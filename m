@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F047E7A7F94
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEAE57A7D72
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:09:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235780AbjITM2U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:28:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49076 "EHLO
+        id S235266AbjITMJV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:09:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235789AbjITM2T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:28:19 -0400
+        with ESMTP id S235307AbjITMJU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:09:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73B7C8F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:28:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D5BC433C8;
-        Wed, 20 Sep 2023 12:28:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9D7D8
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:09:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85286C433CC;
+        Wed, 20 Sep 2023 12:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212894;
-        bh=ErTU00wt4wL2pDFPOLv2DDB4lpILTV9s6DD+GT4kRjY=;
+        s=korg; t=1695211747;
+        bh=Yui9NCKjiIQ02MnZT9qc9/2zU9wRcVpbkXh7kojGI6A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NW4eFK0kZdcUM1p22/9BhLT0wWCHvPcqda7Sz14m9RuXSM2unuW+r6fhC6FdZSEPw
-         l8vau0xoBnjgk5Tk+jk/AHJqVNNCn/5XIYusnr7lU5wxfdgATA8k5h4bahRqGtOjgX
-         ajMZArOpVizDNcISl0CzdZzVzxgh86QB73/k3Xbk=
+        b=1rXhye/bXHco/Q99todJ5B73iClS1PRScTG5bBaceBHXGkygtSboDeCOIyNsi/Tr3
+         RYgnqpJ80LdMvGHPBoz4GmKH5bfnO5B7aQRnS344kLVNpIQ+1bKN5Dvexvh05usibA
+         s6ML4zHXjn8MZycCK8ripDlmHqB/BYDeRhJJnLa0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 084/367] mlxsw: i2c: Limit single transaction buffer size
+        patches@lists.linux.dev, Stefan Haberland <sth@linux.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.ibm.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 021/273] s390/dasd: use correct number of retries for ERP requests
 Date:   Wed, 20 Sep 2023 13:27:41 +0200
-Message-ID: <20230920112900.716776545@linuxfoundation.org>
+Message-ID: <20230920112847.086938166@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Pasternak <vadimp@nvidia.com>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-[ Upstream commit d7248f1cc835bd80e936dc5b2d94b149bdd0077d ]
+[ Upstream commit acea28a6b74f458defda7417d2217b051ba7d444 ]
 
-Maximum size of buffer is obtained from underlying I2C adapter and in
-case adapter allows I2C transaction buffer size greater than 100 bytes,
-transaction will fail due to firmware limitation.
+If a DASD request fails an error recovery procedure (ERP) request might
+be built as a copy of the original request to do error recovery.
 
-As a result driver will fail initialization.
+The ERP request gets a number of retries assigned.
+This number is always 256 no matter what other value might have been set
+for the original request. This is not what is expected when a user
+specifies a certain amount of retries for the device via sysfs.
 
-Limit the maximum size of transaction buffer by 100 bytes to fit to
-firmware.
+Correctly use the number of retries of the original request for ERP
+requests.
 
-Remove unnecessary calculation:
-max_t(u16, MLXSW_I2C_BLK_DEF, quirk_size).
-This condition can not happened.
-
-Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230721193647.3889634-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/i2c.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/s390/block/dasd_3990_erp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-index 65976a3ab591e..b0d44b1361161 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-@@ -47,6 +47,7 @@
- #define MLXSW_I2C_MBOX_SIZE_BITS	12
- #define MLXSW_I2C_ADDR_BUF_SIZE		4
- #define MLXSW_I2C_BLK_DEF		32
-+#define MLXSW_I2C_BLK_MAX		100
- #define MLXSW_I2C_RETRY			5
- #define MLXSW_I2C_TIMEOUT_MSECS		5000
- #define MLXSW_I2C_MAX_DATA_SIZE		256
-@@ -575,7 +576,7 @@ static int mlxsw_i2c_probe(struct i2c_client *client,
- 			return -EOPNOTSUPP;
- 		}
+diff --git a/drivers/s390/block/dasd_3990_erp.c b/drivers/s390/block/dasd_3990_erp.c
+index ee73b0607e47c..8598c792ded30 100644
+--- a/drivers/s390/block/dasd_3990_erp.c
++++ b/drivers/s390/block/dasd_3990_erp.c
+@@ -2436,7 +2436,7 @@ static struct dasd_ccw_req *dasd_3990_erp_add_erp(struct dasd_ccw_req *cqr)
+ 	erp->block    = cqr->block;
+ 	erp->magic    = cqr->magic;
+ 	erp->expires  = cqr->expires;
+-	erp->retries  = 256;
++	erp->retries  = device->default_retries;
+ 	erp->buildclk = get_tod_clock();
+ 	erp->status = DASD_CQR_FILLED;
  
--		mlxsw_i2c->block_size = max_t(u16, MLXSW_I2C_BLK_DEF,
-+		mlxsw_i2c->block_size = min_t(u16, MLXSW_I2C_BLK_MAX,
- 					      min_t(u16, quirks->max_read_len,
- 						    quirks->max_write_len));
- 	} else {
 -- 
 2.40.1
 
