@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D92B17A7E83
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C93A7A7D4D
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235579AbjITMS0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:18:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45378 "EHLO
+        id S234459AbjITMIV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:08:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235580AbjITMSZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:25 -0400
+        with ESMTP id S235249AbjITMIT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:08:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B006793
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:18:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC094C433C9;
-        Wed, 20 Sep 2023 12:18:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C36CB6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:08:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD621C433CA;
+        Wed, 20 Sep 2023 12:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212299;
-        bh=OEwPCc4W0fHIo4qthH52VyDT1M5EpZu56pwbcPszUoM=;
+        s=korg; t=1695211693;
+        bh=t7H2IZE2dAXdVB5W8GgOWcuEwvC9KZisMJIVu0eIMRY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B6MzxzlWL2/Gffq1ZSxUIanT9oVM9HQT7adz7D/W0dbn3zNb9Q3RFmml6x5KXGpxo
-         bu5o9+fPxKU1sndjnRS+2oK76ZHtsPUV0P06g34YU5ow9jiWqyCY4GDDVXy+YUUMmg
-         d4aTddk4tVxxEJVNZygE00HOQazJ3E+LA8uFOOhM=
+        b=cylnF+oaC96eg9MIm72jdlknglEh3qk15N2sxhHeidTla9pRAakU7h22YdFjamTmJ
+         iBijt9SnMjl+/gZsPZQNgORg9Z6IEgp/yu/ncZBYenZb4hcJO1Tj1AyatiGAcphF1j
+         WiNahog8YJut44/lvUi21WnJG+P+4sbewrBeZHmw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 4.19 224/273] ata: sata_gemini: Add missing MODULE_DESCRIPTION
+        patches@lists.linux.dev, Georg Ottinger <g.ottinger@gmx.at>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 161/186] ext2: fix datatype of block number in ext2_xattr_set2()
 Date:   Wed, 20 Sep 2023 13:31:04 +0200
-Message-ID: <20230920112853.330525042@linuxfoundation.org>
+Message-ID: <20230920112842.737686732@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +49,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Georg Ottinger <g.ottinger@gmx.at>
 
-commit 8566572bf3b4d6e416a4bf2110dbb4817d11ba59 upstream.
+[ Upstream commit e88076348425b7d0491c8c98d8732a7df8de7aa3 ]
 
-Add the missing MODULE_DESCRIPTION() to avoid warnings such as:
+I run a small server that uses external hard drives for backups. The
+backup software I use uses ext2 filesystems with 4KiB block size and
+the server is running SELinux and therefore relies on xattr. I recently
+upgraded the hard drives from 4TB to 12TB models. I noticed that after
+transferring some TBs I got a filesystem error "Freeing blocks not in
+datazone - block = 18446744071529317386, count = 1" and the backup
+process stopped. Trying to fix the fs with e2fsck resulted in a
+completely corrupted fs. The error probably came from ext2_free_blocks(),
+and because of the large number 18e19 this problem immediately looked
+like some kind of integer overflow. Whereas the 4TB fs was about 1e9
+blocks, the new 12TB is about 3e9 blocks. So, searching the ext2 code,
+I came across the line in fs/ext2/xattr.c:745 where ext2_new_block()
+is called and the resulting block number is stored in the variable block
+as an int datatype. If a block with a block number greater than
+INT32_MAX is returned, this variable overflows and the call to
+sb_getblk() at line fs/ext2/xattr.c:750 fails, then the call to
+ext2_free_blocks() produces the error.
 
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/ata/sata_gemini.o
-
-when compiling with W=1.
-
-Fixes: be4e456ed3a5 ("ata: Add driver for Faraday Technology FTIDE010")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Georg Ottinger <g.ottinger@gmx.at>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230815100340.22121-1-g.ottinger@gmx.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/sata_gemini.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext2/xattr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ata/sata_gemini.c
-+++ b/drivers/ata/sata_gemini.c
-@@ -434,6 +434,7 @@ static struct platform_driver gemini_sat
- };
- module_platform_driver(gemini_sata_driver);
+diff --git a/fs/ext2/xattr.c b/fs/ext2/xattr.c
+index bd1d68ff3a9f8..437175bce22e8 100644
+--- a/fs/ext2/xattr.c
++++ b/fs/ext2/xattr.c
+@@ -664,10 +664,10 @@ ext2_xattr_set2(struct inode *inode, struct buffer_head *old_bh,
+ 			/* We need to allocate a new block */
+ 			ext2_fsblk_t goal = ext2_group_first_block_no(sb,
+ 						EXT2_I(inode)->i_block_group);
+-			int block = ext2_new_block(inode, goal, &error);
++			ext2_fsblk_t block = ext2_new_block(inode, goal, &error);
+ 			if (error)
+ 				goto cleanup;
+-			ea_idebug(inode, "creating block %d", block);
++			ea_idebug(inode, "creating block %lu", block);
  
-+MODULE_DESCRIPTION("low level driver for Cortina Systems Gemini SATA bridge");
- MODULE_AUTHOR("Linus Walleij <linus.walleij@linaro.org>");
- MODULE_LICENSE("GPL");
- MODULE_ALIAS("platform:" DRV_NAME);
+ 			new_bh = sb_getblk(sb, block);
+ 			if (unlikely(!new_bh)) {
+-- 
+2.40.1
+
 
 
