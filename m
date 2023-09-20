@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 788ED7A7C2C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E99037A7B90
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234979AbjITL6v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:58:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51228 "EHLO
+        id S234766AbjITLxZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:53:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235026AbjITL6u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:50 -0400
+        with ESMTP id S234750AbjITLxZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D390C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74DACC433C9;
-        Wed, 20 Sep 2023 11:58:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69AEBB0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B358AC433C8;
+        Wed, 20 Sep 2023 11:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211122;
-        bh=jEkmRgrxL4eyscqYepN32fkq01BvRbyXhKlHFHkV6t4=;
+        s=korg; t=1695210798;
+        bh=+OGW/XWcjU6j84MbfwtP7hgcZcUaUz36qj+WOQ1ojGY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OpZkiv0vJQOurpvtCw2pK/8BSQN5kbBrDfoS0zbCGQSzU2WqqapO3GPro49bsuqho
-         4gpDmcXpqQ7YwiZMwL9En2Aehe0DtNZHfqBmr1O5vpPCxxsxRiLS8PdXwgoBR9koq7
-         u7pfgyHjRl0R1QL2CFW8uII615MsMON2uzMEXtss=
+        b=a0G6zTZi7AR9T0o4T7fm2TCuWP004jCLVTY2pVQg0s2RK4QDlqE+BasWLbFvLqIfP
+         8dL+UwcdMkZ4XKCyxX4v107cFcmmywFINydt1q/lY+wPpXeKt1U8yTZeBUTPu6cIgV
+         1HmHo+1f3fy/DEamMZiQUsh4dXGIcEGTz8KUz87M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.1 117/139] dm: dont attempt to queue IO under RCU protection
-Date:   Wed, 20 Sep 2023 13:30:51 +0200
-Message-ID: <20230920112839.921638286@linuxfoundation.org>
+        patches@lists.linux.dev, George Shen <george.shen@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Mustapha Ghaddar <mghaddar@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 208/211] drm/amd/display: Add DPIA Link Encoder Assignment Fix
+Date:   Wed, 20 Sep 2023 13:30:52 +0200
+Message-ID: <20230920112852.312154893@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,184 +51,178 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Mustapha Ghaddar <mghaddar@amd.com>
 
-commit a9ce385344f916cd1c36a33905e564f5581beae9 upstream.
+commit 64be47ba286117ee4e3dd9d064c88ea2913e3269 upstream.
 
-dm looks up the table for IO based on the request type, with an
-assumption that if the request is marked REQ_NOWAIT, it's fine to
-attempt to submit that IO while under RCU read lock protection. This
-is not OK, as REQ_NOWAIT just means that we should not be sleeping
-waiting on other IO, it does not mean that we can't potentially
-schedule.
+For DPIA we should have preferred DIG assignment based on DPIA selected
+as per the ASIC design.
 
-A simple test case demonstrates this quite nicely:
-
-int main(int argc, char *argv[])
-{
-        struct iovec iov;
-        int fd;
-
-        fd = open("/dev/dm-0", O_RDONLY | O_DIRECT);
-        posix_memalign(&iov.iov_base, 4096, 4096);
-        iov.iov_len = 4096;
-        preadv2(fd, &iov, 1, 0, RWF_NOWAIT);
-        return 0;
-}
-
-which will instantly spew:
-
-BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
-in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 5580, name: dm-nowait
-preempt_count: 0, expected: 0
-RCU nest depth: 1, expected: 0
-INFO: lockdep is turned off.
-CPU: 7 PID: 5580 Comm: dm-nowait Not tainted 6.6.0-rc1-g39956d2dcd81 #132
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x11d/0x1b0
- __might_resched+0x3c3/0x5e0
- ? preempt_count_sub+0x150/0x150
- mempool_alloc+0x1e2/0x390
- ? mempool_resize+0x7d0/0x7d0
- ? lock_sync+0x190/0x190
- ? lock_release+0x4b7/0x670
- ? internal_get_user_pages_fast+0x868/0x2d40
- bio_alloc_bioset+0x417/0x8c0
- ? bvec_alloc+0x200/0x200
- ? internal_get_user_pages_fast+0xb8c/0x2d40
- bio_alloc_clone+0x53/0x100
- dm_submit_bio+0x27f/0x1a20
- ? lock_release+0x4b7/0x670
- ? blk_try_enter_queue+0x1a0/0x4d0
- ? dm_dax_direct_access+0x260/0x260
- ? rcu_is_watching+0x12/0xb0
- ? blk_try_enter_queue+0x1cc/0x4d0
- __submit_bio+0x239/0x310
- ? __bio_queue_enter+0x700/0x700
- ? kvm_clock_get_cycles+0x40/0x60
- ? ktime_get+0x285/0x470
- submit_bio_noacct_nocheck+0x4d9/0xb80
- ? should_fail_request+0x80/0x80
- ? preempt_count_sub+0x150/0x150
- ? lock_release+0x4b7/0x670
- ? __bio_add_page+0x143/0x2d0
- ? iov_iter_revert+0x27/0x360
- submit_bio_noacct+0x53e/0x1b30
- submit_bio_wait+0x10a/0x230
- ? submit_bio_wait_endio+0x40/0x40
- __blkdev_direct_IO_simple+0x4f8/0x780
- ? blkdev_bio_end_io+0x4c0/0x4c0
- ? stack_trace_save+0x90/0xc0
- ? __bio_clone+0x3c0/0x3c0
- ? lock_release+0x4b7/0x670
- ? lock_sync+0x190/0x190
- ? atime_needs_update+0x3bf/0x7e0
- ? timestamp_truncate+0x21b/0x2d0
- ? inode_owner_or_capable+0x240/0x240
- blkdev_direct_IO.part.0+0x84a/0x1810
- ? rcu_is_watching+0x12/0xb0
- ? lock_release+0x4b7/0x670
- ? blkdev_read_iter+0x40d/0x530
- ? reacquire_held_locks+0x4e0/0x4e0
- ? __blkdev_direct_IO_simple+0x780/0x780
- ? rcu_is_watching+0x12/0xb0
- ? __mark_inode_dirty+0x297/0xd50
- ? preempt_count_add+0x72/0x140
- blkdev_read_iter+0x2a4/0x530
- do_iter_readv_writev+0x2f2/0x3c0
- ? generic_copy_file_range+0x1d0/0x1d0
- ? fsnotify_perm.part.0+0x25d/0x630
- ? security_file_permission+0xd8/0x100
- do_iter_read+0x31b/0x880
- ? import_iovec+0x10b/0x140
- vfs_readv+0x12d/0x1a0
- ? vfs_iter_read+0xb0/0xb0
- ? rcu_is_watching+0x12/0xb0
- ? rcu_is_watching+0x12/0xb0
- ? lock_release+0x4b7/0x670
- do_preadv+0x1b3/0x260
- ? do_readv+0x370/0x370
- __x64_sys_preadv2+0xef/0x150
- do_syscall_64+0x39/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f5af41ad806
-Code: 41 54 41 89 fc 55 44 89 c5 53 48 89 cb 48 83 ec 18 80 3d e4 dd 0d 00 00 74 7a 45 89 c1 49 89 ca 45 31 c0 b8 47 01 00 00 0f 05 <48> 3d 00 f0 ff ff 0f 87 be 00 00 00 48 85 c0 79 4a 48 8b 0d da 55
-RSP: 002b:00007ffd3145c7f0 EFLAGS: 00000246 ORIG_RAX: 0000000000000147
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f5af41ad806
-RDX: 0000000000000001 RSI: 00007ffd3145c850 RDI: 0000000000000003
-RBP: 0000000000000008 R08: 0000000000000000 R09: 0000000000000008
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
-R13: 00007ffd3145c850 R14: 000055f5f0431dd8 R15: 0000000000000001
- </TASK>
-
-where in fact it is dm itself that attempts to allocate a bio clone with
-GFP_NOIO under the rcu read lock, regardless of the request type.
-
-Fix this by getting rid of the special casing for REQ_NOWAIT, and just
-use the normal SRCU protected table lookup. Get rid of the bio based
-table locking helpers at the same time, as they are now unused.
-
+Reviewed-by: George Shen <george.shen@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Mustapha Ghaddar <mghaddar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 563a225c9fd2 ("dm: introduce dm_{get,put}_live_table_bio called from dm_submit_bio")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm.c |   23 ++---------------------
- 1 file changed, 2 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c   |   35 +++++++++++++---
+ drivers/gpu/drm/amd/display/dc/dc.h                     |    1 
+ drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c |   23 ++++++++++
+ drivers/gpu/drm/amd/display/dc/inc/core_types.h         |    1 
+ drivers/gpu/drm/amd/display/dc/link/link_factory.c      |    4 +
+ 5 files changed, 58 insertions(+), 6 deletions(-)
 
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -707,24 +707,6 @@ static void dm_put_live_table_fast(struc
- 	rcu_read_unlock();
- }
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_link_enc_cfg.c
+@@ -169,11 +169,23 @@ static void add_link_enc_assignment(
+ /* Return first available DIG link encoder. */
+ static enum engine_id find_first_avail_link_enc(
+ 		const struct dc_context *ctx,
+-		const struct dc_state *state)
++		const struct dc_state *state,
++		enum engine_id eng_id_requested)
+ {
+ 	enum engine_id eng_id = ENGINE_ID_UNKNOWN;
+ 	int i;
  
--static inline struct dm_table *dm_get_live_table_bio(struct mapped_device *md,
--					int *srcu_idx, blk_opf_t bio_opf)
--{
--	if (bio_opf & REQ_NOWAIT)
--		return dm_get_live_table_fast(md);
--	else
--		return dm_get_live_table(md, srcu_idx);
--}
--
--static inline void dm_put_live_table_bio(struct mapped_device *md, int srcu_idx,
--					 blk_opf_t bio_opf)
--{
--	if (bio_opf & REQ_NOWAIT)
--		dm_put_live_table_fast(md);
--	else
--		dm_put_live_table(md, srcu_idx);
--}
--
- static char *_dm_claim_ptr = "I belong to device-mapper";
++	if (eng_id_requested != ENGINE_ID_UNKNOWN) {
++
++		for (i = 0; i < ctx->dc->res_pool->res_cap->num_dig_link_enc; i++) {
++			eng_id = state->res_ctx.link_enc_cfg_ctx.link_enc_avail[i];
++			if (eng_id == eng_id_requested)
++				return eng_id;
++		}
++	}
++
++	eng_id = ENGINE_ID_UNKNOWN;
++
+ 	for (i = 0; i < ctx->dc->res_pool->res_cap->num_dig_link_enc; i++) {
+ 		eng_id = state->res_ctx.link_enc_cfg_ctx.link_enc_avail[i];
+ 		if (eng_id != ENGINE_ID_UNKNOWN)
+@@ -287,7 +299,7 @@ void link_enc_cfg_link_encs_assign(
+ 		struct dc_stream_state *streams[],
+ 		uint8_t stream_count)
+ {
+-	enum engine_id eng_id = ENGINE_ID_UNKNOWN;
++	enum engine_id eng_id = ENGINE_ID_UNKNOWN, eng_id_req = ENGINE_ID_UNKNOWN;
+ 	int i;
+ 	int j;
  
- /*
-@@ -1805,9 +1787,8 @@ static void dm_submit_bio(struct bio *bi
- 	struct mapped_device *md = bio->bi_bdev->bd_disk->private_data;
- 	int srcu_idx;
- 	struct dm_table *map;
--	blk_opf_t bio_opf = bio->bi_opf;
+@@ -377,8 +389,15 @@ void link_enc_cfg_link_encs_assign(
+ 		 * assigned to that endpoint.
+ 		 */
+ 		link_enc = get_link_enc_used_by_link(state, stream->link);
+-		if (link_enc == NULL)
+-			eng_id = find_first_avail_link_enc(stream->ctx, state);
++		if (link_enc == NULL) {
++
++			if (stream->link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA &&
++					stream->link->dpia_preferred_eng_id != ENGINE_ID_UNKNOWN)
++				eng_id_req = stream->link->dpia_preferred_eng_id;
++
++			if (eng_id == ENGINE_ID_UNKNOWN)
++				eng_id = find_first_avail_link_enc(stream->ctx, state, eng_id_req);
++		}
+ 		else
+ 			eng_id =  link_enc->preferred_engine;
  
--	map = dm_get_live_table_bio(md, &srcu_idx, bio_opf);
-+	map = dm_get_live_table(md, &srcu_idx);
+@@ -402,7 +421,9 @@ void link_enc_cfg_link_encs_assign(
+ 			DC_LOG_DEBUG("%s: CUR %s(%d) - enc_id(%d)\n",
+ 					__func__,
+ 					assignment.ep_id.ep_type == DISPLAY_ENDPOINT_PHY ? "PHY" : "DPIA",
+-					assignment.ep_id.link_id.enum_id - 1,
++					assignment.ep_id.ep_type == DISPLAY_ENDPOINT_PHY ?
++							assignment.ep_id.link_id.enum_id :
++							assignment.ep_id.link_id.enum_id - 1,
+ 					assignment.eng_id);
+ 	}
+ 	for (i = 0; i < MAX_PIPES; i++) {
+@@ -413,7 +434,9 @@ void link_enc_cfg_link_encs_assign(
+ 			DC_LOG_DEBUG("%s: NEW %s(%d) - enc_id(%d)\n",
+ 					__func__,
+ 					assignment.ep_id.ep_type == DISPLAY_ENDPOINT_PHY ? "PHY" : "DPIA",
+-					assignment.ep_id.link_id.enum_id - 1,
++					assignment.ep_id.ep_type == DISPLAY_ENDPOINT_PHY ?
++							assignment.ep_id.link_id.enum_id :
++							assignment.ep_id.link_id.enum_id - 1,
+ 					assignment.eng_id);
+ 	}
  
- 	/* If suspended, or map not yet available, queue this IO for later */
- 	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags)) ||
-@@ -1823,7 +1804,7 @@ static void dm_submit_bio(struct bio *bi
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -1479,6 +1479,7 @@ struct dc_link {
+ 	 * object creation.
+ 	 */
+ 	enum engine_id eng_id;
++	enum engine_id dpia_preferred_eng_id;
  
- 	dm_split_and_process_bio(md, map, bio);
- out:
--	dm_put_live_table_bio(md, srcu_idx, bio_opf);
-+	dm_put_live_table(md, srcu_idx);
- }
+ 	bool test_pattern_enabled;
+ 	union compliance_test_state compliance_test_state;
+--- a/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn314/dcn314_resource.c
+@@ -1029,6 +1029,28 @@ static const struct dce_i2c_mask i2c_mas
+ 		I2C_COMMON_MASK_SH_LIST_DCN30(_MASK)
+ };
  
- static bool dm_poll_dm_io(struct dm_io *io, struct io_comp_batch *iob,
++/* ========================================================== */
++
++/*
++ * DPIA index | Preferred Encoder     |    Host Router
++ *   0        |      C                |       0
++ *   1        |      First Available  |       0
++ *   2        |      D                |       1
++ *   3        |      First Available  |       1
++ */
++/* ========================================================== */
++static const enum engine_id dpia_to_preferred_enc_id_table[] = {
++		ENGINE_ID_DIGC,
++		ENGINE_ID_DIGC,
++		ENGINE_ID_DIGD,
++		ENGINE_ID_DIGD
++};
++
++static enum engine_id dcn314_get_preferred_eng_id_dpia(unsigned int dpia_index)
++{
++	return dpia_to_preferred_enc_id_table[dpia_index];
++}
++
+ static struct dce_i2c_hw *dcn31_i2c_hw_create(
+ 	struct dc_context *ctx,
+ 	uint32_t inst)
+@@ -1777,6 +1799,7 @@ static struct resource_funcs dcn314_res_
+ 	.update_bw_bounding_box = dcn314_update_bw_bounding_box,
+ 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
+ 	.get_panel_config_defaults = dcn314_get_panel_config_defaults,
++	.get_preferred_eng_id_dpia = dcn314_get_preferred_eng_id_dpia,
+ };
+ 
+ static struct clock_source *dcn30_clock_source_create(
+--- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
+@@ -65,6 +65,7 @@ struct resource_context;
+ struct clk_bw_params;
+ 
+ struct resource_funcs {
++	enum engine_id (*get_preferred_eng_id_dpia)(unsigned int dpia_index);
+ 	void (*destroy)(struct resource_pool **pool);
+ 	void (*link_init)(struct dc_link *link);
+ 	struct panel_cntl*(*panel_cntl_create)(
+--- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+@@ -783,6 +783,10 @@ static bool construct_dpia(struct dc_lin
+ 	/* Set dpia port index : 0 to number of dpia ports */
+ 	link->ddc_hw_inst = init_params->connector_index;
+ 
++	// Assign Dpia preferred eng_id
++	if (link->dc->res_pool->funcs->get_preferred_eng_id_dpia)
++		link->dpia_preferred_eng_id = link->dc->res_pool->funcs->get_preferred_eng_id_dpia(link->ddc_hw_inst);
++
+ 	/* TODO: Create link encoder */
+ 
+ 	link->psr_settings.psr_version = DC_PSR_VERSION_UNSUPPORTED;
 
 
