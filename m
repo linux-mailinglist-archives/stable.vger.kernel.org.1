@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB52F7A7C92
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E19747A7B16
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:49:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235064AbjITMCc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:02:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37660 "EHLO
+        id S234639AbjITLtV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:49:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235043AbjITMCb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:02:31 -0400
+        with ESMTP id S234641AbjITLtU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D67A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B066C433CA;
-        Wed, 20 Sep 2023 12:02:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B19FA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B30C433C7;
+        Wed, 20 Sep 2023 11:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211344;
-        bh=FtHNR7RSxJcBj+E7JBmCUyQRIGReUr6MdwWzJXw96pk=;
+        s=korg; t=1695210554;
+        bh=PjGJNJxID3AzuRa52EaLYg/PfmITj5qqP8RDNLd475w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wCekj3RSnZlRaEJdcpRb2lk99MFSuWLBW40rcoSMAEH0r5gBdGeG4S7el9zeGY7my
-         v89sbEQpYv3EKGTuw2zBYZc9wzjKt41amxEoHL1UXm+60CLBR0eZbNQUnF8zGrWCoR
-         TaI6wlavlS49HQ9/Ab8/91WwEpqYm3raMpu4BPSc=
+        b=i8Tnvj7xmYXCxVplOOHmSvrSx+Hp4hSixxFd3PDOBznvr357MQ3ZETY0bKE94o7dy
+         V5vRBgyu6zLkCSADbL6/RKJNckuP0pdOGyed9JVfhL0hDpBtqoHnfJoBUrmGvKwFz6
+         6WT17b/b9IaxY8N+2PCKecVqM5/YV5QOHxDNXeuQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
-        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 059/186] of: unittest: fix null pointer dereferencing in of_unittest_find_node_by_name()
-Date:   Wed, 20 Sep 2023 13:29:22 +0200
-Message-ID: <20230920112839.029631955@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 119/211] serial: cpm_uart: Avoid suspicious locking
+Date:   Wed, 20 Sep 2023 13:29:23 +0200
+Message-ID: <20230920112849.483999478@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -41,83 +42,90 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruan Jinjie <ruanjinjie@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit d6ce4f0ea19c32f10867ed93d8386924326ab474 ]
+[ Upstream commit 36ef11d311f405e55ad8e848c19b212ff71ef536 ]
 
-when kmalloc() fail to allocate memory in kasprintf(), name
-or full_name will be NULL, strcmp() will cause
-null pointer dereference.
+  CHECK   drivers/tty/serial/cpm_uart/cpm_uart_core.c
+drivers/tty/serial/cpm_uart/cpm_uart_core.c:1271:39: warning: context imbalance in 'cpm_uart_console_write' - unexpected unlock
 
-Fixes: 0d638a07d3a1 ("of: Convert to using %pOF instead of full_name")
-Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20230727080246.519539-1-ruanjinjie@huawei.com
-Signed-off-by: Rob Herring <robh@kernel.org>
+Allthough 'nolock' is not expected to change, sparse find the following
+form suspicious:
+
+	if (unlikely(nolock)) {
+		local_irq_save(flags);
+	} else {
+		spin_lock_irqsave(&pinfo->port.lock, flags);
+	}
+
+	cpm_uart_early_write(pinfo, s, count, true);
+
+	if (unlikely(nolock)) {
+		local_irq_restore(flags);
+	} else {
+		spin_unlock_irqrestore(&pinfo->port.lock, flags);
+	}
+
+Rewrite it a more obvious form:
+
+	if (unlikely(oops_in_progress)) {
+		local_irq_save(flags);
+		cpm_uart_early_write(pinfo, s, count, true);
+		local_irq_restore(flags);
+	} else {
+		spin_lock_irqsave(&pinfo->port.lock, flags);
+		cpm_uart_early_write(pinfo, s, count, true);
+		spin_unlock_irqrestore(&pinfo->port.lock, flags);
+	}
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/f7da5cdc9287960185829cfef681a7d8614efa1f.1691068700.git.christophe.leroy@csgroup.eu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/unittest.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/tty/serial/cpm_uart/cpm_uart_core.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 55c98f119df22..89d1011d5b327 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -51,7 +51,7 @@ static void __init of_unittest_find_node_by_name(void)
+diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+index 66afa9bea6bfe..71366a4cea22c 100644
+--- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
++++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+@@ -1255,19 +1255,14 @@ static void cpm_uart_console_write(struct console *co, const char *s,
+ {
+ 	struct uart_cpm_port *pinfo = &cpm_uart_ports[co->index];
+ 	unsigned long flags;
+-	int nolock = oops_in_progress;
  
- 	np = of_find_node_by_path("/testcase-data");
- 	name = kasprintf(GFP_KERNEL, "%pOF", np);
--	unittest(np && !strcmp("/testcase-data", name),
-+	unittest(np && name && !strcmp("/testcase-data", name),
- 		"find /testcase-data failed\n");
- 	of_node_put(np);
- 	kfree(name);
-@@ -62,14 +62,14 @@ static void __init of_unittest_find_node_by_name(void)
- 
- 	np = of_find_node_by_path("/testcase-data/phandle-tests/consumer-a");
- 	name = kasprintf(GFP_KERNEL, "%pOF", np);
--	unittest(np && !strcmp("/testcase-data/phandle-tests/consumer-a", name),
-+	unittest(np && name && !strcmp("/testcase-data/phandle-tests/consumer-a", name),
- 		"find /testcase-data/phandle-tests/consumer-a failed\n");
- 	of_node_put(np);
- 	kfree(name);
- 
- 	np = of_find_node_by_path("testcase-alias");
- 	name = kasprintf(GFP_KERNEL, "%pOF", np);
--	unittest(np && !strcmp("/testcase-data", name),
-+	unittest(np && name && !strcmp("/testcase-data", name),
- 		"find testcase-alias failed\n");
- 	of_node_put(np);
- 	kfree(name);
-@@ -80,7 +80,7 @@ static void __init of_unittest_find_node_by_name(void)
- 
- 	np = of_find_node_by_path("testcase-alias/phandle-tests/consumer-a");
- 	name = kasprintf(GFP_KERNEL, "%pOF", np);
--	unittest(np && !strcmp("/testcase-data/phandle-tests/consumer-a", name),
-+	unittest(np && name && !strcmp("/testcase-data/phandle-tests/consumer-a", name),
- 		"find testcase-alias/phandle-tests/consumer-a failed\n");
- 	of_node_put(np);
- 	kfree(name);
-@@ -966,6 +966,8 @@ static void attach_node_and_children(struct device_node *np)
- 	const char *full_name;
- 
- 	full_name = kasprintf(GFP_KERNEL, "%pOF", np);
-+	if (!full_name)
-+		return;
- 
- 	if (!strcmp(full_name, "/__local_fixups__") ||
- 	    !strcmp(full_name, "/__fixups__")) {
+-	if (unlikely(nolock)) {
++	if (unlikely(oops_in_progress)) {
+ 		local_irq_save(flags);
+-	} else {
+-		spin_lock_irqsave(&pinfo->port.lock, flags);
+-	}
+-
+-	cpm_uart_early_write(pinfo, s, count, true);
+-
+-	if (unlikely(nolock)) {
++		cpm_uart_early_write(pinfo, s, count, true);
+ 		local_irq_restore(flags);
+ 	} else {
++		spin_lock_irqsave(&pinfo->port.lock, flags);
++		cpm_uart_early_write(pinfo, s, count, true);
+ 		spin_unlock_irqrestore(&pinfo->port.lock, flags);
+ 	}
+ }
 -- 
 2.40.1
 
