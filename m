@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88D247A7BBF
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D887A7B17
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:49:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234823AbjITLzS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:55:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35820 "EHLO
+        id S234645AbjITLtY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:49:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235027AbjITLzA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:00 -0400
+        with ESMTP id S234640AbjITLtX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B5F8A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC3AC433C8;
-        Wed, 20 Sep 2023 11:54:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D8BBB0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719BAC433C8;
+        Wed, 20 Sep 2023 11:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210893;
-        bh=n+UjqlOr+UO1Be/s3OUKeZGHIyXGGBGLBCiwtFXJue0=;
+        s=korg; t=1695210556;
+        bh=Is6j2BYQs2Sql7MarYZLysTrXOrCOx9VznlmIkM7zWM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oLbuV/xABs6S2kOACabTAxtzdnaR26ktkF3AlT+TiZR4S8xpVsqJA1DYXHNnSy+QS
-         dJ3duwe/aYYukHdH3lUDSzPM2mqti1S3ulXNINII6RwAWFonMtxcQW3ProhgoQ6UlT
-         Ri1IvnAzSa+CNyJE5iEtm1K/UesLtTyCAQSWVQRo=
+        b=dJULLY7INCEx1yRWYpr5YCTF1hR5raGmqXZGijPXKoQCIThQjhFGrNoYbXjOH4PrL
+         +FD90+SyvOB5TuHRk7jcmcBbY+xyBYN3JGE7c2BkWewTYkAOuvFBCyVAOJFEqNiOe0
+         x6wpJabnv2RwfWv1ggXLGZ3Ojv+zGeecoRgumsJw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jim Reinhart <jimr@tekvox.com>,
-        James Autry <jautry@tekvox.com>,
-        Matthew Maron <matthewm@tekvox.com>,
-        Giulio Benetti <giulio.benetti@benettiengineering.com>,
-        Haibo Chen <haibo.chen@nxp.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/139] mmc: sdhci-esdhc-imx: improve ESDHC_FLAG_ERR010450
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Baoquan He <bhe@redhat.com>,
+        Derek Kiernan <derek.kiernan@amd.com>,
+        Dragan Cvetic <dragan.cvetic@amd.com>,
+        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 120/211] misc: open-dice: make OPEN_DICE depend on HAS_IOMEM
 Date:   Wed, 20 Sep 2023 13:29:24 +0200
-Message-ID: <20230920112836.733864300@linuxfoundation.org>
+Message-ID: <20230920112849.515376914@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,56 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giulio Benetti <giulio.benetti@benettiengineering.com>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit 5ae4b0d8875caa44946e579420c7fd5740d58653 ]
+[ Upstream commit aefc8b57af7787c80686e49a5841e9289cb11f53 ]
 
-Errata ERR010450 only shows up if voltage is 1.8V, but if the device is
-supplied by 3v3 the errata can be ignored. So let's check for if quirk
-SDHCI_QUIRK2_NO_1_8_V is defined or not before limiting the frequency.
+On s390 systems (aka mainframes), it has classic channel devices for
+networking and permanent storage that are currently even more common
+than PCI devices. Hence it could have a fully functional s390 kernel
+with CONFIG_PCI=n, then the relevant iomem mapping functions
+[including ioremap(), devm_ioremap(), etc.] are not available.
 
-Cc: Jim Reinhart <jimr@tekvox.com>
-Cc: James Autry <jautry@tekvox.com>
-Cc: Matthew Maron <matthewm@tekvox.com>
-Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
-Acked-by: Haibo Chen <haibo.chen@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20230811214853.8623-1-giulio.benetti@benettiengineering.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Here let OPEN_DICE depend on HAS_IOMEM so that it won't be built
+to cause below compiling error if PCI is unset:
+
+------
+ERROR: modpost: "devm_memremap" [drivers/misc/open-dice.ko] undefined!
+ERROR: modpost: "devm_memunmap" [drivers/misc/open-dice.ko] undefined!
+------
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202306211329.ticOJCSv-lkp@intel.com/
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Cc: Derek Kiernan <derek.kiernan@amd.com>
+Cc: Dragan Cvetic <dragan.cvetic@amd.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230707135852.24292-4-bhe@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-esdhc-imx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/misc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
-index b63cf1f9e8fb9..3c7b32c0d3f3f 100644
---- a/drivers/mmc/host/sdhci-esdhc-imx.c
-+++ b/drivers/mmc/host/sdhci-esdhc-imx.c
-@@ -171,8 +171,8 @@
- #define ESDHC_FLAG_HS400		BIT(9)
- /*
-  * The IP has errata ERR010450
-- * uSDHC: Due to the I/O timing limit, for SDR mode, SD card clock can't
-- * exceed 150MHz, for DDR mode, SD card clock can't exceed 45MHz.
-+ * uSDHC: At 1.8V due to the I/O timing limit, for SDR mode, SD card
-+ * clock can't exceed 150MHz, for DDR mode, SD card clock can't exceed 45MHz.
-  */
- #define ESDHC_FLAG_ERR010450		BIT(10)
- /* The IP supports HS400ES mode */
-@@ -932,7 +932,8 @@ static inline void esdhc_pltfm_set_clock(struct sdhci_host *host,
- 		| ESDHC_CLOCK_MASK);
- 	sdhci_writel(host, temp, ESDHC_SYSTEM_CONTROL);
- 
--	if (imx_data->socdata->flags & ESDHC_FLAG_ERR010450) {
-+	if ((imx_data->socdata->flags & ESDHC_FLAG_ERR010450) &&
-+	    (!(host->quirks2 & SDHCI_QUIRK2_NO_1_8_V))) {
- 		unsigned int max_clock;
- 
- 		max_clock = imx_data->is_ddr ? 45000000 : 150000000;
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index 75e427f124b28..cadd4a820c033 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -496,6 +496,7 @@ config HISI_HIKEY_USB
+ config OPEN_DICE
+ 	tristate "Open Profile for DICE driver"
+ 	depends on OF_RESERVED_MEM
++	depends on HAS_IOMEM
+ 	help
+ 	  This driver exposes a DICE reserved memory region to userspace via
+ 	  a character device. The memory region contains Compound Device
 -- 
 2.40.1
 
