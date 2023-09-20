@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40C637A817B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEEDC7A7EA8
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236337AbjITMpz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59960 "EHLO
+        id S235534AbjITMTe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:19:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236310AbjITMpy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:45:54 -0400
+        with ESMTP id S235640AbjITMTa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92B9499
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:45:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFD3C433CA;
-        Wed, 20 Sep 2023 12:45:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60086D3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84D2C433C7;
+        Wed, 20 Sep 2023 12:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213948;
-        bh=NbJq0nBJPHEktm4674kLJG2A8wO7lZodLR3bz4R3FRg=;
+        s=korg; t=1695212364;
+        bh=1KDuRLm5X53cYVZLWNSVbEhV5+7V7PQb5ypGRnK7P3k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yH2kzYrPRfdVRDif9yWOEwaiAzyAbI8GLf+F5xVdMFqu2Zcw4HRnz8s3n7CIz9brF
-         zJpH4GufhrVzgblk+4L3ITsbjksarCsORWUxoXa9ebPVLa3LapNsei5/4vs0wUHZSd
-         VQ88EbZ5c0x3lO6N0ni491beOeeaYHAQ+XYR6dog=
+        b=nnjeW1qeUkauJDV2XycwQdBIleY0YqG2PKa/t+fx6wHfN6mqbdm5J9mKXkA8wHsUQ
+         YnO7837DGuTYnX1RKeCJeOcnrQwXtGFcBKFMuz2wlnoKiMoJkaMvkCXEQiOJXm7wQ/
+         Tirke1UCtd/8kMcNyepU7FyAuxLpeVhUUyCa7SP4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rong Tao <rongtao@cestc.cn>,
-        Petr Mladek <pmladek@suse.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/110] samples/hw_breakpoint: Fix kernel BUG invalid opcode: 0000
+        patches@lists.linux.dev, Georg Ottinger <g.ottinger@gmx.at>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 249/273] ext2: fix datatype of block number in ext2_xattr_set2()
 Date:   Wed, 20 Sep 2023 13:31:29 +0200
-Message-ID: <20230920112831.539643478@linuxfoundation.org>
+Message-ID: <20230920112854.001564645@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +49,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Tao <rongtao@cestc.cn>
+From: Georg Ottinger <g.ottinger@gmx.at>
 
-[ Upstream commit 910e230d5f1bb72c54532e94fbb1705095c7bab6 ]
+[ Upstream commit e88076348425b7d0491c8c98d8732a7df8de7aa3 ]
 
-Macro symbol_put() is defined as __symbol_put(__stringify(x))
+I run a small server that uses external hard drives for backups. The
+backup software I use uses ext2 filesystems with 4KiB block size and
+the server is running SELinux and therefore relies on xattr. I recently
+upgraded the hard drives from 4TB to 12TB models. I noticed that after
+transferring some TBs I got a filesystem error "Freeing blocks not in
+datazone - block = 18446744071529317386, count = 1" and the backup
+process stopped. Trying to fix the fs with e2fsck resulted in a
+completely corrupted fs. The error probably came from ext2_free_blocks(),
+and because of the large number 18e19 this problem immediately looked
+like some kind of integer overflow. Whereas the 4TB fs was about 1e9
+blocks, the new 12TB is about 3e9 blocks. So, searching the ext2 code,
+I came across the line in fs/ext2/xattr.c:745 where ext2_new_block()
+is called and the resulting block number is stored in the variable block
+as an int datatype. If a block with a block number greater than
+INT32_MAX is returned, this variable overflows and the call to
+sb_getblk() at line fs/ext2/xattr.c:750 fails, then the call to
+ext2_free_blocks() produces the error.
 
-    ksym_name = "jiffies"
-    symbol_put(ksym_name)
-
-will be resolved as
-
-    __symbol_put("ksym_name")
-
-which is clearly wrong. So symbol_put must be replaced with __symbol_put.
-
-When we uninstall hw_breakpoint.ko (rmmod), a kernel bug occurs with the
-following error:
-
-[11381.854152] kernel BUG at kernel/module/main.c:779!
-[11381.854159] invalid opcode: 0000 [#2] PREEMPT SMP PTI
-[11381.854163] CPU: 8 PID: 59623 Comm: rmmod Tainted: G      D    OE      6.2.9-200.fc37.x86_64 #1
-[11381.854167] Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./B360M-HDV, BIOS P3.20 10/23/2018
-[11381.854169] RIP: 0010:__symbol_put+0xa2/0xb0
-[11381.854175] Code: 00 e8 92 d2 f7 ff 65 8b 05 c3 2f e6 78 85 c0 74 1b 48 8b 44 24 30 65 48 2b 04 25 28 00 00 00 75 12 48 83 c4 38 c3 cc cc cc cc <0f> 0b 0f 1f 44 00 00 eb de e8 c0 df d8 00 90 90 90 90 90 90 90 90
-[11381.854178] RSP: 0018:ffffad8ec6ae7dd0 EFLAGS: 00010246
-[11381.854181] RAX: 0000000000000000 RBX: ffffffffc1fd1240 RCX: 000000000000000c
-[11381.854184] RDX: 000000000000006b RSI: ffffffffc02bf7c7 RDI: ffffffffc1fd001c
-[11381.854186] RBP: 000055a38b76e7c8 R08: ffffffff871ccfe0 R09: 0000000000000000
-[11381.854188] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-[11381.854190] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-[11381.854192] FS:  00007fbf7c62c740(0000) GS:ffff8c5badc00000(0000) knlGS:0000000000000000
-[11381.854195] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[11381.854197] CR2: 000055a38b7793f8 CR3: 0000000363e1e001 CR4: 00000000003726e0
-[11381.854200] DR0: ffffffffb3407980 DR1: 0000000000000000 DR2: 0000000000000000
-[11381.854202] DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
-[11381.854204] Call Trace:
-[11381.854207]  <TASK>
-[11381.854212]  s_module_exit+0xc/0xff0 [symbol_getput]
-[11381.854219]  __do_sys_delete_module.constprop.0+0x198/0x2f0
-[11381.854225]  do_syscall_64+0x58/0x80
-[11381.854231]  ? exit_to_user_mode_prepare+0x180/0x1f0
-[11381.854237]  ? syscall_exit_to_user_mode+0x17/0x40
-[11381.854241]  ? do_syscall_64+0x67/0x80
-[11381.854245]  ? syscall_exit_to_user_mode+0x17/0x40
-[11381.854248]  ? do_syscall_64+0x67/0x80
-[11381.854252]  ? exc_page_fault+0x70/0x170
-[11381.854256]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Signed-off-by: Rong Tao <rongtao@cestc.cn>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Georg Ottinger <g.ottinger@gmx.at>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230815100340.22121-1-g.ottinger@gmx.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/hw_breakpoint/data_breakpoint.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext2/xattr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/samples/hw_breakpoint/data_breakpoint.c b/samples/hw_breakpoint/data_breakpoint.c
-index 418c46fe5ffc3..9debd128b2ab8 100644
---- a/samples/hw_breakpoint/data_breakpoint.c
-+++ b/samples/hw_breakpoint/data_breakpoint.c
-@@ -70,7 +70,7 @@ static int __init hw_break_module_init(void)
- static void __exit hw_break_module_exit(void)
- {
- 	unregister_wide_hw_breakpoint(sample_hbp);
--	symbol_put(ksym_name);
-+	__symbol_put(ksym_name);
- 	printk(KERN_INFO "HW Breakpoint for %s write uninstalled\n", ksym_name);
- }
+diff --git a/fs/ext2/xattr.c b/fs/ext2/xattr.c
+index bd1d68ff3a9f8..437175bce22e8 100644
+--- a/fs/ext2/xattr.c
++++ b/fs/ext2/xattr.c
+@@ -664,10 +664,10 @@ ext2_xattr_set2(struct inode *inode, struct buffer_head *old_bh,
+ 			/* We need to allocate a new block */
+ 			ext2_fsblk_t goal = ext2_group_first_block_no(sb,
+ 						EXT2_I(inode)->i_block_group);
+-			int block = ext2_new_block(inode, goal, &error);
++			ext2_fsblk_t block = ext2_new_block(inode, goal, &error);
+ 			if (error)
+ 				goto cleanup;
+-			ea_idebug(inode, "creating block %d", block);
++			ea_idebug(inode, "creating block %lu", block);
  
+ 			new_bh = sb_getblk(sb, block);
+ 			if (unlikely(!new_bh)) {
 -- 
 2.40.1
 
