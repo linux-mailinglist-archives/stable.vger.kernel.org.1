@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B390D7A785A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF5307A785B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:59:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234326AbjITJ77 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:59:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46938 "EHLO
+        id S234324AbjITKAB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 06:00:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234336AbjITJ76 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:59:58 -0400
+        with ESMTP id S234352AbjITKAA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:00:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A322AB0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:59:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC204C433C9;
-        Wed, 20 Sep 2023 09:59:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69FAEA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:59:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA62C433C8;
+        Wed, 20 Sep 2023 09:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203991;
-        bh=8TiQShOeMbjF8K7/2OX3wM9QI9Wa4YlO+DH17gbSv2c=;
+        s=korg; t=1695203994;
+        bh=qxyS5jD1OwaHIQ6zlVAGyT+156DiFlTXvSVamh5IA1w=;
         h=Subject:To:Cc:From:Date:From;
-        b=1o4yyX9NYAC126as/ydUu0OwO5E8cfT/xs64xTKfl/oJvxS1qnXuIxsHAXffS7bMs
-         GdWnUHQzUICU+0NheEsIb0otPVzgMkf5RWASnpgIwBRw3zTAYfMSYc5gmFB19hYvHs
-         vgCKdSTJyJMU7yeCEpmWPJPo1IPMu45yu12/a1Ao=
-Subject: FAILED: patch "[PATCH] ext4: do not let fstrim block system suspend" failed to apply to 6.1-stable tree
+        b=2W0tajn3vhwC6vhWZWIAAqvAprfvK/oUPfOGhsY1c/xFN0HcBwqcqoITGKuz3DzJv
+         zqXvQeoZ61rhGrv1vtwNBTlaLFf+1MLY8E/Ok26qywUYZUgk4PzC+CIDDHPG8VEktM
+         5xCufqz29dKKiTzKkaXhpEjJ5X7uzPcevdbMx4LU=
+Subject: FAILED: patch "[PATCH] ext4: do not let fstrim block system suspend" failed to apply to 5.10-stable tree
 To:     jack@suse.cz, david@fromorbit.com, lenb@kernel.org, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:59:34 +0200
-Message-ID: <2023092033-sash-truffle-be6d@gregkh>
+Date:   Wed, 20 Sep 2023 11:59:35 +0200
+Message-ID: <2023092035-atop-usual-3d91@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,25 +42,31 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5229a658f6453362fbb9da6bf96872ef25a7097e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092033-sash-truffle-be6d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092035-atop-usual-3d91@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 5229a658f645 ("ext4: do not let fstrim block system suspend")
 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
 de8bf0e5ee74 ("ext4: replace the traditional ternary conditional operator with with max()/min()")
+d63c00ea435a ("ext4: mark group as trimmed only if it was fully scanned")
+2327fb2e2341 ("ext4: change s_last_trim_minblks type to unsigned long")
+173b6e383d2a ("ext4: avoid trim error on fs with small groups")
+afcc4e32f606 ("ext4: scope ret locally in ext4_try_to_trim_range()")
+6920b3913235 ("ext4: add new helper interface ext4_try_to_trim_range()")
+bd2eea8d0a6b ("ext4: remove the 'group' parameter of ext4_trim_extent")
 
 thanks,
 
