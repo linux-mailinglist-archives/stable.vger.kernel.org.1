@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D25B7A7FFA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1F597A7DDE
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:12:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236119AbjITMb5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:31:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37522 "EHLO
+        id S235508AbjITMNA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:13:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236124AbjITMb4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:56 -0400
+        with ESMTP id S235443AbjITMM4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:12:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108A492
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B72AC433C7;
-        Wed, 20 Sep 2023 12:31:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF266C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC535C433C9;
+        Wed, 20 Sep 2023 12:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213110;
-        bh=HWRB8Z4WnpiSEAVCi1Tz03yCWHA2QrVJu08CjQh/iOg=;
+        s=korg; t=1695211969;
+        bh=gWvHZhgl/CN2C7rUQderFP5Mc2QNRU4pM0hHnl3kido=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YB5Yyd3d/Q7NXufdrxDCEZHxC+tbff7Cee92GvNTlbKVCcDHWXlBidyU1tkwZE3kT
-         E+ZX+DLKcLBKBffWv8jXyTDd2kwIiWWds74josneasLBP3k4uU36m7pSqq14IczeUT
-         eYU67BuUKSXhiZS84Aegg8iYBYTW4JnpwflcZJx4=
+        b=RqwGZAWImth+NejIoAY4pje2Xv5h2PLoGgz675CKKJe758k5DU8ITLqUDBtKvQ+u/
+         1naGPN3XJc2H/KUPg0xqKi2RyL/8RdNEMIYNWQgVDPXxQzQ6QLZ55eW3rbPfmZHo8c
+         nJdNR7xDM8B34wvJ3tIUPyvtqU79GmwGxdMXmWp8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chunyan Zhang <chunyan.zhang@unisoc.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
+        Paul Moore <paul@paul-moore.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 165/367] serial: sprd: Fix DMA buffer leak issue
-Date:   Wed, 20 Sep 2023 13:29:02 +0200
-Message-ID: <20230920112902.917822447@linuxfoundation.org>
+Subject: [PATCH 4.19 103/273] audit: fix possible soft lockup in __audit_inode_child()
+Date:   Wed, 20 Sep 2023 13:29:03 +0200
+Message-ID: <20230920112849.641027371@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +50,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunyan Zhang <chunyan.zhang@unisoc.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit cd119fdc3ee1450fbf7f78862b5de44c42b6e47f ]
+[ Upstream commit b59bc6e37237e37eadf50cd5de369e913f524463 ]
 
-Release DMA buffer when _probe() returns failure to avoid memory leak.
+Tracefs or debugfs maybe cause hundreds to thousands of PATH records,
+too many PATH records maybe cause soft lockup.
 
-Fixes: f4487db58eb7 ("serial: sprd: Add DMA mode support")
-Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230725064053.235448-2-chunyan.zhang@unisoc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example:
+  1. CONFIG_KASAN=y && CONFIG_PREEMPTION=n
+  2. auditctl -a exit,always -S open -k key
+  3. sysctl -w kernel.watchdog_thresh=5
+  4. mkdir /sys/kernel/debug/tracing/instances/test
+
+There may be a soft lockup as follows:
+  watchdog: BUG: soft lockup - CPU#45 stuck for 7s! [mkdir:15498]
+  Kernel panic - not syncing: softlockup: hung tasks
+  Call trace:
+   dump_backtrace+0x0/0x30c
+   show_stack+0x20/0x30
+   dump_stack+0x11c/0x174
+   panic+0x27c/0x494
+   watchdog_timer_fn+0x2bc/0x390
+   __run_hrtimer+0x148/0x4fc
+   __hrtimer_run_queues+0x154/0x210
+   hrtimer_interrupt+0x2c4/0x760
+   arch_timer_handler_phys+0x48/0x60
+   handle_percpu_devid_irq+0xe0/0x340
+   __handle_domain_irq+0xbc/0x130
+   gic_handle_irq+0x78/0x460
+   el1_irq+0xb8/0x140
+   __audit_inode_child+0x240/0x7bc
+   tracefs_create_file+0x1b8/0x2a0
+   trace_create_file+0x18/0x50
+   event_create_dir+0x204/0x30c
+   __trace_add_new_event+0xac/0x100
+   event_trace_add_tracer+0xa0/0x130
+   trace_array_create_dir+0x60/0x140
+   trace_array_create+0x1e0/0x370
+   instance_mkdir+0x90/0xd0
+   tracefs_syscall_mkdir+0x68/0xa0
+   vfs_mkdir+0x21c/0x34c
+   do_mkdirat+0x1b4/0x1d4
+   __arm64_sys_mkdirat+0x4c/0x60
+   el0_svc_common.constprop.0+0xa8/0x240
+   do_el0_svc+0x8c/0xc0
+   el0_svc+0x20/0x30
+   el0_sync_handler+0xb0/0xb4
+   el0_sync+0x160/0x180
+
+Therefore, we add cond_resched() to __audit_inode_child() to fix it.
+
+Fixes: 5195d8e217a7 ("audit: dynamically allocate audit_names when not enough space is in the names array")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sprd_serial.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/auditsc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/tty/serial/sprd_serial.c b/drivers/tty/serial/sprd_serial.c
-index 18f5a7f438329..8b45b3ab63416 100644
---- a/drivers/tty/serial/sprd_serial.c
-+++ b/drivers/tty/serial/sprd_serial.c
-@@ -371,7 +371,7 @@ static void sprd_rx_free_buf(struct sprd_uart_port *sp)
- 	if (sp->rx_dma.virt)
- 		dma_free_coherent(sp->port.dev, SPRD_UART_RX_SIZE,
- 				  sp->rx_dma.virt, sp->rx_dma.phys_addr);
--
-+	sp->rx_dma.virt = NULL;
- }
- 
- static int sprd_rx_dma_config(struct uart_port *port, u32 burst)
-@@ -1199,7 +1199,7 @@ static int sprd_probe(struct platform_device *pdev)
- 		ret = uart_register_driver(&sprd_uart_driver);
- 		if (ret < 0) {
- 			pr_err("Failed to register SPRD-UART driver\n");
--			return ret;
-+			goto free_rx_buf;
+diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+index 1513873e23bd1..e4de5b9d5d3f1 100644
+--- a/kernel/auditsc.c
++++ b/kernel/auditsc.c
+@@ -1923,6 +1923,8 @@ void __audit_inode_child(struct inode *parent,
  		}
  	}
  
-@@ -1218,6 +1218,7 @@ static int sprd_probe(struct platform_device *pdev)
- 	sprd_port[index] = NULL;
- 	if (--sprd_ports_num == 0)
- 		uart_unregister_driver(&sprd_uart_driver);
-+free_rx_buf:
- 	sprd_rx_free_buf(sport);
- 	return ret;
- }
++	cond_resched();
++
+ 	/* is there a matching child entry? */
+ 	list_for_each_entry(n, &context->names_list, list) {
+ 		/* can only match entries that have a name */
 -- 
 2.40.1
 
