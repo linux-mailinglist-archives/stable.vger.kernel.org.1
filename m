@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B00A7A7B77
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 981BB7A7BED
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234728AbjITLw0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:52:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38028 "EHLO
+        id S234583AbjITL46 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:56:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234721AbjITLwZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:25 -0400
+        with ESMTP id S234890AbjITL45 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4462C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BB2C433C8;
-        Wed, 20 Sep 2023 11:52:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5849CF7
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33C1C433C9;
+        Wed, 20 Sep 2023 11:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210738;
-        bh=wjWzPaLMHzA1IoOpcyvJGeIukLqKXdpQb4lkgAyk2mY=;
+        s=korg; t=1695211004;
+        bh=JedBv2KfopEh38qIlbNa0Iubgt/wepbBBnhYNuF5daw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gnTxBYcfJwZ425Mf64N5u5IzlwB7abYCoWv0UYLgUGuTaCSzJAVT3Myz4By0hzFcq
-         lyQh5ujL89k/k2UCbyeKxeQ9k1VqHbu0gFM2Yq2/TuCv1mTuXgrcuVZt+6YAgMHyZf
-         mnNE7+dpW60fTAjsPMLwMivt8EDtWOWIH6Ou7mzo=
+        b=v7uKJFLqC+B5wH/YAyakOSJy8WCFdAUBh2593cFnBTB1l1T26IlGoKbpq8JVyuL3k
+         Qprc/qws8NLuvPgJTyj1gQktw/bj7kAFSefs8nBfaZbl8t/Li1hVLjDVEDBJUEJ/Ds
+         JQnq6/pJ0D0QmBQhrxu4SSlNqx7YsC0fT6CuL/R0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Song Liu <song@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 161/211] x86/purgatory: Remove LTO flags
+Subject: [PATCH 6.1 071/139] media: dvb-usb-v2: gl861: Fix null-ptr-deref in gl861_i2c_master_xfer
 Date:   Wed, 20 Sep 2023 13:30:05 +0200
-Message-ID: <20230920112850.878329605@linuxfoundation.org>
+Message-ID: <20230920112838.340959278@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,65 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 75b2f7e4c9e0fd750a5a27ca9736d1daa7a3762a ]
+[ Upstream commit b97719a66970601cd3151a3e2020f4454a1c4ff6 ]
 
--flto* implies -ffunction-sections. With LTO enabled, ld.lld generates
-multiple .text sections for purgatory.ro:
+In gl861_i2c_master_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach gl861_i2c_master_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-  $ readelf -S purgatory.ro  | grep " .text"
-    [ 1] .text             PROGBITS         0000000000000000  00000040
-    [ 7] .text.purgatory   PROGBITS         0000000000000000  000020e0
-    [ 9] .text.warn        PROGBITS         0000000000000000  000021c0
-    [13] .text.sha256_upda PROGBITS         0000000000000000  000022f0
-    [15] .text.sha224_upda PROGBITS         0000000000000000  00002be0
-    [17] .text.sha256_fina PROGBITS         0000000000000000  00002bf0
-    [19] .text.sha224_fina PROGBITS         0000000000000000  00002cc0
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-This causes WARNING from kexec_purgatory_setup_sechdrs():
-
-  WARNING: CPU: 26 PID: 110894 at kernel/kexec_file.c:919
-  kexec_load_purgatory+0x37f/0x390
-
-Fix this by disabling LTO for purgatory.
-
-[ AFAICT, x86 is the only arch that supports LTO and purgatory. ]
-
-We could also fix this with an explicit linker script to rejoin .text.*
-sections back into .text. However, given the benefit of LTOing purgatory
-is small, simply disable the production of more .text.* sections for now.
-
-Fixes: b33fff07e3e3 ("x86, build: allow LTO to be selected")
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Link: https://lore.kernel.org/r/20230914170138.995606-1-song@kernel.org
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/purgatory/Makefile | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/usb/dvb-usb-v2/gl861.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index c2a29be35c01b..08aa0f25f12a0 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -19,6 +19,10 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS -D__NO_FORTIFY
- # optimization flags.
- KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
- 
-+# When LTO is enabled, llvm emits many text sections, which is not supported
-+# by kexec. Remove -flto=* flags.
-+KBUILD_CFLAGS := $(filter-out $(CC_FLAGS_LTO),$(KBUILD_CFLAGS))
-+
- # When linking purgatory.ro with -r unresolved symbols are not checked,
- # also link a purgatory.chk binary without -r to check for unresolved symbols.
- PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
+diff --git a/drivers/media/usb/dvb-usb-v2/gl861.c b/drivers/media/usb/dvb-usb-v2/gl861.c
+index 0c434259c36f1..c71e7b93476de 100644
+--- a/drivers/media/usb/dvb-usb-v2/gl861.c
++++ b/drivers/media/usb/dvb-usb-v2/gl861.c
+@@ -120,7 +120,7 @@ static int gl861_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 	} else if (num == 2 && !(msg[0].flags & I2C_M_RD) &&
+ 		   (msg[1].flags & I2C_M_RD)) {
+ 		/* I2C write + read */
+-		if (msg[0].len > 1 || msg[1].len > sizeof(ctx->buf)) {
++		if (msg[0].len != 1 || msg[1].len > sizeof(ctx->buf)) {
+ 			ret = -EOPNOTSUPP;
+ 			goto err;
+ 		}
 -- 
 2.40.1
 
