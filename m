@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 857397A80AA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D3457A7E4A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:16:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236091AbjITMjH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:39:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56900 "EHLO
+        id S234617AbjITMQ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:16:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236100AbjITMjC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:02 -0400
+        with ESMTP id S235521AbjITMQz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:16:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 658DCCC7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:38:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5D5C433CA;
-        Wed, 20 Sep 2023 12:38:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 506771BE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6C3C433D9;
+        Wed, 20 Sep 2023 12:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213526;
-        bh=Xp4ASzR2jQieP4rnh4zRV+EcK8gdj6yKmAHdpFUvRrI=;
+        s=korg; t=1695212185;
+        bh=jPUTZn8EZ1Ox+QbklQALCrAw5a6WKHoj9EAemuGB4qU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zx3Pf9h37hP/4e1VoENhtzg7Zrsgbv/qgO6cttpsiiATs7U/EkkXIKTdvNLpuNlkP
-         6vDd7r2EoXr5dePyMleGrgxjB1zp7jQ2KVfWoOLVm42T8t5kZGf5icPmSOJcxcTkao
-         d1jalbroQBL/uHvsWnRw6VEM5vnHiFu/hQrXbAEc=
+        b=QtmN/ZgfPbHk/PC9Cwj6DMRfvRwiCsk7R5Gvn3MccDwDL25URv/ZFmGt9BTfbvDH1
+         HJiuOe6N40CJ5inSyzoqz9G81cM7eQA+t9/50D8yi1IrC9dXbpa0E8UtKZ1+Ai6J31
+         7w4byTw+oFZDWEf1n0TSm6dVOrolcCol5FGqcxuM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 5.4 244/367] fbdev/ep93xx-fb: Do not assign to struct fb_info.dev
-Date:   Wed, 20 Sep 2023 13:30:21 +0200
-Message-ID: <20230920112904.872849279@linuxfoundation.org>
+        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 4.19 182/273] Revert "PCI: Mark NVIDIA T4 GPUs to avoid bus reset"
+Date:   Wed, 20 Sep 2023 13:30:22 +0200
+Message-ID: <20230920112852.138468384@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +48,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-commit f90a0e5265b60cdd3c77990e8105f79aa2fac994 upstream.
+commit 5260bd6d36c83c5b269c33baaaf8c78e520908b0 upstream.
 
-Do not assing the Linux device to struct fb_info.dev. The call to
-register_framebuffer() initializes the field to the fbdev device.
-Drivers should not override its value.
+This reverts commit d5af729dc2071273f14cbb94abbc60608142fd83.
 
-Fixes a bug where the driver incorrectly decreases the hardware
-device's reference counter and leaks the fbdev device.
+d5af729dc207 ("PCI: Mark NVIDIA T4 GPUs to avoid bus reset") avoided
+Secondary Bus Reset on the T4 because the reset seemed to not work when the
+T4 was directly attached to a Root Port.
 
-v2:
-	* add Fixes tag (Dan)
+But NVIDIA thinks the issue is probably related to some issue with the Root
+Port, not with the T4.  The T4 provides neither PM nor FLR reset, so
+masking bus reset compromises this device for assignment scenarios.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 88017bda96a5 ("ep93xx video driver")
-Cc: <stable@vger.kernel.org> # v2.6.32+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-15-tzimmermann@suse.de
+Revert d5af729dc207 as requested by Wu Zongyong.  This will leave SBR
+broken in the specific configuration Wu tested, as it was in v6.5, so Wu
+will debug that further.
+
+Link: https://lore.kernel.org/r/ZPqMCDWvITlOLHgJ@wuzongyong-alibaba
+Link: https://lore.kernel.org/r/20230908201104.GA305023@bhelgaas
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/ep93xx-fb.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/quirks.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/ep93xx-fb.c
-+++ b/drivers/video/fbdev/ep93xx-fb.c
-@@ -474,7 +474,6 @@ static int ep93xxfb_probe(struct platfor
- 	if (!info)
- 		return -ENOMEM;
- 
--	info->dev = &pdev->dev;
- 	platform_set_drvdata(pdev, info);
- 	fbi = info->par;
- 	fbi->mach_info = mach_info;
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -3472,7 +3472,7 @@ static void quirk_no_bus_reset(struct pc
+  */
+ static void quirk_nvidia_no_bus_reset(struct pci_dev *dev)
+ {
+-	if ((dev->device & 0xffc0) == 0x2340 || dev->device == 0x1eb8)
++	if ((dev->device & 0xffc0) == 0x2340)
+ 		quirk_no_bus_reset(dev);
+ }
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
 
 
