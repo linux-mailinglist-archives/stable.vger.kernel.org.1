@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 185E47A7BA1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5798B7A7C7E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234811AbjITLyH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:54:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34072 "EHLO
+        id S234993AbjITMBv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:01:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234801AbjITLyB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:01 -0400
+        with ESMTP id S234988AbjITMBq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40166A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B349C433CA;
-        Wed, 20 Sep 2023 11:53:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0C89B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:01:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6ABC433CB;
+        Wed, 20 Sep 2023 12:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210833;
-        bh=2Zaju/PoY5RLCQuLAAA8jhrkbUSCpGzRwqJgBqs/DG4=;
+        s=korg; t=1695211298;
+        bh=47QLw4VOeypdYHuLb/OPGynRhOOw+UUUkrnyX5apZd0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1oru50X0Ar8mbMALl+KgauNSa3gGkHZUjccUd9oxVxuuNCPn5hdrZfrFAi3b1fcJ5
-         6WP7WYV9UanuhaUl6oGxb5IojO8M6zYMjrijL86P7sKeCoZkS8DyHDwXXXgV1TCKD8
-         23Kit/o/A28JdBznjU0u3vWM4Dj5QCEou1Vf6kDk=
+        b=SMUAXxbih4K+/F1j9tvbBy+CKMtpJFSgRB2Pkpl8IlXB3kteoFAMGy1OunxHx2135
+         TZd5PREx3TJOx40Gp327uDq6D3XS/x5QgnpPLOF+MAL/zWuqjGwX2VyMYOyebtEojR
+         9KDiAiz9xTMx3AMPd91FTo8QUAO+whRdy1p+sjQc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Frank Li <Frank.Li@nxp.com>, Will Deacon <will@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/139] perf/imx_ddr: speed up overflow frequency of cycle
+        patches@lists.linux.dev, Polaris Pi <pinkperfect2021@gmail.com>,
+        Matthew Wang <matthewmwang@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 041/186] wifi: mwifiex: Fix OOB and integer underflow when rx packets
 Date:   Wed, 20 Sep 2023 13:29:04 +0200
-Message-ID: <20230920112835.969684348@linuxfoundation.org>
+Message-ID: <20230920112838.431098249@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,91 +51,129 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Polaris Pi <pinkperfect2021@gmail.com>
 
-[ Upstream commit e89ecd8368860bf05437eabd07d292c316221cfc ]
+[ Upstream commit 11958528161731c58e105b501ed60b83a91ea941 ]
 
-For i.MX8MP, we cannot ensure that cycle counter overflow occurs at least
-4 times as often as other events. Due to byte counters will count for any
-event configured, it will overflow more often. And if byte counters
-overflow that related counters would stop since they share the
-COUNTER_CNTL. We can speed up cycle counter overflow frequency by setting
-counter parameter (CP) field of cycle counter. In this way, we can avoid
-stop counting byte counters when interrupt didn't come and the byte
-counters can be fetched or updated from each cycle counter overflow
-interrupt.
+Make sure mwifiex_process_mgmt_packet,
+mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet,
+mwifiex_uap_queue_bridged_pkt and mwifiex_process_rx_packet
+not out-of-bounds access the skb->data buffer.
 
-Because we initialize CP filed to shorten counter0 overflow time, the cycle
-counter will start couting from a fixed/base value each time. We need to
-remove the base from the result too. Therefore, we could get precise result
-from cycle counter.
-
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20230811015438.1999307-1-xu.yang_2@nxp.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80211")
+Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
+Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230723070741.1544662-1-pinkperfect2021@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/fsl_imx8_ddr_perf.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/sta_rx.c | 11 ++++++++++-
+ .../net/wireless/marvell/mwifiex/uap_txrx.c   | 19 +++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/util.c   | 10 +++++++---
+ 3 files changed, 36 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/perf/fsl_imx8_ddr_perf.c b/drivers/perf/fsl_imx8_ddr_perf.c
-index cd4ce2b4906d1..a4cda73b81c9f 100644
---- a/drivers/perf/fsl_imx8_ddr_perf.c
-+++ b/drivers/perf/fsl_imx8_ddr_perf.c
-@@ -28,6 +28,8 @@
- #define CNTL_CLEAR_MASK		0xFFFFFFFD
- #define CNTL_OVER_MASK		0xFFFFFFFE
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+index 00fcbda09349e..a3d716a215ef2 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+@@ -98,6 +98,14 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
+ 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
+ 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
  
-+#define CNTL_CP_SHIFT		16
-+#define CNTL_CP_MASK		(0xFF << CNTL_CP_SHIFT)
- #define CNTL_CSV_SHIFT		24
- #define CNTL_CSV_MASK		(0xFFU << CNTL_CSV_SHIFT)
- 
-@@ -35,6 +37,8 @@
- #define EVENT_CYCLES_COUNTER	0
- #define NUM_COUNTERS		4
- 
-+/* For removing bias if cycle counter CNTL.CP is set to 0xf0 */
-+#define CYCLES_COUNTER_MASK	0x0FFFFFFF
- #define AXI_MASKING_REVERT	0xffff0000	/* AXI_MASKING(MSB 16bits) + AXI_ID(LSB 16bits) */
- 
- #define to_ddr_pmu(p)		container_of(p, struct ddr_pmu, pmu)
-@@ -429,6 +433,17 @@ static void ddr_perf_counter_enable(struct ddr_pmu *pmu, int config,
- 		writel(0, pmu->base + reg);
- 		val = CNTL_EN | CNTL_CLEAR;
- 		val |= FIELD_PREP(CNTL_CSV_MASK, config);
-+
-+		/*
-+		 * On i.MX8MP we need to bias the cycle counter to overflow more often.
-+		 * We do this by initializing bits [23:16] of the counter value via the
-+		 * COUNTER_CTRL Counter Parameter (CP) field.
-+		 */
-+		if (pmu->devtype_data->quirks & DDR_CAP_AXI_ID_FILTER_ENHANCED) {
-+			if (counter == EVENT_CYCLES_COUNTER)
-+				val |= FIELD_PREP(CNTL_CP_MASK, 0xf0);
-+		}
-+
- 		writel(val, pmu->base + reg);
- 	} else {
- 		/* Disable counter */
-@@ -468,6 +483,12 @@ static void ddr_perf_event_update(struct perf_event *event)
- 	int ret;
- 
- 	new_raw_count = ddr_perf_read_counter(pmu, counter);
-+	/* Remove the bias applied in ddr_perf_counter_enable(). */
-+	if (pmu->devtype_data->quirks & DDR_CAP_AXI_ID_FILTER_ENHANCED) {
-+		if (counter == EVENT_CYCLES_COUNTER)
-+			new_raw_count &= CYCLES_COUNTER_MASK;
++	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
++		mwifiex_dbg(priv->adapter, ERROR,
++			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
++			    skb->len, rx_pkt_off);
++		priv->stats.rx_dropped++;
++		dev_kfree_skb_any(skb);
 +	}
 +
- 	local64_add(new_raw_count, &event->count);
+ 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+ 		     sizeof(bridge_tunnel_header))) ||
+ 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+@@ -203,7 +211,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_private *priv,
  
- 	/*
+ 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_offset;
+ 
+-	if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
++	if ((rx_pkt_offset + rx_pkt_length) > skb->len ||
++	    sizeof(rx_pkt_hdr->eth803_hdr) + rx_pkt_offset > skb->len) {
+ 		mwifiex_dbg(adapter, ERROR,
+ 			    "wrong rx packet: len=%d, rx_pkt_offset=%d, rx_pkt_length=%d\n",
+ 			    skb->len, rx_pkt_offset, rx_pkt_length);
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index 1e6a62c69ac52..09243e6d8ba9a 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -116,6 +116,15 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
+ 		return;
+ 	}
+ 
++	if (sizeof(*rx_pkt_hdr) +
++	    le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len) {
++		mwifiex_dbg(adapter, ERROR,
++			    "wrong rx packet offset: len=%d,rx_pkt_offset=%d\n",
++			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
++		priv->stats.rx_dropped++;
++		dev_kfree_skb_any(skb);
++	}
++
+ 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+ 		     sizeof(bridge_tunnel_header))) ||
+ 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+@@ -385,6 +394,16 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_private *priv,
+ 	rx_pkt_type = le16_to_cpu(uap_rx_pd->rx_pkt_type);
+ 	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
+ 
++	if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
++	    sizeof(rx_pkt_hdr->eth803_hdr) > skb->len) {
++		mwifiex_dbg(adapter, ERROR,
++			    "wrong rx packet for struct ethhdr: len=%d, offset=%d\n",
++			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
++		priv->stats.rx_dropped++;
++		dev_kfree_skb_any(skb);
++		return 0;
++	}
++
+ 	ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
+ 
+ 	if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
+diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
+index 51ccf10f44132..4fccdf01b8a05 100644
+--- a/drivers/net/wireless/marvell/mwifiex/util.c
++++ b/drivers/net/wireless/marvell/mwifiex/util.c
+@@ -403,11 +403,15 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+ 	}
+ 
+ 	rx_pd = (struct rxpd *)skb->data;
++	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
++	if (pkt_len < sizeof(struct ieee80211_hdr) + sizeof(pkt_len)) {
++		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
++		return -1;
++	}
+ 
+ 	skb_pull(skb, le16_to_cpu(rx_pd->rx_pkt_offset));
+ 	skb_pull(skb, sizeof(pkt_len));
+-
+-	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
++	pkt_len -= sizeof(pkt_len);
+ 
+ 	ieee_hdr = (void *)skb->data;
+ 	if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
+@@ -420,7 +424,7 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
+ 		skb->data + sizeof(struct ieee80211_hdr),
+ 		pkt_len - sizeof(struct ieee80211_hdr));
+ 
+-	pkt_len -= ETH_ALEN + sizeof(pkt_len);
++	pkt_len -= ETH_ALEN;
+ 	rx_pd->rx_pkt_length = cpu_to_le16(pkt_len);
+ 
+ 	cfg80211_rx_mgmt(&priv->wdev, priv->roc_cfg.chan.center_freq,
 -- 
 2.40.1
 
