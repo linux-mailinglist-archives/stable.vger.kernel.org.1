@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 080A07A7E7E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 546197A80B9
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234593AbjITMSS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:18:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38854 "EHLO
+        id S235943AbjITMk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:40:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235579AbjITMSQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:16 -0400
+        with ESMTP id S236225AbjITMjq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF783B4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:18:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DD0C433C8;
-        Wed, 20 Sep 2023 12:18:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C201BC2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F378BC433C7;
+        Wed, 20 Sep 2023 12:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212290;
-        bh=F3DhPkRVJfuvIWYF1efPbXERfbWn5ZTMXpALiE3UtdM=;
+        s=korg; t=1695213567;
+        bh=4yJlWzKLsZbCCemWXBCK0kS0tLkAVIjQaOmG9GspWrM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y7XhnNxjtljAv254O5lUKBV0W9a9PmDgjQtwCmm8eYrjx6wt7YEB1oRXXUyADbP6+
-         XvEnICD0VPyPr4mmD4Jz3BDNQA6kK5Ghkb/XZ/bbHO/42wiTt/CH5ns8tiwNlr77Sq
-         JmnlcpucAsD46zdbi8pl0sG7ERU7b2osN2p4tsRQ=
+        b=anhnH87/SZVd9IegxQ9bKlAEdBEtcS90cVi4prhiavVgkfHbpjvoxSgnqBMNdE+Ds
+         4y9PnepBqAWFqdzed0pO7wbG3QjGjb6lb7bxnPODfD1nHAaDsJD6UzfbCB4D6fuPm+
+         nFEwDA9uh+Pvrw0SHL9b1PRwlv1CT4gjeZ0WNbz8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chris Lew <quic_clew@quicinc.com>,
-        Praveenkumar I <quic_ipkumar@quicinc.com>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 4.19 204/273] soc: qcom: qmi_encdec: Restrict string length in decode
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 267/367] af_unix: Fix data race around sk->sk_err.
 Date:   Wed, 20 Sep 2023 13:30:44 +0200
-Message-ID: <20230920112852.795062946@linuxfoundation.org>
+Message-ID: <20230920112905.477008286@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Lew <quic_clew@quicinc.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 8d207400fd6b79c92aeb2f33bb79f62dff904ea2 upstream.
+[ Upstream commit b192812905e4b134f7b7994b079eb647e9d2d37e ]
 
-The QMI TLV value for strings in a lot of qmi element info structures
-account for null terminated strings with MAX_LEN + 1. If a string is
-actually MAX_LEN + 1 length, this will cause an out of bounds access
-when the NULL character is appended in decoding.
+As with sk->sk_shutdown shown in the previous patch, sk->sk_err can be
+read locklessly by unix_dgram_sendmsg().
 
-Fixes: 9b8a11e82615 ("soc: qcom: Introduce QMI encoder/decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chris Lew <quic_clew@quicinc.com>
-Signed-off-by: Praveenkumar I <quic_ipkumar@quicinc.com>
-Link: https://lore.kernel.org/r/20230801064712.3590128-1-quic_ipkumar@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's use READ_ONCE() for sk_err as well.
+
+Note that the writer side is marked by commit cc04410af7de ("af_unix:
+annotate lockless accesses to sk->sk_err").
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/qmi_encdec.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/sock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/soc/qcom/qmi_encdec.c
-+++ b/drivers/soc/qcom/qmi_encdec.c
-@@ -534,8 +534,8 @@ static int qmi_decode_string_elem(struct
- 		decoded_bytes += rc;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 79d61be285186..9979cd602dfac 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2225,7 +2225,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
+ 			break;
+ 		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
+ 			break;
+-		if (sk->sk_err)
++		if (READ_ONCE(sk->sk_err))
+ 			break;
+ 		timeo = schedule_timeout(timeo);
  	}
- 
--	if (string_len > temp_ei->elem_len) {
--		pr_err("%s: String len %d > Max Len %d\n",
-+	if (string_len >= temp_ei->elem_len) {
-+		pr_err("%s: String len %d >= Max Len %d\n",
- 		       __func__, string_len, temp_ei->elem_len);
- 		return -ETOOSMALL;
- 	} else if (string_len > tlv_len) {
+-- 
+2.40.1
+
 
 
