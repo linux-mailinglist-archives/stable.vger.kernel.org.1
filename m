@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 586467A7B65
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D2577A7C27
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234653AbjITLvu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:51:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50428 "EHLO
+        id S235022AbjITL6f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:58:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234734AbjITLvs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:48 -0400
+        with ESMTP id S235027AbjITL6e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A01A9ED
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9341C433C7;
-        Wed, 20 Sep 2023 11:51:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 369E4DD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA64C433C8;
+        Wed, 20 Sep 2023 11:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210695;
-        bh=2hGnUni0DG3ldjPPKCvzzvkpdue2WZAL8ajwVCri/DI=;
+        s=korg; t=1695211108;
+        bh=g7IS8h1oxLy9RwsuwHvcodRu8XOpEXWRopafnMPoBqM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NB7pxtrFmE0aWrEwYyKssHLkUWvbCrqqfirv88fPRcxdK02FhxHKXBT0fJ4EH702U
-         Gq+2ATcHUWPhOhMnHq35vOW5n0EqDkdGRBhXAQ3ZMUG8FOnmrwg+lA3ciI5teIeze5
-         nEGnfPOe9F3ZOy0TQqFGz+mSMb3oJwuo2rjbmAa4=
+        b=ppCpG4zkqNz52Qb48rIT+blEkhOHLunP/JvUOhyobLNRgm30boRR/WZFUYPhUQxim
+         8oh1VicV38v9GuyzwO2WPhlchL2AphO/BOBazV70bp6zFTAEQ8T/FprwgZmO2WqlD5
+         9qK7PXl3h7PVTpd0uWNF4cOd/j0hx5YkmeycQtoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Cl=C3=A1udio=20Sampaio?= <patola@gmail.com>,
-        Felix Yan <felixonmars@archlinux.org>,
-        Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.5 171/211] nvme: avoid bogus CRTO values
-Date:   Wed, 20 Sep 2023 13:30:15 +0200
-Message-ID: <20230920112851.189702568@linuxfoundation.org>
+        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 082/139] usb: chipidea: add workaround for chipidea PEC bug
+Date:   Wed, 20 Sep 2023 13:30:16 +0200
+Message-ID: <20230920112838.702939753@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,105 +49,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 6cc834ba62998c65c42d0c63499bdd35067151ec upstream.
+[ Upstream commit 12e6ac69cc7e7d3367599ae26a92a0f9a18bc728 ]
 
-Some devices are reporting controller ready mode support, but return 0
-for CRTO. These devices require a much higher time to ready than that,
-so they are failing to initialize after the driver starter preferring
-that value over CAP.TO.
+Some NXP processors using ChipIdea USB IP have a bug when frame babble is
+detected.
 
-The spec requires that CAP.TO match the appropritate CRTO value, or be
-set to 0xff if CRTO is larger than that. This means that CAP.TO can be
-used to validate if CRTO is reliable, and provides an appropriate
-fallback for setting the timeout value if not. Use whichever is larger.
+Issue description:
+In USB camera test, our controller is host in HS mode. In ISOC IN, when
+device sends data across the micro frame, it causes the babble in host
+controller. This will clear the PE bit. In spec, it also requires to set
+the PEC bit and then set the PCI bit. Without the PCI interrupt, the
+software does not know the PE is cleared.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217863
-Reported-by: Cláudio Sampaio <patola@gmail.com>
-Reported-by: Felix Yan <felixonmars@archlinux.org>
-Tested-by: Felix Yan <felixonmars@archlinux.org>
-Based-on-a-patch-by: Felix Yan <felixonmars@archlinux.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This will add a flag CI_HDRC_HAS_PORTSC_PEC_MISSED to some impacted
+platform datas. And the ehci host driver will assert PEC by SW when
+specific conditions are satisfied.
+
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20230809024432.535160-2-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c |   54 ++++++++++++++++++++++++++++++-----------------
- 1 file changed, 35 insertions(+), 19 deletions(-)
+ drivers/usb/chipidea/ci.h          | 1 +
+ drivers/usb/chipidea/ci_hdrc_imx.c | 4 +++-
+ drivers/usb/chipidea/core.c        | 2 ++
+ drivers/usb/chipidea/host.c        | 1 +
+ include/linux/usb/chipidea.h       | 1 +
+ 5 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -2245,25 +2245,8 @@ int nvme_enable_ctrl(struct nvme_ctrl *c
- 	else
- 		ctrl->ctrl_config = NVME_CC_CSS_NVM;
+diff --git a/drivers/usb/chipidea/ci.h b/drivers/usb/chipidea/ci.h
+index 85a803c135ab3..2ff83911219f8 100644
+--- a/drivers/usb/chipidea/ci.h
++++ b/drivers/usb/chipidea/ci.h
+@@ -253,6 +253,7 @@ struct ci_hdrc {
+ 	bool				id_event;
+ 	bool				b_sess_valid_event;
+ 	bool				imx28_write_fix;
++	bool				has_portsc_pec_bug;
+ 	bool				supports_runtime_pm;
+ 	bool				in_lpm;
+ 	bool				wakeup_int;
+diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
+index caa91117ba429..984087bbf3e2b 100644
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -67,11 +67,13 @@ static const struct ci_hdrc_imx_platform_flag imx7d_usb_data = {
  
--	if (ctrl->cap & NVME_CAP_CRMS_CRWMS) {
--		u32 crto;
--
--		ret = ctrl->ops->reg_read32(ctrl, NVME_REG_CRTO, &crto);
--		if (ret) {
--			dev_err(ctrl->device, "Reading CRTO failed (%d)\n",
--				ret);
--			return ret;
--		}
--
--		if (ctrl->cap & NVME_CAP_CRMS_CRIMS) {
--			ctrl->ctrl_config |= NVME_CC_CRIME;
--			timeout = NVME_CRTO_CRIMT(crto);
--		} else {
--			timeout = NVME_CRTO_CRWMT(crto);
--		}
--	} else {
--		timeout = NVME_CAP_TIMEOUT(ctrl->cap);
--	}
-+	if (ctrl->cap & NVME_CAP_CRMS_CRWMS && ctrl->cap & NVME_CAP_CRMS_CRIMS)
-+		ctrl->ctrl_config |= NVME_CC_CRIME;
+ static const struct ci_hdrc_imx_platform_flag imx7ulp_usb_data = {
+ 	.flags = CI_HDRC_SUPPORTS_RUNTIME_PM |
++		CI_HDRC_HAS_PORTSC_PEC_MISSED |
+ 		CI_HDRC_PMQOS,
+ };
  
- 	ctrl->ctrl_config |= (NVME_CTRL_PAGE_SHIFT - 12) << NVME_CC_MPS_SHIFT;
- 	ctrl->ctrl_config |= NVME_CC_AMS_RR | NVME_CC_SHN_NONE;
-@@ -2277,6 +2260,39 @@ int nvme_enable_ctrl(struct nvme_ctrl *c
- 	if (ret)
- 		return ret;
+ static const struct ci_hdrc_imx_platform_flag imx8ulp_usb_data = {
+-	.flags = CI_HDRC_SUPPORTS_RUNTIME_PM,
++	.flags = CI_HDRC_SUPPORTS_RUNTIME_PM |
++		CI_HDRC_HAS_PORTSC_PEC_MISSED,
+ };
  
-+	/* CAP value may change after initial CC write */
-+	ret = ctrl->ops->reg_read64(ctrl, NVME_REG_CAP, &ctrl->cap);
-+	if (ret)
-+		return ret;
-+
-+	timeout = NVME_CAP_TIMEOUT(ctrl->cap);
-+	if (ctrl->cap & NVME_CAP_CRMS_CRWMS) {
-+		u32 crto, ready_timeout;
-+
-+		ret = ctrl->ops->reg_read32(ctrl, NVME_REG_CRTO, &crto);
-+		if (ret) {
-+			dev_err(ctrl->device, "Reading CRTO failed (%d)\n",
-+				ret);
-+			return ret;
-+		}
-+
-+		/*
-+		 * CRTO should always be greater or equal to CAP.TO, but some
-+		 * devices are known to get this wrong. Use the larger of the
-+		 * two values.
-+		 */
-+		if (ctrl->ctrl_config & NVME_CC_CRIME)
-+			ready_timeout = NVME_CRTO_CRIMT(crto);
-+		else
-+			ready_timeout = NVME_CRTO_CRWMT(crto);
-+
-+		if (ready_timeout < timeout)
-+			dev_warn_once(ctrl->device, "bad crto:%x cap:%llx\n",
-+				      crto, ctrl->cap);
-+		else
-+			timeout = ready_timeout;
-+	}
-+
- 	ctrl->ctrl_config |= NVME_CC_ENABLE;
- 	ret = ctrl->ops->reg_write32(ctrl, NVME_REG_CC, ctrl->ctrl_config);
- 	if (ret)
+ static const struct of_device_id ci_hdrc_imx_dt_ids[] = {
+diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
+index 71f172ecfaabc..b9227f41cf1c0 100644
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -1038,6 +1038,8 @@ static int ci_hdrc_probe(struct platform_device *pdev)
+ 		CI_HDRC_IMX28_WRITE_FIX);
+ 	ci->supports_runtime_pm = !!(ci->platdata->flags &
+ 		CI_HDRC_SUPPORTS_RUNTIME_PM);
++	ci->has_portsc_pec_bug = !!(ci->platdata->flags &
++		CI_HDRC_HAS_PORTSC_PEC_MISSED);
+ 	platform_set_drvdata(pdev, ci);
+ 
+ 	ret = hw_device_init(ci, base);
+diff --git a/drivers/usb/chipidea/host.c b/drivers/usb/chipidea/host.c
+index bc3634a54c6b7..3b08c5e811707 100644
+--- a/drivers/usb/chipidea/host.c
++++ b/drivers/usb/chipidea/host.c
+@@ -151,6 +151,7 @@ static int host_start(struct ci_hdrc *ci)
+ 	ehci->has_hostpc = ci->hw_bank.lpm;
+ 	ehci->has_tdi_phy_lpm = ci->hw_bank.lpm;
+ 	ehci->imx28_write_fix = ci->imx28_write_fix;
++	ehci->has_ci_pec_bug = ci->has_portsc_pec_bug;
+ 
+ 	priv = (struct ehci_ci_priv *)ehci->priv;
+ 	priv->reg_vbus = NULL;
+diff --git a/include/linux/usb/chipidea.h b/include/linux/usb/chipidea.h
+index ee38835ed77cc..0b4f2d5faa080 100644
+--- a/include/linux/usb/chipidea.h
++++ b/include/linux/usb/chipidea.h
+@@ -63,6 +63,7 @@ struct ci_hdrc_platform_data {
+ #define CI_HDRC_IMX_IS_HSIC		BIT(14)
+ #define CI_HDRC_PMQOS			BIT(15)
+ #define CI_HDRC_PHY_VBUS_CONTROL	BIT(16)
++#define CI_HDRC_HAS_PORTSC_PEC_MISSED	BIT(17)
+ 	enum usb_dr_mode	dr_mode;
+ #define CI_HDRC_CONTROLLER_RESET_EVENT		0
+ #define CI_HDRC_CONTROLLER_STOPPED_EVENT	1
+-- 
+2.40.1
+
 
 
