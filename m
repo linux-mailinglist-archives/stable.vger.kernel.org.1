@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 573C87A7AD8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:46:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 886BC7A7C54
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234568AbjITLqn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:46:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44470 "EHLO
+        id S234962AbjITMAQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:00:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234487AbjITLqm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:46:42 -0400
+        with ESMTP id S235118AbjITMAQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:00:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E33B0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:46:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D73BBC433C8;
-        Wed, 20 Sep 2023 11:46:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9122C2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:00:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3099C433BD;
+        Wed, 20 Sep 2023 12:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210396;
-        bh=UTeFcAqV3hVUjeE/EPoL9s/vVmPZeXRilUFm5GMzGOY=;
+        s=korg; t=1695211209;
+        bh=Wu+sTfeekVRBDrcRyqONa8jBEu7ldeZo8fUP5wW0fhI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IUCTqfxp7FD6BThyXJhOy4B1vdWgsYB1CgUPuY/bEKZxou70EuWF8BetkwaXpBgNz
-         jEQFlfPyXst8Gc2nUoqd8yRUkuHuLp7zmdLGwUvI3YLmhYhGdcV6CdPJERx1QfbuLC
-         dVeHmlJQcLTAU66MNsRfnev8DEtXEhASoqLul2pc=
+        b=UpqcMYuKuLyS5b88yaDtIQwxBzQfhh6B6UKkxs7bmbjDkH2d9tSp5y5pT1L9Rux85
+         PJgTztkAfsp3aoQP4I8HD2ARL3bSq/kSLJjosYa+6HmTWl8vz4dyzfapkbcFp1qqAO
+         pZvd+5nOGwCMzAASudWao7o0YxJV8Kmqm2+728Gw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wen Gong <quic_wgong@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 060/211] wifi: ath12k: add check max message length while scanning with extraie
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Christoph Hellwig <hch@lst.de>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 4.14 001/186] ARM: pxa: remove use of symbol_get()
 Date:   Wed, 20 Sep 2023 13:28:24 +0200
-Message-ID: <20230920112847.639262131@linuxfoundation.org>
+Message-ID: <20230920112836.860603500@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +50,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gong <quic_wgong@quicinc.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2f5124e86ae74b7ba24c9ae2644107b750cbf38f ]
+commit 0faa29c4207e6e29cfc81b427df60e326c37083a upstream.
 
-Currently the extraie length is directly used to allocate skb buffer. When
-the length of skb is greater than the max message length which firmware
-supports, error will happen in firmware side.
+The spitz board file uses the obscure symbol_get() function
+to optionally call a function from sharpsl_pm.c if that is
+built. However, the two files are always built together
+these days, and have been for a long time, so this can
+be changed to a normal function call.
 
-Hence add check for the skb length and drop extraie when overflow and
-print a message.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230809081657.13858-1-quic_wgong@quicinc.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/lkml/20230731162639.GA9441@lst.de/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ arch/arm/mach-pxa/sharpsl_pm.c |    2 --
+ arch/arm/mach-pxa/spitz.c      |   14 +-------------
+ 2 files changed, 1 insertion(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 4f378f06e946e..eebc5a65ce3b4 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -2162,12 +2162,6 @@ int ath12k_wmi_send_scan_start_cmd(struct ath12k *ar,
- 	if (arg->num_bssid)
- 		len += sizeof(*bssid) * arg->num_bssid;
- 
--	len += TLV_HDR_SIZE;
--	if (arg->extraie.len)
--		extraie_len_with_pad =
--			roundup(arg->extraie.len, sizeof(u32));
--	len += extraie_len_with_pad;
+--- a/arch/arm/mach-pxa/sharpsl_pm.c
++++ b/arch/arm/mach-pxa/sharpsl_pm.c
+@@ -224,8 +224,6 @@ void sharpsl_battery_kick(void)
+ {
+ 	schedule_delayed_work(&sharpsl_bat, msecs_to_jiffies(125));
+ }
+-EXPORT_SYMBOL(sharpsl_battery_kick);
 -
- 	if (arg->num_hint_bssid)
- 		len += TLV_HDR_SIZE +
- 		       arg->num_hint_bssid * sizeof(*hint_bssid);
-@@ -2176,6 +2170,18 @@ int ath12k_wmi_send_scan_start_cmd(struct ath12k *ar,
- 		len += TLV_HDR_SIZE +
- 		       arg->num_hint_s_ssid * sizeof(*s_ssid);
  
-+	len += TLV_HDR_SIZE;
-+	if (arg->extraie.len)
-+		extraie_len_with_pad =
-+			roundup(arg->extraie.len, sizeof(u32));
-+	if (extraie_len_with_pad <= (wmi->wmi_ab->max_msg_len[ar->pdev_idx] - len)) {
-+		len += extraie_len_with_pad;
-+	} else {
-+		ath12k_warn(ar->ab, "discard large size %d bytes extraie for scan start\n",
-+			    arg->extraie.len);
-+		extraie_len_with_pad = 0;
-+	}
-+
- 	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, len);
- 	if (!skb)
- 		return -ENOMEM;
-@@ -2265,7 +2271,7 @@ int ath12k_wmi_send_scan_start_cmd(struct ath12k *ar,
- 	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_BYTE, len);
- 	ptr += TLV_HDR_SIZE;
+ static void sharpsl_battery_thread(struct work_struct *private_)
+ {
+--- a/arch/arm/mach-pxa/spitz.c
++++ b/arch/arm/mach-pxa/spitz.c
+@@ -13,7 +13,6 @@
+  */
  
--	if (arg->extraie.len)
-+	if (extraie_len_with_pad)
- 		memcpy(ptr, arg->extraie.ptr,
- 		       arg->extraie.len);
+ #include <linux/kernel.h>
+-#include <linux/module.h>	/* symbol_get ; symbol_put */
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+ #include <linux/gpio_keys.h>
+@@ -517,17 +516,6 @@ static struct pxa2xx_spi_chip spitz_ads7
+ 	.gpio_cs		= SPITZ_GPIO_ADS7846_CS,
+ };
  
--- 
-2.40.1
-
+-static void spitz_bl_kick_battery(void)
+-{
+-	void (*kick_batt)(void);
+-
+-	kick_batt = symbol_get(sharpsl_battery_kick);
+-	if (kick_batt) {
+-		kick_batt();
+-		symbol_put(sharpsl_battery_kick);
+-	}
+-}
+-
+ static struct corgi_lcd_platform_data spitz_lcdcon_info = {
+ 	.init_mode		= CORGI_LCD_MODE_VGA,
+ 	.max_intensity		= 0x2f,
+@@ -535,7 +523,7 @@ static struct corgi_lcd_platform_data sp
+ 	.limit_mask		= 0x0b,
+ 	.gpio_backlight_cont	= SPITZ_GPIO_BACKLIGHT_CONT,
+ 	.gpio_backlight_on	= SPITZ_GPIO_BACKLIGHT_ON,
+-	.kick_battery		= spitz_bl_kick_battery,
++	.kick_battery		= sharpsl_battery_kick,
+ };
+ 
+ static struct pxa2xx_spi_chip spitz_lcdcon_chip = {
 
 
