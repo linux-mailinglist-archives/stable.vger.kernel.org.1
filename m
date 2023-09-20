@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A240F7A7EAF
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED887A8149
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235615AbjITMUP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:20:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53922 "EHLO
+        id S236222AbjITMoM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:44:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235661AbjITMTo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:44 -0400
+        with ESMTP id S236264AbjITMoI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 113E083
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58216C433C7;
-        Wed, 20 Sep 2023 12:19:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D8D2C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F25C433CA;
+        Wed, 20 Sep 2023 12:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212377;
-        bh=QOLWnM/4tOywfjKBGMQdYTk+nSv82ny9329/sezwFSc=;
+        s=korg; t=1695213841;
+        bh=lm0rIrvoKbF/7VlKe65QLL9oO9/0DuF/ERQmNeUyEwg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fvg9UTx/15JHc13ZvggN9+06YEu/w1LI55hd8UDqp6FfttE8s2nIvsOpanJySpl0T
-         qyy7rcOVLtjtnagLiFtXypHvMEsoyK6DQPxCbb/PRslTxHeq3p2dyLjIDNl40qrcrp
-         m3Bpq2vWVlyLXX8Y/wBW3looOSYgL2wy+x2Y3V84=
+        b=nL2yoy9SvkTmOAuJ8ezk0hSWY2+yAuZ3h/IscBMY0RfQBZw7er0D+d6n+QUEtq6p+
+         6yrKrFWw1035mxLz64bDixOVRSc/kTmRJJpNnVpkydw3pTnNPcBrxHoLIT+0sMgvhh
+         8QfgrFEEUzW1VhAMbqFOJLbblWR1xUvfZDp/imWY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 4.19 236/273] parisc: Drop loops_per_jiffy from per_cpu struct
+        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 018/110] wifi: wil6210: fix fortify warnings
 Date:   Wed, 20 Sep 2023 13:31:16 +0200
-Message-ID: <20230920112853.652866142@linuxfoundation.org>
+Message-ID: <20230920112831.074239779@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -49,54 +51,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 93346da8ff47cc00f953c7f38a2d6ba11977fc42 upstream.
+[ Upstream commit 1ad8237e971630c66a1a6194491e0837b64d00e0 ]
 
-There is no need to keep a loops_per_jiffy value per cpu. Drop it.
+When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
+I've noticed the following:
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘wil_rx_crypto_check_edma’ at drivers/net/wireless/ath/wil6210/txrx_edma.c:566:2:
+./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  529 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+where the compiler complains on:
+
+const u8 *pn;
+...
+pn = (u8 *)&st->ext.pn_15_0;
+...
+memcpy(cc->pn, pn, IEEE80211_GCMP_PN_LEN);
+
+and:
+
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘wil_rx_crypto_check’ at drivers/net/wireless/ath/wil6210/txrx.c:684:2:
+./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  529 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+where the compiler complains on:
+
+const u8 *pn = (u8 *)&d->mac.pn_15_0;
+...
+memcpy(cc->pn, pn, IEEE80211_GCMP_PN_LEN);
+
+In both cases, the fortification logic interprets 'memcpy()' as 6-byte
+overread of 2-byte field 'pn_15_0' of 'struct wil_rx_status_extension'
+and 'pn_15_0' of 'struct vring_rx_mac', respectively. To silence
+these warnings, last two fields of the aforementioned structures
+are grouped using 'struct_group_attr(pn, __packed' quirk.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230621093711.80118-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/processor.h |    1 -
- arch/parisc/kernel/processor.c      |    5 ++---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/wil6210/txrx.c      | 2 +-
+ drivers/net/wireless/ath/wil6210/txrx.h      | 6 ++++--
+ drivers/net/wireless/ath/wil6210/txrx_edma.c | 2 +-
+ drivers/net/wireless/ath/wil6210/txrx_edma.h | 6 ++++--
+ 4 files changed, 10 insertions(+), 6 deletions(-)
 
---- a/arch/parisc/include/asm/processor.h
-+++ b/arch/parisc/include/asm/processor.h
-@@ -108,7 +108,6 @@ struct cpuinfo_parisc {
- 	unsigned long cpu_loc;      /* CPU location from PAT firmware */
- 	unsigned int state;
- 	struct parisc_device *dev;
--	unsigned long loops_per_jiffy;
- };
+diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless/ath/wil6210/txrx.c
+index cc830c795b33c..5b2de4f3fa0bd 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx.c
++++ b/drivers/net/wireless/ath/wil6210/txrx.c
+@@ -666,7 +666,7 @@ static int wil_rx_crypto_check(struct wil6210_priv *wil, struct sk_buff *skb)
+ 	struct wil_tid_crypto_rx *c = mc ? &s->group_crypto_rx :
+ 				      &s->tid_crypto_rx[tid];
+ 	struct wil_tid_crypto_rx_single *cc = &c->key_id[key_id];
+-	const u8 *pn = (u8 *)&d->mac.pn_15_0;
++	const u8 *pn = (u8 *)&d->mac.pn;
  
- extern struct system_cpuinfo_parisc boot_cpu_data;
---- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -177,7 +177,6 @@ static int __init processor_probe(struct
- 	if (cpuid)
- 		memset(p, 0, sizeof(struct cpuinfo_parisc));
+ 	if (!cc->key_set) {
+ 		wil_err_ratelimited(wil,
+diff --git a/drivers/net/wireless/ath/wil6210/txrx.h b/drivers/net/wireless/ath/wil6210/txrx.h
+index 1f4c8ec75be87..0f6f6b62bfc9a 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx.h
++++ b/drivers/net/wireless/ath/wil6210/txrx.h
+@@ -343,8 +343,10 @@ struct vring_rx_mac {
+ 	u32 d0;
+ 	u32 d1;
+ 	u16 w4;
+-	u16 pn_15_0;
+-	u32 pn_47_16;
++	struct_group_attr(pn, __packed,
++		u16 pn_15_0;
++		u32 pn_47_16;
++	);
+ } __packed;
  
--	p->loops_per_jiffy = loops_per_jiffy;
- 	p->dev = dev;		/* Save IODC data in case we need it */
- 	p->hpa = dev->hpa.start;	/* save CPU hpa */
- 	p->cpuid = cpuid;	/* save CPU id */
-@@ -444,8 +443,8 @@ show_cpuinfo (struct seq_file *m, void *
- 		show_cache_info(m);
+ /* Rx descriptor - DMA part
+diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.c b/drivers/net/wireless/ath/wil6210/txrx_edma.c
+index 201c8c35e0c9e..1ba1f21ebea26 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
++++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
+@@ -548,7 +548,7 @@ static int wil_rx_crypto_check_edma(struct wil6210_priv *wil,
+ 	s = &wil->sta[cid];
+ 	c = mc ? &s->group_crypto_rx : &s->tid_crypto_rx[tid];
+ 	cc = &c->key_id[key_id];
+-	pn = (u8 *)&st->ext.pn_15_0;
++	pn = (u8 *)&st->ext.pn;
  
- 		seq_printf(m, "bogomips\t: %lu.%02lu\n",
--			     cpuinfo->loops_per_jiffy / (500000 / HZ),
--			     (cpuinfo->loops_per_jiffy / (5000 / HZ)) % 100);
-+			     loops_per_jiffy / (500000 / HZ),
-+			     loops_per_jiffy / (5000 / HZ) % 100);
+ 	if (!cc->key_set) {
+ 		wil_err_ratelimited(wil,
+diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.h b/drivers/net/wireless/ath/wil6210/txrx_edma.h
+index c736f7413a35f..ee90e225bb050 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx_edma.h
++++ b/drivers/net/wireless/ath/wil6210/txrx_edma.h
+@@ -330,8 +330,10 @@ struct wil_rx_status_extension {
+ 	u32 d0;
+ 	u32 d1;
+ 	__le16 seq_num; /* only lower 12 bits */
+-	u16 pn_15_0;
+-	u32 pn_47_16;
++	struct_group_attr(pn, __packed,
++		u16 pn_15_0;
++		u32 pn_47_16;
++	);
+ } __packed;
  
- 		seq_printf(m, "software id\t: %ld\n\n",
- 				boot_cpu_data.pdc.model.sw_id);
+ struct wil_rx_status_extended {
+-- 
+2.40.1
+
 
 
