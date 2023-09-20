@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8681A7A7C7F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C61557A7BA2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235013AbjITMBx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:01:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49434 "EHLO
+        id S234795AbjITLyI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:54:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235025AbjITMBv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:51 -0400
+        with ESMTP id S234796AbjITLyG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D609F0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:01:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD8DC433CA;
-        Wed, 20 Sep 2023 12:01:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFD3E9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10893C433CC;
+        Wed, 20 Sep 2023 11:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211301;
-        bh=Izh7+npmAmkIY5M9MNhGtTbW4/ChavhotJGnfNP47PQ=;
+        s=korg; t=1695210836;
+        bh=/NH1fQn+sTgprBj2QWz9Xaq20h/y2NfJWIQ3aT1YuG8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i+U4ebdAM+85FjQYZOASE+53shDymBTC12jmIrSGu/DWz2+Bk75khS97GcRH7iu8O
-         xs/D8e7B7lKI6Tat4OZhDn35z/M1VoImsD3p5n7khjEh2heB7oyN5qpI3GFEFVs6FZ
-         wr+3XmIwLJAUlsuYDjL0qqjB4nmZpNbaoh1q839I=
+        b=PuaRW3ii/BprCR6LL+fMC7ls+tVKt6bAS2KEPPjFq5EVRAxLRdJTKTdoPSWhlHOvc
+         QQWlC5CKD1d9ts6LML1ndBFh6mTK6Fp0GPQoYYx9+O4hEXujwhzY+7YYJMDN7E50nP
+         Gx0MJZM5clQyA0wYhmusFLfA4PLJCL7wobrtIoOE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 042/186] Bluetooth: nokia: fix value check in nokia_bluetooth_serdev_probe()
+        patches@lists.linux.dev, Tomislav Novak <tnovak@meta.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        Samuel Gosselin <sgosselin@google.com>
+Subject: [PATCH 6.1 011/139] hw_breakpoint: fix single-stepping when using bpf_overflow_handler
 Date:   Wed, 20 Sep 2023 13:29:05 +0200
-Message-ID: <20230920112838.462375148@linuxfoundation.org>
+Message-ID: <20230920112836.013439094@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +52,152 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Tomislav Novak <tnovak@meta.com>
 
-[ Upstream commit e8b5aed31355072faac8092ead4938ddec3111fd ]
+[ Upstream commit d11a69873d9a7435fe6a48531e165ab80a8b1221 ]
 
-in nokia_bluetooth_serdev_probe(), check the return value of
-clk_prepare_enable() and return the error code if
-clk_prepare_enable() returns an unexpected value.
+Arm platforms use is_default_overflow_handler() to determine if the
+hw_breakpoint code should single-step over the breakpoint trigger or
+let the custom handler deal with it.
 
-Fixes: 7bb318680e86 ("Bluetooth: add nokia driver")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Since bpf_overflow_handler() currently isn't recognized as a default
+handler, attaching a BPF program to a PERF_TYPE_BREAKPOINT event causes
+it to keep firing (the instruction triggering the data abort exception
+is never skipped). For example:
+
+  # bpftrace -e 'watchpoint:0x10000:4:w { print("hit") }' -c ./test
+  Attaching 1 probe...
+  hit
+  hit
+  [...]
+  ^C
+
+(./test performs a single 4-byte store to 0x10000)
+
+This patch replaces the check with uses_default_overflow_handler(),
+which accounts for the bpf_overflow_handler() case by also testing
+if one of the perf_event_output functions gets invoked indirectly,
+via orig_default_handler.
+
+Signed-off-by: Tomislav Novak <tnovak@meta.com>
+Tested-by: Samuel Gosselin <sgosselin@google.com> # arm64
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/linux-arm-kernel/20220923203644.2731604-1-tnovak@fb.com/
+Link: https://lore.kernel.org/r/20230605191923.1219974-1-tnovak@meta.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_nokia.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/kernel/hw_breakpoint.c   |  8 ++++----
+ arch/arm64/kernel/hw_breakpoint.c |  4 ++--
+ include/linux/perf_event.h        | 22 +++++++++++++++++++---
+ 3 files changed, 25 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_nokia.c b/drivers/bluetooth/hci_nokia.c
-index 3539fd03f47ee..474866448f181 100644
---- a/drivers/bluetooth/hci_nokia.c
-+++ b/drivers/bluetooth/hci_nokia.c
-@@ -746,7 +746,11 @@ static int nokia_bluetooth_serdev_probe(struct serdev_device *serdev)
- 		return err;
+diff --git a/arch/arm/kernel/hw_breakpoint.c b/arch/arm/kernel/hw_breakpoint.c
+index 054e9199f30db..dc0fb7a813715 100644
+--- a/arch/arm/kernel/hw_breakpoint.c
++++ b/arch/arm/kernel/hw_breakpoint.c
+@@ -626,7 +626,7 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
+ 	hw->address &= ~alignment_mask;
+ 	hw->ctrl.len <<= offset;
+ 
+-	if (is_default_overflow_handler(bp)) {
++	if (uses_default_overflow_handler(bp)) {
+ 		/*
+ 		 * Mismatch breakpoints are required for single-stepping
+ 		 * breakpoints.
+@@ -798,7 +798,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
+ 		 * Otherwise, insert a temporary mismatch breakpoint so that
+ 		 * we can single-step over the watchpoint trigger.
+ 		 */
+-		if (!is_default_overflow_handler(wp))
++		if (!uses_default_overflow_handler(wp))
+ 			continue;
+ step:
+ 		enable_single_step(wp, instruction_pointer(regs));
+@@ -811,7 +811,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
+ 		info->trigger = addr;
+ 		pr_debug("watchpoint fired: address = 0x%x\n", info->trigger);
+ 		perf_bp_event(wp, regs);
+-		if (is_default_overflow_handler(wp))
++		if (uses_default_overflow_handler(wp))
+ 			enable_single_step(wp, instruction_pointer(regs));
  	}
  
--	clk_prepare_enable(sysclk);
-+	err = clk_prepare_enable(sysclk);
-+	if (err) {
-+		dev_err(dev, "could not enable sysclk: %d", err);
-+		return err;
-+	}
- 	btdev->sysclk_speed = clk_get_rate(sysclk);
- 	clk_disable_unprepare(sysclk);
+@@ -886,7 +886,7 @@ static void breakpoint_handler(unsigned long unknown, struct pt_regs *regs)
+ 			info->trigger = addr;
+ 			pr_debug("breakpoint fired: address = 0x%x\n", addr);
+ 			perf_bp_event(bp, regs);
+-			if (is_default_overflow_handler(bp))
++			if (uses_default_overflow_handler(bp))
+ 				enable_single_step(bp, addr);
+ 			goto unlock;
+ 		}
+diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
+index b29a311bb0552..9659a9555c63a 100644
+--- a/arch/arm64/kernel/hw_breakpoint.c
++++ b/arch/arm64/kernel/hw_breakpoint.c
+@@ -654,7 +654,7 @@ static int breakpoint_handler(unsigned long unused, unsigned long esr,
+ 		perf_bp_event(bp, regs);
  
+ 		/* Do we need to handle the stepping? */
+-		if (is_default_overflow_handler(bp))
++		if (uses_default_overflow_handler(bp))
+ 			step = 1;
+ unlock:
+ 		rcu_read_unlock();
+@@ -733,7 +733,7 @@ static u64 get_distance_from_watchpoint(unsigned long addr, u64 val,
+ static int watchpoint_report(struct perf_event *wp, unsigned long addr,
+ 			     struct pt_regs *regs)
+ {
+-	int step = is_default_overflow_handler(wp);
++	int step = uses_default_overflow_handler(wp);
+ 	struct arch_hw_breakpoint *info = counter_arch_bp(wp);
+ 
+ 	info->trigger = addr;
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 0031f7b4d9aba..63fae3c7ae430 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -1139,15 +1139,31 @@ extern int perf_event_output(struct perf_event *event,
+ 			     struct pt_regs *regs);
+ 
+ static inline bool
+-is_default_overflow_handler(struct perf_event *event)
++__is_default_overflow_handler(perf_overflow_handler_t overflow_handler)
+ {
+-	if (likely(event->overflow_handler == perf_event_output_forward))
++	if (likely(overflow_handler == perf_event_output_forward))
+ 		return true;
+-	if (unlikely(event->overflow_handler == perf_event_output_backward))
++	if (unlikely(overflow_handler == perf_event_output_backward))
+ 		return true;
+ 	return false;
+ }
+ 
++#define is_default_overflow_handler(event) \
++	__is_default_overflow_handler((event)->overflow_handler)
++
++#ifdef CONFIG_BPF_SYSCALL
++static inline bool uses_default_overflow_handler(struct perf_event *event)
++{
++	if (likely(is_default_overflow_handler(event)))
++		return true;
++
++	return __is_default_overflow_handler(event->orig_overflow_handler);
++}
++#else
++#define uses_default_overflow_handler(event) \
++	is_default_overflow_handler(event)
++#endif
++
+ extern void
+ perf_event_header__init_id(struct perf_event_header *header,
+ 			   struct perf_sample_data *data,
 -- 
 2.40.1
 
