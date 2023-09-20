@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B4FD7A7DB1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F17B57A7FF3
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234907AbjITML0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:11:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49924 "EHLO
+        id S235640AbjITMbj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:31:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235006AbjITMLY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:11:24 -0400
+        with ESMTP id S236114AbjITMbi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DE89E8
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:11:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7079C433C8;
-        Wed, 20 Sep 2023 12:11:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B41183
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64628C433C7;
+        Wed, 20 Sep 2023 12:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211877;
-        bh=LZ68nspDg8/RX24lTVKu++3GCRDlRNH1BNl28aSYM+E=;
+        s=korg; t=1695213091;
+        bh=0i1zai7EkZlEDorUDBkBivFwUUWq8mjjmrz0N+dnBZQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rPEgumMgUKQMK+2kUrt9BA4eBOo9Hptbk890QHXHlhKE0gML+7NL6mTXiTjhORL58
-         Vqb4LuAIEuMOMYKM+XDgzWc5XD3awiUYmdwv2NfVw8MWaN9ewFnzwFi7EIAute6hI9
-         j6aQ2uACpS8VjwDtnSYQqMf0dXs9gCO59mtIgshA=
+        b=u+tggrfVA1tZawcmG+uDyT3LL2O50FsOY9RVKShB1xXyJfQ75A7zuC9wTwvoste4e
+         ygQ47qM2ycMe39d83erUqIqwwbYkFYhTf1FuNWSKEGax+CrTZEoZDTSgPwRJrXLf9N
+         rNgS4/pROKvaekM78be9BfF1KS8nhWaL5G/T4WH8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Peng Fan <peng.fan@nxp.com>, Abel Vesa <abel.vesa@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 069/273] net: arcnet: Do not call kfree_skb() under local_irq_disable()
+Subject: [PATCH 5.4 132/367] clk: imx: composite-8m: fix clock pauses when set_rate would be a no-op
 Date:   Wed, 20 Sep 2023 13:28:29 +0200
-Message-ID: <20230920112848.596584269@linuxfoundation.org>
+Message-ID: <20230920112902.110116314@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +50,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[ Upstream commit 786c96e92fb9e854cb8b0cb7399bb2fb28e15c4b ]
+[ Upstream commit 4dd432d985ef258e3bc436e568fba4b987b59171 ]
 
-It is not allowed to call kfree_skb() from hardware interrupt
-context or with hardware interrupts being disabled.
-So replace kfree_skb() with dev_kfree_skb_irq() under
-local_irq_disable(). Compile tested only.
+Reconfiguring the clock divider to the exact same value is observed
+on an i.MX8MN to often cause a longer than usual clock pause, probably
+because the divider restarts counting whenever the register is rewritten.
 
-Fixes: 05fcd31cc472 ("arcnet: add err_skb package for package status feedback")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This issue doesn't show up normally, because the clock framework will
+take care to not call set_rate when the clock rate is the same.
+However, when we reconfigure an upstream clock, the common code will
+call set_rate with the newly calculated rate on all children, e.g.:
+
+  - sai5 is running normally and divides Audio PLL out by 16.
+  - Audio PLL rate is increased by 32Hz (glitch-free kdiv change)
+  - rates for children are recalculated and rates are set recursively
+  - imx8m_clk_composite_divider_set_rate(sai5) is called with
+    32/16 = 2Hz more
+  - imx8m_clk_composite_divider_set_rate computes same divider as before
+  - divider register is written, so it restarts counting from zero and
+    MCLK is briefly paused, so instead of e.g. 40ns, MCLK is low for 120ns.
+
+Some external clock consumers can be upset by such unexpected clock pauses,
+so let's make sure we only rewrite the divider value when the value to be
+written is actually different.
+
+Fixes: d3ff9728134e ("clk: imx: Add imx composite clock")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20230807082201.2332746-1-a.fatoum@pengutronix.de
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/arcnet/arcnet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-composite-8m.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/arcnet/arcnet.c b/drivers/net/arcnet/arcnet.c
-index 553776cc1d29d..2b112d3d85409 100644
---- a/drivers/net/arcnet/arcnet.c
-+++ b/drivers/net/arcnet/arcnet.c
-@@ -434,7 +434,7 @@ static void arcnet_reply_tasklet(unsigned long data)
+diff --git a/drivers/clk/imx/clk-composite-8m.c b/drivers/clk/imx/clk-composite-8m.c
+index d3486ee79ab54..78122188ac39e 100644
+--- a/drivers/clk/imx/clk-composite-8m.c
++++ b/drivers/clk/imx/clk-composite-8m.c
+@@ -95,7 +95,7 @@ static int imx8m_clk_composite_divider_set_rate(struct clk_hw *hw,
+ 	int prediv_value;
+ 	int div_value;
+ 	int ret;
+-	u32 val;
++	u32 orig, val;
  
- 	ret = sock_queue_err_skb(sk, ackskb);
- 	if (ret)
--		kfree_skb(ackskb);
-+		dev_kfree_skb_irq(ackskb);
+ 	ret = imx8m_clk_composite_compute_dividers(rate, parent_rate,
+ 						&prediv_value, &div_value);
+@@ -104,13 +104,15 @@ static int imx8m_clk_composite_divider_set_rate(struct clk_hw *hw,
  
- 	local_irq_enable();
- };
+ 	spin_lock_irqsave(divider->lock, flags);
+ 
+-	val = readl(divider->reg);
+-	val &= ~((clk_div_mask(divider->width) << divider->shift) |
+-			(clk_div_mask(PCG_DIV_WIDTH) << PCG_DIV_SHIFT));
++	orig = readl(divider->reg);
++	val = orig & ~((clk_div_mask(divider->width) << divider->shift) |
++		       (clk_div_mask(PCG_DIV_WIDTH) << PCG_DIV_SHIFT));
+ 
+ 	val |= (u32)(prediv_value  - 1) << divider->shift;
+ 	val |= (u32)(div_value - 1) << PCG_DIV_SHIFT;
+-	writel(val, divider->reg);
++
++	if (val != orig)
++		writel(val, divider->reg);
+ 
+ 	spin_unlock_irqrestore(divider->lock, flags);
+ 
 -- 
 2.40.1
 
