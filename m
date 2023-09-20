@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD9FD7A7DC5
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9740A7A7FEA
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235357AbjITMML (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:12:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51248 "EHLO
+        id S236072AbjITMbP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:31:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234603AbjITMMJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:12:09 -0400
+        with ESMTP id S236079AbjITMbN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B18C2A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE5DC433C8;
-        Wed, 20 Sep 2023 12:12:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF565B6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EF2C433C8;
+        Wed, 20 Sep 2023 12:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211923;
-        bh=tD6QiMIQAKQXsKOkWDVZ2daNg92EO0YblZ68wITi4qk=;
+        s=korg; t=1695213067;
+        bh=9aCfCFG/vtVY70mkHjbJMQJOif1is92Nn9XKqokgSp0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q/BhuAYLwGn8j78o9+VGVp7f6TM0tFHznR/ASRUU8aWQSOqKkMoXAsE6AkrDivBpI
-         dCi3rfyTJtoXvUtsmIcfnZXdCLAllJLRCcrGg46J2OWXVzdYSRpeR3ERM2sKuz0wH4
-         Zs5l+TvGiiMcf1lxaZmEBq26XcrVkFWh/F8ngank=
+        b=sLcsgo2PSruvaVeIv5g3TrmIHEcHmoLrri/td+w15ZQQdcOwwVnIIAAzI0Upf3Bhk
+         jwJLDNg2FRJ+p5f0PRyFOO4dsm25oUc2F8iEkGhybXlDwUGG0uwBQG3f0RCETPWQIp
+         htvspLO8CHDtkkRvqYd+6ubcJzo47XV7oVAabkVE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Tom Haynes <loghyr@gmail.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 085/273] ARM: dts: BCM53573: Use updated "spi-gpio" binding properties
+Subject: [PATCH 5.4 148/367] NFSD: da_addr_body field missing in some GETDEVICEINFO replies
 Date:   Wed, 20 Sep 2023 13:28:45 +0200
-Message-ID: <20230920112849.073378829@linuxfoundation.org>
+Message-ID: <20230920112902.502297267@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,53 +51,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 2c0fd6b3d0778ceab40205315ccef74568490f17 ]
+[ Upstream commit 6372e2ee629894433fe6107d7048536a3280a284 ]
 
-Switch away from deprecated properties.
+The XDR specification in RFC 8881 looks like this:
 
-This fixes:
-arch/arm/boot/dts/broadcom/bcm947189acdbmr.dtb: spi: gpio-sck: False schema does not allow [[3, 21, 0]]
-        From schema: Documentation/devicetree/bindings/spi/spi-gpio.yaml
-arch/arm/boot/dts/broadcom/bcm947189acdbmr.dtb: spi: gpio-miso: False schema does not allow [[3, 22, 0]]
-        From schema: Documentation/devicetree/bindings/spi/spi-gpio.yaml
-arch/arm/boot/dts/broadcom/bcm947189acdbmr.dtb: spi: gpio-mosi: False schema does not allow [[3, 23, 0]]
-        From schema: Documentation/devicetree/bindings/spi/spi-gpio.yaml
-arch/arm/boot/dts/broadcom/bcm947189acdbmr.dtb: spi: 'sck-gpios' is a required property
-        From schema: Documentation/devicetree/bindings/spi/spi-gpio.yaml
-arch/arm/boot/dts/broadcom/bcm947189acdbmr.dtb: spi: Unevaluated properties are not allowed ('gpio-miso', 'gpio-mosi', 'gpio-sck' were unexpected)
-        From schema: Documentation/devicetree/bindings/spi/spi-gpio.yaml
+struct device_addr4 {
+	layouttype4	da_layout_type;
+	opaque		da_addr_body<>;
+};
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20230707114004.2740-4-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+struct GETDEVICEINFO4resok {
+	device_addr4	gdir_device_addr;
+	bitmap4		gdir_notification;
+};
+
+union GETDEVICEINFO4res switch (nfsstat4 gdir_status) {
+case NFS4_OK:
+	GETDEVICEINFO4resok gdir_resok4;
+case NFS4ERR_TOOSMALL:
+	count4		gdir_mincount;
+default:
+	void;
+};
+
+Looking at nfsd4_encode_getdeviceinfo() ....
+
+When the client provides a zero gd_maxcount, then the Linux NFS
+server implementation encodes the da_layout_type field and then
+skips the da_addr_body field completely, proceeding directly to
+encode gdir_notification field.
+
+There does not appear to be an option in the specification to skip
+encoding da_addr_body. Moreover, Section 18.40.3 says:
+
+> If the client wants to just update or turn off notifications, it
+> MAY send a GETDEVICEINFO operation with gdia_maxcount set to zero.
+> In that event, if the device ID is valid, the reply's da_addr_body
+> field of the gdir_device_addr field will be of zero length.
+
+Since the layout drivers are responsible for encoding the
+da_addr_body field, put this fix inside the ->encode_getdeviceinfo
+methods.
+
+Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Tom Haynes <loghyr@gmail.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/bcm947189acdbmr.dts | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfsd/blocklayoutxdr.c    |  9 +++++++++
+ fs/nfsd/flexfilelayoutxdr.c |  9 +++++++++
+ fs/nfsd/nfs4xdr.c           | 25 +++++++++++--------------
+ 3 files changed, 29 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm947189acdbmr.dts b/arch/arm/boot/dts/bcm947189acdbmr.dts
-index ef263412fea51..02c916bedd281 100644
---- a/arch/arm/boot/dts/bcm947189acdbmr.dts
-+++ b/arch/arm/boot/dts/bcm947189acdbmr.dts
-@@ -61,9 +61,9 @@ wps {
- 	spi {
- 		compatible = "spi-gpio";
- 		num-chipselects = <1>;
--		gpio-sck = <&chipcommon 21 0>;
--		gpio-miso = <&chipcommon 22 0>;
--		gpio-mosi = <&chipcommon 23 0>;
-+		sck-gpios = <&chipcommon 21 0>;
-+		miso-gpios = <&chipcommon 22 0>;
-+		mosi-gpios = <&chipcommon 23 0>;
- 		cs-gpios = <&chipcommon 24 0>;
- 		#address-cells = <1>;
- 		#size-cells = <0>;
+diff --git a/fs/nfsd/blocklayoutxdr.c b/fs/nfsd/blocklayoutxdr.c
+index 442543304930b..2455dc8be18a8 100644
+--- a/fs/nfsd/blocklayoutxdr.c
++++ b/fs/nfsd/blocklayoutxdr.c
+@@ -82,6 +82,15 @@ nfsd4_block_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	int len = sizeof(__be32), ret, i;
+ 	__be32 *p;
+ 
++	/*
++	 * See paragraph 5 of RFC 8881 S18.40.3.
++	 */
++	if (!gdp->gd_maxcount) {
++		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
++			return nfserr_resource;
++		return nfs_ok;
++	}
++
+ 	p = xdr_reserve_space(xdr, len + sizeof(__be32));
+ 	if (!p)
+ 		return nfserr_resource;
+diff --git a/fs/nfsd/flexfilelayoutxdr.c b/fs/nfsd/flexfilelayoutxdr.c
+index e81d2a5cf381e..bb205328e043d 100644
+--- a/fs/nfsd/flexfilelayoutxdr.c
++++ b/fs/nfsd/flexfilelayoutxdr.c
+@@ -85,6 +85,15 @@ nfsd4_ff_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	int addr_len;
+ 	__be32 *p;
+ 
++	/*
++	 * See paragraph 5 of RFC 8881 S18.40.3.
++	 */
++	if (!gdp->gd_maxcount) {
++		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
++			return nfserr_resource;
++		return nfs_ok;
++	}
++
+ 	/* len + padding for two strings */
+ 	addr_len = 16 + da->netaddr.netid_len + da->netaddr.addr_len;
+ 	ver_len = 20;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 3d7b0ad4157df..1d24fff2709c5 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -4126,20 +4126,17 @@ nfsd4_encode_getdeviceinfo(struct nfsd4_compoundres *resp, __be32 nfserr,
+ 
+ 	*p++ = cpu_to_be32(gdev->gd_layout_type);
+ 
+-	/* If maxcount is 0 then just update notifications */
+-	if (gdev->gd_maxcount != 0) {
+-		ops = nfsd4_layout_ops[gdev->gd_layout_type];
+-		nfserr = ops->encode_getdeviceinfo(xdr, gdev);
+-		if (nfserr) {
+-			/*
+-			 * We don't bother to burden the layout drivers with
+-			 * enforcing gd_maxcount, just tell the client to
+-			 * come back with a bigger buffer if it's not enough.
+-			 */
+-			if (xdr->buf->len + 4 > gdev->gd_maxcount)
+-				goto toosmall;
+-			return nfserr;
+-		}
++	ops = nfsd4_layout_ops[gdev->gd_layout_type];
++	nfserr = ops->encode_getdeviceinfo(xdr, gdev);
++	if (nfserr) {
++		/*
++		 * We don't bother to burden the layout drivers with
++		 * enforcing gd_maxcount, just tell the client to
++		 * come back with a bigger buffer if it's not enough.
++		 */
++		if (xdr->buf->len + 4 > gdev->gd_maxcount)
++			goto toosmall;
++		return nfserr;
+ 	}
+ 
+ 	if (gdev->gd_notify_types) {
 -- 
 2.40.1
 
