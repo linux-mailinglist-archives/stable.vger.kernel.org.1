@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99CCA7A7F89
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E35247A7D8E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235776AbjITM1t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:27:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37084 "EHLO
+        id S235343AbjITMK1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:10:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235768AbjITM1s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:27:48 -0400
+        with ESMTP id S235544AbjITMKC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:10:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1242DA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:27:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454E5C43391;
-        Wed, 20 Sep 2023 12:27:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD9B783
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:09:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26829C433C7;
+        Wed, 20 Sep 2023 12:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212861;
-        bh=yxcGkTxKzU2XMO5qijIy3vXYbhNsr027Fc9J3jrDoEA=;
+        s=korg; t=1695211796;
+        bh=GA9KFyg4pkGGWG+DwriO9GfrY0vexedNNj2zigLncYw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uccbmx0ExZBM56kLmgWzpdO0ng66godskFynkH8s5yALiqzf2h33ybW2NVSf3ZMRj
-         jml8O8k/UTqpPO08nNaiL/RwbBA1qiyMxm/vOfa3ME71yuGv+FJWglZu05SWeXECh6
-         DV03dG9oYj14hUbqMsVjLA8C6BuA8w4IjU9DfQBU=
+        b=rPluJ/lASOvvdD7MtZpP6a38MKxjXhzUbiRZN+2LKwmWJ13HbDNP1ipNWd4KBziSQ
+         uJVxYgRcmrbcbTaUx+qK91EwAKtTd0+/fAadphAiaKVUV2gZ0oqT3nuSY2nKQTNzFL
+         xsrtibufRkhdeKUj09QMDaHlxKdQ9LPkr+ZofY6o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Polaris Pi <pinkperfect2021@gmail.com>,
-        Matthew Wang <matthewmwang@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 065/367] wifi: mwifiex: Fix OOB and integer underflow when rx packets
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Christoph Hellwig <hch@lst.de>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 4.19 002/273] ARM: pxa: remove use of symbol_get()
 Date:   Wed, 20 Sep 2023 13:27:22 +0200
-Message-ID: <20230920112900.193552992@linuxfoundation.org>
+Message-ID: <20230920112846.515019074@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,131 +50,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Polaris Pi <pinkperfect2021@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 11958528161731c58e105b501ed60b83a91ea941 ]
+commit 0faa29c4207e6e29cfc81b427df60e326c37083a upstream.
 
-Make sure mwifiex_process_mgmt_packet,
-mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet,
-mwifiex_uap_queue_bridged_pkt and mwifiex_process_rx_packet
-not out-of-bounds access the skb->data buffer.
+The spitz board file uses the obscure symbol_get() function
+to optionally call a function from sharpsl_pm.c if that is
+built. However, the two files are always built together
+these days, and have been for a long time, so this can
+be changed to a normal function call.
 
-Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80211")
-Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
-Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230723070741.1544662-1-pinkperfect2021@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/lkml/20230731162639.GA9441@lst.de/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sta_rx.c | 11 ++++++++++-
- .../net/wireless/marvell/mwifiex/uap_txrx.c   | 19 +++++++++++++++++++
- drivers/net/wireless/marvell/mwifiex/util.c   | 10 +++++++---
- 3 files changed, 36 insertions(+), 4 deletions(-)
+ arch/arm/mach-pxa/sharpsl_pm.c |    2 --
+ arch/arm/mach-pxa/spitz.c      |   14 +-------------
+ 2 files changed, 1 insertion(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index 52a2ce2e78b08..53eef44739571 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -98,6 +98,14 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
- 
-+	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
-+		mwifiex_dbg(priv->adapter, ERROR,
-+			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
-+			    skb->len, rx_pkt_off);
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+	}
-+
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
- 		     sizeof(bridge_tunnel_header))) ||
- 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-@@ -206,7 +214,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_private *priv,
- 
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_offset;
- 
--	if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
-+	if ((rx_pkt_offset + rx_pkt_length) > skb->len ||
-+	    sizeof(rx_pkt_hdr->eth803_hdr) + rx_pkt_offset > skb->len) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "wrong rx packet: len=%d, rx_pkt_offset=%d, rx_pkt_length=%d\n",
- 			    skb->len, rx_pkt_offset, rx_pkt_length);
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index 354b09c5e8dc0..8e263bcc8f432 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -115,6 +115,15 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
- 		return;
- 	}
- 
-+	if (sizeof(*rx_pkt_hdr) +
-+	    le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len) {
-+		mwifiex_dbg(adapter, ERROR,
-+			    "wrong rx packet offset: len=%d,rx_pkt_offset=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+	}
-+
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
- 		     sizeof(bridge_tunnel_header))) ||
- 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-@@ -383,6 +392,16 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_type = le16_to_cpu(uap_rx_pd->rx_pkt_type);
- 	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
- 
-+	if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-+	    sizeof(rx_pkt_hdr->eth803_hdr) > skb->len) {
-+		mwifiex_dbg(adapter, ERROR,
-+			    "wrong rx packet for struct ethhdr: len=%d, offset=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+		return 0;
-+	}
-+
- 	ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
- 
- 	if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
-index 3b0d318276811..135b197fb4a36 100644
---- a/drivers/net/wireless/marvell/mwifiex/util.c
-+++ b/drivers/net/wireless/marvell/mwifiex/util.c
-@@ -405,11 +405,15 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
- 	}
- 
- 	rx_pd = (struct rxpd *)skb->data;
-+	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
-+	if (pkt_len < sizeof(struct ieee80211_hdr) + sizeof(pkt_len)) {
-+		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
-+		return -1;
-+	}
- 
- 	skb_pull(skb, le16_to_cpu(rx_pd->rx_pkt_offset));
- 	skb_pull(skb, sizeof(pkt_len));
+--- a/arch/arm/mach-pxa/sharpsl_pm.c
++++ b/arch/arm/mach-pxa/sharpsl_pm.c
+@@ -224,8 +224,6 @@ void sharpsl_battery_kick(void)
+ {
+ 	schedule_delayed_work(&sharpsl_bat, msecs_to_jiffies(125));
+ }
+-EXPORT_SYMBOL(sharpsl_battery_kick);
 -
--	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
-+	pkt_len -= sizeof(pkt_len);
  
- 	ieee_hdr = (void *)skb->data;
- 	if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
-@@ -422,7 +426,7 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
- 		skb->data + sizeof(struct ieee80211_hdr),
- 		pkt_len - sizeof(struct ieee80211_hdr));
+ static void sharpsl_battery_thread(struct work_struct *private_)
+ {
+--- a/arch/arm/mach-pxa/spitz.c
++++ b/arch/arm/mach-pxa/spitz.c
+@@ -13,7 +13,6 @@
+  */
  
--	pkt_len -= ETH_ALEN + sizeof(pkt_len);
-+	pkt_len -= ETH_ALEN;
- 	rx_pd->rx_pkt_length = cpu_to_le16(pkt_len);
+ #include <linux/kernel.h>
+-#include <linux/module.h>	/* symbol_get ; symbol_put */
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+ #include <linux/gpio_keys.h>
+@@ -517,17 +516,6 @@ static struct pxa2xx_spi_chip spitz_ads7
+ 	.gpio_cs		= SPITZ_GPIO_ADS7846_CS,
+ };
  
- 	cfg80211_rx_mgmt(&priv->wdev, priv->roc_cfg.chan.center_freq,
--- 
-2.40.1
-
+-static void spitz_bl_kick_battery(void)
+-{
+-	void (*kick_batt)(void);
+-
+-	kick_batt = symbol_get(sharpsl_battery_kick);
+-	if (kick_batt) {
+-		kick_batt();
+-		symbol_put(sharpsl_battery_kick);
+-	}
+-}
+-
+ static struct corgi_lcd_platform_data spitz_lcdcon_info = {
+ 	.init_mode		= CORGI_LCD_MODE_VGA,
+ 	.max_intensity		= 0x2f,
+@@ -535,7 +523,7 @@ static struct corgi_lcd_platform_data sp
+ 	.limit_mask		= 0x0b,
+ 	.gpio_backlight_cont	= SPITZ_GPIO_BACKLIGHT_CONT,
+ 	.gpio_backlight_on	= SPITZ_GPIO_BACKLIGHT_ON,
+-	.kick_battery		= spitz_bl_kick_battery,
++	.kick_battery		= sharpsl_battery_kick,
+ };
+ 
+ static struct pxa2xx_spi_chip spitz_lcdcon_chip = {
 
 
