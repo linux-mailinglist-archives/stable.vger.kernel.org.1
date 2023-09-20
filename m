@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A8417A80E8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB777A7EFA
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236252AbjITMlI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:41:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33582 "EHLO
+        id S235647AbjITMWi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:22:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236278AbjITMlD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:03 -0400
+        with ESMTP id S235643AbjITMWh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5D0E118
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:40:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308D0C433C8;
-        Wed, 20 Sep 2023 12:40:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07393B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C39CC433C9;
+        Wed, 20 Sep 2023 12:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213652;
-        bh=SR5LK3EQge2pTNSXI1kwagJcyH9klmAs64KayfAfNb8=;
+        s=korg; t=1695212549;
+        bh=QSxhTuwL5UuliuuaE84iQq2nkyiiMiXTTU2NqI7Yb4A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XZPkpZen4i9dq+usTmaxMiXJQluqCABS5w0yaSfOFSwCCWleWWGQwUoRDWwbI+fQl
-         +OLI/ooNtvaG1SiABCttteeclVTK/sZ+a4cO1rWrSZYRSx0jbaB1p2VhA6U8tJSG9t
-         zl/N/WoKB36NZkLojkWS7KLd6hkYbUWAl88K1DZg=
+        b=llx/y1w9Bag4NrMpmVgHmWlQD4mzfMwc0UBk04SBLe2fcRApK91EBL49YNUJhninb
+         ycUnBPsOGiG+RgcZTb82K9tAtoe4S11iPM+XcyI5XrDrg9HHn3BOJQ/4+uI3YFhr55
+         lmXFPcFmQ8G2BfOrIhLG1t6xTy5+YjBefda/gdnI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 315/367] ACPI: video: Add backlight=native DMI quirk for Lenovo Ideapad Z470
+Subject: [PATCH 5.10 42/83] media: tuners: qt1010: replace BUG_ON with a regular error
 Date:   Wed, 20 Sep 2023 13:31:32 +0200
-Message-ID: <20230920112906.704050342@linuxfoundation.org>
+Message-ID: <20230920112828.341698325@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,49 +49,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 96b709be183c56293933ef45b8b75f8af268c6de ]
+[ Upstream commit ee630b29ea44d1851bb6c903f400956604834463 ]
 
-The Lenovo Ideapad Z470 predates Windows 8, so it defaults to using
-acpi_video for backlight control. But this is not functional on this
-model.
+BUG_ON is unnecessary here, and in addition it confuses smatch.
+Replacing this with an error return help resolve this smatch
+warning:
 
-Add a DMI quirk to use the native backlight interface which works.
+drivers/media/tuners/qt1010.c:350 qt1010_init() error: buffer overflow 'i2c_data' 34 <= 34
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1208724
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/media/tuners/qt1010.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index ef40cd7f36eba..be9c70806b620 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -310,6 +310,15 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_BOARD_NAME, "Lenovo IdeaPad S405"),
- 		},
- 	},
-+	{
-+	 /* https://bugzilla.suse.com/show_bug.cgi?id=1208724 */
-+	 .callback = video_detect_force_native,
-+	 /* Lenovo Ideapad Z470 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_VERSION, "IdeaPad Z470"),
-+		},
-+	},
- 	{
- 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1187004 */
- 	 .callback = video_detect_force_native,
+diff --git a/drivers/media/tuners/qt1010.c b/drivers/media/tuners/qt1010.c
+index 60931367b82ca..48fc79cd40273 100644
+--- a/drivers/media/tuners/qt1010.c
++++ b/drivers/media/tuners/qt1010.c
+@@ -345,11 +345,12 @@ static int qt1010_init(struct dvb_frontend *fe)
+ 			else
+ 				valptr = &tmpval;
+ 
+-			BUG_ON(i >= ARRAY_SIZE(i2c_data) - 1);
+-
+-			err = qt1010_init_meas1(priv, i2c_data[i+1].reg,
+-						i2c_data[i].reg,
+-						i2c_data[i].val, valptr);
++			if (i >= ARRAY_SIZE(i2c_data) - 1)
++				err = -EIO;
++			else
++				err = qt1010_init_meas1(priv, i2c_data[i + 1].reg,
++							i2c_data[i].reg,
++							i2c_data[i].val, valptr);
+ 			i++;
+ 			break;
+ 		}
 -- 
 2.40.1
 
