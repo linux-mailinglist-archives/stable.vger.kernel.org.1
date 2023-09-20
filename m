@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B70307A7B75
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09F937A7BEC
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234717AbjITLwW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:52:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42248 "EHLO
+        id S234857AbjITL45 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:56:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234721AbjITLwV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:21 -0400
+        with ESMTP id S234884AbjITL4z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3028BB9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80530C433C8;
-        Wed, 20 Sep 2023 11:52:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91EB6CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FBFC433CA;
+        Wed, 20 Sep 2023 11:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210735;
-        bh=oR4wrezun5lGwCWrVeVN31HP52I5zpQIjmfeDnn2AWM=;
+        s=korg; t=1695211001;
+        bh=v3kK8Icmf2GN3drpwxNXxdFpWyt9FrIJn9ydvIlQSiE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GWAGVzKPBJ656DMcmLyQk8HMU3IuiNM4/MQQMIro/Qgbzo6O4NffCHAuYK8sxKKC+
-         xkkWuUIUOxw4aaC1Dgh4gzZs8+QHhUXBNLhaMml5xJ0fF/OeTeROHcT1w6OWCrLu0L
-         tUxRQHUu8XpgvHQ89SG+R5DXkM24QmUf7chNkdzI=
+        b=KeoosFgeDylhTuzKxOueEqotjtpN/mQxaWl1dxnbDUkuXYjcvn7CoYkLt7IikpiaO
+         kTqg0gzUzyb6An/1jY/o1zS6VDy8x8Dhf0mI4zv5cX0sCo6Gd+8GTO11AjGilJ4+ws
+         pjd4HwZvwUngNkqU5ae61xPmgXN41pT0QUsaNR/k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aaron Lu <aaron.lu@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 160/211] x86/boot/compressed: Reserve more memory for page tables
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 070/139] media: az6007: Fix null-ptr-deref in az6007_i2c_xfer()
 Date:   Wed, 20 Sep 2023 13:30:04 +0200
-Message-ID: <20230920112850.845834625@linuxfoundation.org>
+Message-ID: <20230920112838.311999105@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,125 +50,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit f530ee95b72e77b09c141c4b1a4b94d1199ffbd9 ]
+[ Upstream commit 1047f9343011f2cedc73c64829686206a7e9fc3f ]
 
-The decompressor has a hard limit on the number of page tables it can
-allocate. This limit is defined at compile-time and will cause boot
-failure if it is reached.
+In az6007_i2c_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach az6007_i2c_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-The kernel is very strict and calculates the limit precisely for the
-worst-case scenario based on the current configuration. However, it is
-easy to forget to adjust the limit when a new use-case arises. The
-worst-case scenario is rarely encountered during sanity checks.
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-In the case of enabling 5-level paging, a use-case was overlooked. The
-limit needs to be increased by one to accommodate the additional level.
-This oversight went unnoticed until Aaron attempted to run the kernel
-via kexec with 5-level paging and unaccepted memory enabled.
-
-Update wost-case calculations to include 5-level paging.
-
-To address this issue, let's allocate some extra space for page tables.
-128K should be sufficient for any use-case. The logic can be simplified
-by using a single value for all kernel configurations.
-
-[ Also add a warning, should this memory run low - by Dave Hansen. ]
-
-Fixes: 34bbb0009f3b ("x86/boot/compressed: Enable 5-level paging during decompression stage")
-Reported-by: Aaron Lu <aaron.lu@intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230915070221.10266-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/ident_map_64.c |  8 +++++
- arch/x86/include/asm/boot.h             | 45 +++++++++++++++++--------
- 2 files changed, 39 insertions(+), 14 deletions(-)
+ drivers/media/usb/dvb-usb-v2/az6007.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/x86/boot/compressed/ident_map_64.c b/arch/x86/boot/compressed/ident_map_64.c
-index bcc956c17872b..08f93b0401bbd 100644
---- a/arch/x86/boot/compressed/ident_map_64.c
-+++ b/arch/x86/boot/compressed/ident_map_64.c
-@@ -59,6 +59,14 @@ static void *alloc_pgt_page(void *context)
- 		return NULL;
- 	}
- 
-+	/* Consumed more tables than expected? */
-+	if (pages->pgt_buf_offset == BOOT_PGT_SIZE_WARN) {
-+		debug_putstr("pgt_buf running low in " __FILE__ "\n");
-+		debug_putstr("Need to raise BOOT_PGT_SIZE?\n");
-+		debug_putaddr(pages->pgt_buf_offset);
-+		debug_putaddr(pages->pgt_buf_size);
-+	}
-+
- 	entry = pages->pgt_buf + pages->pgt_buf_offset;
- 	pages->pgt_buf_offset += PAGE_SIZE;
- 
-diff --git a/arch/x86/include/asm/boot.h b/arch/x86/include/asm/boot.h
-index 9191280d9ea31..215d37f7dde8a 100644
---- a/arch/x86/include/asm/boot.h
-+++ b/arch/x86/include/asm/boot.h
-@@ -40,23 +40,40 @@
- #ifdef CONFIG_X86_64
- # define BOOT_STACK_SIZE	0x4000
- 
-+/*
-+ * Used by decompressor's startup_32() to allocate page tables for identity
-+ * mapping of the 4G of RAM in 4-level paging mode:
-+ * - 1 level4 table;
-+ * - 1 level3 table;
-+ * - 4 level2 table that maps everything with 2M pages;
-+ *
-+ * The additional level5 table needed for 5-level paging is allocated from
-+ * trampoline_32bit memory.
-+ */
- # define BOOT_INIT_PGT_SIZE	(6*4096)
--# ifdef CONFIG_RANDOMIZE_BASE
-+
- /*
-- * Assuming all cross the 512GB boundary:
-- * 1 page for level4
-- * (2+2)*4 pages for kernel, param, cmd_line, and randomized kernel
-- * 2 pages for first 2M (video RAM: CONFIG_X86_VERBOSE_BOOTUP).
-- * Total is 19 pages.
-+ * Total number of page tables kernel_add_identity_map() can allocate,
-+ * including page tables consumed by startup_32().
-+ *
-+ * Worst-case scenario:
-+ *  - 5-level paging needs 1 level5 table;
-+ *  - KASLR needs to map kernel, boot_params, cmdline and randomized kernel,
-+ *    assuming all of them cross 256T boundary:
-+ *    + 4*2 level4 table;
-+ *    + 4*2 level3 table;
-+ *    + 4*2 level2 table;
-+ *  - X86_VERBOSE_BOOTUP needs to map the first 2M (video RAM):
-+ *    + 1 level4 table;
-+ *    + 1 level3 table;
-+ *    + 1 level2 table;
-+ * Total: 28 tables
-+ *
-+ * Add 4 spare table in case decompressor touches anything beyond what is
-+ * accounted above. Warn if it happens.
-  */
--#  ifdef CONFIG_X86_VERBOSE_BOOTUP
--#   define BOOT_PGT_SIZE	(19*4096)
--#  else /* !CONFIG_X86_VERBOSE_BOOTUP */
--#   define BOOT_PGT_SIZE	(17*4096)
--#  endif
--# else /* !CONFIG_RANDOMIZE_BASE */
--#  define BOOT_PGT_SIZE		BOOT_INIT_PGT_SIZE
--# endif
-+# define BOOT_PGT_SIZE_WARN	(28*4096)
-+# define BOOT_PGT_SIZE		(32*4096)
- 
- #else /* !CONFIG_X86_64 */
- # define BOOT_STACK_SIZE	0x1000
+diff --git a/drivers/media/usb/dvb-usb-v2/az6007.c b/drivers/media/usb/dvb-usb-v2/az6007.c
+index 7524c90f5da61..6cbfe75791c21 100644
+--- a/drivers/media/usb/dvb-usb-v2/az6007.c
++++ b/drivers/media/usb/dvb-usb-v2/az6007.c
+@@ -788,6 +788,10 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
+ 			if (az6007_xfer_debug)
+ 				printk(KERN_DEBUG "az6007: I2C W addr=0x%x len=%d\n",
+ 				       addr, msgs[i].len);
++			if (msgs[i].len < 1) {
++				ret = -EIO;
++				goto err;
++			}
+ 			req = AZ6007_I2C_WR;
+ 			index = msgs[i].buf[0];
+ 			value = addr | (1 << 8);
+@@ -802,6 +806,10 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
+ 			if (az6007_xfer_debug)
+ 				printk(KERN_DEBUG "az6007: I2C R addr=0x%x len=%d\n",
+ 				       addr, msgs[i].len);
++			if (msgs[i].len < 1) {
++				ret = -EIO;
++				goto err;
++			}
+ 			req = AZ6007_I2C_RD;
+ 			index = msgs[i].buf[0];
+ 			value = addr;
 -- 
 2.40.1
 
