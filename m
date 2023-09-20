@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C9F07A7F1E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50A597A813A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234957AbjITMYN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:24:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36932 "EHLO
+        id S236186AbjITMnl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:43:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235254AbjITMYM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:12 -0400
+        with ESMTP id S235865AbjITMnk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:43:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20B3283
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496E5C433C9;
-        Wed, 20 Sep 2023 12:24:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C778C83
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:43:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D295C433CA;
+        Wed, 20 Sep 2023 12:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212646;
-        bh=734VCBFM4HpvIdCmZUiqDD7SFU+kyw3D9G6WkxS9he4=;
+        s=korg; t=1695213814;
+        bh=2M2sbHInPHyM5OpFJgWaBdR0uaNVSHJ+7w+kau3m2yM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wOOKEwVD87RM3/Nke4hK67reozx7AFHQX4JvId0WASs0MhegZW1YNuE9hMD4wPjOW
-         cM3SKF2gW+0O0ARzPnCIgJ9uqU5bA4qmIXr3ZhZabkhxZyXtbVu8k/S5RX6dGeDE/A
-         IPtOX3R9rPfRT+0RlBTKE6H6LOVlwH8lbNxULnrY=
+        b=itHDrpSYYUasOXdIWTJa56t0Zkry/7wb2YkS1SzGVfsupc1C5Pb4XEbpWoX/EKawD
+         g8SNH2IllsJp/JnOnV01NeNv34fd8GQ2SSHAa2t+YkHipZAJGrhFY09jxMLpMr9cEX
+         Am9tP9p4nxUJvZjZr2RcbV/rCEo1iUCTIZ8UmFm4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ajay Kaher <akaher@vmware.com>,
-        Ching-lin Yu <chinglinyu@google.com>,
-        kernel test robot <oliver.sang@intel.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 78/83] tracefs: Add missing lockdown check to tracefs_create_dir()
+        patches@lists.linux.dev,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 351/367] btrfs: move btrfs_pinned_by_swapfile prototype into volumes.h
 Date:   Wed, 20 Sep 2023 13:32:08 +0200
-Message-ID: <20230920112829.744884898@linuxfoundation.org>
+Message-ID: <20230920112907.576619759@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,47 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 51aab5ffceb43e05119eb059048fd75765d2bc21 upstream.
+[ Upstream commit c2e79e865b87c2920a3cd39de69c35f2bc758a51 ]
 
-The function tracefs_create_dir() was missing a lockdown check and was
-called by the RV code. This gave an inconsistent behavior of this function
-returning success while other tracefs functions failed. This caused the
-inode being freed by the wrong kmem_cache.
+This is defined in volumes.c, move the prototype into volumes.h.
 
-Link: https://lkml.kernel.org/r/20230905182711.692687042@goodmis.org
-Link: https://lore.kernel.org/all/202309050916.58201dc6-oliver.sang@intel.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Ajay Kaher <akaher@vmware.com>
-Cc: Ching-lin Yu <chinglinyu@google.com>
-Fixes: bf8e602186ec4 ("tracing: Do not create tracefs files if tracefs lockdown is in effect")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 6bfe3959b0e7 ("btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/ctree.h   | 2 --
+ fs/btrfs/volumes.h | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -554,6 +554,9 @@ static struct dentry *__create_dir(const
-  */
- struct dentry *tracefs_create_dir(const char *name, struct dentry *parent)
- {
-+	if (security_locked_down(LOCKDOWN_TRACEFS))
-+		return NULL;
-+
- 	return __create_dir(name, parent, &simple_dir_inode_operations);
- }
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index c2e5fe972f566..b141a7ba4507b 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -482,8 +482,6 @@ struct btrfs_swapfile_pin {
+ 	bool is_block_group;
+ };
  
+-bool btrfs_pinned_by_swapfile(struct btrfs_fs_info *fs_info, void *ptr);
+-
+ enum {
+ 	BTRFS_FS_BARRIER,
+ 	BTRFS_FS_CLOSING_START,
+diff --git a/fs/btrfs/volumes.h b/fs/btrfs/volumes.h
+index aa6a6d7b2978e..fd8fdaa4b0cdf 100644
+--- a/fs/btrfs/volumes.h
++++ b/fs/btrfs/volumes.h
+@@ -581,4 +581,6 @@ int btrfs_bg_type_to_factor(u64 flags);
+ const char *btrfs_bg_type_to_raid_name(u64 flags);
+ int btrfs_verify_dev_extents(struct btrfs_fs_info *fs_info);
+ 
++bool btrfs_pinned_by_swapfile(struct btrfs_fs_info *fs_info, void *ptr);
++
+ #endif
+-- 
+2.40.1
+
 
 
