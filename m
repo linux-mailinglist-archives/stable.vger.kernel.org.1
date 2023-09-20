@@ -2,48 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DF5F7A8002
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ACEE7A7DE0
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236147AbjITMcK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:32:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36348 "EHLO
+        id S235473AbjITMNF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:13:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236129AbjITMcF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:32:05 -0400
+        with ESMTP id S235514AbjITMNC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 786FF83;
-        Wed, 20 Sep 2023 05:31:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608E5C433CA;
-        Wed, 20 Sep 2023 12:31:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19C36F3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607C9C433C7;
+        Wed, 20 Sep 2023 12:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213118;
-        bh=7+S1pQmdnywUPpUTHkvnYk1aENSSCiLjHzEtupe2MG8=;
+        s=korg; t=1695211974;
+        bh=bcqbVHp4lZcbOiUjTN1yEsIV9P51wHjKZgOyiBjLgi8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zsd1LPMXzSo9kNqHcUpRKygf9LK2ohqy4SqMbnGoh3CVOIA6hIsHTLApILrrBZv1E
-         lkmbqSnehMPdnFeiVRKd6tFjsR261R7lLxv8IFCtBhw+x0HSNy/zHOjGlOdYlltJco
-         D7L9Lgv6wXUIwrFkbTYhxgSZwUf+JET3o2EG8rrE=
+        b=zbxf1MJCulGWdhXv3uL7VxmevTDpGuPafU60nuij9ovPsTMcgFdFCo5PqTHdWCaaY
+         QUWJB9ZI4x/0KufeTTFrnkoTq0YZ3Uv3E383N4Wt3/ni0zN3KAKsCWhpIIVxuybXm5
+         nLXdZMX1eGBo31GTYcoy1b/4HW+7FIAiyZgOEY54=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
-        Rob Evers <revers@redhat.com>,
-        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Jozef Bacik <jobacik@redhat.com>,
-        Laurence Oberman <loberman@redhat.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Oleksandr Natalenko <oleksandr@redhat.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Su Hui <suhui@nfschina.com>, Takashi Iwai <tiwai@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 168/367] scsi: qedf: Do not touch __user pointer in qedf_dbg_debug_cmd_read() directly
+Subject: [PATCH 4.19 105/273] ALSA: ac97: Fix possible error value of *rac97
 Date:   Wed, 20 Sep 2023 13:29:05 +0200
-Message-ID: <20230920112902.995361982@linuxfoundation.org>
+Message-ID: <20230920112849.710256797@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,68 +51,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Natalenko <oleksandr@redhat.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 31b5991a9a91ba97237ac9da509d78eec453ff72 ]
+[ Upstream commit 67de40c9df94037769967ba28c7d951afb45b7fb ]
 
-The qedf_dbg_debug_cmd_read() function invokes sprintf() directly on a
-__user pointer, which may crash the kernel.
+Before committing 79597c8bf64c, *rac97 always be NULL if there is
+an error. When error happens, make sure *rac97 is NULL is safer.
 
-Avoid doing that by using a small on-stack buffer for scnprintf() and then
-calling simple_read_from_buffer() which does a proper copy_to_user() call.
+For examble, in snd_vortex_mixer():
+	err = snd_ac97_mixer(pbus, &ac97, &vortex->codec);
+	vortex->isquad = ((vortex->codec == NULL) ?
+		0 : (vortex->codec->ext_id&0x80));
+If error happened but vortex->codec isn't NULL, this may cause some
+problems.
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
-Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
-Cc: Saurav Kashyap <skashyap@marvell.com>
-Cc: Rob Evers <revers@redhat.com>
-Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Cc: David Laight <David.Laight@ACULAB.COM>
-Cc: Jozef Bacik <jobacik@redhat.com>
-Cc: Laurence Oberman <loberman@redhat.com>
-Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: GR-QLogic-Storage-Upstream@marvell.com
-Cc: linux-scsi@vger.kernel.org
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Acked-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
-Link: https://lore.kernel.org/r/20230731084034.37021-3-oleksandr@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Move the judgement order to be clearer and better.
+
+Fixes: 79597c8bf64c ("ALSA: ac97: Fix possible NULL dereference in snd_ac97_mixer")
+Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20230823025212.1000961-1-suhui@nfschina.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_debugfs.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ sound/pci/ac97/ac97_codec.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index 88378a277a015..5e638732d6852 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -140,15 +140,14 @@ qedf_dbg_debug_cmd_read(struct file *filp, char __user *buffer, size_t count,
- 			loff_t *ppos)
- {
- 	int cnt;
-+	char cbuf[32];
- 	struct qedf_dbg_ctx *qedf_dbg =
- 				(struct qedf_dbg_ctx *)filp->private_data;
+diff --git a/sound/pci/ac97/ac97_codec.c b/sound/pci/ac97/ac97_codec.c
+index 3f13666a01904..64a1bd4206379 100644
+--- a/sound/pci/ac97/ac97_codec.c
++++ b/sound/pci/ac97/ac97_codec.c
+@@ -2026,10 +2026,9 @@ int snd_ac97_mixer(struct snd_ac97_bus *bus, struct snd_ac97_template *template,
+ 		.dev_disconnect =	snd_ac97_dev_disconnect,
+ 	};
  
- 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "debug mask=0x%x\n", qedf_debug);
--	cnt = sprintf(buffer, "debug mask = 0x%x\n", qedf_debug);
-+	cnt = scnprintf(cbuf, sizeof(cbuf), "debug mask = 0x%x\n", qedf_debug);
- 
--	cnt = min_t(int, count, cnt - *ppos);
--	*ppos += cnt;
--	return cnt;
-+	return simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
- }
- 
- static ssize_t
+-	if (!rac97)
+-		return -EINVAL;
+-	if (snd_BUG_ON(!bus || !template))
++	if (snd_BUG_ON(!bus || !template || !rac97))
+ 		return -EINVAL;
++	*rac97 = NULL;
+ 	if (snd_BUG_ON(template->num >= 4))
+ 		return -EINVAL;
+ 	if (bus->codec[template->num])
 -- 
 2.40.1
 
