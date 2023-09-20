@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDB937A7D1D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2FF07A7E75
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235154AbjITMGr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:06:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43938 "EHLO
+        id S235586AbjITMSE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:18:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235162AbjITMGq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:46 -0400
+        with ESMTP id S235579AbjITMSD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00FBBF9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEF3C433C8;
-        Wed, 20 Sep 2023 12:06:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A4EE8
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835E1C433CB;
+        Wed, 20 Sep 2023 12:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211593;
-        bh=hPA21x/qxxXXCRBKvyhKEXCfQQx6nWH5W/sjrkEbJDI=;
+        s=korg; t=1695212268;
+        bh=KU79ytpd8WHCx5HqB+2AuFXW5VaDtPNEIGMsbGLUh34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ogLcJVrQvEsukfGhbqYWZZbZJMHt8+4eDTj+Rbzxyycu4yMO/FVS44hNyZSm58DQ4
-         G25BW8eVPtqzJ5tZU9y+pIAXFCEsnLZXSTwTkdKlt6FFhR8NmlfA7xoQ06uJZI0hpO
-         63MZ4KftLTgOgfVLBgwF+WPvIvQ4QTAt9a1QuGho=
+        b=HePbV43VKH3ivbZbdOBB4oRNRpulkbXweN95fjQXV4HbCSYGMQGv8YuBdWwgPiH19
+         FfsccFczxht+GRL63V/AzBV4JNPq2ehzalfbG7XJE763uVWE5xI4R0lsowD4lfUIVh
+         9mvtWO5DfWfY1krX3MSAnlFjY9L04pnWJ2buLpPQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Willy Tarreau <w@1wt.eu>, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 150/186] btrfs: output extra debug info if we failed to find an inline backref
-Date:   Wed, 20 Sep 2023 13:30:53 +0200
-Message-ID: <20230920112842.385259756@linuxfoundation.org>
+Subject: [PATCH 4.19 214/273] af_unix: Fix data-races around user->unix_inflight.
+Date:   Wed, 20 Sep 2023 13:30:54 +0200
+Message-ID: <20230920112853.070100912@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +52,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 7f72f50547b7af4ddf985b07fc56600a4deba281 ]
+[ Upstream commit 0bc36c0650b21df36fbec8136add83936eaf0607 ]
 
-[BUG]
-Syzbot reported several warning triggered inside
-lookup_inline_extent_backref().
+user->unix_inflight is changed under spin_lock(unix_gc_lock),
+but too_many_unix_fds() reads it locklessly.
 
-[CAUSE]
-As usual, the reproducer doesn't reliably trigger locally here, but at
-least we know the WARN_ON() is triggered when an inline backref can not
-be found, and it can only be triggered when @insert is true. (I.e.
-inserting a new inline backref, which means the backref should already
-exist)
+Let's annotate the write/read accesses to user->unix_inflight.
 
-[ENHANCEMENT]
-After the WARN_ON(), dump all the parameters and the extent tree
-leaf to help debug.
+BUG: KCSAN: data-race in unix_attach_fds / unix_inflight
 
-Link: https://syzkaller.appspot.com/bug?extid=d6f9ff86c1d804ba2bc6
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+write to 0xffffffff8546f2d0 of 8 bytes by task 44798 on cpu 1:
+ unix_inflight+0x157/0x180 net/unix/scm.c:66
+ unix_attach_fds+0x147/0x1e0 net/unix/scm.c:123
+ unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
+ unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+read to 0xffffffff8546f2d0 of 8 bytes by task 44814 on cpu 0:
+ too_many_unix_fds net/unix/scm.c:101 [inline]
+ unix_attach_fds+0x54/0x1e0 net/unix/scm.c:110
+ unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
+ unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+value changed: 0x000000000000000c -> 0x000000000000000d
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 44814 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 712f4aad406b ("unix: properly account for FDs passed over unix sockets")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Willy Tarreau <w@1wt.eu>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/unix/scm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index e59987385673f..deb01e59da027 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -1703,6 +1703,11 @@ int lookup_inline_extent_backref(struct btrfs_trans_handle *trans,
- 		err = -ENOENT;
- 		goto out;
- 	} else if (WARN_ON(ret)) {
-+		btrfs_print_leaf(path->nodes[0]);
-+		btrfs_err(fs_info,
-+"extent item not found for insert, bytenr %llu num_bytes %llu parent %llu root_objectid %llu owner %llu offset %llu",
-+			  bytenr, num_bytes, parent, root_objectid, owner,
-+			  offset);
- 		err = -EIO;
- 		goto out;
+diff --git a/net/unix/scm.c b/net/unix/scm.c
+index a07b2efbf8b5e..ac206bfdbbe3c 100644
+--- a/net/unix/scm.c
++++ b/net/unix/scm.c
+@@ -59,7 +59,7 @@ void unix_inflight(struct user_struct *user, struct file *fp)
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
  	}
+-	user->unix_inflight++;
++	WRITE_ONCE(user->unix_inflight, user->unix_inflight + 1);
+ 	spin_unlock(&unix_gc_lock);
+ }
+ 
+@@ -80,7 +80,7 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
+ 	}
+-	user->unix_inflight--;
++	WRITE_ONCE(user->unix_inflight, user->unix_inflight - 1);
+ 	spin_unlock(&unix_gc_lock);
+ }
+ 
+@@ -94,7 +94,7 @@ static inline bool too_many_unix_fds(struct task_struct *p)
+ {
+ 	struct user_struct *user = current_user();
+ 
+-	if (unlikely(user->unix_inflight > task_rlimit(p, RLIMIT_NOFILE)))
++	if (unlikely(READ_ONCE(user->unix_inflight) > task_rlimit(p, RLIMIT_NOFILE)))
+ 		return !capable(CAP_SYS_RESOURCE) && !capable(CAP_SYS_ADMIN);
+ 	return false;
+ }
 -- 
 2.40.1
 
