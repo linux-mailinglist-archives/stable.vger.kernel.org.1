@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 602C57A7B39
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C02327A7B3B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234569AbjITLuP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:50:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44282 "EHLO
+        id S234642AbjITLuR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:50:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234540AbjITLuO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:14 -0400
+        with ESMTP id S234540AbjITLuQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE88E6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75CEC433C8;
-        Wed, 20 Sep 2023 11:50:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E064CA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B486C433C8;
+        Wed, 20 Sep 2023 11:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210608;
-        bh=2E4SQNxmzdkIIV2FJ+EsK9Zo+u05Biaa6ACX+z/IE+4=;
+        s=korg; t=1695210610;
+        bh=Go5otpWzaK9ZNzzlwAQaoTNS5pw4RgX6LG+ERCmksMc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vTKnLIszPVLuyJuItzf5ykwiCb/96gn0moDoNMRLyBLaiyg92JDKPNHNTUQRiE6uk
-         2P9zVjRH8VC3+gzy2HFcDv+P0Ojr429WDvU2UcPTkNh0YnYrGP4A28iCZyFF1PSTrY
-         QY/9D+yRh140jdi26cJflW3/RLxW4/u/4ofk7Bvo=
+        b=W5EXOf8PfVbB9Vs2zn/VilRBA9I1lgeLekyappUeAYcFaBRDeRPFfwqXRwCzTB3NX
+         eX99SfEffD0kHF54vtruB3acgi7Uz/hT13q1PqeI02jR7uAleaR3PyFNZ7aJgsLY2g
+         Fz8QYg2U8P8Z6IlvwyxaPCjPMHkvNQXXd36+y7+o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 140/211] mtd: spi-nor: spansion: preserve CFR2V[7] when writing MEMLAT
-Date:   Wed, 20 Sep 2023 13:29:44 +0200
-Message-ID: <20230920112850.181476232@linuxfoundation.org>
+Subject: [PATCH 6.5 141/211] btrfs: add a helper to read the superblock metadata_uuid
+Date:   Wed, 20 Sep 2023 13:29:45 +0200
+Message-ID: <20230920112850.213523813@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
 References: <20230920112845.859868994@linuxfoundation.org>
@@ -55,64 +57,56 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Anand Jain <anand.jain@oracle.com>
 
-[ Upstream commit 1e611e104b9acb6310b8c684d5acee0e11ca7bd1 ]
+[ Upstream commit 4844c3664a72d36cc79752cb651c78860b14c240 ]
 
-CFR2V[7] is assigned to Flash's address mode (3- or 4-ybte) and must not
-be changed when writing MEMLAT (CFR2V[3:0]). CFR2V shall be used in a read,
-update, write back fashion.
+In some cases, we need to read the FSID from the superblock when the
+metadata_uuid is not set, and otherwise, read the metadata_uuid. So,
+add a helper.
 
-Fixes: c3266af101f2 ("mtd: spi-nor: spansion: add support for Cypress Semper flash")
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230726075257.12985-3-tudor.ambarus@linaro.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 6bfe3959b0e7 ("btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/spansion.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ fs/btrfs/volumes.c | 8 ++++++++
+ fs/btrfs/volumes.h | 1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index 9edc1b7ac091a..4fbaa6fba45a6 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -4,6 +4,7 @@
-  * Copyright (C) 2014, Freescale Semiconductor, Inc.
-  */
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 6aa9bf3661ac8..51070c0d4141e 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -681,6 +681,14 @@ static int btrfs_open_one_device(struct btrfs_fs_devices *fs_devices,
+ 	return -EINVAL;
+ }
  
-+#include <linux/bitfield.h>
- #include <linux/device.h>
- #include <linux/mtd/spi-nor.h>
- 
-@@ -28,6 +29,7 @@
- #define SPINOR_REG_CYPRESS_CFR2			0x3
- #define SPINOR_REG_CYPRESS_CFR2V					\
- 	(SPINOR_REG_CYPRESS_VREG + SPINOR_REG_CYPRESS_CFR2)
-+#define SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK	GENMASK(3, 0)
- #define SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24	0xb
- #define SPINOR_REG_CYPRESS_CFR2_ADRBYT		BIT(7)
- #define SPINOR_REG_CYPRESS_CFR3			0x4
-@@ -161,8 +163,18 @@ static int cypress_nor_octal_dtr_en(struct spi_nor *nor)
- 	int ret;
- 	u8 addr_mode_nbytes = nor->params->addr_mode_nbytes;
- 
-+	op = (struct spi_mem_op)
-+		CYPRESS_NOR_RD_ANY_REG_OP(addr_mode_nbytes,
-+					  SPINOR_REG_CYPRESS_CFR2V, 0, buf);
++u8 *btrfs_sb_fsid_ptr(struct btrfs_super_block *sb)
++{
++	bool has_metadata_uuid = (btrfs_super_incompat_flags(sb) &
++				  BTRFS_FEATURE_INCOMPAT_METADATA_UUID);
 +
-+	ret = spi_nor_read_any_reg(nor, &op, nor->reg_proto);
-+	if (ret)
-+		return ret;
++	return has_metadata_uuid ? sb->metadata_uuid : sb->fsid;
++}
 +
- 	/* Use 24 dummy cycles for memory array reads. */
--	*buf = SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24;
-+	*buf &= ~SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK;
-+	*buf |= FIELD_PREP(SPINOR_REG_CYPRESS_CFR2_MEMLAT_MASK,
-+			   SPINOR_REG_CYPRESS_CFR2_MEMLAT_11_24);
- 	op = (struct spi_mem_op)
- 		CYPRESS_NOR_WR_ANY_REG_OP(addr_mode_nbytes,
- 					  SPINOR_REG_CYPRESS_CFR2V, 1, buf);
+ /*
+  * Handle scanned device having its CHANGING_FSID_V2 flag set and the fs_devices
+  * being created with a disk that has already completed its fsid change. Such
+diff --git a/fs/btrfs/volumes.h b/fs/btrfs/volumes.h
+index b8c51f16ba867..0f87057bb575f 100644
+--- a/fs/btrfs/volumes.h
++++ b/fs/btrfs/volumes.h
+@@ -749,5 +749,6 @@ int btrfs_verify_dev_extents(struct btrfs_fs_info *fs_info);
+ bool btrfs_repair_one_zone(struct btrfs_fs_info *fs_info, u64 logical);
+ 
+ bool btrfs_pinned_by_swapfile(struct btrfs_fs_info *fs_info, void *ptr);
++u8 *btrfs_sb_fsid_ptr(struct btrfs_super_block *sb);
+ 
+ #endif
 -- 
 2.40.1
 
