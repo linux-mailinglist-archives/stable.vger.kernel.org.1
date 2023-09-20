@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 189E47A7839
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:57:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F477A7849
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:58:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234274AbjITJ5h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:57:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47494 "EHLO
+        id S234328AbjITJ6e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234280AbjITJ5g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:57:36 -0400
+        with ESMTP id S234316AbjITJ6V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:58:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68585AD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:57:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF31AC433C8;
-        Wed, 20 Sep 2023 09:57:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5BFA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:58:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 229E1C433C7;
+        Wed, 20 Sep 2023 09:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203850;
-        bh=wVjKphxhSLI6HMtC5aTjyPaSSKbHy8DPqqI4hNJS5H8=;
+        s=korg; t=1695203894;
+        bh=1vT8uuOm6fl0U3r+GfOlaVyk7QPZxHqQm7hTVhuSAUQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=L8JfQU+/tSWyHPLAI1AJ93WDX8d5GlDPMuXyHCl0aeqBDAK1JQQAzes3ra5oI64eX
-         Bhow3DNjlSwTd1c6sCpIpIGlXrGn03qCEzr4kQRIXF6/HsIKlH8KRo55tWyHvcSFGC
-         AgInQ/vulgBWW9Q1K80E5W4RvphtgYbvnMTPEwY4=
-Subject: FAILED: patch "[PATCH] ata: libahci: clear pending interrupt status" failed to apply to 4.14-stable tree
-To:     chensiying21@gmail.com, Chloe_Chen@asmedia.com.tw,
-        dlemoal@kernel.org, niklas.cassel@wdc.com
+        b=DS19O+UGBqGSCXNb5gF3/abjt7Xg5LAgWw9g1oWRazgkY99OP/00gS8OrVqyv7Z5w
+         Pn79jq7qJ+e9tmkb5dZpcvKcd8Z/aeqb1s+Y+OR/xJENBKZ/ERrOOln0ZwmyEugYrU
+         bWT5PbxFhEUzz5AglhhLK6nLMn8CNCaxW5UJ7zCQ=
+Subject: FAILED: patch "[PATCH] scsi: pm8001: Setup IRQs on resume" failed to apply to 5.4-stable tree
+To:     dlemoal@kernel.org, jinpu.wang@ionos.com,
+        martin.petersen@oracle.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:57:19 +0200
-Message-ID: <2023092019-aptitude-device-3909@gregkh>
+Date:   Wed, 20 Sep 2023 11:58:11 +0200
+Message-ID: <2023092011-audio-epilepsy-ee86@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,24 +43,38 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 737dd811a3dbfd7edd4ad2ba5152e93d99074f83
+git cherry-pick -x c91774818b041ed290df29fb1dc0725be9b12e83
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092019-aptitude-device-3909@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092011-audio-epilepsy-ee86@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-737dd811a3db ("ata: libahci: clear pending interrupt status")
-93c7711494f4 ("ata: ahci: Drop pointless VPRINTK() calls and convert the remaining ones")
+c91774818b04 ("scsi: pm8001: Setup IRQs on resume")
+653926205741 ("scsi: pm80xx: Do not call scsi_remove_host() in pm8001_alloc()")
+1b5d2793283d ("scsi: pm8001: Neaten debug logging macros and uses")
+1f889b58716a ("scsi: pm80xx: Fix pm8001_mpi_get_nvmd_resp() race condition")
+4a2efd4b89fc ("scsi: pm80xx: Make running_req atomic")
+7640e1eb8c5d ("scsi: pm80xx: Make mpi_build_cmd locking consistent")
+5a141315ed7c ("scsi: pm80xx: Increase the number of outstanding I/O supported to 1024")
+27bc43bd7c42 ("scsi: pm80xx: Remove DMA memory allocation for ccb and device structures")
+05c6c029a44d ("scsi: pm80xx: Increase number of supported queues")
+dba2cc03b9db ("scsi: pm80xx: sysfs attribute for non fatal dump")
+b40f28820fba ("scsi: pm80xx: Cleanup initialization loading fail path")
+9d9c7c20fb35 ("scsi: pm80xx: Free the tag when mpi_set_phy_profile_resp is received")
+d384be6ede5c ("scsi: pm80xx: Deal with kexec reboots")
+58bf14c17e65 ("scsi: pm80xx: Increase request sg length")
+20bc1ad2e4da ("scsi: pm80xx: fix spelling mistake "to" -> "too"")
+044f59de3a3d ("scsi: pm80xx: Modified the logic to collect fatal dump")
 
 thanks,
 
@@ -68,94 +82,115 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 737dd811a3dbfd7edd4ad2ba5152e93d99074f83 Mon Sep 17 00:00:00 2001
-From: Szuying Chen <chensiying21@gmail.com>
-Date: Thu, 7 Sep 2023 16:17:10 +0800
-Subject: [PATCH] ata: libahci: clear pending interrupt status
+From c91774818b041ed290df29fb1dc0725be9b12e83 Mon Sep 17 00:00:00 2001
+From: Damien Le Moal <dlemoal@kernel.org>
+Date: Tue, 12 Sep 2023 08:27:36 +0900
+Subject: [PATCH] scsi: pm8001: Setup IRQs on resume
 
-When a CRC error occurs, the HBA asserts an interrupt to indicate an
-interface fatal error (PxIS.IFS). The ISR clears PxIE and PxIS, then
-does error recovery. If the adapter receives another SDB FIS
-with an error (PxIS.TFES) from the device before the start of the EH
-recovery process, the interrupt signaling the new SDB cannot be
-serviced as PxIE was cleared already. This in turn results in the HBA
-inability to issue any command during the error recovery process after
-setting PxCMD.ST to 1 because PxIS.TFES is still set.
+The function pm8001_pci_resume() only calls pm8001_request_irq() without
+calling pm8001_setup_irq(). This causes the IRQ allocation to fail, which
+leads all drives being removed from the system.
 
-According to AHCI 1.3.1 specifications section 6.2.2, fatal errors
-notified by setting PxIS.HBFS, PxIS.HBDS, PxIS.IFS or PxIS.TFES will
-cause the HBA to enter the ERR:Fatal state. In this state, the HBA
-shall not issue any new commands.
+Fix this issue by integrating the code for pm8001_setup_irq() directly
+inside pm8001_request_irq() so that MSI-X setup is performed both during
+normal initialization and resume operations.
 
-To avoid this situation, introduce the function
-ahci_port_clear_pending_irq() to clear pending interrupts before
-executing a COMRESET. This follows the AHCI 1.3.1 - section 6.2.2.2
-specification.
-
-Signed-off-by: Szuying Chen <Chloe_Chen@asmedia.com.tw>
-Fixes: e0bfd149973d ("[PATCH] ahci: stop engine during hard reset")
+Fixes: dbf9bfe61571 ("[SCSI] pm8001: add SAS/SATA HBA driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
 Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20230911232745.325149-2-dlemoal@kernel.org
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
-index e2bacedf28ef..f1263364fa97 100644
---- a/drivers/ata/libahci.c
-+++ b/drivers/ata/libahci.c
-@@ -1256,6 +1256,26 @@ static ssize_t ahci_activity_show(struct ata_device *dev, char *buf)
- 	return sprintf(buf, "%d\n", emp->blink_policy);
+diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
+index 5e5ce1e74c3b..443a3176c6c0 100644
+--- a/drivers/scsi/pm8001/pm8001_init.c
++++ b/drivers/scsi/pm8001/pm8001_init.c
+@@ -273,7 +273,6 @@ static irqreturn_t pm8001_interrupt_handler_intx(int irq, void *dev_id)
+ 	return ret;
  }
  
-+static void ahci_port_clear_pending_irq(struct ata_port *ap)
-+{
-+	struct ahci_host_priv *hpriv = ap->host->private_data;
-+	void __iomem *port_mmio = ahci_port_base(ap);
-+	u32 tmp;
-+
-+	/* clear SError */
-+	tmp = readl(port_mmio + PORT_SCR_ERR);
-+	dev_dbg(ap->host->dev, "PORT_SCR_ERR 0x%x\n", tmp);
-+	writel(tmp, port_mmio + PORT_SCR_ERR);
-+
-+	/* clear port IRQ */
-+	tmp = readl(port_mmio + PORT_IRQ_STAT);
-+	dev_dbg(ap->host->dev, "PORT_IRQ_STAT 0x%x\n", tmp);
-+	if (tmp)
-+		writel(tmp, port_mmio + PORT_IRQ_STAT);
-+
-+	writel(1 << ap->port_no, hpriv->mmio + HOST_IRQ_STAT);
-+}
-+
- static void ahci_port_init(struct device *dev, struct ata_port *ap,
- 			   int port_no, void __iomem *mmio,
- 			   void __iomem *port_mmio)
-@@ -1270,18 +1290,7 @@ static void ahci_port_init(struct device *dev, struct ata_port *ap,
+-static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha);
+ static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha);
+ 
+ /**
+@@ -294,13 +293,6 @@ static int pm8001_alloc(struct pm8001_hba_info *pm8001_ha,
+ 	pm8001_dbg(pm8001_ha, INIT, "pm8001_alloc: PHY:%x\n",
+ 		   pm8001_ha->chip->n_phy);
+ 
+-	/* Setup Interrupt */
+-	rc = pm8001_setup_irq(pm8001_ha);
+-	if (rc) {
+-		pm8001_dbg(pm8001_ha, FAIL,
+-			   "pm8001_setup_irq failed [ret: %d]\n", rc);
+-		goto err_out;
+-	}
+ 	/* Request Interrupt */
+ 	rc = pm8001_request_irq(pm8001_ha);
  	if (rc)
- 		dev_warn(dev, "%s (%d)\n", emsg, rc);
+@@ -1031,47 +1023,38 @@ static u32 pm8001_request_msix(struct pm8001_hba_info *pm8001_ha)
+ }
+ #endif
  
--	/* clear SError */
--	tmp = readl(port_mmio + PORT_SCR_ERR);
--	dev_dbg(dev, "PORT_SCR_ERR 0x%x\n", tmp);
--	writel(tmp, port_mmio + PORT_SCR_ERR);
+-static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha)
+-{
+-	struct pci_dev *pdev;
 -
--	/* clear port IRQ */
--	tmp = readl(port_mmio + PORT_IRQ_STAT);
--	dev_dbg(dev, "PORT_IRQ_STAT 0x%x\n", tmp);
--	if (tmp)
--		writel(tmp, port_mmio + PORT_IRQ_STAT);
+-	pdev = pm8001_ha->pdev;
 -
--	writel(1 << port_no, mmio + HOST_IRQ_STAT);
-+	ahci_port_clear_pending_irq(ap);
+-#ifdef PM8001_USE_MSIX
+-	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX))
+-		return pm8001_setup_msix(pm8001_ha);
+-	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
+-#endif
+-	return 0;
+-}
+-
+ /**
+  * pm8001_request_irq - register interrupt
+  * @pm8001_ha: our ha struct.
+  */
+ static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha)
+ {
+-	struct pci_dev *pdev;
++	struct pci_dev *pdev = pm8001_ha->pdev;
++#ifdef PM8001_USE_MSIX
+ 	int rc;
  
- 	/* mark esata ports */
- 	tmp = readl(port_mmio + PORT_CMD);
-@@ -1603,6 +1612,8 @@ int ahci_do_hardreset(struct ata_link *link, unsigned int *class,
- 	tf.status = ATA_BUSY;
- 	ata_tf_to_fis(&tf, 0, 0, d2h_fis);
+-	pdev = pm8001_ha->pdev;
++	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX)) {
++		rc = pm8001_setup_msix(pm8001_ha);
++		if (rc) {
++			pm8001_dbg(pm8001_ha, FAIL,
++				   "pm8001_setup_irq failed [ret: %d]\n", rc);
++			return rc;
++		}
  
-+	ahci_port_clear_pending_irq(ap);
+-#ifdef PM8001_USE_MSIX
+-	if (pdev->msix_cap && pci_msi_enabled())
+-		return pm8001_request_msix(pm8001_ha);
+-	else {
+-		pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
+-		goto intx;
++		if (pdev->msix_cap && pci_msi_enabled())
++			return pm8001_request_msix(pm8001_ha);
+ 	}
 +
- 	rc = sata_link_hardreset(link, timing, deadline, online,
- 				 ahci_check_ready);
++	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
+ #endif
  
+-intx:
+ 	/* initialize the INT-X interrupt */
+ 	pm8001_ha->irq_vector[0].irq_id = 0;
+ 	pm8001_ha->irq_vector[0].drv_inst = pm8001_ha;
+-	rc = request_irq(pdev->irq, pm8001_interrupt_handler_intx, IRQF_SHARED,
+-		pm8001_ha->name, SHOST_TO_SAS_HA(pm8001_ha->shost));
+-	return rc;
++
++	return request_irq(pdev->irq, pm8001_interrupt_handler_intx,
++			   IRQF_SHARED, pm8001_ha->name,
++			   SHOST_TO_SAS_HA(pm8001_ha->shost));
+ }
+ 
+ /**
 
