@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3BD37A7BAD
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F14507A7C73
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234759AbjITLy1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:54:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41134 "EHLO
+        id S235024AbjITMB2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:01:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234803AbjITLy0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:26 -0400
+        with ESMTP id S235043AbjITMBW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D439D3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AA1C433C8;
-        Wed, 20 Sep 2023 11:54:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB0F8E6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:01:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D387C433C9;
+        Wed, 20 Sep 2023 12:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210860;
-        bh=cLyRE7KN2rhNGu6naRlvNyiGqaxUhefeym5LMhy/DRk=;
+        s=korg; t=1695211274;
+        bh=uJD1ldlG28ZUgpcl3IYc3sOJe/N+CYv7l0khd38Aok8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RRkQMVPhsvehi5aElJT5UaFVvdC8kBcm2XDawZbPLXaLjyGFMP6juD8ouaivSFv9u
-         rI8URXMPG/DF+wkNyLB3GC4WOanol2PbiiEl7uaNtcfgtj2mraKrWb6nM9ln81T9C0
-         A6vWANqno7dmQ9A3D5HWObhGzz5TP5yduKKAm7Qc=
+        b=T8BzFkR8s4rpHwZDcZBoxNynvsbjWV+yr+0+sRKeDuv+W1Ky2A75kuhOYl/19NXHy
+         l7ENA8IzSq6wY8tta0b11kKeFRK6SPXX9BzIwsG1d//cgNNqlLLgg7FAkuxsmvxGG3
+         mFWrka3VWBz9nBn7pnIaA2aBImaQzZpGuUpB8lQc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/139] btrfs: output extra debug info if we failed to find an inline backref
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>
+Subject: [PATCH 4.14 033/186] udf: Handle error when adding extent to a file
 Date:   Wed, 20 Sep 2023 13:28:56 +0200
-Message-ID: <20230920112835.649367540@linuxfoundation.org>
+Message-ID: <20230920112838.134597082@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +48,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 7f72f50547b7af4ddf985b07fc56600a4deba281 ]
+commit 19fd80de0a8b5170ef34704c8984cca920dffa59 upstream.
 
-[BUG]
-Syzbot reported several warning triggered inside
-lookup_inline_extent_backref().
+When adding extent to a file fails, so far we've silently squelshed the
+error. Make sure to propagate it up properly.
 
-[CAUSE]
-As usual, the reproducer doesn't reliably trigger locally here, but at
-least we know the WARN_ON() is triggered when an inline backref can not
-be found, and it can only be triggered when @insert is true. (I.e.
-inserting a new inline backref, which means the backref should already
-exist)
-
-[ENHANCEMENT]
-After the WARN_ON(), dump all the parameters and the extent tree
-leaf to help debug.
-
-Link: https://syzkaller.appspot.com/bug?extid=d6f9ff86c1d804ba2bc6
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/udf/inode.c |   41 +++++++++++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 0640ef59fe660..08ff10a81cb90 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -863,6 +863,11 @@ int lookup_inline_extent_backref(struct btrfs_trans_handle *trans,
- 		err = -ENOENT;
- 		goto out;
- 	} else if (WARN_ON(ret)) {
-+		btrfs_print_leaf(path->nodes[0]);
-+		btrfs_err(fs_info,
-+"extent item not found for insert, bytenr %llu num_bytes %llu parent %llu root_objectid %llu owner %llu offset %llu",
-+			  bytenr, num_bytes, parent, root_objectid, owner,
-+			  offset);
- 		err = -EIO;
- 		goto out;
+--- a/fs/udf/inode.c
++++ b/fs/udf/inode.c
+@@ -50,15 +50,15 @@ static int udf_update_inode(struct inode
+ static int udf_sync_inode(struct inode *inode);
+ static int udf_alloc_i_data(struct inode *inode, size_t size);
+ static sector_t inode_getblk(struct inode *, sector_t, int *, int *);
+-static int8_t udf_insert_aext(struct inode *, struct extent_position,
+-			      struct kernel_lb_addr, uint32_t);
++static int udf_insert_aext(struct inode *, struct extent_position,
++			   struct kernel_lb_addr, uint32_t);
+ static void udf_split_extents(struct inode *, int *, int, int,
+ 			      struct kernel_long_ad *, int *);
+ static void udf_prealloc_extents(struct inode *, int, int,
+ 				 struct kernel_long_ad *, int *);
+ static void udf_merge_extents(struct inode *, struct kernel_long_ad *, int *);
+-static void udf_update_extents(struct inode *, struct kernel_long_ad *, int,
+-			       int, struct extent_position *);
++static int udf_update_extents(struct inode *, struct kernel_long_ad *, int,
++			      int, struct extent_position *);
+ static int udf_get_block(struct inode *, sector_t, struct buffer_head *, int);
+ 
+ static void __udf_clear_extent_cache(struct inode *inode)
+@@ -883,7 +883,9 @@ static sector_t inode_getblk(struct inod
+ 	/* write back the new extents, inserting new extents if the new number
+ 	 * of extents is greater than the old number, and deleting extents if
+ 	 * the new number of extents is less than the old number */
+-	udf_update_extents(inode, laarr, startnum, endnum, &prev_epos);
++	*err = udf_update_extents(inode, laarr, startnum, endnum, &prev_epos);
++	if (*err < 0)
++		goto out_free;
+ 
+ 	newblock = udf_get_pblock(inode->i_sb, newblocknum,
+ 				iinfo->i_location.partitionReferenceNum, 0);
+@@ -1151,21 +1153,30 @@ static void udf_merge_extents(struct ino
  	}
--- 
-2.40.1
-
+ }
+ 
+-static void udf_update_extents(struct inode *inode, struct kernel_long_ad *laarr,
+-			       int startnum, int endnum,
+-			       struct extent_position *epos)
++static int udf_update_extents(struct inode *inode, struct kernel_long_ad *laarr,
++			      int startnum, int endnum,
++			      struct extent_position *epos)
+ {
+ 	int start = 0, i;
+ 	struct kernel_lb_addr tmploc;
+ 	uint32_t tmplen;
++	int err;
+ 
+ 	if (startnum > endnum) {
+ 		for (i = 0; i < (startnum - endnum); i++)
+ 			udf_delete_aext(inode, *epos);
+ 	} else if (startnum < endnum) {
+ 		for (i = 0; i < (endnum - startnum); i++) {
+-			udf_insert_aext(inode, *epos, laarr[i].extLocation,
+-					laarr[i].extLength);
++			err = udf_insert_aext(inode, *epos,
++					      laarr[i].extLocation,
++					      laarr[i].extLength);
++			/*
++			 * If we fail here, we are likely corrupting the extent
++			 * list and leaking blocks. At least stop early to
++			 * limit the damage.
++			 */
++			if (err < 0)
++				return err;
+ 			udf_next_aext(inode, epos, &laarr[i].extLocation,
+ 				      &laarr[i].extLength, 1);
+ 			start++;
+@@ -1177,6 +1188,7 @@ static void udf_update_extents(struct in
+ 		udf_write_aext(inode, epos, &laarr[i].extLocation,
+ 			       laarr[i].extLength, 1);
+ 	}
++	return 0;
+ }
+ 
+ struct buffer_head *udf_bread(struct inode *inode, int block,
+@@ -2172,12 +2184,13 @@ int8_t udf_current_aext(struct inode *in
+ 	return etype;
+ }
+ 
+-static int8_t udf_insert_aext(struct inode *inode, struct extent_position epos,
+-			      struct kernel_lb_addr neloc, uint32_t nelen)
++static int udf_insert_aext(struct inode *inode, struct extent_position epos,
++			   struct kernel_lb_addr neloc, uint32_t nelen)
+ {
+ 	struct kernel_lb_addr oeloc;
+ 	uint32_t oelen;
+ 	int8_t etype;
++	int err;
+ 
+ 	if (epos.bh)
+ 		get_bh(epos.bh);
+@@ -2187,10 +2200,10 @@ static int8_t udf_insert_aext(struct ino
+ 		neloc = oeloc;
+ 		nelen = (etype << 30) | oelen;
+ 	}
+-	udf_add_aext(inode, &epos, &neloc, nelen, 1);
++	err = udf_add_aext(inode, &epos, &neloc, nelen, 1);
+ 	brelse(epos.bh);
+ 
+-	return (nelen >> 30);
++	return err;
+ }
+ 
+ int8_t udf_delete_aext(struct inode *inode, struct extent_position epos)
 
 
