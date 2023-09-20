@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 759457A7D30
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BAB77A80A4
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235196AbjITMHc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:07:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51880 "EHLO
+        id S236110AbjITMit (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:38:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235298AbjITMHS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:18 -0400
+        with ESMTP id S236103AbjITMin (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:38:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7968BAD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0DFAC433C8;
-        Wed, 20 Sep 2023 12:07:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43700129
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:38:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E086C433C7;
+        Wed, 20 Sep 2023 12:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211631;
-        bh=Zncw3JJmxyv9KJl9pN2RIYEwoUPnqV6nytcxOJWqRtY=;
+        s=korg; t=1695213512;
+        bh=FhNy8S8+TvNq16HK4trWCtnzqzFEwvoylZ19suraKJE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RfDlKrrKQL2gia9fm9lGX5fnI532Q77ZjBKHDS8G9p2gcdpJO36f55uGcMcVUrVHH
-         TFU/kKdgsSmmmDoMuc3SMayRW/YTwMxIK7K2SZHdUam8htJW+TduYukHOvQcTZSYZa
-         FGBCeeipJDI+lL9Mlolt5+A9Z3HcObZCkPkxfq0U=
+        b=YyuhEaXsSr1kA+eu4MZujDRlRKUqiZL+qpOrAb9HeQ3v0AeL4Ss1mZ0XjCzGyw/aa
+         AIwTgFJgHHLw2YGUJE0INBswN3p8NtQRl2qpSE169kKPKkfkyynczqGUx77xcDelyV
+         A052FZ+2WVtpj5vwC2zWHm33/u2WHrogrAUZYZA4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, valis <sec@valis.email>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Willy Tarreau <w@1wt.eu>, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 138/186] net: sched: sch_qfq: Fix UAF in qfq_dequeue()
+Subject: [PATCH 5.4 264/367] af_unix: Fix data-races around user->unix_inflight.
 Date:   Wed, 20 Sep 2023 13:30:41 +0200
-Message-ID: <20230920112841.980710280@linuxfoundation.org>
+Message-ID: <20230920112905.399230282@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,244 +52,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: valis <sec@valis.email>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 8fc134fee27f2263988ae38920bc03da416b03d8 ]
+[ Upstream commit 0bc36c0650b21df36fbec8136add83936eaf0607 ]
 
-When the plug qdisc is used as a class of the qfq qdisc it could trigger a
-UAF. This issue can be reproduced with following commands:
+user->unix_inflight is changed under spin_lock(unix_gc_lock),
+but too_many_unix_fds() reads it locklessly.
 
-  tc qdisc add dev lo root handle 1: qfq
-  tc class add dev lo parent 1: classid 1:1 qfq weight 1 maxpkt 512
-  tc qdisc add dev lo parent 1:1 handle 2: plug
-  tc filter add dev lo parent 1: basic classid 1:1
-  ping -c1 127.0.0.1
+Let's annotate the write/read accesses to user->unix_inflight.
 
-and boom:
+BUG: KCSAN: data-race in unix_attach_fds / unix_inflight
 
-[  285.353793] BUG: KASAN: slab-use-after-free in qfq_dequeue+0xa7/0x7f0
-[  285.354910] Read of size 4 at addr ffff8880bad312a8 by task ping/144
-[  285.355903]
-[  285.356165] CPU: 1 PID: 144 Comm: ping Not tainted 6.5.0-rc3+ #4
-[  285.357112] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
-[  285.358376] Call Trace:
-[  285.358773]  <IRQ>
-[  285.359109]  dump_stack_lvl+0x44/0x60
-[  285.359708]  print_address_description.constprop.0+0x2c/0x3c0
-[  285.360611]  kasan_report+0x10c/0x120
-[  285.361195]  ? qfq_dequeue+0xa7/0x7f0
-[  285.361780]  qfq_dequeue+0xa7/0x7f0
-[  285.362342]  __qdisc_run+0xf1/0x970
-[  285.362903]  net_tx_action+0x28e/0x460
-[  285.363502]  __do_softirq+0x11b/0x3de
-[  285.364097]  do_softirq.part.0+0x72/0x90
-[  285.364721]  </IRQ>
-[  285.365072]  <TASK>
-[  285.365422]  __local_bh_enable_ip+0x77/0x90
-[  285.366079]  __dev_queue_xmit+0x95f/0x1550
-[  285.366732]  ? __pfx_csum_and_copy_from_iter+0x10/0x10
-[  285.367526]  ? __pfx___dev_queue_xmit+0x10/0x10
-[  285.368259]  ? __build_skb_around+0x129/0x190
-[  285.368960]  ? ip_generic_getfrag+0x12c/0x170
-[  285.369653]  ? __pfx_ip_generic_getfrag+0x10/0x10
-[  285.370390]  ? csum_partial+0x8/0x20
-[  285.370961]  ? raw_getfrag+0xe5/0x140
-[  285.371559]  ip_finish_output2+0x539/0xa40
-[  285.372222]  ? __pfx_ip_finish_output2+0x10/0x10
-[  285.372954]  ip_output+0x113/0x1e0
-[  285.373512]  ? __pfx_ip_output+0x10/0x10
-[  285.374130]  ? icmp_out_count+0x49/0x60
-[  285.374739]  ? __pfx_ip_finish_output+0x10/0x10
-[  285.375457]  ip_push_pending_frames+0xf3/0x100
-[  285.376173]  raw_sendmsg+0xef5/0x12d0
-[  285.376760]  ? do_syscall_64+0x40/0x90
-[  285.377359]  ? __static_call_text_end+0x136578/0x136578
-[  285.378173]  ? do_syscall_64+0x40/0x90
-[  285.378772]  ? kasan_enable_current+0x11/0x20
-[  285.379469]  ? __pfx_raw_sendmsg+0x10/0x10
-[  285.380137]  ? __sock_create+0x13e/0x270
-[  285.380673]  ? __sys_socket+0xf3/0x180
-[  285.381174]  ? __x64_sys_socket+0x3d/0x50
-[  285.381725]  ? entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[  285.382425]  ? __rcu_read_unlock+0x48/0x70
-[  285.382975]  ? ip4_datagram_release_cb+0xd8/0x380
-[  285.383608]  ? __pfx_ip4_datagram_release_cb+0x10/0x10
-[  285.384295]  ? preempt_count_sub+0x14/0xc0
-[  285.384844]  ? __list_del_entry_valid+0x76/0x140
-[  285.385467]  ? _raw_spin_lock_bh+0x87/0xe0
-[  285.386014]  ? __pfx__raw_spin_lock_bh+0x10/0x10
-[  285.386645]  ? release_sock+0xa0/0xd0
-[  285.387148]  ? preempt_count_sub+0x14/0xc0
-[  285.387712]  ? freeze_secondary_cpus+0x348/0x3c0
-[  285.388341]  ? aa_sk_perm+0x177/0x390
-[  285.388856]  ? __pfx_aa_sk_perm+0x10/0x10
-[  285.389441]  ? check_stack_object+0x22/0x70
-[  285.390032]  ? inet_send_prepare+0x2f/0x120
-[  285.390603]  ? __pfx_inet_sendmsg+0x10/0x10
-[  285.391172]  sock_sendmsg+0xcc/0xe0
-[  285.391667]  __sys_sendto+0x190/0x230
-[  285.392168]  ? __pfx___sys_sendto+0x10/0x10
-[  285.392727]  ? kvm_clock_get_cycles+0x14/0x30
-[  285.393328]  ? set_normalized_timespec64+0x57/0x70
-[  285.393980]  ? _raw_spin_unlock_irq+0x1b/0x40
-[  285.394578]  ? __x64_sys_clock_gettime+0x11c/0x160
-[  285.395225]  ? __pfx___x64_sys_clock_gettime+0x10/0x10
-[  285.395908]  ? _copy_to_user+0x3e/0x60
-[  285.396432]  ? exit_to_user_mode_prepare+0x1a/0x120
-[  285.397086]  ? syscall_exit_to_user_mode+0x22/0x50
-[  285.397734]  ? do_syscall_64+0x71/0x90
-[  285.398258]  __x64_sys_sendto+0x74/0x90
-[  285.398786]  do_syscall_64+0x64/0x90
-[  285.399273]  ? exit_to_user_mode_prepare+0x1a/0x120
-[  285.399949]  ? syscall_exit_to_user_mode+0x22/0x50
-[  285.400605]  ? do_syscall_64+0x71/0x90
-[  285.401124]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[  285.401807] RIP: 0033:0x495726
-[  285.402233] Code: ff ff ff f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 11 b8 2c 00 00 00 0f 09
-[  285.404683] RSP: 002b:00007ffcc25fb618 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-[  285.405677] RAX: ffffffffffffffda RBX: 0000000000000040 RCX: 0000000000495726
-[  285.406628] RDX: 0000000000000040 RSI: 0000000002518750 RDI: 0000000000000000
-[  285.407565] RBP: 00000000005205ef R08: 00000000005f8838 R09: 000000000000001c
-[  285.408523] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000002517634
-[  285.409460] R13: 00007ffcc25fb6f0 R14: 0000000000000003 R15: 0000000000000000
-[  285.410403]  </TASK>
-[  285.410704]
-[  285.410929] Allocated by task 144:
-[  285.411402]  kasan_save_stack+0x1e/0x40
-[  285.411926]  kasan_set_track+0x21/0x30
-[  285.412442]  __kasan_slab_alloc+0x55/0x70
-[  285.412973]  kmem_cache_alloc_node+0x187/0x3d0
-[  285.413567]  __alloc_skb+0x1b4/0x230
-[  285.414060]  __ip_append_data+0x17f7/0x1b60
-[  285.414633]  ip_append_data+0x97/0xf0
-[  285.415144]  raw_sendmsg+0x5a8/0x12d0
-[  285.415640]  sock_sendmsg+0xcc/0xe0
-[  285.416117]  __sys_sendto+0x190/0x230
-[  285.416626]  __x64_sys_sendto+0x74/0x90
-[  285.417145]  do_syscall_64+0x64/0x90
-[  285.417624]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[  285.418306]
-[  285.418531] Freed by task 144:
-[  285.418960]  kasan_save_stack+0x1e/0x40
-[  285.419469]  kasan_set_track+0x21/0x30
-[  285.419988]  kasan_save_free_info+0x27/0x40
-[  285.420556]  ____kasan_slab_free+0x109/0x1a0
-[  285.421146]  kmem_cache_free+0x1c2/0x450
-[  285.421680]  __netif_receive_skb_core+0x2ce/0x1870
-[  285.422333]  __netif_receive_skb_one_core+0x97/0x140
-[  285.423003]  process_backlog+0x100/0x2f0
-[  285.423537]  __napi_poll+0x5c/0x2d0
-[  285.424023]  net_rx_action+0x2be/0x560
-[  285.424510]  __do_softirq+0x11b/0x3de
-[  285.425034]
-[  285.425254] The buggy address belongs to the object at ffff8880bad31280
-[  285.425254]  which belongs to the cache skbuff_head_cache of size 224
-[  285.426993] The buggy address is located 40 bytes inside of
-[  285.426993]  freed 224-byte region [ffff8880bad31280, ffff8880bad31360)
-[  285.428572]
-[  285.428798] The buggy address belongs to the physical page:
-[  285.429540] page:00000000f4b77674 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xbad31
-[  285.430758] flags: 0x100000000000200(slab|node=0|zone=1)
-[  285.431447] page_type: 0xffffffff()
-[  285.431934] raw: 0100000000000200 ffff88810094a8c0 dead000000000122 0000000000000000
-[  285.432757] raw: 0000000000000000 00000000800c000c 00000001ffffffff 0000000000000000
-[  285.433562] page dumped because: kasan: bad access detected
-[  285.434144]
-[  285.434320] Memory state around the buggy address:
-[  285.434828]  ffff8880bad31180: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  285.435580]  ffff8880bad31200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  285.436264] >ffff8880bad31280: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  285.436777]                                   ^
-[  285.437106]  ffff8880bad31300: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
-[  285.437616]  ffff8880bad31380: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  285.438126] ==================================================================
-[  285.438662] Disabling lock debugging due to kernel taint
+write to 0xffffffff8546f2d0 of 8 bytes by task 44798 on cpu 1:
+ unix_inflight+0x157/0x180 net/unix/scm.c:66
+ unix_attach_fds+0x147/0x1e0 net/unix/scm.c:123
+ unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
+ unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-Fix this by:
-1. Changing sch_plug's .peek handler to qdisc_peek_dequeued(), a
-function compatible with non-work-conserving qdiscs
-2. Checking the return value of qdisc_dequeue_peeked() in sch_qfq.
+read to 0xffffffff8546f2d0 of 8 bytes by task 44814 on cpu 0:
+ too_many_unix_fds net/unix/scm.c:101 [inline]
+ unix_attach_fds+0x54/0x1e0 net/unix/scm.c:110
+ unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
+ unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
+ unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
+ unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
+ sock_sendmsg_nosec net/socket.c:725 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:748
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
+ __sys_sendmsg+0x94/0x140 net/socket.c:2577
+ __do_sys_sendmsg net/socket.c:2586 [inline]
+ __se_sys_sendmsg net/socket.c:2584 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
-Reported-by: valis <sec@valis.email>
-Signed-off-by: valis <sec@valis.email>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230901162237.11525-1-jhs@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+value changed: 0x000000000000000c -> 0x000000000000000d
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 44814 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 712f4aad406b ("unix: properly account for FDs passed over unix sockets")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Willy Tarreau <w@1wt.eu>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_plug.c |  2 +-
- net/sched/sch_qfq.c  | 22 +++++++++++++++++-----
- 2 files changed, 18 insertions(+), 6 deletions(-)
+ net/unix/scm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_plug.c b/net/sched/sch_plug.c
-index 1c6cbab3e7b99..27a0c028ba338 100644
---- a/net/sched/sch_plug.c
-+++ b/net/sched/sch_plug.c
-@@ -212,7 +212,7 @@ static struct Qdisc_ops plug_qdisc_ops __read_mostly = {
- 	.priv_size   =       sizeof(struct plug_sched_data),
- 	.enqueue     =       plug_enqueue,
- 	.dequeue     =       plug_dequeue,
--	.peek        =       qdisc_peek_head,
-+	.peek        =       qdisc_peek_dequeued,
- 	.init        =       plug_init,
- 	.change      =       plug_change,
- 	.reset       =	     qdisc_reset_queue,
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 1a1366b037fb7..594c2ac319e02 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -984,10 +984,13 @@ static void qfq_update_eligible(struct qfq_sched *q)
- }
- 
- /* Dequeue head packet of the head class in the DRR queue of the aggregate. */
--static void agg_dequeue(struct qfq_aggregate *agg,
--			struct qfq_class *cl, unsigned int len)
-+static struct sk_buff *agg_dequeue(struct qfq_aggregate *agg,
-+				   struct qfq_class *cl, unsigned int len)
- {
--	qdisc_dequeue_peeked(cl->qdisc);
-+	struct sk_buff *skb = qdisc_dequeue_peeked(cl->qdisc);
-+
-+	if (!skb)
-+		return NULL;
- 
- 	cl->deficit -= (int) len;
- 
-@@ -997,6 +1000,8 @@ static void agg_dequeue(struct qfq_aggregate *agg,
- 		cl->deficit += agg->lmax;
- 		list_move_tail(&cl->alist, &agg->active);
+diff --git a/net/unix/scm.c b/net/unix/scm.c
+index ce700b22eccee..e881a6e78af53 100644
+--- a/net/unix/scm.c
++++ b/net/unix/scm.c
+@@ -62,7 +62,7 @@ void unix_inflight(struct user_struct *user, struct file *fp)
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
  	}
-+
-+	return skb;
+-	user->unix_inflight++;
++	WRITE_ONCE(user->unix_inflight, user->unix_inflight + 1);
+ 	spin_unlock(&unix_gc_lock);
  }
  
- static inline struct sk_buff *qfq_peek_skb(struct qfq_aggregate *agg,
-@@ -1142,11 +1147,18 @@ static struct sk_buff *qfq_dequeue(struct Qdisc *sch)
- 	if (!skb)
- 		return NULL;
+@@ -83,7 +83,7 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
+ 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
+ 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
+ 	}
+-	user->unix_inflight--;
++	WRITE_ONCE(user->unix_inflight, user->unix_inflight - 1);
+ 	spin_unlock(&unix_gc_lock);
+ }
  
--	qdisc_qstats_backlog_dec(sch, skb);
- 	sch->q.qlen--;
-+
-+	skb = agg_dequeue(in_serv_agg, cl, len);
-+
-+	if (!skb) {
-+		sch->q.qlen++;
-+		return NULL;
-+	}
-+
-+	qdisc_qstats_backlog_dec(sch, skb);
- 	qdisc_bstats_update(sch, skb);
+@@ -97,7 +97,7 @@ static inline bool too_many_unix_fds(struct task_struct *p)
+ {
+ 	struct user_struct *user = current_user();
  
--	agg_dequeue(in_serv_agg, cl, len);
- 	/* If lmax is lowered, through qfq_change_class, for a class
- 	 * owning pending packets with larger size than the new value
- 	 * of lmax, then the following condition may hold.
+-	if (unlikely(user->unix_inflight > task_rlimit(p, RLIMIT_NOFILE)))
++	if (unlikely(READ_ONCE(user->unix_inflight) > task_rlimit(p, RLIMIT_NOFILE)))
+ 		return !capable(CAP_SYS_RESOURCE) && !capable(CAP_SYS_ADMIN);
+ 	return false;
+ }
 -- 
 2.40.1
 
