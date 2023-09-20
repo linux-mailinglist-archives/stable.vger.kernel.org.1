@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59C687A80B4
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2F7E7A7D24
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236046AbjITMjg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:39:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60990 "EHLO
+        id S235111AbjITMHC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:07:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234722AbjITMjf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:35 -0400
+        with ESMTP id S235187AbjITMG7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D1BDDC
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79040C433C9;
-        Wed, 20 Sep 2023 12:39:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCB26E0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFD6C433CB;
+        Wed, 20 Sep 2023 12:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213550;
-        bh=oiVleHD8QNJcw7KOzKCosNLv2nKUUWI7fQTnIYpkPPg=;
+        s=korg; t=1695211601;
+        bh=ovMXtD5Q3HLSK00KmbPLXAU9fhY/S/ZnBylCZqcJnuM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rjj8TgKeh01n5p9tqSnEqyMlKVvCNiSxuf3rk8lKOp25MOkwuSonzk8/ujgpZLnQ+
-         vr0f+CSsFRyU2FU/fhx1D0sUSIZy2xVH4L/uUWUze1nQr+LACbGH08udSdaaJF5XFj
-         A90AAAGWt/CZ/WfThag/O/6IzO723xpglxgfzwe0=
+        b=MJoCm3h/3FdsQV9Vw5iRAYH3Ak/3x+SnfCaLQ9Lvw0USw8lxDsCB7A76QRvcoDQyG
+         sVoJVE4rwXADL2K9eE/B1owXYrI0WoVZraUyegw85HtCUag4cPQPHgnJPP2ewPrSmr
+         wI3FYmXnKel3RtZ6P0VoH7ITuGBAN8AXUhQyEGl4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.4 279/367] ata: sata_gemini: Add missing MODULE_DESCRIPTION
+        patches@lists.linux.dev, Tomislav Novak <tnovak@meta.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        Samuel Gosselin <sgosselin@google.com>
+Subject: [PATCH 4.14 153/186] hw_breakpoint: fix single-stepping when using bpf_overflow_handler
 Date:   Wed, 20 Sep 2023 13:30:56 +0200
-Message-ID: <20230920112905.783869650@linuxfoundation.org>
+Message-ID: <20230920112842.481365938@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +52,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Tomislav Novak <tnovak@meta.com>
 
-commit 8566572bf3b4d6e416a4bf2110dbb4817d11ba59 upstream.
+[ Upstream commit d11a69873d9a7435fe6a48531e165ab80a8b1221 ]
 
-Add the missing MODULE_DESCRIPTION() to avoid warnings such as:
+Arm platforms use is_default_overflow_handler() to determine if the
+hw_breakpoint code should single-step over the breakpoint trigger or
+let the custom handler deal with it.
 
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/ata/sata_gemini.o
+Since bpf_overflow_handler() currently isn't recognized as a default
+handler, attaching a BPF program to a PERF_TYPE_BREAKPOINT event causes
+it to keep firing (the instruction triggering the data abort exception
+is never skipped). For example:
 
-when compiling with W=1.
+  # bpftrace -e 'watchpoint:0x10000:4:w { print("hit") }' -c ./test
+  Attaching 1 probe...
+  hit
+  hit
+  [...]
+  ^C
 
-Fixes: be4e456ed3a5 ("ata: Add driver for Faraday Technology FTIDE010")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(./test performs a single 4-byte store to 0x10000)
+
+This patch replaces the check with uses_default_overflow_handler(),
+which accounts for the bpf_overflow_handler() case by also testing
+if one of the perf_event_output functions gets invoked indirectly,
+via orig_default_handler.
+
+Signed-off-by: Tomislav Novak <tnovak@meta.com>
+Tested-by: Samuel Gosselin <sgosselin@google.com> # arm64
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/linux-arm-kernel/20220923203644.2731604-1-tnovak@fb.com/
+Link: https://lore.kernel.org/r/20230605191923.1219974-1-tnovak@meta.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/sata_gemini.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/kernel/hw_breakpoint.c   |  8 ++++----
+ arch/arm64/kernel/hw_breakpoint.c |  4 ++--
+ include/linux/perf_event.h        | 22 +++++++++++++++++++---
+ 3 files changed, 25 insertions(+), 9 deletions(-)
 
---- a/drivers/ata/sata_gemini.c
-+++ b/drivers/ata/sata_gemini.c
-@@ -435,6 +435,7 @@ static struct platform_driver gemini_sat
- };
- module_platform_driver(gemini_sata_driver);
+diff --git a/arch/arm/kernel/hw_breakpoint.c b/arch/arm/kernel/hw_breakpoint.c
+index a8783964ebde9..6f5907970143f 100644
+--- a/arch/arm/kernel/hw_breakpoint.c
++++ b/arch/arm/kernel/hw_breakpoint.c
+@@ -631,7 +631,7 @@ int arch_validate_hwbkpt_settings(struct perf_event *bp)
+ 	info->address &= ~alignment_mask;
+ 	info->ctrl.len <<= offset;
  
-+MODULE_DESCRIPTION("low level driver for Cortina Systems Gemini SATA bridge");
- MODULE_AUTHOR("Linus Walleij <linus.walleij@linaro.org>");
- MODULE_LICENSE("GPL");
- MODULE_ALIAS("platform:" DRV_NAME);
+-	if (is_default_overflow_handler(bp)) {
++	if (uses_default_overflow_handler(bp)) {
+ 		/*
+ 		 * Mismatch breakpoints are required for single-stepping
+ 		 * breakpoints.
+@@ -803,7 +803,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
+ 		 * Otherwise, insert a temporary mismatch breakpoint so that
+ 		 * we can single-step over the watchpoint trigger.
+ 		 */
+-		if (!is_default_overflow_handler(wp))
++		if (!uses_default_overflow_handler(wp))
+ 			continue;
+ step:
+ 		enable_single_step(wp, instruction_pointer(regs));
+@@ -816,7 +816,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
+ 		info->trigger = addr;
+ 		pr_debug("watchpoint fired: address = 0x%x\n", info->trigger);
+ 		perf_bp_event(wp, regs);
+-		if (is_default_overflow_handler(wp))
++		if (uses_default_overflow_handler(wp))
+ 			enable_single_step(wp, instruction_pointer(regs));
+ 	}
+ 
+@@ -891,7 +891,7 @@ static void breakpoint_handler(unsigned long unknown, struct pt_regs *regs)
+ 			info->trigger = addr;
+ 			pr_debug("breakpoint fired: address = 0x%x\n", addr);
+ 			perf_bp_event(bp, regs);
+-			if (is_default_overflow_handler(bp))
++			if (uses_default_overflow_handler(bp))
+ 				enable_single_step(bp, addr);
+ 			goto unlock;
+ 		}
+diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
+index 6e96cea99a4ec..7f608a8d43860 100644
+--- a/arch/arm64/kernel/hw_breakpoint.c
++++ b/arch/arm64/kernel/hw_breakpoint.c
+@@ -662,7 +662,7 @@ static int breakpoint_handler(unsigned long unused, unsigned int esr,
+ 		perf_bp_event(bp, regs);
+ 
+ 		/* Do we need to handle the stepping? */
+-		if (is_default_overflow_handler(bp))
++		if (uses_default_overflow_handler(bp))
+ 			step = 1;
+ unlock:
+ 		rcu_read_unlock();
+@@ -741,7 +741,7 @@ static u64 get_distance_from_watchpoint(unsigned long addr, u64 val,
+ static int watchpoint_report(struct perf_event *wp, unsigned long addr,
+ 			     struct pt_regs *regs)
+ {
+-	int step = is_default_overflow_handler(wp);
++	int step = uses_default_overflow_handler(wp);
+ 	struct arch_hw_breakpoint *info = counter_arch_bp(wp);
+ 
+ 	info->trigger = addr;
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 5efd8109ad0ab..e175d5e3acd68 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -985,15 +985,31 @@ extern void perf_event_output(struct perf_event *event,
+ 			      struct pt_regs *regs);
+ 
+ static inline bool
+-is_default_overflow_handler(struct perf_event *event)
++__is_default_overflow_handler(perf_overflow_handler_t overflow_handler)
+ {
+-	if (likely(event->overflow_handler == perf_event_output_forward))
++	if (likely(overflow_handler == perf_event_output_forward))
+ 		return true;
+-	if (unlikely(event->overflow_handler == perf_event_output_backward))
++	if (unlikely(overflow_handler == perf_event_output_backward))
+ 		return true;
+ 	return false;
+ }
+ 
++#define is_default_overflow_handler(event) \
++	__is_default_overflow_handler((event)->overflow_handler)
++
++#ifdef CONFIG_BPF_SYSCALL
++static inline bool uses_default_overflow_handler(struct perf_event *event)
++{
++	if (likely(is_default_overflow_handler(event)))
++		return true;
++
++	return __is_default_overflow_handler(event->orig_overflow_handler);
++}
++#else
++#define uses_default_overflow_handler(event) \
++	is_default_overflow_handler(event)
++#endif
++
+ extern void
+ perf_event_header__init_id(struct perf_event_header *header,
+ 			   struct perf_sample_data *data,
+-- 
+2.40.1
+
 
 
