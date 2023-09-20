@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5979E7A7EC3
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A64AA7A8146
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235661AbjITMUb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:20:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51018 "EHLO
+        id S236242AbjITMoD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:44:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235685AbjITMUa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:30 -0400
+        with ESMTP id S236236AbjITMoC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0F1AAD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C5EC433C7;
-        Wed, 20 Sep 2023 12:20:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F58999
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:43:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB35EC433C7;
+        Wed, 20 Sep 2023 12:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212424;
-        bh=Me0hsR0mhHudhc5TTGRPlm9JpVeA1X6Xnvsb9X8o4Y4=;
+        s=korg; t=1695213836;
+        bh=SGV7f+EAbau1W13NoT07g3J1VLveWqN+bMKVRj5o1NQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nndcTxaMLA+ZFTNeUq/EuI8fRlAWbNX0RwoHh6oEm1nGwMKsVsCUYtscksqFpUCrL
-         o71tV7rdBNz226abD8XbGLWVslIKPS7JnhXhty+1c1ASYRlesY4qkulmxjHw325lIc
-         D19unmrg8Phqw4fG+RjVgKaqhxghCBtKWWQdsvXU=
+        b=0IAFfoaRep7AeeIcAOPWr2443LfTKgSooUgZpMVFz2VNlRkBE/Rssqd3uP1OgVEaA
+         +G+zjvwySW7WsYx+XR90ZCuc3SUV4LaMPQs/hOm4EE5hsilfdAAcJyDgP9mV+PsHdg
+         aEmBo1dSLYk5AdXSlUKP2bN0qQdWYJ2BbYQlf5dc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 234/273] kcm: Fix error handling for SOCK_DGRAM in kcm_sendmsg().
+Subject: [PATCH 5.15 016/110] wifi: ath9k: fix printk specifier
 Date:   Wed, 20 Sep 2023 13:31:14 +0200
-Message-ID: <20230920112853.599635269@linuxfoundation.org>
+Message-ID: <20230920112830.999079246@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,71 +52,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Dongliang Mu <dzm91@hust.edu.cn>
 
-[ Upstream commit a22730b1b4bf437c6bbfdeff5feddf54be4aeada ]
+[ Upstream commit 061115fbfb2ce5870c9a004d68dc63138c07c782 ]
 
-syzkaller found a memory leak in kcm_sendmsg(), and commit c821a88bd720
-("kcm: Fix memory leak in error path of kcm_sendmsg()") suppressed it by
-updating kcm_tx_msg(head)->last_skb if partial data is copied so that the
-following sendmsg() will resume from the skb.
+Smatch reports:
 
-However, we cannot know how many bytes were copied when we get the error.
-Thus, we could mess up the MSG_MORE queue.
+ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
+ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
 
-When kcm_sendmsg() fails for SOCK_DGRAM, we should purge the queue as we
-do so for UDP by udp_flush_pending_frames().
+Fix it by modifying %lx to %p in the printk format string.
 
-Even without this change, when the error occurred, the following sendmsg()
-resumed from a wrong skb and the queue was messed up.  However, we have
-yet to get such a report, and only syzkaller stumbled on it.  So, this
-can be changed safely.
+Note that with this change, the pointer address will be printed as a
+hashed value by default. This is appropriate because the kernel
+should not leak kernel pointers to user space in an informational
+message. If someone wants to see the real address for debugging
+purposes, this can be achieved with the no_hash_pointers kernel option.
 
-Note this does not change SOCK_SEQPACKET behaviour.
-
-Fixes: c821a88bd720 ("kcm: Fix memory leak in error path of kcm_sendmsg()")
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230912022753.33327-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230723040403.296723-1-dzm91@hust.edu.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/kcm/kcmsock.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ath/ath9k/ahb.c | 4 ++--
+ drivers/net/wireless/ath/ath9k/pci.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 8305e229b4ece..a82892c288600 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -1065,17 +1065,18 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- out_error:
- 	kcm_push(kcm);
+diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
+index cdefb8e2daf14..05fb76a4e144e 100644
+--- a/drivers/net/wireless/ath/ath9k/ahb.c
++++ b/drivers/net/wireless/ath/ath9k/ahb.c
+@@ -136,8 +136,8 @@ static int ath_ahb_probe(struct platform_device *pdev)
  
--	if (copied && sock->type == SOCK_SEQPACKET) {
-+	if (sock->type == SOCK_SEQPACKET) {
- 		/* Wrote some bytes before encountering an
- 		 * error, return partial success.
- 		 */
--		goto partial_message;
--	}
--
--	if (head != kcm->seq_skb)
-+		if (copied)
-+			goto partial_message;
-+		if (head != kcm->seq_skb)
-+			kfree_skb(head);
-+	} else {
- 		kfree_skb(head);
--	else if (copied)
--		kcm_tx_msg(head)->last_skb = skb;
-+		kcm->seq_skb = NULL;
-+	}
+ 	ah = sc->sc_ah;
+ 	ath9k_hw_name(ah, hw_name, sizeof(hw_name));
+-	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
+-		   hw_name, (unsigned long)mem, irq);
++	wiphy_info(hw->wiphy, "%s mem=0x%p, irq=%d\n",
++		   hw_name, mem, irq);
  
- 	err = sk_stream_error(sk, msg->msg_flags, err);
+ 	return 0;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
+index a074e23013c58..f0e3901e8182a 100644
+--- a/drivers/net/wireless/ath/ath9k/pci.c
++++ b/drivers/net/wireless/ath/ath9k/pci.c
+@@ -988,8 +988,8 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	sc->sc_ah->msi_reg = 0;
+ 
+ 	ath9k_hw_name(sc->sc_ah, hw_name, sizeof(hw_name));
+-	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
+-		   hw_name, (unsigned long)sc->mem, pdev->irq);
++	wiphy_info(hw->wiphy, "%s mem=0x%p, irq=%d\n",
++		   hw_name, sc->mem, pdev->irq);
+ 
+ 	return 0;
  
 -- 
 2.40.1
