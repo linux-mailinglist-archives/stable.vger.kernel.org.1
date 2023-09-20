@@ -2,117 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A8017A8677
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 16:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0CB87A86C5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 16:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235137AbjITOZA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 10:25:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44960 "EHLO
+        id S236606AbjITOgU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 10:36:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235174AbjITOY7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 10:24:59 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBDFDD7;
-        Wed, 20 Sep 2023 07:24:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3178C433C8;
-        Wed, 20 Sep 2023 14:24:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695219890;
-        bh=RViBJ1ipCpvcOamR36FBZv/+zuY68gbePAurU1aB8A0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o0zxW3WhPXPdjGkBVHgfiGfkhrq0T1IM6K/OdjXSOqWF92J9cPrB8iClVSWHJcPew
-         GNPMu0KprRsTgynMWZPIerPkcDms+5vJOmMVdF+2VC7VjtyiwT+kj+tdNhzSdmAUD2
-         hU0aoNYyyN0/G0DSUnqjmHasvpMXC1qNNoLU1oEpBt32jOQcon/zNg6Fi48+KM14fp
-         Ky64mdl2BLSLaznU8c38BAivfhtoL4ccYXOXNCstrduAoxSN+PeZMMku0vzeP35AKU
-         LEIXCQP+TGB3kxH/fZrD0osEnxPj5WRR8aTdMzPbcYr0eKqCp5pwHoyHZbban9CILe
-         8KgB/v+77jI6A==
-From:   SeongJae Park <sj@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, damon@lists.linux.dev,
-        SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 6.5 000/211] 6.5.5-rc1 review
-Date:   Wed, 20 Sep 2023 14:24:47 +0000
-Message-Id: <20230920142447.1843-1-sj@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: 
+        with ESMTP id S236533AbjITOgH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 10:36:07 -0400
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68BCACF;
+        Wed, 20 Sep 2023 07:36:00 -0700 (PDT)
+Received: from localhost (unknown [10.10.165.8])
+        by mail.ispras.ru (Postfix) with ESMTPSA id 76EFF40F1DD2;
+        Wed, 20 Sep 2023 14:35:57 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 76EFF40F1DD2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+        s=default; t=1695220557;
+        bh=059s3evXL96HfEwH+9seFh8IG+n66+ESgEoyP5gXLcw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VLtYzEpvpsk/iHTDMfR6Gw89KjSlToJvcFcA4XZyJxTfrRmw0tYDuDLi6OvlA680N
+         PBIKoJb2agrdHVgcQOMslA2VXQQf+N7h7HNuqZLILhQQfW1KkBllMi3zl8wFlRwqB4
+         6YjjJ2mL+EB+YV5QKDh7QtQSxHgD7ZQYa2tuzoYA=
+Date:   Wed, 20 Sep 2023 17:35:56 +0300
+From:   Fedor Pchelkin <pchelkin@ispras.ru>
+To:     Hannes Reinecke <hare@suse.de>
+Cc:     Mike Snitzer <snitzer@kernel.org>,
+        Alasdair Kergon <agk@redhat.com>, dm-devel@redhat.com,
+        linux-kernel@vger.kernel.org,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        lvc-project@linuxtesting.org, stable@vger.kernel.org
+Subject: Re: [PATCH] dm-zoned: free dmz->ddev array in dmz_put_zoned_device
+Message-ID: <vdtvo2av3upya6mugjyiqo2hfnn6q4dpofoku6rvrtgmycgbrp@scpcnu3ta7ch>
+References: <20230920105119.21276-1-pchelkin@ispras.ru>
+ <c7818967-1fea-45da-9713-20de4bcb1c44@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <c7818967-1fea-45da-9713-20de4bcb1c44@suse.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
-
-On Wed, 20 Sep 2023 13:27:24 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-
-> This is the start of the stable review cycle for the 6.5.5 release.
-> There are 211 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 23/09/20 04:06PM, Hannes Reinecke wrote:
+> On 9/20/23 12:51, Fedor Pchelkin wrote:
+> > Commit 4dba12881f88 ("dm zoned: support arbitrary number of devices")
+> > made the pointers to additional zoned devices to be stored in a
+> > dynamically allocated dmz->ddev array. However, this array is not freed.
+> > 
+> > Free it when cleaning up zoned device information inside
+> > dmz_put_zoned_device(). Assigning NULL to dmz->ddev elements doesn't make
+> > sense there as they are not supposed to be reused later and the whole dmz
+> > target structure is being cleaned anyway.
+> > 
+> > Found by Linux Verification Center (linuxtesting.org).
+> > 
+> > Fixes: 4dba12881f88 ("dm zoned: support arbitrary number of devices")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> > ---
+> >   drivers/md/dm-zoned-target.c | 8 +++-----
+> >   1 file changed, 3 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
+> > index ad8e670a2f9b..e25cd9db6275 100644
+> > --- a/drivers/md/dm-zoned-target.c
+> > +++ b/drivers/md/dm-zoned-target.c
+> > @@ -753,12 +753,10 @@ static void dmz_put_zoned_device(struct dm_target *ti)
+> >   	struct dmz_target *dmz = ti->private;
+> >   	int i;
+> > -	for (i = 0; i < dmz->nr_ddevs; i++) {
+> > -		if (dmz->ddev[i]) {
+> > +	for (i = 0; i < dmz->nr_ddevs; i++)
+> > +		if (dmz->ddev[i])
+> >   			dm_put_device(ti, dmz->ddev[i]);
+> > -			dmz->ddev[i] = NULL;
+> > -		}
+> > -	}
+> > +	kfree(dmz->ddev);
+> >   }
+> >   static int dmz_fixup_devices(struct dm_target *ti)
 > 
-> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
-> Anything received after that time might be too late.
+> Hmm. I'm not that happy with it; dmz_put_zoned_device() is using dm_target
+> as an argument, whereas all of the functions surrounding the call sites is
+> using the dmz_target directly.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.5-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
+> Mind to modify the function to use 'struct dmz_target' as an argument?
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+dm_target is required inside dmz_put_zoned_device() for dm_put_device()
+calls. I can't see a way for referencing it via dmz_target. Do you mean
+passing additional second argument like
+  dmz_put_zoned_device(struct dmz_target *dmz, struct dm_target *ti) ?
 
-Tested-by: SeongJae Park <sj@kernel.org>
+BTW, I also think it can be renamed to dmz_put_zoned_devices().
 
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] 9e47a110b1b5 ("Linux 6.5.5-rc1")
-
-Thanks,
-SJ
-
-[...]
-
----
-
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: debugfs_rm_non_contexts.sh
-ok 8 selftests: damon: sysfs.sh
-ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 10 selftests: damon: reclaim.sh
-ok 11 selftests: damon: lru_sort.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_m68k.sh
-ok 12 selftests: damon-tests: build_arm64.sh
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+> 
+> Cheers,
+> 
+> Hannes
+> -- 
+> Dr. Hannes Reinecke                Kernel Storage Architect
+> hare@suse.de                              +49 911 74053 688
+> SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
+> HRB 36809 (AG Nürnberg), Geschäftsführer: Ivo Totev, Andrew
+> Myers, Andrew McDonald, Martje Boudien Moerman
+> 
