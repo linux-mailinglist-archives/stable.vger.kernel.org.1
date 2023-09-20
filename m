@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC3C7A8147
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB2AB7A7F03
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236236AbjITMoG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:44:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43060 "EHLO
+        id S235675AbjITMXB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:23:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236222AbjITMoF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:05 -0400
+        with ESMTP id S235663AbjITMW7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87589A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:43:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80DEC433CA;
-        Wed, 20 Sep 2023 12:43:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E1C183
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5155C433C7;
+        Wed, 20 Sep 2023 12:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213839;
-        bh=rewg/ZB71Z/rQKlYjDaEJn2yX2E+y+HbGJtMagEla38=;
+        s=korg; t=1695212573;
+        bh=mAJGAd8BPJHA7uOruyL6Wevcaxb/1hiOQI588uGSaro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y6lCKfZZgTsUrPHV9I8kQIKthCBx0o2IvnfrL04fr175+7LWubokUSt6cvrjCUYTa
-         WHWW1S9iap3X0HtdDynQjQJUiNXCHPftoUUZduY4bJldIlAe+a29+OyM6UcRGkCNT4
-         LdL1kJCrLBvC2BTorVlDQE18Wgvm11nb1LgaHfpc=
+        b=Cja8xCjmBR5wCY7eB0thD+QPRbJRJ+FgT4NSSNgeeo+2L6lCjcOn7+HLb9pQIVnlH
+         bpmncgGEW4WRi/sXN5Qtc4TkEuZ8FRNIGGV57aBTW0spE4PlW5L3j+xmon9b68VIuM
+         H22l440750u307a2cxBONAVJvO0PIoKP+oHAoRjU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 017/110] wifi: mwifiex: fix fortify warning
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 25/83] drm/bridge: tc358762: Instruct DSI host to generate HSE packets
 Date:   Wed, 20 Sep 2023 13:31:15 +0200
-Message-ID: <20230920112831.035917510@linuxfoundation.org>
+Message-ID: <20230920112827.670328245@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,86 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit dcce94b80a954a8968ff29fafcfb066d6197fa9a ]
+[ Upstream commit 362fa8f6e6a05089872809f4465bab9d011d05b3 ]
 
-When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
-I've noticed the following:
+This bridge seems to need the HSE packet, otherwise the image is
+shifted up and corrupted at the bottom. This makes the bridge
+work with Samsung DSIM on i.MX8MM and i.MX8MP.
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘mwifiex_construct_tdls_action_frame’ at drivers/net/wireless/marvell/mwifiex/tdls.c:765:3,
-    inlined from ‘mwifiex_send_tdls_action_frame’ at drivers/net/wireless/marvell/mwifiex/tdls.c:856:6:
-./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  529 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The compiler actually complains on:
-
-memmove(pos + ETH_ALEN, &mgmt->u.action.category,
-	sizeof(mgmt->u.action.u.tdls_discover_resp));
-
-and it happens because the fortification logic interprets this
-as an attempt to overread 1-byte 'u.action.category' member of
-'struct ieee80211_mgmt'. To silence this warning, it's enough
-to pass an address of 'u.action' itself instead of an address
-of its first member.
-
-This also fixes an improper usage of 'sizeof()'. Since 'skb' is
-extended with 'sizeof(mgmt->u.action.u.tdls_discover_resp) + 1'
-bytes (where 1 is actually 'sizeof(mgmt->u.action.category)'),
-I assume that the same number of bytes should be copied.
-
-Suggested-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230629085115.180499-2-dmantipov@yandex.ru
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230615201902.566182-3-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/tdls.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/tc358762.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
-index 97bb87c3676bb..6c60621b6cccb 100644
---- a/drivers/net/wireless/marvell/mwifiex/tdls.c
-+++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
-@@ -735,6 +735,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
- 	int ret;
- 	u16 capab;
- 	struct ieee80211_ht_cap *ht_cap;
-+	unsigned int extra;
- 	u8 radio, *pos;
+diff --git a/drivers/gpu/drm/bridge/tc358762.c b/drivers/gpu/drm/bridge/tc358762.c
+index 1bfdfc6affafe..21c57d3435687 100644
+--- a/drivers/gpu/drm/bridge/tc358762.c
++++ b/drivers/gpu/drm/bridge/tc358762.c
+@@ -224,7 +224,7 @@ static int tc358762_probe(struct mipi_dsi_device *dsi)
+ 	dsi->lanes = 1;
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
+ 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+-			  MIPI_DSI_MODE_LPM;
++			  MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_VIDEO_HSE;
  
- 	capab = priv->curr_bss_params.bss_descriptor.cap_info_bitmap;
-@@ -753,7 +754,10 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
- 
- 	switch (action_code) {
- 	case WLAN_PUB_ACTION_TDLS_DISCOVER_RES:
--		skb_put(skb, sizeof(mgmt->u.action.u.tdls_discover_resp) + 1);
-+		/* See the layout of 'struct ieee80211_mgmt'. */
-+		extra = sizeof(mgmt->u.action.u.tdls_discover_resp) +
-+			sizeof(mgmt->u.action.category);
-+		skb_put(skb, extra);
- 		mgmt->u.action.category = WLAN_CATEGORY_PUBLIC;
- 		mgmt->u.action.u.tdls_discover_resp.action_code =
- 					      WLAN_PUB_ACTION_TDLS_DISCOVER_RES;
-@@ -762,8 +766,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
- 		mgmt->u.action.u.tdls_discover_resp.capability =
- 							     cpu_to_le16(capab);
- 		/* move back for addr4 */
--		memmove(pos + ETH_ALEN, &mgmt->u.action.category,
--			sizeof(mgmt->u.action.u.tdls_discover_resp));
-+		memmove(pos + ETH_ALEN, &mgmt->u.action, extra);
- 		/* init address 4 */
- 		eth_broadcast_addr(pos);
- 
+ 	ret = tc358762_parse_dt(ctx);
+ 	if (ret < 0)
 -- 
 2.40.1
 
