@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2F647A7AC1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 344457A7AC2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234550AbjITLpq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:45:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49898 "EHLO
+        id S233786AbjITLpr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:45:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234573AbjITLpp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:45:45 -0400
+        with ESMTP id S234549AbjITLpq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:45:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F062ED
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:45:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBA8C433C8;
-        Wed, 20 Sep 2023 11:45:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AAC9B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:45:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961B9C433C8;
+        Wed, 20 Sep 2023 11:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210336;
-        bh=7I5v5eFuInLWgLHTZxi5VnFYUMPHy7+woRbEsUEb3Hs=;
+        s=korg; t=1695210339;
+        bh=L4sWJ4B9x+h0YyZwndwnz6WHHbrwZJubS9Gu7lGODmQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A4k6fELanaUfi0m/mkY8vHTZydKd23W5+e7g5cA0kkxss8YL0XQLp9vmhU/GQ4us9
-         6WCIk5XRXXAz8UIUW3VSnOUJ3fGQdJAtzrFgu40CIVJof0AAkXOgLHgOJYlswfuRBX
-         AiMkX6l4pWvRYgH+AiGEVndB2N7fPR+x2tm3gIxo=
+        b=TO3XCuyQXlOYt3oYLR6oLtKRt3GeNEKrGzfxVuspEwr+r3F9HdaLe3ivNk6h3xUu7
+         TqZ+ELmF93KJ16F0bGumQ1hCEmrtuOYuF+ZDojxHQoMP3M4P8eZ7Lz4xTOX8qve/tz
+         aacCdo6TJnF1BEQu6frNSiFff2Z+V7Wtm3bDFapY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Valentin David <valentin.david@gmail.com>,
+        patches@lists.linux.dev, Chris Lu <chris.lu@mediatek.com>,
         Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 040/211] Bluetooth: btusb: Add device 0489:e0f5 as MT7922 device
-Date:   Wed, 20 Sep 2023 13:28:04 +0200
-Message-ID: <20230920112847.034393206@linuxfoundation.org>
+Subject: [PATCH 6.5 041/211] Bluetooth: btusb: Add a new VID/PID 0489/e0f6 for MT7922
+Date:   Wed, 20 Sep 2023 13:28:05 +0200
+Message-ID: <20230920112847.064370021@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
 References: <20230920112845.859868994@linuxfoundation.org>
@@ -54,21 +54,18 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Valentin David <valentin.david@gmail.com>
+From: Chris Lu <chris.lu@mediatek.com>
 
-[ Upstream commit e160a8f4e920e5cf4e16a17f57367954c9436aea ]
+[ Upstream commit b6cfa1c29afb6d527652938b0eb8db17b194bddc ]
 
-Asus ROG Ally gaming computer has a MediaTek MT7922 chip that uses USB id
-0489:e0f5 and needs to be added to the table. Without this, the device is
-not usable and gives the following error:
+Add VID/PID 0489/e0f6 for MediaTek MT7922 USB Bluetooth chip.
 
-Bluetooth: hci0: Opcode 0x c03 failed: -110
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below.
 
-Output from /sys/kernel/debug/usb/devices:
-
-T:  Bus=01 Lev=01 Prnt=01 Port=03 Cnt=03 Dev#=  4 Spd=480  MxCh= 0
+T:  Bus=01 Lev=01 Prnt=01 Port=04 Cnt=03 Dev#=  4 Spd=480  MxCh= 0
 D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e0f5 Rev= 1.00
+P:  Vendor=0489 ProdID=e0f6 Rev= 1.00
 S:  Manufacturer=MediaTek Inc.
 S:  Product=Wireless_Device
 S:  SerialNumber=000000000
@@ -106,7 +103,7 @@ I:  If#= 2 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=(none)
 E:  Ad=8a(I) Atr=03(Int.) MxPS= 512 Ivl=125us
 E:  Ad=0a(O) Atr=03(Int.) MxPS= 512 Ivl=125us
 
-Signed-off-by: Valentin David <valentin.david@gmail.com>
+Signed-off-by: Chris Lu <chris.lu@mediatek.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -114,14 +111,14 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index e685acc5cacd9..e5c7852f8b133 100644
+index e5c7852f8b133..3cdb2dea1f559 100644
 --- a/drivers/bluetooth/btusb.c
 +++ b/drivers/bluetooth/btusb.c
-@@ -628,6 +628,9 @@ static const struct usb_device_id blacklist_table[] = {
- 	{ USB_DEVICE(0x0489, 0xe0f2), .driver_info = BTUSB_MEDIATEK |
+@@ -631,6 +631,9 @@ static const struct usb_device_id blacklist_table[] = {
+ 	{ USB_DEVICE(0x0489, 0xe0f5), .driver_info = BTUSB_MEDIATEK |
  						     BTUSB_WIDEBAND_SPEECH |
  						     BTUSB_VALID_LE_STATES },
-+	{ USB_DEVICE(0x0489, 0xe0f5), .driver_info = BTUSB_MEDIATEK |
++	{ USB_DEVICE(0x0489, 0xe0f6), .driver_info = BTUSB_MEDIATEK |
 +						     BTUSB_WIDEBAND_SPEECH |
 +						     BTUSB_VALID_LE_STATES },
  
