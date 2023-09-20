@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8B17A8168
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 947037A80EB
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236328AbjITMpY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:45:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41112 "EHLO
+        id S235978AbjITMlK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:41:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236458AbjITMpA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:45:00 -0400
+        with ESMTP id S236246AbjITMlH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BDCFA9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D4EC433C7;
-        Wed, 20 Sep 2023 12:44:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD5EC6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:41:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67564C433C8;
+        Wed, 20 Sep 2023 12:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213893;
-        bh=BXlUGQhSaKCb1ryYaJBIOuwYeAHAeOjFIOVOBirSCzc=;
+        s=korg; t=1695213660;
+        bh=sGairIJhJFOZ2/fcbgOLnNewKaqOuOnHbYY/TTSV+lc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qYd87vWZsjDI3d73CfTnFjUZYmsQU21J+mDN8JULunJqK0KKIUfNI/4rKrFcG9Nzy
-         J0NoBThX13kqN+VvxqFqkPCYKYv4LYkO/WpQUk1omJBVucnOuhJDdFnzQlxlxA62Ej
-         6Chdt6pqBJcuxJvr/2d1uONHvVQwf5UHgGmNgmgQ=
+        b=iTSeZyY+FkbwBuSJn0Sp5dfi65lEPUf9eMQoo9nBrNAQGhDPuSIuOAvERQpszZ0bY
+         6D55tz8XNjYOLRWXqeqZANOj9mW1c+tezaalYWWmKlSlJ62cGYV59I0BPR1mQFU+j/
+         RuTrPUrAKo37bf6gi4Mu2/aOyWVgjrG1QeYrNikU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Georg Ottinger <g.ottinger@gmx.at>,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 037/110] ext2: fix datatype of block number in ext2_xattr_set2()
+        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 318/367] devlink: remove reload failed checks in params get/set callbacks
 Date:   Wed, 20 Sep 2023 13:31:35 +0200
-Message-ID: <20230920112831.756290286@linuxfoundation.org>
+Message-ID: <20230920112906.776979630@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,57 +52,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georg Ottinger <g.ottinger@gmx.at>
+From: Jiri Pirko <jiri@nvidia.com>
 
-[ Upstream commit e88076348425b7d0491c8c98d8732a7df8de7aa3 ]
+[ Upstream commit 633d76ad01ad0321a1ace3e5cc4fed06753d7ac4 ]
 
-I run a small server that uses external hard drives for backups. The
-backup software I use uses ext2 filesystems with 4KiB block size and
-the server is running SELinux and therefore relies on xattr. I recently
-upgraded the hard drives from 4TB to 12TB models. I noticed that after
-transferring some TBs I got a filesystem error "Freeing blocks not in
-datazone - block = 18446744071529317386, count = 1" and the backup
-process stopped. Trying to fix the fs with e2fsck resulted in a
-completely corrupted fs. The error probably came from ext2_free_blocks(),
-and because of the large number 18e19 this problem immediately looked
-like some kind of integer overflow. Whereas the 4TB fs was about 1e9
-blocks, the new 12TB is about 3e9 blocks. So, searching the ext2 code,
-I came across the line in fs/ext2/xattr.c:745 where ext2_new_block()
-is called and the resulting block number is stored in the variable block
-as an int datatype. If a block with a block number greater than
-INT32_MAX is returned, this variable overflows and the call to
-sb_getblk() at line fs/ext2/xattr.c:750 fails, then the call to
-ext2_free_blocks() produces the error.
+The checks in question were introduced by:
+commit 6b4db2e528f6 ("devlink: Fix use-after-free after a failed reload").
+That fixed an issue of reload with mlxsw driver.
 
-Signed-off-by: Georg Ottinger <g.ottinger@gmx.at>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230815100340.22121-1-g.ottinger@gmx.at>
+Back then, that was a valid fix, because there was a limitation
+in place that prevented drivers from registering/unregistering params
+when devlink instance was registered.
+
+It was possible to do the fix differently by changing drivers to
+register/unregister params in appropriate places making sure the ops
+operate only on memory which is allocated and initialized. But that,
+as a dependency, would require to remove the limitation mentioned above.
+
+Eventually, this limitation was lifted by:
+commit 1d18bb1a4ddd ("devlink: allow registering parameters after the instance")
+
+Also, the alternative fix (which also fixed another issue) was done by:
+commit 74cbc3c03c82 ("mlxsw: spectrum_acl_tcam: Move devlink param to TCAM code").
+
+Therefore, the checks are no longer relevant. Each driver should make
+sure to have the params registered only when the memory the ops
+are working with is allocated and initialized.
+
+So remove the checks.
+
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/xattr.c | 4 ++--
+ net/core/devlink.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext2/xattr.c b/fs/ext2/xattr.c
-index 841fa6d9d744b..f1dc11dab0d88 100644
---- a/fs/ext2/xattr.c
-+++ b/fs/ext2/xattr.c
-@@ -694,10 +694,10 @@ ext2_xattr_set2(struct inode *inode, struct buffer_head *old_bh,
- 			/* We need to allocate a new block */
- 			ext2_fsblk_t goal = ext2_group_first_block_no(sb,
- 						EXT2_I(inode)->i_block_group);
--			int block = ext2_new_block(inode, goal, &error);
-+			ext2_fsblk_t block = ext2_new_block(inode, goal, &error);
- 			if (error)
- 				goto cleanup;
--			ea_idebug(inode, "creating block %d", block);
-+			ea_idebug(inode, "creating block %lu", block);
- 
- 			new_bh = sb_getblk(sb, block);
- 			if (unlikely(!new_bh)) {
+diff --git a/net/core/devlink.c b/net/core/devlink.c
+index b4dabe5d89f72..5bd6330ab4275 100644
+--- a/net/core/devlink.c
++++ b/net/core/devlink.c
+@@ -2953,7 +2953,7 @@ static int devlink_param_get(struct devlink *devlink,
+ 			     const struct devlink_param *param,
+ 			     struct devlink_param_gset_ctx *ctx)
+ {
+-	if (!param->get || devlink->reload_failed)
++	if (!param->get)
+ 		return -EOPNOTSUPP;
+ 	return param->get(devlink, param->id, ctx);
+ }
+@@ -2962,7 +2962,7 @@ static int devlink_param_set(struct devlink *devlink,
+ 			     const struct devlink_param *param,
+ 			     struct devlink_param_gset_ctx *ctx)
+ {
+-	if (!param->set || devlink->reload_failed)
++	if (!param->set)
+ 		return -EOPNOTSUPP;
+ 	return param->set(devlink, param->id, ctx);
+ }
 -- 
 2.40.1
 
