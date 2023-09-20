@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FA957A80E6
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4B217A8145
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:43:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236260AbjITMlE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:41:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38498 "EHLO
+        id S235865AbjITMoB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:44:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236220AbjITMlB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:01 -0400
+        with ESMTP id S236251AbjITMoA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47ADBDE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:40:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA76C433C8;
-        Wed, 20 Sep 2023 12:40:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07C8A92
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:43:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50342C433C7;
+        Wed, 20 Sep 2023 12:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213646;
-        bh=L9Gtc6qn+JHPoS6MRy8rSaRNfrKvurJB62X1w9LIFfo=;
+        s=korg; t=1695213833;
+        bh=dsc985ko3HHxm1C8zzeae7nmm8bPU57vVKMIvHlljp8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pX3RkdIwlcSwhDyn0e12dfv88ma9lVBxlZ8JS78ztHNol+PB1C0rmCfMxEgk1AI+p
-         KGj0BZrWGOBypmG4zWekF2kSxEPCQp1uQMm1XioVHGJZgUvErsHTtfdnIhZ7VDY9Nx
-         P++295gw58SZcOcF8OuzwXDLY0fu7RwnvKcP38BQ=
+        b=X/OGzMFtXRsHSLTP5CYtTEwcgyTdVhN5IoJOtdRF/eHIQi15o0hSzv9aVkqD51r5s
+         zLzyoM0yffa6OD7r/lQ4TrUkPzBBMa3PL/IYd/hxsOadevJD+jqKMp04av1X3Vn8xz
+         So1JQsCtbGXudUFA7cnz9wILducj+ab5ikqhhwE8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev, Johannes Berg <johannes@sipsolutions.net>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 296/367] clk: imx: pll14xx: dynamically configure PLL for 393216000/361267200Hz
+Subject: [PATCH 5.15 015/110] wifi: ath9k: fix fortify warnings
 Date:   Wed, 20 Sep 2023 13:31:13 +0200
-Message-ID: <20230920112906.208711780@linuxfoundation.org>
+Message-ID: <20230920112830.961777192@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,79 +53,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 72d00e560d10665e6139c9431956a87ded6e9880 ]
+[ Upstream commit 810e41cebb6c6e394f2068f839e1a3fc745a5dcc ]
 
-Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates"),
-the driver has the ability to dynamically compute PLL parameters to
-approximate the requested rates. This is not always used, because the
-logic is as follows:
+When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
+I've noticed the following:
 
-  - Check if the target rate is hardcoded in the frequency table
-  - Check if varying only kdiv is possible, so switch over is glitch free
-  - Compute rate dynamically by iterating over pdiv range
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘ath_tx_complete_aggr’ at drivers/net/wireless/ath/ath9k/xmit.c:556:4,
+    inlined from ‘ath_tx_process_buffer’ at drivers/net/wireless/ath/ath9k/xmit.c:773:3:
+./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  529 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If we skip the frequency table for the 1443x PLL, we find that the
-computed values differ to the hardcoded ones. This can be valid if the
-hardcoded values guarantee for example an earlier lock-in or if the
-divisors are chosen, so that other important rates are more likely to
-be reached glitch-free.
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘ath_tx_count_frames’ at drivers/net/wireless/ath/ath9k/xmit.c:473:3,
+    inlined from ‘ath_tx_complete_aggr’ at drivers/net/wireless/ath/ath9k/xmit.c:572:2,
+    inlined from ‘ath_tx_process_buffer’ at drivers/net/wireless/ath/ath9k/xmit.c:773:3:
+./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  529 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For rates (393216000 and 361267200, this doesn't seem to be the case:
-They are only approximated by existing parameters (393215995 and
-361267196 Hz, respectively) and they aren't reachable glitch-free from
-other hardcoded frequencies. Dropping them from the table allows us
-to lock-in to these frequencies exactly.
+In both cases, the compiler complains on:
 
-This is immediately noticeable because they are the assigned-clock-rates
-for IMX8MN_AUDIO_PLL1 and IMX8MN_AUDIO_PLL2, respectively and a look
-into clk_summary so far showed that they were a few Hz short of the target:
+memcpy(ba, &ts->ba_low, WME_BA_BMP_SIZE >> 3);
 
-imx8mn-board:~# grep audio_pll[12]_out /sys/kernel/debug/clk/clk_summary
-audio_pll2_out           0        0        0   361267196 0     0  50000   N
-audio_pll1_out           1        1        0   393215995 0     0  50000   Y
+which is the legal way to copy both 'ba_low' and following 'ba_high'
+members of 'struct ath_tx_status' at once (that is, issue one 8-byte
+'memcpy()' for two 4-byte fields). Since the fortification logic seems
+interprets this trick as an attempt to overread 4-byte 'ba_low', silence
+relevant warnings by using the convenient 'struct_group()' quirk.
 
-and afterwards:
-
-imx8mn-board:~# grep audio_pll[12]_out /sys/kernel/debug/clk/clk_summary
-audio_pll2_out           0        0        0   361267200 0     0  50000   N
-audio_pll1_out           1        1        0   393216000 0     0  50000   Y
-
-This change is equivalent to adding following hardcoded values:
-
-  /*               rate     mdiv  pdiv  sdiv   kdiv */
-  PLL_1443X_RATE(393216000, 655,    5,    3,  23593),
-  PLL_1443X_RATE(361267200, 497,   33,    0, -16882),
-
-Fixes: 053a4ffe2988 ("clk: imx: imx8mm: fix audio pll setting")
-Cc: stable@vger.kernel.org # v5.18+
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Link: https://lore.kernel.org/r/20230807084744.1184791-2-m.felsch@pengutronix.de
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Suggested-by: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230620080855.396851-2-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-pll14xx.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/ath/ath9k/mac.h  | 6 ++++--
+ drivers/net/wireless/ath/ath9k/xmit.c | 4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-index e7bf6babc28b4..0dbe8c05af478 100644
---- a/drivers/clk/imx/clk-pll14xx.c
-+++ b/drivers/clk/imx/clk-pll14xx.c
-@@ -57,8 +57,6 @@ static const struct imx_pll14xx_rate_table imx_pll1443x_tbl[] = {
- 	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
- 	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
- 	PLL_1443X_RATE(519750000U, 173, 2, 2, 16384),
--	PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
--	PLL_1443X_RATE(361267200U, 361, 3, 3, 17511),
- };
+diff --git a/drivers/net/wireless/ath/ath9k/mac.h b/drivers/net/wireless/ath/ath9k/mac.h
+index fd6aa49adadfe..9b00e77a6fc3c 100644
+--- a/drivers/net/wireless/ath/ath9k/mac.h
++++ b/drivers/net/wireless/ath/ath9k/mac.h
+@@ -113,8 +113,10 @@ struct ath_tx_status {
+ 	u8 qid;
+ 	u16 desc_id;
+ 	u8 tid;
+-	u32 ba_low;
+-	u32 ba_high;
++	struct_group(ba,
++		u32 ba_low;
++		u32 ba_high;
++	);
+ 	u32 evm0;
+ 	u32 evm1;
+ 	u32 evm2;
+diff --git a/drivers/net/wireless/ath/ath9k/xmit.c b/drivers/net/wireless/ath/ath9k/xmit.c
+index 6555abf02f18b..84c68aefc171a 100644
+--- a/drivers/net/wireless/ath/ath9k/xmit.c
++++ b/drivers/net/wireless/ath/ath9k/xmit.c
+@@ -421,7 +421,7 @@ static void ath_tx_count_frames(struct ath_softc *sc, struct ath_buf *bf,
+ 	isaggr = bf_isaggr(bf);
+ 	if (isaggr) {
+ 		seq_st = ts->ts_seqnum;
+-		memcpy(ba, &ts->ba_low, WME_BA_BMP_SIZE >> 3);
++		memcpy(ba, &ts->ba, WME_BA_BMP_SIZE >> 3);
+ 	}
  
- struct imx_pll14xx_clk imx_1443x_pll = {
+ 	while (bf) {
+@@ -504,7 +504,7 @@ static void ath_tx_complete_aggr(struct ath_softc *sc, struct ath_txq *txq,
+ 	if (isaggr && txok) {
+ 		if (ts->ts_flags & ATH9K_TX_BA) {
+ 			seq_st = ts->ts_seqnum;
+-			memcpy(ba, &ts->ba_low, WME_BA_BMP_SIZE >> 3);
++			memcpy(ba, &ts->ba, WME_BA_BMP_SIZE >> 3);
+ 		} else {
+ 			/*
+ 			 * AR5416 can become deaf/mute when BA
 -- 
 2.40.1
 
