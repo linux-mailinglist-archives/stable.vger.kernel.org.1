@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61F907A7CBE
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B1767A7B40
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235163AbjITMDs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:03:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33698 "EHLO
+        id S234641AbjITLuf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:50:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235134AbjITMDq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:46 -0400
+        with ESMTP id S234588AbjITLue (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ADD6110
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:03:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0816C433C7;
-        Wed, 20 Sep 2023 12:03:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B914D3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 597F4C433C9;
+        Wed, 20 Sep 2023 11:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211415;
-        bh=40fp3mHNnnykiizQvbpMe6c5Nzv2mA2wg3XH86Zsnw0=;
+        s=korg; t=1695210627;
+        bh=ntZMgMDKKF27ptitnLmbxkYsLp7QScID9alz7zchtmg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FQlDYNX0E7UuBp8O8j0uDfcPusmgVG15d5JqYO8AbtRp/Rz4QQTdcHzUimwv93E6T
-         McwnxrjxkjkDkt5iONuKThzt+nCDGUIDqRyuhV0xAZnlvkaQIKY1y4HjSuHFg1GdpM
-         hrvPt+8Gor0XI1AkGjLj6kBQghx9OhDf19Qy1u0Y=
+        b=NNjA5aeJEIPOWtKKkz+CKoJFjmOU1i5TGIKAnL957bwX7/oeoRzZOdjM3gPOd+GjZ
+         DRedRJoS6cNxHaKMoR8KG3rT3jE7PQukv2bmBmIfF7jyfJQ2uIsE1jNYWCCJ01/2S+
+         VsmhVd68SXohKB8BrdGKjVXGBB1kiWfAzJPt+Yrg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 085/186] dma-buf/sync_file: Fix docs syntax
-Date:   Wed, 20 Sep 2023 13:29:48 +0200
-Message-ID: <20230920112839.955579898@linuxfoundation.org>
+Subject: [PATCH 6.5 145/211] scsi: qla2xxx: Fix NULL vs IS_ERR() bug for debugfs_create_dir()
+Date:   Wed, 20 Sep 2023 13:29:49 +0200
+Message-ID: <20230920112850.348692839@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 05d56d8079d510a2994039470f65bea85f0075ee ]
+[ Upstream commit d0b0822e32dbae80bbcb3cc86f34d28539d913df ]
 
-Fixes the warning:
+Since both debugfs_create_dir() and debugfs_create_file() return ERR_PTR
+and never NULL, use IS_ERR() instead of checking for NULL.
 
-  include/uapi/linux/sync_file.h:77: warning: Function parameter or member 'num_fences' not described in 'sync_file_info'
-
-Fixes: 2d75c88fefb2 ("staging/android: refactor SYNC IOCTLs")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20230724145000.125880-1-robdclark@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e98fb0f9208 ("scsi: qla2xxx: Setup debugfs entries for remote ports")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20230831140930.3166359-1-ruanjinjie@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/sync_file.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_dfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/uapi/linux/sync_file.h b/include/uapi/linux/sync_file.h
-index ee2dcfb3d6602..d7f7c04a6e0c1 100644
---- a/include/uapi/linux/sync_file.h
-+++ b/include/uapi/linux/sync_file.h
-@@ -52,7 +52,7 @@ struct sync_fence_info {
-  * @name:	name of fence
-  * @status:	status of fence. 1: signaled 0:active <0:error
-  * @flags:	sync_file_info flags
-- * @num_fences	number of fences in the sync_file
-+ * @num_fences:	number of fences in the sync_file
-  * @pad:	padding for 64-bit alignment, should always be zero
-  * @sync_fence_info: pointer to array of structs sync_fence_info with all
-  *		 fences in the sync_file
+diff --git a/drivers/scsi/qla2xxx/qla_dfs.c b/drivers/scsi/qla2xxx/qla_dfs.c
+index f060e593685de..a7a364760b800 100644
+--- a/drivers/scsi/qla2xxx/qla_dfs.c
++++ b/drivers/scsi/qla2xxx/qla_dfs.c
+@@ -116,7 +116,7 @@ qla2x00_dfs_create_rport(scsi_qla_host_t *vha, struct fc_port *fp)
+ 
+ 	sprintf(wwn, "pn-%016llx", wwn_to_u64(fp->port_name));
+ 	fp->dfs_rport_dir = debugfs_create_dir(wwn, vha->dfs_rport_root);
+-	if (!fp->dfs_rport_dir)
++	if (IS_ERR(fp->dfs_rport_dir))
+ 		return;
+ 	if (NVME_TARGET(vha->hw, fp))
+ 		debugfs_create_file("dev_loss_tmo", 0600, fp->dfs_rport_dir,
+@@ -708,14 +708,14 @@ qla2x00_dfs_setup(scsi_qla_host_t *vha)
+ 	if (IS_QLA27XX(ha) || IS_QLA83XX(ha) || IS_QLA28XX(ha)) {
+ 		ha->tgt.dfs_naqp = debugfs_create_file("naqp",
+ 		    0400, ha->dfs_dir, vha, &dfs_naqp_ops);
+-		if (!ha->tgt.dfs_naqp) {
++		if (IS_ERR(ha->tgt.dfs_naqp)) {
+ 			ql_log(ql_log_warn, vha, 0xd011,
+ 			       "Unable to create debugFS naqp node.\n");
+ 			goto out;
+ 		}
+ 	}
+ 	vha->dfs_rport_root = debugfs_create_dir("rports", ha->dfs_dir);
+-	if (!vha->dfs_rport_root) {
++	if (IS_ERR(vha->dfs_rport_root)) {
+ 		ql_log(ql_log_warn, vha, 0xd012,
+ 		       "Unable to create debugFS rports node.\n");
+ 		goto out;
 -- 
 2.40.1
 
