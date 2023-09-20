@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DCB97A7E1B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA0CB7A7E6E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235383AbjITMPg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:15:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49968 "EHLO
+        id S235567AbjITMR5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:17:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235260AbjITMP0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:26 -0400
+        with ESMTP id S235576AbjITMR4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745B893
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26EAC433CA;
-        Wed, 20 Sep 2023 12:15:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC64A18A
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8206C4339A;
+        Wed, 20 Sep 2023 12:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212120;
-        bh=LwBPq+eNK0+ERTpDRLT0ZcAisYCxwwz8URDXd41hAw8=;
+        s=korg; t=1695212258;
+        bh=54wNdgs0O0sngvfPcAWYfwCxThCI5tqOhJLdveA37nM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CqvF802w35zLYwlFsk4adUIDRfgqCLQWCY4i3nJE1NmyTSR7sB71czWszLDN2MGV8
-         lW20IgZRl8M+iuAAsWFhlbe70AsnkTvGf6NGXn0Q1xpXFTzcZP0RVNqOdLnTBck9R9
-         aCkDCu0Jy9n3GgxDx1ITUY4g5V0A8Uj4TE5xFRkE=
+        b=S4HehnmxO38YF/d1pk9DtrFb1SUYlpJqzva5cKRfWuDaPQsso7f0BMhdMVvxYW0mb
+         bRo+KrEXpvLiHUOC6jff6JOUlXbF5rUa+JXiQh9QhMw9EBd+xpf+jtyoD/W02sPrg/
+         Mo5gvitmwIXkVwOqboivj+3XDH+jtZJRRx0Crjk8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
+        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 157/273] serial: tegra: handle clk prepare error in tegra_uart_hw_init()
-Date:   Wed, 20 Sep 2023 13:29:57 +0200
-Message-ID: <20230920112851.381853847@linuxfoundation.org>
+Subject: [PATCH 4.19 158/273] amba: bus: fix refcount leak
+Date:   Wed, 20 Sep 2023 13:29:58 +0200
+Message-ID: <20230920112851.412157014@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
 References: <20230920112846.440597133@linuxfoundation.org>
@@ -53,39 +54,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 5abd01145d0cc6cd1b7c2fe6ee0b9ea0fa13671e ]
+[ Upstream commit e312cbdc11305568554a9e18a2ea5c2492c183f3 ]
 
-In tegra_uart_hw_init(), the return value of clk_prepare_enable() should
-be checked since it might fail.
+commit 5de1540b7bc4 ("drivers/amba: create devices from device tree")
+increases the refcount of of_node, but not releases it in
+amba_device_release, so there is refcount leak. By using of_node_put
+to avoid refcount leak.
 
-Fixes: e9ea096dd225 ("serial: tegra: add serial driver")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Link: https://lore.kernel.org/r/20230817105406.228674-1-yiyang13@huawei.com
+Fixes: 5de1540b7bc4 ("drivers/amba: create devices from device tree")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230821023928.3324283-1-peng.fan@oss.nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial-tegra.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/amba/bus.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/serial-tegra.c b/drivers/tty/serial/serial-tegra.c
-index 41fe45f2349ef..a30f7ed123469 100644
---- a/drivers/tty/serial/serial-tegra.c
-+++ b/drivers/tty/serial/serial-tegra.c
-@@ -944,7 +944,11 @@ static int tegra_uart_hw_init(struct tegra_uart_port *tup)
- 	tup->ier_shadow = 0;
- 	tup->current_baud = 0;
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+index e1992f361c9a6..2aaec96f83849 100644
+--- a/drivers/amba/bus.c
++++ b/drivers/amba/bus.c
+@@ -349,6 +349,7 @@ static void amba_device_release(struct device *dev)
+ {
+ 	struct amba_device *d = to_amba_device(dev);
  
--	clk_prepare_enable(tup->uart_clk);
-+	ret = clk_prepare_enable(tup->uart_clk);
-+	if (ret) {
-+		dev_err(tup->uport.dev, "could not enable clk\n");
-+		return ret;
-+	}
- 
- 	/* Reset the UART controller to clear all previous status.*/
- 	reset_control_assert(tup->rst);
++	of_node_put(d->dev.of_node);
+ 	if (d->res.parent)
+ 		release_resource(&d->res);
+ 	kfree(d);
 -- 
 2.40.1
 
