@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 926FF7A80C8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14C197A7E94
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236107AbjITMkf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:40:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43944 "EHLO
+        id S235603AbjITMTA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:19:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236408AbjITMkJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:40:09 -0400
+        with ESMTP id S235516AbjITMTA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B6A1C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:40:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B370BC433C7;
-        Wed, 20 Sep 2023 12:40:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F369283
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:18:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B524C433C8;
+        Wed, 20 Sep 2023 12:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213603;
-        bh=D+rc3AYTazAKIqbOU2CiahpxhEAh5jiE0YMkG+VX/Wc=;
+        s=korg; t=1695212333;
+        bh=0Y2qPj2Wnxm83dXxFWFNDMHMV6QPzU7OSWbU/2bEtoU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZKQi3K3gtm8xCMNdgYMfRnyiQdsgnRUNEambgJ/4EsOo3lI14/5Qg+LaoUnaRtsiS
-         ircJwsz7yFZkXo+XgBX3G+l5oW7WLGKOBC/LxcpjKnLk0Rki0Q7JAw1oEbQt2JOY7C
-         3fWUKKeD/K0ebjFwr+eSJKQbAbhCTmchPPoBCpQs=
+        b=vOfTiF80Vwtcltorx/mCLlSJyWpy06yu0W8i53WDYcxe11J7OLtHG1ibIjmxJorjL
+         P5lYKiKyVOxiuMl5mSSaAfM0vyQctqSVI2mTaA8msJSSKuZRdTw1FS4SpPJT5a+w1Y
+         RoztPp1cDmk4m6HPYXkbCKdDzUsC9moOBVB4dsLs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Raag Jadav <raag.jadav@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 271/367] igbvf: Change IGBVF_MIN to allow set rx/tx value between 64 and 80
+Subject: [PATCH 4.19 208/273] watchdog: intel-mid_wdt: add MODULE_ALIAS() to allow auto-load
 Date:   Wed, 20 Sep 2023 13:30:48 +0200
-Message-ID: <20230920112905.578412830@linuxfoundation.org>
+Message-ID: <20230920112852.906184606@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Zaborska <olga.zaborska@intel.com>
+From: Raag Jadav <raag.jadav@intel.com>
 
-[ Upstream commit 8360717524a24a421c36ef8eb512406dbd42160a ]
+[ Upstream commit cf38e7691c85f1b09973b22a0b89bf1e1228d2f9 ]
 
-Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
-value between 64 and 80. All igbvf devices can use as low as 64 descriptors.
-This change will unify igbvf with other drivers.
-Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
+When built with CONFIG_INTEL_MID_WATCHDOG=m, currently the driver
+needs to be loaded manually, for the lack of module alias.
+This causes unintended resets in cases where watchdog timer is
+set-up by bootloader and the driver is not explicitly loaded.
+Add MODULE_ALIAS() to load the driver automatically at boot and
+avoid this issue.
 
-Fixes: d4e0fe01a38a ("igbvf: add new driver to support 82576 virtual functions")
-Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 87a1ef8058d9 ("watchdog: add Intel MID watchdog driver support")
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230811120220.31578-1-raag.jadav@intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igbvf/igbvf.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/watchdog/intel-mid_wdt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/igbvf/igbvf.h b/drivers/net/ethernet/intel/igbvf/igbvf.h
-index eee26a3be90ba..52545cb25d058 100644
---- a/drivers/net/ethernet/intel/igbvf/igbvf.h
-+++ b/drivers/net/ethernet/intel/igbvf/igbvf.h
-@@ -39,11 +39,11 @@ enum latency_range {
- /* Tx/Rx descriptor defines */
- #define IGBVF_DEFAULT_TXD	256
- #define IGBVF_MAX_TXD		4096
--#define IGBVF_MIN_TXD		80
-+#define IGBVF_MIN_TXD		64
- 
- #define IGBVF_DEFAULT_RXD	256
- #define IGBVF_MAX_RXD		4096
--#define IGBVF_MIN_RXD		80
-+#define IGBVF_MIN_RXD		64
- 
- #define IGBVF_MIN_ITR_USECS	10 /* 100000 irq/sec */
- #define IGBVF_MAX_ITR_USECS	10000 /* 100    irq/sec */
+diff --git a/drivers/watchdog/intel-mid_wdt.c b/drivers/watchdog/intel-mid_wdt.c
+index 72c108a12c19d..0dec3fba02b99 100644
+--- a/drivers/watchdog/intel-mid_wdt.c
++++ b/drivers/watchdog/intel-mid_wdt.c
+@@ -186,3 +186,4 @@ module_platform_driver(mid_wdt_driver);
+ MODULE_AUTHOR("David Cohen <david.a.cohen@linux.intel.com>");
+ MODULE_DESCRIPTION("Watchdog Driver for Intel MID platform");
+ MODULE_LICENSE("GPL");
++MODULE_ALIAS("platform:intel_mid_wdt");
 -- 
 2.40.1
 
