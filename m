@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE1A57A7B00
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 321AC7A7C79
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234617AbjITLsV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:48:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57920 "EHLO
+        id S234904AbjITMBk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:01:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234621AbjITLsU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:20 -0400
+        with ESMTP id S235020AbjITMBg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59926B0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D43C433C9;
-        Wed, 20 Sep 2023 11:48:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95E3C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:01:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5D7C433C8;
+        Wed, 20 Sep 2023 12:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210494;
-        bh=Lqplz51n2Yy8GLjR907fqWtoD+2t2iSJSfeINJx4Drk=;
+        s=korg; t=1695211290;
+        bh=89pGBB3QrgwjERkYak2yXg3tRBCv9OFUYhwIUByvz2c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LAbshIt3oT5fQH8e7uROH4IlrUg3GA4PgtBJkAg3xMMqfpOcy4TYooT3vkIY9kXM9
-         BXsiJrrLtqVk8IV/Oc1qXxu6i9j3yArQhW0yI0bkcPBubITBFBve1lnMp1muaJUZ3q
-         5YUz0L1079grV8VyWFJHMQHrNdwIy+MQYrxEO2rk=
+        b=mgzgetBT5YZyP2gWl7ApbM8kjVs+fv4f4cXMBA7zvZc27BWd8r0O5dVcOmsXlYqDk
+         0KTyo+Fx2VJx0NZGYXImP/UE6TS1ntAqQbhoxPTSeJ0iMwZq1Udr7xpXXRgybhc4A6
+         KBcx7Q1JoAcWGeSHCF8+ebUHh1Latsk7FvaUlCwY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+90a11e6b1e810785c6ff@syzkaller.appspotmail.com,
-        Liu Shixin <liushixin2@huawei.com>,
-        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 096/211] jfs: fix invalid free of JFS_IP(ipimap)->i_imap in diUnmount
-Date:   Wed, 20 Sep 2023 13:29:00 +0200
-Message-ID: <20230920112848.785596657@linuxfoundation.org>
+Subject: [PATCH 4.14 038/186] regmap: rbtree: Use alloc_flags for memory allocations
+Date:   Wed, 20 Sep 2023 13:29:01 +0200
+Message-ID: <20230920112838.331691452@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,79 +51,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Shixin via Jfs-discussion <jfs-discussion@lists.sourceforge.net>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 6e2bda2c192d0244b5a78b787ef20aa10cb319b7 ]
+[ Upstream commit 0c8b0bf42c8cef56f7cd9cd876fbb7ece9217064 ]
 
-syzbot found an invalid-free in diUnmount:
+The kunit tests discovered a sleeping in atomic bug.  The allocations
+in the regcache-rbtree code should use the map->alloc_flags instead of
+GFP_KERNEL.
 
-BUG: KASAN: double-free in slab_free mm/slub.c:3661 [inline]
-BUG: KASAN: double-free in __kmem_cache_free+0x71/0x110 mm/slub.c:3674
-Free of addr ffff88806f410000 by task syz-executor131/3632
+[    5.005510] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
+[    5.005960] in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 117, name: kunit_try_catch
+[    5.006219] preempt_count: 1, expected: 0
+[    5.006414] 1 lock held by kunit_try_catch/117:
+[    5.006590]  #0: 833b9010 (regmap_kunit:86:(config)->lock){....}-{2:2}, at: regmap_lock_spinlock+0x14/0x1c
+[    5.007493] irq event stamp: 162
+[    5.007627] hardirqs last  enabled at (161): [<80786738>] crng_make_state+0x1a0/0x294
+[    5.007871] hardirqs last disabled at (162): [<80c531ec>] _raw_spin_lock_irqsave+0x7c/0x80
+[    5.008119] softirqs last  enabled at (0): [<801110ac>] copy_process+0x810/0x2138
+[    5.008356] softirqs last disabled at (0): [<00000000>] 0x0
+[    5.008688] CPU: 0 PID: 117 Comm: kunit_try_catch Tainted: G                 N 6.4.4-rc3-g0e8d2fdfb188 #1
+[    5.009011] Hardware name: Generic DT based system
+[    5.009277]  unwind_backtrace from show_stack+0x18/0x1c
+[    5.009497]  show_stack from dump_stack_lvl+0x38/0x5c
+[    5.009676]  dump_stack_lvl from __might_resched+0x188/0x2d0
+[    5.009860]  __might_resched from __kmem_cache_alloc_node+0x1dc/0x25c
+[    5.010061]  __kmem_cache_alloc_node from kmalloc_trace+0x30/0xc8
+[    5.010254]  kmalloc_trace from regcache_rbtree_write+0x26c/0x468
+[    5.010446]  regcache_rbtree_write from _regmap_write+0x88/0x140
+[    5.010634]  _regmap_write from regmap_write+0x44/0x68
+[    5.010803]  regmap_write from basic_read_write+0x8c/0x270
+[    5.010980]  basic_read_write from kunit_try_run_case+0x48/0xa0
 
- CPU: 0 PID: 3632 Comm: syz-executor131 Not tainted 6.1.0-rc7-syzkaller-00012-gca57f02295f1 #0
- Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
- Call Trace:
-  <TASK>
-  __dump_stack lib/dump_stack.c:88 [inline]
-  dump_stack_lvl+0x1b1/0x28e lib/dump_stack.c:106
-  print_address_description+0x74/0x340 mm/kasan/report.c:284
-  print_report+0x107/0x1f0 mm/kasan/report.c:395
-  kasan_report_invalid_free+0xac/0xd0 mm/kasan/report.c:460
-  ____kasan_slab_free+0xfb/0x120
-  kasan_slab_free include/linux/kasan.h:177 [inline]
-  slab_free_hook mm/slub.c:1724 [inline]
-  slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1750
-  slab_free mm/slub.c:3661 [inline]
-  __kmem_cache_free+0x71/0x110 mm/slub.c:3674
-  diUnmount+0xef/0x100 fs/jfs/jfs_imap.c:195
-  jfs_umount+0x108/0x370 fs/jfs/jfs_umount.c:63
-  jfs_put_super+0x86/0x190 fs/jfs/super.c:194
-  generic_shutdown_super+0x130/0x310 fs/super.c:492
-  kill_block_super+0x79/0xd0 fs/super.c:1428
-  deactivate_locked_super+0xa7/0xf0 fs/super.c:332
-  cleanup_mnt+0x494/0x520 fs/namespace.c:1186
-  task_work_run+0x243/0x300 kernel/task_work.c:179
-  exit_task_work include/linux/task_work.h:38 [inline]
-  do_exit+0x664/0x2070 kernel/exit.c:820
-  do_group_exit+0x1fd/0x2b0 kernel/exit.c:950
-  __do_sys_exit_group kernel/exit.c:961 [inline]
-  __se_sys_exit_group kernel/exit.c:959 [inline]
-  __x64_sys_exit_group+0x3b/0x40 kernel/exit.c:959
-  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-  do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
-  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-[...]
-
-JFS_IP(ipimap)->i_imap is not setting to NULL after free in diUnmount.
-If jfs_remount() free JFS_IP(ipimap)->i_imap but then failed at diMount().
-JFS_IP(ipimap)->i_imap will be freed once again.
-Fix this problem by setting JFS_IP(ipimap)->i_imap to NULL after free.
-
-Reported-by: syzbot+90a11e6b1e810785c6ff@syzkaller.appspotmail.com
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: 28644c809f44 ("regmap: Add the rbtree cache support")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/all/ee59d128-413c-48ad-a3aa-d9d350c80042@roeck-us.net/
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/58f12a07-5f4b-4a8f-ab84-0a42d1908cb9@moroto.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_imap.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/regmap/regcache-rbtree.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 390cbfce391fc..6fb28572cb2c6 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -193,6 +193,7 @@ int diUnmount(struct inode *ipimap, int mounterror)
- 	 * free in-memory control structure
- 	 */
- 	kfree(imap);
-+	JFS_IP(ipimap)->i_imap = NULL;
+diff --git a/drivers/base/regmap/regcache-rbtree.c b/drivers/base/regmap/regcache-rbtree.c
+index e9b7ce8c272c6..7353c55270874 100644
+--- a/drivers/base/regmap/regcache-rbtree.c
++++ b/drivers/base/regmap/regcache-rbtree.c
+@@ -291,7 +291,7 @@ static int regcache_rbtree_insert_to_block(struct regmap *map,
  
- 	return (0);
- }
+ 	blk = krealloc(rbnode->block,
+ 		       blklen * map->cache_word_size,
+-		       GFP_KERNEL);
++		       map->alloc_flags);
+ 	if (!blk)
+ 		return -ENOMEM;
+ 
+@@ -300,7 +300,7 @@ static int regcache_rbtree_insert_to_block(struct regmap *map,
+ 	if (BITS_TO_LONGS(blklen) > BITS_TO_LONGS(rbnode->blklen)) {
+ 		present = krealloc(rbnode->cache_present,
+ 				   BITS_TO_LONGS(blklen) * sizeof(*present),
+-				   GFP_KERNEL);
++				   map->alloc_flags);
+ 		if (!present)
+ 			return -ENOMEM;
+ 
+@@ -334,7 +334,7 @@ regcache_rbtree_node_alloc(struct regmap *map, unsigned int reg)
+ 	const struct regmap_range *range;
+ 	int i;
+ 
+-	rbnode = kzalloc(sizeof(*rbnode), GFP_KERNEL);
++	rbnode = kzalloc(sizeof(*rbnode), map->alloc_flags);
+ 	if (!rbnode)
+ 		return NULL;
+ 
+@@ -360,13 +360,13 @@ regcache_rbtree_node_alloc(struct regmap *map, unsigned int reg)
+ 	}
+ 
+ 	rbnode->block = kmalloc_array(rbnode->blklen, map->cache_word_size,
+-				      GFP_KERNEL);
++				      map->alloc_flags);
+ 	if (!rbnode->block)
+ 		goto err_free;
+ 
+ 	rbnode->cache_present = kcalloc(BITS_TO_LONGS(rbnode->blklen),
+ 					sizeof(*rbnode->cache_present),
+-					GFP_KERNEL);
++					map->alloc_flags);
+ 	if (!rbnode->cache_present)
+ 		goto err_free_block;
+ 
 -- 
 2.40.1
 
