@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 651667A7BE1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCEB07A7CC5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234895AbjITL4V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:56:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33590 "EHLO
+        id S235049AbjITMEA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:04:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234857AbjITL4U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:20 -0400
+        with ESMTP id S235091AbjITMD5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29D8792
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710CCC433C7;
-        Wed, 20 Sep 2023 11:56:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7514B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:03:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19043C433C8;
+        Wed, 20 Sep 2023 12:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210971;
-        bh=fc4kj3Cd/8xnque4OU3OkMHAQSAH1vexi1BLcpXzVM8=;
+        s=korg; t=1695211431;
+        bh=DiVIDBvTQnbNZp1DWcNZhr9Bc69Ul26PEe6mK7x+WgM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l1IWMYtms6w/RkKdCQb7TROSH4t4IZMrDOeSm/pj1PTa0dxa1xE8iIgI6p9KilY58
-         TKdREulrUYwP7C5WgHlbCmtshdcJ5KUhFwhoruXGFW/HBpU6A5lZwwKyCIIfl871yj
-         D9DB7aO0ieHUnVsZoBkWrTkRoP2v6TDMcDf8yunc=
+        b=FVPXYwU0L44eSBJQohLJvEMWremMAnzpQ/IChOSLD5CfqZ1U8gSvUCDVtgaBEqRKx
+         ilJTH5+AcPVEGRPs8jkmhlfv8uq6HFV47MNgV6g7XN3K4nGmxASHt4Ak32jgzfQ87T
+         bre/Z4zy1Ngg+kDR4zmbXZbD+MnzyJ67iz44Iifw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fabio Estevam <festevam@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Richard Zhu <hongxing.zhu@nxp.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/139] PCI: dwc: Provide deinit callback for i.MX
+Subject: [PATCH 4.14 091/186] serial: tegra: handle clk prepare error in tegra_uart_hw_init()
 Date:   Wed, 20 Sep 2023 13:29:54 +0200
-Message-ID: <20230920112837.932805948@linuxfoundation.org>
+Message-ID: <20230920112840.207574157@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +49,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit fc8b24c28bec19fc0621d108b9ee81ddfdedb25a ]
+[ Upstream commit 5abd01145d0cc6cd1b7c2fe6ee0b9ea0fa13671e ]
 
-The i.MX integration for the DesignWare PCI controller has a _host_exit()
-operation which undoes everything that the _host_init() operation does but
-does not wire this up as the host_deinit callback for the core, or call it
-in any path other than suspend. This means that if we ever unwind the
-initial probe of the device, for example because it fails, the regulator
-core complains that the regulators for the device were left enabled:
+In tegra_uart_hw_init(), the return value of clk_prepare_enable() should
+be checked since it might fail.
 
-imx6q-pcie 33800000.pcie: iATU: unroll T, 4 ob, 4 ib, align 64K, limit 16G
-imx6q-pcie 33800000.pcie: Phy link never came up
-imx6q-pcie 33800000.pcie: Phy link never came up
-imx6q-pcie: probe of 33800000.pcie failed with error -110
-------------[ cut here ]------------
-WARNING: CPU: 2 PID: 46 at drivers/regulator/core.c:2396 _regulator_put+0x110/0x128
-
-Wire up the callback so that the core can clean up after itself.
-
-Link: https://lore.kernel.org/r/20230731-pci-imx-regulator-cleanup-v2-1-fc8fa5c9893d@kernel.org
-Tested-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Richard Zhu <hongxing.zhu@nxp.com>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: e9ea096dd225 ("serial: tegra: add serial driver")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Link: https://lore.kernel.org/r/20230817105406.228674-1-yiyang13@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/serial-tegra.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 47db2d20568ef..388354a8e31cf 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -999,6 +999,7 @@ static void imx6_pcie_host_exit(struct dw_pcie_rp *pp)
+diff --git a/drivers/tty/serial/serial-tegra.c b/drivers/tty/serial/serial-tegra.c
+index a13d6d4674bcc..05e522be94669 100644
+--- a/drivers/tty/serial/serial-tegra.c
++++ b/drivers/tty/serial/serial-tegra.c
+@@ -827,7 +827,11 @@ static int tegra_uart_hw_init(struct tegra_uart_port *tup)
+ 	tup->ier_shadow = 0;
+ 	tup->current_baud = 0;
  
- static const struct dw_pcie_host_ops imx6_pcie_host_ops = {
- 	.host_init = imx6_pcie_host_init,
-+	.host_deinit = imx6_pcie_host_exit,
- };
+-	clk_prepare_enable(tup->uart_clk);
++	ret = clk_prepare_enable(tup->uart_clk);
++	if (ret) {
++		dev_err(tup->uport.dev, "could not enable clk\n");
++		return ret;
++	}
  
- static const struct dw_pcie_ops dw_pcie_ops = {
+ 	/* Reset the UART controller to clear all previous status.*/
+ 	reset_control_assert(tup->rst);
 -- 
 2.40.1
 
