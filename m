@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B3C7A7DF7
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 667127A801A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:32:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235497AbjITMOC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:14:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39586 "EHLO
+        id S236168AbjITMc4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:32:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235514AbjITMOC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:02 -0400
+        with ESMTP id S236162AbjITMcz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:32:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A7A100
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E451C433C8;
-        Wed, 20 Sep 2023 12:13:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 551A483
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:32:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988C3C433C9;
+        Wed, 20 Sep 2023 12:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212030;
-        bh=D8FQM2B5gtcVg83pNj6wDnXrxfCCZDu0OHqxk+xocn4=;
+        s=korg; t=1695213167;
+        bh=KODJJ1y7dGXxo4EgRRmJ6RtAsPgJjMu37o444/oYzjg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r17Vz9YxYR/dTAiQYotc2/+pie7/DOlxLeBJbkZ4LOV6pbxlhid5C4GJoCAZm6DoK
-         Ltgao1iANDNna8nRJimUQ2mKci7LLRfRbxH7n06NmLvahCZPWb9G2DZFC1mwbmR4kd
-         LM3Z9vlL47lYzVqMzLGzSDxEgZlXmc1qvndF2ezY=
+        b=JM3Va8JOLrcZfSxgXvB6h7g/tJa02u7DPwa42ishP8vIrjBKaExtP95IiYwt5iPI1
+         DdInNXiYakWglN5jQd8yvqAgNAZ+a1Nzy1AnXv1EWnEHhBWdZujkOgttSl4mWB1qYr
+         N2SpIigcrC5TZ58rMUzsgi9eb0PZ9ZGK13zvWR/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Foss <rfoss@kernel.org>,
-        Nuno Sa <nuno.sa@analog.com>,
-        Bogdan Togorean <bogdan.togorean@analog.com>,
-        Alexandru Ardelean <alex@shruggie.ro>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Chris Leech <cleech@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 095/273] drm: adv7511: Fix low refresh rate register for ADV7533/5
-Date:   Wed, 20 Sep 2023 13:28:55 +0200
-Message-ID: <20230920112849.376810127@linuxfoundation.org>
+Subject: [PATCH 5.4 159/367] scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()
+Date:   Wed, 20 Sep 2023 13:28:56 +0200
+Message-ID: <20230920112902.767363118@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +51,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bogdan Togorean <bogdan.togorean@analog.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit d281eeaa4de2636ff0c8e6ae387bb07b50e5fcbb ]
+[ Upstream commit ce51c817008450ef4188471db31639d42d37a5e1 ]
 
-For ADV7533 and ADV7535 low refresh rate is selected using
-bits [3:2] of 0x4a main register.
-So depending on ADV model write 0xfb or 0x4a register.
+The functions iscsi_if_set_param() and iscsi_if_set_host_param() convert an
+nlattr payload to type char* and then call C string handling functions like
+sscanf and kstrdup:
 
-Fixes: 2437e7cd88e8 ("drm/bridge: adv7533: Initial support for ADV7533")
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: Bogdan Togorean <bogdan.togorean@analog.com>
-Signed-off-by: Alexandru Ardelean <alex@shruggie.ro>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230719060143.63649-1-alex@shruggie.ro
+  char *data = (char*)ev + sizeof(*ev);
+  ...
+  sscanf(data, "%d", &value);
+
+However, since the nlattr is provided by the user-space program and the
+nlmsg skb is allocated with GFP_KERNEL instead of GFP_ZERO flag (see
+netlink_alloc_large_skb() in netlink_sendmsg()), dirty data on the heap can
+lead to an OOB access for those string handling functions.
+
+By investigating how the bug is introduced, we find it is really
+interesting as the old version parsing code starting from commit
+fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up") treated
+the nlattr as integer bytes instead of string and had length check in
+iscsi_copy_param():
+
+  if (ev->u.set_param.len != sizeof(uint32_t))
+    BUG();
+
+But, since the commit a54a52caad4b ("[SCSI] iscsi: fixup set/get param
+functions"), the code treated the nlattr as C string while forgetting to
+add any strlen checks(), opening the possibility of an OOB access.
+
+Fix the potential OOB by adding the strlen() check before accessing the
+buf. If the data passes this check, all low-level set_param handlers can
+safely treat this buf as legal C string.
+
+Fixes: fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up")
+Fixes: 1d9bf13a9cf9 ("[SCSI] iscsi class: add iscsi host set param event")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230723075820.3713119-1-linma@zju.edu.cn
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/scsi/scsi_transport_iscsi.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-index 31b75d3ca6e90..85aba4c38dc00 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
-@@ -756,8 +756,13 @@ static void adv7511_mode_set(struct adv7511 *adv7511,
- 	else
- 		low_refresh_rate = ADV7511_LOW_REFRESH_RATE_NONE;
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index f6cce0befa7de..51f53638629cb 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -2767,6 +2767,10 @@ iscsi_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev)
+ 	if (!conn || !session)
+ 		return -EINVAL;
  
--	regmap_update_bits(adv7511->regmap, 0xfb,
--		0x6, low_refresh_rate << 1);
-+	if (adv7511->type == ADV7511)
-+		regmap_update_bits(adv7511->regmap, 0xfb,
-+				   0x6, low_refresh_rate << 1);
-+	else
-+		regmap_update_bits(adv7511->regmap, 0x4a,
-+				   0xc, low_refresh_rate << 2);
++	/* data will be regarded as NULL-ended string, do length check */
++	if (strlen(data) > ev->u.set_param.len)
++		return -EINVAL;
 +
- 	regmap_update_bits(adv7511->regmap, 0x17,
- 		0x60, (vsync_polarity << 6) | (hsync_polarity << 5));
+ 	switch (ev->u.set_param.param) {
+ 	case ISCSI_PARAM_SESS_RECOVERY_TMO:
+ 		sscanf(data, "%d", &value);
+@@ -2919,6 +2923,10 @@ iscsi_set_host_param(struct iscsi_transport *transport,
+ 		return -ENODEV;
+ 	}
  
++	/* see similar check in iscsi_if_set_param() */
++	if (strlen(data) > ev->u.set_host_param.len)
++		return -EINVAL;
++
+ 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
+ 					data, ev->u.set_host_param.len);
+ 	scsi_host_put(shost);
 -- 
 2.40.1
 
