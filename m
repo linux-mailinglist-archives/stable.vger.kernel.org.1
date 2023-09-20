@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62F917A7DCF
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 551587A7FF2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235424AbjITMMb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:12:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
+        id S236109AbjITMbg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:31:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235399AbjITMMa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:12:30 -0400
+        with ESMTP id S236079AbjITMbf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A90CB4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1894C433C9;
-        Wed, 20 Sep 2023 12:12:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7200AB6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2852C433C7;
+        Wed, 20 Sep 2023 12:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211945;
-        bh=gbz+qY2/jKqK0UiOWhiAUJpHJpijekZKuyZz0auXE6Y=;
+        s=korg; t=1695213089;
+        bh=9+u8O2HQM+a8mvgKyFBMMfVAiOEFJlglDrWm/TQOHLE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aAPyZBHo2e12r5Bn6ejrpz1vQ9dS3V1wCPF+MQ9mkFXOdEL/niJM44o2oN1u/GplG
-         D++v3TNSWqTB6z/b34AP0H2RmFBtTJbxrsFqqd8Ki4+oS3QpEuhYwDAfgSNMVGSE5V
-         P7O2/RbtVps8GAcB7Lygg7Zr2RV9tuIZzUxfzdFc=
+        b=ZVe2ITYjN6Yt51Hu9Tgf8nWD9eQHjCVGSCvWV6Ed9RwL8hz73gVVU6GBVMzg+oJVQ
+         nP+maeABw7ssUtBh5NgmFGGHnf/rhyfvw9pn0ukZ0oLwfDK+iY7AsUIgFrlZndNFzU
+         dUtQz9yeHBXCCbzYUzjFO/YUr/oYy8tmllbScvlo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 067/273] wifi: mwifiex: avoid possible NULL skb pointer dereference
-Date:   Wed, 20 Sep 2023 13:28:27 +0200
-Message-ID: <20230920112848.537057756@linuxfoundation.org>
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 131/367] PCI/ASPM: Use RMW accessors for changing LNKCTL
+Date:   Wed, 20 Sep 2023 13:28:28 +0200
+Message-ID: <20230920112902.080329068@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,52 +53,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 35a7a1ce7c7d61664ee54f5239a1f120ab95a87e ]
+[ Upstream commit e09060b3b6b4661278ff8e1b7b81a37d5ea86eae ]
 
-In 'mwifiex_handle_uap_rx_forward()', always check the value
-returned by 'skb_copy()' to avoid potential NULL pointer
-dereference in 'mwifiex_uap_queue_bridged_pkt()', and drop
-original skb in case of copying failure.
+Don't assume that the device is fully under the control of ASPM and use RMW
+capability accessors which do proper locking to avoid losing concurrent
+updates to the register values.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+If configuration fails in pcie_aspm_configure_common_clock(), the
+function attempts to restore the old PCI_EXP_LNKCTL_CCC settings. Store
+only the old PCI_EXP_LNKCTL_CCC bit for the relevant devices rather
+than the content of the whole LNKCTL registers. It aligns better with
+how pcie_lnkctl_clear_and_set() expects its parameter and makes the
+code more obvious to understand.
 
-Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230814095041.16416-1-dmantipov@yandex.ru
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Fixes: 2a42d9dba784 ("PCIe: ASPM: Break out of endless loop waiting for PCI config bits to switch")
+Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
+Link: https://lore.kernel.org/r/20230717120503.15276-5-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/pci/pcie/aspm.c | 30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index c723eb16d0914..987057af00fb3 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -266,7 +266,15 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 55270180ae081..ee51e433fdedb 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -257,7 +257,7 @@ static int pcie_retrain_link(struct pcie_link_state *link)
+ static void pcie_aspm_configure_common_clock(struct pcie_link_state *link)
+ {
+ 	int same_clock = 1;
+-	u16 reg16, parent_reg, child_reg[8];
++	u16 reg16, ccc, parent_old_ccc, child_old_ccc[8];
+ 	struct pci_dev *child, *parent = link->pdev;
+ 	struct pci_bus *linkbus = parent->subordinate;
+ 	/*
+@@ -279,6 +279,7 @@ static void pcie_aspm_configure_common_clock(struct pcie_link_state *link)
  
- 	if (is_multicast_ether_addr(ra)) {
- 		skb_uap = skb_copy(skb, GFP_ATOMIC);
--		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
-+		if (likely(skb_uap)) {
-+			mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
-+		} else {
-+			mwifiex_dbg(adapter, ERROR,
-+				    "failed to copy skb for uAP\n");
-+			priv->stats.rx_dropped++;
-+			dev_kfree_skb_any(skb);
-+			return -1;
-+		}
- 	} else {
- 		if (mwifiex_get_sta_entry(priv, ra)) {
- 			/* Requeue Intra-BSS packet */
+ 	/* Port might be already in common clock mode */
+ 	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
++	parent_old_ccc = reg16 & PCI_EXP_LNKCTL_CCC;
+ 	if (same_clock && (reg16 & PCI_EXP_LNKCTL_CCC)) {
+ 		bool consistent = true;
+ 
+@@ -295,34 +296,29 @@ static void pcie_aspm_configure_common_clock(struct pcie_link_state *link)
+ 		pci_warn(parent, "ASPM: current common clock configuration is broken, reconfiguring\n");
+ 	}
+ 
++	ccc = same_clock ? PCI_EXP_LNKCTL_CCC : 0;
+ 	/* Configure downstream component, all functions */
+ 	list_for_each_entry(child, &linkbus->devices, bus_list) {
+ 		pcie_capability_read_word(child, PCI_EXP_LNKCTL, &reg16);
+-		child_reg[PCI_FUNC(child->devfn)] = reg16;
+-		if (same_clock)
+-			reg16 |= PCI_EXP_LNKCTL_CCC;
+-		else
+-			reg16 &= ~PCI_EXP_LNKCTL_CCC;
+-		pcie_capability_write_word(child, PCI_EXP_LNKCTL, reg16);
++		child_old_ccc[PCI_FUNC(child->devfn)] = reg16 & PCI_EXP_LNKCTL_CCC;
++		pcie_capability_clear_and_set_word(child, PCI_EXP_LNKCTL,
++						   PCI_EXP_LNKCTL_CCC, ccc);
+ 	}
+ 
+ 	/* Configure upstream component */
+-	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
+-	parent_reg = reg16;
+-	if (same_clock)
+-		reg16 |= PCI_EXP_LNKCTL_CCC;
+-	else
+-		reg16 &= ~PCI_EXP_LNKCTL_CCC;
+-	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
++	pcie_capability_clear_and_set_word(parent, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_CCC, ccc);
+ 
+ 	if (pcie_retrain_link(link)) {
+ 
+ 		/* Training failed. Restore common clock configurations */
+ 		pci_err(parent, "ASPM: Could not configure common clock\n");
+ 		list_for_each_entry(child, &linkbus->devices, bus_list)
+-			pcie_capability_write_word(child, PCI_EXP_LNKCTL,
+-					   child_reg[PCI_FUNC(child->devfn)]);
+-		pcie_capability_write_word(parent, PCI_EXP_LNKCTL, parent_reg);
++			pcie_capability_clear_and_set_word(child, PCI_EXP_LNKCTL,
++							   PCI_EXP_LNKCTL_CCC,
++							   child_old_ccc[PCI_FUNC(child->devfn)]);
++		pcie_capability_clear_and_set_word(parent, PCI_EXP_LNKCTL,
++						   PCI_EXP_LNKCTL_CCC, parent_old_ccc);
+ 	}
+ }
+ 
 -- 
 2.40.1
 
