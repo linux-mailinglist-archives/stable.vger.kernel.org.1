@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA8167A7BF2
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE11C7A7CB6
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234892AbjITL5E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:57:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56072 "EHLO
+        id S235076AbjITMDh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:03:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234866AbjITL5D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:03 -0400
+        with ESMTP id S235049AbjITMDh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6230FB
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0FA5C433CC;
-        Wed, 20 Sep 2023 11:56:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9705ACE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:03:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2E2C433CA;
+        Wed, 20 Sep 2023 12:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211012;
-        bh=72cyP6cY/x0eHgMO1QHoRH59xEEvQGyLKV55OOu3gEs=;
+        s=korg; t=1695211404;
+        bh=qDAqrhYA9YnE9+z6M4KE9i6idbTkBTLKFfziP46sxBg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P7u9yzvEqCVzWMdKt1q+ib6YOq4G0w8sc99KlRg2QwqeCzA97WTg3lYsKzDGhhuyx
-         jcMnbavK8VzYQQBO6sDmlFPsHgxqF7MKXhu/Xc1NiDaPlpSTOnFjgGtJvhVFyiS0fg
-         JZnnzW/VQuma7mbRwu7nmaQui5I0L/M9Dkq9qIuE=
+        b=W62sIUbc/FPZA81qnnDGx8fQVkhPWn0guetVt/CoG/Ht8adgGsRUftkNV+/U8UFoy
+         IY9g2xvpiePM3bStRSuBdcR819dayL/LbvAQZSgYl+6KCs0NvhVwBQsq89GW3VWmPq
+         8YLT9jjFdF9MGtfieXlHol3SU/pkJxDgIZB2OsaI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/139] arm64: dts: qcom: sm6350: correct ramoops pmsg-size
+Subject: [PATCH 4.14 073/186] drivers: usb: smsusb: fix error handling code in smsusb_init_device
 Date:   Wed, 20 Sep 2023 13:29:36 +0200
-Message-ID: <20230920112837.203128071@linuxfoundation.org>
+Message-ID: <20230920112839.507302871@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +50,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Dongliang Mu <dzm91@hust.edu.cn>
 
-[ Upstream commit c86b97a72065e06eacb993dc71fa9febc93422af ]
+[ Upstream commit b9c7141f384097fa4fa67d2f72e5731d628aef7c ]
 
-There is no 'msg-size' property in ramoops, so assume intention was for
-'pmsg-size':
+The previous commit 4b208f8b561f ("[media] siano: register media controller
+earlier")moves siano_media_device_register before smscore_register_device,
+and adds corresponding error handling code if smscore_register_device
+fails. However, it misses the following error handling code of
+smsusb_init_device.
 
-  sm6350-sony-xperia-lena-pdx213.dtb: ramoops@ffc00000: Unevaluated properties are not allowed ('msg-size' was unexpected)
+Fix this by moving error handling code at the end of smsusb_init_device
+and adding a goto statement in the following error handling parts.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230618114442.140185-5-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 4b208f8b561f ("[media] siano: register media controller earlier")
+Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/siano/smsusb.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index 34c8de4f43fba..cea7ca3f326fc 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -346,7 +346,7 @@ ramoops: ramoops@ffc00000 {
- 			reg = <0 0xffc00000 0 0x100000>;
- 			record-size = <0x1000>;
- 			console-size = <0x40000>;
--			msg-size = <0x20000 0x20000>;
-+			pmsg-size = <0x20000>;
- 			ecc-size = <16>;
- 			no-map;
- 		};
+diff --git a/drivers/media/usb/siano/smsusb.c b/drivers/media/usb/siano/smsusb.c
+index 92a6192f9ab2b..1d67b4c1a020c 100644
+--- a/drivers/media/usb/siano/smsusb.c
++++ b/drivers/media/usb/siano/smsusb.c
+@@ -467,12 +467,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
+ 	rc = smscore_register_device(&params, &dev->coredev, mdev);
+ 	if (rc < 0) {
+ 		pr_err("smscore_register_device(...) failed, rc %d\n", rc);
+-		smsusb_term_device(intf);
+-#ifdef CONFIG_MEDIA_CONTROLLER_DVB
+-		media_device_unregister(mdev);
+-#endif
+-		kfree(mdev);
+-		return rc;
++		goto err_unregister_device;
+ 	}
+ 
+ 	smscore_set_board_id(dev->coredev, board_id);
+@@ -489,8 +484,7 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
+ 	rc = smsusb_start_streaming(dev);
+ 	if (rc < 0) {
+ 		pr_err("smsusb_start_streaming(...) failed\n");
+-		smsusb_term_device(intf);
+-		return rc;
++		goto err_unregister_device;
+ 	}
+ 
+ 	dev->state = SMSUSB_ACTIVE;
+@@ -498,13 +492,20 @@ static int smsusb_init_device(struct usb_interface *intf, int board_id)
+ 	rc = smscore_start_device(dev->coredev);
+ 	if (rc < 0) {
+ 		pr_err("smscore_start_device(...) failed\n");
+-		smsusb_term_device(intf);
+-		return rc;
++		goto err_unregister_device;
+ 	}
+ 
+ 	pr_debug("device 0x%p created\n", dev);
+ 
+ 	return rc;
++
++err_unregister_device:
++	smsusb_term_device(intf);
++#ifdef CONFIG_MEDIA_CONTROLLER_DVB
++	media_device_unregister(mdev);
++#endif
++	kfree(mdev);
++	return rc;
+ }
+ 
+ static int smsusb_probe(struct usb_interface *intf,
 -- 
 2.40.1
 
