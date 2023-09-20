@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 460BB7A7FB6
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3367A7D9F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236131AbjITMaJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:30:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58398 "EHLO
+        id S235437AbjITMKq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:10:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235883AbjITM3l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:29:41 -0400
+        with ESMTP id S235369AbjITMKi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:10:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2CC48F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:29:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286A1C433C8;
-        Wed, 20 Sep 2023 12:29:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 813D6D3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:10:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E3FC433CB;
+        Wed, 20 Sep 2023 12:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212975;
-        bh=zuwApQyc8Q6rvgKzkp3911pshkSJaW3XqPoJzBwWVlc=;
+        s=korg; t=1695211831;
+        bh=KMwybxpOHRcGAvvwHw597iQLctXboLAGaVAXqCmUexw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LH7mGvn+GBiNfwYnJ1X3/Dm/v4eHdxKccd0SP9Hjdxluv1dGI0KzNfD9T4NBi4B2e
-         561ryfML1ar4aFlxkGd8UbaOVh5k3d9hqUfnCWJeuXyhLOJa5erydxh/AuUGi0QEC1
-         E2m967omhYEoaliUm9Cq46tuTa+WX7E0ZvpyNWoc=
+        b=2sx7L1Mf2PHsVE7QyT4MwW2lgYo9v9v6b4cDYhbIvvCdDGLmnIvYnJwcgEM4Y7Yy1
+         BJTecmGNi4mfa/ekieA25PBlbdVKkTQf9/XrP/+vIJez4U1RmuW8IK4gueJuqp6gl8
+         yCyKRJ2gelETjC4sbNAWAtoXSvoREwNi9G7zLNL0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yangtao Li <frank.li@vivo.com>,
-        Thierry Reding <treding@nvidia.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Yuchung Cheng <ycheng@google.com>,
+        Neal Cardwell <ncardwell@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 114/367] drm/tegra: dpaux: Fix incorrect return value of platform_get_irq
+Subject: [PATCH 4.19 051/273] tcp: tcp_enter_quickack_mode() should be static
 Date:   Wed, 20 Sep 2023 13:28:11 +0200
-Message-ID: <20230920112901.566544880@linuxfoundation.org>
+Message-ID: <20230920112848.005726961@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yangtao Li <frank.li@vivo.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2a1ca44b654346cadfc538c4fb32eecd8daf3140 ]
+[ Upstream commit 03b123debcbc8db987bda17ed8412cc011064c22 ]
 
-When platform_get_irq fails, we should return dpaux->irq
-instead of -ENXIO.
+After commit d2ccd7bc8acd ("tcp: avoid resetting ACK timer in DCTCP"),
+tcp_enter_quickack_mode() is only used from net/ipv4/tcp_input.c.
 
-Fixes: 6b6b604215c6 ("drm/tegra: Add eDP support")
-Signed-off-by: Yangtao Li <frank.li@vivo.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230710032355.72914-13-frank.li@vivo.com
+Fixes: d2ccd7bc8acd ("tcp: avoid resetting ACK timer in DCTCP")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Yuchung Cheng <ycheng@google.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20230718162049.1444938-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/dpaux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/tcp.h    | 1 -
+ net/ipv4/tcp_input.c | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/dpaux.c b/drivers/gpu/drm/tegra/dpaux.c
-index 304434bf10814..a84d19087d094 100644
---- a/drivers/gpu/drm/tegra/dpaux.c
-+++ b/drivers/gpu/drm/tegra/dpaux.c
-@@ -448,7 +448,7 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index c6c48409e7b42..9c43299ff8708 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -346,7 +346,6 @@ ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
+ 			struct pipe_inode_info *pipe, size_t len,
+ 			unsigned int flags);
  
- 	dpaux->irq = platform_get_irq(pdev, 0);
- 	if (dpaux->irq < 0)
--		return -ENXIO;
-+		return dpaux->irq;
+-void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks);
+ static inline void tcp_dec_quickack_mode(struct sock *sk,
+ 					 const unsigned int pkts)
+ {
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 281f7799aeafc..9e1ec69fe5b46 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -216,7 +216,7 @@ static void tcp_incr_quickack(struct sock *sk, unsigned int max_quickacks)
+ 		icsk->icsk_ack.quick = quickacks;
+ }
  
- 	if (!pdev->dev.pm_domain) {
- 		dpaux->rst = devm_reset_control_get(&pdev->dev, "dpaux");
+-void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
++static void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 
+@@ -224,7 +224,6 @@ void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
+ 	icsk->icsk_ack.pingpong = 0;
+ 	icsk->icsk_ack.ato = TCP_ATO_MIN;
+ }
+-EXPORT_SYMBOL(tcp_enter_quickack_mode);
+ 
+ /* Send ACKs quickly, if "quick" count is not exhausted
+  * and the session is not interactive.
 -- 
 2.40.1
 
