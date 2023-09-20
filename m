@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D1F27A7FBA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB127A7DA2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235877AbjITMaM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:30:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55226 "EHLO
+        id S235293AbjITMKw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:10:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235963AbjITM3t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:29:49 -0400
+        with ESMTP id S235376AbjITMKr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:10:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78A58F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:29:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E92EC433C7;
-        Wed, 20 Sep 2023 12:29:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9FD7D8
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:10:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF8BC433C9;
+        Wed, 20 Sep 2023 12:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212983;
-        bh=xMUDFTfM132vnFJVuFVz9YCsr3Xbrm39bhny0J/XsaQ=;
+        s=korg; t=1695211839;
+        bh=7OTnmHECHLYoQFzH81PtQDAuoFXvltMDqWy1QBoG6ng=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bEPl7GDZz8lhz/rgCVlqIZlY0rOKEyz2MbTwtbBLjjBmmj7MKyJdHUGu/oWqRL2sL
-         7xcKRT2EXUG9gAB56eblj3G0H+N6DsznGSDXw4CnIWZSZVW7wRc/SyxytnJgR2bU6A
-         TqhoWahEEffEblRulinN2pP34+F4LmySuZQzW/k0=
+        b=cEmA1UyYbXA1uqIt3Jir46ouOrNi+bmtW+xFLEbHwA3qo6pI/FwkS3NmaBXChvLIH
+         USdSjpmk+XSVQ0bz8/V4UCOL3PfvzY/OXS/l7i5+5uaZxQE7rQb7OinYx9bTMt/xt1
+         Mz+WMXh5vMGHFmgAYraan6TWs/gyCQ2YwfX7A/L8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
+        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 117/367] drm/panel: simple: Add missing connector type and pixel format for AUO T215HVN01
+Subject: [PATCH 4.19 054/273] can: gs_usb: gs_usb_receive_bulk_callback(): count RX overflow errors also in case of OOM
 Date:   Wed, 20 Sep 2023 13:28:14 +0200
-Message-ID: <20230920112901.657393573@linuxfoundation.org>
+Message-ID: <20230920112848.100596697@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +49,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 7a675a8fa598edb29a664a91adb80f0340649f6f ]
+[ Upstream commit 6c8bc15f02b85bc8f47074110d8fd8caf7a1e42d ]
 
-The connector type and pixel format are missing for this panel,
-add them to prevent various drivers from failing to determine
-either of those parameters.
+In case of an RX overflow error from the CAN controller and an OOM
+where no skb can be allocated, the error counters are not incremented.
 
-Fixes: 7ee933a1d5c4 ("drm/panel: simple: Add support for AUO T215HVN01")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230709134914.449328-1-marex@denx.de
+Fix this by first incrementing the error counters and then allocate
+the skb.
+
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://lore.kernel.org/all/20230718-gs_usb-cleanups-v1-7-c3b9154ec605@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index a87b79c8d76f7..63d17607ef89c 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -919,7 +919,9 @@ static const struct panel_desc auo_t215hvn01 = {
- 	.delay = {
- 		.disable = 5,
- 		.unprepare = 1000,
--	}
-+	},
-+	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index b2e48c8595f0f..fd80af775ec75 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -389,6 +389,9 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	}
  
- static const struct drm_display_mode avic_tm070ddh03_mode = {
+ 	if (hf->flags & GS_CAN_FLAG_OVERFLOW) {
++		stats->rx_over_errors++;
++		stats->rx_errors++;
++
+ 		skb = alloc_can_err_skb(netdev, &cf);
+ 		if (!skb)
+ 			goto resubmit_urb;
+@@ -396,8 +399,6 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 		cf->can_id |= CAN_ERR_CRTL;
+ 		cf->can_dlc = CAN_ERR_DLC;
+ 		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
+-		stats->rx_over_errors++;
+-		stats->rx_errors++;
+ 		netif_rx(skb);
+ 	}
+ 
 -- 
 2.40.1
 
