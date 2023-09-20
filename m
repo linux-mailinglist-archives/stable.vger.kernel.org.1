@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B31B17A80B7
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23A6E7A814D
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235898AbjITMk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:40:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32810 "EHLO
+        id S236254AbjITMoQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:44:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236189AbjITMjn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:43 -0400
+        with ESMTP id S236273AbjITMoN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B14E5DE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F7BC433CA;
-        Wed, 20 Sep 2023 12:39:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B0EA9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0401C433C8;
+        Wed, 20 Sep 2023 12:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213561;
-        bh=ZGbWVUH03n8UQM3lutusxiP3RaIGBHv9R5AHygBUrTU=;
+        s=korg; t=1695213847;
+        bh=eBX61kjbRBW+wpxyX2nZ3UrE5mMibmUXv9/bJINOcpc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iPYzbCLcO/a1Vehc904Tt6Sy9iIRGZQrBeZC6uq8qCBwaaAFy7FSkZyWw1pI/DIET
-         gtZS1IPfjjeZOUAHCNYMDKblai+ScpU7eqEipU8QLpUJY4LaQTECtP0vIVOcQUwyol
-         hXbjG1rnsO1z/5iAUwlQSiI8wOhO+ezFL09O9qtc=
+        b=lCTgJ0BFk6K3w4teLFixOs8Uo17DPwdgcd86qgaa8RNcO4PMm3GWlML6//xaARWoc
+         TdmuOhdfwlsdpICTadJ0NfSPF7q5Kv8Mrln9WZm+KLZK+AtdUTsMfiOi6L5jKETPOT
+         O36sqHAmx/r9eb1BCXHGsBlvW2CwlOq6G479Of/0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Anand Jain <anand.jain@oracle.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 283/367] btrfs: use the correct superblock to compare fsid in btrfs_validate_super
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 002/110] btrfs: output extra debug info if we failed to find an inline backref
 Date:   Wed, 20 Sep 2023 13:31:00 +0200
-Message-ID: <20230920112905.890925724@linuxfoundation.org>
+Message-ID: <20230920112830.472407308@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,61 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anand Jain <anand.jain@oracle.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit d167aa76dc0683828588c25767da07fb549e4f48 upstream.
+[ Upstream commit 7f72f50547b7af4ddf985b07fc56600a4deba281 ]
 
-The function btrfs_validate_super() should verify the fsid in the provided
-superblock argument. Because, all its callers expect it to do that.
+[BUG]
+Syzbot reported several warning triggered inside
+lookup_inline_extent_backref().
 
-Such as in the following stack:
+[CAUSE]
+As usual, the reproducer doesn't reliably trigger locally here, but at
+least we know the WARN_ON() is triggered when an inline backref can not
+be found, and it can only be triggered when @insert is true. (I.e.
+inserting a new inline backref, which means the backref should already
+exist)
 
-   write_all_supers()
-       sb = fs_info->super_for_commit;
-       btrfs_validate_write_super(.., sb)
-         btrfs_validate_super(.., sb, ..)
+[ENHANCEMENT]
+After the WARN_ON(), dump all the parameters and the extent tree
+leaf to help debug.
 
-   scrub_one_super()
-	btrfs_validate_super(.., sb, ..)
-
-And
-   check_dev_super()
-	btrfs_validate_super(.., sb, ..)
-
-However, it currently verifies the fs_info::super_copy::fsid instead,
-which is not correct.  Fix this using the correct fsid in the superblock
-argument.
-
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Link: https://syzkaller.appspot.com/bug?extid=d6f9ff86c1d804ba2bc6
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/btrfs/extent-tree.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2480,11 +2480,10 @@ static int validate_super(struct btrfs_f
- 		ret = -EINVAL;
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 597cc2607481c..48f2de789b755 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -860,6 +860,11 @@ int lookup_inline_extent_backref(struct btrfs_trans_handle *trans,
+ 		err = -ENOENT;
+ 		goto out;
+ 	} else if (WARN_ON(ret)) {
++		btrfs_print_leaf(path->nodes[0]);
++		btrfs_err(fs_info,
++"extent item not found for insert, bytenr %llu num_bytes %llu parent %llu root_objectid %llu owner %llu offset %llu",
++			  bytenr, num_bytes, parent, root_objectid, owner,
++			  offset);
+ 		err = -EIO;
+ 		goto out;
  	}
- 
--	if (memcmp(fs_info->fs_devices->fsid, fs_info->super_copy->fsid,
--		   BTRFS_FSID_SIZE)) {
-+	if (memcmp(fs_info->fs_devices->fsid, sb->fsid, BTRFS_FSID_SIZE) != 0) {
- 		btrfs_err(fs_info,
- 		"superblock fsid doesn't match fsid of fs_devices: %pU != %pU",
--			fs_info->super_copy->fsid, fs_info->fs_devices->fsid);
-+			  sb->fsid, fs_info->fs_devices->fsid);
- 		ret = -EINVAL;
- 	}
- 
+-- 
+2.40.1
+
 
 
