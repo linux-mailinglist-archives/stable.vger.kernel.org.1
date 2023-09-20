@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5D287A7B46
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5681E7A7BE3
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234586AbjITLuu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:50:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54850 "EHLO
+        id S234427AbjITL4Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:56:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234588AbjITLut (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:49 -0400
+        with ESMTP id S234885AbjITL4Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC85A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4B6C433C7;
-        Wed, 20 Sep 2023 11:50:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBD76E9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD512C433C7;
+        Wed, 20 Sep 2023 11:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210644;
-        bh=NYnmvtAcI5LqQK8oCvpjduPimbFHidSbl1JmRELVe7g=;
+        s=korg; t=1695210977;
+        bh=qvrRD5ganrqTqn7Cw5heTGmraS+IQO2oazIJ7RMtv64=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vPaRzsSJ7+iPVReNcR6B7FVjspmLxQs4iL5mgeKC76x3ExKx6YOiOGK9Nnv7GQQlv
-         WdQKs6Zs/Wj9XpAsNeW8Yawc3BNrgTpRlzHiuMU9Yn/rlHplbx839llzEcVGZgS2OV
-         L+UruuuYuBQhz2y8DVIUBSO/1vIsO9LSBVBggD6I=
+        b=AJjzrYRqw3Kp8q1AMBfQgemg7x0eIfbMasX3fifU+NP2TOV15lg96bd1V944TjQfw
+         gPC5/z7WpJY7JHizixfWgK6CX3S1A8sTsYGVCaTTBRB0S5trLQCoN1R0OWvfRwG064
+         8hjR/TSgRC/kh/Uuk+4scuyqLYh634AAQDsW2fH4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Kaplan <David.Kaplan@amd.com>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 151/211] x86/ibt: Suppress spurious ENDBR
-Date:   Wed, 20 Sep 2023 13:29:55 +0200
-Message-ID: <20230920112850.551707213@linuxfoundation.org>
+        patches@lists.linux.dev, ruanjinjie <ruanjinjie@huawei.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 062/139] powerpc/pseries: fix possible memory leak in ibmebus_bus_init()
+Date:   Wed, 20 Sep 2023 13:29:56 +0200
+Message-ID: <20230920112838.006894530@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: ruanjinjie <ruanjinjie@huawei.com>
 
-[ Upstream commit 25e73b7e3f72a25aa30cbb2eecb49036e0acf066 ]
+[ Upstream commit afda85b963c12947e298ad85d757e333aa40fd74 ]
 
-It was reported that under certain circumstances GCC emits ENDBR
-instructions for _THIS_IP_ usage. Specifically, when it appears at the
-start of a basic block -- but not elsewhere.
+If device_register() returns error in ibmebus_bus_init(), name of kobject
+which is allocated in dev_set_name() called in device_add() is leaked.
 
-Since _THIS_IP_ is never used for control flow, these ENDBR
-instructions are completely superfluous. Override the _THIS_IP_
-definition for x86_64 to avoid this.
+As comment of device_add() says, it should call put_device() to drop
+the reference count that was set in device_initialize() when it fails,
+so the name can be freed in kobject_cleanup().
 
-Less ENDBR instructions is better.
-
-Fixes: 156ff4a544ae ("x86/ibt: Base IBT bits")
-Reported-by: David Kaplan <David.Kaplan@amd.com>
-Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230802110323.016197440@infradead.org
+Signed-off-by: ruanjinjie <ruanjinjie@huawei.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20221110011929.3709774-1-ruanjinjie@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/linkage.h      | 8 ++++++++
- include/linux/instruction_pointer.h | 5 +++++
- 2 files changed, 13 insertions(+)
+ arch/powerpc/platforms/pseries/ibmebus.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/include/asm/linkage.h b/arch/x86/include/asm/linkage.h
-index 97a3de7892d3f..5ff49fd67732e 100644
---- a/arch/x86/include/asm/linkage.h
-+++ b/arch/x86/include/asm/linkage.h
-@@ -8,6 +8,14 @@
- #undef notrace
- #define notrace __attribute__((no_instrument_function))
+diff --git a/arch/powerpc/platforms/pseries/ibmebus.c b/arch/powerpc/platforms/pseries/ibmebus.c
+index a870cada7acd2..ed5fc70b7353a 100644
+--- a/arch/powerpc/platforms/pseries/ibmebus.c
++++ b/arch/powerpc/platforms/pseries/ibmebus.c
+@@ -455,6 +455,7 @@ static int __init ibmebus_bus_init(void)
+ 	if (err) {
+ 		printk(KERN_WARNING "%s: device_register returned %i\n",
+ 		       __func__, err);
++		put_device(&ibmebus_bus_device);
+ 		bus_unregister(&ibmebus_bus_type);
  
-+#ifdef CONFIG_64BIT
-+/*
-+ * The generic version tends to create spurious ENDBR instructions under
-+ * certain conditions.
-+ */
-+#define _THIS_IP_ ({ unsigned long __here; asm ("lea 0(%%rip), %0" : "=r" (__here)); __here; })
-+#endif
-+
- #ifdef CONFIG_X86_32
- #define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))
- #endif /* CONFIG_X86_32 */
-diff --git a/include/linux/instruction_pointer.h b/include/linux/instruction_pointer.h
-index cda1f706eaeb1..aa0b3ffea9353 100644
---- a/include/linux/instruction_pointer.h
-+++ b/include/linux/instruction_pointer.h
-@@ -2,7 +2,12 @@
- #ifndef _LINUX_INSTRUCTION_POINTER_H
- #define _LINUX_INSTRUCTION_POINTER_H
- 
-+#include <asm/linkage.h>
-+
- #define _RET_IP_		(unsigned long)__builtin_return_address(0)
-+
-+#ifndef _THIS_IP_
- #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
-+#endif
- 
- #endif /* _LINUX_INSTRUCTION_POINTER_H */
+ 		return err;
 -- 
 2.40.1
 
