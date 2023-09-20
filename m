@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BF5C7A7CF3
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F2C7A7E57
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235175AbjITMFi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:05:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33988 "EHLO
+        id S235461AbjITMR0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:17:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235225AbjITMFg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:36 -0400
+        with ESMTP id S234802AbjITMRZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F69B6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:05:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72E1C433C8;
-        Wed, 20 Sep 2023 12:05:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FCF31A7
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535B5C433D9;
+        Wed, 20 Sep 2023 12:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211531;
-        bh=WVE4e2X0Wag8wTOjm9q29eMQjC6iQ35jBelyTu5Rtkg=;
+        s=korg; t=1695212212;
+        bh=7XnX1WeVJugL6bOltTX4UNa0+TVqqk79T6WMg7Z7M6s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lfbAriwvUq37uDamLduwzjCqH5hw8x1lrub5iogG456m+jsVy3uB7JfqFHpUkiPxJ
-         V335duj4Uh3bQAMTPB+79o70bt6N6jh8NItawG7XOfxcadgqOLCCpRbH95ySFYbeVH
-         UVg2bfI51BS6CbPawQCZh53Rh6sUCS/PRTav5Xo8=
+        b=sPURN3tv62TtrKQKST80koEodfrg3Hili3dzoizjwDDmsh8l5KsAKMo4c3X7XusUs
+         5yZCgfjsVhCKC7Vdl16scpeT2JxxuKTxfGLaYV7+6wbqNScVo/UkSPtu0fCS737ggR
+         gC8kfOyPJ4DRmqvzt8LUpGzUGKZYHis2WjGVRsmw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>
-Subject: [PATCH 4.14 127/186] NFSv4/pnfs: minor fix for cleanup path in nfs4_get_device_info
-Date:   Wed, 20 Sep 2023 13:30:30 +0200
-Message-ID: <20230920112841.615200335@linuxfoundation.org>
+        patches@lists.linux.dev, Yunlong Xing <yunlong.xing@unisoc.com>,
+        Enlin Mu <enlin.mu@unisoc.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 4.19 191/273] pstore/ram: Check start of empty przs during init
+Date:   Wed, 20 Sep 2023 13:30:31 +0200
+Message-ID: <20230920112852.410020679@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Enlin Mu <enlin.mu@unisoc.com>
 
-commit 96562c45af5c31b89a197af28f79bfa838fb8391 upstream.
+commit fe8c3623ab06603eb760444a032d426542212021 upstream.
 
-It is an almost improbable error case but when page allocating loop in
-nfs4_get_device_info() fails then we should only free the already
-allocated pages, as __free_page() can't deal with NULL arguments.
+After commit 30696378f68a ("pstore/ram: Do not treat empty buffers as
+valid"), initialization would assume a prz was valid after seeing that
+the buffer_size is zero (regardless of the buffer start position). This
+unchecked start value means it could be outside the bounds of the buffer,
+leading to future access panics when written to:
 
-Found by Linux Verification Center (linuxtesting.org).
+ sysdump_panic_event+0x3b4/0x5b8
+ atomic_notifier_call_chain+0x54/0x90
+ panic+0x1c8/0x42c
+ die+0x29c/0x2a8
+ die_kernel_fault+0x68/0x78
+ __do_kernel_fault+0x1c4/0x1e0
+ do_bad_area+0x40/0x100
+ do_translation_fault+0x68/0x80
+ do_mem_abort+0x68/0xf8
+ el1_da+0x1c/0xc0
+ __raw_writeb+0x38/0x174
+ __memcpy_toio+0x40/0xac
+ persistent_ram_update+0x44/0x12c
+ persistent_ram_write+0x1a8/0x1b8
+ ramoops_pstore_write+0x198/0x1e8
+ pstore_console_write+0x94/0xe0
+ ...
 
+To avoid this, also check if the prz start is 0 during the initialization
+phase. If not, the next prz sanity check case will discover it (start >
+size) and zap the buffer back to a sane state.
+
+Fixes: 30696378f68a ("pstore/ram: Do not treat empty buffers as valid")
+Cc: Yunlong Xing <yunlong.xing@unisoc.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
+Link: https://lore.kernel.org/r/20230801060432.1307717-1-yunlong.xing@unisoc.com
+[kees: update commit log with backtrace and clarifications]
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/pnfs_dev.c |    2 +-
+ fs/pstore/ram_core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfs/pnfs_dev.c
-+++ b/fs/nfs/pnfs_dev.c
-@@ -153,7 +153,7 @@ nfs4_get_device_info(struct nfs_server *
- 		set_bit(NFS_DEVICEID_NOCACHE, &d->flags);
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -500,7 +500,7 @@ static int persistent_ram_post_init(stru
+ 	sig ^= PERSISTENT_RAM_SIG;
  
- out_free_pages:
--	for (i = 0; i < max_pages; i++)
-+	while (--i >= 0)
- 		__free_page(pages[i]);
- 	kfree(pages);
- out_free_pdev:
+ 	if (prz->buffer->sig == sig) {
+-		if (buffer_size(prz) == 0) {
++		if (buffer_size(prz) == 0 && buffer_start(prz) == 0) {
+ 			pr_debug("found existing empty buffer\n");
+ 			return 0;
+ 		}
 
 
