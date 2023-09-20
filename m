@@ -2,37 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61CA57A8059
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B77867A7CCE
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:04:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235608AbjITMgm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:36:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41944 "EHLO
+        id S235134AbjITMER (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235902AbjITMgl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:41 -0400
+        with ESMTP id S235137AbjITMEQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0F06A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD28DC433CB;
-        Wed, 20 Sep 2023 12:36:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B523092
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A1BC433C7;
+        Wed, 20 Sep 2023 12:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213395;
-        bh=RbreA94zEnNtlCJ1mKLo0264vhnJPWXdGMxRaja5Zk0=;
+        s=korg; t=1695211450;
+        bh=LqP3BvptvtgQ3PNJPC8+91f0V4FnJX34pOp9eNDaxYs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SgFBgvcL3s5sXsYKMd9OmSjeunCogjPJ49Ju2vTgeMcgQi/gleTNHI5eBH+N0Ewlg
-         U71SiXdSu2viRVQaYK68mgUF+SmNiflI2iKQhLxC4VmKBXzCG3oxdD4+UFv8V2Etpr
-         nBB6LeO3BFkyGrhkq5nn0eB6rDXUD+DijPW5eu8U=
+        b=QklwfMD5dEOk/qj5A/zM4E4nKe4ydWCg04z6UsGeme7Bn4oGVCeLKI9poFixhtp7m
+         UQrbZBico/7Ve270UEeH5STA/fzkdRlUH10T/djx/VoGOaCGpY9JjR+/BcYnbtk5Th
+         BXFta23mp0CNyavBxh0v5cvvgDyJN67ag4l1PHB8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.4 222/367] Revert "PCI: Mark NVIDIA T4 GPUs to avoid bus reset"
-Date:   Wed, 20 Sep 2023 13:29:59 +0200
-Message-ID: <20230920112904.337331857@linuxfoundation.org>
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Kyle Zeng <zengyhkyle@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.14 097/186] igmp: limit igmpv3_newpack() packet size to IP_MAX_MTU
+Date:   Wed, 20 Sep 2023 13:30:00 +0200
+Message-ID: <20230920112840.468724448@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,46 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 5260bd6d36c83c5b269c33baaaf8c78e520908b0 upstream.
+commit c3b704d4a4a265660e665df51b129e8425216ed1 upstream.
 
-This reverts commit d5af729dc2071273f14cbb94abbc60608142fd83.
+This is a follow up of commit 915d975b2ffa ("net: deal with integer
+overflows in kmalloc_reserve()") based on David Laight feedback.
 
-d5af729dc207 ("PCI: Mark NVIDIA T4 GPUs to avoid bus reset") avoided
-Secondary Bus Reset on the T4 because the reset seemed to not work when the
-T4 was directly attached to a Root Port.
+Back in 2010, I failed to realize malicious users could set dev->mtu
+to arbitrary values. This mtu has been since limited to 0x7fffffff but
+regardless of how big dev->mtu is, it makes no sense for igmpv3_newpack()
+to allocate more than IP_MAX_MTU and risk various skb fields overflows.
 
-But NVIDIA thinks the issue is probably related to some issue with the Root
-Port, not with the T4.  The T4 provides neither PM nor FLR reset, so
-masking bus reset compromises this device for assignment scenarios.
-
-Revert d5af729dc207 as requested by Wu Zongyong.  This will leave SBR
-broken in the specific configuration Wu tested, as it was in v6.5, so Wu
-will debug that further.
-
-Link: https://lore.kernel.org/r/ZPqMCDWvITlOLHgJ@wuzongyong-alibaba
-Link: https://lore.kernel.org/r/20230908201104.GA305023@bhelgaas
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: 57e1ab6eaddc ("igmp: refine skb allocations")
+Link: https://lore.kernel.org/netdev/d273628df80f45428e739274ab9ecb72@AcuMS.aculab.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: David Laight <David.Laight@ACULAB.COM>
+Cc: Kyle Zeng <zengyhkyle@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/igmp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3566,7 +3566,7 @@ static void quirk_no_bus_reset(struct pc
-  */
- static void quirk_nvidia_no_bus_reset(struct pci_dev *dev)
- {
--	if ((dev->device & 0xffc0) == 0x2340 || dev->device == 0x1eb8)
-+	if ((dev->device & 0xffc0) == 0x2340)
- 		quirk_no_bus_reset(dev);
- }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -360,8 +360,9 @@ static struct sk_buff *igmpv3_newpack(st
+ 	struct flowi4 fl4;
+ 	int hlen = LL_RESERVED_SPACE(dev);
+ 	int tlen = dev->needed_tailroom;
+-	unsigned int size = mtu;
++	unsigned int size;
+ 
++	size = min(mtu, IP_MAX_MTU);
+ 	while (1) {
+ 		skb = alloc_skb(size + hlen + tlen,
+ 				GFP_ATOMIC | __GFP_NOWARN);
 
 
