@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD14F7A7CB1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BB9F7A7B0B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235071AbjITMD1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:03:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40820 "EHLO
+        id S234629AbjITLsv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:48:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235104AbjITMDX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:23 -0400
+        with ESMTP id S234628AbjITLsu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4062F186
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:03:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094C0C433CA;
-        Wed, 20 Sep 2023 12:03:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9894D9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23413C433C7;
+        Wed, 20 Sep 2023 11:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211393;
-        bh=syT6aFtu9wWyQOOCMGDzr2r/jzxUbcvkwl2bkQfXy1M=;
+        s=korg; t=1695210524;
+        bh=k3dp5OUwFlqW8+OTvh5wDgQSysXcQzRlAo/SMzyqR9o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MoNKteIxNByAHEhmgUkHR1p/7oViwgdzL26wMzJ2k0h8/cFxvdJ/LIa6s+ONHh7R2
-         hYkRib1pm2z7X/nyCZCb8ai9DZXbXihrDMP1czJ4TKXnUhsVrCuWmSbh6KEJ//8NIR
-         hyLpHlcJU9OxHnK3VU4U8p8KUKUDtES+mVkMOEwQ=
+        b=rnlM46TXAIfzPYvmWxqnJiFmMgucPLko3GuNdhYPIbgpljlUvKSQzzxiXYyWv4Tb0
+         GCU9Wc6VWfRhfyDHW8RxxPVGSwoZkT8N2H3D0PdO60araAJYJkWwQ+p2x29/zFbC4Z
+         4uuvBGoikd2eZzkugv3QPEI0xv7J1wsYsjHBAdCk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 050/186] wifi: mwifiex: avoid possible NULL skb pointer dereference
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 109/211] media: az6007: Fix null-ptr-deref in az6007_i2c_xfer()
 Date:   Wed, 20 Sep 2023 13:29:13 +0200
-Message-ID: <20230920112838.724936923@linuxfoundation.org>
+Message-ID: <20230920112849.175542404@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +50,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 35a7a1ce7c7d61664ee54f5239a1f120ab95a87e ]
+[ Upstream commit 1047f9343011f2cedc73c64829686206a7e9fc3f ]
 
-In 'mwifiex_handle_uap_rx_forward()', always check the value
-returned by 'skb_copy()' to avoid potential NULL pointer
-dereference in 'mwifiex_uap_queue_bridged_pkt()', and drop
-original skb in case of copying failure.
+In az6007_i2c_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach az6007_i2c_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230814095041.16416-1-dmantipov@yandex.ru
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/media/usb/dvb-usb-v2/az6007.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index 90c07722c25f8..a887d7a9b7c03 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -266,7 +266,15 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
- 
- 	if (is_multicast_ether_addr(ra)) {
- 		skb_uap = skb_copy(skb, GFP_ATOMIC);
--		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
-+		if (likely(skb_uap)) {
-+			mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
-+		} else {
-+			mwifiex_dbg(adapter, ERROR,
-+				    "failed to copy skb for uAP\n");
-+			priv->stats.rx_dropped++;
-+			dev_kfree_skb_any(skb);
-+			return -1;
-+		}
- 	} else {
- 		if (mwifiex_get_sta_entry(priv, ra)) {
- 			/* Requeue Intra-BSS packet */
+diff --git a/drivers/media/usb/dvb-usb-v2/az6007.c b/drivers/media/usb/dvb-usb-v2/az6007.c
+index 2dcbb49d66dab..2410054ddb2c3 100644
+--- a/drivers/media/usb/dvb-usb-v2/az6007.c
++++ b/drivers/media/usb/dvb-usb-v2/az6007.c
+@@ -788,6 +788,10 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
+ 			if (az6007_xfer_debug)
+ 				printk(KERN_DEBUG "az6007: I2C W addr=0x%x len=%d\n",
+ 				       addr, msgs[i].len);
++			if (msgs[i].len < 1) {
++				ret = -EIO;
++				goto err;
++			}
+ 			req = AZ6007_I2C_WR;
+ 			index = msgs[i].buf[0];
+ 			value = addr | (1 << 8);
+@@ -802,6 +806,10 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
+ 			if (az6007_xfer_debug)
+ 				printk(KERN_DEBUG "az6007: I2C R addr=0x%x len=%d\n",
+ 				       addr, msgs[i].len);
++			if (msgs[i].len < 1) {
++				ret = -EIO;
++				goto err;
++			}
+ 			req = AZ6007_I2C_RD;
+ 			index = msgs[i].buf[0];
+ 			value = addr;
 -- 
 2.40.1
 
