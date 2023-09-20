@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7962E7A7E79
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97CBE7A7EE7
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235575AbjITMSI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51616 "EHLO
+        id S235629AbjITMVu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:21:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235587AbjITMSG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:06 -0400
+        with ESMTP id S235626AbjITMVt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 297E6DE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08C3C433CC;
-        Wed, 20 Sep 2023 12:17:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F375083
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5B0C433C7;
+        Wed, 20 Sep 2023 12:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212277;
-        bh=Tu2UWDV/ZAv5yNO5NhfAC5fCPfoIr1FHv9qhAlcfQLM=;
+        s=korg; t=1695212503;
+        bh=UR0mBbCkEor60Tq2VAUJVav0OvZ+p2Q8UdapfDPv1kI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xmi0XXKKJjIzTNX3RiWbErzaWViGdgAbzRkhCyfw365j/EHKzPrvETdqa/wye04CN
-         PIsC3nki5U5G/kMLGGEpYzOpu12+ikHp+Gc5Uhwz53CjeEjMhU07yakfNf+mmIse/n
-         u0ESZGuZFy9iEAo25r9T56Kk73O+khsyXvn9O3ho=
+        b=lqsTV+u4BP2nVVtcmCxcHeRaCcXnsiPQN4eAnc1O+9HspcyiIJnhVmz+JZm166lHW
+         //2okf3UmT2rLzWtPcjkw6lRmyt18Fliux/ZJo7wOSGa2nhqUMc2T0KgzP3efFvJqf
+         JSJn82DpLFBeTsEE53BKYz0FPxI6FziVOZGS+apg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, "Paul E. McKenney" <paulmck@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 217/273] af_unix: Fix data race around sk->sk_err.
+Subject: [PATCH 5.10 07/83] scftorture: Forgive memory-allocation failure if KASAN
 Date:   Wed, 20 Sep 2023 13:30:57 +0200
-Message-ID: <20230920112853.148015851@linuxfoundation.org>
+Message-ID: <20230920112826.940393821@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +49,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit b192812905e4b134f7b7994b079eb647e9d2d37e ]
+[ Upstream commit 013608cd0812bdb21fc26d39ed8fdd2fc76e8b9b ]
 
-As with sk->sk_shutdown shown in the previous patch, sk->sk_err can be
-read locklessly by unix_dgram_sendmsg().
+Kernels built with CONFIG_KASAN=y quarantine newly freed memory in order
+to better detect use-after-free errors.  However, this can exhaust memory
+more quickly in allocator-heavy tests, which can result in spurious
+scftorture failure.  This commit therefore forgives memory-allocation
+failure in kernels built with CONFIG_KASAN=y, but continues counting
+the errors for use in detailed test-result analyses.
 
-Let's use READ_ONCE() for sk_err as well.
-
-Note that the writer side is marked by commit cc04410af7de ("af_unix:
-annotate lockless accesses to sk->sk_err").
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/scftorture.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 9a4559b863fb7..e1d0c8c715b87 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2074,7 +2074,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
- 			break;
- 		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 			break;
--		if (sk->sk_err)
-+		if (READ_ONCE(sk->sk_err))
- 			break;
- 		timeo = schedule_timeout(timeo);
+diff --git a/kernel/scftorture.c b/kernel/scftorture.c
+index 060ee0b1569a0..be86207a2ab68 100644
+--- a/kernel/scftorture.c
++++ b/kernel/scftorture.c
+@@ -158,7 +158,8 @@ static void scf_torture_stats_print(void)
+ 		scfs.n_all_wait += scf_stats_p[i].n_all_wait;
  	}
+ 	if (atomic_read(&n_errs) || atomic_read(&n_mb_in_errs) ||
+-	    atomic_read(&n_mb_out_errs) || atomic_read(&n_alloc_errs))
++	    atomic_read(&n_mb_out_errs) ||
++	    (!IS_ENABLED(CONFIG_KASAN) && atomic_read(&n_alloc_errs)))
+ 		bangstr = "!!! ";
+ 	pr_alert("%s %sscf_invoked_count %s: %lld single: %lld/%lld single_ofl: %lld/%lld many: %lld/%lld all: %lld/%lld ",
+ 		 SCFTORT_FLAG, bangstr, isdone ? "VER" : "ver", invoked_count,
+@@ -306,7 +307,8 @@ static void scftorture_invoke_one(struct scf_statistics *scfp, struct torture_ra
+ 		preempt_disable();
+ 	if (scfsp->scfs_prim == SCF_PRIM_SINGLE || scfsp->scfs_wait) {
+ 		scfcp = kmalloc(sizeof(*scfcp), GFP_ATOMIC);
+-		if (WARN_ON_ONCE(!scfcp)) {
++		if (!scfcp) {
++			WARN_ON_ONCE(!IS_ENABLED(CONFIG_KASAN));
+ 			atomic_inc(&n_alloc_errs);
+ 		} else {
+ 			scfcp->scfc_cpu = -1;
 -- 
 2.40.1
 
