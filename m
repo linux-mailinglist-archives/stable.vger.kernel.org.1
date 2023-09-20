@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C36C87A7BB4
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51E027A7C8B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:02:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234801AbjITLzN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:55:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59004 "EHLO
+        id S234546AbjITMCR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:02:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234847AbjITLyk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:40 -0400
+        with ESMTP id S234949AbjITMCR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:02:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D067B129
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF70C433C7;
-        Wed, 20 Sep 2023 11:54:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CFD4B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E344EC433C8;
+        Wed, 20 Sep 2023 12:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210871;
-        bh=C9CCZ6d3ixL8rd4Uk8AQF5gU1kF1EI4sxNBll8e0OtU=;
+        s=korg; t=1695211331;
+        bh=E2ccyG0Xr1A4JkL+W15Pnw7t2HVvfv0ZvYNpS3SZ+BQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qNT4Q4H0Y4I3v7/+Qv0EdkN9bTPn+BlxrIg3ggs4ISOIx97guVhNfqt7SiVLGV3cd
-         gzSsuyNj5pIg79GBvu37i51HK8b4T3+rwI68F6OsI6ORSCCYe8+mqSKzBZH76qpujZ
-         l9UnlpkcaONslLlBn7XhYtbr7xbiYX1yCD86SVPk=
+        b=ra+YFXZWFFZJSzvhFpXUsnN35CTWT/H7VaPbwTDHJoIYxZxMlYZvyEOgNeCaSBhwm
+         SvU9EQVFfYo6EsbtuZpMZTUM8Q1KDUh/nnVmsljD3G/jzLJivpM+iX3cpPRZiy51LS
+         Ewxp3OGtF9JEOwEUYnbHOVQjA0BhY+++d6jLlh7A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Watts <contact@jookia.org>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/139] can: sun4i_can: Add support for the Allwinner D1
+Subject: [PATCH 4.14 054/186] ARM: dts: BCM53573: Add cells sizes to PCIe node
 Date:   Wed, 20 Sep 2023 13:29:17 +0200
-Message-ID: <20230920112836.455504717@linuxfoundation.org>
+Message-ID: <20230920112838.858021604@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,85 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Watts <contact@jookia.org>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 8abb95250ae6af2d51993da8fcae18da2ce24cc4 ]
+[ Upstream commit 3392ef368d9b04622fe758b1079b512664b6110a ]
 
-The controllers present in the D1 are extremely similar to the R40
-and require the same reset quirks, but An extra quirk is needed to support
-receiving packets.
+This fixes:
+arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dtb: pcie@2000: '#address-cells' is a required property
+        From schema: /lib/python3.10/site-packages/dtschema/schemas/pci/pci-bus.yaml
+arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dtb: pcie@2000: '#size-cells' is a required property
+        From schema: /lib/python3.10/site-packages/dtschema/schemas/pci/pci-bus.yaml
 
-Signed-off-by: John Watts <contact@jookia.org>
-Link: https://lore.kernel.org/all/20230721221552.1973203-6-contact@jookia.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Two properties that need to be added later are "device_type" and
+"ranges". Adding "device_type" on its own causes a new warning and the
+value of "ranges" needs to be determined yet.
+
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20230707114004.2740-3-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/Kconfig     |  4 ++--
- drivers/net/can/sun4i_can.c | 12 +++++++++++-
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/bcm53573.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/can/Kconfig b/drivers/net/can/Kconfig
-index 3048ad77edb35..8236aabebb394 100644
---- a/drivers/net/can/Kconfig
-+++ b/drivers/net/can/Kconfig
-@@ -174,10 +174,10 @@ config CAN_SLCAN
+diff --git a/arch/arm/boot/dts/bcm53573.dtsi b/arch/arm/boot/dts/bcm53573.dtsi
+index c698a565b8ae9..99cc83b911c1a 100644
+--- a/arch/arm/boot/dts/bcm53573.dtsi
++++ b/arch/arm/boot/dts/bcm53573.dtsi
+@@ -119,6 +119,9 @@ uart0: serial@0300 {
  
- config CAN_SUN4I
- 	tristate "Allwinner A10 CAN controller"
--	depends on MACH_SUN4I || MACH_SUN7I || COMPILE_TEST
-+	depends on MACH_SUN4I || MACH_SUN7I || RISCV || COMPILE_TEST
- 	help
- 	  Say Y here if you want to use CAN controller found on Allwinner
--	  A10/A20 SoCs.
-+	  A10/A20/D1 SoCs.
- 
- 	  To compile this driver as a module, choose M here: the module will
- 	  be called sun4i_can.
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index dd0c6cd76c5f5..c3a6b028ea4d6 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -91,6 +91,8 @@
- #define SUN4I_REG_BUF12_ADDR	0x0070	/* CAN Tx/Rx Buffer 12 */
- #define SUN4I_REG_ACPC_ADDR	0x0040	/* CAN Acceptance Code 0 */
- #define SUN4I_REG_ACPM_ADDR	0x0044	/* CAN Acceptance Mask 0 */
-+#define SUN4I_REG_ACPC_ADDR_D1	0x0028	/* CAN Acceptance Code 0 on the D1 */
-+#define SUN4I_REG_ACPM_ADDR_D1	0x002C	/* CAN Acceptance Mask 0 on the D1 */
- #define SUN4I_REG_RBUF_RBACK_START_ADDR	0x0180	/* CAN transmit buffer start */
- #define SUN4I_REG_RBUF_RBACK_END_ADDR	0x01b0	/* CAN transmit buffer end */
- 
-@@ -779,6 +781,11 @@ static const struct sun4ican_quirks sun4ican_quirks_r40 = {
- 	.acp_offset = 0,
- };
- 
-+static const struct sun4ican_quirks sun4ican_quirks_d1 = {
-+	.has_reset = true,
-+	.acp_offset = (SUN4I_REG_ACPC_ADDR_D1 - SUN4I_REG_ACPC_ADDR),
-+};
+ 		pcie0: pcie@2000 {
+ 			reg = <0x00002000 0x1000>;
 +
- static const struct of_device_id sun4ican_of_match[] = {
- 	{
- 		.compatible = "allwinner,sun4i-a10-can",
-@@ -789,6 +796,9 @@ static const struct of_device_id sun4ican_of_match[] = {
- 	}, {
- 		.compatible = "allwinner,sun8i-r40-can",
- 		.data = &sun4ican_quirks_r40
-+	}, {
-+		.compatible = "allwinner,sun20i-d1-can",
-+		.data = &sun4ican_quirks_d1
- 	}, {
- 		/* sentinel */
- 	},
-@@ -915,4 +925,4 @@ module_platform_driver(sun4i_can_driver);
- MODULE_AUTHOR("Peter Chen <xingkongcp@gmail.com>");
- MODULE_AUTHOR("Gerhard Bertelsmann <info@gerhard-bertelsmann.de>");
- MODULE_LICENSE("Dual BSD/GPL");
--MODULE_DESCRIPTION("CAN driver for Allwinner SoCs (A10/A20)");
-+MODULE_DESCRIPTION("CAN driver for Allwinner SoCs (A10/A20/D1)");
++			#address-cells = <3>;
++			#size-cells = <2>;
+ 		};
+ 
+ 		usb2: usb2@4000 {
 -- 
 2.40.1
 
