@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCBB77A805C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D5907A7CD1
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:04:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235738AbjITMgs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:36:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48690 "EHLO
+        id S235091AbjITMEX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:04:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235898AbjITMgr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:47 -0400
+        with ESMTP id S235136AbjITMEW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04D4EDC
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3692CC433CA;
-        Wed, 20 Sep 2023 12:36:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332C1B0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751E5C433CB;
+        Wed, 20 Sep 2023 12:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213400;
-        bh=qx6SpxCJxVJG8INcUA63Vl418yeAwubLiW/mZi0PE8c=;
+        s=korg; t=1695211455;
+        bh=DirDhhw4KM1wshtRNiI27qhVRv2iWhp7HrMV5eWOo+k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UKBNRnayp7csjQMY5eqFzdbQzKwS4Wzu5l3eXIQWGRCw1hCd0G0DhEEUYN+wtwV1+
-         rGjnTx0cJGHD+5gEXr7EMwMk/S7gQiS2Cp7y3tjfkuu2Wwlx50g0H28uVrmlFbIzVD
-         IP3BA9iZeH8Vg5XZWUqcS5ZsC6vvBNtaGs6eRu24=
+        b=kPeiB+U599/bXhx18pUHXi8cIVRH7YRgdjYU5xDd7pM9QDmyqdXxDk+OGLY8NbF3s
+         QN/FvFrgkAas/8FQl+uKmX2FuHvmFsGnmEtmSE1iJqclFRydXw7TGHRhHJ+e3nClcA
+         Gr6X6LEO79zWqFGj+uOMQYGOLMMwZ1dwk3R6INHc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.4 224/367] parisc: Fix /proc/cpuinfo output for lscpu
-Date:   Wed, 20 Sep 2023 13:30:01 +0200
-Message-ID: <20230920112904.384678386@linuxfoundation.org>
+        patches@lists.linux.dev, Wander Lairson Costa <wander@redhat.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.14 099/186] netfilter: xt_u32: validate user space input
+Date:   Wed, 20 Sep 2023 13:30:02 +0200
+Message-ID: <20230920112840.547681132@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,65 +49,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Wander Lairson Costa <wander@redhat.com>
 
-commit 9f5ba4b3e1b3c123eeca5d2d09161e8720048b5c upstream.
+commit 69c5d284f67089b4750d28ff6ac6f52ec224b330 upstream.
 
-The lscpu command is broken since commit cab56b51ec0e ("parisc: Fix
-device names in /proc/iomem") added the PA pathname to all PA
-devices, includig the CPUs.
+The xt_u32 module doesn't validate the fields in the xt_u32 structure.
+An attacker may take advantage of this to trigger an OOB read by setting
+the size fields with a value beyond the arrays boundaries.
 
-lscpu parses /proc/cpuinfo and now believes it found different CPU
-types since every CPU is listed with an unique identifier (PA
-pathname).
+Add a checkentry function to validate the structure.
 
-Fix this problem by simply dropping the PA pathname when listing the
-CPUs in /proc/cpuinfo. There is no need to show the pathname in this
-procfs file.
+This was originally reported by the ZDI project (ZDI-CAN-18408).
 
-Fixes: cab56b51ec0e ("parisc: Fix device names in /proc/iomem")
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v4.9+
+Fixes: 1b50b8a371e9 ("[NETFILTER]: Add u32 match")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/processor.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ net/netfilter/xt_u32.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -373,10 +373,18 @@ int
- show_cpuinfo (struct seq_file *m, void *v)
- {
- 	unsigned long cpu;
-+	char cpu_name[60], *p;
+--- a/net/netfilter/xt_u32.c
++++ b/net/netfilter/xt_u32.c
+@@ -95,11 +95,32 @@ static bool u32_mt(const struct sk_buff
+ 	return ret ^ data->invert;
+ }
+ 
++static int u32_mt_checkentry(const struct xt_mtchk_param *par)
++{
++	const struct xt_u32 *data = par->matchinfo;
++	const struct xt_u32_test *ct;
++	unsigned int i;
 +
-+	/* strip PA path from CPU name to not confuse lscpu */
-+	strlcpy(cpu_name, per_cpu(cpu_data, 0).dev->name, sizeof(cpu_name));
-+	p = strrchr(cpu_name, '[');
-+	if (p)
-+		*(--p) = 0;
- 
- 	for_each_online_cpu(cpu) {
--		const struct cpuinfo_parisc *cpuinfo = &per_cpu(cpu_data, cpu);
- #ifdef CONFIG_SMP
-+		const struct cpuinfo_parisc *cpuinfo = &per_cpu(cpu_data, cpu);
++	if (data->ntests > ARRAY_SIZE(data->tests))
++		return -EINVAL;
 +
- 		if (0 == cpuinfo->hpa)
- 			continue;
- #endif
-@@ -421,8 +429,7 @@ show_cpuinfo (struct seq_file *m, void *
- 
- 		seq_printf(m, "model\t\t: %s - %s\n",
- 				 boot_cpu_data.pdc.sys_model_name,
--				 cpuinfo->dev ?
--				 cpuinfo->dev->name : "Unknown");
-+				 cpu_name);
- 
- 		seq_printf(m, "hversion\t: 0x%08x\n"
- 			        "sversion\t: 0x%08x\n",
++	for (i = 0; i < data->ntests; ++i) {
++		ct = &data->tests[i];
++
++		if (ct->nnums > ARRAY_SIZE(ct->location) ||
++		    ct->nvalues > ARRAY_SIZE(ct->value))
++			return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static struct xt_match xt_u32_mt_reg __read_mostly = {
+ 	.name       = "u32",
+ 	.revision   = 0,
+ 	.family     = NFPROTO_UNSPEC,
+ 	.match      = u32_mt,
++	.checkentry = u32_mt_checkentry,
+ 	.matchsize  = sizeof(struct xt_u32),
+ 	.me         = THIS_MODULE,
+ };
 
 
