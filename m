@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 062287A8018
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19B3C7A7DF7
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236176AbjITMcy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:32:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43390 "EHLO
+        id S235497AbjITMOC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:14:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236186AbjITMcw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:32:52 -0400
+        with ESMTP id S235514AbjITMOC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC15CF5
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:32:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC441C433C8;
-        Wed, 20 Sep 2023 12:32:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A7A100
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E451C433C8;
+        Wed, 20 Sep 2023 12:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213165;
-        bh=GTpHvpKuskivVCAZzlp8xH1IlVlBs3ncAwwJgLfPpk4=;
+        s=korg; t=1695212030;
+        bh=D8FQM2B5gtcVg83pNj6wDnXrxfCCZDu0OHqxk+xocn4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HHeJ8SLryMYm434uHklRTLSwZLwboK4k0I3XTBDIWpPQe61SgyBzVzg0N7DSpY3DM
-         ILhuRfXOHaR9yYI7sJzmfqkZrPQVgEAL3H/1cWqb8zsy1+stt8C6eV9F+Jl/IVvEDr
-         DxeXCLi8kQ7fSClWpZOov8q2/rAhLuLBnyI7+iQ0=
+        b=r17Vz9YxYR/dTAiQYotc2/+pie7/DOlxLeBJbkZ4LOV6pbxlhid5C4GJoCAZm6DoK
+         Ltgao1iANDNna8nRJimUQ2mKci7LLRfRbxH7n06NmLvahCZPWb9G2DZFC1mwbmR4kd
+         LM3Z9vlL47lYzVqMzLGzSDxEgZlXmc1qvndF2ezY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Peter Chen <peter.chen@kernel.org>,
+        patches@lists.linux.dev, Robert Foss <rfoss@kernel.org>,
+        Nuno Sa <nuno.sa@analog.com>,
+        Bogdan Togorean <bogdan.togorean@analog.com>,
+        Alexandru Ardelean <alex@shruggie.ro>,
+        Frieder Schrempf <frieder.schrempf@kontron.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 158/367] usb: phy: mxs: fix getting wrong state with mxs_phy_is_otg_host()
+Subject: [PATCH 4.19 095/273] drm: adv7511: Fix low refresh rate register for ADV7533/5
 Date:   Wed, 20 Sep 2023 13:28:55 +0200
-Message-ID: <20230920112902.742266824@linuxfoundation.org>
+Message-ID: <20230920112849.376810127@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +53,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Bogdan Togorean <bogdan.togorean@analog.com>
 
-[ Upstream commit 5eda42aebb7668b4dcff025cd3ccb0d3d7c53da6 ]
+[ Upstream commit d281eeaa4de2636ff0c8e6ae387bb07b50e5fcbb ]
 
-The function mxs_phy_is_otg_host() will return true if OTG_ID_VALUE is
-0 at USBPHY_CTRL register. However, OTG_ID_VALUE will not reflect the real
-state if the ID pin is float, such as Host-only or Type-C cases. The value
-of OTG_ID_VALUE is always 1 which means device mode.
-This patch will fix the issue by judging the current mode based on
-last_event. The controller will update last_event in time.
+For ADV7533 and ADV7535 low refresh rate is selected using
+bits [3:2] of 0x4a main register.
+So depending on ADV model write 0xfb or 0x4a register.
 
-Fixes: 7b09e67639d6 ("usb: phy: mxs: refine mxs_phy_disconnect_line")
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20230627110353.1879477-2-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2437e7cd88e8 ("drm/bridge: adv7533: Initial support for ADV7533")
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Bogdan Togorean <bogdan.togorean@analog.com>
+Signed-off-by: Alexandru Ardelean <alex@shruggie.ro>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230719060143.63649-1-alex@shruggie.ro
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-mxs-usb.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/bridge/adv7511/adv7511_drv.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
-index 70b8c8248caf7..5bcad9041284e 100644
---- a/drivers/usb/phy/phy-mxs-usb.c
-+++ b/drivers/usb/phy/phy-mxs-usb.c
-@@ -388,14 +388,8 @@ static void __mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool disconnect)
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+index 31b75d3ca6e90..85aba4c38dc00 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_drv.c
+@@ -756,8 +756,13 @@ static void adv7511_mode_set(struct adv7511 *adv7511,
+ 	else
+ 		low_refresh_rate = ADV7511_LOW_REFRESH_RATE_NONE;
  
- static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
- {
--	void __iomem *base = mxs_phy->phy.io_priv;
--	u32 phyctrl = readl(base + HW_USBPHY_CTRL);
--
--	if (IS_ENABLED(CONFIG_USB_OTG) &&
--			!(phyctrl & BM_USBPHY_CTRL_OTG_ID_VALUE))
--		return true;
--
--	return false;
-+	return IS_ENABLED(CONFIG_USB_OTG) &&
-+		mxs_phy->phy.last_event == USB_EVENT_ID;
- }
+-	regmap_update_bits(adv7511->regmap, 0xfb,
+-		0x6, low_refresh_rate << 1);
++	if (adv7511->type == ADV7511)
++		regmap_update_bits(adv7511->regmap, 0xfb,
++				   0x6, low_refresh_rate << 1);
++	else
++		regmap_update_bits(adv7511->regmap, 0x4a,
++				   0xc, low_refresh_rate << 2);
++
+ 	regmap_update_bits(adv7511->regmap, 0x17,
+ 		0x60, (vsync_polarity << 6) | (hsync_polarity << 5));
  
- static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
 -- 
 2.40.1
 
