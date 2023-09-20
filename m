@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D85B7A7D44
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 586477A7EEE
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235218AbjITMH7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:07:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41634 "EHLO
+        id S235654AbjITMWM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:22:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235236AbjITMH6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:58 -0400
+        with ESMTP id S235627AbjITMWF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B173CDD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016EBC433CA;
-        Wed, 20 Sep 2023 12:07:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2449D83
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B88C433C9;
+        Wed, 20 Sep 2023 12:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211671;
-        bh=5GUdIZtg5A17Dxshyw6O+SP36pEAs5jILIKaZmnrK4g=;
+        s=korg; t=1695212519;
+        bh=LYBnQ5V9DYUjvI4avcBXFJfioXBchvnzig8xc3ouw+s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fPMgpvfVBX34v9MSU9wA/4Y7bGPFjncMTaEdAUSLiKM753kUKP/rnNULopGDxaVdM
-         bl1cAEIQBVRnmCkDCsVY17hnvGfv68c02VttJC8pqcidfDPNgXJQZ6tQefMlYWABpP
-         u3SLUgiL8rFTxahEA5XRXQ6v7qG1hi8f9tKZweT4=
+        b=pyp+hggSQBUytIYvK9P8ysuQ9XC/t53dA7S8OKcb+bPS8H0FO81gMHY0TS8Gk18hI
+         LZZaXRlre3GXR/LADO7CNpSnlFfbpqbro+1aNnp0VCdi85eiYNx34+HWCWxJufR6se
+         l2etmPz7ns8Pvj0uC+Z+ObNWbRfvNjhGChmEpsnw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+a379155f07c134ea9879@syzkaller.appspotmail.com,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 4.14 179/186] btrfs: fix lockdep splat and potential deadlock after failure running delayed items
+        patches@lists.linux.dev, Georg Ottinger <g.ottinger@gmx.at>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 32/83] ext2: fix datatype of block number in ext2_xattr_set2()
 Date:   Wed, 20 Sep 2023 13:31:22 +0200
-Message-ID: <20230920112843.354214053@linuxfoundation.org>
+Message-ID: <20230920112827.954934712@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,192 +49,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Georg Ottinger <g.ottinger@gmx.at>
 
-commit e110f8911ddb93e6f55da14ccbbe705397b30d0b upstream.
+[ Upstream commit e88076348425b7d0491c8c98d8732a7df8de7aa3 ]
 
-When running delayed items we are holding a delayed node's mutex and then
-we will attempt to modify a subvolume btree to insert/update/delete the
-delayed items. However if have an error during the insertions for example,
-btrfs_insert_delayed_items() may return with a path that has locked extent
-buffers (a leaf at the very least), and then we attempt to release the
-delayed node at __btrfs_run_delayed_items(), which requires taking the
-delayed node's mutex, causing an ABBA type of deadlock. This was reported
-by syzbot and the lockdep splat is the following:
+I run a small server that uses external hard drives for backups. The
+backup software I use uses ext2 filesystems with 4KiB block size and
+the server is running SELinux and therefore relies on xattr. I recently
+upgraded the hard drives from 4TB to 12TB models. I noticed that after
+transferring some TBs I got a filesystem error "Freeing blocks not in
+datazone - block = 18446744071529317386, count = 1" and the backup
+process stopped. Trying to fix the fs with e2fsck resulted in a
+completely corrupted fs. The error probably came from ext2_free_blocks(),
+and because of the large number 18e19 this problem immediately looked
+like some kind of integer overflow. Whereas the 4TB fs was about 1e9
+blocks, the new 12TB is about 3e9 blocks. So, searching the ext2 code,
+I came across the line in fs/ext2/xattr.c:745 where ext2_new_block()
+is called and the resulting block number is stored in the variable block
+as an int datatype. If a block with a block number greater than
+INT32_MAX is returned, this variable overflows and the call to
+sb_getblk() at line fs/ext2/xattr.c:750 fails, then the call to
+ext2_free_blocks() produces the error.
 
-  WARNING: possible circular locking dependency detected
-  6.5.0-rc7-syzkaller-00024-g93f5de5f648d #0 Not tainted
-  ------------------------------------------------------
-  syz-executor.2/13257 is trying to acquire lock:
-  ffff88801835c0c0 (&delayed_node->mutex){+.+.}-{3:3}, at: __btrfs_release_delayed_node+0x9a/0xaa0 fs/btrfs/delayed-inode.c:256
-
-  but task is already holding lock:
-  ffff88802a5ab8e8 (btrfs-tree-00){++++}-{3:3}, at: __btrfs_tree_lock+0x3c/0x2a0 fs/btrfs/locking.c:198
-
-  which lock already depends on the new lock.
-
-  the existing dependency chain (in reverse order) is:
-
-  -> #1 (btrfs-tree-00){++++}-{3:3}:
-         __lock_release kernel/locking/lockdep.c:5475 [inline]
-         lock_release+0x36f/0x9d0 kernel/locking/lockdep.c:5781
-         up_write+0x79/0x580 kernel/locking/rwsem.c:1625
-         btrfs_tree_unlock_rw fs/btrfs/locking.h:189 [inline]
-         btrfs_unlock_up_safe+0x179/0x3b0 fs/btrfs/locking.c:239
-         search_leaf fs/btrfs/ctree.c:1986 [inline]
-         btrfs_search_slot+0x2511/0x2f80 fs/btrfs/ctree.c:2230
-         btrfs_insert_empty_items+0x9c/0x180 fs/btrfs/ctree.c:4376
-         btrfs_insert_delayed_item fs/btrfs/delayed-inode.c:746 [inline]
-         btrfs_insert_delayed_items fs/btrfs/delayed-inode.c:824 [inline]
-         __btrfs_commit_inode_delayed_items+0xd24/0x2410 fs/btrfs/delayed-inode.c:1111
-         __btrfs_run_delayed_items+0x1db/0x430 fs/btrfs/delayed-inode.c:1153
-         flush_space+0x269/0xe70 fs/btrfs/space-info.c:723
-         btrfs_async_reclaim_metadata_space+0x106/0x350 fs/btrfs/space-info.c:1078
-         process_one_work+0x92c/0x12c0 kernel/workqueue.c:2600
-         worker_thread+0xa63/0x1210 kernel/workqueue.c:2751
-         kthread+0x2b8/0x350 kernel/kthread.c:389
-         ret_from_fork+0x2e/0x60 arch/x86/kernel/process.c:145
-         ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
-
-  -> #0 (&delayed_node->mutex){+.+.}-{3:3}:
-         check_prev_add kernel/locking/lockdep.c:3142 [inline]
-         check_prevs_add kernel/locking/lockdep.c:3261 [inline]
-         validate_chain kernel/locking/lockdep.c:3876 [inline]
-         __lock_acquire+0x39ff/0x7f70 kernel/locking/lockdep.c:5144
-         lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5761
-         __mutex_lock_common+0x1d8/0x2530 kernel/locking/mutex.c:603
-         __mutex_lock kernel/locking/mutex.c:747 [inline]
-         mutex_lock_nested+0x1b/0x20 kernel/locking/mutex.c:799
-         __btrfs_release_delayed_node+0x9a/0xaa0 fs/btrfs/delayed-inode.c:256
-         btrfs_release_delayed_node fs/btrfs/delayed-inode.c:281 [inline]
-         __btrfs_run_delayed_items+0x2b5/0x430 fs/btrfs/delayed-inode.c:1156
-         btrfs_commit_transaction+0x859/0x2ff0 fs/btrfs/transaction.c:2276
-         btrfs_sync_file+0xf56/0x1330 fs/btrfs/file.c:1988
-         vfs_fsync_range fs/sync.c:188 [inline]
-         vfs_fsync fs/sync.c:202 [inline]
-         do_fsync fs/sync.c:212 [inline]
-         __do_sys_fsync fs/sync.c:220 [inline]
-         __se_sys_fsync fs/sync.c:218 [inline]
-         __x64_sys_fsync+0x196/0x1e0 fs/sync.c:218
-         do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-         do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-         entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-  other info that might help us debug this:
-
-   Possible unsafe locking scenario:
-
-         CPU0                    CPU1
-         ----                    ----
-    lock(btrfs-tree-00);
-                                 lock(&delayed_node->mutex);
-                                 lock(btrfs-tree-00);
-    lock(&delayed_node->mutex);
-
-   *** DEADLOCK ***
-
-  3 locks held by syz-executor.2/13257:
-   #0: ffff88802c1ee370 (btrfs_trans_num_writers){++++}-{0:0}, at: spin_unlock include/linux/spinlock.h:391 [inline]
-   #0: ffff88802c1ee370 (btrfs_trans_num_writers){++++}-{0:0}, at: join_transaction+0xb87/0xe00 fs/btrfs/transaction.c:287
-   #1: ffff88802c1ee398 (btrfs_trans_num_extwriters){++++}-{0:0}, at: join_transaction+0xbb2/0xe00 fs/btrfs/transaction.c:288
-   #2: ffff88802a5ab8e8 (btrfs-tree-00){++++}-{3:3}, at: __btrfs_tree_lock+0x3c/0x2a0 fs/btrfs/locking.c:198
-
-  stack backtrace:
-  CPU: 0 PID: 13257 Comm: syz-executor.2 Not tainted 6.5.0-rc7-syzkaller-00024-g93f5de5f648d #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-  Call Trace:
-   <TASK>
-   __dump_stack lib/dump_stack.c:88 [inline]
-   dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
-   check_noncircular+0x375/0x4a0 kernel/locking/lockdep.c:2195
-   check_prev_add kernel/locking/lockdep.c:3142 [inline]
-   check_prevs_add kernel/locking/lockdep.c:3261 [inline]
-   validate_chain kernel/locking/lockdep.c:3876 [inline]
-   __lock_acquire+0x39ff/0x7f70 kernel/locking/lockdep.c:5144
-   lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5761
-   __mutex_lock_common+0x1d8/0x2530 kernel/locking/mutex.c:603
-   __mutex_lock kernel/locking/mutex.c:747 [inline]
-   mutex_lock_nested+0x1b/0x20 kernel/locking/mutex.c:799
-   __btrfs_release_delayed_node+0x9a/0xaa0 fs/btrfs/delayed-inode.c:256
-   btrfs_release_delayed_node fs/btrfs/delayed-inode.c:281 [inline]
-   __btrfs_run_delayed_items+0x2b5/0x430 fs/btrfs/delayed-inode.c:1156
-   btrfs_commit_transaction+0x859/0x2ff0 fs/btrfs/transaction.c:2276
-   btrfs_sync_file+0xf56/0x1330 fs/btrfs/file.c:1988
-   vfs_fsync_range fs/sync.c:188 [inline]
-   vfs_fsync fs/sync.c:202 [inline]
-   do_fsync fs/sync.c:212 [inline]
-   __do_sys_fsync fs/sync.c:220 [inline]
-   __se_sys_fsync fs/sync.c:218 [inline]
-   __x64_sys_fsync+0x196/0x1e0 fs/sync.c:218
-   do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-   do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
-  RIP: 0033:0x7f3ad047cae9
-  Code: 28 00 00 00 75 (...)
-  RSP: 002b:00007f3ad12510c8 EFLAGS: 00000246 ORIG_RAX: 000000000000004a
-  RAX: ffffffffffffffda RBX: 00007f3ad059bf80 RCX: 00007f3ad047cae9
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000005
-  RBP: 00007f3ad04c847a R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 000000000000000b R14: 00007f3ad059bf80 R15: 00007ffe56af92f8
-   </TASK>
-  ------------[ cut here ]------------
-
-Fix this by releasing the path before releasing the delayed node in the
-error path at __btrfs_run_delayed_items().
-
-Reported-by: syzbot+a379155f07c134ea9879@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/000000000000abba27060403b5bd@google.com/
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Georg Ottinger <g.ottinger@gmx.at>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230815100340.22121-1-g.ottinger@gmx.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/delayed-inode.c |   19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ fs/ext2/xattr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -1205,20 +1205,33 @@ static int __btrfs_run_delayed_items(str
- 		ret = __btrfs_commit_inode_delayed_items(trans, path,
- 							 curr_node);
- 		if (ret) {
--			btrfs_release_delayed_node(curr_node);
--			curr_node = NULL;
- 			btrfs_abort_transaction(trans, ret);
- 			break;
- 		}
+diff --git a/fs/ext2/xattr.c b/fs/ext2/xattr.c
+index 841fa6d9d744b..f1dc11dab0d88 100644
+--- a/fs/ext2/xattr.c
++++ b/fs/ext2/xattr.c
+@@ -694,10 +694,10 @@ ext2_xattr_set2(struct inode *inode, struct buffer_head *old_bh,
+ 			/* We need to allocate a new block */
+ 			ext2_fsblk_t goal = ext2_group_first_block_no(sb,
+ 						EXT2_I(inode)->i_block_group);
+-			int block = ext2_new_block(inode, goal, &error);
++			ext2_fsblk_t block = ext2_new_block(inode, goal, &error);
+ 			if (error)
+ 				goto cleanup;
+-			ea_idebug(inode, "creating block %d", block);
++			ea_idebug(inode, "creating block %lu", block);
  
- 		prev_node = curr_node;
- 		curr_node = btrfs_next_delayed_node(curr_node);
-+		/*
-+		 * See the comment below about releasing path before releasing
-+		 * node. If the commit of delayed items was successful the path
-+		 * should always be released, but in case of an error, it may
-+		 * point to locked extent buffers (a leaf at the very least).
-+		 */
-+		ASSERT(path->nodes[0] == NULL);
- 		btrfs_release_delayed_node(prev_node);
- 	}
- 
-+	/*
-+	 * Release the path to avoid a potential deadlock and lockdep splat when
-+	 * releasing the delayed node, as that requires taking the delayed node's
-+	 * mutex. If another task starts running delayed items before we take
-+	 * the mutex, it will first lock the mutex and then it may try to lock
-+	 * the same btree path (leaf).
-+	 */
-+	btrfs_free_path(path);
-+
- 	if (curr_node)
- 		btrfs_release_delayed_node(curr_node);
--	btrfs_free_path(path);
- 	trans->block_rsv = block_rsv;
- 
- 	return ret;
+ 			new_bh = sb_getblk(sb, block);
+ 			if (unlikely(!new_bh)) {
+-- 
+2.40.1
+
 
 
