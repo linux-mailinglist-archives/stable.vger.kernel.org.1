@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A9A77A7C21
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 081AB7A7B7E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235010AbjITL6T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:58:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38210 "EHLO
+        id S234735AbjITLwo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:52:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234987AbjITL6S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:18 -0400
+        with ESMTP id S234741AbjITLwn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07C56B6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9D8C433C8;
-        Wed, 20 Sep 2023 11:58:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB014CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350B5C433C7;
+        Wed, 20 Sep 2023 11:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211092;
-        bh=sI4sKj3VTWsXHpKOFeBHh16lQ4ASbjPx1cZCFRVi2TI=;
+        s=korg; t=1695210757;
+        bh=gIrfSEHUKn+9wRIv/NaE31l40R/s/AyMbFRsaeqoZwc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=08HYxHQZAHYAFnCCCDaNEmqhXf6tSWGNOlKyD/3ZZbdxaybjJEkKPPvRPyHDJ7Uh2
-         TD7wovv76tXyQ6ERKM+6bo1SPMyxUwji6stj/6K1Lj3S5FwPzbPAiZBnunAPflZq3T
-         K7VmBss4df41qXSFlrcoISAurSWDPRnt62lChngQ=
+        b=ky8zh5Hn6TKEGH8HSXTGZBIzqQJuAhYG+OUMk3IH2bPmFPuxMfHGbFN/GL2rGQGAY
+         MqppCzyK9FO/b1HrFVAApCfJRtnyJShRpbGSOrjd5E/kj1W9E9j/6rm7KnQ/0wLZvM
+         rZ6dR86yK4TXLeuGm3N8l/wlgHtpNdI8lsEYlbRA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
-        Ingo Molnar <mingo@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/139] panic: Reenable preemption in WARN slowpath
+        patches@lists.linux.dev, Tommy Huang <tommy_huang@aspeedtech.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 6.5 194/211] i2c: aspeed: Reset the i2c controller when timeout occurs
 Date:   Wed, 20 Sep 2023 13:30:38 +0200
-Message-ID: <20230920112839.443577444@linuxfoundation.org>
+Message-ID: <20230920112851.881763382@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,63 +50,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Tommy Huang <tommy_huang@aspeedtech.com>
 
-[ Upstream commit cccd32816506cbac3a4c65d9dff51b3125ef1a03 ]
+commit fee465150b458351b6d9b9f66084f3cc3022b88b upstream.
 
-Commit:
+Reset the i2c controller when an i2c transfer timeout occurs.
+The remaining interrupts and device should be reset to avoid
+unpredictable controller behavior.
 
-  5a5d7e9badd2 ("cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG")
-
-amended warn_slowpath_fmt() to disable preemption until the WARN splat
-has been emitted.
-
-However the commit neglected to reenable preemption in the !fmt codepath,
-i.e. when a WARN splat is emitted without additional format string.
-
-One consequence is that users may see more splats than intended.  E.g. a
-WARN splat emitted in a work item results in at least two extra splats:
-
-  BUG: workqueue leaked lock or atomic
-  (emitted by process_one_work())
-
-  BUG: scheduling while atomic
-  (emitted by worker_thread() -> schedule())
-
-Ironically the point of the commit was to *avoid* extra splats. ;)
-
-Fix it.
-
-Fixes: 5a5d7e9badd2 ("cpuidle: lib/bug: Disable rcu_is_watching() during WARN/BUG")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/3ec48fde01e4ee6505f77908ba351bad200ae3d1.1694763684.git.lukas@wunner.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2e57b7cebb98 ("i2c: aspeed: Add multi-master use case support")
+Cc: <stable@vger.kernel.org> # v5.1+
+Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/panic.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-aspeed.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/panic.c b/kernel/panic.c
-index ca5452afb456d..63e94f3bd8dcd 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -695,6 +695,7 @@ void warn_slowpath_fmt(const char *file, int line, unsigned taint,
- 	if (!fmt) {
- 		__warn(file, line, __builtin_return_address(0), taint,
- 		       NULL, NULL);
-+		warn_rcu_exit(rcu);
- 		return;
- 	}
+--- a/drivers/i2c/busses/i2c-aspeed.c
++++ b/drivers/i2c/busses/i2c-aspeed.c
+@@ -698,13 +698,16 @@ static int aspeed_i2c_master_xfer(struct
  
--- 
-2.40.1
-
+ 	if (time_left == 0) {
+ 		/*
+-		 * If timed out and bus is still busy in a multi master
+-		 * environment, attempt recovery at here.
++		 * In a multi-master setup, if a timeout occurs, attempt
++		 * recovery. But if the bus is idle, we still need to reset the
++		 * i2c controller to clear the remaining interrupts.
+ 		 */
+ 		if (bus->multi_master &&
+ 		    (readl(bus->base + ASPEED_I2C_CMD_REG) &
+ 		     ASPEED_I2CD_BUS_BUSY_STS))
+ 			aspeed_i2c_recover_bus(bus);
++		else
++			aspeed_i2c_reset(bus);
+ 
+ 		/*
+ 		 * If timed out and the state is still pending, drop the pending
 
 
