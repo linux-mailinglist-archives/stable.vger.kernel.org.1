@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFACC7A7D15
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B2687A7E95
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234572AbjITMGa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:06:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39242 "EHLO
+        id S235601AbjITMTE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:19:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234535AbjITMG2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:28 -0400
+        with ESMTP id S235606AbjITMTC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE7FC2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9F2C433C7;
-        Wed, 20 Sep 2023 12:06:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B015CA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:18:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0B4C433CB;
+        Wed, 20 Sep 2023 12:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211580;
-        bh=sgF4g0QtYapB1DO/UFf1mxsg0BTtQXuxIsh4RjaHt5I=;
+        s=korg; t=1695212336;
+        bh=541C3GukpRPAK88SOLo6wHFFM0RrIiLNw/+fAzzefjQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pmcTXA8SsbFecVtmnwKS5BHjoBs+AO8K8393t1gTyWrMAAKElu2gkQWFt8FhvcTIQ
-         WP+FPoMBBAevbACCKiI3D1yuzojM0j4BQNtTocZPj3wCO8+mqXrVNz0NxvSIFDNdzl
-         EVweQGr27sX7oKiNphQ85Y1VBDaamBkiaymcXSRA=
+        b=jUZTRud7PB/QCcAmBz4DFU2TQSL4eSIZmQinaRO+CideYriiJ+h+ODyvBXiTZ/pjT
+         CT2KEtXmFALq+iSd3WwpXG/FdHsPEI06IlVaQUm90mVesF7Zc9CRakjqIWNh6lumI4
+         hDOz9/tfuskyhlPhnOIucrEZlTEbJTQCyFafRa20=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-        Simon Horman <horms@kernel.org>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 4.14 146/186] ixgbe: fix timestamp configuration code
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 209/273] pwm: lpc32xx: Remove handling of PWM channels
 Date:   Wed, 20 Sep 2023 13:30:49 +0200
-Message-ID: <20230920112842.247752791@linuxfoundation.org>
+Message-ID: <20230920112852.934000932@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,151 +54,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+From: Vladimir Zapolskiy <vz@mleia.com>
 
-[ Upstream commit 3c44191dd76cf9c0cc49adaf34384cbd42ef8ad2 ]
+[ Upstream commit 4aae44f65827f0213a7361cf9c32cfe06114473f ]
 
-The commit in fixes introduced flags to control the status of hardware
-configuration while processing packets. At the same time another structure
-is used to provide configuration of timestamper to user-space applications.
-The way it was coded makes this structures go out of sync easily. The
-repro is easy for 82599 chips:
+Because LPC32xx PWM controllers have only a single output which is
+registered as the only PWM device/channel per controller, it is known in
+advance that pwm->hwpwm value is always 0. On basis of this fact
+simplify the code by removing operations with pwm->hwpwm, there is no
+controls which require channel number as input.
 
-[root@hostname ~]# hwstamp_ctl -i eth0 -r 12 -t 1
-current settings:
-tx_type 0
-rx_filter 0
-new settings:
-tx_type 1
-rx_filter 12
+Even though I wasn't aware at the time when I forward ported that patch,
+this fixes a null pointer dereference as lpc32xx->chip.pwms is NULL
+before devm_pwmchip_add() is called.
 
-The eth0 device is properly configured to timestamp any PTPv2 events.
-
-[root@hostname ~]# hwstamp_ctl -i eth0 -r 1 -t 1
-current settings:
-tx_type 1
-rx_filter 12
-SIOCSHWTSTAMP failed: Numerical result out of range
-The requested time stamping mode is not supported by the hardware.
-
-The error is properly returned because HW doesn't support all packets
-timestamping. But the adapter->flags is cleared of timestamp flags
-even though no HW configuration was done. From that point no RX timestamps
-are received by user-space application. But configuration shows good
-values:
-
-[root@hostname ~]# hwstamp_ctl -i eth0
-current settings:
-tx_type 1
-rx_filter 12
-
-Fix the issue by applying new flags only when the HW was actually
-configured.
-
-Fixes: a9763f3cb54c ("ixgbe: Update PTP to support X550EM_x devices")
-Signed-off-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Vladimir Zapolskiy <vz@mleia.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: 3d2813fb17e5 ("pwm: lpc32xx: Don't modify HW state in .probe() after the PWM chip was registered")
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c | 28 +++++++++++---------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ drivers/pwm/pwm-lpc32xx.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-index ad51b521e693a..72df6544d4198 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-@@ -868,6 +868,7 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 	u32 tsync_tx_ctl = IXGBE_TSYNCTXCTL_ENABLED;
- 	u32 tsync_rx_ctl = IXGBE_TSYNCRXCTL_ENABLED;
- 	u32 tsync_rx_mtrl = PTP_EV_PORT << 16;
-+	u32 aflags = adapter->flags;
- 	bool is_l2 = false;
- 	u32 regval;
+diff --git a/drivers/pwm/pwm-lpc32xx.c b/drivers/pwm/pwm-lpc32xx.c
+index ed8e9406b4af2..b5f8b86b328af 100644
+--- a/drivers/pwm/pwm-lpc32xx.c
++++ b/drivers/pwm/pwm-lpc32xx.c
+@@ -55,10 +55,10 @@ static int lpc32xx_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	if (duty_cycles > 255)
+ 		duty_cycles = 255;
  
-@@ -888,20 +889,20 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 	case HWTSTAMP_FILTER_NONE:
- 		tsync_rx_ctl = 0;
- 		tsync_rx_mtrl = 0;
--		adapter->flags &= ~(IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
--				    IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
-+		aflags &= ~(IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
-+			    IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
- 		break;
- 	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
- 		tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_L4_V1;
- 		tsync_rx_mtrl |= IXGBE_RXMTRL_V1_SYNC_MSG;
--		adapter->flags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
--				   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
-+		aflags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
-+			   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
- 		break;
- 	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
- 		tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_L4_V1;
- 		tsync_rx_mtrl |= IXGBE_RXMTRL_V1_DELAY_REQ_MSG;
--		adapter->flags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
--				   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
-+		aflags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
-+			   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
- 		break;
- 	case HWTSTAMP_FILTER_PTP_V2_EVENT:
- 	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
-@@ -915,8 +916,8 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 		tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_EVENT_V2;
- 		is_l2 = true;
- 		config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
--		adapter->flags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
--				   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
-+		aflags |= (IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
-+			   IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
- 		break;
- 	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
- 	case HWTSTAMP_FILTER_NTP_ALL:
-@@ -927,7 +928,7 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 		if (hw->mac.type >= ixgbe_mac_X550) {
- 			tsync_rx_ctl |= IXGBE_TSYNCRXCTL_TYPE_ALL;
- 			config->rx_filter = HWTSTAMP_FILTER_ALL;
--			adapter->flags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
-+			aflags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
- 			break;
- 		}
- 		/* fall through */
-@@ -938,8 +939,6 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 		 * Delay_Req messages and hardware does not support
- 		 * timestamping all packets => return error
- 		 */
--		adapter->flags &= ~(IXGBE_FLAG_RX_HWTSTAMP_ENABLED |
--				    IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER);
- 		config->rx_filter = HWTSTAMP_FILTER_NONE;
- 		return -ERANGE;
- 	}
-@@ -971,8 +970,8 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
- 			       IXGBE_TSYNCRXCTL_TYPE_ALL |
- 			       IXGBE_TSYNCRXCTL_TSIP_UT_EN;
- 		config->rx_filter = HWTSTAMP_FILTER_ALL;
--		adapter->flags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
--		adapter->flags &= ~IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER;
-+		aflags |= IXGBE_FLAG_RX_HWTSTAMP_ENABLED;
-+		aflags &= ~IXGBE_FLAG_RX_HWTSTAMP_IN_REGISTER;
- 		is_l2 = true;
- 		break;
- 	default:
-@@ -1005,6 +1004,9 @@ static int ixgbe_ptp_set_timestamp_mode(struct ixgbe_adapter *adapter,
+-	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
++	val = readl(lpc32xx->base);
+ 	val &= ~0xFFFF;
+ 	val |= (period_cycles << 8) | duty_cycles;
+-	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
++	writel(val, lpc32xx->base);
  
- 	IXGBE_WRITE_FLUSH(hw);
+ 	return 0;
+ }
+@@ -73,9 +73,9 @@ static int lpc32xx_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	if (ret)
+ 		return ret;
  
-+	/* configure adapter flags only when HW is actually configured */
-+	adapter->flags = aflags;
-+
- 	/* clear TX/RX time stamp registers, just to be sure */
- 	ixgbe_ptp_clear_tx_timestamp(adapter);
- 	IXGBE_READ_REG(hw, IXGBE_RXSTMPH);
+-	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
++	val = readl(lpc32xx->base);
+ 	val |= PWM_ENABLE;
+-	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
++	writel(val, lpc32xx->base);
+ 
+ 	return 0;
+ }
+@@ -85,9 +85,9 @@ static void lpc32xx_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
+ 	struct lpc32xx_pwm_chip *lpc32xx = to_lpc32xx_pwm_chip(chip);
+ 	u32 val;
+ 
+-	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
++	val = readl(lpc32xx->base);
+ 	val &= ~PWM_ENABLE;
+-	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
++	writel(val, lpc32xx->base);
+ 
+ 	clk_disable_unprepare(lpc32xx->clk);
+ }
+@@ -125,9 +125,9 @@ static int lpc32xx_pwm_probe(struct platform_device *pdev)
+ 	lpc32xx->chip.base = -1;
+ 
+ 	/* If PWM is disabled, configure the output to the default value */
+-	val = readl(lpc32xx->base + (lpc32xx->chip.pwms[0].hwpwm << 2));
++	val = readl(lpc32xx->base);
+ 	val &= ~PWM_PIN_LEVEL;
+-	writel(val, lpc32xx->base + (lpc32xx->chip.pwms[0].hwpwm << 2));
++	writel(val, lpc32xx->base);
+ 
+ 	ret = pwmchip_add(&lpc32xx->chip);
+ 	if (ret < 0) {
 -- 
 2.40.1
 
