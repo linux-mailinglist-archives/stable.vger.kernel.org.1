@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4CAE7A7C18
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF2B47A7B96
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235017AbjITL54 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:57:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33358 "EHLO
+        id S234769AbjITLxg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:53:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234982AbjITL5z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:55 -0400
+        with ESMTP id S234780AbjITLxf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7AB7D7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B223C433C9;
-        Wed, 20 Sep 2023 11:57:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A519992
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BA7C433C8;
+        Wed, 20 Sep 2023 11:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211068;
-        bh=U139mmxbUb7599rNLDhtspgdH7dh7BnWFb6FFFA61SM=;
+        s=korg; t=1695210808;
+        bh=twPCkCSd/AKzg6yLjRzjxiRqOkS/tcre+Sd2tSGM0Nc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jm8s6YUXlHyjDmzmFI4ZGvPZKIuqvmLWqMYNpiDTdc+Iv+/aXh/sMOv01PjpLBqf0
-         ERNFRz5co90IPh6irKGckxW1F1F3o7LMmrDDDjhEz1OCJnCI3TCRd0L2Tuqeszy5nM
-         rydohfCLmwHRRnCG0woOar2+rYtZKhaurNC7g4V8=
+        b=yeFlY3yHHLBJG0dnl8aCRkhC5YIgGj13BBWIR2JMyap00RcWR3pQM3hzuQ4k6faGE
+         HDS3abMIRq2+vQcLw92Y/CCWBjh9ieArrtggt9Viv9gLebLN6eO5vO7pxB0akOHY4R
+         KuS01hpZTq8Osi+oaLLODaSx5LkzH/YPRLwLmBm8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rakshana Sridhar <rakshanas@chelsio.com>,
-        Varun Prakash <varun@chelsio.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/139] nvmet-tcp: pass iov_len instead of sg->length to bvec_set_page()
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.5 186/211] tracing: Have event inject files inc the trace array ref count
 Date:   Wed, 20 Sep 2023 13:30:30 +0200
-Message-ID: <20230920112839.174791103@linuxfoundation.org>
+Message-ID: <20230920112851.640114311@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,43 +54,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varun Prakash <varun@chelsio.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 1f0bbf28940cf5edad90ab57b62aa8197bf5e836 ]
+commit e5c624f027ac74f97e97c8f36c69228ac9f1102d upstream.
 
-iov_len is the valid data length, so pass iov_len instead of sg->length to
-bvec_set_page().
+The event inject files add events for a specific trace array. For an
+instance, if the file is opened and the instance is deleted, reading or
+writing to the file will cause a use after free.
 
-Fixes: 5bfaba275ae6 ("nvmet-tcp: don't map pages which can't come from HIGHMEM")
-Signed-off-by: Rakshana Sridhar <rakshanas@chelsio.com>
-Signed-off-by: Varun Prakash <varun@chelsio.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Up the ref count of the trace_array when a event inject file is opened.
+
+Link: https://lkml.kernel.org/r/20230907024804.292337868@goodmis.org
+Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Fixes: 6c3edaf9fd6a ("tracing: Introduce trace event injection")
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_events_inject.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index c5759eb503d00..5e29da94f72d6 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -321,7 +321,7 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
- 	while (length) {
- 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
+--- a/kernel/trace/trace_events_inject.c
++++ b/kernel/trace/trace_events_inject.c
+@@ -328,7 +328,8 @@ event_inject_read(struct file *file, cha
+ }
  
--		bvec_set_page(iov, sg_page(sg), sg->length,
-+		bvec_set_page(iov, sg_page(sg), iov_len,
- 				sg->offset + sg_offset);
- 
- 		length -= iov_len;
--- 
-2.40.1
-
+ const struct file_operations event_inject_fops = {
+-	.open = tracing_open_generic,
++	.open = tracing_open_file_tr,
+ 	.read = event_inject_read,
+ 	.write = event_inject_write,
++	.release = tracing_release_file_tr,
+ };
 
 
