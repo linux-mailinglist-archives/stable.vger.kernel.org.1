@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 445A87A7EC2
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD7B17A7EEF
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235703AbjITMU2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:20:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50924 "EHLO
+        id S234977AbjITMWN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:22:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235687AbjITMU1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:27 -0400
+        with ESMTP id S235645AbjITMWM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E784E83
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22665C433C9;
-        Wed, 20 Sep 2023 12:20:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79EE9B6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C30A1C433BB;
+        Wed, 20 Sep 2023 12:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212421;
-        bh=hVVyI+FR7oT75Irs9BSvWIZQAqWdO8pJMy5cL88k/Lc=;
+        s=korg; t=1695212525;
+        bh=37h1AA7FHgmwqL/mXTkYMvPpNuOwUvR/+XT+0xN9zBI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=smFWaEOYVlvxicf1YKCkvy4Z+kwKdeuiACUYnadpeMe61btBzO3zK2dIGVrtUqtRo
-         JBvggGx/s0zoOc2DkBf+ONSWC4DX6DmqjN16Np7UPdcnwUg0GzGv/saGBBlkmsXFdf
-         55TbVJSUqxCfsPUFmGmWILjVISjIyw4t/9W1lz9g=
+        b=qUJh/l1vxDdMv/Y3SHWQKS3vFbLi2ag7AmYN0ad4N0/E8GZEsanyNdboHzvKouUMZ
+         +Cka5vD/yVBStc9uIWRC7dQRc2WrEtbC0Oz5NNZvlX9eJ3P/IKNmsahJVONvcDi8iy
+         loEgcCKZw76rY2GmltQFOXaRthE3kYzbGYbouIHw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 243/273] wifi: mwifiex: fix fortify warning
-Date:   Wed, 20 Sep 2023 13:31:23 +0200
-Message-ID: <20230920112853.843876541@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+90a11e6b1e810785c6ff@syzkaller.appspotmail.com,
+        Liu Shixin <liushixin2@huawei.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 34/83] jfs: fix invalid free of JFS_IP(ipimap)->i_imap in diUnmount
+Date:   Wed, 20 Sep 2023 13:31:24 +0200
+Message-ID: <20230920112828.026172314@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,86 +52,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Liu Shixin via Jfs-discussion <jfs-discussion@lists.sourceforge.net>
 
-[ Upstream commit dcce94b80a954a8968ff29fafcfb066d6197fa9a ]
+[ Upstream commit 6e2bda2c192d0244b5a78b787ef20aa10cb319b7 ]
 
-When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
-I've noticed the following:
+syzbot found an invalid-free in diUnmount:
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘mwifiex_construct_tdls_action_frame’ at drivers/net/wireless/marvell/mwifiex/tdls.c:765:3,
-    inlined from ‘mwifiex_send_tdls_action_frame’ at drivers/net/wireless/marvell/mwifiex/tdls.c:856:6:
-./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  529 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+BUG: KASAN: double-free in slab_free mm/slub.c:3661 [inline]
+BUG: KASAN: double-free in __kmem_cache_free+0x71/0x110 mm/slub.c:3674
+Free of addr ffff88806f410000 by task syz-executor131/3632
 
-The compiler actually complains on:
+ CPU: 0 PID: 3632 Comm: syz-executor131 Not tainted 6.1.0-rc7-syzkaller-00012-gca57f02295f1 #0
+ Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/26/2022
+ Call Trace:
+  <TASK>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0x1b1/0x28e lib/dump_stack.c:106
+  print_address_description+0x74/0x340 mm/kasan/report.c:284
+  print_report+0x107/0x1f0 mm/kasan/report.c:395
+  kasan_report_invalid_free+0xac/0xd0 mm/kasan/report.c:460
+  ____kasan_slab_free+0xfb/0x120
+  kasan_slab_free include/linux/kasan.h:177 [inline]
+  slab_free_hook mm/slub.c:1724 [inline]
+  slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1750
+  slab_free mm/slub.c:3661 [inline]
+  __kmem_cache_free+0x71/0x110 mm/slub.c:3674
+  diUnmount+0xef/0x100 fs/jfs/jfs_imap.c:195
+  jfs_umount+0x108/0x370 fs/jfs/jfs_umount.c:63
+  jfs_put_super+0x86/0x190 fs/jfs/super.c:194
+  generic_shutdown_super+0x130/0x310 fs/super.c:492
+  kill_block_super+0x79/0xd0 fs/super.c:1428
+  deactivate_locked_super+0xa7/0xf0 fs/super.c:332
+  cleanup_mnt+0x494/0x520 fs/namespace.c:1186
+  task_work_run+0x243/0x300 kernel/task_work.c:179
+  exit_task_work include/linux/task_work.h:38 [inline]
+  do_exit+0x664/0x2070 kernel/exit.c:820
+  do_group_exit+0x1fd/0x2b0 kernel/exit.c:950
+  __do_sys_exit_group kernel/exit.c:961 [inline]
+  __se_sys_exit_group kernel/exit.c:959 [inline]
+  __x64_sys_exit_group+0x3b/0x40 kernel/exit.c:959
+  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+  do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[...]
 
-memmove(pos + ETH_ALEN, &mgmt->u.action.category,
-	sizeof(mgmt->u.action.u.tdls_discover_resp));
+JFS_IP(ipimap)->i_imap is not setting to NULL after free in diUnmount.
+If jfs_remount() free JFS_IP(ipimap)->i_imap but then failed at diMount().
+JFS_IP(ipimap)->i_imap will be freed once again.
+Fix this problem by setting JFS_IP(ipimap)->i_imap to NULL after free.
 
-and it happens because the fortification logic interprets this
-as an attempt to overread 1-byte 'u.action.category' member of
-'struct ieee80211_mgmt'. To silence this warning, it's enough
-to pass an address of 'u.action' itself instead of an address
-of its first member.
-
-This also fixes an improper usage of 'sizeof()'. Since 'skb' is
-extended with 'sizeof(mgmt->u.action.u.tdls_discover_resp) + 1'
-bytes (where 1 is actually 'sizeof(mgmt->u.action.category)'),
-I assume that the same number of bytes should be copied.
-
-Suggested-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230629085115.180499-2-dmantipov@yandex.ru
+Reported-by: syzbot+90a11e6b1e810785c6ff@syzkaller.appspotmail.com
+Signed-off-by: Liu Shixin <liushixin2@huawei.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/tdls.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/jfs/jfs_imap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
-index b6b7bbe168ebc..12cfc95f02598 100644
---- a/drivers/net/wireless/marvell/mwifiex/tdls.c
-+++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
-@@ -737,6 +737,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
- 	int ret;
- 	u16 capab;
- 	struct ieee80211_ht_cap *ht_cap;
-+	unsigned int extra;
- 	u8 radio, *pos;
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index 937ca07b58b1d..67c67604b8c85 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -195,6 +195,7 @@ int diUnmount(struct inode *ipimap, int mounterror)
+ 	 * free in-memory control structure
+ 	 */
+ 	kfree(imap);
++	JFS_IP(ipimap)->i_imap = NULL;
  
- 	capab = priv->curr_bss_params.bss_descriptor.cap_info_bitmap;
-@@ -755,7 +756,10 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
- 
- 	switch (action_code) {
- 	case WLAN_PUB_ACTION_TDLS_DISCOVER_RES:
--		skb_put(skb, sizeof(mgmt->u.action.u.tdls_discover_resp) + 1);
-+		/* See the layout of 'struct ieee80211_mgmt'. */
-+		extra = sizeof(mgmt->u.action.u.tdls_discover_resp) +
-+			sizeof(mgmt->u.action.category);
-+		skb_put(skb, extra);
- 		mgmt->u.action.category = WLAN_CATEGORY_PUBLIC;
- 		mgmt->u.action.u.tdls_discover_resp.action_code =
- 					      WLAN_PUB_ACTION_TDLS_DISCOVER_RES;
-@@ -764,8 +768,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
- 		mgmt->u.action.u.tdls_discover_resp.capability =
- 							     cpu_to_le16(capab);
- 		/* move back for addr4 */
--		memmove(pos + ETH_ALEN, &mgmt->u.action.category,
--			sizeof(mgmt->u.action.u.tdls_discover_resp));
-+		memmove(pos + ETH_ALEN, &mgmt->u.action, extra);
- 		/* init address 4 */
- 		memcpy(pos, bc_addr, ETH_ALEN);
- 
+ 	return (0);
+ }
 -- 
 2.40.1
 
