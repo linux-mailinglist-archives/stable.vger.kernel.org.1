@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 633787A7C6D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3ECD7A7AF5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:47:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234960AbjITMBR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:01:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40798 "EHLO
+        id S234501AbjITLrx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:47:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234988AbjITMBP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:15 -0400
+        with ESMTP id S234609AbjITLru (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:47:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C373E6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:00:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3264C433C7;
-        Wed, 20 Sep 2023 12:00:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DEF9D8
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:47:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF232C433C7;
+        Wed, 20 Sep 2023 11:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211258;
-        bh=bWYkKxnPkyiYIWqrSN13KJAXCbhrIi/sDNLmW/Wrglo=;
+        s=korg; t=1695210464;
+        bh=m1WJs3oGp/e7o7G+jHQqRO3HPZsb6KrR/EU+Ms3lvbU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tt5dzUOd1eUMAv7WYx2f+YZijz9Itc3cHSJatamCD+EhmIZZhFo5BFRbkglaQNnhG
-         ubIlQgTCU5sBpb02bjxZtDVcB51ZcOPq3Yhp939sLjYUs/O2V8JjAMzbqpHc4pJZaN
-         2M2y2I8MmFmReGg7DeG8BnJW3b3tfmnUvjuJ9I8I=
+        b=1E2xkfwwqxVhaxThUdvW4K8AeejkyGjPOX8u6/2hOiqk1vxfgd6K/ypLxtZ+aSc6+
+         qphmPV6RnG3gcPcUdsV6V1Sa5zlhPG/8rXs5Uphpn4uew9PGpovYwEDoyOn71TlhwJ
+         EVUVJ1z97cJESeqBr8iWw+5wWShXKAwzLGRTu45w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 027/186] sctp: handle invalid error codes without calling BUG()
+        patches@lists.linux.dev, Breno Leitao <leitao@debian.org>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 086/211] io_uring: annotate the struct io_kiocb slab for appropriate user copy
 Date:   Wed, 20 Sep 2023 13:28:50 +0200
-Message-ID: <20230920112837.898210944@linuxfoundation.org>
+Message-ID: <20230920112848.480893484@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,47 +49,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit a0067dfcd9418fd3b0632bc59210d120d038a9c6 ]
+[ Upstream commit b97f96e22f051d59d07a527dbd7d90408b661ca8 ]
 
-The sctp_sf_eat_auth() function is supposed to return enum sctp_disposition
-values but if the call to sctp_ulpevent_make_authkey() fails, it returns
--ENOMEM.
+When compiling the kernel with clang and having HARDENED_USERCOPY
+enabled, the liburing openat2.t test case fails during request setup:
 
-This results in calling BUG() inside the sctp_side_effects() function.
-Calling BUG() is an over reaction and not helpful.  Call WARN_ON_ONCE()
-instead.
+usercopy: Kernel memory overwrite attempt detected to SLUB object 'io_kiocb' (offset 24, size 24)!
+------------[ cut here ]------------
+kernel BUG at mm/usercopy.c:102!
+invalid opcode: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC
+CPU: 3 PID: 413 Comm: openat2.t Tainted: G                 N 6.4.3-g6995e2de6891-dirty #19
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
+RIP: 0010:usercopy_abort+0x84/0x90
+Code: ce 49 89 ce 48 c7 c3 68 48 98 82 48 0f 44 de 48 c7 c7 56 c6 94 82 4c 89 de 48 89 c1 41 52 41 56 53 e8 e0 51 c5 00 48 83 c4 18 <0f> 0b 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 55 41 57 41 56
+RSP: 0018:ffffc900016b3da0 EFLAGS: 00010296
+RAX: 0000000000000062 RBX: ffffffff82984868 RCX: 4e9b661ac6275b00
+RDX: ffff8881b90ec580 RSI: ffffffff82949a64 RDI: 00000000ffffffff
+RBP: 0000000000000018 R08: 0000000000000000 R09: 0000000000000000
+R10: ffffc900016b3c88 R11: ffffc900016b3c30 R12: 00007ffe549659e0
+R13: ffff888119014000 R14: 0000000000000018 R15: 0000000000000018
+FS:  00007f862e3ca680(0000) GS:ffff8881b90c0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005571483542a8 CR3: 0000000118c11000 CR4: 00000000003506e0
+Call Trace:
+ <TASK>
+ ? __die_body+0x63/0xb0
+ ? die+0x9d/0xc0
+ ? do_trap+0xa7/0x180
+ ? usercopy_abort+0x84/0x90
+ ? do_error_trap+0xc6/0x110
+ ? usercopy_abort+0x84/0x90
+ ? handle_invalid_op+0x2c/0x40
+ ? usercopy_abort+0x84/0x90
+ ? exc_invalid_op+0x2f/0x40
+ ? asm_exc_invalid_op+0x16/0x20
+ ? usercopy_abort+0x84/0x90
+ __check_heap_object+0xe2/0x110
+ __check_object_size+0x142/0x3d0
+ io_openat2_prep+0x68/0x140
+ io_submit_sqes+0x28a/0x680
+ __se_sys_io_uring_enter+0x120/0x580
+ do_syscall_64+0x3d/0x80
+ entry_SYSCALL_64_after_hwframe+0x46/0xb0
+RIP: 0033:0x55714834de26
+Code: ca 01 0f b6 82 d0 00 00 00 8b ba cc 00 00 00 45 31 c0 31 d2 41 b9 08 00 00 00 83 e0 01 c1 e0 04 41 09 c2 b8 aa 01 00 00 0f 05 <c3> 66 0f 1f 84 00 00 00 00 00 89 30 eb 89 0f 1f 40 00 8b 00 a8 06
+RSP: 002b:00007ffe549659c8 EFLAGS: 00000246 ORIG_RAX: 00000000000001aa
+RAX: ffffffffffffffda RBX: 00007ffe54965a50 RCX: 000055714834de26
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000008
+R10: 0000000000000000 R11: 0000000000000246 R12: 000055714834f057
+R13: 00007ffe54965a50 R14: 0000000000000001 R15: 0000557148351dd8
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
 
-This code predates git.
+when it tries to copy struct open_how from userspace into the per-command
+space in the io_kiocb. There's nothing wrong with the copy, but we're
+missing the appropriate annotations for allowing user copies to/from the
+io_kiocb slab.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Allow copies in the per-command area, which is from the 'file' pointer to
+when 'opcode' starts. We do have existing user copies there, but they are
+not all annotated like the one that openat2_prep() uses,
+copy_struct_from_user(). But in practice opcodes should be allowed to
+copy data into their per-command area in the io_kiocb.
+
+Reported-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_sideeffect.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
-index 169819263c0bb..87822421b99db 100644
---- a/net/sctp/sm_sideeffect.c
-+++ b/net/sctp/sm_sideeffect.c
-@@ -1235,7 +1235,10 @@ static int sctp_side_effects(enum sctp_event event_type,
- 	default:
- 		pr_err("impossible disposition %d in state %d, event_type %d, event_id %d\n",
- 		       status, state, event_type, subtype.chunk);
--		BUG();
-+		error = status;
-+		if (error >= 0)
-+			error = -EINVAL;
-+		WARN_ON_ONCE(1);
- 		break;
- 	}
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 4e9217c1eb2e0..a1562f2cf3f3c 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -4628,8 +4628,20 @@ static int __init io_uring_init(void)
  
+ 	io_uring_optable_init();
+ 
+-	req_cachep = KMEM_CACHE(io_kiocb, SLAB_HWCACHE_ALIGN | SLAB_PANIC |
+-				SLAB_ACCOUNT | SLAB_TYPESAFE_BY_RCU);
++	/*
++	 * Allow user copy in the per-command field, which starts after the
++	 * file in io_kiocb and until the opcode field. The openat2 handling
++	 * requires copying in user memory into the io_kiocb object in that
++	 * range, and HARDENED_USERCOPY will complain if we haven't
++	 * correctly annotated this range.
++	 */
++	req_cachep = kmem_cache_create_usercopy("io_kiocb",
++				sizeof(struct io_kiocb), 0,
++				SLAB_HWCACHE_ALIGN | SLAB_PANIC |
++				SLAB_ACCOUNT | SLAB_TYPESAFE_BY_RCU,
++				offsetof(struct io_kiocb, cmd.data),
++				sizeof_field(struct io_kiocb, cmd.data), NULL);
++
+ 	return 0;
+ };
+ __initcall(io_uring_init);
 -- 
 2.40.1
 
