@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF6C27A7F0D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77BB77A7ED0
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235687AbjITMX1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:23:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43096 "EHLO
+        id S235624AbjITMU7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:20:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235693AbjITMX1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:27 -0400
+        with ESMTP id S235735AbjITMU5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E04A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D066EC433C9;
-        Wed, 20 Sep 2023 12:23:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1867DDC
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F7AC433CB;
+        Wed, 20 Sep 2023 12:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212600;
-        bh=M/DlGqqR3N8IHSZYEAbh/zTkPS0SPKm2pXRwVsQlTy0=;
+        s=korg; t=1695212451;
+        bh=cDzl8m902wu+cSBhdwZpAeBIzVnwLnpULpV4z4iMrvs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l2UYh8cTunCkgvHKOvZFwktJTBuTBFNLN5ly+Uob7Q4br//eLr+z1RVESuG2YHwBg
-         A+i9HM7AqnEP9nLIDy+wPqisxGXaYCKGWzz+mmy9Hf0GTF1V5eEWUPvPb8Zuhw853D
-         qIiVYF3QxZQ3HSr0hqsQJxMClDvd68NUiPWYyflE=
+        b=YmDmRz41yfDwHgaBbK9W72dDL/fQyXF+otDBdhIG2T1TAJLexP0xaX+XxQCTllY7c
+         Rkj1cdKRy8x1ihminyvlMyYRn7s5YlFpg5m2pAKA12Ya39NOX44qZ84AqSdp99iZ3d
+         ef4BO0W5oJLU6xspK3aUkr9TJIFca25q0+WInuFk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        Justin Tee <justin.tee@broadcom.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 62/83] scsi: lpfc: Fix the NULL vs IS_ERR() bug for debugfs_create_file()
+        patches@lists.linux.dev, valis <sec@valis.email>,
+        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        M A Ramdhan <ramdhan@starlabs.sg>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Luiz Capitulino <luizcap@amazon.com>
+Subject: [PATCH 4.19 272/273] net/sched: cls_fw: No longer copy tcf_result on update to avoid use-after-free
 Date:   Wed, 20 Sep 2023 13:31:52 +0200
-Message-ID: <20230920112829.111310490@linuxfoundation.org>
+Message-ID: <20230920112854.610226971@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,83 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: valis <sec@valis.email>
 
-[ Upstream commit 7dcc683db3639eadd11bf0d59a09088a43de5e22 ]
+commit 76e42ae831991c828cffa8c37736ebfb831ad5ec upstream.
 
-Since debugfs_create_file() returns ERR_PTR and never NULL, use IS_ERR() to
-check the return value.
+When fw_change() is called on an existing filter, the whole
+tcf_result struct is always copied into the new instance of the filter.
 
-Fixes: 2fcbc569b9f5 ("scsi: lpfc: Make debugfs ktime stats generic for NVME and SCSI")
-Fixes: 4c47efc140fa ("scsi: lpfc: Move SCSI and NVME Stats to hardware queue structures")
-Fixes: 6a828b0f6192 ("scsi: lpfc: Support non-uniform allocation of MSIX vectors to hardware queues")
-Fixes: 95bfc6d8ad86 ("scsi: lpfc: Make FW logging dynamically configurable")
-Fixes: 9f77870870d8 ("scsi: lpfc: Add debugfs support for cm framework buffers")
-Fixes: c490850a0947 ("scsi: lpfc: Adapt partitioned XRI lists to efficient sharing")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20230906030809.2847970-1-ruanjinjie@huawei.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This causes a problem when updating a filter bound to a class,
+as tcf_unbind_filter() is always called on the old instance in the
+success path, decreasing filter_cnt of the still referenced class
+and allowing it to be deleted, leading to a use-after-free.
+
+Fix this by no longer copying the tcf_result struct from the old filter.
+
+Fixes: e35a8ee5993b ("net: sched: fw use RCU")
+Reported-by: valis <sec@valis.email>
+Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Signed-off-by: valis <sec@valis.email>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: M A Ramdhan <ramdhan@starlabs.sg>
+Link: https://lore.kernel.org/r/20230729123202.72406-3-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Fixed small conflict as 'fnew->ifindex' assignment is not protected by
+  CONFIG_NET_CLS_IND on upstream since a51486266c3 ]
+Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_debugfs.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/sched/cls_fw.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_debugfs.c b/drivers/scsi/lpfc/lpfc_debugfs.c
-index 2b77cbbcdccb6..f91eee01ce95e 100644
---- a/drivers/scsi/lpfc/lpfc_debugfs.c
-+++ b/drivers/scsi/lpfc/lpfc_debugfs.c
-@@ -5909,7 +5909,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
- 					    phba->hba_debugfs_root,
- 					    phba,
- 					    &lpfc_debugfs_op_multixripools);
--		if (!phba->debug_multixri_pools) {
-+		if (IS_ERR(phba->debug_multixri_pools)) {
- 			lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
- 					 "0527 Cannot create debugfs multixripools\n");
- 			goto debug_failed;
-@@ -5921,7 +5921,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
- 			debugfs_create_file(name, 0644,
- 					    phba->hba_debugfs_root,
- 					    phba, &lpfc_debugfs_ras_log);
--		if (!phba->debug_ras_log) {
-+		if (IS_ERR(phba->debug_ras_log)) {
- 			lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
- 					 "6148 Cannot create debugfs"
- 					 " ras_log\n");
-@@ -5942,7 +5942,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
- 			debugfs_create_file(name, S_IFREG | 0644,
- 					    phba->hba_debugfs_root,
- 					    phba, &lpfc_debugfs_op_lockstat);
--		if (!phba->debug_lockstat) {
-+		if (IS_ERR(phba->debug_lockstat)) {
- 			lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
- 					 "4610 Can't create debugfs lockstat\n");
- 			goto debug_failed;
-@@ -6171,7 +6171,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
- 		debugfs_create_file(name, 0644,
- 				    vport->vport_debugfs_root,
- 				    vport, &lpfc_debugfs_op_scsistat);
--	if (!vport->debug_scsistat) {
-+	if (IS_ERR(vport->debug_scsistat)) {
- 		lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
- 				 "4611 Cannot create debugfs scsistat\n");
- 		goto debug_failed;
-@@ -6182,7 +6182,7 @@ lpfc_debugfs_initialize(struct lpfc_vport *vport)
- 		debugfs_create_file(name, 0644,
- 				    vport->vport_debugfs_root,
- 				    vport, &lpfc_debugfs_op_ioktime);
--	if (!vport->debug_ioktime) {
-+	if (IS_ERR(vport->debug_ioktime)) {
- 		lpfc_printf_vlog(vport, KERN_ERR, LOG_INIT,
- 				 "0815 Cannot create debugfs ioktime\n");
- 		goto debug_failed;
--- 
-2.40.1
-
+--- a/net/sched/cls_fw.c
++++ b/net/sched/cls_fw.c
+@@ -277,7 +277,6 @@ static int fw_change(struct net *net, st
+ 			return -ENOBUFS;
+ 
+ 		fnew->id = f->id;
+-		fnew->res = f->res;
+ #ifdef CONFIG_NET_CLS_IND
+ 		fnew->ifindex = f->ifindex;
+ #endif /* CONFIG_NET_CLS_IND */
 
 
