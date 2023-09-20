@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCBF37A7E6A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2447F7A8067
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235556AbjITMRv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:17:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51500 "EHLO
+        id S235918AbjITMhD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:37:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235583AbjITMRt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:49 -0400
+        with ESMTP id S235915AbjITMhD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7235E130
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAE8C433CD;
-        Wed, 20 Sep 2023 12:17:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 422238F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8935AC433C7;
+        Wed, 20 Sep 2023 12:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212250;
-        bh=LqHDISMVcuf9c7sjRbkeJJFK0qfOqbusGKZwEo2Zpi4=;
+        s=korg; t=1695213416;
+        bh=gGaEcDi7iefmQiyEZnnW2ypN5MCpL87idCfoPtoUutk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AP+6pKtYHO/jdTVCQY1hZ/BTrCSEAGxjxJw6eX7TQe3IZPb8puSKtHdM0ZiLTWYfw
-         96d149+QI3YwHkor/HgSCAOfKIR+KE+IkSBDJynxpY3FguKDUPYxQbmf/Y4NTM5IYK
-         CLlq7IcnWAkGXHiohJ+BCkYMJSm/22h+NuU9GGH4=
+        b=wLl7F9tlMKQYfOjRhgsJ8PcGuNDBjr/Txefd0Qh5xMsnvP20f8mlkVn4Mcq7WctSy
+         m2JbuVIgndR60r6huDLy9PBnPanke9laU9oJqzuZJZwsR/9svjcyaZZ9sVEA0NNrvX
+         kGFl7inR1POdvbzjXsRL/w7Pp2cjq24wsaA3r/HU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Kyle Zeng <zengyhkyle@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 4.19 165/273] igmp: limit igmpv3_newpack() packet size to IP_MAX_MTU
-Date:   Wed, 20 Sep 2023 13:30:05 +0200
-Message-ID: <20230920112851.619921804@linuxfoundation.org>
+        patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Biggers <ebiggers@google.com>
+Subject: [PATCH 5.4 229/367] fsverity: skip PKCS#7 parser when keyring is empty
+Date:   Wed, 20 Sep 2023 13:30:06 +0200
+Message-ID: <20230920112904.508183560@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +49,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Eric Biggers <ebiggers@google.com>
 
-commit c3b704d4a4a265660e665df51b129e8425216ed1 upstream.
+commit 919dc320956ea353a7fb2d84265195ad5ef525ac upstream.
 
-This is a follow up of commit 915d975b2ffa ("net: deal with integer
-overflows in kmalloc_reserve()") based on David Laight feedback.
+If an fsverity builtin signature is given for a file but the
+".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
+parser.  Skip this to avoid the PKCS#7 attack surface when builtin
+signature support is configured into the kernel but is not being used.
 
-Back in 2010, I failed to realize malicious users could set dev->mtu
-to arbitrary values. This mtu has been since limited to 0x7fffffff but
-regardless of how big dev->mtu is, it makes no sense for igmpv3_newpack()
-to allocate more than IP_MAX_MTU and risk various skb fields overflows.
+This is a hardening improvement, not a fix per se, but I've added
+Fixes and Cc stable to get it out to more users.
 
-Fixes: 57e1ab6eaddc ("igmp: refine skb allocations")
-Link: https://lore.kernel.org/netdev/d273628df80f45428e739274ab9ecb72@AcuMS.aculab.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: David Laight <David.Laight@ACULAB.COM>
-Cc: Kyle Zeng <zengyhkyle@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/r/20230820173237.2579-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/igmp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/verity/signature.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/net/ipv4/igmp.c
-+++ b/net/ipv4/igmp.c
-@@ -357,8 +357,9 @@ static struct sk_buff *igmpv3_newpack(st
- 	struct flowi4 fl4;
- 	int hlen = LL_RESERVED_SPACE(dev);
- 	int tlen = dev->needed_tailroom;
--	unsigned int size = mtu;
-+	unsigned int size;
+--- a/fs/verity/signature.c
++++ b/fs/verity/signature.c
+@@ -58,6 +58,22 @@ int fsverity_verify_signature(const stru
+ 		return -EBADMSG;
+ 	}
  
-+	size = min(mtu, IP_MAX_MTU);
- 	while (1) {
- 		skb = alloc_skb(size + hlen + tlen,
- 				GFP_ATOMIC | __GFP_NOWARN);
++	if (fsverity_keyring->keys.nr_leaves_on_tree == 0) {
++		/*
++		 * The ".fs-verity" keyring is empty, due to builtin signatures
++		 * being supported by the kernel but not actually being used.
++		 * In this case, verify_pkcs7_signature() would always return an
++		 * error, usually ENOKEY.  It could also be EBADMSG if the
++		 * PKCS#7 is malformed, but that isn't very important to
++		 * distinguish.  So, just skip to ENOKEY to avoid the attack
++		 * surface of the PKCS#7 parser, which would otherwise be
++		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
++		 */
++		fsverity_err(inode,
++			     "fs-verity keyring is empty, rejecting signed file!");
++		return -ENOKEY;
++	}
++
+ 	d = kzalloc(sizeof(*d) + hash_alg->digest_size, GFP_KERNEL);
+ 	if (!d)
+ 		return -ENOMEM;
 
 
