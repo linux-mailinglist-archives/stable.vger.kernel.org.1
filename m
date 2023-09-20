@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D66107A7D52
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4A557A7E88
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232848AbjITMIe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:08:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43316 "EHLO
+        id S235589AbjITMSi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:18:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235265AbjITMIe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:08:34 -0400
+        with ESMTP id S235588AbjITMSi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33442C2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:08:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD92C433CA;
-        Wed, 20 Sep 2023 12:08:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9413B6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:18:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149C7C433C7;
+        Wed, 20 Sep 2023 12:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211706;
-        bh=BCdnj2HveUB18bJnT0zxOBDN2UGTUrYUgvSdMVq/uzo=;
+        s=korg; t=1695212312;
+        bh=EJZZUEMZFWbTh5qKvtWvsUceyaklPZws0ZP+JxOA6m4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qh9Ro0aPvztfP7N0IzSjmz3rHfjS8HM9KEBuxfP2xWIXD4XzY3L8DVtutBnfst+rl
-         rAB6YlJixK9B52Pz3ppEfwCBMcM0P/AQhiEuMJlcWMo5Ig2ZVZKbeXvkmy0VgFbuYd
-         0KZ+bsoAoBrg/otPnPn/4aidpOTascrcN7k3d6NA=
+        b=RRcxsCWDVT3KVX2RFwPcutq8xw+rQApxk0lW3qyctybxxwSfduNC1Ax2lg3XpmqEv
+         ZL4eAFKiKD/lD+ajZPO6jsVK7cnm4WjYaKJUlfCV4IAjbzQ12QrJSGv/nrIF+OEXJF
+         Mc1E6EpDgye4RUZSCQ1fUWms5bNiSZQUDj/VGDe4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 166/186] media: dw2102: Fix null-ptr-deref in dw2102_i2c_transfer()
+        patches@lists.linux.dev,
+        William Zhang <william.zhang@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 4.19 229/273] mtd: rawnand: brcmnand: Fix potential false time out warning
 Date:   Wed, 20 Sep 2023 13:31:09 +0200
-Message-ID: <20230920112842.892778521@linuxfoundation.org>
+Message-ID: <20230920112853.467510125@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,102 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: William Zhang <william.zhang@broadcom.com>
 
-[ Upstream commit 5ae544d94abc8ff77b1b9bf8774def3fa5689b5b ]
+commit 9cc0a598b944816f2968baf2631757f22721b996 upstream.
 
-In dw2102_i2c_transfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach dw2102_i2c_transfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+If system is busy during the command status polling function, the driver
+may not get the chance to poll the status register till the end of time
+out and return the premature status.  Do a final check after time out
+happens to ensure reading the correct status.
 
-Similar commit:
-commit 950e252cb469
-("[media] dw2102: limit messages to buffer size")
-
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9d2ee0a60b8b ("mtd: nand: brcmnand: Check flash #WP pin status before nand erase/program")
+Signed-off-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-3-william.zhang@broadcom.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb/dw2102.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
-index 2c9c4432a0e65..ef22188104718 100644
---- a/drivers/media/usb/dvb-usb/dw2102.c
-+++ b/drivers/media/usb/dvb-usb/dw2102.c
-@@ -133,6 +133,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -836,6 +836,14 @@ static int bcmnand_ctrl_poll_status(stru
+ 		cpu_relax();
+ 	} while (time_after(limit, jiffies));
  
- 	switch (num) {
- 	case 2:
-+		if (msg[0].len < 1) {
-+			num = -EOPNOTSUPP;
-+			break;
-+		}
- 		/* read stv0299 register */
- 		value = msg[0].buf[0];/* register */
- 		for (i = 0; i < msg[1].len; i++) {
-@@ -144,6 +148,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 	case 1:
- 		switch (msg[0].addr) {
- 		case 0x68:
-+			if (msg[0].len < 2) {
-+				num = -EOPNOTSUPP;
-+				break;
-+			}
- 			/* write to stv0299 register */
- 			buf6[0] = 0x2a;
- 			buf6[1] = msg[0].buf[0];
-@@ -153,6 +161,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			break;
- 		case 0x60:
- 			if (msg[0].flags == 0) {
-+				if (msg[0].len < 4) {
-+					num = -EOPNOTSUPP;
-+					break;
-+				}
- 			/* write to tuner pll */
- 				buf6[0] = 0x2c;
- 				buf6[1] = 5;
-@@ -164,6 +176,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				dw210x_op_rw(d->udev, 0xb2, 0, 0,
- 						buf6, 7, DW210X_WRITE_MSG);
- 			} else {
-+				if (msg[0].len < 1) {
-+					num = -EOPNOTSUPP;
-+					break;
-+				}
- 			/* read from tuner */
- 				dw210x_op_rw(d->udev, 0xb5, 0, 0,
- 						buf6, 1, DW210X_READ_MSG);
-@@ -171,12 +187,20 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			}
- 			break;
- 		case (DW2102_RC_QUERY):
-+			if (msg[0].len < 2) {
-+				num = -EOPNOTSUPP;
-+				break;
-+			}
- 			dw210x_op_rw(d->udev, 0xb8, 0, 0,
- 					buf6, 2, DW210X_READ_MSG);
- 			msg[0].buf[0] = buf6[0];
- 			msg[0].buf[1] = buf6[1];
- 			break;
- 		case (DW2102_VOLTAGE_CTRL):
-+			if (msg[0].len < 1) {
-+				num = -EOPNOTSUPP;
-+				break;
-+			}
- 			buf6[0] = 0x30;
- 			buf6[1] = msg[0].buf[0];
- 			dw210x_op_rw(d->udev, 0xb2, 0, 0,
--- 
-2.40.1
-
++	/*
++	 * do a final check after time out in case the CPU was busy and the driver
++	 * did not get enough time to perform the polling to avoid false alarms
++	 */
++	val = brcmnand_read_reg(ctrl, BRCMNAND_INTFC_STATUS);
++	if ((val & mask) == expected_val)
++		return 0;
++
+ 	dev_warn(ctrl->dev, "timeout on status poll (expected %x got %x)\n",
+ 		 expected_val, val & mask);
+ 
 
 
