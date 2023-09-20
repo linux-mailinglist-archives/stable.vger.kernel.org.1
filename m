@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC4C67A7E6F
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73A057A7CEE
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235576AbjITMR6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:17:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55062 "EHLO
+        id S235238AbjITMFb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:05:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235578AbjITMR5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:57 -0400
+        with ESMTP id S235427AbjITMFX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60DF9E58
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3560DC433C7;
-        Wed, 20 Sep 2023 12:16:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2221F92
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:05:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FC1C433C7;
+        Wed, 20 Sep 2023 12:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212193;
-        bh=X2jkQ8xs2psq/wC8YgvCdTRB8DAuwEIR4gXiDAl7tCo=;
+        s=korg; t=1695211517;
+        bh=19n01cyGrmy45eIaL4pvoQ0ZSiBWYOkdC9nG1Kd7+vM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dS8nAIDGmx6MjNSq/A6aRwOCz+RFrAyQ8dNJ9Vq9gNWfzyGprNojJpiCaUyqDEZBv
-         k1dgDUNVfOOgPOWWWIZ6C4OZ+IOd0glVMYzLGUQkNDq/p4n+6bfkgo68AqyZuhs7g+
-         ALlImeRWgl0ffIvKoQTdZ03m0Wz8+RghWhaHPmuM=
+        b=EKZHFx8VK7wlkao2Y3oI9NYDh/uUqPMFKxJWIbojZ8zITCHp+poDZbv7Z5E3YQx76
+         UphlqSEK5RZji7Ll0pE86q0X+QMv80syM1biM6AU5FJlQG3R2IpQTn/0kIbaI0UC+H
+         gmDgest9/bF0JU2y25H+wc4AhsMBcizUOObciv4c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Barry Marson <bmarson@redhat.com>,
-        Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>
-Subject: [PATCH 4.19 185/273] dlm: fix plock lookup when using multiple lockspaces
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 4.14 122/186] fbdev/ep93xx-fb: Do not assign to struct fb_info.dev
 Date:   Wed, 20 Sep 2023 13:30:25 +0200
-Message-ID: <20230920112852.229916024@linuxfoundation.org>
+Message-ID: <20230920112841.446824437@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,61 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 7c53e847ff5e97f033fdd31f71949807633d506b upstream.
+commit f90a0e5265b60cdd3c77990e8105f79aa2fac994 upstream.
 
-All posix lock ops, for all lockspaces (gfs2 file systems) are
-sent to userspace (dlm_controld) through a single misc device.
-The dlm_controld daemon reads the ops from the misc device
-and sends them to other cluster nodes using separate, per-lockspace
-cluster api communication channels.  The ops for a single lockspace
-are ordered at this level, so that the results are received in
-the same sequence that the requests were sent.  When the results
-are sent back to the kernel via the misc device, they are again
-funneled through the single misc device for all lockspaces.  When
-the dlm code in the kernel processes the results from the misc
-device, these results will be returned in the same sequence that
-the requests were sent, on a per-lockspace basis.  A recent change
-in this request/reply matching code missed the "per-lockspace"
-check (fsid comparison) when matching request and reply, so replies
-could be incorrectly matched to requests from other lockspaces.
+Do not assing the Linux device to struct fb_info.dev. The call to
+register_framebuffer() initializes the field to the fbdev device.
+Drivers should not override its value.
 
-Cc: stable@vger.kernel.org
-Reported-by: Barry Marson <bmarson@redhat.com>
-Fixes: 57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspace")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Fixes a bug where the driver incorrectly decreases the hardware
+device's reference counter and leaks the fbdev device.
+
+v2:
+	* add Fixes tag (Dan)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 88017bda96a5 ("ep93xx video driver")
+Cc: <stable@vger.kernel.org> # v2.6.32+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-15-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/plock.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/ep93xx-fb.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -469,7 +469,8 @@ static ssize_t dev_write(struct file *fi
- 		}
- 	} else {
- 		list_for_each_entry(iter, &recv_list, list) {
--			if (!iter->info.wait) {
-+			if (!iter->info.wait &&
-+			    iter->info.fsid == info.fsid) {
- 				op = iter;
- 				break;
- 			}
-@@ -481,8 +482,7 @@ static ssize_t dev_write(struct file *fi
- 		if (info.wait)
- 			WARN_ON(op->info.optype != DLM_PLOCK_OP_LOCK);
- 		else
--			WARN_ON(op->info.fsid != info.fsid ||
--				op->info.number != info.number ||
-+			WARN_ON(op->info.number != info.number ||
- 				op->info.owner != info.owner ||
- 				op->info.optype != info.optype);
+--- a/drivers/video/fbdev/ep93xx-fb.c
++++ b/drivers/video/fbdev/ep93xx-fb.c
+@@ -478,7 +478,6 @@ static int ep93xxfb_probe(struct platfor
+ 	if (!info)
+ 		return -ENOMEM;
  
+-	info->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, info);
+ 	fbi = info->par;
+ 	fbi->mach_info = mach_info;
 
 
