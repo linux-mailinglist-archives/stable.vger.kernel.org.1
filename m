@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB1997A7BCE
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 671B67A7CAB
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234785AbjITLzl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:55:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60432 "EHLO
+        id S235103AbjITMDK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:03:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234843AbjITLzk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:40 -0400
+        with ESMTP id S235102AbjITMDE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 801F7A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:55:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C611AC433C8;
-        Wed, 20 Sep 2023 11:55:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 922E9D3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97A3C433C9;
+        Wed, 20 Sep 2023 12:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210934;
-        bh=nO9V2uzGRv6at+DY5+2PW0mRwhHMDuSbXj4i9n6fo+g=;
+        s=korg; t=1695211377;
+        bh=GFapavElACLxw57aL1dQkEN9iSYsl3DxJF+5BuLC4F0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zmriKsdSqibCfN4mJdEtQgyFfri0QJ055FrkIrKbN5loeL8nXjljzNm8KGmNXgtL/
-         OfCGXj2NoQ34i928yeQPSvikeM9D1f8uJJUAo95GsEsdJjcagYDS089u03IlQnBi6E
-         LJ7rV/4wU3iUjt8GV/mAeHScFjmY/2NKwXyWHYxQ=
+        b=rECUz5YQbj5m8Fc2NpUR874MzEqdHD1fx9r3SMnCS04SBJ9BQoXAKRnuWn+kP+APL
+         X4ZnJiRN4N4NjxRbSp4spYffGQ+3nKFuiMkQUP+8R3c9OeWAptmj79tTAqb6GcjD5/
+         tCva0VaiOrjCmQ5xB+Wc3p9jYypXqbp+c8qnJA+k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/139] drm/bridge: tc358762: Instruct DSI host to generate HSE packets
+        patches@lists.linux.dev, Aleksei Filippov <halip0503@gmail.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+5f088f29593e6b4c8db8@syzkaller.appspotmail.com
+Subject: [PATCH 4.14 070/186] jfs: validate max amount of blocks before allocation.
 Date:   Wed, 20 Sep 2023 13:29:33 +0200
-Message-ID: <20230920112837.087292623@linuxfoundation.org>
+Message-ID: <20230920112839.400122369@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Alexei Filippov <halip0503@gmail.com>
 
-[ Upstream commit 362fa8f6e6a05089872809f4465bab9d011d05b3 ]
+[ Upstream commit 0225e10972fa809728b8d4c1bd2772b3ec3fdb57 ]
 
-This bridge seems to need the HSE packet, otherwise the image is
-shifted up and corrupted at the bottom. This makes the bridge
-work with Samsung DSIM on i.MX8MM and i.MX8MP.
+The lack of checking bmp->db_max_freebud in extBalloc() can lead to
+shift out of bounds, so this patch prevents undefined behavior, because
+bmp->db_max_freebud == -1 only if there is no free space.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230615201902.566182-3-marex@denx.de
+Signed-off-by: Aleksei Filippov <halip0503@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-and-tested-by: syzbot+5f088f29593e6b4c8db8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=01abadbd6ae6a08b1f1987aa61554c6b3ac19ff2
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358762.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_extent.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/tc358762.c b/drivers/gpu/drm/bridge/tc358762.c
-index 7f4fce1aa9988..8db981e7759b9 100644
---- a/drivers/gpu/drm/bridge/tc358762.c
-+++ b/drivers/gpu/drm/bridge/tc358762.c
-@@ -216,7 +216,7 @@ static int tc358762_probe(struct mipi_dsi_device *dsi)
- 	dsi->lanes = 1;
- 	dsi->format = MIPI_DSI_FMT_RGB888;
- 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
--			  MIPI_DSI_MODE_LPM;
-+			  MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_VIDEO_HSE;
- 
- 	ret = tc358762_parse_dt(ctx);
- 	if (ret < 0)
+diff --git a/fs/jfs/jfs_extent.c b/fs/jfs/jfs_extent.c
+index 2ae7d59ab10a5..c971e8a6525de 100644
+--- a/fs/jfs/jfs_extent.c
++++ b/fs/jfs/jfs_extent.c
+@@ -521,6 +521,11 @@ extBalloc(struct inode *ip, s64 hint, s64 * nblocks, s64 * blkno)
+ 	 * blocks in the map. in that case, we'll start off with the
+ 	 * maximum free.
+ 	 */
++
++	/* give up if no space left */
++	if (bmp->db_maxfreebud == -1)
++		return -ENOSPC;
++
+ 	max = (s64) 1 << bmp->db_maxfreebud;
+ 	if (*nblocks >= max && *nblocks > nbperpage)
+ 		nb = nblks = (max > nbperpage) ? max : nbperpage;
 -- 
 2.40.1
 
