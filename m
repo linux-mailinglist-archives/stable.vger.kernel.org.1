@@ -2,58 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BB6C7A704B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 04:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85B0A7A704C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 04:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230010AbjITCVm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 19 Sep 2023 22:21:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44374 "EHLO
+        id S229641AbjITCWW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 19 Sep 2023 22:22:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbjITCVl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 22:21:41 -0400
-Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19645C5
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:21:33 -0700 (PDT)
-Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-1db2445b7afso1452479fac.1
-        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:21:33 -0700 (PDT)
+        with ESMTP id S229521AbjITCWW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 19 Sep 2023 22:22:22 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78CA3AB
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:22:14 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1c43b4b02c1so33256965ad.3
+        for <stable@vger.kernel.org>; Tue, 19 Sep 2023 19:22:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695176492; x=1695781292; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1695176534; x=1695781334; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=0wa0sFH1hXKbDpB3VK59wKNLGaUwRl3RkXqb73IkvjY=;
-        b=VoRDIXrUNwhPdiMgm1JADo5WQdm1o3b/ejjAQ3fZJuo8Rz728FFe33PsiI4dlYw8xF
-         ByFaLaazfPQ+LUtQL/KBD2Ju7eNjOZ+UT8HSuJPjnWuJQwVp9wqHwxw54KCZ4x76MzY5
-         w54t7Gq2SBkQP+klg+WxJlA5CLJAR2W0DVWaZJ+LIeOrx9ERDfAw99PDVu59rlPLTfJA
-         kGuts/WMrbcddVQCD+6iEhkShRvn3O36wrCOo2kzyY50QXoiZim1iJqhgoRPo06GGllc
-         A9AQb21zG5Z8cBIF5qU+bYtSn4ySe4yRcfoTavla4dNgA0UlHu97qM58SZSecQY2EPRZ
-         WN6g==
+        bh=lcDAU1kA+4AhF7BpLceNTAlgMbAdm54bD6RjDKYdpsY=;
+        b=jaBDYf2WCqm1O7EApnB1OLf4TTNCnQLKg0g9V8CYFJSISVmng9tF/0QKFcujc/5FhP
+         bnuGvjCcKflgNGRXG34WwCHMxrjkvIqOfAbgjD+vCc+eK+gQMKZksfqZt+eec7gxo7ve
+         jEaV0wPM6kDsn5TkYNXq97IhCNEGHv53SFRJG4WHQRH4pRfl0y6TPtKkSOrMzf2c/bXd
+         8J5sVGSlS0fKfz9JMs34fQ97Flp+cGim9seIf3CTkLuuflzQ7/rhFeSwTBcxQZzdA4xF
+         LpGBx9COfSU0sO6cpzmTvj/XL7T/YVnD7VZMwkTMMotdlq5by6LO6VNrA6SRvhCbLO5P
+         TtlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695176492; x=1695781292;
+        d=1e100.net; s=20230601; t=1695176534; x=1695781334;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0wa0sFH1hXKbDpB3VK59wKNLGaUwRl3RkXqb73IkvjY=;
-        b=t/6+p1ilb02wKvkXizxXxCykWPPUL8RqWsSwvqfVYk/pcVj67c/TTfi4uJy9W4f30P
-         wQ5QIvq0MwN4u9V2aIO9jpAWv38LxF2Fpfaw4U3pLbUHxRashT43BUrDTjkCRK2EwnqB
-         SJZ2OqM9YD2I+STunTfq6baFQSQ7pCiVJ/qpLLh2aCi+jnkavDRK1SeTm8BJOv8HqwZ8
-         wACe38h2Y5Fp5Td2wFyORVCKe9sjbt/JWsc7qwje6P8RO3+5ewbZhu1eriuf/+zkw/mM
-         M8prMNb2AA/HeDZsJwjBPfCe4Hx1719HD8DPtIJ+rAZjul8/M8DIMoYcPTnf2h97V6Zt
-         23lQ==
-X-Gm-Message-State: AOJu0YyMv0DsZhAxh3q3G5+AiliZRbFkvkjKD2A4p70nc0W0daJmYXCs
-        jwE4iS3f+e8aKjy0XZyNTsU=
-X-Google-Smtp-Source: AGHT+IHGnKA0fcafoYZvNVxPQ3wpcRRBfrvI4S+2zO23qrIa2Y7OvoeXKshZ0gTFl3N9EDZ8T10aSA==
-X-Received: by 2002:a05:6870:e394:b0:1d6:3b6d:f824 with SMTP id x20-20020a056870e39400b001d63b6df824mr1366783oad.36.1695176492149;
-        Tue, 19 Sep 2023 19:21:32 -0700 (PDT)
+        bh=lcDAU1kA+4AhF7BpLceNTAlgMbAdm54bD6RjDKYdpsY=;
+        b=xPln4DiwZkLZwcn72F1apF6J9qydIC2x1DHeiaRztxkTN80kVQaD55wUBa97K/C7Vi
+         X1Qyx82tcl6uKZ741nV3iA50x6Pyu7Vo92d34LJOuNcGus9x83N4sLj8CrNqM+f84sfc
+         M7KOtkqgh/WhpXFbHeDwQlXfzdDo3lt4jjG14680CV9Z2+U2foZ13vjx7He0fvckO/q/
+         4Li59/q4tkEsYiIh37a7HpTnRsoISfLmxwcNfCkGQ7G8hM5Yi64sh9W5mzT2vLgeeJUG
+         K76mL1WeZxeKJsKnIiL2+zfI2LZGds7t1cFwIym502qbxTwcrR4DrU1ol6pEzuz+H9/H
+         ff8Q==
+X-Gm-Message-State: AOJu0Yw2QQklwPzDNM/21MM8c6FPpzooWZpSCx5m00tU54MlUBNrsgRR
+        1fI4ppuoG9nIdNY3XFF0UdM=
+X-Google-Smtp-Source: AGHT+IG5yCfVK5nw4Qxg75GcF2ie0QHBytdKvqEazx5pHf5pESqzrJuVbmQhFEC0JIGs8aCjygwg0g==
+X-Received: by 2002:a17:902:d502:b0:1c3:8464:cad1 with SMTP id b2-20020a170902d50200b001c38464cad1mr1299388plg.26.1695176533646;
+        Tue, 19 Sep 2023 19:22:13 -0700 (PDT)
 Received: from westworld (209-147-138-147.nat.asu.edu. [209.147.138.147])
-        by smtp.gmail.com with ESMTPSA id x4-20020a656aa4000000b0056428865aadsm7687427pgu.82.2023.09.19.19.21.31
+        by smtp.gmail.com with ESMTPSA id h14-20020a170902680e00b001b9be3b94d3sm10836816plk.140.2023.09.19.19.22.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Sep 2023 19:21:31 -0700 (PDT)
-Date:   Tue, 19 Sep 2023 19:21:29 -0700
+        Tue, 19 Sep 2023 19:22:13 -0700 (PDT)
+Date:   Tue, 19 Sep 2023 19:22:11 -0700
 From:   Kyle Zeng <zengyhkyle@gmail.com>
 To:     gregkh@linuxfoundation.org
 Cc:     stable@vger.kernel.org, jhs@mojatatu.com, jiri@nvidia.com,
         pabeni@redhat.com
-Subject: [PATCH v5.4.y] net/sched: Retire rsvp classifier
-Message-ID: <ZQpXKV1P+fSBO1UB@westworld>
+Subject: [PATCH v5.10.y] net/sched: Retire rsvp classifier
+Message-ID: <ZQpXU/1WMhxaXeg4@westworld>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -77,11 +77,11 @@ Acked-by: Jiri Pirko <jiri@nvidia.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
 ---
-Please apply this patch to v5.4.y. This patch adapts the original patch
-to v5.4.y considering codebase change.
+Please apply this patch to v5.10.y. This patch adapts the original patch
+to v5.10.y considering codebase change.
 This patch retires rsvp classifier which is what the upstream patch did. 
 
-This patch has been tested against the v5.4.y stable tree.
+This patch has been tested against the v5.10.y stable tree.
 
  net/sched/Kconfig     |  28 --
  net/sched/Makefile    |   2 -
@@ -94,17 +94,17 @@ This patch has been tested against the v5.4.y stable tree.
  delete mode 100644 net/sched/cls_rsvp6.c
 
 diff --git a/net/sched/Kconfig b/net/sched/Kconfig
-index 2e4604cdaf23..46f2847a071e 100644
+index 697522371914..2046c16b29f0 100644
 --- a/net/sched/Kconfig
 +++ b/net/sched/Kconfig
-@@ -514,34 +514,6 @@ config CLS_U32_MARK
- 	---help---
+@@ -548,34 +548,6 @@ config CLS_U32_MARK
+ 	help
  	  Say Y here to be able to use netfilter marks as u32 key.
  
 -config NET_CLS_RSVP
 -	tristate "IPv4 Resource Reservation Protocol (RSVP)"
 -	select NET_CLS
--	---help---
+-	help
 -	  The Resource Reservation Protocol (RSVP) permits end systems to
 -	  request a minimum and maximum data flow rate for a connection; this
 -	  is important for real time data such as streaming sound or video.
@@ -118,7 +118,7 @@ index 2e4604cdaf23..46f2847a071e 100644
 -config NET_CLS_RSVP6
 -	tristate "IPv6 Resource Reservation Protocol (RSVP6)"
 -	select NET_CLS
--	---help---
+-	help
 -	  The Resource Reservation Protocol (RSVP) permits end systems to
 -	  request a minimum and maximum data flow rate for a connection; this
 -	  is important for real time data such as streaming sound or video.
@@ -133,10 +133,10 @@ index 2e4604cdaf23..46f2847a071e 100644
  	tristate "Flow classifier"
  	select NET_CLS
 diff --git a/net/sched/Makefile b/net/sched/Makefile
-index 9e1f904d0c18..fb2b90648a20 100644
+index 4311fdb21119..df2bcd785f7d 100644
 --- a/net/sched/Makefile
 +++ b/net/sched/Makefile
-@@ -65,8 +65,6 @@ obj-$(CONFIG_NET_SCH_TAPRIO)	+= sch_taprio.o
+@@ -68,8 +68,6 @@ obj-$(CONFIG_NET_SCH_TAPRIO)	+= sch_taprio.o
  obj-$(CONFIG_NET_CLS_U32)	+= cls_u32.o
  obj-$(CONFIG_NET_CLS_ROUTE4)	+= cls_route.o
  obj-$(CONFIG_NET_CLS_FW)	+= cls_fw.o
