@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 510A17A7CF1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A91417A8093
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235167AbjITMFc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:05:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57006 "EHLO
+        id S235993AbjITMiF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:38:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235225AbjITMFb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:31 -0400
+        with ESMTP id S236050AbjITMiA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:38:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19081B4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:05:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666E5C433CB;
-        Wed, 20 Sep 2023 12:05:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AB7293
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC68C433C8;
+        Wed, 20 Sep 2023 12:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211525;
-        bh=pTMG5e+sBQOPJDU7MWhMIk2YRP3/v7boGjAYJ4OgPXI=;
+        s=korg; t=1695213474;
+        bh=FwqdeRgHPAjFXInKwcrnlj5729dPqStP4kK0GWghxBM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F19yo8UniKoENHfCqCgs1APbYGVpT8Kx0ZIX95CmABBfjYT9xyBSBZZiXhCNwCqX1
-         ArStguN0l34uX9PlPrXJe+TlEsXE3zyCSMOmLhvwsMo2zO7GjO3lUX/JMXNTKWJrIE
-         nP3BJw2ehBs+87ewOg6LFmXLF71E+v093UgmtI0s=
+        b=j1hnubG1n9wQGlvIEwN5P9QF/6pB+CeCM7/A5tTueKhiLUUqu/ffJaK0EjkRqrSG/
+         5Lu4DvrHwAKbcFWOiijwCiOisC18eVFSTIFqdCoGMtxVof8pGuMp8g/EiZ0OJV9wKc
+         mWzUrcbz3EoO3lX89wHrb8wqnTwKlle3rValD9yQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.14 125/186] parisc: led: Reduce CPU overhead for disk & lan LED computation
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        Benjamin Coddington <bcodding@redhat.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 5.4 251/367] NFSv4/pnfs: minor fix for cleanup path in nfs4_get_device_info
 Date:   Wed, 20 Sep 2023 13:30:28 +0200
-Message-ID: <20230920112841.550020106@linuxfoundation.org>
+Message-ID: <20230920112905.053999118@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,42 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 358ad816e52d4253b38c2f312e6b1cbd89e0dbf7 upstream.
+commit 96562c45af5c31b89a197af28f79bfa838fb8391 upstream.
 
-Older PA-RISC machines have LEDs which show the disk- and LAN-activity.
-The computation is done in software and takes quite some time, e.g. on a
-J6500 this may take up to 60% time of one CPU if the machine is loaded
-via network traffic.
+It is an almost improbable error case but when page allocating loop in
+nfs4_get_device_info() fails then we should only free the already
+allocated pages, as __free_page() can't deal with NULL arguments.
 
-Since most people don't care about the LEDs, start with LEDs disabled and
-just show a CPU heartbeat LED. The disk and LAN LEDs can be turned on
-manually via /proc/pdc/led.
+Found by Linux Verification Center (linuxtesting.org).
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/led.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/pnfs_dev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/parisc/led.c
-+++ b/drivers/parisc/led.c
-@@ -60,8 +60,8 @@
- static int led_type __read_mostly = -1;
- static unsigned char lastleds;	/* LED state from most recent update */
- static unsigned int led_heartbeat __read_mostly = 1;
--static unsigned int led_diskio    __read_mostly = 1;
--static unsigned int led_lanrxtx   __read_mostly = 1;
-+static unsigned int led_diskio    __read_mostly;
-+static unsigned int led_lanrxtx   __read_mostly;
- static char lcd_text[32]          __read_mostly;
- static char lcd_text_default[32]  __read_mostly;
- static int  lcd_no_led_support    __read_mostly = 0; /* KittyHawk doesn't support LED on its LCD */
+--- a/fs/nfs/pnfs_dev.c
++++ b/fs/nfs/pnfs_dev.c
+@@ -152,7 +152,7 @@ nfs4_get_device_info(struct nfs_server *
+ 		set_bit(NFS_DEVICEID_NOCACHE, &d->flags);
+ 
+ out_free_pages:
+-	for (i = 0; i < max_pages; i++)
++	while (--i >= 0)
+ 		__free_page(pages[i]);
+ 	kfree(pages);
+ out_free_pdev:
 
 
