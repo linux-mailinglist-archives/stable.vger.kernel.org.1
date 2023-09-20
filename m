@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8034A7A7E78
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 959647A7EE6
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235597AbjITMSG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:18:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49450 "EHLO
+        id S235623AbjITMVr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:21:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235575AbjITMSF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:05 -0400
+        with ESMTP id S235629AbjITMVr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83797E6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D1CC433C8;
-        Wed, 20 Sep 2023 12:17:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B638D9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9260BC433C8;
+        Wed, 20 Sep 2023 12:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212274;
-        bh=FrvGefUHvYtSLrZ0vFDOswfx86bZYzY0EvUlJ4FeAeE=;
+        s=korg; t=1695212500;
+        bh=uKNmTbX/v5siYQjyuAHgWnNeDFZxd+kQOiwAsYYIu34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T6UNu9O47yiOQZHNjYBtc9KuofY0DXT8FCiEoCt0+DOTv9QtlEcGvc+FLLjjkQBkf
-         0AHV0NQBD9zV1WBxXx+1ReFLKcgVFzKs3nzIAFQhaueCVIe1uHbVYaZ1458auGz4lM
-         4BZpEvaQUAZ6gYE+bcKtu/IyuMraXKU4+LxOZvOE=
+        b=e+WSMf0Xd25e3wcs3lAg/mRHKAKKdcKEH/RoIByBKooVIEf8QaoDJHqdM3fV50WsG
+         31thrG0EbXjuNEIdxtgQ8D6NwrlU4OzOnoBsyjcyqhKf5mV90M/qq8XqDBMOMApSV7
+         aMvw2VJ7svRXpYAdmaUKuYON52sGL6Ec6MaqX2Ec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Zqiang <qiang.zhang1211@gmail.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 216/273] af_unix: Fix data-races around sk->sk_shutdown.
+Subject: [PATCH 5.10 06/83] rcuscale: Move rcu_scale_writer() schedule_timeout_uninterruptible() to _idle()
 Date:   Wed, 20 Sep 2023 13:30:56 +0200
-Message-ID: <20230920112853.122415189@linuxfoundation.org>
+Message-ID: <20230920112826.902241348@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,98 +50,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit afe8764f76346ba838d4f162883e23d2fcfaa90e ]
+[ Upstream commit e60c122a1614b4f65b29a7bef9d83b9fd30e937a ]
 
-sk->sk_shutdown is changed under unix_state_lock(sk), but
-unix_dgram_sendmsg() calls two functions to read sk_shutdown locklessly.
+The rcuscale.holdoff module parameter can be used to delay the start
+of rcu_scale_writer() kthread.  However, the hung-task timeout will
+trigger when the timeout specified by rcuscale.holdoff is greater than
+hung_task_timeout_secs:
 
-  sock_alloc_send_pskb
-  `- sock_wait_for_wmem
+runqemu kvm nographic slirp qemuparams="-smp 4 -m 2048M"
+bootparams="rcuscale.shutdown=0 rcuscale.holdoff=300"
 
-Let's use READ_ONCE() there.
+[  247.071753] INFO: task rcu_scale_write:59 blocked for more than 122 seconds.
+[  247.072529]       Not tainted 6.4.0-rc1-00134-gb9ed6de8d4ff #7
+[  247.073400] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  247.074331] task:rcu_scale_write state:D stack:30144 pid:59    ppid:2      flags:0x00004000
+[  247.075346] Call Trace:
+[  247.075660]  <TASK>
+[  247.075965]  __schedule+0x635/0x1280
+[  247.076448]  ? __pfx___schedule+0x10/0x10
+[  247.076967]  ? schedule_timeout+0x2dc/0x4d0
+[  247.077471]  ? __pfx_lock_release+0x10/0x10
+[  247.078018]  ? enqueue_timer+0xe2/0x220
+[  247.078522]  schedule+0x84/0x120
+[  247.078957]  schedule_timeout+0x2e1/0x4d0
+[  247.079447]  ? __pfx_schedule_timeout+0x10/0x10
+[  247.080032]  ? __pfx_rcu_scale_writer+0x10/0x10
+[  247.080591]  ? __pfx_process_timeout+0x10/0x10
+[  247.081163]  ? __pfx_sched_set_fifo_low+0x10/0x10
+[  247.081760]  ? __pfx_rcu_scale_writer+0x10/0x10
+[  247.082287]  rcu_scale_writer+0x6b1/0x7f0
+[  247.082773]  ? mark_held_locks+0x29/0xa0
+[  247.083252]  ? __pfx_rcu_scale_writer+0x10/0x10
+[  247.083865]  ? __pfx_rcu_scale_writer+0x10/0x10
+[  247.084412]  kthread+0x179/0x1c0
+[  247.084759]  ? __pfx_kthread+0x10/0x10
+[  247.085098]  ret_from_fork+0x2c/0x50
+[  247.085433]  </TASK>
 
-Note that the writer side was marked by commit e1d09c2c2f57 ("af_unix:
-Fix data races around sk->sk_shutdown.").
+This commit therefore replaces schedule_timeout_uninterruptible() with
+schedule_timeout_idle().
 
-BUG: KCSAN: data-race in sock_alloc_send_pskb / unix_release_sock
-
-write (marked) to 0xffff8880069af12c of 1 bytes by task 1 on cpu 1:
- unix_release_sock+0x75c/0x910 net/unix/af_unix.c:631
- unix_release+0x59/0x80 net/unix/af_unix.c:1053
- __sock_release+0x7d/0x170 net/socket.c:654
- sock_close+0x19/0x30 net/socket.c:1386
- __fput+0x2a3/0x680 fs/file_table.c:384
- ____fput+0x15/0x20 fs/file_table.c:412
- task_work_run+0x116/0x1a0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
- syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
- do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-read to 0xffff8880069af12c of 1 bytes by task 28650 on cpu 0:
- sock_alloc_send_pskb+0xd2/0x620 net/core/sock.c:2767
- unix_dgram_sendmsg+0x2f8/0x14f0 net/unix/af_unix.c:1944
- unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
- unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
- sock_sendmsg_nosec net/socket.c:725 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:748
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
- __sys_sendmsg+0x94/0x140 net/socket.c:2577
- __do_sys_sendmsg net/socket.c:2586 [inline]
- __se_sys_sendmsg net/socket.c:2584 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-value changed: 0x00 -> 0x03
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 28650 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/rcu/rcuscale.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 385ce723fc29e..9a4559b863fb7 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2072,7 +2072,7 @@ static long sock_wait_for_wmem(struct sock *sk, long timeo)
- 		prepare_to_wait(sk_sleep(sk), &wait, TASK_INTERRUPTIBLE);
- 		if (refcount_read(&sk->sk_wmem_alloc) < sk->sk_sndbuf)
- 			break;
--		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 			break;
- 		if (sk->sk_err)
- 			break;
-@@ -2102,7 +2102,7 @@ struct sk_buff *sock_alloc_send_pskb(struct sock *sk, unsigned long header_len,
- 			goto failure;
+diff --git a/kernel/rcu/rcuscale.c b/kernel/rcu/rcuscale.c
+index 6c05365ed80fc..3b9783eda6796 100644
+--- a/kernel/rcu/rcuscale.c
++++ b/kernel/rcu/rcuscale.c
+@@ -372,7 +372,7 @@ rcu_scale_writer(void *arg)
+ 	sched_set_fifo_low(current);
  
- 		err = -EPIPE;
--		if (sk->sk_shutdown & SEND_SHUTDOWN)
-+		if (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN)
- 			goto failure;
+ 	if (holdoff)
+-		schedule_timeout_uninterruptible(holdoff * HZ);
++		schedule_timeout_idle(holdoff * HZ);
  
- 		if (sk_wmem_alloc_get(sk) < sk->sk_sndbuf)
+ 	/*
+ 	 * Wait until rcu_end_inkernel_boot() is called for normal GP tests
 -- 
 2.40.1
 
