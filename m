@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CAB37A7B7B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B86177A7C12
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234721AbjITLwg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:52:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38810 "EHLO
+        id S234570AbjITL5o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234713AbjITLwf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:35 -0400
+        with ESMTP id S234967AbjITL5n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C11CD92
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15739C433C8;
-        Wed, 20 Sep 2023 11:52:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A3DB4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6302FC433C9;
+        Wed, 20 Sep 2023 11:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210749;
-        bh=o1KffXENgiohHCvgPczxBY7I33546zUOIx18S4Q8Mz0=;
+        s=korg; t=1695211057;
+        bh=mZMihZ6UIDZE9mNoIC6fS9yLGbbZMYXYF/wFnlIqKWQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y8GedO2bKa+QRwxMQRatThj7OK60kYZHdnNxxhMMHFzCWpK3pYtELzhqNwOANIJBi
-         VB/Sl72CIEoTXDXEXqOqp9uG/zST3i375z8ddlzBlhTvEKJQbNGKdcSm3/5G7eaxZ0
-         Pk/OFtWhAfOp7EVgd1jD9o+U7iJ4pxepPQblQl64=
+        b=eVatUTxlRmdFfXI10/OSV3twoAjwqf88bqTLPpcBi4qYQt3Yu0uFHYo1OK4cOieuy
+         4wMgF/O9bIoaUlZWm8Q+g3UGoX/iWV2TuwMD8bbmQzRpzNJ19ikTvVfU+PDspxTBMc
+         5y0Sb9g1xheabccMBYbDVej+pJJ4CcpB2ROF0wLQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.5 183/211] btrfs: check for BTRFS_FS_ERROR in pending ordered assert
+        patches@lists.linux.dev,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 093/139] btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super
 Date:   Wed, 20 Sep 2023 13:30:27 +0200
-Message-ID: <20230920112851.548592017@linuxfoundation.org>
+Message-ID: <20230920112839.073200237@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +53,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Anand Jain <anand.jain@oracle.com>
 
-commit 4ca8e03cf2bfaeef7c85939fa1ea0c749cd116ab upstream.
+[ Upstream commit 6bfe3959b0e7a526f5c64747801a8613f002f05a ]
 
-If we do fast tree logging we increment a counter on the current
-transaction for every ordered extent we need to wait for.  This means we
-expect the transaction to still be there when we clear pending on the
-ordered extent.  However if we happen to abort the transaction and clean
-it up, there could be no running transaction, and thus we'll trip the
-"ASSERT(trans)" check.  This is obviously incorrect, and the code
-properly deals with the case that the transaction doesn't exist.  Fix
-this ASSERT() to only fire if there's no trans and we don't have
-BTRFS_FS_ERROR() set on the file system.
+The function btrfs_validate_super() should verify the metadata_uuid in
+the provided superblock argument. Because, all its callers expect it to
+do that.
 
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Such as in the following stacks:
+
+  write_all_supers()
+   sb = fs_info->super_for_commit;
+   btrfs_validate_write_super(.., sb)
+     btrfs_validate_super(.., sb, ..)
+
+  scrub_one_super()
+	btrfs_validate_super(.., sb, ..)
+
+And
+   check_dev_super()
+	btrfs_validate_super(.., sb, ..)
+
+However, it currently verifies the fs_info::super_copy::metadata_uuid
+instead.  Fix this using the correct metadata_uuid in the superblock
+argument.
+
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ordered-data.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/disk-io.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/ordered-data.c
-+++ b/fs/btrfs/ordered-data.c
-@@ -635,7 +635,7 @@ void btrfs_remove_ordered_extent(struct
- 			refcount_inc(&trans->use_count);
- 		spin_unlock(&fs_info->trans_lock);
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 64daae693afd1..c44f1fcc19097 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2728,13 +2728,11 @@ int btrfs_validate_super(struct btrfs_fs_info *fs_info,
+ 		ret = -EINVAL;
+ 	}
  
--		ASSERT(trans);
-+		ASSERT(trans || BTRFS_FS_ERROR(fs_info));
- 		if (trans) {
- 			if (atomic_dec_and_test(&trans->pending_ordered))
- 				wake_up(&trans->pending_wait);
+-	if (btrfs_fs_incompat(fs_info, METADATA_UUID) &&
+-	    memcmp(fs_info->fs_devices->metadata_uuid,
+-		   fs_info->super_copy->metadata_uuid, BTRFS_FSID_SIZE)) {
++	if (memcmp(fs_info->fs_devices->metadata_uuid, btrfs_sb_fsid_ptr(sb),
++		   BTRFS_FSID_SIZE) != 0) {
+ 		btrfs_err(fs_info,
+ "superblock metadata_uuid doesn't match metadata uuid of fs_devices: %pU != %pU",
+-			fs_info->super_copy->metadata_uuid,
+-			fs_info->fs_devices->metadata_uuid);
++			  btrfs_sb_fsid_ptr(sb), fs_info->fs_devices->metadata_uuid);
+ 		ret = -EINVAL;
+ 	}
+ 
+-- 
+2.40.1
+
 
 
