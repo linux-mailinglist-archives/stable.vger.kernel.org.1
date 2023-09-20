@@ -2,39 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C86C7A818A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC72C7A8114
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236237AbjITMq0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:46:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53566 "EHLO
+        id S236218AbjITMmd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:42:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236358AbjITMqZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:25 -0400
+        with ESMTP id S236266AbjITMmc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:42:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF17FCE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309FAC433C8;
-        Wed, 20 Sep 2023 12:46:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FC4483
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3430FC433C9;
+        Wed, 20 Sep 2023 12:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213978;
-        bh=e8RhCdZTWtpvxEmMvpkp3bzrYGQdeS15XErtdtxFyUw=;
+        s=korg; t=1695213746;
+        bh=IoKaksz9Puj9tM06D2su7yxkV8PRidVqvfhXGChWde8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I3d+egxnsPZgEUl8M5QYg8a4pvKGhw7jO4HMbMYqjQ8fUuATc/PA2I/dahiccokiS
-         bAnEHA3suznqvA0v0Bu0tt5Luek19dxp+D0N6p+Gz/LvcRDnhx/ikQrCeVwxWi0G+C
-         ZUU2N7YlM9ynW0sYCed6UDnwKbYWn+zLPQAGS60U=
+        b=wQLm67svHW4tzTSPwYPt32Feza5HvzU3qWffWr5RD1vcHpPHmKecYcfH79qgTWLLv
+         vjOPCKTk+GkmYluJnu5VNeVPLfdyEIK7Agm+ze7mQfQrMwmnr4N/eAJRvdIpEL14p9
+         MAuSjorNOeYvdg8meShcQHAOWt2oxmpUuRvWRVLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tiezhu Yang <yangtiezhu@loongson.cn>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Anup Sharma <anupnewsmail@gmail.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 068/110] MIPS: Use "grep -E" instead of "egrep"
-Date:   Wed, 20 Sep 2023 13:32:06 +0200
-Message-ID: <20230920112832.966844403@linuxfoundation.org>
+Subject: [PATCH 5.4 350/367] perf build: Update build rule for generated files
+Date:   Wed, 20 Sep 2023 13:32:07 +0200
+Message-ID: <20230920112907.552738259@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,62 +56,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit d42f0c6ad502c9f612410e125ebdf290cce8bdc3 ]
+[ Upstream commit 7822a8913f4c51c7d1aff793b525d60c3384fb5b ]
 
-The latest version of grep claims the egrep is now obsolete so the build
-now contains warnings that look like:
-	egrep: warning: egrep is obsolescent; using grep -E
-fix this up by moving the related file to use "grep -E" instead.
+The bison and flex generate C files from the source (.y and .l)
+files.  When O= option is used, they are saved in a separate directory
+but the default build rule assumes the .C files are in the source
+directory.  So it might read invalid file if there are generated files
+from an old version.  The same is true for the pmu-events files.
 
-Here are the steps to install the latest grep:
+For example, the following command would cause a build failure:
 
-  wget http://ftp.gnu.org/gnu/grep/grep-3.8.tar.gz
-  tar xf grep-3.8.tar.gz
-  cd grep-3.8 && ./configure && make
-  sudo make install
-  export PATH=/usr/local/bin:$PATH
+  $ git checkout v6.3
+  $ make -C tools/perf  # build in the same directory
 
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Stable-dep-of: 4fe4a6374c4d ("MIPS: Only fiddle with CHECKFLAGS if `need-compiler'")
+  $ git checkout v6.5-rc2
+  $ mkdir build  # create a build directory
+  $ make -C tools/perf O=build  # build in a different directory but it
+                                # refers files in the source directory
+
+Let's update the build rule to specify those cases explicitly to depend
+on the files in the output directory.
+
+Note that it's not a complete fix and it needs the next patch for the
+include path too.
+
+Fixes: 80eeb67fe577aa76 ("perf jevents: Program to convert JSON file")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Anup Sharma <anupnewsmail@gmail.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230728022447.1323563-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/Makefile      | 2 +-
- arch/mips/vdso/Makefile | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/build/Makefile.build  | 10 ++++++++++
+ tools/perf/pmu-events/Build |  6 ++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 151e98698f763..3830217fab414 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -323,7 +323,7 @@ KBUILD_LDFLAGS		+= -m $(ld-emul)
+diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
+index cd72016c3cfa7..5a727094ae832 100644
+--- a/tools/build/Makefile.build
++++ b/tools/build/Makefile.build
+@@ -116,6 +116,16 @@ $(OUTPUT)%.s: %.c FORCE
+ 	$(call rule_mkdir)
+ 	$(call if_changed_dep,cc_s_c)
  
- ifdef need-compiler
- CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
--	egrep -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
-+	grep -E -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
- 	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
++# bison and flex files are generated in the OUTPUT directory
++# so it needs a separate rule to depend on them properly
++$(OUTPUT)%-bison.o: $(OUTPUT)%-bison.c FORCE
++	$(call rule_mkdir)
++	$(call if_changed_dep,$(host)cc_o_c)
++
++$(OUTPUT)%-flex.o: $(OUTPUT)%-flex.c FORCE
++	$(call rule_mkdir)
++	$(call if_changed_dep,$(host)cc_o_c)
++
+ # Gather build data:
+ #   obj-y        - list of build objects
+ #   subdir-y     - list of directories to nest
+diff --git a/tools/perf/pmu-events/Build b/tools/perf/pmu-events/Build
+index 5ec5ce8c31bab..ea8c41f9c7398 100644
+--- a/tools/perf/pmu-events/Build
++++ b/tools/perf/pmu-events/Build
+@@ -25,3 +25,9 @@ $(OUTPUT)pmu-events/pmu-events.c: $(JSON) $(JSON_TEST) $(JEVENTS_PY)
+ 	$(call rule_mkdir)
+ 	$(Q)$(call echo-cmd,gen)$(PYTHON) $(JEVENTS_PY) $(SRCARCH) pmu-events/arch $@
  endif
- 
-diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
-index 1b2ea34c3d3bb..ed090ef30757c 100644
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -68,7 +68,7 @@ KCOV_INSTRUMENT := n
- 
- # Check that we don't have PIC 'jalr t9' calls left
- quiet_cmd_vdso_mips_check = VDSOCHK $@
--      cmd_vdso_mips_check = if $(OBJDUMP) --disassemble $@ | egrep -h "jalr.*t9" > /dev/null; \
-+      cmd_vdso_mips_check = if $(OBJDUMP) --disassemble $@ | grep -E -h "jalr.*t9" > /dev/null; \
- 		       then (echo >&2 "$@: PIC 'jalr t9' calls are not supported"; \
- 			     rm -f $@; /bin/false); fi
- 
++
++# pmu-events.c file is generated in the OUTPUT directory so it needs a
++# separate rule to depend on it properly
++$(OUTPUT)pmu-events/pmu-events.o: $(PMU_EVENTS_C)
++	$(call rule_mkdir)
++	$(call if_changed_dep,cc_o_c)
 -- 
 2.40.1
 
