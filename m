@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4107C7A7E42
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24F497A80A8
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234510AbjITMQn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:16:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34278 "EHLO
+        id S235838AbjITMi5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:38:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234617AbjITMQm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:16:42 -0400
+        with ESMTP id S236054AbjITMiw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:38:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C657189
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06888C43391;
-        Wed, 20 Sep 2023 12:16:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 665431B6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:38:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96035C433C9;
+        Wed, 20 Sep 2023 12:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212177;
-        bh=UYGpmW7MglKjJKy02JcARy33fXXhfBKkoRbEuNzyyrM=;
+        s=korg; t=1695213521;
+        bh=H4uRzfJfA0HM6GW6zhO98dNZcnLnP5JFPydoHxqK5a8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aLbgzn1sMQhakgBi+de7J/Un+9cidJvgoGOrurUo3j/XikIpRz3yGJVNoTi1146pw
-         +ubvHvhWtvX+1vVMPr7ynVOzMHZW7T3x6EtrenNfivvShm7a1skm8wH1KYEaZUqYVp
-         JUci+ZvpkyFond1M46cPc9VPYdZazQJHSDvog4A8=
+        b=hO9+QIhKNnbK2H6xHCxka7fbjE24hqfIrfECTJM+qhWRIR9a65K9xAMJ07KguRlzB
+         FXBx3jKv0tcWWZk4bmw+ipYmBNDoCF/+zGhXTSFznGm8MkZ9N6sEQCAZHkrdAcwl53
+         8lvELKHt58Fc4MvRkuLISo/DWrs2l+xlpxksG47I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 4.19 179/273] ntb: Drop packets when qp link is down
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 242/367] scsi: qla2xxx: Turn off noisy message log
 Date:   Wed, 20 Sep 2023 13:30:19 +0200
-Message-ID: <20230920112852.047979042@linuxfoundation.org>
+Message-ID: <20230920112904.824580962@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +51,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit f195a1a6fe416882984f8bd6c61afc1383171860 upstream.
+commit 8ebaa45163a3fedc885c1dc7d43ea987a2f00a06 upstream.
 
-Currently when the transport receive packets after netdev has closed the
-transport returns error and triggers tx errors to be incremented and
-carrier to be stopped. There is no reason to return error if the device is
-already closed. Drop the packet and return 0.
+Some consider noisy log as test failure.  Turn off noisy message log.
 
-Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
-Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
-Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Cc: stable@vger.kernel.org
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-8-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/ntb_transport.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_nvme.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -2046,9 +2046,13 @@ int ntb_transport_tx_enqueue(struct ntb_
- 	struct ntb_queue_entry *entry;
- 	int rc;
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -577,7 +577,7 @@ static int qla_nvme_post_cmd(struct nvme
  
--	if (!qp || !qp->link_is_up || !len)
-+	if (!qp || !len)
- 		return -EINVAL;
- 
-+	/* If the qp link is down already, just ignore. */
-+	if (!qp->link_is_up)
-+		return 0;
-+
- 	entry = ntb_list_rm(&qp->ntb_tx_free_q_lock, &qp->tx_free_q);
- 	if (!entry) {
- 		qp->tx_err_no_buf++;
+ 	rval = qla2x00_start_nvme_mq(sp);
+ 	if (rval != QLA_SUCCESS) {
+-		ql_log(ql_log_warn, vha, 0x212d,
++		ql_dbg(ql_dbg_io + ql_dbg_verbose, vha, 0x212d,
+ 		    "qla2x00_start_nvme_mq failed = %d\n", rval);
+ 		sp->priv = NULL;
+ 		priv->sp = NULL;
 
 
