@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42DE67A7D9B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 460BB7A7FB6
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235311AbjITMKe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:10:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38794 "EHLO
+        id S236131AbjITMaJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:30:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235360AbjITMKc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:10:32 -0400
+        with ESMTP id S235883AbjITM3l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:29:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34AB793
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:10:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7929BC433C9;
-        Wed, 20 Sep 2023 12:10:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2CC48F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:29:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286A1C433C8;
+        Wed, 20 Sep 2023 12:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211825;
-        bh=jHO9DRr8UDqXdjHUldmhVuxiHDxZyW3KQzsG/WkO19M=;
+        s=korg; t=1695212975;
+        bh=zuwApQyc8Q6rvgKzkp3911pshkSJaW3XqPoJzBwWVlc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cljZrJ7Pfmh5KGEDE0YbAgxQKSzFMsj0X6ZJeH/tICVzP/0WJXiRkLG+Fg/svrivu
-         NHhDNQpz5j6CjhWvZgLjoTSHnyNEkWGDnSW3/k0rxmkVWuW0OiE5QohEdLtOSjf6hX
-         hleE+8aM01xeKTaZkau2UsOgi2sq1PPwzdtDfBWQ=
+        b=LH7mGvn+GBiNfwYnJ1X3/Dm/v4eHdxKccd0SP9Hjdxluv1dGI0KzNfD9T4NBi4B2e
+         561ryfML1ar4aFlxkGd8UbaOVh5k3d9hqUfnCWJeuXyhLOJa5erydxh/AuUGi0QEC1
+         E2m967omhYEoaliUm9Cq46tuTa+WX7E0ZvpyNWoc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yafang Shao <laoar.shao@gmail.com>,
-        Yonghong Song <yhs@fb.com>, Jiri Olsa <jolsa@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Yangtao Li <frank.li@vivo.com>,
+        Thierry Reding <treding@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 050/273] bpf: Clear the probe_addr for uprobe
-Date:   Wed, 20 Sep 2023 13:28:10 +0200
-Message-ID: <20230920112847.971792621@linuxfoundation.org>
+Subject: [PATCH 5.4 114/367] drm/tegra: dpaux: Fix incorrect return value of platform_get_irq
+Date:   Wed, 20 Sep 2023 13:28:11 +0200
+Message-ID: <20230920112901.566544880@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit 5125e757e62f6c1d5478db4c2b61a744060ddf3f ]
+[ Upstream commit 2a1ca44b654346cadfc538c4fb32eecd8daf3140 ]
 
-To avoid returning uninitialized or random values when querying the file
-descriptor (fd) and accessing probe_addr, it is necessary to clear the
-variable prior to its use.
+When platform_get_irq fails, we should return dpaux->irq
+instead of -ENXIO.
 
-Fixes: 41bdc4b40ed6 ("bpf: introduce bpf subcommand BPF_TASK_FD_QUERY")
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Acked-by: Yonghong Song <yhs@fb.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20230709025630.3735-6-laoar.shao@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 6b6b604215c6 ("drm/tegra: Add eDP support")
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230710032355.72914-13-frank.li@vivo.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_events.h | 3 ++-
- kernel/trace/bpf_trace.c     | 2 +-
- kernel/trace/trace_uprobe.c  | 3 ++-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/tegra/dpaux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 0643c083ed862..93a1b5497bdf1 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -581,7 +581,8 @@ extern int  perf_uprobe_init(struct perf_event *event, bool is_retprobe);
- extern void perf_uprobe_destroy(struct perf_event *event);
- extern int bpf_get_uprobe_info(const struct perf_event *event,
- 			       u32 *fd_type, const char **filename,
--			       u64 *probe_offset, bool perf_type_tracepoint);
-+			       u64 *probe_offset, u64 *probe_addr,
-+			       bool perf_type_tracepoint);
- #endif
- extern int  ftrace_profile_set_filter(struct perf_event *event, int event_id,
- 				     char *filter_str);
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 1cb13d6368f3f..b794470bb42ed 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -1274,7 +1274,7 @@ int bpf_get_perf_event_info(const struct perf_event *event, u32 *prog_id,
- #ifdef CONFIG_UPROBE_EVENTS
- 		if (flags & TRACE_EVENT_FL_UPROBE)
- 			err = bpf_get_uprobe_info(event, fd_type, buf,
--						  probe_offset,
-+						  probe_offset, probe_addr,
- 						  event->attr.type == PERF_TYPE_TRACEPOINT);
- #endif
- 	}
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 0da379b902492..0e3bdd69fa2d6 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1159,7 +1159,7 @@ static void uretprobe_perf_func(struct trace_uprobe *tu, unsigned long func,
+diff --git a/drivers/gpu/drm/tegra/dpaux.c b/drivers/gpu/drm/tegra/dpaux.c
+index 304434bf10814..a84d19087d094 100644
+--- a/drivers/gpu/drm/tegra/dpaux.c
++++ b/drivers/gpu/drm/tegra/dpaux.c
+@@ -448,7 +448,7 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
  
- int bpf_get_uprobe_info(const struct perf_event *event, u32 *fd_type,
- 			const char **filename, u64 *probe_offset,
--			bool perf_type_tracepoint)
-+			u64 *probe_addr, bool perf_type_tracepoint)
- {
- 	const char *pevent = trace_event_name(event->tp_event);
- 	const char *group = event->tp_event->class->system;
-@@ -1176,6 +1176,7 @@ int bpf_get_uprobe_info(const struct perf_event *event, u32 *fd_type,
- 				    : BPF_FD_TYPE_UPROBE;
- 	*filename = tu->filename;
- 	*probe_offset = tu->offset;
-+	*probe_addr = 0;
- 	return 0;
- }
- #endif	/* CONFIG_PERF_EVENTS */
+ 	dpaux->irq = platform_get_irq(pdev, 0);
+ 	if (dpaux->irq < 0)
+-		return -ENXIO;
++		return dpaux->irq;
+ 
+ 	if (!pdev->dev.pm_domain) {
+ 		dpaux->rst = devm_reset_control_get(&pdev->dev, "dpaux");
 -- 
 2.40.1
 
