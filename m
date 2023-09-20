@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BCC97A8118
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38E8B7A7EC4
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236266AbjITMmj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54554 "EHLO
+        id S234634AbjITMUe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:20:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236005AbjITMmi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:42:38 -0400
+        with ESMTP id S235687AbjITMUd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A57383
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2252C433C8;
-        Wed, 20 Sep 2023 12:42:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69570CA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4BEC433C7;
+        Wed, 20 Sep 2023 12:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213752;
-        bh=fX2/U5S7KmqGlxTJopMU2joa/FUlgEVSM8Uxdy0kT48=;
+        s=korg; t=1695212427;
+        bh=Cq01sCi9B6NTPpql0haHiVIYmoVmQe8f7I/dHpLSHNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R1+ql8gQGhK7ixXP31a0wtDmsUHyA1h6LGUOfXPsKvWVFUlfhmZ3J40JKfsSrUJD5
-         zE2PwgpQoLAHX4PM2JuIz+j7MEvlJbG5UwyaHL7Xjzks5lTkXiFgU6cLNxRhDTrogO
-         G2zEAnVwRX81uhUvopkcb+y9wMioRKMP125o4xXM=
+        b=xb3fDqjd4eEkUl9PTci3rBBPEAC6mDqpLZlXu14V2yFymIDkmGkhxk6BYIVjDAcDq
+         fi6z5jKeSkn6C97X8XoIQdsJ1ZMEfGc5KcvpiTJxENhaU0d9oS4R3YWXh/wrNNGC0J
+         A1RoAN7UuDRln+VOVnr9+Y9vOdAjew8pUIkZDqFA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Luo <haoluo@google.com>,
-        Andrii Nakryiko <andrii@kernel.org>,
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 326/367] libbpf: Free btf_vmlinux when closing bpf_object
-Date:   Wed, 20 Sep 2023 13:31:43 +0200
-Message-ID: <20230920112906.975001366@linuxfoundation.org>
+Subject: [PATCH 4.19 264/273] serial: cpm_uart: Avoid suspicious locking
+Date:   Wed, 20 Sep 2023 13:31:44 +0200
+Message-ID: <20230920112854.400913936@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +50,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Luo <haoluo@google.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 29d67fdebc42af6466d1909c60fdd1ef4f3e5240 ]
+[ Upstream commit 36ef11d311f405e55ad8e848c19b212ff71ef536 ]
 
-I hit a memory leak when testing bpf_program__set_attach_target().
-Basically, set_attach_target() may allocate btf_vmlinux, for example,
-when setting attach target for bpf_iter programs. But btf_vmlinux
-is freed only in bpf_object_load(), which means if we only open
-bpf object but not load it, setting attach target may leak
-btf_vmlinux.
+  CHECK   drivers/tty/serial/cpm_uart/cpm_uart_core.c
+drivers/tty/serial/cpm_uart/cpm_uart_core.c:1271:39: warning: context imbalance in 'cpm_uart_console_write' - unexpected unlock
 
-So let's free btf_vmlinux in bpf_object__close() anyway.
+Allthough 'nolock' is not expected to change, sparse find the following
+form suspicious:
 
-Signed-off-by: Hao Luo <haoluo@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20230822193840.1509809-1-haoluo@google.com
+	if (unlikely(nolock)) {
+		local_irq_save(flags);
+	} else {
+		spin_lock_irqsave(&pinfo->port.lock, flags);
+	}
+
+	cpm_uart_early_write(pinfo, s, count, true);
+
+	if (unlikely(nolock)) {
+		local_irq_restore(flags);
+	} else {
+		spin_unlock_irqrestore(&pinfo->port.lock, flags);
+	}
+
+Rewrite it a more obvious form:
+
+	if (unlikely(oops_in_progress)) {
+		local_irq_save(flags);
+		cpm_uart_early_write(pinfo, s, count, true);
+		local_irq_restore(flags);
+	} else {
+		spin_lock_irqsave(&pinfo->port.lock, flags);
+		cpm_uart_early_write(pinfo, s, count, true);
+		spin_unlock_irqrestore(&pinfo->port.lock, flags);
+	}
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/f7da5cdc9287960185829cfef681a7d8614efa1f.1691068700.git.christophe.leroy@csgroup.eu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/cpm_uart/cpm_uart_core.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index b8849812449c3..343018632d2d1 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -4202,6 +4202,7 @@ void bpf_object__close(struct bpf_object *obj)
- 	bpf_object__elf_finish(obj);
- 	bpf_object__unload(obj);
- 	btf__free(obj->btf);
-+	btf__free(obj->btf_vmlinux);
- 	btf_ext__free(obj->btf_ext);
+diff --git a/drivers/tty/serial/cpm_uart/cpm_uart_core.c b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+index ad40c75bb58f8..375d4790e058b 100644
+--- a/drivers/tty/serial/cpm_uart/cpm_uart_core.c
++++ b/drivers/tty/serial/cpm_uart/cpm_uart_core.c
+@@ -1269,19 +1269,14 @@ static void cpm_uart_console_write(struct console *co, const char *s,
+ {
+ 	struct uart_cpm_port *pinfo = &cpm_uart_ports[co->index];
+ 	unsigned long flags;
+-	int nolock = oops_in_progress;
  
- 	for (i = 0; i < obj->nr_maps; i++) {
+-	if (unlikely(nolock)) {
++	if (unlikely(oops_in_progress)) {
+ 		local_irq_save(flags);
+-	} else {
+-		spin_lock_irqsave(&pinfo->port.lock, flags);
+-	}
+-
+-	cpm_uart_early_write(pinfo, s, count, true);
+-
+-	if (unlikely(nolock)) {
++		cpm_uart_early_write(pinfo, s, count, true);
+ 		local_irq_restore(flags);
+ 	} else {
++		spin_lock_irqsave(&pinfo->port.lock, flags);
++		cpm_uart_early_write(pinfo, s, count, true);
+ 		spin_unlock_irqrestore(&pinfo->port.lock, flags);
+ 	}
+ }
 -- 
 2.40.1
 
