@@ -2,43 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2024C7A7E16
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F7227A8084
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235354AbjITMPc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52324 "EHLO
+        id S235985AbjITMhq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:37:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235823AbjITMPP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:15 -0400
+        with ESMTP id S235977AbjITMhl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7C2E93
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEF3C433C8;
-        Wed, 20 Sep 2023 12:15:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 908B6C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA816C433CA;
+        Wed, 20 Sep 2023 12:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212109;
-        bh=Gb87cSX5pUjp8WfQv3AdkKMc9Ovnt/s9vXCj9nUwjGs=;
+        s=korg; t=1695213455;
+        bh=THwI41OuR9mFZxhiEMiU50IASVJEvWqK4gZnu7JU9Lg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vBA70NJUygV1ix7jYY4DfGrzbYmQI7RI4BbBEidzpXkf0lOtcuggW7zi/8mRes3iH
-         WAzWCQmtvs7PjaNGVMm7/25KgYrusfJjg9KOqlQg7QD57TfSZ5XgvGVGrTd4ahsLBW
-         013+tzFFsUKUz+WL9oqtvUJiENpWT3hxZCLcHkDo=
+        b=oIRPmdbtS8mIsE6H5aKCb271gwqAhK+Qrd/wWxL1kM1yEB3hIzI1hFszoeEbO2QH2
+         snx5V1VLp3H0d1jC9txNCXM7pogS7PmbQpw58nlO8V0k1w8W8ehjbCCqQtNWjNQEH1
+         bXF9aDbSs2BhhEKIG1JjpM9tOXmt/1YTABP3Vsls=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 153/273] media: ov2680: Fix regulators being left enabled on ov2680_power_on() errors
-Date:   Wed, 20 Sep 2023 13:29:53 +0200
-Message-ID: <20230920112851.263589135@linuxfoundation.org>
+        patches@lists.linux.dev, Max Filippov <jcmvbkbc@gmail.com>
+Subject: [PATCH 5.4 217/367] xtensa: PMU: fix base address for the newer hardware
+Date:   Wed, 20 Sep 2023 13:29:54 +0200
+Message-ID: <20230920112904.217381680@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,67 +48,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit 84b4bd7e0d98166aa32fd470e672721190492eae ]
+commit 687eb3c42f4ad81e7c947c50e2d865f692064291 upstream.
 
-When the ov2680_power_on() "sensor soft reset failed" path is hit during
-probe() the WARN() about putting an enabled regulator at
-drivers/regulator/core.c:2398 triggers 3 times (once for each regulator),
-filling dmesg with backtraces.
+With introduction of ERI access control in RG.0 base address of the PMU
+unit registers has changed. Add support for the new PMU configuration.
 
-Fix this by properly disabling the regulators on ov2680_power_on() errors.
-
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov2680.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/xtensa/include/asm/core.h  |    9 +++++++++
+ arch/xtensa/kernel/perf_event.c |   17 +++++++++++++----
+ 2 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 142c6c1721649..40d583a972a41 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -459,7 +459,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
- 		ret = ov2680_write_reg(sensor, OV2680_REG_SOFT_RESET, 0x01);
- 		if (ret != 0) {
- 			dev_err(dev, "sensor soft reset failed\n");
--			return ret;
-+			goto err_disable_regulators;
- 		}
- 		usleep_range(1000, 2000);
- 	} else {
-@@ -469,7 +469,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
+--- a/arch/xtensa/include/asm/core.h
++++ b/arch/xtensa/include/asm/core.h
+@@ -18,4 +18,13 @@
+ #define XCHAL_SPANNING_WAY 0
+ #endif
  
- 	ret = clk_prepare_enable(sensor->xvclk);
- 	if (ret < 0)
--		return ret;
-+		goto err_disable_regulators;
- 
- 	sensor->is_enabled = true;
- 
-@@ -479,6 +479,10 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
- 	ov2680_stream_disable(sensor);
- 
- 	return 0;
++#ifndef XCHAL_HW_MIN_VERSION
++#if defined(XCHAL_HW_MIN_VERSION_MAJOR) && defined(XCHAL_HW_MIN_VERSION_MINOR)
++#define XCHAL_HW_MIN_VERSION (XCHAL_HW_MIN_VERSION_MAJOR * 100 + \
++			      XCHAL_HW_MIN_VERSION_MINOR)
++#else
++#define XCHAL_HW_MIN_VERSION 0
++#endif
++#endif
 +
-+err_disable_regulators:
-+	regulator_bulk_disable(OV2680_NUM_SUPPLIES, sensor->supplies);
-+	return ret;
- }
+ #endif
+--- a/arch/xtensa/kernel/perf_event.c
++++ b/arch/xtensa/kernel/perf_event.c
+@@ -13,17 +13,26 @@
+ #include <linux/perf_event.h>
+ #include <linux/platform_device.h>
  
- static int ov2680_s_power(struct v4l2_subdev *sd, int on)
--- 
-2.40.1
-
++#include <asm/core.h>
+ #include <asm/processor.h>
+ #include <asm/stacktrace.h>
+ 
++#define XTENSA_HWVERSION_RG_2015_0	260000
++
++#if XCHAL_HW_MIN_VERSION >= XTENSA_HWVERSION_RG_2015_0
++#define XTENSA_PMU_ERI_BASE		0x00101000
++#else
++#define XTENSA_PMU_ERI_BASE		0x00001000
++#endif
++
+ /* Global control/status for all perf counters */
+-#define XTENSA_PMU_PMG			0x1000
++#define XTENSA_PMU_PMG			XTENSA_PMU_ERI_BASE
+ /* Perf counter values */
+-#define XTENSA_PMU_PM(i)		(0x1080 + (i) * 4)
++#define XTENSA_PMU_PM(i)		(XTENSA_PMU_ERI_BASE + 0x80 + (i) * 4)
+ /* Perf counter control registers */
+-#define XTENSA_PMU_PMCTRL(i)		(0x1100 + (i) * 4)
++#define XTENSA_PMU_PMCTRL(i)		(XTENSA_PMU_ERI_BASE + 0x100 + (i) * 4)
+ /* Perf counter status registers */
+-#define XTENSA_PMU_PMSTAT(i)		(0x1180 + (i) * 4)
++#define XTENSA_PMU_PMSTAT(i)		(XTENSA_PMU_ERI_BASE + 0x180 + (i) * 4)
+ 
+ #define XTENSA_PMU_PMG_PMEN		0x1
+ 
 
 
