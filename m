@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 947037A80EB
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDFA77A7EB1
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235978AbjITMlK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:41:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33546 "EHLO
+        id S235632AbjITMUQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:20:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236246AbjITMlH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:07 -0400
+        with ESMTP id S235735AbjITMTv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD5EC6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:41:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67564C433C8;
-        Wed, 20 Sep 2023 12:41:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72A54AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B97D5C433C8;
+        Wed, 20 Sep 2023 12:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213660;
-        bh=sGairIJhJFOZ2/fcbgOLnNewKaqOuOnHbYY/TTSV+lc=;
+        s=korg; t=1695212383;
+        bh=3v2mJEoVLfgFey27J+xuITUcKeUEZT+3RZMhyh0e2Xw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iTSeZyY+FkbwBuSJn0Sp5dfi65lEPUf9eMQoo9nBrNAQGhDPuSIuOAvERQpszZ0bY
-         6D55tz8XNjYOLRWXqeqZANOj9mW1c+tezaalYWWmKlSlJ62cGYV59I0BPR1mQFU+j/
-         RuTrPUrAKo37bf6gi4Mu2/aOyWVgjrG1QeYrNikU=
+        b=IVwalZJbCl+5UJhi8qzg3YLSOjBn/SJrqbjO3i8DS3fiw9NBUOvtOTgRajmOwIc8O
+         cCXihix/DEFkBJ4lH34CIITnSfZ1On84Riqp4bvDJ1N7f2xBxqEWweSOa727uThjQw
+         LVTurIfg1Xfb9YQvTq/b9ldH14F3JWlJQgoLjpYA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 318/367] devlink: remove reload failed checks in params get/set callbacks
+Subject: [PATCH 4.19 255/273] media: dw2102: Fix null-ptr-deref in dw2102_i2c_transfer()
 Date:   Wed, 20 Sep 2023 13:31:35 +0200
-Message-ID: <20230920112906.776979630@linuxfoundation.org>
+Message-ID: <20230920112854.163084825@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +50,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 633d76ad01ad0321a1ace3e5cc4fed06753d7ac4 ]
+[ Upstream commit 5ae544d94abc8ff77b1b9bf8774def3fa5689b5b ]
 
-The checks in question were introduced by:
-commit 6b4db2e528f6 ("devlink: Fix use-after-free after a failed reload").
-That fixed an issue of reload with mlxsw driver.
+In dw2102_i2c_transfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach dw2102_i2c_transfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-Back then, that was a valid fix, because there was a limitation
-in place that prevented drivers from registering/unregistering params
-when devlink instance was registered.
+Similar commit:
+commit 950e252cb469
+("[media] dw2102: limit messages to buffer size")
 
-It was possible to do the fix differently by changing drivers to
-register/unregister params in appropriate places making sure the ops
-operate only on memory which is allocated and initialized. But that,
-as a dependency, would require to remove the limitation mentioned above.
-
-Eventually, this limitation was lifted by:
-commit 1d18bb1a4ddd ("devlink: allow registering parameters after the instance")
-
-Also, the alternative fix (which also fixed another issue) was done by:
-commit 74cbc3c03c82 ("mlxsw: spectrum_acl_tcam: Move devlink param to TCAM code").
-
-Therefore, the checks are no longer relevant. Each driver should make
-sure to have the params registered only when the memory the ops
-are working with is allocated and initialized.
-
-So remove the checks.
-
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/devlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/usb/dvb-usb/dw2102.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/net/core/devlink.c b/net/core/devlink.c
-index b4dabe5d89f72..5bd6330ab4275 100644
---- a/net/core/devlink.c
-+++ b/net/core/devlink.c
-@@ -2953,7 +2953,7 @@ static int devlink_param_get(struct devlink *devlink,
- 			     const struct devlink_param *param,
- 			     struct devlink_param_gset_ctx *ctx)
- {
--	if (!param->get || devlink->reload_failed)
-+	if (!param->get)
- 		return -EOPNOTSUPP;
- 	return param->get(devlink, param->id, ctx);
- }
-@@ -2962,7 +2962,7 @@ static int devlink_param_set(struct devlink *devlink,
- 			     const struct devlink_param *param,
- 			     struct devlink_param_gset_ctx *ctx)
- {
--	if (!param->set || devlink->reload_failed)
-+	if (!param->set)
- 		return -EOPNOTSUPP;
- 	return param->set(devlink, param->id, ctx);
- }
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index cd0566c0b3de7..a3c5261f9aa41 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -131,6 +131,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 
+ 	switch (num) {
+ 	case 2:
++		if (msg[0].len < 1) {
++			num = -EOPNOTSUPP;
++			break;
++		}
+ 		/* read stv0299 register */
+ 		value = msg[0].buf[0];/* register */
+ 		for (i = 0; i < msg[1].len; i++) {
+@@ -142,6 +146,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 	case 1:
+ 		switch (msg[0].addr) {
+ 		case 0x68:
++			if (msg[0].len < 2) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			/* write to stv0299 register */
+ 			buf6[0] = 0x2a;
+ 			buf6[1] = msg[0].buf[0];
+@@ -151,6 +159,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			break;
+ 		case 0x60:
+ 			if (msg[0].flags == 0) {
++				if (msg[0].len < 4) {
++					num = -EOPNOTSUPP;
++					break;
++				}
+ 			/* write to tuner pll */
+ 				buf6[0] = 0x2c;
+ 				buf6[1] = 5;
+@@ -162,6 +174,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 				dw210x_op_rw(d->udev, 0xb2, 0, 0,
+ 						buf6, 7, DW210X_WRITE_MSG);
+ 			} else {
++				if (msg[0].len < 1) {
++					num = -EOPNOTSUPP;
++					break;
++				}
+ 			/* read from tuner */
+ 				dw210x_op_rw(d->udev, 0xb5, 0, 0,
+ 						buf6, 1, DW210X_READ_MSG);
+@@ -169,12 +185,20 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			}
+ 			break;
+ 		case (DW2102_RC_QUERY):
++			if (msg[0].len < 2) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			dw210x_op_rw(d->udev, 0xb8, 0, 0,
+ 					buf6, 2, DW210X_READ_MSG);
+ 			msg[0].buf[0] = buf6[0];
+ 			msg[0].buf[1] = buf6[1];
+ 			break;
+ 		case (DW2102_VOLTAGE_CTRL):
++			if (msg[0].len < 1) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			buf6[0] = 0x30;
+ 			buf6[1] = msg[0].buf[0];
+ 			dw210x_op_rw(d->udev, 0xb2, 0, 0,
 -- 
 2.40.1
 
