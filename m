@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47C9F7A7B0C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71D347A7CB2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234628AbjITLsx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:48:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47416 "EHLO
+        id S235122AbjITMD3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:03:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234627AbjITLsw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:52 -0400
+        with ESMTP id S235067AbjITMDZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 826AFA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF718C433C9;
-        Wed, 20 Sep 2023 11:48:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E1D110
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:03:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD100C433C9;
+        Wed, 20 Sep 2023 12:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210527;
-        bh=f4zg7ygaDK62R6pc8CTe7Mp0u1eDZZNz/vpkGbbtfME=;
+        s=korg; t=1695211396;
+        bh=/LCfl2yKeHPgBQrdIiIMiKC11anZNDlv9jGP+fSa9R4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f07CHEaJnshXn+jaVJEaAhD7TN/J5N1SK4APB+4wzII63PuuE8A8Hamb+Ezh4JrvP
-         XH6HqzGxK3HpofSgWAvcB79021BFMCyQKwagK02j/7APmVHUaFYVuIxKtAjaLAw69m
-         GxJr+kNjRRPcjBkGVoa115ImJaOPRpa2Arj+nzvA=
+        b=Plc7wGGGcxMCm/PuK1EZKNee2kAHiqDs8r472+JvSi1GG77xSlKHQfJZN4qckleTh
+         6hznIIyXAbgT2nvNWx/tlL5r9MrGWNDTvjnFhHrJE//lBSqQaewW4lDMewiD7jUHUW
+         Og+6FnKV+k1Jn6DpMU8mADPZq6viMzbrq6sTZqTY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 110/211] media: dvb-usb-v2: gl861: Fix null-ptr-deref in gl861_i2c_master_xfer
+Subject: [PATCH 4.14 051/186] wifi: ath9k: use IS_ERR() with debugfs_create_dir()
 Date:   Wed, 20 Sep 2023 13:29:14 +0200
-Message-ID: <20230920112849.205591059@linuxfoundation.org>
+Message-ID: <20230920112838.756265961@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,44 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Wang Ming <machel@vivo.com>
 
-[ Upstream commit b97719a66970601cd3151a3e2020f4454a1c4ff6 ]
+[ Upstream commit 1e4134610d93271535ecf900a676e1f094e9944c ]
 
-In gl861_i2c_master_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach gl861_i2c_master_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+The debugfs_create_dir() function returns error pointers,
+it never returns NULL. Most incorrect error checks were fixed,
+but the one in ath9k_htc_init_debug() was forgotten.
 
-Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+Fix the remaining error check.
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: e5facc75fa91 ("ath9k_htc: Cleanup HTC debugfs")
+Signed-off-by: Wang Ming <machel@vivo.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230713030358.12379-1-machel@vivo.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/gl861.c | 2 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/gl861.c b/drivers/media/usb/dvb-usb-v2/gl861.c
-index 0c434259c36f1..c71e7b93476de 100644
---- a/drivers/media/usb/dvb-usb-v2/gl861.c
-+++ b/drivers/media/usb/dvb-usb-v2/gl861.c
-@@ -120,7 +120,7 @@ static int gl861_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 	} else if (num == 2 && !(msg[0].flags & I2C_M_RD) &&
- 		   (msg[1].flags & I2C_M_RD)) {
- 		/* I2C write + read */
--		if (msg[0].len > 1 || msg[1].len > sizeof(ctx->buf)) {
-+		if (msg[0].len != 1 || msg[1].len > sizeof(ctx->buf)) {
- 			ret = -EOPNOTSUPP;
- 			goto err;
- 		}
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+index dc79afd7e151b..b711b2e1ce93e 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+@@ -491,7 +491,7 @@ int ath9k_htc_init_debug(struct ath_hw *ah)
+ 
+ 	priv->debug.debugfs_phy = debugfs_create_dir(KBUILD_MODNAME,
+ 					     priv->hw->wiphy->debugfsdir);
+-	if (!priv->debug.debugfs_phy)
++	if (IS_ERR(priv->debug.debugfs_phy))
+ 		return -ENOMEM;
+ 
+ 	ath9k_cmn_spectral_init_debug(&priv->spec_priv, priv->debug.debugfs_phy);
 -- 
 2.40.1
 
