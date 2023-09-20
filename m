@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 969E67A7E7D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 529DC7A8158
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235487AbjITMSP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:18:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38770 "EHLO
+        id S236306AbjITMoh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:44:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235578AbjITMSO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:14 -0400
+        with ESMTP id S236308AbjITMog (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F69D97
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:18:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771F7C433C8;
-        Wed, 20 Sep 2023 12:18:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 570B2AB
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E5EC433C9;
+        Wed, 20 Sep 2023 12:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212287;
-        bh=6NytpxZpHKawCNYEKZGoXDuEr6T7grt9PUNpddHQ/ZY=;
+        s=korg; t=1695213866;
+        bh=+LrDnkG1e0nMGnGc3/lss6z/cUgr/3c5vzz1l9iWqag=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A9omhVh5P8ONddxptNMG7RHapiWXnWA7vkbcjIzwf8vi8XGcNE47ZsdBtZo+vHPyF
-         GF4zeqNhIjKiSBw4YLT51vLc6kXFS6n3OzAeLSk4Qq8jDSKI/t9ZfYv91Kyfy+CDTP
-         SH7GZliQxtHunj4YgigUVF8yWAF1SWZu0o3dB2Qc=
+        b=iI4n82bQBD1CywLIG/fR5q97JwqosR0QybOp25oJIyupUGNTXzBzFVJQwvBZZQVrW
+         hZa/u3CNk1zHxUmYAns7euvf1MtAHi+2B60v7Y6X5FrA3d9hjHYNTKKpik9bMEJPPk
+         E0KJ1zEKgpw25rJslD+XInM4u8cP8u57luExkBiI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Zaborska <olga.zaborska@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 4.19 221/273] igb: Change IGB_MIN to allow set rx/tx value between 64 and 80
+        patches@lists.linux.dev, Will Shiu <Will.Shiu@mediatek.com>,
+        Jeff Layton <jlayton@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 003/110] locks: fix KASAN: use-after-free in trace_event_raw_event_filelock_lock
 Date:   Wed, 20 Sep 2023 13:31:01 +0200
-Message-ID: <20230920112853.251283856@linuxfoundation.org>
+Message-ID: <20230920112830.510497713@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +50,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Zaborska <olga.zaborska@intel.com>
+From: Will Shiu <Will.Shiu@mediatek.com>
 
-[ Upstream commit 6319685bdc8ad5310890add907b7c42f89302886 ]
+[ Upstream commit 74f6f5912693ce454384eaeec48705646a21c74f ]
 
-Change the minimum value of RX/TX descriptors to 64 to enable setting the rx/tx
-value between 64 and 80. All igb devices can use as low as 64 descriptors.
-This change will unify igb with other drivers.
-Based on commit 7b1be1987c1e ("e1000e: lower ring minimum size to 64")
+As following backtrace, the struct file_lock request , in posix_lock_inode
+is free before ftrace function using.
+Replace the ftrace function ahead free flow could fix the use-after-free
+issue.
 
-Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
-Signed-off-by: Olga Zaborska <olga.zaborska@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[name:report&]===============================================
+BUG:KASAN: use-after-free in trace_event_raw_event_filelock_lock+0x80/0x12c
+[name:report&]Read at addr f6ffff8025622620 by task NativeThread/16753
+[name:report_hw_tags&]Pointer tag: [f6], memory tag: [fe]
+[name:report&]
+BT:
+Hardware name: MT6897 (DT)
+Call trace:
+ dump_backtrace+0xf8/0x148
+ show_stack+0x18/0x24
+ dump_stack_lvl+0x60/0x7c
+ print_report+0x2c8/0xa08
+ kasan_report+0xb0/0x120
+ __do_kernel_fault+0xc8/0x248
+ do_bad_area+0x30/0xdc
+ do_tag_check_fault+0x1c/0x30
+ do_mem_abort+0x58/0xbc
+ el1_abort+0x3c/0x5c
+ el1h_64_sync_handler+0x54/0x90
+ el1h_64_sync+0x68/0x6c
+ trace_event_raw_event_filelock_lock+0x80/0x12c
+ posix_lock_inode+0xd0c/0xd60
+ do_lock_file_wait+0xb8/0x190
+ fcntl_setlk+0x2d8/0x440
+...
+[name:report&]
+[name:report&]Allocated by task 16752:
+...
+ slab_post_alloc_hook+0x74/0x340
+ kmem_cache_alloc+0x1b0/0x2f0
+ posix_lock_inode+0xb0/0xd60
+...
+ [name:report&]
+ [name:report&]Freed by task 16752:
+...
+  kmem_cache_free+0x274/0x5b0
+  locks_dispose_list+0x3c/0x148
+  posix_lock_inode+0xc40/0xd60
+  do_lock_file_wait+0xb8/0x190
+  fcntl_setlk+0x2d8/0x440
+  do_fcntl+0x150/0xc18
+...
+
+Signed-off-by: Will Shiu <Will.Shiu@mediatek.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/locks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb.h b/drivers/net/ethernet/intel/igb/igb.h
-index 33cbe4f70d590..e6d99759d95a1 100644
---- a/drivers/net/ethernet/intel/igb/igb.h
-+++ b/drivers/net/ethernet/intel/igb/igb.h
-@@ -32,11 +32,11 @@ struct igb_adapter;
- /* TX/RX descriptor defines */
- #define IGB_DEFAULT_TXD		256
- #define IGB_DEFAULT_TX_WORK	128
--#define IGB_MIN_TXD		80
-+#define IGB_MIN_TXD		64
- #define IGB_MAX_TXD		4096
+diff --git a/fs/locks.c b/fs/locks.c
+index 881fd16905c61..4899a4666f24d 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -1339,6 +1339,7 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
+  out:
+ 	spin_unlock(&ctx->flc_lock);
+ 	percpu_up_read(&file_rwsem);
++	trace_posix_lock_inode(inode, request, error);
+ 	/*
+ 	 * Free any unused locks.
+ 	 */
+@@ -1347,7 +1348,6 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
+ 	if (new_fl2)
+ 		locks_free_lock(new_fl2);
+ 	locks_dispose_list(&dispose);
+-	trace_posix_lock_inode(inode, request, error);
  
- #define IGB_DEFAULT_RXD		256
--#define IGB_MIN_RXD		80
-+#define IGB_MIN_RXD		64
- #define IGB_MAX_RXD		4096
- 
- #define IGB_DEFAULT_ITR		3 /* dynamic */
+ 	return error;
+ }
 -- 
 2.40.1
 
