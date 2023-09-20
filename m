@@ -2,45 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F6E27A7F05
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 036757A80F3
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235684AbjITMXF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:23:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48096 "EHLO
+        id S236144AbjITMlc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:41:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235683AbjITMXE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:04 -0400
+        with ESMTP id S236210AbjITMla (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC49397
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D956C433C8;
-        Wed, 20 Sep 2023 12:22:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F93C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:41:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB6DC433C7;
+        Wed, 20 Sep 2023 12:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212578;
-        bh=lLhMnrzd7qw5v6hi8HpGn6DSxeUChSldXhANJg0VeO4=;
+        s=korg; t=1695213679;
+        bh=kNyV2a65l9iBCel5nabBD1/Cid9bt7lQYzrqqP/hcaI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=URPmF5UHk7P0WIJEx7DoJUEsxoMw3DpSogN4cmQT13jxNzGKuSDz37SDPfKpwcnEx
-         ADfYUXAO/NFUcGjKI2+T8IuK8If2BlwzJL1Jib3DM4btvegZEkK0JBjljIoHxHcCcK
-         6ymaAOSqmEptgw2DDZBaNKKUwqQ3hPr67KDEiE0A=
+        b=qhwNlyho8o+Ji98e7UeVqu5d8d31CuLGRLgDeGs3wUw7YrgfgGwvFkIUx03Ru64Sv
+         FJBYNtI94cPzKDUSWlIhelLeSAZFkNKOHh6sCokpWMev+24MzVvFP32Oj6MI0hmePW
+         uShqpQC4oKVdyxDMipoVh7TctKStyN9pVRtk/ovg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Uday M Bhat <uday.m.bhat@intel.com>,
-        Jairaj Arava <jairaj.arava@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 27/83] ASoC: Intel: sof_sdw: Update BT offload config for soundwire config
+Subject: [PATCH 5.4 300/367] r8152: check budget for r8152_poll()
 Date:   Wed, 20 Sep 2023 13:31:17 +0200
-Message-ID: <20230920112827.751203739@linuxfoundation.org>
+Message-ID: <20230920112906.310186129@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,45 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uday M Bhat <uday.m.bhat@intel.com>
+From: Hayes Wang <hayeswang@realtek.com>
 
-[ Upstream commit a14aded9299187bb17ef90700eb2cf1120ef5885 ]
+[ Upstream commit a7b8d60b37237680009dd0b025fe8c067aba0ee3 ]
 
-For soundwire config, SSP1 is used for BT offload. This is enabled
-in sof_sdw_quirk_table
+According to the document of napi, there is no rx process when the
+budget is 0. Therefore, r8152_poll() has to return 0 directly when the
+budget is equal to 0.
 
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Uday M Bhat <uday.m.bhat@intel.com>
-Signed-off-by: Jairaj Arava <jairaj.arava@intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230731214257.444605-5-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d2187f8e4454 ("r8152: divide the tx and rx bottom functions")
+Signed-off-by: Hayes Wang <hayeswang@realtek.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/usb/r8152.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index f36a0fda1b6ae..1955d277fdf20 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -214,7 +214,9 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Rex"),
- 		},
--		.driver_data = (void *)(SOF_SDW_PCH_DMIC),
-+		.driver_data = (void *)(SOF_SDW_PCH_DMIC |
-+					SOF_BT_OFFLOAD_SSP(1) |
-+					SOF_SSP_BT_OFFLOAD_PRESENT),
- 	},
- 	/* LunarLake devices */
- 	{
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index b0412d14e8f6c..a19f0431e6f99 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -2253,6 +2253,9 @@ static int r8152_poll(struct napi_struct *napi, int budget)
+ 	struct r8152 *tp = container_of(napi, struct r8152, napi);
+ 	int work_done;
+ 
++	if (!budget)
++		return 0;
++
+ 	work_done = rx_bottom(tp, budget);
+ 
+ 	if (work_done < budget) {
 -- 
 2.40.1
 
