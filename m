@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 321AC7A7C79
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:01:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEC277A7B31
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:49:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234904AbjITMBk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:01:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35372 "EHLO
+        id S234526AbjITLt4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:49:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235020AbjITMBg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:01:36 -0400
+        with ESMTP id S232318AbjITLt4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95E3C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:01:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5D7C433C8;
-        Wed, 20 Sep 2023 12:01:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B170DB0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4C7C433CD;
+        Wed, 20 Sep 2023 11:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211290;
-        bh=89pGBB3QrgwjERkYak2yXg3tRBCv9OFUYhwIUByvz2c=;
+        s=korg; t=1695210589;
+        bh=ewBN+g3NDcSnxIk9L7qEIz+Hs9NzKSSiXDqRZ5KkDqY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mgzgetBT5YZyP2gWl7ApbM8kjVs+fv4f4cXMBA7zvZc27BWd8r0O5dVcOmsXlYqDk
-         0KTyo+Fx2VJx0NZGYXImP/UE6TS1ntAqQbhoxPTSeJ0iMwZq1Udr7xpXXRgybhc4A6
-         KBcx7Q1JoAcWGeSHCF8+ebUHh1Latsk7FvaUlCwY=
+        b=0rdOj29gmOA63I918+uwWcvMgkEYyHYShsnMrANzxXoVo8YLAt9SxkLrGZUXqxAxG
+         YUX1OrcUHFCMhFLzM7kmeqXdn7BzYh2TjTCQRnivmEn+4kQChkiEdKHCkABygNT6KB
+         wCBIBIVs3Fd+neL0KN34DiAcs+agfsme8fIFnhoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 038/186] regmap: rbtree: Use alloc_flags for memory allocations
+        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 097/211] ext4: add two helper functions extent_logical_end() and pa_logical_end()
 Date:   Wed, 20 Sep 2023 13:29:01 +0200
-Message-ID: <20230920112838.331691452@linuxfoundation.org>
+Message-ID: <20230920112848.814816189@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,100 +50,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 0c8b0bf42c8cef56f7cd9cd876fbb7ece9217064 ]
+[ Upstream commit 43bbddc067883d94de7a43d5756a295439fbe37d ]
 
-The kunit tests discovered a sleeping in atomic bug.  The allocations
-in the regcache-rbtree code should use the map->alloc_flags instead of
-GFP_KERNEL.
+When we use lstart + len to calculate the end of free extent or prealloc
+space, it may exceed the maximum value of 4294967295(0xffffffff) supported
+by ext4_lblk_t and cause overflow, which may lead to various problems.
 
-[    5.005510] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
-[    5.005960] in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 117, name: kunit_try_catch
-[    5.006219] preempt_count: 1, expected: 0
-[    5.006414] 1 lock held by kunit_try_catch/117:
-[    5.006590]  #0: 833b9010 (regmap_kunit:86:(config)->lock){....}-{2:2}, at: regmap_lock_spinlock+0x14/0x1c
-[    5.007493] irq event stamp: 162
-[    5.007627] hardirqs last  enabled at (161): [<80786738>] crng_make_state+0x1a0/0x294
-[    5.007871] hardirqs last disabled at (162): [<80c531ec>] _raw_spin_lock_irqsave+0x7c/0x80
-[    5.008119] softirqs last  enabled at (0): [<801110ac>] copy_process+0x810/0x2138
-[    5.008356] softirqs last disabled at (0): [<00000000>] 0x0
-[    5.008688] CPU: 0 PID: 117 Comm: kunit_try_catch Tainted: G                 N 6.4.4-rc3-g0e8d2fdfb188 #1
-[    5.009011] Hardware name: Generic DT based system
-[    5.009277]  unwind_backtrace from show_stack+0x18/0x1c
-[    5.009497]  show_stack from dump_stack_lvl+0x38/0x5c
-[    5.009676]  dump_stack_lvl from __might_resched+0x188/0x2d0
-[    5.009860]  __might_resched from __kmem_cache_alloc_node+0x1dc/0x25c
-[    5.010061]  __kmem_cache_alloc_node from kmalloc_trace+0x30/0xc8
-[    5.010254]  kmalloc_trace from regcache_rbtree_write+0x26c/0x468
-[    5.010446]  regcache_rbtree_write from _regmap_write+0x88/0x140
-[    5.010634]  _regmap_write from regmap_write+0x44/0x68
-[    5.010803]  regmap_write from basic_read_write+0x8c/0x270
-[    5.010980]  basic_read_write from kunit_try_run_case+0x48/0xa0
+Therefore, we add two helper functions, extent_logical_end() and
+pa_logical_end(), to limit the type of end to loff_t, and also convert
+lstart to loff_t for calculation to avoid overflow.
 
-Fixes: 28644c809f44 ("regmap: Add the rbtree cache support")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/all/ee59d128-413c-48ad-a3aa-d9d350c80042@roeck-us.net/
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/58f12a07-5f4b-4a8f-ab84-0a42d1908cb9@moroto.mountain
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/20230724121059.11834-2-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regcache-rbtree.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ext4/mballoc.c |  9 +++------
+ fs/ext4/mballoc.h | 14 ++++++++++++++
+ 2 files changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/base/regmap/regcache-rbtree.c b/drivers/base/regmap/regcache-rbtree.c
-index e9b7ce8c272c6..7353c55270874 100644
---- a/drivers/base/regmap/regcache-rbtree.c
-+++ b/drivers/base/regmap/regcache-rbtree.c
-@@ -291,7 +291,7 @@ static int regcache_rbtree_insert_to_block(struct regmap *map,
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index a197ef71b7b02..627c813cf0759 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4433,7 +4433,7 @@ ext4_mb_normalize_request(struct ext4_allocation_context *ac,
  
- 	blk = krealloc(rbnode->block,
- 		       blklen * map->cache_word_size,
--		       GFP_KERNEL);
-+		       map->alloc_flags);
- 	if (!blk)
- 		return -ENOMEM;
+ 	/* first, let's learn actual file size
+ 	 * given current request is allocated */
+-	size = ac->ac_o_ex.fe_logical + EXT4_C2B(sbi, ac->ac_o_ex.fe_len);
++	size = extent_logical_end(sbi, &ac->ac_o_ex);
+ 	size = size << bsbits;
+ 	if (size < i_size_read(ac->ac_inode))
+ 		size = i_size_read(ac->ac_inode);
+@@ -4767,7 +4767,6 @@ ext4_mb_use_preallocated(struct ext4_allocation_context *ac)
+ 	struct ext4_inode_info *ei = EXT4_I(ac->ac_inode);
+ 	struct ext4_locality_group *lg;
+ 	struct ext4_prealloc_space *tmp_pa = NULL, *cpa = NULL;
+-	loff_t tmp_pa_end;
+ 	struct rb_node *iter;
+ 	ext4_fsblk_t goal_block;
  
-@@ -300,7 +300,7 @@ static int regcache_rbtree_insert_to_block(struct regmap *map,
- 	if (BITS_TO_LONGS(blklen) > BITS_TO_LONGS(rbnode->blklen)) {
- 		present = krealloc(rbnode->cache_present,
- 				   BITS_TO_LONGS(blklen) * sizeof(*present),
--				   GFP_KERNEL);
-+				   map->alloc_flags);
- 		if (!present)
- 			return -ENOMEM;
- 
-@@ -334,7 +334,7 @@ regcache_rbtree_node_alloc(struct regmap *map, unsigned int reg)
- 	const struct regmap_range *range;
- 	int i;
- 
--	rbnode = kzalloc(sizeof(*rbnode), GFP_KERNEL);
-+	rbnode = kzalloc(sizeof(*rbnode), map->alloc_flags);
- 	if (!rbnode)
- 		return NULL;
- 
-@@ -360,13 +360,13 @@ regcache_rbtree_node_alloc(struct regmap *map, unsigned int reg)
+@@ -4863,9 +4862,7 @@ ext4_mb_use_preallocated(struct ext4_allocation_context *ac)
+ 	 * pa can possibly satisfy the request hence check if it overlaps
+ 	 * original logical start and stop searching if it doesn't.
+ 	 */
+-	tmp_pa_end = (loff_t)tmp_pa->pa_lstart + EXT4_C2B(sbi, tmp_pa->pa_len);
+-
+-	if (ac->ac_o_ex.fe_logical >= tmp_pa_end) {
++	if (ac->ac_o_ex.fe_logical >= pa_logical_end(sbi, tmp_pa)) {
+ 		spin_unlock(&tmp_pa->pa_lock);
+ 		goto try_group_pa;
  	}
+@@ -5770,7 +5767,7 @@ static void ext4_mb_group_or_file(struct ext4_allocation_context *ac)
  
- 	rbnode->block = kmalloc_array(rbnode->blklen, map->cache_word_size,
--				      GFP_KERNEL);
-+				      map->alloc_flags);
- 	if (!rbnode->block)
- 		goto err_free;
+ 	group_pa_eligible = sbi->s_mb_group_prealloc > 0;
+ 	inode_pa_eligible = true;
+-	size = ac->ac_o_ex.fe_logical + EXT4_C2B(sbi, ac->ac_o_ex.fe_len);
++	size = extent_logical_end(sbi, &ac->ac_o_ex);
+ 	isize = (i_size_read(ac->ac_inode) + ac->ac_sb->s_blocksize - 1)
+ 		>> bsbits;
  
- 	rbnode->cache_present = kcalloc(BITS_TO_LONGS(rbnode->blklen),
- 					sizeof(*rbnode->cache_present),
--					GFP_KERNEL);
-+					map->alloc_flags);
- 	if (!rbnode->cache_present)
- 		goto err_free_block;
+diff --git a/fs/ext4/mballoc.h b/fs/ext4/mballoc.h
+index df6b5e7c22741..d7aeb5da7d867 100644
+--- a/fs/ext4/mballoc.h
++++ b/fs/ext4/mballoc.h
+@@ -233,6 +233,20 @@ static inline ext4_fsblk_t ext4_grp_offs_to_block(struct super_block *sb,
+ 		(fex->fe_start << EXT4_SB(sb)->s_cluster_bits);
+ }
  
++static inline loff_t extent_logical_end(struct ext4_sb_info *sbi,
++					struct ext4_free_extent *fex)
++{
++	/* Use loff_t to avoid end exceeding ext4_lblk_t max. */
++	return (loff_t)fex->fe_logical + EXT4_C2B(sbi, fex->fe_len);
++}
++
++static inline loff_t pa_logical_end(struct ext4_sb_info *sbi,
++				    struct ext4_prealloc_space *pa)
++{
++	/* Use loff_t to avoid end exceeding ext4_lblk_t max. */
++	return (loff_t)pa->pa_lstart + EXT4_C2B(sbi, pa->pa_len);
++}
++
+ typedef int (*ext4_mballoc_query_range_fn)(
+ 	struct super_block		*sb,
+ 	ext4_group_t			agno,
 -- 
 2.40.1
 
