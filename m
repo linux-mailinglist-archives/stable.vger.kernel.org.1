@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05DE27A807E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6798B7A7E15
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235982AbjITMhi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:37:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49898 "EHLO
+        id S235450AbjITMPb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235978AbjITMhg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:36 -0400
+        with ESMTP id S235802AbjITMPN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2392DB6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FCDC433C7;
-        Wed, 20 Sep 2023 12:37:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA641C2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0B8C433C7;
+        Wed, 20 Sep 2023 12:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213449;
-        bh=Kefqz6l+qkwVFjeSl1f57tNLdR2/g9pRtGEaKFKuqWo=;
+        s=korg; t=1695212106;
+        bh=bQNlHx0SGgWoX0EUDtzTOe3nyKT+4cgtIqiFmdtLVfM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pQvcF7NSc2bHe/0kpW3ZhmY+ZzLKmcuM0QklFEdtUE1QLJpnFtm3m6CaPAogzvPDN
-         xrrsJ1ck+otz/WUQtn5TrCzlB6GNM5dO7qGobAWnJfzoHwE5rOFye6/TWkJDf2wlRr
-         gqmrXwlXU8rPC5mdNHBINkG/r8hrcCROuN+72lUg=
+        b=dobAB14CQYwuTBesaSCrI0lmCZKl9X4LIDaj6pHFeIGYZyE16OuzEf97WKlTZ+M2O
+         5IyM9k0+DbFeOzfnjEM1XJTEGSqunX3x2wSle93nHzpiNTGC4Ky8HxYz9sLSHNXP1L
+         aJEJ3WvE0yehG1YjB0uys2spdezpUKk/CHENzSDQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 5.4 215/367] backlight/bd6107: Compare against struct fb_info.device
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 152/273] media: ov2680: Fix vflip / hflip set functions
 Date:   Wed, 20 Sep 2023 13:29:52 +0200
-Message-ID: <20230920112904.167331544@linuxfoundation.org>
+Message-ID: <20230920112851.234153008@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,52 +54,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 992bdddaabfba19bdc77c1c7a4977b2aa41ec891 upstream.
+[ Upstream commit d5d08ad330c9ccebc5e066fda815423a290f48b0 ]
 
-Struct bd6107_platform_data refers to a platform device within
-the Linux device hierarchy. The test in bd6107_backlight_check_fb()
-compares it against the fbdev device in struct fb_info.dev, which
-is different. Fix the test by comparing to struct fb_info.device.
+ov2680_vflip_disable() / ov2680_hflip_disable() pass BIT(0) instead of
+0 as value to ov2680_mod_reg().
 
-Fixes a bug in the backlight driver and prepares fbdev for making
-struct fb_info.dev optional.
+While fixing this also:
 
-v2:
-	* move renames into separate patch (Javier, Sam, Michael)
+1. Stop having separate enable/disable functions for hflip / vflip
+2. Move the is_streaming check, which is unique to hflip / vflip
+   into the ov2680_set_?flip() functions.
 
-Fixes: 67b43e590415 ("backlight: Add ROHM BD6107 backlight driver")
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.12+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-2-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+for a nice code cleanup.
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/bd6107.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ov2680.c | 50 +++++++++-----------------------------
+ 1 file changed, 12 insertions(+), 38 deletions(-)
 
---- a/drivers/video/backlight/bd6107.c
-+++ b/drivers/video/backlight/bd6107.c
-@@ -107,7 +107,7 @@ static int bd6107_backlight_check_fb(str
- {
- 	struct bd6107 *bd = bl_get_data(backlight);
- 
--	return bd->pdata->fbdev == NULL || bd->pdata->fbdev == info->dev;
-+	return bd->pdata->fbdev == NULL || bd->pdata->fbdev == info->device;
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 96513c86c8f66..142c6c1721649 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -328,23 +328,15 @@ static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
+ 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
  }
  
- static const struct backlight_ops bd6107_backlight_ops = {
+-static int ov2680_vflip_enable(struct ov2680_dev *sensor)
++static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
+ {
+ 	int ret;
+ 
+-	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1, BIT(2), BIT(2));
+-	if (ret < 0)
+-		return ret;
+-
+-	ov2680_set_bayer_order(sensor);
+-	return 0;
+-}
+-
+-static int ov2680_vflip_disable(struct ov2680_dev *sensor)
+-{
+-	int ret;
++	if (sensor->is_streaming)
++		return -EBUSY;
+ 
+-	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1, BIT(2), BIT(0));
++	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1,
++			     BIT(2), val ? BIT(2) : 0);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -352,23 +344,15 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
+ 	return 0;
+ }
+ 
+-static int ov2680_hflip_enable(struct ov2680_dev *sensor)
++static int ov2680_set_hflip(struct ov2680_dev *sensor, s32 val)
+ {
+ 	int ret;
+ 
+-	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2, BIT(2), BIT(2));
+-	if (ret < 0)
+-		return ret;
+-
+-	ov2680_set_bayer_order(sensor);
+-	return 0;
+-}
+-
+-static int ov2680_hflip_disable(struct ov2680_dev *sensor)
+-{
+-	int ret;
++	if (sensor->is_streaming)
++		return -EBUSY;
+ 
+-	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2, BIT(2), BIT(0));
++	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2,
++			     BIT(2), val ? BIT(2) : 0);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -724,19 +708,9 @@ static int ov2680_s_ctrl(struct v4l2_ctrl *ctrl)
+ 	case V4L2_CID_EXPOSURE:
+ 		return ov2680_exposure_set(sensor, ctrl->val);
+ 	case V4L2_CID_VFLIP:
+-		if (sensor->is_streaming)
+-			return -EBUSY;
+-		if (ctrl->val)
+-			return ov2680_vflip_enable(sensor);
+-		else
+-			return ov2680_vflip_disable(sensor);
++		return ov2680_set_vflip(sensor, ctrl->val);
+ 	case V4L2_CID_HFLIP:
+-		if (sensor->is_streaming)
+-			return -EBUSY;
+-		if (ctrl->val)
+-			return ov2680_hflip_enable(sensor);
+-		else
+-			return ov2680_hflip_disable(sensor);
++		return ov2680_set_hflip(sensor, ctrl->val);
+ 	case V4L2_CID_TEST_PATTERN:
+ 		return ov2680_test_pattern_set(sensor, ctrl->val);
+ 	default:
+-- 
+2.40.1
+
 
 
