@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 294557A8023
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E8A17A7DFD
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236177AbjITMdW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:33:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55390 "EHLO
+        id S235200AbjITMOT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:14:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236153AbjITMdW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:33:22 -0400
+        with ESMTP id S235534AbjITMOS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF9E7D8
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:33:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6D2C433C9;
-        Wed, 20 Sep 2023 12:33:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C806E9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88582C433D9;
+        Wed, 20 Sep 2023 12:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213192;
-        bh=kjRhf7dVBxObVSXr3Dn6Nsm9bIgeeq92ARZ91psmndQ=;
+        s=korg; t=1695212047;
+        bh=jKTphTkQ8gUMUsLxhGHhGdvRycfalJTHShEqrI2mMJ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sbc0ayKkcpsxtPF1YXKUdzscIYuqpUWEzEudMTRVxnGUCcPiZC+Sj4ygBJlsIVb0s
-         FEBxP88Te4aIW9kgPjla4ID1bgPL8OhDxP9Sg76YagJXzsM53LL+03iajRAukPy6W1
-         psztZAuPYpZUqruGVVGRYa+aA9vJBUOgb+Y99ThM=
+        b=vKaiaIT2EpRrDu66wQb/tuwm5/M/4vm9pfil7nqiu/BrUUjWH9O6SjnYl+bZYpstf
+         UuB3kGp+OFavsgrEf+tcU7voaTOJ4MFFJZbWdJ02kE5PGL9dPV/+EN4qYO7lvVagCF
+         swWGqUNBd+Bm3BkBsnvLRIr6nw06stBG8Nt3VUlA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 195/367] phy/rockchip: inno-hdmi: use correct vco_div_5 macro on rk3328
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 132/273] media: v4l2-core: Fix a potential resource leak in v4l2_fwnode_parse_link()
 Date:   Wed, 20 Sep 2023 13:29:32 +0200
-Message-ID: <20230920112903.679120463@linuxfoundation.org>
+Message-ID: <20230920112850.594845479@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +52,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 644c06dfbd0da713f772abf0a8f8581ac78e6264 ]
+[ Upstream commit d7b13edd4cb4bfa335b6008ab867ac28582d3e5c ]
 
-inno_hdmi_phy_rk3328_clk_set_rate() is using the RK3228 macro
-when configuring vco_div_5 on RK3328.
+If fwnode_graph_get_remote_endpoint() fails, 'fwnode' is known to be NULL,
+so fwnode_handle_put() is a no-op.
 
-Fix this by using correct vco_div_5 macro for RK3328.
+Release the reference taken from a previous fwnode_graph_get_port_parent()
+call instead.
 
-Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20230615171005.2251032-2-jonas@kwiboo.se
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Also handle fwnode_graph_get_port_parent() failures.
+
+In order to fix these issues, add an error handling path to the function
+and the needed gotos.
+
+Fixes: ca50c197bd96 ("[media] v4l: fwnode: Support generic fwnode for parsing standardised properties")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/v4l2-core/v4l2-fwnode.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-index 9ca20c947283d..b0ac1d3ee3905 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-@@ -790,8 +790,8 @@ static int inno_hdmi_phy_rk3328_clk_set_rate(struct clk_hw *hw,
- 			 RK3328_PRE_PLL_POWER_DOWN);
+diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
+index 14530fddbef47..95079229a772b 100644
+--- a/drivers/media/v4l2-core/v4l2-fwnode.c
++++ b/drivers/media/v4l2-core/v4l2-fwnode.c
+@@ -289,18 +289,28 @@ int v4l2_fwnode_parse_link(struct fwnode_handle *fwnode,
+ 	fwnode_graph_parse_endpoint(fwnode, &fwep);
+ 	link->local_port = fwep.port;
+ 	link->local_node = fwnode_graph_get_port_parent(fwnode);
++	if (!link->local_node)
++		return -ENOLINK;
  
- 	/* Configure pre-pll */
--	inno_update_bits(inno, 0xa0, RK3228_PCLK_VCO_DIV_5_MASK,
--			 RK3228_PCLK_VCO_DIV_5(cfg->vco_div_5_en));
-+	inno_update_bits(inno, 0xa0, RK3328_PCLK_VCO_DIV_5_MASK,
-+			 RK3328_PCLK_VCO_DIV_5(cfg->vco_div_5_en));
- 	inno_write(inno, 0xa1, RK3328_PRE_PLL_PRE_DIV(cfg->prediv));
+ 	fwnode = fwnode_graph_get_remote_endpoint(fwnode);
+-	if (!fwnode) {
+-		fwnode_handle_put(fwnode);
+-		return -ENOLINK;
+-	}
++	if (!fwnode)
++		goto err_put_local_node;
  
- 	val = RK3328_SPREAD_SPECTRUM_MOD_DISABLE;
+ 	fwnode_graph_parse_endpoint(fwnode, &fwep);
+ 	link->remote_port = fwep.port;
+ 	link->remote_node = fwnode_graph_get_port_parent(fwnode);
++	if (!link->remote_node)
++		goto err_put_remote_endpoint;
+ 
+ 	return 0;
++
++err_put_remote_endpoint:
++	fwnode_handle_put(fwnode);
++
++err_put_local_node:
++	fwnode_handle_put(link->local_node);
++
++	return -ENOLINK;
+ }
+ EXPORT_SYMBOL_GPL(v4l2_fwnode_parse_link);
+ 
 -- 
 2.40.1
 
