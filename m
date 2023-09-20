@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 328807A7AA7
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A3087A7AAB
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:44:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234556AbjITLob (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:44:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50076 "EHLO
+        id S234465AbjITLoz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:44:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234512AbjITLoS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:44:18 -0400
+        with ESMTP id S234471AbjITLoz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:44:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DFFDB4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:44:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52BBC433D9;
-        Wed, 20 Sep 2023 11:44:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6864F2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:44:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B0FC433C8;
+        Wed, 20 Sep 2023 11:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210252;
-        bh=YxRkl49tVAJaZ/gx+qRy2ggAaixFGB38AwGWXMq7XfQ=;
+        s=korg; t=1695210287;
+        bh=vEn0YEfMj/eShRok9dUFyD0uq1mnKSjwHcn/uVEClew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d0JaW3htr4Iec/jlTNjGCL2ZO+a/pODeR9kRln1M5GdxYshXEnlBPtYaSwQ89qogd
-         73/zAMAuIREqCQuMa6O/GUrYDbmr3CfeFUP+ytoMgFDFjCvEiCtAuhSrmBGr523qjz
-         dfqgd+4tnGIqVmMCLV74w8EjOW1MOZ30XiHeu5bA=
+        b=gL0JPVYo8+BickPkj/9Ac5KJUgmA04jhzuvurcRGxmAZxfLKNxcCkpoKGXMq8n8EN
+         xg2v55aVI5lha+OadBq+Vt5Jjq9yy42L9vhidMcVwDDgoW1Wbq+pkKm1XhtLIkNc51
+         uFiIXSWtpg9Qw3gOgkJSKgQ9vivJzlvstWnQpog8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        Zhangjin Wu <falcon@tinylab.org>, Willy Tarreau <w@1wt.eu>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 020/211] selftests/nolibc: fix up kernel parameters support
-Date:   Wed, 20 Sep 2023 13:27:44 +0200
-Message-ID: <20230920112846.434056704@linuxfoundation.org>
+        Willy Tarreau <w@1wt.eu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 021/211] selftests/nolibc: prevent out of bounds access in expect_vfprintf
+Date:   Wed, 20 Sep 2023 13:27:45 +0200
+Message-ID: <20230920112846.462961982@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
 References: <20230920112845.859868994@linuxfoundation.org>
@@ -56,100 +55,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zhangjin Wu <falcon@tinylab.org>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit c388c9920da2679f62bec48d00ca9e80e9d0a364 ]
+[ Upstream commit 9c5e490093e83e165022e0311bd7df5aa06cc860 ]
 
-kernel parameters allow pass two types of strings, one type is like
-'noapic', another type is like 'panic=5', the first type is passed as
-arguments of the init program, the second type is passed as environment
-variables of the init program.
+If read() fails and returns -1 (or returns garbage for some other
+reason) buf would be accessed out of bounds.
+Only use the return value of read() after it has been validated.
 
-when users pass kernel parameters like this:
-
-    noapic NOLIBC_TEST=syscall
-
-our nolibc-test program will use the test setting from argv[1] and
-ignore the one from NOLIBC_TEST environment variable, and at last, it
-will print the following line and ignore the whole test setting.
-
-    Ignoring unknown test name 'noapic'
-
-reversing the parsing order does solve the above issue:
-
-    test = getenv("NOLIBC_TEST");
-    if (test)
-        test = argv[1];
-
-but it still doesn't work with such kernel parameters (without
-NOLIBC_TEST environment variable):
-
-    noapic FOO=bar
-
-To support all of the potential kernel parameters, let's verify the test
-setting from both of argv[1] and NOLIBC_TEST environment variable.
-
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Zhangjin Wu <falcon@tinylab.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Willy Tarreau <w@1wt.eu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/nolibc/nolibc-test.c | 33 ++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ tools/testing/selftests/nolibc/nolibc-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
-index 486334981e601..55628a25df0a3 100644
+index 55628a25df0a3..8e7750e2eb97c 100644
 --- a/tools/testing/selftests/nolibc/nolibc-test.c
 +++ b/tools/testing/selftests/nolibc/nolibc-test.c
-@@ -939,6 +939,35 @@ static const struct test test_names[] = {
- 	{ 0 }
- };
+@@ -769,7 +769,6 @@ static int expect_vfprintf(int llen, size_t c, const char *expected, const char
+ 	lseek(fd, 0, SEEK_SET);
  
-+int is_setting_valid(char *test)
-+{
-+	int idx, len, test_len, valid = 0;
-+	char delimiter;
-+
-+	if (!test)
-+		return valid;
-+
-+	test_len = strlen(test);
-+
-+	for (idx = 0; test_names[idx].name; idx++) {
-+		len = strlen(test_names[idx].name);
-+		if (test_len < len)
-+			continue;
-+
-+		if (strncmp(test, test_names[idx].name, len) != 0)
-+			continue;
-+
-+		delimiter = test[len];
-+		if (delimiter != ':' && delimiter != ',' && delimiter != '\0')
-+			continue;
-+
-+		valid = 1;
-+		break;
-+	}
-+
-+	return valid;
-+}
-+
- int main(int argc, char **argv, char **envp)
- {
- 	int min = 0;
-@@ -964,10 +993,10 @@ int main(int argc, char **argv, char **envp)
- 	 *    syscall:5-15[:.*],stdlib:8-10
- 	 */
- 	test = argv[1];
--	if (!test)
-+	if (!is_setting_valid(test))
- 		test = getenv("NOLIBC_TEST");
+ 	r = read(fd, buf, sizeof(buf) - 1);
+-	buf[r] = '\0';
  
--	if (test) {
-+	if (is_setting_valid(test)) {
- 		char *comma, *colon, *dash, *value;
+ 	fclose(memfile);
  
- 		do {
+@@ -779,6 +778,7 @@ static int expect_vfprintf(int llen, size_t c, const char *expected, const char
+ 		return 1;
+ 	}
+ 
++	buf[r] = '\0';
+ 	llen += printf(" \"%s\" = \"%s\"", expected, buf);
+ 	ret = strncmp(expected, buf, c);
+ 
 -- 
 2.40.1
 
