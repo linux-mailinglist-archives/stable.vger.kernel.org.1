@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B83DB7A7EA5
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E48F37A7EF4
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235613AbjITMTc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:19:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37848 "EHLO
+        id S234639AbjITMWT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:22:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235653AbjITMT0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:26 -0400
+        with ESMTP id S234556AbjITMWT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ACA2181
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5699FC433C7;
-        Wed, 20 Sep 2023 12:19:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A12E6CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FD2C433C8;
+        Wed, 20 Sep 2023 12:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212358;
-        bh=Z/mbSunyyOSU9ikNxPAdMMnDA/SoqyUCEVJjJbnzp1Y=;
+        s=korg; t=1695212533;
+        bh=Ua0PXi0SYMzmWuM6BMWU7y6Gv31JCxCEAQJen1JRBCs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NwRejVpNzn0CuiMcIT9X95CYiGz3Cxt10+VqaD/6IMZNRAo31y3/gpeuMftGfCDfx
-         jD0u5kJBRXvD059EMnUWs60gn9H63AiK7J4SYSZvLiKmrnfxl/wAH+kkzEI8YPBLKZ
-         vYXIm3hkqpLxu4524bLUjhsIbUgqLGNwKV2jB6TE=
+        b=MQAfltHIzunon4GF+KZWtxmKMvaXC6JC9TGs5IHrfTx2bx3w6XUZFaFTAilB8idre
+         O1BjbD9J+l0D0MA9bNy4RO/RiqRfU9q6MoYrlsc4vBmzJAYVIn7TeOfaildECkcdu3
+         idkd8U7v0CUvejJJZoU8twjrDy28Q0/zfOrlR7sc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Inki Dae <inki.dae@samsung.com>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 247/273] drm/exynos: fix a possible null-pointer dereference due to data race in exynos_drm_crtc_atomic_disable()
+Subject: [PATCH 5.10 37/83] media: dw2102: Fix null-ptr-deref in dw2102_i2c_transfer()
 Date:   Wed, 20 Sep 2023 13:31:27 +0200
-Message-ID: <20230920112853.948873163@linuxfoundation.org>
+Message-ID: <20230920112828.138334864@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +50,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 2e63972a2de14482d0eae1a03a73e379f1c3f44c ]
+[ Upstream commit 5ae544d94abc8ff77b1b9bf8774def3fa5689b5b ]
 
-The variable crtc->state->event is often protected by the lock
-crtc->dev->event_lock when is accessed. However, it is accessed as a
-condition of an if statement in exynos_drm_crtc_atomic_disable() without
-holding the lock:
+In dw2102_i2c_transfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach dw2102_i2c_transfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-  if (crtc->state->event && !crtc->state->active)
+Similar commit:
+commit 950e252cb469
+("[media] dw2102: limit messages to buffer size")
 
-However, if crtc->state->event is changed to NULL by another thread right
-after the conditions of the if statement is checked to be true, a
-null-pointer dereference can occur in drm_crtc_send_vblank_event():
-
-  e->pipe = pipe;
-
-To fix this possible null-pointer dereference caused by data race, the
-spin lock coverage is extended to protect the if statement as well as the
-function call to drm_crtc_send_vblank_event().
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Link: https://sites.google.com/view/basscheck/home
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Added relevant link.
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_crtc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/media/usb/dvb-usb/dw2102.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_crtc.c b/drivers/gpu/drm/exynos/exynos_drm_crtc.c
-index 2696289ecc78f..b3e23ace5869c 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_crtc.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_crtc.c
-@@ -43,13 +43,12 @@ static void exynos_drm_crtc_atomic_disable(struct drm_crtc *crtc,
- 	if (exynos_crtc->ops->disable)
- 		exynos_crtc->ops->disable(exynos_crtc);
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index 3c4ac998d040f..2290f132a82c8 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -128,6 +128,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
  
-+	spin_lock_irq(&crtc->dev->event_lock);
- 	if (crtc->state->event && !crtc->state->active) {
--		spin_lock_irq(&crtc->dev->event_lock);
- 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
--		spin_unlock_irq(&crtc->dev->event_lock);
--
- 		crtc->state->event = NULL;
- 	}
-+	spin_unlock_irq(&crtc->dev->event_lock);
- }
- 
- static int exynos_crtc_atomic_check(struct drm_crtc *crtc,
+ 	switch (num) {
+ 	case 2:
++		if (msg[0].len < 1) {
++			num = -EOPNOTSUPP;
++			break;
++		}
+ 		/* read stv0299 register */
+ 		value = msg[0].buf[0];/* register */
+ 		for (i = 0; i < msg[1].len; i++) {
+@@ -139,6 +143,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 	case 1:
+ 		switch (msg[0].addr) {
+ 		case 0x68:
++			if (msg[0].len < 2) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			/* write to stv0299 register */
+ 			buf6[0] = 0x2a;
+ 			buf6[1] = msg[0].buf[0];
+@@ -148,6 +156,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			break;
+ 		case 0x60:
+ 			if (msg[0].flags == 0) {
++				if (msg[0].len < 4) {
++					num = -EOPNOTSUPP;
++					break;
++				}
+ 			/* write to tuner pll */
+ 				buf6[0] = 0x2c;
+ 				buf6[1] = 5;
+@@ -159,6 +171,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 				dw210x_op_rw(d->udev, 0xb2, 0, 0,
+ 						buf6, 7, DW210X_WRITE_MSG);
+ 			} else {
++				if (msg[0].len < 1) {
++					num = -EOPNOTSUPP;
++					break;
++				}
+ 			/* read from tuner */
+ 				dw210x_op_rw(d->udev, 0xb5, 0, 0,
+ 						buf6, 1, DW210X_READ_MSG);
+@@ -166,12 +182,20 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			}
+ 			break;
+ 		case (DW2102_RC_QUERY):
++			if (msg[0].len < 2) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			dw210x_op_rw(d->udev, 0xb8, 0, 0,
+ 					buf6, 2, DW210X_READ_MSG);
+ 			msg[0].buf[0] = buf6[0];
+ 			msg[0].buf[1] = buf6[1];
+ 			break;
+ 		case (DW2102_VOLTAGE_CTRL):
++			if (msg[0].len < 1) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			buf6[0] = 0x30;
+ 			buf6[1] = msg[0].buf[0];
+ 			dw210x_op_rw(d->udev, 0xb2, 0, 0,
 -- 
 2.40.1
 
