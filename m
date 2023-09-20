@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 817647A7F43
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED2947A7F45
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:25:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234609AbjITMZu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57254 "EHLO
+        id S235956AbjITMZy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:25:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235887AbjITMZq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:25:46 -0400
+        with ESMTP id S235915AbjITMZs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:25:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 478A0F5
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:25:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C21C433C9;
-        Wed, 20 Sep 2023 12:25:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CF9012D
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:25:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72C8C433C8;
+        Wed, 20 Sep 2023 12:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212730;
-        bh=t77G2dfyg9kV3fgASqwwzpLYY8wjdzMtD+3ifdtIOik=;
+        s=korg; t=1695212736;
+        bh=QMipyxAv8nVB+R6nveI0/OwK6SaTYzEkObwCZe9E8Xg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A3D0JqEp3EJRVG5/LVjety5d7SCLrGknU+wu9K8Zz6a4UTyjy+0bfbmsuTOwkilbh
-         c70XGm/4PG7lsl1LxIfVhoUbYHb7hHhPMhYvrg6B5jbyQSUkNi0xjzci2Glsyb4onK
-         xLmQY5AQ+H/39MMKKF6K8TZ34bWkuIIeapASbFdc=
+        b=BeeReAUSWk2gRaZHKwpSr1+TV2F9X58Mo9/QGFDShzwYjjna7XGccUKJyfKwbanTK
+         7MZH09yn1PQ1S/yc/dnTlx4sIvRQBpMgStWBUxxqn2FHNhlAGNEviWttMa7mmFbt4m
+         ENk5y6vfPlexJnfGbW3rqVdMRKfhS92XdstCGW90=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Rothwell <sfr@canb.auug.org.au>,
-        Winston Wen <wentao@uniontech.com>,
-        Paulo Alcantara <pc@manguebit.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Edgar <ljijcj@163.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 026/367] fs/nls: make load_nls() take a const parameter
-Date:   Wed, 20 Sep 2023 13:26:43 +0200
-Message-ID: <20230920112859.197455931@linuxfoundation.org>
+Subject: [PATCH 5.4 027/367] ASoc: codecs: ES8316: Fix DMIC config
+Date:   Wed, 20 Sep 2023 13:26:44 +0200
+Message-ID: <20230920112859.223283343@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
 References: <20230920112858.471730572@linuxfoundation.org>
@@ -57,64 +54,34 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Winston Wen <wentao@uniontech.com>
+From: Edgar <ljijcj@163.com>
 
-[ Upstream commit c1ed39ec116272935528ca9b348b8ee79b0791da ]
+[ Upstream commit d20d35d1ad62c6cca36368c1e8f29335a068659e ]
 
-load_nls() take a char * parameter, use it to find nls module in list or
-construct the module name to load it.
+According to the datasheet, the DMIC config should
+be changed to { 0, 2 ,3 }
 
-This change make load_nls() take a const parameter, so we don't need do
-some cast like this:
-
-        ses->local_nls = load_nls((char *)ctx->local_nls->charset);
-
-Suggested-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Winston Wen <wentao@uniontech.com>
-Reviewed-by: Paulo Alcantara <pc@manguebit.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Edgar <ljijcj@163.com>
+Link: https://lore.kernel.org/r/20230719054722.401954-1-ljijcj@163.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nls/nls_base.c   | 4 ++--
- include/linux/nls.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/codecs/es8316.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
-index 52ccd34b1e792..a026dbd3593f6 100644
---- a/fs/nls/nls_base.c
-+++ b/fs/nls/nls_base.c
-@@ -272,7 +272,7 @@ int unregister_nls(struct nls_table * nls)
- 	return -EINVAL;
- }
- 
--static struct nls_table *find_nls(char *charset)
-+static struct nls_table *find_nls(const char *charset)
- {
- 	struct nls_table *nls;
- 	spin_lock(&nls_lock);
-@@ -288,7 +288,7 @@ static struct nls_table *find_nls(char *charset)
- 	return nls;
- }
- 
--struct nls_table *load_nls(char *charset)
-+struct nls_table *load_nls(const char *charset)
- {
- 	return try_then_request_module(find_nls(charset), "nls_%s", charset);
- }
-diff --git a/include/linux/nls.h b/include/linux/nls.h
-index 499e486b3722d..e0bf8367b274a 100644
---- a/include/linux/nls.h
-+++ b/include/linux/nls.h
-@@ -47,7 +47,7 @@ enum utf16_endian {
- /* nls_base.c */
- extern int __register_nls(struct nls_table *, struct module *);
- extern int unregister_nls(struct nls_table *);
--extern struct nls_table *load_nls(char *);
-+extern struct nls_table *load_nls(const char *charset);
- extern void unload_nls(struct nls_table *);
- extern struct nls_table *load_nls_default(void);
- #define register_nls(nls) __register_nls((nls), THIS_MODULE)
+diff --git a/sound/soc/codecs/es8316.c b/sound/soc/codecs/es8316.c
+index 131f41cccbe65..dd2df9a903e05 100644
+--- a/sound/soc/codecs/es8316.c
++++ b/sound/soc/codecs/es8316.c
+@@ -153,7 +153,7 @@ static const char * const es8316_dmic_txt[] = {
+ 		"dmic data at high level",
+ 		"dmic data at low level",
+ };
+-static const unsigned int es8316_dmic_values[] = { 0, 1, 2 };
++static const unsigned int es8316_dmic_values[] = { 0, 2, 3 };
+ static const struct soc_enum es8316_dmic_src_enum =
+ 	SOC_VALUE_ENUM_SINGLE(ES8316_ADC_DMIC, 0, 3,
+ 			      ARRAY_SIZE(es8316_dmic_txt),
 -- 
 2.40.1
 
