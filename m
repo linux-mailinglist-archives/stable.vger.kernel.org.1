@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EFB07A8069
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F282B7A7E6C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235842AbjITMhH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:37:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36222 "EHLO
+        id S235564AbjITMRx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:17:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235919AbjITMhG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:06 -0400
+        with ESMTP id S235565AbjITMRw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D96C9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48556C433C7;
-        Wed, 20 Sep 2023 12:36:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D6B110
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CC3C433AB;
+        Wed, 20 Sep 2023 12:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213419;
-        bh=v2MRB6lIuZRk/F9zYpN2gv99kduxAQWXkynPb8zDt/U=;
+        s=korg; t=1695212255;
+        bh=7hJ5yK9X51tnUCh3ItGKKsZ0kaguA29sI6Fxn2R70Lc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xGCW9rIPKPOWm3VUZCP/ODin2IiJHnKTD2lvW7EIRVvHOqAjo9rw0cT7GqXLtFi7W
-         UaMHjo9RKowGJlavxDAdrQ/xsjXCne5xdU7QtLKPFXHWNG/0pYtIxbfBqrSJeARC71
-         wfxMZEqanme3jCpVkjXlF5HrLa3bBM+bNeUD79hM=
+        b=cAr66AwGFmwqY4jHbnY2Onz9BMZKjB4Vs9J/Yy1HaMBOo+ZeBkpN/Z0Bs50mOr3+v
+         +zjRCXDZCUU12z+Vh2TZgMjY6g8XJoNGAItXGeIpwpu1V7yI6j0W44iBxrUAZYuvnC
+         lNt88RUR/y04G3D7yIO7qdZk5dLVbZ5FA+lctDMk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunlong Xing <yunlong.xing@unisoc.com>,
-        Enlin Mu <enlin.mu@unisoc.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.4 230/367] pstore/ram: Check start of empty przs during init
+        patches@lists.linux.dev, Wander Lairson Costa <wander@redhat.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 167/273] netfilter: xt_u32: validate user space input
 Date:   Wed, 20 Sep 2023 13:30:07 +0200
-Message-ID: <20230920112904.536229685@linuxfoundation.org>
+Message-ID: <20230920112851.683360050@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +49,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Enlin Mu <enlin.mu@unisoc.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-commit fe8c3623ab06603eb760444a032d426542212021 upstream.
+commit 69c5d284f67089b4750d28ff6ac6f52ec224b330 upstream.
 
-After commit 30696378f68a ("pstore/ram: Do not treat empty buffers as
-valid"), initialization would assume a prz was valid after seeing that
-the buffer_size is zero (regardless of the buffer start position). This
-unchecked start value means it could be outside the bounds of the buffer,
-leading to future access panics when written to:
+The xt_u32 module doesn't validate the fields in the xt_u32 structure.
+An attacker may take advantage of this to trigger an OOB read by setting
+the size fields with a value beyond the arrays boundaries.
 
- sysdump_panic_event+0x3b4/0x5b8
- atomic_notifier_call_chain+0x54/0x90
- panic+0x1c8/0x42c
- die+0x29c/0x2a8
- die_kernel_fault+0x68/0x78
- __do_kernel_fault+0x1c4/0x1e0
- do_bad_area+0x40/0x100
- do_translation_fault+0x68/0x80
- do_mem_abort+0x68/0xf8
- el1_da+0x1c/0xc0
- __raw_writeb+0x38/0x174
- __memcpy_toio+0x40/0xac
- persistent_ram_update+0x44/0x12c
- persistent_ram_write+0x1a8/0x1b8
- ramoops_pstore_write+0x198/0x1e8
- pstore_console_write+0x94/0xe0
- ...
+Add a checkentry function to validate the structure.
 
-To avoid this, also check if the prz start is 0 during the initialization
-phase. If not, the next prz sanity check case will discover it (start >
-size) and zap the buffer back to a sane state.
+This was originally reported by the ZDI project (ZDI-CAN-18408).
 
-Fixes: 30696378f68a ("pstore/ram: Do not treat empty buffers as valid")
-Cc: Yunlong Xing <yunlong.xing@unisoc.com>
+Fixes: 1b50b8a371e9 ("[NETFILTER]: Add u32 match")
 Cc: stable@vger.kernel.org
-Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
-Link: https://lore.kernel.org/r/20230801060432.1307717-1-yunlong.xing@unisoc.com
-[kees: update commit log with backtrace and clarifications]
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/pstore/ram_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/xt_u32.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/fs/pstore/ram_core.c
-+++ b/fs/pstore/ram_core.c
-@@ -506,7 +506,7 @@ static int persistent_ram_post_init(stru
- 	sig ^= PERSISTENT_RAM_SIG;
+--- a/net/netfilter/xt_u32.c
++++ b/net/netfilter/xt_u32.c
+@@ -95,11 +95,32 @@ static bool u32_mt(const struct sk_buff
+ 	return ret ^ data->invert;
+ }
  
- 	if (prz->buffer->sig == sig) {
--		if (buffer_size(prz) == 0) {
-+		if (buffer_size(prz) == 0 && buffer_start(prz) == 0) {
- 			pr_debug("found existing empty buffer\n");
- 			return 0;
- 		}
++static int u32_mt_checkentry(const struct xt_mtchk_param *par)
++{
++	const struct xt_u32 *data = par->matchinfo;
++	const struct xt_u32_test *ct;
++	unsigned int i;
++
++	if (data->ntests > ARRAY_SIZE(data->tests))
++		return -EINVAL;
++
++	for (i = 0; i < data->ntests; ++i) {
++		ct = &data->tests[i];
++
++		if (ct->nnums > ARRAY_SIZE(ct->location) ||
++		    ct->nvalues > ARRAY_SIZE(ct->value))
++			return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static struct xt_match xt_u32_mt_reg __read_mostly = {
+ 	.name       = "u32",
+ 	.revision   = 0,
+ 	.family     = NFPROTO_UNSPEC,
+ 	.match      = u32_mt,
++	.checkentry = u32_mt_checkentry,
+ 	.matchsize  = sizeof(struct xt_u32),
+ 	.me         = THIS_MODULE,
+ };
 
 
