@@ -2,35 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C6437A7AFA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7D0C7A7AFC
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234614AbjITLsG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:48:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44138 "EHLO
+        id S234609AbjITLsK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:48:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234611AbjITLsF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:05 -0400
+        with ESMTP id S234620AbjITLsJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03EC9B4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:47:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3F3C433C7;
-        Wed, 20 Sep 2023 11:47:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749A6B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B643EC433C8;
+        Wed, 20 Sep 2023 11:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210477;
-        bh=G2cyj+f5ZBqvb31Ig5xT+LYbVFChfyXA/Tn8VP6lXHg=;
+        s=korg; t=1695210483;
+        bh=XpFK2Y8fDDLByprZvMsbmMcssm+siP4qfwuoFyC4eyI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=miIPBFks0NBBzqitPofIXDQ4Fk4oMvAzd2Z5GNoYiVZjtmTP8/vgVkLPCZOivihzV
-         dmhUzsTE4ZiFqGCTfPRSvG6D6YbsX+/rchBvEv5ntLVBjTSpXsNB0PByT0Rby1WKzm
-         V+7ew4m5s/M7VYpLy8Gsya/sdysb+5BwIXxmyUOI=
+        b=A842k3z6p2zknB8EMrRmlXWWG92oiu7Zk7Jxo+D8KWs9niYGZugSZWTnhnV5KU+lv
+         4hBDpmJJmEb0I4ZC7O/6eWx1UVPI8sW/d38SKzhR2SPej9wCJt77o/zNBwAWXFyKcP
+         9SdZ6OtmeK6jOOJDwiiOCUd2tYeQ40PebYcmjPJE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Georg Ottinger <g.ottinger@gmx.at>,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 091/211] ext2: fix datatype of block number in ext2_xattr_set2()
-Date:   Wed, 20 Sep 2023 13:28:55 +0200
-Message-ID: <20230920112848.633373221@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Chengming Zhou <zhouchengming@bytedance.com>,
+        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 092/211] blk-mq: fix tags leak when shrink nr_hw_queues
+Date:   Wed, 20 Sep 2023 13:28:56 +0200
+Message-ID: <20230920112848.668271708@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
 References: <20230920112845.859868994@linuxfoundation.org>
@@ -53,53 +55,53 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Georg Ottinger <g.ottinger@gmx.at>
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-[ Upstream commit e88076348425b7d0491c8c98d8732a7df8de7aa3 ]
+[ Upstream commit e1dd7bc93029024af5688253b0c05181d6e01f8e ]
 
-I run a small server that uses external hard drives for backups. The
-backup software I use uses ext2 filesystems with 4KiB block size and
-the server is running SELinux and therefore relies on xattr. I recently
-upgraded the hard drives from 4TB to 12TB models. I noticed that after
-transferring some TBs I got a filesystem error "Freeing blocks not in
-datazone - block = 18446744071529317386, count = 1" and the backup
-process stopped. Trying to fix the fs with e2fsck resulted in a
-completely corrupted fs. The error probably came from ext2_free_blocks(),
-and because of the large number 18e19 this problem immediately looked
-like some kind of integer overflow. Whereas the 4TB fs was about 1e9
-blocks, the new 12TB is about 3e9 blocks. So, searching the ext2 code,
-I came across the line in fs/ext2/xattr.c:745 where ext2_new_block()
-is called and the resulting block number is stored in the variable block
-as an int datatype. If a block with a block number greater than
-INT32_MAX is returned, this variable overflows and the call to
-sb_getblk() at line fs/ext2/xattr.c:750 fails, then the call to
-ext2_free_blocks() produces the error.
+Although we don't need to realloc set->tags[] when shrink nr_hw_queues,
+we need to free them. Or these tags will be leaked.
 
-Signed-off-by: Georg Ottinger <g.ottinger@gmx.at>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230815100340.22121-1-g.ottinger@gmx.at>
+How to reproduce:
+1. mount -t configfs configfs /mnt
+2. modprobe null_blk nr_devices=0 submit_queues=8
+3. mkdir /mnt/nullb/nullb0
+4. echo 1 > /mnt/nullb/nullb0/power
+5. echo 4 > /mnt/nullb/nullb0/submit_queues
+6. rmdir /mnt/nullb/nullb0
+
+In step 4, will alloc 9 tags (8 submit queues and 1 poll queue), then
+in step 5, new_nr_hw_queues = 5 (4 submit queues and 1 poll queue).
+At last in step 6, only these 5 tags are freed, the other 4 tags leaked.
+
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20230821095602.70742-1-chengming.zhou@linux.dev
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/xattr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ block/blk-mq.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext2/xattr.c b/fs/ext2/xattr.c
-index 8906ba479aafb..89517937d36c4 100644
---- a/fs/ext2/xattr.c
-+++ b/fs/ext2/xattr.c
-@@ -742,10 +742,10 @@ ext2_xattr_set2(struct inode *inode, struct buffer_head *old_bh,
- 			/* We need to allocate a new block */
- 			ext2_fsblk_t goal = ext2_group_first_block_no(sb,
- 						EXT2_I(inode)->i_block_group);
--			int block = ext2_new_block(inode, goal, &error);
-+			ext2_fsblk_t block = ext2_new_block(inode, goal, &error);
- 			if (error)
- 				goto cleanup;
--			ea_idebug(inode, "creating block %d", block);
-+			ea_idebug(inode, "creating block %lu", block);
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 953f08354c8c3..d9b365c2eaa0d 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -4402,9 +4402,13 @@ static int blk_mq_realloc_tag_set_tags(struct blk_mq_tag_set *set,
+ 				       int new_nr_hw_queues)
+ {
+ 	struct blk_mq_tags **new_tags;
++	int i;
  
- 			new_bh = sb_getblk(sb, block);
- 			if (unlikely(!new_bh)) {
+-	if (set->nr_hw_queues >= new_nr_hw_queues)
++	if (set->nr_hw_queues >= new_nr_hw_queues) {
++		for (i = new_nr_hw_queues; i < set->nr_hw_queues; i++)
++			__blk_mq_free_map_and_rqs(set, i);
+ 		goto done;
++	}
+ 
+ 	new_tags = kcalloc_node(new_nr_hw_queues, sizeof(struct blk_mq_tags *),
+ 				GFP_KERNEL, set->numa_node);
 -- 
 2.40.1
 
