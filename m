@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E68E7A8132
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17C467A7F2D
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236195AbjITMnZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:43:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60974 "EHLO
+        id S235732AbjITMZV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:25:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236186AbjITMnY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:43:24 -0400
+        with ESMTP id S235761AbjITMYn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73DD292
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:43:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE6BC433C9;
-        Wed, 20 Sep 2023 12:43:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A15C7C2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD667C433CA;
+        Wed, 20 Sep 2023 12:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213798;
-        bh=N48rDzTnlqEaDTweH4hUG0ojVTy9SHLC9JhAGV2ECEo=;
+        s=korg; t=1695212676;
+        bh=jzhpP30XSgIBnqg07U16Ehs6xb/64DQ8IJsFQz8b3kE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sesODAYmZIFx8lrSJkC0vEG/bc6QgE01f6AP1gJ/OWdny0wMCeRaPoCnjWxGfmAnW
-         WYiJrrg3PJmnWUNQiG3eQ7Csp7wqZGpswUSpnUT4JQDo8M+6hASWCmsN+Gynsz0bEe
-         p600m0TnDaN4JPRBflIkhVLjKdUHji72AdDNQ+b8=
+        b=nHQkL2WuslUzq9SAGMg5m+V6ZLKBwjnaME5TKn91n66yi3qYv0r7USZh2SGu8R3uq
+         P5FxXHUo3LTkvsahukD2929+UsivLEIwc+HuvIzx3ap7eoGWMKe/UhSOYvWUl8j0Yq
+         4f+RhZoiwmzzSOiifVHyJUz8usriSeH6elu8rflk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nigel Croxon <ncroxon@redhat.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 355/367] md/raid1: fix error: ISO C90 forbids mixed declarations
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Jack Wang <jinpu.wang@ionos.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 82/83] scsi: pm8001: Setup IRQs on resume
 Date:   Wed, 20 Sep 2023 13:32:12 +0200
-Message-ID: <20230920112907.676377521@linuxfoundation.org>
+Message-ID: <20230920112829.908076082@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,55 +50,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nigel Croxon <ncroxon@redhat.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit df203da47f4428bc286fc99318936416253a321c ]
+commit c91774818b041ed290df29fb1dc0725be9b12e83 upstream.
 
-There is a compile error when this commit is added:
-md: raid1: fix potential OOB in raid1_remove_disk()
+The function pm8001_pci_resume() only calls pm8001_request_irq() without
+calling pm8001_setup_irq(). This causes the IRQ allocation to fail, which
+leads all drives being removed from the system.
 
-drivers/md/raid1.c: In function 'raid1_remove_disk':
-drivers/md/raid1.c:1844:9: error: ISO C90 forbids mixed declarations
-and code [-Werror=declaration-after-statement]
-1844 |         struct raid1_info *p = conf->mirrors + number;
-     |         ^~~~~~
+Fix this issue by integrating the code for pm8001_setup_irq() directly
+inside pm8001_request_irq() so that MSI-X setup is performed both during
+normal initialization and resume operations.
 
-That's because the new code was inserted before the struct.
-The change is move the struct command above this commit.
-
-Fixes: 8b0472b50bcf ("md: raid1: fix potential OOB in raid1_remove_disk()")
-Signed-off-by: Nigel Croxon <ncroxon@redhat.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/46d929d0-2aab-4cf2-b2bf-338963e8ba5a@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dbf9bfe61571 ("[SCSI] pm8001: add SAS/SATA HBA driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20230911232745.325149-2-dlemoal@kernel.org
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid1.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/pm8001/pm8001_init.c |   51 ++++++++++++--------------------------
+ 1 file changed, 17 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index f96e079454700..c40237cfdcb0f 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1808,12 +1808,11 @@ static int raid1_remove_disk(struct mddev *mddev, struct md_rdev *rdev)
- 	struct r1conf *conf = mddev->private;
- 	int err = 0;
- 	int number = rdev->raid_disk;
-+	struct raid1_info *p = conf->mirrors + number;
+--- a/drivers/scsi/pm8001/pm8001_init.c
++++ b/drivers/scsi/pm8001/pm8001_init.c
+@@ -255,7 +255,6 @@ static irqreturn_t pm8001_interrupt_hand
+ 	return ret;
+ }
  
- 	if (unlikely(number >= conf->raid_disks))
- 		goto abort;
+-static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha);
+ static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha);
  
--	struct raid1_info *p = conf->mirrors + number;
+ /**
+@@ -275,13 +274,6 @@ static int pm8001_alloc(struct pm8001_hb
+ 	pm8001_dbg(pm8001_ha, INIT, "pm8001_alloc: PHY:%x\n",
+ 		   pm8001_ha->chip->n_phy);
+ 
+-	/* Setup Interrupt */
+-	rc = pm8001_setup_irq(pm8001_ha);
+-	if (rc) {
+-		pm8001_dbg(pm8001_ha, FAIL,
+-			   "pm8001_setup_irq failed [ret: %d]\n", rc);
+-		goto err_out;
+-	}
+ 	/* Request Interrupt */
+ 	rc = pm8001_request_irq(pm8001_ha);
+ 	if (rc)
+@@ -990,47 +982,38 @@ static u32 pm8001_request_msix(struct pm
+ }
+ #endif
+ 
+-static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha)
+-{
+-	struct pci_dev *pdev;
 -
- 	if (rdev != p->rdev)
- 		p = conf->mirrors + conf->raid_disks + number;
+-	pdev = pm8001_ha->pdev;
+-
+-#ifdef PM8001_USE_MSIX
+-	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX))
+-		return pm8001_setup_msix(pm8001_ha);
+-	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
+-#endif
+-	return 0;
+-}
+-
+ /**
+  * pm8001_request_irq - register interrupt
+  * @pm8001_ha: our ha struct.
+  */
+ static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha)
+ {
+-	struct pci_dev *pdev;
++	struct pci_dev *pdev = pm8001_ha->pdev;
++#ifdef PM8001_USE_MSIX
+ 	int rc;
  
--- 
-2.40.1
-
+-	pdev = pm8001_ha->pdev;
++	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX)) {
++		rc = pm8001_setup_msix(pm8001_ha);
++		if (rc) {
++			pm8001_dbg(pm8001_ha, FAIL,
++				   "pm8001_setup_irq failed [ret: %d]\n", rc);
++			return rc;
++		}
+ 
+-#ifdef PM8001_USE_MSIX
+-	if (pdev->msix_cap && pci_msi_enabled())
+-		return pm8001_request_msix(pm8001_ha);
+-	else {
+-		pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
+-		goto intx;
++		if (pdev->msix_cap && pci_msi_enabled())
++			return pm8001_request_msix(pm8001_ha);
+ 	}
++
++	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
+ #endif
+ 
+-intx:
+ 	/* initialize the INT-X interrupt */
+ 	pm8001_ha->irq_vector[0].irq_id = 0;
+ 	pm8001_ha->irq_vector[0].drv_inst = pm8001_ha;
+-	rc = request_irq(pdev->irq, pm8001_interrupt_handler_intx, IRQF_SHARED,
+-		pm8001_ha->name, SHOST_TO_SAS_HA(pm8001_ha->shost));
+-	return rc;
++
++	return request_irq(pdev->irq, pm8001_interrupt_handler_intx,
++			   IRQF_SHARED, pm8001_ha->name,
++			   SHOST_TO_SAS_HA(pm8001_ha->shost));
+ }
+ 
+ /**
 
 
