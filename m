@@ -2,51 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BFF57A7992
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 12:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 201F87A799A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 12:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234493AbjITKqG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 06:46:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36848 "EHLO
+        id S234346AbjITKqt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 06:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234415AbjITKpe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:45:34 -0400
+        with ESMTP id S234364AbjITKq3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:46:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9ABBF2;
-        Wed, 20 Sep 2023 03:45:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AF22C433C8;
-        Wed, 20 Sep 2023 10:45:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92501EC
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 03:46:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCABBC433C7;
+        Wed, 20 Sep 2023 10:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695206715;
-        bh=JugKkRU1X5rlumprCvTfvliuik27QKBGnmfChQ51VtU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=0S0tEb+VLi12h64gO4CuGvecaMFC5e19Gongi+LH/kAPQd6rkoQNPtKmmAORZDr8e
-         Be6rS8Q9MrvPZtQZm48G3aKKzKhvvoN2Zr6YEjQbV5BNCXtv2aQTmq8zxbUzgK84OQ
-         oFkgMCBCH/uxkCGtN6+rNx5I4XEwVNdG7gTRT6HE=
-Date:   Wed, 20 Sep 2023 12:45:08 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc:     Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        patches@lists.linux.dev, Shakeel Butt <shakeelb@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        mathieu.tortuyaux@gmail.com
-Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop
- kmem.limit_in_bytes
-Message-ID: <2023092044-porthole-impeding-e539@gregkh>
-References: <20230917191040.964416434@linuxfoundation.org>
- <20230917191042.204185566@linuxfoundation.org>
- <20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz>
- <2023092032-applied-gave-0bff@gregkh>
- <76525b1a-6857-434d-86ee-3c2ff4db0e4c@linux.microsoft.com>
+        s=korg; t=1695206764;
+        bh=SvjsfUUivCXxHh/7MxWG/XRA9KjlIa1LtOb+t+Z/Xhc=;
+        h=Subject:To:Cc:From:Date:From;
+        b=1FvRxa/ClpGePiytqvqXdPSWzdF+CNk/Mzs4U50cpQxd9P+0KXsTEoYxLczXejSC2
+         5+FKqrpg7xJnD8KjChZJ/aKtEh5GauVoVASQVugLI7Wp7weNVcO6loPEX5lA+S26z7
+         461o3wh9lpV4ma5kOde+NXyXmGJrVJqdQRiN+tZY=
+Subject: FAILED: patch "[PATCH] btrfs: check for BTRFS_FS_ERROR in pending ordered assert" failed to apply to 5.15-stable tree
+To:     josef@toxicpanda.com, dsterba@suse.com, fdmanana@suse.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 20 Sep 2023 12:45:57 +0200
+Message-ID: <2023092057-deceiving-jukebox-5350@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <76525b1a-6857-434d-86ee-3c2ff4db0e4c@linux.microsoft.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -57,70 +42,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 20, 2023 at 12:21:37PM +0200, Jeremi Piotrowski wrote:
-> On 9/20/2023 11:25 AM, Greg Kroah-Hartman wrote:
-> > On Wed, Sep 20, 2023 at 10:43:56AM +0200, Michal Hocko wrote:
-> >> On Wed 20-09-23 01:11:01, Jeremi Piotrowski wrote:
-> >>> On Sun, Sep 17, 2023 at 09:12:40PM +0200, Greg Kroah-Hartman wrote:
-> >>>> 6.1-stable review patch.  If anyone has any objections, please let me know.
-> >>>>
-> >>>> ------------------
-> >>>
-> >>> Hi Greg/Michal,
-> >>>
-> >>> This commit breaks userspace which makes it a bad commit for mainline and an
-> >>> even worse commit for stable.
-> >>>
-> >>> We ingested 6.1.54 into our nightly testing and found that runc fails to gather
-> >>> cgroup statistics (when reading kmem.limit_in_bytes). The same code is vendored
-> >>> into kubelet and kubelet fails to start if this operation fails. 6.1.53 is
-> >>> fine.
-> >>
-> >> Could you expand some more on why is the file read? It doesn't support
-> >> writing to it for some time so how does reading it helps in any sense?
-> >>
-> >> Anyway, I do agree that the stable backport should be reverted.
-> > 
-> > That will just postpone the breakage, we really shouldn't break
-> > userspace.
-> > 
-> > That being said, having userspace "break" because a file is no longer
-> > present is not good coding style on the userspace side at all.  That's
-> > why we have sysfs and single-value-files now, if the file isn't present,
-> > then userspace instantly notices and can handle it.  Much easier than
-> > the old-style multi-fields-in-one-file problem.
-> > 
-> 
-> The memcg files in this case are single-value, but userspace expects to be able
-> to read memcg limits when it can read the usage (indicating MEMCG is enabled).
-> If it can't - then something is off, and the node is marked unhealthy.
-> 
-> >>>> Address this by wiping out the file completely and effectively get back to
-> >>>> pre 4.5 era and CONFIG_MEMCG_KMEM=n configuration.
-> > 
-> > The fact that this is a valid option (i.e. no file) with that config
-> > option disabled makes me want to keep this as well, as how does
-> > userspace handle this option disabled at all?  Or old kernels?
-> > 
-> 
-> Userspace has had to handle the case of MEMCG_KMEM=n, but that had 2 cases so far:
-> 
-> limits/usage/max_usage/failcnt files are all available or none of them are available.
-> 
-> Now it needs to handle 3 of 4 files being available, but only for kmem (and not plain
-> memory, memsw or kmem.tcp). That's an inconsistency.
-> 
-> > I can drop this from stable kernels, but again, this feels like the runc
-> > developers are just postponing the problem...
-> >
-> 
-> Since cgroups v1 is deprecated, I think the runc developers haven't touched this part
-> of the code in years and expected it to keep working while they wait for the long tail
-> of usage to die out.
 
-Ok, then we should revert this, I'll go drop it in the stable trees, it
-should also be reverted in Linus's tree too.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4ca8e03cf2bfaeef7c85939fa1ea0c749cd116ab
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092057-deceiving-jukebox-5350@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+4ca8e03cf2bf ("btrfs: check for BTRFS_FS_ERROR in pending ordered assert")
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4ca8e03cf2bfaeef7c85939fa1ea0c749cd116ab Mon Sep 17 00:00:00 2001
+From: Josef Bacik <josef@toxicpanda.com>
+Date: Thu, 24 Aug 2023 16:59:04 -0400
+Subject: [PATCH] btrfs: check for BTRFS_FS_ERROR in pending ordered assert
+
+If we do fast tree logging we increment a counter on the current
+transaction for every ordered extent we need to wait for.  This means we
+expect the transaction to still be there when we clear pending on the
+ordered extent.  However if we happen to abort the transaction and clean
+it up, there could be no running transaction, and thus we'll trip the
+"ASSERT(trans)" check.  This is obviously incorrect, and the code
+properly deals with the case that the transaction doesn't exist.  Fix
+this ASSERT() to only fire if there's no trans and we don't have
+BTRFS_FS_ERROR() set on the file system.
+
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/ordered-data.c b/fs/btrfs/ordered-data.c
+index b46ab348e8e5..345c449d588c 100644
+--- a/fs/btrfs/ordered-data.c
++++ b/fs/btrfs/ordered-data.c
+@@ -639,7 +639,7 @@ void btrfs_remove_ordered_extent(struct btrfs_inode *btrfs_inode,
+ 			refcount_inc(&trans->use_count);
+ 		spin_unlock(&fs_info->trans_lock);
+ 
+-		ASSERT(trans);
++		ASSERT(trans || BTRFS_FS_ERROR(fs_info));
+ 		if (trans) {
+ 			if (atomic_dec_and_test(&trans->pending_ordered))
+ 				wake_up(&trans->pending_wait);
+
