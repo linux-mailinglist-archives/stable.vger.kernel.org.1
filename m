@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62D487A7E1C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFD5D7A804E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235260AbjITMPg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:15:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50054 "EHLO
+        id S234484AbjITMgZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:36:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235458AbjITMPc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:32 -0400
+        with ESMTP id S235933AbjITMgY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CFA4DC
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85585C433C7;
-        Wed, 20 Sep 2023 12:15:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88388C9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B70BC433CB;
+        Wed, 20 Sep 2023 12:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212122;
-        bh=Q3IWW32oepVxYI0sr8+j/m46apUAzx0UNgIQn/xUA/Q=;
+        s=korg; t=1695213373;
+        bh=oz/kI++9mQf4EH7H0rG4uL9Me3m/Bo+29YwXCY+tatY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MNXNTyJZ7B1jlBoNrtDkkAS+THurl1tai0rEqKBSmfW0VAK9+xhUFCSWF+oAaR87O
-         LrrVbp5IusCK7L5tRiiF5mt7vO8TGGC1wyDrb6ckxpl6dCBYS3rNiWdaBNW8lqoTBj
-         9VirE7unkGrgHQVBPqQDCVsSgrpnGe/soxEifjGk=
+        b=S1ZztXbw30+GNTMoPJMVNQAC0TbTYjb6XJghBH2ZJi6xGjaupiVeNgAStpy1In+rx
+         UiADWK2Zogx2skBY80xJCmcCoGUOgqrAjnh5+N34gqFtFQgyeRDG6dhzG7l2/uCMX5
+         grHQWG5LDPNtyit+3aGCb0zs5yXDUoxhsk9LXWKE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Nageswara R Sastry <rnsastry@linux.ibm.com>,
-        Russell Currey <ruscur@russell.cc>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 125/273] powerpc/iommu: Fix notifiers being shared by PCI and VIO buses
+Subject: [PATCH 5.4 188/367] Revert "IB/isert: Fix incorrect release of isert connection"
 Date:   Wed, 20 Sep 2023 13:29:25 +0200
-Message-ID: <20230920112850.362762131@linuxfoundation.org>
+Message-ID: <20230920112903.504077011@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,98 +51,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell Currey <ruscur@russell.cc>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit c37b6908f7b2bd24dcaaf14a180e28c9132b9c58 ]
+[ Upstream commit dfe261107c080709459c32695847eec96238852b ]
 
-fail_iommu_setup() registers the fail_iommu_bus_notifier struct to both
-PCI and VIO buses.  struct notifier_block is a linked list node, so this
-causes any notifiers later registered to either bus type to also be
-registered to the other since they share the same node.
+Commit: 699826f4e30a ("IB/isert: Fix incorrect release of isert connection") is
+causing problems on OPA when DEVICE_REMOVAL is happening.
 
-This causes issues in (at least) the vgaarb code, which registers a
-notifier for PCI buses.  pci_notify() ends up being called on a vio
-device, converted with to_pci_dev() even though it's not a PCI device,
-and finally makes a bad access in vga_arbiter_add_pci_device() as
-discovered with KASAN:
-
- BUG: KASAN: slab-out-of-bounds in vga_arbiter_add_pci_device+0x60/0xe00
- Read of size 4 at addr c000000264c26fdc by task swapper/0/1
-
+ ------------[ cut here ]------------
+ WARNING: CPU: 52 PID: 2117247 at drivers/infiniband/core/cq.c:359
+ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
+ Modules linked in: nfsd nfs_acl target_core_user uio tcm_fc libfc
+scsi_transport_fc tcm_loop target_core_pscsi target_core_iblock target_core_file
+rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs
+rfkill rpcrdma rdma_ucm ib_srpt sunrpc ib_isert iscsi_target_mod target_core_mod
+opa_vnic ib_iser libiscsi ib_umad scsi_transport_iscsi rdma_cm ib_ipoib iw_cm
+ib_cm hfi1(-) rdmavt ib_uverbs intel_rapl_msr intel_rapl_common sb_edac ib_core
+x86_pkg_temp_thermal intel_powerclamp coretemp i2c_i801 mxm_wmi rapl iTCO_wdt
+ipmi_si iTCO_vendor_support mei_me ipmi_devintf mei intel_cstate ioatdma
+intel_uncore i2c_smbus joydev pcspkr lpc_ich ipmi_msghandler acpi_power_meter
+acpi_pad xfs libcrc32c sr_mod sd_mod cdrom t10_pi sg crct10dif_pclmul
+crc32_pclmul crc32c_intel drm_kms_helper drm_shmem_helper ahci libahci
+ghash_clmulni_intel igb drm libata dca i2c_algo_bit wmi fuse
+ CPU: 52 PID: 2117247 Comm: modprobe Not tainted 6.5.0-rc1+ #1
+ Hardware name: Intel Corporation S2600CWR/S2600CW, BIOS
+SE5C610.86B.01.01.0014.121820151719 12/18/2015
+ RIP: 0010:ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
+ Code: ff 48 8b 43 40 48 8d 7b 40 48 83 e8 40 4c 39 e7 75 b3 49 83
+c4 10 4d 39 fc 75 94 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc <0f> 0b eb a1
+90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f
+ RSP: 0018:ffffc10bea13fc80 EFLAGS: 00010206
+ RAX: 000000000000010c RBX: ffff9bf5c7e66c00 RCX: 000000008020001d
+ RDX: 000000008020001e RSI: fffff175221f9900 RDI: ffff9bf5c7e67640
+ RBP: ffff9bf5c7e67600 R08: ffff9bf5c7e64400 R09: 000000008020001d
+ R10: 0000000040000000 R11: 0000000000000000 R12: ffff9bee4b1e8a18
+ R13: dead000000000122 R14: dead000000000100 R15: ffff9bee4b1e8a38
+ FS:  00007ff1e6d38740(0000) GS:ffff9bfd9fb00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00005652044ecc68 CR3: 0000000889b5c005 CR4: 00000000001706e0
  Call Trace:
-   dump_stack_lvl+0x1bc/0x2b8 (unreliable)
-   print_report+0x3f4/0xc60
-   kasan_report+0x244/0x698
-   __asan_load4+0xe8/0x250
-   vga_arbiter_add_pci_device+0x60/0xe00
-   pci_notify+0x88/0x444
-   notifier_call_chain+0x104/0x320
-   blocking_notifier_call_chain+0xa0/0x140
-   device_add+0xac8/0x1d30
-   device_register+0x58/0x80
-   vio_register_device_node+0x9ac/0xce0
-   vio_bus_scan_register_devices+0xc4/0x13c
-   __machine_initcall_pseries_vio_device_init+0x94/0xf0
-   do_one_initcall+0x12c/0xaa8
-   kernel_init_freeable+0xa48/0xba8
-   kernel_init+0x64/0x400
-   ret_from_kernel_thread+0x5c/0x64
+  <TASK>
+  ? __warn+0x80/0x130
+  ? ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
+  ? report_bug+0x195/0x1a0
+  ? handle_bug+0x3c/0x70
+  ? exc_invalid_op+0x14/0x70
+  ? asm_exc_invalid_op+0x16/0x20
+  ? ib_cq_pool_cleanup+0xac/0xb0 [ib_core]
+  disable_device+0x9d/0x160 [ib_core]
+  __ib_unregister_device+0x42/0xb0 [ib_core]
+  ib_unregister_device+0x22/0x30 [ib_core]
+  rvt_unregister_device+0x20/0x90 [rdmavt]
+  hfi1_unregister_ib_device+0x16/0xf0 [hfi1]
+  remove_one+0x55/0x1a0 [hfi1]
+  pci_device_remove+0x36/0xa0
+  device_release_driver_internal+0x193/0x200
+  driver_detach+0x44/0x90
+  bus_remove_driver+0x69/0xf0
+  pci_unregister_driver+0x2a/0xb0
+  hfi1_mod_cleanup+0xc/0x3c [hfi1]
+  __do_sys_delete_module.constprop.0+0x17a/0x2f0
+  ? exit_to_user_mode_prepare+0xc4/0xd0
+  ? syscall_trace_enter.constprop.0+0x126/0x1a0
+  do_syscall_64+0x5c/0x90
+  ? syscall_exit_to_user_mode+0x12/0x30
+  ? do_syscall_64+0x69/0x90
+  ? syscall_exit_work+0x103/0x130
+  ? syscall_exit_to_user_mode+0x12/0x30
+  ? do_syscall_64+0x69/0x90
+  ? exc_page_fault+0x65/0x150
+  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+ RIP: 0033:0x7ff1e643f5ab
+ Code: 73 01 c3 48 8b 0d 75 a8 1b 00 f7 d8 64 89 01 48 83 c8 ff c3
+66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0
+ff ff 73 01 c3 48 8b 0d 45 a8 1b 00 f7 d8 64 89 01 48
+ RSP: 002b:00007ffec9103cc8 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
+ RAX: ffffffffffffffda RBX: 00005615267fdc50 RCX: 00007ff1e643f5ab
+ RDX: 0000000000000000 RSI: 0000000000000800 RDI: 00005615267fdcb8
+ RBP: 00005615267fdc50 R08: 0000000000000000 R09: 0000000000000000
+ R10: 00007ff1e659eac0 R11: 0000000000000206 R12: 00005615267fdcb8
+ R13: 0000000000000000 R14: 00005615267fdcb8 R15: 00007ffec9105ff8
+  </TASK>
+ ---[ end trace 0000000000000000 ]---
 
-Fix this by creating separate notifier_block structs for each bus type.
+And...
 
-Fixes: d6b9a81b2a45 ("powerpc: IOMMU fault injection")
-Reported-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Tested-by: Nageswara R Sastry <rnsastry@linux.ibm.com>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-[mpe: Add #ifdef to fix CONFIG_IBMVIO=n build]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230322035322.328709-1-ruscur@russell.cc
+ restrack: ------------[ cut here ]------------
+ infiniband hfi1_0: BUG: RESTRACK detected leak of resources
+ restrack: Kernel PD object allocated by ib_isert is not freed
+ restrack: Kernel CQ object allocated by ib_core is not freed
+ restrack: Kernel QP object allocated by rdma_cm is not freed
+ restrack: ------------[ cut here ]------------
+
+Fixes: 699826f4e30a ("IB/isert: Fix incorrect release of isert connection")
+Reported-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Closes: https://lore.kernel.org/all/921cd1d9-2879-f455-1f50-0053fe6a6655@cornelisnetworks.com
+Link: https://lore.kernel.org/r/a27982d3235005c58f6d321f3fad5eb6e1beaf9e.1692604607.git.leonro@nvidia.com
+Tested-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/iommu.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/infiniband/ulp/isert/ib_isert.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index c3d2d5cd7c10c..af1a2bf758c5c 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -145,17 +145,28 @@ static int fail_iommu_bus_notify(struct notifier_block *nb,
- 	return 0;
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index 5bb1fc7fd79c9..6ff92dca2898c 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -2646,6 +2646,8 @@ static void isert_wait_conn(struct iscsi_conn *conn)
+ 	isert_put_unsol_pending_cmds(conn);
+ 	isert_wait4cmds(conn);
+ 	isert_wait4logout(isert_conn);
++
++	queue_work(isert_release_wq, &isert_conn->release_work);
  }
  
--static struct notifier_block fail_iommu_bus_notifier = {
-+/*
-+ * PCI and VIO buses need separate notifier_block structs, since they're linked
-+ * list nodes.  Sharing a notifier_block would mean that any notifiers later
-+ * registered for PCI buses would also get called by VIO buses and vice versa.
-+ */
-+static struct notifier_block fail_iommu_pci_bus_notifier = {
- 	.notifier_call = fail_iommu_bus_notify
- };
- 
-+#ifdef CONFIG_IBMVIO
-+static struct notifier_block fail_iommu_vio_bus_notifier = {
-+	.notifier_call = fail_iommu_bus_notify
-+};
-+#endif
-+
- static int __init fail_iommu_setup(void)
- {
- #ifdef CONFIG_PCI
--	bus_register_notifier(&pci_bus_type, &fail_iommu_bus_notifier);
-+	bus_register_notifier(&pci_bus_type, &fail_iommu_pci_bus_notifier);
- #endif
- #ifdef CONFIG_IBMVIO
--	bus_register_notifier(&vio_bus_type, &fail_iommu_bus_notifier);
-+	bus_register_notifier(&vio_bus_type, &fail_iommu_vio_bus_notifier);
- #endif
- 
- 	return 0;
+ static void isert_free_conn(struct iscsi_conn *conn)
 -- 
 2.40.1
 
