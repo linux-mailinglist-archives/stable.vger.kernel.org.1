@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 578D77A7BD5
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 997177A7B3C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234482AbjITL4A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:56:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53096 "EHLO
+        id S234680AbjITLuX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:50:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234689AbjITLz5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:57 -0400
+        with ESMTP id S234604AbjITLuU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D17F92
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:55:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 860B3C433C8;
-        Wed, 20 Sep 2023 11:55:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7A40DE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B88EC433CB;
+        Wed, 20 Sep 2023 11:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210944;
-        bh=NY5zVWfJHMIOQTIMAG2a5wUPVw4lRY7CoGcsIO1U9gk=;
+        s=korg; t=1695210613;
+        bh=so4nrHgpxyDv+qJT177hZO+WhhDe0E+rrkuHOwEP49A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wCWKchbrLKOp2JRDN9vWywDBY9oKS7T9LqQEEjqqWO9+phGsjH939kGY9McsSE2Ny
-         hYleam16pTsHfJ8/JSAsxxDV6qDaZcuqajH7GWK4EEtmcSXqpdDLhqmWZ1swhA4yDy
-         UB7ypEyGq5kAg+6zvjDxcUzaCfRxNWpW1+bpOhaw=
+        b=loHSPGqbJKt4j6DyYx6ErqtNRHta7c9yDD+00meawmp7yGkuR47yRZL+uH8n7tyU+
+         rSaQD7uKQi9cXr2YQ/Yi191re25tZVq2mWQhNyv/1aXOedhqha3JBnLv4dKiczon1N
+         7cAnOLVBZDEWg2vCYRmIVP6uM4oH7etQVYX9rIyk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Tom Chung <chiahsuan.chung@amd.com>,
-        Leo Chen <sancchen@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/139] drm/amd/display: Blocking invalid 420 modes on HDMI TMDS for DCN31
-Date:   Wed, 20 Sep 2023 13:29:45 +0200
-Message-ID: <20230920112837.570406382@linuxfoundation.org>
+Subject: [PATCH 6.5 142/211] btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super
+Date:   Wed, 20 Sep 2023 13:29:46 +0200
+Message-ID: <20230920112850.249017463@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +53,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Chen <sancchen@amd.com>
+From: Anand Jain <anand.jain@oracle.com>
 
-[ Upstream commit 026a71babf48efb6b9884a3a66fa31aec9e1ea54 ]
+[ Upstream commit 6bfe3959b0e7a526f5c64747801a8613f002f05a ]
 
-[Why & How]
-HDMI TMDS does not have ODM support. Filtering 420 modes that
-exceed the 4096 FMT limitation on DCN31 will resolve
-intermittent corruptions issues.
+The function btrfs_validate_super() should verify the metadata_uuid in
+the provided superblock argument. Because, all its callers expect it to
+do that.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Leo Chen <sancchen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Such as in the following stacks:
+
+  write_all_supers()
+   sb = fs_info->super_for_commit;
+   btrfs_validate_write_super(.., sb)
+     btrfs_validate_super(.., sb, ..)
+
+  scrub_one_super()
+	btrfs_validate_super(.., sb, ..)
+
+And
+   check_dev_super()
+	btrfs_validate_super(.., sb, ..)
+
+However, it currently verifies the fs_info::super_copy::metadata_uuid
+instead.  Fix this using the correct metadata_uuid in the superblock
+argument.
+
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c    | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/btrfs/disk-io.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c b/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-index ebc04b72b284b..9c84561ff3bc4 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-@@ -4133,7 +4133,9 @@ void dml31_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
- 				}
- 				if (v->OutputFormat[k] == dm_420 && v->HActive[k] > DCN31_MAX_FMT_420_BUFFER_WIDTH
- 						&& v->ODMCombineEnablePerState[i][k] != dm_odm_combine_mode_4to1) {
--					if (v->HActive[k] / 2 > DCN31_MAX_FMT_420_BUFFER_WIDTH) {
-+					if (v->Output[k] == dm_hdmi) {
-+						FMTBufferExceeded = true;
-+					} else if (v->HActive[k] / 2 > DCN31_MAX_FMT_420_BUFFER_WIDTH) {
- 						v->ODMCombineEnablePerState[i][k] = dm_odm_combine_mode_4to1;
- 						v->PlaneRequiredDISPCLK = v->PlaneRequiredDISPCLKWithODMCombine4To1;
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 4494883a19abc..0593f8f458a6e 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -2391,13 +2391,11 @@ int btrfs_validate_super(struct btrfs_fs_info *fs_info,
+ 		ret = -EINVAL;
+ 	}
+ 
+-	if (btrfs_fs_incompat(fs_info, METADATA_UUID) &&
+-	    memcmp(fs_info->fs_devices->metadata_uuid,
+-		   fs_info->super_copy->metadata_uuid, BTRFS_FSID_SIZE)) {
++	if (memcmp(fs_info->fs_devices->metadata_uuid, btrfs_sb_fsid_ptr(sb),
++		   BTRFS_FSID_SIZE) != 0) {
+ 		btrfs_err(fs_info,
+ "superblock metadata_uuid doesn't match metadata uuid of fs_devices: %pU != %pU",
+-			fs_info->super_copy->metadata_uuid,
+-			fs_info->fs_devices->metadata_uuid);
++			  btrfs_sb_fsid_ptr(sb), fs_info->fs_devices->metadata_uuid);
+ 		ret = -EINVAL;
+ 	}
  
 -- 
 2.40.1
