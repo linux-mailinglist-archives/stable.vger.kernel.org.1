@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0C6E7A80EA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C90557A8166
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234738AbjITMlK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:41:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38566 "EHLO
+        id S236320AbjITMpY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:45:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236218AbjITMlE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:41:04 -0400
+        with ESMTP id S236443AbjITMo6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F70CAD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:40:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52D6C433CA;
-        Wed, 20 Sep 2023 12:40:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC025B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8078C433C8;
+        Wed, 20 Sep 2023 12:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213658;
-        bh=7CbOR46xCngiFr39JMpUajZdnvyncOarCi0xAGOKTeg=;
+        s=korg; t=1695213891;
+        bh=la+2+/i0dupowSAFVOMW5iaENFtVyqJhi/l8VOVkylc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LLdLjm+mvXuaUbNGoCT4HZ7Z7w15I9se7T0hfOTl5qjh8uXchu7NMXXtsaFeZsSDi
-         igUWGLP+a78OSge2qEjom0BYKB05GIZ1ygYoH8mkJQM0t8Va61YLC7WwVf5V6G8KEb
-         iDJ7HHfg2h0QfoFk0LslUhna5D5zdaMkGUKH/b+0=
+        b=vOTJNj1dhn5Tyz4h5vI4pTtUQ+xxY8b7eJ9TKMNWv8yFmamGe0SWApDtAgfV1VESL
+         jVZE1/DbeHLdFYMEJXn+QWY7syhDUefvMWJWbF04kjX94xW517Nahf/FGObtpXTlRt
+         Uxhn7ZWQ6cTsTYQU318OB8AXWFi5cx+eSkRozqBA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tomislav Novak <tnovak@meta.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        Samuel Gosselin <sgosselin@google.com>
-Subject: [PATCH 5.4 317/367] hw_breakpoint: fix single-stepping when using bpf_overflow_handler
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 036/110] md: raid1: fix potential OOB in raid1_remove_disk()
 Date:   Wed, 20 Sep 2023 13:31:34 +0200
-Message-ID: <20230920112906.752355947@linuxfoundation.org>
+Message-ID: <20230920112831.716804481@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,152 +50,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomislav Novak <tnovak@meta.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit d11a69873d9a7435fe6a48531e165ab80a8b1221 ]
+[ Upstream commit 8b0472b50bcf0f19a5119b00a53b63579c8e1e4d ]
 
-Arm platforms use is_default_overflow_handler() to determine if the
-hw_breakpoint code should single-step over the breakpoint trigger or
-let the custom handler deal with it.
+If rddev->raid_disk is greater than mddev->raid_disks, there will be
+an out-of-bounds in raid1_remove_disk(). We have already found
+similar reports as follows:
 
-Since bpf_overflow_handler() currently isn't recognized as a default
-handler, attaching a BPF program to a PERF_TYPE_BREAKPOINT event causes
-it to keep firing (the instruction triggering the data abort exception
-is never skipped). For example:
+1) commit d17f744e883b ("md-raid10: fix KASAN warning")
+2) commit 1ebc2cec0b7d ("dm raid: fix KASAN warning in raid5_remove_disk")
 
-  # bpftrace -e 'watchpoint:0x10000:4:w { print("hit") }' -c ./test
-  Attaching 1 probe...
-  hit
-  hit
-  [...]
-  ^C
+Fix this bug by checking whether the "number" variable is
+valid.
 
-(./test performs a single 4-byte store to 0x10000)
-
-This patch replaces the check with uses_default_overflow_handler(),
-which accounts for the bpf_overflow_handler() case by also testing
-if one of the perf_event_output functions gets invoked indirectly,
-via orig_default_handler.
-
-Signed-off-by: Tomislav Novak <tnovak@meta.com>
-Tested-by: Samuel Gosselin <sgosselin@google.com> # arm64
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://lore.kernel.org/linux-arm-kernel/20220923203644.2731604-1-tnovak@fb.com/
-Link: https://lore.kernel.org/r/20230605191923.1219974-1-tnovak@meta.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/tencent_0D24426FAC6A21B69AC0C03CE4143A508F09@qq.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/hw_breakpoint.c   |  8 ++++----
- arch/arm64/kernel/hw_breakpoint.c |  4 ++--
- include/linux/perf_event.h        | 22 +++++++++++++++++++---
- 3 files changed, 25 insertions(+), 9 deletions(-)
+ drivers/md/raid1.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/kernel/hw_breakpoint.c b/arch/arm/kernel/hw_breakpoint.c
-index b06d9ea07c846..a69dd64a84017 100644
---- a/arch/arm/kernel/hw_breakpoint.c
-+++ b/arch/arm/kernel/hw_breakpoint.c
-@@ -623,7 +623,7 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
- 	hw->address &= ~alignment_mask;
- 	hw->ctrl.len <<= offset;
- 
--	if (is_default_overflow_handler(bp)) {
-+	if (uses_default_overflow_handler(bp)) {
- 		/*
- 		 * Mismatch breakpoints are required for single-stepping
- 		 * breakpoints.
-@@ -795,7 +795,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
- 		 * Otherwise, insert a temporary mismatch breakpoint so that
- 		 * we can single-step over the watchpoint trigger.
- 		 */
--		if (!is_default_overflow_handler(wp))
-+		if (!uses_default_overflow_handler(wp))
- 			continue;
- step:
- 		enable_single_step(wp, instruction_pointer(regs));
-@@ -808,7 +808,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
- 		info->trigger = addr;
- 		pr_debug("watchpoint fired: address = 0x%x\n", info->trigger);
- 		perf_bp_event(wp, regs);
--		if (is_default_overflow_handler(wp))
-+		if (uses_default_overflow_handler(wp))
- 			enable_single_step(wp, instruction_pointer(regs));
- 	}
- 
-@@ -883,7 +883,7 @@ static void breakpoint_handler(unsigned long unknown, struct pt_regs *regs)
- 			info->trigger = addr;
- 			pr_debug("breakpoint fired: address = 0x%x\n", addr);
- 			perf_bp_event(bp, regs);
--			if (is_default_overflow_handler(bp))
-+			if (uses_default_overflow_handler(bp))
- 				enable_single_step(bp, addr);
- 			goto unlock;
- 		}
-diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
-index b4a1607958246..534578eba556e 100644
---- a/arch/arm64/kernel/hw_breakpoint.c
-+++ b/arch/arm64/kernel/hw_breakpoint.c
-@@ -654,7 +654,7 @@ static int breakpoint_handler(unsigned long unused, unsigned int esr,
- 		perf_bp_event(bp, regs);
- 
- 		/* Do we need to handle the stepping? */
--		if (is_default_overflow_handler(bp))
-+		if (uses_default_overflow_handler(bp))
- 			step = 1;
- unlock:
- 		rcu_read_unlock();
-@@ -733,7 +733,7 @@ static u64 get_distance_from_watchpoint(unsigned long addr, u64 val,
- static int watchpoint_report(struct perf_event *wp, unsigned long addr,
- 			     struct pt_regs *regs)
- {
--	int step = is_default_overflow_handler(wp);
-+	int step = uses_default_overflow_handler(wp);
- 	struct arch_hw_breakpoint *info = counter_arch_bp(wp);
- 
- 	info->trigger = addr;
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index b7ac395513c0f..c99e2f851d312 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1018,15 +1018,31 @@ extern int perf_event_output(struct perf_event *event,
- 			     struct pt_regs *regs);
- 
- static inline bool
--is_default_overflow_handler(struct perf_event *event)
-+__is_default_overflow_handler(perf_overflow_handler_t overflow_handler)
- {
--	if (likely(event->overflow_handler == perf_event_output_forward))
-+	if (likely(overflow_handler == perf_event_output_forward))
- 		return true;
--	if (unlikely(event->overflow_handler == perf_event_output_backward))
-+	if (unlikely(overflow_handler == perf_event_output_backward))
- 		return true;
- 	return false;
- }
- 
-+#define is_default_overflow_handler(event) \
-+	__is_default_overflow_handler((event)->overflow_handler)
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 084bfea6ad316..5360d6ed16e05 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1820,6 +1820,10 @@ static int raid1_remove_disk(struct mddev *mddev, struct md_rdev *rdev)
+ 	struct r1conf *conf = mddev->private;
+ 	int err = 0;
+ 	int number = rdev->raid_disk;
 +
-+#ifdef CONFIG_BPF_SYSCALL
-+static inline bool uses_default_overflow_handler(struct perf_event *event)
-+{
-+	if (likely(is_default_overflow_handler(event)))
-+		return true;
++	if (unlikely(number >= conf->raid_disks))
++		goto abort;
 +
-+	return __is_default_overflow_handler(event->orig_overflow_handler);
-+}
-+#else
-+#define uses_default_overflow_handler(event) \
-+	is_default_overflow_handler(event)
-+#endif
-+
- extern void
- perf_event_header__init_id(struct perf_event_header *header,
- 			   struct perf_sample_data *data,
+ 	struct raid1_info *p = conf->mirrors + number;
+ 
+ 	if (rdev != p->rdev)
 -- 
 2.40.1
 
