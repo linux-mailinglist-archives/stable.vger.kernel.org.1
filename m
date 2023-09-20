@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 937BA7A7C66
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 686AC7A7C55
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234866AbjITMAw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:00:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44576 "EHLO
+        id S235119AbjITMAT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:00:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235188AbjITMAs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:00:48 -0400
+        with ESMTP id S235095AbjITMAS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:00:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A692132
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:00:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738D8C433C9;
-        Wed, 20 Sep 2023 12:00:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 754A3A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:00:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45E4C433C7;
+        Wed, 20 Sep 2023 12:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211241;
-        bh=Nm68toKpyzulpn0QZT1GyvuS/ZGqo+msQLYOotqMp2A=;
+        s=korg; t=1695211212;
+        bh=i5CwbQ9hFqvnMq7NRhr9raHAM4+J7JWAsw7+POd0pZY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rQi4GDEP2qj5/2NWP6Hjvd75QUoZMj/rbRXu3RZALw6QcPEld3kcR/s7OYgZPfXhm
-         vgnYv7RxtIUhjal1s/WxOlv8tKiiqEFpYSpLEglxN57VfVeaQ0i2Ghb0iWWgV6f78B
-         jzWqxnst7AcxpfiUk1ZzQLVbpM4whI2gJqnuvGOs=
+        b=Qa1kzFBx+M5yinArzb4o6XfyUc1vcHj+Rd7s6Cbm5ihsw6lWdWqiABu9+ITWtrkFl
+         xeEyCzXupGuPkpmOcQtTqcneUupvjoG56TN3P6Oaal5B3D8MCzN0IU/ymnIQE6mpyC
+         ATLubiI1jAxH97mSsG3cqt05nSAjtLBPiba0fkUM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Lech Perczak <lech.perczak@camlingroup.com>
-Subject: [PATCH 4.14 009/186] serial: sc16is7xx: fix bug when first setting GPIO direction
-Date:   Wed, 20 Sep 2023 13:28:32 +0200
-Message-ID: <20230920112837.183097279@linuxfoundation.org>
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+0ad741797f4565e7e2d2@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.14 010/186] nilfs2: fix general protection fault in nilfs_lookup_dirty_data_buffers()
+Date:   Wed, 20 Sep 2023 13:28:33 +0200
+Message-ID: <20230920112837.221545420@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
 References: <20230920112836.799946261@linuxfoundation.org>
@@ -54,59 +55,48 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 9baeea723c0fb9c3ba9a336369f758ed9bc6831d upstream.
+commit f83913f8c5b882a312e72b7669762f8a5c9385e4 upstream.
 
-When configuring a pin as an output pin with a value of logic 0, we
-end up as having a value of logic 1 on the output pin. Setting a
-logic 0 a second time (or more) after that will correctly output a
-logic 0 on the output pin.
+A syzbot stress test reported that create_empty_buffers() called from
+nilfs_lookup_dirty_data_buffers() can cause a general protection fault.
 
-By default, all GPIO pins are configured as inputs. When we enter
-sc16is7xx_gpio_direction_output() for the first time, we first set the
-desired value in IOSTATE, and then we configure the pin as an output.
-The datasheet states that writing to IOSTATE register will trigger a
-transfer of the value to the I/O pin configured as output, so if the
-pin is configured as an input, nothing will be transferred.
+Analysis using its reproducer revealed that the back reference "mapping"
+from a page/folio has been changed to NULL after dirty page/folio gang
+lookup in nilfs_lookup_dirty_data_buffers().
 
-Therefore, set the direction first in IODIR, and then set the desired
-value in IOSTATE.
+Fix this issue by excluding pages/folios from being collected if, after
+acquiring a lock on each page/folio, its back reference "mapping" differs
+from the pointer to the address space struct that held the page/folio.
 
-This is what is done in NXP application note AN10587.
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
-Link: https://lore.kernel.org/r/20230807214556.540627-6-hugo@hugovil.com
+Link: https://lkml.kernel.org/r/20230805132038.6435-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+0ad741797f4565e7e2d2@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/0000000000002930a705fc32b231@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+fs/nilfs2/segment.c | 5 +++++
+ fs/nilfs2/segment.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1171,9 +1171,18 @@ static int sc16is7xx_gpio_direction_outp
- 		state |= BIT(offset);
- 	else
- 		state &= ~BIT(offset);
--	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
-+
-+	/*
-+	 * If we write IOSTATE first, and then IODIR, the output value is not
-+	 * transferred to the corresponding I/O pin.
-+	 * The datasheet states that each register bit will be transferred to
-+	 * the corresponding I/O pin programmed as output when writing to
-+	 * IOSTATE. Therefore, configure direction first with IODIR, and then
-+	 * set value after with IOSTATE.
-+	 */
- 	sc16is7xx_port_update(port, SC16IS7XX_IODIR_REG, BIT(offset),
- 			      BIT(offset));
-+	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -743,6 +743,11 @@ static size_t nilfs_lookup_dirty_data_bu
+ 			break;
  
- 	return 0;
- }
+ 		lock_page(page);
++		if (unlikely(page->mapping != mapping)) {
++			/* Exclude pages removed from the address space */
++			unlock_page(page);
++			continue;
++		}
+ 		if (!page_has_buffers(page))
+ 			create_empty_buffers(page, i_blocksize(inode), 0);
+ 		unlock_page(page);
 
 
