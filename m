@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01A677A7F23
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 573707A7EC7
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234502AbjITMYY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:24:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56552 "EHLO
+        id S235692AbjITMUm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:20:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235724AbjITMYX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:23 -0400
+        with ESMTP id S235730AbjITMUl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEF3D97
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D5DC433C9;
-        Wed, 20 Sep 2023 12:24:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2688CA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72F3C433C8;
+        Wed, 20 Sep 2023 12:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212657;
-        bh=3qziMd/wnNZVrKZ7Yknaln1DMTbEs6vMkg2rTf/AcLY=;
+        s=korg; t=1695212435;
+        bh=wwOCfvfufn799fXeXCXzRzer9tySBC1TgSL7+rnCHtw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ptzTLUhKqASsm4OvOdo16/hs5jy+JkYafWE0Gx3UhtI0RhxidPmPOnyq1go3SUBeA
-         ibkCneIktRRarJQ3x3ashMU7hCrzGGp7FMgaNywt637oPoJzjam5swX7TjRfsbs8BI
-         EkFxLSWWZ5ecV6L49eIIVmyQs9LU9LmvURwzy02Y=
+        b=xdeAO9JeI5wMj9IwFCGaxRxo/RvqnMa4NTBJ8MH9d+O85aw65pn/6AsJ82CPVlYVg
+         bPPxHEqciSnFgIygTPTrYcPY80DS/mDpUWN9wTOiq0hYsV88dXtWj4U3X88d3Rse+W
+         OzLtTIVDJuz7oRNLQAakksXrlToPHCPpAKU3S2bo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Anand Jain <anand.jain@oracle.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, Zhen Lei <thunder.leizhen@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 56/83] btrfs: move btrfs_pinned_by_swapfile prototype into volumes.h
+Subject: [PATCH 4.19 266/273] kobject: Add sanity check for kset->kobj.ktype in kset_register()
 Date:   Wed, 20 Sep 2023 13:31:46 +0200
-Message-ID: <20230920112828.875484587@linuxfoundation.org>
+Message-ID: <20230920112854.452562159@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +49,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-[ Upstream commit c2e79e865b87c2920a3cd39de69c35f2bc758a51 ]
+[ Upstream commit 4d0fe8c52bb3029d83e323c961221156ab98680b ]
 
-This is defined in volumes.c, move the prototype into volumes.h.
+When I register a kset in the following way:
+	static struct kset my_kset;
+	kobject_set_name(&my_kset.kobj, "my_kset");
+        ret = kset_register(&my_kset);
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 6bfe3959b0e7 ("btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super")
+A null pointer dereference exception is occurred:
+[ 4453.568337] Unable to handle kernel NULL pointer dereference at \
+virtual address 0000000000000028
+... ...
+[ 4453.810361] Call trace:
+[ 4453.813062]  kobject_get_ownership+0xc/0x34
+[ 4453.817493]  kobject_add_internal+0x98/0x274
+[ 4453.822005]  kset_register+0x5c/0xb4
+[ 4453.825820]  my_kobj_init+0x44/0x1000 [my_kset]
+... ...
+
+Because I didn't initialize my_kset.kobj.ktype.
+
+According to the description in Documentation/core-api/kobject.rst:
+ - A ktype is the type of object that embeds a kobject.  Every structure
+   that embeds a kobject needs a corresponding ktype.
+
+So add sanity check to make sure kset->kobj.ktype is not NULL.
+
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20230805084114.1298-2-thunder.leizhen@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.h   | 2 --
- fs/btrfs/volumes.h | 2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ lib/kobject.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index bcc6848bb6d6a..67831868ef0de 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -529,8 +529,6 @@ struct btrfs_swapfile_pin {
- 	int bg_extent_count;
- };
+diff --git a/lib/kobject.c b/lib/kobject.c
+index 97d86dc17c42b..2bab65232925a 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -829,6 +829,11 @@ int kset_register(struct kset *k)
+ 	if (!k)
+ 		return -EINVAL;
  
--bool btrfs_pinned_by_swapfile(struct btrfs_fs_info *fs_info, void *ptr);
--
- enum {
- 	BTRFS_FS_BARRIER,
- 	BTRFS_FS_CLOSING_START,
-diff --git a/fs/btrfs/volumes.h b/fs/btrfs/volumes.h
-index f2177263748e8..2463aeb34ab55 100644
---- a/fs/btrfs/volumes.h
-+++ b/fs/btrfs/volumes.h
-@@ -580,4 +580,6 @@ int btrfs_bg_type_to_factor(u64 flags);
- const char *btrfs_bg_type_to_raid_name(u64 flags);
- int btrfs_verify_dev_extents(struct btrfs_fs_info *fs_info);
- 
-+bool btrfs_pinned_by_swapfile(struct btrfs_fs_info *fs_info, void *ptr);
++	if (!k->kobj.ktype) {
++		pr_err("must have a ktype to be initialized properly!\n");
++		return -EINVAL;
++	}
 +
- #endif
+ 	kset_init(k);
+ 	err = kobject_add_internal(&k->kobj);
+ 	if (err)
 -- 
 2.40.1
 
