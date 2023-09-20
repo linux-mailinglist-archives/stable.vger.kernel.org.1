@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 659847A7DF2
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 324317A804A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235503AbjITMNt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:13:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36524 "EHLO
+        id S234719AbjITMgQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:36:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235511AbjITMNs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:48 -0400
+        with ESMTP id S234700AbjITMgP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2E15A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E555EC433CB;
-        Wed, 20 Sep 2023 12:13:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E98BC6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BD4C433C7;
+        Wed, 20 Sep 2023 12:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212020;
-        bh=yHubY5WulNFtv/c+ANzhpK5/aFG/R1S+LmKeB/OiRfM=;
+        s=korg; t=1695213362;
+        bh=A8rYscBv4DYUMl33nppNuvghlqpObWi+HaptaZDPs94=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lJ4ijoYW5RTjy2AbrC+zDBb6WVzsLo67N5hjWkBA0Q6XgWNw5VB7f8T1d1hbGzDn9
-         5dfyGSXJSFj2/joDzRq1tmXaQgIGEr7xZY8IhRQ79O4KwnkImy3i2XF+tcOi/4AWdA
-         CKFX5kCyhyGy77NPpmgk8DBuhKldK1JQzFiXyHIU=
+        b=RcqdYTOnH4wyEYxNucIf6npOjVKruP2xUZEBXzol2UdBD8qJP+k6PSzbGfzL8cyke
+         75uGfxroaouL4i2cLFSMB2jM32Kb97AF34z5hfMLrvc5CyZhvi5kFmPrDxmLj3rGx2
+         dzP6QXxMtg5jgtfv9LHh8LWCVqRs37uTi0Qa74XY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Tony Battersby <tonyb@cybernetics.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 120/273] drm/radeon: Replace numbers with PCI_EXP_LNKCTL2 definitions
-Date:   Wed, 20 Sep 2023 13:29:20 +0200
-Message-ID: <20230920112850.201144983@linuxfoundation.org>
+Subject: [PATCH 5.4 184/367] scsi: core: Use 32-bit hostnum in scsi_host_lookup()
+Date:   Wed, 20 Sep 2023 13:29:21 +0200
+Message-ID: <20230920112903.395343332@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,119 +51,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit ca56f99c18cafdeae6961ce9d87fc978506152ca ]
+[ Upstream commit 62ec2092095b678ff89ce4ba51c2938cd1e8e630 ]
 
-Replace hard-coded magic numbers with the descriptive PCI_EXP_LNKCTL2
-definitions.  No functional change intended.
+Change scsi_host_lookup() hostnum argument type from unsigned short to
+unsigned int to match the type used everywhere else.
 
-Link: https://lore.kernel.org/r/20191112173503.176611-4-helgaas@kernel.org
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 7189576e8a82 ("drm/radeon: Use RMW accessors for changing LNKCTL")
+Fixes: 6d49f63b415c ("[SCSI] Make host_no an unsigned int")
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://lore.kernel.org/r/a02497e7-c12b-ef15-47fc-3f0a0b00ffce@cybernetics.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/cik.c | 22 ++++++++++++++--------
- drivers/gpu/drm/radeon/si.c  | 22 ++++++++++++++--------
- 2 files changed, 28 insertions(+), 16 deletions(-)
+ drivers/scsi/hosts.c     | 4 ++--
+ include/scsi/scsi_host.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/cik.c b/drivers/gpu/drm/radeon/cik.c
-index bd009d12b1571..47e5c29a9c2f7 100644
---- a/drivers/gpu/drm/radeon/cik.c
-+++ b/drivers/gpu/drm/radeon/cik.c
-@@ -9615,13 +9615,19 @@ static void cik_pcie_gen3_enable(struct radeon_device *rdev)
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index b97e046c6a6e1..a8ae573294e57 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -518,7 +518,7 @@ EXPORT_SYMBOL(scsi_host_alloc);
+ static int __scsi_host_match(struct device *dev, const void *data)
+ {
+ 	struct Scsi_Host *p;
+-	const unsigned short *hostnum = data;
++	const unsigned int *hostnum = data;
  
- 				/* linkctl2 */
- 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
--				tmp16 &= ~((1 << 4) | (7 << 7));
--				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 7)));
-+				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
-+					   PCI_EXP_LNKCTL2_TX_MARGIN);
-+				tmp16 |= (bridge_cfg2 &
-+					  (PCI_EXP_LNKCTL2_ENTER_COMP |
-+					   PCI_EXP_LNKCTL2_TX_MARGIN));
- 				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
+ 	p = class_to_shost(dev);
+ 	return p->host_no == *hostnum;
+@@ -535,7 +535,7 @@ static int __scsi_host_match(struct device *dev, const void *data)
+  *	that scsi_host_get() took. The put_device() below dropped
+  *	the reference from class_find_device().
+  **/
+-struct Scsi_Host *scsi_host_lookup(unsigned short hostnum)
++struct Scsi_Host *scsi_host_lookup(unsigned int hostnum)
+ {
+ 	struct device *cdev;
+ 	struct Scsi_Host *shost = NULL;
+diff --git a/include/scsi/scsi_host.h b/include/scsi/scsi_host.h
+index 31e0d6ca1ebaa..4488c3468c6de 100644
+--- a/include/scsi/scsi_host.h
++++ b/include/scsi/scsi_host.h
+@@ -744,7 +744,7 @@ extern void scsi_remove_host(struct Scsi_Host *);
+ extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
+ extern int scsi_host_busy(struct Scsi_Host *shost);
+ extern void scsi_host_put(struct Scsi_Host *t);
+-extern struct Scsi_Host *scsi_host_lookup(unsigned short);
++extern struct Scsi_Host *scsi_host_lookup(unsigned int hostnum);
+ extern const char *scsi_host_state_name(enum scsi_host_state);
  
- 				pci_read_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
--				tmp16 &= ~((1 << 4) | (7 << 7));
--				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 7)));
-+				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
-+					   PCI_EXP_LNKCTL2_TX_MARGIN);
-+				tmp16 |= (gpu_cfg2 &
-+					  (PCI_EXP_LNKCTL2_ENTER_COMP |
-+					   PCI_EXP_LNKCTL2_TX_MARGIN));
- 				pci_write_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
- 
- 				tmp = RREG32_PCIE_PORT(PCIE_LC_CNTL4);
-@@ -9637,13 +9643,13 @@ static void cik_pcie_gen3_enable(struct radeon_device *rdev)
- 	WREG32_PCIE_PORT(PCIE_LC_SPEED_CNTL, speed_cntl);
- 
- 	pci_read_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
--	tmp16 &= ~0xf;
-+	tmp16 &= ~PCI_EXP_LNKCTL2_TLS;
- 	if (speed_cap == PCIE_SPEED_8_0GT)
--		tmp16 |= 3; /* gen3 */
-+		tmp16 |= PCI_EXP_LNKCTL2_TLS_8_0GT; /* gen3 */
- 	else if (speed_cap == PCIE_SPEED_5_0GT)
--		tmp16 |= 2; /* gen2 */
-+		tmp16 |= PCI_EXP_LNKCTL2_TLS_5_0GT; /* gen2 */
- 	else
--		tmp16 |= 1; /* gen1 */
-+		tmp16 |= PCI_EXP_LNKCTL2_TLS_2_5GT; /* gen1 */
- 	pci_write_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
- 
- 	speed_cntl = RREG32_PCIE_PORT(PCIE_LC_SPEED_CNTL);
-diff --git a/drivers/gpu/drm/radeon/si.c b/drivers/gpu/drm/radeon/si.c
-index 7ed5d7970108c..53ef1bff057e9 100644
---- a/drivers/gpu/drm/radeon/si.c
-+++ b/drivers/gpu/drm/radeon/si.c
-@@ -7198,13 +7198,19 @@ static void si_pcie_gen3_enable(struct radeon_device *rdev)
- 
- 				/* linkctl2 */
- 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
--				tmp16 &= ~((1 << 4) | (7 << 7));
--				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 7)));
-+				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
-+					   PCI_EXP_LNKCTL2_TX_MARGIN);
-+				tmp16 |= (bridge_cfg2 &
-+					  (PCI_EXP_LNKCTL2_ENTER_COMP |
-+					   PCI_EXP_LNKCTL2_TX_MARGIN));
- 				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
- 
- 				pci_read_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
--				tmp16 &= ~((1 << 4) | (7 << 7));
--				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 7)));
-+				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
-+					   PCI_EXP_LNKCTL2_TX_MARGIN);
-+				tmp16 |= (gpu_cfg2 &
-+					  (PCI_EXP_LNKCTL2_ENTER_COMP |
-+					   PCI_EXP_LNKCTL2_TX_MARGIN));
- 				pci_write_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
- 
- 				tmp = RREG32_PCIE_PORT(PCIE_LC_CNTL4);
-@@ -7220,13 +7226,13 @@ static void si_pcie_gen3_enable(struct radeon_device *rdev)
- 	WREG32_PCIE_PORT(PCIE_LC_SPEED_CNTL, speed_cntl);
- 
- 	pci_read_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
--	tmp16 &= ~0xf;
-+	tmp16 &= ~PCI_EXP_LNKCTL2_TLS;
- 	if (speed_cap == PCIE_SPEED_8_0GT)
--		tmp16 |= 3; /* gen3 */
-+		tmp16 |= PCI_EXP_LNKCTL2_TLS_8_0GT; /* gen3 */
- 	else if (speed_cap == PCIE_SPEED_5_0GT)
--		tmp16 |= 2; /* gen2 */
-+		tmp16 |= PCI_EXP_LNKCTL2_TLS_5_0GT; /* gen2 */
- 	else
--		tmp16 |= 1; /* gen1 */
-+		tmp16 |= PCI_EXP_LNKCTL2_TLS_2_5GT; /* gen1 */
- 	pci_write_config_word(rdev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
- 
- 	speed_cntl = RREG32_PCIE_PORT(PCIE_LC_SPEED_CNTL);
+ static inline int __must_check scsi_add_host(struct Scsi_Host *host,
 -- 
 2.40.1
 
