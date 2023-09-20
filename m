@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 529DC7A8158
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C55DD7A7ED6
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236306AbjITMoh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:44:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54862 "EHLO
+        id S235752AbjITMVS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:21:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236308AbjITMog (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:36 -0400
+        with ESMTP id S235687AbjITMVO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 570B2AB
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E5EC433C9;
-        Wed, 20 Sep 2023 12:44:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35DE4AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E42EC433C9;
+        Wed, 20 Sep 2023 12:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213866;
-        bh=+LrDnkG1e0nMGnGc3/lss6z/cUgr/3c5vzz1l9iWqag=;
+        s=korg; t=1695212462;
+        bh=X2cEMwqUTXH3djjZ1LWZSabKgYUrHFifst+B/rg+a/Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iI4n82bQBD1CywLIG/fR5q97JwqosR0QybOp25oJIyupUGNTXzBzFVJQwvBZZQVrW
-         hZa/u3CNk1zHxUmYAns7euvf1MtAHi+2B60v7Y6X5FrA3d9hjHYNTKKpik9bMEJPPk
-         E0KJ1zEKgpw25rJslD+XInM4u8cP8u57luExkBiI=
+        b=BrtSotQ4wfs6TgEExmRORYE56czyo/8Kct3CMWk3Yq/9Bkw9BnFP4rHr5C+bjf9Lh
+         6jiz2opJ7+qrYqH/EC2exuKVBER/Y/1Kl8RcpS5TIxGE841aUUzNesmFcUWkN8yLzJ
+         oHLer9i7fG+jAxXkAg4TEHwLxb5FkhfAMAORKghw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Will Shiu <Will.Shiu@mediatek.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 003/110] locks: fix KASAN: use-after-free in trace_event_raw_event_filelock_lock
+        patches@lists.linux.dev, Tomislav Novak <tnovak@meta.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        Samuel Gosselin <sgosselin@google.com>
+Subject: [PATCH 5.10 11/83] hw_breakpoint: fix single-stepping when using bpf_overflow_handler
 Date:   Wed, 20 Sep 2023 13:31:01 +0200
-Message-ID: <20230920112830.510497713@linuxfoundation.org>
+Message-ID: <20230920112827.112182329@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,89 +52,152 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Shiu <Will.Shiu@mediatek.com>
+From: Tomislav Novak <tnovak@meta.com>
 
-[ Upstream commit 74f6f5912693ce454384eaeec48705646a21c74f ]
+[ Upstream commit d11a69873d9a7435fe6a48531e165ab80a8b1221 ]
 
-As following backtrace, the struct file_lock request , in posix_lock_inode
-is free before ftrace function using.
-Replace the ftrace function ahead free flow could fix the use-after-free
-issue.
+Arm platforms use is_default_overflow_handler() to determine if the
+hw_breakpoint code should single-step over the breakpoint trigger or
+let the custom handler deal with it.
 
-[name:report&]===============================================
-BUG:KASAN: use-after-free in trace_event_raw_event_filelock_lock+0x80/0x12c
-[name:report&]Read at addr f6ffff8025622620 by task NativeThread/16753
-[name:report_hw_tags&]Pointer tag: [f6], memory tag: [fe]
-[name:report&]
-BT:
-Hardware name: MT6897 (DT)
-Call trace:
- dump_backtrace+0xf8/0x148
- show_stack+0x18/0x24
- dump_stack_lvl+0x60/0x7c
- print_report+0x2c8/0xa08
- kasan_report+0xb0/0x120
- __do_kernel_fault+0xc8/0x248
- do_bad_area+0x30/0xdc
- do_tag_check_fault+0x1c/0x30
- do_mem_abort+0x58/0xbc
- el1_abort+0x3c/0x5c
- el1h_64_sync_handler+0x54/0x90
- el1h_64_sync+0x68/0x6c
- trace_event_raw_event_filelock_lock+0x80/0x12c
- posix_lock_inode+0xd0c/0xd60
- do_lock_file_wait+0xb8/0x190
- fcntl_setlk+0x2d8/0x440
-...
-[name:report&]
-[name:report&]Allocated by task 16752:
-...
- slab_post_alloc_hook+0x74/0x340
- kmem_cache_alloc+0x1b0/0x2f0
- posix_lock_inode+0xb0/0xd60
-...
- [name:report&]
- [name:report&]Freed by task 16752:
-...
-  kmem_cache_free+0x274/0x5b0
-  locks_dispose_list+0x3c/0x148
-  posix_lock_inode+0xc40/0xd60
-  do_lock_file_wait+0xb8/0x190
-  fcntl_setlk+0x2d8/0x440
-  do_fcntl+0x150/0xc18
-...
+Since bpf_overflow_handler() currently isn't recognized as a default
+handler, attaching a BPF program to a PERF_TYPE_BREAKPOINT event causes
+it to keep firing (the instruction triggering the data abort exception
+is never skipped). For example:
 
-Signed-off-by: Will Shiu <Will.Shiu@mediatek.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
+  # bpftrace -e 'watchpoint:0x10000:4:w { print("hit") }' -c ./test
+  Attaching 1 probe...
+  hit
+  hit
+  [...]
+  ^C
+
+(./test performs a single 4-byte store to 0x10000)
+
+This patch replaces the check with uses_default_overflow_handler(),
+which accounts for the bpf_overflow_handler() case by also testing
+if one of the perf_event_output functions gets invoked indirectly,
+via orig_default_handler.
+
+Signed-off-by: Tomislav Novak <tnovak@meta.com>
+Tested-by: Samuel Gosselin <sgosselin@google.com> # arm64
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/linux-arm-kernel/20220923203644.2731604-1-tnovak@fb.com/
+Link: https://lore.kernel.org/r/20230605191923.1219974-1-tnovak@meta.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/locks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/kernel/hw_breakpoint.c   |  8 ++++----
+ arch/arm64/kernel/hw_breakpoint.c |  4 ++--
+ include/linux/perf_event.h        | 22 +++++++++++++++++++---
+ 3 files changed, 25 insertions(+), 9 deletions(-)
 
-diff --git a/fs/locks.c b/fs/locks.c
-index 881fd16905c61..4899a4666f24d 100644
---- a/fs/locks.c
-+++ b/fs/locks.c
-@@ -1339,6 +1339,7 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
-  out:
- 	spin_unlock(&ctx->flc_lock);
- 	percpu_up_read(&file_rwsem);
-+	trace_posix_lock_inode(inode, request, error);
- 	/*
- 	 * Free any unused locks.
- 	 */
-@@ -1347,7 +1348,6 @@ static int posix_lock_inode(struct inode *inode, struct file_lock *request,
- 	if (new_fl2)
- 		locks_free_lock(new_fl2);
- 	locks_dispose_list(&dispose);
--	trace_posix_lock_inode(inode, request, error);
+diff --git a/arch/arm/kernel/hw_breakpoint.c b/arch/arm/kernel/hw_breakpoint.c
+index b1423fb130ea4..8f1fa7aac31fb 100644
+--- a/arch/arm/kernel/hw_breakpoint.c
++++ b/arch/arm/kernel/hw_breakpoint.c
+@@ -626,7 +626,7 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
+ 	hw->address &= ~alignment_mask;
+ 	hw->ctrl.len <<= offset;
  
- 	return error;
+-	if (is_default_overflow_handler(bp)) {
++	if (uses_default_overflow_handler(bp)) {
+ 		/*
+ 		 * Mismatch breakpoints are required for single-stepping
+ 		 * breakpoints.
+@@ -798,7 +798,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
+ 		 * Otherwise, insert a temporary mismatch breakpoint so that
+ 		 * we can single-step over the watchpoint trigger.
+ 		 */
+-		if (!is_default_overflow_handler(wp))
++		if (!uses_default_overflow_handler(wp))
+ 			continue;
+ step:
+ 		enable_single_step(wp, instruction_pointer(regs));
+@@ -811,7 +811,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
+ 		info->trigger = addr;
+ 		pr_debug("watchpoint fired: address = 0x%x\n", info->trigger);
+ 		perf_bp_event(wp, regs);
+-		if (is_default_overflow_handler(wp))
++		if (uses_default_overflow_handler(wp))
+ 			enable_single_step(wp, instruction_pointer(regs));
+ 	}
+ 
+@@ -886,7 +886,7 @@ static void breakpoint_handler(unsigned long unknown, struct pt_regs *regs)
+ 			info->trigger = addr;
+ 			pr_debug("breakpoint fired: address = 0x%x\n", addr);
+ 			perf_bp_event(bp, regs);
+-			if (is_default_overflow_handler(bp))
++			if (uses_default_overflow_handler(bp))
+ 				enable_single_step(bp, addr);
+ 			goto unlock;
+ 		}
+diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
+index 712e97c03e54c..e5a0c38f1b5ee 100644
+--- a/arch/arm64/kernel/hw_breakpoint.c
++++ b/arch/arm64/kernel/hw_breakpoint.c
+@@ -654,7 +654,7 @@ static int breakpoint_handler(unsigned long unused, unsigned int esr,
+ 		perf_bp_event(bp, regs);
+ 
+ 		/* Do we need to handle the stepping? */
+-		if (is_default_overflow_handler(bp))
++		if (uses_default_overflow_handler(bp))
+ 			step = 1;
+ unlock:
+ 		rcu_read_unlock();
+@@ -733,7 +733,7 @@ static u64 get_distance_from_watchpoint(unsigned long addr, u64 val,
+ static int watchpoint_report(struct perf_event *wp, unsigned long addr,
+ 			     struct pt_regs *regs)
+ {
+-	int step = is_default_overflow_handler(wp);
++	int step = uses_default_overflow_handler(wp);
+ 	struct arch_hw_breakpoint *info = counter_arch_bp(wp);
+ 
+ 	info->trigger = addr;
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 67a50c78232fe..93dffe2f3fff2 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -1069,15 +1069,31 @@ extern int perf_event_output(struct perf_event *event,
+ 			     struct pt_regs *regs);
+ 
+ static inline bool
+-is_default_overflow_handler(struct perf_event *event)
++__is_default_overflow_handler(perf_overflow_handler_t overflow_handler)
+ {
+-	if (likely(event->overflow_handler == perf_event_output_forward))
++	if (likely(overflow_handler == perf_event_output_forward))
+ 		return true;
+-	if (unlikely(event->overflow_handler == perf_event_output_backward))
++	if (unlikely(overflow_handler == perf_event_output_backward))
+ 		return true;
+ 	return false;
  }
+ 
++#define is_default_overflow_handler(event) \
++	__is_default_overflow_handler((event)->overflow_handler)
++
++#ifdef CONFIG_BPF_SYSCALL
++static inline bool uses_default_overflow_handler(struct perf_event *event)
++{
++	if (likely(is_default_overflow_handler(event)))
++		return true;
++
++	return __is_default_overflow_handler(event->orig_overflow_handler);
++}
++#else
++#define uses_default_overflow_handler(event) \
++	is_default_overflow_handler(event)
++#endif
++
+ extern void
+ perf_event_header__init_id(struct perf_event_header *header,
+ 			   struct perf_sample_data *data,
 -- 
 2.40.1
 
