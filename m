@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 686AC7A7C55
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C3AC7A7B04
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235119AbjITMAT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:00:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38008 "EHLO
+        id S234618AbjITLsb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:48:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235095AbjITMAS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:00:18 -0400
+        with ESMTP id S234616AbjITLsa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 754A3A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:00:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45E4C433C7;
-        Wed, 20 Sep 2023 12:00:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46044B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927ADC433C9;
+        Wed, 20 Sep 2023 11:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211212;
-        bh=i5CwbQ9hFqvnMq7NRhr9raHAM4+J7JWAsw7+POd0pZY=;
+        s=korg; t=1695210504;
+        bh=Em8M8dtlGT90bHOmCi7jO6WJhfTpFqdsa5WfSLVSBm0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qa1kzFBx+M5yinArzb4o6XfyUc1vcHj+Rd7s6Cbm5ihsw6lWdWqiABu9+ITWtrkFl
-         xeEyCzXupGuPkpmOcQtTqcneUupvjoG56TN3P6Oaal5B3D8MCzN0IU/ymnIQE6mpyC
-         ATLubiI1jAxH97mSsG3cqt05nSAjtLBPiba0fkUM=
+        b=1HfwiWrZuhjfXGZ1U73rrXScss76APBHr6hiZVPyJZAzZW1KStw4FVuyjkqX2/qWs
+         Pti6gHt4mg0EF6p+bviLwtbArgjPPA6PdIdGMmcAQ9vNGdyoZjQwKwVrabSI/hP3mO
+         NiNWD7aozs7zvYtneen/schgN3X5HyTp7OsrVLGE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+0ad741797f4565e7e2d2@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 010/186] nilfs2: fix general protection fault in nilfs_lookup_dirty_data_buffers()
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 069/211] arm64: dts: qcom: sm6350: correct ramoops pmsg-size
 Date:   Wed, 20 Sep 2023 13:28:33 +0200
-Message-ID: <20230920112837.221545420@linuxfoundation.org>
+Message-ID: <20230920112847.912546477@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,52 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit f83913f8c5b882a312e72b7669762f8a5c9385e4 upstream.
+[ Upstream commit c86b97a72065e06eacb993dc71fa9febc93422af ]
 
-A syzbot stress test reported that create_empty_buffers() called from
-nilfs_lookup_dirty_data_buffers() can cause a general protection fault.
+There is no 'msg-size' property in ramoops, so assume intention was for
+'pmsg-size':
 
-Analysis using its reproducer revealed that the back reference "mapping"
-from a page/folio has been changed to NULL after dirty page/folio gang
-lookup in nilfs_lookup_dirty_data_buffers().
+  sm6350-sony-xperia-lena-pdx213.dtb: ramoops@ffc00000: Unevaluated properties are not allowed ('msg-size' was unexpected)
 
-Fix this issue by excluding pages/folios from being collected if, after
-acquiring a lock on each page/folio, its back reference "mapping" differs
-from the pointer to the address space struct that held the page/folio.
-
-Link: https://lkml.kernel.org/r/20230805132038.6435-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+0ad741797f4565e7e2d2@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/0000000000002930a705fc32b231@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230618114442.140185-5-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-fs/nilfs2/segment.c | 5 +++++
- fs/nilfs2/segment.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -743,6 +743,11 @@ static size_t nilfs_lookup_dirty_data_bu
- 			break;
- 
- 		lock_page(page);
-+		if (unlikely(page->mapping != mapping)) {
-+			/* Exclude pages removed from the address space */
-+			unlock_page(page);
-+			continue;
-+		}
- 		if (!page_has_buffers(page))
- 			create_empty_buffers(page, i_blocksize(inode), 0);
- 		unlock_page(page);
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index 7cafb32fbb941..4b4ea156a92c5 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -673,7 +673,7 @@ ramoops: ramoops@ffc00000 {
+ 			reg = <0 0xffc00000 0 0x100000>;
+ 			record-size = <0x1000>;
+ 			console-size = <0x40000>;
+-			msg-size = <0x20000 0x20000>;
++			pmsg-size = <0x20000>;
+ 			ecc-size = <16>;
+ 			no-map;
+ 		};
+-- 
+2.40.1
+
 
 
