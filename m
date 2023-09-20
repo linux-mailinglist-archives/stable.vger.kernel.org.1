@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEEDC7A7EA8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CCC77A7EF6
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235534AbjITMTe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:19:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37928 "EHLO
+        id S234556AbjITMW0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:22:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235640AbjITMTa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:30 -0400
+        with ESMTP id S235641AbjITMWZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60086D3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84D2C433C7;
-        Wed, 20 Sep 2023 12:19:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6DB7A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86878C433C9;
+        Wed, 20 Sep 2023 12:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212364;
-        bh=1KDuRLm5X53cYVZLWNSVbEhV5+7V7PQb5ypGRnK7P3k=;
+        s=korg; t=1695212538;
+        bh=Y/IUYjvOByiCfK0qV5xK9lZ0wi6efoJpwJllhxTjc64=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nnjeW1qeUkauJDV2XycwQdBIleY0YqG2PKa/t+fx6wHfN6mqbdm5J9mKXkA8wHsUQ
-         YnO7837DGuTYnX1RKeCJeOcnrQwXtGFcBKFMuz2wlnoKiMoJkaMvkCXEQiOJXm7wQ/
-         Tirke1UCtd/8kMcNyepU7FyAuxLpeVhUUyCa7SP4=
+        b=uoLz+DScrGlUjM0H3tFLtSinH0fnyDw8uu+q0YGAlNPhkWQvYNPWApimFs4j0YUiD
+         u26JA3yTHxrfRJJ+hhvNdd62EkH3k86lBWm4EruDaxuTcQHa+uNuimisainsTaSkkC
+         O0+4rOH5li40gIx9HoOKve3eWFaduue16MmC8p3g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Georg Ottinger <g.ottinger@gmx.at>,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 249/273] ext2: fix datatype of block number in ext2_xattr_set2()
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 39/83] media: anysee: fix null-ptr-deref in anysee_master_xfer
 Date:   Wed, 20 Sep 2023 13:31:29 +0200
-Message-ID: <20230920112854.001564645@linuxfoundation.org>
+Message-ID: <20230920112828.215473345@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,57 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georg Ottinger <g.ottinger@gmx.at>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit e88076348425b7d0491c8c98d8732a7df8de7aa3 ]
+[ Upstream commit c30411266fd67ea3c02a05c157231654d5a3bdc9 ]
 
-I run a small server that uses external hard drives for backups. The
-backup software I use uses ext2 filesystems with 4KiB block size and
-the server is running SELinux and therefore relies on xattr. I recently
-upgraded the hard drives from 4TB to 12TB models. I noticed that after
-transferring some TBs I got a filesystem error "Freeing blocks not in
-datazone - block = 18446744071529317386, count = 1" and the backup
-process stopped. Trying to fix the fs with e2fsck resulted in a
-completely corrupted fs. The error probably came from ext2_free_blocks(),
-and because of the large number 18e19 this problem immediately looked
-like some kind of integer overflow. Whereas the 4TB fs was about 1e9
-blocks, the new 12TB is about 3e9 blocks. So, searching the ext2 code,
-I came across the line in fs/ext2/xattr.c:745 where ext2_new_block()
-is called and the resulting block number is stored in the variable block
-as an int datatype. If a block with a block number greater than
-INT32_MAX is returned, this variable overflows and the call to
-sb_getblk() at line fs/ext2/xattr.c:750 fails, then the call to
-ext2_free_blocks() produces the error.
+In anysee_master_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach anysee_master_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-Signed-off-by: Georg Ottinger <g.ottinger@gmx.at>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230815100340.22121-1-g.ottinger@gmx.at>
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: add spaces around +]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/xattr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/usb/dvb-usb-v2/anysee.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext2/xattr.c b/fs/ext2/xattr.c
-index bd1d68ff3a9f8..437175bce22e8 100644
---- a/fs/ext2/xattr.c
-+++ b/fs/ext2/xattr.c
-@@ -664,10 +664,10 @@ ext2_xattr_set2(struct inode *inode, struct buffer_head *old_bh,
- 			/* We need to allocate a new block */
- 			ext2_fsblk_t goal = ext2_group_first_block_no(sb,
- 						EXT2_I(inode)->i_block_group);
--			int block = ext2_new_block(inode, goal, &error);
-+			ext2_fsblk_t block = ext2_new_block(inode, goal, &error);
- 			if (error)
- 				goto cleanup;
--			ea_idebug(inode, "creating block %d", block);
-+			ea_idebug(inode, "creating block %lu", block);
+diff --git a/drivers/media/usb/dvb-usb-v2/anysee.c b/drivers/media/usb/dvb-usb-v2/anysee.c
+index 89a1b204b90c3..3dacf3914d75b 100644
+--- a/drivers/media/usb/dvb-usb-v2/anysee.c
++++ b/drivers/media/usb/dvb-usb-v2/anysee.c
+@@ -202,7 +202,7 @@ static int anysee_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
  
- 			new_bh = sb_getblk(sb, block);
- 			if (unlikely(!new_bh)) {
+ 	while (i < num) {
+ 		if (num > i + 1 && (msg[i+1].flags & I2C_M_RD)) {
+-			if (msg[i].len > 2 || msg[i+1].len > 60) {
++			if (msg[i].len != 2 || msg[i + 1].len > 60) {
+ 				ret = -EOPNOTSUPP;
+ 				break;
+ 			}
 -- 
 2.40.1
 
