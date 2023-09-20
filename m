@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06C757A7D3A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82ABA7A7E9B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235187AbjITMHl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:07:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37120 "EHLO
+        id S235507AbjITMTO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235224AbjITMHk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:07:40 -0400
+        with ESMTP id S235605AbjITMTO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7DEACA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:07:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED098C433C9;
-        Wed, 20 Sep 2023 12:07:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3668C83
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBE1C433C8;
+        Wed, 20 Sep 2023 12:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211647;
-        bh=Cuss6SLcD+p3RpY1SuaeJnV6GL9y4sfv7r9iWL8wPVE=;
+        s=korg; t=1695212347;
+        bh=gMXiOkccmfJ+TW4QLoMO80+9U6lmPsOvOS+KCyAgs6Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NtivwmgXO90WbIAEWU5s+tXHCHb9sLIkipfQ9pGfT8XnGwa2nJclIUpIPkGdOgPb1
-         TWPj1xRVidXLkKtWSNnQSkfG3ZYlblaO03SMrEjqmApxdFy2jI/Vizpv45zet80qh+
-         X0G4KBqAavWCpVjCqQ999YgixLl5rUFkpXkCUqAw=
+        b=KQ9z1G6hdOfcqO796xp0yNug/1kNjH3qZKmiIw4seMjBQcs0kP/qlfCTAZf6WRHJG
+         CqzFl6a86gKLCv4s+3lGPVacM/c0ofH5HBXh5rYJ42jIbdPyVEsftUtUr7Lt4h2lLT
+         fWxPGcXfldXExQjwk0P0x6vpxfJdPzpvDwead6e8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 171/186] media: tuners: qt1010: replace BUG_ON with a regular error
-Date:   Wed, 20 Sep 2023 13:31:14 +0200
-Message-ID: <20230920112843.060794677@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Jun Lei <jun.lei@amd.com>, Tom Chung <chiahsuan.chung@amd.com>,
+        Wesley Chalmers <wesley.chalmers@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 4.19 235/273] drm/amd/display: Fix a bug when searching for insert_above_mpcc
+Date:   Wed, 20 Sep 2023 13:31:15 +0200
+Message-ID: <20230920112853.626126584@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,50 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Wesley Chalmers <wesley.chalmers@amd.com>
 
-[ Upstream commit ee630b29ea44d1851bb6c903f400956604834463 ]
+commit 3d028d5d60d516c536de1ddd3ebf3d55f3f8983b upstream.
 
-BUG_ON is unnecessary here, and in addition it confuses smatch.
-Replacing this with an error return help resolve this smatch
-warning:
+[WHY]
+Currently, when insert_plane is called with insert_above_mpcc
+parameter that is equal to tree->opp_list, the function returns NULL.
 
-drivers/media/tuners/qt1010.c:350 qt1010_init() error: buffer overflow 'i2c_data' 34 <= 34
+[HOW]
+Instead, the function should insert the plane at the top of the tree.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Wesley Chalmers <wesley.chalmers@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/tuners/qt1010.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_mpc.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/tuners/qt1010.c b/drivers/media/tuners/qt1010.c
-index 31258749b27b7..37a1db02a3042 100644
---- a/drivers/media/tuners/qt1010.c
-+++ b/drivers/media/tuners/qt1010.c
-@@ -351,11 +351,12 @@ static int qt1010_init(struct dvb_frontend *fe)
- 			else
- 				valptr = &tmpval;
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_mpc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_mpc.c
+@@ -193,8 +193,9 @@ struct mpcc *mpc1_insert_plane(
+ 		/* check insert_above_mpcc exist in tree->opp_list */
+ 		struct mpcc *temp_mpcc = tree->opp_list;
  
--			BUG_ON(i >= ARRAY_SIZE(i2c_data) - 1);
--
--			err = qt1010_init_meas1(priv, i2c_data[i+1].reg,
--						i2c_data[i].reg,
--						i2c_data[i].val, valptr);
-+			if (i >= ARRAY_SIZE(i2c_data) - 1)
-+				err = -EIO;
-+			else
-+				err = qt1010_init_meas1(priv, i2c_data[i + 1].reg,
-+							i2c_data[i].reg,
-+							i2c_data[i].val, valptr);
- 			i++;
- 			break;
- 		}
--- 
-2.40.1
-
+-		while (temp_mpcc && temp_mpcc->mpcc_bot != insert_above_mpcc)
+-			temp_mpcc = temp_mpcc->mpcc_bot;
++		if (temp_mpcc != insert_above_mpcc)
++			while (temp_mpcc && temp_mpcc->mpcc_bot != insert_above_mpcc)
++				temp_mpcc = temp_mpcc->mpcc_bot;
+ 		if (temp_mpcc == NULL)
+ 			return NULL;
+ 	}
 
 
