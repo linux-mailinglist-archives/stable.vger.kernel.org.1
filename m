@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AA7C7A7F09
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDA437A7E8B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234669AbjITMXP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:23:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46586 "EHLO
+        id S235588AbjITMSq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:18:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235663AbjITMXP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:15 -0400
+        with ESMTP id S235590AbjITMSp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCB993
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03685C433C8;
-        Wed, 20 Sep 2023 12:23:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 256BCB6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:18:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CEEC433C8;
+        Wed, 20 Sep 2023 12:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212589;
-        bh=rtsHmbhTCaYuZZ9+aMmxM0hVxutZApzDRyu3YsSUloY=;
+        s=korg; t=1695212317;
+        bh=36qHRyHyPyA5GaI6rgOr/7q7kaoqLCnykXSZxNKTRD0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gd1uDItodB7neh5nUo8WKeJwZ4IFdXGK0vCOvVP+0lkBY9JwhaGH3QtZ687aIM896
-         BP8WsX4BQzF1Dp0vJZCJJIIWmGY3IYhElyHc39L6lYUi8MY+1Cw8qzDZORaBedYS/U
-         haG1nBp2jST+zvn4kggqapoiuYkNfUeY0Pftuy28=
+        b=KcLmpD7fDtcurABq1lSCUrIn6Hd1HHNxuCSrRtZiMUh4v4G108iDlwr7LGC+RYhLD
+         rdA5IBF95KuYsFBwlZg3EreyGKMvDhB0AqB69lHIDd1r61E6rFE2Qp1PWicA27yZqH
+         kQY4PnD0rOzTnxroZ508DWxpw7EUNMUEy24kxdjw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "GONG, Ruiqi" <gongruiqi1@huawei.com>,
+        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
         Simon Horman <horms@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>, GONG@vger.kernel.org
-Subject: [PATCH 5.10 21/83] alx: fix OOB-read compiler warning
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 231/273] net: ethernet: mtk_eth_soc: fix possible NULL pointer dereference in mtk_hwlro_get_fdir_all()
 Date:   Wed, 20 Sep 2023 13:31:11 +0200
-Message-ID: <20230920112827.511944676@linuxfoundation.org>
+Message-ID: <20230920112853.519764627@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,53 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: GONG, Ruiqi <gongruiqi1@huawei.com>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit 3a198c95c95da10ad844cbeade2fe40bdf14c411 ]
+[ Upstream commit e4c79810755f66c9a933ca810da2724133b1165a ]
 
-The following message shows up when compiling with W=1:
+rule_locs is allocated in ethtool_get_rxnfc and the size is determined by
+rule_cnt from user space. So rule_cnt needs to be check before using
+rule_locs to avoid NULL pointer dereference.
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘alx_get_ethtool_stats’ at drivers/net/ethernet/atheros/alx/ethtool.c:297:2:
-./include/linux/fortify-string.h:592:4: error: call to ‘__read_overflow2_field’
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Werror=attribute-warning]
-  592 |    __read_overflow2_field(q_size_field, size);
-      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-In order to get alx stats altogether, alx_get_ethtool_stats() reads
-beyond hw->stats.rx_ok. Fix this warning by directly copying hw->stats,
-and refactor the unnecessarily complicated BUILD_BUG_ON btw.
-
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
+Fixes: 7aab747e5563 ("net: ethernet: mediatek: add ethtool functions to configure RX flows of HW LRO")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230821013218.1614265-1-gongruiqi@huaweicloud.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/atheros/alx/ethtool.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/atheros/alx/ethtool.c b/drivers/net/ethernet/atheros/alx/ethtool.c
-index 2f4eabf652e80..51e5aa2c74b34 100644
---- a/drivers/net/ethernet/atheros/alx/ethtool.c
-+++ b/drivers/net/ethernet/atheros/alx/ethtool.c
-@@ -281,9 +281,8 @@ static void alx_get_ethtool_stats(struct net_device *netdev,
- 	spin_lock(&alx->stats_lock);
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 53cff913abf0b..1a4f96894cd70 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -1621,6 +1621,9 @@ static int mtk_hwlro_get_fdir_all(struct net_device *dev,
+ 	int i;
  
- 	alx_update_hw_stats(hw);
--	BUILD_BUG_ON(sizeof(hw->stats) - offsetof(struct alx_hw_stats, rx_ok) <
--		     ALX_NUM_STATS * sizeof(u64));
--	memcpy(data, &hw->stats.rx_ok, ALX_NUM_STATS * sizeof(u64));
-+	BUILD_BUG_ON(sizeof(hw->stats) != ALX_NUM_STATS * sizeof(u64));
-+	memcpy(data, &hw->stats, sizeof(hw->stats));
- 
- 	spin_unlock(&alx->stats_lock);
- }
+ 	for (i = 0; i < MTK_MAX_LRO_IP_CNT; i++) {
++		if (cnt == cmd->rule_cnt)
++			return -EMSGSIZE;
++
+ 		if (mac->hwlro_ip[i]) {
+ 			rule_locs[cnt] = i;
+ 			cnt++;
 -- 
 2.40.1
 
