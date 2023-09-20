@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E0DB7A7800
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7DF97A7801
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:53:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234129AbjITJxp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:53:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49856 "EHLO
+        id S234218AbjITJxt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:53:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234114AbjITJxo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:53:44 -0400
+        with ESMTP id S234114AbjITJxr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:53:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F0CA8F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:53:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA41C433C8;
-        Wed, 20 Sep 2023 09:53:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 381A48F
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:53:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D446C433C7;
+        Wed, 20 Sep 2023 09:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203618;
-        bh=QsrqGCNyS1wj22NRN9E8jEymZVd+IX069LQckqlgu5k=;
+        s=korg; t=1695203620;
+        bh=f2F0xZDXGFosSf/PbRxW00vJh7XmfKG8yPqs3NTwncs=;
         h=Subject:To:Cc:From:Date:From;
-        b=fbQNP2wcJavnOHCj28HaR4YHp+Tua7YXCPcSsbwA0x9XNA9Sq28isC1130jsFxijV
-         GS+FZNPK9YSW+1lQjj3Cuzf8IoMMvUpAXvHxcdKNS/EFIYeMOY5no+SGce+zry0ne3
-         8Mb8LwOtEOHOp0XVVvaHVPK6euVrpjg54nCapQbc=
-Subject: FAILED: patch "[PATCH] btrfs: remove BUG() after failure to insert delayed dir index" failed to apply to 5.10-stable tree
+        b=YSEmDinhWUN00thbRM2yR6QUfpN5TrMAwG545iN/RaW2GN+Lxg7vCReoID0++qbR4
+         rOQKI89YjbQA9Yyf1DIvVN4ypLldqUjd84dlAH8wSArTa/zMaPDkkSGztXNiFLpahG
+         IVZDCcwB48KUu/hwk2T4NkPCqiWACL2PqURauyVM=
+Subject: FAILED: patch "[PATCH] btrfs: remove BUG() after failure to insert delayed dir index" failed to apply to 5.4-stable tree
 To:     fdmanana@suse.com, dsterba@suse.com, wqu@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:53:27 +0200
-Message-ID: <2023092027-census-monorail-5614@gregkh>
+Date:   Wed, 20 Sep 2023 11:53:28 +0200
+Message-ID: <2023092028-purveyor-limpness-f224@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2c58c3931ede7cd08cbecf1f1a4acaf0a04a41a9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092027-census-monorail-5614@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092028-purveyor-limpness-f224@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
