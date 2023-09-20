@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDDC37A7EF1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 203CD7A7EA1
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235627AbjITMWO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:22:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44684 "EHLO
+        id S235631AbjITMT0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:19:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234639AbjITMWN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:13 -0400
+        with ESMTP id S235632AbjITMTY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2302783
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1FFC433C8;
-        Wed, 20 Sep 2023 12:22:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D18FFDD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA837C433CA;
+        Wed, 20 Sep 2023 12:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212527;
-        bh=ccqo3dv7zibO62XboprEWsEKJXoKvPpL43blyPDOAAY=;
+        s=korg; t=1695212353;
+        bh=cf2V2vi8Tes5aHfih9NIt45V/uOfQJzvT3l0BIZUlw8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e8H565GPvuBDQrR//sAkcUJK3ZVUZfkwRKOflilHgLbS8+vT6CVGsp8EBLwcfm4yY
-         vxnr+yHCEAM1kOBI+izabkuV6JdSufWprHACbApPcE1j6mFX7QnYSw7L3PJUVuxgpt
-         lBi9CVf6Klsrrx4MKS9nFpoAvGI/iYTkesnHvBfM=
+        b=Pn08cG8hehSgH2YHGdZzCKPcjx3GTd24jiDWeSIgtmD6Lq3qa7cifaNIW4iKa0N8b
+         IDbn3tZymWGbxVK6AyQOsal4vJ8bQ69OGEE+D5hAmUApjSIY20tkB6lQKFBY2csWzX
+         g4mrjAxRGuCaWfcIFKPIOM+Ox2Y76AFIFooBvqmI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, ruanjinjie <ruanjinjie@huawei.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev,
+        Alexander Steffen <Alexander.Steffen@infineon.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 35/83] powerpc/pseries: fix possible memory leak in ibmebus_bus_init()
+Subject: [PATCH 4.19 245/273] tpm_tis: Resend command to recover from data transfer errors
 Date:   Wed, 20 Sep 2023 13:31:25 +0200
-Message-ID: <20230920112828.065036849@linuxfoundation.org>
+Message-ID: <20230920112853.894182524@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +51,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ruanjinjie <ruanjinjie@huawei.com>
+From: Alexander Steffen <Alexander.Steffen@infineon.com>
 
-[ Upstream commit afda85b963c12947e298ad85d757e333aa40fd74 ]
+[ Upstream commit 280db21e153d8810ce3b93640c63ae922bcb9e8e ]
 
-If device_register() returns error in ibmebus_bus_init(), name of kobject
-which is allocated in dev_set_name() called in device_add() is leaked.
+Similar to the transmission of TPM responses, also the transmission of TPM
+commands may become corrupted. Instead of aborting when detecting such
+issues, try resending the command again.
 
-As comment of device_add() says, it should call put_device() to drop
-the reference count that was set in device_initialize() when it fails,
-so the name can be freed in kobject_cleanup().
-
-Signed-off-by: ruanjinjie <ruanjinjie@huawei.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20221110011929.3709774-1-ruanjinjie@huawei.com
+Signed-off-by: Alexander Steffen <Alexander.Steffen@infineon.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/ibmebus.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/char/tpm/tpm_tis_core.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/ibmebus.c b/arch/powerpc/platforms/pseries/ibmebus.c
-index 8c6e509f69675..c3cc010e9cc45 100644
---- a/arch/powerpc/platforms/pseries/ibmebus.c
-+++ b/arch/powerpc/platforms/pseries/ibmebus.c
-@@ -451,6 +451,7 @@ static int __init ibmebus_bus_init(void)
- 	if (err) {
- 		printk(KERN_WARNING "%s: device_register returned %i\n",
- 		       __func__, err);
-+		put_device(&ibmebus_bus_device);
- 		bus_unregister(&ibmebus_bus_type);
+diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
+index 430a9eac67e19..d1869b9a2ffd3 100644
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -425,10 +425,17 @@ static int tpm_tis_send_main(struct tpm_chip *chip, const u8 *buf, size_t len)
+ 	int rc;
+ 	u32 ordinal;
+ 	unsigned long dur;
+-
+-	rc = tpm_tis_send_data(chip, buf, len);
+-	if (rc < 0)
+-		return rc;
++	unsigned int try;
++
++	for (try = 0; try < TPM_RETRY; try++) {
++		rc = tpm_tis_send_data(chip, buf, len);
++		if (rc >= 0)
++			/* Data transfer done successfully */
++			break;
++		else if (rc != -EIO)
++			/* Data transfer failed, not recoverable */
++			return rc;
++	}
  
- 		return err;
+ 	/* go and do it */
+ 	rc = tpm_tis_write8(priv, TPM_STS(priv->locality), TPM_STS_GO);
 -- 
 2.40.1
 
