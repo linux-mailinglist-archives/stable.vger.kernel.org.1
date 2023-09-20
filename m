@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A60B7A7F25
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3785A7A7ECC
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235724AbjITMY3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:24:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33678 "EHLO
+        id S235662AbjITMUv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:20:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235730AbjITMY2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:28 -0400
+        with ESMTP id S235688AbjITMUu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16EF992
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5468EC433CB;
-        Wed, 20 Sep 2023 12:24:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13D6AB4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544C1C433C7;
+        Wed, 20 Sep 2023 12:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212662;
-        bh=Vg+qD+3JFAvI/C8ntOl697ujw7lHy8zEP12qSzlfMwA=;
+        s=korg; t=1695212440;
+        bh=e76mENKpOIq4ob44XBuOoOzQuKr91yRmvTIC1m5YWsA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TgGiBOxD4LkRkR8cHFOrfGeLUkzNkBFFAwdZza1S3zONFQLU5y/MnuEhyp0AR92EP
-         fYn3O33n7vj1E+oOWnznQsKk80tgfNDiNyR76MzXeP0tx9iBCHcfO9ojzOX1pqn7ya
-         cCHJHlJf5m82q+Sn9oocmyRM7pfG9Q4JStdmZNIU=
+        b=zYkzFfWJHqXoJcfrwBybCGxh39+MNS4IAD+wJitbXw0ywJjjOCVW7DJknIgptE0Pl
+         QfZtsCYFQ8RsSzwiuTUsMYew/8w/GnCJzA6eHP1R7R53eckovXjwdpOB7VaApP/VbD
+         TNphMl63hO8zriZEO0LE0/ajmveJZjtnQnavCMEA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Anand Jain <anand.jain@oracle.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 58/83] btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super
+        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Weimer <fweimer@redhat.com>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 4.19 268/273] attr: block mode changes of symlinks
 Date:   Wed, 20 Sep 2023 13:31:48 +0200
-Message-ID: <20230920112828.951189500@linuxfoundation.org>
+Message-ID: <20230920112854.506119440@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,70 +51,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anand Jain <anand.jain@oracle.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 6bfe3959b0e7a526f5c64747801a8613f002f05a ]
+commit 5d1f903f75a80daa4dfb3d84e114ec8ecbf29956 upstream.
 
-The function btrfs_validate_super() should verify the metadata_uuid in
-the provided superblock argument. Because, all its callers expect it to
-do that.
+Changing the mode of symlinks is meaningless as the vfs doesn't take the
+mode of a symlink into account during path lookup permission checking.
 
-Such as in the following stacks:
+However, the vfs doesn't block mode changes on symlinks. This however,
+has lead to an untenable mess roughly classifiable into the following
+two categories:
 
-  write_all_supers()
-   sb = fs_info->super_for_commit;
-   btrfs_validate_write_super(.., sb)
-     btrfs_validate_super(.., sb, ..)
+(1) Filesystems that don't implement a i_op->setattr() for symlinks.
 
-  scrub_one_super()
-	btrfs_validate_super(.., sb, ..)
+    Such filesystems may or may not know that without i_op->setattr()
+    defined, notify_change() falls back to simple_setattr() causing the
+    inode's mode in the inode cache to be changed.
 
-And
-   check_dev_super()
-	btrfs_validate_super(.., sb, ..)
+    That's a generic issue as this will affect all non-size changing
+    inode attributes including ownership changes.
 
-However, it currently verifies the fs_info::super_copy::metadata_uuid
-instead.  Fix this using the correct metadata_uuid in the superblock
-argument.
+    Example: afs
 
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Anand Jain <anand.jain@oracle.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+(2) Filesystems that fail with EOPNOTSUPP but change the mode of the
+    symlink nonetheless.
+
+    Some filesystems will happily update the mode of a symlink but still
+    return EOPNOTSUPP. This is the biggest source of confusion for
+    userspace.
+
+    The EOPNOTSUPP in this case comes from POSIX ACLs. Specifically it
+    comes from filesystems that call posix_acl_chmod(), e.g., btrfs via
+
+        if (!err && attr->ia_valid & ATTR_MODE)
+                err = posix_acl_chmod(idmap, dentry, inode->i_mode);
+
+    Filesystems including btrfs don't implement i_op->set_acl() so
+    posix_acl_chmod() will report EOPNOTSUPP.
+
+    When posix_acl_chmod() is called, most filesystems will have
+    finished updating the inode.
+
+    Perversely, this has the consequences that this behavior may depend
+    on two kconfig options and mount options:
+
+    * CONFIG_POSIX_ACL={y,n}
+    * CONFIG_${FSTYPE}_POSIX_ACL={y,n}
+    * Opt_acl, Opt_noacl
+
+    Example: btrfs, ext4, xfs
+
+The only way to change the mode on a symlink currently involves abusing
+an O_PATH file descriptor in the following manner:
+
+        fd = openat(-1, "/path/to/link", O_CLOEXEC | O_PATH | O_NOFOLLOW);
+
+        char path[PATH_MAX];
+        snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
+        chmod(path, 0000);
+
+But for most major filesystems with POSIX ACL support such as btrfs,
+ext4, ceph, tmpfs, xfs and others this will fail with EOPNOTSUPP with
+the mode still updated due to the aforementioned posix_acl_chmod()
+nonsense.
+
+So, given that for all major filesystems this would fail with EOPNOTSUPP
+and that both glibc (cf. [1]) and musl (cf. [2]) outright block mode
+changes on symlinks we should just try and block mode changes on
+symlinks directly in the vfs and have a clean break with this nonsense.
+
+If this causes any regressions, we do the next best thing and fix up all
+filesystems that do return EOPNOTSUPP with the mode updated to not call
+posix_acl_chmod() on symlinks.
+
+But as usual, let's try the clean cut solution first. It's a simple
+patch that can be easily reverted. Not marking this for backport as I'll
+do that manually if we're reasonably sure that this works and there are
+no strong objections.
+
+We could block this in chmod_common() but it's more appropriate to do it
+notify_change() as it will also mean that we catch filesystems that
+change symlink permissions explicitly or accidently.
+
+Similar proposals were floated in the past as in [3] and [4] and again
+recently in [5]. There's also a couple of bugs about this inconsistency
+as in [6] and [7].
+
+Link: https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/fchmodat.c;h=99527a3727e44cb8661ee1f743068f108ec93979;hb=HEAD [1]
+Link: https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c [2]
+Link: https://lore.kernel.org/all/20200911065733.GA31579@infradead.org [3]
+Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00518.html [4]
+Link: https://lore.kernel.org/lkml/87lefmbppo.fsf@oldenburg.str.redhat.com [5]
+Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00467.html [6]
+Link: https://sourceware.org/bugzilla/show_bug.cgi?id=14578#c17 [7]
+Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org # please backport to all LTSes but not before v6.6-rc2 is tagged
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Suggested-by: Florian Weimer <fweimer@redhat.com>
+Message-Id: <20230712-vfs-chmod-symlinks-v2-1-08cfb92b61dd@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ fs/attr.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 1bc6909d4de94..0e25a3f64b2e0 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2503,13 +2503,11 @@ static int validate_super(struct btrfs_fs_info *fs_info,
- 		ret = -EINVAL;
+--- a/fs/attr.c
++++ b/fs/attr.c
+@@ -256,9 +256,25 @@ int notify_change(struct dentry * dentry
  	}
  
--	if (btrfs_fs_incompat(fs_info, METADATA_UUID) &&
--	    memcmp(fs_info->fs_devices->metadata_uuid,
--		   fs_info->super_copy->metadata_uuid, BTRFS_FSID_SIZE)) {
-+	if (memcmp(fs_info->fs_devices->metadata_uuid, btrfs_sb_fsid_ptr(sb),
-+		   BTRFS_FSID_SIZE) != 0) {
- 		btrfs_err(fs_info,
- "superblock metadata_uuid doesn't match metadata uuid of fs_devices: %pU != %pU",
--			fs_info->super_copy->metadata_uuid,
--			fs_info->fs_devices->metadata_uuid);
-+			  btrfs_sb_fsid_ptr(sb), fs_info->fs_devices->metadata_uuid);
- 		ret = -EINVAL;
+ 	if ((ia_valid & ATTR_MODE)) {
+-		umode_t amode = attr->ia_mode;
++		/*
++		 * Don't allow changing the mode of symlinks:
++		 *
++		 * (1) The vfs doesn't take the mode of symlinks into account
++		 *     during permission checking.
++		 * (2) This has never worked correctly. Most major filesystems
++		 *     did return EOPNOTSUPP due to interactions with POSIX ACLs
++		 *     but did still updated the mode of the symlink.
++		 *     This inconsistency led system call wrapper providers such
++		 *     as libc to block changing the mode of symlinks with
++		 *     EOPNOTSUPP already.
++		 * (3) To even do this in the first place one would have to use
++		 *     specific file descriptors and quite some effort.
++		 */
++		if (S_ISLNK(inode->i_mode))
++			return -EOPNOTSUPP;
++
+ 		/* Flag setting protected by i_mutex */
+-		if (is_sxid(amode))
++		if (is_sxid(attr->ia_mode))
+ 			inode->i_flags &= ~S_NOSEC;
  	}
  
--- 
-2.40.1
-
 
 
