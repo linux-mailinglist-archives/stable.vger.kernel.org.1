@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31F0E7A7EE5
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BF3C7A7E77
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235621AbjITMVr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:21:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42278 "EHLO
+        id S235577AbjITMSF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:18:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235651AbjITMVp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:45 -0400
+        with ESMTP id S235583AbjITMSE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D7AEC6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFF6C433CA;
-        Wed, 20 Sep 2023 12:21:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E10EB100
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD44C433C9;
+        Wed, 20 Sep 2023 12:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212498;
-        bh=CUosmvh0JZhND5cWKpomZ0tpx8f3Pdoom38HYHhB2zk=;
+        s=korg; t=1695212271;
+        bh=xvAT5RjmW1C53hLaNjeNO5QOyg08gIqXZ71V96vNpAM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d7lB/IfoH/sBH0dGaNqw4eYsJAku3/mGgQPPy+jNIJY1MVr6NhRrUoWN+WAsKU/UC
-         wSD99FjTNngrdjo1ttfi54jqCChsfcFr4mFhs2h9OuRrsH7AWgSyHHoq004KUj2vgt
-         SPW4N9euvIhlht7yzyKuFQd66Mggasnyo69/WBkg=
+        b=R6R3S+rKdNfBwXRGTl5aqlHE1sZYaHJxVFfKTt7yOO7/+sVsUyRbcrWPERDRGvbTN
+         y9koLxAFj+HTy01oZO8pVwETVuKhAGIkAECFGYWW0iC1uQYobC5NUY4M6m2XO2YWAm
+         U1xCN7xURKFe3Pte4gHBUkAN1mKYmmvwAtTx329g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hu Chunyu <chuhu@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Wander Lairson Costa <wander@redhat.com>,
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 05/83] kernel/fork: beware of __put_task_struct() calling context
+Subject: [PATCH 4.19 215/273] af_unix: Fix data-race around unix_tot_inflight.
 Date:   Wed, 20 Sep 2023 13:30:55 +0200
-Message-ID: <20230920112826.863808195@linuxfoundation.org>
+Message-ID: <20230920112853.096420093@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,130 +52,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit d243b34459cea30cfe5f3a9b2feb44e7daff9938 ]
+[ Upstream commit ade32bd8a738d7497ffe9743c46728db26740f78 ]
 
-Under PREEMPT_RT, __put_task_struct() indirectly acquires sleeping
-locks. Therefore, it can't be called from an non-preemptible context.
+unix_tot_inflight is changed under spin_lock(unix_gc_lock), but
+unix_release_sock() reads it locklessly.
 
-One practical example is splat inside inactive_task_timer(), which is
-called in a interrupt context:
+Let's use READ_ONCE() for unix_tot_inflight.
 
-  CPU: 1 PID: 2848 Comm: life Kdump: loaded Tainted: G W ---------
-   Hardware name: HP ProLiant DL388p Gen8, BIOS P70 07/15/2012
-   Call Trace:
-   dump_stack_lvl+0x57/0x7d
-   mark_lock_irq.cold+0x33/0xba
-   mark_lock+0x1e7/0x400
-   mark_usage+0x11d/0x140
-   __lock_acquire+0x30d/0x930
-   lock_acquire.part.0+0x9c/0x210
-   rt_spin_lock+0x27/0xe0
-   refill_obj_stock+0x3d/0x3a0
-   kmem_cache_free+0x357/0x560
-   inactive_task_timer+0x1ad/0x340
-   __run_hrtimer+0x8a/0x1a0
-   __hrtimer_run_queues+0x91/0x130
-   hrtimer_interrupt+0x10f/0x220
-   __sysvec_apic_timer_interrupt+0x7b/0xd0
-   sysvec_apic_timer_interrupt+0x4f/0xd0
-   asm_sysvec_apic_timer_interrupt+0x12/0x20
-   RIP: 0033:0x7fff196bf6f5
+Note that the writer side was marked by commit 9d6d7f1cb67c ("af_unix:
+annote lockless accesses to unix_tot_inflight & gc_in_progress")
 
-Instead of calling __put_task_struct() directly, we defer it using
-call_rcu(). A more natural approach would use a workqueue, but since
-in PREEMPT_RT, we can't allocate dynamic memory from atomic context,
-the code would become more complex because we would need to put the
-work_struct instance in the task_struct and initialize it when we
-allocate a new task_struct.
+BUG: KCSAN: data-race in unix_inflight / unix_release_sock
 
-The issue is reproducible with stress-ng:
+write (marked) to 0xffffffff871852b8 of 4 bytes by task 123 on cpu 1:
+ unix_inflight+0x130/0x180 net/unix/scm.c:64
+ unix_attach_fds+0x137/0x1b0 net/unix/scm.c:123
+ unix_scm_to_skb net/unix/af_unix.c:1832 [inline]
+ unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1955
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg+0x148/0x160 net/socket.c:747
+ ____sys_sendmsg+0x4e4/0x610 net/socket.c:2493
+ ___sys_sendmsg+0xc6/0x140 net/socket.c:2547
+ __sys_sendmsg+0x94/0x140 net/socket.c:2576
+ __do_sys_sendmsg net/socket.c:2585 [inline]
+ __se_sys_sendmsg net/socket.c:2583 [inline]
+ __x64_sys_sendmsg+0x45/0x50 net/socket.c:2583
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-  while true; do
-      stress-ng --sched deadline --sched-period 1000000000 \
-	      --sched-runtime 800000000 --sched-deadline \
-	      1000000000 --mmapfork 23 -t 20
-  done
+read to 0xffffffff871852b8 of 4 bytes by task 4891 on cpu 0:
+ unix_release_sock+0x608/0x910 net/unix/af_unix.c:671
+ unix_release+0x59/0x80 net/unix/af_unix.c:1058
+ __sock_release+0x7d/0x170 net/socket.c:653
+ sock_close+0x19/0x30 net/socket.c:1385
+ __fput+0x179/0x5e0 fs/file_table.c:321
+ ____fput+0x15/0x20 fs/file_table.c:349
+ task_work_run+0x116/0x1a0 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
+ syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
+ do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-Reported-by: Hu Chunyu <chuhu@redhat.com>
-Suggested-by: Oleg Nesterov <oleg@redhat.com>
-Suggested-by: Valentin Schneider <vschneid@redhat.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230614122323.37957-2-wander@redhat.com
+value changed: 0x00000000 -> 0x00000001
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 4891 Comm: systemd-coredum Not tainted 6.4.0-rc5-01219-gfa0e21fa4443 #5
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 9305cfa4443d ("[AF_UNIX]: Make unix_tot_inflight counter non-atomic")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched/task.h | 28 +++++++++++++++++++++++++++-
- kernel/fork.c              |  8 ++++++++
- 2 files changed, 35 insertions(+), 1 deletion(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index e8304e929e283..de21a45a4ee7d 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -110,10 +110,36 @@ static inline struct task_struct *get_task_struct(struct task_struct *t)
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 402060cf3198c..0632b494d329b 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -594,7 +594,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
+ 	 *	  What the above comment does talk about? --ANK(980817)
+ 	 */
+ 
+-	if (unix_tot_inflight)
++	if (READ_ONCE(unix_tot_inflight))
+ 		unix_gc();		/* Garbage collect fds */
  }
  
- extern void __put_task_struct(struct task_struct *t);
-+extern void __put_task_struct_rcu_cb(struct rcu_head *rhp);
- 
- static inline void put_task_struct(struct task_struct *t)
- {
--	if (refcount_dec_and_test(&t->usage))
-+	if (!refcount_dec_and_test(&t->usage))
-+		return;
-+
-+	/*
-+	 * under PREEMPT_RT, we can't call put_task_struct
-+	 * in atomic context because it will indirectly
-+	 * acquire sleeping locks.
-+	 *
-+	 * call_rcu() will schedule delayed_put_task_struct_rcu()
-+	 * to be called in process context.
-+	 *
-+	 * __put_task_struct() is called when
-+	 * refcount_dec_and_test(&t->usage) succeeds.
-+	 *
-+	 * This means that it can't "conflict" with
-+	 * put_task_struct_rcu_user() which abuses ->rcu the same
-+	 * way; rcu_users has a reference so task->usage can't be
-+	 * zero after rcu_users 1 -> 0 transition.
-+	 *
-+	 * delayed_free_task() also uses ->rcu, but it is only called
-+	 * when it fails to fork a process. Therefore, there is no
-+	 * way it can conflict with put_task_struct().
-+	 */
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT) && !preemptible())
-+		call_rcu(&t->rcu, __put_task_struct_rcu_cb);
-+	else
- 		__put_task_struct(t);
- }
- 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 31455f5ab015a..633b0af1d1a73 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -745,6 +745,14 @@ void __put_task_struct(struct task_struct *tsk)
- }
- EXPORT_SYMBOL_GPL(__put_task_struct);
- 
-+void __put_task_struct_rcu_cb(struct rcu_head *rhp)
-+{
-+	struct task_struct *task = container_of(rhp, struct task_struct, rcu);
-+
-+	__put_task_struct(task);
-+}
-+EXPORT_SYMBOL_GPL(__put_task_struct_rcu_cb);
-+
- void __init __weak arch_task_cache_init(void) { }
- 
- /*
 -- 
 2.40.1
 
