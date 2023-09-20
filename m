@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BE097A7E87
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AA137A7D51
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235599AbjITMSh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:18:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54350 "EHLO
+        id S234576AbjITMIc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:08:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235588AbjITMSg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:36 -0400
+        with ESMTP id S235249AbjITMIb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:08:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D2BCCA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:18:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51063C433C8;
-        Wed, 20 Sep 2023 12:18:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80118C2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:08:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4AF6C433C9;
+        Wed, 20 Sep 2023 12:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212309;
-        bh=k/jBvkO4DmQmbM483y37sioDkNvCLqSA/DkRXPos7J4=;
+        s=korg; t=1695211704;
+        bh=De/rHnpuFikf7EJ4MyqhYaPj5glaPEqsduVGIwdsaRw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WeU8JjrAUOASEozW41QE5yUa6F0VYEU/9NrUxeUa2nV6QgyZyl3KD3AjiAVwXWMZ3
-         ef3hFrjF/KKlZxZwK/taSE87pDoiokGRGz6+flZrCmm91ZtFbu/vwt1sRoMcwk2yPA
-         BgIV6RwVHL6wwyUC/s8JRzzAD2m+nXi6urh+5I4g=
+        b=DxZyl0j9kdmbruyDup+rbaa8Slq+A4sho+rtoOTI31FpUBiy6H+vxkB+jh3dwjY7I
+         zFfUGzQ5URdgVRm6WsK6zIWJUEqy8KQBVcVnkwYkarbN7xdONT6aHM7sKoivcss1XG
+         FUMZoUhFefBwrtVQcXMH890xonVJjqx0uvIsyPRI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Zhang <william.zhang@broadcom.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 4.19 228/273] mtd: rawnand: brcmnand: Fix potential out-of-bounds access in oob write
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 165/186] media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer
 Date:   Wed, 20 Sep 2023 13:31:08 +0200
-Message-ID: <20230920112853.441500122@linuxfoundation.org>
+Message-ID: <20230920112842.859155335@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,68 +50,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Zhang <william.zhang@broadcom.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit 5d53244186c9ac58cb88d76a0958ca55b83a15cd upstream.
+[ Upstream commit 7bf744f2de0a848fb1d717f5831b03db96feae89 ]
 
-When the oob buffer length is not in multiple of words, the oob write
-function does out-of-bounds read on the oob source buffer at the last
-iteration. Fix that by always checking length limit on the oob buffer
-read and fill with 0xff when reaching the end of the buffer to the oob
-registers.
+In af9035_i2c_master_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach af9035_i2c_master_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-Fixes: 27c5b17cd1b1 ("mtd: nand: add NAND driver "library" for Broadcom STB NAND controller")
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-5-william.zhang@broadcom.com
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ moved variable declaration to fix build issues in older kernels - gregkh ]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c |   18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/media/usb/dvb-usb-v2/af9035.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -1213,19 +1213,33 @@ static int write_oob_to_regs(struct brcm
- 			     const u8 *oob, int sas, int sector_1k)
- {
- 	int tbytes = sas << sector_1k;
--	int j;
-+	int j, k = 0;
-+	u32 last = 0xffffffff;
-+	u8 *plast = (u8 *)&last;
+--- a/drivers/media/usb/dvb-usb-v2/af9035.c
++++ b/drivers/media/usb/dvb-usb-v2/af9035.c
+@@ -284,6 +284,7 @@ static int af9035_i2c_master_xfer(struct
+ 	struct dvb_usb_device *d = i2c_get_adapdata(adap);
+ 	struct state *state = d_to_priv(d);
+ 	int ret;
++	u32 reg;
  
- 	/* Adjust OOB values for 1K sector size */
- 	if (sector_1k && (i & 0x01))
- 		tbytes = max(0, tbytes - (int)ctrl->max_oob);
- 	tbytes = min_t(int, tbytes, ctrl->max_oob);
+ 	if (mutex_lock_interruptible(&d->i2c_mutex) < 0)
+ 		return -EAGAIN;
+@@ -336,8 +337,10 @@ static int af9035_i2c_master_xfer(struct
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
++			if (msg[0].len < 3 || msg[1].len < 1)
++				return -EOPNOTSUPP;
+ 			/* demod access via firmware interface */
+-			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
++			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
  
--	for (j = 0; j < tbytes; j += 4)
-+	/*
-+	 * tbytes may not be multiple of words. Make sure we don't read out of
-+	 * the boundary and stop at last word.
-+	 */
-+	for (j = 0; (j + 3) < tbytes; j += 4)
- 		oob_reg_write(ctrl, j,
- 				(oob[j + 0] << 24) |
- 				(oob[j + 1] << 16) |
- 				(oob[j + 2] <<  8) |
- 				(oob[j + 3] <<  0));
-+
-+	/* handle the remaing bytes */
-+	while (j < tbytes)
-+		plast[k++] = oob[j++];
-+
-+	if (tbytes & 0x3)
-+		oob_reg_write(ctrl, (tbytes & ~0x3), (__force u32)cpu_to_be32(last));
-+
- 	return tbytes;
- }
+ 			if (msg[0].addr == state->af9033_i2c_addr[1])
+@@ -395,17 +398,16 @@ static int af9035_i2c_master_xfer(struct
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
++			if (msg[0].len < 3)
++				return -EOPNOTSUPP;
+ 			/* demod access via firmware interface */
+-			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
++			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
  
+ 			if (msg[0].addr == state->af9033_i2c_addr[1])
+ 				reg |= 0x100000;
+ 
+-			ret = (msg[0].len >= 3) ? af9035_wr_regs(d, reg,
+-							         &msg[0].buf[3],
+-							         msg[0].len - 3)
+-					        : -EOPNOTSUPP;
++			ret = af9035_wr_regs(d, reg, &msg[0].buf[3], msg[0].len - 3);
+ 		} else {
+ 			/* I2C write */
+ 			u8 buf[MAX_XFER_SIZE];
 
 
