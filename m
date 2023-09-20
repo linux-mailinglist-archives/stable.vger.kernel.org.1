@@ -2,127 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 733747A8AEA
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 19:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA2CC7A8B55
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 20:13:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbjITRy5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 13:54:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34836 "EHLO
+        id S229706AbjITSNj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 14:13:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbjITRy4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 13:54:56 -0400
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFB1194
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 10:54:08 -0700 (PDT)
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-773ac11de71so1060185a.2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 10:54:08 -0700 (PDT)
+        with ESMTP id S229699AbjITSNi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 14:13:38 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36B3B97;
+        Wed, 20 Sep 2023 11:13:33 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-690bfd4f3ebso56979b3a.3;
+        Wed, 20 Sep 2023 11:13:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695233612; x=1695838412; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JfTC70wEujuVMb02KLAiMmYdtpGG/mauqfpeX7AFOaE=;
+        b=X2Z4yBGkxfwrdpsM8D3OY69Ul+QL45WVg1/WPpana+0GO7q8+k6l0C5GUBmUuWAWcI
+         h300YZsOtn5xlWwJuqoA3hGg+pbPYYVzCrT2pcMX7P601JXNIxMFyyz5S9fztkpfanxy
+         AkWAOUsPzMEEDXa+hT52vLTbBJYA3rJfUWw4afaNmBt9j1TrQDPBzNXzeyqIe5zsUq6P
+         0Shq/jBDW1CeICQihjiylensAj+PCIqUhwwLUaiITv+4/kRqBvDMR4zAbwtl3VlOuFvR
+         /a3trL1e0gNtmuj9ej0TrubcuWL1lLLnik1wV05sehQ8hCrPoPvrIO91WJHZz//uXuPY
+         tVNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695232448; x=1695837248;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sMUjbe6jAZJm7ZNBEI2GzRHbQh/3nvCFD3HmyB44o2Y=;
-        b=H3E9L1zPrTtpd7OvT1y2H5I85MF4HV4pxHNfE6K1QbA4qukSE1KyBY/q/Iq8scHmex
-         sfTukDy3vfERJUxWnWPpOW9GeBkgoZ8OyfiaW3Kw8iZg1M7MAsT/kxz5+IxUO1hzoVIP
-         AjBKQELJByTUNXGqOgYsU6JhZsIFIWGnGWqJ49ekISC5Ai7u4NMhzou7E8oWBYnd5ne7
-         Q6fiUW5m6AycCHD/fUGJnlQEaYFproRF55hS/gJxb/CopqzP4U66TG8SeJM4AuukVeIp
-         zYfae84VtAU8AIyvQD7z+lMsW2mrv03Ylmw61MNw9W5Vo2jWLJPzZaTafmU2B08pgp0Q
-         EfpA==
-X-Gm-Message-State: AOJu0YyG9Dg7ueXqGhGTr5k42QBAEcjfjQ7bKxmNsp+jTcU0FUXR0A2K
-        8YkhQpO5H6S6MDGKdAXXd/0z
-X-Google-Smtp-Source: AGHT+IEak9SOm9Pps/WpGIUms89fzDOBjAMtv3am2s1xZcN9i58NixmmmksMVtNi4wnk9/5qJ6K1AQ==
-X-Received: by 2002:a05:620a:3890:b0:76f:19fd:5058 with SMTP id qp16-20020a05620a389000b0076f19fd5058mr2422766qkn.78.1695232447730;
-        Wed, 20 Sep 2023 10:54:07 -0700 (PDT)
-Received: from localhost (pool-68-160-141-91.bstnma.fios.verizon.net. [68.160.141.91])
-        by smtp.gmail.com with ESMTPSA id d21-20020a05620a159500b007710052789dsm4986047qkk.94.2023.09.20.10.54.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Sep 2023 10:54:07 -0700 (PDT)
-Date:   Wed, 20 Sep 2023 13:54:05 -0400
-From:   Mike Snitzer <snitzer@kernel.org>
-To:     Fedor Pchelkin <pchelkin@ispras.ru>
-Cc:     Hannes Reinecke <hare@suse.de>, Alasdair Kergon <agk@redhat.com>,
-        dm-devel@redhat.com, linux-kernel@vger.kernel.org,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: dm-zoned: free dmz->ddev array in dmz_put_zoned_device
-Message-ID: <ZQsxvY12z+/yYcR6@redhat.com>
-References: <20230920105119.21276-1-pchelkin@ispras.ru>
- <c7818967-1fea-45da-9713-20de4bcb1c44@suse.de>
- <vdtvo2av3upya6mugjyiqo2hfnn6q4dpofoku6rvrtgmycgbrp@scpcnu3ta7ch>
+        d=1e100.net; s=20230601; t=1695233612; x=1695838412;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JfTC70wEujuVMb02KLAiMmYdtpGG/mauqfpeX7AFOaE=;
+        b=AofTaraf/+GqlGe2AHvXwCA2C8/NxrzwS/Qf4qAVUszFLnelu6ed7Y+ydKZaLKooKS
+         wXbpReG+rgWGP6pyJw3XzFDLweiSEIrMvIbT3UXlT83pOuHpUC7PMwiuJMm75RKSLvIe
+         mmiT1mLhXulpAjJ5zEHeeanVRBTzRbN8sULdVXk6XQPx51n6kaiz36mwsW1q+uiN3GQq
+         fPOSMd7akMhXf/EffLLjeBbvg6UXDwLaOkO1bDW5P26E0e7Osmhkptrld0u82rkLTB9K
+         sTXYiTEn8NZw8mUNOwmqfRve4dHjbBAGpFVkgSEMrMAo4rOco5cvnsXq5JFvM65FndhE
+         O5Sg==
+X-Gm-Message-State: AOJu0Ywdpe84vaMFnwGodc2Uta5VrDlujJkvQ7UHOFpRlamqd0Di2JqA
+        UaEjpp6lO7Z+CvuoDATvfcA=
+X-Google-Smtp-Source: AGHT+IFdl3LgMneO+iO5MnNLX1meZYPYp5J5pSrzItpSbxObmpeDIvzHfi3EwkbtLZ8a46prLlb9Vw==
+X-Received: by 2002:a05:6a21:4846:b0:15c:b7ba:9137 with SMTP id au6-20020a056a21484600b0015cb7ba9137mr3052327pzc.2.1695233612530;
+        Wed, 20 Sep 2023 11:13:32 -0700 (PDT)
+Received: from [10.67.49.139] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id n3-20020a63b443000000b00578b40a4903sm2535075pgu.22.2023.09.20.11.13.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Sep 2023 11:13:31 -0700 (PDT)
+Message-ID: <dcb9997a-2e8a-5eb2-7a34-f8af418d4bf1@gmail.com>
+Date:   Wed, 20 Sep 2023 11:13:30 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <vdtvo2av3upya6mugjyiqo2hfnn6q4dpofoku6rvrtgmycgbrp@scpcnu3ta7ch>
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 5.10 00/83] 5.10.196-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Namhyung Kim <namhyung@kernel.org>,
+        Ian Rogers <rogers.email@gmail.com>
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230920112826.634178162@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 20 2023 at 10:35P -0400,
-Fedor Pchelkin <pchelkin@ispras.ru> wrote:
-
-> On 23/09/20 04:06PM, Hannes Reinecke wrote:
-> > On 9/20/23 12:51, Fedor Pchelkin wrote:
-> > > Commit 4dba12881f88 ("dm zoned: support arbitrary number of devices")
-> > > made the pointers to additional zoned devices to be stored in a
-> > > dynamically allocated dmz->ddev array. However, this array is not freed.
-> > > 
-> > > Free it when cleaning up zoned device information inside
-> > > dmz_put_zoned_device(). Assigning NULL to dmz->ddev elements doesn't make
-> > > sense there as they are not supposed to be reused later and the whole dmz
-> > > target structure is being cleaned anyway.
-> > > 
-> > > Found by Linux Verification Center (linuxtesting.org).
-> > > 
-> > > Fixes: 4dba12881f88 ("dm zoned: support arbitrary number of devices")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> > > ---
-> > >   drivers/md/dm-zoned-target.c | 8 +++-----
-> > >   1 file changed, 3 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/drivers/md/dm-zoned-target.c b/drivers/md/dm-zoned-target.c
-> > > index ad8e670a2f9b..e25cd9db6275 100644
-> > > --- a/drivers/md/dm-zoned-target.c
-> > > +++ b/drivers/md/dm-zoned-target.c
-> > > @@ -753,12 +753,10 @@ static void dmz_put_zoned_device(struct dm_target *ti)
-> > >   	struct dmz_target *dmz = ti->private;
-> > >   	int i;
-> > > -	for (i = 0; i < dmz->nr_ddevs; i++) {
-> > > -		if (dmz->ddev[i]) {
-> > > +	for (i = 0; i < dmz->nr_ddevs; i++)
-> > > +		if (dmz->ddev[i])
-> > >   			dm_put_device(ti, dmz->ddev[i]);
-> > > -			dmz->ddev[i] = NULL;
-> > > -		}
-> > > -	}
-> > > +	kfree(dmz->ddev);
-> > >   }
-> > >   static int dmz_fixup_devices(struct dm_target *ti)
-> > 
-> > Hmm. I'm not that happy with it; dmz_put_zoned_device() is using dm_target
-> > as an argument, whereas all of the functions surrounding the call sites is
-> > using the dmz_target directly.
-> > 
-> > Mind to modify the function to use 'struct dmz_target' as an argument?
+On 9/20/23 04:30, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.196 release.
+> There are 83 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> dm_target is required inside dmz_put_zoned_device() for dm_put_device()
-> calls. I can't see a way for referencing it via dmz_target. Do you mean
-> passing additional second argument like
->   dmz_put_zoned_device(struct dmz_target *dmz, struct dm_target *ti) ?
+> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.196-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-No, what you did is fine.  Not sure what Hannes is saying given only
-passing dm_target has symmetry with dm_get_zoned_device (and
-dmz_fixup_devices).
+perf fails to build on ARM, ARM64 and MIPS with:
 
-> BTW, I also think it can be renamed to dmz_put_zoned_devices().
+fixdep: error opening depfile: 
+/local/users/fainelli/buildroot/output/bmips/build/linux-custom/tools/perf/pmu-events/.pmu-events.o.d: 
+No such file or directory
+make[5]: *** [pmu-events/Build:33: 
+/local/users/fainelli/buildroot/output/bmips/build/linux-custom/tools/perf/pmu-events/pmu-events.o] 
+Error 2
+make[4]: *** [Makefile.perf:653: 
+/local/users/fainelli/buildroot/output/bmips/build/linux-custom/tools/perf/pmu-events/pmu-events-in.o] 
+Error 2
+make[3]: *** [Makefile.perf:229: sub-make] Error 2
+make[2]: *** [Makefile:70: all] Error 2
+make[1]: *** [package/pkg-generic.mk:294: 
+/local/users/fainelli/buildroot/output/bmips/build/linux-tools/.stamp_built] 
+Error 2
+make: *** [Makefile:27: _all] Error 2
 
-I've renamed like you suggested and added a newline to
-dmz_put_zoned_devices() and staged this fix in linux-next for
-upstream inclusion before 6.6 final releases.
+this is caused by 653fc524e350b62479529140dc9abef05abbcc29 ("perf build: 
+Update build rule for generated files"). Reverting that commit plus 
+5804de1f2324ddcfe3f0b6ad58fcfe4d344e0471 ("perf jevents: Switch build to 
+use jevents.py") gets us going again.
+-- 
+Florian
 
-Mike
