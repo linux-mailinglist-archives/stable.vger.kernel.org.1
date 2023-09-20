@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CEF27A7BC2
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE917A7CA4
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:02:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234816AbjITLzT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:55:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57110 "EHLO
+        id S235032AbjITMDB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:03:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235093AbjITLzH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:55:07 -0400
+        with ESMTP id S235137AbjITMCr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:02:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 932CCA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:55:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0022C433C7;
-        Wed, 20 Sep 2023 11:55:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3313CA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7772EC433C7;
+        Wed, 20 Sep 2023 12:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210901;
-        bh=7YK4uEKHiCmodr4KAkfC4vr6tOJSAZYwC+WkkW6xQrM=;
+        s=korg; t=1695211360;
+        bh=3TJi8eUJ60FFcRLichmbEbbPIXsHsIjZj5BPFzzsqb0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mA26TcisXpzxNh9AmlEkDYLW9ZgbpVJh+BrImektZwA8ooj31tHE8xh5f7Y2pGqAl
-         K/blEwEaB/hTwyA+PzKrlRgV8rFcZmPAqb2+w6RkMBDDNDJ4ZgjfT+EmU4SLs+dF15
-         ihJCdZ5VEWqaJvirCNyE4GIFO5YjW4agFtb/R+U0=
+        b=HooTKbiNjhf1/kdRXcXw9gpbbM5DYthhJEsXyEiGptNPYIfL5hpkw+DH5fxQVX8LU
+         SfztOmZpS7wcQm/nw/QtBswawp7s83UQorYJVQVd4njl5i+aO95P7NOCmLEUzp7vrg
+         hQ56Hl2CdU9XkoqlYNA5XHwPE+7c/Wxiu07wdonQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "GONG, Ruiqi" <gongruiqi1@huawei.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>, GONG@vger.kernel.org
-Subject: [PATCH 6.1 033/139] netfilter: ebtables: fix fortify warnings in size_entry_mwt()
+        patches@lists.linux.dev, Zhang Jianhua <chris.zjh@huawei.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 064/186] clk: sunxi-ng: Modify mismatched function name
 Date:   Wed, 20 Sep 2023 13:29:27 +0200
-Message-ID: <20230920112836.850469791@linuxfoundation.org>
+Message-ID: <20230920112839.194848492@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,83 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: GONG, Ruiqi <gongruiqi1@huawei.com>
+From: Zhang Jianhua <chris.zjh@huawei.com>
 
-[ Upstream commit a7ed3465daa240bdf01a5420f64336fee879c09d ]
+[ Upstream commit 075d9ca5b4e17f84fd1c744a405e69ec743be7f0 ]
 
-When compiling with gcc 13 and CONFIG_FORTIFY_SOURCE=y, the following
-warning appears:
+No functional modification involved.
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘size_entry_mwt’ at net/bridge/netfilter/ebtables.c:2118:2:
-./include/linux/fortify-string.h:592:25: error: call to ‘__read_overflow2_field’
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Werror=attribute-warning]
-  592 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/clk/sunxi-ng/ccu_mmc_timing.c:54: warning: expecting prototype for sunxi_ccu_set_mmc_timing_mode(). Prototype was for sunxi_ccu_get_mmc_timing_mode() instead
 
-The compiler is complaining:
-
-memcpy(&offsets[1], &entry->watchers_offset,
-                       sizeof(offsets) - sizeof(offsets[0]));
-
-where memcpy reads beyong &entry->watchers_offset to copy
-{watchers,target,next}_offset altogether into offsets[]. Silence the
-warning by wrapping these three up via struct_group().
-
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: f6f64ed868d3 ("clk: sunxi-ng: Add interface to query or configure MMC timing modes.")
+Signed-off-by: Zhang Jianhua <chris.zjh@huawei.com>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20230722153107.2078179-1-chris.zjh@huawei.com
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/netfilter_bridge/ebtables.h | 14 ++++++++------
- net/bridge/netfilter/ebtables.c                |  3 +--
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ drivers/clk/sunxi-ng/ccu_mmc_timing.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/netfilter_bridge/ebtables.h b/include/uapi/linux/netfilter_bridge/ebtables.h
-index a494cf43a7552..b0caad82b6937 100644
---- a/include/uapi/linux/netfilter_bridge/ebtables.h
-+++ b/include/uapi/linux/netfilter_bridge/ebtables.h
-@@ -182,12 +182,14 @@ struct ebt_entry {
- 	unsigned char sourcemsk[ETH_ALEN];
- 	unsigned char destmac[ETH_ALEN];
- 	unsigned char destmsk[ETH_ALEN];
--	/* sizeof ebt_entry + matches */
--	unsigned int watchers_offset;
--	/* sizeof ebt_entry + matches + watchers */
--	unsigned int target_offset;
--	/* sizeof ebt_entry + matches + watchers + target */
--	unsigned int next_offset;
-+	__struct_group(/* no tag */, offsets, /* no attrs */,
-+		/* sizeof ebt_entry + matches */
-+		unsigned int watchers_offset;
-+		/* sizeof ebt_entry + matches + watchers */
-+		unsigned int target_offset;
-+		/* sizeof ebt_entry + matches + watchers + target */
-+		unsigned int next_offset;
-+	);
- 	unsigned char elems[0] __attribute__ ((aligned (__alignof__(struct ebt_replace))));
- };
+diff --git a/drivers/clk/sunxi-ng/ccu_mmc_timing.c b/drivers/clk/sunxi-ng/ccu_mmc_timing.c
+index f9869f7353c01..9356dc1571561 100644
+--- a/drivers/clk/sunxi-ng/ccu_mmc_timing.c
++++ b/drivers/clk/sunxi-ng/ccu_mmc_timing.c
+@@ -50,7 +50,7 @@ int sunxi_ccu_set_mmc_timing_mode(struct clk *clk, bool new_mode)
+ EXPORT_SYMBOL_GPL(sunxi_ccu_set_mmc_timing_mode);
  
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index 757ec46fc45a0..aa23479b20b2a 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -2115,8 +2115,7 @@ static int size_entry_mwt(const struct ebt_entry *entry, const unsigned char *ba
- 		return ret;
- 
- 	offsets[0] = sizeof(struct ebt_entry); /* matches come first */
--	memcpy(&offsets[1], &entry->watchers_offset,
--			sizeof(offsets) - sizeof(offsets[0]));
-+	memcpy(&offsets[1], &entry->offsets, sizeof(entry->offsets));
- 
- 	if (state->buf_kern_start) {
- 		buf_start = state->buf_kern_start + state->buf_kern_offset;
+ /**
+- * sunxi_ccu_set_mmc_timing_mode: Get the current MMC clock timing mode
++ * sunxi_ccu_get_mmc_timing_mode: Get the current MMC clock timing mode
+  * @clk: clock to query
+  *
+  * Returns 0 if the clock is in old timing mode, > 0 if it is in
 -- 
 2.40.1
 
