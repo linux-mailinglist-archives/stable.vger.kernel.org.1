@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F7937A8153
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E83B7A80CF
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236283AbjITMo1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:44:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37302 "EHLO
+        id S236121AbjITMkj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:40:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236306AbjITMoY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:24 -0400
+        with ESMTP id S236475AbjITMkZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:40:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCBBC6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD11C433C7;
-        Wed, 20 Sep 2023 12:44:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1316C83
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:40:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5942AC433C7;
+        Wed, 20 Sep 2023 12:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213858;
-        bh=xB3k2jhMBQfgPw5fibatOdXWuYvCV/pbz75QjEnTQUo=;
+        s=korg; t=1695213619;
+        bh=bRQazNOhNdsFeSrqDlvDb9jjVj3Jtd35gujb1sRNWyk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=atD170RuDdOD5G2kVLYCKqtgSxJQC6ozeqma3ynYitoY+bjtrH2z61x36rHVt+Cgk
-         hNCMWZ1l4UlsNK8mk90pUn5gWflvRSnfKORpDdsau980X5tQs3g437nIEXUqssydA5
-         0c5aivC5MC0i95weKL/beJx6lExHbYDGsv7IOvv0=
+        b=d9evKkf6c6ZqOGeLK2TltiUPsrg1s+QIuYTE41xWWHr1xNjEFgDB6I4oEVMz37OkI
+         kFPMtOAPh4p8KNh02mLC5mYqsBFHFtRCndaCcCAZ0r70eitz1w79uat3EBMMvcflD8
+         nFhY+H6poVSjkZJ2WWjg11NGLJXXGa5QT7yRv2NY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+be9c824e6f269d608288@syzkaller.appspotmail.com,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Liming Sun <limings@nvidia.com>,
+        Vadim Pasternak <vadimp@nvidia.com>,
+        David Thompson <davthompson@nvidia.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/110] wifi: mac80211: check S1G action frame size
+Subject: [PATCH 5.4 304/367] platform/mellanox: mlxbf-tmfifo: Drop jumbo frames
 Date:   Wed, 20 Sep 2023 13:31:21 +0200
-Message-ID: <20230920112831.261841819@linuxfoundation.org>
+Message-ID: <20230920112906.416434473@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,39 +52,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Liming Sun <limings@nvidia.com>
 
-[ Upstream commit 19e4a47ee74718a22e963e8a647c8c3bfe8bb05c ]
+[ Upstream commit fc4c655821546239abb3cf4274d66b9747aa87dd ]
 
-Before checking the action code, check that it even
-exists in the frame.
+This commit drops over-sized network packets to avoid tmfifo
+queue stuck.
 
-Reported-by: syzbot+be9c824e6f269d608288@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1357dfd7261f ("platform/mellanox: Add TmFifo driver for Mellanox BlueField Soc")
+Signed-off-by: Liming Sun <limings@nvidia.com>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/9318936c2447f76db475c985ca6d91f057efcd41.1693322547.git.limings@nvidia.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 175ead6b19cb4..26943c93f14c4 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3557,6 +3557,10 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
- 			break;
- 		goto queue;
- 	case WLAN_CATEGORY_S1G:
-+		if (len < offsetofend(typeof(*mgmt),
-+				      u.action.u.s1g.action_code))
-+			break;
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index 42fcccf06157f..194f3205e5597 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -205,7 +205,7 @@ static u8 mlxbf_tmfifo_net_default_mac[ETH_ALEN] = {
+ static efi_char16_t mlxbf_tmfifo_efi_name[] = L"RshimMacAddr";
+ 
+ /* Maximum L2 header length. */
+-#define MLXBF_TMFIFO_NET_L2_OVERHEAD	36
++#define MLXBF_TMFIFO_NET_L2_OVERHEAD	(ETH_HLEN + VLAN_HLEN)
+ 
+ /* Supported virtio-net features. */
+ #define MLXBF_TMFIFO_NET_FEATURES \
+@@ -623,13 +623,14 @@ static void mlxbf_tmfifo_rxtx_word(struct mlxbf_tmfifo_vring *vring,
+  * flag is set.
+  */
+ static void mlxbf_tmfifo_rxtx_header(struct mlxbf_tmfifo_vring *vring,
+-				     struct vring_desc *desc,
++				     struct vring_desc **desc,
+ 				     bool is_rx, bool *vring_change)
+ {
+ 	struct mlxbf_tmfifo *fifo = vring->fifo;
+ 	struct virtio_net_config *config;
+ 	struct mlxbf_tmfifo_msg_hdr hdr;
+ 	int vdev_id, hdr_len;
++	bool drop_rx = false;
+ 
+ 	/* Read/Write packet header. */
+ 	if (is_rx) {
+@@ -649,8 +650,8 @@ static void mlxbf_tmfifo_rxtx_header(struct mlxbf_tmfifo_vring *vring,
+ 			if (ntohs(hdr.len) >
+ 			    __virtio16_to_cpu(virtio_legacy_is_little_endian(),
+ 					      config->mtu) +
+-			    MLXBF_TMFIFO_NET_L2_OVERHEAD)
+-				return;
++					      MLXBF_TMFIFO_NET_L2_OVERHEAD)
++				drop_rx = true;
+ 		} else {
+ 			vdev_id = VIRTIO_ID_CONSOLE;
+ 			hdr_len = 0;
+@@ -665,16 +666,25 @@ static void mlxbf_tmfifo_rxtx_header(struct mlxbf_tmfifo_vring *vring,
+ 
+ 			if (!tm_dev2)
+ 				return;
+-			vring->desc = desc;
++			vring->desc = *desc;
+ 			vring = &tm_dev2->vrings[MLXBF_TMFIFO_VRING_RX];
+ 			*vring_change = true;
+ 		}
 +
- 		switch (mgmt->u.action.u.s1g.action_code) {
- 		case WLAN_S1G_TWT_SETUP:
- 		case WLAN_S1G_TWT_TEARDOWN:
++		if (drop_rx && !IS_VRING_DROP(vring)) {
++			if (vring->desc_head)
++				mlxbf_tmfifo_release_pkt(vring);
++			*desc = &vring->drop_desc;
++			vring->desc_head = *desc;
++			vring->desc = *desc;
++		}
++
+ 		vring->pkt_len = ntohs(hdr.len) + hdr_len;
+ 	} else {
+ 		/* Network virtio has an extra header. */
+ 		hdr_len = (vring->vdev_id == VIRTIO_ID_NET) ?
+ 			   sizeof(struct virtio_net_hdr) : 0;
+-		vring->pkt_len = mlxbf_tmfifo_get_pkt_len(vring, desc);
++		vring->pkt_len = mlxbf_tmfifo_get_pkt_len(vring, *desc);
+ 		hdr.type = (vring->vdev_id == VIRTIO_ID_NET) ?
+ 			    VIRTIO_ID_NET : VIRTIO_ID_CONSOLE;
+ 		hdr.len = htons(vring->pkt_len - hdr_len);
+@@ -723,7 +733,7 @@ static bool mlxbf_tmfifo_rxtx_one_desc(struct mlxbf_tmfifo_vring *vring,
+ 
+ 	/* Beginning of a packet. Start to Rx/Tx packet header. */
+ 	if (vring->pkt_len == 0) {
+-		mlxbf_tmfifo_rxtx_header(vring, desc, is_rx, &vring_change);
++		mlxbf_tmfifo_rxtx_header(vring, &desc, is_rx, &vring_change);
+ 		(*avail)--;
+ 
+ 		/* Return if new packet is for another ring. */
 -- 
 2.40.1
 
