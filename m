@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB9787A7BAF
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 811A67A7C8A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:02:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234793AbjITLye (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:54:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41304 "EHLO
+        id S234994AbjITMCR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:02:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234812AbjITLyd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:33 -0400
+        with ESMTP id S235011AbjITMCP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:02:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5460100
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21C2C433C8;
-        Wed, 20 Sep 2023 11:54:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 028F3E4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:02:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F1BC433C7;
+        Wed, 20 Sep 2023 12:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210866;
-        bh=Ib//NESInTbnnY3cCz3Dr9ot/DfQ1iAyzFZ8G7uiMUA=;
+        s=korg; t=1695211328;
+        bh=9HsCNGrOYGT5MQiwvgTUw1eMLfCVAGJfTkWs3JK3khI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZD9LnGpDwc/M2hoa6FB6PW54Fje68SaS2IQ4lgNGkTsl+p9eag1lg4/fk9yDFb8ZC
-         vHU9/wjKB9cM/9wy6BIETfZp6TxrIIi2xq+MANUo8joWYiaRHJI7G3FDC900gwp8uV
-         uGzyl4Wa1VJsu1kvpigdhVrSinlpPR0OZcZ2gaYk=
+        b=V89rMuXM7j+NQa4bYIq6av+tsAgQWWZ55Bn7GA+U/2U5OSeqUeDgBLCVvGuDHmF10
+         D3rQ+8GGzkFTJ1m8RnicyiyTFfkmw+DQL3p1lGnhM4wsvQ+nvzaSlmomfCnNZ9Xl9o
+         9wdad52dR+Vr1EgqAKwVefwkiadUGKVgKu3G183s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev,
+        syzbot+666c97e4686410e79649@syzkaller.appspotmail.com,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/139] wifi: wil6210: fix fortify warnings
-Date:   Wed, 20 Sep 2023 13:29:15 +0200
-Message-ID: <20230920112836.392596257@linuxfoundation.org>
+Subject: [PATCH 4.14 053/186] netrom: Deny concurrent connect().
+Date:   Wed, 20 Sep 2023 13:29:16 +0200
+Message-ID: <20230920112838.827085175@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,126 +52,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 1ad8237e971630c66a1a6194491e0837b64d00e0 ]
+[ Upstream commit c2f8fd7949603efb03908e05abbf7726748c8de3 ]
 
-When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
-I've noticed the following:
+syzkaller reported null-ptr-deref [0] related to AF_NETROM.
+This is another self-accept issue from the strace log. [1]
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘wil_rx_crypto_check_edma’ at drivers/net/wireless/ath/wil6210/txrx_edma.c:566:2:
-./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  529 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+syz-executor creates an AF_NETROM socket and calls connect(), which
+is blocked at that time.  Then, sk->sk_state is TCP_SYN_SENT and
+sock->state is SS_CONNECTING.
 
-where the compiler complains on:
+  [pid  5059] socket(AF_NETROM, SOCK_SEQPACKET, 0) = 4
+  [pid  5059] connect(4, {sa_family=AF_NETROM, sa_data="..." <unfinished ...>
 
-const u8 *pn;
-...
-pn = (u8 *)&st->ext.pn_15_0;
-...
-memcpy(cc->pn, pn, IEEE80211_GCMP_PN_LEN);
+Another thread calls connect() concurrently, which finally fails
+with -EINVAL.  However, the problem here is the socket state is
+reset even while the first connect() is blocked.
 
-and:
+  [pid  5060] connect(4, NULL, 0 <unfinished ...>
+  [pid  5060] <... connect resumed>)      = -1 EINVAL (Invalid argument)
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘wil_rx_crypto_check’ at drivers/net/wireless/ath/wil6210/txrx.c:684:2:
-./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  529 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As sk->state is TCP_CLOSE and sock->state is SS_UNCONNECTED, the
+following listen() succeeds.  Then, the first connect() looks up
+itself as a listener and puts skb into the queue with skb->sk itself.
+As a result, the next accept() gets another FD of itself as 3, and
+the first connect() finishes.
 
-where the compiler complains on:
+  [pid  5060] listen(4, 0 <unfinished ...>
+  [pid  5060] <... listen resumed>)       = 0
+  [pid  5060] accept(4, NULL, NULL <unfinished ...>
+  [pid  5060] <... accept resumed>)       = 3
+  [pid  5059] <... connect resumed>)      = 0
 
-const u8 *pn = (u8 *)&d->mac.pn_15_0;
-...
-memcpy(cc->pn, pn, IEEE80211_GCMP_PN_LEN);
+Then, accept4() is called but blocked, which causes the general protection
+fault later.
 
-In both cases, the fortification logic interprets 'memcpy()' as 6-byte
-overread of 2-byte field 'pn_15_0' of 'struct wil_rx_status_extension'
-and 'pn_15_0' of 'struct vring_rx_mac', respectively. To silence
-these warnings, last two fields of the aforementioned structures
-are grouped using 'struct_group_attr(pn, __packed' quirk.
+  [pid  5059] accept4(4, NULL, 0x20000400, SOCK_NONBLOCK <unfinished ...>
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230621093711.80118-1-dmantipov@yandex.ru
+After that, another self-accept occurs by accept() and writev().
+
+  [pid  5060] accept(4, NULL, NULL <unfinished ...>
+  [pid  5061] writev(3, [{iov_base=...}] <unfinished ...>
+  [pid  5061] <... writev resumed>)       = 99
+  [pid  5060] <... accept resumed>)       = 6
+
+Finally, the leader thread close()s all FDs.  Since the three FDs
+reference the same socket, nr_release() does the cleanup for it
+three times, and the remaining accept4() causes the following fault.
+
+  [pid  5058] close(3)                    = 0
+  [pid  5058] close(4)                    = 0
+  [pid  5058] close(5)                    = -1 EBADF (Bad file descriptor)
+  [pid  5058] close(6)                    = 0
+  [pid  5058] <... exit_group resumed>)   = ?
+  [   83.456055][ T5059] general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
+
+To avoid the issue, we need to return an error for connect() if
+another connect() is in progress, as done in __inet_stream_connect().
+
+[0]:
+general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+CPU: 0 PID: 5059 Comm: syz-executor.0 Not tainted 6.5.0-rc5-syzkaller-00194-gace0ab3a4b54 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+RIP: 0010:__lock_acquire+0x109/0x5de0 kernel/locking/lockdep.c:5012
+Code: 45 85 c9 0f 84 cc 0e 00 00 44 8b 05 11 6e 23 0b 45 85 c0 0f 84 be 0d 00 00 48 ba 00 00 00 00 00 fc ff df 4c 89 d1 48 c1 e9 03 <80> 3c 11 00 0f 85 e8 40 00 00 49 81 3a a0 69 48 90 0f 84 96 0d 00
+RSP: 0018:ffffc90003d6f9e0 EFLAGS: 00010006
+RAX: ffff8880244c8000 RBX: 1ffff920007adf6c RCX: 0000000000000003
+RDX: dffffc0000000000 RSI: 0000000000000000 RDI: 0000000000000018
+RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000001
+R10: 0000000000000018 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007f51d519a6c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f51d5158d58 CR3: 000000002943f000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ lock_acquire kernel/locking/lockdep.c:5761 [inline]
+ lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0x3a/0x50 kernel/locking/spinlock.c:162
+ prepare_to_wait+0x47/0x380 kernel/sched/wait.c:269
+ nr_accept+0x20d/0x650 net/netrom/af_netrom.c:798
+ do_accept+0x3a6/0x570 net/socket.c:1872
+ __sys_accept4_file net/socket.c:1913 [inline]
+ __sys_accept4+0x99/0x120 net/socket.c:1943
+ __do_sys_accept4 net/socket.c:1954 [inline]
+ __se_sys_accept4 net/socket.c:1951 [inline]
+ __x64_sys_accept4+0x96/0x100 net/socket.c:1951
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f51d447cae9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f51d519a0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000120
+RAX: ffffffffffffffda RBX: 00007f51d459bf80 RCX: 00007f51d447cae9
+RDX: 0000000020000400 RSI: 0000000000000000 RDI: 0000000000000004
+RBP: 00007f51d44c847a R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000800 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007f51d459bf80 R15: 00007ffc25c34e48
+ </TASK>
+
+Link: https://syzkaller.appspot.com/text?tag=CrashLog&x=152cdb63a80000 [1]
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+666c97e4686410e79649@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=666c97e4686410e79649
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/wil6210/txrx.c      | 2 +-
- drivers/net/wireless/ath/wil6210/txrx.h      | 6 ++++--
- drivers/net/wireless/ath/wil6210/txrx_edma.c | 2 +-
- drivers/net/wireless/ath/wil6210/txrx_edma.h | 6 ++++--
- 4 files changed, 10 insertions(+), 6 deletions(-)
+ net/netrom/af_netrom.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless/ath/wil6210/txrx.c
-index 237cbd5c5060b..f29ac6de71399 100644
---- a/drivers/net/wireless/ath/wil6210/txrx.c
-+++ b/drivers/net/wireless/ath/wil6210/txrx.c
-@@ -666,7 +666,7 @@ static int wil_rx_crypto_check(struct wil6210_priv *wil, struct sk_buff *skb)
- 	struct wil_tid_crypto_rx *c = mc ? &s->group_crypto_rx :
- 				      &s->tid_crypto_rx[tid];
- 	struct wil_tid_crypto_rx_single *cc = &c->key_id[key_id];
--	const u8 *pn = (u8 *)&d->mac.pn_15_0;
-+	const u8 *pn = (u8 *)&d->mac.pn;
+diff --git a/net/netrom/af_netrom.c b/net/netrom/af_netrom.c
+index b5a99b5172076..4480d0d8394b1 100644
+--- a/net/netrom/af_netrom.c
++++ b/net/netrom/af_netrom.c
+@@ -663,6 +663,11 @@ static int nr_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		goto out_release;
+ 	}
  
- 	if (!cc->key_set) {
- 		wil_err_ratelimited(wil,
-diff --git a/drivers/net/wireless/ath/wil6210/txrx.h b/drivers/net/wireless/ath/wil6210/txrx.h
-index 1ae1bec1b97f1..689f68d89a440 100644
---- a/drivers/net/wireless/ath/wil6210/txrx.h
-+++ b/drivers/net/wireless/ath/wil6210/txrx.h
-@@ -343,8 +343,10 @@ struct vring_rx_mac {
- 	u32 d0;
- 	u32 d1;
- 	u16 w4;
--	u16 pn_15_0;
--	u32 pn_47_16;
-+	struct_group_attr(pn, __packed,
-+		u16 pn_15_0;
-+		u32 pn_47_16;
-+	);
- } __packed;
++	if (sock->state == SS_CONNECTING) {
++		err = -EALREADY;
++		goto out_release;
++	}
++
+ 	sk->sk_state   = TCP_CLOSE;
+ 	sock->state = SS_UNCONNECTED;
  
- /* Rx descriptor - DMA part
-diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.c b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-index 201c8c35e0c9e..1ba1f21ebea26 100644
---- a/drivers/net/wireless/ath/wil6210/txrx_edma.c
-+++ b/drivers/net/wireless/ath/wil6210/txrx_edma.c
-@@ -548,7 +548,7 @@ static int wil_rx_crypto_check_edma(struct wil6210_priv *wil,
- 	s = &wil->sta[cid];
- 	c = mc ? &s->group_crypto_rx : &s->tid_crypto_rx[tid];
- 	cc = &c->key_id[key_id];
--	pn = (u8 *)&st->ext.pn_15_0;
-+	pn = (u8 *)&st->ext.pn;
- 
- 	if (!cc->key_set) {
- 		wil_err_ratelimited(wil,
-diff --git a/drivers/net/wireless/ath/wil6210/txrx_edma.h b/drivers/net/wireless/ath/wil6210/txrx_edma.h
-index c736f7413a35f..ee90e225bb050 100644
---- a/drivers/net/wireless/ath/wil6210/txrx_edma.h
-+++ b/drivers/net/wireless/ath/wil6210/txrx_edma.h
-@@ -330,8 +330,10 @@ struct wil_rx_status_extension {
- 	u32 d0;
- 	u32 d1;
- 	__le16 seq_num; /* only lower 12 bits */
--	u16 pn_15_0;
--	u32 pn_47_16;
-+	struct_group_attr(pn, __packed,
-+		u16 pn_15_0;
-+		u32 pn_47_16;
-+	);
- } __packed;
- 
- struct wil_rx_status_extended {
 -- 
 2.40.1
 
