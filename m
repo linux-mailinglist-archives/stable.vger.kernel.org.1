@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1FC7A7BB3
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30C147A7B0F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233786AbjITLzM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:55:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58974 "EHLO
+        id S234633AbjITLtB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:49:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234829AbjITLyj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:39 -0400
+        with ESMTP id S234630AbjITLtB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3225BF7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5749AC433C9;
-        Wed, 20 Sep 2023 11:54:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9394CA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08D7C433C8;
+        Wed, 20 Sep 2023 11:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210868;
-        bh=10NLeIdLMVuGb3za/n35W5V+3gl9fL4nvvGdb8WIQls=;
+        s=korg; t=1695210535;
+        bh=nhjHHP/HbHFDPgK+i4Cbb/6SvYR/5/IYWtFdsp+MaMk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AWk0FXNQB+Hhg4Fyi1Usd65pxu6bZWNm/cQubymd00ZzfnzTZTe1o1cwG2wmxPuzH
-         C26mBHVOEjhqia1nX40koO2IXoDxY00ZOGQOjTYb6oZv3guvZM07ZQgzqUoxkqxoNd
-         CmDyoJt1OgWu880AZZ6eVhVLyen7FNHiI8VjkOpA=
+        b=AF/4ukFakY4c8UiJ3I0gqjENVpTEW1twvDn2qKfnheL6eWF8AranNCWwPkobzlYoA
+         C8BWK9X41IZD1aRAzdy04KuXsDKcpUO7h5Fzzb02nye47hbtwElFERKjwlIPYe8riz
+         0g+/XfkQvnIPOZCXBXnnrSlXDelUR5p5tCmAoiQ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Watts <contact@jookia.org>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/139] can: sun4i_can: Add acceptance register quirk
-Date:   Wed, 20 Sep 2023 13:29:16 +0200
-Message-ID: <20230920112836.422390424@linuxfoundation.org>
+Subject: [PATCH 6.5 113/211] media: pci: cx23885: replace BUG with error return
+Date:   Wed, 20 Sep 2023 13:29:17 +0200
+Message-ID: <20230920112849.297470751@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +49,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Watts <contact@jookia.org>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 8cda0c6dfd42ee6f2586e7dffb553aaf1fcb62ca ]
+[ Upstream commit 2e1796fd4904fdd6062a8e4589778ea899ea0c8d ]
 
-The Allwinner D1's CAN controllers have the ACPC and ACPM registers
-moved down. Compensate for this by adding an offset quirk for the
-acceptance registers.
+It was completely unnecessary to use BUG in buffer_prepare().
+Just replace it with an error return. This also fixes a smatch warning:
 
-Signed-off-by: John Watts <contact@jookia.org>
-Link: https://lore.kernel.org/all/20230721221552.1973203-5-contact@jookia.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+drivers/media/pci/cx23885/cx23885-video.c:422 buffer_prepare() error: uninitialized symbol 'ret'.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/sun4i_can.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/pci/cx23885/cx23885-video.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index 2b78f9197681b..dd0c6cd76c5f5 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -205,9 +205,11 @@
-  * struct sun4ican_quirks - Differences between SoC variants.
-  *
-  * @has_reset: SoC needs reset deasserted.
-+ * @acp_offset: Offset of ACPC and ACPM registers
-  */
- struct sun4ican_quirks {
- 	bool has_reset;
-+	int acp_offset;
- };
- 
- struct sun4ican_priv {
-@@ -216,6 +218,7 @@ struct sun4ican_priv {
- 	struct clk *clk;
- 	struct reset_control *reset;
- 	spinlock_t cmdreg_lock;	/* lock for concurrent cmd register writes */
-+	int acp_offset;
- };
- 
- static const struct can_bittiming_const sun4ican_bittiming_const = {
-@@ -338,8 +341,8 @@ static int sun4i_can_start(struct net_device *dev)
+diff --git a/drivers/media/pci/cx23885/cx23885-video.c b/drivers/media/pci/cx23885/cx23885-video.c
+index 671fc0588e431..9af2c5596121c 100644
+--- a/drivers/media/pci/cx23885/cx23885-video.c
++++ b/drivers/media/pci/cx23885/cx23885-video.c
+@@ -413,7 +413,7 @@ static int buffer_prepare(struct vb2_buffer *vb)
+ 				dev->height >> 1);
+ 		break;
+ 	default:
+-		BUG();
++		return -EINVAL; /* should not happen */
  	}
- 
- 	/* set filters - we accept all */
--	writel(0x00000000, priv->base + SUN4I_REG_ACPC_ADDR);
--	writel(0xFFFFFFFF, priv->base + SUN4I_REG_ACPM_ADDR);
-+	writel(0x00000000, priv->base + SUN4I_REG_ACPC_ADDR + priv->acp_offset);
-+	writel(0xFFFFFFFF, priv->base + SUN4I_REG_ACPM_ADDR + priv->acp_offset);
- 
- 	/* clear error counters and error code capture */
- 	writel(0, priv->base + SUN4I_REG_ERRC_ADDR);
-@@ -768,10 +771,12 @@ static const struct ethtool_ops sun4ican_ethtool_ops = {
- 
- static const struct sun4ican_quirks sun4ican_quirks_a10 = {
- 	.has_reset = false,
-+	.acp_offset = 0,
- };
- 
- static const struct sun4ican_quirks sun4ican_quirks_r40 = {
- 	.has_reset = true,
-+	.acp_offset = 0,
- };
- 
- static const struct of_device_id sun4ican_of_match[] = {
-@@ -872,6 +877,7 @@ static int sun4ican_probe(struct platform_device *pdev)
- 	priv->base = addr;
- 	priv->clk = clk;
- 	priv->reset = reset;
-+	priv->acp_offset = quirks->acp_offset;
- 	spin_lock_init(&priv->cmdreg_lock);
- 
- 	platform_set_drvdata(pdev, dev);
+ 	dprintk(2, "[%p/%d] buffer_init - %dx%d %dbpp 0x%08x - dma=0x%08lx\n",
+ 		buf, buf->vb.vb2_buf.index,
 -- 
 2.40.1
 
