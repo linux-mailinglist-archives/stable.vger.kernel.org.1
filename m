@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15BCF7A7FAD
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:29:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 867B37A7D96
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235748AbjITM31 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:29:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55602 "EHLO
+        id S235336AbjITMKc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:10:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235871AbjITM3Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:29:25 -0400
+        with ESMTP id S235334AbjITMKY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:10:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 157F9AD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:29:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199D9C433CA;
-        Wed, 20 Sep 2023 12:29:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99F3B83;
+        Wed, 20 Sep 2023 05:10:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BBFC433C9;
+        Wed, 20 Sep 2023 12:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212959;
-        bh=zL3ybC7kAOVzeL1Qd7CMjvvpCZik/i5uQ8Nte9Tic9k=;
+        s=korg; t=1695211815;
+        bh=2Mphd1WoRtpR3HujuCbxZTgVX5h+R5BkDlU8NPsjj90=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yBU5HUgHR9ZpDDqEn/l4lYgsa3gkMBnRX6NFMZXMK33vTyXdbHo93Mgj40f2j1H7C
-         7EwQAO5pByO7Es2py9oVFhhLH5K+Bvqavti+tJ9177ANPTHc0D/5WHpG68Yfa99YG5
-         wgy3FUfluKEtEJp1R/kWKD0Lz/sdUv8lbqCIfdW4=
+        b=S2oKX3dnCZoPp3TYqhnCvjY6jS4q/g2/RxuYreKtVGPdA/nqw6h6Q2akm15cJQBCi
+         ON+L3O0EmwUzWTZXYnaupazB4TuaxEOPar7ZoCfG1sLNmj+djYP3PGgNuiDSMGXQtM
+         mn4p7QRitZIGA8no8tMEO93CmnxjtkodYF033rvI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, netfilter-devel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 109/367] arm64: dts: qcom: sdm845: Add missing RPMh power domain to GCC
+        patches@lists.linux.dev, wenxu <wenxu@ucloud.cn>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 4.19 046/273] netfilter: nft_flow_offload: fix underflow in flowtable reference counter
 Date:   Wed, 20 Sep 2023 13:28:06 +0200
-Message-ID: <20230920112901.417499528@linuxfoundation.org>
+Message-ID: <20230920112847.839984406@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +49,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: wenxu <wenxu@ucloud.cn>
 
-[ Upstream commit 4b6ea15c0a1122422b44bf6c47a3c22fc8d46777 ]
+commit 8ca79606cdfde2e37ee4f0707b9d1874a6f0eb38 upstream.
 
-GCC and it's GDSCs are under the RPMh CX power domain. So let's add the
-missing RPMh power domain to the GCC node.
+The .deactivate and .activate interfaces already deal with the reference
+counter. Otherwise, this results in spurious "Device is busy" errors.
 
-Fixes: 6d4cf750d03a ("arm64: dts: sdm845: Add minimal dts/dtsi files for sdm845 SoC and MTP")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Co-developed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230720054100.9940-4-manivannan.sadhasivam@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a3c90f7a2323 ("netfilter: nf_tables: flow offload expression")
+Signed-off-by: wenxu <wenxu@ucloud.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_flow_offload.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 2287354fef863..ca77fc8aa75bb 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -715,6 +715,7 @@ gcc: clock-controller@100000 {
- 			#clock-cells = <1>;
- 			#reset-cells = <1>;
- 			#power-domain-cells = <1>;
-+			power-domains = <&rpmhpd SDM845_CX>;
- 		};
+--- a/net/netfilter/nft_flow_offload.c
++++ b/net/netfilter/nft_flow_offload.c
+@@ -197,9 +197,6 @@ static void nft_flow_offload_activate(co
+ static void nft_flow_offload_destroy(const struct nft_ctx *ctx,
+ 				     const struct nft_expr *expr)
+ {
+-	struct nft_flow_offload *priv = nft_expr_priv(expr);
+-
+-	priv->flowtable->use--;
+ 	nf_ct_netns_put(ctx->net, ctx->family);
+ }
  
- 		qfprom@784000 {
--- 
-2.40.1
-
 
 
