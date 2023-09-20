@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB9F7A7B0B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 228997A7BAC
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:54:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234629AbjITLsv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:48:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47364 "EHLO
+        id S234800AbjITLyY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:54:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234628AbjITLsu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:50 -0400
+        with ESMTP id S234793AbjITLyY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9894D9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23413C433C7;
-        Wed, 20 Sep 2023 11:48:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F63D7
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E347C433C8;
+        Wed, 20 Sep 2023 11:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210524;
-        bh=k3dp5OUwFlqW8+OTvh5wDgQSysXcQzRlAo/SMzyqR9o=;
+        s=korg; t=1695210857;
+        bh=2Fo6z8QrmguwtGrcfWEgW2IlIntTOo50+HlhCm9b5FM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rnlM46TXAIfzPYvmWxqnJiFmMgucPLko3GuNdhYPIbgpljlUvKSQzzxiXYyWv4Tb0
-         GCU9Wc6VWfRhfyDHW8RxxPVGSwoZkT8N2H3D0PdO60araAJYJkWwQ+p2x29/zFbC4Z
-         4uuvBGoikd2eZzkugv3QPEI0xv7J1wsYsjHBAdCk=
+        b=sWUF+y1IBL13t5tK1TyN/16xGtJO0U/MygP0UJwj3ciIyHA5OXmuwC97Z9pLQPZ9d
+         YGZRTXNnLq4sT2Ta9dNm4qiC9z3tGTGfMo5nLeU0Om9vF/MXlPmJdzHd1LXiWQNfzB
+         Aw3rb2MW8l7wHkqb2eqlENNvX9M1yIjdPP3/mVOA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 109/211] media: az6007: Fix null-ptr-deref in az6007_i2c_xfer()
+        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 019/139] wifi: mwifiex: fix fortify warning
 Date:   Wed, 20 Sep 2023 13:29:13 +0200
-Message-ID: <20230920112849.175542404@linuxfoundation.org>
+Message-ID: <20230920112836.316579377@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,57 +51,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 1047f9343011f2cedc73c64829686206a7e9fc3f ]
+[ Upstream commit dcce94b80a954a8968ff29fafcfb066d6197fa9a ]
 
-In az6007_i2c_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach az6007_i2c_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+When compiling with gcc 13.1 and CONFIG_FORTIFY_SOURCE=y,
+I've noticed the following:
 
-Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+In function ‘fortify_memcpy_chk’,
+    inlined from ‘mwifiex_construct_tdls_action_frame’ at drivers/net/wireless/marvell/mwifiex/tdls.c:765:3,
+    inlined from ‘mwifiex_send_tdls_action_frame’ at drivers/net/wireless/marvell/mwifiex/tdls.c:856:6:
+./include/linux/fortify-string.h:529:25: warning: call to ‘__read_overflow2_field’
+declared with attribute warning: detected read beyond size of field (2nd parameter);
+maybe use struct_group()? [-Wattribute-warning]
+  529 |                         __read_overflow2_field(q_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+The compiler actually complains on:
+
+memmove(pos + ETH_ALEN, &mgmt->u.action.category,
+	sizeof(mgmt->u.action.u.tdls_discover_resp));
+
+and it happens because the fortification logic interprets this
+as an attempt to overread 1-byte 'u.action.category' member of
+'struct ieee80211_mgmt'. To silence this warning, it's enough
+to pass an address of 'u.action' itself instead of an address
+of its first member.
+
+This also fixes an improper usage of 'sizeof()'. Since 'skb' is
+extended with 'sizeof(mgmt->u.action.u.tdls_discover_resp) + 1'
+bytes (where 1 is actually 'sizeof(mgmt->u.action.category)'),
+I assume that the same number of bytes should be copied.
+
+Suggested-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reviewed-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230629085115.180499-2-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/az6007.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/tdls.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/az6007.c b/drivers/media/usb/dvb-usb-v2/az6007.c
-index 2dcbb49d66dab..2410054ddb2c3 100644
---- a/drivers/media/usb/dvb-usb-v2/az6007.c
-+++ b/drivers/media/usb/dvb-usb-v2/az6007.c
-@@ -788,6 +788,10 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
- 			if (az6007_xfer_debug)
- 				printk(KERN_DEBUG "az6007: I2C W addr=0x%x len=%d\n",
- 				       addr, msgs[i].len);
-+			if (msgs[i].len < 1) {
-+				ret = -EIO;
-+				goto err;
-+			}
- 			req = AZ6007_I2C_WR;
- 			index = msgs[i].buf[0];
- 			value = addr | (1 << 8);
-@@ -802,6 +806,10 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
- 			if (az6007_xfer_debug)
- 				printk(KERN_DEBUG "az6007: I2C R addr=0x%x len=%d\n",
- 				       addr, msgs[i].len);
-+			if (msgs[i].len < 1) {
-+				ret = -EIO;
-+				goto err;
-+			}
- 			req = AZ6007_I2C_RD;
- 			index = msgs[i].buf[0];
- 			value = addr;
+diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
+index 97bb87c3676bb..6c60621b6cccb 100644
+--- a/drivers/net/wireless/marvell/mwifiex/tdls.c
++++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
+@@ -735,6 +735,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
+ 	int ret;
+ 	u16 capab;
+ 	struct ieee80211_ht_cap *ht_cap;
++	unsigned int extra;
+ 	u8 radio, *pos;
+ 
+ 	capab = priv->curr_bss_params.bss_descriptor.cap_info_bitmap;
+@@ -753,7 +754,10 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
+ 
+ 	switch (action_code) {
+ 	case WLAN_PUB_ACTION_TDLS_DISCOVER_RES:
+-		skb_put(skb, sizeof(mgmt->u.action.u.tdls_discover_resp) + 1);
++		/* See the layout of 'struct ieee80211_mgmt'. */
++		extra = sizeof(mgmt->u.action.u.tdls_discover_resp) +
++			sizeof(mgmt->u.action.category);
++		skb_put(skb, extra);
+ 		mgmt->u.action.category = WLAN_CATEGORY_PUBLIC;
+ 		mgmt->u.action.u.tdls_discover_resp.action_code =
+ 					      WLAN_PUB_ACTION_TDLS_DISCOVER_RES;
+@@ -762,8 +766,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
+ 		mgmt->u.action.u.tdls_discover_resp.capability =
+ 							     cpu_to_le16(capab);
+ 		/* move back for addr4 */
+-		memmove(pos + ETH_ALEN, &mgmt->u.action.category,
+-			sizeof(mgmt->u.action.u.tdls_discover_resp));
++		memmove(pos + ETH_ALEN, &mgmt->u.action, extra);
+ 		/* init address 4 */
+ 		eth_broadcast_addr(pos);
+ 
 -- 
 2.40.1
 
