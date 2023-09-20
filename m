@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17C467A7F2D
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6F727A8195
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235732AbjITMZV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:25:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40818 "EHLO
+        id S234647AbjITMqu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:46:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235761AbjITMYn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:43 -0400
+        with ESMTP id S234693AbjITMqt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A15C7C2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD667C433CA;
-        Wed, 20 Sep 2023 12:24:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6A1218D
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024FEC433C7;
+        Wed, 20 Sep 2023 12:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212676;
-        bh=jzhpP30XSgIBnqg07U16Ehs6xb/64DQ8IJsFQz8b3kE=;
+        s=korg; t=1695213997;
+        bh=rp4y9kBwQVkK1IoXUpuT2UkPKAITlq9TAYHiUYOswrs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nHQkL2WuslUzq9SAGMg5m+V6ZLKBwjnaME5TKn91n66yi3qYv0r7USZh2SGu8R3uq
-         P5FxXHUo3LTkvsahukD2929+UsivLEIwc+HuvIzx3ap7eoGWMKe/UhSOYvWUl8j0Yq
-         4f+RhZoiwmzzSOiifVHyJUz8usriSeH6elu8rflk=
+        b=zii1vVX0PMxj5y7G8BU1zJI6JLpZmEgOoAqp6Qa2B/KZpm/BtztjDvoezn8bcGUk9
+         rv59jyTNB3nq3dFysPtSU6AO7JuBJrn8vRf0/DFu3SdB8C+iSyoxa1IYrSy0BuC/p5
+         KEDLY3F9M9KRuggcljFcDpHUjSdVRi4nAsv8w6gA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 82/83] scsi: pm8001: Setup IRQs on resume
+        patches@lists.linux.dev,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+        Anand Jain <anand.jain@oracle.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 074/110] btrfs: add a helper to read the superblock metadata_uuid
 Date:   Wed, 20 Sep 2023 13:32:12 +0200
-Message-ID: <20230920112829.908076082@linuxfoundation.org>
+Message-ID: <20230920112833.196750626@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,121 +53,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Anand Jain <anand.jain@oracle.com>
 
-commit c91774818b041ed290df29fb1dc0725be9b12e83 upstream.
+[ Upstream commit 4844c3664a72d36cc79752cb651c78860b14c240 ]
 
-The function pm8001_pci_resume() only calls pm8001_request_irq() without
-calling pm8001_setup_irq(). This causes the IRQ allocation to fail, which
-leads all drives being removed from the system.
+In some cases, we need to read the FSID from the superblock when the
+metadata_uuid is not set, and otherwise, read the metadata_uuid. So,
+add a helper.
 
-Fix this issue by integrating the code for pm8001_setup_irq() directly
-inside pm8001_request_irq() so that MSI-X setup is performed both during
-normal initialization and resume operations.
-
-Fixes: dbf9bfe61571 ("[SCSI] pm8001: add SAS/SATA HBA driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20230911232745.325149-2-dlemoal@kernel.org
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Anand Jain <anand.jain@oracle.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 6bfe3959b0e7 ("btrfs: compare the correct fsid/metadata_uuid in btrfs_validate_super")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm8001_init.c |   51 ++++++++++++--------------------------
- 1 file changed, 17 insertions(+), 34 deletions(-)
+ fs/btrfs/volumes.c | 8 ++++++++
+ fs/btrfs/volumes.h | 1 +
+ 2 files changed, 9 insertions(+)
 
---- a/drivers/scsi/pm8001/pm8001_init.c
-+++ b/drivers/scsi/pm8001/pm8001_init.c
-@@ -255,7 +255,6 @@ static irqreturn_t pm8001_interrupt_hand
- 	return ret;
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 0e9236a745b81..56ea2ec26436f 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -709,6 +709,14 @@ static int btrfs_open_one_device(struct btrfs_fs_devices *fs_devices,
+ 	return -EINVAL;
  }
  
--static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha);
- static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha);
- 
- /**
-@@ -275,13 +274,6 @@ static int pm8001_alloc(struct pm8001_hb
- 	pm8001_dbg(pm8001_ha, INIT, "pm8001_alloc: PHY:%x\n",
- 		   pm8001_ha->chip->n_phy);
- 
--	/* Setup Interrupt */
--	rc = pm8001_setup_irq(pm8001_ha);
--	if (rc) {
--		pm8001_dbg(pm8001_ha, FAIL,
--			   "pm8001_setup_irq failed [ret: %d]\n", rc);
--		goto err_out;
--	}
- 	/* Request Interrupt */
- 	rc = pm8001_request_irq(pm8001_ha);
- 	if (rc)
-@@ -990,47 +982,38 @@ static u32 pm8001_request_msix(struct pm
- }
- #endif
- 
--static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha)
--{
--	struct pci_dev *pdev;
--
--	pdev = pm8001_ha->pdev;
--
--#ifdef PM8001_USE_MSIX
--	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX))
--		return pm8001_setup_msix(pm8001_ha);
--	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
--#endif
--	return 0;
--}
--
- /**
-  * pm8001_request_irq - register interrupt
-  * @pm8001_ha: our ha struct.
-  */
- static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha)
- {
--	struct pci_dev *pdev;
-+	struct pci_dev *pdev = pm8001_ha->pdev;
-+#ifdef PM8001_USE_MSIX
- 	int rc;
- 
--	pdev = pm8001_ha->pdev;
-+	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX)) {
-+		rc = pm8001_setup_msix(pm8001_ha);
-+		if (rc) {
-+			pm8001_dbg(pm8001_ha, FAIL,
-+				   "pm8001_setup_irq failed [ret: %d]\n", rc);
-+			return rc;
-+		}
- 
--#ifdef PM8001_USE_MSIX
--	if (pdev->msix_cap && pci_msi_enabled())
--		return pm8001_request_msix(pm8001_ha);
--	else {
--		pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
--		goto intx;
-+		if (pdev->msix_cap && pci_msi_enabled())
-+			return pm8001_request_msix(pm8001_ha);
- 	}
++u8 *btrfs_sb_fsid_ptr(struct btrfs_super_block *sb)
++{
++	bool has_metadata_uuid = (btrfs_super_incompat_flags(sb) &
++				  BTRFS_FEATURE_INCOMPAT_METADATA_UUID);
 +
-+	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
- #endif
- 
--intx:
- 	/* initialize the INT-X interrupt */
- 	pm8001_ha->irq_vector[0].irq_id = 0;
- 	pm8001_ha->irq_vector[0].drv_inst = pm8001_ha;
--	rc = request_irq(pdev->irq, pm8001_interrupt_handler_intx, IRQF_SHARED,
--		pm8001_ha->name, SHOST_TO_SAS_HA(pm8001_ha->shost));
--	return rc;
++	return has_metadata_uuid ? sb->metadata_uuid : sb->fsid;
++}
 +
-+	return request_irq(pdev->irq, pm8001_interrupt_handler_intx,
-+			   IRQF_SHARED, pm8001_ha->name,
-+			   SHOST_TO_SAS_HA(pm8001_ha->shost));
- }
+ /*
+  * Handle scanned device having its CHANGING_FSID_V2 flag set and the fs_devices
+  * being created with a disk that has already completed its fsid change. Such
+diff --git a/fs/btrfs/volumes.h b/fs/btrfs/volumes.h
+index 1f6461b568659..eb91d6eb78ceb 100644
+--- a/fs/btrfs/volumes.h
++++ b/fs/btrfs/volumes.h
+@@ -623,5 +623,6 @@ int btrfs_verify_dev_extents(struct btrfs_fs_info *fs_info);
+ int btrfs_repair_one_zone(struct btrfs_fs_info *fs_info, u64 logical);
  
- /**
+ bool btrfs_pinned_by_swapfile(struct btrfs_fs_info *fs_info, void *ptr);
++u8 *btrfs_sb_fsid_ptr(struct btrfs_super_block *sb);
+ 
+ #endif
+-- 
+2.40.1
+
 
 
