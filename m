@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D1C67A785C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 12:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDF017A785E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 12:00:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234323AbjITKAE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 06:00:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47064 "EHLO
+        id S234325AbjITKAH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 06:00:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234314AbjITKAD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:00:03 -0400
+        with ESMTP id S234331AbjITKAG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 06:00:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31F45A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:59:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2DCC433C8;
-        Wed, 20 Sep 2023 09:59:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3052AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:59:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C1EC433C7;
+        Wed, 20 Sep 2023 09:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203996;
-        bh=6NriYjb9YWShpFS7AdFkxXmPUcXU/0eALaiE+1VsoCU=;
+        s=korg; t=1695203999;
+        bh=YuwRJp5ZA6RnHYK/5S9ygHIh2UI4aoYNN34wPInzeo8=;
         h=Subject:To:Cc:From:Date:From;
-        b=flVVE7nYVGdr8/4y95N5CqBq06YBM3RXixQHLEXs4h6cdjRC4NgxTHAbwh8v5u0hc
-         5bWO3JCKDGlFv5Hbzk2j7cIyNmGdK02ovDo0/xn3jWq366eNz2PzTQ1SnwtEJS5qey
-         fFnIHeVPyvZVLsOowWrHIqgNLxmFFVT/yUvOZqBI=
-Subject: FAILED: patch "[PATCH] ext4: do not let fstrim block system suspend" failed to apply to 5.4-stable tree
+        b=cTwME3jX30OGQ+jZh+uYEdE5+7BDxObD+St/37vjqZreBsBObJz/BJ+LkD3SpaUuP
+         R/TwFX5hefWQYLGD7NaMrIFR8yYcGSTwehG88zFLlZ20frmm2aOOIVyhhC39CjX+DU
+         GTp/bWATjzWmsSEfZPrnfWUqSGsKODw9W8RJ2vI8=
+Subject: FAILED: patch "[PATCH] ext4: do not let fstrim block system suspend" failed to apply to 4.19-stable tree
 To:     jack@suse.cz, david@fromorbit.com, lenb@kernel.org, tytso@mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 20 Sep 2023 11:59:36 +0200
-Message-ID: <2023092036-outline-champion-bd90@gregkh>
+Date:   Wed, 20 Sep 2023 11:59:37 +0200
+Message-ID: <2023092037-underpaid-casing-6ccf@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5229a658f6453362fbb9da6bf96872ef25a7097e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092036-outline-champion-bd90@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092037-underpaid-casing-6ccf@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
