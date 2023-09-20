@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 505CF7A7B34
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED3E87A7C03
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232318AbjITLuH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:50:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40050 "EHLO
+        id S235142AbjITL5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234471AbjITLuG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:06 -0400
+        with ESMTP id S235022AbjITL5U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58C56DE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E05AC433C7;
-        Wed, 20 Sep 2023 11:49:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B42FD8
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA614C433C9;
+        Wed, 20 Sep 2023 11:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210597;
-        bh=N3kq6sXwXoTQ7f7HyN0IoTkvtsa//Z/gwxpzt/uL0lk=;
+        s=korg; t=1695211023;
+        bh=Vo4ZwTwKB6ukKtMEw7/yxysmQ2QmcTHskWPId7lw9oY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hhbrl0woWYcd4F0xyO7w8v39Yb6ZIlRI1wZuhXCqDOMlr9jWZ8Trtm1QLPHopkCWy
-         DIGLudDlQiXbX1nzyfmRYui3uU2H3XVXio73h0DCjcPHK+Ol2ZeDqSFAg+XrAhxSAc
-         Q/vnekLwfZ2bVQEvNVQZ61E8ULfWQBzQr0loH5gU=
+        b=nUF8YVthT+OaVROScslikqAH7oa2cjfcIFkXQue6MGVY8cnhpgLFBBfzi1Rgz9jFM
+         Lw0mlg1PferVmGGT0rXx3FxIntNHPqZo6REfze6wi2eE/CWb9vBDpGXDNpa3jrHpFo
+         xmkPDILpgPepXJpPaJMIUNqv+r8fRlM+9kdD9KJA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, Dillon Varone <dillon.varone@amd.com>,
+        Alex Hung <alex.hung@amd.com>, Leo Ma <hanghong.ma@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 136/211] btrfs: zoned: return int from btrfs_check_meta_write_pointer
+Subject: [PATCH 6.1 046/139] drm/amd/display: Fix underflow issue on 175hz timing
 Date:   Wed, 20 Sep 2023 13:29:40 +0200
-Message-ID: <20230920112850.051609823@linuxfoundation.org>
+Message-ID: <20230920112837.348839777@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,139 +52,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Leo Ma <hanghong.ma@amd.com>
 
-[ Upstream commit 2ad8c0510a965113404cfe670b41ddc34fb66100 ]
+[ Upstream commit 735688eb905db529efea0c78466fccc1461c3fde ]
 
-Now that we have writeback_control passed to
-btrfs_check_meta_write_pointer(), we can move the wbc condition in
-submit_eb_page() to btrfs_check_meta_write_pointer() and return int.
+[Why]
+Screen underflows happen on 175hz timing for 3 plane overlay case.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 13bb483d32ab ("btrfs: zoned: activate metadata block group on write time")
+[How]
+Based on dst y prefetch value clamp to equ or oto for bandwidth
+calculation.
+
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Leo Ma <hanghong.ma@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 11 +++--------
- fs/btrfs/zoned.c     | 30 ++++++++++++++++++++++--------
- fs/btrfs/zoned.h     | 10 +++++-----
- 3 files changed, 30 insertions(+), 21 deletions(-)
+ .../amd/display/dc/dml/dcn32/display_mode_vba_util_32.c    | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index c2be1561a52cb..d4bac66cee533 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -1918,14 +1918,9 @@ static int submit_eb_page(struct page *page, struct btrfs_eb_write_context *ctx)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
+index b53feeaf5cf11..23e4be2ad63f9 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
+@@ -3454,6 +3454,7 @@ bool dml32_CalculatePrefetchSchedule(
+ 	double TimeForFetchingMetaPTE = 0;
+ 	double TimeForFetchingRowInVBlank = 0;
+ 	double LinesToRequestPrefetchPixelData = 0;
++	double LinesForPrefetchBandwidth = 0;
+ 	unsigned int HostVMDynamicLevelsTrips;
+ 	double  trip_to_mem;
+ 	double  Tvm_trips;
+@@ -3883,11 +3884,15 @@ bool dml32_CalculatePrefetchSchedule(
+ 			TimeForFetchingMetaPTE = Tvm_oto;
+ 			TimeForFetchingRowInVBlank = Tr0_oto;
+ 			*PrefetchBandwidth = prefetch_bw_oto;
++			/* Clamp to oto for bandwidth calculation */
++			LinesForPrefetchBandwidth = dst_y_prefetch_oto;
+ 		} else {
+ 			*DestinationLinesForPrefetch = dst_y_prefetch_equ;
+ 			TimeForFetchingMetaPTE = Tvm_equ;
+ 			TimeForFetchingRowInVBlank = Tr0_equ;
+ 			*PrefetchBandwidth = prefetch_bw_equ;
++			/* Clamp to equ for bandwidth calculation */
++			LinesForPrefetchBandwidth = dst_y_prefetch_equ;
+ 		}
  
- 	ctx->eb = eb;
+ 		*DestinationLinesToRequestVMInVBlank = dml_ceil(4.0 * TimeForFetchingMetaPTE / LineTime, 1.0) / 4.0;
+@@ -3895,7 +3900,7 @@ bool dml32_CalculatePrefetchSchedule(
+ 		*DestinationLinesToRequestRowInVBlank =
+ 				dml_ceil(4.0 * TimeForFetchingRowInVBlank / LineTime, 1.0) / 4.0;
  
--	if (!btrfs_check_meta_write_pointer(eb->fs_info, ctx)) {
--		/*
--		 * If for_sync, this hole will be filled with
--		 * trasnsaction commit.
--		 */
--		if (wbc->sync_mode == WB_SYNC_ALL && !wbc->for_sync)
--			ret = -EAGAIN;
--		else
-+	ret = btrfs_check_meta_write_pointer(eb->fs_info, ctx);
-+	if (ret) {
-+		if (ret == -EBUSY)
- 			ret = 0;
- 		free_extent_buffer(eb);
- 		return ret;
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 92f11176216b5..6e406f1b0d21e 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -1758,14 +1758,23 @@ void btrfs_finish_ordered_zoned(struct btrfs_ordered_extent *ordered)
- 	}
- }
+-		LinesToRequestPrefetchPixelData = *DestinationLinesForPrefetch -
++		LinesToRequestPrefetchPixelData = LinesForPrefetchBandwidth -
+ 				*DestinationLinesToRequestVMInVBlank - 2 * *DestinationLinesToRequestRowInVBlank;
  
--bool btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
--				    struct btrfs_eb_write_context *ctx)
-+/*
-+ * Check if @ctx->eb is aligned to the write pointer.
-+ *
-+ * Return:
-+ *   0:        @ctx->eb is at the write pointer. You can write it.
-+ *   -EAGAIN:  There is a hole. The caller should handle the case.
-+ *   -EBUSY:   There is a hole, but the caller can just bail out.
-+ */
-+int btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
-+				   struct btrfs_eb_write_context *ctx)
- {
-+	const struct writeback_control *wbc = ctx->wbc;
- 	const struct extent_buffer *eb = ctx->eb;
- 	struct btrfs_block_group *block_group = ctx->zoned_bg;
- 
- 	if (!btrfs_is_zoned(fs_info))
--		return true;
-+		return 0;
- 
- 	if (block_group) {
- 		if (block_group->start > eb->start ||
-@@ -1779,15 +1788,20 @@ bool btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
- 	if (!block_group) {
- 		block_group = btrfs_lookup_block_group(fs_info, eb->start);
- 		if (!block_group)
--			return true;
-+			return 0;
- 		ctx->zoned_bg = block_group;
- 	}
- 
--	if (block_group->meta_write_pointer != eb->start)
--		return false;
--	block_group->meta_write_pointer = eb->start + eb->len;
-+	if (block_group->meta_write_pointer == eb->start) {
-+		block_group->meta_write_pointer = eb->start + eb->len;
- 
--	return true;
-+		return 0;
-+	}
-+
-+	/* If for_sync, this hole will be filled with trasnsaction commit. */
-+	if (wbc->sync_mode == WB_SYNC_ALL && !wbc->for_sync)
-+		return -EAGAIN;
-+	return -EBUSY;
- }
- 
- void btrfs_revert_meta_write_pointer(struct btrfs_block_group *cache,
-diff --git a/fs/btrfs/zoned.h b/fs/btrfs/zoned.h
-index 49d5bd87245c5..c0859d8be1520 100644
---- a/fs/btrfs/zoned.h
-+++ b/fs/btrfs/zoned.h
-@@ -58,8 +58,8 @@ void btrfs_redirty_list_add(struct btrfs_transaction *trans,
- 			    struct extent_buffer *eb);
- bool btrfs_use_zone_append(struct btrfs_bio *bbio);
- void btrfs_record_physical_zoned(struct btrfs_bio *bbio);
--bool btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
--				    struct btrfs_eb_write_context *ctx);
-+int btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
-+				   struct btrfs_eb_write_context *ctx);
- void btrfs_revert_meta_write_pointer(struct btrfs_block_group *cache,
- 				     struct extent_buffer *eb);
- int btrfs_zoned_issue_zeroout(struct btrfs_device *device, u64 physical, u64 length);
-@@ -188,10 +188,10 @@ static inline void btrfs_record_physical_zoned(struct btrfs_bio *bbio)
- {
- }
- 
--static inline bool btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
--						  struct btrfs_eb_write_context *ctx)
-+static inline int btrfs_check_meta_write_pointer(struct btrfs_fs_info *fs_info,
-+						 struct btrfs_eb_write_context *ctx)
- {
--	return true;
-+	return 0;
- }
- 
- static inline void btrfs_revert_meta_write_pointer(
+ #ifdef __DML_VBA_DEBUG__
 -- 
 2.40.1
 
