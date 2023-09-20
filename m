@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF2B47A7B96
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B82527A7C19
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234769AbjITLxg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:53:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49436 "EHLO
+        id S235003AbjITL56 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234780AbjITLxf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:35 -0400
+        with ESMTP id S234987AbjITL55 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A519992
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BA7C433C8;
-        Wed, 20 Sep 2023 11:53:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF9DC2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF24FC433C8;
+        Wed, 20 Sep 2023 11:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210808;
-        bh=twPCkCSd/AKzg6yLjRzjxiRqOkS/tcre+Sd2tSGM0Nc=;
+        s=korg; t=1695211071;
+        bh=aTe3aYHJpMErQl9nLOlwP5+qC0Zz9ckDR14B387/OHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yeFlY3yHHLBJG0dnl8aCRkhC5YIgGj13BBWIR2JMyap00RcWR3pQM3hzuQ4k6faGE
-         HDS3abMIRq2+vQcLw92Y/CCWBjh9ieArrtggt9Viv9gLebLN6eO5vO7pxB0akOHY4R
-         KuS01hpZTq8Osi+oaLLODaSx5LkzH/YPRLwLmBm8=
+        b=gtn0duR2H4R3nAoMK3LnDS39yfHa+2wYO2j4Xw6DeKjXtNcPpowq+i7qomPLHSuS1
+         PYgG2daxd6XRKq31OtYSnWNHEAVkjUqQMcaOE4DGUlOOfU4wHXJ4kTxJRMQMJjkJ62
+         +Um8gZzLhFmRDRDOlbF+Ec7L+jBwHLh4YQPLc45c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.5 186/211] tracing: Have event inject files inc the trace array ref count
-Date:   Wed, 20 Sep 2023 13:30:30 +0200
-Message-ID: <20230920112851.640114311@linuxfoundation.org>
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 097/139] drm: gm12u320: Fix the timeout usage for usb_bulk_msg()
+Date:   Wed, 20 Sep 2023 13:30:31 +0200
+Message-ID: <20230920112839.204916808@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,48 +51,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit e5c624f027ac74f97e97c8f36c69228ac9f1102d upstream.
+[ Upstream commit 7583028d359db3cd0072badcc576b4f9455fd27a ]
 
-The event inject files add events for a specific trace array. For an
-instance, if the file is opened and the instance is deleted, reading or
-writing to the file will cause a use after free.
+The timeout arg of usb_bulk_msg() is ms already, which has been converted
+to jiffies by msecs_to_jiffies() in usb_start_wait_urb(). So fix the usage
+by removing the redundant msecs_to_jiffies() in the macros.
 
-Up the ref count of the trace_array when a event inject file is opened.
+And as Hans suggested, also remove msecs_to_jiffies() for the IDLE_TIMEOUT
+macro to make it consistent here and so change IDLE_TIMEOUT to
+msecs_to_jiffies(IDLE_TIMEOUT) where it is used.
 
-Link: https://lkml.kernel.org/r/20230907024804.292337868@goodmis.org
-Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Fixes: 6c3edaf9fd6a ("tracing: Introduce trace event injection")
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e4f86e437164 ("drm: Add Grain Media GM12U320 driver v2")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Suggested-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230904021421.1663892-1-ruanjinjie@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_inject.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tiny/gm12u320.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/kernel/trace/trace_events_inject.c
-+++ b/kernel/trace/trace_events_inject.c
-@@ -328,7 +328,8 @@ event_inject_read(struct file *file, cha
- }
+diff --git a/drivers/gpu/drm/tiny/gm12u320.c b/drivers/gpu/drm/tiny/gm12u320.c
+index 7441d992a5d7a..8b0a9059d3fdd 100644
+--- a/drivers/gpu/drm/tiny/gm12u320.c
++++ b/drivers/gpu/drm/tiny/gm12u320.c
+@@ -69,10 +69,10 @@ MODULE_PARM_DESC(eco_mode, "Turn on Eco mode (less bright, more silent)");
+ #define READ_STATUS_SIZE		13
+ #define MISC_VALUE_SIZE			4
  
- const struct file_operations event_inject_fops = {
--	.open = tracing_open_generic,
-+	.open = tracing_open_file_tr,
- 	.read = event_inject_read,
- 	.write = event_inject_write,
-+	.release = tracing_release_file_tr,
- };
+-#define CMD_TIMEOUT			msecs_to_jiffies(200)
+-#define DATA_TIMEOUT			msecs_to_jiffies(1000)
+-#define IDLE_TIMEOUT			msecs_to_jiffies(2000)
+-#define FIRST_FRAME_TIMEOUT		msecs_to_jiffies(2000)
++#define CMD_TIMEOUT			200
++#define DATA_TIMEOUT			1000
++#define IDLE_TIMEOUT			2000
++#define FIRST_FRAME_TIMEOUT		2000
+ 
+ #define MISC_REQ_GET_SET_ECO_A		0xff
+ #define MISC_REQ_GET_SET_ECO_B		0x35
+@@ -388,7 +388,7 @@ static void gm12u320_fb_update_work(struct work_struct *work)
+ 	 * switches back to showing its logo.
+ 	 */
+ 	queue_delayed_work(system_long_wq, &gm12u320->fb_update.work,
+-			   IDLE_TIMEOUT);
++			   msecs_to_jiffies(IDLE_TIMEOUT));
+ 
+ 	return;
+ err:
+-- 
+2.40.1
+
 
 
