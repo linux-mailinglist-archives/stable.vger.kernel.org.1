@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B5EE7A80A6
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:38:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFB377A7CEA
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236074AbjITMix (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:38:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56468 "EHLO
+        id S235209AbjITMF2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:05:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236089AbjITMis (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:38:48 -0400
+        with ESMTP id S235312AbjITMFE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B2BDE8
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:38:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DFAC433C8;
-        Wed, 20 Sep 2023 12:38:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC62CA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D71C433C8;
+        Wed, 20 Sep 2023 12:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213518;
-        bh=kz+D/KMnKSOjmiccZKrmXcNQsKtc/DWH+zIxoWPkWzA=;
+        s=korg; t=1695211498;
+        bh=2pxGzdBBLkCa3y1DjclC4koUujBMNqtFnRXSGnqZvVA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ynm2CH8OSxV2qEY+nHZ65JLNATRrhFljIflwhfl7R0crUxFmubUCwzVqmXfJOuHyO
-         UJ2Lr6TyXziRLemZMFnKfVkbEX8AVtfHVS5XEdmM/rHhNBIHwORhZZ+Tx4iDwjQava
-         i+f6ySMS3MrGbe1xhr7t67WIh/iAbOcjCuZP8NjA=
+        b=AAlOJ1H3NxbJL0e8e9CHJGngyUdVwfiyPUPCOmIacDadOEz4jq2W12TO6n11JbtxK
+         VjN7ExfQxUfPuCrpNWoohJoeWb43IrtkfuilsPTnfsprA81v1Gh3j3g28qMgah4A+w
+         5IBMpYnHfH2p5URn/qWaLlkIxX08qL2wKOKDGad0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 241/367] scsi: qla2xxx: Fix erroneous link up failure
-Date:   Wed, 20 Sep 2023 13:30:18 +0200
-Message-ID: <20230920112904.800483040@linuxfoundation.org>
+        patches@lists.linux.dev, Thore Sommer <public@thson.de>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 4.14 116/186] X.509: if signature is unsupported skip validation
+Date:   Wed, 20 Sep 2023 13:30:19 +0200
+Message-ID: <20230920112841.224971703@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +49,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Thore Sommer <public@thson.de>
 
-commit 5b51f35d127e7bef55fa869d2465e2bca4636454 upstream.
+commit ef5b52a631f8c18353e80ccab8408b963305510c upstream.
 
-Link up failure occurred where driver failed to see certain events from FW
-indicating link up (AEN 8011) and fabric login completion (AEN 8014).
-Without these 2 events, driver would not proceed forward to scan the
-fabric. The cause of this is due to delay in the receive of interrupt for
-Mailbox 60 that causes qla to set the fw_started flag late.  The late
-setting of this flag causes other interrupts to be dropped.  These dropped
-interrupts happen to be the link up (AEN 8011) and fabric login completion
-(AEN 8014).
+When the hash algorithm for the signature is not available the digest size
+is 0 and the signature in the certificate is marked as unsupported.
 
-Set fw_started flag early to prevent interrupts being dropped.
+When validating a self-signed certificate, this needs to be checked,
+because otherwise trying to validate the signature will fail with an
+warning:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230714070104.40052-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Loading compiled-in X.509 certificates
+WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
+pkcs1pad_verify+0x46/0x12c
+...
+Problem loading in-kernel X.509 certificate (-22)
+
+Signed-off-by: Thore Sommer <public@thson.de>
+Cc: stable@vger.kernel.org # v4.7+
+Fixes: 6c2dc5ae4ab7 ("X.509: Extract signature digest and make self-signed cert checks earlier")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_init.c |    3 ++-
- drivers/scsi/qla2xxx/qla_isr.c  |    6 +++++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ crypto/asymmetric_keys/x509_public_key.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -4176,15 +4176,16 @@ qla2x00_init_rings(scsi_qla_host_t *vha)
- 		    (ha->flags.fawwpn_enabled) ? "enabled" : "disabled");
- 	}
+--- a/crypto/asymmetric_keys/x509_public_key.c
++++ b/crypto/asymmetric_keys/x509_public_key.c
+@@ -138,6 +138,11 @@ int x509_check_for_self_signed(struct x5
+ 	if (strcmp(cert->pub->pkey_algo, cert->sig->pkey_algo) != 0)
+ 		goto out;
  
-+	QLA_FW_STARTED(ha);
- 	rval = qla2x00_init_firmware(vha, ha->init_cb_size);
- next_check:
- 	if (rval) {
-+		QLA_FW_STOPPED(ha);
- 		ql_log(ql_log_fatal, vha, 0x00d2,
- 		    "Init Firmware **** FAILED ****.\n");
- 	} else {
- 		ql_dbg(ql_dbg_init, vha, 0x00d3,
- 		    "Init Firmware -- success.\n");
--		QLA_FW_STARTED(ha);
- 		vha->u_ql2xexchoffld = vha->u_ql2xiniexchg = 0;
- 	}
- 
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -639,8 +639,12 @@ qla2x00_async_event(scsi_qla_host_t *vha
- 	unsigned long	flags;
- 	fc_port_t	*fcport = NULL;
- 
--	if (!vha->hw->flags.fw_started)
-+	if (!vha->hw->flags.fw_started) {
-+		ql_log(ql_log_warn, vha, 0x50ff,
-+		    "Dropping AEN - %04x %04x %04x %04x.\n",
-+		    mb[0], mb[1], mb[2], mb[3]);
- 		return;
++	if (cert->unsupported_sig) {
++		ret = 0;
++		goto out;
 +	}
- 
- 	/* Setup to process RIO completion. */
- 	handle_cnt = 0;
++
+ 	ret = public_key_verify_signature(cert->pub, cert->sig);
+ 	if (ret < 0) {
+ 		if (ret == -ENOPKG) {
 
 
