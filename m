@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 921077A7DE7
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C774D7A800C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:32:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235410AbjITMNU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:13:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55226 "EHLO
+        id S234673AbjITMc2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:32:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235321AbjITMNT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:19 -0400
+        with ESMTP id S236151AbjITMc1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:32:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C79AEE4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CF7C433C8;
-        Wed, 20 Sep 2023 12:13:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FA1E93
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:32:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496FDC433C8;
+        Wed, 20 Sep 2023 12:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211993;
-        bh=qYEtc3nH/dlyeE1UH5eIxPGPEzKy+md/xR/RdM24CvU=;
+        s=korg; t=1695213140;
+        bh=nOvCJEDy7cIcoi85Xs9+4WpjA7y1arNLPxg2tCjhxiA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t5V5V/cjtVclbKOG3MuZF+NI4LrwZscz5wNmQWPx1Ke2h19+NRZe0orNtxEG/Tg2Q
-         gke3CrXfx5MZdHmDVy5YpOHEsp3lhfEtpWgWVzkWi9ROeBXE/91EkiEFFMo+5mqH9J
-         XxYwlEDxiVJqpLm0FSisnsJU3eMZMCWtgtkTkP0Q=
+        b=pWSyTgdHxyRCXQx5tk+mDebr1ieuLK639/AY+1AzXP2UfI5WBon41MdaiAmyu8x/q
+         sjYB08N7rIqBTWLMKq54Xu+hxCkxRn0aDhcgxqqq8LTSwYKsgt6sAD4fdznHkF7k2J
+         /vdFdlPKXYp+yd9zu+ZgebAZOF6fbPuGt6yXKgys=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ashok Raj <ashok.raj@intel.com>,
-        Jacob Pan <jacob.jun.pan@linux.intel.com>,
-        Keith Busch <keith.busch@intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 111/273] PCI/ATS: Add pci_prg_resp_pasid_required() interface.
-Date:   Wed, 20 Sep 2023 13:29:11 +0200
-Message-ID: <20230920112849.911782604@linuxfoundation.org>
+        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 175/367] media: go7007: Remove redundant if statement
+Date:   Wed, 20 Sep 2023 13:29:12 +0200
+Message-ID: <20230920112903.169067434@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,121 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit e5567f5f67621877726f99be040af9fbedda37dc ]
+[ Upstream commit f33cb49081da0ec5af0888f8ecbd566bd326eed1 ]
 
-Return the PRG Response PASID Required bit in the Page Request
-Status Register.
+The if statement that compares msgs[i].len != 3 is always false because
+it is in a code block where msg[i].len is equal to 3. The check is
+redundant and can be removed.
 
-As per PCIe spec r4.0, sec 10.5.2.3, if this bit is Set, the device
-expects a PASID TLP Prefix on PRG Response Messages when the
-corresponding Page Requests had a PASID TLP Prefix. If Clear, the device
-does not expect PASID TLP Prefixes on any PRG Response Message, and the
-device behavior is undefined if the device receives a PRG Response Message
-with a PASID TLP Prefix. Also the device behavior is undefined if this
-bit is Set and the device receives a PRG Response Message with no PASID TLP
-Prefix when the corresponding Page Requests had a PASID TLP Prefix.
+As detected by cppcheck static analysis:
+drivers/media/usb/go7007/go7007-i2c.c:168:20: warning: Opposite inner
+'if' condition leads to a dead code block. [oppositeInnerCondition]
 
-This function will be used by drivers like IOMMU, if it is required to
-check the status of the PRG Response PASID Required bit before enabling
-the PASID support of the device.
+Link: https://lore.kernel.org/linux-media/20230727174007.635572-1-colin.i.king@gmail.com
 
-Cc: Ashok Raj <ashok.raj@intel.com>
-Cc: Jacob Pan <jacob.jun.pan@linux.intel.com>
-Cc: Keith Busch <keith.busch@intel.com>
-Suggested-by: Ashok Raj <ashok.raj@intel.com>
-Signed-off-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: ce7d88110b9e ("drm/amdgpu: Use RMW accessors for changing LNKCTL")
+Fixes: 866b8695d67e ("Staging: add the go7007 video driver")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/ats.c             | 30 ++++++++++++++++++++++++++++++
- include/linux/pci-ats.h       |  5 +++++
- include/uapi/linux/pci_regs.h |  1 +
- 3 files changed, 36 insertions(+)
+ drivers/media/usb/go7007/go7007-i2c.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/pci/ats.c b/drivers/pci/ats.c
-index 5b78f3b1b918a..420cd0a578d07 100644
---- a/drivers/pci/ats.c
-+++ b/drivers/pci/ats.c
-@@ -368,6 +368,36 @@ int pci_pasid_features(struct pci_dev *pdev)
- }
- EXPORT_SYMBOL_GPL(pci_pasid_features);
- 
-+/**
-+ * pci_prg_resp_pasid_required - Return PRG Response PASID Required bit
-+ *				 status.
-+ * @pdev: PCI device structure
-+ *
-+ * Returns 1 if PASID is required in PRG Response Message, 0 otherwise.
-+ *
-+ * Even though the PRG response PASID status is read from PRI Status
-+ * Register, since this API will mainly be used by PASID users, this
-+ * function is defined within #ifdef CONFIG_PCI_PASID instead of
-+ * CONFIG_PCI_PRI.
-+ */
-+int pci_prg_resp_pasid_required(struct pci_dev *pdev)
-+{
-+	u16 status;
-+	int pos;
-+
-+	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_PRI);
-+	if (!pos)
-+		return 0;
-+
-+	pci_read_config_word(pdev, pos + PCI_PRI_STATUS, &status);
-+
-+	if (status & PCI_PRI_STATUS_PASID)
-+		return 1;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(pci_prg_resp_pasid_required);
-+
- #define PASID_NUMBER_SHIFT	8
- #define PASID_NUMBER_MASK	(0x1f << PASID_NUMBER_SHIFT)
- /**
-diff --git a/include/linux/pci-ats.h b/include/linux/pci-ats.h
-index 7c4b8e27268c7..facfd6a18fe18 100644
---- a/include/linux/pci-ats.h
-+++ b/include/linux/pci-ats.h
-@@ -40,6 +40,7 @@ void pci_disable_pasid(struct pci_dev *pdev);
- void pci_restore_pasid_state(struct pci_dev *pdev);
- int pci_pasid_features(struct pci_dev *pdev);
- int pci_max_pasids(struct pci_dev *pdev);
-+int pci_prg_resp_pasid_required(struct pci_dev *pdev);
- 
- #else  /* CONFIG_PCI_PASID */
- 
-@@ -66,6 +67,10 @@ static inline int pci_max_pasids(struct pci_dev *pdev)
- 	return -EINVAL;
- }
- 
-+static int pci_prg_resp_pasid_required(struct pci_dev *pdev)
-+{
-+	return 0;
-+}
- #endif /* CONFIG_PCI_PASID */
- 
- 
-diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-index 8d2767140798b..4c7aa15b0e2ee 100644
---- a/include/uapi/linux/pci_regs.h
-+++ b/include/uapi/linux/pci_regs.h
-@@ -885,6 +885,7 @@
- #define  PCI_PRI_STATUS_RF	0x001	/* Response Failure */
- #define  PCI_PRI_STATUS_UPRGI	0x002	/* Unexpected PRG index */
- #define  PCI_PRI_STATUS_STOPPED	0x100	/* PRI Stopped */
-+#define  PCI_PRI_STATUS_PASID	0x8000	/* PRG Response PASID Required */
- #define PCI_PRI_MAX_REQ		0x08	/* PRI max reqs supported */
- #define PCI_PRI_ALLOC_REQ	0x0c	/* PRI max reqs allowed */
- #define PCI_EXT_CAP_PRI_SIZEOF	16
+diff --git a/drivers/media/usb/go7007/go7007-i2c.c b/drivers/media/usb/go7007/go7007-i2c.c
+index 38339dd2f83f7..2880370e45c8b 100644
+--- a/drivers/media/usb/go7007/go7007-i2c.c
++++ b/drivers/media/usb/go7007/go7007-i2c.c
+@@ -165,8 +165,6 @@ static int go7007_i2c_master_xfer(struct i2c_adapter *adapter,
+ 		} else if (msgs[i].len == 3) {
+ 			if (msgs[i].flags & I2C_M_RD)
+ 				return -EIO;
+-			if (msgs[i].len != 3)
+-				return -EIO;
+ 			if (go7007_i2c_xfer(go, msgs[i].addr, 0,
+ 					(msgs[i].buf[0] << 8) | msgs[i].buf[1],
+ 					0x01, &msgs[i].buf[2]) < 0)
 -- 
 2.40.1
 
