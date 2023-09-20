@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63FCC7A7810
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C0387A7816
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 11:55:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234235AbjITJzJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 05:55:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44008 "EHLO
+        id S234234AbjITJzO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 05:55:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234271AbjITJzC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:55:02 -0400
+        with ESMTP id S234259AbjITJzL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 05:55:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 621F5C9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:54:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769AFC433C7;
-        Wed, 20 Sep 2023 09:54:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1EECA9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 02:55:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45705C433C8;
+        Wed, 20 Sep 2023 09:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695203696;
-        bh=FXbB/eeT2ITnbTWxWggCp4sEoOE9WjWBKlvsYgJ3iNE=;
+        s=korg; t=1695203704;
+        bh=IfpLkSiII+0+OfBdFCRKCQMiEcoKMI4VcfXVkMERgfs=;
         h=Subject:To:Cc:From:Date:From;
-        b=oKgBPNRxzoH6UW7OcLwCqHQzJNh/XRHfziblHS3aSVtuIoKe0zRGK79K61eYYtOL+
-         1rsE1qa6WeieYwlPyxmnh+o0Grvfb2Zh2h6z93Kvt1S99Cn4XRxZPnWKcug9B2o460
-         s08QV7oiyW83ZNOx/8iJeD7FsSSKAZWM23POXRII=
-Subject: FAILED: patch "[PATCH] tracing: Increase trace array ref count on enable and filter" failed to apply to 5.15-stable tree
+        b=kvqq2xyNolVrx2K3AE1Ur5FKdhynuN/PoAukJcJcgND0k4UF6hkc1z4L8BiZ8SRfv
+         uwx8yYFfQUYE2hy0zEWTo6eup/yjA+HLl8D9YTABBhNVzVWhAZ16BGBsDBW/hwIbmV
+         PKWEY9pCR6Up7NYmLb3PptV4BypdWNeZ7Bi3LcqU=
+Subject: FAILED: patch "[PATCH] tracing: Increase trace array ref count on enable and filter" failed to apply to 5.10-stable tree
 To:     rostedt@goodmis.org, akpm@linux-foundation.org, lkft@linaro.org,
         mark.rutland@arm.com, mhiramat@kernel.org,
         naresh.kamboju@linaro.org, zhengyejian1@huawei.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Wed, 20 Sep 2023 11:54:53 +0200
-Message-ID: <2023092053-morphine-popcorn-8bb6@gregkh>
+Message-ID: <2023092053-clamor-enduring-64a9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x f5ca233e2e66dc1c249bf07eefa37e34a6c9346a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092053-morphine-popcorn-8bb6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092053-clamor-enduring-64a9@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
