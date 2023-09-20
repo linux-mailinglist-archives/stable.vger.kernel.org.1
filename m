@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57F397A7CDF
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 353F67A7E36
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:16:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235174AbjITMFZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:05:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44334 "EHLO
+        id S235536AbjITMQX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:16:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235214AbjITMEs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:48 -0400
+        with ESMTP id S235583AbjITMQK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:16:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF7FF93
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6FFC433C7;
-        Wed, 20 Sep 2023 12:04:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3DCB12B
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73313C433CA;
+        Wed, 20 Sep 2023 12:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211482;
-        bh=UURWCm4iKq2E/oqhzDDBVm5FAro2GHYsfijM4BmxMuY=;
+        s=korg; t=1695212160;
+        bh=f+3LCWhbFSwLAxaVjGWfzdm/UjLfGK3nEMYEwAU2dhQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y0CjnR5tZZiHVu7YqXfv0bSPKb8tu5TWQxwBhTxwRB5IjAYLC/6maDGP5rQ+xX8fb
-         HHlgxblvmp+EcbQopEWdO4EmS61KJ/WOJVxRed9fvzqHJWeWV7lyq9pbPdlBVaafap
-         AFdlVE95Q+4w2J7EPnqq4m5tqVV80cDzkFaSrCS0=
+        b=ntZ8NiOvVB6jw9BTFupKtjQbHfSvxMOZu6U4OLCfeHTygPcnYDsmwnQ6QTLVyYwsx
+         VIUvfCEyZvtXleRx0yi6xyM1FQnIMR56N85h3ikw6cxHl64KhH6sh1vIatEMbOEWtW
+         28AnIl2mwGU6qFWggHE1sVcZblid1+IX0utf5SkE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 4.14 110/186] ntb: Clean up tx tail index on link down
-Date:   Wed, 20 Sep 2023 13:30:13 +0200
-Message-ID: <20230920112841.002268802@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 4.19 174/273] ARM: OMAP2+: Fix -Warray-bounds warning in _pwrdm_state_switch()
+Date:   Wed, 20 Sep 2023 13:30:14 +0200
+Message-ID: <20230920112851.894197817@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,62 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-commit cc79bd2738c2d40aba58b2be6ce47dc0e471df0e upstream.
+commit 847fb80cc01a54bc827b02547bb8743bdb59ddab upstream.
 
-The tx tail index is not reset when the link goes down. This causes the
-tail index to go out of sync when the link goes down and comes back up.
-Refactor the ntb_qp_link_down_reset() and reset the tail index as well.
+If function pwrdm_read_prev_pwrst() returns -EINVAL, we will end
+up accessing array pwrdm->state_counter through negative index
+-22. This is wrong and the compiler is legitimately warning us
+about this potential problem.
 
-Fixes: 2849b5d70641 ("NTB: Reset transport QP link stats on down")
-Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
-Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Fix this by sanity checking the value stored in variable _prev_
+before accessing array pwrdm->state_counter.
+
+Address the following -Warray-bounds warning:
+arch/arm/mach-omap2/powerdomain.c:178:45: warning: array subscript -22 is below array bounds of 'unsigned int[4]' [-Warray-bounds]
+
+Link: https://github.com/KSPP/linux/issues/307
+Fixes: ba20bb126940 ("OMAP: PM counter infrastructure.")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/lkml/20230607050639.LzbPn%25lkp@intel.com/
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Message-ID: <ZIFVGwImU3kpaGeH@work>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/ntb_transport.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/arm/mach-omap2/powerdomain.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -741,7 +741,7 @@ static int ntb_set_mw(struct ntb_transpo
- 	return 0;
- }
- 
--static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
-+static void ntb_qp_link_context_reset(struct ntb_transport_qp *qp)
- {
- 	qp->link_is_up = false;
- 	qp->active = false;
-@@ -764,6 +764,13 @@ static void ntb_qp_link_down_reset(struc
- 	qp->tx_async = 0;
- }
- 
-+static void ntb_qp_link_down_reset(struct ntb_transport_qp *qp)
-+{
-+	ntb_qp_link_context_reset(qp);
-+	if (qp->remote_rx_info)
-+		qp->remote_rx_info->entry = qp->rx_max_entry - 1;
-+}
-+
- static void ntb_qp_link_cleanup(struct ntb_transport_qp *qp)
- {
- 	struct ntb_transport_ctx *nt = qp->transport;
-@@ -988,7 +995,7 @@ static int ntb_transport_init_queue(stru
- 	qp->ndev = nt->ndev;
- 	qp->client_ready = false;
- 	qp->event_handler = NULL;
--	ntb_qp_link_down_reset(qp);
-+	ntb_qp_link_context_reset(qp);
- 
- 	if (mw_num < qp_count % mw_count)
- 		num_qps_mw = qp_count / mw_count + 1;
+--- a/arch/arm/mach-omap2/powerdomain.c
++++ b/arch/arm/mach-omap2/powerdomain.c
+@@ -177,7 +177,7 @@ static int _pwrdm_state_switch(struct po
+ 		break;
+ 	case PWRDM_STATE_PREV:
+ 		prev = pwrdm_read_prev_pwrst(pwrdm);
+-		if (pwrdm->state != prev)
++		if (prev >= 0 && pwrdm->state != prev)
+ 			pwrdm->state_counter[prev]++;
+ 		if (prev == PWRDM_POWER_RET)
+ 			_update_logic_membank_counters(pwrdm);
 
 
