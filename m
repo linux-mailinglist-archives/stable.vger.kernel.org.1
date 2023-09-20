@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8FCD7A7ECE
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA9FA7A7F0B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:23:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235734AbjITMUw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:20:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48608 "EHLO
+        id S235683AbjITMXV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:23:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235723AbjITMUv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:51 -0400
+        with ESMTP id S235660AbjITMXU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:23:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D5C583
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD549C433C9;
-        Wed, 20 Sep 2023 12:20:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C98083
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:23:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EC4C433C8;
+        Wed, 20 Sep 2023 12:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212446;
-        bh=gemPILUFLBeNlYw80gnxbqjN0fVSEhvRVE5eAqrYUek=;
+        s=korg; t=1695212594;
+        bh=vYxnYbZMsOBvMK2RhANFwW+p1tXsb1ze3uH5eL0NT8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QBGqUf7fH4li59EJPusE6pKU4FUb9YsVR2Kukdj7uYa4QWRqKRj+ejyQPceW0kME0
-         NTFLvcSOC40W+i6OHfPNoUmQPAnTPB/1yILK82vuLvgFxcUYsl0qKeW5v1GaSrdCqc
-         WFjKcTun6AQMgLniqEAyO5kCndLGb+5GxHxQH9mY=
+        b=uhHg0Ofmvig8vu4hTBY8HWKaIdAvg4IzN6SMzYkYv+jzTLDQicyOvLUEdefnzpiMB
+         r0yvKNQFjQ73mg6R33/7pxwB5ofNbsPeCNFaULi4woI1zcRwL4MQR5UHhg3M0uunnp
+         Gbq/pjftFATLkqbOHah64CDz/hpQ55KQrEq1gMAw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhi Li <yieli@redhat.com>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 4.19 270/273] nfsd: fix change_info in NFSv4 RENAME replies
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 60/83] scsi: qla2xxx: Fix NULL vs IS_ERR() bug for debugfs_create_dir()
 Date:   Wed, 20 Sep 2023 13:31:50 +0200
-Message-ID: <20230920112854.558826840@linuxfoundation.org>
+Message-ID: <20230920112829.031562401@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +50,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit fdd2630a7398191e84822612e589062063bd4f3d upstream.
+[ Upstream commit d0b0822e32dbae80bbcb3cc86f34d28539d913df ]
 
-nfsd sends the transposed directory change info in the RENAME reply. The
-source directory is in save_fh and the target is in current_fh.
+Since both debugfs_create_dir() and debugfs_create_file() return ERR_PTR
+and never NULL, use IS_ERR() instead of checking for NULL.
 
-Reported-by: Zhi Li <yieli@redhat.com>
-Reported-by: Benjamin Coddington <bcodding@redhat.com>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2218844
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e98fb0f9208 ("scsi: qla2xxx: Setup debugfs entries for remote ports")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20230831140930.3166359-1-ruanjinjie@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_dfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -870,8 +870,8 @@ nfsd4_rename(struct svc_rqst *rqstp, str
- 			     rename->rn_tname, rename->rn_tnamelen);
- 	if (status)
- 		return status;
--	set_change_info(&rename->rn_sinfo, &cstate->current_fh);
--	set_change_info(&rename->rn_tinfo, &cstate->save_fh);
-+	set_change_info(&rename->rn_sinfo, &cstate->save_fh);
-+	set_change_info(&rename->rn_tinfo, &cstate->current_fh);
- 	return nfs_ok;
- }
+diff --git a/drivers/scsi/qla2xxx/qla_dfs.c b/drivers/scsi/qla2xxx/qla_dfs.c
+index d5ebcf7d70ff0..7d778bf3fd722 100644
+--- a/drivers/scsi/qla2xxx/qla_dfs.c
++++ b/drivers/scsi/qla2xxx/qla_dfs.c
+@@ -116,7 +116,7 @@ qla2x00_dfs_create_rport(scsi_qla_host_t *vha, struct fc_port *fp)
  
+ 	sprintf(wwn, "pn-%016llx", wwn_to_u64(fp->port_name));
+ 	fp->dfs_rport_dir = debugfs_create_dir(wwn, vha->dfs_rport_root);
+-	if (!fp->dfs_rport_dir)
++	if (IS_ERR(fp->dfs_rport_dir))
+ 		return;
+ 	if (NVME_TARGET(vha->hw, fp))
+ 		debugfs_create_file("dev_loss_tmo", 0600, fp->dfs_rport_dir,
+@@ -571,14 +571,14 @@ qla2x00_dfs_setup(scsi_qla_host_t *vha)
+ 	if (IS_QLA27XX(ha) || IS_QLA83XX(ha) || IS_QLA28XX(ha)) {
+ 		ha->tgt.dfs_naqp = debugfs_create_file("naqp",
+ 		    0400, ha->dfs_dir, vha, &dfs_naqp_ops);
+-		if (!ha->tgt.dfs_naqp) {
++		if (IS_ERR(ha->tgt.dfs_naqp)) {
+ 			ql_log(ql_log_warn, vha, 0xd011,
+ 			       "Unable to create debugFS naqp node.\n");
+ 			goto out;
+ 		}
+ 	}
+ 	vha->dfs_rport_root = debugfs_create_dir("rports", ha->dfs_dir);
+-	if (!vha->dfs_rport_root) {
++	if (IS_ERR(vha->dfs_rport_root)) {
+ 		ql_log(ql_log_warn, vha, 0xd012,
+ 		       "Unable to create debugFS rports node.\n");
+ 		goto out;
+-- 
+2.40.1
+
 
 
