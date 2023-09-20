@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43BCE7A8013
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6483A7A7DEC
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235887AbjITMcj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:32:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43182 "EHLO
+        id S235476AbjITMNf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:13:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236163AbjITMch (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:32:37 -0400
+        with ESMTP id S235497AbjITMNd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 110489E
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:32:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CDEC433C7;
-        Wed, 20 Sep 2023 12:32:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E736C2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8875BC433C8;
+        Wed, 20 Sep 2023 12:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213151;
-        bh=ivjqjm4OQPr1jLKkuVKziKrFY5/tC6qDkV7eOSb5dyg=;
+        s=korg; t=1695212006;
+        bh=urahMXo2oEKPLFjZyH16MfsF6hrGrxxOtG6CjKCGxAI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OaOeM+DfKtQDA3bVxXYckDgh8nofK8HmNxX0atZsGb9tLW4rypzYk5dJm6rglUy1f
-         6lEEMg/s1/fj5cK5WsKu+WvEGA8769T1zGlBL2XYE9NNUUbPIqSGUfYotJM1sgREdr
-         W7VinU4MBdIgnYXYbvdMHw5x4Sv5PyB3b0348gWk=
+        b=E+1YfhgNjCHI93bUQ8J4GiE5g4qnEU/OoivYXfoieOODqCXE7f7D4b3AbKKXbFiwY
+         AWB7nspKnX8BAtKpXykMZHX9moqs6VneYdetnmAkPJaULsEG7WSS6etoKVwAzKwFl3
+         xOq7DWnCJQNMLOGaoFann8LgoUHz/EsIf19Rb9ng=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dave Stevenson <dave.stevenson@raspberrypi.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 179/367] media: i2c: ov2680: Set V4L2_CTRL_FLAG_MODIFY_LAYOUT on flips
+Subject: [PATCH 4.19 116/273] drm/amdgpu: Replace numbers with PCI_EXP_LNKCTL2 definitions
 Date:   Wed, 20 Sep 2023 13:29:16 +0200
-Message-ID: <20230920112903.269862041@linuxfoundation.org>
+Message-ID: <20230920112850.074538854@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,43 +50,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 66274280b2c745d380508dc27b9a4dfd736e5eda ]
+[ Upstream commit 35e768e296729ac96a8c33b7810b6cb1673ae961 ]
 
-The driver changes the Bayer order based on the flips, but
-does not define the control correctly with the
-V4L2_CTRL_FLAG_MODIFY_LAYOUT flag.
+Replace hard-coded magic numbers with the descriptive PCI_EXP_LNKCTL2
+definitions.  No functional change intended.
 
-Add the V4L2_CTRL_FLAG_MODIFY_LAYOUT flag.
-
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Stable-dep-of: 7b5a42e6ae71 ("media: ov2680: Remove auto-gain and auto-exposure controls")
+Link: https://lore.kernel.org/r/20191112173503.176611-4-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: ce7d88110b9e ("drm/amdgpu: Use RMW accessors for changing LNKCTL")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/cik.c | 22 ++++++++++++++--------
+ drivers/gpu/drm/amd/amdgpu/si.c  | 22 ++++++++++++++--------
+ 2 files changed, 28 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 59cdbc33658ce..cd0c083a4768a 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -966,6 +966,8 @@ static int ov2680_v4l2_register(struct ov2680_dev *sensor)
+diff --git a/drivers/gpu/drm/amd/amdgpu/cik.c b/drivers/gpu/drm/amd/amdgpu/cik.c
+index 40b62edd891f3..95b3a1f601e8b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/cik.c
++++ b/drivers/gpu/drm/amd/amdgpu/cik.c
+@@ -1491,13 +1491,19 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
  
- 	ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
- 	ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
-+	ctrls->vflip->flags |= V4L2_CTRL_FLAG_MODIFY_LAYOUT;
-+	ctrls->hflip->flags |= V4L2_CTRL_FLAG_MODIFY_LAYOUT;
+ 				/* linkctl2 */
+ 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 7));
+-				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 7)));
++				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN);
++				tmp16 |= (bridge_cfg2 &
++					  (PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN));
+ 				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
  
- 	v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
- 	v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp, 1, true);
+ 				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 7));
+-				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 7)));
++				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN);
++				tmp16 |= (gpu_cfg2 &
++					  (PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN));
+ 				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 				tmp = RREG32_PCIE(ixPCIE_LC_CNTL4);
+@@ -1514,13 +1520,13 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
+ 	WREG32_PCIE(ixPCIE_LC_SPEED_CNTL, speed_cntl);
+ 
+ 	pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
+-	tmp16 &= ~0xf;
++	tmp16 &= ~PCI_EXP_LNKCTL2_TLS;
+ 	if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
+-		tmp16 |= 3; /* gen3 */
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_8_0GT; /* gen3 */
+ 	else if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN2)
+-		tmp16 |= 2; /* gen2 */
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_5_0GT; /* gen2 */
+ 	else
+-		tmp16 |= 1; /* gen1 */
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_2_5GT; /* gen1 */
+ 	pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 	speed_cntl = RREG32_PCIE(ixPCIE_LC_SPEED_CNTL);
+diff --git a/drivers/gpu/drm/amd/amdgpu/si.c b/drivers/gpu/drm/amd/amdgpu/si.c
+index 3b9e944bee180..e5fe304a28156 100644
+--- a/drivers/gpu/drm/amd/amdgpu/si.c
++++ b/drivers/gpu/drm/amd/amdgpu/si.c
+@@ -1662,13 +1662,19 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
+ 				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, tmp16);
+ 
+ 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 7));
+-				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 7)));
++				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN);
++				tmp16 |= (bridge_cfg2 &
++					  (PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN));
+ 				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
+-				tmp16 &= ~((1 << 4) | (7 << 7));
+-				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 7)));
++				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN);
++				tmp16 |= (gpu_cfg2 &
++					  (PCI_EXP_LNKCTL2_ENTER_COMP |
++					   PCI_EXP_LNKCTL2_TX_MARGIN));
+ 				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 				tmp = RREG32_PCIE_PORT(PCIE_LC_CNTL4);
+@@ -1683,13 +1689,13 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
+ 	WREG32_PCIE_PORT(PCIE_LC_SPEED_CNTL, speed_cntl);
+ 
+ 	pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
+-	tmp16 &= ~0xf;
++	tmp16 &= ~PCI_EXP_LNKCTL2_TLS;
+ 	if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
+-		tmp16 |= 3;
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_8_0GT; /* gen3 */
+ 	else if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN2)
+-		tmp16 |= 2;
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_5_0GT; /* gen2 */
+ 	else
+-		tmp16 |= 1;
++		tmp16 |= PCI_EXP_LNKCTL2_TLS_2_5GT; /* gen1 */
+ 	pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
+ 
+ 	speed_cntl = RREG32_PCIE_PORT(PCIE_LC_SPEED_CNTL);
 -- 
 2.40.1
 
