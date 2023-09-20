@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AC497A7B11
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D160D7A7BB6
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234634AbjITLtI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:49:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55096 "EHLO
+        id S234810AbjITLzO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:55:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234635AbjITLtH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:07 -0400
+        with ESMTP id S234898AbjITLyq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FF1BCA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D42BC433C8;
-        Wed, 20 Sep 2023 11:49:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B676E6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E188C433C7;
+        Wed, 20 Sep 2023 11:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210540;
-        bh=E9fSwZ/jM++xCT/uEpYv4vD41peOA2Ip9wkao5I3yJg=;
+        s=korg; t=1695210876;
+        bh=K4F6w3moKzrDdO8MimPL343JntuHz2AVOriPM4kyhyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tjGgqHSXwOhLpAGBm5tgGJ5rUqZeWsM5e2pNpz/nyKlBlEgiBYGSwQwIiE1Qh+mIB
-         CKct2f8v62i1nOtWJ4PCJg/zyjg+cFWhTJZumzywzBqezTqEYzifkvsdIGiLRliObL
-         9B6n/z8uOAIXpjT7Thi2py1miCVB0BU3YlkbSrkk=
+        b=kRn4XwQValN0Hr8mSAwvqAyweqiWA2C5NgvnZPt6/oRoAYVKX/BqCWUYTvXrsPTNa
+         WO8up9GeJ4hkt//tSZ9iP7I4wXUwMz9Bwk8mk1tvE6Y0C81GYBeNab1GtyhILKiYE3
+         o2HBeXv/OA/exoRxQ4JROpl9D/827GUWRtVBRj8I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Madhu M <madhu.m@intel.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 115/211] usb: typec: intel_pmc_mux: Add new ACPI ID for Lunar Lake IOM device
+        patches@lists.linux.dev, xu xin <xu.xin16@zte.com.cn>,
+        Yang Yang <yang.yang29@zte.com.cn>, Si Hao <si.hao@zte.com.cn>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 025/139] net/ipv4: return the real errno instead of -EINVAL
 Date:   Wed, 20 Sep 2023 13:29:19 +0200
-Message-ID: <20230920112849.357317277@linuxfoundation.org>
+Message-ID: <20230920112836.534785001@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,101 +53,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhu M <madhu.m@intel.com>
+From: xu xin <xu.xin16@zte.com.cn>
 
-[ Upstream commit e032368e8cb15ab1f11b92f078caa9bae995b8fe ]
+[ Upstream commit c67180efc507e04a87f22aa68bd7dd832db006b7 ]
 
-Intel Lunar Lake IOM has a different IOM port status offset and size
-than Intel MTL.
+For now, No matter what error pointer ip_neigh_for_gw() returns,
+ip_finish_output2() always return -EINVAL, which may mislead the upper
+users.
 
-Intel Lunar Lake is the first platform to extend IOM port status
-from 32bit to 64bit by adding DDI port number into IOM port status.
+For exemple, an application uses sendto to send an UDP packet, but when the
+neighbor table overflows, sendto() will get a value of -EINVAL, and it will
+cause users to waste a lot of time checking parameters for errors.
 
-Added IOM_PORT_STATUS_REGS macro for using platform specific IOM port
-status offset and size.
+Return the real errno instead of -EINVAL.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Madhu M <madhu.m@intel.com>
-Link: https://lore.kernel.org/r/20230704080509.14251-1-madhu.m@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+Reviewed-by: Yang Yang <yang.yang29@zte.com.cn>
+Cc: Si Hao <si.hao@zte.com.cn>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://lore.kernel.org/r/20230807015408.248237-1-xu.xin16@zte.com.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/mux/intel_pmc_mux.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ net/ipv4/ip_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/mux/intel_pmc_mux.c b/drivers/usb/typec/mux/intel_pmc_mux.c
-index 5e8edf3881c0d..61a88f68b458c 100644
---- a/drivers/usb/typec/mux/intel_pmc_mux.c
-+++ b/drivers/usb/typec/mux/intel_pmc_mux.c
-@@ -117,6 +117,16 @@ enum {
- 	  IOM_PORT_STATUS_DHPD_HPD_STATUS_SHIFT) &			\
- 	 IOM_PORT_STATUS_DHPD_HPD_STATUS_ASSERT)
- 
-+/* IOM port status register */
-+#define IOM_PORT_STATUS_REGS(_offset_, _size_)	((_offset_) | (_size_))
-+#define IOM_PORT_STATUS_REGS_SZ_MASK		BIT(0)
-+#define IOM_PORT_STATUS_REGS_SZ_4		0
-+#define IOM_PORT_STATUS_REGS_SZ_8		1
-+#define IOM_PORT_STATUS_REGS_OFFSET(_d_)				\
-+	((_d_) & ~IOM_PORT_STATUS_REGS_SZ_MASK)
-+#define IOM_PORT_STATUS_REGS_SIZE(_d_)					\
-+	(4 << ((_d_) & IOM_PORT_STATUS_REGS_SZ_MASK))
-+
- struct pmc_usb;
- 
- struct pmc_usb_port {
-@@ -145,6 +155,7 @@ struct pmc_usb {
- 	struct acpi_device *iom_adev;
- 	void __iomem *iom_base;
- 	u32 iom_port_status_offset;
-+	u8 iom_port_status_size;
- 
- 	struct dentry *dentry;
- };
-@@ -160,7 +171,7 @@ static void update_port_status(struct pmc_usb_port *port)
- 
- 	port->iom_status = readl(port->pmc->iom_base +
- 				 port->pmc->iom_port_status_offset +
--				 port_num * sizeof(u32));
-+				 port_num * port->pmc->iom_port_status_size);
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index ebd2cea5b7d7a..66908ce2dd116 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -234,7 +234,7 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
+ 	net_dbg_ratelimited("%s: No header cache and no neighbour!\n",
+ 			    __func__);
+ 	kfree_skb_reason(skb, SKB_DROP_REASON_NEIGH_CREATEFAIL);
+-	return -EINVAL;
++	return PTR_ERR(neigh);
  }
  
- static int sbu_orientation(struct pmc_usb_port *port)
-@@ -589,13 +600,16 @@ static int pmc_usb_register_port(struct pmc_usb *pmc, int index,
- /* IOM ACPI IDs and IOM_PORT_STATUS_OFFSET */
- static const struct acpi_device_id iom_acpi_ids[] = {
- 	/* TigerLake */
--	{ "INTC1072", 0x560, },
-+	{ "INTC1072", IOM_PORT_STATUS_REGS(0x560, IOM_PORT_STATUS_REGS_SZ_4) },
- 
- 	/* AlderLake */
--	{ "INTC1079", 0x160, },
-+	{ "INTC1079", IOM_PORT_STATUS_REGS(0x160, IOM_PORT_STATUS_REGS_SZ_4) },
- 
- 	/* Meteor Lake */
--	{ "INTC107A", 0x160, },
-+	{ "INTC107A", IOM_PORT_STATUS_REGS(0x160, IOM_PORT_STATUS_REGS_SZ_4) },
-+
-+	/* Lunar Lake */
-+	{ "INTC10EA", IOM_PORT_STATUS_REGS(0x150, IOM_PORT_STATUS_REGS_SZ_8) },
- 	{}
- };
- 
-@@ -615,7 +629,8 @@ static int pmc_usb_probe_iom(struct pmc_usb *pmc)
- 	if (!adev)
- 		return -ENODEV;
- 
--	pmc->iom_port_status_offset = (u32)dev_id->driver_data;
-+	pmc->iom_port_status_offset = IOM_PORT_STATUS_REGS_OFFSET(dev_id->driver_data);
-+	pmc->iom_port_status_size = IOM_PORT_STATUS_REGS_SIZE(dev_id->driver_data);
- 
- 	INIT_LIST_HEAD(&resource_list);
- 	ret = acpi_dev_get_memory_resources(adev, &resource_list);
+ static int ip_finish_output_gso(struct net *net, struct sock *sk,
 -- 
 2.40.1
 
