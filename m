@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81EBA7A8173
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F20CD7A8120
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:42:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236331AbjITMpf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:45:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36268 "EHLO
+        id S236292AbjITMmq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:42:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236357AbjITMpd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:45:33 -0400
+        with ESMTP id S236005AbjITMmq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:42:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5201B92
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:45:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3F8C433C9;
-        Wed, 20 Sep 2023 12:45:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAD1B93
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:42:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3262C433C9;
+        Wed, 20 Sep 2023 12:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213926;
-        bh=IU80j2MXYuLwQ67zI/gluE8ojaYKv1r0NbeXlmJlrNM=;
+        s=korg; t=1695213760;
+        bh=VUZMGl6F3/61KOFwk0MQ9esFYYV/gvnwuE5fL357IVQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cUcSlYU8Z8pJwbIYrUloY5ZGH3w1IfN0e6DXw6X6pd+aic0LvUMtyWbKJfeqYlRAI
-         I5xSYuAuZtOO9paqc+bzFSFPf/QZ0FFOjRi+vr0ckLwMvm4wLRsc5T93E7DTEmgcD6
-         Uv16lHLyEObsNBjpzChA8XvjU1sZLwfHLwCzi4+A=
+        b=OG6WWQHdhWEzBRjax62czIZgNqUur5l/STtow1K9kGtA6dSc4QOaKtYQR22kewfav
+         x6vfCokiUE2Y6Jzn1tUGeZFbMISHwt+b2PqmWLrqDB4VwhdoLahLEIgj8K+OhRaTGf
+         ZZJs2j9JJ+ybe6+uKpWZy5j3LNRpwXxdATegaaz4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 048/110] media: dvb-usb-v2: gl861: Fix null-ptr-deref in gl861_i2c_master_xfer
+Subject: [PATCH 5.4 329/367] md: raid1: fix potential OOB in raid1_remove_disk()
 Date:   Wed, 20 Sep 2023 13:31:46 +0200
-Message-ID: <20230920112832.174672176@linuxfoundation.org>
+Message-ID: <20230920112907.047346156@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +50,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit b97719a66970601cd3151a3e2020f4454a1c4ff6 ]
+[ Upstream commit 8b0472b50bcf0f19a5119b00a53b63579c8e1e4d ]
 
-In gl861_i2c_master_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach gl861_i2c_master_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+If rddev->raid_disk is greater than mddev->raid_disks, there will be
+an out-of-bounds in raid1_remove_disk(). We have already found
+similar reports as follows:
 
-Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+1) commit d17f744e883b ("md-raid10: fix KASAN warning")
+2) commit 1ebc2cec0b7d ("dm raid: fix KASAN warning in raid5_remove_disk")
+
+Fix this bug by checking whether the "number" variable is
+valid.
 
 Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/tencent_0D24426FAC6A21B69AC0C03CE4143A508F09@qq.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/gl861.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/raid1.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/gl861.c b/drivers/media/usb/dvb-usb-v2/gl861.c
-index 0c434259c36f1..c71e7b93476de 100644
---- a/drivers/media/usb/dvb-usb-v2/gl861.c
-+++ b/drivers/media/usb/dvb-usb-v2/gl861.c
-@@ -120,7 +120,7 @@ static int gl861_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 	} else if (num == 2 && !(msg[0].flags & I2C_M_RD) &&
- 		   (msg[1].flags & I2C_M_RD)) {
- 		/* I2C write + read */
--		if (msg[0].len > 1 || msg[1].len > sizeof(ctx->buf)) {
-+		if (msg[0].len != 1 || msg[1].len > sizeof(ctx->buf)) {
- 			ret = -EOPNOTSUPP;
- 			goto err;
- 		}
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 1919de4c8c12d..f96e079454700 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1808,6 +1808,10 @@ static int raid1_remove_disk(struct mddev *mddev, struct md_rdev *rdev)
+ 	struct r1conf *conf = mddev->private;
+ 	int err = 0;
+ 	int number = rdev->raid_disk;
++
++	if (unlikely(number >= conf->raid_disks))
++		goto abort;
++
+ 	struct raid1_info *p = conf->mirrors + number;
+ 
+ 	if (rdev != p->rdev)
 -- 
 2.40.1
 
