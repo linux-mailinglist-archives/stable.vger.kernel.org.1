@@ -2,48 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDA617A8003
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:32:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AD1A7A7DE2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236145AbjITMcN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:32:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36448 "EHLO
+        id S235301AbjITMNH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236150AbjITMcK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:32:10 -0400
+        with ESMTP id S235483AbjITMNF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25AD0B4;
-        Wed, 20 Sep 2023 05:32:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A36DC433CA;
-        Wed, 20 Sep 2023 12:32:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5844E93
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF6EC433C8;
+        Wed, 20 Sep 2023 12:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213121;
-        bh=3Dqp41UQ8t6sH/BAYKVjA2+H3vCW/4bbbIozAdg+byc=;
+        s=korg; t=1695211980;
+        bh=Z/QGuUCLhTicG5/G+VSn0bemW9PNWy55pK/O479P4mg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EI80SyKmGjF8G044Gpa0Eim7wY1Z1U9BIIucJyJVy4v3XltX8fXYvY356zjQFu3jJ
-         ehAQtiD4avszgFDp6NDiDfNCoX3X73+zI+WXT9kL0DLl6XexiJVyj44TPDM9KVawW2
-         3XiTMA+0vdfHWYfiFPiyu1ZFxkV8pqnAFk6/aFXc=
+        b=qPcryHDlJbmojK7vj2qPuweyhzxNuBQ0KDycpJrfWNvGVhpp7pOXimDp7szto5yTg
+         yvPzuTa7lc+PeJTjNhVuujbT9DFnc4fCcR2/Ac7vqX4/hzrA1mO1TR9fc4Xv6XnZ7g
+         /c04+KX53ZxuBRM3bktUrW+NqGWhScVIXAsdJzv8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
-        Rob Evers <revers@redhat.com>,
-        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Jozef Bacik <jobacik@redhat.com>,
-        Laurence Oberman <loberman@redhat.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Oleksandr Natalenko <oleksandr@redhat.com>,
+        patches@lists.linux.dev, Zhang Jianhua <chris.zjh@huawei.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 169/367] scsi: qedf: Do not touch __user pointer in qedf_dbg_fp_int_cmd_read() directly
-Date:   Wed, 20 Sep 2023 13:29:06 +0200
-Message-ID: <20230920112903.020733651@linuxfoundation.org>
+Subject: [PATCH 4.19 107/273] clk: sunxi-ng: Modify mismatched function name
+Date:   Wed, 20 Sep 2023 13:29:07 +0200
+Message-ID: <20230920112849.780377464@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,113 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Natalenko <oleksandr@redhat.com>
+From: Zhang Jianhua <chris.zjh@huawei.com>
 
-[ Upstream commit 25dbc20deab5165f847b4eb42f376f725a986ee8 ]
+[ Upstream commit 075d9ca5b4e17f84fd1c744a405e69ec743be7f0 ]
 
-The qedf_dbg_fp_int_cmd_read() function invokes sprintf() directly on a
-__user pointer, which may crash the kernel.
+No functional modification involved.
 
-Avoid doing that by vmalloc()'ating a buffer for scnprintf() and then
-calling simple_read_from_buffer() which does a proper copy_to_user() call.
+drivers/clk/sunxi-ng/ccu_mmc_timing.c:54: warning: expecting prototype for sunxi_ccu_set_mmc_timing_mode(). Prototype was for sunxi_ccu_get_mmc_timing_mode() instead
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
-Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
-Cc: Saurav Kashyap <skashyap@marvell.com>
-Cc: Rob Evers <revers@redhat.com>
-Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Cc: David Laight <David.Laight@ACULAB.COM>
-Cc: Jozef Bacik <jobacik@redhat.com>
-Cc: Laurence Oberman <loberman@redhat.com>
-Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: GR-QLogic-Storage-Upstream@marvell.com
-Cc: linux-scsi@vger.kernel.org
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Acked-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
-Link: https://lore.kernel.org/r/20230731084034.37021-4-oleksandr@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: f6f64ed868d3 ("clk: sunxi-ng: Add interface to query or configure MMC timing modes.")
+Signed-off-by: Zhang Jianhua <chris.zjh@huawei.com>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20230722153107.2078179-1-chris.zjh@huawei.com
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_dbg.h     |  2 ++
- drivers/scsi/qedf/qedf_debugfs.c | 21 +++++++++++++++------
- 2 files changed, 17 insertions(+), 6 deletions(-)
+ drivers/clk/sunxi-ng/ccu_mmc_timing.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_dbg.h b/drivers/scsi/qedf/qedf_dbg.h
-index d979f095aeda0..73e5756cade62 100644
---- a/drivers/scsi/qedf/qedf_dbg.h
-+++ b/drivers/scsi/qedf/qedf_dbg.h
-@@ -60,6 +60,8 @@ extern uint qedf_debug;
- #define QEDF_LOG_NOTICE	0x40000000	/* Notice logs */
- #define QEDF_LOG_WARN		0x80000000	/* Warning logs */
+diff --git a/drivers/clk/sunxi-ng/ccu_mmc_timing.c b/drivers/clk/sunxi-ng/ccu_mmc_timing.c
+index f9869f7353c01..9356dc1571561 100644
+--- a/drivers/clk/sunxi-ng/ccu_mmc_timing.c
++++ b/drivers/clk/sunxi-ng/ccu_mmc_timing.c
+@@ -50,7 +50,7 @@ int sunxi_ccu_set_mmc_timing_mode(struct clk *clk, bool new_mode)
+ EXPORT_SYMBOL_GPL(sunxi_ccu_set_mmc_timing_mode);
  
-+#define QEDF_DEBUGFS_LOG_LEN (2 * PAGE_SIZE)
-+
- /* Debug context structure */
- struct qedf_dbg_ctx {
- 	unsigned int host_no;
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index 5e638732d6852..b0a28a6a9c64a 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -8,6 +8,7 @@
- #include <linux/uaccess.h>
- #include <linux/debugfs.h>
- #include <linux/module.h>
-+#include <linux/vmalloc.h>
- 
- #include "qedf.h"
- #include "qedf_dbg.h"
-@@ -100,7 +101,9 @@ static ssize_t
- qedf_dbg_fp_int_cmd_read(struct file *filp, char __user *buffer, size_t count,
- 			 loff_t *ppos)
- {
-+	ssize_t ret;
- 	size_t cnt = 0;
-+	char *cbuf;
- 	int id;
- 	struct qedf_fastpath *fp = NULL;
- 	struct qedf_dbg_ctx *qedf_dbg =
-@@ -110,19 +113,25 @@ qedf_dbg_fp_int_cmd_read(struct file *filp, char __user *buffer, size_t count,
- 
- 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
- 
--	cnt = sprintf(buffer, "\nFastpath I/O completions\n\n");
-+	cbuf = vmalloc(QEDF_DEBUGFS_LOG_LEN);
-+	if (!cbuf)
-+		return 0;
-+
-+	cnt += scnprintf(cbuf + cnt, QEDF_DEBUGFS_LOG_LEN - cnt, "\nFastpath I/O completions\n\n");
- 
- 	for (id = 0; id < qedf->num_queues; id++) {
- 		fp = &(qedf->fp_array[id]);
- 		if (fp->sb_id == QEDF_SB_ID_NULL)
- 			continue;
--		cnt += sprintf((buffer + cnt), "#%d: %lu\n", id,
--			       fp->completions);
-+		cnt += scnprintf(cbuf + cnt, QEDF_DEBUGFS_LOG_LEN - cnt,
-+				 "#%d: %lu\n", id, fp->completions);
- 	}
- 
--	cnt = min_t(int, count, cnt - *ppos);
--	*ppos += cnt;
--	return cnt;
-+	ret = simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
-+
-+	vfree(cbuf);
-+
-+	return ret;
- }
- 
- static ssize_t
+ /**
+- * sunxi_ccu_set_mmc_timing_mode: Get the current MMC clock timing mode
++ * sunxi_ccu_get_mmc_timing_mode: Get the current MMC clock timing mode
+  * @clk: clock to query
+  *
+  * Returns 0 if the clock is in old timing mode, > 0 if it is in
 -- 
 2.40.1
 
