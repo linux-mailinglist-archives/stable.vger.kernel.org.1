@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 548927A7D55
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43DF97A7FA5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235257AbjITMIl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:08:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43320 "EHLO
+        id S234774AbjITM3E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:29:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235250AbjITMIl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:08:41 -0400
+        with ESMTP id S235818AbjITM3D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:29:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B34DCE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:08:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A128BC433C9;
-        Wed, 20 Sep 2023 12:08:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AE1D99
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:28:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E61C433C7;
+        Wed, 20 Sep 2023 12:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211715;
-        bh=7hiIGOj++9dRbCxwCD+vdX5zn2rZ5l/TdQcam0UZW2c=;
+        s=korg; t=1695212937;
+        bh=I4wo3yNYnMZrXg3TBITfWAU8WQjjZTVosThIhQ/UZrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xoZCBrotc2Wbx+HO2jsVuNKic7CMu6cNEIG/jB03kM/mECSacshlE7GxUW8/82oB9
-         lMqNAB4wVXHriY5gRox5XbnKJgu6qnC8QJ9SNgn8DqnG1Qds2JbuPuGZ2zCTk3kihT
-         6JIN7K0NYSmRhzDb1fjB+2gwzq+VBVKVqC5mYa4A=
+        b=t/zGnE8y/hSDod/SnVe62NOqE9QkxZKC+anHcIJBtgJaNZ8rZWrSCIXehXCKm5txp
+         w0Vx+9uiqBh4/DqzZMYQIJWEpM/cVsHNJubNJKAfstvCEe9UuGEY/FDzmehG04YQVf
+         FB2AlBBKf4QrZ7cjIcsDpBGR+SUDVcXFUCHDfeZc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, keltargw <keltar.gw@gmail.com>,
-        Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 4.19 001/273] erofs: ensure that the post-EOF tails are all zeroed
+        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 064/367] can: gs_usb: gs_usb_receive_bulk_callback(): count RX overflow errors also in case of OOM
 Date:   Wed, 20 Sep 2023 13:27:21 +0200
-Message-ID: <20230920112846.486047057@linuxfoundation.org>
+Message-ID: <20230920112900.166464650@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,51 +49,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit e4c1cf523d820730a86cae2c6d55924833b6f7ac upstream.
+[ Upstream commit 6c8bc15f02b85bc8f47074110d8fd8caf7a1e42d ]
 
-This was accidentally fixed up in commit e4c1cf523d82 but we can't
-take the full change due to other dependancy issues, so here is just
-the actual bugfix that is needed.
+In case of an RX overflow error from the CAN controller and an OOM
+where no skb can be allocated, the error counters are not incremented.
 
-[Background]
+Fix this by first incrementing the error counters and then allocate
+the skb.
 
-keltargw reported an issue [1] that with mmaped I/Os, sometimes the
-tail of the last page (after file ends) is not filled with zeroes.
-
-The root cause is that such tail page could be wrongly selected for
-inplace I/Os so the zeroed part will then be filled with compressed
-data instead of zeroes.
-
-A simple fix is to avoid doing inplace I/Os for such tail parts,
-actually that was already fixed upstream in commit e4c1cf523d82
-("erofs: tidy up z_erofs_do_read_page()") by accident.
-
-[1] https://lore.kernel.org/r/3ad8b469-25db-a297-21f9-75db2d6ad224@linux.alibaba.com
-
-Reported-by: keltargw <keltar.gw@gmail.com>
-Fixes: 3883a79abd02 ("staging: erofs: introduce VLE decompression support")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://lore.kernel.org/all/20230718-gs_usb-cleanups-v1-7-c3b9154ec605@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/erofs/unzip_vle.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/can/usb/gs_usb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/staging/erofs/unzip_vle.c
-+++ b/drivers/staging/erofs/unzip_vle.c
-@@ -675,6 +675,8 @@ hitted:
- 	cur = end - min_t(unsigned, offset + end - map->m_la, end);
- 	if (unlikely(!(map->m_flags & EROFS_MAP_MAPPED))) {
- 		zero_user_segment(page, cur, end);
-+		++spiltted;
-+		tight = false;
- 		goto next_part;
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index de5e5385fc110..1a24c1d9dd8f7 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -381,6 +381,9 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
  	}
  
+ 	if (hf->flags & GS_CAN_FLAG_OVERFLOW) {
++		stats->rx_over_errors++;
++		stats->rx_errors++;
++
+ 		skb = alloc_can_err_skb(netdev, &cf);
+ 		if (!skb)
+ 			goto resubmit_urb;
+@@ -388,8 +391,6 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 		cf->can_id |= CAN_ERR_CRTL;
+ 		cf->can_dlc = CAN_ERR_DLC;
+ 		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
+-		stats->rx_over_errors++;
+-		stats->rx_errors++;
+ 		netif_rx(skb);
+ 	}
+ 
+-- 
+2.40.1
+
 
 
