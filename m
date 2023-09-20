@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71AA97A7EA2
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32AC47A8170
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:45:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235622AbjITMT1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:19:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37722 "EHLO
+        id S236332AbjITMpb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:45:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235615AbjITMTZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:25 -0400
+        with ESMTP id S236321AbjITMpY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:45:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 000CB123
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBCDC433C7;
-        Wed, 20 Sep 2023 12:19:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA90083
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:45:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CAB7C433CA;
+        Wed, 20 Sep 2023 12:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212356;
-        bh=3BCugA7uIwGwpJoSRxlYgfoC+avEIRkUHwjiDW+OKAE=;
+        s=korg; t=1695213918;
+        bh=wmEAhp9dXVOVSmqivI2JTpCSL7OulhEknCinaEArma4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aWYgKQc0n2DhbTmpupzTOZ7ajOrcTxuqn3A7+FntPH5L5O7y/9iHvRrsEkGWmbD7r
-         vqltkYr1C4iKuavxZOpb+/Y669wTEKcZCmZDhr1J/pOmR8GFZyoSvYk+wdk8fYNZB5
-         2uYyvJNDEq4bozPWbGyM0cU2ou8HrTHecXemBLOU=
+        b=VkuPw5P03o2P8D+9V2T6HGdrHBOzRnS0XBQ6fwaDvYboZxtevD3a3Ksbr4cnGoRBO
+         3tt2+cRr7pPqftUtjLzqlYKCzAfDDUdII5uu9tQE1NbaJXhyezywbDK/ncxSUd9frP
+         itzZViq788xnLqsm/7oJFV+ir4tQtaYEfpWKOeRY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "GONG, Ruiqi" <gongruiqi1@huawei.com>,
-        Simon Horman <horms@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>, GONG@vger.kernel.org
-Subject: [PATCH 4.19 246/273] alx: fix OOB-read compiler warning
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 028/110] arm64: dts: qcom: sm6125-pdx201: correct ramoops pmsg-size
 Date:   Wed, 20 Sep 2023 13:31:26 +0200
-Message-ID: <20230920112853.919681905@linuxfoundation.org>
+Message-ID: <20230920112831.438772310@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+References: <20230920112830.377666128@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,53 +52,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: GONG, Ruiqi <gongruiqi1@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 3a198c95c95da10ad844cbeade2fe40bdf14c411 ]
+[ Upstream commit c42f5452de6ad2599c6e5e2a64c180a4ac835d27 ]
 
-The following message shows up when compiling with W=1:
+There is no 'msg-size' property in ramoops, so assume intention was for
+'pmsg-size':
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘alx_get_ethtool_stats’ at drivers/net/ethernet/atheros/alx/ethtool.c:297:2:
-./include/linux/fortify-string.h:592:4: error: call to ‘__read_overflow2_field’
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Werror=attribute-warning]
-  592 |    __read_overflow2_field(q_size_field, size);
-      |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  sm6125-sony-xperia-seine-pdx201.dtb: ramoops@ffc00000: Unevaluated properties are not allowed ('msg-size' was unexpected)
 
-In order to get alx stats altogether, alx_get_ethtool_stats() reads
-beyond hw->stats.rx_ok. Fix this warning by directly copying hw->stats,
-and refactor the unnecessarily complicated BUILD_BUG_ON btw.
-
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230821013218.1614265-1-gongruiqi@huaweicloud.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230618114442.140185-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/atheros/alx/ethtool.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/atheros/alx/ethtool.c b/drivers/net/ethernet/atheros/alx/ethtool.c
-index 2f4eabf652e80..51e5aa2c74b34 100644
---- a/drivers/net/ethernet/atheros/alx/ethtool.c
-+++ b/drivers/net/ethernet/atheros/alx/ethtool.c
-@@ -281,9 +281,8 @@ static void alx_get_ethtool_stats(struct net_device *netdev,
- 	spin_lock(&alx->stats_lock);
+diff --git a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
+index 47f8e5397ebba..8625fb3a7f0a7 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
++++ b/arch/arm64/boot/dts/qcom/sm6125-sony-xperia-seine-pdx201.dts
+@@ -74,7 +74,7 @@ pstore_mem: ramoops@ffc00000 {
+ 			reg = <0x0 0xffc40000 0x0 0xc0000>;
+ 			record-size = <0x1000>;
+ 			console-size = <0x40000>;
+-			msg-size = <0x20000 0x20000>;
++			pmsg-size = <0x20000>;
+ 		};
  
- 	alx_update_hw_stats(hw);
--	BUILD_BUG_ON(sizeof(hw->stats) - offsetof(struct alx_hw_stats, rx_ok) <
--		     ALX_NUM_STATS * sizeof(u64));
--	memcpy(data, &hw->stats.rx_ok, ALX_NUM_STATS * sizeof(u64));
-+	BUILD_BUG_ON(sizeof(hw->stats) != ALX_NUM_STATS * sizeof(u64));
-+	memcpy(data, &hw->stats, sizeof(hw->stats));
- 
- 	spin_unlock(&alx->stats_lock);
- }
+ 		cmdline_mem: memory@ffd00000 {
 -- 
 2.40.1
 
