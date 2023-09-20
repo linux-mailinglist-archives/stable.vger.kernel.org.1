@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C20AA7A7B4B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 394207A7C05
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234588AbjITLu7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:50:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33192 "EHLO
+        id S234888AbjITL51 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234689AbjITLu7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:50:59 -0400
+        with ESMTP id S235066AbjITL5W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7753ECE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:50:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEB5C433CA;
-        Wed, 20 Sep 2023 11:50:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5045181
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97CEC433C9;
+        Wed, 20 Sep 2023 11:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210652;
-        bh=fynoGi+yC/8/EvXwM4C73jpsbYDbZslyGIcSbDJHpO0=;
+        s=korg; t=1695211028;
+        bh=Rw8bkXwHgyPeh6sEbpT612P5Cly2wrLJeE34UT9Ft2c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Asm/bIm2XOOO6bQ9qA5HVmsDU1+zYyMKNzwdI4KvMf1u7gxhfIAxBOKHOKTTfTTZd
-         iCIFXfZe0o6yOC2P61FVUZZzE8VjwewIU6QtPYLyipy9yN1p6863nn2EXtpR2nU+NP
-         xfpaD8cPuv4KnTyGmqG3AQYYa8JjdZ2CPCwxHhxo=
+        b=PIyV+SmL4MLag6iimMolK84v8l9IfHm0aMWLm2Vlk8jT0AZCjwJODraFQe0SnTWfY
+         Gcl4kIxefo8epxgBjl9atW+ANSRxjeI2tVn2lu8neVE6Ho25GraUr0qzFXpLS4CmI4
+         p+HW2Sm6m5QNex/qG4Ifz/SpU9BcSvA744MZW2PA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 128/211] printk: Reduce console_unblank() usage in unsafe scenarios
+        patches@lists.linux.dev, Hao Luo <haoluo@google.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 038/139] libbpf: Free btf_vmlinux when closing bpf_object
 Date:   Wed, 20 Sep 2023 13:29:32 +0200
-Message-ID: <20230920112849.781543688@linuxfoundation.org>
+Message-ID: <20230920112837.049830899@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,104 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Hao Luo <haoluo@google.com>
 
-[ Upstream commit 7b23a66db55ed0a55b020e913f0d6f6d52a1ad2c ]
+[ Upstream commit 29d67fdebc42af6466d1909c60fdd1ef4f3e5240 ]
 
-A semaphore is not NMI-safe, even when using down_trylock(). Both
-down_trylock() and up() are using internal spinlocks and up()
-might even call wake_up_process().
+I hit a memory leak when testing bpf_program__set_attach_target().
+Basically, set_attach_target() may allocate btf_vmlinux, for example,
+when setting attach target for bpf_iter programs. But btf_vmlinux
+is freed only in bpf_object_load(), which means if we only open
+bpf object but not load it, setting attach target may leak
+btf_vmlinux.
 
-In the panic() code path it gets even worse because the internal
-spinlocks of the semaphore may have been taken by a CPU that has
-been stopped.
+So let's free btf_vmlinux in bpf_object__close() anyway.
 
-To reduce the risk of deadlocks caused by the console semaphore in
-the panic path, make the following changes:
-
-- First check if any consoles have implemented the unblank()
-  callback. If not, then there is no reason to take the console
-  semaphore anyway. (This check is also useful for the non-panic
-  path since the locking/unlocking of the console lock can be
-  quite expensive due to console printing.)
-
-- If the panic path is in NMI context, bail out without attempting
-  to take the console semaphore or calling any unblank() callbacks.
-  Bailing out is acceptable because console_unblank() would already
-  bail out if the console semaphore is contended. The alternative of
-  ignoring the console semaphore and calling the unblank() callbacks
-  anyway is a bad idea because these callbacks are also not NMI-safe.
-
-If consoles with unblank() callbacks exist and console_unblank() is
-called from a non-NMI panic context, it will still attempt a
-down_trylock(). This could still result in a deadlock if one of the
-stopped CPUs is holding the semaphore internal spinlock. But this
-is a risk that the kernel has been (and continues to be) willing
-to take.
-
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20230717194607.145135-3-john.ogness@linutronix.de
+Signed-off-by: Hao Luo <haoluo@google.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230822193840.1509809-1-haoluo@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/printk/printk.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ tools/lib/bpf/libbpf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index 357a4d18f6387..7d3f30eb35862 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -3045,9 +3045,27 @@ EXPORT_SYMBOL(console_conditional_schedule);
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index eeb2693128d8a..10f15a3e3a95e 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -8173,6 +8173,7 @@ void bpf_object__close(struct bpf_object *obj)
+ 	bpf_object__elf_finish(obj);
+ 	bpf_object_unload(obj);
+ 	btf__free(obj->btf);
++	btf__free(obj->btf_vmlinux);
+ 	btf_ext__free(obj->btf_ext);
  
- void console_unblank(void)
- {
-+	bool found_unblank = false;
- 	struct console *c;
- 	int cookie;
- 
-+	/*
-+	 * First check if there are any consoles implementing the unblank()
-+	 * callback. If not, there is no reason to continue and take the
-+	 * console lock, which in particular can be dangerous if
-+	 * @oops_in_progress is set.
-+	 */
-+	cookie = console_srcu_read_lock();
-+	for_each_console_srcu(c) {
-+		if ((console_srcu_read_flags(c) & CON_ENABLED) && c->unblank) {
-+			found_unblank = true;
-+			break;
-+		}
-+	}
-+	console_srcu_read_unlock(cookie);
-+	if (!found_unblank)
-+		return;
-+
- 	/*
- 	 * Stop console printing because the unblank() callback may
- 	 * assume the console is not within its write() callback.
-@@ -3056,6 +3074,16 @@ void console_unblank(void)
- 	 * In that case, attempt a trylock as best-effort.
- 	 */
- 	if (oops_in_progress) {
-+		/* Semaphores are not NMI-safe. */
-+		if (in_nmi())
-+			return;
-+
-+		/*
-+		 * Attempting to trylock the console lock can deadlock
-+		 * if another CPU was stopped while modifying the
-+		 * semaphore. "Hope and pray" that this is not the
-+		 * current situation.
-+		 */
- 		if (down_trylock_console_sem() != 0)
- 			return;
- 	} else
+ 	for (i = 0; i < obj->nr_maps; i++)
 -- 
 2.40.1
 
