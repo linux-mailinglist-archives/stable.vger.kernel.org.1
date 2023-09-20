@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A8877A7B84
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00F157A7C43
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234748AbjITLxB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:53:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42102 "EHLO
+        id S234885AbjITMAH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:00:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234745AbjITLxA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:00 -0400
+        with ESMTP id S234916AbjITL7k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:59:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11414A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DBCC433C7;
-        Wed, 20 Sep 2023 11:52:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 590D2A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:59:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EDFC433C7;
+        Wed, 20 Sep 2023 11:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210773;
-        bh=zNDgn+zAs0GLuIZfs4isBEyE4g/xMc/zESSyoAdqwpA=;
+        s=korg; t=1695211174;
+        bh=3zXO0dS/gXzXebp6IFQWYkdsjSy4PatyppVGdpsP0mU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0p0zOeEjIpkAF1KUGI2ebmlgMaang80H2lMnp+BtCzApprP4bgudPTz+kvugCoZoI
-         fuOvVvULsX5HmyP/2bfm7+Bcp0z8iaVkdmSnn/O1OuPyUw8jdAZ3Ax6Ind+eSffoEG
-         Pssxh29MKZ0kzL6GUGMVdrBgAdmmFYLR5YNO7wDc=
+        b=xIG4hJ0sAwqZLw3IKgtG/LGwZqRf3Jlqc5JCBiWonTV3QJB4/YbThMpqQ48LlNqBR
+         LNvS2u1KKtsvP66e6olJFjmsy5PuyryosMxiuGRFSeCkWnFZxYbCwwBDFGiqgSFfUx
+         TUhPRebXXZ4sq0/VJ1WuJM8rzcHyEthiYD1sLiYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Niklas Schnelle <schnelle@linux.ibm.com>,
-        Arnd Bergmann <arnd@kernel.org>, Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.5 200/211] Revert "comedi: add HAS_IOPORT dependencies"
+        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Weimer <fweimer@redhat.com>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 110/139] attr: block mode changes of symlinks
 Date:   Wed, 20 Sep 2023 13:30:44 +0200
-Message-ID: <20230920112852.064627430@linuxfoundation.org>
+Message-ID: <20230920112839.661844120@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,458 +51,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 98a15816636044f25be4644db2a3e09fad68aaf7 upstream.
+commit 5d1f903f75a80daa4dfb3d84e114ec8ecbf29956 upstream.
 
-This reverts commit b5c75b68b7ded84d4c82118974ce3975a4dcaa74.
+Changing the mode of symlinks is meaningless as the vfs doesn't take the
+mode of a symlink into account during path lookup permission checking.
 
-The commit makes it impossible to select configuration options that
-depend on COMEDI_8254, COMEDI_DAS08, COMEDI_NI_LABPC, or
-COMEDI_AMPLC_DIO200 options due to changing 'select' directives to
-'depends on' directives and there being no other way to select those
-codependent configuration options.
+However, the vfs doesn't block mode changes on symlinks. This however,
+has lead to an untenable mess roughly classifiable into the following
+two categories:
 
-Fixes: b5c75b68b7de ("comedi: add HAS_IOPORT dependencies")
-Cc: Niklas Schnelle <schnelle@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: <stable@vger.kernel.org> # v6.5+
-Acked-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20230905090922.3314-1-abbotti@mev.co.uk
+(1) Filesystems that don't implement a i_op->setattr() for symlinks.
+
+    Such filesystems may or may not know that without i_op->setattr()
+    defined, notify_change() falls back to simple_setattr() causing the
+    inode's mode in the inode cache to be changed.
+
+    That's a generic issue as this will affect all non-size changing
+    inode attributes including ownership changes.
+
+    Example: afs
+
+(2) Filesystems that fail with EOPNOTSUPP but change the mode of the
+    symlink nonetheless.
+
+    Some filesystems will happily update the mode of a symlink but still
+    return EOPNOTSUPP. This is the biggest source of confusion for
+    userspace.
+
+    The EOPNOTSUPP in this case comes from POSIX ACLs. Specifically it
+    comes from filesystems that call posix_acl_chmod(), e.g., btrfs via
+
+        if (!err && attr->ia_valid & ATTR_MODE)
+                err = posix_acl_chmod(idmap, dentry, inode->i_mode);
+
+    Filesystems including btrfs don't implement i_op->set_acl() so
+    posix_acl_chmod() will report EOPNOTSUPP.
+
+    When posix_acl_chmod() is called, most filesystems will have
+    finished updating the inode.
+
+    Perversely, this has the consequences that this behavior may depend
+    on two kconfig options and mount options:
+
+    * CONFIG_POSIX_ACL={y,n}
+    * CONFIG_${FSTYPE}_POSIX_ACL={y,n}
+    * Opt_acl, Opt_noacl
+
+    Example: btrfs, ext4, xfs
+
+The only way to change the mode on a symlink currently involves abusing
+an O_PATH file descriptor in the following manner:
+
+        fd = openat(-1, "/path/to/link", O_CLOEXEC | O_PATH | O_NOFOLLOW);
+
+        char path[PATH_MAX];
+        snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
+        chmod(path, 0000);
+
+But for most major filesystems with POSIX ACL support such as btrfs,
+ext4, ceph, tmpfs, xfs and others this will fail with EOPNOTSUPP with
+the mode still updated due to the aforementioned posix_acl_chmod()
+nonsense.
+
+So, given that for all major filesystems this would fail with EOPNOTSUPP
+and that both glibc (cf. [1]) and musl (cf. [2]) outright block mode
+changes on symlinks we should just try and block mode changes on
+symlinks directly in the vfs and have a clean break with this nonsense.
+
+If this causes any regressions, we do the next best thing and fix up all
+filesystems that do return EOPNOTSUPP with the mode updated to not call
+posix_acl_chmod() on symlinks.
+
+But as usual, let's try the clean cut solution first. It's a simple
+patch that can be easily reverted. Not marking this for backport as I'll
+do that manually if we're reasonably sure that this works and there are
+no strong objections.
+
+We could block this in chmod_common() but it's more appropriate to do it
+notify_change() as it will also mean that we catch filesystems that
+change symlink permissions explicitly or accidently.
+
+Similar proposals were floated in the past as in [3] and [4] and again
+recently in [5]. There's also a couple of bugs about this inconsistency
+as in [6] and [7].
+
+Link: https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/fchmodat.c;h=99527a3727e44cb8661ee1f743068f108ec93979;hb=HEAD [1]
+Link: https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c [2]
+Link: https://lore.kernel.org/all/20200911065733.GA31579@infradead.org [3]
+Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00518.html [4]
+Link: https://lore.kernel.org/lkml/87lefmbppo.fsf@oldenburg.str.redhat.com [5]
+Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00467.html [6]
+Link: https://sourceware.org/bugzilla/show_bug.cgi?id=14578#c17 [7]
+Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: stable@vger.kernel.org # please backport to all LTSes but not before v6.6-rc2 is tagged
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Suggested-by: Florian Weimer <fweimer@redhat.com>
+Message-Id: <20230712-vfs-chmod-symlinks-v2-1-08cfb92b61dd@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/Kconfig |  103 ++++++++++++++++---------------------------------
- 1 file changed, 35 insertions(+), 68 deletions(-)
+ fs/attr.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
---- a/drivers/comedi/Kconfig
-+++ b/drivers/comedi/Kconfig
-@@ -67,7 +67,6 @@ config COMEDI_TEST
+--- a/fs/attr.c
++++ b/fs/attr.c
+@@ -394,9 +394,25 @@ int notify_change(struct user_namespace
+ 		return error;
  
- config COMEDI_PARPORT
- 	tristate "Parallel port support"
--	depends on HAS_IOPORT
- 	help
- 	  Enable support for the standard parallel port.
- 	  A cheap and easy way to get a few more digital I/O lines. Steal
-@@ -80,7 +79,6 @@ config COMEDI_PARPORT
- config COMEDI_SSV_DNP
- 	tristate "SSV Embedded Systems DIL/Net-PC support"
- 	depends on X86_32 || COMPILE_TEST
--	depends on HAS_IOPORT
- 	help
- 	  Enable support for SSV Embedded Systems DIL/Net-PC
+ 	if ((ia_valid & ATTR_MODE)) {
+-		umode_t amode = attr->ia_mode;
++		/*
++		 * Don't allow changing the mode of symlinks:
++		 *
++		 * (1) The vfs doesn't take the mode of symlinks into account
++		 *     during permission checking.
++		 * (2) This has never worked correctly. Most major filesystems
++		 *     did return EOPNOTSUPP due to interactions with POSIX ACLs
++		 *     but did still updated the mode of the symlink.
++		 *     This inconsistency led system call wrapper providers such
++		 *     as libc to block changing the mode of symlinks with
++		 *     EOPNOTSUPP already.
++		 * (3) To even do this in the first place one would have to use
++		 *     specific file descriptors and quite some effort.
++		 */
++		if (S_ISLNK(inode->i_mode))
++			return -EOPNOTSUPP;
++
+ 		/* Flag setting protected by i_mutex */
+-		if (is_sxid(amode))
++		if (is_sxid(attr->ia_mode))
+ 			inode->i_flags &= ~S_NOSEC;
+ 	}
  
-@@ -91,7 +89,6 @@ endif # COMEDI_MISC_DRIVERS
- 
- menuconfig COMEDI_ISA_DRIVERS
- 	bool "Comedi ISA and PC/104 drivers"
--	depends on ISA
- 	help
- 	  Enable comedi ISA and PC/104 drivers to be built
- 
-@@ -103,8 +100,7 @@ if COMEDI_ISA_DRIVERS
- 
- config COMEDI_PCL711
- 	tristate "Advantech PCL-711/711b and ADlink ACL-8112 ISA card support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for Advantech PCL-711 and 711b, ADlink ACL-8112
- 
-@@ -165,9 +161,8 @@ config COMEDI_PCL730
- 
- config COMEDI_PCL812
- 	tristate "Advantech PCL-812/813 and ADlink ACL-8112/8113/8113/8216"
--	depends on HAS_IOPORT
- 	select COMEDI_ISADMA if ISA_DMA_API
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for Advantech PCL-812/PG, PCL-813/B, ADLink
- 	  ACL-8112DG/HG/PG, ACL-8113, ACL-8216, ICP DAS A-821PGH/PGL/PGL-NDA,
-@@ -178,9 +173,8 @@ config COMEDI_PCL812
- 
- config COMEDI_PCL816
- 	tristate "Advantech PCL-814 and PCL-816 ISA card support"
--	depends on HAS_IOPORT
- 	select COMEDI_ISADMA if ISA_DMA_API
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for Advantech PCL-814 and PCL-816 ISA cards
- 
-@@ -189,9 +183,8 @@ config COMEDI_PCL816
- 
- config COMEDI_PCL818
- 	tristate "Advantech PCL-718 and PCL-818 ISA card support"
--	depends on HAS_IOPORT
- 	select COMEDI_ISADMA if ISA_DMA_API
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for Advantech PCL-818 ISA cards
- 	  PCL-818L, PCL-818H, PCL-818HD, PCL-818HG, PCL-818 and PCL-718
-@@ -210,7 +203,7 @@ config COMEDI_PCM3724
- 
- config COMEDI_AMPLC_DIO200_ISA
- 	tristate "Amplicon PC212E/PC214E/PC215E/PC218E/PC272E"
--	depends on COMEDI_AMPLC_DIO200
-+	select COMEDI_AMPLC_DIO200
- 	help
- 	  Enable support for Amplicon PC212E, PC214E, PC215E, PC218E and
- 	  PC272E ISA DIO boards
-@@ -262,8 +255,7 @@ config COMEDI_DAC02
- 
- config COMEDI_DAS16M1
- 	tristate "MeasurementComputing CIO-DAS16/M1DAS-16 ISA card support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	select COMEDI_8255
- 	help
- 	  Enable support for Measurement Computing CIO-DAS16/M1 ISA cards.
-@@ -273,7 +265,7 @@ config COMEDI_DAS16M1
- 
- config COMEDI_DAS08_ISA
- 	tristate "DAS-08 compatible ISA and PC/104 card support"
--	depends on COMEDI_DAS08
-+	select COMEDI_DAS08
- 	help
- 	  Enable support for Keithley Metrabyte/ComputerBoards DAS08
- 	  and compatible ISA and PC/104 cards:
-@@ -286,9 +278,8 @@ config COMEDI_DAS08_ISA
- 
- config COMEDI_DAS16
- 	tristate "DAS-16 compatible ISA and PC/104 card support"
--	depends on HAS_IOPORT
- 	select COMEDI_ISADMA if ISA_DMA_API
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	select COMEDI_8255
- 	help
- 	  Enable support for Keithley Metrabyte/ComputerBoards DAS16
-@@ -305,8 +296,7 @@ config COMEDI_DAS16
- 
- config COMEDI_DAS800
- 	tristate "DAS800 and compatible ISA card support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for Keithley Metrabyte DAS800 and compatible ISA cards
- 	  Keithley Metrabyte DAS-800, DAS-801, DAS-802
-@@ -318,9 +308,8 @@ config COMEDI_DAS800
- 
- config COMEDI_DAS1800
- 	tristate "DAS1800 and compatible ISA card support"
--	depends on HAS_IOPORT
- 	select COMEDI_ISADMA if ISA_DMA_API
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for DAS1800 and compatible ISA cards
- 	  Keithley Metrabyte DAS-1701ST, DAS-1701ST-DA, DAS-1701/AO,
-@@ -334,8 +323,7 @@ config COMEDI_DAS1800
- 
- config COMEDI_DAS6402
- 	tristate "DAS6402 and compatible ISA card support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for DAS6402 and compatible ISA cards
- 	  Computerboards, Keithley Metrabyte DAS6402 and compatibles
-@@ -414,8 +402,7 @@ config COMEDI_FL512
- 
- config COMEDI_AIO_AIO12_8
- 	tristate "I/O Products PC/104 AIO12-8 Analog I/O Board support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	select COMEDI_8255
- 	help
- 	  Enable support for I/O Products PC/104 AIO12-8 Analog I/O Board
-@@ -469,9 +456,8 @@ config COMEDI_ADQ12B
- 
- config COMEDI_NI_AT_A2150
- 	tristate "NI AT-A2150 ISA card support"
--	depends on HAS_IOPORT
- 	select COMEDI_ISADMA if ISA_DMA_API
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for National Instruments AT-A2150 cards
- 
-@@ -480,8 +466,7 @@ config COMEDI_NI_AT_A2150
- 
- config COMEDI_NI_AT_AO
- 	tristate "NI AT-AO-6/10 EISA card support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for National Instruments AT-AO-6/10 cards
- 
-@@ -512,7 +497,7 @@ config COMEDI_NI_ATMIO16D
- 
- config COMEDI_NI_LABPC_ISA
- 	tristate "NI Lab-PC and compatibles ISA support"
--	depends on COMEDI_NI_LABPC
-+	select COMEDI_NI_LABPC
- 	help
- 	  Enable support for National Instruments Lab-PC and compatibles
- 	  Lab-PC-1200, Lab-PC-1200AI, Lab-PC+.
-@@ -576,7 +561,7 @@ endif # COMEDI_ISA_DRIVERS
- 
- menuconfig COMEDI_PCI_DRIVERS
- 	tristate "Comedi PCI drivers"
--	depends on PCI && HAS_IOPORT
-+	depends on PCI
- 	help
- 	  Enable support for comedi PCI drivers.
- 
-@@ -725,8 +710,7 @@ config COMEDI_ADL_PCI8164
- 
- config COMEDI_ADL_PCI9111
- 	tristate "ADLink PCI-9111HR support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for ADlink PCI9111 cards
- 
-@@ -736,7 +720,7 @@ config COMEDI_ADL_PCI9111
- config COMEDI_ADL_PCI9118
- 	tristate "ADLink PCI-9118DG, PCI-9118HG, PCI-9118HR support"
- 	depends on HAS_DMA
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for ADlink PCI-9118DG, PCI-9118HG, PCI-9118HR cards
- 
-@@ -745,8 +729,7 @@ config COMEDI_ADL_PCI9118
- 
- config COMEDI_ADV_PCI1710
- 	tristate "Advantech PCI-171x and PCI-1731 support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for Advantech PCI-1710, PCI-1710HG, PCI-1711,
- 	  PCI-1713 and PCI-1731
-@@ -790,8 +773,7 @@ config COMEDI_ADV_PCI1760
- 
- config COMEDI_ADV_PCI_DIO
- 	tristate "Advantech PCI DIO card support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	select COMEDI_8255
- 	help
- 	  Enable support for Advantech PCI DIO cards
-@@ -804,7 +786,7 @@ config COMEDI_ADV_PCI_DIO
- 
- config COMEDI_AMPLC_DIO200_PCI
- 	tristate "Amplicon PCI215/PCI272/PCIe215/PCIe236/PCIe296 DIO support"
--	depends on COMEDI_AMPLC_DIO200
-+	select COMEDI_AMPLC_DIO200
- 	help
- 	  Enable support for Amplicon PCI215, PCI272, PCIe215, PCIe236
- 	  and PCIe296 DIO boards.
-@@ -832,8 +814,7 @@ config COMEDI_AMPLC_PC263_PCI
- 
- config COMEDI_AMPLC_PCI224
- 	tristate "Amplicon PCI224 and PCI234 support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for Amplicon PCI224 and PCI234 AO boards
- 
-@@ -842,8 +823,7 @@ config COMEDI_AMPLC_PCI224
- 
- config COMEDI_AMPLC_PCI230
- 	tristate "Amplicon PCI230 and PCI260 support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	select COMEDI_8255
- 	help
- 	  Enable support for Amplicon PCI230 and PCI260 Multifunction I/O
-@@ -862,7 +842,7 @@ config COMEDI_CONTEC_PCI_DIO
- 
- config COMEDI_DAS08_PCI
- 	tristate "DAS-08 PCI support"
--	depends on COMEDI_DAS08
-+	select COMEDI_DAS08
- 	help
- 	  Enable support for PCI DAS-08 cards.
- 
-@@ -949,8 +929,7 @@ config COMEDI_CB_PCIDAS64
- 
- config COMEDI_CB_PCIDAS
- 	tristate "MeasurementComputing PCI-DAS support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	select COMEDI_8255
- 	help
- 	  Enable support for ComputerBoards/MeasurementComputing PCI-DAS with
-@@ -974,8 +953,7 @@ config COMEDI_CB_PCIDDA
- 
- config COMEDI_CB_PCIMDAS
- 	tristate "MeasurementComputing PCIM-DAS1602/16, PCIe-DAS1602/16 support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	select COMEDI_8255
- 	help
- 	  Enable support for ComputerBoards/MeasurementComputing PCI Migration
-@@ -995,8 +973,7 @@ config COMEDI_CB_PCIMDDA
- 
- config COMEDI_ME4000
- 	tristate "Meilhaus ME-4000 support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for Meilhaus PCI data acquisition cards
- 	  ME-4650, ME-4670i, ME-4680, ME-4680i and ME-4680is
-@@ -1054,7 +1031,7 @@ config COMEDI_NI_670X
- 
- config COMEDI_NI_LABPC_PCI
- 	tristate "NI Lab-PC PCI-1200 support"
--	depends on COMEDI_NI_LABPC
-+	select COMEDI_NI_LABPC
- 	help
- 	  Enable support for National Instruments Lab-PC PCI-1200.
- 
-@@ -1076,7 +1053,6 @@ config COMEDI_NI_PCIDIO
- config COMEDI_NI_PCIMIO
- 	tristate "NI PCI-MIO-E series and M series support"
- 	depends on HAS_DMA
--	depends on HAS_IOPORT
- 	select COMEDI_NI_TIOCMD
- 	select COMEDI_8255
- 	help
-@@ -1098,8 +1074,7 @@ config COMEDI_NI_PCIMIO
- 
- config COMEDI_RTD520
- 	tristate "Real Time Devices PCI4520/DM7520 support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for Real Time Devices PCI4520/DM7520
- 
-@@ -1139,8 +1114,7 @@ if COMEDI_PCMCIA_DRIVERS
- 
- config COMEDI_CB_DAS16_CS
- 	tristate "CB DAS16 series PCMCIA support"
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	help
- 	  Enable support for the ComputerBoards/MeasurementComputing PCMCIA
- 	  cards DAS16/16, PCM-DAS16D/12 and PCM-DAS16s/16
-@@ -1150,7 +1124,7 @@ config COMEDI_CB_DAS16_CS
- 
- config COMEDI_DAS08_CS
- 	tristate "CB DAS08 PCMCIA support"
--	depends on COMEDI_DAS08
-+	select COMEDI_DAS08
- 	help
- 	  Enable support for the ComputerBoards/MeasurementComputing DAS-08
- 	  PCMCIA card
-@@ -1160,7 +1134,6 @@ config COMEDI_DAS08_CS
- 
- config COMEDI_NI_DAQ_700_CS
- 	tristate "NI DAQCard-700 PCMCIA support"
--	depends on HAS_IOPORT
- 	help
- 	  Enable support for the National Instruments PCMCIA DAQCard-700 DIO
- 
-@@ -1169,7 +1142,6 @@ config COMEDI_NI_DAQ_700_CS
- 
- config COMEDI_NI_DAQ_DIO24_CS
- 	tristate "NI DAQ-Card DIO-24 PCMCIA support"
--	depends on HAS_IOPORT
- 	select COMEDI_8255
- 	help
- 	  Enable support for the National Instruments PCMCIA DAQ-Card DIO-24
-@@ -1179,7 +1151,7 @@ config COMEDI_NI_DAQ_DIO24_CS
- 
- config COMEDI_NI_LABPC_CS
- 	tristate "NI DAQCard-1200 PCMCIA support"
--	depends on COMEDI_NI_LABPC
-+	select COMEDI_NI_LABPC
- 	help
- 	  Enable support for the National Instruments PCMCIA DAQCard-1200
- 
-@@ -1188,7 +1160,6 @@ config COMEDI_NI_LABPC_CS
- 
- config COMEDI_NI_MIO_CS
- 	tristate "NI DAQCard E series PCMCIA support"
--	depends on HAS_IOPORT
- 	select COMEDI_NI_TIO
- 	select COMEDI_8255
- 	help
-@@ -1201,7 +1172,6 @@ config COMEDI_NI_MIO_CS
- 
- config COMEDI_QUATECH_DAQP_CS
- 	tristate "Quatech DAQP PCMCIA data capture card support"
--	depends on HAS_IOPORT
- 	help
- 	  Enable support for the Quatech DAQP PCMCIA data capture cards
- 	  DAQP-208 and DAQP-308
-@@ -1278,14 +1248,12 @@ endif # COMEDI_USB_DRIVERS
- 
- config COMEDI_8254
- 	tristate
--	depends on HAS_IOPORT
- 
- config COMEDI_8255
- 	tristate
- 
- config COMEDI_8255_SA
- 	tristate "Standalone 8255 support"
--	depends on HAS_IOPORT
- 	select COMEDI_8255
- 	help
- 	  Enable support for 8255 digital I/O as a standalone driver.
-@@ -1317,7 +1285,7 @@ config COMEDI_KCOMEDILIB
- 	  called kcomedilib.
- 
- config COMEDI_AMPLC_DIO200
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	tristate
- 
- config COMEDI_AMPLC_PC236
-@@ -1326,7 +1294,7 @@ config COMEDI_AMPLC_PC236
- 
- config COMEDI_DAS08
- 	tristate
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	select COMEDI_8255
- 
- config COMEDI_ISADMA
-@@ -1334,8 +1302,7 @@ config COMEDI_ISADMA
- 
- config COMEDI_NI_LABPC
- 	tristate
--	depends on HAS_IOPORT
--	depends on COMEDI_8254
-+	select COMEDI_8254
- 	select COMEDI_8255
- 
- config COMEDI_NI_LABPC_ISADMA
 
 
