@@ -2,40 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 468A67A7BA8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E647A7CAD
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234773AbjITLyO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:54:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34854 "EHLO
+        id S235075AbjITMDO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:03:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234796AbjITLyO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:14 -0400
+        with ESMTP id S235108AbjITMDL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E8EACA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8771C433C8;
-        Wed, 20 Sep 2023 11:54:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1992C138
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:03:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DA11C433C7;
+        Wed, 20 Sep 2023 12:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210847;
-        bh=WL2dnqzY7PlJWFUVqnHH4ximExSUY8TZ71pXc95Zclw=;
+        s=korg; t=1695211382;
+        bh=uaaYW5/Cy0Je9+ITKZQImqnURKlqtDdTilm7C1wSUKw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2GXspQ03YrXS0UXFHn5R0sUcI/WX1SfZEEksLLenUm347QPbAfkpgBJ7r70ry86sd
-         tTgGUOsOb6EW7gZjqIIdu0/cYC4g09y7+/pAOQ/dUZ8IHGQw7k8q9IE2iuR1a/xrPE
-         14Y3AURkSRRqFVdA+xHa7L61u/EbEm1ddGwovzXY=
+        b=DpEFGcvFMIZ7yEH4Ac3u3zGyNeSLqTQ9lIa8gDcqql4CwjnATEysfn38IAERrBsb6
+         ZreN+Kfdho7httmw5dybeM2DLIYucaffODep4XBnZj8BJNw4HveGohFxRD1XWaj2yb
+         CqOChFDEVW2pUK9P4o34TYvy7l2UsrrwBXuQsNkE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Azeem Shaikh <azeemshaikh38@gmail.com>,
-        Kees Cook <keescook@chromium.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev,
+        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Joel Becker <jlbec@evilplan.org>,
+        Kurt Hackel <kurt.hackel@oracle.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Junxiao Bi <junxiao.bi@oracle.com>,
+        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
+        Jun Piao <piaojun@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/139] crypto: lrw,xts - Replace strlcpy with strscpy
+Subject: [PATCH 4.14 046/186] fs: ocfs2: namei: check return value of ocfs2_add_entry()
 Date:   Wed, 20 Sep 2023 13:29:09 +0200
-Message-ID: <20230920112836.177400773@linuxfoundation.org>
+Message-ID: <20230920112838.593074459@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +58,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Azeem Shaikh <azeemshaikh38@gmail.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit babb80b3ecc6f40c962e13c654ebcd27f25ee327 ]
+[ Upstream commit 6b72e5f9e79360fce4f2be7fe81159fbdf4256a5 ]
 
-strlcpy() reads the entire source buffer first.
-This read may exceed the destination size limit.
-This is both inefficient and can lead to linear read
-overflows if a source string is not NUL-terminated [1].
-In an effort to remove strlcpy() completely [2], replace
-strlcpy() here with strscpy().
+Process result of ocfs2_add_entry() in case we have an error
+value.
 
-Direct replacement is safe here since return value of -errno
-is used to check for truncation instead of sizeof(dest).
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-[1] https://www.kernel.org/doc/html/latest/process/deprecated.html#strlcpy
-[2] https://github.com/KSPP/linux/issues/89
-
-Signed-off-by: Azeem Shaikh <azeemshaikh38@gmail.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://lkml.kernel.org/r/20230803145417.177649-1-artem.chernyshev@red-soft.ru
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Kurt Hackel <kurt.hackel@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/lrw.c | 6 +++---
- crypto/xts.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ fs/ocfs2/namei.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/crypto/lrw.c b/crypto/lrw.c
-index 8d59a66b65255..fb8892ed179f5 100644
---- a/crypto/lrw.c
-+++ b/crypto/lrw.c
-@@ -357,10 +357,10 @@ static int lrw_create(struct crypto_template *tmpl, struct rtattr **tb)
- 	 * cipher name.
- 	 */
- 	if (!strncmp(cipher_name, "ecb(", 4)) {
--		unsigned len;
-+		int len;
+diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
+index 6ec15ffeb5629..f36a338bf7278 100644
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -1537,6 +1537,10 @@ static int ocfs2_rename(struct inode *old_dir,
+ 		status = ocfs2_add_entry(handle, new_dentry, old_inode,
+ 					 OCFS2_I(old_inode)->ip_blkno,
+ 					 new_dir_bh, &target_insert);
++		if (status < 0) {
++			mlog_errno(status);
++			goto bail;
++		}
+ 	}
  
--		len = strlcpy(ecb_name, cipher_name + 4, sizeof(ecb_name));
--		if (len < 2 || len >= sizeof(ecb_name))
-+		len = strscpy(ecb_name, cipher_name + 4, sizeof(ecb_name));
-+		if (len < 2)
- 			goto err_free_inst;
- 
- 		if (ecb_name[len - 1] != ')')
-diff --git a/crypto/xts.c b/crypto/xts.c
-index de6cbcf69bbd6..b05020657cdc8 100644
---- a/crypto/xts.c
-+++ b/crypto/xts.c
-@@ -396,10 +396,10 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
- 	 * cipher name.
- 	 */
- 	if (!strncmp(cipher_name, "ecb(", 4)) {
--		unsigned len;
-+		int len;
- 
--		len = strlcpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
--		if (len < 2 || len >= sizeof(ctx->name))
-+		len = strscpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
-+		if (len < 2)
- 			goto err_free_inst;
- 
- 		if (ctx->name[len - 1] != ')')
+ 	old_inode->i_ctime = current_time(old_inode);
 -- 
 2.40.1
 
