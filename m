@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A5A87A7FA0
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BB1D7A7D89
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234472AbjITM2w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:28:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56762 "EHLO
+        id S235313AbjITMKX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:10:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234541AbjITM2u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:28:50 -0400
+        with ESMTP id S235421AbjITMJp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:09:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF4EA3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:28:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7E7C433C7;
-        Wed, 20 Sep 2023 12:28:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A01FD7
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:09:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2727C433C7;
+        Wed, 20 Sep 2023 12:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212923;
-        bh=m5cWhDpcnQQBd9grNe3y9E7lygOQTUnQVnmaCAMMcHc=;
+        s=korg; t=1695211780;
+        bh=0atL64NluILxhvfSrFduQnFtWuMd/SSdHLA3CznuOVo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xk4UUaLQ4fwEboYnX1m0DIeOv5ZSAZfP3Q9ypKUmys4VVah4vd15fGMRCl2g57NVU
-         St8lBecDs2406rKlGJzuDYPhoRXHPVyepjcgM2zR0xgNT7TnqMJbBs7+vDrPX/LbXv
-         PvdZveqDm0oz+yk7Ws4BiH01LOW1iLVDP0RaISeI=
+        b=Br/Tp3FV6f1B7t1hnEuXRDaE9K626Q2HPXg3crLI5rywa+hoCXrQem9P3of3vbNHi
+         3cN1+oXLu63xSRbcPKOgseDrSGENRKhSIYodEvzyONbMdGfpUqxpr85ZuGy897xd/o
+         UH5NhiAkaruSwJ8ZZh9tnLA5FFLUhs1p6AJ2/j80=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 069/367] Bluetooth: nokia: fix value check in nokia_bluetooth_serdev_probe()
+        patches@lists.linux.dev, Martin Kohn <m.kohn@welotec.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 006/273] USB: serial: option: add Quectel EM05G variant (0x030e)
 Date:   Wed, 20 Sep 2023 13:27:26 +0200
-Message-ID: <20230920112900.302241178@linuxfoundation.org>
+Message-ID: <20230920112846.632996299@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +49,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Martin Kohn <m.kohn@welotec.com>
 
-[ Upstream commit e8b5aed31355072faac8092ead4938ddec3111fd ]
+commit 873854c02364ebb991fc06f7148c14dfb5419e1b upstream.
 
-in nokia_bluetooth_serdev_probe(), check the return value of
-clk_prepare_enable() and return the error code if
-clk_prepare_enable() returns an unexpected value.
+Add Quectel EM05G with product ID 0x030e.
+Interface 4 is used for qmi.
 
-Fixes: 7bb318680e86 ("Bluetooth: add nokia driver")
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=030e Rev= 3.18
+S:  Manufacturer=Quectel
+S:  Product=Quectel EM05-G
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Martin Kohn <m.kohn@welotec.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_nokia.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/bluetooth/hci_nokia.c b/drivers/bluetooth/hci_nokia.c
-index 6463350b79779..82db15585196a 100644
---- a/drivers/bluetooth/hci_nokia.c
-+++ b/drivers/bluetooth/hci_nokia.c
-@@ -734,7 +734,11 @@ static int nokia_bluetooth_serdev_probe(struct serdev_device *serdev)
- 		return err;
- 	}
- 
--	clk_prepare_enable(sysclk);
-+	err = clk_prepare_enable(sysclk);
-+	if (err) {
-+		dev_err(dev, "could not enable sysclk: %d", err);
-+		return err;
-+	}
- 	btdev->sysclk_speed = clk_get_rate(sysclk);
- 	clk_disable_unprepare(sysclk);
- 
--- 
-2.40.1
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -259,6 +259,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_EM05G			0x030a
+ #define QUECTEL_PRODUCT_EM060K			0x030b
+ #define QUECTEL_PRODUCT_EM05G_CS		0x030c
++#define QUECTEL_PRODUCT_EM05GV2			0x030e
+ #define QUECTEL_PRODUCT_EM05CN_SG		0x0310
+ #define QUECTEL_PRODUCT_EM05G_SG		0x0311
+ #define QUECTEL_PRODUCT_EM05CN			0x0312
+@@ -1190,6 +1191,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(6) | ZLP },
+ 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_GR, 0xff),
+ 	  .driver_info = RSVD(6) | ZLP },
++	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05GV2, 0xff),
++	  .driver_info = RSVD(4) | ZLP },
+ 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_CS, 0xff),
+ 	  .driver_info = RSVD(6) | ZLP },
+ 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_RS, 0xff),
 
 
