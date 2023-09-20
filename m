@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B31E7A8032
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 942367A7E08
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236190AbjITMdq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:33:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37912 "EHLO
+        id S234600AbjITMPY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236191AbjITMdp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:33:45 -0400
+        with ESMTP id S235540AbjITMOp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A1BA9E
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:33:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFD3C433CA;
-        Wed, 20 Sep 2023 12:33:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEBB1B6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462A0C433C8;
+        Wed, 20 Sep 2023 12:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213219;
-        bh=zMkalwTSCRCnhV4Nkh/FK6Q4SXrWZ/FyULGUUMQrSX0=;
+        s=korg; t=1695212074;
+        bh=sOZzuEAZCi/jloHC+BJLNvii5bZ8580TRQ3QhZZ6D6s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hdZSuZkgv8foxbS0smUYYopy1kJp3yj0FKNoQP+M0jci2xxi6l8jMpp33H09mhusB
-         A1ay6N5ZaqsIfqUXVjJymEXq6MgaCUCsMgqc3sRChfXtWGpM1p4iVJRtJqAJ8z3EKe
-         Cg7oDcq74b7kzOD6z7j+FXDfMILU9CAyevaec2Wc=
+        b=0pS36NexZBYixWQsqC59BVmAa5UxfDiTEmy5UzxxQ35lKwEsgiswAPala4tVM+YQ7
+         9sg/131J/p+7NjYeyRMYWfFhTzeKs8NZdiz+PGQ64GMUkNyOR+fxsbmJ4fwsK+zBdx
+         dkRmAt9WzciLm+RXN/3u1Fl0plUzrXaUkV1mI1zo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Kyle Zeng <zengyhkyle@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 204/367] igmp: limit igmpv3_newpack() packet size to IP_MAX_MTU
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Chris Leech <cleech@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 141/273] scsi: qla4xxx: Add length check when parsing nlattrs
 Date:   Wed, 20 Sep 2023 13:29:41 +0200
-Message-ID: <20230920112903.904075778@linuxfoundation.org>
+Message-ID: <20230920112850.886774836@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +51,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit c3b704d4a4a265660e665df51b129e8425216ed1 upstream.
+[ Upstream commit 47cd3770e31df942e2bb925a9a855c79ed0662eb ]
 
-This is a follow up of commit 915d975b2ffa ("net: deal with integer
-overflows in kmalloc_reserve()") based on David Laight feedback.
+There are three places that qla4xxx parses nlattrs:
 
-Back in 2010, I failed to realize malicious users could set dev->mtu
-to arbitrary values. This mtu has been since limited to 0x7fffffff but
-regardless of how big dev->mtu is, it makes no sense for igmpv3_newpack()
-to allocate more than IP_MAX_MTU and risk various skb fields overflows.
+ - qla4xxx_set_chap_entry()
 
-Fixes: 57e1ab6eaddc ("igmp: refine skb allocations")
-Link: https://lore.kernel.org/netdev/d273628df80f45428e739274ab9ecb72@AcuMS.aculab.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: David Laight <David.Laight@ACULAB.COM>
-Cc: Kyle Zeng <zengyhkyle@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ - qla4xxx_iface_set_param()
+
+ - qla4xxx_sysfs_ddb_set_param()
+
+and each of them directly converts the nlattr to specific pointer of
+structure without length checking. This could be dangerous as those
+attributes are not validated and a malformed nlattr (e.g., length 0) could
+result in an OOB read that leaks heap dirty data.
+
+Add the nla_len check before accessing the nlattr data and return EINVAL if
+the length check fails.
+
+Fixes: 26ffd7b45fe9 ("[SCSI] qla4xxx: Add support to set CHAP entries")
+Fixes: 1e9e2be3ee03 ("[SCSI] qla4xxx: Add flash node mgmt support")
+Fixes: 00c31889f751 ("[SCSI] qla4xxx: fix data alignment and use nl helpers")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230723080053.3714534-1-linma@zju.edu.cn
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/igmp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/qla4xxx/ql4_os.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/net/ipv4/igmp.c
-+++ b/net/ipv4/igmp.c
-@@ -355,8 +355,9 @@ static struct sk_buff *igmpv3_newpack(st
- 	struct flowi4 fl4;
- 	int hlen = LL_RESERVED_SPACE(dev);
- 	int tlen = dev->needed_tailroom;
--	unsigned int size = mtu;
-+	unsigned int size;
+diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
+index 4ba9f46fcf748..21cc9e2797a28 100644
+--- a/drivers/scsi/qla4xxx/ql4_os.c
++++ b/drivers/scsi/qla4xxx/ql4_os.c
+@@ -940,6 +940,11 @@ static int qla4xxx_set_chap_entry(struct Scsi_Host *shost, void *data, int len)
+ 	memset(&chap_rec, 0, sizeof(chap_rec));
  
-+	size = min(mtu, IP_MAX_MTU);
- 	while (1) {
- 		skb = alloc_skb(size + hlen + tlen,
- 				GFP_ATOMIC | __GFP_NOWARN);
+ 	nla_for_each_attr(attr, data, len, rem) {
++		if (nla_len(attr) < sizeof(*param_info)) {
++			rc = -EINVAL;
++			goto exit_set_chap;
++		}
++
+ 		param_info = nla_data(attr);
+ 
+ 		switch (param_info->param) {
+@@ -2724,6 +2729,11 @@ qla4xxx_iface_set_param(struct Scsi_Host *shost, void *data, uint32_t len)
+ 	}
+ 
+ 	nla_for_each_attr(attr, data, len, rem) {
++		if (nla_len(attr) < sizeof(*iface_param)) {
++			rval = -EINVAL;
++			goto exit_init_fw_cb;
++		}
++
+ 		iface_param = nla_data(attr);
+ 
+ 		if (iface_param->param_type == ISCSI_NET_PARAM) {
+@@ -8098,6 +8108,11 @@ qla4xxx_sysfs_ddb_set_param(struct iscsi_bus_flash_session *fnode_sess,
+ 
+ 	memset((void *)&chap_tbl, 0, sizeof(chap_tbl));
+ 	nla_for_each_attr(attr, data, len, rem) {
++		if (nla_len(attr) < sizeof(*fnode_param)) {
++			rc = -EINVAL;
++			goto exit_set_param;
++		}
++
+ 		fnode_param = nla_data(attr);
+ 
+ 		switch (fnode_param->param) {
+-- 
+2.40.1
+
 
 
