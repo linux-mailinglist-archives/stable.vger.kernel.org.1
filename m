@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C21E7A7E49
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A31B7A7CE8
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235522AbjITMQw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:16:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33172 "EHLO
+        id S235214AbjITMF2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:05:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234617AbjITMQu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:16:50 -0400
+        with ESMTP id S235361AbjITMFK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92709F7
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95574C433C9;
-        Wed, 20 Sep 2023 12:16:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8243AB0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:05:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABCBC433C8;
+        Wed, 20 Sep 2023 12:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212183;
-        bh=bwbd/aX//AfvbQJaYMiWMjsKwv2P5ZLiz2LpLvDxQEg=;
+        s=korg; t=1695211504;
+        bh=DTX2mcpO2hAFn6JSJ8gq+oLDoTto26drWX2TUmAgHI4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aDFpXmxP8PXL6Xsq2eOQTroQMir7/aV7UevpfQBDRRlnAjbu5r87673gEJYWZvUu/
-         5Ta3e0xqKc5BnY1T3TQYv6z1X8cRnOtPQV3Hv1d/W5t24D/LqVelVkPXBLStCA0tVI
-         Uh+EYq6hsjWtvq/LgHu+S4WwV7kf+Ks8izkpT6Jk=
+        b=NvpfrUkASl5ko74GaxmYP5NFlAV8AFovlD34WojztLOtp6Xo/jDCGI2jws8ntIoBt
+         inAraWZqv6HL1S5TDIGeQAZy1rpJnDT+3ydxX6zPpeQTRf8Up9uuHCzA9KFFKEhyKl
+         URcUVstlH1rvWacse6NKVU6JT9sj6Uv45X5GWG3Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Logan Gunthorpe <logang@deltatee.com>,
-        renlonglong <ren.longlong@h3c.com>,
-        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 4.19 181/273] ntb: Fix calculation ntb_transport_tx_free_entry()
+        patches@lists.linux.dev, Yunlong Xing <yunlong.xing@unisoc.com>,
+        Enlin Mu <enlin.mu@unisoc.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 4.14 118/186] pstore/ram: Check start of empty przs during init
 Date:   Wed, 20 Sep 2023 13:30:21 +0200
-Message-ID: <20230920112852.106906555@linuxfoundation.org>
+Message-ID: <20230920112841.302373958@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Enlin Mu <enlin.mu@unisoc.com>
 
-commit 5a7693e6bbf19b22fd6c1d2c4b7beb0a03969e2c upstream.
+commit fe8c3623ab06603eb760444a032d426542212021 upstream.
 
-ntb_transport_tx_free_entry() never returns 0 with the current
-calculation. If head == tail, then it would return qp->tx_max_entry.
-Change compare to tail >= head and when they are equal, a 0 would be
-returned.
+After commit 30696378f68a ("pstore/ram: Do not treat empty buffers as
+valid"), initialization would assume a prz was valid after seeing that
+the buffer_size is zero (regardless of the buffer start position). This
+unchecked start value means it could be outside the bounds of the buffer,
+leading to future access panics when written to:
 
-Fixes: e74bfeedad08 ("NTB: Add flow control to the ntb_netdev")
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: renlonglong <ren.longlong@h3c.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
+ sysdump_panic_event+0x3b4/0x5b8
+ atomic_notifier_call_chain+0x54/0x90
+ panic+0x1c8/0x42c
+ die+0x29c/0x2a8
+ die_kernel_fault+0x68/0x78
+ __do_kernel_fault+0x1c4/0x1e0
+ do_bad_area+0x40/0x100
+ do_translation_fault+0x68/0x80
+ do_mem_abort+0x68/0xf8
+ el1_da+0x1c/0xc0
+ __raw_writeb+0x38/0x174
+ __memcpy_toio+0x40/0xac
+ persistent_ram_update+0x44/0x12c
+ persistent_ram_write+0x1a8/0x1b8
+ ramoops_pstore_write+0x198/0x1e8
+ pstore_console_write+0x94/0xe0
+ ...
+
+To avoid this, also check if the prz start is 0 during the initialization
+phase. If not, the next prz sanity check case will discover it (start >
+size) and zap the buffer back to a sane state.
+
+Fixes: 30696378f68a ("pstore/ram: Do not treat empty buffers as valid")
+Cc: Yunlong Xing <yunlong.xing@unisoc.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
+Link: https://lore.kernel.org/r/20230801060432.1307717-1-yunlong.xing@unisoc.com
+[kees: update commit log with backtrace and clarifications]
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ntb/ntb_transport.c |    2 +-
+ fs/pstore/ram_core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -2199,7 +2199,7 @@ unsigned int ntb_transport_tx_free_entry
- 	unsigned int head = qp->tx_index;
- 	unsigned int tail = qp->remote_rx_info->entry;
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -492,7 +492,7 @@ static int persistent_ram_post_init(stru
+ 	sig ^= PERSISTENT_RAM_SIG;
  
--	return tail > head ? tail - head : qp->tx_max_entry + tail - head;
-+	return tail >= head ? tail - head : qp->tx_max_entry + tail - head;
- }
- EXPORT_SYMBOL_GPL(ntb_transport_tx_free_entry);
- 
+ 	if (prz->buffer->sig == sig) {
+-		if (buffer_size(prz) == 0) {
++		if (buffer_size(prz) == 0 && buffer_start(prz) == 0) {
+ 			pr_debug("found existing empty buffer\n");
+ 			return 0;
+ 		}
 
 
