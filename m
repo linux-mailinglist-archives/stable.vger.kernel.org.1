@@ -2,51 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D001A7A818E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB4EA7A7F2F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234679AbjITMqh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:46:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36530 "EHLO
+        id S235766AbjITMZV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:25:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234839AbjITMqg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:46:36 -0400
+        with ESMTP id S235815AbjITMYr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 269C0C6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:46:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B74C433C9;
-        Wed, 20 Sep 2023 12:46:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14DBBA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A97C433C8;
+        Wed, 20 Sep 2023 12:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213986;
-        bh=yYUJGr1ekFJdAXZtWX62M+Gi8IxzUdobO7q5GulGG/0=;
+        s=korg; t=1695212681;
+        bh=wyvhGkxzERvVB+2/KnUqy8RZ/dJuEfrE4MwLnJDD0ro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uo485Gx5mf+c3zsZMnQo+V8QvO2AvpeWF/UtvuAP8xnTJc93e+GJT0HcN1PefhnsM
-         s3KwnnbFAPePXiNbiwbqfUNfytSeDPR7jzkVbqRzCKcra5eEGWjTpXLKqPg1klgzB1
-         Qz5eB6lbArS6x+/aIiCYqbAp8Ex5MvBJXKpWB3Jg=
+        b=l6dzqMQrAk6yxY3H8q3mOHg8wB6gT3vZeQiwp/8tqbxV2Ou5BH5lw3eeeYf7D6Cy/
+         hayYmkUKhPyJUD/QmZQXURro2AxwCdO9qYEXX0w0illYOqK1XcL/YWVzaGA8/qjWbV
+         5tSZGjskFWqWeRTlzRFx3UGX1FsHda/GZlp05Hno=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, James Clark <james.clark@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@redhat.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Song Liu <songliubraving@fb.com>,
-        Sumanth Korikkar <sumanthk@linux.ibm.com>,
-        Thomas Richter <tmricht@linux.ibm.com>,
-        Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org,
-        netdev@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/110] perf test: Remove bash construct from stat_bpf_counters.sh test
+        patches@lists.linux.dev, Tommy Huang <tommy_huang@aspeedtech.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 5.10 79/83] i2c: aspeed: Reset the i2c controller when timeout occurs
 Date:   Wed, 20 Sep 2023 13:32:09 +0200
-Message-ID: <20230920112833.087148087@linuxfoundation.org>
+Message-ID: <20230920112829.780940639@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +50,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Tommy Huang <tommy_huang@aspeedtech.com>
 
-[ Upstream commit c8b947642d2339ce74c6a1ce56726089539f48d9 ]
+commit fee465150b458351b6d9b9f66084f3cc3022b88b upstream.
 
-Currently the test skips with an error because == only works in bash:
+Reset the i2c controller when an i2c transfer timeout occurs.
+The remaining interrupts and device should be reset to avoid
+unpredictable controller behavior.
 
-  $ ./perf test 91 -v
-  Couldn't bump rlimit(MEMLOCK), failures may take place when creating BPF maps, etc
-  91: perf stat --bpf-counters test                                   :
-  --- start ---
-  test child forked, pid 44586
-  ./tests/shell/stat_bpf_counters.sh: 26: [: -v: unexpected operator
-  test child finished with -2
-  ---- end ----
-  perf stat --bpf-counters test: Skip
-
-Changing == to = does the same thing, but doesn't result in an error:
-
-  ./perf test 91 -v
-  Couldn't bump rlimit(MEMLOCK), failures may take place when creating BPF maps, etc
-  91: perf stat --bpf-counters test                                   :
-  --- start ---
-  test child forked, pid 45833
-  Skipping: --bpf-counters not supported
-    Error: unknown option `bpf-counters'
-  [...]
-  test child finished with -2
-  ---- end ----
-  perf stat --bpf-counters test: Skip
-
-Signed-off-by: James Clark <james.clark@arm.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: KP Singh <kpsingh@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Martin KaFai Lau <kafai@fb.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc: Thomas Richter <tmricht@linux.ibm.com>
-Cc: Yonghong Song <yhs@fb.com>
-Cc: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Link: https://lore.kernel.org/r/20211028134828.65774-2-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: 68ca249c964f ("perf test shell stat_bpf_counters: Fix test on Intel")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2e57b7cebb98 ("i2c: aspeed: Add multi-master use case support")
+Cc: <stable@vger.kernel.org> # v5.1+
+Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/tests/shell/stat_bpf_counters.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-aspeed.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/tests/shell/stat_bpf_counters.sh b/tools/perf/tests/shell/stat_bpf_counters.sh
-index 2aed20dc22625..13473aeba489c 100755
---- a/tools/perf/tests/shell/stat_bpf_counters.sh
-+++ b/tools/perf/tests/shell/stat_bpf_counters.sh
-@@ -23,7 +23,7 @@ compare_number()
+--- a/drivers/i2c/busses/i2c-aspeed.c
++++ b/drivers/i2c/busses/i2c-aspeed.c
+@@ -693,13 +693,16 @@ static int aspeed_i2c_master_xfer(struct
  
- # skip if --bpf-counters is not supported
- if ! perf stat --bpf-counters true > /dev/null 2>&1; then
--	if [ "$1" == "-v" ]; then
-+	if [ "$1" = "-v" ]; then
- 		echo "Skipping: --bpf-counters not supported"
- 		perf --no-pager stat --bpf-counters true || true
- 	fi
--- 
-2.40.1
-
+ 	if (time_left == 0) {
+ 		/*
+-		 * If timed out and bus is still busy in a multi master
+-		 * environment, attempt recovery at here.
++		 * In a multi-master setup, if a timeout occurs, attempt
++		 * recovery. But if the bus is idle, we still need to reset the
++		 * i2c controller to clear the remaining interrupts.
+ 		 */
+ 		if (bus->multi_master &&
+ 		    (readl(bus->base + ASPEED_I2C_CMD_REG) &
+ 		     ASPEED_I2CD_BUS_BUSY_STS))
+ 			aspeed_i2c_recover_bus(bus);
++		else
++			aspeed_i2c_reset(bus);
+ 
+ 		/*
+ 		 * If timed out and the state is still pending, drop the pending
 
 
