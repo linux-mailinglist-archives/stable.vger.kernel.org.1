@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 853CA7A7CC2
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E17237A7BDD
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:56:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235104AbjITMD4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40532 "EHLO
+        id S234869AbjITL4Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:56:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235151AbjITMDw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:52 -0400
+        with ESMTP id S234870AbjITL4P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:56:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857B3102
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:03:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DB1C433CB;
-        Wed, 20 Sep 2023 12:03:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74B9F4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:56:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A56C433CA;
+        Wed, 20 Sep 2023 11:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211426;
-        bh=WzyeYf247YkGwD7pdo8Fhzq6khOl03V7mWtWEJ6gkxQ=;
+        s=korg; t=1695210966;
+        bh=8hgY677B/BwZXW9FX757+0z5k2I8g4pxiIYirSbYl98=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aFP/IaYuAE0QkPjvT9H3nB6rb4HgVJGMTccadNQ5MSFbUt6Lut1nUh0i8dCG495gg
-         4iXHQg2CYn5Fu8IcKddrBn/1C31szf5a6EEgTwiBthMkiGXY0183rYf/P1g2IBthf6
-         GCCFRr/zNqjKbMVF6sqo2uyeqzsRCaSI4LgW57cI=
+        b=ujHJBRxdmpyszvxaji3aGOmfyCkLCiBr3b+q7GaVEqJeakAvxZLiIGpk17NRuMajH
+         ZzOsHZglBuSOnyifdEg7Mhk0qgY5on9YWU+S9XDwb8L94ozXCFjM3qHHlaZJFj+bMw
+         0AB8n3cNyj8h+9OA9KeQqXPFScGkzN8EDpCJBH9k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Battersby <tonyb@cybernetics.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 089/186] scsi: core: Use 32-bit hostnum in scsi_host_lookup()
+        patches@lists.linux.dev, Andrew Kanner <andrew.kanner@gmail.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+6a93efb725385bc4b2e9@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 058/139] fs/jfs: prevent double-free in dbUnmount() after failed jfs_remount()
 Date:   Wed, 20 Sep 2023 13:29:52 +0200
-Message-ID: <20230920112840.129262566@linuxfoundation.org>
+Message-ID: <20230920112837.848955556@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +51,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Andrew Kanner <andrew.kanner@gmail.com>
 
-[ Upstream commit 62ec2092095b678ff89ce4ba51c2938cd1e8e630 ]
+[ Upstream commit cade5397e5461295f3cb87880534b6a07cafa427 ]
 
-Change scsi_host_lookup() hostnum argument type from unsigned short to
-unsigned int to match the type used everywhere else.
+Syzkaller reported the following issue:
+==================================================================
+BUG: KASAN: double-free in slab_free mm/slub.c:3787 [inline]
+BUG: KASAN: double-free in __kmem_cache_free+0x71/0x110 mm/slub.c:3800
+Free of addr ffff888086408000 by task syz-executor.4/12750
+[...]
+Call Trace:
+ <TASK>
+[...]
+ kasan_report_invalid_free+0xac/0xd0 mm/kasan/report.c:482
+ ____kasan_slab_free+0xfb/0x120
+ kasan_slab_free include/linux/kasan.h:177 [inline]
+ slab_free_hook mm/slub.c:1781 [inline]
+ slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1807
+ slab_free mm/slub.c:3787 [inline]
+ __kmem_cache_free+0x71/0x110 mm/slub.c:3800
+ dbUnmount+0xf4/0x110 fs/jfs/jfs_dmap.c:264
+ jfs_umount+0x248/0x3b0 fs/jfs/jfs_umount.c:87
+ jfs_put_super+0x86/0x190 fs/jfs/super.c:194
+ generic_shutdown_super+0x130/0x310 fs/super.c:492
+ kill_block_super+0x79/0xd0 fs/super.c:1386
+ deactivate_locked_super+0xa7/0xf0 fs/super.c:332
+ cleanup_mnt+0x494/0x520 fs/namespace.c:1291
+ task_work_run+0x243/0x300 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop+0x124/0x150 kernel/entry/common.c:171
+ exit_to_user_mode_prepare+0xb2/0x140 kernel/entry/common.c:203
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
+ syscall_exit_to_user_mode+0x26/0x60 kernel/entry/common.c:296
+ do_syscall_64+0x49/0xb0 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[...]
+ </TASK>
 
-Fixes: 6d49f63b415c ("[SCSI] Make host_no an unsigned int")
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Link: https://lore.kernel.org/r/a02497e7-c12b-ef15-47fc-3f0a0b00ffce@cybernetics.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Allocated by task 13352:
+ kasan_save_stack mm/kasan/common.c:45 [inline]
+ kasan_set_track+0x3d/0x60 mm/kasan/common.c:52
+ ____kasan_kmalloc mm/kasan/common.c:371 [inline]
+ __kasan_kmalloc+0x97/0xb0 mm/kasan/common.c:380
+ kmalloc include/linux/slab.h:580 [inline]
+ dbMount+0x54/0x980 fs/jfs/jfs_dmap.c:164
+ jfs_mount+0x1dd/0x830 fs/jfs/jfs_mount.c:121
+ jfs_fill_super+0x590/0xc50 fs/jfs/super.c:556
+ mount_bdev+0x26c/0x3a0 fs/super.c:1359
+ legacy_get_tree+0xea/0x180 fs/fs_context.c:610
+ vfs_get_tree+0x88/0x270 fs/super.c:1489
+ do_new_mount+0x289/0xad0 fs/namespace.c:3145
+ do_mount fs/namespace.c:3488 [inline]
+ __do_sys_mount fs/namespace.c:3697 [inline]
+ __se_sys_mount+0x2d3/0x3c0 fs/namespace.c:3674
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Freed by task 13352:
+ kasan_save_stack mm/kasan/common.c:45 [inline]
+ kasan_set_track+0x3d/0x60 mm/kasan/common.c:52
+ kasan_save_free_info+0x27/0x40 mm/kasan/generic.c:518
+ ____kasan_slab_free+0xd6/0x120 mm/kasan/common.c:236
+ kasan_slab_free include/linux/kasan.h:177 [inline]
+ slab_free_hook mm/slub.c:1781 [inline]
+ slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1807
+ slab_free mm/slub.c:3787 [inline]
+ __kmem_cache_free+0x71/0x110 mm/slub.c:3800
+ dbUnmount+0xf4/0x110 fs/jfs/jfs_dmap.c:264
+ jfs_mount_rw+0x545/0x740 fs/jfs/jfs_mount.c:247
+ jfs_remount+0x3db/0x710 fs/jfs/super.c:454
+ reconfigure_super+0x3bc/0x7b0 fs/super.c:935
+ vfs_fsconfig_locked fs/fsopen.c:254 [inline]
+ __do_sys_fsconfig fs/fsopen.c:439 [inline]
+ __se_sys_fsconfig+0xad5/0x1060 fs/fsopen.c:314
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[...]
+
+JFS_SBI(ipbmap->i_sb)->bmap wasn't set to NULL after kfree() in
+dbUnmount().
+
+Syzkaller uses faultinject to reproduce this KASAN double-free
+warning. The issue is triggered if either diMount() or dbMount() fail
+in jfs_remount(), since diUnmount() or dbUnmount() already happened in
+such a case - they will do double-free on next execution: jfs_umount
+or jfs_remount.
+
+Tested on both upstream and jfs-next by syzkaller.
+
+Reported-and-tested-by: syzbot+6a93efb725385bc4b2e9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000471f2d05f1ce8bad@google.com/T/
+Link: https://syzkaller.appspot.com/bug?extid=6a93efb725385bc4b2e9
+Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hosts.c     | 4 ++--
- include/scsi/scsi_host.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/jfs/jfs_dmap.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-index 27609b2ae544a..493700ae19b45 100644
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -555,7 +555,7 @@ EXPORT_SYMBOL(scsi_unregister);
- static int __scsi_host_match(struct device *dev, const void *data)
- {
- 	struct Scsi_Host *p;
--	const unsigned short *hostnum = data;
-+	const unsigned int *hostnum = data;
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index bd4ef43b02033..e9d075cbd71ad 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -269,6 +269,7 @@ int dbUnmount(struct inode *ipbmap, int mounterror)
  
- 	p = class_to_shost(dev);
- 	return p->host_no == *hostnum;
-@@ -572,7 +572,7 @@ static int __scsi_host_match(struct device *dev, const void *data)
-  *	that scsi_host_get() took. The put_device() below dropped
-  *	the reference from class_find_device().
-  **/
--struct Scsi_Host *scsi_host_lookup(unsigned short hostnum)
-+struct Scsi_Host *scsi_host_lookup(unsigned int hostnum)
- {
- 	struct device *cdev;
- 	struct Scsi_Host *shost = NULL;
-diff --git a/include/scsi/scsi_host.h b/include/scsi/scsi_host.h
-index 9c1e4bad6581d..1294b6ce9884f 100644
---- a/include/scsi/scsi_host.h
-+++ b/include/scsi/scsi_host.h
-@@ -786,7 +786,7 @@ extern void scsi_rescan_device(struct device *);
- extern void scsi_remove_host(struct Scsi_Host *);
- extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
- extern void scsi_host_put(struct Scsi_Host *t);
--extern struct Scsi_Host *scsi_host_lookup(unsigned short);
-+extern struct Scsi_Host *scsi_host_lookup(unsigned int hostnum);
- extern const char *scsi_host_state_name(enum scsi_host_state);
- extern void scsi_cmd_get_serial(struct Scsi_Host *, struct scsi_cmnd *);
+ 	/* free the memory for the in-memory bmap. */
+ 	kfree(bmp);
++	JFS_SBI(ipbmap->i_sb)->bmap = NULL;
  
+ 	return (0);
+ }
 -- 
 2.40.1
 
