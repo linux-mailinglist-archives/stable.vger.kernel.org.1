@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 959037A80D8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 395997A7EF2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236120AbjITMkl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:40:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42550 "EHLO
+        id S234630AbjITMWS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:22:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236123AbjITMkj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:40:39 -0400
+        with ESMTP id S234639AbjITMWR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC9A08F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:40:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFF2C433D9;
-        Wed, 20 Sep 2023 12:40:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD62FAD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303A1C433C7;
+        Wed, 20 Sep 2023 12:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213633;
-        bh=KQz9RwJ0j+5T5qSm7oRI+keuen2Pp2To/WtKuSFUDyk=;
+        s=korg; t=1695212530;
+        bh=nRTgJ9lM+4mI/Kr0xqDnvTY+dTpvBhpzc6L2RC4yqas=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zIGLvmwGuja/HwtEcB26AlCBWLKFElh8Kukz2hvfslNFgr6owcLSsFRw8ycYdL9U8
-         HuKHM+eucZECBcdXFOqIm1RGFbqpkoA2loNAogQijFv3b+TQj6U5bHASE+2bQbW9LP
-         ohwKrO2UNIESRINSLyvZuWdoSUVlc+4RbF2BVf88=
+        b=Bw97F3w2jgT6DmRi40STDzPpJuEiORJPXKISIRbHT1FQgq5+OEArGTrvYWzJG8Mjp
+         PRMncx/zJCdVLxmxueQEBe5qdkpLYr16x0lppKJ3mzaShAiwt0+mQ6JM5E0L7isjkS
+         TzTrYHSuup72lh5mPwezWnrjrARwrTgaXe9ImZbc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.4 309/367] parisc: Drop loops_per_jiffy from per_cpu struct
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 36/83] media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer
 Date:   Wed, 20 Sep 2023 13:31:26 +0200
-Message-ID: <20230920112906.553888927@linuxfoundation.org>
+Message-ID: <20230920112828.100130267@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +50,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit 93346da8ff47cc00f953c7f38a2d6ba11977fc42 upstream.
+[ Upstream commit 7bf744f2de0a848fb1d717f5831b03db96feae89 ]
 
-There is no need to keep a loops_per_jiffy value per cpu. Drop it.
+In af9035_i2c_master_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach af9035_i2c_master_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Guenter Roeck <linux@roeck-us.net>
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ moved variable declaration to fix build issues in older kernels - gregkh ]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/include/asm/processor.h |    1 -
- arch/parisc/kernel/processor.c      |    5 ++---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/media/usb/dvb-usb-v2/af9035.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/arch/parisc/include/asm/processor.h
-+++ b/arch/parisc/include/asm/processor.h
-@@ -97,7 +97,6 @@ struct cpuinfo_parisc {
- 	unsigned long cpu_loc;      /* CPU location from PAT firmware */
- 	unsigned int state;
- 	struct parisc_device *dev;
--	unsigned long loops_per_jiffy;
- };
+--- a/drivers/media/usb/dvb-usb-v2/af9035.c
++++ b/drivers/media/usb/dvb-usb-v2/af9035.c
+@@ -269,6 +269,7 @@ static int af9035_i2c_master_xfer(struct
+ 	struct dvb_usb_device *d = i2c_get_adapdata(adap);
+ 	struct state *state = d_to_priv(d);
+ 	int ret;
++	u32 reg;
  
- extern struct system_cpuinfo_parisc boot_cpu_data;
---- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -163,7 +163,6 @@ static int __init processor_probe(struct
- 	if (cpuid)
- 		memset(p, 0, sizeof(struct cpuinfo_parisc));
+ 	if (mutex_lock_interruptible(&d->i2c_mutex) < 0)
+ 		return -EAGAIN;
+@@ -321,8 +322,10 @@ static int af9035_i2c_master_xfer(struct
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
++			if (msg[0].len < 3 || msg[1].len < 1)
++				return -EOPNOTSUPP;
+ 			/* demod access via firmware interface */
+-			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
++			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
  
--	p->loops_per_jiffy = loops_per_jiffy;
- 	p->dev = dev;		/* Save IODC data in case we need it */
- 	p->hpa = dev->hpa.start;	/* save CPU hpa */
- 	p->cpuid = cpuid;	/* save CPU id */
-@@ -440,8 +439,8 @@ show_cpuinfo (struct seq_file *m, void *
- 		show_cache_info(m);
+ 			if (msg[0].addr == state->af9033_i2c_addr[1])
+@@ -380,17 +383,16 @@ static int af9035_i2c_master_xfer(struct
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
++			if (msg[0].len < 3)
++				return -EOPNOTSUPP;
+ 			/* demod access via firmware interface */
+-			u32 reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
++			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
  
- 		seq_printf(m, "bogomips\t: %lu.%02lu\n",
--			     cpuinfo->loops_per_jiffy / (500000 / HZ),
--			     (cpuinfo->loops_per_jiffy / (5000 / HZ)) % 100);
-+			     loops_per_jiffy / (500000 / HZ),
-+			     loops_per_jiffy / (5000 / HZ) % 100);
+ 			if (msg[0].addr == state->af9033_i2c_addr[1])
+ 				reg |= 0x100000;
  
- 		seq_printf(m, "software id\t: %ld\n\n",
- 				boot_cpu_data.pdc.model.sw_id);
+-			ret = (msg[0].len >= 3) ? af9035_wr_regs(d, reg,
+-							         &msg[0].buf[3],
+-							         msg[0].len - 3)
+-					        : -EOPNOTSUPP;
++			ret = af9035_wr_regs(d, reg, &msg[0].buf[3], msg[0].len - 3);
+ 		} else {
+ 			/* I2C write */
+ 			u8 buf[MAX_XFER_SIZE];
 
 
