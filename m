@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD0127A7DBD
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F2857A7FE0
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235378AbjITMLx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:11:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48456 "EHLO
+        id S235282AbjITMa6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235389AbjITMLu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:11:50 -0400
+        with ESMTP id S235996AbjITMa5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:30:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B69EC6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:11:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B183BC433C9;
-        Wed, 20 Sep 2023 12:11:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D36B699
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:30:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE1FC433C8;
+        Wed, 20 Sep 2023 12:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211904;
-        bh=k5CQEzYUEmw9OfHAkW6Uu+wxz1Mu/XCh2DPZrQiytog=;
+        s=korg; t=1695213051;
+        bh=50CSQ2/TBdpfkWsVeqL2SkDxhDmiGqNHWTH8wIYg1V0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NGYhe0NfJaGHBwGi2TrLgJoIMVDifgTvT5TVdQT5Bo5kIypIANJR0zRozo2s0JZmv
-         N3JhpnVYizcJyrLQ4P+GR0PsI1gpTJWRCFpFTsaRiTG59ubvVAGRAfj/mc8HQg4N6/
-         y2B41E//BMi3stDyElNKanfhAIUCiRYu1oFuG63U=
+        b=KB10GVAEA2bx1PsvUA71rHXLZxW8nw8wvucvo9+LGlyECOBjfZTR65tSTLvnBmutp
+         +zIUqiX74+Km4RqU8PCzBOjg8fstgUx971uOEpij0i/fOVJgJn29/p8enZBFNlZJbg
+         Uf7XV1FULbx9FzhbQdPp6DWXxg4s7ZlAglG9sWrM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Yan Zhai <yan@cloudflare.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Corey Minyard <minyard@acm.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 061/273] lwt: Check LWTUNNEL_XMIT_CONTINUE strictly
-Date:   Wed, 20 Sep 2023 13:28:21 +0200
-Message-ID: <20230920112848.336681879@linuxfoundation.org>
+Subject: [PATCH 5.4 125/367] ipmi:ssif: Add check for kstrdup
+Date:   Wed, 20 Sep 2023 13:28:22 +0200
+Message-ID: <20230920112901.901992834@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,80 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yan Zhai <yan@cloudflare.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit a171fbec88a2c730b108c7147ac5e7b2f5a02b47 ]
+[ Upstream commit c5586d0f711e9744d0cade39b0c4a2d116a333ca ]
 
-LWTUNNEL_XMIT_CONTINUE is implicitly assumed in ip(6)_finish_output2,
-such that any positive return value from a xmit hook could cause
-unexpected continue behavior, despite that related skb may have been
-freed. This could be error-prone for future xmit hook ops. One of the
-possible errors is to return statuses of dst_output directly.
+Add check for the return value of kstrdup() and return the error
+if it fails in order to avoid NULL pointer dereference.
 
-To make the code safer, redefine LWTUNNEL_XMIT_CONTINUE value to
-distinguish from dst_output statuses and check the continue
-condition explicitly.
-
-Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/96b939b85eda00e8df4f7c080f770970a4c5f698.1692326837.git.yan@cloudflare.com
+Fixes: c4436c9149c5 ("ipmi_ssif: avoid registering duplicate ssif interface")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Message-Id: <20230619092802.35384-1-jiasheng@iscas.ac.cn>
+Signed-off-by: Corey Minyard <minyard@acm.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/lwtunnel.h | 5 ++++-
- net/ipv4/ip_output.c   | 2 +-
- net/ipv6/ip6_output.c  | 2 +-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/char/ipmi/ipmi_ssif.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
-index 33fd9ba7e0e5a..ec75c0a1c529f 100644
---- a/include/net/lwtunnel.h
-+++ b/include/net/lwtunnel.h
-@@ -16,9 +16,12 @@
- #define LWTUNNEL_STATE_INPUT_REDIRECT	BIT(1)
- #define LWTUNNEL_STATE_XMIT_REDIRECT	BIT(2)
- 
-+/* LWTUNNEL_XMIT_CONTINUE should be distinguishable from dst_output return
-+ * values (NET_XMIT_xxx and NETDEV_TX_xxx in linux/netdevice.h) for safety.
-+ */
- enum {
- 	LWTUNNEL_XMIT_DONE,
--	LWTUNNEL_XMIT_CONTINUE,
-+	LWTUNNEL_XMIT_CONTINUE = 0x100,
- };
- 
- 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 92fa11e75a4d0..6936f703758bb 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -221,7 +221,7 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
- 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
- 		int res = lwtunnel_xmit(skb);
- 
--		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
-+		if (res != LWTUNNEL_XMIT_CONTINUE)
- 			return res;
- 	}
- 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 4f31a781ab370..ff4d349e13f78 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -106,7 +106,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
- 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
- 		int res = lwtunnel_xmit(skb);
- 
--		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
-+		if (res != LWTUNNEL_XMIT_CONTINUE)
- 			return res;
- 	}
- 
+diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
+index 2907b0bca1af0..0061f2207f318 100644
+--- a/drivers/char/ipmi/ipmi_ssif.c
++++ b/drivers/char/ipmi/ipmi_ssif.c
+@@ -1609,6 +1609,11 @@ static int ssif_add_infos(struct i2c_client *client)
+ 	info->addr_src = SI_ACPI;
+ 	info->client = client;
+ 	info->adapter_name = kstrdup(client->adapter->name, GFP_KERNEL);
++	if (!info->adapter_name) {
++		kfree(info);
++		return -ENOMEM;
++	}
++
+ 	info->binfo.addr = client->addr;
+ 	list_add_tail(&info->link, &ssif_infos);
+ 	return 0;
 -- 
 2.40.1
 
