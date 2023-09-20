@@ -2,47 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AF727A80DB
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B83DB7A7EA5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236199AbjITMkn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:40:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42590 "EHLO
+        id S235613AbjITMTc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:19:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236189AbjITMkm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:40:42 -0400
+        with ESMTP id S235653AbjITMT0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7989193;
-        Wed, 20 Sep 2023 05:40:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B16CC433D9;
-        Wed, 20 Sep 2023 12:40:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ACA2181
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5699FC433C7;
+        Wed, 20 Sep 2023 12:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213636;
-        bh=f4AJNlVtXUMhhf1Uggc5Hzzx4YqoWhmVPrv6HVPU9F8=;
+        s=korg; t=1695212358;
+        bh=Z/mbSunyyOSU9ikNxPAdMMnDA/SoqyUCEVJjJbnzp1Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=grDrSjgSnyojjGWGoUL6EI8iTJH0poYF0txS/clvCjQZSkX9PUtQUWc89BywTzwBG
-         lenxSqlMP6mjNPnd0DC+Ygp8LOUlhMETI1E5AvHw4JWoZmTJe0R6r7c9T1d4N6M6Ar
-         7pnu8Crkcykbb/ROD9O+GsLieuLRyS1BxAbZbrCo=
+        b=NwRejVpNzn0CuiMcIT9X95CYiGz3Cxt10+VqaD/6IMZNRAo31y3/gpeuMftGfCDfx
+         jD0u5kJBRXvD059EMnUWs60gn9H63AiK7J4SYSZvLiKmrnfxl/wAH+kkzEI8YPBLKZ
+         vYXIm3hkqpLxu4524bLUjhsIbUgqLGNwKV2jB6TE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com,
-        Takeshi Misawa <jeliantsurux@gmail.com>,
-        Fedor Pchelkin <pchelkin@ispras.ru>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Ian Kent <raven@themaw.net>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrei Vagin <avagin@gmail.com>, autofs@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
+        Tuo Li <islituo@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Inki Dae <inki.dae@samsung.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 310/367] autofs: fix memory leak of waitqueues in autofs_catatonic_mode
+Subject: [PATCH 4.19 247/273] drm/exynos: fix a possible null-pointer dereference due to data race in exynos_drm_crtc_atomic_disable()
 Date:   Wed, 20 Sep 2023 13:31:27 +0200
-Message-ID: <20230920112906.580988977@linuxfoundation.org>
+Message-ID: <20230920112853.948873163@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,108 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Tuo Li <islituo@gmail.com>
 
-[ Upstream commit ccbe77f7e45dfb4420f7f531b650c00c6e9c7507 ]
+[ Upstream commit 2e63972a2de14482d0eae1a03a73e379f1c3f44c ]
 
-Syzkaller reports a memory leak:
+The variable crtc->state->event is often protected by the lock
+crtc->dev->event_lock when is accessed. However, it is accessed as a
+condition of an if statement in exynos_drm_crtc_atomic_disable() without
+holding the lock:
 
-BUG: memory leak
-unreferenced object 0xffff88810b279e00 (size 96):
-  comm "syz-executor399", pid 3631, jiffies 4294964921 (age 23.870s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 08 9e 27 0b 81 88 ff ff  ..........'.....
-    08 9e 27 0b 81 88 ff ff 00 00 00 00 00 00 00 00  ..'.............
-  backtrace:
-    [<ffffffff814cfc90>] kmalloc_trace+0x20/0x90 mm/slab_common.c:1046
-    [<ffffffff81bb75ca>] kmalloc include/linux/slab.h:576 [inline]
-    [<ffffffff81bb75ca>] autofs_wait+0x3fa/0x9a0 fs/autofs/waitq.c:378
-    [<ffffffff81bb88a7>] autofs_do_expire_multi+0xa7/0x3e0 fs/autofs/expire.c:593
-    [<ffffffff81bb8c33>] autofs_expire_multi+0x53/0x80 fs/autofs/expire.c:619
-    [<ffffffff81bb6972>] autofs_root_ioctl_unlocked+0x322/0x3b0 fs/autofs/root.c:897
-    [<ffffffff81bb6a95>] autofs_root_ioctl+0x25/0x30 fs/autofs/root.c:910
-    [<ffffffff81602a9c>] vfs_ioctl fs/ioctl.c:51 [inline]
-    [<ffffffff81602a9c>] __do_sys_ioctl fs/ioctl.c:870 [inline]
-    [<ffffffff81602a9c>] __se_sys_ioctl fs/ioctl.c:856 [inline]
-    [<ffffffff81602a9c>] __x64_sys_ioctl+0xfc/0x140 fs/ioctl.c:856
-    [<ffffffff84608225>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84608225>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84800087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  if (crtc->state->event && !crtc->state->active)
 
-autofs_wait_queue structs should be freed if their wait_ctr becomes zero.
-Otherwise they will be lost.
+However, if crtc->state->event is changed to NULL by another thread right
+after the conditions of the if statement is checked to be true, a
+null-pointer dereference can occur in drm_crtc_send_vblank_event():
 
-In this case an AUTOFS_IOC_EXPIRE_MULTI ioctl is done, then a new
-waitqueue struct is allocated in autofs_wait(), its initial wait_ctr
-equals 2. After that wait_event_killable() is interrupted (it returns
--ERESTARTSYS), so that 'wq->name.name == NULL' condition may be not
-satisfied. Actually, this condition can be satisfied when
-autofs_wait_release() or autofs_catatonic_mode() is called and, what is
-also important, wait_ctr is decremented in those places. Upon the exit of
-autofs_wait(), wait_ctr is decremented to 1. Then the unmounting process
-begins: kill_sb calls autofs_catatonic_mode(), which should have freed the
-waitqueues, but it only decrements its usage counter to zero which is not
-a correct behaviour.
+  e->pipe = pipe;
 
-edit:imk
-This description is of course not correct. The umount performed as a result
-of an expire is a umount of a mount that has been automounted, it's not the
-autofs mount itself. They happen independently, usually after everything
-mounted within the autofs file system has been expired away. If everything
-hasn't been expired away the automount daemon can still exit leaving mounts
-in place. But expires done in both cases will result in a notification that
-calls autofs_wait_release() with a result status. The problem case is the
-summary execution of of the automount daemon. In this case any waiting
-processes won't be woken up until either they are terminated or the mount
-is umounted.
-end edit: imk
+To fix this possible null-pointer dereference caused by data race, the
+spin lock coverage is extended to protect the if statement as well as the
+function call to drm_crtc_send_vblank_event().
 
-So in catatonic mode we should free waitqueues which counter becomes zero.
-
-edit: imk
-Initially I was concerned that the calling of autofs_wait_release() and
-autofs_catatonic_mode() was not mutually exclusive but that can't be the
-case (obviously) because the queue entry (or entries) is removed from the
-list when either of these two functions are called. Consequently the wait
-entry will be freed by only one of these functions or by the woken process
-in autofs_wait() depending on the order of the calls.
-end edit: imk
-
-Reported-by: syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com
-Suggested-by: Takeshi Misawa <jeliantsurux@gmail.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Ian Kent <raven@themaw.net>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Andrei Vagin <avagin@gmail.com>
-Cc: autofs@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Message-Id: <169112719161.7590.6700123246297365841.stgit@donald.themaw.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: BassCheck <bass@buaa.edu.cn>
+Link: https://sites.google.com/view/basscheck/home
+Signed-off-by: Tuo Li <islituo@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Added relevant link.
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/autofs/waitq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/exynos/exynos_drm_crtc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/autofs/waitq.c b/fs/autofs/waitq.c
-index b04c528b19d34..1230bdf329898 100644
---- a/fs/autofs/waitq.c
-+++ b/fs/autofs/waitq.c
-@@ -32,8 +32,9 @@ void autofs_catatonic_mode(struct autofs_sb_info *sbi)
- 		wq->status = -ENOENT; /* Magic is gone - report failure */
- 		kfree(wq->name.name);
- 		wq->name.name = NULL;
--		wq->wait_ctr--;
- 		wake_up_interruptible(&wq->queue);
-+		if (!--wq->wait_ctr)
-+			kfree(wq);
- 		wq = nwq;
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_crtc.c b/drivers/gpu/drm/exynos/exynos_drm_crtc.c
+index 2696289ecc78f..b3e23ace5869c 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_crtc.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_crtc.c
+@@ -43,13 +43,12 @@ static void exynos_drm_crtc_atomic_disable(struct drm_crtc *crtc,
+ 	if (exynos_crtc->ops->disable)
+ 		exynos_crtc->ops->disable(exynos_crtc);
+ 
++	spin_lock_irq(&crtc->dev->event_lock);
+ 	if (crtc->state->event && !crtc->state->active) {
+-		spin_lock_irq(&crtc->dev->event_lock);
+ 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
+-		spin_unlock_irq(&crtc->dev->event_lock);
+-
+ 		crtc->state->event = NULL;
  	}
- 	fput(sbi->pipe);	/* Close the pipe */
++	spin_unlock_irq(&crtc->dev->event_lock);
+ }
+ 
+ static int exynos_crtc_atomic_check(struct drm_crtc *crtc,
 -- 
 2.40.1
 
