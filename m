@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B94F7A7DED
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D5757A8050
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:36:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235488AbjITMNi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:13:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55120 "EHLO
+        id S235911AbjITMgb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:36:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235364AbjITMNh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:13:37 -0400
+        with ESMTP id S235945AbjITMga (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:36:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0691DB6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:13:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1AEC433C8;
-        Wed, 20 Sep 2023 12:13:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73858ED
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:36:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85C8C433CA;
+        Wed, 20 Sep 2023 12:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212009;
-        bh=oqAanCB+an4rRBW6pPemkkks8rGlBxVREMxGSiJIbmM=;
+        s=korg; t=1695213379;
+        bh=e45hEXydPHjTWCfcrxBsOhxjlI+ygj8+zVcdBtxV4kc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V9OFu3i+jMgXhV5neE6NNz13eZ4jBqM78yWiMTMWGueFD4mOH3Dhe+Nm5wzfTnf2B
-         KUWWAK9yU8c15n/SdM+BM3WPo5CKprYc+60ch7PwG1Lf+e5+e42plzlSekOcKFqiAC
-         kk8fQ/Zl0EKItz4LDI8mcoUk1YX6jp+cOalSsb2A=
+        b=BCMJXztSOFTB3Ka0l41IGamsgsmfq+1XTcEUoqJVLUdsj83XFN8XPnxgsHQrsxhwj
+         vqeLd7l8oG3EM+fRBstj9vZjMGWrfDeZ0lzKfg/FNrITsikfl7CNpWYXakM80so1RX
+         jhHnPMK0D8MWevsc8z8Kpbnab7E0LmMV4SI+j+xw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Frederick Lawler <fred@fredlawl.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 117/273] drm/amdgpu: Prefer pcie_capability_read_word()
+Subject: [PATCH 5.4 180/367] media: ov2680: Remove auto-gain and auto-exposure controls
 Date:   Wed, 20 Sep 2023 13:29:17 +0200
-Message-ID: <20230920112850.105820765@linuxfoundation.org>
+Message-ID: <20230920112903.295099332@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,333 +54,333 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederick Lawler <fred@fredlawl.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 88027c89ea146e32485251f1c2dddcde43c8d04e ]
+[ Upstream commit 7b5a42e6ae71927359ea67a2c22570ba97fa4059 ]
 
-Commit 8c0d3a02c130 ("PCI: Add accessors for PCI Express Capability")
-added accessors for the PCI Express Capability so that drivers didn't
-need to be aware of differences between v1 and v2 of the PCI
-Express Capability.
+Quoting the OV2680 datasheet:
 
-Replace pci_read_config_word() and pci_write_config_word() calls with
-pcie_capability_read_word() and pcie_capability_write_word().
+"3.2 exposure and gain control
 
-[bhelgaas: fix a couple remaining instances in cik.c]
-Link: https://lore.kernel.org/r/20191118003513.10852-1-fred@fredlawl.com
-Signed-off-by: Frederick Lawler <fred@fredlawl.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: ce7d88110b9e ("drm/amdgpu: Use RMW accessors for changing LNKCTL")
+In the OV2680, the exposure time and gain are set manually from an external
+controller. The OV2680 supports manual gain and exposure control only for
+normal applications, no auto mode."
+
+And indeed testing with the atomisp_ov2680 fork of ov2680.c has shown that
+auto-exposure and auto-gain do not work.
+
+Note that the code setting the auto-exposure flag was broken, callers
+of ov2680_exposure_set() were directly passing !!ctrls->auto_exp->val as
+"bool auto_exp" value, but ctrls->auto_exp is a menu control with:
+
+enum  v4l2_exposure_auto_type {
+        V4L2_EXPOSURE_AUTO = 0,
+        V4L2_EXPOSURE_MANUAL = 1,
+	...
+
+So instead of passing !!ctrls->auto_exp->val they should have been passing
+ctrls->auto_exp->val == V4L2_EXPOSURE_AUTO, iow the passed value was
+inverted of what it should have been.
+
+Also remove ov2680_g_volatile_ctrl() since without auto support the gain
+and exposure controls are not volatile.
+
+This also fixes the control values not being properly applied in
+ov2680_mode_set(). The 800x600 mode register-list also sets gain,
+exposure and vflip overriding the last set ctrl values.
+
+ov2680_mode_set() does call ov2680_gain_set() and ov2680_exposure_set()
+but did this before writing the mode register-list, so these values
+would still be overridden by the mode register-list.
+
+Add a v4l2_ctrl_handler_setup() call after writing the mode register-list
+to restore all ctrl values. Also remove the ctrls->gain->is_new check from
+ov2680_gain_set() so that the gain always gets restored properly.
+
+Last since ov2680_mode_set() now calls v4l2_ctrl_handler_setup(), remove
+the v4l2_ctrl_handler_setup() call after ov2680_mode_restore() since
+ov2680_mode_restore() calls ov2680_mode_set().
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/cik.c | 71 ++++++++++++++++++++------------
- drivers/gpu/drm/amd/amdgpu/si.c  | 71 ++++++++++++++++++++------------
- 2 files changed, 90 insertions(+), 52 deletions(-)
+ drivers/media/i2c/ov2680.c | 161 ++++---------------------------------
+ 1 file changed, 17 insertions(+), 144 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/cik.c b/drivers/gpu/drm/amd/amdgpu/cik.c
-index 95b3a1f601e8b..35f9bcd17b1b2 100644
---- a/drivers/gpu/drm/amd/amdgpu/cik.c
-+++ b/drivers/gpu/drm/amd/amdgpu/cik.c
-@@ -1377,7 +1377,6 @@ static int cik_set_vce_clocks(struct amdgpu_device *adev, u32 evclk, u32 ecclk)
- static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index cd0c083a4768a..f143e2af0b5fc 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -85,15 +85,8 @@ struct ov2680_mode_info {
+ 
+ struct ov2680_ctrls {
+ 	struct v4l2_ctrl_handler handler;
+-	struct {
+-		struct v4l2_ctrl *auto_exp;
+-		struct v4l2_ctrl *exposure;
+-	};
+-	struct {
+-		struct v4l2_ctrl *auto_gain;
+-		struct v4l2_ctrl *gain;
+-	};
+-
++	struct v4l2_ctrl *exposure;
++	struct v4l2_ctrl *gain;
+ 	struct v4l2_ctrl *hflip;
+ 	struct v4l2_ctrl *vflip;
+ 	struct v4l2_ctrl *test_pattern;
+@@ -143,6 +136,7 @@ static const struct reg_value ov2680_setting_30fps_QUXGA_800_600[] = {
+ 	{0x380e, 0x02}, {0x380f, 0x84}, {0x3811, 0x04}, {0x3813, 0x04},
+ 	{0x3814, 0x31}, {0x3815, 0x31}, {0x3820, 0xc0}, {0x4008, 0x00},
+ 	{0x4009, 0x03}, {0x4837, 0x1e}, {0x3501, 0x4e}, {0x3502, 0xe0},
++	{0x3503, 0x03},
+ };
+ 
+ static const struct reg_value ov2680_setting_30fps_720P_1280_720[] = {
+@@ -405,69 +399,15 @@ static int ov2680_test_pattern_set(struct ov2680_dev *sensor, int value)
+ 	return 0;
+ }
+ 
+-static int ov2680_gain_set(struct ov2680_dev *sensor, bool auto_gain)
+-{
+-	struct ov2680_ctrls *ctrls = &sensor->ctrls;
+-	u32 gain;
+-	int ret;
+-
+-	ret = ov2680_mod_reg(sensor, OV2680_REG_R_MANUAL, BIT(1),
+-			     auto_gain ? 0 : BIT(1));
+-	if (ret < 0)
+-		return ret;
+-
+-	if (auto_gain || !ctrls->gain->is_new)
+-		return 0;
+-
+-	gain = ctrls->gain->val;
+-
+-	ret = ov2680_write_reg16(sensor, OV2680_REG_GAIN_PK, gain);
+-
+-	return 0;
+-}
+-
+-static int ov2680_gain_get(struct ov2680_dev *sensor)
+-{
+-	u32 gain;
+-	int ret;
+-
+-	ret = ov2680_read_reg16(sensor, OV2680_REG_GAIN_PK, &gain);
+-	if (ret)
+-		return ret;
+-
+-	return gain;
+-}
+-
+-static int ov2680_exposure_set(struct ov2680_dev *sensor, bool auto_exp)
++static int ov2680_gain_set(struct ov2680_dev *sensor, u32 gain)
  {
- 	struct pci_dev *root = adev->pdev->bus->self;
--	int bridge_pos, gpu_pos;
- 	u32 speed_cntl, current_data_rate;
- 	int i;
- 	u16 tmp16;
-@@ -1412,12 +1411,7 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
- 		DRM_INFO("enabling PCIE gen 2 link speeds, disable with amdgpu.pcie_gen2=0\n");
+-	struct ov2680_ctrls *ctrls = &sensor->ctrls;
+-	u32 exp;
+-	int ret;
+-
+-	ret = ov2680_mod_reg(sensor, OV2680_REG_R_MANUAL, BIT(0),
+-			     auto_exp ? 0 : BIT(0));
+-	if (ret < 0)
+-		return ret;
+-
+-	if (auto_exp || !ctrls->exposure->is_new)
+-		return 0;
+-
+-	exp = (u32)ctrls->exposure->val;
+-	exp <<= 4;
+-
+-	return ov2680_write_reg24(sensor, OV2680_REG_EXPOSURE_PK_HIGH, exp);
++	return ov2680_write_reg16(sensor, OV2680_REG_GAIN_PK, gain);
+ }
+ 
+-static int ov2680_exposure_get(struct ov2680_dev *sensor)
++static int ov2680_exposure_set(struct ov2680_dev *sensor, u32 exp)
+ {
+-	int ret;
+-	u32 exp;
+-
+-	ret = ov2680_read_reg24(sensor, OV2680_REG_EXPOSURE_PK_HIGH, &exp);
+-	if (ret)
+-		return ret;
+-
+-	return exp >> 4;
++	return ov2680_write_reg24(sensor, OV2680_REG_EXPOSURE_PK_HIGH,
++				  exp << 4);
+ }
+ 
+ static int ov2680_stream_enable(struct ov2680_dev *sensor)
+@@ -482,33 +422,17 @@ static int ov2680_stream_disable(struct ov2680_dev *sensor)
+ 
+ static int ov2680_mode_set(struct ov2680_dev *sensor)
+ {
+-	struct ov2680_ctrls *ctrls = &sensor->ctrls;
+ 	int ret;
+ 
+-	ret = ov2680_gain_set(sensor, false);
+-	if (ret < 0)
+-		return ret;
+-
+-	ret = ov2680_exposure_set(sensor, false);
++	ret = ov2680_load_regs(sensor, sensor->current_mode);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = ov2680_load_regs(sensor, sensor->current_mode);
++	/* Restore value of all ctrls */
++	ret = __v4l2_ctrl_handler_setup(&sensor->ctrls.handler);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	if (ctrls->auto_gain->val) {
+-		ret = ov2680_gain_set(sensor, true);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+-	if (ctrls->auto_exp->val == V4L2_EXPOSURE_AUTO) {
+-		ret = ov2680_exposure_set(sensor, true);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+ 	sensor->mode_pending_changes = false;
+ 
+ 	return 0;
+@@ -590,15 +514,10 @@ static int ov2680_s_power(struct v4l2_subdev *sd, int on)
+ 	else
+ 		ret = ov2680_power_off(sensor);
+ 
+-	mutex_unlock(&sensor->lock);
+-
+-	if (on && ret == 0) {
+-		ret = v4l2_ctrl_handler_setup(&sensor->ctrls.handler);
+-		if (ret < 0)
+-			return ret;
+-
++	if (on && ret == 0)
+ 		ret = ov2680_mode_restore(sensor);
+-	}
++
++	mutex_unlock(&sensor->lock);
+ 
+ 	return ret;
+ }
+@@ -793,52 +712,19 @@ static int ov2680_enum_frame_interval(struct v4l2_subdev *sd,
+ 	return 0;
+ }
+ 
+-static int ov2680_g_volatile_ctrl(struct v4l2_ctrl *ctrl)
+-{
+-	struct v4l2_subdev *sd = ctrl_to_sd(ctrl);
+-	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+-	struct ov2680_ctrls *ctrls = &sensor->ctrls;
+-	int val;
+-
+-	if (!sensor->is_enabled)
+-		return 0;
+-
+-	switch (ctrl->id) {
+-	case V4L2_CID_GAIN:
+-		val = ov2680_gain_get(sensor);
+-		if (val < 0)
+-			return val;
+-		ctrls->gain->val = val;
+-		break;
+-	case V4L2_CID_EXPOSURE:
+-		val = ov2680_exposure_get(sensor);
+-		if (val < 0)
+-			return val;
+-		ctrls->exposure->val = val;
+-		break;
+-	}
+-
+-	return 0;
+-}
+-
+ static int ov2680_s_ctrl(struct v4l2_ctrl *ctrl)
+ {
+ 	struct v4l2_subdev *sd = ctrl_to_sd(ctrl);
+ 	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+-	struct ov2680_ctrls *ctrls = &sensor->ctrls;
+ 
+ 	if (!sensor->is_enabled)
+ 		return 0;
+ 
+ 	switch (ctrl->id) {
+-	case V4L2_CID_AUTOGAIN:
+-		return ov2680_gain_set(sensor, !!ctrl->val);
+ 	case V4L2_CID_GAIN:
+-		return ov2680_gain_set(sensor, !!ctrls->auto_gain->val);
+-	case V4L2_CID_EXPOSURE_AUTO:
+-		return ov2680_exposure_set(sensor, !!ctrl->val);
++		return ov2680_gain_set(sensor, ctrl->val);
+ 	case V4L2_CID_EXPOSURE:
+-		return ov2680_exposure_set(sensor, !!ctrls->auto_exp->val);
++		return ov2680_exposure_set(sensor, ctrl->val);
+ 	case V4L2_CID_VFLIP:
+ 		if (sensor->is_streaming)
+ 			return -EBUSY;
+@@ -863,7 +749,6 @@ static int ov2680_s_ctrl(struct v4l2_ctrl *ctrl)
+ }
+ 
+ static const struct v4l2_ctrl_ops ov2680_ctrl_ops = {
+-	.g_volatile_ctrl = ov2680_g_volatile_ctrl,
+ 	.s_ctrl = ov2680_s_ctrl,
+ };
+ 
+@@ -935,7 +820,7 @@ static int ov2680_v4l2_register(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	v4l2_ctrl_handler_init(hdl, 7);
++	v4l2_ctrl_handler_init(hdl, 5);
+ 
+ 	hdl->lock = &sensor->lock;
+ 
+@@ -947,16 +832,9 @@ static int ov2680_v4l2_register(struct ov2680_dev *sensor)
+ 					ARRAY_SIZE(test_pattern_menu) - 1,
+ 					0, 0, test_pattern_menu);
+ 
+-	ctrls->auto_exp = v4l2_ctrl_new_std_menu(hdl, ops,
+-						 V4L2_CID_EXPOSURE_AUTO,
+-						 V4L2_EXPOSURE_MANUAL, 0,
+-						 V4L2_EXPOSURE_AUTO);
+-
+ 	ctrls->exposure = v4l2_ctrl_new_std(hdl, ops, V4L2_CID_EXPOSURE,
+ 					    0, 32767, 1, 0);
+ 
+-	ctrls->auto_gain = v4l2_ctrl_new_std(hdl, ops, V4L2_CID_AUTOGAIN,
+-					     0, 1, 1, 1);
+ 	ctrls->gain = v4l2_ctrl_new_std(hdl, ops, V4L2_CID_GAIN, 0, 2047, 1, 0);
+ 
+ 	if (hdl->error) {
+@@ -964,14 +842,9 @@ static int ov2680_v4l2_register(struct ov2680_dev *sensor)
+ 		goto cleanup_entity;
  	}
  
--	bridge_pos = pci_pcie_cap(root);
--	if (!bridge_pos)
--		return;
+-	ctrls->gain->flags |= V4L2_CTRL_FLAG_VOLATILE;
+-	ctrls->exposure->flags |= V4L2_CTRL_FLAG_VOLATILE;
+ 	ctrls->vflip->flags |= V4L2_CTRL_FLAG_MODIFY_LAYOUT;
+ 	ctrls->hflip->flags |= V4L2_CTRL_FLAG_MODIFY_LAYOUT;
+ 
+-	v4l2_ctrl_auto_cluster(2, &ctrls->auto_gain, 0, true);
+-	v4l2_ctrl_auto_cluster(2, &ctrls->auto_exp, 1, true);
 -
--	gpu_pos = pci_pcie_cap(adev->pdev);
--	if (!gpu_pos)
-+	if (!pci_is_pcie(root) || !pci_is_pcie(adev->pdev))
- 		return;
+ 	sensor->sd.ctrl_handler = hdl;
  
- 	if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3) {
-@@ -1427,14 +1421,17 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
- 			u16 bridge_cfg2, gpu_cfg2;
- 			u32 max_lw, current_lw, tmp;
- 
--			pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL, &bridge_cfg);
--			pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, &gpu_cfg);
-+			pcie_capability_read_word(root, PCI_EXP_LNKCTL,
-+						  &bridge_cfg);
-+			pcie_capability_read_word(adev->pdev, PCI_EXP_LNKCTL,
-+						  &gpu_cfg);
- 
- 			tmp16 = bridge_cfg | PCI_EXP_LNKCTL_HAWD;
--			pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL, tmp16);
-+			pcie_capability_write_word(root, PCI_EXP_LNKCTL, tmp16);
- 
- 			tmp16 = gpu_cfg | PCI_EXP_LNKCTL_HAWD;
--			pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, tmp16);
-+			pcie_capability_write_word(adev->pdev, PCI_EXP_LNKCTL,
-+						   tmp16);
- 
- 			tmp = RREG32_PCIE(ixPCIE_LC_STATUS1);
- 			max_lw = (tmp & PCIE_LC_STATUS1__LC_DETECTED_LINK_WIDTH_MASK) >>
-@@ -1458,15 +1455,23 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
- 
- 			for (i = 0; i < 10; i++) {
- 				/* check status */
--				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_DEVSTA, &tmp16);
-+				pcie_capability_read_word(adev->pdev,
-+							  PCI_EXP_DEVSTA,
-+							  &tmp16);
- 				if (tmp16 & PCI_EXP_DEVSTA_TRPND)
- 					break;
- 
--				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL, &bridge_cfg);
--				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, &gpu_cfg);
-+				pcie_capability_read_word(root, PCI_EXP_LNKCTL,
-+							  &bridge_cfg);
-+				pcie_capability_read_word(adev->pdev,
-+							  PCI_EXP_LNKCTL,
-+							  &gpu_cfg);
- 
--				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &bridge_cfg2);
--				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &gpu_cfg2);
-+				pcie_capability_read_word(root, PCI_EXP_LNKCTL2,
-+							  &bridge_cfg2);
-+				pcie_capability_read_word(adev->pdev,
-+							  PCI_EXP_LNKCTL2,
-+							  &gpu_cfg2);
- 
- 				tmp = RREG32_PCIE(ixPCIE_LC_CNTL4);
- 				tmp |= PCIE_LC_CNTL4__LC_SET_QUIESCE_MASK;
-@@ -1479,32 +1484,45 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
- 				msleep(100);
- 
- 				/* linkctl */
--				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL, &tmp16);
-+				pcie_capability_read_word(root, PCI_EXP_LNKCTL,
-+							  &tmp16);
- 				tmp16 &= ~PCI_EXP_LNKCTL_HAWD;
- 				tmp16 |= (bridge_cfg & PCI_EXP_LNKCTL_HAWD);
--				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL, tmp16);
-+				pcie_capability_write_word(root, PCI_EXP_LNKCTL,
-+							   tmp16);
- 
--				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, &tmp16);
-+				pcie_capability_read_word(adev->pdev,
-+							  PCI_EXP_LNKCTL,
-+							  &tmp16);
- 				tmp16 &= ~PCI_EXP_LNKCTL_HAWD;
- 				tmp16 |= (gpu_cfg & PCI_EXP_LNKCTL_HAWD);
--				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, tmp16);
-+				pcie_capability_write_word(adev->pdev,
-+							   PCI_EXP_LNKCTL,
-+							   tmp16);
- 
- 				/* linkctl2 */
--				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
-+				pcie_capability_read_word(root, PCI_EXP_LNKCTL2,
-+							  &tmp16);
- 				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
- 					   PCI_EXP_LNKCTL2_TX_MARGIN);
- 				tmp16 |= (bridge_cfg2 &
- 					  (PCI_EXP_LNKCTL2_ENTER_COMP |
- 					   PCI_EXP_LNKCTL2_TX_MARGIN));
--				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
-+				pcie_capability_write_word(root,
-+							   PCI_EXP_LNKCTL2,
-+							   tmp16);
- 
--				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
-+				pcie_capability_read_word(adev->pdev,
-+							  PCI_EXP_LNKCTL2,
-+							  &tmp16);
- 				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
- 					   PCI_EXP_LNKCTL2_TX_MARGIN);
- 				tmp16 |= (gpu_cfg2 &
- 					  (PCI_EXP_LNKCTL2_ENTER_COMP |
- 					   PCI_EXP_LNKCTL2_TX_MARGIN));
--				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
-+				pcie_capability_write_word(adev->pdev,
-+							   PCI_EXP_LNKCTL2,
-+							   tmp16);
- 
- 				tmp = RREG32_PCIE(ixPCIE_LC_CNTL4);
- 				tmp &= ~PCIE_LC_CNTL4__LC_SET_QUIESCE_MASK;
-@@ -1519,15 +1537,16 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
- 	speed_cntl &= ~PCIE_LC_SPEED_CNTL__LC_FORCE_DIS_SW_SPEED_CHANGE_MASK;
- 	WREG32_PCIE(ixPCIE_LC_SPEED_CNTL, speed_cntl);
- 
--	pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
-+	pcie_capability_read_word(adev->pdev, PCI_EXP_LNKCTL2, &tmp16);
- 	tmp16 &= ~PCI_EXP_LNKCTL2_TLS;
-+
- 	if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
- 		tmp16 |= PCI_EXP_LNKCTL2_TLS_8_0GT; /* gen3 */
- 	else if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN2)
- 		tmp16 |= PCI_EXP_LNKCTL2_TLS_5_0GT; /* gen2 */
- 	else
- 		tmp16 |= PCI_EXP_LNKCTL2_TLS_2_5GT; /* gen1 */
--	pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
-+	pcie_capability_write_word(adev->pdev, PCI_EXP_LNKCTL2, tmp16);
- 
- 	speed_cntl = RREG32_PCIE(ixPCIE_LC_SPEED_CNTL);
- 	speed_cntl |= PCIE_LC_SPEED_CNTL__LC_INITIATE_LINK_SPEED_CHANGE_MASK;
-diff --git a/drivers/gpu/drm/amd/amdgpu/si.c b/drivers/gpu/drm/amd/amdgpu/si.c
-index e5fe304a28156..c6516f82f29c8 100644
---- a/drivers/gpu/drm/amd/amdgpu/si.c
-+++ b/drivers/gpu/drm/amd/amdgpu/si.c
-@@ -1558,7 +1558,6 @@ static void si_init_golden_registers(struct amdgpu_device *adev)
- static void si_pcie_gen3_enable(struct amdgpu_device *adev)
- {
- 	struct pci_dev *root = adev->pdev->bus->self;
--	int bridge_pos, gpu_pos;
- 	u32 speed_cntl, current_data_rate;
- 	int i;
- 	u16 tmp16;
-@@ -1593,12 +1592,7 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
- 		DRM_INFO("enabling PCIE gen 2 link speeds, disable with amdgpu.pcie_gen2=0\n");
- 	}
- 
--	bridge_pos = pci_pcie_cap(root);
--	if (!bridge_pos)
--		return;
--
--	gpu_pos = pci_pcie_cap(adev->pdev);
--	if (!gpu_pos)
-+	if (!pci_is_pcie(root) || !pci_is_pcie(adev->pdev))
- 		return;
- 
- 	if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3) {
-@@ -1607,14 +1601,17 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
- 			u16 bridge_cfg2, gpu_cfg2;
- 			u32 max_lw, current_lw, tmp;
- 
--			pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL, &bridge_cfg);
--			pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, &gpu_cfg);
-+			pcie_capability_read_word(root, PCI_EXP_LNKCTL,
-+						  &bridge_cfg);
-+			pcie_capability_read_word(adev->pdev, PCI_EXP_LNKCTL,
-+						  &gpu_cfg);
- 
- 			tmp16 = bridge_cfg | PCI_EXP_LNKCTL_HAWD;
--			pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL, tmp16);
-+			pcie_capability_write_word(root, PCI_EXP_LNKCTL, tmp16);
- 
- 			tmp16 = gpu_cfg | PCI_EXP_LNKCTL_HAWD;
--			pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, tmp16);
-+			pcie_capability_write_word(adev->pdev, PCI_EXP_LNKCTL,
-+						   tmp16);
- 
- 			tmp = RREG32_PCIE(PCIE_LC_STATUS1);
- 			max_lw = (tmp & LC_DETECTED_LINK_WIDTH_MASK) >> LC_DETECTED_LINK_WIDTH_SHIFT;
-@@ -1631,15 +1628,23 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
- 			}
- 
- 			for (i = 0; i < 10; i++) {
--				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_DEVSTA, &tmp16);
-+				pcie_capability_read_word(adev->pdev,
-+							  PCI_EXP_DEVSTA,
-+							  &tmp16);
- 				if (tmp16 & PCI_EXP_DEVSTA_TRPND)
- 					break;
- 
--				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL, &bridge_cfg);
--				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, &gpu_cfg);
-+				pcie_capability_read_word(root, PCI_EXP_LNKCTL,
-+							  &bridge_cfg);
-+				pcie_capability_read_word(adev->pdev,
-+							  PCI_EXP_LNKCTL,
-+							  &gpu_cfg);
- 
--				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &bridge_cfg2);
--				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &gpu_cfg2);
-+				pcie_capability_read_word(root, PCI_EXP_LNKCTL2,
-+							  &bridge_cfg2);
-+				pcie_capability_read_word(adev->pdev,
-+							  PCI_EXP_LNKCTL2,
-+							  &gpu_cfg2);
- 
- 				tmp = RREG32_PCIE_PORT(PCIE_LC_CNTL4);
- 				tmp |= LC_SET_QUIESCE;
-@@ -1651,31 +1656,44 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
- 
- 				mdelay(100);
- 
--				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL, &tmp16);
-+				pcie_capability_read_word(root, PCI_EXP_LNKCTL,
-+							  &tmp16);
- 				tmp16 &= ~PCI_EXP_LNKCTL_HAWD;
- 				tmp16 |= (bridge_cfg & PCI_EXP_LNKCTL_HAWD);
--				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL, tmp16);
-+				pcie_capability_write_word(root, PCI_EXP_LNKCTL,
-+							   tmp16);
- 
--				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, &tmp16);
-+				pcie_capability_read_word(adev->pdev,
-+							  PCI_EXP_LNKCTL,
-+							  &tmp16);
- 				tmp16 &= ~PCI_EXP_LNKCTL_HAWD;
- 				tmp16 |= (gpu_cfg & PCI_EXP_LNKCTL_HAWD);
--				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, tmp16);
-+				pcie_capability_write_word(adev->pdev,
-+							   PCI_EXP_LNKCTL,
-+							   tmp16);
- 
--				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
-+				pcie_capability_read_word(root, PCI_EXP_LNKCTL2,
-+							  &tmp16);
- 				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
- 					   PCI_EXP_LNKCTL2_TX_MARGIN);
- 				tmp16 |= (bridge_cfg2 &
- 					  (PCI_EXP_LNKCTL2_ENTER_COMP |
- 					   PCI_EXP_LNKCTL2_TX_MARGIN));
--				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
-+				pcie_capability_write_word(root,
-+							   PCI_EXP_LNKCTL2,
-+							   tmp16);
- 
--				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
-+				pcie_capability_read_word(adev->pdev,
-+							  PCI_EXP_LNKCTL2,
-+							  &tmp16);
- 				tmp16 &= ~(PCI_EXP_LNKCTL2_ENTER_COMP |
- 					   PCI_EXP_LNKCTL2_TX_MARGIN);
- 				tmp16 |= (gpu_cfg2 &
- 					  (PCI_EXP_LNKCTL2_ENTER_COMP |
- 					   PCI_EXP_LNKCTL2_TX_MARGIN));
--				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
-+				pcie_capability_write_word(adev->pdev,
-+							   PCI_EXP_LNKCTL2,
-+							   tmp16);
- 
- 				tmp = RREG32_PCIE_PORT(PCIE_LC_CNTL4);
- 				tmp &= ~LC_SET_QUIESCE;
-@@ -1688,15 +1706,16 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
- 	speed_cntl &= ~LC_FORCE_DIS_SW_SPEED_CHANGE;
- 	WREG32_PCIE_PORT(PCIE_LC_SPEED_CNTL, speed_cntl);
- 
--	pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
-+	pcie_capability_read_word(adev->pdev, PCI_EXP_LNKCTL2, &tmp16);
- 	tmp16 &= ~PCI_EXP_LNKCTL2_TLS;
-+
- 	if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN3)
- 		tmp16 |= PCI_EXP_LNKCTL2_TLS_8_0GT; /* gen3 */
- 	else if (adev->pm.pcie_gen_mask & CAIL_PCIE_LINK_SPEED_SUPPORT_GEN2)
- 		tmp16 |= PCI_EXP_LNKCTL2_TLS_5_0GT; /* gen2 */
- 	else
- 		tmp16 |= PCI_EXP_LNKCTL2_TLS_2_5GT; /* gen1 */
--	pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
-+	pcie_capability_write_word(adev->pdev, PCI_EXP_LNKCTL2, tmp16);
- 
- 	speed_cntl = RREG32_PCIE_PORT(PCIE_LC_SPEED_CNTL);
- 	speed_cntl |= LC_INITIATE_LINK_SPEED_CHANGE;
+ 	ret = v4l2_async_register_subdev(&sensor->sd);
 -- 
 2.40.1
 
