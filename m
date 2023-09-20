@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 589587A7B9B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1AAD7A7C1E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234770AbjITLxv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:53:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41778 "EHLO
+        id S235028AbjITL6O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:58:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234792AbjITLxu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:50 -0400
+        with ESMTP id S235107AbjITL6M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:58:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E284ED
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B75C433C8;
-        Wed, 20 Sep 2023 11:53:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D282BB0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:58:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D755C433CB;
+        Wed, 20 Sep 2023 11:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210823;
-        bh=BzbVTHA+YUQpO8lAXZUkr1xXC3dGlrsfZLrOcKutGCY=;
+        s=korg; t=1695211084;
+        bh=motg3+a2ViGENVufdgYaLX/7RJleQkuPT+BAliHTxbk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C3LtxUTRP8Uh6NCWFYnCKl2bsd6oH1ALq83ABZui7GUO1JvWduroSKfRSQMglO+7I
-         apm0zipEI/00Ya+ZaOvaBpa6a5GtcuGUVhjOhTnXB+b8jtOgJnRwJuuFjgJh/Q0C3D
-         Uyq9Kg9Je+rv142lXNy3uST92GRyErFkcpagWhyY=
+        b=05rSNNhjQlLsaGgDBCpMxv9AdHSjCVrmqTQc7tP5xGxNjslL14C5yDcXlbctwM3zO
+         XkSvzan4ViIHcAQm/+KMza9eYROK68y2Qb2KZFUXvvyVvYHVy38aDWOewnQio1IKql
+         NG3klnmkruafzT8fTDi3zORtVVmMbpmtoQ7iHBu8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adam Williamson <awilliam@redhat.com>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.5 191/211] selinux: fix handling of empty opts in selinux_fs_context_submount()
-Date:   Wed, 20 Sep 2023 13:30:35 +0200
-Message-ID: <20230920112851.793889567@linuxfoundation.org>
+        patches@lists.linux.dev, David Disseldorp <ddiss@suse.de>,
+        Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 102/139] scsi: target: core: Fix target_cmd_counter leak
+Date:   Wed, 20 Sep 2023 13:30:36 +0200
+Message-ID: <20230920112839.372867890@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,62 +51,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: David Disseldorp <ddiss@suse.de>
 
-commit ccf1dab96be4caed7c5235b1cfdb606ac161b996 upstream.
+[ Upstream commit d14e3e553e05cb763964c991fe6acb0a6a1c6f9c ]
 
-selinux_set_mnt_opts() relies on the fact that the mount options pointer
-is always NULL when all options are unset (specifically in its
-!selinux_initialized() branch. However, the new
-selinux_fs_context_submount() hook breaks this rule by allocating a new
-structure even if no options are set. That causes any submount created
-before a SELinux policy is loaded to be rejected in
-selinux_set_mnt_opts().
+The target_cmd_counter struct allocated via target_alloc_cmd_counter() is
+never freed, resulting in leaks across various transport types, e.g.:
 
-Fix this by making selinux_fs_context_submount() leave fc->security
-set to NULL when there are no options to be copied from the reference
-superblock.
+ unreferenced object 0xffff88801f920120 (size 96):
+  comm "sh", pid 102, jiffies 4294892535 (age 713.412s)
+  hex dump (first 32 bytes):
+    07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 38 01 92 1f 80 88 ff ff  ........8.......
+  backtrace:
+    [<00000000e58a6252>] kmalloc_trace+0x11/0x20
+    [<0000000043af4b2f>] target_alloc_cmd_counter+0x17/0x90 [target_core_mod]
+    [<000000007da2dfa7>] target_setup_session+0x2d/0x140 [target_core_mod]
+    [<0000000068feef86>] tcm_loop_tpg_nexus_store+0x19b/0x350 [tcm_loop]
+    [<000000006a80e021>] configfs_write_iter+0xb1/0x120
+    [<00000000e9f4d860>] vfs_write+0x2e4/0x3c0
+    [<000000008143433b>] ksys_write+0x80/0xb0
+    [<00000000a7df29b2>] do_syscall_64+0x42/0x90
+    [<0000000053f45fb8>] entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-Cc: <stable@vger.kernel.org>
-Reported-by: Adam Williamson <awilliam@redhat.com>
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2236345
-Fixes: d80a8f1b58c2 ("vfs, security: Fix automount superblock LSM init problem, preventing NFS sb sharing")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Free the structure alongside the corresponding iscsit_conn / se_sess
+parent.
+
+Signed-off-by: David Disseldorp <ddiss@suse.de>
+Link: https://lore.kernel.org/r/20230831183459.6938-1-ddiss@suse.de
+Fixes: becd9be6069e ("scsi: target: Move sess cmd counter to new struct")
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/hooks.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/target/target_core_transport.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -2748,14 +2748,20 @@ static int selinux_umount(struct vfsmoun
- static int selinux_fs_context_submount(struct fs_context *fc,
- 				   struct super_block *reference)
- {
--	const struct superblock_security_struct *sbsec;
-+	const struct superblock_security_struct *sbsec = selinux_superblock(reference);
- 	struct selinux_mnt_opts *opts;
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 687adc9e086ca..0686882bcbda3 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -264,6 +264,7 @@ void target_free_cmd_counter(struct target_cmd_counter *cmd_cnt)
+ 		percpu_ref_put(&cmd_cnt->refcnt);
  
-+	/*
-+	 * Ensure that fc->security remains NULL when no options are set
-+	 * as expected by selinux_set_mnt_opts().
-+	 */
-+	if (!(sbsec->flags & (FSCONTEXT_MNT|CONTEXT_MNT|DEFCONTEXT_MNT)))
-+		return 0;
-+
- 	opts = kzalloc(sizeof(*opts), GFP_KERNEL);
- 	if (!opts)
- 		return -ENOMEM;
+ 	percpu_ref_exit(&cmd_cnt->refcnt);
++	kfree(cmd_cnt);
+ }
+ EXPORT_SYMBOL_GPL(target_free_cmd_counter);
  
--	sbsec = selinux_superblock(reference);
- 	if (sbsec->flags & FSCONTEXT_MNT)
- 		opts->fscontext_sid = sbsec->sid;
- 	if (sbsec->flags & CONTEXT_MNT)
+-- 
+2.40.1
+
 
 
