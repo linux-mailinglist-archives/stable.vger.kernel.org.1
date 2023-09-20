@@ -2,47 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B5537A7D0B
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 516DE7A7E5A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234462AbjITMGI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:06:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52158 "EHLO
+        id S235540AbjITMRe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:17:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234527AbjITMGF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:05 -0400
+        with ESMTP id S234802AbjITMRd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:17:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C26E5CA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:05:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C86AC433CD;
-        Wed, 20 Sep 2023 12:05:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65C59CCA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3584C433AD;
+        Wed, 20 Sep 2023 12:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211558;
-        bh=thjWDnGDPsHRACE9Cm5slLH9YnCerO8VhDyqaGGXF7Y=;
+        s=korg; t=1695212218;
+        bh=jvpHrKor9TLWx2ouDUZaIDrG6Bks4UQ/z3UUhDuCWNY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p5lMhDjWX/N3pDTBoZP/J77e/pDrcqdMUlQO84zMfO0QVsiaFYA5v6YxI4BC9dDE1
-         ikxs9OqKnb+akFsoLn8S3yg/QDCVheVZEMgoyTJwH9hlNSh2sBgYYxdEA1c/elfs2M
-         G3/aYSYf6fsEIuyUSEh6mjVbxIBDY1tAQUZ5zONo=
+        b=uFFlTucM0yGUe33NrGy0SdplTguXm6Mn7Z894nj/3T+HC0HZ+0AEvHTmSF4iioZcB
+         4ZwcabUU3s3t3sK2OM/7CKTrtUvDjuh1yGRR/2/YqW8Kf2032/uCrLZbZZNBo4GT2y
+         nlOIXWtupOt+KdF6Zks8PVzhMztaKUOUXt72KowE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        patches@lists.linux.dev, Daniel Mack <daniel@zonque.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 130/186] pwm: lpc32xx: Remove handling of PWM channels
+Subject: [PATCH 4.19 193/273] sc16is7xx: Set iobase to device index
 Date:   Wed, 20 Sep 2023 13:30:33 +0200
-Message-ID: <20230920112841.714346167@linuxfoundation.org>
+Message-ID: <20230920112852.469435811@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,87 +49,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Zapolskiy <vz@mleia.com>
+From: Daniel Mack <daniel@zonque.org>
 
-[ Upstream commit 4aae44f65827f0213a7361cf9c32cfe06114473f ]
+[ Upstream commit 5da6b1c079e6804a81e63ab8337224cbd2148c91 ]
 
-Because LPC32xx PWM controllers have only a single output which is
-registered as the only PWM device/channel per controller, it is known in
-advance that pwm->hwpwm value is always 0. On basis of this fact
-simplify the code by removing operations with pwm->hwpwm, there is no
-controls which require channel number as input.
+Some derivates of sc16is7xx devices expose more than one tty device to
+userspace. If multiple such devices exist in a system, userspace
+currently has no clean way to infer which tty maps to which physical
+line.
 
-Even though I wasn't aware at the time when I forward ported that patch,
-this fixes a null pointer dereference as lpc32xx->chip.pwms is NULL
-before devm_pwmchip_add() is called.
+Set the .iobase value to the relative index within the device to allow
+infering the order through sysfs.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Vladimir Zapolskiy <vz@mleia.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Fixes: 3d2813fb17e5 ("pwm: lpc32xx: Don't modify HW state in .probe() after the PWM chip was registered")
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Signed-off-by: Daniel Mack <daniel@zonque.org>
+Link: https://lore.kernel.org/r/20200901120329.4176302-1-daniel@zonque.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2861ed4d6e6d ("serial: sc16is7xx: fix broken port 0 uart init")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-lpc32xx.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pwm/pwm-lpc32xx.c b/drivers/pwm/pwm-lpc32xx.c
-index ed8e9406b4af2..b5f8b86b328af 100644
---- a/drivers/pwm/pwm-lpc32xx.c
-+++ b/drivers/pwm/pwm-lpc32xx.c
-@@ -55,10 +55,10 @@ static int lpc32xx_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	if (duty_cycles > 255)
- 		duty_cycles = 255;
- 
--	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val &= ~0xFFFF;
- 	val |= (period_cycles << 8) | duty_cycles;
--	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
-+	writel(val, lpc32xx->base);
- 
- 	return 0;
- }
-@@ -73,9 +73,9 @@ static int lpc32xx_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
- 	if (ret)
- 		return ret;
- 
--	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val |= PWM_ENABLE;
--	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
-+	writel(val, lpc32xx->base);
- 
- 	return 0;
- }
-@@ -85,9 +85,9 @@ static void lpc32xx_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
- 	struct lpc32xx_pwm_chip *lpc32xx = to_lpc32xx_pwm_chip(chip);
- 	u32 val;
- 
--	val = readl(lpc32xx->base + (pwm->hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val &= ~PWM_ENABLE;
--	writel(val, lpc32xx->base + (pwm->hwpwm << 2));
-+	writel(val, lpc32xx->base);
- 
- 	clk_disable_unprepare(lpc32xx->clk);
- }
-@@ -125,9 +125,9 @@ static int lpc32xx_pwm_probe(struct platform_device *pdev)
- 	lpc32xx->chip.base = -1;
- 
- 	/* If PWM is disabled, configure the output to the default value */
--	val = readl(lpc32xx->base + (lpc32xx->chip.pwms[0].hwpwm << 2));
-+	val = readl(lpc32xx->base);
- 	val &= ~PWM_PIN_LEVEL;
--	writel(val, lpc32xx->base + (lpc32xx->chip.pwms[0].hwpwm << 2));
-+	writel(val, lpc32xx->base);
- 
- 	ret = pwmchip_add(&lpc32xx->chip);
- 	if (ret < 0) {
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 453cdcc9f3223..1ff48f827b2c3 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1264,6 +1264,7 @@ static int sc16is7xx_probe(struct device *dev,
+ 		s->p[i].port.type	= PORT_SC16IS7XX;
+ 		s->p[i].port.fifosize	= SC16IS7XX_FIFO_SIZE;
+ 		s->p[i].port.flags	= UPF_FIXED_TYPE | UPF_LOW_LATENCY;
++		s->p[i].port.iobase	= i;
+ 		s->p[i].port.iotype	= UPIO_PORT;
+ 		s->p[i].port.uartclk	= freq;
+ 		s->p[i].port.rs485_config = sc16is7xx_config_rs485;
 -- 
 2.40.1
 
