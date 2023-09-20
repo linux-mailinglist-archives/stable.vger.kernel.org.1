@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C454F7A7AFB
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DCBE7A7C63
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234607AbjITLsG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:48:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44178 "EHLO
+        id S235184AbjITMAs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:00:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234612AbjITLsG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:48:06 -0400
+        with ESMTP id S235175AbjITMAk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:00:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9793B0
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:48:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15065C433C8;
-        Wed, 20 Sep 2023 11:47:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A80AB4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:00:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED8BC433C8;
+        Wed, 20 Sep 2023 12:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210480;
-        bh=TcXZ6ltSBC3PUSffvinI0SVuHYHyirBBGxkyxME+fGY=;
+        s=korg; t=1695211233;
+        bh=jgqcN7WjEtVe8bIg/U1dZIPuNwpLU28bBIqVNRPX58o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YtebxirZHifVAbqd5DJAtUydweZYJgqYRiQfU1IsctbfR31qoz6CyqSmD4QiL449/
-         c/i5/QsD4pnK2hjnPsxRgPCAvFJJYLjihSsB6ikpmJbSooOHdVuk0s5XNrNQAMaqk/
-         PaXzLQL1on+lpCNYrSErTW+YtGPbFbUAIL1Tp8IM=
+        b=bk3v83xxPVzpmnGzaiql5x/OqjbKS/2d/dj9HfodgpMIL1Tke+1B14PdvMxAtHM/W
+         Ek7fHc7QnZQDpAoAyYEPcbzVawH9Q0QkRv6HMioNBr9YlDEvQhSPXOWSeI2Vt50UzI
+         S9deYyy7Ri/gKobtG0ZDWzuebN5lvXsg9z1InBMU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ralph Campbell <rcampbell@nvidia.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 065/211] drm/edid: Add quirk for OSVR HDK 2.0
+        patches@lists.linux.dev, Slark Xiao <slark_xiao@163.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.14 006/186] USB: serial: option: add FOXCONN T99W368/T99W373 product
 Date:   Wed, 20 Sep 2023 13:28:29 +0200
-Message-ID: <20230920112847.790092654@linuxfoundation.org>
+Message-ID: <20230920112837.067234035@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +49,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralph Campbell <rcampbell@nvidia.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-[ Upstream commit 98d4cb705bc00afd4a9a71cc1e84f7111682639a ]
+commit 4d9488b294e1f8353bbcadc4c7172a7f7490199b upstream.
 
-The OSVR virtual reality headset HDK 2.0 uses a different EDID
-vendor and device identifier than the HDK 1.1 - 1.4 headsets.
-Add the HDK 2.0 vendor and device identifier to the quirks table so
-that window managers do not try to display the desktop screen on the
-headset display.
+The difference of T99W368 and T99W373 is the chip solution.
+T99W368 is designed based on Qualcomm SDX65 and T99W373 is SDX62.
 
-Closes: https://gitlab.freedesktop.org/drm/misc/-/issues/30
-Signed-off-by: Ralph Campbell <rcampbell@nvidia.com>
-Tested-by: Ralph Campbell <rcampbell@nvidia.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230621061903.3422648-1-rcampbell@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Test evidence as below:
+T:  Bus=01 Lev=02 Prnt=05 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e0f0 Rev=05.04
+S:  Manufacturer=FII
+S:  Product=OLYMPIC USB WWAN Adapter
+S:  SerialNumber=78ada8c4
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+I:  If#=0x4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+
+T:  Bus=01 Lev=02 Prnt=05 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e0ee Rev=05.04
+S:  Manufacturer=FII
+S:  Product=OLYMPIC USB WWAN Adapter
+S:  SerialNumber=78ada8d5
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+I:  If#=0x4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+
+Both of them share the same port configuration:
+0&1: MBIM, 2: Modem, 3:GNSS, 4:NMEA, 5:Diag
+GNSS port don't use serial driver.
+
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_edid.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 1f470968ed14b..9271e47d66572 100644
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -230,6 +230,7 @@ static const struct edid_quirk {
- 
- 	/* OSVR HDK and HDK2 VR Headsets */
- 	EDID_QUIRK('S', 'V', 'R', 0x1019, EDID_QUIRK_NON_DESKTOP),
-+	EDID_QUIRK('A', 'U', 'O', 0x1111, EDID_QUIRK_NON_DESKTOP),
- };
- 
- /*
--- 
-2.40.1
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2237,6 +2237,10 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0db, 0xff),			/* Foxconn T99W265 MBIM */
+ 	  .driver_info = RSVD(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0ee, 0xff),			/* Foxconn T99W368 MBIM */
++	  .driver_info = RSVD(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
++	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
+ 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
 
 
