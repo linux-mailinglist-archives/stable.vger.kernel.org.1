@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E01BC7A7CC7
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6D497A7E1A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235117AbjITMEF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:04:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39206 "EHLO
+        id S235457AbjITMPf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235114AbjITMEE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:04 -0400
+        with ESMTP id S235875AbjITMPX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:15:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5838ECA
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:03:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C771C433C7;
-        Wed, 20 Sep 2023 12:03:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9DC093
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA18C433C7;
+        Wed, 20 Sep 2023 12:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211437;
-        bh=j+x4Sm6O97bGUQAXVHdiKQvdOBRYcC5fITlQ1uop+tY=;
+        s=korg; t=1695212117;
+        bh=a8PrbD/8g6magA2g4j87+r5VsOI/AxDNrxZyn8TQy9g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aB1aSvuvgYLeo6virwITUcAMyLmKaQK1LxIljJ2HtkUQ8hCE59MGPACPRafu0WaPI
-         +jyGgq6EX2cGvMRqJo/+QgPd0yGa7z21WYbBRcswl9lnnE7TkH8/P8T1RRrnfZ+Oy+
-         m3rZ0YnEnnCNOYBPrw1Uyovtk43uUeFUbNy8+b/8=
+        b=clptlTnx/dCwey3Z920WETD4kUAVR2aKKiMwQi29CbOuxfrSw416I5clE2hLhP2Nt
+         fflKFWQWp7/9ckFAX1aHfzs28yxNdGhCjQ/K5ovrzv2GruYMPQR5T9uL4Q0zKHhCgF
+         9f5BjuNw+7Hb+6jmhQgUVNeqkD5DdZzw6PHwQSNY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 092/186] amba: bus: fix refcount leak
-Date:   Wed, 20 Sep 2023 13:29:55 +0200
-Message-ID: <20230920112840.251540450@linuxfoundation.org>
+Subject: [PATCH 4.19 156/273] scsi: fcoe: Fix potential deadlock on &fip->ctlr_lock
+Date:   Wed, 20 Sep 2023 13:29:56 +0200
+Message-ID: <20230920112851.352484070@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
-References: <20230920112836.799946261@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +51,158 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit e312cbdc11305568554a9e18a2ea5c2492c183f3 ]
+[ Upstream commit 1a1975551943f681772720f639ff42fbaa746212 ]
 
-commit 5de1540b7bc4 ("drivers/amba: create devices from device tree")
-increases the refcount of of_node, but not releases it in
-amba_device_release, so there is refcount leak. By using of_node_put
-to avoid refcount leak.
+There is a long call chain that &fip->ctlr_lock is acquired by isr
+fnic_isr_msix_wq_copy() under hard IRQ context. Thus other process context
+code acquiring the lock should disable IRQ, otherwise deadlock could happen
+if the IRQ preempts the execution while the lock is held in process context
+on the same CPU.
 
-Fixes: 5de1540b7bc4 ("drivers/amba: create devices from device tree")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230821023928.3324283-1-peng.fan@oss.nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ISR]
+fnic_isr_msix_wq_copy()
+ -> fnic_wq_copy_cmpl_handler()
+ -> fnic_fcpio_cmpl_handler()
+ -> fnic_fcpio_flogi_reg_cmpl_handler()
+ -> fnic_flush_tx()
+ -> fnic_send_frame()
+ -> fcoe_ctlr_els_send()
+ -> spin_lock_bh(&fip->ctlr_lock)
+
+[Process Context]
+1. fcoe_ctlr_timer_work()
+ -> fcoe_ctlr_flogi_send()
+ -> spin_lock_bh(&fip->ctlr_lock)
+
+2. fcoe_ctlr_recv_work()
+ -> fcoe_ctlr_recv_handler()
+ -> fcoe_ctlr_recv_els()
+ -> fcoe_ctlr_announce()
+ -> spin_lock_bh(&fip->ctlr_lock)
+
+3. fcoe_ctlr_recv_work()
+ -> fcoe_ctlr_recv_handler()
+ -> fcoe_ctlr_recv_els()
+ -> fcoe_ctlr_flogi_retry()
+ -> spin_lock_bh(&fip->ctlr_lock)
+
+4. -> fcoe_xmit()
+ -> fcoe_ctlr_els_send()
+ -> spin_lock_bh(&fip->ctlr_lock)
+
+spin_lock_bh() is not enough since fnic_isr_msix_wq_copy() is a
+hardirq.
+
+These flaws were found by an experimental static analysis tool I am
+developing for irq-related deadlock.
+
+The patch fix the potential deadlocks by spin_lock_irqsave() to disable
+hard irq.
+
+Fixes: 794d98e77f59 ("[SCSI] libfcoe: retry rejected FLOGI to another FCF if possible")
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230817074708.7509-1-dg573847474@gmail.com
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/amba/bus.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/fcoe/fcoe_ctlr.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
-index 8ea401fc89968..e07d6a4d3f03a 100644
---- a/drivers/amba/bus.c
-+++ b/drivers/amba/bus.c
-@@ -344,6 +344,7 @@ static void amba_device_release(struct device *dev)
+diff --git a/drivers/scsi/fcoe/fcoe_ctlr.c b/drivers/scsi/fcoe/fcoe_ctlr.c
+index 1e087a206f48e..c49986eba47b6 100644
+--- a/drivers/scsi/fcoe/fcoe_ctlr.c
++++ b/drivers/scsi/fcoe/fcoe_ctlr.c
+@@ -330,16 +330,17 @@ static void fcoe_ctlr_announce(struct fcoe_ctlr *fip)
  {
- 	struct amba_device *d = to_amba_device(dev);
+ 	struct fcoe_fcf *sel;
+ 	struct fcoe_fcf *fcf;
++	unsigned long flags;
  
-+	of_node_put(d->dev.of_node);
- 	if (d->res.parent)
- 		release_resource(&d->res);
- 	kfree(d);
+ 	mutex_lock(&fip->ctlr_mutex);
+-	spin_lock_bh(&fip->ctlr_lock);
++	spin_lock_irqsave(&fip->ctlr_lock, flags);
+ 
+ 	kfree_skb(fip->flogi_req);
+ 	fip->flogi_req = NULL;
+ 	list_for_each_entry(fcf, &fip->fcfs, list)
+ 		fcf->flogi_sent = 0;
+ 
+-	spin_unlock_bh(&fip->ctlr_lock);
++	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
+ 	sel = fip->sel_fcf;
+ 
+ 	if (sel && ether_addr_equal(sel->fcf_mac, fip->dest_addr))
+@@ -709,6 +710,7 @@ int fcoe_ctlr_els_send(struct fcoe_ctlr *fip, struct fc_lport *lport,
+ {
+ 	struct fc_frame *fp;
+ 	struct fc_frame_header *fh;
++	unsigned long flags;
+ 	u16 old_xid;
+ 	u8 op;
+ 	u8 mac[ETH_ALEN];
+@@ -742,11 +744,11 @@ int fcoe_ctlr_els_send(struct fcoe_ctlr *fip, struct fc_lport *lport,
+ 		op = FIP_DT_FLOGI;
+ 		if (fip->mode == FIP_MODE_VN2VN)
+ 			break;
+-		spin_lock_bh(&fip->ctlr_lock);
++		spin_lock_irqsave(&fip->ctlr_lock, flags);
+ 		kfree_skb(fip->flogi_req);
+ 		fip->flogi_req = skb;
+ 		fip->flogi_req_send = 1;
+-		spin_unlock_bh(&fip->ctlr_lock);
++		spin_unlock_irqrestore(&fip->ctlr_lock, flags);
+ 		schedule_work(&fip->timer_work);
+ 		return -EINPROGRESS;
+ 	case ELS_FDISC:
+@@ -1723,10 +1725,11 @@ static int fcoe_ctlr_flogi_send_locked(struct fcoe_ctlr *fip)
+ static int fcoe_ctlr_flogi_retry(struct fcoe_ctlr *fip)
+ {
+ 	struct fcoe_fcf *fcf;
++	unsigned long flags;
+ 	int error;
+ 
+ 	mutex_lock(&fip->ctlr_mutex);
+-	spin_lock_bh(&fip->ctlr_lock);
++	spin_lock_irqsave(&fip->ctlr_lock, flags);
+ 	LIBFCOE_FIP_DBG(fip, "re-sending FLOGI - reselect\n");
+ 	fcf = fcoe_ctlr_select(fip);
+ 	if (!fcf || fcf->flogi_sent) {
+@@ -1737,7 +1740,7 @@ static int fcoe_ctlr_flogi_retry(struct fcoe_ctlr *fip)
+ 		fcoe_ctlr_solicit(fip, NULL);
+ 		error = fcoe_ctlr_flogi_send_locked(fip);
+ 	}
+-	spin_unlock_bh(&fip->ctlr_lock);
++	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
+ 	mutex_unlock(&fip->ctlr_mutex);
+ 	return error;
+ }
+@@ -1754,8 +1757,9 @@ static int fcoe_ctlr_flogi_retry(struct fcoe_ctlr *fip)
+ static void fcoe_ctlr_flogi_send(struct fcoe_ctlr *fip)
+ {
+ 	struct fcoe_fcf *fcf;
++	unsigned long flags;
+ 
+-	spin_lock_bh(&fip->ctlr_lock);
++	spin_lock_irqsave(&fip->ctlr_lock, flags);
+ 	fcf = fip->sel_fcf;
+ 	if (!fcf || !fip->flogi_req_send)
+ 		goto unlock;
+@@ -1782,7 +1786,7 @@ static void fcoe_ctlr_flogi_send(struct fcoe_ctlr *fip)
+ 	} else /* XXX */
+ 		LIBFCOE_FIP_DBG(fip, "No FCF selected - defer send\n");
+ unlock:
+-	spin_unlock_bh(&fip->ctlr_lock);
++	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
+ }
+ 
+ /**
 -- 
 2.40.1
 
