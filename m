@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA8A37A7E00
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB7027A7CDD
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235454AbjITMOW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:14:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52430 "EHLO
+        id S235148AbjITMFY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235422AbjITMOV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:14:21 -0400
+        with ESMTP id S235174AbjITMEn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45CBC83
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:14:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926D2C433C7;
-        Wed, 20 Sep 2023 12:14:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66E91A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FCBC433C8;
+        Wed, 20 Sep 2023 12:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212055;
-        bh=F0C9BwRFxyDpeNAEWiLrfXvRpw9hHtHz0eNkW5QRCvY=;
+        s=korg; t=1695211477;
+        bh=XlR4UHI2YLPkdGoOXpcL2px84L4+PJ5bStd/UayL0j0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c4tQ06JmtUEozn0+meiUSFsSD5N5ElDlikwEJkAilVOuOOmSJmIFMo+dWnGf8RFKE
-         mOs9FAK6rZMJT/PTOCggYB2h93XXHyzjPW2jmkN9/28dXIiU5mbFxIXoppygFUtliy
-         Om2vRvR89W+lESULT+Gmre557me+YpROURPbjklU=
+        b=S68hD56FmwBsR4xIFFl/prOls9YrBppzBzPlHtStMDrquwMoKiEBNrARrSM7g5AC6
+         lWBRfpZbDa6I+3Ffc/X7w93i0oNRKkN0QHxIm2IUPbnKIq5SODoFh8AvkRkMfQovL9
+         gXPB19RA4mMcy//UdOMScxF6TClUmOuLZGdTRKB4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Tom Haynes <loghyr@gmail.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 135/273] media: dvb-usb: m920x: Fix a potential memory leak in m920x_i2c_xfer()
+Subject: [PATCH 4.14 072/186] NFSD: da_addr_body field missing in some GETDEVICEINFO replies
 Date:   Wed, 20 Sep 2023 13:29:35 +0200
-Message-ID: <20230920112850.691731169@linuxfoundation.org>
+Message-ID: <20230920112839.470145600@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +51,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit ea9ef6c2e001c5dc94bee35ebd1c8a98621cf7b8 ]
+[ Upstream commit 6372e2ee629894433fe6107d7048536a3280a284 ]
 
-'read' is freed when it is known to be NULL, but not when a read error
-occurs.
+The XDR specification in RFC 8881 looks like this:
 
-Revert the logic to avoid a small leak, should a m920x_read() call fail.
+struct device_addr4 {
+	layouttype4	da_layout_type;
+	opaque		da_addr_body<>;
+};
 
-Fixes: a2ab06d7c4d6 ("media: m920x: don't use stack on USB reads")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+struct GETDEVICEINFO4resok {
+	device_addr4	gdir_device_addr;
+	bitmap4		gdir_notification;
+};
+
+union GETDEVICEINFO4res switch (nfsstat4 gdir_status) {
+case NFS4_OK:
+	GETDEVICEINFO4resok gdir_resok4;
+case NFS4ERR_TOOSMALL:
+	count4		gdir_mincount;
+default:
+	void;
+};
+
+Looking at nfsd4_encode_getdeviceinfo() ....
+
+When the client provides a zero gd_maxcount, then the Linux NFS
+server implementation encodes the da_layout_type field and then
+skips the da_addr_body field completely, proceeding directly to
+encode gdir_notification field.
+
+There does not appear to be an option in the specification to skip
+encoding da_addr_body. Moreover, Section 18.40.3 says:
+
+> If the client wants to just update or turn off notifications, it
+> MAY send a GETDEVICEINFO operation with gdia_maxcount set to zero.
+> In that event, if the device ID is valid, the reply's da_addr_body
+> field of the gdir_device_addr field will be of zero length.
+
+Since the layout drivers are responsible for encoding the
+da_addr_body field, put this fix inside the ->encode_getdeviceinfo
+methods.
+
+Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Tom Haynes <loghyr@gmail.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/m920x.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/nfsd/blocklayoutxdr.c    |  9 +++++++++
+ fs/nfsd/flexfilelayoutxdr.c |  9 +++++++++
+ fs/nfsd/nfs4xdr.c           | 25 +++++++++++--------------
+ 3 files changed, 29 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/media/usb/dvb-usb/m920x.c b/drivers/media/usb/dvb-usb/m920x.c
-index 3b2a0f36fc38e..e5491b9b8825c 100644
---- a/drivers/media/usb/dvb-usb/m920x.c
-+++ b/drivers/media/usb/dvb-usb/m920x.c
-@@ -280,7 +280,6 @@ static int m920x_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int nu
- 			char *read = kmalloc(1, GFP_KERNEL);
- 			if (!read) {
- 				ret = -ENOMEM;
--				kfree(read);
- 				goto unlock;
- 			}
+diff --git a/fs/nfsd/blocklayoutxdr.c b/fs/nfsd/blocklayoutxdr.c
+index 442543304930b..2455dc8be18a8 100644
+--- a/fs/nfsd/blocklayoutxdr.c
++++ b/fs/nfsd/blocklayoutxdr.c
+@@ -82,6 +82,15 @@ nfsd4_block_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	int len = sizeof(__be32), ret, i;
+ 	__be32 *p;
  
-@@ -291,8 +290,10 @@ static int m920x_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int nu
++	/*
++	 * See paragraph 5 of RFC 8881 S18.40.3.
++	 */
++	if (!gdp->gd_maxcount) {
++		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
++			return nfserr_resource;
++		return nfs_ok;
++	}
++
+ 	p = xdr_reserve_space(xdr, len + sizeof(__be32));
+ 	if (!p)
+ 		return nfserr_resource;
+diff --git a/fs/nfsd/flexfilelayoutxdr.c b/fs/nfsd/flexfilelayoutxdr.c
+index e81d2a5cf381e..bb205328e043d 100644
+--- a/fs/nfsd/flexfilelayoutxdr.c
++++ b/fs/nfsd/flexfilelayoutxdr.c
+@@ -85,6 +85,15 @@ nfsd4_ff_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	int addr_len;
+ 	__be32 *p;
  
- 				if ((ret = m920x_read(d->udev, M9206_I2C, 0x0,
- 						      0x20 | stop,
--						      read, 1)) != 0)
-+						      read, 1)) != 0) {
-+					kfree(read);
- 					goto unlock;
-+				}
- 				msg[i].buf[j] = read[0];
- 			}
++	/*
++	 * See paragraph 5 of RFC 8881 S18.40.3.
++	 */
++	if (!gdp->gd_maxcount) {
++		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
++			return nfserr_resource;
++		return nfs_ok;
++	}
++
+ 	/* len + padding for two strings */
+ 	addr_len = 16 + da->netaddr.netid_len + da->netaddr.addr_len;
+ 	ver_len = 20;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index d34ed6575e8fb..997d3134beb32 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -4091,20 +4091,17 @@ nfsd4_encode_getdeviceinfo(struct nfsd4_compoundres *resp, __be32 nfserr,
  
+ 	*p++ = cpu_to_be32(gdev->gd_layout_type);
+ 
+-	/* If maxcount is 0 then just update notifications */
+-	if (gdev->gd_maxcount != 0) {
+-		ops = nfsd4_layout_ops[gdev->gd_layout_type];
+-		nfserr = ops->encode_getdeviceinfo(xdr, gdev);
+-		if (nfserr) {
+-			/*
+-			 * We don't bother to burden the layout drivers with
+-			 * enforcing gd_maxcount, just tell the client to
+-			 * come back with a bigger buffer if it's not enough.
+-			 */
+-			if (xdr->buf->len + 4 > gdev->gd_maxcount)
+-				goto toosmall;
+-			return nfserr;
+-		}
++	ops = nfsd4_layout_ops[gdev->gd_layout_type];
++	nfserr = ops->encode_getdeviceinfo(xdr, gdev);
++	if (nfserr) {
++		/*
++		 * We don't bother to burden the layout drivers with
++		 * enforcing gd_maxcount, just tell the client to
++		 * come back with a bigger buffer if it's not enough.
++		 */
++		if (xdr->buf->len + 4 > gdev->gd_maxcount)
++			goto toosmall;
++		return nfserr;
+ 	}
+ 
+ 	if (gdev->gd_notify_types) {
 -- 
 2.40.1
 
