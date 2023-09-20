@@ -2,41 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 379D27A80CD
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 451817A7E9A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236112AbjITMkh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:40:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48102 "EHLO
+        id S235516AbjITMTM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:19:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236449AbjITMkV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:40:21 -0400
+        with ESMTP id S235606AbjITMTL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87FC183
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:40:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E08C433C7;
-        Wed, 20 Sep 2023 12:40:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A11A4CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C754DC433C7;
+        Wed, 20 Sep 2023 12:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213614;
-        bh=cSDQh2IcUYwuqJQwe4RG3OgiNmEFEum9RR+ij1dlNU4=;
+        s=korg; t=1695212345;
+        bh=gh8lIb8VLZukvGlPIezxxObjeu/jrqy0O9Gqj1EVbpM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aATUP2dMiTkAHY97BMLorpqVX9kf2kHaETcKJnZMKjZzRYE4dwMsfCO9oUgzNoxn6
-         ybRhOToYdCGLeyllj1dxp4q/PKjJzQoLvGgaSmZemmLDp0XnL5zRA5kuuf3HfVimt+
-         K3u1t/tujFbY9oCpFhyBnuQoOyZ5NyneLmDOylps=
+        b=vTD/eRXz/42Ko66iUxATN/pDKx4FYIf81PdSsxYfqrO3DdfzxRXnx3+3ecbLTVWYr
+         eIm/VunzaKEYOkReqJpZvnsDUk76OFHY2elXzYcj5GfOISodHDJ0bkxhG0CAQuoak8
+         LYIjnAOyjWSRUNRi9UdePlUpH+GzuqND7GtaCwgI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 265/367] af_unix: Fix data-race around unix_tot_inflight.
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
+Subject: [PATCH 4.19 202/273] parisc: led: Reduce CPU overhead for disk & lan LED computation
 Date:   Wed, 20 Sep 2023 13:30:42 +0200
-Message-ID: <20230920112905.425415126@linuxfoundation.org>
+Message-ID: <20230920112852.735467937@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,88 +48,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit ade32bd8a738d7497ffe9743c46728db26740f78 ]
+commit 358ad816e52d4253b38c2f312e6b1cbd89e0dbf7 upstream.
 
-unix_tot_inflight is changed under spin_lock(unix_gc_lock), but
-unix_release_sock() reads it locklessly.
+Older PA-RISC machines have LEDs which show the disk- and LAN-activity.
+The computation is done in software and takes quite some time, e.g. on a
+J6500 this may take up to 60% time of one CPU if the machine is loaded
+via network traffic.
 
-Let's use READ_ONCE() for unix_tot_inflight.
+Since most people don't care about the LEDs, start with LEDs disabled and
+just show a CPU heartbeat LED. The disk and LAN LEDs can be turned on
+manually via /proc/pdc/led.
 
-Note that the writer side was marked by commit 9d6d7f1cb67c ("af_unix:
-annote lockless accesses to unix_tot_inflight & gc_in_progress")
-
-BUG: KCSAN: data-race in unix_inflight / unix_release_sock
-
-write (marked) to 0xffffffff871852b8 of 4 bytes by task 123 on cpu 1:
- unix_inflight+0x130/0x180 net/unix/scm.c:64
- unix_attach_fds+0x137/0x1b0 net/unix/scm.c:123
- unix_scm_to_skb net/unix/af_unix.c:1832 [inline]
- unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1955
- sock_sendmsg_nosec net/socket.c:724 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:747
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2493
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2547
- __sys_sendmsg+0x94/0x140 net/socket.c:2576
- __do_sys_sendmsg net/socket.c:2585 [inline]
- __se_sys_sendmsg net/socket.c:2583 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2583
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-read to 0xffffffff871852b8 of 4 bytes by task 4891 on cpu 0:
- unix_release_sock+0x608/0x910 net/unix/af_unix.c:671
- unix_release+0x59/0x80 net/unix/af_unix.c:1058
- __sock_release+0x7d/0x170 net/socket.c:653
- sock_close+0x19/0x30 net/socket.c:1385
- __fput+0x179/0x5e0 fs/file_table.c:321
- ____fput+0x15/0x20 fs/file_table.c:349
- task_work_run+0x116/0x1a0 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x174/0x180 kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
- syscall_exit_to_user_mode+0x1a/0x30 kernel/entry/common.c:297
- do_syscall_64+0x4b/0x90 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-value changed: 0x00000000 -> 0x00000001
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 4891 Comm: systemd-coredum Not tainted 6.4.0-rc5-01219-gfa0e21fa4443 #5
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 9305cfa4443d ("[AF_UNIX]: Make unix_tot_inflight counter non-atomic")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/parisc/led.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index baf0af49c5bd4..304eb26b34dca 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -589,7 +589,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 	 *	  What the above comment does talk about? --ANK(980817)
- 	 */
- 
--	if (unix_tot_inflight)
-+	if (READ_ONCE(unix_tot_inflight))
- 		unix_gc();		/* Garbage collect fds */
- }
- 
--- 
-2.40.1
-
+--- a/drivers/parisc/led.c
++++ b/drivers/parisc/led.c
+@@ -60,8 +60,8 @@
+ static int led_type __read_mostly = -1;
+ static unsigned char lastleds;	/* LED state from most recent update */
+ static unsigned int led_heartbeat __read_mostly = 1;
+-static unsigned int led_diskio    __read_mostly = 1;
+-static unsigned int led_lanrxtx   __read_mostly = 1;
++static unsigned int led_diskio    __read_mostly;
++static unsigned int led_lanrxtx   __read_mostly;
+ static char lcd_text[32]          __read_mostly;
+ static char lcd_text_default[32]  __read_mostly;
+ static int  lcd_no_led_support    __read_mostly = 0; /* KittyHawk doesn't support LED on its LCD */
 
 
