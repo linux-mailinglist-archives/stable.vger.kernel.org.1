@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F34357A7BA9
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CE217A7B2E
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:49:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234806AbjITLyR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:54:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34910 "EHLO
+        id S234682AbjITLtx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:49:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234801AbjITLyQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:16 -0400
+        with ESMTP id S234688AbjITLtw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:49:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5185BDD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D2E3C433C9;
-        Wed, 20 Sep 2023 11:54:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0437A3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:49:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF30C433C9;
+        Wed, 20 Sep 2023 11:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210849;
-        bh=Crd/yO4pvY57kYT6TCwojIGXsUtmVlvGg6Yq/1aY7EQ=;
+        s=korg; t=1695210586;
+        bh=UCfiDVFnq+EOE6oavxehpPNGRQFcmBrB1JCz2JF/pK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HCYhY3MvyfBh64hAQ8VIU65kUUqQSuk3fm7Oc0E6iKt4GNnyOhmdflRtXeqmlgr5N
-         VPNaFXNjv/Iy1GT8eFAoKCtr16Haz3vdVEvXAXa3r3t9F/jFnwUUZ0A/zeZceyt12o
-         RdUZ8mp+M7x8LgpnOz1V9rnC1QJtveoIKWEYqLTk=
+        b=RU3Jsn76K9ctyGVc3fLh+R09J67HjIfZVXXj0DPcuy12D2M1JSTcSBJlH4VVHQmYA
+         W2w39DL3E4zKisd602vTDnrDkj6N4jdUeEp9uMCJYpjkEhob1Hq9vL+2h7pmKvzmP0
+         f+6biTCwCvqzIb2j026dUEH0GD1xdtlxxshhbVJw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paul Menzel <pmenzel@molgen.mpg.de>,
-        Simon Horman <simon.horman@corigine.com>,
-        Wojciech Drewek <wojciech.drewek@intel.com>,
-        Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/139] ice: Dont tx before switchdev is fully configured
+Subject: [PATCH 6.5 106/211] media: dw2102: Fix null-ptr-deref in dw2102_i2c_transfer()
 Date:   Wed, 20 Sep 2023 13:29:10 +0200
-Message-ID: <20230920112836.211127534@linuxfoundation.org>
+Message-ID: <20230920112849.082455150@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,43 +50,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojciech Drewek <wojciech.drewek@intel.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 7aa529a69e92b9aff585e569d5003f7c15d8d60b ]
+[ Upstream commit 5ae544d94abc8ff77b1b9bf8774def3fa5689b5b ]
 
-There is possibility that ice_eswitch_port_start_xmit might be
-called while some resources are still not allocated which might
-cause NULL pointer dereference. Fix this by checking if switchdev
-configuration was finished.
+In dw2102_i2c_transfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach dw2102_i2c_transfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Similar commit:
+commit 950e252cb469
+("[media] dw2102: limit messages to buffer size")
+
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_eswitch.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/usb/dvb-usb/dw2102.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-index 2ffe5708a045b..7de4a8a4b563c 100644
---- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
-@@ -361,6 +361,9 @@ ice_eswitch_port_start_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	np = netdev_priv(netdev);
- 	vsi = np->vsi;
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index 970b84c3f0b5a..b3bb1805829ad 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -128,6 +128,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
  
-+	if (!vsi || !ice_is_switchdev_running(vsi->back))
-+		return NETDEV_TX_BUSY;
-+
- 	if (ice_is_reset_in_progress(vsi->back->state) ||
- 	    test_bit(ICE_VF_DIS, vsi->back->state))
- 		return NETDEV_TX_BUSY;
+ 	switch (num) {
+ 	case 2:
++		if (msg[0].len < 1) {
++			num = -EOPNOTSUPP;
++			break;
++		}
+ 		/* read stv0299 register */
+ 		value = msg[0].buf[0];/* register */
+ 		for (i = 0; i < msg[1].len; i++) {
+@@ -139,6 +143,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 	case 1:
+ 		switch (msg[0].addr) {
+ 		case 0x68:
++			if (msg[0].len < 2) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			/* write to stv0299 register */
+ 			buf6[0] = 0x2a;
+ 			buf6[1] = msg[0].buf[0];
+@@ -148,6 +156,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			break;
+ 		case 0x60:
+ 			if (msg[0].flags == 0) {
++				if (msg[0].len < 4) {
++					num = -EOPNOTSUPP;
++					break;
++				}
+ 			/* write to tuner pll */
+ 				buf6[0] = 0x2c;
+ 				buf6[1] = 5;
+@@ -159,6 +171,10 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 				dw210x_op_rw(d->udev, 0xb2, 0, 0,
+ 						buf6, 7, DW210X_WRITE_MSG);
+ 			} else {
++				if (msg[0].len < 1) {
++					num = -EOPNOTSUPP;
++					break;
++				}
+ 			/* read from tuner */
+ 				dw210x_op_rw(d->udev, 0xb5, 0, 0,
+ 						buf6, 1, DW210X_READ_MSG);
+@@ -166,12 +182,20 @@ static int dw2102_i2c_transfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			}
+ 			break;
+ 		case (DW2102_RC_QUERY):
++			if (msg[0].len < 2) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			dw210x_op_rw(d->udev, 0xb8, 0, 0,
+ 					buf6, 2, DW210X_READ_MSG);
+ 			msg[0].buf[0] = buf6[0];
+ 			msg[0].buf[1] = buf6[1];
+ 			break;
+ 		case (DW2102_VOLTAGE_CTRL):
++			if (msg[0].len < 1) {
++				num = -EOPNOTSUPP;
++				break;
++			}
+ 			buf6[0] = 0x30;
+ 			buf6[1] = msg[0].buf[0];
+ 			dw210x_op_rw(d->udev, 0xb2, 0, 0,
 -- 
 2.40.1
 
