@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABE3B7A7BAB
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD14F7A7CB1
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:03:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234796AbjITLyV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:54:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35026 "EHLO
+        id S235071AbjITMD1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:03:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234759AbjITLyV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:54:21 -0400
+        with ESMTP id S235104AbjITMDX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:03:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836E4AD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:54:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5433C433C8;
-        Wed, 20 Sep 2023 11:54:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4062F186
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:03:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094C0C433CA;
+        Wed, 20 Sep 2023 12:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210855;
-        bh=jxeLhlja9yqOSN5MA01JW2wo6Xj8h6XqPTm82D6Fel0=;
+        s=korg; t=1695211393;
+        bh=syT6aFtu9wWyQOOCMGDzr2r/jzxUbcvkwl2bkQfXy1M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R3A3ry00B4iTEHhBfmkbO37CuKr4YYaY4I+jGPRx7N+92WfVZi3NDrwr9hnNkJHnr
-         TlNQO6iEWDii8+sN8jXczUBkV0YWI7u5Y4Pelf6fz2n/4wnuOIJQfugLN0sHuNqMWi
-         H6djw/sjTlwsU6CK4m1UGZJqMTWrh9kp8ajYBD2A=
+        b=MoNKteIxNByAHEhmgUkHR1p/7oViwgdzL26wMzJ2k0h8/cFxvdJ/LIa6s+ONHh7R2
+         hYkRib1pm2z7X/nyCZCb8ai9DZXbXihrDMP1czJ4TKXnUhsVrCuWmSbh6KEJ//8NIR
+         hyLpHlcJU9OxHnK3VU4U8p8KUKUDtES+mVkMOEwQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dongliang Mu <dzm91@hust.edu.cn>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/139] wifi: ath9k: fix printk specifier
-Date:   Wed, 20 Sep 2023 13:29:12 +0200
-Message-ID: <20230920112836.277755116@linuxfoundation.org>
+        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 050/186] wifi: mwifiex: avoid possible NULL skb pointer dereference
+Date:   Wed, 20 Sep 2023 13:29:13 +0200
+Message-ID: <20230920112838.724936923@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,67 +50,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongliang Mu <dzm91@hust.edu.cn>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 061115fbfb2ce5870c9a004d68dc63138c07c782 ]
+[ Upstream commit 35a7a1ce7c7d61664ee54f5239a1f120ab95a87e ]
 
-Smatch reports:
+In 'mwifiex_handle_uap_rx_forward()', always check the value
+returned by 'skb_copy()' to avoid potential NULL pointer
+dereference in 'mwifiex_uap_queue_bridged_pkt()', and drop
+original skb in case of copying failure.
 
-ath_pci_probe() warn: argument 4 to %lx specifier is cast from pointer
-ath_ahb_probe() warn: argument 4 to %lx specifier is cast from pointer
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fix it by modifying %lx to %p in the printk format string.
-
-Note that with this change, the pointer address will be printed as a
-hashed value by default. This is appropriate because the kernel
-should not leak kernel pointers to user space in an informational
-message. If someone wants to see the real address for debugging
-purposes, this can be achieved with the no_hash_pointers kernel option.
-
-Signed-off-by: Dongliang Mu <dzm91@hust.edu.cn>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230723040403.296723-1-dzm91@hust.edu.cn
+Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230814095041.16416-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/ahb.c | 4 ++--
- drivers/net/wireless/ath/ath9k/pci.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
-index 9cd12b20b18d8..9bfaadfa6c009 100644
---- a/drivers/net/wireless/ath/ath9k/ahb.c
-+++ b/drivers/net/wireless/ath/ath9k/ahb.c
-@@ -132,8 +132,8 @@ static int ath_ahb_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index 90c07722c25f8..a887d7a9b7c03 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -266,7 +266,15 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
  
- 	ah = sc->sc_ah;
- 	ath9k_hw_name(ah, hw_name, sizeof(hw_name));
--	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
--		   hw_name, (unsigned long)mem, irq);
-+	wiphy_info(hw->wiphy, "%s mem=0x%p, irq=%d\n",
-+		   hw_name, mem, irq);
- 
- 	return 0;
- 
-diff --git a/drivers/net/wireless/ath/ath9k/pci.c b/drivers/net/wireless/ath/ath9k/pci.c
-index a074e23013c58..f0e3901e8182a 100644
---- a/drivers/net/wireless/ath/ath9k/pci.c
-+++ b/drivers/net/wireless/ath/ath9k/pci.c
-@@ -988,8 +988,8 @@ static int ath_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	sc->sc_ah->msi_reg = 0;
- 
- 	ath9k_hw_name(sc->sc_ah, hw_name, sizeof(hw_name));
--	wiphy_info(hw->wiphy, "%s mem=0x%lx, irq=%d\n",
--		   hw_name, (unsigned long)sc->mem, pdev->irq);
-+	wiphy_info(hw->wiphy, "%s mem=0x%p, irq=%d\n",
-+		   hw_name, sc->mem, pdev->irq);
- 
- 	return 0;
- 
+ 	if (is_multicast_ether_addr(ra)) {
+ 		skb_uap = skb_copy(skb, GFP_ATOMIC);
+-		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
++		if (likely(skb_uap)) {
++			mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
++		} else {
++			mwifiex_dbg(adapter, ERROR,
++				    "failed to copy skb for uAP\n");
++			priv->stats.rx_dropped++;
++			dev_kfree_skb_any(skb);
++			return -1;
++		}
+ 	} else {
+ 		if (mwifiex_get_sta_entry(priv, ra)) {
+ 			/* Requeue Intra-BSS packet */
 -- 
 2.40.1
 
