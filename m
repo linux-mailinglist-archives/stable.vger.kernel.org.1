@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00F157A7C43
+	by mail.lfdr.de (Postfix) with ESMTP id 54B447A7C44
 	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234885AbjITMAH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S234973AbjITMAH (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 20 Sep 2023 08:00:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52942 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234916AbjITL7k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:59:40 -0400
+        with ESMTP id S234969AbjITL7m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:59:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 590D2A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:59:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EDFC433C7;
-        Wed, 20 Sep 2023 11:59:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E795AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:59:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C27C433C7;
+        Wed, 20 Sep 2023 11:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211174;
-        bh=3zXO0dS/gXzXebp6IFQWYkdsjSy4PatyppVGdpsP0mU=;
+        s=korg; t=1695211176;
+        bh=sH0hZ4uGl2Z6xXFMq9+rwqBZd/gqSlXZ4vy1msZoUN0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xIG4hJ0sAwqZLw3IKgtG/LGwZqRf3Jlqc5JCBiWonTV3QJB4/YbThMpqQ48LlNqBR
-         LNvS2u1KKtsvP66e6olJFjmsy5PuyryosMxiuGRFSeCkWnFZxYbCwwBDFGiqgSFfUx
-         TUhPRebXXZ4sq0/VJ1WuJM8rzcHyEthiYD1sLiYY=
+        b=H07bIYDn7IrrjMoB6JCdpDOIfdtcaBtbgUahs5W216aYP/4FCz0JkjUkeN2ZbpGZl
+         fRofvYKMV38b7zlidtkhNhZxWKNXGu5WR9e+SbqFDr8WQmXbOeHBFlDmbwHpYBdsMa
+         iDj+W/KhNUHbKJEwmi5Vgx+UKmZXDVL9CpoXI/zc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Florian Weimer <fweimer@redhat.com>,
-        Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 110/139] attr: block mode changes of symlinks
-Date:   Wed, 20 Sep 2023 13:30:44 +0200
-Message-ID: <20230920112839.661844120@linuxfoundation.org>
+        patches@lists.linux.dev, Ruiwen Zhao <ruiwen@google.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 6.1 111/139] ovl: fix failed copyup of fileattr on a symlink
+Date:   Wed, 20 Sep 2023 13:30:45 +0200
+Message-ID: <20230920112839.699136233@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
 References: <20230920112835.549467415@linuxfoundation.org>
@@ -55,140 +54,57 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 5d1f903f75a80daa4dfb3d84e114ec8ecbf29956 upstream.
+commit ab048302026d7701e7fbd718917e0dbcff0c4223 upstream.
 
-Changing the mode of symlinks is meaningless as the vfs doesn't take the
-mode of a symlink into account during path lookup permission checking.
+Some local filesystems support setting persistent fileattr flags
+(e.g. FS_NOATIME_FL) on directories and regular files via ioctl.
+Some of those persistent fileattr flags are reflected to vfs as
+in-memory inode flags (e.g. S_NOATIME).
 
-However, the vfs doesn't block mode changes on symlinks. This however,
-has lead to an untenable mess roughly classifiable into the following
-two categories:
+Overlayfs uses the in-memory inode flags (e.g. S_NOATIME) on a lower file
+as an indication that a the lower file may have persistent inode fileattr
+flags (e.g. FS_NOATIME_FL) that need to be copied to upper file.
 
-(1) Filesystems that don't implement a i_op->setattr() for symlinks.
+However, in some cases, the S_NOATIME in-memory flag could be a false
+indication for persistent FS_NOATIME_FL fileattr. For example, with NFS
+and FUSE lower fs, as was the case in the two bug reports, the S_NOATIME
+flag is set unconditionally for all inodes.
 
-    Such filesystems may or may not know that without i_op->setattr()
-    defined, notify_change() falls back to simple_setattr() causing the
-    inode's mode in the inode cache to be changed.
+Users cannot set persistent fileattr flags on symlinks and special files,
+but in some local fs, such as ext4/btrfs/tmpfs, the FS_NOATIME_FL fileattr
+flag are inheritted to symlinks and special files from parent directory.
 
-    That's a generic issue as this will affect all non-size changing
-    inode attributes including ownership changes.
+In both cases described above, when lower symlink has the S_NOATIME flag,
+overlayfs will try to copy the symlink's fileattrs and fail with error
+ENOXIO, because it could not open the symlink for the ioctl security hook.
 
-    Example: afs
+To solve this failure, do not attempt to copyup fileattrs for anything
+other than directories and regular files.
 
-(2) Filesystems that fail with EOPNOTSUPP but change the mode of the
-    symlink nonetheless.
-
-    Some filesystems will happily update the mode of a symlink but still
-    return EOPNOTSUPP. This is the biggest source of confusion for
-    userspace.
-
-    The EOPNOTSUPP in this case comes from POSIX ACLs. Specifically it
-    comes from filesystems that call posix_acl_chmod(), e.g., btrfs via
-
-        if (!err && attr->ia_valid & ATTR_MODE)
-                err = posix_acl_chmod(idmap, dentry, inode->i_mode);
-
-    Filesystems including btrfs don't implement i_op->set_acl() so
-    posix_acl_chmod() will report EOPNOTSUPP.
-
-    When posix_acl_chmod() is called, most filesystems will have
-    finished updating the inode.
-
-    Perversely, this has the consequences that this behavior may depend
-    on two kconfig options and mount options:
-
-    * CONFIG_POSIX_ACL={y,n}
-    * CONFIG_${FSTYPE}_POSIX_ACL={y,n}
-    * Opt_acl, Opt_noacl
-
-    Example: btrfs, ext4, xfs
-
-The only way to change the mode on a symlink currently involves abusing
-an O_PATH file descriptor in the following manner:
-
-        fd = openat(-1, "/path/to/link", O_CLOEXEC | O_PATH | O_NOFOLLOW);
-
-        char path[PATH_MAX];
-        snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-        chmod(path, 0000);
-
-But for most major filesystems with POSIX ACL support such as btrfs,
-ext4, ceph, tmpfs, xfs and others this will fail with EOPNOTSUPP with
-the mode still updated due to the aforementioned posix_acl_chmod()
-nonsense.
-
-So, given that for all major filesystems this would fail with EOPNOTSUPP
-and that both glibc (cf. [1]) and musl (cf. [2]) outright block mode
-changes on symlinks we should just try and block mode changes on
-symlinks directly in the vfs and have a clean break with this nonsense.
-
-If this causes any regressions, we do the next best thing and fix up all
-filesystems that do return EOPNOTSUPP with the mode updated to not call
-posix_acl_chmod() on symlinks.
-
-But as usual, let's try the clean cut solution first. It's a simple
-patch that can be easily reverted. Not marking this for backport as I'll
-do that manually if we're reasonably sure that this works and there are
-no strong objections.
-
-We could block this in chmod_common() but it's more appropriate to do it
-notify_change() as it will also mean that we catch filesystems that
-change symlink permissions explicitly or accidently.
-
-Similar proposals were floated in the past as in [3] and [4] and again
-recently in [5]. There's also a couple of bugs about this inconsistency
-as in [6] and [7].
-
-Link: https://sourceware.org/git/?p=glibc.git;a=blob;f=sysdeps/unix/sysv/linux/fchmodat.c;h=99527a3727e44cb8661ee1f743068f108ec93979;hb=HEAD [1]
-Link: https://git.musl-libc.org/cgit/musl/tree/src/stat/fchmodat.c [2]
-Link: https://lore.kernel.org/all/20200911065733.GA31579@infradead.org [3]
-Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00518.html [4]
-Link: https://lore.kernel.org/lkml/87lefmbppo.fsf@oldenburg.str.redhat.com [5]
-Link: https://sourceware.org/legacy-ml/libc-alpha/2020-02/msg00467.html [6]
-Link: https://sourceware.org/bugzilla/show_bug.cgi?id=14578#c17 [7]
-Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: stable@vger.kernel.org # please backport to all LTSes but not before v6.6-rc2 is tagged
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Suggested-by: Florian Weimer <fweimer@redhat.com>
-Message-Id: <20230712-vfs-chmod-symlinks-v2-1-08cfb92b61dd@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: Ruiwen Zhao <ruiwen@google.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217850
+Fixes: 72db82115d2b ("ovl: copy up sync/noatime fileattr flags")
+Cc: <stable@vger.kernel.org> # v5.15
+Reviewed-by: Miklos Szeredi <miklos@szeredi.hu>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/attr.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ fs/overlayfs/copy_up.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/attr.c
-+++ b/fs/attr.c
-@@ -394,9 +394,25 @@ int notify_change(struct user_namespace
- 		return error;
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -580,7 +580,8 @@ static int ovl_copy_up_metadata(struct o
+ 	if (err)
+ 		return err;
  
- 	if ((ia_valid & ATTR_MODE)) {
--		umode_t amode = attr->ia_mode;
-+		/*
-+		 * Don't allow changing the mode of symlinks:
-+		 *
-+		 * (1) The vfs doesn't take the mode of symlinks into account
-+		 *     during permission checking.
-+		 * (2) This has never worked correctly. Most major filesystems
-+		 *     did return EOPNOTSUPP due to interactions with POSIX ACLs
-+		 *     but did still updated the mode of the symlink.
-+		 *     This inconsistency led system call wrapper providers such
-+		 *     as libc to block changing the mode of symlinks with
-+		 *     EOPNOTSUPP already.
-+		 * (3) To even do this in the first place one would have to use
-+		 *     specific file descriptors and quite some effort.
-+		 */
-+		if (S_ISLNK(inode->i_mode))
-+			return -EOPNOTSUPP;
-+
- 		/* Flag setting protected by i_mutex */
--		if (is_sxid(amode))
-+		if (is_sxid(attr->ia_mode))
- 			inode->i_flags &= ~S_NOSEC;
- 	}
- 
+-	if (inode->i_flags & OVL_COPY_I_FLAGS_MASK) {
++	if (inode->i_flags & OVL_COPY_I_FLAGS_MASK &&
++	    (S_ISREG(c->stat.mode) || S_ISDIR(c->stat.mode))) {
+ 		/*
+ 		 * Copy the fileattr inode flags that are the source of already
+ 		 * copied i_flags
 
 
