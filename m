@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAA037A7C0A
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D48467A7B6C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234938AbjITL5c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:57:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56198 "EHLO
+        id S234612AbjITLwB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:52:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235032AbjITL5Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:25 -0400
+        with ESMTP id S234732AbjITLv7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A308E4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E24C433C9;
-        Wed, 20 Sep 2023 11:57:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4590DC
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C05DC433CA;
+        Wed, 20 Sep 2023 11:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211039;
-        bh=6CqAcjaDl/vEh1wlRMBzRNT/Mmv4MSM91u5A2jx5zK0=;
+        s=korg; t=1695210711;
+        bh=jcSb4PmPMboYy0kFy7TeVdpFj2ch7ZzFOidpUbVnhH8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ywWIq/sVM5HrVJWnPGrn1GysKFzDQODTRkUZXBoMyoa9XKaPfsAhwlJ6wrIWqkJh+
-         y4iD/JUke7kdolIxamp3DbMs0Ox4bFKPNrho6iLXJUUFJ7+zqavXp9zzmuWV5aY7bv
-         ATIlpqYbg1RiYPucvUHW7CmJp2S3RSDMpRywNncg=
+        b=lreS1IcFBNmLqr6Z1FkUmj5wclPXvaUZa/WrgxpYfAtOC7qIiBjXMz6IF+XDsaTZz
+         Y8oxxuuskj9K2RjiISluiNhjPgzBbnJGI3IgCMMaYkeEhf7At2kNwQsiljuu4S6XDx
+         Wga3YnNwQI/9ooP5dODX+XW/VVDzsphyr115Shm4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Ogness <john.ogness@linutronix.de>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/139] printk: Keep non-panic-CPUs out of console lock
+        patches@lists.linux.dev, Harry Wentland <harry.wentland@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>
+Subject: [PATCH 6.5 176/211] Revert "drm/amd: Disable S/G for APUs when 64GB or more host memory"
 Date:   Wed, 20 Sep 2023 13:30:20 +0200
-Message-ID: <20230920112838.836388090@linuxfoundation.org>
+Message-ID: <20230920112851.336950748@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,112 +50,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ogness <john.ogness@linutronix.de>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit 51a1d258e50e03a0216bf42b6af9ff34ec402ac1 ]
+commit 169ed4ece8373f02f10642eae5240e3d1ef5c038 upstream.
 
-When in a panic situation, non-panic CPUs should avoid holding the
-console lock so as not to contend with the panic CPU. This is already
-implemented with abandon_console_lock_in_panic(), which is checked
-after each printed line. However, non-panic CPUs should also avoid
-trying to acquire the console lock during a panic.
+This reverts commit 70e64c4d522b732e31c6475a3be2349de337d321.
 
-Modify console_trylock() to fail and console_lock() to block() when
-called from a non-panic CPU during a panic.
+Since, we now have an actual fix for this issue, we can get rid of this
+workaround as it can cause pin failures if enough VRAM isn't carved out
+by the BIOS.
 
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20230717194607.145135-4-john.ogness@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.1+
+Acked-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/printk/printk.c | 45 ++++++++++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h               |    1 
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c        |   26 ----------------------
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    5 ++--
+ 3 files changed, 3 insertions(+), 29 deletions(-)
 
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index e4f1e7478b521..4b9429f3fd6d8 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -2552,6 +2552,25 @@ static int console_cpu_notify(unsigned int cpu)
- 	return 0;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -1296,7 +1296,6 @@ int amdgpu_device_gpu_recover(struct amd
+ void amdgpu_device_pci_config_reset(struct amdgpu_device *adev);
+ int amdgpu_device_pci_reset(struct amdgpu_device *adev);
+ bool amdgpu_device_need_post(struct amdgpu_device *adev);
+-bool amdgpu_sg_display_supported(struct amdgpu_device *adev);
+ bool amdgpu_device_pcie_dynamic_switching_supported(void);
+ bool amdgpu_device_should_use_aspm(struct amdgpu_device *adev);
+ bool amdgpu_device_aspm_support_quirk(void);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1462,32 +1462,6 @@ bool amdgpu_device_need_post(struct amdg
  }
  
-+/*
-+ * Return true when this CPU should unlock console_sem without pushing all
-+ * messages to the console. This reduces the chance that the console is
-+ * locked when the panic CPU tries to use it.
-+ */
-+static bool abandon_console_lock_in_panic(void)
-+{
-+	if (!panic_in_progress())
-+		return false;
-+
-+	/*
-+	 * We can use raw_smp_processor_id() here because it is impossible for
-+	 * the task to be migrated to the panic_cpu, or away from it. If
-+	 * panic_cpu has already been set, and we're not currently executing on
-+	 * that CPU, then we never will be.
-+	 */
-+	return atomic_read(&panic_cpu) != raw_smp_processor_id();
-+}
-+
- /**
-  * console_lock - lock the console system for exclusive use.
-  *
-@@ -2564,6 +2583,10 @@ void console_lock(void)
- {
- 	might_sleep();
- 
-+	/* On panic, the console_lock must be left to the panic cpu. */
-+	while (abandon_console_lock_in_panic())
-+		msleep(1000);
-+
- 	down_console_sem();
- 	if (console_suspended)
- 		return;
-@@ -2582,6 +2605,9 @@ EXPORT_SYMBOL(console_lock);
-  */
- int console_trylock(void)
- {
-+	/* On panic, the console_lock must be left to the panic cpu. */
-+	if (abandon_console_lock_in_panic())
-+		return 0;
- 	if (down_trylock_console_sem())
- 		return 0;
- 	if (console_suspended) {
-@@ -2600,25 +2626,6 @@ int is_console_locked(void)
- }
- EXPORT_SYMBOL(is_console_locked);
- 
--/*
-- * Return true when this CPU should unlock console_sem without pushing all
-- * messages to the console. This reduces the chance that the console is
-- * locked when the panic CPU tries to use it.
+ /*
+- * On APUs with >= 64GB white flickering has been observed w/ SG enabled.
+- * Disable S/G on such systems until we have a proper fix.
+- * https://gitlab.freedesktop.org/drm/amd/-/issues/2354
+- * https://gitlab.freedesktop.org/drm/amd/-/issues/2735
 - */
--static bool abandon_console_lock_in_panic(void)
+-bool amdgpu_sg_display_supported(struct amdgpu_device *adev)
 -{
--	if (!panic_in_progress())
+-	switch (amdgpu_sg_display) {
+-	case -1:
+-		break;
+-	case 0:
 -		return false;
--
--	/*
--	 * We can use raw_smp_processor_id() here because it is impossible for
--	 * the task to be migrated to the panic_cpu, or away from it. If
--	 * panic_cpu has already been set, and we're not currently executing on
--	 * that CPU, then we never will be.
--	 */
--	return atomic_read(&panic_cpu) != raw_smp_processor_id();
+-	case 1:
+-		return true;
+-	default:
+-		return false;
+-	}
+-	if ((totalram_pages() << (PAGE_SHIFT - 10)) +
+-	    (adev->gmc.real_vram_size / 1024) >= 64000000) {
+-		DRM_WARN("Disabling S/G due to >=64GB RAM\n");
+-		return false;
+-	}
+-	return true;
 -}
 -
- /*
-  * Check if the given console is currently capable and allowed to print
-  * records.
--- 
-2.40.1
-
+-/*
+  * Intel hosts such as Raptor Lake and Sapphire Rapids don't support dynamic
+  * speed switching. Until we have confirmation from Intel that a specific host
+  * supports it, it's safer that we keep it disabled for all.
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1638,8 +1638,9 @@ static int amdgpu_dm_init(struct amdgpu_
+ 		}
+ 		break;
+ 	}
+-	if (init_data.flags.gpu_vm_support)
+-		init_data.flags.gpu_vm_support = amdgpu_sg_display_supported(adev);
++	if (init_data.flags.gpu_vm_support &&
++	    (amdgpu_sg_display == 0))
++		init_data.flags.gpu_vm_support = false;
+ 
+ 	if (init_data.flags.gpu_vm_support)
+ 		adev->mode_info.gpu_vm_support = true;
 
 
