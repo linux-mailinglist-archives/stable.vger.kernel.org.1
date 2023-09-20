@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A0407A7B6E
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A17107A7C0C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234648AbjITLwF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:52:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
+        id S234902AbjITL5e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234706AbjITLwE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:04 -0400
+        with ESMTP id S235049AbjITL5b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95415DE
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EB1C433C8;
-        Wed, 20 Sep 2023 11:51:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB532122
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB7FC433C7;
+        Wed, 20 Sep 2023 11:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210716;
-        bh=azFpPDNZYFFbhaWd/vs5kJPbY3W3AyQC9wFIt1XsDgs=;
+        s=korg; t=1695211044;
+        bh=qgU9PjwEj9cTkaktt73IxmiWjYW7eF2+30kpvRFT/FU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KCN155mp6Mlkiz0s4oAcb8HH/5cJ53pQuGgOTD0Fj/azv0T5lvQjn0KxvFI3nRH0U
-         8mWpvqjJxpOJvMRmXEElW2ObIgLwzcKw85EX15wSlaV21mGnRY8I0eB6HYWM+PRnst
-         ZQ+lpiASCVn54KFf5IKLEcstgMse1VDyXUSlMo4g=
+        b=2SMrOS6nzrgIMBhzZnCO+Cn7g8IZ9Kh+ZVFf3knaGHBK210HoRMpMXAPdB4haRGDn
+         yalXqvn2/emsYGfzatWJ/tlUfZxETN0fJMlVoKTVbQAm9HNMgO1s8yoQSInYSQHF75
+         nPpc+E3i0Br3Fk1yphn2oc/8mFrVBAZJgnDSy/ao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luo Meng <luomeng12@huawei.com>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        Li Lingfeng <lilingfeng3@huawei.com>,
-        Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.5 178/211] dm: fix a race condition in retrieve_deps
+        patches@lists.linux.dev, Sumit Semwal <sumit.semwal@linaro.org>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 088/139] dma-buf: Add unlocked variant of attachment-mapping functions
 Date:   Wed, 20 Sep 2023 13:30:22 +0200
-Message-ID: <20230920112851.396519013@linuxfoundation.org>
+Message-ID: <20230920112838.903693721@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,167 +52,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
-commit f6007dce0cd35d634d9be91ef3515a6385dcee16 upstream.
+[ Upstream commit 19d6634d8789573a9212ce78dbb4348ffd4f7f78 ]
 
-There's a race condition in the multipath target when retrieve_deps
-races with multipath_message calling dm_get_device and dm_put_device.
-retrieve_deps walks the list of open devices without holding any lock
-but multipath may add or remove devices to the list while it is
-running. The end result may be memory corruption or use-after-free
-memory access.
+Add unlocked variant of dma_buf_map/unmap_attachment() that will
+be used by drivers that don't take the reservation lock explicitly.
 
-See this description of a UAF with multipath_message():
-https://listman.redhat.com/archives/dm-devel/2022-October/052373.html
-
-Fix this bug by introducing a new rw semaphore "devices_lock". We grab
-devices_lock for read in retrieve_deps and we grab it for write in
-dm_get_device and dm_put_device.
-
-Reported-by: Luo Meng <luomeng12@huawei.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Tested-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Sumit Semwal <sumit.semwal@linaro.org>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20221017172229.42269-3-dmitry.osipenko@collabora.com
+Stable-dep-of: a2cb9cd6a394 ("misc: fastrpc: Fix incorrect DMA mapping unmap request")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-core.h  |    1 +
- drivers/md/dm-ioctl.c |    7 ++++++-
- drivers/md/dm-table.c |   32 ++++++++++++++++++++++++--------
- 3 files changed, 31 insertions(+), 9 deletions(-)
+ drivers/dma-buf/dma-buf.c | 53 +++++++++++++++++++++++++++++++++++++++
+ include/linux/dma-buf.h   |  6 +++++
+ 2 files changed, 59 insertions(+)
 
---- a/drivers/md/dm-core.h
-+++ b/drivers/md/dm-core.h
-@@ -214,6 +214,7 @@ struct dm_table {
- 
- 	/* a list of devices used by this table */
- 	struct list_head devices;
-+	struct rw_semaphore devices_lock;
- 
- 	/* events get handed up using this callback */
- 	void (*event_fn)(void *data);
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1630,6 +1630,8 @@ static void retrieve_deps(struct dm_tabl
- 	struct dm_dev_internal *dd;
- 	struct dm_target_deps *deps;
- 
-+	down_read(&table->devices_lock);
-+
- 	deps = get_result_buffer(param, param_size, &len);
- 
- 	/*
-@@ -1644,7 +1646,7 @@ static void retrieve_deps(struct dm_tabl
- 	needed = struct_size(deps, dev, count);
- 	if (len < needed) {
- 		param->flags |= DM_BUFFER_FULL_FLAG;
--		return;
-+		goto out;
- 	}
- 
- 	/*
-@@ -1656,6 +1658,9 @@ static void retrieve_deps(struct dm_tabl
- 		deps->dev[count++] = huge_encode_dev(dd->dm_dev->bdev->bd_dev);
- 
- 	param->data_size = param->data_start + needed;
-+
-+out:
-+	up_read(&table->devices_lock);
+diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
+index eb6b59363c4f5..3d58514d04826 100644
+--- a/drivers/dma-buf/dma-buf.c
++++ b/drivers/dma-buf/dma-buf.c
+@@ -1105,6 +1105,34 @@ struct sg_table *dma_buf_map_attachment(struct dma_buf_attachment *attach,
  }
+ EXPORT_SYMBOL_NS_GPL(dma_buf_map_attachment, DMA_BUF);
  
- static int table_deps(struct file *filp, struct dm_ioctl *param, size_t param_size)
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -135,6 +135,7 @@ int dm_table_create(struct dm_table **re
- 		return -ENOMEM;
- 
- 	INIT_LIST_HEAD(&t->devices);
-+	init_rwsem(&t->devices_lock);
- 
- 	if (!num_targets)
- 		num_targets = KEYS_PER_NODE;
-@@ -359,16 +360,20 @@ int __ref dm_get_device(struct dm_target
- 	if (dev == disk_devt(t->md->disk))
- 		return -EINVAL;
- 
-+	down_write(&t->devices_lock);
++/**
++ * dma_buf_map_attachment_unlocked - Returns the scatterlist table of the attachment;
++ * mapped into _device_ address space. Is a wrapper for map_dma_buf() of the
++ * dma_buf_ops.
++ * @attach:	[in]	attachment whose scatterlist is to be returned
++ * @direction:	[in]	direction of DMA transfer
++ *
++ * Unlocked variant of dma_buf_map_attachment().
++ */
++struct sg_table *
++dma_buf_map_attachment_unlocked(struct dma_buf_attachment *attach,
++				enum dma_data_direction direction)
++{
++	struct sg_table *sg_table;
 +
- 	dd = find_device(&t->devices, dev);
- 	if (!dd) {
- 		dd = kmalloc(sizeof(*dd), GFP_KERNEL);
--		if (!dd)
--			return -ENOMEM;
-+		if (!dd) {
-+			r = -ENOMEM;
-+			goto unlock_ret_r;
-+		}
- 
- 		r = dm_get_table_device(t->md, dev, mode, &dd->dm_dev);
- 		if (r) {
- 			kfree(dd);
--			return r;
-+			goto unlock_ret_r;
- 		}
- 
- 		refcount_set(&dd->count, 1);
-@@ -378,12 +383,17 @@ int __ref dm_get_device(struct dm_target
- 	} else if (dd->dm_dev->mode != (mode | dd->dm_dev->mode)) {
- 		r = upgrade_mode(dd, mode, t->md);
- 		if (r)
--			return r;
-+			goto unlock_ret_r;
- 	}
- 	refcount_inc(&dd->count);
- out:
-+	up_write(&t->devices_lock);
- 	*result = dd->dm_dev;
- 	return 0;
++	might_sleep();
 +
-+unlock_ret_r:
-+	up_write(&t->devices_lock);
-+	return r;
++	if (WARN_ON(!attach || !attach->dmabuf))
++		return ERR_PTR(-EINVAL);
++
++	dma_resv_lock(attach->dmabuf->resv, NULL);
++	sg_table = dma_buf_map_attachment(attach, direction);
++	dma_resv_unlock(attach->dmabuf->resv);
++
++	return sg_table;
++}
++EXPORT_SYMBOL_NS_GPL(dma_buf_map_attachment_unlocked, DMA_BUF);
++
+ /**
+  * dma_buf_unmap_attachment - unmaps and decreases usecount of the buffer;might
+  * deallocate the scatterlist associated. Is a wrapper for unmap_dma_buf() of
+@@ -1141,6 +1169,31 @@ void dma_buf_unmap_attachment(struct dma_buf_attachment *attach,
  }
- EXPORT_SYMBOL(dm_get_device);
+ EXPORT_SYMBOL_NS_GPL(dma_buf_unmap_attachment, DMA_BUF);
  
-@@ -419,9 +429,12 @@ static int dm_set_device_limits(struct d
- void dm_put_device(struct dm_target *ti, struct dm_dev *d)
- {
- 	int found = 0;
--	struct list_head *devices = &ti->table->devices;
-+	struct dm_table *t = ti->table;
-+	struct list_head *devices = &t->devices;
- 	struct dm_dev_internal *dd;
- 
-+	down_write(&t->devices_lock);
++/**
++ * dma_buf_unmap_attachment_unlocked - unmaps and decreases usecount of the buffer;might
++ * deallocate the scatterlist associated. Is a wrapper for unmap_dma_buf() of
++ * dma_buf_ops.
++ * @attach:	[in]	attachment to unmap buffer from
++ * @sg_table:	[in]	scatterlist info of the buffer to unmap
++ * @direction:	[in]	direction of DMA transfer
++ *
++ * Unlocked variant of dma_buf_unmap_attachment().
++ */
++void dma_buf_unmap_attachment_unlocked(struct dma_buf_attachment *attach,
++				       struct sg_table *sg_table,
++				       enum dma_data_direction direction)
++{
++	might_sleep();
 +
- 	list_for_each_entry(dd, devices, list) {
- 		if (dd->dm_dev == d) {
- 			found = 1;
-@@ -430,14 +443,17 @@ void dm_put_device(struct dm_target *ti,
- 	}
- 	if (!found) {
- 		DMERR("%s: device %s not in table devices list",
--		      dm_device_name(ti->table->md), d->name);
--		return;
-+		      dm_device_name(t->md), d->name);
-+		goto unlock_ret;
- 	}
- 	if (refcount_dec_and_test(&dd->count)) {
--		dm_put_table_device(ti->table->md, d);
-+		dm_put_table_device(t->md, d);
- 		list_del(&dd->list);
- 		kfree(dd);
- 	}
++	if (WARN_ON(!attach || !attach->dmabuf || !sg_table))
++		return;
 +
-+unlock_ret:
-+	up_write(&t->devices_lock);
- }
- EXPORT_SYMBOL(dm_put_device);
++	dma_resv_lock(attach->dmabuf->resv, NULL);
++	dma_buf_unmap_attachment(attach, sg_table, direction);
++	dma_resv_unlock(attach->dmabuf->resv);
++}
++EXPORT_SYMBOL_NS_GPL(dma_buf_unmap_attachment_unlocked, DMA_BUF);
++
+ /**
+  * dma_buf_move_notify - notify attachments that DMA-buf is moving
+  *
+diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+index 71731796c8c3a..9c31f1f430d8e 100644
+--- a/include/linux/dma-buf.h
++++ b/include/linux/dma-buf.h
+@@ -627,6 +627,12 @@ int dma_buf_begin_cpu_access(struct dma_buf *dma_buf,
+ 			     enum dma_data_direction dir);
+ int dma_buf_end_cpu_access(struct dma_buf *dma_buf,
+ 			   enum dma_data_direction dir);
++struct sg_table *
++dma_buf_map_attachment_unlocked(struct dma_buf_attachment *attach,
++				enum dma_data_direction direction);
++void dma_buf_unmap_attachment_unlocked(struct dma_buf_attachment *attach,
++				       struct sg_table *sg_table,
++				       enum dma_data_direction direction);
  
+ int dma_buf_mmap(struct dma_buf *, struct vm_area_struct *,
+ 		 unsigned long);
+-- 
+2.40.1
+
 
 
