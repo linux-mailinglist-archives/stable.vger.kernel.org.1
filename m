@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0D167A7E31
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F2B57A8070
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:37:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235426AbjITMQK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:16:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58524 "EHLO
+        id S235917AbjITMhU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:37:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235521AbjITMQD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:16:03 -0400
+        with ESMTP id S235334AbjITMhT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:37:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2E8B134
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:15:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02EB8C433C9;
-        Wed, 20 Sep 2023 12:15:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA735B6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:37:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE99C433C8;
+        Wed, 20 Sep 2023 12:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212155;
-        bh=I+l3AZ30fZdOfNUiCvbZp/cwR64Q6kqlGU7CNtpGWnE=;
+        s=korg; t=1695213433;
+        bh=ivbeCynZxSvRnKVXm/jU0qDpQRtrt4wsNb++YGz1DPg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MIeiZjAQCIeTzFE0riTbhujo1+25MRZcZ74zZKiIXtAOnWikwChhCVe1dlPara62B
-         0Rx7Kn0YCXnzWVQcHtvzoZzuSoOKA/H8YMnqu4/aaA5j1UlPLfHDe1XxGGJuTKTu86
-         Og8jH5cDQzidJAvSm7ZU7eC0392W3XBOex3bZOmY=
+        b=OzxeL5U1vAMWJeS96xB+KbWzdxKxcMNX/87+65YvdVaILHTVTxfaAEZIvGZ/XpHTf
+         sMpsW2bfNn56XybHZyTM2mk0KMvsGvm4WQMI0cEdE4rVSkAQsToiTqURZX2xFB2yg0
+         KeA3HzQYCf3KlMNHZ8NuFoERobVbnwPGoj8dve3Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Meng_Cai@novatek.com.cn,
-        Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 172/273] ALSA: pcm: Fix missing fixup call in compat hw_refine ioctl
+        patches@lists.linux.dev,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 235/367] serial: sc16is7xx: fix broken port 0 uart init
 Date:   Wed, 20 Sep 2023 13:30:12 +0200
-Message-ID: <20230920112851.832965054@linuxfoundation.org>
+Message-ID: <20230920112904.656415502@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,53 +53,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 358040e3807754944dbddf948a23c6d914297ed7 upstream.
+[ Upstream commit 2861ed4d6e6d1a2c9de9bf5b0abd996c2dc673d0 ]
 
-The update of rate_num/den and msbits were factored out to
-fixup_unreferenced_params() function to be called explicitly after the
-hw_refine or hw_params procedure.  It's called from
-snd_pcm_hw_refine_user(), but it's forgotten in the PCM compat ioctl.
-This ended up with the incomplete rate_num/den and msbits parameters
-when 32bit compat ioctl is used.
+The sc16is7xx_config_rs485() function is called only for the second
+port (index 1, channel B), causing initialization problems for the
+first port.
 
-This patch adds the missing call in snd_pcm_ioctl_hw_params_compat().
+For the sc16is7xx driver, port->membase and port->mapbase are not set,
+and their default values are 0. And we set port->iobase to the device
+index. This means that when the first device is registered using the
+uart_add_one_port() function, the following values will be in the port
+structure:
+    port->membase = 0
+    port->mapbase = 0
+    port->iobase  = 0
 
-Reported-by: Meng_Cai@novatek.com.cn
-Fixes: f9a076bff053 ("ALSA: pcm: calculate non-mask/non-interval parameters always when possible")
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230829134344.31588-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Therefore, the function uart_configure_port() in serial_core.c will
+exit early because of the following check:
+	/*
+	 * If there isn't a port here, don't do anything further.
+	 */
+	if (!port->iobase && !port->mapbase && !port->membase)
+		return;
+
+Typically, I2C and SPI drivers do not set port->membase and
+port->mapbase.
+
+The max310x driver sets port->membase to ~0 (all ones). By
+implementing the same change in this driver, uart_configure_port() is
+now correctly executed for all ports.
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+Link: https://lore.kernel.org/r/20230807214556.540627-2-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_compat.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/sound/core/pcm_compat.c
-+++ b/sound/core/pcm_compat.c
-@@ -329,10 +329,14 @@ static int snd_pcm_ioctl_hw_params_compa
- 		goto error;
- 	}
- 
--	if (refine)
-+	if (refine) {
- 		err = snd_pcm_hw_refine(substream, data);
--	else
-+		if (err < 0)
-+			goto error;
-+		err = fixup_unreferenced_params(substream, data);
-+	} else {
- 		err = snd_pcm_hw_params(substream, data);
-+	}
- 	if (err < 0)
- 		goto error;
- 	if (copy_to_user(data32, data, sizeof(*data32)) ||
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 9b68725d4e9ba..091cf5fe90304 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1271,6 +1271,12 @@ static int sc16is7xx_probe(struct device *dev,
+ 		s->p[i].port.fifosize	= SC16IS7XX_FIFO_SIZE;
+ 		s->p[i].port.flags	= UPF_FIXED_TYPE | UPF_LOW_LATENCY;
+ 		s->p[i].port.iobase	= i;
++		/*
++		 * Use all ones as membase to make sure uart_configure_port() in
++		 * serial_core.c does not abort for SPI/I2C devices where the
++		 * membase address is not applicable.
++		 */
++		s->p[i].port.membase	= (void __iomem *)~0;
+ 		s->p[i].port.iotype	= UPIO_PORT;
+ 		s->p[i].port.uartclk	= freq;
+ 		s->p[i].port.rs485_config = sc16is7xx_config_rs485;
+-- 
+2.40.1
+
 
 
