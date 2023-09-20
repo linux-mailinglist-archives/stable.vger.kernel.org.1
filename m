@@ -2,95 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBDBF7A81C4
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44BF97A7D03
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235123AbjITMsY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:48:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47630 "EHLO
+        id S235259AbjITMGA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:06:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235430AbjITMsW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:48:22 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DEBA99
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:48:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BB4C433C8;
-        Wed, 20 Sep 2023 12:48:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695214095;
-        bh=xSeb2beHuQdVTGXkwJXw1fh9/4lCK+Sfyjrpv8kLsYo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XBdPg61LDjC8EXMw8KtPwW/3wRCvp/XGNKOqVeoaIikCZNUWTMPbYkfj5Sbyy/xNq
-         KpNn7QhLFJl9yXpK/kt/DtUvNtqmMPQ9bPdeJFb5NBLaL32VOEnQVh1L+bjWUVudDC
-         yY0DFiFvIjQPWfkazi6/fRaILVtIddhGOrBq68sk=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Melissa Wen <mwen@igalia.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 110/110] drm/amd/display: enable cursor degamma for DCN3+ DRM legacy gamma
-Date:   Wed, 20 Sep 2023 13:32:48 +0200
-Message-ID: <20230920112834.531212725@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+        with ESMTP id S235216AbjITMFz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:05:55 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A5D7D8
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:05:46 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qivxT-0004MG-T3; Wed, 20 Sep 2023 14:05:31 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qivxR-007g38-VX; Wed, 20 Sep 2023 14:05:29 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qivxR-00BmIp-Ma; Wed, 20 Sep 2023 14:05:29 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     linux-arm-kernel@lists.infradead.org
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        devicetree@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+        Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org
+Subject: [PATCH] ARM: dts: stm32: Fix ethernet pins used on phyCORE-STM32MP15
+Date:   Wed, 20 Sep 2023 14:05:20 +0200
+Message-Id: <20230920120520.2807275-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+On the phyCORE-STM32MP15 the 125MHz clock for the ethernet phy must
+be provided on the ETH_RGMII_GTX_CLK. ETH_RGMII_CLK125 is unused though,
+so remove the latter pin and add the former.
 
-------------------
+ethernet0_rgmii_pins_d and ethernet0_rgmii_sleep_pins_d are used by the
+phyCORE-STM32MP15 board only, so we can do this change in the generic
+pinctrl file without breaking other boards.
 
-From: Melissa Wen <mwen@igalia.com>
-
-commit 57a943ebfcdb4a97fbb409640234bdb44bfa1953 upstream.
-
-For DRM legacy gamma, AMD display manager applies implicit sRGB degamma
-using a pre-defined sRGB transfer function. It works fine for DCN2
-family where degamma ROM and custom curves go to the same color block.
-But, on DCN3+, degamma is split into two blocks: degamma ROM for
-pre-defined TFs and `gamma correction` for user/custom curves and
-degamma ROM settings doesn't apply to cursor plane. To get DRM legacy
-gamma working as expected, enable cursor degamma ROM for implict sRGB
-degamma on HW with this configuration.
-
+Fixes: 303f3fe1d88f ("ARM: dts: stm32: Add alternate pinmux for ethernet for stm32mp15")
 Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2803
-Fixes: 96b020e2163f ("drm/amd/display: check attr flag before set cursor degamma on DCN3+")
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm/boot/dts/st/stm32mp15-pinctrl.dtsi | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8794,6 +8794,13 @@ static void handle_cursor_update(struct
- 	attributes.rotation_angle    = 0;
- 	attributes.attribute_flags.value = 0;
+diff --git a/arch/arm/boot/dts/st/stm32mp15-pinctrl.dtsi b/arch/arm/boot/dts/st/stm32mp15-pinctrl.dtsi
+index 098153ee99a3a..5d85bcc8b3a8c 100644
+--- a/arch/arm/boot/dts/st/stm32mp15-pinctrl.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp15-pinctrl.dtsi
+@@ -354,7 +354,7 @@ pins1 {
  
-+	/* Enable cursor degamma ROM on DCN3+ for implicit sRGB degamma in DRM
-+	 * legacy gamma setup.
-+	 */
-+	if (crtc_state->cm_is_degamma_srgb &&
-+	    adev->dm.dc->caps.color.dpp.gamma_corr)
-+		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
-+
- 	attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
+ 	ethernet0_rgmii_pins_d: rgmii-3 {
+ 		pins1 {
+-			pinmux = <STM32_PINMUX('G', 5, AF11)>, /* ETH_RGMII_CLK125 */
++			pinmux = <STM32_PINMUX('G', 4, AF11)>, /* ETH_RGMII_GTX_CLK */
+ 				 <STM32_PINMUX('G', 13, AF11)>,	/* ETH_RGMII_TXD0 */
+ 				 <STM32_PINMUX('G', 14, AF11)>,	/* ETH_RGMII_TXD1 */
+ 				 <STM32_PINMUX('C', 2, AF11)>, /* ETH_RGMII_TXD2 */
+@@ -384,8 +384,7 @@ pins3 {
  
- 	if (crtc_state->stream) {
-
+ 	ethernet0_rgmii_sleep_pins_d: rgmii-sleep-3 {
+ 		pins1 {
+-			pinmux = <STM32_PINMUX('G', 5, ANALOG)>, /* ETH_RGMII_CLK125 */
+-				 <STM32_PINMUX('G', 4, ANALOG)>, /* ETH_RGMII_GTX_CLK */
++			pinmux = <STM32_PINMUX('G', 4, ANALOG)>, /* ETH_RGMII_GTX_CLK */
+ 				 <STM32_PINMUX('G', 13, ANALOG)>, /* ETH_RGMII_TXD0 */
+ 				 <STM32_PINMUX('G', 14, ANALOG)>, /* ETH_RGMII_TXD1 */
+ 				 <STM32_PINMUX('C', 2, ANALOG)>, /* ETH_RGMII_TXD2 */
+-- 
+2.39.2
 
