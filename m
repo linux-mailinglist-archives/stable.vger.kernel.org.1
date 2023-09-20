@@ -2,109 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C39B07A8D79
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 22:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D6CF7A8D9B
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 22:13:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbjITUIV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 16:08:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52324 "EHLO
+        id S229714AbjITUNa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 16:13:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229485AbjITUIU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 16:08:20 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B4EA9;
-        Wed, 20 Sep 2023 13:08:14 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id E8F8E202D0;
-        Wed, 20 Sep 2023 20:08:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1695240492; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zacjS2oDob3p7eHr2oY8UG1OkZiVCpmrl6tk1i02zBw=;
-        b=D7iEZ49EnDc3Ssg0WXscpTKL66CU7apcB4NXqQ+nGJae9wBgMTDFMU3IykgutBmSGmR8B6
-        HAp9/8RiSDyuLK9loyOPpFQ57NUrP/COR3vQSm0M0cmBwhkQWvBoO5i/x4Ab/h1Orf7aw9
-        g7zegnpkCusd4lHjtKshjQ5a6+jY2p0=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C6250132C7;
-        Wed, 20 Sep 2023 20:08:12 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id gtZWLSxRC2XKUQAAMHmgww
-        (envelope-from <mhocko@suse.com>); Wed, 20 Sep 2023 20:08:12 +0000
-Date:   Wed, 20 Sep 2023 22:08:11 +0200
-From:   Michal Hocko <mhocko@suse.com>
-To:     Shakeel Butt <shakeelb@google.com>
-Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        Tejun Heo <tj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        mathieu.tortuyaux@gmail.com
-Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop
- kmem.limit_in_bytes
-Message-ID: <ZQtRKzUOfdaVKRCF@dhcp22.suse.cz>
-References: <20230917191042.204185566@linuxfoundation.org>
- <20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz>
- <101987a1-b1ab-429d-af03-b6bdf6216474@linux.microsoft.com>
- <ZQrSXh+riB7NnZuE@dhcp22.suse.cz>
- <4eb47d6a-b127-4aad-af30-896c3b9505b4@linux.microsoft.com>
- <ZQr3+YfcBM2Er6F7@dhcp22.suse.cz>
- <CALvZod7E_Jm9y+40OKtLs5EFA0ptKGjoe2BU58SY29pUiPc93g@mail.gmail.com>
- <ZQskGGAwlsr1YxAp@dhcp22.suse.cz>
- <CALvZod6b3=+=xXEUeWOQW3t_URJpeeVX46WjBHv5BS+436KoFA@mail.gmail.com>
+        with ESMTP id S229699AbjITUN3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 16:13:29 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E4FA9
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 13:13:19 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-400a087b0bfso2104835e9.2
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 13:13:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695240797; x=1695845597; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zd8Do9SJJUDst37nmnERp+r9LxKeGK/VDgtvpwIPuCY=;
+        b=XH00e/Bqpj344sIhJsu42IBEMyjpG9NZQA2sxZwefzELniYcifxD8hrDFlhzfzol21
+         rTQ6FEra+fMeit7Q3DbMSF4TEdFMOwFwfgZc5ATUZT4Z+GVy+Xq0P5cuY2apXzABV7y/
+         5/NpN1HAYybobV4lRNMIrO8EeN4KcstCCJWbjBQSyDcwgIzCiQTfT0n7aYyOmpXwVw7D
+         HGSrBMaYZEaTssmGHnA1nma6PFeR5GL1yjce06kQ1h7WM3TVpAb0RUcxV4tSrmIu7mcP
+         H1bwQv7L57AHouACbcuzsa3o6g8EPyobnxVBkZYo4mXj2dGFSJ5U7SbGeuCbcfmuL5/C
+         dGXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695240797; x=1695845597;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zd8Do9SJJUDst37nmnERp+r9LxKeGK/VDgtvpwIPuCY=;
+        b=prveeRl51Hl/QGDlemVaR9XIkRV4wHM/nBjOQULnyhVre+AHzYnDqFjk2cnVn8wh4/
+         8p+itZTzXtgRYNU7DxUwxtmUmXaAYcayjDCc17krqKJH9OaFSLTPcVjc7NyNCEJr9PLy
+         pXtIfKH3nlXpzDnACrhK4kbqgMUOa2fL/eeB0vzQ4x0gn1r44wmyc6q6YSA4GudZknKu
+         Lh7rjG/V23x/+FaBu9Y5K+o965JUsSNT9nx8lyfZBiDvBM25iiiAf6Nfe+0FLy8e0548
+         b7V5szYBvwjsgsZJYuUvH2m/Kr/7hnsRAPvTR9XTSNmwa0iMBHflX9HDE9jtl+IR0xda
+         9yPw==
+X-Gm-Message-State: AOJu0YyPhoG6nlOqDy/tkq5Lh1yee93HmRaRjjaLljXYtcMPIEBT9G+j
+        IVu4eLkwWJUayVufD86xM7Q=
+X-Google-Smtp-Source: AGHT+IGar0PuT+VjHqU64mWQ3i2PiNibAkrooc0IjrAJPYVu/s5ByDeuaxe9SVZq4z3GLtKPFhBI6g==
+X-Received: by 2002:adf:ee11:0:b0:314:350a:6912 with SMTP id y17-20020adfee11000000b00314350a6912mr3418365wrn.36.1695240797195;
+        Wed, 20 Sep 2023 13:13:17 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id k1-20020adfd221000000b003217c096c1esm1390198wrh.73.2023.09.20.13.13.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Sep 2023 13:13:15 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+        id B7506BE2DE0; Wed, 20 Sep 2023 22:13:14 +0200 (CEST)
+Date:   Wed, 20 Sep 2023 22:13:14 +0200
+From:   Salvatore Bonaccorso <carnil@debian.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Uday M Bhat <uday.m.bhat@intel.com>,
+        Jairaj Arava <jairaj.arava@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 27/83] ASoC: Intel: sof_sdw: Update BT offload
+ config for soundwire config
+Message-ID: <ZQtSWm3ycmA1W7Ry@eldamar.lan>
+References: <20230920112826.634178162@linuxfoundation.org>
+ <20230920112827.751203739@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALvZod6b3=+=xXEUeWOQW3t_URJpeeVX46WjBHv5BS+436KoFA@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230920112827.751203739@linuxfoundation.org>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed 20-09-23 12:46:23, Shakeel Butt wrote:
-> On Wed, Sep 20, 2023 at 9:55 AM Michal Hocko <mhocko@suse.com> wrote:
-> >
-> > On Wed 20-09-23 08:32:42, Shakeel Butt wrote:
-> > > Also I don't think reverting 58056f77502f would give any benefit.
-> >
-> > Not reverting 58056f77502f would re-introduce the regression in some
-> > non-patched versions of Docker runtimes which cannot handle ENOTSUPP.
-> > So I think we need to revert both or none of them. I would prefer the
-> > later (option 1) as the fix is trivial but I do understand headache
-> > of chasing all those outdated deployments or vendor code forks.
+Hi Greg,
+
+On Wed, Sep 20, 2023 at 01:31:17PM +0200, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
 > 
-> I think that would be too much conservative an approach but I don't
+> ------------------
+> 
+> From: Uday M Bhat <uday.m.bhat@intel.com>
+> 
+> [ Upstream commit a14aded9299187bb17ef90700eb2cf1120ef5885 ]
+> 
+> For soundwire config, SSP1 is used for BT offload. This is enabled
+> in sof_sdw_quirk_table
+> 
+> Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+> Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+> Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+> Signed-off-by: Uday M Bhat <uday.m.bhat@intel.com>
+> Signed-off-by: Jairaj Arava <jairaj.arava@intel.com>
+> Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> Link: https://lore.kernel.org/r/20230731214257.444605-5-pierre-louis.bossart@linux.intel.com
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  sound/soc/intel/boards/sof_sdw.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+> index f36a0fda1b6ae..1955d277fdf20 100644
+> --- a/sound/soc/intel/boards/sof_sdw.c
+> +++ b/sound/soc/intel/boards/sof_sdw.c
+> @@ -214,7 +214,9 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+>  			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
+>  			DMI_MATCH(DMI_PRODUCT_NAME, "Rex"),
+>  		},
+> -		.driver_data = (void *)(SOF_SDW_PCH_DMIC),
+> +		.driver_data = (void *)(SOF_SDW_PCH_DMIC |
+> +					SOF_BT_OFFLOAD_SSP(1) |
+> +					SOF_SSP_BT_OFFLOAD_PRESENT),
+>  	},
+>  	/* LunarLake devices */
+>  	{
+> -- 
+> 2.40.1
 
-Well, TBH I do not really see any sifference between one set of broken
-userspace or the other. Both are making assumptions on our interfaces
-and they do not overlap unfortunately.
+I see the following build issue while trying to check 5.10.196-rc1:
 
-> have a strong opinion against it. Also just to be clear we are not
-> talking about full revert of 58056f77502f but just the returning of
-> EOPNOTSUPP, right?
+sound/soc/intel/boards/sof_sdw.c:218:6: error: implicit declaration of function ‘SOF_BT_OFFLOAD_SSP’ [-Werror=implicit-function-declaration]
+  218 |      SOF_BT_OFFLOAD_SSP(1) |
+      |      ^~~~~~~~~~~~~~~~~~
+sound/soc/intel/boards/sof_sdw.c:219:6: error: ‘SOF_SSP_BT_OFFLOAD_PRESENT’ undeclared here (not in a function)
+  219 |      SOF_SSP_BT_OFFLOAD_PRESENT),
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: some warnings being treated as errors
+make[7]: *** [scripts/Makefile.build:286: sound/soc/intel/boards/sof_sdw.o] Error 1
 
-If we allow the limit to be set without returning a failure then we
-still have options 2 and 3 on how to deal with that. One of them is to
-enforce the limit.
-
--- 
-Michal Hocko
-SUSE Labs
+Regards,
+Salvatore
