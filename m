@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C45397A7E99
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 386817A7D18
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235602AbjITMTI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36376 "EHLO
+        id S234535AbjITMGh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:06:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235516AbjITMTI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:08 -0400
+        with ESMTP id S235173AbjITMGg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF1D3C2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB01BC433C8;
-        Wed, 20 Sep 2023 12:19:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5CAE128
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10094C433C7;
+        Wed, 20 Sep 2023 12:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212342;
-        bh=3LxB2RXChAtRWwb7AxgQQvlXCp3DL1/QJO0RxlOa8f8=;
+        s=korg; t=1695211585;
+        bh=g2fAzvVIAh9m1tSY26evVlhbFYLl2ySMboAYnuD0wlA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0AA+jG7+aXmFj21Ccyzfp5Vc7fdbkxGmDhDRlj2r4S4lCtu2M3sZjrR78Ac9dlsoA
-         CZ7wj64aEMtVm5FpK9pKCkUeDX/oIzk1xYBEGqNjLiS3bD+JRLEK+6tvS/w0Axsojz
-         5kIFa1R+I7Y59wPYAUKgfqUP+cQxeIG0uCvGKk2s=
+        b=FcPzh9G/TdAznS4qjzKYiIE6bfy9ArVv2s4/iw8/+NIT2F9g81K260NGBRUb7XHBY
+         RSJT2fWfE7IaPdX0/clXN0ctWXLlj3pGiDer0rMv5W4bW6fcG/ShUalIm0oEAm+BdR
+         awbh6Cf1OK+I1PaA4uNj3mNpi4y+O4HXrQo22a9Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Corinna Vinschen <vinschen@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 211/273] igb: disable virtualization features on 82580
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 4.14 148/186] parisc: Drop loops_per_jiffy from per_cpu struct
 Date:   Wed, 20 Sep 2023 13:30:51 +0200
-Message-ID: <20230920112852.989212481@linuxfoundation.org>
+Message-ID: <20230920112842.315123162@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +49,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corinna Vinschen <vinschen@redhat.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit fa09bc40b21a33937872c4c4cf0f266ec9fa4869 ]
+commit 93346da8ff47cc00f953c7f38a2d6ba11977fc42 upstream.
 
-Disable virtualization features on 82580 just as on i210/i211.
-This avoids that virt functions are acidentally called on 82850.
+There is no need to keep a loops_per_jiffy value per cpu. Drop it.
 
-Fixes: 55cac248caa4 ("igb: Add full support for 82580 devices")
-Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/parisc/include/asm/processor.h |    1 -
+ arch/parisc/kernel/processor.c      |    5 ++---
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 02a95d9f1100e..00d8f1e8177e7 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -3736,8 +3736,9 @@ static void igb_probe_vfs(struct igb_adapter *adapter)
- 	struct pci_dev *pdev = adapter->pdev;
- 	struct e1000_hw *hw = &adapter->hw;
+--- a/arch/parisc/include/asm/processor.h
++++ b/arch/parisc/include/asm/processor.h
+@@ -108,7 +108,6 @@ struct cpuinfo_parisc {
+ 	unsigned long cpu_loc;      /* CPU location from PAT firmware */
+ 	unsigned int state;
+ 	struct parisc_device *dev;
+-	unsigned long loops_per_jiffy;
+ };
  
--	/* Virtualization features not supported on i210 family. */
--	if ((hw->mac.type == e1000_i210) || (hw->mac.type == e1000_i211))
-+	/* Virtualization features not supported on i210 and 82580 family. */
-+	if ((hw->mac.type == e1000_i210) || (hw->mac.type == e1000_i211) ||
-+	    (hw->mac.type == e1000_82580))
- 		return;
+ extern struct system_cpuinfo_parisc boot_cpu_data;
+--- a/arch/parisc/kernel/processor.c
++++ b/arch/parisc/kernel/processor.c
+@@ -177,7 +177,6 @@ static int __init processor_probe(struct
+ 	if (cpuid)
+ 		memset(p, 0, sizeof(struct cpuinfo_parisc));
  
- 	/* Of the below we really only want the effect of getting
--- 
-2.40.1
-
+-	p->loops_per_jiffy = loops_per_jiffy;
+ 	p->dev = dev;		/* Save IODC data in case we need it */
+ 	p->hpa = dev->hpa.start;	/* save CPU hpa */
+ 	p->cpuid = cpuid;	/* save CPU id */
+@@ -429,8 +428,8 @@ show_cpuinfo (struct seq_file *m, void *
+ 		show_cache_info(m);
+ 
+ 		seq_printf(m, "bogomips\t: %lu.%02lu\n",
+-			     cpuinfo->loops_per_jiffy / (500000 / HZ),
+-			     (cpuinfo->loops_per_jiffy / (5000 / HZ)) % 100);
++			     loops_per_jiffy / (500000 / HZ),
++			     loops_per_jiffy / (5000 / HZ) % 100);
+ 
+ 		seq_printf(m, "software id\t: %ld\n\n",
+ 				boot_cpu_data.pdc.model.sw_id);
 
 
