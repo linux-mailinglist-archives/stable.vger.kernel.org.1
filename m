@@ -2,80 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B1487A8806
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 17:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51D547A8871
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 17:32:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234765AbjITPTC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 11:19:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60050 "EHLO
+        id S236596AbjITPdB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 11:33:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235369AbjITPS7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 11:18:59 -0400
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB1FEAD;
-        Wed, 20 Sep 2023 08:18:53 -0700 (PDT)
-Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-564af0ac494so5044412a12.0;
-        Wed, 20 Sep 2023 08:18:53 -0700 (PDT)
+        with ESMTP id S235241AbjITPdA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 11:33:00 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE64999
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 08:32:54 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1c4084803f1so204205ad.0
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 08:32:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695223133; x=1695827933; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uvIkPnTGjA9TvBMyuBkisN/scCEl8tlz0F2bE1tw4V8=;
-        b=eQ5Xp5+2chfD116Vt2cQmf3gXI6Ei6CDDCQBLhCWiyOzUvV+1Bvtl0qLjaP5t6mBkO
-         Uhg6N7hTF5hujdhCxxnE7ZqJj+c7dNdWS6R1HcpSrkCau8drsRn4XwAMUXY1uT7bM7Ha
-         1bPJL9CnTpTTkVzn905JqDNDpkECpYQepgerZygbjg923OVlChDIDxRUnAz6HkAyB8nc
-         0uwSrjLx/Qt287+/D3/ImkHtRVjb/DZR5aAb5quWjFs33sxLPCCMiwubaQh3uedU/gAM
-         ig+/c+BzZRRXeJ2Sh7OhoQ8M+PzNoNUNVf9Zai9Tnp/ED1vuWtiy2lNEquBrHkleeJQt
-         Mbgg==
+        d=google.com; s=20230601; t=1695223974; x=1695828774; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bdCXdOQ9nj5NwvgTMa99A9hiNmoB51uuqq4nZAsFZLE=;
+        b=FeTZkTZdgdvRK/xj3j8MB8V24yzekAdGAfDIc57WwHHWJtL3W7ujOaZz9TIiYqNEX6
+         opM/R5craN7khWrPzDeWrDtxfR0sEIur51bhztTqX6ck3MX/E9HSYP0riSgtBo1zRQ/9
+         ehDXpuJaJ8oNZEHp3znugADCSEUpUqShQFGT25D7Sy1TaiUyXTXIG/ZGF0pgas/b33K1
+         tKbVJpBJXCZd5vkOXdygxjGwaL/f59Yh0D/dpXhPrZJoq8A6NljIij1Bial6N5zPDccF
+         Druib8Qz9qiSGugOHDY48kKjx55p1kR7H2QPBJVf2aU5U+aeUbnmzaRJQGPEtef0dOJI
+         Zd5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695223133; x=1695827933;
-        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uvIkPnTGjA9TvBMyuBkisN/scCEl8tlz0F2bE1tw4V8=;
-        b=B07lwOUVlWsQNPORUs7ewqrrLsDNF3So8qm4HjAzweyUwpcddBvj80SMRB5+ZaTePz
-         xEC1KWoSP+LsfRT3UHObMDi4ie51vewnWhFsJL6wHlY+bmBfnhlEKcKqkn0S4lVyK1Un
-         Hm8OlX2ZQeN8fojTH2t1xmnxpHN5hx1b7dy8o1U8w2DgrrVDOZ74dpM2onTirjOLHNkg
-         MzHwiCY5umSmy/TCjl8bn7rwR9s39DvEFo8ehWOjV20f/pS4dPyxtmtJyyxBySfd/o8l
-         j+vPvzQSNG0gigbCD8/HtDWvIQdjMVu9tzUVX/h4coXXY2SsZeMZiQXky376i8vRWzZh
-         UDVA==
-X-Gm-Message-State: AOJu0Yw3ThX2+NFV1dtT/wjEKq+ptM8S7CEY34BsegepgaLiun3tan7M
-        XTrkMrW/vJrZpxKWcF99E+Khf91KRz8=
-X-Google-Smtp-Source: AGHT+IGCBsAwAwTXPdN9DNx7Pd57SrP01DlRc9rIKrwjQ1cHujamzucUqKtQzKLV8keq9QmyAS8Lwg==
-X-Received: by 2002:a05:6a20:552a:b0:140:c838:2b2e with SMTP id ko42-20020a056a20552a00b00140c8382b2emr2401423pzb.22.1695223133090;
-        Wed, 20 Sep 2023 08:18:53 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id n9-20020a17090a670900b002630c9d78aasm1460942pjj.5.2023.09.20.08.18.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Sep 2023 08:18:52 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <27f978f3-11ca-6054-5160-ab66d4c918bc@roeck-us.net>
-Date:   Wed, 20 Sep 2023 08:18:50 -0700
+        d=1e100.net; s=20230601; t=1695223974; x=1695828774;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bdCXdOQ9nj5NwvgTMa99A9hiNmoB51uuqq4nZAsFZLE=;
+        b=DnhO/fZOeVB22tB31bfFV1gx83ObPORszfzp+MspoMUho2n0dbf6OrHfpNO3DpGtTx
+         0jAGjoGy76jKNKCJXnjFQ1JzmElaX2vMMvcQRpH4uP2s1E6cx6kwyoqtAL5lP+KOCsSX
+         0LfkNxk0WPjBYADy7xMW5uNjRwQivCCvpR/p0eUo9c0Kh+YKayXshpQNXNdmyUW3yY8t
+         aZKN2zERRubE86rCwWSgTrD6q5V32I9GVhLvq04Z/v4t/d7kDV4CSf9PjN15bWgxAUyV
+         sxaGI/7El7yJ5jIIT6rwkvLDIhCuJa8lieYzOS2xaZpn6/tncUu4LqpPIvMguoyCpt3z
+         3GGA==
+X-Gm-Message-State: AOJu0YxbX7xDjjyEsWrpq4DMTT0AwOXUYxe3n3Wubk1mE4t8S3XUbxYb
+        R+g8f82aRLG/44c5HpRR4gO3klMUrkP6SGBCN3U82A==
+X-Google-Smtp-Source: AGHT+IG7jHv9mEJ9vDwu2rKaq8OA4qZgGZVHORBp0NC00eAtSWOs7zP67eILIjgFXrRNttx39BoMwKPfmWcjEmZ73Bs=
+X-Received: by 2002:a17:903:41c7:b0:1c4:21fe:2823 with SMTP id
+ u7-20020a17090341c700b001c421fe2823mr181043ple.13.1695223974038; Wed, 20 Sep
+ 2023 08:32:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kyle Zeng <zengyhkyle@gmail.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230917191101.035638219@linuxfoundation.org>
- <07a04540-554c-4394-1e79-46ea665f8c03@roeck-us.net>
- <2023092009-angriness-sank-ae4f@gregkh>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 5.10 000/406] 5.10.195-rc1 review
-In-Reply-To: <2023092009-angriness-sank-ae4f@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20230917191040.964416434@linuxfoundation.org> <20230917191042.204185566@linuxfoundation.org>
+ <20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz> <101987a1-b1ab-429d-af03-b6bdf6216474@linux.microsoft.com>
+ <ZQrSXh+riB7NnZuE@dhcp22.suse.cz> <4eb47d6a-b127-4aad-af30-896c3b9505b4@linux.microsoft.com>
+ <ZQr3+YfcBM2Er6F7@dhcp22.suse.cz>
+In-Reply-To: <ZQr3+YfcBM2Er6F7@dhcp22.suse.cz>
+From:   Shakeel Butt <shakeelb@google.com>
+Date:   Wed, 20 Sep 2023 08:32:42 -0700
+Message-ID: <CALvZod7E_Jm9y+40OKtLs5EFA0ptKGjoe2BU58SY29pUiPc93g@mail.gmail.com>
+Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop kmem.limit_in_bytes
+To:     Michal Hocko <mhocko@suse.com>
+Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        Tejun Heo <tj@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
+        mathieu.tortuyaux@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,66 +81,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/20/23 01:11, Greg Kroah-Hartman wrote:
-> On Tue, Sep 19, 2023 at 09:57:25PM -0700, Guenter Roeck wrote:
->> On 9/17/23 12:07, Greg Kroah-Hartman wrote:
->>> This is the start of the stable review cycle for the 5.10.195 release.
->>> There are 406 patches in this series, all will be posted as a response
->>> to this one.  If anyone has any issues with these being applied, please
->>> let me know.
->>>
->>> Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
->>> Anything received after that time might be too late.
->>>
->>
->> chromeos-5.10 locks up in configfs_lookup() after the merge of v5.10.195.
->>
->> I am a bit puzzled because I see
->>
->> c709c7ca020a configfs: fix a race in configfs_lookup()
->>
->> in v5.10.195 but not in the list of commits below. I guess I must be
->> missing something.
-> 
-> It was part of the big patchset, it was posted here:
-> 	https://lore.kernel.org/r/20230917191101.511939651@linuxfoundation.org
-> 
-> Not hidden at all :)
-> 
-> and was submitted here:
-> 	https://lore.kernel.org/r/ZPOZFHHA0abVmGx+@westworld
-> 
->> Either case, the code now looks as follows.
->>
->> configfs_lookup()
->> {
->>      ...
->>      spin_lock(&configfs_dirent_lock);
->>      ...
->>          err = configfs_attach_attr(sd, dentry);
->>      ...
->>      spin_unlock(&configfs_dirent_lock);
->>      ...
->> }
->>
->> and
->>
->> configfs_attach_attr(...)
->> {
->>      ...
->>      spin_lock(&configfs_dirent_lock);
->>      ...
->> }
->>
->> which unless it is way too late here and I really need to go to sleep
->> just won't work.
-> 
-> Kyle, you did the backport, any comments?
-> 
+On Wed, Sep 20, 2023 at 6:47=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrot=
+e:
+>
+> On Wed 20-09-23 15:25:23, Jeremi Piotrowski wrote:
+> > On 9/20/2023 1:07 PM, Michal Hocko wrote:
+> [...]
+> > > I mean, normally I would be just fine reverting this API change becau=
+se
+> > > it is disruptive but the only way to have the file available and not
+> > > break somebody is to revert 58056f77502f ("memcg, kmem: further
+> > > deprecate kmem.limit_in_bytes") as well. Or to ignore any value writt=
+en
+> > > there but that sounds rather dubious. Although one could argue this
+> > > would mimic nokmem kernel option.
+> > >
+> >
+> > I just want to make sure we don't introduce yet another new behavior in=
+ this legacy
+> > system. I have not seen breakage due to 58056f77502f. Mimicing nokmem s=
+ounds good but
+> > does this mean "don't enforce limits" (that should be fine) or "ignore =
+writes to the limit"
+> > (=3Ddon't event store the written limit). The latter might have uninten=
+ded consequences.
+>
+> Yes it would mean that the limit is never enforced. Bad as it is the
+> thing is that the hard limit on kernel memory is broken by design and
+> unfixable.  This causes all sorts of unexpected kernel allocation
+> failures that this is simply unsafe to use.
+>
+> All that being said I can see the following options
+> 1) keep the current upstream status and not export the file
+> 2) revert both 58056f77502f and 86327e8eb94 and make it clear
+>    that kmem.limit_in_bytes is unsupported so failures or misbehavior
+>    as a result of the limit being hit are likely not going to be
+>    investigated or fixed.
+> 3) reverting like in 2) but never inforce the limit (so basically nokmem
+>    semantic)
+>
+> Shakeel, Johannes, Roman, Muchun Song what do you think?
 
-After a good night sleep, the code still looks wrong to me. Reverting
-the offending patch in chromeos-5.10 solved the problem there.
-That makes me suspect that no one actually tests configfs.
+I think the safe option would be to revert 86327e8eb94 for now and put
+pr_warn_once even for the read of kmem.limit_in_bytes? We can retry
+86327e8eb94 in a year or so.
 
-Guenter
-
+However personally I would prefer option 1. Also I don't think
+reverting  58056f77502f would give any benefit.
