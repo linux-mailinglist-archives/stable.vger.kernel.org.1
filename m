@@ -2,44 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D70ED7A7E3C
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 256137A7CEC
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235472AbjITMQa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:16:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34388 "EHLO
+        id S235205AbjITMF1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:05:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235565AbjITMQW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:16:22 -0400
+        with ESMTP id S235270AbjITME4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:04:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF3CCC9
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:16:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33FBC433CC;
-        Wed, 20 Sep 2023 12:16:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAF7892
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:04:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2CBC433C7;
+        Wed, 20 Sep 2023 12:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212166;
-        bh=bOEABJEfJZ2BcVjKvIMby2RO7uv0NjZm1PDO+S236Kk=;
+        s=korg; t=1695211490;
+        bh=syhYMwahSrPDUV32qORrCk8bvljjwYAp4cQi+FfWhFk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=anexjQZlW5WXm1c2jKZW8NVyaJHsSZ59FzI6HBls9701XTApKgIGD9RPKOt2x50eP
-         PxWDxc1mdGIz1gLj0tSwZ70W6dAC5GxVBWB/c1HtAW9Q6nTtSjCk7/hvmbo/OB3pu6
-         D4h/TkcUREfwmCro0l7jAGUKB73k7A4prVUDO6ZQ=
+        b=iH/AZATzgqjuAmBQn0HHVN4j3N0J7aTZnJoqiiVnrf7R+NA9QTmRePBX8xKT70dtr
+         Y9IhUdqsF1JUULxJMPXgJc5X80HthGYbqVyCs6LwZEcFMM1TkltaW15G8Zox/zCK56
+         rXElFkjjS1CCEw7uXZbLLKoDd2QACNqYU6t8U0ZQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 4.19 176/273] backlight/bd6107: Compare against struct fb_info.device
+        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
+        Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 4.14 113/186] procfs: block chmod on /proc/thread-self/comm
 Date:   Wed, 20 Sep 2023 13:30:16 +0200
-Message-ID: <20230920112851.955152216@linuxfoundation.org>
+Message-ID: <20230920112841.111575161@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,52 +49,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Aleksa Sarai <cyphar@cyphar.com>
 
-commit 992bdddaabfba19bdc77c1c7a4977b2aa41ec891 upstream.
+commit ccf61486fe1e1a48e18c638d1813cda77b3c0737 upstream.
 
-Struct bd6107_platform_data refers to a platform device within
-the Linux device hierarchy. The test in bd6107_backlight_check_fb()
-compares it against the fbdev device in struct fb_info.dev, which
-is different. Fix the test by comparing to struct fb_info.device.
+Due to an oversight in commit 1b3044e39a89 ("procfs: fix pthread
+cross-thread naming if !PR_DUMPABLE") in switching from REG to NOD,
+chmod operations on /proc/thread-self/comm were no longer blocked as
+they are on almost all other procfs files.
 
-Fixes a bug in the backlight driver and prepares fbdev for making
-struct fb_info.dev optional.
+A very similar situation with /proc/self/environ was used to as a root
+exploit a long time ago, but procfs has SB_I_NOEXEC so this is simply a
+correctness issue.
 
-v2:
-	* move renames into separate patch (Javier, Sam, Michael)
-
-Fixes: 67b43e590415 ("backlight: Add ROHM BD6107 backlight driver")
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.12+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-2-tzimmermann@suse.de
+Ref: https://lwn.net/Articles/191954/
+Ref: 6d76fa58b050 ("Don't allow chmod() on the /proc/<pid>/ files")
+Fixes: 1b3044e39a89 ("procfs: fix pthread cross-thread naming if !PR_DUMPABLE")
+Cc: stable@vger.kernel.org # v4.7+
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Message-Id: <20230713141001.27046-1-cyphar@cyphar.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/bd6107.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/base.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/video/backlight/bd6107.c
-+++ b/drivers/video/backlight/bd6107.c
-@@ -110,7 +110,7 @@ static int bd6107_backlight_check_fb(str
- {
- 	struct bd6107 *bd = bl_get_data(backlight);
- 
--	return bd->pdata->fbdev == NULL || bd->pdata->fbdev == info->dev;
-+	return bd->pdata->fbdev == NULL || bd->pdata->fbdev == info->device;
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -3335,7 +3335,8 @@ static int proc_tid_comm_permission(stru
  }
  
- static const struct backlight_ops bd6107_backlight_ops = {
+ static const struct inode_operations proc_tid_comm_inode_operations = {
+-		.permission = proc_tid_comm_permission,
++		.setattr	= proc_setattr,
++		.permission	= proc_tid_comm_permission,
+ };
+ 
+ /*
 
 
