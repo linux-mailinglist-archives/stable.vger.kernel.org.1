@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72E0A7A7FCB
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B0977A7DB5
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:11:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235863AbjITMai (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:30:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37310 "EHLO
+        id S235369AbjITMLj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:11:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235951AbjITMag (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:30:36 -0400
+        with ESMTP id S235410AbjITMLh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:11:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB5A99
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:30:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7415C433C8;
-        Wed, 20 Sep 2023 12:30:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F5FAFB
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:11:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC135C433C8;
+        Wed, 20 Sep 2023 12:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213030;
-        bh=+Rq05fCK4SXTinzeZp0nCcum570U1BUzrJCHu0P5/ek=;
+        s=korg; t=1695211888;
+        bh=vukZFeq21dUfQA8lr0mMtuQdOi/JVGiNAcE9BPH/LL8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XIrk6XW/hxNYyqBMnA7HXRMGaxg4J/PKa0eMQThZ/i1Miz4tLCplOft5hS9X/1TCI
-         aep6wmDexnBh+HU+WeUVtE0FKZQrwsnnnc+yLkcKMuee27AzjIG12bhIzlAHlXZVsl
-         fyjfbdcfNQCbuLQRFLw7d6jiPAOVtltUdFeqPeQU=
+        b=YrmA+P7ygjt5oaTd8J0bKIHBit+bPJpJpMUiJmrTpfT7Lg1TdzUDDAZiJTy6yzYmr
+         1u9IOOCvTJxVlM6HhlBrZeEVeRD7T4zqWl8euLqMAiqsyH3eaVtuSCS/eC7CAV3hqo
+         SpgWdUboh+rkj0R9EAxyqaFk7L484M6/tPt82FSg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 135/367] drm/amdgpu: Correct Transmit Margin masks
-Date:   Wed, 20 Sep 2023 13:28:32 +0200
-Message-ID: <20230920112902.191129042@linuxfoundation.org>
+        patches@lists.linux.dev, Chengguang Xu <cgxu519@zoho.com.cn>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 073/273] quota: avoid increasing DQST_LOOKUPS when iterating over dirty/inuse list
+Date:   Wed, 20 Sep 2023 13:28:33 +0200
+Message-ID: <20230920112848.716766950@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,75 +49,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Chengguang Xu <cgxu519@zoho.com.cn>
 
-[ Upstream commit 19d7a95a8ba66b198f759cf610cc935ce9840d5b ]
+[ Upstream commit 05848db2083d4f232e84e385845dcd98d5c511b2 ]
 
-Previously we masked PCIe Link Control 2 register values with "7 << 9",
-which was apparently intended to be the Transmit Margin field, but instead
-was the high order bit of Transmit Margin, the Enter Modified Compliance
-bit, and the Compliance SOS bit.
+It is meaningless to increase DQST_LOOKUPS number while iterating
+over dirty/inuse list, so just avoid it.
 
-Correct the mask to "7 << 7", which is the Transmit Margin field.
-
-Link: https://lore.kernel.org/r/20191112173503.176611-3-helgaas@kernel.org
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: ce7d88110b9e ("drm/amdgpu: Use RMW accessors for changing LNKCTL")
+Link: https://lore.kernel.org/r/20190926083408.4269-1-cgxu519@zoho.com.cn
+Signed-off-by: Chengguang Xu <cgxu519@zoho.com.cn>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Stable-dep-of: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/cik.c | 8 ++++----
- drivers/gpu/drm/amd/amdgpu/si.c  | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ fs/quota/dquot.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/cik.c b/drivers/gpu/drm/amd/amdgpu/cik.c
-index b81bb414fcb30..13a5696d2a6a2 100644
---- a/drivers/gpu/drm/amd/amdgpu/cik.c
-+++ b/drivers/gpu/drm/amd/amdgpu/cik.c
-@@ -1498,13 +1498,13 @@ static void cik_pcie_gen3_enable(struct amdgpu_device *adev)
- 
- 				/* linkctl2 */
- 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
--				tmp16 &= ~((1 << 4) | (7 << 9));
--				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 9)));
-+				tmp16 &= ~((1 << 4) | (7 << 7));
-+				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 7)));
- 				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
- 
- 				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
--				tmp16 &= ~((1 << 4) | (7 << 9));
--				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 9)));
-+				tmp16 &= ~((1 << 4) | (7 << 7));
-+				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 7)));
- 				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
- 
- 				tmp = RREG32_PCIE(ixPCIE_LC_CNTL4);
-diff --git a/drivers/gpu/drm/amd/amdgpu/si.c b/drivers/gpu/drm/amd/amdgpu/si.c
-index 493af42152f26..1e350172dc7bb 100644
---- a/drivers/gpu/drm/amd/amdgpu/si.c
-+++ b/drivers/gpu/drm/amd/amdgpu/si.c
-@@ -1737,13 +1737,13 @@ static void si_pcie_gen3_enable(struct amdgpu_device *adev)
- 				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL, tmp16);
- 
- 				pci_read_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, &tmp16);
--				tmp16 &= ~((1 << 4) | (7 << 9));
--				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 9)));
-+				tmp16 &= ~((1 << 4) | (7 << 7));
-+				tmp16 |= (bridge_cfg2 & ((1 << 4) | (7 << 7)));
- 				pci_write_config_word(root, bridge_pos + PCI_EXP_LNKCTL2, tmp16);
- 
- 				pci_read_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, &tmp16);
--				tmp16 &= ~((1 << 4) | (7 << 9));
--				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 9)));
-+				tmp16 &= ~((1 << 4) | (7 << 7));
-+				tmp16 |= (gpu_cfg2 & ((1 << 4) | (7 << 7)));
- 				pci_write_config_word(adev->pdev, gpu_pos + PCI_EXP_LNKCTL2, tmp16);
- 
- 				tmp = RREG32_PCIE_PORT(PCIE_LC_CNTL4);
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 01bec330d54b1..50aaa5b0706e8 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -594,7 +594,6 @@ int dquot_scan_active(struct super_block *sb,
+ 		/* Now we have active dquot so we can just increase use count */
+ 		atomic_inc(&dquot->dq_count);
+ 		spin_unlock(&dq_list_lock);
+-		dqstats_inc(DQST_LOOKUPS);
+ 		dqput(old_dquot);
+ 		old_dquot = dquot;
+ 		/*
+@@ -649,7 +648,6 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+ 			 * use count */
+ 			dqgrab(dquot);
+ 			spin_unlock(&dq_list_lock);
+-			dqstats_inc(DQST_LOOKUPS);
+ 			err = sb->dq_op->write_dquot(dquot);
+ 			if (err) {
+ 				/*
 -- 
 2.40.1
 
