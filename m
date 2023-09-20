@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FE997A7F26
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 833D67A7ECD
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235730AbjITMYc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:24:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33744 "EHLO
+        id S235585AbjITMUw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:20:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235708AbjITMYb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:31 -0400
+        with ESMTP id S235624AbjITMUt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:20:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCAC8AD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F424C433C8;
-        Wed, 20 Sep 2023 12:24:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFC7092
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA4AC433CC;
+        Wed, 20 Sep 2023 12:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212665;
-        bh=W9aYsUqC28UuyhNfHa537r4iFDsQF95qgKsswMbWJFw=;
+        s=korg; t=1695212443;
+        bh=UijdsYDybt68L4rw5E0JkbDFN6BMsna7ov1oF0gz518=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2bYe4s1KWGhBgptagTEtc1Jmt1FEg2Mf7vs0kT/cDwTD6OZk0eRQGruCph2sQN6Yz
-         HvN6UyLnAYxG1jN6FskjoozxJO0ycgyv40FzJpACBfTqvlryNve9mE50L4/nxa6oD6
-         NgiEOufm8yrFMwdAamnGPerHBr7BefaIDqR6PjBo=
+        b=vF5v/6mgppJwjnW+cO5IVtX2HJxYZoWDTTUmOPIISM4594dJ9HHOWpEc31HiD7DlF
+         5GJN+xukxnJM/Zcv1wHG/a3Kvl0l4tjmJWaG/CcvjGTMiILljbHSKYVT8iWPMmACRV
+         +2+L5RF+U4wNH0IWAY4SDqzHax6LPxD1METkx218=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 59/83] drm: gm12u320: Fix the timeout usage for usb_bulk_msg()
+        patches@lists.linux.dev,
+        syzbot+a379155f07c134ea9879@syzkaller.appspotmail.com,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 4.19 269/273] btrfs: fix lockdep splat and potential deadlock after failure running delayed items
 Date:   Wed, 20 Sep 2023 13:31:49 +0200
-Message-ID: <20230920112828.990111524@linuxfoundation.org>
+Message-ID: <20230920112854.532688409@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-References: <20230920112826.634178162@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +51,192 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 7583028d359db3cd0072badcc576b4f9455fd27a ]
+commit e110f8911ddb93e6f55da14ccbbe705397b30d0b upstream.
 
-The timeout arg of usb_bulk_msg() is ms already, which has been converted
-to jiffies by msecs_to_jiffies() in usb_start_wait_urb(). So fix the usage
-by removing the redundant msecs_to_jiffies() in the macros.
+When running delayed items we are holding a delayed node's mutex and then
+we will attempt to modify a subvolume btree to insert/update/delete the
+delayed items. However if have an error during the insertions for example,
+btrfs_insert_delayed_items() may return with a path that has locked extent
+buffers (a leaf at the very least), and then we attempt to release the
+delayed node at __btrfs_run_delayed_items(), which requires taking the
+delayed node's mutex, causing an ABBA type of deadlock. This was reported
+by syzbot and the lockdep splat is the following:
 
-And as Hans suggested, also remove msecs_to_jiffies() for the IDLE_TIMEOUT
-macro to make it consistent here and so change IDLE_TIMEOUT to
-msecs_to_jiffies(IDLE_TIMEOUT) where it is used.
+  WARNING: possible circular locking dependency detected
+  6.5.0-rc7-syzkaller-00024-g93f5de5f648d #0 Not tainted
+  ------------------------------------------------------
+  syz-executor.2/13257 is trying to acquire lock:
+  ffff88801835c0c0 (&delayed_node->mutex){+.+.}-{3:3}, at: __btrfs_release_delayed_node+0x9a/0xaa0 fs/btrfs/delayed-inode.c:256
 
-Fixes: e4f86e437164 ("drm: Add Grain Media GM12U320 driver v2")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230904021421.1663892-1-ruanjinjie@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  but task is already holding lock:
+  ffff88802a5ab8e8 (btrfs-tree-00){++++}-{3:3}, at: __btrfs_tree_lock+0x3c/0x2a0 fs/btrfs/locking.c:198
+
+  which lock already depends on the new lock.
+
+  the existing dependency chain (in reverse order) is:
+
+  -> #1 (btrfs-tree-00){++++}-{3:3}:
+         __lock_release kernel/locking/lockdep.c:5475 [inline]
+         lock_release+0x36f/0x9d0 kernel/locking/lockdep.c:5781
+         up_write+0x79/0x580 kernel/locking/rwsem.c:1625
+         btrfs_tree_unlock_rw fs/btrfs/locking.h:189 [inline]
+         btrfs_unlock_up_safe+0x179/0x3b0 fs/btrfs/locking.c:239
+         search_leaf fs/btrfs/ctree.c:1986 [inline]
+         btrfs_search_slot+0x2511/0x2f80 fs/btrfs/ctree.c:2230
+         btrfs_insert_empty_items+0x9c/0x180 fs/btrfs/ctree.c:4376
+         btrfs_insert_delayed_item fs/btrfs/delayed-inode.c:746 [inline]
+         btrfs_insert_delayed_items fs/btrfs/delayed-inode.c:824 [inline]
+         __btrfs_commit_inode_delayed_items+0xd24/0x2410 fs/btrfs/delayed-inode.c:1111
+         __btrfs_run_delayed_items+0x1db/0x430 fs/btrfs/delayed-inode.c:1153
+         flush_space+0x269/0xe70 fs/btrfs/space-info.c:723
+         btrfs_async_reclaim_metadata_space+0x106/0x350 fs/btrfs/space-info.c:1078
+         process_one_work+0x92c/0x12c0 kernel/workqueue.c:2600
+         worker_thread+0xa63/0x1210 kernel/workqueue.c:2751
+         kthread+0x2b8/0x350 kernel/kthread.c:389
+         ret_from_fork+0x2e/0x60 arch/x86/kernel/process.c:145
+         ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+
+  -> #0 (&delayed_node->mutex){+.+.}-{3:3}:
+         check_prev_add kernel/locking/lockdep.c:3142 [inline]
+         check_prevs_add kernel/locking/lockdep.c:3261 [inline]
+         validate_chain kernel/locking/lockdep.c:3876 [inline]
+         __lock_acquire+0x39ff/0x7f70 kernel/locking/lockdep.c:5144
+         lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5761
+         __mutex_lock_common+0x1d8/0x2530 kernel/locking/mutex.c:603
+         __mutex_lock kernel/locking/mutex.c:747 [inline]
+         mutex_lock_nested+0x1b/0x20 kernel/locking/mutex.c:799
+         __btrfs_release_delayed_node+0x9a/0xaa0 fs/btrfs/delayed-inode.c:256
+         btrfs_release_delayed_node fs/btrfs/delayed-inode.c:281 [inline]
+         __btrfs_run_delayed_items+0x2b5/0x430 fs/btrfs/delayed-inode.c:1156
+         btrfs_commit_transaction+0x859/0x2ff0 fs/btrfs/transaction.c:2276
+         btrfs_sync_file+0xf56/0x1330 fs/btrfs/file.c:1988
+         vfs_fsync_range fs/sync.c:188 [inline]
+         vfs_fsync fs/sync.c:202 [inline]
+         do_fsync fs/sync.c:212 [inline]
+         __do_sys_fsync fs/sync.c:220 [inline]
+         __se_sys_fsync fs/sync.c:218 [inline]
+         __x64_sys_fsync+0x196/0x1e0 fs/sync.c:218
+         do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+         do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+         entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+  other info that might help us debug this:
+
+   Possible unsafe locking scenario:
+
+         CPU0                    CPU1
+         ----                    ----
+    lock(btrfs-tree-00);
+                                 lock(&delayed_node->mutex);
+                                 lock(btrfs-tree-00);
+    lock(&delayed_node->mutex);
+
+   *** DEADLOCK ***
+
+  3 locks held by syz-executor.2/13257:
+   #0: ffff88802c1ee370 (btrfs_trans_num_writers){++++}-{0:0}, at: spin_unlock include/linux/spinlock.h:391 [inline]
+   #0: ffff88802c1ee370 (btrfs_trans_num_writers){++++}-{0:0}, at: join_transaction+0xb87/0xe00 fs/btrfs/transaction.c:287
+   #1: ffff88802c1ee398 (btrfs_trans_num_extwriters){++++}-{0:0}, at: join_transaction+0xbb2/0xe00 fs/btrfs/transaction.c:288
+   #2: ffff88802a5ab8e8 (btrfs-tree-00){++++}-{3:3}, at: __btrfs_tree_lock+0x3c/0x2a0 fs/btrfs/locking.c:198
+
+  stack backtrace:
+  CPU: 0 PID: 13257 Comm: syz-executor.2 Not tainted 6.5.0-rc7-syzkaller-00024-g93f5de5f648d #0
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+  Call Trace:
+   <TASK>
+   __dump_stack lib/dump_stack.c:88 [inline]
+   dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+   check_noncircular+0x375/0x4a0 kernel/locking/lockdep.c:2195
+   check_prev_add kernel/locking/lockdep.c:3142 [inline]
+   check_prevs_add kernel/locking/lockdep.c:3261 [inline]
+   validate_chain kernel/locking/lockdep.c:3876 [inline]
+   __lock_acquire+0x39ff/0x7f70 kernel/locking/lockdep.c:5144
+   lock_acquire+0x1e3/0x520 kernel/locking/lockdep.c:5761
+   __mutex_lock_common+0x1d8/0x2530 kernel/locking/mutex.c:603
+   __mutex_lock kernel/locking/mutex.c:747 [inline]
+   mutex_lock_nested+0x1b/0x20 kernel/locking/mutex.c:799
+   __btrfs_release_delayed_node+0x9a/0xaa0 fs/btrfs/delayed-inode.c:256
+   btrfs_release_delayed_node fs/btrfs/delayed-inode.c:281 [inline]
+   __btrfs_run_delayed_items+0x2b5/0x430 fs/btrfs/delayed-inode.c:1156
+   btrfs_commit_transaction+0x859/0x2ff0 fs/btrfs/transaction.c:2276
+   btrfs_sync_file+0xf56/0x1330 fs/btrfs/file.c:1988
+   vfs_fsync_range fs/sync.c:188 [inline]
+   vfs_fsync fs/sync.c:202 [inline]
+   do_fsync fs/sync.c:212 [inline]
+   __do_sys_fsync fs/sync.c:220 [inline]
+   __se_sys_fsync fs/sync.c:218 [inline]
+   __x64_sys_fsync+0x196/0x1e0 fs/sync.c:218
+   do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+   do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  RIP: 0033:0x7f3ad047cae9
+  Code: 28 00 00 00 75 (...)
+  RSP: 002b:00007f3ad12510c8 EFLAGS: 00000246 ORIG_RAX: 000000000000004a
+  RAX: ffffffffffffffda RBX: 00007f3ad059bf80 RCX: 00007f3ad047cae9
+  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000005
+  RBP: 00007f3ad04c847a R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  R13: 000000000000000b R14: 00007f3ad059bf80 R15: 00007ffe56af92f8
+   </TASK>
+  ------------[ cut here ]------------
+
+Fix this by releasing the path before releasing the delayed node in the
+error path at __btrfs_run_delayed_items().
+
+Reported-by: syzbot+a379155f07c134ea9879@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/000000000000abba27060403b5bd@google.com/
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/gm12u320.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/btrfs/delayed-inode.c |   19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/tiny/gm12u320.c b/drivers/gpu/drm/tiny/gm12u320.c
-index 0f5d1e598d75f..1656f3ee0b193 100644
---- a/drivers/gpu/drm/tiny/gm12u320.c
-+++ b/drivers/gpu/drm/tiny/gm12u320.c
-@@ -67,10 +67,10 @@ MODULE_PARM_DESC(eco_mode, "Turn on Eco mode (less bright, more silent)");
- #define READ_STATUS_SIZE		13
- #define MISC_VALUE_SIZE			4
+--- a/fs/btrfs/delayed-inode.c
++++ b/fs/btrfs/delayed-inode.c
+@@ -1171,20 +1171,33 @@ static int __btrfs_run_delayed_items(str
+ 		ret = __btrfs_commit_inode_delayed_items(trans, path,
+ 							 curr_node);
+ 		if (ret) {
+-			btrfs_release_delayed_node(curr_node);
+-			curr_node = NULL;
+ 			btrfs_abort_transaction(trans, ret);
+ 			break;
+ 		}
  
--#define CMD_TIMEOUT			msecs_to_jiffies(200)
--#define DATA_TIMEOUT			msecs_to_jiffies(1000)
--#define IDLE_TIMEOUT			msecs_to_jiffies(2000)
--#define FIRST_FRAME_TIMEOUT		msecs_to_jiffies(2000)
-+#define CMD_TIMEOUT			200
-+#define DATA_TIMEOUT			1000
-+#define IDLE_TIMEOUT			2000
-+#define FIRST_FRAME_TIMEOUT		2000
+ 		prev_node = curr_node;
+ 		curr_node = btrfs_next_delayed_node(curr_node);
++		/*
++		 * See the comment below about releasing path before releasing
++		 * node. If the commit of delayed items was successful the path
++		 * should always be released, but in case of an error, it may
++		 * point to locked extent buffers (a leaf at the very least).
++		 */
++		ASSERT(path->nodes[0] == NULL);
+ 		btrfs_release_delayed_node(prev_node);
+ 	}
  
- #define MISC_REQ_GET_SET_ECO_A		0xff
- #define MISC_REQ_GET_SET_ECO_B		0x35
-@@ -399,7 +399,7 @@ static void gm12u320_fb_update_work(struct work_struct *work)
- 	 * switches back to showing its logo.
- 	 */
- 	queue_delayed_work(system_long_wq, &gm12u320->fb_update.work,
--			   IDLE_TIMEOUT);
-+			   msecs_to_jiffies(IDLE_TIMEOUT));
++	/*
++	 * Release the path to avoid a potential deadlock and lockdep splat when
++	 * releasing the delayed node, as that requires taking the delayed node's
++	 * mutex. If another task starts running delayed items before we take
++	 * the mutex, it will first lock the mutex and then it may try to lock
++	 * the same btree path (leaf).
++	 */
++	btrfs_free_path(path);
++
+ 	if (curr_node)
+ 		btrfs_release_delayed_node(curr_node);
+-	btrfs_free_path(path);
+ 	trans->block_rsv = block_rsv;
  
- 	return;
- err:
--- 
-2.40.1
-
+ 	return ret;
 
 
