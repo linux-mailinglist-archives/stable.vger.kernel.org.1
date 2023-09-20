@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2FF07A7E75
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3875D7A7D1F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:06:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235586AbjITMSE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:18:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
+        id S234555AbjITMGt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:06:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235579AbjITMSD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:18:03 -0400
+        with ESMTP id S235160AbjITMGt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:06:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A4EE8
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:17:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 835E1C433CB;
-        Wed, 20 Sep 2023 12:17:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 832D6DD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:06:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5E6C433CA;
+        Wed, 20 Sep 2023 12:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212268;
-        bh=KU79ytpd8WHCx5HqB+2AuFXW5VaDtPNEIGMsbGLUh34=;
+        s=korg; t=1695211596;
+        bh=qW8ptWzZzzKu6KU8wssYYiNKLXFxQranB3Ke9sU/z98=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HePbV43VKH3ivbZbdOBB4oRNRpulkbXweN95fjQXV4HbCSYGMQGv8YuBdWwgPiH19
-         FfsccFczxht+GRL63V/AzBV4JNPq2ehzalfbG7XJE763uVWE5xI4R0lsowD4lfUIVh
-         9mvtWO5DfWfY1krX3MSAnlFjY9L04pnWJ2buLpPQ=
+        b=w6OTw5gxBxcFo/5GHofdRn6I9F/qesw8orJQGlvKQikVuT81Pka187pS2KwvfrdUf
+         1ZioeKJjyAgCpAq+hVHWPwraAm0xOo8Wi/CDMM2KCqTtIqdO7GplQ8levnEZJD16sj
+         DIdyaHkaifVzO+pKXwiYsCzwI3ze8O+nulpwq6x4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Willy Tarreau <w@1wt.eu>, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Abhishek Mainkar <abmainkar@nvidia.com>,
+        Bob Moore <robert.moore@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 214/273] af_unix: Fix data-races around user->unix_inflight.
+Subject: [PATCH 4.14 151/186] ACPICA: Add AML_NO_OPERAND_RESOLVE flag to Timer
 Date:   Wed, 20 Sep 2023 13:30:54 +0200
-Message-ID: <20230920112853.070100912@linuxfoundation.org>
+Message-ID: <20230920112842.417464572@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112836.799946261@linuxfoundation.org>
+References: <20230920112836.799946261@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,107 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Abhishek Mainkar <abmainkar@nvidia.com>
 
-[ Upstream commit 0bc36c0650b21df36fbec8136add83936eaf0607 ]
+[ Upstream commit 3a21ffdbc825e0919db9da0e27ee5ff2cc8a863e ]
 
-user->unix_inflight is changed under spin_lock(unix_gc_lock),
-but too_many_unix_fds() reads it locklessly.
+ACPICA commit 90310989a0790032f5a0140741ff09b545af4bc5
 
-Let's annotate the write/read accesses to user->unix_inflight.
+According to the ACPI specification 19.6.134, no argument is required to be passed for ASL Timer instruction. For taking care of no argument, AML_NO_OPERAND_RESOLVE flag is added to ASL Timer instruction opcode.
 
-BUG: KCSAN: data-race in unix_attach_fds / unix_inflight
+When ASL timer instruction interpreted by ACPI interpreter, getting error. After adding AML_NO_OPERAND_RESOLVE flag to ASL Timer instruction opcode, issue is not observed.
 
-write to 0xffffffff8546f2d0 of 8 bytes by task 44798 on cpu 1:
- unix_inflight+0x157/0x180 net/unix/scm.c:66
- unix_attach_fds+0x147/0x1e0 net/unix/scm.c:123
- unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
- unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
- unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
- unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
- sock_sendmsg_nosec net/socket.c:725 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:748
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
- __sys_sendmsg+0x94/0x140 net/socket.c:2577
- __do_sys_sendmsg net/socket.c:2586 [inline]
- __se_sys_sendmsg net/socket.c:2584 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+=============================================================
+UBSAN: array-index-out-of-bounds in acpica/dswexec.c:401:12 index -1 is out of range for type 'union acpi_operand_object *[9]'
+CPU: 37 PID: 1678 Comm: cat Not tainted
+6.0.0-dev-th500-6.0.y-1+bcf8c46459e407-generic-64k
+HW name: NVIDIA BIOS v1.1.1-d7acbfc-dirty 12/19/2022 Call trace:
+ dump_backtrace+0xe0/0x130
+ show_stack+0x20/0x60
+ dump_stack_lvl+0x68/0x84
+ dump_stack+0x18/0x34
+ ubsan_epilogue+0x10/0x50
+ __ubsan_handle_out_of_bounds+0x80/0x90
+ acpi_ds_exec_end_op+0x1bc/0x6d8
+ acpi_ps_parse_loop+0x57c/0x618
+ acpi_ps_parse_aml+0x1e0/0x4b4
+ acpi_ps_execute_method+0x24c/0x2b8
+ acpi_ns_evaluate+0x3a8/0x4bc
+ acpi_evaluate_object+0x15c/0x37c
+ acpi_evaluate_integer+0x54/0x15c
+ show_power+0x8c/0x12c [acpi_power_meter]
 
-read to 0xffffffff8546f2d0 of 8 bytes by task 44814 on cpu 0:
- too_many_unix_fds net/unix/scm.c:101 [inline]
- unix_attach_fds+0x54/0x1e0 net/unix/scm.c:110
- unix_scm_to_skb net/unix/af_unix.c:1827 [inline]
- unix_dgram_sendmsg+0x46a/0x14f0 net/unix/af_unix.c:1950
- unix_seqpacket_sendmsg net/unix/af_unix.c:2308 [inline]
- unix_seqpacket_sendmsg+0xba/0x130 net/unix/af_unix.c:2292
- sock_sendmsg_nosec net/socket.c:725 [inline]
- sock_sendmsg+0x148/0x160 net/socket.c:748
- ____sys_sendmsg+0x4e4/0x610 net/socket.c:2494
- ___sys_sendmsg+0xc6/0x140 net/socket.c:2548
- __sys_sendmsg+0x94/0x140 net/socket.c:2577
- __do_sys_sendmsg net/socket.c:2586 [inline]
- __se_sys_sendmsg net/socket.c:2584 [inline]
- __x64_sys_sendmsg+0x45/0x50 net/socket.c:2584
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-value changed: 0x000000000000000c -> 0x000000000000000d
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 44814 Comm: systemd-coredum Not tainted 6.4.0-11989-g6843306689af #6
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 712f4aad406b ("unix: properly account for FDs passed over unix sockets")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Willy Tarreau <w@1wt.eu>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://github.com/acpica/acpica/commit/90310989
+Signed-off-by: Abhishek Mainkar <abmainkar@nvidia.com>
+Signed-off-by: Bob Moore <robert.moore@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/scm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/acpica/psopcode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/unix/scm.c b/net/unix/scm.c
-index a07b2efbf8b5e..ac206bfdbbe3c 100644
---- a/net/unix/scm.c
-+++ b/net/unix/scm.c
-@@ -59,7 +59,7 @@ void unix_inflight(struct user_struct *user, struct file *fp)
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
- 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight + 1);
- 	}
--	user->unix_inflight++;
-+	WRITE_ONCE(user->unix_inflight, user->unix_inflight + 1);
- 	spin_unlock(&unix_gc_lock);
- }
+diff --git a/drivers/acpi/acpica/psopcode.c b/drivers/acpi/acpica/psopcode.c
+index a402ad772a1e5..c561d35d441bb 100644
+--- a/drivers/acpi/acpica/psopcode.c
++++ b/drivers/acpi/acpica/psopcode.c
+@@ -637,7 +637,7 @@ const struct acpi_opcode_info acpi_gbl_aml_op_info[AML_NUM_OPCODES] = {
  
-@@ -80,7 +80,7 @@ void unix_notinflight(struct user_struct *user, struct file *fp)
- 		/* Paired with READ_ONCE() in wait_for_unix_gc() */
- 		WRITE_ONCE(unix_tot_inflight, unix_tot_inflight - 1);
- 	}
--	user->unix_inflight--;
-+	WRITE_ONCE(user->unix_inflight, user->unix_inflight - 1);
- 	spin_unlock(&unix_gc_lock);
- }
+ /* 7E */ ACPI_OP("Timer", ARGP_TIMER_OP, ARGI_TIMER_OP, ACPI_TYPE_ANY,
+ 			 AML_CLASS_EXECUTE, AML_TYPE_EXEC_0A_0T_1R,
+-			 AML_FLAGS_EXEC_0A_0T_1R),
++			 AML_FLAGS_EXEC_0A_0T_1R | AML_NO_OPERAND_RESOLVE),
  
-@@ -94,7 +94,7 @@ static inline bool too_many_unix_fds(struct task_struct *p)
- {
- 	struct user_struct *user = current_user();
+ /* ACPI 5.0 opcodes */
  
--	if (unlikely(user->unix_inflight > task_rlimit(p, RLIMIT_NOFILE)))
-+	if (unlikely(READ_ONCE(user->unix_inflight) > task_rlimit(p, RLIMIT_NOFILE)))
- 		return !capable(CAP_SYS_RESOURCE) && !capable(CAP_SYS_ADMIN);
- 	return false;
- }
 -- 
 2.40.1
 
