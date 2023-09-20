@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B98077A7C07
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12BFA7A7B5C
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234933AbjITL53 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:57:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58032 "EHLO
+        id S234676AbjITLv1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:51:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235099AbjITL5W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:22 -0400
+        with ESMTP id S234697AbjITLv0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E65718F
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC63C433C9;
-        Wed, 20 Sep 2023 11:57:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81627F4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6222C433B8;
+        Wed, 20 Sep 2023 11:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211030;
-        bh=SRL3JpW3qqCZzJfXLCUv2wcFejI8RjU7NmvOGhFp98s=;
+        s=korg; t=1695210679;
+        bh=KSIiGgRM0LBEgmUUTtrAzG4Iz2d9EKc6tHK5lqpgQcI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DuV2xNlOPsFCe1/PKGv8Zyw+BsJksOP8I8F4l+tItrhixFH36k7BcTTt3JLs3zDeh
-         y3hPi/uVe65YeGxYauoENNV6mY3U+AYtg2EBnQMCePc7CoqQnJ1LhKhQPjCPHepstQ
-         qNkziqgMFHMEATKIAGJWBaOiLnkuFDiGJxER8QiM=
+        b=qsGrsJx31wBs5oWLzJpUDsPwdqxHR0UpGcIRqjEMD7pgpc98yx8hvh6vzugoj5Qus
+         k3PuxS/8bvPJm4Qdaums1u/wo7PBDMsRCfuNAvHJrFpgwGw+Qo9Xg/ik1nfG+CIIHC
+         yCluZ8TjtUoI+D+Oikyx8FO19K+0ejilBE5huNzU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiaolei Wang <xiaolei.wang@windriver.com>,
-        Peter Chen <peter.chen@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/139] usb: cdns3: Put the cdns set active part outside the spin lock
+        patches@lists.linux.dev, Nigel Croxon <ncroxon@redhat.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 165/211] md/raid1: fix error: ISO C90 forbids mixed declarations
 Date:   Wed, 20 Sep 2023 13:30:09 +0200
-Message-ID: <20230920112838.476829956@linuxfoundation.org>
+Message-ID: <20230920112851.002611645@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,145 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Nigel Croxon <ncroxon@redhat.com>
 
-[ Upstream commit 2319b9c87fe243327285f2fefd7374ffd75a65fc ]
+[ Upstream commit df203da47f4428bc286fc99318936416253a321c ]
 
-The device may be scheduled during the resume process,
-so this cannot appear in atomic operations. Since
-pm_runtime_set_active will resume suppliers, put set
-active outside the spin lock, which is only used to
-protect the struct cdns data structure, otherwise the
-kernel will report the following warning:
+There is a compile error when this commit is added:
+md: raid1: fix potential OOB in raid1_remove_disk()
 
-  BUG: sleeping function called from invalid context at drivers/base/power/runtime.c:1163
-  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 651, name: sh
-  preempt_count: 1, expected: 0
-  RCU nest depth: 0, expected: 0
-  CPU: 0 PID: 651 Comm: sh Tainted: G        WC         6.1.20 #1
-  Hardware name: Freescale i.MX8QM MEK (DT)
-  Call trace:
-    dump_backtrace.part.0+0xe0/0xf0
-    show_stack+0x18/0x30
-    dump_stack_lvl+0x64/0x80
-    dump_stack+0x1c/0x38
-    __might_resched+0x1fc/0x240
-    __might_sleep+0x68/0xc0
-    __pm_runtime_resume+0x9c/0xe0
-    rpm_get_suppliers+0x68/0x1b0
-    __pm_runtime_set_status+0x298/0x560
-    cdns_resume+0xb0/0x1c0
-    cdns3_controller_resume.isra.0+0x1e0/0x250
-    cdns3_plat_resume+0x28/0x40
+drivers/md/raid1.c: In function 'raid1_remove_disk':
+drivers/md/raid1.c:1844:9: error: ISO C90 forbids mixed declarations
+and code [-Werror=declaration-after-statement]
+1844 |         struct raid1_info *p = conf->mirrors + number;
+     |         ^~~~~~
 
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20230616021952.1025854-1-xiaolei.wang@windriver.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+That's because the new code was inserted before the struct.
+The change is move the struct command above this commit.
+
+Fixes: 8b0472b50bcf ("md: raid1: fix potential OOB in raid1_remove_disk()")
+Signed-off-by: Nigel Croxon <ncroxon@redhat.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/46d929d0-2aab-4cf2-b2bf-338963e8ba5a@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-plat.c |  3 ++-
- drivers/usb/cdns3/cdnsp-pci.c  |  3 ++-
- drivers/usb/cdns3/core.c       | 15 +++++++++++----
- drivers/usb/cdns3/core.h       |  7 +++++--
- 4 files changed, 20 insertions(+), 8 deletions(-)
+ drivers/md/raid1.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/usb/cdns3/cdns3-plat.c b/drivers/usb/cdns3/cdns3-plat.c
-index 2bc5d094548b6..726b2e4f67e4d 100644
---- a/drivers/usb/cdns3/cdns3-plat.c
-+++ b/drivers/usb/cdns3/cdns3-plat.c
-@@ -256,9 +256,10 @@ static int cdns3_controller_resume(struct device *dev, pm_message_t msg)
- 	cdns3_set_platform_suspend(cdns->dev, false, false);
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 80aeee63dfb78..a60acd72210aa 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1829,12 +1829,11 @@ static int raid1_remove_disk(struct mddev *mddev, struct md_rdev *rdev)
+ 	struct r1conf *conf = mddev->private;
+ 	int err = 0;
+ 	int number = rdev->raid_disk;
++	struct raid1_info *p = conf->mirrors + number;
  
- 	spin_lock_irqsave(&cdns->lock, flags);
--	cdns_resume(cdns, !PMSG_IS_AUTO(msg));
-+	cdns_resume(cdns);
- 	cdns->in_lpm = false;
- 	spin_unlock_irqrestore(&cdns->lock, flags);
-+	cdns_set_active(cdns, !PMSG_IS_AUTO(msg));
- 	if (cdns->wakeup_pending) {
- 		cdns->wakeup_pending = false;
- 		enable_irq(cdns->wakeup_irq);
-diff --git a/drivers/usb/cdns3/cdnsp-pci.c b/drivers/usb/cdns3/cdnsp-pci.c
-index 29f433c5a6f3f..a85db23fa19f2 100644
---- a/drivers/usb/cdns3/cdnsp-pci.c
-+++ b/drivers/usb/cdns3/cdnsp-pci.c
-@@ -210,8 +210,9 @@ static int __maybe_unused cdnsp_pci_resume(struct device *dev)
- 	int ret;
+ 	if (unlikely(number >= conf->raid_disks))
+ 		goto abort;
  
- 	spin_lock_irqsave(&cdns->lock, flags);
--	ret = cdns_resume(cdns, 1);
-+	ret = cdns_resume(cdns);
- 	spin_unlock_irqrestore(&cdns->lock, flags);
-+	cdns_set_active(cdns, 1);
+-	struct raid1_info *p = conf->mirrors + number;
+-
+ 	if (rdev != p->rdev)
+ 		p = conf->mirrors + conf->raid_disks + number;
  
- 	return ret;
- }
-diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index dbcdf3b24b477..7b20d2d5c262e 100644
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -522,9 +522,8 @@ int cdns_suspend(struct cdns *cdns)
- }
- EXPORT_SYMBOL_GPL(cdns_suspend);
- 
--int cdns_resume(struct cdns *cdns, u8 set_active)
-+int cdns_resume(struct cdns *cdns)
- {
--	struct device *dev = cdns->dev;
- 	enum usb_role real_role;
- 	bool role_changed = false;
- 	int ret = 0;
-@@ -556,15 +555,23 @@ int cdns_resume(struct cdns *cdns, u8 set_active)
- 	if (cdns->roles[cdns->role]->resume)
- 		cdns->roles[cdns->role]->resume(cdns, cdns_power_is_lost(cdns));
- 
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(cdns_resume);
-+
-+void cdns_set_active(struct cdns *cdns, u8 set_active)
-+{
-+	struct device *dev = cdns->dev;
-+
- 	if (set_active) {
- 		pm_runtime_disable(dev);
- 		pm_runtime_set_active(dev);
- 		pm_runtime_enable(dev);
- 	}
- 
--	return 0;
-+	return;
- }
--EXPORT_SYMBOL_GPL(cdns_resume);
-+EXPORT_SYMBOL_GPL(cdns_set_active);
- #endif /* CONFIG_PM_SLEEP */
- 
- MODULE_AUTHOR("Peter Chen <peter.chen@nxp.com>");
-diff --git a/drivers/usb/cdns3/core.h b/drivers/usb/cdns3/core.h
-index 2d332a788871e..4a4dbc2c15615 100644
---- a/drivers/usb/cdns3/core.h
-+++ b/drivers/usb/cdns3/core.h
-@@ -125,10 +125,13 @@ int cdns_init(struct cdns *cdns);
- int cdns_remove(struct cdns *cdns);
- 
- #ifdef CONFIG_PM_SLEEP
--int cdns_resume(struct cdns *cdns, u8 set_active);
-+int cdns_resume(struct cdns *cdns);
- int cdns_suspend(struct cdns *cdns);
-+void cdns_set_active(struct cdns *cdns, u8 set_active);
- #else /* CONFIG_PM_SLEEP */
--static inline int cdns_resume(struct cdns *cdns, u8 set_active)
-+static inline int cdns_resume(struct cdns *cdns)
-+{ return 0; }
-+static inline int cdns_set_active(struct cdns *cdns, u8 set_active)
- { return 0; }
- static inline int cdns_suspend(struct cdns *cdns)
- { return 0; }
 -- 
 2.40.1
 
