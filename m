@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 006A07A80B6
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BAF57A7EE9
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:21:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234722AbjITMk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:40:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32772 "EHLO
+        id S235636AbjITMV5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:21:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236120AbjITMjl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:39:41 -0400
+        with ESMTP id S234630AbjITMV4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282E7137
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:39:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB2EC433CC;
-        Wed, 20 Sep 2023 12:39:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FE5FCA
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:21:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A449AC433C7;
+        Wed, 20 Sep 2023 12:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213558;
-        bh=4lPzXCtNT94OWHky/5+DeZDyLX6NcB1TB4MGZ74IQ9s=;
+        s=korg; t=1695212509;
+        bh=pA4i2nlgU5+O6P1XPELUzGK2FBBrB8uY0tTPksl1Grk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hfkvrGPFe+9C2Bsp1SqBM7OdG5yaJiwtbao75WYNu+hhKFOqhsokImOcMPI9Hrfu9
-         H5QDn4JGeE/p/jGv2bniMnI7bc36u/N+XAV951r7uI/EB5SYjVrFsPCBHYWQPBoEyL
-         8i4MNGD/GDbDnDdNJ0ZXu/2BswqdKpkrGLVaBnwY=
+        b=h1HhaURj0Bwz0EPt6TFjMO8KqbaaFOYNHaVuwy/3Dvfq5ZSX64PCztP+rHLk7tdls
+         qigN3pYM0G2G94XTTK0I09jIZIH+tt6J8jVum7W1908N6NLoKIg2G4624kDgw4QCPX
+         WjqF6dcqE0WFhzWqxU7+wjBnIwwYN6qdz90JbTCM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 282/367] btrfs: dont start transaction when joining with TRANS_JOIN_NOSTART
+        patches@lists.linux.dev, Yicong Yang <yangyicong@hisilicon.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 09/83] perf/smmuv3: Enable HiSilicon Erratum 162001900 quirk for HIP08/09
 Date:   Wed, 20 Sep 2023 13:30:59 +0200
-Message-ID: <20230920112905.864100438@linuxfoundation.org>
+Message-ID: <20230920112827.023874380@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,47 +49,164 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-commit 4490e803e1fe9fab8db5025e44e23b55df54078b upstream.
+[ Upstream commit 0242737dc4eb9f6e9a5ea594b3f93efa0b12f28d ]
 
-When joining a transaction with TRANS_JOIN_NOSTART, if we don't find a
-running transaction we end up creating one. This goes against the purpose
-of TRANS_JOIN_NOSTART which is to join a running transaction if its state
-is at or below the state TRANS_STATE_COMMIT_START, otherwise return an
--ENOENT error and don't start a new transaction. So fix this to not create
-a new transaction if there's no running transaction at or below that
-state.
+Some HiSilicon SMMU PMCG suffers the erratum 162001900 that the PMU
+disable control sometimes fail to disable the counters. This will lead
+to error or inaccurate data since before we enable the counters the
+counter's still counting for the event used in last perf session.
 
-CC: stable@vger.kernel.org # 4.14+
-Fixes: a6d155d2e363 ("Btrfs: fix deadlock between fiemap and transaction commits")
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch tries to fix this by hardening the global disable process.
+Before disable the PMU, writing an invalid event type (0xffff) to
+focibly stop the counters. Correspondingly restore each events on
+pmu::pmu_enable().
+
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20230814124012.58013-1-yangyicong@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ Documentation/arm64/silicon-errata.rst |  3 ++
+ drivers/acpi/arm64/iort.c              |  5 ++-
+ drivers/perf/arm_smmuv3_pmu.c          | 46 +++++++++++++++++++++++++-
+ include/linux/acpi_iort.h              |  1 +
+ 4 files changed, 53 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -190,10 +190,11 @@ loop:
- 	spin_unlock(&fs_info->trans_lock);
+diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
+index 4f3206495217c..10a26d44ef4a9 100644
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -149,6 +149,9 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
++| Hisilicon      | Hip08 SMMU PMCG | #162001900      | N/A                         |
++|                | Hip09 SMMU PMCG |                 |                             |
+++----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
+ +----------------+-----------------+-----------------+-----------------------------+
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 50ed949dc1449..554943be26984 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1474,7 +1474,10 @@ static void __init arm_smmu_v3_pmcg_init_resources(struct resource *res,
+ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
+ 	/* HiSilicon Hip08 Platform */
+ 	{"HISI  ", "HIP08   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+-	 "Erratum #162001800", IORT_SMMU_V3_PMCG_HISI_HIP08},
++	 "Erratum #162001800, Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP08},
++	/* HiSilicon Hip09 Platform */
++	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+ 	{ }
+ };
  
- 	/*
--	 * If we are ATTACH, we just want to catch the current transaction,
--	 * and commit it. If there is no transaction, just return ENOENT.
-+	 * If we are ATTACH or TRANS_JOIN_NOSTART, we just want to catch the
-+	 * current transaction, and commit it. If there is no transaction, just
-+	 * return ENOENT.
- 	 */
--	if (type == TRANS_ATTACH)
-+	if (type == TRANS_ATTACH || type == TRANS_JOIN_NOSTART)
- 		return -ENOENT;
+diff --git a/drivers/perf/arm_smmuv3_pmu.c b/drivers/perf/arm_smmuv3_pmu.c
+index f5a33dbe7acb9..6ebe72b862661 100644
+--- a/drivers/perf/arm_smmuv3_pmu.c
++++ b/drivers/perf/arm_smmuv3_pmu.c
+@@ -95,6 +95,7 @@
+ #define SMMU_PMCG_PA_SHIFT              12
  
- 	/*
+ #define SMMU_PMCG_EVCNTR_RDONLY         BIT(0)
++#define SMMU_PMCG_HARDEN_DISABLE        BIT(1)
+ 
+ static int cpuhp_state_num;
+ 
+@@ -138,6 +139,20 @@ static inline void smmu_pmu_enable(struct pmu *pmu)
+ 	writel(SMMU_PMCG_CR_ENABLE, smmu_pmu->reg_base + SMMU_PMCG_CR);
+ }
+ 
++static int smmu_pmu_apply_event_filter(struct smmu_pmu *smmu_pmu,
++				       struct perf_event *event, int idx);
++
++static inline void smmu_pmu_enable_quirk_hip08_09(struct pmu *pmu)
++{
++	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
++	unsigned int idx;
++
++	for_each_set_bit(idx, smmu_pmu->used_counters, smmu_pmu->num_counters)
++		smmu_pmu_apply_event_filter(smmu_pmu, smmu_pmu->events[idx], idx);
++
++	smmu_pmu_enable(pmu);
++}
++
+ static inline void smmu_pmu_disable(struct pmu *pmu)
+ {
+ 	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
+@@ -146,6 +161,22 @@ static inline void smmu_pmu_disable(struct pmu *pmu)
+ 	writel(0, smmu_pmu->reg_base + SMMU_PMCG_IRQ_CTRL);
+ }
+ 
++static inline void smmu_pmu_disable_quirk_hip08_09(struct pmu *pmu)
++{
++	struct smmu_pmu *smmu_pmu = to_smmu_pmu(pmu);
++	unsigned int idx;
++
++	/*
++	 * The global disable of PMU sometimes fail to stop the counting.
++	 * Harden this by writing an invalid event type to each used counter
++	 * to forcibly stop counting.
++	 */
++	for_each_set_bit(idx, smmu_pmu->used_counters, smmu_pmu->num_counters)
++		writel(0xffff, smmu_pmu->reg_base + SMMU_PMCG_EVTYPER(idx));
++
++	smmu_pmu_disable(pmu);
++}
++
+ static inline void smmu_pmu_counter_set_value(struct smmu_pmu *smmu_pmu,
+ 					      u32 idx, u64 value)
+ {
+@@ -719,7 +750,10 @@ static void smmu_pmu_get_acpi_options(struct smmu_pmu *smmu_pmu)
+ 	switch (model) {
+ 	case IORT_SMMU_V3_PMCG_HISI_HIP08:
+ 		/* HiSilicon Erratum 162001800 */
+-		smmu_pmu->options |= SMMU_PMCG_EVCNTR_RDONLY;
++		smmu_pmu->options |= SMMU_PMCG_EVCNTR_RDONLY | SMMU_PMCG_HARDEN_DISABLE;
++		break;
++	case IORT_SMMU_V3_PMCG_HISI_HIP09:
++		smmu_pmu->options |= SMMU_PMCG_HARDEN_DISABLE;
+ 		break;
+ 	}
+ 
+@@ -806,6 +840,16 @@ static int smmu_pmu_probe(struct platform_device *pdev)
+ 
+ 	smmu_pmu_get_acpi_options(smmu_pmu);
+ 
++	/*
++	 * For platforms suffer this quirk, the PMU disable sometimes fails to
++	 * stop the counters. This will leads to inaccurate or error counting.
++	 * Forcibly disable the counters with these quirk handler.
++	 */
++	if (smmu_pmu->options & SMMU_PMCG_HARDEN_DISABLE) {
++		smmu_pmu->pmu.pmu_enable = smmu_pmu_enable_quirk_hip08_09;
++		smmu_pmu->pmu.pmu_disable = smmu_pmu_disable_quirk_hip08_09;
++	}
++
+ 	/* Pick one CPU to be the preferred one to use */
+ 	smmu_pmu->on_cpu = raw_smp_processor_id();
+ 	WARN_ON(irq_set_affinity_hint(smmu_pmu->irq,
+diff --git a/include/linux/acpi_iort.h b/include/linux/acpi_iort.h
+index 1a12baa58e409..136dba94c646f 100644
+--- a/include/linux/acpi_iort.h
++++ b/include/linux/acpi_iort.h
+@@ -21,6 +21,7 @@
+  */
+ #define IORT_SMMU_V3_PMCG_GENERIC        0x00000000 /* Generic SMMUv3 PMCG */
+ #define IORT_SMMU_V3_PMCG_HISI_HIP08     0x00000001 /* HiSilicon HIP08 PMCG */
++#define IORT_SMMU_V3_PMCG_HISI_HIP09     0x00000002 /* HiSilicon HIP09 PMCG */
+ 
+ int iort_register_domain_token(int trans_id, phys_addr_t base,
+ 			       struct fwnode_handle *fw_node);
+-- 
+2.40.1
+
 
 
