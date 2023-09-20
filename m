@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0987F7A8154
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A2967A80D2
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:40:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236298AbjITMo2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:44:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37260 "EHLO
+        id S236125AbjITMkj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:40:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236257AbjITMo1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:44:27 -0400
+        with ESMTP id S235999AbjITMk2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:40:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E60E6B4
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:44:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386A7C433C7;
-        Wed, 20 Sep 2023 12:44:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C23CD83
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:40:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07198C433C7;
+        Wed, 20 Sep 2023 12:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213860;
-        bh=aAChA0yigzvpAErtnEWizH5nBG2pTmIRYBO+y12Xt3w=;
+        s=korg; t=1695213622;
+        bh=Q535MoCnuPmvM++C8hrHGqSRgJDRJ014jFHWm5Lty4Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qC+AvCfqJ3tkzibjHkRgsDVNt7J6Nlk8WzjfdnFKtft4bvmJpOUetr1YIpusf3Odo
-         n/iA/CzNc4GldESrdpOKn3tTGWxDQLaiZvVHO5MaKgB/apzV8uKeVcNv+vSQmRJE2H
-         wksCMQUUk0s+iJWFXYXhMQnkmpHM+mFvrnsJLIsQ=
+        b=fWKrJvM0IY1VkeJ4iYnezoLlJM4ZM8RGTn9zFoeOQkMzrnj0+UiE8Yo3jPx0FoSMy
+         6FHK43U3s5Fj37yXFUywgvHTj+UiV88/y13xQtn3MAjI0PKNSqoor+RXg1hm1Gp9kX
+         EwI0GacZIJzJqFknnJIbvSm2iKwwQtX7EZ4Z83Bc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "GONG, Ruiqi" <gongruiqi1@huawei.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>, GONG@vger.kernel.org
-Subject: [PATCH 5.15 024/110] netfilter: ebtables: fix fortify warnings in size_entry_mwt()
+        patches@lists.linux.dev, Liu Jian <liujian56@huawei.com>,
+        Sabrina Dubroca <sd@queasysnail.net>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 305/367] net/tls: do not free tls_rec on async operation in bpf_exec_tx_verdict()
 Date:   Wed, 20 Sep 2023 13:31:22 +0200
-Message-ID: <20230920112831.299395660@linuxfoundation.org>
+Message-ID: <20230920112906.442926723@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
-References: <20230920112830.377666128@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,83 +51,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: GONG, Ruiqi <gongruiqi1@huawei.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit a7ed3465daa240bdf01a5420f64336fee879c09d ]
+[ Upstream commit cfaa80c91f6f99b9342b6557f0f0e1143e434066 ]
 
-When compiling with gcc 13 and CONFIG_FORTIFY_SOURCE=y, the following
-warning appears:
+I got the below warning when do fuzzing test:
+BUG: KASAN: null-ptr-deref in scatterwalk_copychunks+0x320/0x470
+Read of size 4 at addr 0000000000000008 by task kworker/u8:1/9
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘size_entry_mwt’ at net/bridge/netfilter/ebtables.c:2118:2:
-./include/linux/fortify-string.h:592:25: error: call to ‘__read_overflow2_field’
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Werror=attribute-warning]
-  592 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CPU: 0 PID: 9 Comm: kworker/u8:1 Tainted: G           OE
+Hardware name: linux,dummy-virt (DT)
+Workqueue: pencrypt_parallel padata_parallel_worker
+Call trace:
+ dump_backtrace+0x0/0x420
+ show_stack+0x34/0x44
+ dump_stack+0x1d0/0x248
+ __kasan_report+0x138/0x140
+ kasan_report+0x44/0x6c
+ __asan_load4+0x94/0xd0
+ scatterwalk_copychunks+0x320/0x470
+ skcipher_next_slow+0x14c/0x290
+ skcipher_walk_next+0x2fc/0x480
+ skcipher_walk_first+0x9c/0x110
+ skcipher_walk_aead_common+0x380/0x440
+ skcipher_walk_aead_encrypt+0x54/0x70
+ ccm_encrypt+0x13c/0x4d0
+ crypto_aead_encrypt+0x7c/0xfc
+ pcrypt_aead_enc+0x28/0x84
+ padata_parallel_worker+0xd0/0x2dc
+ process_one_work+0x49c/0xbdc
+ worker_thread+0x124/0x880
+ kthread+0x210/0x260
+ ret_from_fork+0x10/0x18
 
-The compiler is complaining:
+This is because the value of rec_seq of tls_crypto_info configured by the
+user program is too large, for example, 0xffffffffffffff. In addition, TLS
+is asynchronously accelerated. When tls_do_encryption() returns
+-EINPROGRESS and sk->sk_err is set to EBADMSG due to rec_seq overflow,
+skmsg is released before the asynchronous encryption process ends. As a
+result, the UAF problem occurs during the asynchronous processing of the
+encryption module.
 
-memcpy(&offsets[1], &entry->watchers_offset,
-                       sizeof(offsets) - sizeof(offsets[0]));
+If the operation is asynchronous and the encryption module returns
+EINPROGRESS, do not free the record information.
 
-where memcpy reads beyong &entry->watchers_offset to copy
-{watchers,target,next}_offset altogether into offsets[]. Silence the
-warning by wrapping these three up via struct_group().
-
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 635d93981786 ("net/tls: free record only on encryption error")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/20230909081434.2324940-1-liujian56@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/netfilter_bridge/ebtables.h | 14 ++++++++------
- net/bridge/netfilter/ebtables.c                |  3 +--
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ net/tls/tls_sw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/netfilter_bridge/ebtables.h b/include/uapi/linux/netfilter_bridge/ebtables.h
-index a494cf43a7552..b0caad82b6937 100644
---- a/include/uapi/linux/netfilter_bridge/ebtables.h
-+++ b/include/uapi/linux/netfilter_bridge/ebtables.h
-@@ -182,12 +182,14 @@ struct ebt_entry {
- 	unsigned char sourcemsk[ETH_ALEN];
- 	unsigned char destmac[ETH_ALEN];
- 	unsigned char destmsk[ETH_ALEN];
--	/* sizeof ebt_entry + matches */
--	unsigned int watchers_offset;
--	/* sizeof ebt_entry + matches + watchers */
--	unsigned int target_offset;
--	/* sizeof ebt_entry + matches + watchers + target */
--	unsigned int next_offset;
-+	__struct_group(/* no tag */, offsets, /* no attrs */,
-+		/* sizeof ebt_entry + matches */
-+		unsigned int watchers_offset;
-+		/* sizeof ebt_entry + matches + watchers */
-+		unsigned int target_offset;
-+		/* sizeof ebt_entry + matches + watchers + target */
-+		unsigned int next_offset;
-+	);
- 	unsigned char elems[0] __attribute__ ((aligned (__alignof__(struct ebt_replace))));
- };
- 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index a09b2fc11c80e..c0389199c0dcb 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -2114,8 +2114,7 @@ static int size_entry_mwt(const struct ebt_entry *entry, const unsigned char *ba
- 		return ret;
- 
- 	offsets[0] = sizeof(struct ebt_entry); /* matches come first */
--	memcpy(&offsets[1], &entry->watchers_offset,
--			sizeof(offsets) - sizeof(offsets[0]));
-+	memcpy(&offsets[1], &entry->offsets, sizeof(entry->offsets));
- 
- 	if (state->buf_kern_start) {
- 		buf_start = state->buf_kern_start + state->buf_kern_offset;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index f4091fba4c722..62bc7e5c58e53 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -807,7 +807,7 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 	psock = sk_psock_get(sk);
+ 	if (!psock || !policy) {
+ 		err = tls_push_record(sk, flags, record_type);
+-		if (err && sk->sk_err == EBADMSG) {
++		if (err && err != -EINPROGRESS && sk->sk_err == EBADMSG) {
+ 			*copied -= sk_msg_free(sk, msg);
+ 			tls_free_open_rec(sk);
+ 			err = -sk->sk_err;
+@@ -836,7 +836,7 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 	switch (psock->eval) {
+ 	case __SK_PASS:
+ 		err = tls_push_record(sk, flags, record_type);
+-		if (err && sk->sk_err == EBADMSG) {
++		if (err && err != -EINPROGRESS && sk->sk_err == EBADMSG) {
+ 			*copied -= sk_msg_free(sk, msg);
+ 			tls_free_open_rec(sk);
+ 			err = -sk->sk_err;
 -- 
 2.40.1
 
