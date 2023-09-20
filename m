@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B82527A7C19
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 556D07A7B97
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235003AbjITL56 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49022 "EHLO
+        id S234779AbjITLxi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:53:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234987AbjITL55 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:57 -0400
+        with ESMTP id S234778AbjITLxh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF9DC2
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF24FC433C8;
-        Wed, 20 Sep 2023 11:57:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34826CE
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F30C433C8;
+        Wed, 20 Sep 2023 11:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211071;
-        bh=aTe3aYHJpMErQl9nLOlwP5+qC0Zz9ckDR14B387/OHE=;
+        s=korg; t=1695210811;
+        bh=3FXbHG5XTst+mKgJnSW7ImAFOyynUu+H5zuqFuz9h8E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gtn0duR2H4R3nAoMK3LnDS39yfHa+2wYO2j4Xw6DeKjXtNcPpowq+i7qomPLHSuS1
-         PYgG2daxd6XRKq31OtYSnWNHEAVkjUqQMcaOE4DGUlOOfU4wHXJ4kTxJRMQMJjkJ62
-         +Um8gZzLhFmRDRDOlbF+Ec7L+jBwHLh4YQPLc45c=
+        b=OKpJt6sXPEq1hI6JsyUSp6lzwqd0zd+vIluF61kicgDO0KKhoN5NGdGQsaaPUbkoj
+         89vYfrKXJj6JHtrsCZ1MTA2xvlzLq8fCYxQfMpaAq5I4y4PegsF3tJM/UlTdj1Uz8t
+         A/SmSKvzD48yUV62UkePiu721wrFkC/wJun9a4zE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/139] drm: gm12u320: Fix the timeout usage for usb_bulk_msg()
+        patches@lists.linux.dev, Tero Kristo <tero.kristo@linux.intel.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.5 187/211] tracing/synthetic: Print out u64 values properly
 Date:   Wed, 20 Sep 2023 13:30:31 +0200
-Message-ID: <20230920112839.204916808@linuxfoundation.org>
+Message-ID: <20230920112851.670295143@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +49,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Tero Kristo <tero.kristo@linux.intel.com>
 
-[ Upstream commit 7583028d359db3cd0072badcc576b4f9455fd27a ]
+commit 62663b849662c1a5126b6274d91671b90566ef13 upstream.
 
-The timeout arg of usb_bulk_msg() is ms already, which has been converted
-to jiffies by msecs_to_jiffies() in usb_start_wait_urb(). So fix the usage
-by removing the redundant msecs_to_jiffies() in the macros.
+The synth traces incorrectly print pointer to the synthetic event values
+instead of the actual value when using u64 type. Fix by addressing the
+contents of the union properly.
 
-And as Hans suggested, also remove msecs_to_jiffies() for the IDLE_TIMEOUT
-macro to make it consistent here and so change IDLE_TIMEOUT to
-msecs_to_jiffies(IDLE_TIMEOUT) where it is used.
+Link: https://lore.kernel.org/linux-trace-kernel/20230911141704.3585965-1-tero.kristo@linux.intel.com
 
-Fixes: e4f86e437164 ("drm: Add Grain Media GM12U320 driver v2")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230904021421.1663892-1-ruanjinjie@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ddeea494a16f ("tracing/synthetic: Use union instead of casts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tero Kristo <tero.kristo@linux.intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/gm12u320.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ kernel/trace/trace_events_synth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tiny/gm12u320.c b/drivers/gpu/drm/tiny/gm12u320.c
-index 7441d992a5d7a..8b0a9059d3fdd 100644
---- a/drivers/gpu/drm/tiny/gm12u320.c
-+++ b/drivers/gpu/drm/tiny/gm12u320.c
-@@ -69,10 +69,10 @@ MODULE_PARM_DESC(eco_mode, "Turn on Eco mode (less bright, more silent)");
- #define READ_STATUS_SIZE		13
- #define MISC_VALUE_SIZE			4
+diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+index 9897d0bfcab7..14cb275a0bab 100644
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -337,7 +337,7 @@ static void print_synth_event_num_val(struct trace_seq *s,
+ 		break;
  
--#define CMD_TIMEOUT			msecs_to_jiffies(200)
--#define DATA_TIMEOUT			msecs_to_jiffies(1000)
--#define IDLE_TIMEOUT			msecs_to_jiffies(2000)
--#define FIRST_FRAME_TIMEOUT		msecs_to_jiffies(2000)
-+#define CMD_TIMEOUT			200
-+#define DATA_TIMEOUT			1000
-+#define IDLE_TIMEOUT			2000
-+#define FIRST_FRAME_TIMEOUT		2000
- 
- #define MISC_REQ_GET_SET_ECO_A		0xff
- #define MISC_REQ_GET_SET_ECO_B		0x35
-@@ -388,7 +388,7 @@ static void gm12u320_fb_update_work(struct work_struct *work)
- 	 * switches back to showing its logo.
- 	 */
- 	queue_delayed_work(system_long_wq, &gm12u320->fb_update.work,
--			   IDLE_TIMEOUT);
-+			   msecs_to_jiffies(IDLE_TIMEOUT));
- 
- 	return;
- err:
+ 	default:
+-		trace_seq_printf(s, print_fmt, name, val, space);
++		trace_seq_printf(s, print_fmt, name, val->as_u64, space);
+ 		break;
+ 	}
+ }
 -- 
-2.40.1
+2.42.0
 
 
 
