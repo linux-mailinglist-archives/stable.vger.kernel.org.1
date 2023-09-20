@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D87DA7A7B95
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37A0B7A7C17
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234772AbjITLxe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:53:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54604 "EHLO
+        id S234901AbjITL5y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234769AbjITLxc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:53:32 -0400
+        with ESMTP id S234987AbjITL5w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9042492
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:53:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDFBC433C8;
-        Wed, 20 Sep 2023 11:53:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4794DC6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA7CC433C9;
+        Wed, 20 Sep 2023 11:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210806;
-        bh=AeuKo47GmHnPnoasCjD9P4PdGssduLsocNvcMgccMEk=;
+        s=korg; t=1695211065;
+        bh=D3PtxeoaE60brmsBwFAxzL4FcJuRQQNerCaLTK8Oi40=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TtrGZcl+T0TgIZyNGO/oRmOvLW25cRAiqn5P9KYSja4yTxK2teCs4A3UVQ6uPpDvT
-         PeMBkOoif5dFl9knw0Lui6OdPSoHkoiFU7BxSaxh5CgFUoRYQPgbiA5rkTz59WL97F
-         sPHZP0B5U2E8jCYe7sxJQoUBMRc/nSG/evZt66YA=
+        b=L84ucu66/r0Y4h9Bei1oHV0boUtBT61smTICtG+vuPbcvfd1X88DhhsRjSxv+LVSC
+         P0nQ1O/jw6fl5WmNn3Sv8BIZ6tyo83GMzOk+eF3ETihXMprISkc1enM/qRWAtgM5iY
+         rkHhR1qzJPB8Bi+GWEROcZF8qZSj3x7TUQiZFxmY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.5 185/211] tracing: Have tracing_max_latency inc the trace array ref count
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/139] nvmet: use bvec_set_page to initialize bvecs
 Date:   Wed, 20 Sep 2023 13:30:29 +0200
-Message-ID: <20230920112851.609944709@linuxfoundation.org>
+Message-ID: <20230920112839.143325109@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,90 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 7d660c9b2bc95107f90a9f4c4759be85309a6550 upstream.
+[ Upstream commit fc41c97a3a7b08131e6998bc7692f95729f9d359 ]
 
-The tracing_max_latency file points to the trace_array max_latency field.
-For an instance, if the file is opened and the instance is deleted,
-reading or writing to the file will cause a use after free.
+Use the bvec_set_page helper to initialize bvecs.
 
-Up the ref count of the trace_array when tracing_max_latency is opened.
-
-Link: https://lkml.kernel.org/r/20230907024803.666889383@goodmis.org
-Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Fixes: 8530dec63e7b4 ("tracing: Add tracing_check_open_get_tr()")
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20230203150634.3199647-7-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 1f0bbf28940c ("nvmet-tcp: pass iov_len instead of sg->length to bvec_set_page()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |   15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/nvme/target/io-cmd-file.c | 10 ++--------
+ drivers/nvme/target/tcp.c         |  5 ++---
+ 2 files changed, 4 insertions(+), 11 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1772,7 +1772,7 @@ static void trace_create_maxlat_file(str
- 	init_irq_work(&tr->fsnotify_irqwork, latency_fsnotify_workfn_irq);
- 	tr->d_max_latency = trace_create_file("tracing_max_latency",
- 					      TRACE_MODE_WRITE,
--					      d_tracer, &tr->max_latency,
-+					      d_tracer, tr,
- 					      &tracing_max_lat_fops);
+diff --git a/drivers/nvme/target/io-cmd-file.c b/drivers/nvme/target/io-cmd-file.c
+index 871c4f32f443f..2d068439b129c 100644
+--- a/drivers/nvme/target/io-cmd-file.c
++++ b/drivers/nvme/target/io-cmd-file.c
+@@ -73,13 +73,6 @@ int nvmet_file_ns_enable(struct nvmet_ns *ns)
+ 	return ret;
  }
  
-@@ -1805,7 +1805,7 @@ void latency_fsnotify(struct trace_array
- 
- #define trace_create_maxlat_file(tr, d_tracer)				\
- 	trace_create_file("tracing_max_latency", TRACE_MODE_WRITE,	\
--			  d_tracer, &tr->max_latency, &tracing_max_lat_fops)
-+			  d_tracer, tr, &tracing_max_lat_fops)
- 
- #endif
- 
-@@ -6706,14 +6706,18 @@ static ssize_t
- tracing_max_lat_read(struct file *filp, char __user *ubuf,
- 		     size_t cnt, loff_t *ppos)
+-static void nvmet_file_init_bvec(struct bio_vec *bv, struct scatterlist *sg)
+-{
+-	bv->bv_page = sg_page(sg);
+-	bv->bv_offset = sg->offset;
+-	bv->bv_len = sg->length;
+-}
+-
+ static ssize_t nvmet_file_submit_bvec(struct nvmet_req *req, loff_t pos,
+ 		unsigned long nr_segs, size_t count, int ki_flags)
  {
--	return tracing_nsecs_read(filp->private_data, ubuf, cnt, ppos);
-+	struct trace_array *tr = filp->private_data;
-+
-+	return tracing_nsecs_read(&tr->max_latency, ubuf, cnt, ppos);
- }
+@@ -146,7 +139,8 @@ static bool nvmet_file_execute_io(struct nvmet_req *req, int ki_flags)
  
- static ssize_t
- tracing_max_lat_write(struct file *filp, const char __user *ubuf,
- 		      size_t cnt, loff_t *ppos)
- {
--	return tracing_nsecs_write(filp->private_data, ubuf, cnt, ppos);
-+	struct trace_array *tr = filp->private_data;
-+
-+	return tracing_nsecs_write(&tr->max_latency, ubuf, cnt, ppos);
- }
+ 	memset(&req->f.iocb, 0, sizeof(struct kiocb));
+ 	for_each_sg(req->sg, sg, req->sg_cnt, i) {
+-		nvmet_file_init_bvec(&req->f.bvec[bv_cnt], sg);
++		bvec_set_page(&req->f.bvec[bv_cnt], sg_page(sg), sg->length,
++			      sg->offset);
+ 		len += req->f.bvec[bv_cnt].bv_len;
+ 		total_len += req->f.bvec[bv_cnt].bv_len;
+ 		bv_cnt++;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index cc05c094de221..c5759eb503d00 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -321,9 +321,8 @@ static void nvmet_tcp_build_pdu_iovec(struct nvmet_tcp_cmd *cmd)
+ 	while (length) {
+ 		u32 iov_len = min_t(u32, length, sg->length - sg_offset);
  
- #endif
-@@ -7770,10 +7774,11 @@ static const struct file_operations trac
+-		iov->bv_page = sg_page(sg);
+-		iov->bv_len = sg->length;
+-		iov->bv_offset = sg->offset + sg_offset;
++		bvec_set_page(iov, sg_page(sg), sg->length,
++				sg->offset + sg_offset);
  
- #ifdef CONFIG_TRACER_MAX_TRACE
- static const struct file_operations tracing_max_lat_fops = {
--	.open		= tracing_open_generic,
-+	.open		= tracing_open_generic_tr,
- 	.read		= tracing_max_lat_read,
- 	.write		= tracing_max_lat_write,
- 	.llseek		= generic_file_llseek,
-+	.release	= tracing_release_generic_tr,
- };
- #endif
- 
+ 		length -= iov_len;
+ 		sg = sg_next(sg);
+-- 
+2.40.1
+
 
 
