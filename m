@@ -2,40 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F6007A7ED1
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4D7E7A7F1F
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:24:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235753AbjITMVC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:21:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46016 "EHLO
+        id S234651AbjITMYR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:24:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235688AbjITMVB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:21:01 -0400
+        with ESMTP id S235724AbjITMYQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:24:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4BE3D3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:20:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3504EC433C9;
-        Wed, 20 Sep 2023 12:20:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0CD0AD
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:24:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A6AC433C8;
+        Wed, 20 Sep 2023 12:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212454;
-        bh=Du4RI8Yk9OkboZ9uvD0KqBWiXm4i0dwcqFkn6ZE+bbI=;
+        s=korg; t=1695212649;
+        bh=chuCTRH3AFQUxqH3oMh04k3wF36dPejNc//nPuIFoN8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=upEeTjsMyrM/6uSk6k6NNcUJnlf8p/9npvzf2tr9jEqgw8cF9Ui0aW2+mzyM4WI2Z
-         0nnqa+qO+PShWhPgfcZfv9qlwLPuKX2avzb8ParC6cJpEQ/kAf0aRgeCAsFJ/Fbx+a
-         veBQf5QO3xW8cwJBWD98cFPt8vjo/itnyZAog/mM=
+        b=tKOjST0a+126t/e4/4K/1T0cY1nEFn4T5mCSCOYhbKr4b0XKXF1hc3QGPVxbZr/iu
+         zyWGusSBTimjpMDIwXIR4jQaznubYI2kQu/WnqMncVPAEf6gnmfBMsVuOcJWBadhGS
+         s6rkr449UCIFl1bODeWODMYMc6DeT8mHOgR89N+w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Konstantin Shelekhin <k.shelekhin@yadro.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        tony garnock-jones <tonyg@leastfixedpoint.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 263/273] scsi: target: iscsi: Fix buffer overflow in lio_target_nacl_info_show()
+Subject: [PATCH 5.10 53/83] perf tools: Add an option to build without libbfd
 Date:   Wed, 20 Sep 2023 13:31:43 +0200
-Message-ID: <20230920112854.374433503@linuxfoundation.org>
+Message-ID: <20230920112828.753732764@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,164 +56,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Shelekhin <k.shelekhin@yadro.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 801f287c93ff95582b0a2d2163f12870a2f076d4 ]
+[ Upstream commit 0d1c50ac488ebdaeeaea8ed5069f8d435fd485ed ]
 
-The function lio_target_nacl_info_show() uses sprintf() in a loop to print
-details for every iSCSI connection in a session without checking for the
-buffer length. With enough iSCSI connections it's possible to overflow the
-buffer provided by configfs and corrupt the memory.
+Some distributions, like debian, don't link perf with libbfd. Add a
+build flag to make this configuration buildable and testable.
 
-This patch replaces sprintf() with sysfs_emit_at() that checks for buffer
-boundries.
+This was inspired by:
 
-Signed-off-by: Konstantin Shelekhin <k.shelekhin@yadro.com>
-Link: https://lore.kernel.org/r/20230722152657.168859-2-k.shelekhin@yadro.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+  https://lore.kernel.org/linux-perf-users/20210910102307.2055484-1-tonyg@leastfixedpoint.com/T/#u
+
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: tony garnock-jones <tonyg@leastfixedpoint.com>
+Link: http://lore.kernel.org/lkml/20210910225756.729087-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 7822a8913f4c ("perf build: Update build rule for generated files")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/iscsi/iscsi_target_configfs.c | 54 ++++++++++----------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ tools/perf/Makefile.config | 47 ++++++++++++++++++++------------------
+ 1 file changed, 25 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/target/iscsi/iscsi_target_configfs.c b/drivers/target/iscsi/iscsi_target_configfs.c
-index d25cadc4f4f11..ac071abae7e90 100644
---- a/drivers/target/iscsi/iscsi_target_configfs.c
-+++ b/drivers/target/iscsi/iscsi_target_configfs.c
-@@ -516,102 +516,102 @@ static ssize_t lio_target_nacl_info_show(struct config_item *item, char *page)
- 	spin_lock_bh(&se_nacl->nacl_sess_lock);
- 	se_sess = se_nacl->nacl_sess;
- 	if (!se_sess) {
--		rb += sprintf(page+rb, "No active iSCSI Session for Initiator"
-+		rb += sysfs_emit_at(page, rb, "No active iSCSI Session for Initiator"
- 			" Endpoint: %s\n", se_nacl->initiatorname);
- 	} else {
- 		sess = se_sess->fabric_sess_ptr;
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index 3e7706c251e9e..89905b4e93091 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -824,33 +824,36 @@ else
+   endif
+ endif
  
--		rb += sprintf(page+rb, "InitiatorName: %s\n",
-+		rb += sysfs_emit_at(page, rb, "InitiatorName: %s\n",
- 			sess->sess_ops->InitiatorName);
--		rb += sprintf(page+rb, "InitiatorAlias: %s\n",
-+		rb += sysfs_emit_at(page, rb, "InitiatorAlias: %s\n",
- 			sess->sess_ops->InitiatorAlias);
+-ifeq ($(feature-libbfd), 1)
+-  EXTLIBS += -lbfd -lopcodes
+-else
+-  # we are on a system that requires -liberty and (maybe) -lz
+-  # to link against -lbfd; test each case individually here
+-
+-  # call all detections now so we get correct
+-  # status in VF output
+-  $(call feature_check,libbfd-liberty)
+-  $(call feature_check,libbfd-liberty-z)
  
--		rb += sprintf(page+rb,
-+		rb += sysfs_emit_at(page, rb,
- 			      "LIO Session ID: %u   ISID: 0x%6ph  TSIH: %hu  ",
- 			      sess->sid, sess->isid, sess->tsih);
--		rb += sprintf(page+rb, "SessionType: %s\n",
-+		rb += sysfs_emit_at(page, rb, "SessionType: %s\n",
- 				(sess->sess_ops->SessionType) ?
- 				"Discovery" : "Normal");
--		rb += sprintf(page+rb, "Session State: ");
-+		rb += sysfs_emit_at(page, rb, "Session State: ");
- 		switch (sess->session_state) {
- 		case TARG_SESS_STATE_FREE:
--			rb += sprintf(page+rb, "TARG_SESS_FREE\n");
-+			rb += sysfs_emit_at(page, rb, "TARG_SESS_FREE\n");
- 			break;
- 		case TARG_SESS_STATE_ACTIVE:
--			rb += sprintf(page+rb, "TARG_SESS_STATE_ACTIVE\n");
-+			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_ACTIVE\n");
- 			break;
- 		case TARG_SESS_STATE_LOGGED_IN:
--			rb += sprintf(page+rb, "TARG_SESS_STATE_LOGGED_IN\n");
-+			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_LOGGED_IN\n");
- 			break;
- 		case TARG_SESS_STATE_FAILED:
--			rb += sprintf(page+rb, "TARG_SESS_STATE_FAILED\n");
-+			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_FAILED\n");
- 			break;
- 		case TARG_SESS_STATE_IN_CONTINUE:
--			rb += sprintf(page+rb, "TARG_SESS_STATE_IN_CONTINUE\n");
-+			rb += sysfs_emit_at(page, rb, "TARG_SESS_STATE_IN_CONTINUE\n");
- 			break;
- 		default:
--			rb += sprintf(page+rb, "ERROR: Unknown Session"
-+			rb += sysfs_emit_at(page, rb, "ERROR: Unknown Session"
- 					" State!\n");
- 			break;
- 		}
+-  ifeq ($(feature-libbfd-liberty), 1)
+-    EXTLIBS += -lbfd -lopcodes -liberty
+-    FEATURE_CHECK_LDFLAGS-disassembler-four-args += -liberty -ldl
++ifndef NO_LIBBFD
++  ifeq ($(feature-libbfd), 1)
++    EXTLIBS += -lbfd -lopcodes
+   else
+-    ifeq ($(feature-libbfd-liberty-z), 1)
+-      EXTLIBS += -lbfd -lopcodes -liberty -lz
+-      FEATURE_CHECK_LDFLAGS-disassembler-four-args += -liberty -lz -ldl
++    # we are on a system that requires -liberty and (maybe) -lz
++    # to link against -lbfd; test each case individually here
++
++    # call all detections now so we get correct
++    # status in VF output
++    $(call feature_check,libbfd-liberty)
++    $(call feature_check,libbfd-liberty-z)
++
++    ifeq ($(feature-libbfd-liberty), 1)
++      EXTLIBS += -lbfd -lopcodes -liberty
++      FEATURE_CHECK_LDFLAGS-disassembler-four-args += -liberty -ldl
++    else
++      ifeq ($(feature-libbfd-liberty-z), 1)
++        EXTLIBS += -lbfd -lopcodes -liberty -lz
++        FEATURE_CHECK_LDFLAGS-disassembler-four-args += -liberty -lz -ldl
++      endif
+     endif
++    $(call feature_check,disassembler-four-args)
+   endif
+-  $(call feature_check,disassembler-four-args)
+-endif
  
--		rb += sprintf(page+rb, "---------------------[iSCSI Session"
-+		rb += sysfs_emit_at(page, rb, "---------------------[iSCSI Session"
- 				" Values]-----------------------\n");
--		rb += sprintf(page+rb, "  CmdSN/WR  :  CmdSN/WC  :  ExpCmdSN"
-+		rb += sysfs_emit_at(page, rb, "  CmdSN/WR  :  CmdSN/WC  :  ExpCmdSN"
- 				"  :  MaxCmdSN  :     ITT    :     TTT\n");
- 		max_cmd_sn = (u32) atomic_read(&sess->max_cmd_sn);
--		rb += sprintf(page+rb, " 0x%08x   0x%08x   0x%08x   0x%08x"
-+		rb += sysfs_emit_at(page, rb, " 0x%08x   0x%08x   0x%08x   0x%08x"
- 				"   0x%08x   0x%08x\n",
- 			sess->cmdsn_window,
- 			(max_cmd_sn - sess->exp_cmd_sn) + 1,
- 			sess->exp_cmd_sn, max_cmd_sn,
- 			sess->init_task_tag, sess->targ_xfer_tag);
--		rb += sprintf(page+rb, "----------------------[iSCSI"
-+		rb += sysfs_emit_at(page, rb, "----------------------[iSCSI"
- 				" Connections]-------------------------\n");
+-ifeq ($(feature-libbfd-buildid), 1)
+-  CFLAGS += -DHAVE_LIBBFD_BUILDID_SUPPORT
+-else
+-  msg := $(warning Old version of libbfd/binutils things like PE executable profiling will not be available);
++  ifeq ($(feature-libbfd-buildid), 1)
++    CFLAGS += -DHAVE_LIBBFD_BUILDID_SUPPORT
++  else
++    msg := $(warning Old version of libbfd/binutils things like PE executable profiling will not be available);
++  endif
+ endif
  
- 		spin_lock(&sess->conn_lock);
- 		list_for_each_entry(conn, &sess->sess_conn_list, conn_list) {
--			rb += sprintf(page+rb, "CID: %hu  Connection"
-+			rb += sysfs_emit_at(page, rb, "CID: %hu  Connection"
- 					" State: ", conn->cid);
- 			switch (conn->conn_state) {
- 			case TARG_CONN_STATE_FREE:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_FREE\n");
- 				break;
- 			case TARG_CONN_STATE_XPT_UP:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_XPT_UP\n");
- 				break;
- 			case TARG_CONN_STATE_IN_LOGIN:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_IN_LOGIN\n");
- 				break;
- 			case TARG_CONN_STATE_LOGGED_IN:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_LOGGED_IN\n");
- 				break;
- 			case TARG_CONN_STATE_IN_LOGOUT:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_IN_LOGOUT\n");
- 				break;
- 			case TARG_CONN_STATE_LOGOUT_REQUESTED:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_LOGOUT_REQUESTED\n");
- 				break;
- 			case TARG_CONN_STATE_CLEANUP_WAIT:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"TARG_CONN_STATE_CLEANUP_WAIT\n");
- 				break;
- 			default:
--				rb += sprintf(page+rb,
-+				rb += sysfs_emit_at(page, rb,
- 					"ERROR: Unknown Connection State!\n");
- 				break;
- 			}
- 
--			rb += sprintf(page+rb, "   Address %pISc %s", &conn->login_sockaddr,
-+			rb += sysfs_emit_at(page, rb, "   Address %pISc %s", &conn->login_sockaddr,
- 				(conn->network_transport == ISCSI_TCP) ?
- 				"TCP" : "SCTP");
--			rb += sprintf(page+rb, "  StatSN: 0x%08x\n",
-+			rb += sysfs_emit_at(page, rb, "  StatSN: 0x%08x\n",
- 				conn->stat_sn);
- 		}
- 		spin_unlock(&sess->conn_lock);
+ ifdef NO_DEMANGLE
 -- 
 2.40.1
 
