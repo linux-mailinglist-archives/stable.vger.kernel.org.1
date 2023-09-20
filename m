@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2371F7A7FA4
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:28:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B79C27A7D8A
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:10:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235847AbjITM3C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:29:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60222 "EHLO
+        id S235341AbjITMK0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:10:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235844AbjITM3A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:29:00 -0400
+        with ESMTP id S235494AbjITMJ5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:09:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCE76A3
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:28:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3572FC433C7;
-        Wed, 20 Sep 2023 12:28:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E732C6
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:09:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9882C433C8;
+        Wed, 20 Sep 2023 12:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212934;
-        bh=23TL1SrLYD9Me7SbWdXWOysmLjAEyNKynrCwOVGJPOI=;
+        s=korg; t=1695211791;
+        bh=7tIBM9wjq/paXlRCv2rgin6RuFVQB3XnMey3i6wwshA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sv/zjVzTBTv1hbXUhsWo07Jzk92xTFf101Efxe+Sy5K1/iXiHlOaEtPYszVrN8OfA
-         Vfei9HQvuAtZKTkMDgUKckZlZr5ocvP+/2hxsaIhyGgQSmVqBUqka1Z5CXKc9dH7x6
-         f1n/2mkHNjjwd+vs+pJaDfVFGIj3jQq1Qsg3OB80=
+        b=V3KeL3KxidmqwXAMKhDdiKoN8w2SPyf3Z4mYP0jKy+FT9kbwvmJ/Y6BoIAprGUk96
+         jgpxyK2xTIGZCCadOhoKMk4tzvmvbsVm6oZaLWGUwAlYm4aAHwBJ1klt68hCIn/3t3
+         4PP3Kpb5D4xwn8tolysMfTV6mYLIwYKHfuI6DVHI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jordan Griege <jgriege@cloudflare.com>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Stanislav Fomichev <sdf@google.com>,
-        Yan Zhai <yan@cloudflare.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 073/367] lwt: Fix return values of BPF xmit ops
+        patches@lists.linux.dev,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
+Subject: [PATCH 4.19 010/273] serial: sc16is7xx: fix bug when first setting GPIO direction
 Date:   Wed, 20 Sep 2023 13:27:30 +0200
-Message-ID: <20230920112900.415317657@linuxfoundation.org>
+Message-ID: <20230920112846.749680257@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,67 +50,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yan Zhai <yan@cloudflare.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 29b22badb7a84b783e3a4fffca16f7768fb31205 ]
+commit 9baeea723c0fb9c3ba9a336369f758ed9bc6831d upstream.
 
-BPF encap ops can return different types of positive values, such like
-NET_RX_DROP, NET_XMIT_CN, NETDEV_TX_BUSY, and so on, from function
-skb_do_redirect and bpf_lwt_xmit_reroute. At the xmit hook, such return
-values would be treated implicitly as LWTUNNEL_XMIT_CONTINUE in
-ip(6)_finish_output2. When this happens, skbs that have been freed would
-continue to the neighbor subsystem, causing use-after-free bug and
-kernel crashes.
+When configuring a pin as an output pin with a value of logic 0, we
+end up as having a value of logic 1 on the output pin. Setting a
+logic 0 a second time (or more) after that will correctly output a
+logic 0 on the output pin.
 
-To fix the incorrect behavior, skb_do_redirect return values can be
-simply discarded, the same as tc-egress behavior. On the other hand,
-bpf_lwt_xmit_reroute returns useful errors to local senders, e.g. PMTU
-information. Thus convert its return values to avoid the conflict with
-LWTUNNEL_XMIT_CONTINUE.
+By default, all GPIO pins are configured as inputs. When we enter
+sc16is7xx_gpio_direction_output() for the first time, we first set the
+desired value in IOSTATE, and then we configure the pin as an output.
+The datasheet states that writing to IOSTATE register will trigger a
+transfer of the value to the I/O pin configured as output, so if the
+pin is configured as an input, nothing will be transferred.
 
-Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
-Reported-by: Jordan Griege <jgriege@cloudflare.com>
-Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
-Suggested-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/0d2b878186cfe215fec6b45769c1cd0591d3628d.1692326837.git.yan@cloudflare.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore, set the direction first in IODIR, and then set the desired
+value in IOSTATE.
+
+This is what is done in NXP application note AN10587.
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+Link: https://lore.kernel.org/r/20230807214556.540627-6-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/lwt_bpf.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
-index bf270b6a99b4f..017ed82611a8d 100644
---- a/net/core/lwt_bpf.c
-+++ b/net/core/lwt_bpf.c
-@@ -59,9 +59,8 @@ static int run_lwt_bpf(struct sk_buff *skb, struct bpf_lwt_prog *lwt,
- 			ret = BPF_OK;
- 		} else {
- 			skb_reset_mac_header(skb);
--			ret = skb_do_redirect(skb);
--			if (ret == 0)
--				ret = BPF_REDIRECT;
-+			skb_do_redirect(skb);
-+			ret = BPF_REDIRECT;
- 		}
- 		break;
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1166,9 +1166,18 @@ static int sc16is7xx_gpio_direction_outp
+ 		state |= BIT(offset);
+ 	else
+ 		state &= ~BIT(offset);
+-	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
++
++	/*
++	 * If we write IOSTATE first, and then IODIR, the output value is not
++	 * transferred to the corresponding I/O pin.
++	 * The datasheet states that each register bit will be transferred to
++	 * the corresponding I/O pin programmed as output when writing to
++	 * IOSTATE. Therefore, configure direction first with IODIR, and then
++	 * set value after with IOSTATE.
++	 */
+ 	sc16is7xx_port_update(port, SC16IS7XX_IODIR_REG, BIT(offset),
+ 			      BIT(offset));
++	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
  
-@@ -254,7 +253,7 @@ static int bpf_lwt_xmit_reroute(struct sk_buff *skb)
- 
- 	err = dst_output(dev_net(skb_dst(skb)->dev), skb->sk, skb);
- 	if (unlikely(err))
--		return err;
-+		return net_xmit_errno(err);
- 
- 	/* ip[6]_finish_output2 understand LWTUNNEL_XMIT_DONE */
- 	return LWTUNNEL_XMIT_DONE;
--- 
-2.40.1
-
+ 	return 0;
+ }
 
 
