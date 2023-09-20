@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA62C7A7FEB
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C0DB7A7DC7
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:12:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236073AbjITMbS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:31:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43484 "EHLO
+        id S234603AbjITMMO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:12:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236132AbjITMbR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:31:17 -0400
+        with ESMTP id S235360AbjITMMO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:12:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94996B6
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:31:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31C9C433C7;
-        Wed, 20 Sep 2023 12:31:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDCEA3
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:12:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 486B1C433C7;
+        Wed, 20 Sep 2023 12:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695213070;
-        bh=cv2ULD1+PvlMdPcsBB7e/J1jzEdQw3+/BY2+GKNETqc=;
+        s=korg; t=1695211928;
+        bh=8PzKCL58Z+yxLn3ajl9lu9YLV87/FYesg1IsW1KL5OQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pkqFuW9+y6GgH+hngD//9KL1DSb8jwMFJ7plzSsPmRAVIZUfG8GeIJBj/aWIxqkXg
-         a07l3B2aNfsBAlTEUkEBkLa/YmFDEXJ3fGIoVpzkaQMYG6mBY9SAOEAML65VpC2R3H
-         yLEQy1AsgB1koK7SyHagAK73yBCxOqXy0XLKGFSI=
+        b=ZGWUnSDOCITBC9Fiw2mxirjlNuLV3EUCeDiRnzRLIdTSayj/1EvtNA2hR+BTQhSzZ
+         lIDTdNUIwXFfy9iU1pB0Jyb+IoZtGWUSY1pV9xhmiPWvN8mIky/jklQdbaWZUH6WVZ
+         Zl8NSg0l5pCrReu4MPGqGZa8+qCLc9rY4DLDc/ZM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Coddington <bcodding@redhat.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        patches@lists.linux.dev, Krzysztof Kozlowski <krzk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 149/367] NFS: Guard against READDIR loop when entry names exceed MAXNAMELEN
-Date:   Wed, 20 Sep 2023 13:28:46 +0200
-Message-ID: <20230920112902.525682165@linuxfoundation.org>
+Subject: [PATCH 4.19 087/273] ARM: dts: s3c6410: align node SROM bus node name with dtschema in Mini6410
+Date:   Wed, 20 Sep 2023 13:28:47 +0200
+Message-ID: <20230920112849.133302904@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+References: <20230920112846.440597133@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,59 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-[ Upstream commit f67b55b6588bcf9316a1e6e8d529100a5aa3ebe6 ]
+[ Upstream commit 5911622eff5134c4bf1e16e4e1e2fd18c4f24889 ]
 
-Commit 64cfca85bacd asserts the only valid return values for
-nfs2/3_decode_dirent should not include -ENAMETOOLONG, but for a server
-that sends a filename3 which exceeds MAXNAMELEN in a READDIR response the
-client's behavior will be to endlessly retry the operation.
+The SROM controller is modeled with a bus so align the device node name
+with dtschema to fix warning:
 
-We could map -ENAMETOOLONG into -EBADCOOKIE, but that would produce
-truncated listings without any error.  The client should return an error
-for this case to clearly assert that the server implementation must be
-corrected.
+  srom-cs1@18000000: $nodename:0: 'srom-cs1@18000000'
+    does not match '^([a-z][a-z0-9\\-]+-bus|bus|soc|axi|ahb|apb)(@[0-9a-f]+)?$'
 
-Fixes: 64cfca85bacd ("NFS: Return valid errors from nfs2/3_decode_dirent()")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20200907183313.29234-5-krzk@kernel.org
+Stable-dep-of: cf0cb2af6a18 ("ARM: dts: samsung: s3c6410-mini6410: correct ethernet reg addresses (split)")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs2xdr.c | 2 +-
- fs/nfs/nfs3xdr.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/s3c6410-mini6410.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs2xdr.c b/fs/nfs/nfs2xdr.c
-index af557dc2cfe1d..6b783e2d28554 100644
---- a/fs/nfs/nfs2xdr.c
-+++ b/fs/nfs/nfs2xdr.c
-@@ -953,7 +953,7 @@ int nfs2_decode_dirent(struct xdr_stream *xdr, struct nfs_entry *entry,
+diff --git a/arch/arm/boot/dts/s3c6410-mini6410.dts b/arch/arm/boot/dts/s3c6410-mini6410.dts
+index 75067dbcf7e83..285555b9ed943 100644
+--- a/arch/arm/boot/dts/s3c6410-mini6410.dts
++++ b/arch/arm/boot/dts/s3c6410-mini6410.dts
+@@ -42,7 +42,7 @@ xusbxti: oscillator-1 {
+ 		#clock-cells = <0>;
+ 	};
  
- 	error = decode_filename_inline(xdr, &entry->name, &entry->len);
- 	if (unlikely(error))
--		return -EAGAIN;
-+		return error == -ENAMETOOLONG ? -ENAMETOOLONG : -EAGAIN;
- 
- 	/*
- 	 * The type (size and byte order) of nfscookie isn't defined in
-diff --git a/fs/nfs/nfs3xdr.c b/fs/nfs/nfs3xdr.c
-index 84369d51353a5..6d8768ce370d2 100644
---- a/fs/nfs/nfs3xdr.c
-+++ b/fs/nfs/nfs3xdr.c
-@@ -1991,7 +1991,7 @@ int nfs3_decode_dirent(struct xdr_stream *xdr, struct nfs_entry *entry,
- 
- 	error = decode_inline_filename3(xdr, &entry->name, &entry->len);
- 	if (unlikely(error))
--		return -EAGAIN;
-+		return error == -ENAMETOOLONG ? -ENAMETOOLONG : -EAGAIN;
- 
- 	error = decode_cookie3(xdr, &new_cookie);
- 	if (unlikely(error))
+-	srom-cs1@18000000 {
++	srom-cs1-bus@18000000 {
+ 		compatible = "simple-bus";
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
 -- 
 2.40.1
 
