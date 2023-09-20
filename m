@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B357A7B83
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D533C7A7C40
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234746AbjITLw5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:52:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42010 "EHLO
+        id S234887AbjITL7h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:59:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234742AbjITLw5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:57 -0400
+        with ESMTP id S234885AbjITL7h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:59:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 561E892
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2670C433C8;
-        Wed, 20 Sep 2023 11:52:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCA1892
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:59:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B63C433C7;
+        Wed, 20 Sep 2023 11:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210771;
-        bh=0KcKR2nWfva1+fPAqOz8QR3Nb1EGM3rb4b0v1PER10Y=;
+        s=korg; t=1695211171;
+        bh=FqO0h45bP9Pux5Clm9m+KCTNIuh2+h9K5dXf0WUl4Yg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P6LigN4DJCGrrA8Vq8O0dA1nkbrpQ+J9MOqpWpphn58NvJAKDxJIakK2QGjQj2NAc
-         NAY0+MmHwS3WWUKeF/ZSqXw4mlGaRy3AqmoM3CSoL98jpWuaTf0eyepsbjHgL2jNHj
-         ZCRMn2It7VQ/eAZ+9Gs2bYDfC0kFsPK6PrKbFnPo=
+        b=CKh9r9pTmKn5HLN0JnWnwI4FOjP80ysiUbX9K2wM+V78tP08rY3Scz5dLTaW25QeX
+         /CfbWS+ojBjY2pKm9rez7HV/h6PTmxfpmiVseGFgw1pcx+W7xzq6UCpUW/Ww4hKYR4
+         0Zn3AtOoRFYgntehDNaC5MbQNspu+GVsWMib0fBE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.5 199/211] scsi: pm8001: Setup IRQs on resume
+        patches@lists.linux.dev, Russell Cattelan <cattelan@thebarn.com>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 6.1 109/139] Revert "SUNRPC: Fail faster on bad verifier"
 Date:   Wed, 20 Sep 2023 13:30:43 +0200
-Message-ID: <20230920112852.033838621@linuxfoundation.org>
+Message-ID: <20230920112839.625439834@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,121 +50,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit c91774818b041ed290df29fb1dc0725be9b12e83 upstream.
+commit e86fcf0820d914389b46658a5a7e8969c3af2d53 upstream.
 
-The function pm8001_pci_resume() only calls pm8001_request_irq() without
-calling pm8001_setup_irq(). This causes the IRQ allocation to fail, which
-leads all drives being removed from the system.
+This reverts commit 0701214cd6e66585a999b132eb72ae0489beb724.
 
-Fix this issue by integrating the code for pm8001_setup_irq() directly
-inside pm8001_request_irq() so that MSI-X setup is performed both during
-normal initialization and resume operations.
+The premise of this commit was incorrect. There are exactly 2 cases
+where rpcauth_checkverf() will return an error:
 
-Fixes: dbf9bfe61571 ("[SCSI] pm8001: add SAS/SATA HBA driver")
+1) If there was an XDR decode problem (i.e. garbage data).
+2) If gss_validate() had a problem verifying the RPCSEC_GSS MIC.
+
+In the second case, there are again 2 subcases:
+
+a) The GSS context expires, in which case gss_validate() will force a
+   new context negotiation on retry by invalidating the cred.
+b) The sequence number check failed because an RPC call timed out, and
+   the client retransmitted the request using a new sequence number,
+   as required by RFC2203.
+
+In neither subcase is this a fatal error.
+
+Reported-by: Russell Cattelan <cattelan@thebarn.com>
+Fixes: 0701214cd6e6 ("SUNRPC: Fail faster on bad verifier")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20230911232745.325149-2-dlemoal@kernel.org
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/pm8001/pm8001_init.c |   51 ++++++++++++--------------------------
- 1 file changed, 17 insertions(+), 34 deletions(-)
+ net/sunrpc/clnt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/pm8001/pm8001_init.c
-+++ b/drivers/scsi/pm8001/pm8001_init.c
-@@ -275,7 +275,6 @@ static irqreturn_t pm8001_interrupt_hand
- 	return ret;
- }
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2710,7 +2710,7 @@ out_unparsable:
  
--static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha);
- static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha);
+ out_verifier:
+ 	trace_rpc_bad_verifier(task);
+-	goto out_err;
++	goto out_garbage;
  
- /**
-@@ -296,13 +295,6 @@ static int pm8001_alloc(struct pm8001_hb
- 	pm8001_dbg(pm8001_ha, INIT, "pm8001_alloc: PHY:%x\n",
- 		   pm8001_ha->chip->n_phy);
- 
--	/* Setup Interrupt */
--	rc = pm8001_setup_irq(pm8001_ha);
--	if (rc) {
--		pm8001_dbg(pm8001_ha, FAIL,
--			   "pm8001_setup_irq failed [ret: %d]\n", rc);
--		goto err_out;
--	}
- 	/* Request Interrupt */
- 	rc = pm8001_request_irq(pm8001_ha);
- 	if (rc)
-@@ -1034,47 +1026,38 @@ static u32 pm8001_request_msix(struct pm
- }
- #endif
- 
--static u32 pm8001_setup_irq(struct pm8001_hba_info *pm8001_ha)
--{
--	struct pci_dev *pdev;
--
--	pdev = pm8001_ha->pdev;
--
--#ifdef PM8001_USE_MSIX
--	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX))
--		return pm8001_setup_msix(pm8001_ha);
--	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
--#endif
--	return 0;
--}
--
- /**
-  * pm8001_request_irq - register interrupt
-  * @pm8001_ha: our ha struct.
-  */
- static u32 pm8001_request_irq(struct pm8001_hba_info *pm8001_ha)
- {
--	struct pci_dev *pdev;
-+	struct pci_dev *pdev = pm8001_ha->pdev;
-+#ifdef PM8001_USE_MSIX
- 	int rc;
- 
--	pdev = pm8001_ha->pdev;
-+	if (pci_find_capability(pdev, PCI_CAP_ID_MSIX)) {
-+		rc = pm8001_setup_msix(pm8001_ha);
-+		if (rc) {
-+			pm8001_dbg(pm8001_ha, FAIL,
-+				   "pm8001_setup_irq failed [ret: %d]\n", rc);
-+			return rc;
-+		}
- 
--#ifdef PM8001_USE_MSIX
--	if (pdev->msix_cap && pci_msi_enabled())
--		return pm8001_request_msix(pm8001_ha);
--	else {
--		pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
--		goto intx;
-+		if (pdev->msix_cap && pci_msi_enabled())
-+			return pm8001_request_msix(pm8001_ha);
- 	}
-+
-+	pm8001_dbg(pm8001_ha, INIT, "MSIX not supported!!!\n");
- #endif
- 
--intx:
- 	/* initialize the INT-X interrupt */
- 	pm8001_ha->irq_vector[0].irq_id = 0;
- 	pm8001_ha->irq_vector[0].drv_inst = pm8001_ha;
--	rc = request_irq(pdev->irq, pm8001_interrupt_handler_intx, IRQF_SHARED,
--		pm8001_ha->name, SHOST_TO_SAS_HA(pm8001_ha->shost));
--	return rc;
-+
-+	return request_irq(pdev->irq, pm8001_interrupt_handler_intx,
-+			   IRQF_SHARED, pm8001_ha->name,
-+			   SHOST_TO_SAS_HA(pm8001_ha->shost));
- }
- 
- /**
+ out_msg_denied:
+ 	error = -EACCES;
 
 
