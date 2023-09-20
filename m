@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 647957A7EB8
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69E137A7F00
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 14:22:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235289AbjITMUR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 08:20:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54670 "EHLO
+        id S235645AbjITMWv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 08:22:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235780AbjITMT6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:19:58 -0400
+        with ESMTP id S235641AbjITMWv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 08:22:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B59B292
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:19:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AE2C433CA;
-        Wed, 20 Sep 2023 12:19:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9251A93
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 05:22:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8EAC433C7;
+        Wed, 20 Sep 2023 12:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695212391;
-        bh=3zaeCMRKIDtBHcXKz7Quf6uzsYun4oKH+AKt/eHyQ9k=;
+        s=korg; t=1695212565;
+        bh=6G9xwxvPbXmM+InQ4XWlsOYfxjrM7PClSWnwRhbv2Kg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TRd5g7K1SF5dJONJ8NGQB9Tt7Ke2fqF6tO0FguF+fobBS+EfnVGI7DPV5M7IvyVG7
-         SFVZHEs19VhtANouwKuBS5ZmNowoZjugm8ys1ms9n7nBfO+9IggWC+2+29LmD2UiW1
-         DrnE2QMe2vFtMZ+EmwwQA6wxpS5bOUe6SXhLO7/0=
+        b=MPWqTuaeU9h98hx+gGF344SdcLlrE+dHaTOLWnd7k+6QuuKXnB8Ah3FvcxWwY1GVk
+         /Lnf8ICiAzBOX/HuvOKsx7EFCcAPGm6YB2sr0qb2H/esiX0vEyIAbzRG2BVdMEmfCK
+         KG84VU9N3BgaKLnJlTgirYtIhvUpIsn/M1T3BF3U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Zhen Lei <thunder.leizhen@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 258/273] media: az6007: Fix null-ptr-deref in az6007_i2c_xfer()
+Subject: [PATCH 5.10 48/83] kobject: Add sanity check for kset->kobj.ktype in kset_register()
 Date:   Wed, 20 Sep 2023 13:31:38 +0200
-Message-ID: <20230920112854.243422878@linuxfoundation.org>
+Message-ID: <20230920112828.571357815@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
-References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
+References: <20230920112826.634178162@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,57 +49,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-[ Upstream commit 1047f9343011f2cedc73c64829686206a7e9fc3f ]
+[ Upstream commit 4d0fe8c52bb3029d83e323c961221156ab98680b ]
 
-In az6007_i2c_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach az6007_i2c_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+When I register a kset in the following way:
+	static struct kset my_kset;
+	kobject_set_name(&my_kset.kobj, "my_kset");
+        ret = kset_register(&my_kset);
 
-Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+A null pointer dereference exception is occurred:
+[ 4453.568337] Unable to handle kernel NULL pointer dereference at \
+virtual address 0000000000000028
+... ...
+[ 4453.810361] Call trace:
+[ 4453.813062]  kobject_get_ownership+0xc/0x34
+[ 4453.817493]  kobject_add_internal+0x98/0x274
+[ 4453.822005]  kset_register+0x5c/0xb4
+[ 4453.825820]  my_kobj_init+0x44/0x1000 [my_kset]
+... ...
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Because I didn't initialize my_kset.kobj.ktype.
+
+According to the description in Documentation/core-api/kobject.rst:
+ - A ktype is the type of object that embeds a kobject.  Every structure
+   that embeds a kobject needs a corresponding ktype.
+
+So add sanity check to make sure kset->kobj.ktype is not NULL.
+
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20230805084114.1298-2-thunder.leizhen@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/az6007.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ lib/kobject.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/az6007.c b/drivers/media/usb/dvb-usb-v2/az6007.c
-index 8e914be5b7c5e..2f40eb6bdbb83 100644
---- a/drivers/media/usb/dvb-usb-v2/az6007.c
-+++ b/drivers/media/usb/dvb-usb-v2/az6007.c
-@@ -796,6 +796,10 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
- 			if (az6007_xfer_debug)
- 				printk(KERN_DEBUG "az6007: I2C W addr=0x%x len=%d\n",
- 				       addr, msgs[i].len);
-+			if (msgs[i].len < 1) {
-+				ret = -EIO;
-+				goto err;
-+			}
- 			req = AZ6007_I2C_WR;
- 			index = msgs[i].buf[0];
- 			value = addr | (1 << 8);
-@@ -810,6 +814,10 @@ static int az6007_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
- 			if (az6007_xfer_debug)
- 				printk(KERN_DEBUG "az6007: I2C R addr=0x%x len=%d\n",
- 				       addr, msgs[i].len);
-+			if (msgs[i].len < 1) {
-+				ret = -EIO;
-+				goto err;
-+			}
- 			req = AZ6007_I2C_RD;
- 			index = msgs[i].buf[0];
- 			value = addr;
+diff --git a/lib/kobject.c b/lib/kobject.c
+index ea53b30cf4837..cd3e1a98eff9e 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -874,6 +874,11 @@ int kset_register(struct kset *k)
+ 	if (!k)
+ 		return -EINVAL;
+ 
++	if (!k->kobj.ktype) {
++		pr_err("must have a ktype to be initialized properly!\n");
++		return -EINVAL;
++	}
++
+ 	kset_init(k);
+ 	err = kobject_add_internal(&k->kobj);
+ 	if (err)
 -- 
 2.40.1
 
