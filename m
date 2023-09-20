@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1C4A7A7C37
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24C217A7B82
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:52:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234864AbjITL7N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:59:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43038 "EHLO
+        id S234744AbjITLwz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:52:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234876AbjITL7N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:59:13 -0400
+        with ESMTP id S234745AbjITLwy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:52:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E69AD
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:59:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF928C433C7;
-        Wed, 20 Sep 2023 11:59:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4E06B4
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:52:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D3FC433C9;
+        Wed, 20 Sep 2023 11:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695211147;
-        bh=U4It2bLHujKvznforhHFkOS2M/W65tFYntQ7XGkBVVA=;
+        s=korg; t=1695210768;
+        bh=Bn6JMRljh4XFsPlZRadWdzShW9TJ7yA3xflCynlWgr8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TgJrgVxSuv1qfs6gZeriTqaW9ormGgX50HYALeLL9u/BzOwbbuisOrJSSibpc/68u
-         TS0usGa4c+9lTs0uk/6de+ex1iWYMeiRNa5Fppm8E9WYHGUxrQYM7+nh5ia/rkGmlI
-         /TtzwdX6wT7L9LbjFOvYmCDqYS75Anqef9A9+BXo=
+        b=fe9MZZVaq36eEeGLhCM1wJlno6cmPhu1JI0RF8v0ASCHxn4X/CFbCRlCpRiA4Jb0A
+         FKuqr1nmPEGakNvbUG1mST3Z2ab5RwVdyiPZA9iIlkWgENJgnvWeLi/3qkOLp5um3z
+         nKTvr3VWAdZX4eZDlJzr6RcSx4wLQGMQ9IDZZYNQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nigel Croxon <ncroxon@redhat.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/139] md/raid1: fix error: ISO C90 forbids mixed declarations
+        patches@lists.linux.dev, John Garry <john.g.garry@oracle.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.5 198/211] scsi: qla2xxx: Use raw_smp_processor_id() instead of smp_processor_id()
 Date:   Wed, 20 Sep 2023 13:30:42 +0200
-Message-ID: <20230920112839.586310725@linuxfoundation.org>
+Message-ID: <20230920112852.004196698@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
-References: <20230920112835.549467415@linuxfoundation.org>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
+References: <20230920112845.859868994@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,55 +50,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nigel Croxon <ncroxon@redhat.com>
+From: Nilesh Javali <njavali@marvell.com>
 
-[ Upstream commit df203da47f4428bc286fc99318936416253a321c ]
+commit 59f10a05b5c7b675256a66e3161741239889ff80 upstream.
 
-There is a compile error when this commit is added:
-md: raid1: fix potential OOB in raid1_remove_disk()
+The following call trace was observed:
 
-drivers/md/raid1.c: In function 'raid1_remove_disk':
-drivers/md/raid1.c:1844:9: error: ISO C90 forbids mixed declarations
-and code [-Werror=declaration-after-statement]
-1844 |         struct raid1_info *p = conf->mirrors + number;
-     |         ^~~~~~
+localhost kernel: nvme nvme0: NVME-FC{0}: controller connect complete
+localhost kernel: BUG: using smp_processor_id() in preemptible [00000000] code: kworker/u129:4/75092
+localhost kernel: nvme nvme0: NVME-FC{0}: new ctrl: NQN "nqn.1992-08.com.netapp:sn.b42d198afb4d11ecad6d00a098d6abfa:subsystem.PR_Channel2022_RH84_subsystem_291"
+localhost kernel: caller is qla_nvme_post_cmd+0x216/0x1380 [qla2xxx]
+localhost kernel: CPU: 6 PID: 75092 Comm: kworker/u129:4 Kdump: loaded Tainted: G    B   W  OE    --------- ---  5.14.0-70.22.1.el9_0.x86_64+debug #1
+localhost kernel: Hardware name: HPE ProLiant XL420 Gen10/ProLiant XL420 Gen10, BIOS U39 01/13/2022
+localhost kernel: Workqueue: nvme-wq nvme_async_event_work [nvme_core]
+localhost kernel: Call Trace:
+localhost kernel: dump_stack_lvl+0x57/0x7d
+localhost kernel: check_preemption_disabled+0xc8/0xd0
+localhost kernel: qla_nvme_post_cmd+0x216/0x1380 [qla2xxx]
 
-That's because the new code was inserted before the struct.
-The change is move the struct command above this commit.
+Use raw_smp_processor_id() instead of smp_processor_id().
 
-Fixes: 8b0472b50bcf ("md: raid1: fix potential OOB in raid1_remove_disk()")
-Signed-off-by: Nigel Croxon <ncroxon@redhat.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/46d929d0-2aab-4cf2-b2bf-338963e8ba5a@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also use queue_work() across the driver instead of queue_work_on() thus
+avoiding usage of smp_processor_id() when CONFIG_DEBUG_PREEMPT is enabled.
+
+Cc: stable@vger.kernel.org
+Suggested-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230831112146.32595-2-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid1.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_inline.h  |    2 +-
+ drivers/scsi/qla2xxx/qla_isr.c     |    6 +++---
+ drivers/scsi/qla2xxx/qla_target.c  |    3 +--
+ drivers/scsi/qla2xxx/tcm_qla2xxx.c |    4 ++--
+ 4 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 72303c6201747..30f906a67def4 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1826,12 +1826,11 @@ static int raid1_remove_disk(struct mddev *mddev, struct md_rdev *rdev)
- 	struct r1conf *conf = mddev->private;
- 	int err = 0;
- 	int number = rdev->raid_disk;
-+	struct raid1_info *p = conf->mirrors + number;
+--- a/drivers/scsi/qla2xxx/qla_inline.h
++++ b/drivers/scsi/qla2xxx/qla_inline.h
+@@ -577,7 +577,7 @@ fcport_is_bigger(fc_port_t *fcport)
+ static inline struct qla_qpair *
+ qla_mapq_nvme_select_qpair(struct qla_hw_data *ha, struct qla_qpair *qpair)
+ {
+-	int cpuid = smp_processor_id();
++	int cpuid = raw_smp_processor_id();
  
- 	if (unlikely(number >= conf->raid_disks))
- 		goto abort;
+ 	if (qpair->cpuid != cpuid &&
+ 	    ha->qp_cpu_map[cpuid]) {
+--- a/drivers/scsi/qla2xxx/qla_isr.c
++++ b/drivers/scsi/qla2xxx/qla_isr.c
+@@ -3817,7 +3817,7 @@ void qla24xx_process_response_queue(stru
+ 	if (!ha->flags.fw_started)
+ 		return;
  
--	struct raid1_info *p = conf->mirrors + number;
--
- 	if (rdev != p->rdev)
- 		p = conf->mirrors + conf->raid_disks + number;
+-	if (rsp->qpair->cpuid != smp_processor_id() || !rsp->qpair->rcv_intr) {
++	if (rsp->qpair->cpuid != raw_smp_processor_id() || !rsp->qpair->rcv_intr) {
+ 		rsp->qpair->rcv_intr = 1;
  
--- 
-2.40.1
-
+ 		if (!rsp->qpair->cpu_mapped)
+@@ -4308,7 +4308,7 @@ qla2xxx_msix_rsp_q(int irq, void *dev_id
+ 	}
+ 	ha = qpair->hw;
+ 
+-	queue_work_on(smp_processor_id(), ha->wq, &qpair->q_work);
++	queue_work(ha->wq, &qpair->q_work);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -4334,7 +4334,7 @@ qla2xxx_msix_rsp_q_hs(int irq, void *dev
+ 	wrt_reg_dword(&reg->hccr, HCCRX_CLR_RISC_INT);
+ 	spin_unlock_irqrestore(&ha->hardware_lock, flags);
+ 
+-	queue_work_on(smp_processor_id(), ha->wq, &qpair->q_work);
++	queue_work(ha->wq, &qpair->q_work);
+ 
+ 	return IRQ_HANDLED;
+ }
+--- a/drivers/scsi/qla2xxx/qla_target.c
++++ b/drivers/scsi/qla2xxx/qla_target.c
+@@ -4425,8 +4425,7 @@ static int qlt_handle_cmd_for_atio(struc
+ 		queue_work_on(cmd->se_cmd.cpuid, qla_tgt_wq, &cmd->work);
+ 	} else if (ha->msix_count) {
+ 		if (cmd->atio.u.isp24.fcp_cmnd.rddata)
+-			queue_work_on(smp_processor_id(), qla_tgt_wq,
+-			    &cmd->work);
++			queue_work(qla_tgt_wq, &cmd->work);
+ 		else
+ 			queue_work_on(cmd->se_cmd.cpuid, qla_tgt_wq,
+ 			    &cmd->work);
+--- a/drivers/scsi/qla2xxx/tcm_qla2xxx.c
++++ b/drivers/scsi/qla2xxx/tcm_qla2xxx.c
+@@ -310,7 +310,7 @@ static void tcm_qla2xxx_free_cmd(struct
+ 	cmd->trc_flags |= TRC_CMD_DONE;
+ 
+ 	INIT_WORK(&cmd->work, tcm_qla2xxx_complete_free);
+-	queue_work_on(smp_processor_id(), tcm_qla2xxx_free_wq, &cmd->work);
++	queue_work(tcm_qla2xxx_free_wq, &cmd->work);
+ }
+ 
+ /*
+@@ -547,7 +547,7 @@ static void tcm_qla2xxx_handle_data(stru
+ 	cmd->trc_flags |= TRC_DATA_IN;
+ 	cmd->cmd_in_wq = 1;
+ 	INIT_WORK(&cmd->work, tcm_qla2xxx_handle_data_work);
+-	queue_work_on(smp_processor_id(), tcm_qla2xxx_free_wq, &cmd->work);
++	queue_work(tcm_qla2xxx_free_wq, &cmd->work);
+ }
+ 
+ static int tcm_qla2xxx_chk_dif_tags(uint32_t tag)
 
 
