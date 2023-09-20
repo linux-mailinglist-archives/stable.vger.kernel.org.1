@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C50057A7B69
-	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21A207A7C06
+	for <lists+stable@lfdr.de>; Wed, 20 Sep 2023 13:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234738AbjITLv4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 20 Sep 2023 07:51:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46568 "EHLO
+        id S234723AbjITL52 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 20 Sep 2023 07:57:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234748AbjITLvx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:51:53 -0400
+        with ESMTP id S235105AbjITL5X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 20 Sep 2023 07:57:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC73DC
-        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:51:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B659DC433C9;
-        Wed, 20 Sep 2023 11:51:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 056B9199
+        for <stable@vger.kernel.org>; Wed, 20 Sep 2023 04:57:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48274C433C8;
+        Wed, 20 Sep 2023 11:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695210706;
-        bh=vikRSlR5Thp3Gb7EfDPdlFhMWVXMYvFrE2KF0c/iOv0=;
+        s=korg; t=1695211033;
+        bh=954Zf/lh9aXtd5VEMPxuHxKK4oqc6kezTFkJILYqwfg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xgo3xOJhf/ihI4J5aw9SHNvvUmV16sZ/kLoFRsCSqXDxCqPvKkH7W6c3uSefcDmFn
-         ZmcDt/oxfVwEJSbeX9vIsoBaGGN1wQ0wpajoY6zmwwFz17USE1ftTQ7a/5Ap506mv4
-         yFhuxP73oyDKWj9/vi00zEMgPmao5g8xN0CXus3U=
+        b=ljN8RT2JBNDXPgRyLCC1X8swfqTUV+1qxi7SgY4HIxWggH89taRWh3KwGlNXyEOo8
+         2HL12j+A+Yu93+mH+ZilxMXfyQrS0lhHtpyp++P/jXtqVpfQskJh9sESAMVtsTxmzm
+         KDMntYo8d/nmfZXub9rasWw4arZyq8b3Vl1MgrmM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, AceLan Kao <acelan@gmail.com>,
-        Yu Kuai <yukuai3@huawei.com>,
-        Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>,
-        Song Liu <song@kernel.org>
-Subject: [PATCH 6.5 174/211] md: Put the right device in md_seq_next
+        patches@lists.linux.dev, Zhen Lei <thunder.leizhen@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 084/139] kobject: Add sanity check for kset->kobj.ktype in kset_register()
 Date:   Wed, 20 Sep 2023 13:30:18 +0200
-Message-ID: <20230920112851.277624057@linuxfoundation.org>
+Message-ID: <20230920112838.767537323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
-References: <20230920112845.859868994@linuxfoundation.org>
+In-Reply-To: <20230920112835.549467415@linuxfoundation.org>
+References: <20230920112835.549467415@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,45 +49,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-commit c8870379a21fbd9ad14ca36204ccfbe9d25def43 upstream.
+[ Upstream commit 4d0fe8c52bb3029d83e323c961221156ab98680b ]
 
-If there are multiple arrays in system and one mddevice is marked
-with MD_DELETED and md_seq_next() is called in the middle of removal
-then it _get()s proper device but it may _put() deleted one. As a result,
-active counter may never be zeroed for mddevice and it cannot
-be removed.
+When I register a kset in the following way:
+	static struct kset my_kset;
+	kobject_set_name(&my_kset.kobj, "my_kset");
+        ret = kset_register(&my_kset);
 
-Put the device which has been _get with previous md_seq_next() call.
+A null pointer dereference exception is occurred:
+[ 4453.568337] Unable to handle kernel NULL pointer dereference at \
+virtual address 0000000000000028
+... ...
+[ 4453.810361] Call trace:
+[ 4453.813062]  kobject_get_ownership+0xc/0x34
+[ 4453.817493]  kobject_add_internal+0x98/0x274
+[ 4453.822005]  kset_register+0x5c/0xb4
+[ 4453.825820]  my_kobj_init+0x44/0x1000 [my_kset]
+... ...
 
-Cc: stable@vger.kernel.org
-Fixes: 12a6caf27324 ("md: only delete entries from all_mddevs when the disk is freed")
-Reported-by: AceLan Kao <acelan@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217798
-Cc: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Mariusz Tkaczyk <mariusz.tkaczyk@linux.intel.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230914152416.10819-1-mariusz.tkaczyk@linux.intel.com
+Because I didn't initialize my_kset.kobj.ktype.
+
+According to the description in Documentation/core-api/kobject.rst:
+ - A ktype is the type of object that embeds a kobject.  Every structure
+   that embeds a kobject needs a corresponding ktype.
+
+So add sanity check to make sure kset->kobj.ktype is not NULL.
+
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20230805084114.1298-2-thunder.leizhen@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/kobject.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -8214,7 +8214,7 @@ static void *md_seq_next(struct seq_file
- 	spin_unlock(&all_mddevs_lock);
+diff --git a/lib/kobject.c b/lib/kobject.c
+index aa375a5d94419..207fd22ad3bde 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -850,6 +850,11 @@ int kset_register(struct kset *k)
+ 	if (!k)
+ 		return -EINVAL;
  
- 	if (to_put)
--		mddev_put(mddev);
-+		mddev_put(to_put);
- 	return next_mddev;
- 
- }
++	if (!k->kobj.ktype) {
++		pr_err("must have a ktype to be initialized properly!\n");
++		return -EINVAL;
++	}
++
+ 	kset_init(k);
+ 	err = kobject_add_internal(&k->kobj);
+ 	if (err)
+-- 
+2.40.1
+
 
 
