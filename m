@@ -2,225 +2,190 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 070117A9F1D
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 22:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B87B87AA1A8
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 23:06:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230439AbjIUUSA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 16:18:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53644 "EHLO
+        id S232151AbjIUVFt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 17:05:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231378AbjIUURf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 16:17:35 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8720349CD
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:25:24 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1c5dfadb492so8145ad.1
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:25:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695317123; x=1695921923; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nEO84+iq6kC3VEaU1+DAhOho9ryfXauqS0h4qPx+tVo=;
-        b=UmgM4a5eO87NvvqT4VbsUD0cVBF7B5KILCjrBj+T+pVfrTpG9Rg47p6TdtG/FmvTtP
-         lmh/zpJ54NrDpw09b64iEmxoDm5ZwAkgb3eI4yKkHGbKZIA50+BUoksudnqUWQkrgEfy
-         Enw2O0EfHEppZeg/y78ZI2SnIBpAJJAxpobZ2XdhAa75qu2F7mqU/JbOYsMz7YM0I14I
-         cUQx+o+5dj7442hvkHKh39JqnGtvxt8sKLbAuoWMVJESGOhBxN1X436pK8LhOLPa68qR
-         +V2f82kuKT/dDxgtQhKmdkFE356gUZkRv+ndek7XB2NvLPlzuW1NlVcTpSAf1Nryj9BC
-         31DA==
+        with ESMTP id S232641AbjIUVEm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 17:04:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B65B4B0A05
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 11:09:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695319741;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qGxZnsNiHt/giK6qzG9BTVYPrTI5jtrYUuPjM2C4/y0=;
+        b=PUMi79T7aoKZIy+86/Lv8Y22qgOaAegyBRLwG9OXDZWNk9TxoPD1AOUxoBIqx24hO0zgIu
+        qzN1tTUiWyReOphCzoNpDwv5isNmttJ9lf+3sf54cvr47zOlunLvjD2qHW/k0aH7e3w23D
+        6Ec+KPIu8OHT9AcCi+D30z1fgO+41pI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-303--SIwOuIbPJuve_dSVRQ_MQ-1; Thu, 21 Sep 2023 14:09:00 -0400
+X-MC-Unique: -SIwOuIbPJuve_dSVRQ_MQ-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-9ae5f4ebe7eso25472066b.0
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 11:09:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695317123; x=1695921923;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nEO84+iq6kC3VEaU1+DAhOho9ryfXauqS0h4qPx+tVo=;
-        b=ufNdyWYp0p9e6w3t3K7V5vlT850MOL2gtnus7phNAtCNRcyM3Lws7rkaeNOkNgMxps
-         Si/iyZ6Uazx9VoindcB5rFpSgKwnub3wZvRLlEDvTBvIZrkrYtr3k4oMr6G79kC7V1AB
-         2yz/djX1PyIfmEPnlwwovHeiXPj7CCLnOZ2xJVhHcVbTDt/Z62IpFs77AMWw4qOqi9FU
-         cGmUCoeAQnHTDqFAjRocb7hy0GiuPURN0iSfFcvQ62aZZrUObWbzCHJq/42ay84jX8YR
-         EtilcdGIY/v+ekI9zbeKXd0VmOszQTBMk8/MoXU03rk040kO9r/WrWs0rpfumyPpPi2H
-         wsPg==
-X-Gm-Message-State: AOJu0YxPyc40eaomDG303iSY8f1wvjF1wVoYp0lmfLznXvPZYTKyEhfS
-        8zaLw/olcf3fB9yCZD7SDodO/u/lDFSJiX2KouBxgg==
-X-Google-Smtp-Source: AGHT+IH34jeCfkePOj7hpV+ODrentVe9NkKGE3tVIgDkrp39gCm/9T4EqQqhcSsElnfpQxsWsPmXdWmVy7RyHw94dUk=
-X-Received: by 2002:a17:902:e744:b0:1b8:89fd:61ea with SMTP id
- p4-20020a170902e74400b001b889fd61eamr201854plf.1.1695317123272; Thu, 21 Sep
- 2023 10:25:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <ZQrSXh+riB7NnZuE@dhcp22.suse.cz> <4eb47d6a-b127-4aad-af30-896c3b9505b4@linux.microsoft.com>
- <ZQr3+YfcBM2Er6F7@dhcp22.suse.cz> <CALvZod7E_Jm9y+40OKtLs5EFA0ptKGjoe2BU58SY29pUiPc93g@mail.gmail.com>
- <ZQskGGAwlsr1YxAp@dhcp22.suse.cz> <CALvZod6b3=+=xXEUeWOQW3t_URJpeeVX46WjBHv5BS+436KoFA@mail.gmail.com>
- <ZQtRKzUOfdaVKRCF@dhcp22.suse.cz> <CALvZod5DSMoEGY0CwGz=P-2=Opbr4SmMfwHhZRROBx7yCaBdDA@mail.gmail.com>
- <ZQv2MXOynlEPW/bX@dhcp22.suse.cz> <f01b5d93-0f43-41c8-b3d8-40ef9696dcf8@linux.microsoft.com>
- <ZQwnUpX7FlzIOWXP@dhcp22.suse.cz>
-In-Reply-To: <ZQwnUpX7FlzIOWXP@dhcp22.suse.cz>
-From:   Shakeel Butt <shakeelb@google.com>
-Date:   Thu, 21 Sep 2023 10:25:11 -0700
-Message-ID: <CALvZod7fs_K3807N1=-5bmXbA=vhAk+zcF+VHS=T5ycK1eeMfg@mail.gmail.com>
-Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop kmem.limit_in_bytes
-To:     Michal Hocko <mhocko@suse.com>
-Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        Tejun Heo <tj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        mathieu.tortuyaux@gmail.com
+        d=1e100.net; s=20230601; t=1695319739; x=1695924539;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qGxZnsNiHt/giK6qzG9BTVYPrTI5jtrYUuPjM2C4/y0=;
+        b=v4LnYrnzg1DnzdphvvS9vZEHlee6epnPnLGsdfFNCHy4ED22H7952FK6EWeOVNDJjO
+         jmU9uBNgsT0lyTbfjRKBsscLyZFa2xk94326T2xm72my4QCYmsdCVz4OqY0fdZJwTVCC
+         Dlz6s/gGaUj8/TQWnnTTNE0fRykg37Kbzq6dZ8wi3RerjFuHvq7eFJ4Fyxj3fA7FNAzn
+         wVHpXgy1Z0EEnzkNZuG5NqGs7G/quQ5787AdQY9dwEJo98VK1BCMasvajjSvOXTmouqO
+         NGv3M8iev8VpUxTxaytc/RbKuTA1/9VAIcVHoZ+ugUHIBEorljTHQFEFTF9PzbMvDERu
+         SCyA==
+X-Gm-Message-State: AOJu0YyGnFctX7jYGxH00O4sQNN00FtYVQVMx74f1RX5ch+ZzAxl5R0B
+        J/5EufwBOCg6biuzs1DBf/ddU+KfVh9ZGrsuDaeahTPX7kFUO5VmRjXhfx6Pr9C+yqDAU2A15bW
+        BZocAOFgp5W0PfaSW
+X-Received: by 2002:a17:906:74d5:b0:9a6:5340:c337 with SMTP id z21-20020a17090674d500b009a65340c337mr4707837ejl.2.1695319739413;
+        Thu, 21 Sep 2023 11:08:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGLaoTSytYH1pXp57psAu+VYfFfn2yexrzGAJGcSC8u/J2RZ+YiZfWXtLdDSja//QnIeUbzPg==
+X-Received: by 2002:a17:906:74d5:b0:9a6:5340:c337 with SMTP id z21-20020a17090674d500b009a65340c337mr4707821ejl.2.1695319739057;
+        Thu, 21 Sep 2023 11:08:59 -0700 (PDT)
+Received: from gerbillo.redhat.com (146-241-251-4.dyn.eolo.it. [146.241.251.4])
+        by smtp.gmail.com with ESMTPSA id va1-20020a17090711c100b00992ea405a79sm1387076ejb.166.2023.09.21.11.08.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Sep 2023 11:08:58 -0700 (PDT)
+Message-ID: <9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com>
+Subject: Re: [PATCH net v4 3/3] net: prevent address rewrite in kernel_bind()
+From:   Paolo Abeni <pabeni@redhat.com>
+To:     Jordan Rife <jrife@google.com>
+Cc:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        netdev@vger.kernel.org, dborkman@kernel.org,
+        philipp.reisner@linbit.com, lars.ellenberg@linbit.com,
+        christoph.boehmwalder@linbit.com, axboe@kernel.dk,
+        airlied@redhat.com, chengyou@linux.alibaba.com,
+        kaishen@linux.alibaba.com, jgg@ziepe.ca, leon@kernel.org,
+        bmt@zurich.ibm.com, isdn@linux-pingi.de, ccaulfie@redhat.com,
+        teigland@redhat.com, mark@fasheh.com, jlbec@evilplan.org,
+        joseph.qi@linux.alibaba.com, sfrench@samba.org, pc@manguebit.com,
+        lsahlber@redhat.com, sprasad@microsoft.com, tom@talpey.com,
+        horms@verge.net.au, ja@ssi.bg, pablo@netfilter.org,
+        kadlec@netfilter.org, fw@strlen.de, santosh.shilimkar@oracle.com,
+        stable@vger.kernel.org
+Date:   Thu, 21 Sep 2023 20:08:56 +0200
+In-Reply-To: <CADKFtnTz-gDRKtDpw1p=AEkBSa3MispZDV8Rz5n+ZahdBr3vnA@mail.gmail.com>
+References: <20230919175323.144902-1-jrife@google.com>
+         <650af4001eb7c_37ac7329443@willemb.c.googlers.com.notmuch>
+         <550df73160cd600f797823b86fde2c2b3526b133.camel@redhat.com>
+         <CAF=yD-K3oLn++V_zJMjGRXdiPh2qi+Fit6uOh4z4HxuuyCOyog@mail.gmail.com>
+         <b822f1246a35682ad6f2351d451191825416af58.camel@redhat.com>
+         <CADKFtnTz-gDRKtDpw1p=AEkBSa3MispZDV8Rz5n+ZahdBr3vnA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 21, 2023 at 4:21=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrot=
-e:
->
-> On Thu 21-09-23 12:43:05, Jeremi Piotrowski wrote:
-> > On 9/21/2023 9:52 AM, Michal Hocko wrote:
-> > > On Wed 20-09-23 14:46:52, Shakeel Butt wrote:
-> > >> On Wed, Sep 20, 2023 at 1:08=E2=80=AFPM Michal Hocko <mhocko@suse.co=
+On Thu, 2023-09-21 at 10:01 -0700, Jordan Rife wrote:
+> On Thu, Sep 21, 2023 at 8:26=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> w=
+rote:
+> >=20
+> > On Thu, 2023-09-21 at 09:30 -0400, Willem de Bruijn wrote:
+> > > On Thu, Sep 21, 2023 at 4:35=E2=80=AFAM Paolo Abeni <pabeni@redhat.co=
 m> wrote:
-> > >>>
-> > >> [...]
-> > >>>> have a strong opinion against it. Also just to be clear we are not
-> > >>>> talking about full revert of 58056f77502f but just the returning o=
-f
-> > >>>> EOPNOTSUPP, right?
-> > >>>
-> > >>> If we allow the limit to be set without returning a failure then we
-> > >>> still have options 2 and 3 on how to deal with that. One of them is=
- to
-> > >>> enforce the limit.
-> > >>>
-> > >>
-> > >> Option 3 is a partial revert of 58056f77502f where we keep the no
-> > >> limit enforcement and remove the EOPNOTSUPP return on write. Let's g=
-o
-> > >> with option 3. In addition, let's add pr_warn_once on the read of
-> > >> kmem.limit_in_bytes as well.
-> > >
-> > > How about this?
-> > > ---
-> >
-> > I'm OK with this approach. You're missing this in the patch below:
-> >
-> > // static struct cftype mem_cgroup_legacy_files[] =3D {
-> >
-> > +       {
-> > +               .name =3D "kmem.limit_in_bytes",
-> > +               .private =3D MEMFILE_PRIVATE(_KMEM, RES_LIMIT),
-> > +               .write =3D mem_cgroup_write,
-> > +               .read_u64 =3D mem_cgroup_read_u64,
-> > +       },
->
-> Of course. I've lost the hunk while massaging the revert. Thanks for
-> spotting. Updated version below. Btw. I've decided to not pr_{warn,info}
-> on the read side because realistically I do not think this will help all
-> that much. I am worried we will get stuck with this for ever because
-> there always be somebody stuck on unpatched userspace.
-> ---
-> From bb6702b698efd31f3f90f4f1dd36ffe223397bec Mon Sep 17 00:00:00 2001
-> From: Michal Hocko <mhocko@suse.com>
-> Date: Thu, 21 Sep 2023 09:38:29 +0200
-> Subject: [PATCH] mm, memcg: reconsider kmem.limit_in_bytes deprecation
->
-> This reverts commits 86327e8eb94c ("memcg: drop kmem.limit_in_bytes")
-> and partially reverts 58056f77502f ("memcg, kmem: further deprecate
-> kmem.limit_in_bytes") which have incrementally removed support for the
-> kernel memory accounting hard limit. Unfortunately it has turned out
-> that there is still userspace depending on the existence of
-> memory.kmem.limit_in_bytes [1]. The underlying functionality is not
-> really required but the non-existent file just confuses the userspace
-> which fails in the result. The patch to fix this on the userspace side
-> has been submitted but it is hard to predict how it will propagate
-> through the maze of 3rd party consumers of the software.
->
-> Now, reverting alone 86327e8eb94c is not an option because there is
-> another set of userspace which cannot cope with ENOTSUPP returned when
-> writing to the file. Therefore we have to go and revisit 58056f77502f
-> as well. There are two ways to go ahead. Either we give up on the
-> deprecation and fully revert 58056f77502f as well or we can keep
-> kmem.limit_in_bytes but make the write a noop and warn about the fact.
-> This should work for both known breaking workloads which depend on the
-> existence but do not depend on the hard limit enforcement.
->
-> [1] http://lkml.kernel.org/r/20230920081101.GA12096@linuxonhyperv3.guj3yc=
-tzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net
-> Fixes: 86327e8eb94c ("memcg: drop kmem.limit_in_bytes")
-> Fixes: 58056f77502f ("memcg, kmem: further deprecate kmem.limit_in_bytes"=
+> > > >=20
+> > > > On Wed, 2023-09-20 at 09:30 -0400, Willem de Bruijn wrote:
+> > > > > Jordan Rife wrote:
+> > > > > > Similar to the change in commit 0bdf399342c5("net: Avoid addres=
+s
+> > > > > > overwrite in kernel_connect"), BPF hooks run on bind may rewrit=
+e the
+> > > > > > address passed to kernel_bind(). This change
+> > > > > >=20
+> > > > > > 1) Makes a copy of the bind address in kernel_bind() to insulat=
+e
+> > > > > >    callers.
+> > > > > > 2) Replaces direct calls to sock->ops->bind() with kernel_bind(=
 )
-> Signed-off-by: Michal Hocko <mhocko@suse.com>
+> > > > > >=20
+> > > > > > Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-j=
+rife@google.com/
+> > > > > > Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+> > > > > > Cc: stable@vger.kernel.org
+> > > > > > Signed-off-by: Jordan Rife <jrife@google.com>
+> > > > >=20
+> > > > > Reviewed-by: Willem de Bruijn <willemb@google.com>
+> > > >=20
+> > > > I fear this is going to cause a few conflicts with other trees. We =
+can
+> > > > still take it, but at very least we will need some acks from the
+> > > > relevant maintainers.
+> > > >=20
+> > > > I *think* it would be easier split this and patch 1/3 in individual
+> > > > patches targeting the different trees, hopefully not many additiona=
+l
+> > > > patches will be required. What do you think?
+> > >=20
+> > > Roughly how many patches would result from this one patch. From the
+> > > stat line I count { block/drbd, char/agp, infiniband, isdn, fs/dlm,
+> > > fs/ocfs2, fs/smb, netfilter, rds }. That's worst case nine callers
+> > > plus the core patch to net/socket.c?
+> >=20
+> > I think there should not be problems taking directly changes for rds
+> > and nf/ipvs.
+> >=20
+> > Additionally, I think the non network changes could consolidate the
+> > bind and connect changes in a single patch.
+> >=20
+> > It should be 7 not-network patches overall.
+> >=20
+> > > If logistically simpler and you prefer the approach, we can also
+> > > revisit Jordan's original approach, which embedded the memcpy inside
+> > > the BPF branches.
+> > >=20
+> > > That has the slight benefit to in-kernel callers that it limits the
+> > > cost of the memcpy to cgroup_bpf_enabled. But adds a superfluous
+> > > second copy to the more common userspace callers, again at least only
+> > > if cgroup_bpf_enabled.
+> > >=20
+> > > If so, it should at least move the whole logic around those BPF hooks
+> > > into helper functions.
+> >=20
+> > IMHO the approach implemented here is preferable, I suggest going
+> > forward with it.
+> >=20
+> > Thanks,
+> >=20
+> > Paolo
+> >=20
+>=20
+> > Additionally, I think the non network changes could consolidate the
+> > bind and connect changes in a single patch.
+> >=20
+> > It should be 7 not-network patches overall.
+>=20
+> I'm fine with this. If there are no objections, I can drop the non-net
+> changes in this patch series and send out several
+> kernel_connect/kernel_bind patches to the appropriate trees as a
+> follow up. Shall we wait to hear back from the maintainers or just go
+> ahead with this plan?
 
-With one request below:
+I'm guessing you can go ahead with that: it should better fit anybody.
 
-Acked-by: Shakeel Butt <shakeelb@google.com>
+Thanks
 
-> ---
->  Documentation/admin-guide/cgroup-v1/memory.rst |  7 +++++++
->  mm/memcontrol.c                                | 18 ++++++++++++++++++
->  2 files changed, 25 insertions(+)
->
-> diff --git a/Documentation/admin-guide/cgroup-v1/memory.rst b/Documentati=
-on/admin-guide/cgroup-v1/memory.rst
-> index 5f502bf68fbc..ff456871bf4b 100644
-> --- a/Documentation/admin-guide/cgroup-v1/memory.rst
-> +++ b/Documentation/admin-guide/cgroup-v1/memory.rst
-> @@ -92,6 +92,13 @@ Brief summary of control files.
->   memory.oom_control                 set/show oom controls.
->   memory.numa_stat                   show the number of memory usage per =
-numa
->                                      node
-> + memory.kmem.limit_in_bytes          Deprecated knob to set and read the=
- kernel
-> +                                     memory hard limit. Kernel hard limi=
-t is not
-> +                                     supported since 5.16. Writing any v=
-alue to
-> +                                     do file will not have any effect sa=
-me as if
-> +                                     nokmem kernel parameter was specifi=
-ed.
-> +                                     Kernel memory is still charged and =
-reported
-> +                                     by memory.kmem.usage_in_bytes.
->   memory.kmem.usage_in_bytes          show current kernel memory allocati=
-on
->   memory.kmem.failcnt                 show the number of kernel memory us=
-age
->                                      hits limits
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index a4d3282493b6..0b161705ef36 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3097,6 +3097,7 @@ static void obj_cgroup_uncharge_pages(struct obj_cg=
-roup *objcg,
->  static int obj_cgroup_charge_pages(struct obj_cgroup *objcg, gfp_t gfp,
->                                    unsigned int nr_pages)
->  {
-> +       struct page_counter *counter;
->         struct mem_cgroup *memcg;
->         int ret;
->
-> @@ -3107,6 +3108,10 @@ static int obj_cgroup_charge_pages(struct obj_cgro=
-up *objcg, gfp_t gfp,
->                 goto out;
->
->         memcg_account_kmem(memcg, nr_pages);
-> +
-> +       /* There is no way to set up kmem hard limit so this operation ca=
-nnot fail */
-> +       if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> +               WARN_ON(!page_counter_try_charge(&memcg->kmem, nr_pages, =
-&counter));
+Paolo
 
-WARN_ON_ONCE() please.
+p.s. also using this reply to check if finally vger accepts my message
+again...
+
