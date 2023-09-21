@@ -2,151 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99AF77AA4F1
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 00:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AB047AA4E2
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 00:25:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233096AbjIUW0O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 18:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59918 "EHLO
+        id S233042AbjIUWZf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 18:25:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233059AbjIUWZg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 18:25:36 -0400
-X-Greylist: delayed 3334 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 21 Sep 2023 10:59:07 PDT
-Received: from vulcan.natalenko.name (vulcan.natalenko.name [104.207.131.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90313A59C5;
-        Thu, 21 Sep 2023 10:59:06 -0700 (PDT)
-Received: from spock.localnet (unknown [94.142.239.106])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id 206D3150AC2D;
-        Thu, 21 Sep 2023 07:02:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1695272574;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=CBBr2jfDzLMCIhDU0Px248rD/FOXEfErM7/x99M3aDM=;
-        b=GLaqSqG4vq2RFzSGUNB2nPqN50JbIQHga5A+ZnDQ/pAvQdCnf1TdR4oZPjneXPUjbkJssh
-        NewB0E7ctuCiZaYC0f+Mvif8TAXhgY7vzca3GrvyUJrzFGCXj0rSgdp1M/dhyYwQerXSyJ
-        dqRjguWNaJQwTrl8VyJBhSwjfIudnJs=
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on MT7915
-Date:   Thu, 21 Sep 2023 07:02:41 +0200
-Message-ID: <12289744.O9o76ZdvQC@natalenko.name>
-In-Reply-To: <20230726091704.25795-1-nbd@nbd.name>
-References: <20230726091704.25795-1-nbd@nbd.name>
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5713149.DvuYhMxLoT";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
+        with ESMTP id S233039AbjIUWZZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 18:25:25 -0400
+Received: from nautica.notk.org (ipv6.notk.org [IPv6:2001:41d0:1:7a93::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E9498A59;
+        Thu, 21 Sep 2023 10:56:50 -0700 (PDT)
+Received: by nautica.notk.org (Postfix, from userid 108)
+        id CE3F9C009; Thu, 21 Sep 2023 08:07:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+        t=1695276455; bh=NNAd8hBazUT7q+i5GrRpTZnyh8y+ObeLpTZ022LCAvc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=G8QlnTKqjzuKx4FNalVbhKSvN9V6iQhsV7bOjGxCNHvqGRvhPTHc5EdkBkkw1M/SX
+         +mSimrzKqJ1Vfdo3DzJkGe3Kzm1Uos68uUgs704Ma9C7zFh6tadu/qC3N7BzZPsuxD
+         EewnDgloAiqLjFbXRaK7fArqa773jEZticuXj3R5qz64xGQY89uFOnZi2EX2eqJ8Gw
+         LefZbDKJDHqRJITdO0WxRXUG+37F6X9EcqhW5hYaDYtWbnO/TAXBW9wL+fZkE9vM4A
+         PxLAPSj28XnXHkpnbLo/BDJ6N2meuFZU+Ah3Hq7mdqE0RqWV5Aggfz1p1R6zP5Ol9M
+         G1EshNcD++UBA==
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
+X-Spam-Level: 
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+Received: from gaia (localhost [127.0.0.1])
+        by nautica.notk.org (Postfix) with ESMTPS id 40415C009;
+        Thu, 21 Sep 2023 08:07:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+        t=1695276454; bh=NNAd8hBazUT7q+i5GrRpTZnyh8y+ObeLpTZ022LCAvc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HRzWF7WAwNHgM96SCbeWfJiEOGfOUbu1t0CSyzok5jwHqHAbXeTcySEaw3glOsC59
+         6N9mYjUx1nPCiMhonJ1ooqccsxhYlYlGxSxd1MPQBYzcR1ItWlGphvxculERDu9vE5
+         bVwfQNFeVsCn6hYbnMsSkTyaAf5nGm2con7iUGDQJ5HDfF56DBKdw/IOzoc6OXMGMG
+         mihleLH2mbnna8r/KXxt+M/2RcHRtnwgTRx48rrXsBeIJxCm6bKpXI2NpC3A+YI6uO
+         SqNt42p6j1fcMBdUBM+RcIw8SEvIFgaWMLmxv1bySGqHiWmfO9Ux0u0jEEc4OGEh5H
+         dRqEsNGTNsLyA==
+Received: from localhost (gaia [local])
+        by gaia (OpenSMTPD) with ESMTPA id 73b27eeb;
+        Thu, 21 Sep 2023 06:07:25 +0000 (UTC)
+Date:   Thu, 21 Sep 2023 15:07:10 +0900
+From:   Dominique Martinet <asmadeus@codewreck.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 5.10 00/83] 5.10.196-rc1 review
+Message-ID: <ZQvdjhnxlIAdXKuo@codewreck.org>
+References: <20230920112826.634178162@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---nextPart5713149.DvuYhMxLoT
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-To: linux-wireless@vger.kernel.org
-Date: Thu, 21 Sep 2023 07:02:41 +0200
-Message-ID: <12289744.O9o76ZdvQC@natalenko.name>
-In-Reply-To: <20230726091704.25795-1-nbd@nbd.name>
-References: <20230726091704.25795-1-nbd@nbd.name>
-MIME-Version: 1.0
+Greg Kroah-Hartman wrote on Wed, Sep 20, 2023 at 01:30:50PM +0200:
+> This is the start of the stable review cycle for the 5.10.196 release.
+> There are 83 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.196-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-Hello Felix.
+Tested on our armv7 and aarch64 boards (respectively Armadillo 640 and
+Armadillo G4), no obvious regression:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-On st=C5=99eda 26. =C4=8Dervence 2023 11:17:02 CEST Felix Fietkau wrote:
-> The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half=
-=2DNSS
-> 160 MHz support, so it is wrong to also advertise full 160 MHz support.
->=20
-> Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width s=
-upport for MT7915")
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
->  1 file changed, 1 deletion(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7915/init.c
-> index ee976657bfc3..78552f10b377 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
->  			if (!dev->dbdc_support)
->  				vht_cap->cap |=3D
->  					IEEE80211_VHT_CAP_SHORT_GI_160 |
-> -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
->  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
->  		} else {
->  			vht_cap->cap |=3D
->=20
-
-=46or some reason this got backported into the stable kernel:
-
-```
-$ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt=
-7915/
-c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
-edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib=
-_info
-9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
-0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
-6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
-7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is acti=
-ve
-feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is ac=
-tive
-70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
-```
-
-and this broke my mt7915-based AP.
-
-However, if I remove `[VT160]` capability from the hostapd config, things g=
-o back to normal. It does seem that 160 MHz still works even.
-
-Is this expected?
-
-Please check.
-
-Thanks.
-
-=2D-=20
-Oleksandr Natalenko (post-factum)
---nextPart5713149.DvuYhMxLoT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmULznEACgkQil/iNcg8
-M0vrVxAAr2A2S5y3K3KZCf6eC4XHPkTxvLb/VNZfY4NVE+mHkgFZU9lFxYIw5D6y
-XxfukONRVtusbi5M2gHCGPQEpNCAeSr2P9P/v8KRaYOoT54lrOvQquyliuoujuYC
-jeO2XtIJUWxIpz5+BoXYrroD7z5k9sHIXf/xDuAmHa2IGy/bpU6yYb1V+dwEvzbi
-43QoscmGzjAbZvrZiufetU3hUq4/oyZycwdUDK0/9cbEliQ8NkM6JiTFBQylgnmP
-NI2iy0SZlHVcf/AWgps6TZwx3Frb12OvNAmnGWga2axpkXRm5pPkFEjxOreLteps
-uSFcV12ZmTEsaHsAQOd+demq75/H3f9tJPMy1gz06oixO/3k9tUpdxVNiFgOuyg9
-iKGUWTb5ETjufpJe6dpnnuhpHU2i+npAgs0tf8gVux/DZncvYbaYxb6iEIefwfXk
-yUENnOzfud2aEFM/WJ8W9B8X+qGzsJD17YKV0VYKi0M6BQRdGFKP82EWAoTizTPj
-0oSswygE9pf9ApswpOm0kq+3/iywejIchCNNjNFxvlrIMZCTtUSBeoUdNGitzcjE
-7qOtBUpB5TikczCJt5ut4R9i51xCRrRi681XGx89zepc42DwpSj5qkORYOkGtWap
-e8C01yUtMwdenAIJBYikBhNLtilZYg6epSuf7HhpGcn7fQDXwTM=
-=VAkp
------END PGP SIGNATURE-----
-
---nextPart5713149.DvuYhMxLoT--
-
-
-
+-- 
+Dominique Martinet | Asmadeus
