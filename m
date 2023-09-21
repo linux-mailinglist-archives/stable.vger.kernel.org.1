@@ -2,74 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB0BE7A977D
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 19:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38E2C7A973E
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 19:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229500AbjIURYe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 13:24:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60544 "EHLO
+        id S229550AbjIURMe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 13:12:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229907AbjIURYP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 13:24:15 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BD737BEF
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:13:23 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-31dcf18f9e2so1204392f8f.0
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:13:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=libre.computer; s=google; t=1695316398; x=1695921198; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PImsx6KWbNqeW3aSQcC5Ii8dPWKbRVigN6bpHRAR4iI=;
-        b=SpuTYjjfufihzbKpfDT09ZpOVv7Cky3O7Aom2jJ/Ze23kJnLUJIQwFBlprBoeuzInG
-         NtZqVoavMN0EFj7Ive6jNYQSljKAB46JWtgxSZ7JtlLKSC8V6I5m+OEDtOL0BwxESd9V
-         xhhejNVTFnCryQzG7uVFmbQxPefMGiPKJfmoBzy+SnNGBfsZH90IdwTxC7g5Hh4BAylo
-         xEQQZ/08OjANUwx8WVsHfFBnwVXaN2eF7ibBK1MtvBVrGvNDEwVQrBSXUMSlYwd3o2Gv
-         9w0HxwdwTK2oW+ME6RmdzWd5KfPyoQjAGiARP73AnH2aRpL6Va2BLwvvB/xSXGXFInYT
-         xVKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695316398; x=1695921198;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PImsx6KWbNqeW3aSQcC5Ii8dPWKbRVigN6bpHRAR4iI=;
-        b=neYwn+Baruc00RgbaKW5ZQBCkNlOIuXnBkBrOxT3aSFy12HVN4u3r6FfxsoMM1u8Ql
-         enAYV+MdO2ROdURkUBQ3l5iT6X4Ut69hXJ1wBic6cUs/G+bVjfzTDI9jmTK9Xr8fk6b7
-         +zEznfyh+QrUGWbM+tSYqt7kl69XgKV1yRdoovNnHcPEMGfdphCt7qk9o3Yuz62V+prj
-         BiYzcrHPFE35jP2PBFd7KjY/7fVq0IssvwQzD07mYRlQmACHuoy30mwh5ORQ76/X+hpG
-         AU/p78NVyHqsAlD/ZO3DK5NmJpDB33oqGWHEgExthy6pbp7MNNjPUe4bVKWslK9KF+eK
-         qbug==
-X-Gm-Message-State: AOJu0Yz2JNPIOhUkKuJ1gFleq8aYbBDC6qKxaH0kGiZm/kOez0Ros5aA
-        fwhY48XxDInLJ/E5P7Goq0M4f1W0v315tWtfxtC+QUAAhKCB+nKlPw==
-X-Google-Smtp-Source: AGHT+IFl+eP0H2PDCxlqQpOe2LDiAdzem0Vet1AdL+OxBmXcP12GPV6P5bL+gRXHdK1uYNaJH8PE9PebIIyY/Kq9MCk=
-X-Received: by 2002:a05:6512:617:b0:500:b5db:990b with SMTP id
- b23-20020a056512061700b00500b5db990bmr4609070lfe.47.1695300086936; Thu, 21
- Sep 2023 05:41:26 -0700 (PDT)
+        with ESMTP id S229837AbjIURKz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 13:10:55 -0400
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7CC842681;
+        Thu, 21 Sep 2023 10:06:12 -0700 (PDT)
+Received: from loongson.cn (unknown [10.20.42.43])
+        by gateway (Coremail) with SMTP id _____8BxnuveQAxl+IoqAA--.14247S3;
+        Thu, 21 Sep 2023 21:10:54 +0800 (CST)
+Received: from [0.0.0.0] (unknown [10.20.42.43])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8Dxnd7MQAxlS0cNAA--.28996S3;
+        Thu, 21 Sep 2023 21:10:45 +0800 (CST)
+Message-ID: <cab7d157-946e-6b8f-1b29-5618a0ac0da6@loongson.cn>
+Date:   Thu, 21 Sep 2023 21:10:36 +0800
 MIME-Version: 1.0
-From:   Da Xue <da@libre.computer>
-Date:   Thu, 21 Sep 2023 08:41:16 -0400
-Message-ID: <CACqvRUbXK3gNXB5me0OvWy2qkyHU22JjBZaJ8Sxm=KJd8gzM-g@mail.gmail.com>
-Subject: Re: [PATCH] usb: dwc3: Soft reset phy on probe for host
-To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-stable <stable@vger.kernel.org>, linux-usb@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 5.4 000/367] 5.4.257-rc1 review
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        dri-devel@lists.freedesktop.org
+References: <20230920112858.471730572@linuxfoundation.org>
+ <CA+G9fYsM0Lr8TNQJxsZFDZwcH-rEzkVV+y+x5FX18oH5wm5dRg@mail.gmail.com>
+Content-Language: en-US
+From:   Sui Jingfeng <suijingfeng@loongson.cn>
+In-Reply-To: <CA+G9fYsM0Lr8TNQJxsZFDZwcH-rEzkVV+y+x5FX18oH5wm5dRg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Dxnd7MQAxlS0cNAA--.28996S3
+X-CM-SenderInfo: xvxlyxpqjiv03j6o00pqjv00gofq/
+X-Coremail-Antispam: 1Uk129KBj93XoW7CF17WryktFWxtFWfXFy8tFc_yoW8uFW5pF
+        W5t34Yyr4jyr47tan7Zr1Sva4Yyan3J3y7Wr1DWry3uF1UWF4xKw1v9rZIvF9rWFWkKa1U
+        tr4qga4jva109rbCm3ZEXasCq-sJn29KB7ZKAUJUUUUA529EdanIXcx71UUUUU7KY7ZEXa
+        sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+        0xBIdaVrnRJUUUP2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+        IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+        e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+        0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+        6F4UJVW0owAaw2AFwI0_Jw0_GFyle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
+        Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_
+        WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrw
+        CYjI0SjxkI62AI1cAE67vIY487MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48J
+        MxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI
+        0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y
+        0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+        W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1l
+        IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0L0ePUUUU
+        U==
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Thinh,
+Hi,
 
-I can confirm your patch fixed the issue on RK3399 when I was running
-on Linux 6.1.54.
 
-I'm not on the ML for this so I'm sorry if this email causes any issue
-as I'm not sure how to reply to a thread from a ML I am not on.
+On 2023/9/21 20:08, Naresh Kamboju wrote:
+> On Wed, 20 Sept 2023 at 14:25, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+>> This is the start of the stable review cycle for the 5.4.257 release.
+>> There are 367 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, please
+>> let me know.
+>>
+>> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
+>> Anything received after that time might be too late.
+>>
+>> The whole patch series can be found in one patch at:
+>>          https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.257-rc1.gz
+>> or in the git tree and branch at:
+>>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+>> and the diffstat can be found below.
+>>
+>> thanks,
+>>
+>> greg k-h
+> Following build warnings noticed while building arm64 with allmodconfig
+> on stable-rc 5.4 with gcc-8 and gcc-12 toolchains.
+>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> drivers/gpu/drm/mediatek/mtk_drm_gem.c: In function 'mtk_drm_gem_prime_vmap':
+> drivers/gpu/drm/mediatek/mtk_drm_gem.c:273:10: warning: returning
+> 'int' from a function with return type 'void *' makes pointer from
+> integer without a cast [-Wint-conversion]
+>     return -ENOMEM;
+>            ^
 
-Best,
-Da
+
+Well, this is easy to solve.
+For the Linux-5.4 kernel, we should use "return -ERR_PTR(-ENOMEM)" instead of "return -ENOMEM".
+Since, newer version kernel prefer to return error code instead of error pointer.
+See below commit for more information.
+
+commit <7e542ff8b463>  ("drm/mediatek: Use struct dma_buf_map in GEM 
+vmap ops")
+commit <49a3f51dfeee> ("drm/gem: Use struct dma_buf_map in GEM vmap ops 
+and convert GEM backends")
+
+
+> Links:
+>   - https://storage.tuxsuite.com/public/linaro/lkft/builds/2VfG47LmPH9MUEuIcMVftu6NsFy/
+>
+>
+> Following commit is causing this build warning.
+>
+> drm/mediatek: Fix potential memory leak if vmap() fail
+> [ Upstream commit 379091e0f6d179d1a084c65de90fa44583b14a70 ]
+>
+> --
+> Linaro LKFT
+> https://lkft.linaro.org
+
