@@ -2,70 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77B047AA1E3
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 23:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0D887A9EEB
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 22:14:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232543AbjIUVIA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 17:08:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48604 "EHLO
+        id S231318AbjIUUOS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 16:14:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231584AbjIUVHj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 17:07:39 -0400
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A956CCB7
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 11:10:54 -0700 (PDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-59c268676a9so15697257b3.0
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 11:10:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695319854; x=1695924654; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WUBffOBfeC4iGfE0wxrC0Btm8jAtr1Pc1HT4AAEfzTE=;
-        b=k1R8TTaFYgCEb0p9jpKWOHzuvu547lvhNQCI8bz4zdXYz1YN1LwQnVuydJBL9iD25K
-         F0kqqHIkxK/QzkYkNK4DzxNHGQsGO8rGceqz6kgV1hU/ptH+3ztFiD3thlu+iChy4oV9
-         SRq7N0WYRgQK2EWO5DmIr/JrXVgBGlyuAZZ7oYFMdfQhlxQAOdYu2rtrQya9Zgv1EUwX
-         5b+CgXwojAidnLZp4aHjkTsCOdc8dsvcMBZQ3rq8MhLP5fjgLbjIbgXnYOskTNfPTNoq
-         lzYb85HVGHcplIel4oidZ6tV3jPVfRQeX4ZBa6zrKmrL9xE40mfkthdqq7l1RFmPEkT8
-         zRtA==
+        with ESMTP id S229708AbjIUUNz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 16:13:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62A7D448A
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:22:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695316944;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=SqoOPgme4Uuv5hKrBPiJj6+uKIVnMHAtPkgpqGU6vG4=;
+        b=TWSl9O1w12Vb7S1rK8jOQ2jInvDieEPYn6pKYNPhtnAjjJWk+qv/l0/C8DuFONBAD6C3G+
+        ESWMVUXoHaikX0GET0GHeoz9I8lMWIliQMXsomQ3ar0Xg5VHn/yFFqdYw3vfM8wx0phtkf
+        qrmINJbr79d1gq02jPCDqVlFyBexVWg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-541-yrLyIV8YPu6nvNS_mim-Xg-1; Thu, 21 Sep 2023 10:07:01 -0400
+X-MC-Unique: yrLyIV8YPu6nvNS_mim-Xg-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-321544abeeeso679939f8f.1
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 07:07:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695319854; x=1695924654;
+        d=1e100.net; s=20230601; t=1695305219; x=1695910019;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WUBffOBfeC4iGfE0wxrC0Btm8jAtr1Pc1HT4AAEfzTE=;
-        b=OrhtG4CNnxvoAzaDaIWwSta9jlti6FfWA4Ks8249u6iX54U3ryH8V9PF9j6hMRL2EM
-         1M2cZP9yB8yV2xC41+DCaHogoQFEGJZ+NfPFIDEpPULDDHhLRO5qe1RU8M7B768vezyA
-         Uz60Nj3rTvoTTWyIysSe0RENzbUqeXHCewt4+F48f5Forbtn3YPF7OdP1SqIXl8SR08+
-         N14oihVIIt3CT6TDHlkBz0rXOASnLTV1RfTz2l5RlRIaJpiu2B5TOb+gZYEJSvG0Ni6m
-         F7E7J2zIFG01uBwMV4n8sefBUsBvaGnhYCcceEjiKs5Zcu+41sagSTkUCIxVpdUeAveu
-         1Yqg==
-X-Gm-Message-State: AOJu0YzacIZ5X4nwfGSLRqd6B3zjXsLUYJSDLQWjFkksu0gs/XBHJklz
-        yhvEL+MRAVlj/8w+VbDjU6jYbpZkGMYiOX7Jjpw6uCKe3I4iCDz+jfkJug==
-X-Google-Smtp-Source: AGHT+IHvvzJ5FrOBVxuU7MJlhhXjUqpDEKLo7haizXBfU6s6ceBJbpHRnsjrEsB19ulthb+AD7V/9xxV7AFl676QuJM=
-X-Received: by 2002:a1f:6243:0:b0:486:de54:b11 with SMTP id
- w64-20020a1f6243000000b00486de540b11mr4378052vkb.16.1695303136171; Thu, 21
- Sep 2023 06:32:16 -0700 (PDT)
+        bh=SqoOPgme4Uuv5hKrBPiJj6+uKIVnMHAtPkgpqGU6vG4=;
+        b=RqZW5nbjtqSRfpVa3sj3Prd59kwp1o8MO8KyytWCzn2Hf12nR7V7FWWTo1ECdGpR0f
+         XGJjjOyM8Ievnfju1PSMrD0VCubzFOkacwRsdQKj1vUMjWes+mLQEbna2NNsr33zSjeC
+         nlQepeLRFi/S7kv/oBJ9vm7ADKOM99q4T9ZTaoq2ypgBCDiwhHwiFyT6U3kWC4nB+CoQ
+         dGuZPHmGfTUlvVNG8W4lQh5SJ99Pyer7K2WCvMW3SHazxjxZaMS5NRQ+oiM6EDSVac0S
+         9BDSzRrXudg8TpYas+2YNF7PEbj36yWIy9XIjqy6rfvNoFOVqj/Q0Zmb5RF+VkNoSGRU
+         0GIQ==
+X-Gm-Message-State: AOJu0YzB0JSKgTOqOkc4yJDKXYTpWtVfkrvOhC1xc0j41YnZ4K9uUBjs
+        P4rjMlqKFUyFye+L+aXL9MeeYKWBLHh59d7ZEdOHVQOvd1yoZJGiSSSYyBZPzjJnartxTwu9rEQ
+        nOlz4nKvA84E8KZZc0K90HU2Xcj3whr1U
+X-Received: by 2002:adf:e604:0:b0:319:7c7d:8d1 with SMTP id p4-20020adfe604000000b003197c7d08d1mr4559816wrm.44.1695305219568;
+        Thu, 21 Sep 2023 07:06:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEc9cPDe47gAzDmyMLuyvubfic4IfTmoR2y3Zwjncq14ViwH92x3CA0CL7uTBYmXwPLmcQOAKYKkzdqCkjcTCA=
+X-Received: by 2002:adf:e604:0:b0:319:7c7d:8d1 with SMTP id
+ p4-20020adfe604000000b003197c7d08d1mr4559793wrm.44.1695305219207; Thu, 21 Sep
+ 2023 07:06:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230920112826.634178162@linuxfoundation.org>
-In-Reply-To: <20230920112826.634178162@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 21 Sep 2023 15:32:04 +0200
-Message-ID: <CA+G9fYsCDqeonuM3Z-RHmbAyJ4w-UMwXYTevdKwHXEk2JhN7GQ@mail.gmail.com>
-Subject: Re: [PATCH 5.10 00/83] 5.10.196-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
+References: <20230912030008.3599514-1-lulu@redhat.com> <20230912030008.3599514-2-lulu@redhat.com>
+ <CACGkMEuwjga949gGBKyZozfppMa2UF5mu8wuk4o88Qi6GthtXw@mail.gmail.com>
+In-Reply-To: <CACGkMEuwjga949gGBKyZozfppMa2UF5mu8wuk4o88Qi6GthtXw@mail.gmail.com>
+From:   Cindy Lu <lulu@redhat.com>
+Date:   Thu, 21 Sep 2023 22:06:16 +0800
+Message-ID: <CACLfguUu83eYPr=yaSMEAm77igOvdc1ZF-LPNPRcbKrg1OsbUA@mail.gmail.com>
+Subject: Re: [RFC v2 1/4] vduse: Add function to get/free the pages for reconnection
+To:     Jason Wang <jasowang@redhat.com>
+Cc:     mst@redhat.com, maxime.coquelin@redhat.com,
+        xieyongji@bytedance.com, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,168 +79,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 20 Sept 2023 at 14:21, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Mon, Sep 18, 2023 at 4:41=E2=80=AFPM Jason Wang <jasowang@redhat.com> wr=
+ote:
 >
-> This is the start of the stable review cycle for the 5.10.196 release.
-> There are 83 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On Tue, Sep 12, 2023 at 11:00=E2=80=AFAM Cindy Lu <lulu@redhat.com> wrote=
+:
+> >
+> > Add the function vduse_alloc_reconnnect_info_mem
+> > and vduse_alloc_reconnnect_info_mem
+> > In this 2 function, vduse will get/free (vq_num + 1)*page
+> > Page 0 will be used to save the reconnection information, The
+> > Userspace App will maintain this. Page 1 ~ vq_num + 1 will save
+> > the reconnection information for vqs.
 >
-> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
-> Anything received after that time might be too late.
+> Please explain why this is needed instead of only describing how it is
+> implemented. (Code can explain itself).
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.10.196-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.10.y
-> and the diffstat can be found below.
+> >
+> > Signed-off-by: Cindy Lu <lulu@redhat.com>
+> > ---
+> >  drivers/vdpa/vdpa_user/vduse_dev.c | 86 ++++++++++++++++++++++++++++++
+> >  1 file changed, 86 insertions(+)
+> >
+> > diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_use=
+r/vduse_dev.c
+> > index 26b7e29cb900..4c256fa31fc4 100644
+> > --- a/drivers/vdpa/vdpa_user/vduse_dev.c
+> > +++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+> > @@ -30,6 +30,10 @@
+> >  #include <uapi/linux/virtio_blk.h>
+> >  #include <linux/mod_devicetable.h>
+> >
+> > +#ifdef CONFIG_X86
+> > +#include <asm/set_memory.h>
+> > +#endif
+> > +
+> >  #include "iova_domain.h"
+> >
+> >  #define DRV_AUTHOR   "Yongji Xie <xieyongji@bytedance.com>"
+> > @@ -41,6 +45,23 @@
+> >  #define VDUSE_IOVA_SIZE (128 * 1024 * 1024)
+> >  #define VDUSE_MSG_DEFAULT_TIMEOUT 30
+> >
+> > +/* struct vdpa_reconnect_info save the page information for reconnecti=
+on
+> > + * kernel will init these information while alloc the pages
+> > + * and use these information to free the pages
+> > + */
+> > +struct vdpa_reconnect_info {
+> > +       /* Offset (within vm_file) in PAGE_SIZE,
+> > +        * this just for check, not using
+> > +        */
+> > +       u32 index;
+> > +       /* physical address for this page*/
+> > +       phys_addr_t addr;
+> > +       /* virtual address for this page*/
+> > +       unsigned long vaddr;
 >
-> thanks,
+> If it could be switched by virt_to_phys() why duplicate those fields?
 >
-> greg k-h
+yes will remove this part
+Thanks
+Cindy
+> > +       /* memory size, here always page_size*/
+> > +       phys_addr_t size;
+>
+> If it's always PAGE_SIZE why would we have this?
+will remove this
+Thanks
+Cindy
+>
+> > +};
+> > +
+> >  struct vduse_virtqueue {
+> >         u16 index;
+> >         u16 num_max;
+> > @@ -57,6 +78,7 @@ struct vduse_virtqueue {
+> >         struct vdpa_callback cb;
+> >         struct work_struct inject;
+> >         struct work_struct kick;
+> > +       struct vdpa_reconnect_info reconnect_info;
+> >  };
+> >
+> >  struct vduse_dev;
+> > @@ -106,6 +128,7 @@ struct vduse_dev {
+> >         u32 vq_align;
+> >         struct vduse_umem *umem;
+> >         struct mutex mem_lock;
+> > +       struct vdpa_reconnect_info reconnect_status;
+> >  };
+> >
+> >  struct vduse_dev_msg {
+> > @@ -1030,6 +1053,65 @@ static int vduse_dev_reg_umem(struct vduse_dev *=
+dev,
+> >         return ret;
+> >  }
+> >
+> > +int vduse_alloc_reconnnect_info_mem(struct vduse_dev *dev)
+> > +{
+> > +       struct vdpa_reconnect_info *info;
+> > +       struct vduse_virtqueue *vq;
+> > +       void *addr;
+> > +
+> > +       /*page 0 is use to save status,dpdk will use this to save the i=
+nformation
+> > +        *needed in reconnection,kernel don't need to maintain this
+> > +        */
+> > +       info =3D &dev->reconnect_status;
+> > +       addr =3D (void *)get_zeroed_page(GFP_KERNEL);
+> > +       if (!addr)
+> > +               return -1;
+>
+> -ENOMEM?
+>
+sure will change this
+Thanks
+Cidny
+> Thanks
+>
 
-
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 5.10.196-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.10.y
-* git commit: f147286de8e534b063d97de0c66a4a5895bfc6ad
-* git describe: v5.10.195-84-gf147286de8e5
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
-.195-84-gf147286de8e5
-
-## Test Regressions (compared to v5.10.195)
-
-## Metric Regressions (compared to v5.10.195)
-
-## Test Fixes (compared to v5.10.195)
-
-## Metric Fixes (compared to v5.10.195)
-
-## Test result summary
-total: 89352, pass: 70107, fail: 2413, skip: 16770, xfail: 62
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 117 total, 116 passed, 1 failed
-* arm64: 44 total, 43 passed, 1 failed
-* i386: 35 total, 35 passed, 0 failed
-* mips: 27 total, 26 passed, 1 failed
-* parisc: 4 total, 0 passed, 4 failed
-* powerpc: 26 total, 25 passed, 1 failed
-* riscv: 12 total, 11 passed, 1 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 38 total, 38 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
