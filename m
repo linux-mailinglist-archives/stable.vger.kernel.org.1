@@ -2,111 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D22287A9FDF
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 22:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 480487AA0F6
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 22:56:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232134AbjIUU22 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 16:28:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37970 "EHLO
+        id S232401AbjIUU4I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 16:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231921AbjIUU2K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 16:28:10 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5C805AE0F;
-        Thu, 21 Sep 2023 12:50:16 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 09DBE1F37C;
-        Thu, 21 Sep 2023 19:50:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1695325815; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=F9fNT393+ZwmVQgjbtj+WOmx+WURCS26K1KA4ErkEyw=;
-        b=mqcnorfwtHQ0g5Unuh4IiRrgaXgqTarwt+Enc/GQ7uXAOuTk0wPklV0ATRXsu7vc4ioTIQ
-        JKrO736zI5g7fWJyxINphvPj1Gfy3XHxQYA54fhbRRAq6WoEwDzVPg22wkc9x226AYVzov
-        2cf+NVbpnmo8qJp3WLg+1HlgL9tO+Io=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D8E48134B0;
-        Thu, 21 Sep 2023 19:50:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id fXiKMnaeDGW5eQAAMHmgww
-        (envelope-from <mhocko@suse.com>); Thu, 21 Sep 2023 19:50:14 +0000
-Date:   Thu, 21 Sep 2023 21:50:14 +0200
-From:   Michal Hocko <mhocko@suse.com>
-To:     Shakeel Butt <shakeelb@google.com>
-Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        Tejun Heo <tj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        mathieu.tortuyaux@gmail.com
-Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop
- kmem.limit_in_bytes
-Message-ID: <ZQyedkYIp2L+S2jm@dhcp22.suse.cz>
-References: <ZQr3+YfcBM2Er6F7@dhcp22.suse.cz>
- <CALvZod7E_Jm9y+40OKtLs5EFA0ptKGjoe2BU58SY29pUiPc93g@mail.gmail.com>
- <ZQskGGAwlsr1YxAp@dhcp22.suse.cz>
- <CALvZod6b3=+=xXEUeWOQW3t_URJpeeVX46WjBHv5BS+436KoFA@mail.gmail.com>
- <ZQtRKzUOfdaVKRCF@dhcp22.suse.cz>
- <CALvZod5DSMoEGY0CwGz=P-2=Opbr4SmMfwHhZRROBx7yCaBdDA@mail.gmail.com>
- <ZQv2MXOynlEPW/bX@dhcp22.suse.cz>
- <f01b5d93-0f43-41c8-b3d8-40ef9696dcf8@linux.microsoft.com>
- <ZQwnUpX7FlzIOWXP@dhcp22.suse.cz>
- <CALvZod7fs_K3807N1=-5bmXbA=vhAk+zcF+VHS=T5ycK1eeMfg@mail.gmail.com>
+        with ESMTP id S232427AbjIUUz4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 16:55:56 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED3A4720F5
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 13:33:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695328400; x=1726864400;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=iLjy9nWYiDfEjO8IDkKLFjNEHW4QIXVu6B9F4PvQ0jA=;
+  b=SSsvzcfwKEM3zMwNEfhGnAz83bS6ZgT+k55biL2jL6S9Koon+qYH/jnG
+   MDjF4BGC8wX0Q6H5T8Qz0jwUcRa8DLJJV7RUmgVaIK24QfTIadob9EXTs
+   e1dQIGaldlqxVnsJV2lMXUxG5cmt28m5OWCHuYdY7OqbjkDmCFMsEl2Ro
+   mWnbskKIOO3JmTzLwXlztRxWGo2aGMjS5xdyG5odDBbRy64uyulLxjfJv
+   XGEBW2Gvk2Fbgppc1JGNK+AGxMJbSf95vDtW3bBXQ03TtaCCfK1LlzsuH
+   76/kp9bmdEHmJk3Mu5I0Gv2B8U4SKUd+l6yLDIkZ5BCNDKGP8FVZbWuvE
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="384496511"
+X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; 
+   d="scan'208";a="384496511"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 13:33:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="994237709"
+X-IronPort-AV: E=Sophos;i="6.03,166,1694761200"; 
+   d="scan'208";a="994237709"
+Received: from lkp-server02.sh.intel.com (HELO b77866e22201) ([10.239.97.151])
+  by fmsmga006.fm.intel.com with ESMTP; 21 Sep 2023 13:33:19 -0700
+Received: from kbuild by b77866e22201 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qjQMP-0000NP-0Z;
+        Thu, 21 Sep 2023 20:33:17 +0000
+Date:   Fri, 22 Sep 2023 04:32:19 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Saranya Muruganandam <saranyamohan@google.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] block: fix use-after-free of q->q_usage_counter
+Message-ID: <ZQyoUx9NpWfL4ED4@a36b5d0e9c41>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALvZod7fs_K3807N1=-5bmXbA=vhAk+zcF+VHS=T5ycK1eeMfg@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230921182012.3965572-1-saranyamohan@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu 21-09-23 10:25:11, Shakeel Butt wrote:
-> On Thu, Sep 21, 2023 at 4:21 AM Michal Hocko <mhocko@suse.com> wrote:
-[...]
-> With one request below:
-> 
-> Acked-by: Shakeel Butt <shakeelb@google.com>
+Hi,
 
-Thanks.
+Thanks for your patch.
 
-> > @@ -3107,6 +3108,10 @@ static int obj_cgroup_charge_pages(struct obj_cgroup *objcg, gfp_t gfp,
-> >                 goto out;
-> >
-> >         memcg_account_kmem(memcg, nr_pages);
-> > +
-> > +       /* There is no way to set up kmem hard limit so this operation cannot fail */
-> > +       if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-> > +               WARN_ON(!page_counter_try_charge(&memcg->kmem, nr_pages, &counter));
-> 
-> WARN_ON_ONCE() please.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Sure. This shouldn't really trigger, but it is true that if something
-unexpected happens then it is likly to flood the log so _ONCE is safer.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html/#option-1
 
-I will wait for others to comment before I send the official patch.
-To be completely honest I am not super happy about this way of handling
-stuff, but considering the level of brokenness this seems like the
-safest option. Especially when nobody really want to use the kernel
-memory hard limit AFAIU.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] block: fix use-after-free of q->q_usage_counter
+Link: https://lore.kernel.org/stable/20230921182012.3965572-1-saranyamohan%40google.com
+
 -- 
-Michal Hocko
-SUSE Labs
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
