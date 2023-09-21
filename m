@@ -2,28 +2,26 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11D387AA457
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 00:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 846727AA49C
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 00:12:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232651AbjIUWG4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 18:06:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50062 "EHLO
+        id S232995AbjIUWMz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 18:12:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232774AbjIUWGi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 18:06:38 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 51FED85D07;
-        Thu, 21 Sep 2023 10:37:47 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F07FB175D;
-        Thu, 21 Sep 2023 09:21:23 -0700 (PDT)
-Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.26])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 84F093F59C;
-        Thu, 21 Sep 2023 09:20:42 -0700 (PDT)
-From:   Ryan Roberts <ryan.roberts@arm.com>
-To:     Catalin Marinas <catalin.marinas@arm.com>,
+        with ESMTP id S232999AbjIUWMU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 18:12:20 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5E4A86E58;
+        Thu, 21 Sep 2023 10:38:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE57AC433C8;
+        Thu, 21 Sep 2023 17:38:09 +0000 (UTC)
+Date:   Thu, 21 Sep 2023 18:38:07 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Ryan Roberts <ryan.roberts@arm.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Will Deacon <will@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
         Helge Deller <deller@gmx.de>,
         Nicholas Piggin <npiggin@gmail.com>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -41,112 +39,84 @@ To:     Catalin Marinas <catalin.marinas@arm.com>,
         Mike Kravetz <mike.kravetz@oracle.com>,
         Muchun Song <muchun.song@linux.dev>,
         SeongJae Park <sj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
         Uladzislau Rezki <urezki@gmail.com>,
         Christoph Hellwig <hch@infradead.org>,
         Lorenzo Stoakes <lstoakes@gmail.com>,
         Anshuman Khandual <anshuman.khandual@arm.com>,
         Peter Xu <peterx@redhat.com>,
         Axel Rasmussen <axelrasmussen@google.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>
-Cc:     Ryan Roberts <ryan.roberts@arm.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org
-Subject: [PATCH v1 5/8] sparc: hugetlb: Convert set_huge_pte_at() to take vma
-Date:   Thu, 21 Sep 2023 17:20:04 +0100
-Message-Id: <20230921162007.1630149-6-ryan.roberts@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230921162007.1630149-1-ryan.roberts@arm.com>
+        stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v1 0/8] Fix set_huge_pte_at() panic on arm64
+Message-ID: <ZQx/f35o0zT2lug4@arm.com>
 References: <20230921162007.1630149-1-ryan.roberts@arm.com>
+ <20230921093026.230b2991be551093e397f462@linux-foundation.org>
+ <7c5c2c00-d657-44fd-b478-743b43c57e8a@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7c5c2c00-d657-44fd-b478-743b43c57e8a@arm.com>
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In order to fix a bug, arm64 needs access to the vma inside it's
-implementation of set_huge_pte_at(). Provide for this by converting the
-mm parameter to be a vma. Any implementations that require the mm can
-access it via vma->vm_mm.
+On Thu, Sep 21, 2023 at 05:35:54PM +0100, Ryan Roberts wrote:
+> On 21/09/2023 17:30, Andrew Morton wrote:
+> > On Thu, 21 Sep 2023 17:19:59 +0100 Ryan Roberts <ryan.roberts@arm.com> wrote:
+> >> Ryan Roberts (8):
+> >>   parisc: hugetlb: Convert set_huge_pte_at() to take vma
+> >>   powerpc: hugetlb: Convert set_huge_pte_at() to take vma
+> >>   riscv: hugetlb: Convert set_huge_pte_at() to take vma
+> >>   s390: hugetlb: Convert set_huge_pte_at() to take vma
+> >>   sparc: hugetlb: Convert set_huge_pte_at() to take vma
+> >>   mm: hugetlb: Convert set_huge_pte_at() to take vma
+> >>   arm64: hugetlb: Convert set_huge_pte_at() to take vma
+> >>   arm64: hugetlb: Fix set_huge_pte_at() to work with all swap entries
+> >>
+> >>  arch/arm64/include/asm/hugetlb.h              |  2 +-
+> >>  arch/arm64/mm/hugetlbpage.c                   | 22 ++++----------
+> >>  arch/parisc/include/asm/hugetlb.h             |  2 +-
+> >>  arch/parisc/mm/hugetlbpage.c                  |  4 +--
+> >>  .../include/asm/nohash/32/hugetlb-8xx.h       |  3 +-
+> >>  arch/powerpc/mm/book3s64/hugetlbpage.c        |  2 +-
+> >>  arch/powerpc/mm/book3s64/radix_hugetlbpage.c  |  2 +-
+> >>  arch/powerpc/mm/nohash/8xx.c                  |  2 +-
+> >>  arch/powerpc/mm/pgtable.c                     |  7 ++++-
+> >>  arch/riscv/include/asm/hugetlb.h              |  2 +-
+> >>  arch/riscv/mm/hugetlbpage.c                   |  3 +-
+> >>  arch/s390/include/asm/hugetlb.h               |  8 +++--
+> >>  arch/s390/mm/hugetlbpage.c                    |  8 ++++-
+> >>  arch/sparc/include/asm/hugetlb.h              |  8 +++--
+> >>  arch/sparc/mm/hugetlbpage.c                   |  8 ++++-
+> >>  include/asm-generic/hugetlb.h                 |  6 ++--
+> >>  include/linux/hugetlb.h                       |  6 ++--
+> >>  mm/damon/vaddr.c                              |  2 +-
+> >>  mm/hugetlb.c                                  | 30 +++++++++----------
+> >>  mm/migrate.c                                  |  2 +-
+> >>  mm/rmap.c                                     | 10 +++----
+> >>  mm/vmalloc.c                                  |  5 +++-
+> >>  22 files changed, 80 insertions(+), 64 deletions(-)
+> > 
+> > Looks scary but it's actually a fairly modest patchset.  It could
+> > easily be all rolled into a single patch for ease of backporting. 
+> > Maybe Greg has an opinion?
+> 
+> Yes, I thought about doing that; or perhaps 2 patches - one for the interface
+> change across all arches and core code, and one for the actual bug fix?
 
-This commit makes the required sparc modifications. Separate commits
-update the other arches and core code, before the actual bug is fixed in
-arm64.
+I think this would make more sense, especially if we want to backport
+it. The first patch would have no functional change, only an interface
+change, followed by the arm64 fix.
 
-No behavioral changes intended.
-
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
----
- arch/sparc/include/asm/hugetlb.h | 8 +++++---
- arch/sparc/mm/hugetlbpage.c      | 8 +++++++-
- 2 files changed, 12 insertions(+), 4 deletions(-)
-
-diff --git a/arch/sparc/include/asm/hugetlb.h b/arch/sparc/include/asm/hugetlb.h
-index 0a26cca24232..14a71b735bb8 100644
---- a/arch/sparc/include/asm/hugetlb.h
-+++ b/arch/sparc/include/asm/hugetlb.h
-@@ -13,7 +13,9 @@ extern struct pud_huge_patch_entry __pud_huge_patch, __pud_huge_patch_end;
- #endif
- 
- #define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
--void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
-+void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
-+		     pte_t *ptep, pte_t pte);
-+void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
- 		     pte_t *ptep, pte_t pte);
- 
- #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
-@@ -32,7 +34,7 @@ static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
- 					   unsigned long addr, pte_t *ptep)
- {
- 	pte_t old_pte = *ptep;
--	set_huge_pte_at(mm, addr, ptep, pte_wrprotect(old_pte));
-+	__set_huge_pte_at(mm, addr, ptep, pte_wrprotect(old_pte));
- }
- 
- #define __HAVE_ARCH_HUGE_PTEP_SET_ACCESS_FLAGS
-@@ -42,7 +44,7 @@ static inline int huge_ptep_set_access_flags(struct vm_area_struct *vma,
- {
- 	int changed = !pte_same(*ptep, pte);
- 	if (changed) {
--		set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
-+		__set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
- 		flush_tlb_page(vma, addr);
- 	}
- 	return changed;
-diff --git a/arch/sparc/mm/hugetlbpage.c b/arch/sparc/mm/hugetlbpage.c
-index d7018823206c..05267b72103f 100644
---- a/arch/sparc/mm/hugetlbpage.c
-+++ b/arch/sparc/mm/hugetlbpage.c
-@@ -328,7 +328,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
- 	return pte_offset_huge(pmd, addr);
- }
- 
--void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
-+void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
- 		     pte_t *ptep, pte_t entry)
- {
- 	unsigned int nptes, orig_shift, shift;
-@@ -364,6 +364,12 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
- 				    orig_shift);
- }
- 
-+void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
-+		     pte_t *ptep, pte_t entry)
-+{
-+	__set_huge_pte_at(vma->vm_mm, addr, ptep, entry);
-+}
-+
- pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
- 			      pte_t *ptep)
- {
 -- 
-2.25.1
-
+Catalin
