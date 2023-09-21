@@ -2,172 +2,196 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A078A7AA127
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 22:58:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFFCF7AA18F
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 23:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231864AbjIUU6V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 16:58:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35788 "EHLO
+        id S231241AbjIUVDo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 17:03:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231759AbjIUU6B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 16:58:01 -0400
-Received: from vulcan.natalenko.name (vulcan.natalenko.name [104.207.131.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A794B0A0C;
-        Thu, 21 Sep 2023 11:09:04 -0700 (PDT)
-Received: from spock.localnet (unknown [94.142.239.106])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id 5B08E150B9B2;
-        Thu, 21 Sep 2023 18:03:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1695312216;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=QxsO6UkNvxMnaFNUASnMsSuKlQTdxo+O3u8ycIHVlUc=;
-        b=oaQWT3Kzb4K5+aOUjPKPbiQf6IWki7Osf4bE/fWdYLN5HY9SsjuVaXG2jYRHSz1/q9wpVG
-        0tkVCbGHHmiNN5zGTlbWeUZZykzTP9L3ZMsNG78SDMHxl+9Law0Clmpr+5ydPUzqzKJP50
-        yg8Nm0Do/mnojCQeQBnhZW61Vq32naU=
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
-        Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on MT7915
-Date:   Thu, 21 Sep 2023 18:03:23 +0200
-Message-ID: <4862789.31r3eYUQgx@natalenko.name>
-In-Reply-To: <2023092145-luxury-fender-d5b9@gregkh>
-References: <20230726091704.25795-1-nbd@nbd.name> <12289744.O9o76ZdvQC@natalenko.name>
- <2023092145-luxury-fender-d5b9@gregkh>
+        with ESMTP id S232457AbjIUVDS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 17:03:18 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BA3B485D0D;
+        Thu, 21 Sep 2023 10:37:47 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 72F9616F8;
+        Thu, 21 Sep 2023 09:21:01 -0700 (PDT)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.26])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 036003F59C;
+        Thu, 21 Sep 2023 09:20:19 -0700 (PDT)
+From:   Ryan Roberts <ryan.roberts@arm.com>
+To:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Muchun Song <muchun.song@linux.dev>,
+        SeongJae Park <sj@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Peter Xu <peterx@redhat.com>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>
+Cc:     Ryan Roberts <ryan.roberts@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org
+Subject: [PATCH v1 0/8] Fix set_huge_pte_at() panic on arm64
+Date:   Thu, 21 Sep 2023 17:19:59 +0100
+Message-Id: <20230921162007.1630149-1-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4513970.LvFx2qVVIh";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---nextPart4513970.LvFx2qVVIh
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Date: Thu, 21 Sep 2023 18:03:23 +0200
-Message-ID: <4862789.31r3eYUQgx@natalenko.name>
-In-Reply-To: <2023092145-luxury-fender-d5b9@gregkh>
-MIME-Version: 1.0
+Hi All,
 
-Hello.
+This series fixes a bug in arm64's implementation of set_huge_pte_at(), which
+can result in an unprivileged user causing a kernel panic. The problem was
+triggered when running the new uffd poison mm selftest for HUGETLB memory. This
+test (and the uffd poison feature) was merged for v6.6-rc1. However, upon
+inspection there are multiple other pre-existing paths that can trigger this
+bug.
 
-On =C4=8Dtvrtek 21. z=C3=A1=C5=99=C3=AD 2023 9:19:58 CEST Greg Kroah-Hartma=
-n wrote:
-> On Thu, Sep 21, 2023 at 07:02:41AM +0200, Oleksandr Natalenko wrote:
-> > Hello Felix.
-> >=20
-> > On st=C5=99eda 26. =C4=8Dervence 2023 11:17:02 CEST Felix Fietkau wrote:
-> > > The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for =
-half-NSS
-> > > 160 MHz support, so it is wrong to also advertise full 160 MHz suppor=
-t.
-> > >=20
-> > > Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel wid=
-th support for MT7915")
-> > > Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> > > ---
-> > >  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
-> > >  1 file changed, 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drive=
-rs/net/wireless/mediatek/mt76/mt7915/init.c
-> > > index ee976657bfc3..78552f10b377 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> > > @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
-> > >  			if (!dev->dbdc_support)
-> > >  				vht_cap->cap |=3D
-> > >  					IEEE80211_VHT_CAP_SHORT_GI_160 |
-> > > -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
-> > >  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
-> > >  		} else {
-> > >  			vht_cap->cap |=3D
-> > >=20
-> >=20
-> > For some reason this got backported into the stable kernel:
-> >=20
-> > ```
-> > $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt7=
-6/mt7915/
-> > c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
-> > edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan=
-_mib_info
-> > 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
-> > 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
-> > 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
-> > 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is =
-active
-> > feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED i=
-s active
-> > 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being bloc=
-ked
-> > ```
-> >=20
-> > and this broke my mt7915-based AP.
-> >=20
-> > However, if I remove `[VT160]` capability from the hostapd config, thin=
-gs go back to normal. It does seem that 160 MHz still works even.
-> >=20
-> > Is this expected?
->=20
-> Is your device also broken in 6.6-rc2?
-
-Yes, the same behaviour is observed with v6.6-rc2:
-
-```
-hostapd[1316]: Configured VHT capability [VHT_CAP_SUPP_CHAN_WIDTH_MASK] exc=
-eeds max value supported by the driver (1 > 0)
-```
-
-while having `[VT160]` in `vht_capab=3D`.
-
-Thanks.
-
-> thanks,
->=20
-> greg k-h
->=20
+Ideally, I'd like to get this fix in for v6.6 if possible? And I guess it should
+be backported too, given there are call sites where this can theoretically
+happen that pre-date v6.6-rc1 (I've cc'ed stable@vger.kernel.org).
 
 
-=2D-=20
-Oleksandr Natalenko (post-factum)
---nextPart4513970.LvFx2qVVIh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Description of Bug
+------------------
 
------BEGIN PGP SIGNATURE-----
+arm64's huge pte implementation supports multiple huge page sizes, some of which
+are implemented in the page table with contiguous mappings. So set_huge_pte_at()
+needs to work out how big the logical pte is, so that it can also work out how
+many physical ptes (or pmds) need to be written. It does this by grabbing the
+folio out of the pte and querying its size.
 
-iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmUMaUsACgkQil/iNcg8
-M0vq2BAAuqUjADQGA+kGleFQ3VOqGsfXScI5KLV6AdTLuLpWqs9aFt/DsrE8hj+B
-lUkTpEdWJvWRcMrWluTVp4wM+DVmrIid0+nY7yLJ9YwQEW2IzCIhrQrmoSrP09+6
-MFmtvwolHlnAB6Mfat+uEPY6Bj6x6AY6BwHuqOpZVhI6mYZ/AUfVl0nmnuHRfiNw
-ztpYDirxtQiG+zeEfegFzgRsYh3icFXo5G7R4nGmJrJWtr8DXd4NqObMFFtCLufH
-vzNzk+isp/tA++kPE5gHwSXAJGjKWzecNdKuZNrr9X+FaF69yo6sCsF0scq1lvz5
-i2zOzi6/jU6NMDJZbRsPLIrXKKZxj9DS3UEypFTI39oHgqHmqaWGMRutb5G9PeyQ
-yhNj0ozWPOJxsSUfDQWs9plYwoHSvDc3L1T0NsjNojlDdkn8jJEaezV4RlcvJ5xU
-iDVzTDru1jiCUnJ+RZyh9bLj9XdoR8l80w90DFnQ+BTbX2fUVARzub/4CJPfoTGy
-1llvYYCi4sOrDMKuhxvgzVllwWy9exd2P4yMKifoYXjKhZeSgndSvhjF1f6TS6VQ
-DWGYK4GWAwYUkTHpgdQSL/Mpo7Uz2yGLLKuoKorEMVtHA6HuMd83Mk7ABNsk6Nha
-bNyC27xssOgbzCQPQOwIzouEE+Gnj2OfCko0DoDxzrvHreRGZY0=
-=NwXY
------END PGP SIGNATURE-----
+However, there are cases when the pte being set is actually a swap entry. But
+this also used to work fine, because for huge ptes, we only ever saw migration
+entries and hwpoison entries. And both of these types of swap entries have a PFN
+embedded, so the code would grab that and everything still worked out.
 
---nextPart4513970.LvFx2qVVIh--
+But over time, more calls to set_huge_pte_at() have been added that set swap
+entry types that do not embed a PFN. And this causes the code to go bang. The
+triggering case is for the uffd poison test, commit 99aa77215ad0 ("selftests/mm:
+add uffd unit test for UFFDIO_POISON"), which sets a PTE_MARKER_POISONED swap
+entry. But review shows there are other places too (PTE_MARKER_UFFD_WP).
+
+If CONFIG_DEBUG_VM is enabled, we do at least get a BUG(), but otherwise, it
+will dereference a bad pointer in page_folio():
+
+    static inline struct folio *hugetlb_swap_entry_to_folio(swp_entry_t entry)
+    {
+        VM_BUG_ON(!is_migration_entry(entry) && !is_hwpoison_entry(entry));
+
+        return page_folio(pfn_to_page(swp_offset_pfn(entry)));
+    }
+
+So the root cause is due to commit 18f3962953e4 ("mm: hugetlb: kill
+set_huge_swap_pte_at()"), which aimed to simplify the interface to the core code
+by removing set_huge_swap_pte_at() (which took a page size parameter) and
+replacing it with calls to set_huge_swap_pte_at() where the size was inferred
+from the folio, as descibed above. While that commit didn't break anything at
+the time, it did break the interface because it couldn't handle swap entries
+without PFNs. And since then new callers have come along which rely on this
+working.
 
 
+Fix
+---
+
+The simplest fix would have been to revert the dodgy cleanup commit, but since
+things have moved on, this would have required an audit of all the new
+set_huge_pte_at() call sites to see if they should be converted to
+set_huge_swap_pte_at(). As per the original intent of the change, it would also
+leave us open to future bugs when people invariably get it wrong and call the
+wrong helper.
+
+So instead, I've converted the first parameter of set_huge_pte_at() to be a vma
+rather than an mm. This means that the arm64 code can easily recover the huge
+page size in all cases. It's a bigger change, due to needing to touch the arches
+that implement the function, but it is entirely mechanical, so in my view, low
+risk.
+
+I've compile-tested all touched arches; arm64, parisc, powerpc, riscv, s390 (and
+additionally x86_64). I've additionally booted and run mm selftests against
+arm64, where I observe the uffd poison test is fixed, and there are no other
+regressions.
+
+
+Patches
+-------
+
+patches 1-7: Convert core mm and arches to pass vma instead of mm
+patch: 8: Fixes the arm64 bug
+
+Patches based on v6.6-rc2.
+
+
+Thanks,
+Ryan
+
+
+Ryan Roberts (8):
+  parisc: hugetlb: Convert set_huge_pte_at() to take vma
+  powerpc: hugetlb: Convert set_huge_pte_at() to take vma
+  riscv: hugetlb: Convert set_huge_pte_at() to take vma
+  s390: hugetlb: Convert set_huge_pte_at() to take vma
+  sparc: hugetlb: Convert set_huge_pte_at() to take vma
+  mm: hugetlb: Convert set_huge_pte_at() to take vma
+  arm64: hugetlb: Convert set_huge_pte_at() to take vma
+  arm64: hugetlb: Fix set_huge_pte_at() to work with all swap entries
+
+ arch/arm64/include/asm/hugetlb.h              |  2 +-
+ arch/arm64/mm/hugetlbpage.c                   | 22 ++++----------
+ arch/parisc/include/asm/hugetlb.h             |  2 +-
+ arch/parisc/mm/hugetlbpage.c                  |  4 +--
+ .../include/asm/nohash/32/hugetlb-8xx.h       |  3 +-
+ arch/powerpc/mm/book3s64/hugetlbpage.c        |  2 +-
+ arch/powerpc/mm/book3s64/radix_hugetlbpage.c  |  2 +-
+ arch/powerpc/mm/nohash/8xx.c                  |  2 +-
+ arch/powerpc/mm/pgtable.c                     |  7 ++++-
+ arch/riscv/include/asm/hugetlb.h              |  2 +-
+ arch/riscv/mm/hugetlbpage.c                   |  3 +-
+ arch/s390/include/asm/hugetlb.h               |  8 +++--
+ arch/s390/mm/hugetlbpage.c                    |  8 ++++-
+ arch/sparc/include/asm/hugetlb.h              |  8 +++--
+ arch/sparc/mm/hugetlbpage.c                   |  8 ++++-
+ include/asm-generic/hugetlb.h                 |  6 ++--
+ include/linux/hugetlb.h                       |  6 ++--
+ mm/damon/vaddr.c                              |  2 +-
+ mm/hugetlb.c                                  | 30 +++++++++----------
+ mm/migrate.c                                  |  2 +-
+ mm/rmap.c                                     | 10 +++----
+ mm/vmalloc.c                                  |  5 +++-
+ 22 files changed, 80 insertions(+), 64 deletions(-)
+
+--
+2.25.1
 
