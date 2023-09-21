@@ -2,77 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C4667A96B2
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 19:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C5BD7A97D9
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 19:27:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230090AbjIURGX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 13:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58516 "EHLO
+        id S229660AbjIUR2C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 13:28:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229815AbjIURF7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 13:05:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D4C030DF
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:02:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695315662;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=n5pyZLuCo/XvXRs78cLj8dcUE4Os6CZvVNQ9E5PNqc8=;
-        b=ix2GbXva1Aa2Gg/tYz1Q9wMos7a/bcyJs15wd1ISSjYQjBAOb54x419cglzBoQ03qTouSG
-        rNHRNxuTXX2D52oKLfrmNrS84Rn5RdqZeH+3UVKf448yuXqHeLtY68vJH5J1SbXLVCj20s
-        gJV7VX49Zlosj/4BR6OSLleR8mbUJN4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-108-KiZYkNPVO8W-a_1o7NhLzw-1; Thu, 21 Sep 2023 06:36:37 -0400
-X-MC-Unique: KiZYkNPVO8W-a_1o7NhLzw-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-320095a13deso611148f8f.2
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 03:36:37 -0700 (PDT)
+        with ESMTP id S229774AbjIUR1m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 13:27:42 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 103B8135
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:03:03 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1bd9b4f8e0eso9619275ad.1
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:03:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695315707; x=1695920507; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=P/PqXWQfhVy+I8T2s3N1D7o33scIo2tfwpAYEoZrILA=;
+        b=zQ35rkmSB9elUhUIWlQ6XEkXzx9k9EMjSXYK+tO35KqJ6vwW/6Dy3v+4LcZof1ZHO3
+         RrKR/cl0ZnzlktLRP3tcACsHwoL1CStUPBwjEv2Qt1WdOAtUHz2J6nShgo3G8FWN8Cm9
+         JCUqiCIQggsrxTPZM440kO2vXpnTk5h+2+U9vGco5IhGtz7oNNG/qLJvjq6w1DRJK9Ug
+         h26fETANIDbhNX2ZgM+fC1ibivNMzwcKcktPETDLB7HIn+qaquaTiTzw4r++VqpbXR6J
+         dcpFo4Gc5v5e/G3WJjiEh9OAlgbM59S9EauyVIDy598hIJrSha603vZPQL4blb8w7Vrd
+         y2oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695292596; x=1695897396;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n5pyZLuCo/XvXRs78cLj8dcUE4Os6CZvVNQ9E5PNqc8=;
-        b=xFk43Z+kr2+/zA9zZwKLQRdwmkeL6lgdi4wYvkRfOwy6ShVTcdR0sgd00CrrD/0Kgj
-         /UAjylrLi3Dprrv5afhZpxPPcVLo3AuRUlqkcCEXPVgooauBqTcTQ0Yrj1av/0irx3n/
-         WkMY/tEteYeXqr3Pwtk9pFPpQQem8PcRyX4QQ4FXQI+3u3VmNV86BhdYjSnn/gqOvrRw
-         O3iy2IoC0oglJDHm0s+8AXC3Jgb3z/PuSPIMLV6NvXTfkojtPTm5d9Vrwjt0O3qtQ3zZ
-         4Ue0bNgxehwacRkVpq01nkgVlzR2yrTfdRvpkjt4SL2QxqVCO/PLCy6LZTJkkhCeI3Zw
-         4MjA==
-X-Gm-Message-State: AOJu0YyLSPOedGPwfVdZwjYIDtKB1Q3LL9pX/WMiizuRIRkykP1mzZda
-        FY27Y7h96EDOTs7WBN0pullI5lzAXRcJ2bFP1KVXNT8Uquq+l2iqelw6YvxeyyZBK+9buI7AzFy
-        fDz1q1wdB7NagmYkH
-X-Received: by 2002:adf:fe8a:0:b0:31a:d4a9:bdac with SMTP id l10-20020adffe8a000000b0031ad4a9bdacmr4758962wrr.11.1695292596347;
-        Thu, 21 Sep 2023 03:36:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHo4IlMYvVaA5s4LWesfAld9qk/d4qdTGLbpvwo6KlcwOZdqJ9/fXFN20xWoWzNksmmABizyA==
-X-Received: by 2002:adf:fe8a:0:b0:31a:d4a9:bdac with SMTP id l10-20020adffe8a000000b0031ad4a9bdacmr4758950wrr.11.1695292595980;
-        Thu, 21 Sep 2023 03:36:35 -0700 (PDT)
-Received: from rh (p200300c93f1ec600a890fb4d684902d4.dip0.t-ipconnect.de. [2003:c9:3f1e:c600:a890:fb4d:6849:2d4])
-        by smtp.gmail.com with ESMTPSA id z8-20020adff748000000b0031fedb25b85sm1378553wrp.84.2023.09.21.03.36.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Sep 2023 03:36:35 -0700 (PDT)
-Date:   Thu, 21 Sep 2023 12:36:34 +0200 (CEST)
-From:   Sebastian Ott <sebott@redhat.com>
-To:     =?ISO-8859-15?Q?Thomas_Wei=DFschuh?= <linux@weissschuh.net>
-cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Kees Cook <keescook@chromium.org>,
-        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH RFC] binfmt_elf: fully allocate bss pages
-In-Reply-To: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net>
-Message-ID: <36e93c8e-4384-b269-be78-479ccc7817b1@redhat.com>
-References: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net>
+        d=1e100.net; s=20230601; t=1695315707; x=1695920507;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=P/PqXWQfhVy+I8T2s3N1D7o33scIo2tfwpAYEoZrILA=;
+        b=RknehFNL4Zz3RrcRewE8kQVZmnnDv6f3pNXWjOSKE4K2gI4ummUeztj7loIF9FHUce
+         wnYNczJhFsikXakSlYFc2K3ToKtILXnJNJxz8cw5e2yyrqsz4CCymLao64clft0WbS1Y
+         NmOQObWyCsva0Nn4oGcJw6opVDe4CpCM74GZozoVti3ZM2SEyuL5Dxwe86TuxeNuBszS
+         dIHij5vxIx+pMnuLhKqdbCyDhrkOnv6KsiyAoV+AqhOVJHbUjWpthiSC4Xkyb0UOgA91
+         w/NdnJ5L/ovH4goqQK5rjjZ8lq3pLoTxvUV4ZxqtANnVrywhB4Y4f0HSx0idCKzGlU7e
+         neQg==
+X-Gm-Message-State: AOJu0YzpwctupLp376kFoFZc55GdbknJaQRTPnOU+hyOixAQBsb14BiD
+        3WhBuUR/Uzk2RQtY50YAw1NlN8wKxhnCqoqJeEymVNBzOjQPN5VBc743vw==
+X-Google-Smtp-Source: AGHT+IFWlx6n2/Kk0g46UDZm3S6M/U7TGZzI2JNZdQpgITr3ukFkfiSX7//HF3bxEWslCcCtpPLluke/ZzL90KT7rwE=
+X-Received: by 2002:a05:6102:101:b0:452:700c:7230 with SMTP id
+ z1-20020a056102010100b00452700c7230mr5965430vsq.8.1695297652808; Thu, 21 Sep
+ 2023 05:00:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+References: <20230920112846.440597133@linuxfoundation.org>
+In-Reply-To: <20230920112846.440597133@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 21 Sep 2023 14:00:41 +0200
+Message-ID: <CA+G9fYsZ-dwwaQRRPxUpCx+hhKuUNCp9C5K2EhgyH-kuZR+5GQ@mail.gmail.com>
+Subject: Re: [PATCH 4.19 000/273] 4.19.295-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,52 +71,178 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hej,
+On Wed, 20 Sept 2023 at 14:08, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 4.19.295 release.
+> There are 273 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.295-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-since we figured that the proposed patch is not going to work I've spent a
-couple more hours looking at this (some static binaries on arm64 segfault
-during load [0]). The segfault happens because of a failed clear_user()
-call in load_elf_binary(). The address we try to write zeros to is mapped with
-correct permissions.
 
-After some experiments I've noticed that writing to anonymous mappings work
-fine and all the error cases happend on file backed VMAs. Debugging showed that
-in elf_map() we call vm_mmap() with a file offset of 15 pages - for a binary
-that's less than 1KiB in size.
+Following arm build regressions noticed on 4.19 kernel.
 
-Looking at the ELF headers again that 15 pages offset originates from the offset
-of the 2nd segment - so, I guess the loader did as instructed and that binary is
-just too nasty?
+* arm, build
+  - clang-17-imx_v6_v7_defconfig
+  - gcc-12-imx_v6_v7_defconfig
+  - gcc-8-imx_v6_v7_defconfig
 
-Program Headers:
-   Type           Offset             VirtAddr           PhysAddr
-                  FileSiz            MemSiz              Flags  Align
-   LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
-                  0x0000000000000178 0x0000000000000178  R E    0x10000
-   LOAD           0x000000000000ffe8 0x000000000041ffe8 0x000000000041ffe8
-                  0x0000000000000000 0x0000000000000008  RW     0x10000
-   NOTE           0x0000000000000120 0x0000000000400120 0x0000000000400120
-                  0x0000000000000024 0x0000000000000024  R      0x4
-   GNU_STACK      0x0000000000000000 0x0000000000000000 0x0000000000000000
-                  0x0000000000000000 0x0000000000000000  RW     0x10
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-As an additional test I've added a bunch of zeros at the end of that binary
-so that the offset is within that file and it did load just fine.
+Logs:
+------
+drivers/pci/controller/dwc/pci-imx6.c:645:10: error: 'const struct
+dw_pcie_host_ops' has no member named 'host_deinit'; did you mean
+'host_init'?
+  645 |         .host_deinit = imx6_pcie_host_exit,
+      |          ^~~~~~~~~~~
+      |          host_init
+drivers/pci/controller/dwc/pci-imx6.c:645:24: error:
+'imx6_pcie_host_exit' undeclared here (not in a function); did you
+mean 'imx6_pcie_host_init'?
+  645 |         .host_deinit = imx6_pcie_host_exit,
+      |                        ^~~~~~~~~~~~~~~~~~~
+      |                        imx6_pcie_host_init
 
-On the other hand there is this section header:
-   [ 4] .bss              NOBITS           000000000041ffe8  0000ffe8
-        0000000000000008  0000000000000000  WA       0     0     1
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19.294-274-gb67b483f6a45/testrun/20075618/suite/build/test/gcc-12-imx_v6_v7_defconfig/history/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19.294-274-gb67b483f6a45/testrun/20075618/suite/build/test/gcc-12-imx_v6_v7_defconfig/log
 
-"sh_offset
-This member's value gives the byte offset from the beginning of the file to
-the first byte in the section. One section type, SHT_NOBITS described
-below, occupies no space in the file, and its sh_offset member locates
-the conceptual placement in the file.
-"
+## Build
+* kernel: 4.19.295-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-4.19.y
+* git commit: b67b483f6a4512bad5b589f3bf49503cfe941cf9
+* git describe: v4.19.294-274-gb67b483f6a45
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19.294-274-gb67b483f6a45
 
-So, still not sure what to do here..
+## Test Regressions (compared to v4.19.294-235-gf91592b50ab2)
+* arm, build
+  - clang-17-imx_v6_v7_defconfig
+  - gcc-12-imx_v6_v7_defconfig
+  - gcc-8-imx_v6_v7_defconfig
 
-Sebastian
+## Metric Regressions (compared to v4.19.294-235-gf91592b50ab2)
 
-[0] https://lore.kernel.org/lkml/5d49767a-fbdc-fbe7-5fb2-d99ece3168cb@redhat.com/
+## Test Fixes (compared to v4.19.294-235-gf91592b50ab2)
 
+## Metric Fixes (compared to v4.19.294-235-gf91592b50ab2)
+
+## Test result summary
+total: 52194, pass: 44599, fail: 1323, skip: 6238, xfail: 34
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 111 total, 102 passed, 9 failed
+* arm64: 37 total, 32 passed, 5 failed
+* i386: 21 total, 18 passed, 3 failed
+* mips: 21 total, 21 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 24 total, 24 passed, 0 failed
+* s390: 6 total, 6 passed, 0 failed
+* sh: 12 total, 12 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 30 total, 25 passed, 5 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-user
+* kselftest-vm
+* kselftest-zram
+* kunit
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
