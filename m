@@ -2,82 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05B317A981D
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 19:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E74747A9672
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 19:11:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229526AbjIURb2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 13:31:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60356 "EHLO
+        id S229801AbjIURDt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 13:03:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbjIURbR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 13:31:17 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A19665490F
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:17:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695316630; x=1726852630;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=VFRCODsJNfdcvJJhUcuwsfzTPniBXQCCWfGakGAFnuw=;
-  b=O4mwKofJkCeAmLXjolkEal0vis/5Aj8cnf0JcgfhTVOqNT+lok+8GDPl
-   Tbts2dOSyxOmdTOLE4S0hLNlSTq4r56MAip81S6yDfYj9bEMo5/LiD1bo
-   67yBmjDBEJTVbALmxoFKQh6s1lD2Njb4ETYYN5i8AGgqge/VL2YckmIFT
-   UbS3JVbWI/TffvGXRMMDjJIkPWADWbZhs0DwJ0GKRqucb2HccVhYmdCWi
-   EgoZOR1x6jYFWHJP7CU3icHgpAmKZqXFFHd7AcanUP7UwCAf17KAWwOAR
-   Dk1skN6jcOtTuzi0aJjx7aGaQVALT4nOtBCH/tVRk/315kcDxrbTB+mGs
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="380476405"
-X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
-   d="scan'208";a="380476405"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2023 09:21:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="994141504"
-X-IronPort-AV: E=Sophos;i="6.03,165,1694761200"; 
-   d="scan'208";a="994141504"
-Received: from lkp-server02.sh.intel.com (HELO b77866e22201) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 21 Sep 2023 09:21:08 -0700
-Received: from kbuild by b77866e22201 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qjMQM-00009V-1n;
-        Thu, 21 Sep 2023 16:21:06 +0000
-Date:   Fri, 22 Sep 2023 00:21:04 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Ryan Roberts <ryan.roberts@arm.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v1 4/8] s390: hugetlb: Convert set_huge_pte_at() to take
- vma
-Message-ID: <ZQxtcKDtX0sgBM1O@a36b5d0e9c41>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230921162007.1630149-5-ryan.roberts@arm.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229969AbjIURDK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 13:03:10 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEEF71999
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:02:12 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d81c02bf2beso1539784276.2
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:02:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1695315659; x=1695920459; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SlG0tdesvk2hZuyJ1dUVmziVM4LZO9/3+eAIoN/aiGs=;
+        b=4ralu2YB1+f92Mmm9HrkEuESYlFCw9oHy2zSuSw1XCwrlz8dCuYYo5rE3YIqTbWuec
+         OqVnqYFKz/2tozqNpWJEgiaL64SeMwpEM3Dd31cJqvgNmOi6sC5T+i6/fs93kB7/uIqw
+         k7zn1fC9KpDY11eTW76WmTy6pqfj9OHsM9agiR9YzBUg4HmAgoQ2XQAhzeqNWhcK6RTS
+         pU7/F4my98LVp1GrkGWx8VPoh1hbQdWFbTsalu6hdEEXvSS2tH737rSOCm83emjXTw3g
+         7bUSXx9c8XcKOPEHmjHVdFwWZ4k7CKCP+IplbKOqwJYdpePpjk0ATD2YpY5Pq/BbkWah
+         oc3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695315659; x=1695920459;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SlG0tdesvk2hZuyJ1dUVmziVM4LZO9/3+eAIoN/aiGs=;
+        b=xDKink1GnWhQTsU6EhCAf0E4Kj8D+OQq3ncOKCMsHhS5sVjbsmp/DrKsedkYEVtT//
+         a6XUq67ftNn70DwMtwsaggw/qrDExJuXJnXCb2j5dboGTbOV7zv4APuCS9Qske+vwrWd
+         alGo2kkl3eXlZl0ntLF29otg5GWVHbc4tHuS5SiadPyXE0yIhZajEXy4CkVI+iCIJjQG
+         76cmlrAYr1EAJo+Ay79LUqrioW9JSaB8AUzZCbaEhINhQqQEGgHFRyw6r8MKe/HEnu+N
+         uEuchD7gfUhCZB+jELBLtE/YiksXOY5yCOpzhuvuE+VRv1UybRXt4iFDei8K5NsvLR7X
+         P4wg==
+X-Gm-Message-State: AOJu0Ywew9Muf5UVRPgawhj1W2PzmSouHTfi5y08oJRJP6hCegEDOR+/
+        5Tg138UOeJacSQ0oEeVQYgyjiqJMAmPr
+X-Google-Smtp-Source: AGHT+IF937OVQEJlcVjD46qKkz1op8XyFpYCUz4xdIQ1LnJeaeax/FP9gNNX1vIULn/T6b6tqd8ICJWGor0n
+X-Received: from bjg.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:415])
+ (user=bgeffon job=sendgmr) by 2002:a25:adc9:0:b0:d7e:dff4:b0fe with SMTP id
+ d9-20020a25adc9000000b00d7edff4b0femr79575ybe.7.1695315659038; Thu, 21 Sep
+ 2023 10:00:59 -0700 (PDT)
+Date:   Thu, 21 Sep 2023 13:00:45 -0400
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.459.ge4e396fd5e-goog
+Message-ID: <20230921170045.4189251-1-bgeffon@google.com>
+Subject: [PATCH] PM: hibernate: use __get_safe_page() rather than touching the list.
+From:   Brian Geffon <bgeffon@google.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthias Kaehlcke <mka@chromium.org>, stable@vger.kernel.org,
+        Brian Geffon <bgeffon@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+We found at least one situation where the safe pages list was empty and
+get_buffer() would gladly try to use a NULL pointer.
 
-Thanks for your patch.
+Signed-off-by: Brian Geffon <bgeffon@google.com>
+Fixes: 8357376 ("swsusp: Improve handling of highmem")
+Cc: stable@vger.kernel.org
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Change-Id: Ibb43a9b4ac5ff2d7e3021fdacc08e116650231e9
+---
+ kernel/power/snapshot.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html/#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v1 4/8] s390: hugetlb: Convert set_huge_pte_at() to take vma
-Link: https://lore.kernel.org/stable/20230921162007.1630149-5-ryan.roberts%40arm.com
-
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index 362e6bae5891..2dcb33248518 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -2544,8 +2544,9 @@ static void *get_highmem_page_buffer(struct page *page,
+ 		pbe->copy_page = pfn_to_page(pfn);
+ 	} else {
+ 		/* Copy of the page will be stored in normal memory */
+-		kaddr = safe_pages_list;
+-		safe_pages_list = safe_pages_list->next;
++		kaddr = __get_safe_page(ca->gfp_mask);
++		if (!kaddr)
++			return ERR_PTR(-ENOMEM);
+ 		pbe->copy_page = virt_to_page(kaddr);
+ 	}
+ 	pbe->next = highmem_pblist;
+@@ -2747,8 +2748,9 @@ static void *get_buffer(struct memory_bitmap *bm, struct chain_allocator *ca)
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 	pbe->orig_address = page_address(page);
+-	pbe->address = safe_pages_list;
+-	safe_pages_list = safe_pages_list->next;
++	pbe->address = __get_safe_page(ca->gfp_mask);
++	if (!pbe->address)
++		return ERR_PTR(-ENOMEM);
+ 	pbe->next = restore_pblist;
+ 	restore_pblist = pbe;
+ 	return pbe->address;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.42.0.459.ge4e396fd5e-goog
 
