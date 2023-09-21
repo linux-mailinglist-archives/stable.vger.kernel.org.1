@@ -2,105 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8632F7AA214
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 23:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A5BD7AA006
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 22:30:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231439AbjIUVMW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 17:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
+        id S231261AbjIUUaq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 16:30:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231597AbjIUVLD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 17:11:03 -0400
-Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31D00A3AC3;
-        Thu, 21 Sep 2023 10:57:59 -0700 (PDT)
-Received: by mail-oo1-xc33.google.com with SMTP id 006d021491bc7-57b5ef5b947so354467eaf.0;
-        Thu, 21 Sep 2023 10:57:59 -0700 (PDT)
+        with ESMTP id S232692AbjIUUac (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 16:30:32 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E1558DEDA;
+        Thu, 21 Sep 2023 10:44:12 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2c131ddfc95so11361101fa.0;
+        Thu, 21 Sep 2023 10:44:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695319078; x=1695923878; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=MrqMyDfh/NoVjPJH/IspBXCIftHgNrpO3X4YYK4Vmmk=;
-        b=YwS74lOa7mpRApzHNqib4jCJCGaJsaUtvwj5/8djA2pxOu2UyHyuwV48CrI2SbRvvW
-         860CB2LaWumfv8lACeEluKrPzQsH2adTDGxlOfjwMlu10NjEACfCfgrqMB1W0HhCe7tj
-         dExUqhmvNWT7zwWVzBJNQbBzuxHpHGqgCBJPn3HVFSScZ4a6ajO7WW3H+PpGUJ20zcxz
-         JKIh8VOx4ENyQmB3zo9pY4ntGvNoJjJo09jA7VnaQcsHp0G1gHO3xj0kG6E1mStZV0Qx
-         7J/l31Np+xg6mJf0M38fi5we5O/K5QZIHLsUjMX4wfd/bR6rJrqlR+KLqakZm7fkJa6r
-         2Gtw==
+        d=gmail.com; s=20230601; t=1695318251; x=1695923051; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FQlhQ18mkiygDlJKtoMX3pgyYRKOBMaaTP/lu4ZhNHs=;
+        b=BQbpyTr4ATdIauar8Wl9rLCfiCr46ujVf1ClfO2TzwziV3dbcvGzNfs8gOiYnOUeQa
+         VL1K6AnRm22Tyn7rw6CCUDd2c5p3UsoCR9T6NrG0oT1X7oHlqjHP7jjUgDHQ2VctFMgF
+         0z7eVb1HJq+rCeQcWwxqNIJLB7LZUpUDIOoNO+hMs8+hwpBogQyfzA+BvbgZCP1InJs5
+         X3v5Wn464EJkn5bYinMWZ596qBO7Zt+RrWQdouszvLcTskgYV7sup4nL0IcnLhzTnvvL
+         Ig2hk0WtAc5vnPMdgWKmFtNiYytXs37V6/SOpH/twXGjiqGNcgp+GND4CDMU26t1eHa6
+         6cFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695319078; x=1695923878;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MrqMyDfh/NoVjPJH/IspBXCIftHgNrpO3X4YYK4Vmmk=;
-        b=VNXPpe6xWBjwHrWeEjGKUZKuoYopzIA2/UMhqc0MvZVKOI3bKICUxDEN3Gr22VDJx0
-         QEhAjVFYt/chQ2A0lN1Fs6Q6dbQHyYLAeE6XGw8sRTUSaJUAjZfn0He9JPgwL5rRaWgA
-         6+SRCv3Pe6sChKskqkVc3QCwIgZBV5nyQG3Odcpsw3tFnbwQsR/GAlqD0EQvJTAQx8Bo
-         +KQudkg+9lssNQEdXdjIqWHW+vv3kqYxFemtAS2U+Xw+aTZ8lwh5PWnuVDtuZV9CrXVx
-         Ygiz9WZm8Agu/MVgZu435oqEThvU9hT083lsSmWz6QY9iWblQtmyUaw8rvcMhXOgvDqZ
-         aJPA==
-X-Gm-Message-State: AOJu0Yw/XQif/fq/7uGjSZ9eIvIVrlDWaKdm7A22RwGRf8a+rgw5Ycpb
-        OCM7Qro2LRXMolqakFsbMQTtt6Adsnw=
-X-Google-Smtp-Source: AGHT+IF7ZbUBjXhr1E3hDBZvekqd4EWOu7Rd4Hf7dK3IXPmdnMtSy8mWpGFOdQHr4eOR6s3YPupd8g==
-X-Received: by 2002:a05:6808:df4:b0:3a8:4903:5688 with SMTP id g52-20020a0568080df400b003a849035688mr4759045oic.34.1695299104626;
-        Thu, 21 Sep 2023 05:25:04 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id i14-20020aa787ce000000b006870ed427b2sm1271538pfo.94.2023.09.21.05.25.03
+        d=1e100.net; s=20230601; t=1695318251; x=1695923051;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FQlhQ18mkiygDlJKtoMX3pgyYRKOBMaaTP/lu4ZhNHs=;
+        b=nGFOLxzGW022e3tSUmWBOCRUipx9W1+ApnvBWbDOGsLm2PDcfB3LQ2ZOpo8YlCVpsW
+         a62a38ScbWhxenw2UbeCQuM9fiAhHj7oBUMBPZ5WXBa917rvXhPoBpIb6o9mshIaBcRZ
+         M00RTcOTwL8rFwRbwNVVfIlbjLyHERvC6+x8LBktKcQ6todjs0sTESPM5rO8y5lIFvzF
+         L+NxfazdUNsSmVlQ7pqEmCACcZpKFDea9kplkqTPzwhiQut1XqIt3in6sgvW8a7cRBUa
+         t6yedU8ipdUbJvKLE0ZWZMsKVad/Xhr9kq1tjRt0Gb86T2FoFERRrFaT9D1AKTL0b2W4
+         kPsQ==
+X-Gm-Message-State: AOJu0YyiGMesennWWpxyRsvA/3GlYAm+xmxsZHihvTdZsRhmeAoz9L8U
+        hL1pq1wZGmhjl2lwcFBDRL+4RDyBggw=
+X-Google-Smtp-Source: AGHT+IHZ4A/BJ+1JF1sRLXOnBdteqw91VqGx+yAvlagrN9AYVba/sQuAo7hedbTGqHzfvCk6U1OByg==
+X-Received: by 2002:a19:7602:0:b0:503:3421:4ebd with SMTP id c2-20020a197602000000b0050334214ebdmr4559888lff.63.1695300179956;
+        Thu, 21 Sep 2023 05:42:59 -0700 (PDT)
+Received: from [192.168.8.100] ([148.252.133.205])
+        by smtp.gmail.com with ESMTPSA id n12-20020aa7db4c000000b005312b68cb37sm783444edt.28.2023.09.21.05.42.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Sep 2023 05:25:04 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <0309d2fe-a9c9-f963-b096-ba11fa74a081@roeck-us.net>
-Date:   Thu, 21 Sep 2023 05:25:02 -0700
+        Thu, 21 Sep 2023 05:42:59 -0700 (PDT)
+Message-ID: <d0f4a2ab-7010-5b09-f47e-21dc54a759c2@gmail.com>
+Date:   Thu, 21 Sep 2023 13:30:25 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 5.15 000/110] 5.15.133-rc1 review
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4 2/3] net: prevent rewrite of msg_name in
+ sock_sendmsg()
+To:     Paolo Abeni <pabeni@redhat.com>,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        Jordan Rife <jrife@google.com>, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, netdev@vger.kernel.org
+Cc:     dborkman@kernel.org, stable@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>
+References: <20230919175254.144417-1-jrife@google.com>
+ <650af39492a56_37ac7329469@willemb.c.googlers.com.notmuch>
+ <139933c6013e444047dc685ade53fa3dc1ad68d3.camel@redhat.com>
 Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230920112830.377666128@linuxfoundation.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+From:   Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <139933c6013e444047dc685ade53fa3dc1ad68d3.camel@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/20/23 04:30, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.133 release.
-> There are 110 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 9/21/23 09:32, Paolo Abeni wrote:
+> On Wed, 2023-09-20 at 09:28 -0400, Willem de Bruijn wrote:
+>> Jordan Rife wrote:
+>>> Callers of sock_sendmsg(), and similarly kernel_sendmsg(), in kernel
+>>> space may observe their value of msg_name change in cases where BPF
+>>> sendmsg hooks rewrite the send address. This has been confirmed to break
+>>> NFS mounts running in UDP mode and has the potential to break other
+>>> systems.
+>>>
+>>> This patch:
+>>>
+>>> 1) Creates a new function called __sock_sendmsg() with same logic as the
+>>>     old sock_sendmsg() function.
+>>> 2) Replaces calls to sock_sendmsg() made by __sys_sendto() and
+>>>     __sys_sendmsg() with __sock_sendmsg() to avoid an unnecessary copy,
+>>>     as these system calls are already protected.
+>>> 3) Modifies sock_sendmsg() so that it makes a copy of msg_name if
+>>>     present before passing it down the stack to insulate callers from
+>>>     changes to the send address.
+>>>
+>>> Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
+>>> Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Jordan Rife <jrife@google.com>
+>>
+>> Reviewed-by: Willem de Bruijn <willemb@google.com>
 > 
-> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
-> Anything received after that time might be too late.
-> 
+> CC Jens and Pavel, as I guess io_uring likely want to use
+> __sock_sendmsg(), in a follow-up patch.
 
-Building powerpc:ppc32_allmodconfig ... failed
---------------
-Error log:
-drivers/usb/gadget/udc/fsl_qe_udc.c: In function 'ch9getstatus':
-drivers/usb/gadget/udc/fsl_qe_udc.c:1961:17: error: ISO C90 forbids mixed declarations and code [-Werror=declaration-after-statement]
-  1961 |                 struct qe_ep *target_ep = &udc->eps[pipe];
-       |                 ^~~~~~
+Yeah, likely so. Thanks Paolo, we'll take a look
 
-This problem also affects v6.1.
-
-Guenter
-
+-- 
+Pavel Begunkov
