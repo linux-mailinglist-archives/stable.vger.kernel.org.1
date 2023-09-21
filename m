@@ -2,228 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2E0B7AA249
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 23:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A88F27A9F29
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 22:18:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231646AbjIUVPp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 17:15:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45510 "EHLO
+        id S229934AbjIUUSo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 16:18:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232894AbjIUVPB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 17:15:01 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A91979D442;
-        Thu, 21 Sep 2023 10:56:54 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id E5B612229E;
-        Thu, 21 Sep 2023 11:21:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1695295314; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=4K5YBr9/tEzngbv3UTbthsjK/IjLYc1431CBjULW/cI=;
-        b=FjEdrQSslwZHZzAMEniNGI7aZwN68qkF7uStSsT/dl2ljLF1akmGyCnmLTbOuXad5cjvhJ
-        56YHR3X13JuV5uOzU1Rj3/l56+9QzKeR55dD7xzo8EDQ3QnsNpL4mYuq86hAzlVIXXN2lY
-        s1e7dKT1d2+T921R6NjvhAxzdLUTI3Q=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D745B13513;
-        Thu, 21 Sep 2023 11:21:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id D8wVNFInDGV/dAAAMHmgww
-        (envelope-from <mhocko@suse.com>); Thu, 21 Sep 2023 11:21:54 +0000
-Date:   Thu, 21 Sep 2023 13:21:54 +0200
-From:   Michal Hocko <mhocko@suse.com>
-To:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc:     Shakeel Butt <shakeelb@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        Tejun Heo <tj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        mathieu.tortuyaux@gmail.com
-Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop
- kmem.limit_in_bytes
-Message-ID: <ZQwnUpX7FlzIOWXP@dhcp22.suse.cz>
-References: <ZQrSXh+riB7NnZuE@dhcp22.suse.cz>
- <4eb47d6a-b127-4aad-af30-896c3b9505b4@linux.microsoft.com>
- <ZQr3+YfcBM2Er6F7@dhcp22.suse.cz>
- <CALvZod7E_Jm9y+40OKtLs5EFA0ptKGjoe2BU58SY29pUiPc93g@mail.gmail.com>
- <ZQskGGAwlsr1YxAp@dhcp22.suse.cz>
- <CALvZod6b3=+=xXEUeWOQW3t_URJpeeVX46WjBHv5BS+436KoFA@mail.gmail.com>
- <ZQtRKzUOfdaVKRCF@dhcp22.suse.cz>
- <CALvZod5DSMoEGY0CwGz=P-2=Opbr4SmMfwHhZRROBx7yCaBdDA@mail.gmail.com>
- <ZQv2MXOynlEPW/bX@dhcp22.suse.cz>
- <f01b5d93-0f43-41c8-b3d8-40ef9696dcf8@linux.microsoft.com>
+        with ESMTP id S231494AbjIUUSN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 16:18:13 -0400
+Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90757585D0
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:19:19 -0700 (PDT)
+Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-351098a1e8cso3070865ab.2
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:19:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1695316759; x=1695921559; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=f0A4cf8xaLph2RFxNW2e2zC/ozNHYMpBHiQTWSZDrd4=;
+        b=UoFciicU49fMVGDs80LLbkyiUc8Yf0Ur6SJ8JBiePNUlSvzhqFcC6LXyqW2mF6Pmzw
+         78CmvYzFbMabz+mjR/7uFq/XQJgFXkQdheNmnrbXvDoTJ8ESRwU2ZWC5icsryOtBBKop
+         NgOya0komdG3ifSdAznHsiaCqNXy4zMCfOc96JAlVJkmuAxvfFXWItJXcNtyZAs0SamR
+         nGQf0yTU9bSTPYSutCm9j8S3Lt36OjnJEa6UJjyf44J39B3fJH0a9OAYkodS9pgjW30F
+         z8NQJxJihhHm8WCMQfjAMzfl3/oHfaMhpyXMwCNPY0Z0PQlxfAFvWGFYMKWxekkk8tZD
+         QY7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695316759; x=1695921559;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=f0A4cf8xaLph2RFxNW2e2zC/ozNHYMpBHiQTWSZDrd4=;
+        b=K/encAWmZDRsC5X17MVeYxXN5Z2MZLyBOTuzOSQz5PBzmGjkgYahlh/c6NYGmz7lWR
+         /+CUgWfYBmDe5MQEKjxeA6fU7vdWNlN1qek5mnSQzJ1yvXJDlVSo413F98mT4CzdYKpV
+         Vxrm21GgVREY3R9VCebOaOWsmNsyi9Qt4O4xAVSApCYxV2difftMt+bsDgL/PwvruUGR
+         F291fZ21U1oboSfkYQFU16gR7/eWzGzYjBeMaJ2sX65ayOKgOuxrO9GIBgVGURz6CDs6
+         VRYEWipxrkOK+eSiNcMT6KkXQyBm+maH0Wjz1xeRvkdGIG0VXUavMaG4NAZpMvGSrJpw
+         8w2g==
+X-Gm-Message-State: AOJu0YznUDA5hee7kfZ7As4VByux+AXvuIdOpKhmgCnFSQIcU1OMFk2m
+        Z+k7NRSopOUoy0onzYNNnkWStT3+6xU3JZVXlQQkQ/qz0m1buGrmUZ0rQA==
+X-Google-Smtp-Source: AGHT+IF6qOrjEY9if7ZapsXGGL1X2pv/FF05y7VvQhm8TwsXueJgwhY8SQCZZx9F8vyaLZqpsJvBOnpMrRr0N4EDD4o=
+X-Received: by 2002:a1f:c6c1:0:b0:495:ec90:997e with SMTP id
+ w184-20020a1fc6c1000000b00495ec90997emr5200602vkf.7.1695298135191; Thu, 21
+ Sep 2023 05:08:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f01b5d93-0f43-41c8-b3d8-40ef9696dcf8@linux.microsoft.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <20230920112858.471730572@linuxfoundation.org>
+In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 21 Sep 2023 14:08:44 +0200
+Message-ID: <CA+G9fYsM0Lr8TNQJxsZFDZwcH-rEzkVV+y+x5FX18oH5wm5dRg@mail.gmail.com>
+Subject: Re: [PATCH 5.4 000/367] 5.4.257-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Sui Jingfeng <suijingfeng@loongson.cn>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu 21-09-23 12:43:05, Jeremi Piotrowski wrote:
-> On 9/21/2023 9:52 AM, Michal Hocko wrote:
-> > On Wed 20-09-23 14:46:52, Shakeel Butt wrote:
-> >> On Wed, Sep 20, 2023 at 1:08 PM Michal Hocko <mhocko@suse.com> wrote:
-> >>>
-> >> [...]
-> >>>> have a strong opinion against it. Also just to be clear we are not
-> >>>> talking about full revert of 58056f77502f but just the returning of
-> >>>> EOPNOTSUPP, right?
-> >>>
-> >>> If we allow the limit to be set without returning a failure then we
-> >>> still have options 2 and 3 on how to deal with that. One of them is to
-> >>> enforce the limit.
-> >>>
-> >>
-> >> Option 3 is a partial revert of 58056f77502f where we keep the no
-> >> limit enforcement and remove the EOPNOTSUPP return on write. Let's go
-> >> with option 3. In addition, let's add pr_warn_once on the read of
-> >> kmem.limit_in_bytes as well.
-> > 
-> > How about this?
-> > --- 
-> 
-> I'm OK with this approach. You're missing this in the patch below:
-> 
-> // static struct cftype mem_cgroup_legacy_files[] = {
-> 
-> +       {
-> +               .name = "kmem.limit_in_bytes",
-> +               .private = MEMFILE_PRIVATE(_KMEM, RES_LIMIT),
-> +               .write = mem_cgroup_write,
-> +               .read_u64 = mem_cgroup_read_u64,
-> +       },
+On Wed, 20 Sept 2023 at 14:25, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.4.257 release.
+> There are 367 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.257-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Of course. I've lost the hunk while massaging the revert. Thanks for
-spotting. Updated version below. Btw. I've decided to not pr_{warn,info}
-on the read side because realistically I do not think this will help all
-that much. I am worried we will get stuck with this for ever because
-there always be somebody stuck on unpatched userspace.
---- 
-From bb6702b698efd31f3f90f4f1dd36ffe223397bec Mon Sep 17 00:00:00 2001
-From: Michal Hocko <mhocko@suse.com>
-Date: Thu, 21 Sep 2023 09:38:29 +0200
-Subject: [PATCH] mm, memcg: reconsider kmem.limit_in_bytes deprecation
+Following build warnings noticed while building arm64 with allmodconfig
+on stable-rc 5.4 with gcc-8 and gcc-12 toolchains.
 
-This reverts commits 86327e8eb94c ("memcg: drop kmem.limit_in_bytes")
-and partially reverts 58056f77502f ("memcg, kmem: further deprecate
-kmem.limit_in_bytes") which have incrementally removed support for the
-kernel memory accounting hard limit. Unfortunately it has turned out
-that there is still userspace depending on the existence of
-memory.kmem.limit_in_bytes [1]. The underlying functionality is not
-really required but the non-existent file just confuses the userspace
-which fails in the result. The patch to fix this on the userspace side
-has been submitted but it is hard to predict how it will propagate
-through the maze of 3rd party consumers of the software.
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Now, reverting alone 86327e8eb94c is not an option because there is
-another set of userspace which cannot cope with ENOTSUPP returned when
-writing to the file. Therefore we have to go and revisit 58056f77502f
-as well. There are two ways to go ahead. Either we give up on the
-deprecation and fully revert 58056f77502f as well or we can keep
-kmem.limit_in_bytes but make the write a noop and warn about the fact.
-This should work for both known breaking workloads which depend on the
-existence but do not depend on the hard limit enforcement.
+drivers/gpu/drm/mediatek/mtk_drm_gem.c: In function 'mtk_drm_gem_prime_vmap':
+drivers/gpu/drm/mediatek/mtk_drm_gem.c:273:10: warning: returning
+'int' from a function with return type 'void *' makes pointer from
+integer without a cast [-Wint-conversion]
+   return -ENOMEM;
+          ^
 
-[1] http://lkml.kernel.org/r/20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net
-Fixes: 86327e8eb94c ("memcg: drop kmem.limit_in_bytes")
-Fixes: 58056f77502f ("memcg, kmem: further deprecate kmem.limit_in_bytes")
-Signed-off-by: Michal Hocko <mhocko@suse.com>
----
- Documentation/admin-guide/cgroup-v1/memory.rst |  7 +++++++
- mm/memcontrol.c                                | 18 ++++++++++++++++++
- 2 files changed, 25 insertions(+)
+Links:
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2VfG47LmPH9MUEuIcMVftu6NsFy/
 
-diff --git a/Documentation/admin-guide/cgroup-v1/memory.rst b/Documentation/admin-guide/cgroup-v1/memory.rst
-index 5f502bf68fbc..ff456871bf4b 100644
---- a/Documentation/admin-guide/cgroup-v1/memory.rst
-+++ b/Documentation/admin-guide/cgroup-v1/memory.rst
-@@ -92,6 +92,13 @@ Brief summary of control files.
-  memory.oom_control		     set/show oom controls.
-  memory.numa_stat		     show the number of memory usage per numa
- 				     node
-+ memory.kmem.limit_in_bytes          Deprecated knob to set and read the kernel
-+                                     memory hard limit. Kernel hard limit is not
-+                                     supported since 5.16. Writing any value to
-+                                     do file will not have any effect same as if
-+                                     nokmem kernel parameter was specified.
-+                                     Kernel memory is still charged and reported
-+                                     by memory.kmem.usage_in_bytes.
-  memory.kmem.usage_in_bytes          show current kernel memory allocation
-  memory.kmem.failcnt                 show the number of kernel memory usage
- 				     hits limits
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a4d3282493b6..0b161705ef36 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3097,6 +3097,7 @@ static void obj_cgroup_uncharge_pages(struct obj_cgroup *objcg,
- static int obj_cgroup_charge_pages(struct obj_cgroup *objcg, gfp_t gfp,
- 				   unsigned int nr_pages)
- {
-+	struct page_counter *counter;
- 	struct mem_cgroup *memcg;
- 	int ret;
- 
-@@ -3107,6 +3108,10 @@ static int obj_cgroup_charge_pages(struct obj_cgroup *objcg, gfp_t gfp,
- 		goto out;
- 
- 	memcg_account_kmem(memcg, nr_pages);
-+
-+	/* There is no way to set up kmem hard limit so this operation cannot fail */
-+	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
-+		WARN_ON(!page_counter_try_charge(&memcg->kmem, nr_pages, &counter));
- out:
- 	css_put(&memcg->css);
- 
-@@ -3867,6 +3872,13 @@ static ssize_t mem_cgroup_write(struct kernfs_open_file *of,
- 		case _MEMSWAP:
- 			ret = mem_cgroup_resize_max(memcg, nr_pages, true);
- 			break;
-+		case _KMEM:
-+			pr_warn_once("kmem.limit_in_bytes is deprecated and will be removed. "
-+				     "Writing any value to this file has no effect. "
-+				     "Please report your usecase to linux-mm@kvack.org if you "
-+				     "depend on this functionality.\n");
-+			ret = 0;
-+			break;
- 		case _TCP:
- 			ret = memcg_update_tcp_max(memcg, nr_pages);
- 			break;
-@@ -5077,6 +5089,12 @@ static struct cftype mem_cgroup_legacy_files[] = {
- 		.seq_show = memcg_numa_stat_show,
- 	},
- #endif
-+	{
-+		.name = "kmem.limit_in_bytes",
-+		.private = MEMFILE_PRIVATE(_KMEM, RES_LIMIT),
-+		.write = mem_cgroup_write,
-+		.read_u64 = mem_cgroup_read_u64,
-+	},
- 	{
- 		.name = "kmem.usage_in_bytes",
- 		.private = MEMFILE_PRIVATE(_KMEM, RES_USAGE),
--- 
-2.30.2
 
--- 
-Michal Hocko
-SUSE Labs
+Following commit is causing this build warning.
+
+drm/mediatek: Fix potential memory leak if vmap() fail
+[ Upstream commit 379091e0f6d179d1a084c65de90fa44583b14a70 ]
+
+--
+Linaro LKFT
+https://lkft.linaro.org
