@@ -2,145 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68C937A9A27
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 20:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B80007A9A6E
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 20:39:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230175AbjIUSgz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 14:36:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35074 "EHLO
+        id S230381AbjIUSjf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 14:39:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229540AbjIUSgg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 14:36:36 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1F7044563F;
-        Thu, 21 Sep 2023 10:13:57 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C5882176C;
-        Thu, 21 Sep 2023 09:36:37 -0700 (PDT)
-Received: from [10.1.34.154] (XHFQ2J9959.cambridge.arm.com [10.1.34.154])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 82BA63F59C;
-        Thu, 21 Sep 2023 09:35:55 -0700 (PDT)
-Message-ID: <7c5c2c00-d657-44fd-b478-743b43c57e8a@arm.com>
-Date:   Thu, 21 Sep 2023 17:35:54 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/8] Fix set_huge_pte_at() panic on arm64
-Content-Language: en-GB
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <muchun.song@linux.dev>,
-        SeongJae Park <sj@kernel.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Peter Xu <peterx@redhat.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20230921162007.1630149-1-ryan.roberts@arm.com>
- <20230921093026.230b2991be551093e397f462@linux-foundation.org>
-From:   Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <20230921093026.230b2991be551093e397f462@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230392AbjIUSjU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 14:39:20 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19063D3171;
+        Thu, 21 Sep 2023 11:23:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1159C433C8;
+        Thu, 21 Sep 2023 18:23:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1695320632;
+        bh=9HLQKTZgsHyWBlJ5DLMy9KuI2CVbUlewE8E590u6dTE=;
+        h=Date:To:From:Subject:From;
+        b=Tl0w5pOd6dkLd+UuYo8Qcg0X3R601WTa3qojhT22b7Xu2tVEyfMjEr9m2I+gn6YMF
+         /lyKha8/z3jFXxZY52mHzBIN9hdtHFyHOkSvk3pHTUbnJPADNiU5NgX2ji9KMcvU3b
+         r7Vd7mzEWT+FOfcN/6UubB6+tsDvw31QjUzljPks=
+Date:   Thu, 21 Sep 2023 11:23:51 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        pedro.falcato@gmail.com, Liam.Howlett@oracle.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + maple_tree-add-mas_active-to-detect-in-tree-walks.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230921182352.A1159C433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 21/09/2023 17:30, Andrew Morton wrote:
-> On Thu, 21 Sep 2023 17:19:59 +0100 Ryan Roberts <ryan.roberts@arm.com> wrote:
-> 
->> Hi All,
->>
->> This series fixes a bug in arm64's implementation of set_huge_pte_at(), which
->> can result in an unprivileged user causing a kernel panic. The problem was
->> triggered when running the new uffd poison mm selftest for HUGETLB memory. This
->> test (and the uffd poison feature) was merged for v6.6-rc1. However, upon
->> inspection there are multiple other pre-existing paths that can trigger this
->> bug.
->>
->> Ideally, I'd like to get this fix in for v6.6 if possible? And I guess it should
->> be backported too, given there are call sites where this can theoretically
->> happen that pre-date v6.6-rc1 (I've cc'ed stable@vger.kernel.org).
-> 
-> This gets you a naggygram from Greg.  The way to request a backport is
-> to add cc:stable to all the changelogs.  I'll make that change to my copy.
 
-Ahh, sorry about that... I just got the same moan from the kernel test robot too.
+The patch titled
+     Subject: maple_tree: add mas_is_active() to detect in-tree walks
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     maple_tree-add-mas_active-to-detect-in-tree-walks.patch
 
-> 
-> 
->> Ryan Roberts (8):
->>   parisc: hugetlb: Convert set_huge_pte_at() to take vma
->>   powerpc: hugetlb: Convert set_huge_pte_at() to take vma
->>   riscv: hugetlb: Convert set_huge_pte_at() to take vma
->>   s390: hugetlb: Convert set_huge_pte_at() to take vma
->>   sparc: hugetlb: Convert set_huge_pte_at() to take vma
->>   mm: hugetlb: Convert set_huge_pte_at() to take vma
->>   arm64: hugetlb: Convert set_huge_pte_at() to take vma
->>   arm64: hugetlb: Fix set_huge_pte_at() to work with all swap entries
->>
->>  arch/arm64/include/asm/hugetlb.h              |  2 +-
->>  arch/arm64/mm/hugetlbpage.c                   | 22 ++++----------
->>  arch/parisc/include/asm/hugetlb.h             |  2 +-
->>  arch/parisc/mm/hugetlbpage.c                  |  4 +--
->>  .../include/asm/nohash/32/hugetlb-8xx.h       |  3 +-
->>  arch/powerpc/mm/book3s64/hugetlbpage.c        |  2 +-
->>  arch/powerpc/mm/book3s64/radix_hugetlbpage.c  |  2 +-
->>  arch/powerpc/mm/nohash/8xx.c                  |  2 +-
->>  arch/powerpc/mm/pgtable.c                     |  7 ++++-
->>  arch/riscv/include/asm/hugetlb.h              |  2 +-
->>  arch/riscv/mm/hugetlbpage.c                   |  3 +-
->>  arch/s390/include/asm/hugetlb.h               |  8 +++--
->>  arch/s390/mm/hugetlbpage.c                    |  8 ++++-
->>  arch/sparc/include/asm/hugetlb.h              |  8 +++--
->>  arch/sparc/mm/hugetlbpage.c                   |  8 ++++-
->>  include/asm-generic/hugetlb.h                 |  6 ++--
->>  include/linux/hugetlb.h                       |  6 ++--
->>  mm/damon/vaddr.c                              |  2 +-
->>  mm/hugetlb.c                                  | 30 +++++++++----------
->>  mm/migrate.c                                  |  2 +-
->>  mm/rmap.c                                     | 10 +++----
->>  mm/vmalloc.c                                  |  5 +++-
->>  22 files changed, 80 insertions(+), 64 deletions(-)
-> 
-> Looks scary but it's actually a fairly modest patchset.  It could
-> easily be all rolled into a single patch for ease of backporting. 
-> Maybe Greg has an opinion?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/maple_tree-add-mas_active-to-detect-in-tree-walks.patch
 
-Yes, I thought about doing that; or perhaps 2 patches - one for the interface
-change across all arches and core code, and one for the actual bug fix?
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-But I thought the arch people might prefer to see exactly what's going on in
-each arch. Let me know the preference and I can repost if necessary.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-> 
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: maple_tree: add mas_is_active() to detect in-tree walks
+Date: Thu, 21 Sep 2023 14:12:35 -0400
+
+Patch series "maple_tree: Fix mas_prev() state regression".
+
+Pedro Falcato contacted me on IRC with an mprotect regression which was
+bisected back to the iterator changes for maple tree.  Root cause analysis
+showed the mas_prev() running off the end of the VMA space (previous from
+0) followed by mas_find(), would skip the first value.
+
+This patchset introduces maple state underflow/overflow so the sequence of
+calls on the maple state will return what the user expects.
+
+
+This patch (of 2):
+
+Instead of constantly checking each possibility of the maple state,
+create a fast path that will skip over checking unlikely states.
+
+Link: https://lkml.kernel.org/r/20230921181236.509072-1-Liam.Howlett@oracle.com
+Link: https://lkml.kernel.org/r/20230921181236.509072-2-Liam.Howlett@oracle.com
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Pedro Falcato <pedro.falcato@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/maple_tree.h |    9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+--- a/include/linux/maple_tree.h~maple_tree-add-mas_active-to-detect-in-tree-walks
++++ a/include/linux/maple_tree.h
+@@ -511,6 +511,15 @@ static inline bool mas_is_paused(const s
+ 	return mas->node == MAS_PAUSE;
+ }
+ 
++/* Check if the mas is pointing to a node or not */
++static inline bool mas_is_active(struct ma_state *mas)
++{
++	if ((unsigned long)mas->node >= MAPLE_RESERVED_RANGE)
++		return true;
++
++	return false;
++}
++
+ /**
+  * mas_reset() - Reset a Maple Tree operation state.
+  * @mas: Maple Tree operation state.
+_
+
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
+
+maple_tree-add-mas_active-to-detect-in-tree-walks.patch
+maple_tree-add-mas_underflow-and-mas_overflow-states.patch
 
