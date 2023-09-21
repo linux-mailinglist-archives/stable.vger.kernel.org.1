@@ -2,119 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A88F27A9F29
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 22:18:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8632F7AA214
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 23:12:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbjIUUSo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 16:18:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53670 "EHLO
+        id S231439AbjIUVMW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 17:12:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231494AbjIUUSN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 16:18:13 -0400
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90757585D0
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:19:19 -0700 (PDT)
-Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-351098a1e8cso3070865ab.2
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 10:19:19 -0700 (PDT)
+        with ESMTP id S231597AbjIUVLD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 17:11:03 -0400
+Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31D00A3AC3;
+        Thu, 21 Sep 2023 10:57:59 -0700 (PDT)
+Received: by mail-oo1-xc33.google.com with SMTP id 006d021491bc7-57b5ef5b947so354467eaf.0;
+        Thu, 21 Sep 2023 10:57:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695316759; x=1695921559; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=f0A4cf8xaLph2RFxNW2e2zC/ozNHYMpBHiQTWSZDrd4=;
-        b=UoFciicU49fMVGDs80LLbkyiUc8Yf0Ur6SJ8JBiePNUlSvzhqFcC6LXyqW2mF6Pmzw
-         78CmvYzFbMabz+mjR/7uFq/XQJgFXkQdheNmnrbXvDoTJ8ESRwU2ZWC5icsryOtBBKop
-         NgOya0komdG3ifSdAznHsiaCqNXy4zMCfOc96JAlVJkmuAxvfFXWItJXcNtyZAs0SamR
-         nGQf0yTU9bSTPYSutCm9j8S3Lt36OjnJEa6UJjyf44J39B3fJH0a9OAYkodS9pgjW30F
-         z8NQJxJihhHm8WCMQfjAMzfl3/oHfaMhpyXMwCNPY0Z0PQlxfAFvWGFYMKWxekkk8tZD
-         QY7A==
+        d=gmail.com; s=20230601; t=1695319078; x=1695923878; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=MrqMyDfh/NoVjPJH/IspBXCIftHgNrpO3X4YYK4Vmmk=;
+        b=YwS74lOa7mpRApzHNqib4jCJCGaJsaUtvwj5/8djA2pxOu2UyHyuwV48CrI2SbRvvW
+         860CB2LaWumfv8lACeEluKrPzQsH2adTDGxlOfjwMlu10NjEACfCfgrqMB1W0HhCe7tj
+         dExUqhmvNWT7zwWVzBJNQbBzuxHpHGqgCBJPn3HVFSScZ4a6ajO7WW3H+PpGUJ20zcxz
+         JKIh8VOx4ENyQmB3zo9pY4ntGvNoJjJo09jA7VnaQcsHp0G1gHO3xj0kG6E1mStZV0Qx
+         7J/l31Np+xg6mJf0M38fi5we5O/K5QZIHLsUjMX4wfd/bR6rJrqlR+KLqakZm7fkJa6r
+         2Gtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695316759; x=1695921559;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1695319078; x=1695923878;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=f0A4cf8xaLph2RFxNW2e2zC/ozNHYMpBHiQTWSZDrd4=;
-        b=K/encAWmZDRsC5X17MVeYxXN5Z2MZLyBOTuzOSQz5PBzmGjkgYahlh/c6NYGmz7lWR
-         /+CUgWfYBmDe5MQEKjxeA6fU7vdWNlN1qek5mnSQzJ1yvXJDlVSo413F98mT4CzdYKpV
-         Vxrm21GgVREY3R9VCebOaOWsmNsyi9Qt4O4xAVSApCYxV2difftMt+bsDgL/PwvruUGR
-         F291fZ21U1oboSfkYQFU16gR7/eWzGzYjBeMaJ2sX65ayOKgOuxrO9GIBgVGURz6CDs6
-         VRYEWipxrkOK+eSiNcMT6KkXQyBm+maH0Wjz1xeRvkdGIG0VXUavMaG4NAZpMvGSrJpw
-         8w2g==
-X-Gm-Message-State: AOJu0YznUDA5hee7kfZ7As4VByux+AXvuIdOpKhmgCnFSQIcU1OMFk2m
-        Z+k7NRSopOUoy0onzYNNnkWStT3+6xU3JZVXlQQkQ/qz0m1buGrmUZ0rQA==
-X-Google-Smtp-Source: AGHT+IF6qOrjEY9if7ZapsXGGL1X2pv/FF05y7VvQhm8TwsXueJgwhY8SQCZZx9F8vyaLZqpsJvBOnpMrRr0N4EDD4o=
-X-Received: by 2002:a1f:c6c1:0:b0:495:ec90:997e with SMTP id
- w184-20020a1fc6c1000000b00495ec90997emr5200602vkf.7.1695298135191; Thu, 21
- Sep 2023 05:08:55 -0700 (PDT)
+        bh=MrqMyDfh/NoVjPJH/IspBXCIftHgNrpO3X4YYK4Vmmk=;
+        b=VNXPpe6xWBjwHrWeEjGKUZKuoYopzIA2/UMhqc0MvZVKOI3bKICUxDEN3Gr22VDJx0
+         QEhAjVFYt/chQ2A0lN1Fs6Q6dbQHyYLAeE6XGw8sRTUSaJUAjZfn0He9JPgwL5rRaWgA
+         6+SRCv3Pe6sChKskqkVc3QCwIgZBV5nyQG3Odcpsw3tFnbwQsR/GAlqD0EQvJTAQx8Bo
+         +KQudkg+9lssNQEdXdjIqWHW+vv3kqYxFemtAS2U+Xw+aTZ8lwh5PWnuVDtuZV9CrXVx
+         Ygiz9WZm8Agu/MVgZu435oqEThvU9hT083lsSmWz6QY9iWblQtmyUaw8rvcMhXOgvDqZ
+         aJPA==
+X-Gm-Message-State: AOJu0Yw/XQif/fq/7uGjSZ9eIvIVrlDWaKdm7A22RwGRf8a+rgw5Ycpb
+        OCM7Qro2LRXMolqakFsbMQTtt6Adsnw=
+X-Google-Smtp-Source: AGHT+IF7ZbUBjXhr1E3hDBZvekqd4EWOu7Rd4Hf7dK3IXPmdnMtSy8mWpGFOdQHr4eOR6s3YPupd8g==
+X-Received: by 2002:a05:6808:df4:b0:3a8:4903:5688 with SMTP id g52-20020a0568080df400b003a849035688mr4759045oic.34.1695299104626;
+        Thu, 21 Sep 2023 05:25:04 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id i14-20020aa787ce000000b006870ed427b2sm1271538pfo.94.2023.09.21.05.25.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Sep 2023 05:25:04 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <0309d2fe-a9c9-f963-b096-ba11fa74a081@roeck-us.net>
+Date:   Thu, 21 Sep 2023 05:25:02 -0700
 MIME-Version: 1.0
-References: <20230920112858.471730572@linuxfoundation.org>
-In-Reply-To: <20230920112858.471730572@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 21 Sep 2023 14:08:44 +0200
-Message-ID: <CA+G9fYsM0Lr8TNQJxsZFDZwcH-rEzkVV+y+x5FX18oH5wm5dRg@mail.gmail.com>
-Subject: Re: [PATCH 5.4 000/367] 5.4.257-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Sui Jingfeng <suijingfeng@loongson.cn>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 5.15 000/110] 5.15.133-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20230920112830.377666128@linuxfoundation.org>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <20230920112830.377666128@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 20 Sept 2023 at 14:25, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.4.257 release.
-> There are 367 patches in this series, all will be posted as a response
+On 9/20/23 04:30, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.133 release.
+> There are 110 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->
+> 
 > Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
 > Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.257-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> 
 
-Following build warnings noticed while building arm64 with allmodconfig
-on stable-rc 5.4 with gcc-8 and gcc-12 toolchains.
+Building powerpc:ppc32_allmodconfig ... failed
+--------------
+Error log:
+drivers/usb/gadget/udc/fsl_qe_udc.c: In function 'ch9getstatus':
+drivers/usb/gadget/udc/fsl_qe_udc.c:1961:17: error: ISO C90 forbids mixed declarations and code [-Werror=declaration-after-statement]
+  1961 |                 struct qe_ep *target_ep = &udc->eps[pipe];
+       |                 ^~~~~~
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+This problem also affects v6.1.
 
-drivers/gpu/drm/mediatek/mtk_drm_gem.c: In function 'mtk_drm_gem_prime_vmap':
-drivers/gpu/drm/mediatek/mtk_drm_gem.c:273:10: warning: returning
-'int' from a function with return type 'void *' makes pointer from
-integer without a cast [-Wint-conversion]
-   return -ENOMEM;
-          ^
+Guenter
 
-Links:
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2VfG47LmPH9MUEuIcMVftu6NsFy/
-
-
-Following commit is causing this build warning.
-
-drm/mediatek: Fix potential memory leak if vmap() fail
-[ Upstream commit 379091e0f6d179d1a084c65de90fa44583b14a70 ]
-
---
-Linaro LKFT
-https://lkft.linaro.org
