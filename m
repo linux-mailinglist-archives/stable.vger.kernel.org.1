@@ -2,56 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D1567A9A60
-	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 20:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 263047A9FFE
+	for <lists+stable@lfdr.de>; Thu, 21 Sep 2023 22:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbjIUSim convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Thu, 21 Sep 2023 14:38:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35256 "EHLO
+        id S230018AbjIUU3e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 16:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230304AbjIUSiK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 14:38:10 -0400
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 964CAD62E8;
-        Thu, 21 Sep 2023 11:26:50 -0700 (PDT)
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3adc95fdceeso83763b6e.0;
-        Thu, 21 Sep 2023 11:26:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695320810; x=1695925610;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4n/wqWr27pRntEElj0EkXR3VCLKvT4G/Xcd993NCAk4=;
-        b=JVnGpV8TDgfBN4Hk8s0JvmB3A98d61iOmzqRcFV9g6bmAYjc8yphO8g1ebfLsfyUWu
-         iwqX8gUrB/jtipEvdMsumntv9mM8kmkdgiOWKDaRhthyRmDG1Pp5+DSHXzHZvA5Jg0wY
-         S2b0Im4TeshTSII5FN9YfvKeu7eIU5jG5nXcBq4zBkipAWnrmxxX8qvoKs2raN9xhmr7
-         w9A7xdznhP/CZCZQ5n+UejykLW0lEwBZ89IEoqFmGMxd3gImdnC3U8honwGxoGtxL3zG
-         o8LDpGOQcQ0V21EOYM7k3Tapd3tqUlIRKrpVia5H/2nUzALx66cT9VwwYnxXwsgqEaSt
-         VjFA==
-X-Gm-Message-State: AOJu0YwW4UYVbm7z1oTpMwH/Xf31yoOXSHYRJEnf77FGUe1jZetDlJvf
-        GTqS5tkTLONqxbRmvV/EO38/Z5CZ1paoax7SQfe4paw0
-X-Google-Smtp-Source: AGHT+IHrxNnigtLDAImoAjPYXbdlPLItCPsgM9jP/lbemDhG/GboyCzrBZG0LxMXhPHJITu+MFQrBEHm/2Ne9DJnuAA=
-X-Received: by 2002:a05:6808:20a7:b0:3ad:f525:52d5 with SMTP id
- s39-20020a05680820a700b003adf52552d5mr5455443oiw.4.1695320809853; Thu, 21 Sep
- 2023 11:26:49 -0700 (PDT)
+        with ESMTP id S232014AbjIUU3I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 16:29:08 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 269857B462;
+        Thu, 21 Sep 2023 10:37:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E54C433AD;
+        Thu, 21 Sep 2023 07:13:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1695280397;
+        bh=x6BlTSESHv0WOlUjZBFf7l1hNElIvW/QK5IYHQsxdnM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=uOG/GtzpdZ6fKTbu7bwE8JZTsAYH8Mrh0VxH+3Ui+QkMyKgVIj/fI3zUjIltrXetl
+         jSCh54mrGeo6oAq92d5bWKuSxOlC9hvnDQBCnd7/Gx6FbR7aJVufEETB+FzRH0+pO2
+         2X2+DOXVmYemtaJPCW4aoGbZ09JjVqo9Ic1wJqhA=
+Date:   Thu, 21 Sep 2023 09:13:16 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Kyle Zeng <zengyhkyle@gmail.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 5.10 000/406] 5.10.195-rc1 review
+Message-ID: <2023092111-grill-excusable-f67a@gregkh>
+References: <20230917191101.035638219@linuxfoundation.org>
+ <07a04540-554c-4394-1e79-46ea665f8c03@roeck-us.net>
+ <2023092009-angriness-sank-ae4f@gregkh>
+ <27f978f3-11ca-6054-5160-ab66d4c918bc@roeck-us.net>
+ <8457ff12-c28b-898b-3f12-97aa12ce6716@gmail.com>
+ <ZQtEVR+Vc6CD6iUG@westworld>
 MIME-Version: 1.0
-References: <20230921170045.4189251-1-bgeffon@google.com>
-In-Reply-To: <20230921170045.4189251-1-bgeffon@google.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 21 Sep 2023 20:26:38 +0200
-Message-ID: <CAJZ5v0g1PyhxaD+mk0ccHStpO0YZhRXLdE=X5zKCx0xAGpL5QQ@mail.gmail.com>
-Subject: Re: [PATCH] PM: hibernate: use __get_safe_page() rather than touching
- the list.
-To:     Brian Geffon <bgeffon@google.com>
-Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
-        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matthias Kaehlcke <mka@chromium.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZQtEVR+Vc6CD6iUG@westworld>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
         autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,48 +57,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 21, 2023 at 7:01â€¯PM Brian Geffon <bgeffon@google.com> wrote:
->
-> We found at least one situation where the safe pages list was empty and
-> get_buffer() would gladly try to use a NULL pointer.
->
-> Signed-off-by: Brian Geffon <bgeffon@google.com>
-> Fixes: 8357376 ("swsusp: Improve handling of highmem")
-> Cc: stable@vger.kernel.org
->
-> Change-Id: Ibb43a9b4ac5ff2d7e3021fdacc08e116650231e9
-> ---
->  kernel/power/snapshot.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
->
-> diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-> index 362e6bae5891..2dcb33248518 100644
-> --- a/kernel/power/snapshot.c
-> +++ b/kernel/power/snapshot.c
-> @@ -2544,8 +2544,9 @@ static void *get_highmem_page_buffer(struct page *page,
->                 pbe->copy_page = pfn_to_page(pfn);
->         } else {
->                 /* Copy of the page will be stored in normal memory */
-> -               kaddr = safe_pages_list;
-> -               safe_pages_list = safe_pages_list->next;
-> +               kaddr = __get_safe_page(ca->gfp_mask);
-> +               if (!kaddr)
-> +                       return ERR_PTR(-ENOMEM);
->                 pbe->copy_page = virt_to_page(kaddr);
->         }
->         pbe->next = highmem_pblist;
-> @@ -2747,8 +2748,9 @@ static void *get_buffer(struct memory_bitmap *bm, struct chain_allocator *ca)
->                 return ERR_PTR(-ENOMEM);
->         }
->         pbe->orig_address = page_address(page);
-> -       pbe->address = safe_pages_list;
-> -       safe_pages_list = safe_pages_list->next;
-> +       pbe->address = __get_safe_page(ca->gfp_mask);
-> +       if (!pbe->address)
-> +               return ERR_PTR(-ENOMEM);
->         pbe->next = restore_pblist;
->         restore_pblist = pbe;
->         return pbe->address;
-> --
+On Wed, Sep 20, 2023 at 12:13:25PM -0700, Kyle Zeng wrote:
+> On Wed, Sep 20, 2023 at 10:01:55AM -0700, Florian Fainelli wrote:
+> > On 9/20/23 08:18, Guenter Roeck wrote:
+> > > On 9/20/23 01:11, Greg Kroah-Hartman wrote:
+> > > > On Tue, Sep 19, 2023 at 09:57:25PM -0700, Guenter Roeck wrote:
+> > > > > On 9/17/23 12:07, Greg Kroah-Hartman wrote:
+> > > > > > This is the start of the stable review cycle for the 5.10.195 release.
+> > > > > > There are 406 patches in this series, all will be posted as a response
+> > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > let me know.
+> > > > > > 
+> > > > > > Responses should be made by Tue, 19 Sep 2023 19:10:04 +0000.
+> > > > > > Anything received after that time might be too late.
+> > > > > > 
+> > > > > 
+> > > > > chromeos-5.10 locks up in configfs_lookup() after the merge of
+> > > > > v5.10.195.
+> > > > > 
+> > > > > I am a bit puzzled because I see
+> > > > > 
+> > > > > c709c7ca020a configfs: fix a race in configfs_lookup()
+> > > > > 
+> > > > > in v5.10.195 but not in the list of commits below. I guess I must be
+> > > > > missing something.
+> > > > 
+> > > > It was part of the big patchset, it was posted here:
+> > > >     https://lore.kernel.org/r/20230917191101.511939651@linuxfoundation.org
+> > > > 
+> > > > Not hidden at all :)
+> > > > 
+> > > > and was submitted here:
+> > > >     https://lore.kernel.org/r/ZPOZFHHA0abVmGx+@westworld
+> > > > 
+> > > > > Either case, the code now looks as follows.
+> > > > > 
+> > > > > configfs_lookup()
+> > > > > {
+> > > > >      ...
+> > > > >      spin_lock(&configfs_dirent_lock);
+> > > > >      ...
+> > > > >          err = configfs_attach_attr(sd, dentry);
+> > > > >      ...
+> > > > >      spin_unlock(&configfs_dirent_lock);
+> > > > >      ...
+> > > > > }
+> > > > > 
+> > > > > and
+> > > > > 
+> > > > > configfs_attach_attr(...)
+> > > > > {
+> > > > >      ...
+> > > > >      spin_lock(&configfs_dirent_lock);
+> > > > >      ...
+> > > > > }
+> > > > > 
+> > > > > which unless it is way too late here and I really need to go to sleep
+> > > > > just won't work.
+> > > > 
+> > > > Kyle, you did the backport, any comments?
+> > > > 
+> > > 
+> > > After a good night sleep, the code still looks wrong to me. Reverting
+> > > the offending patch in chromeos-5.10 solved the problem there.
+> > > That makes me suspect that no one actually tests configfs.
+> > 
+> > Humm indeed, looking at our testing we don't have our USB devices being
+> > tested which would exercise configfs since we switch the USB device between
+> > different configurations (mass storage, serial, networking etc.). Let me see
+> > about adding that so we get some coverage.
+> > -- 
+> > Florian
+> > 
+> 
+> Sorry for the wrong patch. My intention was to backport c42dd069be8dfc9b2239a5c89e73bbd08ab35de0
+> to v5.10 to avoid a race condition triggered in my test. I tested the
+> patch with my PoC program and made sure it won't trigger the crash. But
+> I didn't notice that it could hang the kernel.
+> I sincerely apologize for the mistake.
+> 
+> My new proposed patch backports both
+> c42dd069be8dfc9b2239a5c89e73bbd08ab35de0 and d07f132a225c013e59aa77f514ad9211ecab82ee.
+> I made sure it does not trigger the race condition anymore.
+> Can anyone having access to more comprehensive tests please check whether it works?
+> 
+> Also, I'm not sure whether it is OK or how to backport two patches in
+> one patch. Please advise on how to do it properly.
 
-Applied as 6.7 material, thanks!
+Please backport them both individually, do not merge them together.
+
+I'll go revert the current change now and push out a release with it so
+that it fixes users of this kernel tree.
+
+thanks,
+
+greg k-h
