@@ -2,109 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E6C97AB543
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 17:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A6447AB54B
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 17:53:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231604AbjIVPvb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 11:51:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57466 "EHLO
+        id S230445AbjIVPxs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 11:53:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231883AbjIVPva (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 11:51:30 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E9FD100
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 08:51:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDD9C433CC;
-        Fri, 22 Sep 2023 15:51:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695397884;
-        bh=gcRAnlPPhzGuwjzkrCHq4S2a/cVRkBflII1JB2lJU+0=;
-        h=From:Date:Subject:To:Cc:From;
-        b=JHvghhh5aTrdwv45a5aWrV9EtLYm6O/9vhKmFFEfctQNsDIHMy43vZh3lrzOC4WIh
-         9HFE4FJJ3rPMTLpeT2Ne64LLEbqnZijZFzjDN1adBAhHACEN+p1QChiQcGa168jMZk
-         02mW2ZPTzjQemSkLGUmGoxJTOHEfykzZMqTyF0anhZO3cLHX8KrXayWZt4Z9KRISuI
-         gQ2aaXAgrDplyaT5aJymsF3SBBnOZmkGW5IX0jNGegHwlL196tg/i+efdsb8xC5n7K
-         9K0yZqnIdgUJKwvjlAf7zHGiPL5YUBOni23pD1Ow9yNWef17/16sJe30Jo2/RdMEfz
-         8mY7vNtvTnlsQ==
-From:   Nathan Chancellor <nathan@kernel.org>
-Date:   Fri, 22 Sep 2023 08:51:17 -0700
-Subject: [PATCH 5.10] drm/mediatek: Fix backport issue in
- mtk_drm_gem_prime_vmap()
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230922-5-10-fix-drm-mediatek-backport-v1-1-912d76cd4a96@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAPS3DWUC/x2NzQqDMBAGX0X23C2biIX0VUoPqfnSLuIPG5GC+
- O4GjwPDzE4Fpij0bHYybFp0niq4W0P9L05fsKbK5MW3Erznjp1w1j8nG3lE0rhi4E/sh2W2lQV
- 4hNaHjCxUI4uhytfgRd3dCb2P4wS20nRBdgAAAA==
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Cc:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-mediatek@lists.infradead.org, stable@vger.kernel.org,
-        llvm@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.13-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1768; i=nathan@kernel.org;
- h=from:subject:message-id; bh=gcRAnlPPhzGuwjzkrCHq4S2a/cVRkBflII1JB2lJU+0=;
- b=owGbwMvMwCEmm602sfCA1DTG02pJDKm82/9EyCus2b75RPjCBPGJ/svrueTihDxcJvx0WpU4a
- VYr19u/HaUsDGIcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAicx8y/PffKfCR9fm5E4Kb
- dj2Sdj+aFXDxn+RT0U+9t5139ee//3KIkeF48J+1P5WjTmz3DE+VPfz6oly/juoqX4cw9/AI3rk
- J//kA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230051AbjIVPxs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 11:53:48 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 722B9100
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 08:53:42 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d84acda47aeso3302315276.3
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 08:53:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1695398021; x=1696002821; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=P7bK6hAXjxwm2ijcRkbUrk4xLVSp4X3nArYEjpbBtYs=;
+        b=DAXFv3e5pUF9pzB10KB8TtxXzK2gSyPdF7EAw/GwB5nE1zmwi8f0hApHd3bZIxa2BD
+         3Q8OxKq1c8+kOJfjArMAWN5qJEeWnqLv3xUA1k+HhTHSElaCC5GiDP5qg9g9eeyZDFir
+         ytiq6/4irTp71UeD7lP4m8KIixKTKKoOl6WQdp08L9bYOeBwtFOifjwJH8U5a1l5rSE9
+         +VH2UogrMDjq9KPx4u+1Ye77DHcg76ye7SiIKnZpQ4B39TJq6X1/TP/LKo1VgbDIslU7
+         z98hZftyDIQJVdpZJrw+O/ZzcNk5JvHkzoBCy1t+TrbNdRFpfSpKD/jhMk2MSqsyVcqW
+         KPWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695398021; x=1696002821;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P7bK6hAXjxwm2ijcRkbUrk4xLVSp4X3nArYEjpbBtYs=;
+        b=BMycVKrf454FjzAelVzNciY9PjTWb+rs1Hw6uB2+4ooJAtbssrxe6jib+ksQEMLLh0
+         uwlhgKm9pA5LleDTNWYyh0Mdys0YcZ+HCfLXtrZK5DPmG3T0JIYdF3ClWW2uNgEkMbXG
+         7pD+m5e5FILGomeqr6Kk0OIAMQ5O7UNVH9Y1wKkFxAaUVaNc37ZKCfMw0FmXdomtT6j1
+         iE4hoO8lD0TEy7+w2oBW/B2JZa4r1xhhCL2Bt/LIWgRY+Y5VY2EqSQk+OGw4QMz3RFwB
+         UUlQWRUA+Wl3CBOUaXYGmj3O170OmjiE3FUgRo/+4eWTJp7pFynMe0e8u4BYXwNel59d
+         owJw==
+X-Gm-Message-State: AOJu0YyRCtZAR8uKKXbNoVkzWwCue8gCvLKdEfSvijCFpq/tvf4wAWFB
+        NNODOdZyn/Rda2fM+dSET9/NPC0sL8Dx
+X-Google-Smtp-Source: AGHT+IHDDnP0ZSOPgk0DlTlo+bvkM6ULCHtAWJPl4dAhWDlxfr7ZOa9+PCIY6cT541j4sLdcJgiVygLsLTa1
+X-Received: from bjg.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:415])
+ (user=bgeffon job=sendgmr) by 2002:a25:ae66:0:b0:d7e:79c3:cd0b with SMTP id
+ g38-20020a25ae66000000b00d7e79c3cd0bmr114598ybe.3.1695398021726; Fri, 22 Sep
+ 2023 08:53:41 -0700 (PDT)
+Date:   Fri, 22 Sep 2023 11:53:36 -0400
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
+Message-ID: <20230922155336.507220-1-bgeffon@google.com>
+Subject: [PATCH] PM: hibernate: clean up sync_read handling in snapshot_write_next
+From:   Brian Geffon <bgeffon@google.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Brian Geffon <bgeffon@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When building with clang:
+In snapshot_write_next sync_read is set and unset in three different
+spots unnecessiarly. As a result there is a subtle bug where the first
+page after the meta data has been loaded unconditionally sets sync_read
+to 0. If this first pfn was actually a highmem page then the returned
+buffer will be the global "buffer," and the page needs to be loaded
+synchronously.
 
-  drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'void *' [-Wint-conversion]
-    255 |                 return -ENOMEM;
-        |                        ^~~~~~~
-  1 error generated.
+That is, I'm not sure we can always assume the following to be safe:
+		handle->buffer = get_buffer(&orig_bm, &ca);
+		handle->sync_read = 0;
 
-GCC reports the same issue as a warning, rather than an error.
+Because get_buffer can call get_highmem_page_buffer which can
+return 'buffer'
 
-Prior to commit 7e542ff8b463 ("drm/mediatek: Use struct dma_buf_map in
-GEM vmap ops"), this function returned a pointer rather than an integer.
-This function is indirectly called in drm_gem_vmap(), which treats NULL
-as -ENOMEM through an error pointer. Return NULL in this block to
-resolve the warning but keep the same end result.
+The easiest way to address this is just set sync_read before
+snapshot_write_next returns if handle->buffer == buffer.
 
-Fixes: 43f561e809aa ("drm/mediatek: Fix potential memory leak if vmap() fail")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Brian Geffon <bgeffon@google.com>
+Cc: stable@vger.kernel.org
 ---
-This is a fix for a 5.10 backport, so it has no upstream relevance but
-I've still cc'd the relevant maintainers in case they have any comments
-or want to double check my work.
----
- drivers/gpu/drm/mediatek/mtk_drm_gem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/power/snapshot.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-index fe64bf2176f3..b20ea58907c2 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-@@ -252,7 +252,7 @@ void *mtk_drm_gem_prime_vmap(struct drm_gem_object *obj)
- 	if (!mtk_gem->kvaddr) {
- 		kfree(sgt);
- 		kfree(mtk_gem->pages);
--		return -ENOMEM;
-+		return NULL;
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index 190ed707ddcc..362e6bae5891 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -2780,8 +2780,6 @@ int snapshot_write_next(struct snapshot_handle *handle)
+ 	if (handle->cur > 1 && handle->cur > nr_meta_pages + nr_copy_pages + nr_zero_pages)
+ 		return 0;
+ 
+-	handle->sync_read = 1;
+-
+ 	if (!handle->cur) {
+ 		if (!buffer)
+ 			/* This makes the buffer be freed by swsusp_free() */
+@@ -2824,7 +2822,6 @@ int snapshot_write_next(struct snapshot_handle *handle)
+ 			memory_bm_position_reset(&zero_bm);
+ 			restore_pblist = NULL;
+ 			handle->buffer = get_buffer(&orig_bm, &ca);
+-			handle->sync_read = 0;
+ 			if (IS_ERR(handle->buffer))
+ 				return PTR_ERR(handle->buffer);
+ 		}
+@@ -2834,9 +2831,8 @@ int snapshot_write_next(struct snapshot_handle *handle)
+ 		handle->buffer = get_buffer(&orig_bm, &ca);
+ 		if (IS_ERR(handle->buffer))
+ 			return PTR_ERR(handle->buffer);
+-		if (handle->buffer != buffer)
+-			handle->sync_read = 0;
  	}
- out:
- 	kfree(sgt);
-
----
-base-commit: ff0bfa8f23eb4c5a65ee6b0d0b7dc2e3439f1063
-change-id: 20230922-5-10-fix-drm-mediatek-backport-0ee69329fef0
-
-Best regards,
++	handle->sync_read = (handle->buffer == buffer);
+ 	handle->cur++;
+ 
+ 	/* Zero pages were not included in the image, memset it and move on. */
 -- 
-Nathan Chancellor <nathan@kernel.org>
+2.42.0.515.g380fc7ccd1-goog
 
