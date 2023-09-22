@@ -2,137 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F6EF7AA7ED
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 06:42:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D66C7AA873
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 07:39:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230246AbjIVEmw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 00:42:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54676 "EHLO
+        id S229541AbjIVFjc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 01:39:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229685AbjIVEmw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 00:42:52 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A2C18F
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 21:42:46 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59c0dd156e5so24884007b3.3
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 21:42:46 -0700 (PDT)
+        with ESMTP id S229539AbjIVFjb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 01:39:31 -0400
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CD6A8F
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 22:39:25 -0700 (PDT)
+Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-32157c8e4c7so1695510f8f.1
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 22:39:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695357765; x=1695962565; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZOSxLadMmyxPzCAuHUscDwKckaObJr5AodXorCq6Mh8=;
-        b=fTNUn8rto1MZyCpzbK1R5MD6M4l7IOz2ZCvBccHLtaN4tULJ/SAnPNpnEYMEhWgsvR
-         zlB7DtYhn0ZlCX+FTMWImCzlzFM/t5zyABbR7636Cihv7+KMWrTwiBCAdw7gPkvN+KMp
-         WcC+/bFwGi79VNZ9MQPyF+wtaIdLQ8JWqzt47GQH1EM3HOtCfLT+sAJxf2geflXVa3bg
-         4msDCVKTG2ZMsh7fPU/gbDVkTxTA6e0EXGklaFl07caIyVrSjjtAZ49ml1idWTSNWXiP
-         7eJ0HhBx+MvLgI56naWuVwI04dPzZhtbgGyTpj9x7DZ+wwzuDJwltKim6E/mjOGlxTV1
-         WlKA==
+        d=gmail.com; s=20230601; t=1695361164; x=1695965964; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ipDK22wS5etgWiSV07SPcEV8HzMBF9D7TF65lxUNyyc=;
+        b=h/KwFOzqDZcYbR4AdN5f4f8VRAys0DWDQ1n5PsFNnRssOeoiJlcX3GyzNV2OoNdswr
+         ABzZ38Sg90bYtH92mYsjU/IHFX7so8NKYRfu2xUNE4KGYG4zaZJWOh9/hcrcNt7ILL8+
+         TXJacv1Wl1LeBweeuRZQGOguiulrsMZIrx1o3+9j3CEB/9q6/snjqPPLFZ75cYn4/MOx
+         lFkS6cZ2dA0nxxGw41e5VHpU8oauRPmX5Ei981MQPZktPfuIyLDDDWyGbuDn4Thwx6vV
+         RFao9S7PMdbbLG6F5fCbgtMVd53GRHvTlD3GEATiXoj1R+zQA0uU4xQHlB5sgZ3XbvIW
+         7boA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695357765; x=1695962565;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZOSxLadMmyxPzCAuHUscDwKckaObJr5AodXorCq6Mh8=;
-        b=Gp26h7fi2s6+A0xd18WtYmoG0kJ9s18/h9P8dBbxRB4RBqcmWdJW1hVisYK24HHenP
-         73cKOGWMzssqhDEMZKJ2ZzdWZh6ZtKy2/+agMzzQvX0P8mDAlPYVkYIYg1XI11zzV1Rh
-         cEddeUMF1HiE9fmUTGtPWalVWp9NPtMQJnpLVrw2UVUmeE10H8wW6bZWn+WvRf/7JNUB
-         TRYz6/kOPK73xZ+Yrp/ocXvchO3OWKP24AIJi8s00/MnI72726H/MxkfVG1vV5kLeNNk
-         7/YiPz0wpPYrCts+y0eSx8n5Pif6YP+gCoZyYtLldbMt5RJtWaAYqFlMzWMoHA5XoZoO
-         zNnw==
-X-Gm-Message-State: AOJu0YytHj447eLirpUhwnf3Wpjc86ca82ozI67PWy7syatlFJqGB3lV
-        yuxcQbyOO2u65bI6Qjl6w1z2eAnleRk1OA==
-X-Google-Smtp-Source: AGHT+IGFkPNBuQkD4DINS/cFH5kDu7DzVRnFZDZ/Xi6NfhQQYigH8yAxegiiIIH5LJR6g8b6w63HsC3BlUywOg==
-X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a81:d203:0:b0:59b:d33b:5ddc with SMTP id
- x3-20020a81d203000000b0059bd33b5ddcmr112799ywi.4.1695357765078; Thu, 21 Sep
- 2023 21:42:45 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 04:42:40 +0000
-In-Reply-To: <000000000000aa181605ededf1fa@google.com>
-Mime-Version: 1.0
-References: <000000000000aa181605ededf1fa@google.com>
-X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
-Message-ID: <20230922044241.322832-1-cmllamas@google.com>
-Subject: [PATCH] binder: fix memory leak of spamming work
-From:   Carlos Llamas <cmllamas@google.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>,
-        Todd Kjos <tkjos@android.com>,
-        Martijn Coenen <maco@android.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Carlos Llamas <cmllamas@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Hang Lu <hangl@codeaurora.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
-        syzkaller-bugs@googlegroups.com, stable@vger.kernel.org,
-        syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com,
-        Todd Kjos <tkjos@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        d=1e100.net; s=20230601; t=1695361164; x=1695965964;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ipDK22wS5etgWiSV07SPcEV8HzMBF9D7TF65lxUNyyc=;
+        b=XLLej9r3mttIQBiJqueaQtk2RnQcSn89iQaCJ3sjRcruiKrepjylrFSjLZ08xw+Oof
+         qVYzkFSgHUY5dxq5XxnsgK4wD15+lnbjp0NBnEgzrK9PQCq7cl5pXeGEaNZ19cE2X4lS
+         Cv2THxYOOXLv0HN4KK72tZyG24eWlZDKYKLFWUvsXcBvdhfW7w4D7Rp2Oz/MVXfg/igi
+         49DuE/8Hkkqbsuf4+pYFgLypTNhXuZzt7M0sgOMyN4oYneG1ohdnmtuZiaLvvEs4qWBT
+         qRPes6m2eAsCQLaCSHICJgRjtbFoFZ2i7kBDhivhtB4/thYLXSdIzUdW5R4njFjxLzJh
+         YmOA==
+X-Gm-Message-State: AOJu0YyDyMEUKsVGLopO56XzLfFKoCLuLFtKe9hmaud1BKHf1iMUwpOw
+        pOQYiZDiFyM3n+u0jsbeHt1+UBy6xZtKpiHE
+X-Google-Smtp-Source: AGHT+IHlrgYBDjD0MOh3X7fzj3PvnTCAscAAftXePQzZEaon+8jjjzJSyYG0VKALreAxq09baImrAA==
+X-Received: by 2002:a05:6000:41:b0:31f:b402:5aaa with SMTP id k1-20020a056000004100b0031fb4025aaamr6312297wrx.8.1695361163378;
+        Thu, 21 Sep 2023 22:39:23 -0700 (PDT)
+Received: from localhost.localdomain ([2a05:f480:1000:b09:5400:4ff:fe6f:7099])
+        by smtp.gmail.com with ESMTPSA id x5-20020adfdcc5000000b0031c6581d55esm3505880wrm.91.2023.09.21.22.39.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Sep 2023 22:39:23 -0700 (PDT)
+From:   zhangshida <starzhangzsd@gmail.com>
+X-Google-Original-From: zhangshida <zhangshida@kylinos.cn>
+To:     stable@vger.kernel.org
+Cc:     starzhangzsd@gmail.com, Shida Zhang <zhangshida@kylinos.cn>,
+        stable@kernel.org, Andreas Dilger <adilger@dilger.ca>,
+        "Darrick J . Wong" <djwong@kernel.org>,
+        Theodore Ts'o <tytso@mit.edu>
+Subject: [PATCH] ext4: fix rec_len verify error
+Date:   Fri, 22 Sep 2023 13:39:15 +0800
+Message-Id: <20230922053915.2176290-1-zhangshida@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2023092057-company-unworried-210b@gregkh>
+References: <2023092057-company-unworried-210b@gregkh>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-A transaction complete work is allocated and queued for each
-transaction. Under certain conditions the work->type might be marked as
-BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT to notify userspace about
-potential spamming threads.
+From: Shida Zhang <zhangshida@kylinos.cn>
 
-However, this work->type is not being handled in binder_release_work()
-so it will leak during a clean up. This was reported by syzkaller with
-the following kmemleak dump:
+[ Upstream commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6 ]
 
-BUG: memory leak
-unreferenced object 0xffff88810e2d6de0 (size 32):
-  comm "syz-executor338", pid 5046, jiffies 4294968230 (age 13.590s)
-  hex dump (first 32 bytes):
-    e0 6d 2d 0e 81 88 ff ff e0 6d 2d 0e 81 88 ff ff  .m-......m-.....
-    04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff81573b75>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
-    [<ffffffff83d41873>] kmalloc include/linux/slab.h:599 [inline]
-    [<ffffffff83d41873>] kzalloc include/linux/slab.h:720 [inline]
-    [<ffffffff83d41873>] binder_transaction+0x573/0x4050 drivers/android/binder.c:3152
-    [<ffffffff83d45a05>] binder_thread_write+0x6b5/0x1860 drivers/android/binder.c:4010
-    [<ffffffff83d486dc>] binder_ioctl_write_read drivers/android/binder.c:5066 [inline]
-    [<ffffffff83d486dc>] binder_ioctl+0x1b2c/0x3cf0 drivers/android/binder.c:5352
-    [<ffffffff816b25f2>] vfs_ioctl fs/ioctl.c:51 [inline]
-    [<ffffffff816b25f2>] __do_sys_ioctl fs/ioctl.c:871 [inline]
-    [<ffffffff816b25f2>] __se_sys_ioctl fs/ioctl.c:857 [inline]
-    [<ffffffff816b25f2>] __x64_sys_ioctl+0xf2/0x140 fs/ioctl.c:857
-    [<ffffffff84b30008>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84b30008>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
+a problem occurred when more than 13 million files were directly created
+under a directory:
 
-Fix the leak by kfreeing this work in binder_release_work().
+EXT4-fs error (device xx): ext4_dx_csum_set:492: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): ext4_dx_csum_verify:463: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): dx_probe:856: inode #xxxx: block 8188: comm xxxxx: Directory index failed checksum
 
-Cc: stable@vger.kernel.org
-Fixes: a7dc1e6f99df ("binder: tell userspace to dump current backtrace when detected oneway spamming")
-Reported-by: syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7f10c1653e35933c0f1e
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
+When enough files are created, the fake_dirent->reclen will be 0xffff.
+it doesn't equal to the blocksize 65536, i.e. 0x10000.
+
+But it is not the same condition when blocksize equals to 4k.
+when enough files are created, the fake_dirent->reclen will be 0x1000.
+it equals to the blocksize 4k, i.e. 0x1000.
+
+The problem seems to be related to the limitation of the 16-bit field
+when the blocksize is set to 64k.
+To address this, helpers like ext4_rec_len_{from,to}_disk has already
+been introduced to complete the conversion between the encoded and the
+plain form of rec_len.
+
+So fix this one by using the helper, and all the other in this file too.
+
+Cc: stable@kernel.org
+Fixes: dbe89444042a ("ext4: Calculate and verify checksums for htree nodes")
+Suggested-by: Andreas Dilger <adilger@dilger.ca>
+Suggested-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kylinos.cn
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
 ---
- drivers/android/binder.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/namei.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index 367afac5f1bf..d7aa561f4ef2 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -4831,6 +4831,9 @@ static void binder_release_work(struct binder_proc *proc,
- 		} break;
- 		case BINDER_WORK_NODE:
- 			break;
-+		case BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT:
-+			kfree(w);
-+			break;
- 		default:
- 			pr_err("unexpected work type, %d, not freed\n",
- 			       wtype);
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 57c78a7a7425..a763216e1c15 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -321,17 +321,17 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
+ 						   struct ext4_dir_entry *de)
+ {
+ 	struct ext4_dir_entry_tail *t;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
+ 
+ #ifdef PARANOID
+ 	struct ext4_dir_entry *d, *top;
+ 
+ 	d = de;
+ 	top = (struct ext4_dir_entry *)(((void *)de) +
+-		(EXT4_BLOCK_SIZE(inode->i_sb) -
+-		sizeof(struct ext4_dir_entry_tail)));
+-	while (d < top && d->rec_len)
++		(blocksize - sizeof(struct ext4_dir_entry_tail)));
++	while (d < top && ext4_rec_len_from_disk(d->rec_len, blocksize))
+ 		d = (struct ext4_dir_entry *)(((void *)d) +
+-		    le16_to_cpu(d->rec_len));
++		    ext4_rec_len_from_disk(d->rec_len, blocksize));
+ 
+ 	if (d != top)
+ 		return NULL;
+@@ -342,7 +342,8 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
+ #endif
+ 
+ 	if (t->det_reserved_zero1 ||
+-	    le16_to_cpu(t->det_rec_len) != sizeof(struct ext4_dir_entry_tail) ||
++	    (ext4_rec_len_from_disk(t->det_rec_len, blocksize) !=
++	     sizeof(struct ext4_dir_entry_tail)) ||
+ 	    t->det_reserved_zero2 ||
+ 	    t->det_reserved_ft != EXT4_FT_DIR_CSUM)
+ 		return NULL;
+@@ -424,13 +425,14 @@ static struct dx_countlimit *get_dx_countlimit(struct inode *inode,
+ 	struct ext4_dir_entry *dp;
+ 	struct dx_root_info *root;
+ 	int count_offset;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
++	unsigned int rlen = ext4_rec_len_from_disk(dirent->rec_len, blocksize);
+ 
+-	if (le16_to_cpu(dirent->rec_len) == EXT4_BLOCK_SIZE(inode->i_sb))
++	if (rlen == blocksize)
+ 		count_offset = 8;
+-	else if (le16_to_cpu(dirent->rec_len) == 12) {
++	else if (rlen == 12) {
+ 		dp = (struct ext4_dir_entry *)(((void *)dirent) + 12);
+-		if (le16_to_cpu(dp->rec_len) !=
+-		    EXT4_BLOCK_SIZE(inode->i_sb) - 12)
++		if (ext4_rec_len_from_disk(dp->rec_len, blocksize) != blocksize - 12)
+ 			return NULL;
+ 		root = (struct dx_root_info *)(((void *)dp + 12));
+ 		if (root->reserved_zero ||
+@@ -1243,6 +1245,7 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
+ 	unsigned int buflen = bh->b_size;
+ 	char *base = bh->b_data;
+ 	struct dx_hash_info h = *hinfo;
++	int blocksize = EXT4_BLOCK_SIZE(dir->i_sb);
+ 
+ 	if (ext4_has_metadata_csum(dir->i_sb))
+ 		buflen -= sizeof(struct ext4_dir_entry_tail);
+@@ -1256,11 +1259,12 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
+ 			map_tail--;
+ 			map_tail->hash = h.hash;
+ 			map_tail->offs = ((char *) de - base)>>2;
+-			map_tail->size = le16_to_cpu(de->rec_len);
++			map_tail->size = ext4_rec_len_from_disk(de->rec_len,
++								blocksize);
+ 			count++;
+ 			cond_resched();
+ 		}
+-		de = ext4_next_entry(de, dir->i_sb->s_blocksize);
++		de = ext4_next_entry(de, blocksize);
+ 	}
+ 	return count;
+ }
 -- 
-2.42.0.515.g380fc7ccd1-goog
+2.27.0
 
