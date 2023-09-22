@@ -2,117 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 577FD7AB607
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 18:31:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07F4B7AB60C
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 18:33:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232113AbjIVQbJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 12:31:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52374 "EHLO
+        id S230171AbjIVQdI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 12:33:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232348AbjIVQbH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 12:31:07 -0400
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BE6C7114;
-        Fri, 22 Sep 2023 09:31:01 -0700 (PDT)
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
-To:     netfilter-devel@vger.kernel.org
-Cc:     stable@vger.kernel.org, gregkh@linuxfoundation.org,
-        sashal@kernel.org
-Subject: [-stable,6.1 17/17] netfilter: nf_tables: fix memleak when more than 255 elements expired
-Date:   Fri, 22 Sep 2023 18:30:29 +0200
-Message-Id: <20230922163029.150988-18-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230922163029.150988-1-pablo@netfilter.org>
-References: <20230922163029.150988-1-pablo@netfilter.org>
+        with ESMTP id S229636AbjIVQdH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 12:33:07 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CBBC114
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 09:33:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695400382; x=1726936382;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=n2tpziZFCVuyN6rruA1ZmLCh2RYhKljPGvsKB6KiRu8=;
+  b=fm8x5K4Lh3tLc2WKqCVKHHnKz7ZSuWAaz+zfrUK+GtzvvxBEiv5I7fMA
+   axaIRFHtYBhbsa2ioGaTPzffnwiTzNzzTVyyvSzlKZjdrmgRVRwKBesCz
+   7Hsj1xmxpucTGi8n0nMx3jOFvjJkaMx7wakkLqpqH03YVmcghlyC9lIaC
+   aj0C0xBsfLHmMBXg1HJW2gJ8Vt3N3lRPc0YAD5ZR1FGNh6rnCmTAhiAKz
+   7msTC0epLPpYd3IWRXTXvK9DeyRwq0clRbNHJuJOOYC4BfGfORv29MnD4
+   BCv+fpZS05PmMhYWJmsaqdWURnZgAxwirH5yaFXx+wUUQxyy5QzAjrASV
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10841"; a="379757033"
+X-IronPort-AV: E=Sophos;i="6.03,167,1694761200"; 
+   d="scan'208";a="379757033"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2023 09:33:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10841"; a="890873689"
+X-IronPort-AV: E=Sophos;i="6.03,167,1694761200"; 
+   d="scan'208";a="890873689"
+Received: from lkp-server02.sh.intel.com (HELO 493f6c7fed5d) ([10.239.97.151])
+  by fmsmga001.fm.intel.com with ESMTP; 22 Sep 2023 09:32:06 -0700
+Received: from kbuild by 493f6c7fed5d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qjj4q-0000zB-21;
+        Fri, 22 Sep 2023 16:32:50 +0000
+Date:   Sat, 23 Sep 2023 00:31:12 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Pablo Neira Ayuso <pablo@netfilter.org>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [-stable,6.1 01/17] netfilter: nf_tables: don't skip expired
+ elements during walk
+Message-ID: <ZQ3BUNNkLY2EPB1n@845c4ce01481>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230922163029.150988-2-pablo@netfilter.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+Hi,
 
-commit cf5000a7787cbc10341091d37245a42c119d26c5 upstream.
+Thanks for your patch.
 
-When more than 255 elements expired we're supposed to switch to a new gc
-container structure.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-This never happens: u8 type will wrap before reaching the boundary
-and nft_trans_gc_space() always returns true.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html/#option-1
 
-This means we recycle the initial gc container structure and
-lose track of the elements that came before.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [-stable,6.1 01/17] netfilter: nf_tables: don't skip expired elements during walk
+Link: https://lore.kernel.org/stable/20230922163029.150988-2-pablo%40netfilter.org
 
-While at it, don't deref 'gc' after we've passed it to call_rcu.
-
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- include/net/netfilter/nf_tables.h |  2 +-
- net/netfilter/nf_tables_api.c     | 10 ++++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index eb2103a9a7dd..05d7a60a0e1f 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1657,7 +1657,7 @@ struct nft_trans_gc {
- 	struct net		*net;
- 	struct nft_set		*set;
- 	u32			seq;
--	u8			count;
-+	u16			count;
- 	void			*priv[NFT_TRANS_GC_BATCHCOUNT];
- 	struct rcu_head		rcu;
- };
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 6e67fb999a25..b22f2d9ee4af 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9190,12 +9190,15 @@ static int nft_trans_gc_space(struct nft_trans_gc *trans)
- struct nft_trans_gc *nft_trans_gc_queue_async(struct nft_trans_gc *gc,
- 					      unsigned int gc_seq, gfp_t gfp)
- {
-+	struct nft_set *set;
-+
- 	if (nft_trans_gc_space(gc))
- 		return gc;
- 
-+	set = gc->set;
- 	nft_trans_gc_queue_work(gc);
- 
--	return nft_trans_gc_alloc(gc->set, gc_seq, gfp);
-+	return nft_trans_gc_alloc(set, gc_seq, gfp);
- }
- 
- void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
-@@ -9210,15 +9213,18 @@ void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
- 
- struct nft_trans_gc *nft_trans_gc_queue_sync(struct nft_trans_gc *gc, gfp_t gfp)
- {
-+	struct nft_set *set;
-+
- 	if (WARN_ON_ONCE(!lockdep_commit_lock_is_held(gc->net)))
- 		return NULL;
- 
- 	if (nft_trans_gc_space(gc))
- 		return gc;
- 
-+	set = gc->set;
- 	call_rcu(&gc->rcu, nft_trans_gc_trans_free);
- 
--	return nft_trans_gc_alloc(gc->set, 0, gfp);
-+	return nft_trans_gc_alloc(set, 0, gfp);
- }
- 
- void nft_trans_gc_queue_sync_done(struct nft_trans_gc *trans)
 -- 
-2.30.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
