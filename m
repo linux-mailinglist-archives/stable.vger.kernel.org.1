@@ -2,101 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E0BE7ABC2B
-	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 01:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E47A7ABC37
+	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 01:18:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230228AbjIVXIi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 19:08:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35124 "EHLO
+        id S230074AbjIVXSk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 19:18:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbjIVXIh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 19:08:37 -0400
-X-Greylist: delayed 472 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 22 Sep 2023 16:08:31 PDT
-Received: from out-191.mta1.migadu.com (out-191.mta1.migadu.com [95.215.58.191])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5DC7198
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 16:08:31 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 16:00:30 -0700
+        with ESMTP id S230051AbjIVXSk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 19:18:40 -0400
+X-Greylist: delayed 602 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 22 Sep 2023 16:18:32 PDT
+Received: from out-210.mta0.migadu.com (out-210.mta0.migadu.com [91.218.175.210])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C1FF194
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 16:18:32 -0700 (PDT)
+Date:   Fri, 22 Sep 2023 23:08:21 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1695423637;
+        t=1695424106;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=xnLthAI2KKZwUYazrEPUSMFwID0MKjI3FCNZtFBM4m4=;
-        b=E35HnXox4DMrYu3DkYtdgmp0uOW7ubbbmSyrum1CRnX+YpPXnGRoXIqr21W5ok6+a5jcR5
-        KJdYqD8of5GS6tMtn3L1CKtyBVVxIrjiG8nUcORjD1mPjNYsdtJSFSZOomwvYiNfPOr+XR
-        Rqo+dUaRoJrsrQX0lusdx455KWZkuxg=
+        bh=xpFIobQExILClkKTeW/cYTjEqv/q/JhNQ5dNQFV+wwI=;
+        b=kuu5l9LqbKERXQkbxSoPFZr+vhTqJo0n9KLjbOq+Bw8pI2bWwNuniOOFNrY0pPgXTDHw3V
+        72w3I8obqdyQTx8tLoPTjhE27dMtLWYQx+tP/Z1N4xBa/Jh8q/Zj505aw6lIbnKoJqH+Jq
+        f9RQc0JPWIG5DIG2gUIZHPZOfyByFi4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Roman Gushchin <roman.gushchin@linux.dev>
-To:     Michal Hocko <mhocko@suse.com>
-Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        Shakeel Butt <shakeelb@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Muchun Song <muchun.song@linux.dev>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        Tejun Heo <tj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-        mathieu.tortuyaux@gmail.com
-Subject: Re: [REGRESSION] Re: [PATCH 6.1 033/219] memcg: drop
- kmem.limit_in_bytes
-Message-ID: <ZQ4cjqQLhgX1pOVX@P9FQF9L96D.corp.robot.car>
-References: <20230917191040.964416434@linuxfoundation.org>
- <20230917191042.204185566@linuxfoundation.org>
- <20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <ZQqwzK/fDm+GLiKM@dhcp22.suse.cz>
- <101987a1-b1ab-429d-af03-b6bdf6216474@linux.microsoft.com>
- <ZQrSXh+riB7NnZuE@dhcp22.suse.cz>
- <4eb47d6a-b127-4aad-af30-896c3b9505b4@linux.microsoft.com>
- <ZQr3+YfcBM2Er6F7@dhcp22.suse.cz>
+From:   Oliver Upton <oliver.upton@linux.dev>
+To:     kvmarm@lists.linux.dev
+Cc:     kvm@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Vipin Sharma <vipinsh@google.com>,
+        Jing Zhang <jingzhangos@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: Always invalidate TLB for stage-2 permission
+ faults
+Message-ID: <ZQ4eZcWRO/nHnGc4@linux.dev>
+References: <20230922223229.1608155-1-oliver.upton@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZQr3+YfcBM2Er6F7@dhcp22.suse.cz>
+In-Reply-To: <20230922223229.1608155-1-oliver.upton@linux.dev>
 X-Migadu-Flow: FLOW_OUT
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 20, 2023 at 03:47:37PM +0200, Michal Hocko wrote:
-> On Wed 20-09-23 15:25:23, Jeremi Piotrowski wrote:
-> > On 9/20/2023 1:07 PM, Michal Hocko wrote:
-> [...]
-> > > I mean, normally I would be just fine reverting this API change because
-> > > it is disruptive but the only way to have the file available and not
-> > > break somebody is to revert 58056f77502f ("memcg, kmem: further
-> > > deprecate kmem.limit_in_bytes") as well. Or to ignore any value written
-> > > there but that sounds rather dubious. Although one could argue this
-> > > would mimic nokmem kernel option.
-> > > 
-> > 
-> > I just want to make sure we don't introduce yet another new behavior in this legacy
-> > system. I have not seen breakage due to 58056f77502f. Mimicing nokmem sounds good but
-> > does this mean "don't enforce limits" (that should be fine) or "ignore writes to the limit"
-> > (=don't event store the written limit). The latter might have unintended consequences.
+On Fri, Sep 22, 2023 at 10:32:29PM +0000, Oliver Upton wrote:
+> It is possible for multiple vCPUs to fault on the same IPA and attempt
+> to resolve the fault. One of the page table walks will actually update
+> the PTE and the rest will return -EAGAIN per our race detection scheme.
+> KVM elides the TLB invalidation on the racing threads as the return
+> value is nonzero.
 > 
-> Yes it would mean that the limit is never enforced. Bad as it is the
-> thing is that the hard limit on kernel memory is broken by design and
-> unfixable.  This causes all sorts of unexpected kernel allocation
-> failures that this is simply unsafe to use.
+> Before commit a12ab1378a88 ("KVM: arm64: Use local TLBI on permission
+> relaxation") KVM always used broadcast TLB invalidations when handling
+> permission faults, which had the convenient property of making the
+> stage-2 updates visible to all CPUs in the system. However now we do a
+> local invalidation, and TLBI elision leads to vCPUs getting stuck in a
+> permission fault loop. Remember that the architecture permits the TLB to
+> cache translations that precipitate a permission fault.
+
+The effects of this are slightly overstated (got ahead of myself).
+EAGAIN only crops up if the cmpxchg() fails, we return 0 if the PTE
+didn't need to be updated.
+
+On the subsequent permission fault we'll do the right thing and
+invalidate the TLB, so this change is purely an optimization rather than
+a correctness issue.
+
+> Invalidate the TLB entry responsible for the permission fault if the
+> stage-2 descriptor has been relaxed, regardless of which thread actually
+> did the job.
 > 
-> All that being said I can see the following options
-> 1) keep the current upstream status and not export the file
-> 2) revert both 58056f77502f and 86327e8eb94 and make it clear
->    that kmem.limit_in_bytes is unsupported so failures or misbehavior
->    as a result of the limit being hit are likely not going to be
->    investigated or fixed.
-> 3) reverting like in 2) but never inforce the limit (so basically nokmem
->    semantic)
+> Cc: stable@vger.kernel.org
+> Fixes: a12ab1378a88 ("KVM: arm64: Use local TLBI on permission relaxation")
 
-Since it's a part of cgroup v1 interface, which is in a frozen state as a whole,
-and there is no significant (performance, code complexity) benefit of
-additionally deprecating kmem.limit_in_bytes, I vote for 2).
-1) is also an option.
+I'll drop the stable tag.
 
-Thanks!
+> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+> ---
+>  arch/arm64/kvm/hyp/pgtable.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
+> index f155b8c9e98c..286888751793 100644
+> --- a/arch/arm64/kvm/hyp/pgtable.c
+> +++ b/arch/arm64/kvm/hyp/pgtable.c
+> @@ -1314,7 +1314,7 @@ int kvm_pgtable_stage2_relax_perms(struct kvm_pgtable *pgt, u64 addr,
+>  	ret = stage2_update_leaf_attrs(pgt, addr, 1, set, clr, NULL, &level,
+>  				       KVM_PGTABLE_WALK_HANDLE_FAULT |
+>  				       KVM_PGTABLE_WALK_SHARED);
+> -	if (!ret)
+> +	if (!ret || ret == -EAGAIN)
+>  		kvm_call_hyp(__kvm_tlb_flush_vmid_ipa_nsh, pgt->mmu, addr, level);
+>  	return ret;
+>  }
+> 
+> base-commit: ce9ecca0238b140b88f43859b211c9fdfd8e5b70
+> -- 
+> 2.42.0.515.g380fc7ccd1-goog
+> 
+
+-- 
+Thanks,
+Oliver
