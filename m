@@ -2,145 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D02F87AB877
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 19:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A8CF7AB8F0
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 20:15:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233733AbjIVRxu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 13:53:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51940 "EHLO
+        id S231449AbjIVSPj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 14:15:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233438AbjIVRxX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 13:53:23 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 006EC1F12
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 10:51:41 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d81486a0382so3089862276.0
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 10:51:41 -0700 (PDT)
+        with ESMTP id S229634AbjIVSPi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 14:15:38 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C0AEA9
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 11:15:32 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-cf4cb742715so3312195276.2
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 11:15:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695405101; x=1696009901; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fPoesx7eIkvIyN/ECBqYvUwy9riOVetGjUtm7GvkcAQ=;
-        b=M9FspRTRg5iKLUT95ZRx1RxpmyXULmaFRUAZqosCYnVR31gFlY6u+D4PFBqe7NINL9
-         zfpnmUF/72y2Lis/TtDgeSTllv3Bq4R3Z98haB2R8jeEThB3/jEcPxHHrJPPvAGQ54yT
-         gn1iSn6XzJ4lDMhyInnHNHBsSdxv7ORmP3QZlmtz80rmb3OgVuEb5l9P/hHPmlGC47QZ
-         9gPBeX7WRpj8qaiAvM8Z0m6NmbmkTIklSI4LqY2ErmwnSRQ4diwdqB4bpaq+gYYavFNH
-         GGjwT/hqHqiKpL5cxscIkPIf4djBExHMjeqwXCxMJ9kwEWMESRMst5aPQiuiQXIq6D88
-         GuAA==
+        d=google.com; s=20230601; t=1695406531; x=1696011331; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=yisyY0FcmMhu1UJ/oaYmui5M8B9s34gvtt+JkaXaZJE=;
+        b=xKbjJFawPq3P2Rqp0AoelvxFAsmjkVVaYt6RF52xu7mhDWUmn2RIYRafiPyWdLGAdx
+         1HFv9cniAx/PuVPNcOqYzqox0JCKxh3AE9S6oSqiKJZ5UkWVgsXjk7+slaDn6pxBonJh
+         bApAhc7pKa/QKigrL94SXCkbJfwGaWtznY4ieIK5JKzD4AQGQLLlih7bxC0lfH57PZvL
+         /2azdufvdUW3iI1JDAisciV2wrh4uOKZd4GaoK2rkZa3qLHw3hrhJ+dv2jDBsnVb4krP
+         5bpnTGbt7g6dEO93n8f0nHygmpuQTXBT1+z17xeTPRMsfJM6rC/XkxyD2pgB8iSy5MZq
+         bY/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695405101; x=1696009901;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fPoesx7eIkvIyN/ECBqYvUwy9riOVetGjUtm7GvkcAQ=;
-        b=knuBYe1RDO1q4KiNxwiuVbxs14YkAJ3sJNTo+jy1x1thX+VHi+3BMEC+2O10AL9J+V
-         WsD7oaXkXtry0cvmGQ6KfxBmTYggoInsBnY1K6ZKyeeOvL+HvdudfPvOG04fxKStvKeZ
-         Y0Yn7HFtvUUOg9Bd9v9G1f4EuPSqC0A5OhJwvYKN1LOzeUaNS+4Vf9/1RvsKrpjKzav5
-         YPSG3GsA40EtpSHrcG9Qggz/BflaJMH56b/p7EXPoYX68JJSxW5apQGUV6RBGGSKLMpg
-         fYD7YtvNI29jaslmORkWtbB7S0ZFzaHD+gEWWGfN16ZjC0vhTfVH4adwFGaQptLPmz4u
-         K9kw==
-X-Gm-Message-State: AOJu0YztJvuaQbVZRb5zdGVQdYHwBmGKDQ9ftec5ZBW4tiT2TT/wW5CE
-        0lnOntgYx8087N+TzeQMySXJkC+G8MBf/A==
-X-Google-Smtp-Source: AGHT+IEIodY6P8AEfYuvD2zh3y3p9HhvCqmHHHxKT05y8cUv8VPdaP2I7/YajTg2Gkalk2g6RpbDy0/vf2J8Jg==
-X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a5b:d0b:0:b0:d85:ae1e:f696 with SMTP id
- y11-20020a5b0d0b000000b00d85ae1ef696mr927ybp.0.1695405101036; Fri, 22 Sep
- 2023 10:51:41 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 17:51:37 +0000
-In-Reply-To: <20230922044241.322832-1-cmllamas@google.com>
+        d=1e100.net; s=20230601; t=1695406531; x=1696011331;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yisyY0FcmMhu1UJ/oaYmui5M8B9s34gvtt+JkaXaZJE=;
+        b=OXaqPTZV3wvPfvGQXntf9aPmz1RcnsvTK4P44jtjuErkBrJ0pf3PO6Tea4S1PzFpZA
+         uk9wiQDQYh5MQBUXxFXyujJytzKNzymbd2tnFIXRmSav1ZuvdxZm8qmVzPuagEh0pxcB
+         8cwRLD6H9jikIZcPq3+qE82qnXhPJXlLTr0czh7yDFyDUtcr28OhWRXCQDWDVCCM1iPf
+         h6U4glNjxTCBOST4YcMaQh2ASrFm3s17kKG4kMINZjGQONktaPf9zPEvaaJjojNVSAXv
+         ZsPV7leyDVWytu8UIavyO+rBdZIuGnnS+Je9e/ySTISgm7XxA14+cEjfNd78MhLwdY2S
+         bYrA==
+X-Gm-Message-State: AOJu0Yy3k6tmhnu5XDyKLh11ltFYLusZBwtlpUmlct22GCC/+oUJ+2SC
+        FF9GasgZWngkpNcv8I92xfaMgSxtGxH2tHw+VEs=
+X-Google-Smtp-Source: AGHT+IFQ1zANXEZ45PUN85d3Byff5vsjkSZ9yZxDFGwfcMj4yS/9JsNcjoZvrTXXNE/JR+PhfTyQ2mp5VnDjWOxSv2c=
+X-Received: from saranyamohan.svl.corp.google.com ([2620:15c:2a3:200:bdd4:4eee:5b8e:9273])
+ (user=saranyamohan job=sendgmr) by 2002:a25:316:0:b0:d7b:8d0c:43f1 with SMTP
+ id 22-20020a250316000000b00d7b8d0c43f1mr784ybd.9.1695406531401; Fri, 22 Sep
+ 2023 11:15:31 -0700 (PDT)
+Date:   Fri, 22 Sep 2023 11:15:28 -0700
 Mime-Version: 1.0
-References: <20230922044241.322832-1-cmllamas@google.com>
 X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
-Message-ID: <20230922175138.230331-1-cmllamas@google.com>
-Subject: [PATCH v2] binder: fix memory leaks of spam and pending work
-From:   Carlos Llamas <cmllamas@google.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>,
-        Todd Kjos <tkjos@android.com>,
-        Martijn Coenen <maco@android.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Carlos Llamas <cmllamas@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Li Li <dualli@google.com>, Hang Lu <hangl@codeaurora.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
-        syzkaller-bugs@googlegroups.com, stable@vger.kernel.org,
-        syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com,
-        Alice Ryhl <aliceryhl@google.com>, Todd Kjos <tkjos@google.com>
+Message-ID: <20230922181528.366670-1-saranyamohan@google.com>
+Subject: [PATCH 6.1] block: fix use-after-free of q->q_usage_counter
+From:   Saranya Muruganandam <saranyamohan@google.com>
+To:     Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+        Ming Lei <ming.lei@redhat.com>, stable@vger.kernel.org
+Cc:     linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zhang Wensheng <zhangwensheng@huaweicloud.com>,
+        Zhong Jinghua <zhongjinghua@huawei.com>,
+        Hillf Danton <hdanton@sina.com>, Yu Kuai <yukuai3@huawei.com>,
+        Dennis Zhou <dennis@kernel.org>,
+        Saranya Muruganandam <saranyamohan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
-        USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-A transaction complete work is allocated and queued for each
-transaction. Under certain conditions the work->type might be marked as
-BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT to notify userspace about
-potential spamming threads or as BINDER_WORK_TRANSACTION_PENDING when
-the target is currently frozen.
+From: Ming Lei <ming.lei@redhat.com>
 
-However, these work types are not being handled in binder_release_work()
-so they will leak during a cleanup. This was reported by syzkaller with
-the following kmemleak dump:
+commit d36a9ea5e7766961e753ee38d4c331bbe6ef659b upstream.
 
-BUG: memory leak
-unreferenced object 0xffff88810e2d6de0 (size 32):
-  comm "syz-executor338", pid 5046, jiffies 4294968230 (age 13.590s)
-  hex dump (first 32 bytes):
-    e0 6d 2d 0e 81 88 ff ff e0 6d 2d 0e 81 88 ff ff  .m-......m-.....
-    04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff81573b75>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
-    [<ffffffff83d41873>] kmalloc include/linux/slab.h:599 [inline]
-    [<ffffffff83d41873>] kzalloc include/linux/slab.h:720 [inline]
-    [<ffffffff83d41873>] binder_transaction+0x573/0x4050 drivers/android/binder.c:3152
-    [<ffffffff83d45a05>] binder_thread_write+0x6b5/0x1860 drivers/android/binder.c:4010
-    [<ffffffff83d486dc>] binder_ioctl_write_read drivers/android/binder.c:5066 [inline]
-    [<ffffffff83d486dc>] binder_ioctl+0x1b2c/0x3cf0 drivers/android/binder.c:5352
-    [<ffffffff816b25f2>] vfs_ioctl fs/ioctl.c:51 [inline]
-    [<ffffffff816b25f2>] __do_sys_ioctl fs/ioctl.c:871 [inline]
-    [<ffffffff816b25f2>] __se_sys_ioctl fs/ioctl.c:857 [inline]
-    [<ffffffff816b25f2>] __x64_sys_ioctl+0xf2/0x140 fs/ioctl.c:857
-    [<ffffffff84b30008>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84b30008>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+For blk-mq, queue release handler is usually called after
+blk_mq_freeze_queue_wait() returns. However, the
+q_usage_counter->release() handler may not be run yet at that time, so
+this can cause a use-after-free.
 
-Fix the leaks by kfreeing these work types in binder_release_work() and
-handle them as a BINDER_WORK_TRANSACTION_COMPLETE cleanup.
+Fix the issue by moving percpu_ref_exit() into blk_free_queue_rcu().
+Since ->release() is called with rcu read lock held, it is agreed that
+the race should be covered in caller per discussion from the two links.
 
-Cc: stable@vger.kernel.org
-Fixes: 0567461a7a6e ("binder: return pending info for frozen async txns")
-Fixes: a7dc1e6f99df ("binder: tell userspace to dump current backtrace when detected oneway spamming")
-Reported-by: syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7f10c1653e35933c0f1e
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Backport-notes: Not a clean cherry-pick since a lot has changed,
+however essentially the same fix.
+
+Reported-by: Zhang Wensheng <zhangwensheng@huaweicloud.com>
+Reported-by: Zhong Jinghua <zhongjinghua@huawei.com>
+Link: https://lore.kernel.org/linux-block/Y5prfOjyyjQKUrtH@T590/T/#u
+Link: https://lore.kernel.org/lkml/Y4%2FmzMd4evRg9yDi@fedora/
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20221215021629.74870-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Saranya Muruganandam <saranyamohan@google.com>
 ---
-v2 - Handle also peding work and merge with transaction complete as
-     suggested by Alice Ryhl. Add corresponding new tags.
-v1 - https://lore.kernel.org/all/20230922044241.322832-1-cmllamas@google.com/
----
- drivers/android/binder.c | 2 ++
- 1 file changed, 2 insertions(+)
+ block/blk-sysfs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index 367afac5f1bf..92128aae2d06 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -4812,6 +4812,8 @@ static void binder_release_work(struct binder_proc *proc,
- 				"undelivered TRANSACTION_ERROR: %u\n",
- 				e->cmd);
- 		} break;
-+		case BINDER_WORK_TRANSACTION_PENDING:
-+		case BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT:
- 		case BINDER_WORK_TRANSACTION_COMPLETE: {
- 			binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
- 				"undelivered TRANSACTION_COMPLETE\n");
+diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+index a582ea0da74f..a82bdec923b2 100644
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -737,6 +737,7 @@ static void blk_free_queue_rcu(struct rcu_head *rcu_head)
+ 	struct request_queue *q = container_of(rcu_head, struct request_queue,
+ 					       rcu_head);
+ 
++	percpu_ref_exit(&q->q_usage_counter);
+ 	kmem_cache_free(blk_get_queue_kmem_cache(blk_queue_has_srcu(q)), q);
+ }
+ 
+@@ -762,8 +763,6 @@ static void blk_release_queue(struct kobject *kobj)
+ 
+ 	might_sleep();
+ 
+-	percpu_ref_exit(&q->q_usage_counter);
+-
+ 	if (q->poll_stat)
+ 		blk_stat_remove_callback(q, q->poll_cb);
+ 	blk_stat_free_callback(q->poll_cb);
 -- 
 2.42.0.515.g380fc7ccd1-goog
 
