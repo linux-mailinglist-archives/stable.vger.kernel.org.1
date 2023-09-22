@@ -2,72 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92C667AADC3
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 11:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA1997AADC8
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 11:24:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231808AbjIVJXW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 05:23:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59676 "EHLO
+        id S231795AbjIVJYI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 05:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjIVJXU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 05:23:20 -0400
+        with ESMTP id S231180AbjIVJYH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 05:24:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17C96192;
-        Fri, 22 Sep 2023 02:23:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32460C433C7;
-        Fri, 22 Sep 2023 09:23:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EEF3195
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 02:24:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA32C433C7;
+        Fri, 22 Sep 2023 09:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695374593;
-        bh=dXskQX5Hl5xkPtfaxV8tcYegxNU8vst41m8wxd6lccM=;
+        s=korg; t=1695374641;
+        bh=DwZlnZLgXMNE+ZzleFxHPJhiKoucAi8CLZr5qGACYT0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HC7A5qwRYefrtsRKDVgbV8LB3GlGNnwCiuzuBjBf//079Vr5pHlHx7w33piVwkMSg
-         KdakR66MrSNSkYJO3jbZwCr/w2VTw33wUH/TvBJA0dAAYl+WQ5Z5GVudGyrcU4/vOf
-         0KADD+v5vZCFHY1cz6sqX/igDr/hO6uHWrXxgxmY=
-Date:   Fri, 22 Sep 2023 11:23:12 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ryan Roberts <ryan.roberts@arm.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <muchun.song@linux.dev>,
-        SeongJae Park <sj@kernel.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Peter Xu <peterx@redhat.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v1 0/8] Fix set_huge_pte_at() panic on arm64
-Message-ID: <2023092208-sitcom-playpen-b62d@gregkh>
-References: <20230921162007.1630149-1-ryan.roberts@arm.com>
- <20230921093026.230b2991be551093e397f462@linux-foundation.org>
- <7c5c2c00-d657-44fd-b478-743b43c57e8a@arm.com>
+        b=XuEReGEy6/Fflv32/L1U+m1afbZOqvChX5fHEAAK03QFmA1nRDGs+lfwZfY9U83GT
+         UfcTXROIP8itTGH8xpqrufbAZRPIGHR1cG97Mua1itShcTYu8XEa+AC6y0evCUcvLR
+         oMZ4GD1p3XnUMHMoZY07mxaNF4mH8mAaUSAam5KI=
+Date:   Fri, 22 Sep 2023 11:23:59 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     zhangshida <starzhangzsd@gmail.com>
+Cc:     stable@vger.kernel.org, Shida Zhang <zhangshida@kylinos.cn>,
+        stable@kernel.org, Andreas Dilger <adilger@dilger.ca>,
+        "Darrick J . Wong" <djwong@kernel.org>,
+        Theodore Ts'o <tytso@mit.edu>
+Subject: Re: [PATCH] ext4: fix rec_len verify error
+Message-ID: <2023092232-squash-buggy-51c7@gregkh>
+References: <2023092057-company-unworried-210b@gregkh>
+ <20230922053915.2176290-1-zhangshida@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7c5c2c00-d657-44fd-b478-743b43c57e8a@arm.com>
+In-Reply-To: <20230922053915.2176290-1-zhangshida@kylinos.cn>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -78,78 +48,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 21, 2023 at 05:35:54PM +0100, Ryan Roberts wrote:
-> On 21/09/2023 17:30, Andrew Morton wrote:
-> > On Thu, 21 Sep 2023 17:19:59 +0100 Ryan Roberts <ryan.roberts@arm.com> wrote:
-> > 
-> >> Hi All,
-> >>
-> >> This series fixes a bug in arm64's implementation of set_huge_pte_at(), which
-> >> can result in an unprivileged user causing a kernel panic. The problem was
-> >> triggered when running the new uffd poison mm selftest for HUGETLB memory. This
-> >> test (and the uffd poison feature) was merged for v6.6-rc1. However, upon
-> >> inspection there are multiple other pre-existing paths that can trigger this
-> >> bug.
-> >>
-> >> Ideally, I'd like to get this fix in for v6.6 if possible? And I guess it should
-> >> be backported too, given there are call sites where this can theoretically
-> >> happen that pre-date v6.6-rc1 (I've cc'ed stable@vger.kernel.org).
-> > 
-> > This gets you a naggygram from Greg.  The way to request a backport is
-> > to add cc:stable to all the changelogs.  I'll make that change to my copy.
+On Fri, Sep 22, 2023 at 01:39:15PM +0800, zhangshida wrote:
+> From: Shida Zhang <zhangshida@kylinos.cn>
 > 
-> Ahh, sorry about that... I just got the same moan from the kernel test robot too.
+> [ Upstream commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6 ]
 > 
-> > 
-> > 
-> >> Ryan Roberts (8):
-> >>   parisc: hugetlb: Convert set_huge_pte_at() to take vma
-> >>   powerpc: hugetlb: Convert set_huge_pte_at() to take vma
-> >>   riscv: hugetlb: Convert set_huge_pte_at() to take vma
-> >>   s390: hugetlb: Convert set_huge_pte_at() to take vma
-> >>   sparc: hugetlb: Convert set_huge_pte_at() to take vma
-> >>   mm: hugetlb: Convert set_huge_pte_at() to take vma
-> >>   arm64: hugetlb: Convert set_huge_pte_at() to take vma
-> >>   arm64: hugetlb: Fix set_huge_pte_at() to work with all swap entries
-> >>
-> >>  arch/arm64/include/asm/hugetlb.h              |  2 +-
-> >>  arch/arm64/mm/hugetlbpage.c                   | 22 ++++----------
-> >>  arch/parisc/include/asm/hugetlb.h             |  2 +-
-> >>  arch/parisc/mm/hugetlbpage.c                  |  4 +--
-> >>  .../include/asm/nohash/32/hugetlb-8xx.h       |  3 +-
-> >>  arch/powerpc/mm/book3s64/hugetlbpage.c        |  2 +-
-> >>  arch/powerpc/mm/book3s64/radix_hugetlbpage.c  |  2 +-
-> >>  arch/powerpc/mm/nohash/8xx.c                  |  2 +-
-> >>  arch/powerpc/mm/pgtable.c                     |  7 ++++-
-> >>  arch/riscv/include/asm/hugetlb.h              |  2 +-
-> >>  arch/riscv/mm/hugetlbpage.c                   |  3 +-
-> >>  arch/s390/include/asm/hugetlb.h               |  8 +++--
-> >>  arch/s390/mm/hugetlbpage.c                    |  8 ++++-
-> >>  arch/sparc/include/asm/hugetlb.h              |  8 +++--
-> >>  arch/sparc/mm/hugetlbpage.c                   |  8 ++++-
-> >>  include/asm-generic/hugetlb.h                 |  6 ++--
-> >>  include/linux/hugetlb.h                       |  6 ++--
-> >>  mm/damon/vaddr.c                              |  2 +-
-> >>  mm/hugetlb.c                                  | 30 +++++++++----------
-> >>  mm/migrate.c                                  |  2 +-
-> >>  mm/rmap.c                                     | 10 +++----
-> >>  mm/vmalloc.c                                  |  5 +++-
-> >>  22 files changed, 80 insertions(+), 64 deletions(-)
-> > 
-> > Looks scary but it's actually a fairly modest patchset.  It could
-> > easily be all rolled into a single patch for ease of backporting. 
-> > Maybe Greg has an opinion?
+> With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
+> a problem occurred when more than 13 million files were directly created
+> under a directory:
 > 
-> Yes, I thought about doing that; or perhaps 2 patches - one for the interface
-> change across all arches and core code, and one for the actual bug fix?
+> EXT4-fs error (device xx): ext4_dx_csum_set:492: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+> EXT4-fs error (device xx): ext4_dx_csum_verify:463: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+> EXT4-fs error (device xx): dx_probe:856: inode #xxxx: block 8188: comm xxxxx: Directory index failed checksum
+> 
+> When enough files are created, the fake_dirent->reclen will be 0xffff.
+> it doesn't equal to the blocksize 65536, i.e. 0x10000.
+> 
+> But it is not the same condition when blocksize equals to 4k.
+> when enough files are created, the fake_dirent->reclen will be 0x1000.
+> it equals to the blocksize 4k, i.e. 0x1000.
+> 
+> The problem seems to be related to the limitation of the 16-bit field
+> when the blocksize is set to 64k.
+> To address this, helpers like ext4_rec_len_{from,to}_disk has already
+> been introduced to complete the conversion between the encoded and the
+> plain form of rec_len.
+> 
+> So fix this one by using the helper, and all the other in this file too.
+> 
+> Cc: stable@kernel.org
+> Fixes: dbe89444042a ("ext4: Calculate and verify checksums for htree nodes")
+> Suggested-by: Andreas Dilger <adilger@dilger.ca>
+> Suggested-by: Darrick J. Wong <djwong@kernel.org>
+> Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+> Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+> Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+> Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kylinos.cn
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+> ---
+>  fs/ext4/namei.c | 26 +++++++++++++++-----------
+>  1 file changed, 15 insertions(+), 11 deletions(-)
 
-I have no issues with taking patch series, or one big patch, into stable
-trees, they just have to match up with what is in Linus's tree.
-
-so if it makes more sense to have this as a series (like you did here),
-wonderful, make it a patch series.  Do not go out of your way to do
-things differently just for stable kernels, that is not necessary or
-needed at all.
+What stable tree(s) are you asking this to be backported to?
 
 thanks,
 
