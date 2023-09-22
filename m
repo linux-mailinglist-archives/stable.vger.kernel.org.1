@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 149317AADDA
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 11:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E9707AADE3
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 11:29:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231157AbjIVJ1f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 05:27:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34124 "EHLO
+        id S231157AbjIVJ2x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 05:28:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231810AbjIVJ1b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 05:27:31 -0400
+        with ESMTP id S232887AbjIVJ2v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 05:28:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11CC1194
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 02:27:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543E2C433C7;
-        Fri, 22 Sep 2023 09:27:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDFD5194;
+        Fri, 22 Sep 2023 02:28:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3831BC433C9;
+        Fri, 22 Sep 2023 09:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695374845;
-        bh=ki0iensyeHwXW+oYe9f9i92B/TNs5SCJ00K8uAvcFfg=;
+        s=korg; t=1695374925;
+        bh=1N0RINgSti7GRzCMQyRJ+M265Zpr0LcGBAeXkkytdkk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ejISiXDrPoCDw1GytbcgPFM9h5ErK3RaCZwkBd7OnpF3y82nLWYLGFd2fxbZmGmBu
-         6ugPp2l1OPMg4V6hWq75MW54pSVRXM5HBQ6d2RVeaDCYVOoOYiaDtdyXls5o1yQ6G9
-         ebSXwy8QHJwyAKQ4unZifNHZP8iXvMHDETAjLpvk=
-Date:   Fri, 22 Sep 2023 11:27:23 +0200
+        b=A5NdbWWyfeQM/bF2iQ2T5AUgeg79reBVyxgFzUiKXbM67xK/NrTLd1oohP74mkBl1
+         iIjMYzjzNI/6mPqWZp2kv3iCxemEu3ir0qK/ygNglaJS0Ti+WpoDhRR7vO6lNm3AYJ
+         fN4lAXYOcKRM+UgWuVU5icQERgIgHYCTqwgI1luk=
+Date:   Fri, 22 Sep 2023 11:28:44 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     zhangshida <starzhangzsd@gmail.com>
-Cc:     stable@vger.kernel.org, Shida Zhang <zhangshida@kylinos.cn>,
-        stable@kernel.org, Andreas Dilger <adilger@dilger.ca>,
-        "Darrick J . Wong" <djwong@kernel.org>,
-        Theodore Ts'o <tytso@mit.edu>
-Subject: Re: [PATCH] ext4: fix rec_len verify error
-Message-ID: <2023092205-ending-subzero-9778@gregkh>
-References: <2023092055-disband-unveiling-f6cc@gregkh>
- <20230922025458.2169511-1-zhangshida@kylinos.cn>
+To:     Brian Geffon <bgeffon@google.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
+        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Matthias Kaehlcke <mka@chromium.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] PM: hibernate: use __get_safe_page() rather than
+ touching the list.
+Message-ID: <2023092227-underline-gave-cbef@gregkh>
+References: <20230921170045.4189251-1-bgeffon@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230922025458.2169511-1-zhangshida@kylinos.cn>
+In-Reply-To: <20230921170045.4189251-1-bgeffon@google.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -48,51 +48,15 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 22, 2023 at 10:54:58AM +0800, zhangshida wrote:
-> From: Shida Zhang <zhangshida@kylinos.cn>
+On Thu, Sep 21, 2023 at 01:00:45PM -0400, Brian Geffon wrote:
+> We found at least one situation where the safe pages list was empty and
+> get_buffer() would gladly try to use a NULL pointer.
 > 
-> [ Upstream commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6 ]
+> Signed-off-by: Brian Geffon <bgeffon@google.com>
+> Fixes: 8357376 ("swsusp: Improve handling of highmem")
+> Cc: stable@vger.kernel.org
 > 
-> With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
-> a problem occurred when more than 13 million files were directly created
-> under a directory:
-> 
-> EXT4-fs error (device xx): ext4_dx_csum_set:492: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
-> EXT4-fs error (device xx): ext4_dx_csum_verify:463: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
-> EXT4-fs error (device xx): dx_probe:856: inode #xxxx: block 8188: comm xxxxx: Directory index failed checksum
-> 
-> When enough files are created, the fake_dirent->reclen will be 0xffff.
-> it doesn't equal to the blocksize 65536, i.e. 0x10000.
-> 
-> But it is not the same condition when blocksize equals to 4k.
-> when enough files are created, the fake_dirent->reclen will be 0x1000.
-> it equals to the blocksize 4k, i.e. 0x1000.
-> 
-> The problem seems to be related to the limitation of the 16-bit field
-> when the blocksize is set to 64k.
-> To address this, helpers like ext4_rec_len_{from,to}_disk has already
-> been introduced to complete the conversion between the encoded and the
-> plain form of rec_len.
-> 
-> So fix this one by using the helper, and all the other in this file too.
-> 
-> Cc: stable@kernel.org
-> Fixes: dbe89444042a ("ext4: Calculate and verify checksums for htree nodes")
-> Suggested-by: Andreas Dilger <adilger@dilger.ca>
-> Suggested-by: Darrick J. Wong <djwong@kernel.org>
-> Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
-> Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-> Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-> Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kylinos.cn
-> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-> Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
-> ---
->  fs/ext4/namei.c | 26 +++++++++++++++-----------
->  1 file changed, 15 insertions(+), 11 deletions(-)
-> 
+> Change-Id: Ibb43a9b4ac5ff2d7e3021fdacc08e116650231e9
 
-What stable kernel tree(s) are you asking for this to be applied to?
-
-thanks,
-
-greg k-h
+Please always use checkpatch.pl so that maintainers don't have to ask
+you to use checkpatch.pl :(
