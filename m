@@ -2,138 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF8E17AA7F0
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 06:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F6EF7AA7ED
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 06:42:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229582AbjIVEsy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 00:48:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46170 "EHLO
+        id S230246AbjIVEmw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 00:42:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229584AbjIVEsx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 00:48:53 -0400
-X-Greylist: delayed 480 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 21 Sep 2023 21:48:23 PDT
-Received: from stravinsky.debian.org (stravinsky.debian.org [IPv6:2001:41b8:202:deb::311:108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0AFECA
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 21:48:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-        s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-        Reply-To:Content-ID:Content-Description;
-        bh=WzZqa3rocV6baVg9nN1haYz7bTxH+VDBp3FoCoYTHuA=; b=qH4NAFKZSLK/sDp4JWBBogPpcD
-        rGbuYiD4NR0Gm7nZRel+r8wUcfojHRODORb2YUgzp4Z4RQXVZzDN2vFsqBvind5fRGTUxPCdC66z+
-        lnXsM1u76KplnAk8cttQ0Do3cSTcvu/dHlYGpDm6O9bbpbxa2i8U/UxixtWC7GP8bD4oG4IGoesUt
-        KJkyB/rZcWOafFzt71bsYyw1OkjzKIRSIhVH998gJoRzACJNtl+RfVYbeBU7MlegtOyeymD1ZX9rg
-        6VBl4bdfiBOdO/psivoybAiVYmEmWmAcAtZNEX8AQ4sZO4LLd9fQFuntZDW5XlhBY/nhATMuDvanD
-        U3xEAZmQ==;
-Received: from authenticated user
-        by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <carnil@debian.org>)
-        id 1qjXxF-00CVWl-Q6; Fri, 22 Sep 2023 04:39:50 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-        id 74D08BE2DE0; Fri, 22 Sep 2023 06:39:48 +0200 (CEST)
-Date:   Fri, 22 Sep 2023 06:39:48 +0200
-From:   Salvatore Bonaccorso <carnil@debian.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Uday M Bhat <uday.m.bhat@intel.com>,
-        Jairaj Arava <jairaj.arava@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 27/83] ASoC: Intel: sof_sdw: Update BT offload
- config for soundwire config
-Message-ID: <ZQ0alCnaXpqWRuuQ@eldamar.lan>
-References: <20230920112826.634178162@linuxfoundation.org>
- <20230920112827.751203739@linuxfoundation.org>
- <ZQtSWm3ycmA1W7Ry@eldamar.lan>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZQtSWm3ycmA1W7Ry@eldamar.lan>
-X-Debian-User: carnil
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,UNPARSEABLE_RELAY
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229685AbjIVEmw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 00:42:52 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A2C18F
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 21:42:46 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59c0dd156e5so24884007b3.3
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 21:42:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1695357765; x=1695962565; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZOSxLadMmyxPzCAuHUscDwKckaObJr5AodXorCq6Mh8=;
+        b=fTNUn8rto1MZyCpzbK1R5MD6M4l7IOz2ZCvBccHLtaN4tULJ/SAnPNpnEYMEhWgsvR
+         zlB7DtYhn0ZlCX+FTMWImCzlzFM/t5zyABbR7636Cihv7+KMWrTwiBCAdw7gPkvN+KMp
+         WcC+/bFwGi79VNZ9MQPyF+wtaIdLQ8JWqzt47GQH1EM3HOtCfLT+sAJxf2geflXVa3bg
+         4msDCVKTG2ZMsh7fPU/gbDVkTxTA6e0EXGklaFl07caIyVrSjjtAZ49ml1idWTSNWXiP
+         7eJ0HhBx+MvLgI56naWuVwI04dPzZhtbgGyTpj9x7DZ+wwzuDJwltKim6E/mjOGlxTV1
+         WlKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695357765; x=1695962565;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZOSxLadMmyxPzCAuHUscDwKckaObJr5AodXorCq6Mh8=;
+        b=Gp26h7fi2s6+A0xd18WtYmoG0kJ9s18/h9P8dBbxRB4RBqcmWdJW1hVisYK24HHenP
+         73cKOGWMzssqhDEMZKJ2ZzdWZh6ZtKy2/+agMzzQvX0P8mDAlPYVkYIYg1XI11zzV1Rh
+         cEddeUMF1HiE9fmUTGtPWalVWp9NPtMQJnpLVrw2UVUmeE10H8wW6bZWn+WvRf/7JNUB
+         TRYz6/kOPK73xZ+Yrp/ocXvchO3OWKP24AIJi8s00/MnI72726H/MxkfVG1vV5kLeNNk
+         7/YiPz0wpPYrCts+y0eSx8n5Pif6YP+gCoZyYtLldbMt5RJtWaAYqFlMzWMoHA5XoZoO
+         zNnw==
+X-Gm-Message-State: AOJu0YytHj447eLirpUhwnf3Wpjc86ca82ozI67PWy7syatlFJqGB3lV
+        yuxcQbyOO2u65bI6Qjl6w1z2eAnleRk1OA==
+X-Google-Smtp-Source: AGHT+IGFkPNBuQkD4DINS/cFH5kDu7DzVRnFZDZ/Xi6NfhQQYigH8yAxegiiIIH5LJR6g8b6w63HsC3BlUywOg==
+X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
+ (user=cmllamas job=sendgmr) by 2002:a81:d203:0:b0:59b:d33b:5ddc with SMTP id
+ x3-20020a81d203000000b0059bd33b5ddcmr112799ywi.4.1695357765078; Thu, 21 Sep
+ 2023 21:42:45 -0700 (PDT)
+Date:   Fri, 22 Sep 2023 04:42:40 +0000
+In-Reply-To: <000000000000aa181605ededf1fa@google.com>
+Mime-Version: 1.0
+References: <000000000000aa181605ededf1fa@google.com>
+X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
+Message-ID: <20230922044241.322832-1-cmllamas@google.com>
+Subject: [PATCH] binder: fix memory leak of spamming work
+From:   Carlos Llamas <cmllamas@google.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Carlos Llamas <cmllamas@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Hang Lu <hangl@codeaurora.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        syzkaller-bugs@googlegroups.com, stable@vger.kernel.org,
+        syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com,
+        Todd Kjos <tkjos@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+A transaction complete work is allocated and queued for each
+transaction. Under certain conditions the work->type might be marked as
+BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT to notify userspace about
+potential spamming threads.
 
-On Wed, Sep 20, 2023 at 10:13:14PM +0200, Salvatore Bonaccorso wrote:
-> Hi Greg,
-> 
-> On Wed, Sep 20, 2023 at 01:31:17PM +0200, Greg Kroah-Hartman wrote:
-> > 5.10-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Uday M Bhat <uday.m.bhat@intel.com>
-> > 
-> > [ Upstream commit a14aded9299187bb17ef90700eb2cf1120ef5885 ]
-> > 
-> > For soundwire config, SSP1 is used for BT offload. This is enabled
-> > in sof_sdw_quirk_table
-> > 
-> > Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-> > Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-> > Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-> > Signed-off-by: Uday M Bhat <uday.m.bhat@intel.com>
-> > Signed-off-by: Jairaj Arava <jairaj.arava@intel.com>
-> > Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-> > Link: https://lore.kernel.org/r/20230731214257.444605-5-pierre-louis.bossart@linux.intel.com
-> > Signed-off-by: Mark Brown <broonie@kernel.org>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >  sound/soc/intel/boards/sof_sdw.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-> > index f36a0fda1b6ae..1955d277fdf20 100644
-> > --- a/sound/soc/intel/boards/sof_sdw.c
-> > +++ b/sound/soc/intel/boards/sof_sdw.c
-> > @@ -214,7 +214,9 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
-> >  			DMI_MATCH(DMI_SYS_VENDOR, "Google"),
-> >  			DMI_MATCH(DMI_PRODUCT_NAME, "Rex"),
-> >  		},
-> > -		.driver_data = (void *)(SOF_SDW_PCH_DMIC),
-> > +		.driver_data = (void *)(SOF_SDW_PCH_DMIC |
-> > +					SOF_BT_OFFLOAD_SSP(1) |
-> > +					SOF_SSP_BT_OFFLOAD_PRESENT),
-> >  	},
-> >  	/* LunarLake devices */
-> >  	{
-> > -- 
-> > 2.40.1
-> 
-> I see the following build issue while trying to check 5.10.196-rc1:
-> 
-> sound/soc/intel/boards/sof_sdw.c:218:6: error: implicit declaration of function ‘SOF_BT_OFFLOAD_SSP’ [-Werror=implicit-function-declaration]
->   218 |      SOF_BT_OFFLOAD_SSP(1) |
->       |      ^~~~~~~~~~~~~~~~~~
-> sound/soc/intel/boards/sof_sdw.c:219:6: error: ‘SOF_SSP_BT_OFFLOAD_PRESENT’ undeclared here (not in a function)
->   219 |      SOF_SSP_BT_OFFLOAD_PRESENT),
->       |      ^~~~~~~~~~~~~~~~~~~~~~~~~~
-> cc1: some warnings being treated as errors
-> make[7]: *** [scripts/Makefile.build:286: sound/soc/intel/boards/sof_sdw.o] Error 1
+However, this work->type is not being handled in binder_release_work()
+so it will leak during a clean up. This was reported by syzkaller with
+the following kmemleak dump:
 
-Would it be better to drop this patch for the 5.10.y series?
+BUG: memory leak
+unreferenced object 0xffff88810e2d6de0 (size 32):
+  comm "syz-executor338", pid 5046, jiffies 4294968230 (age 13.590s)
+  hex dump (first 32 bytes):
+    e0 6d 2d 0e 81 88 ff ff e0 6d 2d 0e 81 88 ff ff  .m-......m-.....
+    04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff81573b75>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
+    [<ffffffff83d41873>] kmalloc include/linux/slab.h:599 [inline]
+    [<ffffffff83d41873>] kzalloc include/linux/slab.h:720 [inline]
+    [<ffffffff83d41873>] binder_transaction+0x573/0x4050 drivers/android/binder.c:3152
+    [<ffffffff83d45a05>] binder_thread_write+0x6b5/0x1860 drivers/android/binder.c:4010
+    [<ffffffff83d486dc>] binder_ioctl_write_read drivers/android/binder.c:5066 [inline]
+    [<ffffffff83d486dc>] binder_ioctl+0x1b2c/0x3cf0 drivers/android/binder.c:5352
+    [<ffffffff816b25f2>] vfs_ioctl fs/ioctl.c:51 [inline]
+    [<ffffffff816b25f2>] __do_sys_ioctl fs/ioctl.c:871 [inline]
+    [<ffffffff816b25f2>] __se_sys_ioctl fs/ioctl.c:857 [inline]
+    [<ffffffff816b25f2>] __x64_sys_ioctl+0xf2/0x140 fs/ioctl.c:857
+    [<ffffffff84b30008>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<ffffffff84b30008>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-SOF_SSP_BT_OFFLOAD_PRESENT only got introduced in 19f1eace0441 ("ASoC:
-Intel: sof_sdw: add support for Bluetooth offload") in 5.14-rc1 and
-later the bit changed again in 368fa526e6e3 ("ASoC: Intel: sof_sdw:
-extends SOF_RT711_JDSRC to 4 bits") ?
+Fix the leak by kfreeing this work in binder_release_work().
 
-Again, note I'm only the person seeing a build failure while testing
-the new RC version for 5.10.y.
+Cc: stable@vger.kernel.org
+Fixes: a7dc1e6f99df ("binder: tell userspace to dump current backtrace when detected oneway spamming")
+Reported-by: syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7f10c1653e35933c0f1e
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+ drivers/android/binder.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Regards,
-Salvatore
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 367afac5f1bf..d7aa561f4ef2 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -4831,6 +4831,9 @@ static void binder_release_work(struct binder_proc *proc,
+ 		} break;
+ 		case BINDER_WORK_NODE:
+ 			break;
++		case BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT:
++			kfree(w);
++			break;
+ 		default:
+ 			pr_err("unexpected work type, %d, not freed\n",
+ 			       wtype);
+-- 
+2.42.0.515.g380fc7ccd1-goog
+
