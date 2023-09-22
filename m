@@ -2,257 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25BD17AA652
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 03:02:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D32A27AA662
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 03:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230022AbjIVBCO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 21:02:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58164 "EHLO
+        id S229832AbjIVBK0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 21:10:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229596AbjIVBCN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 21:02:13 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9885191;
-        Thu, 21 Sep 2023 18:02:07 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1c59c40b840so14732805ad.3;
-        Thu, 21 Sep 2023 18:02:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695344527; x=1695949327; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5EQwThOiasL4de5Y5vJ+ZLwZXFoPo1unIHxbqTwkXC8=;
-        b=ERMOA85BazzCj7u5gk3carKu3tcRfeXsc9XTfVxfNkvCsF7+u0cbeB+aT6QPSsp/Fz
-         +GvQIGyfKHekxZsmk8E00aR8jcnB/ww1a7EWmJwbEyzJodHQ1IVoT5DLWTx4ScPWqVBa
-         ocIqZTBFkdc6yqSKx9nkxBBUiR9Ci4ksFS+xQHow3jSJD8bc+6CnzXZLrF8OKEcFDeqx
-         xTUd5x3xhxwUQyfUaE7Ch3QCBtV35jHl3LTgPfsdamXDvhm5EavBtlrpmVtgl5OiPAhr
-         KJjZpozISXbyuXNdFIUQDFl5nWbGfjFaAI1Qb6PrmmGWqjVNQSDcZRjQ194FkMcVa+dI
-         riRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695344527; x=1695949327;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5EQwThOiasL4de5Y5vJ+ZLwZXFoPo1unIHxbqTwkXC8=;
-        b=AkUQltsGSGUTBbPdezGpAT8puepzB3EM5XH0rgCiM2j6iZ0zw4e+z2myIFBE0Hkuml
-         8As90FSs11Q2Kwbhnr31mXNLCyCSXFz7XEbp7Ulfzf8Xm6FuR9hHuCxqhPh4QkY588RH
-         JVKlyDNdB4kbBMp3jjUj67mBVJ0Tc94IvlIvfXCoycCwjGwlQ7GeKx8y2rSW+wFNtPPl
-         RWhcdeMZQnLBXktgn/UW/61WmJ8ECNdotUbZ4+1PMuiDGA/1zkS00hFZSED2S3g6qOeW
-         xO8nrUMdyvDRGImH6M2ISWMswjqm61xq47qbSDBGFZqkoD33w/jbfx+cPTBPY4pybG7I
-         WJIQ==
-X-Gm-Message-State: AOJu0YxEltKiwPCOc01K+esjQkL31L90b4J3+0M5+gO15RBtgoHXq4gO
-        RInr2rGZL0u8qWe00HeqvDgorAQlfaHeBQ==
-X-Google-Smtp-Source: AGHT+IH5MjAHpRSKHDzuu+1w7S2b6diJbtxDrdjHHxc51XoPVd/FrrmjiDSGio4AcAs6/mz29RBfjg==
-X-Received: by 2002:a17:90a:bb8b:b0:268:b682:23de with SMTP id v11-20020a17090abb8b00b00268b68223demr7562891pjr.28.1695344527027;
-        Thu, 21 Sep 2023 18:02:07 -0700 (PDT)
-Received: from lrumancik.svl.corp.google.com ([2620:15c:2a3:200:d5ff:b7b0:7028:8af6])
-        by smtp.gmail.com with ESMTPSA id u2-20020a17090282c200b001bc445e2497sm2178815plz.79.2023.09.21.18.02.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Sep 2023 18:02:06 -0700 (PDT)
-From:   Leah Rumancik <leah.rumancik@gmail.com>
-To:     stable@vger.kernel.org
-Cc:     linux-xfs@vger.kernel.org, amir73il@gmail.com,
-        chandan.babu@oracle.com, "Darrick J. Wong" <djwong@kernel.org>,
-        Dave Chinner <dchinner@redhat.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 5.15 6/6] xfs: fix xfs_inodegc_stop racing with mod_delayed_work
-Date:   Thu, 21 Sep 2023 18:01:56 -0700
-Message-ID: <20230922010156.1718782-6-leah.rumancik@gmail.com>
-X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
-In-Reply-To: <20230922010156.1718782-1-leah.rumancik@gmail.com>
-References: <20230922010156.1718782-1-leah.rumancik@gmail.com>
+        with ESMTP id S229452AbjIVBKY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 21:10:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98690F5
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 18:09:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695344970;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=R22aP8cvuvHgsRSlkpYF9RgXwgDt5sXPX6aie3Yt8vI=;
+        b=E6f2G/h/fv05YhJrJf31PBOqJfgdodvGCFUxkWePBaWPH2qz7D/W+KVkBafUVzmMOfJ6k3
+        igOe74rSaP7harRDt7Kas11t/RWcoQSnx9RcDzE6StRLxxL+g90YwB7pyLnWMhE+y/W41S
+        ft7jbvgT7lROQH2FqLfr+CrKVXYxfs8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-316-NdYook5eMLa2EVpSr1Nipg-1; Thu, 21 Sep 2023 21:09:27 -0400
+X-MC-Unique: NdYook5eMLa2EVpSr1Nipg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 88C97811E7B;
+        Fri, 22 Sep 2023 01:09:26 +0000 (UTC)
+Received: from fedora (unknown [10.72.120.5])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id E6A14492C37;
+        Fri, 22 Sep 2023 01:09:19 +0000 (UTC)
+Date:   Fri, 22 Sep 2023 09:09:14 +0800
+From:   Ming Lei <ming.lei@redhat.com>
+To:     Saranya Muruganandam <saranyamohan@google.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+        stable@vger.kernel.org, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Zhang Wensheng <zhangwensheng@huaweicloud.com>,
+        Zhong Jinghua <zhongjinghua@huawei.com>,
+        Hillf Danton <hdanton@sina.com>, Yu Kuai <yukuai3@huawei.com>,
+        Dennis Zhou <dennis@kernel.org>
+Subject: Re: [PATCH] block: fix use-after-free of q->q_usage_counter
+Message-ID: <ZQzpOhe6Rk3pOtBc@fedora>
+References: <20230921182012.3965572-1-saranyamohan@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230921182012.3965572-1-saranyamohan@google.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+On Thu, Sep 21, 2023 at 11:20:12AM -0700, Saranya Muruganandam wrote:
+> From: Ming Lei <ming.lei@redhat.com>
+> 
+> commit d36a9ea5e7766961e753ee38d4c331bbe6ef659b upstream.
+> 
+> For blk-mq, queue release handler is usually called after
+> blk_mq_freeze_queue_wait() returns. However, the
+> q_usage_counter->release() handler may not be run yet at that time, so
+> this can cause a use-after-free.
+> 
+> Fix the issue by moving percpu_ref_exit() into blk_free_queue_rcu().
+> Since ->release() is called with rcu read lock held, it is agreed that
+> the race should be covered in caller per discussion from the two links.
+> 
+> Backport-notes: Not a clean cherry-pick since a lot has changed,
+> however essentially the same fix.
+> 
+> Reported-by: Zhang Wensheng <zhangwensheng@huaweicloud.com>
+> Reported-by: Zhong Jinghua <zhongjinghua@huawei.com>
+> Link: https://lore.kernel.org/linux-block/Y5prfOjyyjQKUrtH@T590/T/#u
+> Link: https://lore.kernel.org/lkml/Y4%2FmzMd4evRg9yDi@fedora/
+> Cc: Hillf Danton <hdanton@sina.com>
+> Cc: Yu Kuai <yukuai3@huawei.com>
+> Cc: Dennis Zhou <dennis@kernel.org>
+> Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
+> Signed-off-by: Ming Lei <ming.lei@redhat.com>
+> Link: https://lore.kernel.org/r/20221215021629.74870-1-ming.lei@redhat.com
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> Signed-off-by: Saranya Muruganandam <saranyamohan@google.com>
+> ---
+>  block/blk-core.c  | 2 --
+>  block/blk-sysfs.c | 2 ++
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/block/blk-core.c b/block/blk-core.c
+> index d0d0dd8151f7..e5eeec801f56 100644
+> --- a/block/blk-core.c
+> +++ b/block/blk-core.c
+> @@ -414,8 +414,6 @@ void blk_cleanup_queue(struct request_queue *q)
+>  		blk_mq_sched_free_requests(q);
+>  	mutex_unlock(&q->sysfs_lock);
+>  
+> -	percpu_ref_exit(&q->q_usage_counter);
+> -
+>  	/* @q is and will stay empty, shutdown and put */
+>  	blk_put_queue(q);
+>  }
+> diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+> index 8c5816364dd1..9174137a913c 100644
+> --- a/block/blk-sysfs.c
+> +++ b/block/blk-sysfs.c
+> @@ -726,6 +726,8 @@ static void blk_free_queue_rcu(struct rcu_head *rcu_head)
+>  {
+>  	struct request_queue *q = container_of(rcu_head, struct request_queue,
+>  					       rcu_head);
+> +
+> +	percpu_ref_exit(&q->q_usage_counter);
+>  	kmem_cache_free(blk_requestq_cachep, q);
+>  }
 
-[ Upstream commit 2254a7396a0ca6309854948ee1c0a33fa4268cec ]
+Looks fine.
 
-syzbot reported this warning from the faux inodegc shrinker that tries
-to kick off inodegc work:
+BTW, you should have provided target stable tree release info, otherwise how
+you expect people to review?
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 102 at kernel/workqueue.c:1445 __queue_work+0xd44/0x1120 kernel/workqueue.c:1444
-RIP: 0010:__queue_work+0xd44/0x1120 kernel/workqueue.c:1444
-Call Trace:
- __queue_delayed_work+0x1c8/0x270 kernel/workqueue.c:1672
- mod_delayed_work_on+0xe1/0x220 kernel/workqueue.c:1746
- xfs_inodegc_shrinker_scan fs/xfs/xfs_icache.c:2212 [inline]
- xfs_inodegc_shrinker_scan+0x250/0x4f0 fs/xfs/xfs_icache.c:2191
- do_shrink_slab+0x428/0xaa0 mm/vmscan.c:853
- shrink_slab+0x175/0x660 mm/vmscan.c:1013
- shrink_one+0x502/0x810 mm/vmscan.c:5343
- shrink_many mm/vmscan.c:5394 [inline]
- lru_gen_shrink_node mm/vmscan.c:5511 [inline]
- shrink_node+0x2064/0x35f0 mm/vmscan.c:6459
- kswapd_shrink_node mm/vmscan.c:7262 [inline]
- balance_pgdat+0xa02/0x1ac0 mm/vmscan.c:7452
- kswapd+0x677/0xd60 mm/vmscan.c:7712
- kthread+0x2e8/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
-
-This warning corresponds to this code in __queue_work:
-
-	/*
-	 * For a draining wq, only works from the same workqueue are
-	 * allowed. The __WQ_DESTROYING helps to spot the issue that
-	 * queues a new work item to a wq after destroy_workqueue(wq).
-	 */
-	if (unlikely(wq->flags & (__WQ_DESTROYING | __WQ_DRAINING) &&
-		     WARN_ON_ONCE(!is_chained_work(wq))))
-		return;
-
-For this to trip, we must have a thread draining the inodedgc workqueue
-and a second thread trying to queue inodegc work to that workqueue.
-This can happen if freezing or a ro remount race with reclaim poking our
-faux inodegc shrinker and another thread dropping an unlinked O_RDONLY
-file:
-
-Thread 0	Thread 1	Thread 2
-
-xfs_inodegc_stop
-
-				xfs_inodegc_shrinker_scan
-				xfs_is_inodegc_enabled
-				<yes, will continue>
-
-xfs_clear_inodegc_enabled
-xfs_inodegc_queue_all
-<list empty, do not queue inodegc worker>
-
-		xfs_inodegc_queue
-		<add to list>
-		xfs_is_inodegc_enabled
-		<no, returns>
-
-drain_workqueue
-<set WQ_DRAINING>
-
-				llist_empty
-				<no, will queue list>
-				mod_delayed_work_on(..., 0)
-				__queue_work
-				<sees WQ_DRAINING, kaboom>
-
-In other words, everything between the access to inodegc_enabled state
-and the decision to poke the inodegc workqueue requires some kind of
-coordination to avoid the WQ_DRAINING state.  We could perhaps introduce
-a lock here, but we could also try to eliminate WQ_DRAINING from the
-picture.
-
-We could replace the drain_workqueue call with a loop that flushes the
-workqueue and queues workers as long as there is at least one inode
-present in the per-cpu inodegc llists.  We've disabled inodegc at this
-point, so we know that the number of queued inodes will eventually hit
-zero as long as xfs_inodegc_start cannot reactivate the workers.
-
-There are four callers of xfs_inodegc_start.  Three of them come from the
-VFS with s_umount held: filesystem thawing, failed filesystem freezing,
-and the rw remount transition.  The fourth caller is mounting rw (no
-remount or freezing possible).
-
-There are three callers ofs xfs_inodegc_stop.  One is unmounting (no
-remount or thaw possible).  Two of them come from the VFS with s_umount
-held: fs freezing and ro remount transition.
-
-Hence, it is correct to replace the drain_workqueue call with a loop
-that drains the inodegc llists.
-
-Fixes: 6191cf3ad59f ("xfs: flush inodegc workqueue tasks before cancel")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Dave Chinner <david@fromorbit.com>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
----
- fs/xfs/xfs_icache.c | 32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
-
-diff --git a/fs/xfs/xfs_icache.c b/fs/xfs/xfs_icache.c
-index 02022164772d..eab98d76dbe1 100644
---- a/fs/xfs/xfs_icache.c
-+++ b/fs/xfs/xfs_icache.c
-@@ -448,18 +448,23 @@ xfs_iget_check_free_state(
- }
- 
- /* Make all pending inactivation work start immediately. */
--static void
-+static bool
- xfs_inodegc_queue_all(
- 	struct xfs_mount	*mp)
- {
- 	struct xfs_inodegc	*gc;
- 	int			cpu;
-+	bool			ret = false;
- 
- 	for_each_online_cpu(cpu) {
- 		gc = per_cpu_ptr(mp->m_inodegc, cpu);
--		if (!llist_empty(&gc->list))
-+		if (!llist_empty(&gc->list)) {
- 			mod_delayed_work_on(cpu, mp->m_inodegc_wq, &gc->work, 0);
-+			ret = true;
-+		}
- 	}
-+
-+	return ret;
- }
- 
- /*
-@@ -1902,24 +1907,41 @@ xfs_inodegc_flush(
- 
- /*
-  * Flush all the pending work and then disable the inode inactivation background
-- * workers and wait for them to stop.
-+ * workers and wait for them to stop.  Caller must hold sb->s_umount to
-+ * coordinate changes in the inodegc_enabled state.
-  */
- void
- xfs_inodegc_stop(
- 	struct xfs_mount	*mp)
- {
-+	bool			rerun;
-+
- 	if (!xfs_clear_inodegc_enabled(mp))
- 		return;
- 
-+	/*
-+	 * Drain all pending inodegc work, including inodes that could be
-+	 * queued by racing xfs_inodegc_queue or xfs_inodegc_shrinker_scan
-+	 * threads that sample the inodegc state just prior to us clearing it.
-+	 * The inodegc flag state prevents new threads from queuing more
-+	 * inodes, so we queue pending work items and flush the workqueue until
-+	 * all inodegc lists are empty.  IOWs, we cannot use drain_workqueue
-+	 * here because it does not allow other unserialized mechanisms to
-+	 * reschedule inodegc work while this draining is in progress.
-+	 */
- 	xfs_inodegc_queue_all(mp);
--	drain_workqueue(mp->m_inodegc_wq);
-+	do {
-+		flush_workqueue(mp->m_inodegc_wq);
-+		rerun = xfs_inodegc_queue_all(mp);
-+	} while (rerun);
- 
- 	trace_xfs_inodegc_stop(mp, __return_address);
- }
- 
- /*
-  * Enable the inode inactivation background workers and schedule deferred inode
-- * inactivation work if there is any.
-+ * inactivation work if there is any.  Caller must hold sb->s_umount to
-+ * coordinate changes in the inodegc_enabled state.
-  */
- void
- xfs_inodegc_start(
--- 
-2.42.0.515.g380fc7ccd1-goog
+Thanks,
+Ming
 
