@@ -2,150 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 587027AB467
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 17:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61C447AB479
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 17:12:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232520AbjIVPAy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 11:00:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51244 "EHLO
+        id S232239AbjIVPMU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 11:12:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232330AbjIVPAt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 11:00:49 -0400
-Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3202E19A
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 08:00:43 -0700 (PDT)
-Received: by mail-io1-xd31.google.com with SMTP id ca18e2360f4ac-79fa4ff8220so13132639f.3
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 08:00:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1695394842; x=1695999642; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jYn6LvwErM+FWcs1ijUw0l4OdU4J9KJ6IGyuBDg5TUM=;
-        b=nvLbHRZ6HX0KEiCK6ljjoii4i8lRgR2XWob3X20fw9qoVQ26w1w8wXl8mQyKsxjhYm
-         ZIyhTtiVG+nkTILeUFZYteVbJ4CSUNjzh4HQdZ//MaUTXrBVuHGg6onE5kpwN5DIx7ix
-         RmCBLILoMoyLFbym5jRagLB0Ad4Zo7WNrUGXs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695394842; x=1695999642;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jYn6LvwErM+FWcs1ijUw0l4OdU4J9KJ6IGyuBDg5TUM=;
-        b=oW6EPQ4mxcSgoyqzowMD45sJHTQLhOntEaIFwAohNB7b15DYg1Fys2RlOZOhp4FYRe
-         aQ1UJzH5chNhw/wqhhVeEgnTtFTxUo0jDkoVMC8nJDbmWpmbaBAjlk/3itsC9TfTPRD5
-         0JQR+S2ZQbtsQ3DOh/df3wadpgx6F3P42sM6j7GCNUUd7kMv+ihkonzwQp1ZlgVNL1QJ
-         ylZxTAb0Sali7rLTIf4VKwCw1RhL3ixhoLisDuDyOKlogzAEgY4NZQ8kBpyoBMH58QW2
-         5iObgU6IFgzuzL5IJ1X4yKmOdOygni3Wjh7HOOm3KY0YekN2OnckPK22wd3MdZhOJgAL
-         0dsg==
-X-Gm-Message-State: AOJu0YwPa5PJSyOEy40sFF9GkbwQ+PU4YbqC2VdZEdlsIIJ1uoL7J8BJ
-        ga3DZve85sPrEssxJTOH3c9BKsxQMQiSESTlvYH3yA==
-X-Google-Smtp-Source: AGHT+IFbEGFXJmNzYcTCklkiBTGe0RHiphpx+QFahlodchm827xZVeRdpbGcmTnbPC8j2gcUb6dS/KP3T2t9n71A9EY=
-X-Received: by 2002:a6b:e419:0:b0:799:178c:7be5 with SMTP id
- u25-20020a6be419000000b00799178c7be5mr9412049iog.17.1695394842589; Fri, 22
- Sep 2023 08:00:42 -0700 (PDT)
+        with ESMTP id S232148AbjIVPMT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 11:12:19 -0400
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93B75100
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 08:12:13 -0700 (PDT)
+Received: from letrec.thunk.org (c-73-8-226-230.hsd1.il.comcast.net [73.8.226.230])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 38MFBb4P029366
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 22 Sep 2023 11:11:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+        t=1695395502; bh=rIsvtPJKI5A4W7MXZpx3scaZGfbU7dME98mLqzcBFoo=;
+        h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+        b=ZnnSLOkuW4qz4NjryVkviQFVf8oBKgekG8h4rDu+q6nZWDgagmVw9zMLl6vfHWvKI
+         tR8T4RZS7P19smHB2MnJW9KdL/zT+VfH6Q6vyOWqWgqJ5SuJzM5PBLMFeblcKJKf2d
+         E8Lt6u7DpNKF1zYuAAytMsrK69Hr02jULuVhdEnNqO4lUI3uBVAONROK8kwsuR0l/C
+         Ijnmw2QN+lk9UHkqYbbYnpp6ems+LKyIHWgdt09oeWxXsQ7HG3g/s+4qpUL5fX0W4f
+         KtkmzWb9bEQ/UzcSg/2ekNweYDaT492YnVuqmdEog395QJqilpI1WJTVJS5r/Rg04u
+         vrNOrZJQS0P0g==
+Received: by letrec.thunk.org (Postfix, from userid 15806)
+        id AD1B58C0281; Fri, 22 Sep 2023 11:11:36 -0400 (EDT)
+Date:   Fri, 22 Sep 2023 11:11:36 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     zhangshida <starzhangzsd@gmail.com>, stable@vger.kernel.org,
+        Shida Zhang <zhangshida@kylinos.cn>, stable@kernel.org,
+        Andreas Dilger <adilger@dilger.ca>,
+        "Darrick J . Wong" <djwong@kernel.org>
+Subject: Re: [PATCH] ext4: fix rec_len verify error
+Message-ID: <ZQ2uqEO51hJI4RRi@mit.edu>
+References: <2023092057-company-unworried-210b@gregkh>
+ <20230922053915.2176290-1-zhangshida@kylinos.cn>
+ <2023092232-squash-buggy-51c7@gregkh>
 MIME-Version: 1.0
-References: <20230920112835.549467415@linuxfoundation.org> <79a96d41-1b79-51b4-fda0-743b853213b9@nvidia.com>
- <7e0355bd-64cd-f6c2-b720-e4643579078c@nvidia.com> <53c9f81e-55b9-b8bb-7821-cb124780d4c0@roeck-us.net>
-In-Reply-To: <53c9f81e-55b9-b8bb-7821-cb124780d4c0@roeck-us.net>
-From:   Rob Clark <robdclark@chromium.org>
-Date:   Fri, 22 Sep 2023 08:00:31 -0700
-Message-ID: <CAJs_Fx6-AWA1fxgV1u=ycn2YXm3D0GnGQeC1UR8QwVXFKDGJqw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/139] 6.1.55-rc1 review
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Jon Hunter <jonathanh@nvidia.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org,
-        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023092232-squash-buggy-51c7@gregkh>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 22, 2023 at 7:52=E2=80=AFAM Guenter Roeck <linux@roeck-us.net> =
-wrote:
->
-> On 9/22/23 05:31, Jon Hunter wrote:
-> >
-> > On 22/09/2023 10:45, Jon Hunter wrote:
-> >> Hi Greg,
-> >>
-> >> On 20/09/2023 12:28, Greg Kroah-Hartman wrote:
-> >>> This is the start of the stable review cycle for the 6.1.55 release.
-> >>> There are 139 patches in this series, all will be posted as a respons=
-e
-> >>> to this one.  If anyone has any issues with these being applied, plea=
-se
-> >>> let me know.
-> >>>
-> >>> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
-> >>> Anything received after that time might be too late.
-> >>>
-> >>> The whole patch series can be found in one patch at:
-> >>>     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.55-rc1.gz
-> >>> or in the git tree and branch at:
-> >>>     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> >>> and the diffstat can be found below.
-> >>>
-> >>> thanks,
-> >>>
-> >>> greg k-h
-> >>
-> >> I am seeing some suspend failures with this update ...
-> >>
-> >> Test results for stable-v6.1:
-> >>      11 builds:    11 pass, 0 fail
-> >>      28 boots:    28 pass, 0 fail
-> >>      130 tests:    124 pass, 6 fail
-> >>
-> >> Linux version:    6.1.55-rc1-gd5ace918366e
-> >> Boards tested:    tegra124-jetson-tk1, tegra186-p2771-0000,
-> >>                  tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-> >>                  tegra20-ventana, tegra210-p2371-2180,
-> >>                  tegra210-p3450-0000, tegra30-cardhu-a04
-> >>
-> >> Test failures:    tegra124-jetson-tk1: pm-system-suspend.sh
-> >>                  tegra186-p2771-0000: pm-system-suspend.sh
-> >>                  tegra20-ventana: pm-system-suspend.sh
-> >>                  tegra30-cardhu-a04: pm-system-suspend.sh
-> >>
-> >> Bisect is underway.
-> >
-> >
-> > Bisect for this issue is also pointing to ...
-> >
-> > Rob Clark <robdclark@chromium.org>
-> >       interconnect: Fix locking for runpm vs reclaim
-> >
-> > Looks like all the Tegra issues are related to this.
-> >
->
-> This isn't surprising because upstream commit 136191703038 ("interconnect=
-: Teach
-> lockdep about icc_bw_lock order") silently fixes it without Fixes: tag. I=
-f you
-> look into that patch you'll see that the the missing call to mutex_unlock=
-() is
-> added to icc_sync_state().
+On Fri, Sep 22, 2023 at 11:23:59AM +0200, Greg KH wrote:
+> 
+> What stable tree(s) are you asking this to be backported to?
 
-Oh, indeed, it looks like that hunk ended up in the wrong commit, and
-I didn't notice because both were merged at the same time
+I assume that from the reply to message id
+2023092057-company-unworried-210b@gregkh, this was intended for the
+4.14 stable tree (since the automatic backport didn't apply).
 
-BR,
--R
+Zhangshida, for future reference, when sending a patch for an LTS
+kernel, please include the kernel version in the PATCH line,
+e.g. "[PATCH 4.14.123]" or some such.  This saves everyone a lot of
+time (including myself, since I need to filter out the LTS backports
+to ext4 patchwork dashboard).
 
-> Guenter
->
+Thanks,
+
+					- Ted
