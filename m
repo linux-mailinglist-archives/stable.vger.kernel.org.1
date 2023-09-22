@@ -2,116 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8137C7AB445
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 16:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 587027AB467
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 17:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232064AbjIVO70 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 10:59:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44990 "EHLO
+        id S232520AbjIVPAy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 11:00:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232021AbjIVO7Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 10:59:25 -0400
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27F7100
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 07:59:19 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id d75a77b69052e-4121130e7afso14164571cf.2
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 07:59:19 -0700 (PDT)
+        with ESMTP id S232330AbjIVPAt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 11:00:49 -0400
+Received: from mail-io1-xd31.google.com (mail-io1-xd31.google.com [IPv6:2607:f8b0:4864:20::d31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3202E19A
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 08:00:43 -0700 (PDT)
+Received: by mail-io1-xd31.google.com with SMTP id ca18e2360f4ac-79fa4ff8220so13132639f.3
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 08:00:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1695394759; x=1695999559; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1XFv7wzgSRzNlMpAIAXPdx/9Ru1HG5ToVHBwYeRkmP8=;
-        b=eKZpA2y265msJcQMTXQQE3jq+PG5nahlF7Gxayl1HrnVhaxeyzP/aoSiQ7FWfxh93D
-         8Dc0FyizTA1T6CrjgBYOOSKckv4lUkFmZiopVVUYN/Bsc1wHSmo7/Ls5T9Fn4AAezufI
-         YnnErWciT/oUee8ZCuLd7miva378Pt+DmcFrtiFjsUKJkwtrHUkX9mEEvHAFiqt31fw/
-         XRumelcgt3K272aClFlo+e3rDifE0wsOfiE3aDjIakoBnBo2YujEVQpa3AucB985Eb+0
-         0CH3R+ciJA5S5T9RNctYWMKyip16rsbubE2++j8XcNUvrPplFA9WF7jszHMp0r6mvL06
-         lUrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695394759; x=1695999559;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1695394842; x=1695999642; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1XFv7wzgSRzNlMpAIAXPdx/9Ru1HG5ToVHBwYeRkmP8=;
-        b=vT4WuXhTbB9ayd6D9lXkWMig0/2vgIy6HbY2DCrgtopzjkQAy3KNPtJT7SOzhLpZ82
-         UtE3uf8suwlwhl+3Cniv/gLIFdMHkZQcu6MoKs+uzvKZViXx3Oc3KlqR2TDiEaE8ZGWi
-         K/MitA5ryGhzgPa6s1lOTksj8MubmIxVvHocQJTHsqnfUn8v47ZDKiyI+UUlcuEJ3dkc
-         r67dqxkbeyi86uiFFQtL5bv/BIQnwbX+XQNjqV0OHg8UmJnAN1zTEWtna8Yp6CVHPrko
-         YAugPwvD4gb/rZXyv2ajdXwT+wwdaEF3G8IorSNMKn3w8w9tzfmkxWJ+241HjEyWYc8d
-         hxdQ==
-X-Gm-Message-State: AOJu0YzZhIoYMZ6xoLvtP+FZol4AlnYHaU+9W3hmNLDv1uAmUkejMdlZ
-        0vK9I48QEOKo9CZ3NwzsfahIgg==
-X-Google-Smtp-Source: AGHT+IFepS22bGXECBY+vUBb2rhMrd9rmdSAqafKVqKT+SSCdNN/lwEK0LNLwifMHk5me/tHvErfGQ==
-X-Received: by 2002:ac8:5d0c:0:b0:403:72fa:630b with SMTP id f12-20020ac85d0c000000b0040372fa630bmr10093264qtx.58.1695394758807;
-        Fri, 22 Sep 2023 07:59:18 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-26-201.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.26.201])
-        by smtp.gmail.com with ESMTPSA id t16-20020ac85310000000b00405553305casm1501734qtn.86.2023.09.22.07.59.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Sep 2023 07:59:18 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1qjhcj-000Ygf-KE;
-        Fri, 22 Sep 2023 11:59:17 -0300
-Date:   Fri, 22 Sep 2023 11:59:17 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Hector Martin <marcan@marcan.st>
-Cc:     Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Joerg Roedel <jroedel@suse.de>, Neal Gompa <neal@gompa.dev>,
-        "Justin M. Forbes" <jforbes@fedoraproject.org>,
-        iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev, stable@vger.kernel.org,
-        regressions@lists.linux.dev
-Subject: Re: [PATCH REGRESSION v2] iommu/apple-dart: Handle DMA_FQ domains in
- attach_dev()
-Message-ID: <20230922145917.GG13795@ziepe.ca>
-References: <20230922-iommu-type-regression-v2-1-689b2ba9b673@marcan.st>
+        bh=jYn6LvwErM+FWcs1ijUw0l4OdU4J9KJ6IGyuBDg5TUM=;
+        b=nvLbHRZ6HX0KEiCK6ljjoii4i8lRgR2XWob3X20fw9qoVQ26w1w8wXl8mQyKsxjhYm
+         ZIyhTtiVG+nkTILeUFZYteVbJ4CSUNjzh4HQdZ//MaUTXrBVuHGg6onE5kpwN5DIx7ix
+         RmCBLILoMoyLFbym5jRagLB0Ad4Zo7WNrUGXs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695394842; x=1695999642;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jYn6LvwErM+FWcs1ijUw0l4OdU4J9KJ6IGyuBDg5TUM=;
+        b=oW6EPQ4mxcSgoyqzowMD45sJHTQLhOntEaIFwAohNB7b15DYg1Fys2RlOZOhp4FYRe
+         aQ1UJzH5chNhw/wqhhVeEgnTtFTxUo0jDkoVMC8nJDbmWpmbaBAjlk/3itsC9TfTPRD5
+         0JQR+S2ZQbtsQ3DOh/df3wadpgx6F3P42sM6j7GCNUUd7kMv+ihkonzwQp1ZlgVNL1QJ
+         ylZxTAb0Sali7rLTIf4VKwCw1RhL3ixhoLisDuDyOKlogzAEgY4NZQ8kBpyoBMH58QW2
+         5iObgU6IFgzuzL5IJ1X4yKmOdOygni3Wjh7HOOm3KY0YekN2OnckPK22wd3MdZhOJgAL
+         0dsg==
+X-Gm-Message-State: AOJu0YwPa5PJSyOEy40sFF9GkbwQ+PU4YbqC2VdZEdlsIIJ1uoL7J8BJ
+        ga3DZve85sPrEssxJTOH3c9BKsxQMQiSESTlvYH3yA==
+X-Google-Smtp-Source: AGHT+IFbEGFXJmNzYcTCklkiBTGe0RHiphpx+QFahlodchm827xZVeRdpbGcmTnbPC8j2gcUb6dS/KP3T2t9n71A9EY=
+X-Received: by 2002:a6b:e419:0:b0:799:178c:7be5 with SMTP id
+ u25-20020a6be419000000b00799178c7be5mr9412049iog.17.1695394842589; Fri, 22
+ Sep 2023 08:00:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230922-iommu-type-regression-v2-1-689b2ba9b673@marcan.st>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <20230920112835.549467415@linuxfoundation.org> <79a96d41-1b79-51b4-fda0-743b853213b9@nvidia.com>
+ <7e0355bd-64cd-f6c2-b720-e4643579078c@nvidia.com> <53c9f81e-55b9-b8bb-7821-cb124780d4c0@roeck-us.net>
+In-Reply-To: <53c9f81e-55b9-b8bb-7821-cb124780d4c0@roeck-us.net>
+From:   Rob Clark <robdclark@chromium.org>
+Date:   Fri, 22 Sep 2023 08:00:31 -0700
+Message-ID: <CAJs_Fx6-AWA1fxgV1u=ycn2YXm3D0GnGQeC1UR8QwVXFKDGJqw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/139] 6.1.55-rc1 review
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Jon Hunter <jonathanh@nvidia.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 22, 2023 at 11:55:23PM +0900, Hector Martin wrote:
-> Commit a4fdd9762272 ("iommu: Use flush queue capability") hid the
-> IOMMU_DOMAIN_DMA_FQ domain type from domain allocation. A check was
-> introduced in iommu_dma_init_domain() to fall back if not supported, but
-> this check runs too late: by that point, devices have been attached to
-> the IOMMU, and apple-dart's attach_dev() callback does not expect
-> IOMMU_DOMAIN_DMA_FQ domains.
-> 
-> Change the logic so the IOMMU_DOMAIN_DMA codepath is the default,
-> instead of explicitly enumerating all types.
-> 
-> Fixes an apple-dart regression in v6.5.
-> 
-> Cc: regressions@lists.linux.dev
-> Cc: stable@vger.kernel.org
-> Suggested-by: Robin Murphy <robin.murphy@arm.com>
-> Fixes: a4fdd9762272 ("iommu: Use flush queue capability")
-> Signed-off-by: Hector Martin <marcan@marcan.st>
-> ---
-> Changes in v2:
-> - Fixed the issue in apple-dart instead of the iommu core, per Robin's
->   suggestion.
-> - Link to v1: https://lore.kernel.org/r/20230922-iommu-type-regression-v1-1-1ed3825b2c38@marcan.st
-> ---
->  drivers/iommu/apple-dart.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+On Fri, Sep 22, 2023 at 7:52=E2=80=AFAM Guenter Roeck <linux@roeck-us.net> =
+wrote:
+>
+> On 9/22/23 05:31, Jon Hunter wrote:
+> >
+> > On 22/09/2023 10:45, Jon Hunter wrote:
+> >> Hi Greg,
+> >>
+> >> On 20/09/2023 12:28, Greg Kroah-Hartman wrote:
+> >>> This is the start of the stable review cycle for the 6.1.55 release.
+> >>> There are 139 patches in this series, all will be posted as a respons=
+e
+> >>> to this one.  If anyone has any issues with these being applied, plea=
+se
+> >>> let me know.
+> >>>
+> >>> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
+> >>> Anything received after that time might be too late.
+> >>>
+> >>> The whole patch series can be found in one patch at:
+> >>>     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.55-rc1.gz
+> >>> or in the git tree and branch at:
+> >>>     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> >>> and the diffstat can be found below.
+> >>>
+> >>> thanks,
+> >>>
+> >>> greg k-h
+> >>
+> >> I am seeing some suspend failures with this update ...
+> >>
+> >> Test results for stable-v6.1:
+> >>      11 builds:    11 pass, 0 fail
+> >>      28 boots:    28 pass, 0 fail
+> >>      130 tests:    124 pass, 6 fail
+> >>
+> >> Linux version:    6.1.55-rc1-gd5ace918366e
+> >> Boards tested:    tegra124-jetson-tk1, tegra186-p2771-0000,
+> >>                  tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+> >>                  tegra20-ventana, tegra210-p2371-2180,
+> >>                  tegra210-p3450-0000, tegra30-cardhu-a04
+> >>
+> >> Test failures:    tegra124-jetson-tk1: pm-system-suspend.sh
+> >>                  tegra186-p2771-0000: pm-system-suspend.sh
+> >>                  tegra20-ventana: pm-system-suspend.sh
+> >>                  tegra30-cardhu-a04: pm-system-suspend.sh
+> >>
+> >> Bisect is underway.
+> >
+> >
+> > Bisect for this issue is also pointing to ...
+> >
+> > Rob Clark <robdclark@chromium.org>
+> >       interconnect: Fix locking for runpm vs reclaim
+> >
+> > Looks like all the Tegra issues are related to this.
+> >
+>
+> This isn't surprising because upstream commit 136191703038 ("interconnect=
+: Teach
+> lockdep about icc_bw_lock order") silently fixes it without Fixes: tag. I=
+f you
+> look into that patch you'll see that the the missing call to mutex_unlock=
+() is
+> added to icc_sync_state().
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Oh, indeed, it looks like that hunk ended up in the wrong commit, and
+I didn't notice because both were merged at the same time
 
-It is weird looking, but I have a followup series that will clean it -
-this should go to -rc
+BR,
+-R
 
-Thanks,
-Jason
+> Guenter
+>
