@@ -2,180 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BC877AB511
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 17:47:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E6C97AB543
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 17:51:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231411AbjIVPrj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 11:47:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46164 "EHLO
+        id S231604AbjIVPvb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 11:51:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229621AbjIVPri (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 11:47:38 -0400
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11379102;
-        Fri, 22 Sep 2023 08:47:30 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0943AFF804;
-        Fri, 22 Sep 2023 15:47:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1695397649;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=0lon5/x4ZEHfLTXgH5Oz0uMHCKVpaOIfvunrk6KCYY8=;
-        b=BtyEAKS9A+HwBtCIGxIpCJdFry61d7vWQPXsZM/EWliyHhbW2mTfsoDI63SXcCyfM1IeJW
-        1VQwNqYfNnBQ6xYKTcFpJjLuZhZir3PP43ECpd1H2IwRXoVwFlGDdUbay9G+q9lS1JVn92
-        xkgXW6+F+kS9qHOEtEWpX8UcSaSn+qf6HrfQW3o9HP/mE6OJTd4kTAEqENXAsife3Zx+6b
-        EBluVNmGSOK27vb7FVZY/wBUoRSo6QnMAnUoYhr0WBJE15NpDnDeZ3B7hK9t6k/+mWCdM8
-        ol7DXtK36tL+p88FkmM17o3fVq/MQwN0dHA5Zwl363wy25xsE/efGI1R0vlovA==
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-        linux-can@vger.kernel.org,
-        =?UTF-8?q?J=C3=A9r=C3=A9mie=20Dautheribes?= 
-        <jeremie.dautheribes@bootlin.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        sylvain.girard@se.com, pascal.eberhard@se.com,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        stable@vger.kernel.org
-Subject: [PATCH net] can: sja1000: Always restart the Tx queue after an overrun
-Date:   Fri, 22 Sep 2023 17:47:27 +0200
-Message-Id: <20230922154727.591672-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S231883AbjIVPva (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 11:51:30 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E9FD100
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 08:51:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDD9C433CC;
+        Fri, 22 Sep 2023 15:51:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695397884;
+        bh=gcRAnlPPhzGuwjzkrCHq4S2a/cVRkBflII1JB2lJU+0=;
+        h=From:Date:Subject:To:Cc:From;
+        b=JHvghhh5aTrdwv45a5aWrV9EtLYm6O/9vhKmFFEfctQNsDIHMy43vZh3lrzOC4WIh
+         9HFE4FJJ3rPMTLpeT2Ne64LLEbqnZijZFzjDN1adBAhHACEN+p1QChiQcGa168jMZk
+         02mW2ZPTzjQemSkLGUmGoxJTOHEfykzZMqTyF0anhZO3cLHX8KrXayWZt4Z9KRISuI
+         gQ2aaXAgrDplyaT5aJymsF3SBBnOZmkGW5IX0jNGegHwlL196tg/i+efdsb8xC5n7K
+         9K0yZqnIdgUJKwvjlAf7zHGiPL5YUBOni23pD1Ow9yNWef17/16sJe30Jo2/RdMEfz
+         8mY7vNtvTnlsQ==
+From:   Nathan Chancellor <nathan@kernel.org>
+Date:   Fri, 22 Sep 2023 08:51:17 -0700
+Subject: [PATCH 5.10] drm/mediatek: Fix backport issue in
+ mtk_drm_gem_prime_vmap()
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230922-5-10-fix-drm-mediatek-backport-v1-1-912d76cd4a96@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAPS3DWUC/x2NzQqDMBAGX0X23C2biIX0VUoPqfnSLuIPG5GC+
+ O4GjwPDzE4Fpij0bHYybFp0niq4W0P9L05fsKbK5MW3Erznjp1w1j8nG3lE0rhi4E/sh2W2lQV
+ 4hNaHjCxUI4uhytfgRd3dCb2P4wS20nRBdgAAAA==
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Cc:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        linux-mediatek@lists.infradead.org, stable@vger.kernel.org,
+        llvm@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.13-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1768; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=gcRAnlPPhzGuwjzkrCHq4S2a/cVRkBflII1JB2lJU+0=;
+ b=owGbwMvMwCEmm602sfCA1DTG02pJDKm82/9EyCus2b75RPjCBPGJ/svrueTihDxcJvx0WpU4a
+ VYr19u/HaUsDGIcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAicx8y/PffKfCR9fm5E4Kb
+ dj2Sdj+aFXDxn+RT0U+9t5139ee//3KIkeF48J+1P5WjTmz3DE+VPfz6oly/juoqX4cw9/AI3rk
+ J//kA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Upstream commit 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with
-a soft reset on Renesas SoCs") fixes an issue with Renesas own SJA1000
-CAN controller reception: the Rx buffer is only 5 messages long, so when
-the bus loaded (eg. a message every 50us), overrun may easily
-happen. Upon an overrun situation, due to a possible internal crosstalk
-situation, the controller enters a frozen state which only can be
-unlocked with a soft reset (experimentally). The solution was to offload
-a call to sja1000_start() in a threaded handler. This needs to happen in
-process context as this operation requires to sleep. sja1000_start()
-basically enters "reset mode", performs a proper software reset and
-returns back into "normal mode".
+When building with clang:
 
-Since this fix was introduced, we no longer observe any stalls in
-reception. However it was sporadically observed that the transmit path
-would now freeze. Further investigation blamed the fix mentioned above,
-and especially the reset operation. Reproducing the reset in a loop
-helped identifying what could possibly go wrong. The sja1000 is a single
-Tx queue device, which leverages the netdev helpers to process one Tx
-message at a time. The logic is: the queue is stopped, the message sent
-to the transceiver, once properly transmitted the controller sets a
-status bit which triggers an interrupt, in the interrupt handler the
-transmission status is checked and the queue woken up. Unfortunately, if
-an overrun happens, we might perform the soft reset precisely between
-the transmission of the buffer to the transceiver and the advent of the
-transmission status bit. We would then stop the transmission operation
-without re-enabling the queue, leading to all further transmissions to
-be ignored.
+  drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: error: incompatible integer to pointer conversion returning 'int' from a function with result type 'void *' [-Wint-conversion]
+    255 |                 return -ENOMEM;
+        |                        ^~~~~~~
+  1 error generated.
 
-The reset interrupt can only happen while the device is "open", and
-after a reset we anyway want to resume normal operations, no matter if a
-packet to transmit got dropped in the process, so we shall wake up the
-queue. Restarting the device and waking-up the queue is exactly what
-sja1000_set_mode(CAN_MODE_START) does. In order to be consistent about
-the queue state, we must acquire a lock both in the reset handler and in
-the transmit path to ensure serialization of both operations. As the
-reset handler might still be called after the transmission of a frame to
-the transceiver but before it actually gets transmitted, we must ensure
-we don't leak the skb, so we free it (the behavior is consistent, no
-matter if there was an skb on the stack or not).
+GCC reports the same issue as a warning, rather than an error.
 
-Fixes: 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with a soft reset on Renesas SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Prior to commit 7e542ff8b463 ("drm/mediatek: Use struct dma_buf_map in
+GEM vmap ops"), this function returned a pointer rather than an integer.
+This function is indirectly called in drm_gem_vmap(), which treats NULL
+as -ENOMEM through an error pointer. Return NULL in this block to
+resolve the warning but keep the same end result.
+
+Fixes: 43f561e809aa ("drm/mediatek: Fix potential memory leak if vmap() fail")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
+This is a fix for a 5.10 backport, so it has no upstream relevance but
+I've still cc'd the relevant maintainers in case they have any comments
+or want to double check my work.
+---
+ drivers/gpu/drm/mediatek/mtk_drm_gem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This patch was written and tested on a slightly older stable kernel as
-this is the kernel that runs on the boards which shown the problem, but
-there should be no difference with upstream kernels.
-
- drivers/net/can/sja1000/sja1000.c          | 13 ++++++++++++-
- drivers/net/can/sja1000/sja1000.h          |  1 +
- drivers/net/can/sja1000/sja1000_platform.c |  2 ++
- 3 files changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
-index ae47fc72aa96..fe1d818f5d51 100644
---- a/drivers/net/can/sja1000/sja1000.c
-+++ b/drivers/net/can/sja1000/sja1000.c
-@@ -297,6 +297,8 @@ static netdev_tx_t sja1000_start_xmit(struct sk_buff *skb,
- 	if (can_dropped_invalid_skb(dev, skb))
- 		return NETDEV_TX_OK;
- 
-+	spin_lock(&priv->tx_lock);
-+
- 	netif_stop_queue(dev);
- 
- 	fi = dlc = cf->can_dlc;
-@@ -335,6 +337,8 @@ static netdev_tx_t sja1000_start_xmit(struct sk_buff *skb,
- 
- 	sja1000_write_cmdreg(priv, cmd_reg_val);
- 
-+	spin_unlock(&priv->tx_lock);
-+
- 	return NETDEV_TX_OK;
- }
- 
-@@ -394,9 +398,16 @@ static void sja1000_rx(struct net_device *dev)
- static irqreturn_t sja1000_reset_interrupt(int irq, void *dev_id)
- {
- 	struct net_device *dev = (struct net_device *)dev_id;
-+	struct sja1000_priv *priv = netdev_priv(dev);
- 
- 	netdev_dbg(dev, "performing a soft reset upon overrun\n");
--	sja1000_start(dev);
-+
-+	spin_lock(&priv->tx_lock);
-+
-+	can_free_echo_skb(dev, 0);
-+	sja1000_set_mode(dev, CAN_MODE_START);
-+
-+	spin_unlock(&priv->tx_lock);
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/drivers/net/can/sja1000/sja1000.h b/drivers/net/can/sja1000/sja1000.h
-index 9f041d027dcc..85def6329edb 100644
---- a/drivers/net/can/sja1000/sja1000.h
-+++ b/drivers/net/can/sja1000/sja1000.h
-@@ -166,6 +166,7 @@ struct sja1000_priv {
- 	void __iomem *reg_base;	 /* ioremap'ed address to registers */
- 	unsigned long irq_flags; /* for request_irq() */
- 	spinlock_t cmdreg_lock;  /* lock for concurrent cmd register writes */
-+	spinlock_t tx_lock;      /* lock for serializing transmissions and soft resets */
- 
- 	u16 flags;		/* custom mode flags */
- 	u8 ocr;			/* output control register */
-diff --git a/drivers/net/can/sja1000/sja1000_platform.c b/drivers/net/can/sja1000/sja1000_platform.c
-index f33bad164813..ca3bcab461d8 100644
---- a/drivers/net/can/sja1000/sja1000_platform.c
-+++ b/drivers/net/can/sja1000/sja1000_platform.c
-@@ -305,6 +305,8 @@ static int sp_probe(struct platform_device *pdev)
- 		priv->can.clock.freq = clk_get_rate(clk) / 2;
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+index fe64bf2176f3..b20ea58907c2 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+@@ -252,7 +252,7 @@ void *mtk_drm_gem_prime_vmap(struct drm_gem_object *obj)
+ 	if (!mtk_gem->kvaddr) {
+ 		kfree(sgt);
+ 		kfree(mtk_gem->pages);
+-		return -ENOMEM;
++		return NULL;
  	}
- 
-+	spin_lock_init(&priv->tx_lock);
-+
- 	platform_set_drvdata(pdev, dev);
- 	SET_NETDEV_DEV(dev, &pdev->dev);
- 
+ out:
+ 	kfree(sgt);
+
+---
+base-commit: ff0bfa8f23eb4c5a65ee6b0d0b7dc2e3439f1063
+change-id: 20230922-5-10-fix-drm-mediatek-backport-0ee69329fef0
+
+Best regards,
 -- 
-2.34.1
+Nathan Chancellor <nathan@kernel.org>
 
