@@ -2,131 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 063757AAE4D
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 11:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80D547AAE84
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 11:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232375AbjIVJiF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 05:38:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37674 "EHLO
+        id S230144AbjIVJo4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 05:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231503AbjIVJiE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 05:38:04 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 71EA318F;
-        Fri, 22 Sep 2023 02:37:58 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E8769DA7;
-        Fri, 22 Sep 2023 02:38:34 -0700 (PDT)
-Received: from [10.57.65.11] (unknown [10.57.65.11])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4A97B3F5A1;
-        Fri, 22 Sep 2023 02:37:53 -0700 (PDT)
-Message-ID: <806eceac-8f97-403d-bee7-4fbc9e75e872@arm.com>
-Date:   Fri, 22 Sep 2023 10:37:52 +0100
+        with ESMTP id S232849AbjIVJof (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 05:44:35 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD4AAE57;
+        Fri, 22 Sep 2023 02:44:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695375862; x=1726911862;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=XqXG2jgGiK6RcE5JTJCQMqr1wkSsKU5xrFxakZbujqo=;
+  b=fb3dYfKzzVhgWX/qNtOCr+Rl4aO2zyU2I+H7xCOyHqyJqMlLBgkSU2VU
+   F76aMZ7f6RJ3Zfj+il6OZBKWN8Jk/ELr2a5Zhxi+kpd+0vgV0g58FBlg5
+   fhPmtoyZTsFSBPz19BCW8VAfzSWP4a5rJ7MCaHTVBCS3fpFqJ9LYgifWB
+   B1RERTHD6e+OeDhTctRrLAfPHGbXJnlj+fxrDKF7EqtSwvalIIEIrEeZJ
+   yb5g2/2XRBSHjqXSUQwEkY//qcqZyY7kXrUNq/97i8aNEVnLqcr9ogxt8
+   ricwqXiO0EJ20PHSchVFwoh6rXw8q/4IrKX3z3d+HqaCJzWdVnAPs9SBD
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="447268802"
+X-IronPort-AV: E=Sophos;i="6.03,167,1694761200"; 
+   d="scan'208";a="447268802"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2023 02:44:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10840"; a="782578828"
+X-IronPort-AV: E=Sophos;i="6.03,167,1694761200"; 
+   d="scan'208";a="782578828"
+Received: from aboreiko-mobl3.ger.corp.intel.com (HELO localhost) ([10.252.50.131])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2023 02:44:18 -0700
+From:   Jani Nikula <jani.nikula@intel.com>
+To:     Chen-Yu Tsai <wenst@chromium.org>
+Cc:     dri-devel@lists.freedesktop.org,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Guillaume Ranquet <granquet@baylibre.com>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Markus Schneider-Pargmann <msp@baylibre.com>,
+        Bo-Chen Chen <rex-bc.chen@mediatek.com>,
+        linux-mediatek@lists.infradead.org,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Subject: Re: [PATCH] drm/mediatek/dp: fix memory leak on ->get_edid callback
+ audio detection
+In-Reply-To: <CAGXv+5FvmwMW+bxJ9d_ULbOJA9qpd-vybn0VyE5iyQLHCET1=A@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20230914131058.2472260-1-jani.nikula@intel.com>
+ <20230914155317.2511876-1-jani.nikula@intel.com>
+ <CAGXv+5GJxEobJKKWuc_UN+Gf_z8g6eb6KWTz-L+RqtyLYKK3Jg@mail.gmail.com>
+ <87cyyetohx.fsf@intel.com>
+ <CAGXv+5FvmwMW+bxJ9d_ULbOJA9qpd-vybn0VyE5iyQLHCET1=A@mail.gmail.com>
+Date:   Fri, 22 Sep 2023 12:44:15 +0300
+Message-ID: <87o7huo840.fsf@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/8] powerpc: hugetlb: Convert set_huge_pte_at() to
- take vma
-Content-Language: en-GB
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <muchun.song@linux.dev>,
-        SeongJae Park <sj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Peter Xu <peterx@redhat.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>
-Cc:     "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20230921162007.1630149-1-ryan.roberts@arm.com>
- <20230921162007.1630149-3-ryan.roberts@arm.com>
- <0f2dd31a-a361-24ba-154d-4e614c0eff73@csgroup.eu>
- <597e7496-ef99-4505-88ee-91701af02835@arm.com>
- <5ee382da-0ed0-9fb1-7640-35ef77c195fc@csgroup.eu>
- <871d277e-6c4e-418a-9574-2e9117646ca2@arm.com>
- <1cc4d995-efeb-9d15-446f-475e63154a2d@csgroup.eu>
-From:   Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <1cc4d995-efeb-9d15-446f-475e63154a2d@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 22/09/2023 10:14, Christophe Leroy wrote:
-> 
-> 
-> Le 22/09/2023 à 10:41, Ryan Roberts a écrit :
->> On 22/09/2023 09:10, Christophe Leroy wrote:
->>>
->>>
->>>> I'm happy to take your proposed approach if that's your preference. Another
->>>> option is to use a dummy VMA, as I have done in the core code, for the one call
->>>> site that calls set_huge_pte_at() with init_mm:
->>>>
->>>> struct vm_area_struct vma = TLB_FLUSH_VMA(&init_mm, 0);
->>>>
->>>> This is an existing macro that creates a dummy vma with vma->vm_mm filled in.
->>>> Then I pass &vma to the function.
->>>
->>> I don't like that, I prefer the solution I proposed. We already have a
->>> couple places where powerpc do things based on whether vma is NULL or not.
->>>
->>>>
->>>> Or yet another option would be to keep the mm param as is in set_huge_pte_at(),
->>>> and add a size param to the function. But then all call sites have the burden of
->>>> figuring out the size of the huge pte (although I think most know already).
->>>
->>> Indeed.
->>>
->>> arch_make_huge_pte() used to take a vma until commit 79c1c594f49a
->>> ("mm/hugetlb: change parameters of arch_make_huge_pte()").
->>>
->>> Should we try and have the same approach ? Or is it irrelevant ?
+On Tue, 19 Sep 2023, Chen-Yu Tsai <wenst@chromium.org> wrote:
+> On Tue, Sep 19, 2023 at 7:02=E2=80=AFPM Jani Nikula <jani.nikula@intel.co=
+m> wrote:
 >>
->> See [1]; I'm going to rework to pass mm + size parameter since the current
->> approach will break riscv.
-> 
-> Can you pass a shift parameter instead of a size, like 
-> arch_make_huge_pte() ? As far as I remember it is easier to handle a 
-> shift than a size.
+>> On Fri, 15 Sep 2023, Chen-Yu Tsai <wenst@chromium.org> wrote:
+>> > On Thu, Sep 14, 2023 at 11:53=E2=80=AFPM Jani Nikula <jani.nikula@inte=
+l.com> wrote:
+>> >>
+>> >> The sads returned by drm_edid_to_sad() needs to be freed.
+>> >>
+>> >> Fixes: e71a8ebbe086 ("drm/mediatek: dp: Audio support for MT8195")
+>> >> Cc: Guillaume Ranquet <granquet@baylibre.com>
+>> >> Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
+>> >> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.c=
+om>
+>> >> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+>> >> Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+>> >> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+>> >> Cc: Matthias Brugger <matthias.bgg@gmail.com>
+>> >> Cc: dri-devel@lists.freedesktop.org
+>> >> Cc: linux-mediatek@lists.infradead.org
+>> >> Cc: linux-kernel@vger.kernel.org
+>> >> Cc: linux-arm-kernel@lists.infradead.org
+>> >> Cc: <stable@vger.kernel.org> # v6.1+
+>> >> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>> >
+>> > Looks correct to me.
+>> >
+>> > Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+>>
+>> Thanks for the reviews Chen-Yu and Guillaume. Will you push this to
+>> drm-misc-next or shall I?
+>
+> Patches for the MediaTek drm driver go through their own separate tree,
+> maintained by CK (Chun-Kuang).
 
-Most of the call sites already have the size, not the shift. And arm64 needs the
-size, so it would have do (1UL << shift). So on that basis, I prefer to pass
-size. huge_pte_clear() already passes long unsigned sz, so I'd rather follow
-that pattern.
+Chun-Kuang, can you confirm picking up these two patches, please?
 
-> 
-> Christophe
+MAINTAINERS does not list a separate git repository for MediaTek drm
+drivers, so I don't know where that would be. It should probably be
+added to MAINTAINERS.
 
+Thanks,
+Jani.
+
+>
+> ChenYu
+
+--=20
+Jani Nikula, Intel
