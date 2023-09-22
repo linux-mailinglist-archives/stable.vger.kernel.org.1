@@ -2,57 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8A147AADCB
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 11:25:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A94337AADD1
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 11:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbjIVJZu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 05:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43796 "EHLO
+        id S231815AbjIVJ0b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 05:26:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbjIVJZt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 05:25:49 -0400
+        with ESMTP id S232332AbjIVJ0a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 05:26:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A576CCE;
-        Fri, 22 Sep 2023 02:25:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E17C433C7;
-        Fri, 22 Sep 2023 09:25:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 107C3197;
+        Fri, 22 Sep 2023 02:26:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC56C433C7;
+        Fri, 22 Sep 2023 09:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695374743;
-        bh=MwiAl2OmUZtagJvVNwfbJoo0d7SmvqIR/m1GHGeUvUk=;
+        s=korg; t=1695374783;
+        bh=CiplfnZWE0N96tT0Pqsa0UEZgTjTPzci1ZYFdLmLu34=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=exwkfWhBB7UHqxU9mxyvs2+oe4sgHDKS4tXpZFVeNZdzKEjUcyfzOjSGx85sMdXA4
-         EFr2cbFHyK0lnY+cx5SoMp+55ZS5IM14IXl+ryDZhqn+BVqvZKDEK3kt8nekfOhOZj
-         b9RXXR7+ORkemS06SxEv2K+Np7QGnk7lWa/6qI7Q=
-Date:   Fri, 22 Sep 2023 11:25:41 +0200
+        b=WsZ6FYLlqZJ0Wx9wj3oJWpkWzElbpXmmVhOT05kNCZRqqstYlKXj1B60PruPBESXx
+         StdNK6XAXeDh7iImU1cuqe1zuYd7iJyCylBZTBVko2JYVYrFqUYtbbwzXrnTgSl82f
+         aQzDl8nITFW6K8KN2zhfv0Kwnon8Nz3Cu/3WH2z8=
+Date:   Fri, 22 Sep 2023 11:26:22 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Jitindar Singh, Suraj" <surajjs@amazon.com>
-Cc:     "maz@kernel.org" <maz@kernel.org>,
-        "vdonnefort@google.com" <vdonnefort@google.com>,
-        "philmd@linaro.org" <philmd@linaro.org>,
-        "james.morse@arm.com" <james.morse@arm.com>,
-        "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-        "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-        "qperret@google.com" <qperret@google.com>,
-        "kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-        "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "will@kernel.org" <will@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "alexandru.elisei@arm.com" <alexandru.elisei@arm.com>
-Subject: Re: [PATCH stable 6.1.y 1/2] KVM: arm64: Prevent the donation of
- no-map pages
-Message-ID: <2023092243-eliminate-unless-cc2b@gregkh>
-References: <20230920192729.694309-1-surajjs@amazon.com>
- <878r903snv.wl-maz@kernel.org>
- <a64c30b027951c4c533dea858150e2e807a912b7.camel@amazon.com>
+To:     Saranya Muruganandam <saranyamohan@google.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+        Ming Lei <ming.lei@redhat.com>, stable@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Zhang Wensheng <zhangwensheng@huaweicloud.com>,
+        Zhong Jinghua <zhongjinghua@huawei.com>,
+        Hillf Danton <hdanton@sina.com>, Yu Kuai <yukuai3@huawei.com>,
+        Dennis Zhou <dennis@kernel.org>
+Subject: Re: [PATCH] block: fix use-after-free of q->q_usage_counter
+Message-ID: <2023092258-clothing-passerby-e0f2@gregkh>
+References: <20230921182012.3965572-1-saranyamohan@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a64c30b027951c4c533dea858150e2e807a912b7.camel@amazon.com>
+In-Reply-To: <20230921182012.3965572-1-saranyamohan@google.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -63,79 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 21, 2023 at 10:22:54PM +0000, Jitindar Singh, Suraj wrote:
-> On Thu, 2023-09-21 at 08:13 +0100, Marc Zyngier wrote:
-> > On Wed, 20 Sep 2023 20:27:28 +0100,
-> > Suraj Jitindar Singh <surajjs@amazon.com> wrote:
-> > > 
-> > > From: Quentin Perret <qperret@google.com>
-> > > 
-> > > commit 43c1ff8b75011bc3e3e923adf31ba815864a2494 upstream.
-> > > 
-> > > Memory regions marked as "no-map" in the host device-tree routinely
-> > > include TrustZone carev-outs and DMA pools. Although donating such
-> > > pages
-> > > to the hypervisor may not breach confidentiality, it could be used
-> > > to
-> > > corrupt its state in uncontrollable ways. To prevent this, let's
-> > > block
-> > > host-initiated memory transitions targeting "no-map" pages
-> > > altogether in
-> > > nVHE protected mode as there should be no valid reason to do this
-> > > in
-> > > current operation.
-> > > 
-> > > Thankfully, the pKVM EL2 hypervisor has a full copy of the host's
-> > > list
-> > > of memblock regions, so we can easily check for the presence of the
-> > > MEMBLOCK_NOMAP flag on a region containing pages being donated from
-> > > the
-> > > host.
-> > > 
-> > > Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> > > Tested-by: Vincent Donnefort <vdonnefort@google.com>
-> > > Signed-off-by: Quentin Perret <qperret@google.com>
-> > > Signed-off-by: Will Deacon <will@kernel.org>
-> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > > Link:
-> > > https://lore.kernel.org/r/20221110190259.26861-8-will@kernel.org
-> > > [ bp: clean ]
-> > 
-> > What is this?
+On Thu, Sep 21, 2023 at 11:20:12AM -0700, Saranya Muruganandam wrote:
+> From: Ming Lei <ming.lei@redhat.com>
 > 
-> Noting any details about the backport. In this case it was a clean
-> backport.
+> commit d36a9ea5e7766961e753ee38d4c331bbe6ef659b upstream.
 > 
-> > 
-> > > Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
-> > 
-> > What is the rationale for backporting this? It wasn't tagged as Cc:
-> > to
-> > stable for a reason: pKVM isn't functional upstream, and won't be for
-> > the next couple of cycles *at least*.
-> > 
-> > So at it stands, I'm against such a backport.
-> > 
+> For blk-mq, queue release handler is usually called after
+> blk_mq_freeze_queue_wait() returns. However, the
+> q_usage_counter->release() handler may not be run yet at that time, so
+> this can cause a use-after-free.
 > 
-> The 2 patches were backported to address CVE-2023-21264.
-> This one provides context for the proceeding patch.
+> Fix the issue by moving percpu_ref_exit() into blk_free_queue_rcu().
+> Since ->release() is called with rcu read lock held, it is agreed that
+> the race should be covered in caller per discussion from the two links.
 > 
-> I wasn't aware that it's non functional. Does this mean that the code
-> won't be compiled or just that it can't actually be run currently from
-> the upstream codebase?
+> Backport-notes: Not a clean cherry-pick since a lot has changed,
+> however essentially the same fix.
 > 
-> I guess I'm trying to understand if the conditions of the CVE are a
-> real concern even if it isn't technically functional.
+> Reported-by: Zhang Wensheng <zhangwensheng@huaweicloud.com>
+> Reported-by: Zhong Jinghua <zhongjinghua@huawei.com>
+> Link: https://lore.kernel.org/linux-block/Y5prfOjyyjQKUrtH@T590/T/#u
+> Link: https://lore.kernel.org/lkml/Y4%2FmzMd4evRg9yDi@fedora/
+> Cc: Hillf Danton <hdanton@sina.com>
+> Cc: Yu Kuai <yukuai3@huawei.com>
+> Cc: Dennis Zhou <dennis@kernel.org>
+> Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
+> Signed-off-by: Ming Lei <ming.lei@redhat.com>
+> Link: https://lore.kernel.org/r/20221215021629.74870-1-ming.lei@redhat.com
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> Signed-off-by: Saranya Muruganandam <saranyamohan@google.com>
+> ---
+>  block/blk-core.c  | 2 --
+>  block/blk-sysfs.c | 2 ++
+>  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Why do you think the CVE is actually even valid?  Who filed it and why?
-
-Remember, CVEs almost never mean anything for the kernel, they are not
-able to be given out by the kernel security team, and they just don't
-make any sense for us.
-
-I'll go drop these patches from the stable queues for now, and wait for
-you all to agree what is happening here.
+What stable kernel(s) are you expecting this backport to be applied to?
 
 thanks,
 
-greg k-h
+greg "not a mind reader" k-h
