@@ -2,234 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEAA77AB6DD
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 19:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D02F87AB877
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 19:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230386AbjIVRJ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 13:09:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57882 "EHLO
+        id S233733AbjIVRxu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 13:53:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229863AbjIVRJ4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 13:09:56 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60EDF194
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 10:09:48 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9ae75ece209so112306366b.3
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 10:09:48 -0700 (PDT)
+        with ESMTP id S233438AbjIVRxX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 13:53:23 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 006EC1F12
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 10:51:41 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d81486a0382so3089862276.0
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 10:51:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695402587; x=1696007387; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YZMr1kN15ref1wUYr4E6kS3JTBkLGuuuWxsn4v7voMQ=;
-        b=OX56MkhYo96iSH/9jTtGmowa0IWzk2k5Qm+D9h7oPJOjJ/+Zsko+SIn9DNNw33kZ0F
-         a1NC0h7yfuFZekYPR50aSDIkD/lyzGW/pcJUXLxVvGnqplA4AxTwoqqe3X31dVef8StM
-         KDrBAEzwp5I0HqGKrSRHFTrrhWlf+5wls8mZbwjU5eL8dwNEsaFxZPt/KoDmdFuIDvDv
-         Tx4RYM0g/D0MzcS75yveTi1qJZgbvpkfBEEYorNb4I9V0T260/jrCtnzyVlHRd4yHkxz
-         HsjgZgFPTKZB0LrQb3QDGf6/RebAJi30u5vWLYIsZtjfFNLmia/XD09ljRrFSAI8tIZC
-         4/3w==
+        d=google.com; s=20230601; t=1695405101; x=1696009901; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fPoesx7eIkvIyN/ECBqYvUwy9riOVetGjUtm7GvkcAQ=;
+        b=M9FspRTRg5iKLUT95ZRx1RxpmyXULmaFRUAZqosCYnVR31gFlY6u+D4PFBqe7NINL9
+         zfpnmUF/72y2Lis/TtDgeSTllv3Bq4R3Z98haB2R8jeEThB3/jEcPxHHrJPPvAGQ54yT
+         gn1iSn6XzJ4lDMhyInnHNHBsSdxv7ORmP3QZlmtz80rmb3OgVuEb5l9P/hHPmlGC47QZ
+         9gPBeX7WRpj8qaiAvM8Z0m6NmbmkTIklSI4LqY2ErmwnSRQ4diwdqB4bpaq+gYYavFNH
+         GGjwT/hqHqiKpL5cxscIkPIf4djBExHMjeqwXCxMJ9kwEWMESRMst5aPQiuiQXIq6D88
+         GuAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695402587; x=1696007387;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YZMr1kN15ref1wUYr4E6kS3JTBkLGuuuWxsn4v7voMQ=;
-        b=KAAVA7mjbZuNZLU64afuKwCICOvSbpqhKn8QSWnpA4SaZi/yLl8T+vBoZVgNw4TqMJ
-         ZIMIdsBMyBuf2KXej2MI43Y0XyA/dakJfmuiO0pU+MET0KP/gWBeqTRlnVFNd6rhwadj
-         IoNOGIMP0zfc7zhxfR71Q/JSAc25+BKup4SKGZv/KgcgC/qL+ic9CZl5NYj2y2SmH9eI
-         9zFcTmuoBSXpMjr2yJWW2dY2EV+Be7+M0CqsYT5Y0Djqr7OjHgMjkzsNl+ESuwAW/N5q
-         st2t/34gFjIKtcxACAUSEZxJ6EWgZdEeWV2GXYasWgjyx/oym4N2i0jWiIXgi29Q9Gs7
-         k4bg==
-X-Gm-Message-State: AOJu0YzyZrwfXfDDy3IZwNENa7tqxzjzaPM49C4QQnuhBQW+ZDjB0B3f
-        nukAbLiXUyM6pyRt1u9d9HQxfHx6Gn7oo6hDFj/SmA==
-X-Google-Smtp-Source: AGHT+IH4/kuj4pc7LLnOeIo2zssiCuHuC210f94Y24I1r6FA5L9LiUH2koVLT71RUpM7wLJf6p3XQNKYGbF6emeCse8=
-X-Received: by 2002:a17:907:985b:b0:9a2:1ce5:1243 with SMTP id
- jj27-20020a170907985b00b009a21ce51243mr7710566ejc.60.1695402586369; Fri, 22
- Sep 2023 10:09:46 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230922115804.2043771-1-ryan.roberts@arm.com>
- <20230922115804.2043771-3-ryan.roberts@arm.com> <20230922161404.GA23332@willie-the-truck>
- <32052cb7-91f1-461d-a226-2cd2fcf34ad2@arm.com>
-In-Reply-To: <32052cb7-91f1-461d-a226-2cd2fcf34ad2@arm.com>
-From:   Axel Rasmussen <axelrasmussen@google.com>
-Date:   Fri, 22 Sep 2023 10:09:08 -0700
-Message-ID: <CAJHvVcgq9mJFgy=M1J546XboTu2=SWMdbQM457xUtD1kba4xew@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] arm64: hugetlb: Fix set_huge_pte_at() to work with
- all swap entries
-To:     Ryan Roberts <ryan.roberts@arm.com>
-Cc:     Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <muchun.song@linux.dev>,
-        SeongJae Park <sj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Peter Xu <peterx@redhat.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org
+        d=1e100.net; s=20230601; t=1695405101; x=1696009901;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fPoesx7eIkvIyN/ECBqYvUwy9riOVetGjUtm7GvkcAQ=;
+        b=knuBYe1RDO1q4KiNxwiuVbxs14YkAJ3sJNTo+jy1x1thX+VHi+3BMEC+2O10AL9J+V
+         WsD7oaXkXtry0cvmGQ6KfxBmTYggoInsBnY1K6ZKyeeOvL+HvdudfPvOG04fxKStvKeZ
+         Y0Yn7HFtvUUOg9Bd9v9G1f4EuPSqC0A5OhJwvYKN1LOzeUaNS+4Vf9/1RvsKrpjKzav5
+         YPSG3GsA40EtpSHrcG9Qggz/BflaJMH56b/p7EXPoYX68JJSxW5apQGUV6RBGGSKLMpg
+         fYD7YtvNI29jaslmORkWtbB7S0ZFzaHD+gEWWGfN16ZjC0vhTfVH4adwFGaQptLPmz4u
+         K9kw==
+X-Gm-Message-State: AOJu0YztJvuaQbVZRb5zdGVQdYHwBmGKDQ9ftec5ZBW4tiT2TT/wW5CE
+        0lnOntgYx8087N+TzeQMySXJkC+G8MBf/A==
+X-Google-Smtp-Source: AGHT+IEIodY6P8AEfYuvD2zh3y3p9HhvCqmHHHxKT05y8cUv8VPdaP2I7/YajTg2Gkalk2g6RpbDy0/vf2J8Jg==
+X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
+ (user=cmllamas job=sendgmr) by 2002:a5b:d0b:0:b0:d85:ae1e:f696 with SMTP id
+ y11-20020a5b0d0b000000b00d85ae1ef696mr927ybp.0.1695405101036; Fri, 22 Sep
+ 2023 10:51:41 -0700 (PDT)
+Date:   Fri, 22 Sep 2023 17:51:37 +0000
+In-Reply-To: <20230922044241.322832-1-cmllamas@google.com>
+Mime-Version: 1.0
+References: <20230922044241.322832-1-cmllamas@google.com>
+X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
+Message-ID: <20230922175138.230331-1-cmllamas@google.com>
+Subject: [PATCH v2] binder: fix memory leaks of spam and pending work
+From:   Carlos Llamas <cmllamas@google.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Carlos Llamas <cmllamas@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Li Li <dualli@google.com>, Hang Lu <hangl@codeaurora.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        syzkaller-bugs@googlegroups.com, stable@vger.kernel.org,
+        syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com,
+        Alice Ryhl <aliceryhl@google.com>, Todd Kjos <tkjos@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,
+        USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Looks correct to me - thanks for the fix!
+A transaction complete work is allocated and queued for each
+transaction. Under certain conditions the work->type might be marked as
+BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT to notify userspace about
+potential spamming threads or as BINDER_WORK_TRANSACTION_PENDING when
+the target is currently frozen.
 
-Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
+However, these work types are not being handled in binder_release_work()
+so they will leak during a cleanup. This was reported by syzkaller with
+the following kmemleak dump:
 
-On Fri, Sep 22, 2023 at 9:41=E2=80=AFAM Ryan Roberts <ryan.roberts@arm.com>=
- wrote:
->
-> On 22/09/2023 17:14, Will Deacon wrote:
-> > On Fri, Sep 22, 2023 at 12:58:04PM +0100, Ryan Roberts wrote:
-> >> When called with a swap entry that does not embed a PFN (e.g.
-> >> PTE_MARKER_POISONED or PTE_MARKER_UFFD_WP), the previous implementatio=
-n
-> >> of set_huge_pte_at() would either cause a BUG() to fire (if
-> >> CONFIG_DEBUG_VM is enabled) or cause a dereference of an invalid addre=
-ss
-> >> and subsequent panic.
-> >>
-> >> arm64's huge pte implementation supports multiple huge page sizes, som=
-e
-> >> of which are implemented in the page table with multiple contiguous
-> >> entries. So set_huge_pte_at() needs to work out how big the logical pt=
-e
-> >> is, so that it can also work out how many physical ptes (or pmds) need
-> >> to be written. It previously did this by grabbing the folio out of the
-> >> pte and querying its size.
-> >>
-> >> However, there are cases when the pte being set is actually a swap
-> >> entry. But this also used to work fine, because for huge ptes, we only
-> >> ever saw migration entries and hwpoison entries. And both of these typ=
-es
-> >> of swap entries have a PFN embedded, so the code would grab that and
-> >> everything still worked out.
-> >>
-> >> But over time, more calls to set_huge_pte_at() have been added that se=
-t
-> >> swap entry types that do not embed a PFN. And this causes the code to =
-go
-> >> bang. The triggering case is for the uffd poison test, commit
-> >> 99aa77215ad0 ("selftests/mm: add uffd unit test for UFFDIO_POISON"),
-> >> which causes a PTE_MARKER_POISONED swap entry to be set, coutesey of
-> >> commit 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for
-> >> hugetlbfs") - added in v6.5-rc7. Although review shows that there are
-> >> other call sites that set PTE_MARKER_UFFD_WP (which also has no PFN),
-> >> these don't trigger on arm64 because arm64 doesn't support UFFD WP.
-> >>
-> >> Arguably, the root cause is really due to commit 18f3962953e4 ("mm:
-> >> hugetlb: kill set_huge_swap_pte_at()"), which aimed to simplify the
-> >> interface to the core code by removing set_huge_swap_pte_at() (which
-> >> took a page size parameter) and replacing it with calls to
-> >> set_huge_pte_at() where the size was inferred from the folio, as
-> >> descibed above. While that commit didn't break anything at the time, i=
-t
-> >> did break the interface because it couldn't handle swap entries withou=
-t
-> >> PFNs. And since then new callers have come along which rely on this
-> >> working. But given the brokeness is only observable after commit
-> >> 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs"),
-> >> that one gets the Fixes tag.
-> >>
-> >> Now that we have modified the set_huge_pte_at() interface to pass the
-> >> huge page size in the previous patch, we can trivially fix this issue.
-> >>
-> >> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> >> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for huget=
-lbfs")
-> >> Cc: <stable@vger.kernel.org> # 6.5+
-> >> ---
-> >>  arch/arm64/mm/hugetlbpage.c | 17 +++--------------
-> >>  1 file changed, 3 insertions(+), 14 deletions(-)
-> >>
-> >> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> >> index a7f8c8db3425..13fd592228b1 100644
-> >> --- a/arch/arm64/mm/hugetlbpage.c
-> >> +++ b/arch/arm64/mm/hugetlbpage.c
-> >> @@ -241,13 +241,6 @@ static void clear_flush(struct mm_struct *mm,
-> >>      flush_tlb_range(&vma, saddr, addr);
-> >>  }
-> >>
-> >> -static inline struct folio *hugetlb_swap_entry_to_folio(swp_entry_t e=
-ntry)
-> >> -{
-> >> -    VM_BUG_ON(!is_migration_entry(entry) && !is_hwpoison_entry(entry)=
-);
-> >> -
-> >> -    return page_folio(pfn_to_page(swp_offset_pfn(entry)));
-> >> -}
-> >> -
-> >>  void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
-> >>                          pte_t *ptep, pte_t pte, unsigned long sz)
-> >>  {
-> >> @@ -257,13 +250,10 @@ void set_huge_pte_at(struct mm_struct *mm, unsig=
-ned long addr,
-> >>      unsigned long pfn, dpfn;
-> >>      pgprot_t hugeprot;
-> >>
-> >> -    if (!pte_present(pte)) {
-> >> -            struct folio *folio;
-> >> -
-> >> -            folio =3D hugetlb_swap_entry_to_folio(pte_to_swp_entry(pt=
-e));
-> >> -            ncontig =3D num_contig_ptes(folio_size(folio), &pgsize);
-> >> +    ncontig =3D num_contig_ptes(sz, &pgsize);
-> >>
-> >> -            for (i =3D 0; i < ncontig; i++, ptep++)
-> >> +    if (!pte_present(pte)) {
-> >> +            for (i =3D 0; i < ncontig; i++, ptep++, addr +=3D pgsize)
-> >>                      set_pte_at(mm, addr, ptep, pte);
-> >
-> > Our set_pte_at() doesn't use 'addr' for anything and the old code didn'=
-t
-> > even bother to increment it here! I'm fine adding that, but it feels
-> > unrelated to the issue which this patch is actually fixing.
->
-> True. I agree its not strictly necessary and will presumably be optimized=
- out.
-> But I'm not sure that having knowledge that the implementation doesn't us=
-e it is
-> a good reason not to call the interface correctly. I'll leave it as I've =
-done it
-> if that's ok.
->
-> >
-> > Either way:
-> >
-> > Acked-by: Will Deacon <will@kernel.org>
->
-> Thanks!
->
-> >
-> > Will
->
+BUG: memory leak
+unreferenced object 0xffff88810e2d6de0 (size 32):
+  comm "syz-executor338", pid 5046, jiffies 4294968230 (age 13.590s)
+  hex dump (first 32 bytes):
+    e0 6d 2d 0e 81 88 ff ff e0 6d 2d 0e 81 88 ff ff  .m-......m-.....
+    04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff81573b75>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
+    [<ffffffff83d41873>] kmalloc include/linux/slab.h:599 [inline]
+    [<ffffffff83d41873>] kzalloc include/linux/slab.h:720 [inline]
+    [<ffffffff83d41873>] binder_transaction+0x573/0x4050 drivers/android/binder.c:3152
+    [<ffffffff83d45a05>] binder_thread_write+0x6b5/0x1860 drivers/android/binder.c:4010
+    [<ffffffff83d486dc>] binder_ioctl_write_read drivers/android/binder.c:5066 [inline]
+    [<ffffffff83d486dc>] binder_ioctl+0x1b2c/0x3cf0 drivers/android/binder.c:5352
+    [<ffffffff816b25f2>] vfs_ioctl fs/ioctl.c:51 [inline]
+    [<ffffffff816b25f2>] __do_sys_ioctl fs/ioctl.c:871 [inline]
+    [<ffffffff816b25f2>] __se_sys_ioctl fs/ioctl.c:857 [inline]
+    [<ffffffff816b25f2>] __x64_sys_ioctl+0xf2/0x140 fs/ioctl.c:857
+    [<ffffffff84b30008>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<ffffffff84b30008>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Fix the leaks by kfreeing these work types in binder_release_work() and
+handle them as a BINDER_WORK_TRANSACTION_COMPLETE cleanup.
+
+Cc: stable@vger.kernel.org
+Fixes: 0567461a7a6e ("binder: return pending info for frozen async txns")
+Fixes: a7dc1e6f99df ("binder: tell userspace to dump current backtrace when detected oneway spamming")
+Reported-by: syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7f10c1653e35933c0f1e
+Suggested-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+v2 - Handle also peding work and merge with transaction complete as
+     suggested by Alice Ryhl. Add corresponding new tags.
+v1 - https://lore.kernel.org/all/20230922044241.322832-1-cmllamas@google.com/
+---
+ drivers/android/binder.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 367afac5f1bf..92128aae2d06 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -4812,6 +4812,8 @@ static void binder_release_work(struct binder_proc *proc,
+ 				"undelivered TRANSACTION_ERROR: %u\n",
+ 				e->cmd);
+ 		} break;
++		case BINDER_WORK_TRANSACTION_PENDING:
++		case BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT:
+ 		case BINDER_WORK_TRANSACTION_COMPLETE: {
+ 			binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
+ 				"undelivered TRANSACTION_COMPLETE\n");
+-- 
+2.42.0.515.g380fc7ccd1-goog
+
