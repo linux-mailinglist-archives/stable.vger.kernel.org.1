@@ -2,217 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26CA57AA726
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 04:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89B37AA724
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 04:55:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbjIVCzS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 21 Sep 2023 22:55:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
+        id S229497AbjIVCzP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 21 Sep 2023 22:55:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjIVCzQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 22:55:16 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49E3C199
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 19:54:46 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6926d5ad926so236361b3a.1
-        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 19:54:46 -0700 (PDT)
+        with ESMTP id S229540AbjIVCzP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 21 Sep 2023 22:55:15 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3FC192
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 19:55:09 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-403012f27e1so18288705e9.1
+        for <stable@vger.kernel.org>; Thu, 21 Sep 2023 19:55:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1695351286; x=1695956086; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=br+/C/v821nNYRFlkBHOr44NAy7oCmXwb/N/stsA46I=;
-        b=iieGcXJyMSUNUOMFkMI8NGO223qUzApef48rY6IMCTl3FpfdAFBmg5wjFjgydijixc
-         yUkTmPo15sAqVGkpS0PVBltlbJZBgT8FJ/X2ufRYw6f4kRGmuHxg3AiiTPtZGaNZoXa1
-         787dxbAJXnJdRTESFaKdsWgYgbN3/3hZWlqxbUWPBaGbCXWxg9LbY53FVrUhWitM7iSg
-         dQYjccukqgfMz4GpYXdIky1R+hNKPDgHcDcoKwiLK+lXG3maGfYtd9o17AyQpysZCZvk
-         eoHqp0rWQ0qhLpdUMTjRmM+z+VQhaG6iMSMFRzabmAZu0R0aozWtjTdIhwwKkjHJ1sPh
-         7AkA==
+        d=gmail.com; s=20230601; t=1695351307; x=1695956107; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LnHDBH+0phNRe6YebEoo1p0qE4IciHqlymDW6RNuSOk=;
+        b=K1+5Jt/xDf86iK+wWCzjuup86yjXIUJvwipqXKdJUuFszr6eixneKTWbP2IXS8djmp
+         Jt3+9szEzysGgVA89TPxouBUfphc6Exe7IUxSx3Bt+2W0IJ4JSHszn3zd0xr/UyI29jU
+         Rt70vCexlx2AUPH1+gjPpb4uCVE9lqPjPX0aAcN1ZNQs3VfPubBrgstx9gHkbJNlBct/
+         LIFY7D5BdlzleVHEUuENb+oqT54saau8FeFsc8mgvubO/WVyy2muhv4dNYAkmnbwAKS2
+         HgkukahJru4g1bk6d6o7P+p3hwLdipyfms+COrhzrfNLe8uSj98X07LionlU3ejepF/w
+         Z0cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695351286; x=1695956086;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=br+/C/v821nNYRFlkBHOr44NAy7oCmXwb/N/stsA46I=;
-        b=va8sCzjJwuSLeWCua+FQ2MkajMun20rGvaGd5vzIvU5YjjNZ3vNvP0WjWBV+wHlsZP
-         4obyFkemc0VTfrn4HUmGy60MXyutTzN/uxh6kXKpOtun0Df0Ngl+o5rqd1Um2/XAly3N
-         trzyRjUHtaeFLVmacCIatzPTlbxEa8NgvWbtYX+OiultZZq2DPHjrK+vuEEXO+MiG0Mu
-         VeHSMRMgJE4nLk3BonKFj4ni+qiF5Wowh7XRe+dWbT3ZRRpyu72npt2vqGicUnmnwmE7
-         k515kgZ/WwQKmn/C+RxaynzvasLizbdFt63bSzHlnJEYXYrftuFLhONjfecAoGDWSM/E
-         1jmg==
-X-Gm-Message-State: AOJu0YzsVLh7U0WD/K2Si85s7uUUce/gv+UevQ42Cb93A/Sn1lEgfIlF
-        s5ilO0fNlVFtkjvZXvMk9eQrmQ==
-X-Google-Smtp-Source: AGHT+IE6azF5uKJJ3m1Yb0ly5UPZHOK7EZhY5CJWIi1/96fWzCl6d26UEkh5dqVknV//4FTGeJthoQ==
-X-Received: by 2002:a05:6a20:c1aa:b0:15c:b7ba:e9ba with SMTP id bg42-20020a056a20c1aa00b0015cb7bae9bamr6999312pzb.0.1695351285575;
-        Thu, 21 Sep 2023 19:54:45 -0700 (PDT)
-Received: from [10.84.155.178] ([203.208.167.146])
-        by smtp.gmail.com with ESMTPSA id gp24-20020a17090adf1800b00268032f6a64sm3855746pjb.25.2023.09.21.19.54.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Sep 2023 19:54:45 -0700 (PDT)
-Message-ID: <217bb956-b9f6-1057-914b-436d4c775a8b@bytedance.com>
-Date:   Fri, 22 Sep 2023 10:54:32 +0800
+        d=1e100.net; s=20230601; t=1695351307; x=1695956107;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LnHDBH+0phNRe6YebEoo1p0qE4IciHqlymDW6RNuSOk=;
+        b=dJg4yuTvFUnvF4XhYGSOMjT4PIbWezgWuLjbd7Gtkk3OBPDch/SsWd6yoMik1g5u35
+         1zDRkAsEmd8GnRCPoXSArkgvtLuw3fHEjAAZZEP+62bBVyzyOvqG5s2lXR8IDa9a7tTt
+         AnyUvq+2o1h76NBryuEcnyIEKCPiDMwMaDv0OzWlWX1BXv+7vYS3y9AQg3mY4ekgCEed
+         Xl/P2iNJi35BqdU2dZCbkFBk2lbFpY84SA9lmKD7IS0gvGnktQxfv7Xo8G3O2PDlNcuF
+         My6pz2wxz4x3P/Emsjm4mgTG66VA31jneR2ASmblKxskZcv/sfAgLUiYUnffzx1ZsjGk
+         iKiA==
+X-Gm-Message-State: AOJu0YxrRe8hPaOu9cwas9ECms0MrenPqZRIg+cBfpdPEOggTMlw5x6V
+        FahXVyXSFBEpOGgwA2Im6nUUJqR0TGC7qcjO
+X-Google-Smtp-Source: AGHT+IFOBaDIxb5yAcK2HOj/UbbXEJsXZCIppfM7iAPQznfY6CXvzoEGIY80SIy1q311VMRT1QhT8g==
+X-Received: by 2002:a7b:c8d8:0:b0:402:ee9e:ed98 with SMTP id f24-20020a7bc8d8000000b00402ee9eed98mr6855417wml.34.1695351306878;
+        Thu, 21 Sep 2023 19:55:06 -0700 (PDT)
+Received: from localhost.localdomain ([2a05:f480:1000:b09:5400:4ff:fe6f:7099])
+        by smtp.gmail.com with ESMTPSA id v19-20020a05600c429300b004047ac770d1sm1128015wmc.8.2023.09.21.19.55.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Sep 2023 19:55:06 -0700 (PDT)
+From:   zhangshida <starzhangzsd@gmail.com>
+X-Google-Original-From: zhangshida <zhangshida@kylinos.cn>
+To:     stable@vger.kernel.org
+Cc:     Shida Zhang <zhangshida@kylinos.cn>, stable@kernel.org,
+        Andreas Dilger <adilger@dilger.ca>,
+        "Darrick J . Wong" <djwong@kernel.org>,
+        Theodore Ts'o <tytso@mit.edu>
+Subject: [PATCH] ext4: fix rec_len verify error
+Date:   Fri, 22 Sep 2023 10:54:58 +0800
+Message-Id: <20230922025458.2169511-1-zhangshida@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2023092055-disband-unveiling-f6cc@gregkh>
+References: <2023092055-disband-unveiling-f6cc@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v1 8/8] arm64: hugetlb: Fix set_huge_pte_at() to work with
- all swap entries
-Content-Language: en-US
-To:     Ryan Roberts <ryan.roberts@arm.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <muchun.song@linux.dev>,
-        SeongJae Park <sj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Peter Xu <peterx@redhat.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org
-References: <20230921162007.1630149-1-ryan.roberts@arm.com>
- <20230921162007.1630149-9-ryan.roberts@arm.com>
-From:   Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <20230921162007.1630149-9-ryan.roberts@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Ryan,
+From: Shida Zhang <zhangshida@kylinos.cn>
 
-On 2023/9/22 00:20, Ryan Roberts wrote:
-> When called with a swap entry that does not embed a PFN (e.g.
-> PTE_MARKER_POISONED or PTE_MARKER_UFFD_WP), the previous implementation
-> of set_huge_pte_at() would either cause a BUG() to fire (if
-> CONFIG_DEBUG_VM is enabled) or cause a dereference of an invalid address
-> and subsequent panic.
-> 
-> arm64's huge pte implementation supports multiple huge page sizes, some
-> of which are implemented in the page table with contiguous mappings. So
-> set_huge_pte_at() needs to work out how big the logical pte is, so that
-> it can also work out how many physical ptes (or pmds) need to be
-> written. It does this by grabbing the folio out of the pte and querying
-> its size.
-> 
-> However, there are cases when the pte being set is actually a swap
-> entry. But this also used to work fine, because for huge ptes, we only
-> ever saw migration entries and hwpoison entries. And both of these types
-> of swap entries have a PFN embedded, so the code would grab that and
-> everything still worked out.
-> 
-> But over time, more calls to set_huge_pte_at() have been added that set
-> swap entry types that do not embed a PFN. And this causes the code to go
-> bang. The triggering case is for the uffd poison test, commit
-> 99aa77215ad0 ("selftests/mm: add uffd unit test for UFFDIO_POISON"),
-> which sets a PTE_MARKER_POISONED swap entry. But review shows there are
-> other places too (PTE_MARKER_UFFD_WP).
-> 
-> So the root cause is due to commit 18f3962953e4 ("mm: hugetlb: kill
-> set_huge_swap_pte_at()"), which aimed to simplify the interface to the
-> core code by removing set_huge_swap_pte_at() (which took a page size
-> parameter) and replacing it with calls to set_huge_swap_pte_at() where
-> the size was inferred from the folio, as descibed above. While that
-> commit didn't break anything at the time, 
+[ Upstream commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6 ]
 
-If it didn't break anything at that time, then shouldn't the Fixes tag
-be added to this commit?
+With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
+a problem occurred when more than 13 million files were directly created
+under a directory:
 
-> it did break the interface
-> because it couldn't handle swap entries without PFNs. And since then new
-> callers have come along which rely on this working.
+EXT4-fs error (device xx): ext4_dx_csum_set:492: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): ext4_dx_csum_verify:463: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): dx_probe:856: inode #xxxx: block 8188: comm xxxxx: Directory index failed checksum
 
-So the Fixes tag should be added only to the commit that introduces the
-first new callers?
+When enough files are created, the fake_dirent->reclen will be 0xffff.
+it doesn't equal to the blocksize 65536, i.e. 0x10000.
 
-Other than that, LGTM.
+But it is not the same condition when blocksize equals to 4k.
+when enough files are created, the fake_dirent->reclen will be 0x1000.
+it equals to the blocksize 4k, i.e. 0x1000.
 
-Thanks,
-Qi
+The problem seems to be related to the limitation of the 16-bit field
+when the blocksize is set to 64k.
+To address this, helpers like ext4_rec_len_{from,to}_disk has already
+been introduced to complete the conversion between the encoded and the
+plain form of rec_len.
 
-> 
-> Now that we have modified the set_huge_pte_at() interface to pass the
-> vma, we can extract the huge page size from it and fix this issue.
-> 
-> I'm tagging the commit that added the uffd poison feature, since that is
-> what exposed the problem, as well as the original change that broke the
-> interface. Hopefully this is valuable for people doing bisect.
-> 
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Fixes: 18f3962953e4 ("mm: hugetlb: kill set_huge_swap_pte_at()")
-> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
-> ---
->   arch/arm64/mm/hugetlbpage.c | 17 +++--------------
->   1 file changed, 3 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> index 844832511c1e..a08601a14689 100644
-> --- a/arch/arm64/mm/hugetlbpage.c
-> +++ b/arch/arm64/mm/hugetlbpage.c
-> @@ -241,13 +241,6 @@ static void clear_flush(struct mm_struct *mm,
->   	flush_tlb_range(&vma, saddr, addr);
->   }
->   
-> -static inline struct folio *hugetlb_swap_entry_to_folio(swp_entry_t entry)
-> -{
-> -	VM_BUG_ON(!is_migration_entry(entry) && !is_hwpoison_entry(entry));
-> -
-> -	return page_folio(pfn_to_page(swp_offset_pfn(entry)));
-> -}
-> -
->   void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
->   			    pte_t *ptep, pte_t pte)
->   {
-> @@ -258,13 +251,10 @@ void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
->   	unsigned long pfn, dpfn;
->   	pgprot_t hugeprot;
->   
-> -	if (!pte_present(pte)) {
-> -		struct folio *folio;
-> -
-> -		folio = hugetlb_swap_entry_to_folio(pte_to_swp_entry(pte));
-> -		ncontig = num_contig_ptes(folio_size(folio), &pgsize);
-> +	ncontig = num_contig_ptes(huge_page_size(hstate_vma(vma)), &pgsize);
->   
-> -		for (i = 0; i < ncontig; i++, ptep++)
-> +	if (!pte_present(pte)) {
-> +		for (i = 0; i < ncontig; i++, ptep++, addr += pgsize)
->   			set_pte_at(mm, addr, ptep, pte);
->   		return;
->   	}
-> @@ -274,7 +264,6 @@ void set_huge_pte_at(struct vm_area_struct *vma, unsigned long addr,
->   		return;
->   	}
->   
-> -	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
->   	pfn = pte_pfn(pte);
->   	dpfn = pgsize >> PAGE_SHIFT;
->   	hugeprot = pte_pgprot(pte);
+So fix this one by using the helper, and all the other in this file too.
+
+Cc: stable@kernel.org
+Fixes: dbe89444042a ("ext4: Calculate and verify checksums for htree nodes")
+Suggested-by: Andreas Dilger <adilger@dilger.ca>
+Suggested-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kylinos.cn
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+---
+ fs/ext4/namei.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
+
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index db9bba3473b5..93d392576c12 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -322,17 +322,17 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
+ 						   struct ext4_dir_entry *de)
+ {
+ 	struct ext4_dir_entry_tail *t;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
+ 
+ #ifdef PARANOID
+ 	struct ext4_dir_entry *d, *top;
+ 
+ 	d = de;
+ 	top = (struct ext4_dir_entry *)(((void *)de) +
+-		(EXT4_BLOCK_SIZE(inode->i_sb) -
+-		sizeof(struct ext4_dir_entry_tail)));
+-	while (d < top && d->rec_len)
++		(blocksize - sizeof(struct ext4_dir_entry_tail)));
++	while (d < top && ext4_rec_len_from_disk(d->rec_len, blocksize))
+ 		d = (struct ext4_dir_entry *)(((void *)d) +
+-		    le16_to_cpu(d->rec_len));
++		    ext4_rec_len_from_disk(d->rec_len, blocksize));
+ 
+ 	if (d != top)
+ 		return NULL;
+@@ -343,7 +343,8 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
+ #endif
+ 
+ 	if (t->det_reserved_zero1 ||
+-	    le16_to_cpu(t->det_rec_len) != sizeof(struct ext4_dir_entry_tail) ||
++	    (ext4_rec_len_from_disk(t->det_rec_len, blocksize) !=
++	     sizeof(struct ext4_dir_entry_tail)) ||
+ 	    t->det_reserved_zero2 ||
+ 	    t->det_reserved_ft != EXT4_FT_DIR_CSUM)
+ 		return NULL;
+@@ -425,13 +426,14 @@ static struct dx_countlimit *get_dx_countlimit(struct inode *inode,
+ 	struct ext4_dir_entry *dp;
+ 	struct dx_root_info *root;
+ 	int count_offset;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
++	unsigned int rlen = ext4_rec_len_from_disk(dirent->rec_len, blocksize);
+ 
+-	if (le16_to_cpu(dirent->rec_len) == EXT4_BLOCK_SIZE(inode->i_sb))
++	if (rlen == blocksize)
+ 		count_offset = 8;
+-	else if (le16_to_cpu(dirent->rec_len) == 12) {
++	else if (rlen == 12) {
+ 		dp = (struct ext4_dir_entry *)(((void *)dirent) + 12);
+-		if (le16_to_cpu(dp->rec_len) !=
+-		    EXT4_BLOCK_SIZE(inode->i_sb) - 12)
++		if (ext4_rec_len_from_disk(dp->rec_len, blocksize) != blocksize - 12)
+ 			return NULL;
+ 		root = (struct dx_root_info *)(((void *)dp + 12));
+ 		if (root->reserved_zero ||
+@@ -1244,6 +1246,7 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
+ 	unsigned int buflen = bh->b_size;
+ 	char *base = bh->b_data;
+ 	struct dx_hash_info h = *hinfo;
++	int blocksize = EXT4_BLOCK_SIZE(dir->i_sb);
+ 
+ 	if (ext4_has_metadata_csum(dir->i_sb))
+ 		buflen -= sizeof(struct ext4_dir_entry_tail);
+@@ -1257,11 +1260,12 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
+ 			map_tail--;
+ 			map_tail->hash = h.hash;
+ 			map_tail->offs = ((char *) de - base)>>2;
+-			map_tail->size = le16_to_cpu(de->rec_len);
++			map_tail->size = ext4_rec_len_from_disk(de->rec_len,
++								blocksize);
+ 			count++;
+ 			cond_resched();
+ 		}
+-		de = ext4_next_entry(de, dir->i_sb->s_blocksize);
++		de = ext4_next_entry(de, blocksize);
+ 	}
+ 	return count;
+ }
+-- 
+2.27.0
+
