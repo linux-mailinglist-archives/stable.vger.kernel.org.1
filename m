@@ -2,88 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1CCA7AB410
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 16:51:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66CAD7AB426
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 16:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231716AbjIVOv1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 10:51:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50924 "EHLO
+        id S231791AbjIVOxF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 10:53:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231687AbjIVOv0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 10:51:26 -0400
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2DA2180
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 07:51:20 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C78E4FF80C;
-        Fri, 22 Sep 2023 14:51:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1695394279;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XdFA1MU2iB96iiBSQaJClbeQXcL5rEOl1Obs0685Gkw=;
-        b=R0n4aHueLSJWCWFCIRcYg1FeAt0+36MUlzxpXgHCUYOYhiET21h5IL8KIGhvSM51kMNcZ5
-        MrmeKpTd1NoJIxzplBMosV8xAQaHnAfLS7ikNeDtBvmOYEeF4F1K12YCRyQVttZxwy9uDJ
-        fZ8+qIGtkXzBKyOBl/1JYkQL6FyPYZbHMWVW7V4mOcicvI3RtKSxMgXQKFP+5jnF9NupdX
-        OGVy/t0XczBmUXrqsAWTwyC61iCESXc/2EIWSl/ZD6YxWgVasywzkeUUYAB2HuC6iXpGu5
-        tE/eE/fkqZOcEu9jQCPolZi0SsdKov/QK7kFngaclc4GLFhviJAPt+PKaouYTA==
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Michael Walle <michael@walle.cc>, linux-mtd@lists.infradead.org
-Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Michal Simek <michal.simek@amd.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] mtd: rawnand: arasan: Ensure program page operations are successful
-Date:   Fri, 22 Sep 2023 16:51:17 +0200
-Message-Id: <20230922145117.578303-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230717194221.229778-2-miquel.raynal@bootlin.com>
-References: 
+        with ESMTP id S231912AbjIVOw7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 10:52:59 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C82194;
+        Fri, 22 Sep 2023 07:52:53 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1c43b4b02c1so17718365ad.3;
+        Fri, 22 Sep 2023 07:52:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695394372; x=1695999172; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=uFOz5B5cvfyphqLib4XjPgRuoCQemaGEyuj1nS/YTcY=;
+        b=XyusmUfHx/7qJFb+Gs/345cx28Cx9fJQ8OEXwZssHKO+m4SkGf9XT3hlDOGtRNL+bh
+         4aoFCGiNs18hm+xyxu8u0dl+F98h6y/CoyClV9Rng6AXKxPqky2gJRSz2ux1xYroHumc
+         3yIVdF8E9pU/2Gre41mFqP+4t8vC2bPzrERQkoNw/v3HVPlYzYNk5S9tCro6gp27o8Zc
+         504PH4jjvT2haixWi+G27rc9qgP6IM4+6UbexoNfVKjOIP6gjxUHU637dLTfDTNhoCCS
+         9xbvnwPiUg7r5u5fTT6CkhLuguRrEOpCNqcQOVWDjv6M2h3GObyiClJ6NRMJULC+Y4vF
+         7MIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695394372; x=1695999172;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uFOz5B5cvfyphqLib4XjPgRuoCQemaGEyuj1nS/YTcY=;
+        b=cmQL2hNEXMKZx2GUX2CCEN7jEvlwfveDnK10I9bAe4gvtM04zGJI3TsZPAuQd3rMgN
+         TZDJQimL3uzbUv+KHdIMxdxP08StoIKjP0FzpF3wnGaw6ZpzfpKJHYXwQ/7tcHnyyi6C
+         ei4oCFE6qvR+YjtgEqYrqIzcJuBrQhouLBeLC498LIiDdrRXzK6MfKB1zKBrDh0sqyk9
+         uIgwpD7uio9R9bllHm//bONBFkTocSiK2hhsHU8pK8ua9NiADHPFaKFlCNMmCe/Vq9Y3
+         7hnOWqK0CIkApZ0VAH9r/50TyHoKw0b6cS0VXubo7DJuydie9vAOlK39rxMth7tJpaDV
+         QOCQ==
+X-Gm-Message-State: AOJu0Ywh8pBlB37jMIrIY4f1QUe7j6dEn+qiA0G/fJc5qqXHMRA55Epm
+        iW7/JB03Pvz52dt0/Qh1JH0=
+X-Google-Smtp-Source: AGHT+IEZN572fa6bFTfpRChjwE2UuVpBnja/f797TYM8J0DmFRetiu2CQF9UKBb4yh5diMB89nb/qg==
+X-Received: by 2002:a17:902:e808:b0:1c4:3ea7:4328 with SMTP id u8-20020a170902e80800b001c43ea74328mr10800989plg.45.1695394372514;
+        Fri, 22 Sep 2023 07:52:52 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id u15-20020a170902e5cf00b001c0af36dd64sm3548071plf.162.2023.09.22.07.52.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Sep 2023 07:52:52 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <53c9f81e-55b9-b8bb-7821-cb124780d4c0@roeck-us.net>
+Date:   Fri, 22 Sep 2023 07:52:50 -0700
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'3a4a893dbb19e229db3b753f0462520b561dee98'
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 6.1 000/139] 6.1.55-rc1 review
+Content-Language: en-US
+To:     Jon Hunter <jonathanh@nvidia.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>,
+        robdclark@chromium.org
+References: <20230920112835.549467415@linuxfoundation.org>
+ <79a96d41-1b79-51b4-fda0-743b853213b9@nvidia.com>
+ <7e0355bd-64cd-f6c2-b720-e4643579078c@nvidia.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <7e0355bd-64cd-f6c2-b720-e4643579078c@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 2023-07-17 at 19:42:20 UTC, Miquel Raynal wrote:
-> The NAND core complies with the ONFI specification, which itself
-> mentions that after any program or erase operation, a status check
-> should be performed to see whether the operation was finished *and*
-> successful.
+On 9/22/23 05:31, Jon Hunter wrote:
 > 
-> The NAND core offers helpers to finish a page write (sending the
-> "PAGE PROG" command, waiting for the NAND chip to be ready again, and
-> checking the operation status). But in some cases, advanced controller
-> drivers might want to optimize this and craft their own page write
-> helper to leverage additional hardware capabilities, thus not always
-> using the core facilities.
+> On 22/09/2023 10:45, Jon Hunter wrote:
+>> Hi Greg,
+>>
+>> On 20/09/2023 12:28, Greg Kroah-Hartman wrote:
+>>> This is the start of the stable review cycle for the 6.1.55 release.
+>>> There are 139 patches in this series, all will be posted as a response
+>>> to this one.  If anyone has any issues with these being applied, please
+>>> let me know.
+>>>
+>>> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
+>>> Anything received after that time might be too late.
+>>>
+>>> The whole patch series can be found in one patch at:
+>>>     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.55-rc1.gz
+>>> or in the git tree and branch at:
+>>>     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+>>> and the diffstat can be found below.
+>>>
+>>> thanks,
+>>>
+>>> greg k-h
+>>
+>> I am seeing some suspend failures with this update ...
+>>
+>> Test results for stable-v6.1:
+>>      11 builds:    11 pass, 0 fail
+>>      28 boots:    28 pass, 0 fail
+>>      130 tests:    124 pass, 6 fail
+>>
+>> Linux version:    6.1.55-rc1-gd5ace918366e
+>> Boards tested:    tegra124-jetson-tk1, tegra186-p2771-0000,
+>>                  tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+>>                  tegra20-ventana, tegra210-p2371-2180,
+>>                  tegra210-p3450-0000, tegra30-cardhu-a04
+>>
+>> Test failures:    tegra124-jetson-tk1: pm-system-suspend.sh
+>>                  tegra186-p2771-0000: pm-system-suspend.sh
+>>                  tegra20-ventana: pm-system-suspend.sh
+>>                  tegra30-cardhu-a04: pm-system-suspend.sh
+>>
+>> Bisect is underway.
 > 
-> Some drivers, like this one, do not use the core helper to finish a page
-> write because the final cycles are automatically managed by the
-> hardware. In this case, the additional care must be taken to manually
-> perform the final status check.
 > 
-> Let's read the NAND chip status at the end of the page write helper and
-> return -EIO upon error.
+> Bisect for this issue is also pointing to ...
 > 
-> Cc: Michal Simek <michal.simek@amd.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 88ffef1b65cf ("mtd: rawnand: arasan: Support the hardware BCH ECC engine")
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> Acked-by: Michal Smek <michal.simek@amd.com>
+> Rob Clark <robdclark@chromium.org>
+>       interconnect: Fix locking for runpm vs reclaim
+> 
+> Looks like all the Tegra issues are related to this.
+> 
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git mtd/fixes.
+This isn't surprising because upstream commit 136191703038 ("interconnect: Teach
+lockdep about icc_bw_lock order") silently fixes it without Fixes: tag. If you
+look into that patch you'll see that the the missing call to mutex_unlock() is
+added to icc_sync_state().
 
-Miquel
+Guenter
+
