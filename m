@@ -2,125 +2,193 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC5327AB083
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 13:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B38F17AB171
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 13:58:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233621AbjIVLWn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 07:22:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56198 "EHLO
+        id S233948AbjIVL6X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 07:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233551AbjIVLWn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 07:22:43 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CCC28F;
-        Fri, 22 Sep 2023 04:22:36 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qjeF0-0001kI-Kc; Fri, 22 Sep 2023 13:22:34 +0200
-Message-ID: <b5e822ff-4b7c-4617-96c8-5b132df814ab@leemhuis.info>
-Date:   Fri, 22 Sep 2023 13:22:33 +0200
+        with ESMTP id S233669AbjIVL6W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 07:58:22 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4CEBF18F;
+        Fri, 22 Sep 2023 04:58:16 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 13FA5DA7;
+        Fri, 22 Sep 2023 04:58:53 -0700 (PDT)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.26])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C73D3F67D;
+        Fri, 22 Sep 2023 04:58:11 -0700 (PDT)
+From:   Ryan Roberts <ryan.roberts@arm.com>
+To:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Muchun Song <muchun.song@linux.dev>,
+        SeongJae Park <sj@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Peter Xu <peterx@redhat.com>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>
+Cc:     Ryan Roberts <ryan.roberts@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org
+Subject: [PATCH v2 0/2] Fix set_huge_pte_at() panic on arm64
+Date:   Fri, 22 Sep 2023 12:58:02 +0100
+Message-Id: <20230922115804.2043771-1-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on
- MT7915
-Content-Language: en-US, de-DE
-To:     Oleksandr Natalenko <oleksandr@natalenko.name>,
-        linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20230726091704.25795-1-nbd@nbd.name>
- <12289744.O9o76ZdvQC@natalenko.name>
-From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <12289744.O9o76ZdvQC@natalenko.name>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695381756;a2ff28c2;
-X-HE-SMSGID: 1qjeF0-0001kI-Kc
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[TLDR: I'm adding this report to the list of tracked Linux kernel
-regressions; the text you find below is based on a few templates
-paragraphs you might have encountered already in similar form.
-See link in footer if these mails annoy you.]
+Hi All,
 
-On 21.09.23 07:02, Oleksandr Natalenko wrote:
-> 
-> On středa 26. července 2023 11:17:02 CEST Felix Fietkau wrote:
->> The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half-NSS
->> 160 MHz support, so it is wrong to also advertise full 160 MHz support.
->>
->> Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width support for MT7915")
->> Signed-off-by: Felix Fietkau <nbd@nbd.name>
->> ---
->>  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
->>  1 file changed, 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->> index ee976657bfc3..78552f10b377 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->> @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
->>  			if (!dev->dbdc_support)
->>  				vht_cap->cap |=
->>  					IEEE80211_VHT_CAP_SHORT_GI_160 |
->> -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
->>  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
->>  		} else {
->>  			vht_cap->cap |=
->>
-> 
-> For some reason this got backported into the stable kernel:
-> 
-> ```
-> $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt7915/
-> c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
-> edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
-> 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
-> 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
-> 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
-> 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is active
-> feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is active
-> 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
-> ```
-> 
-> and this broke my mt7915-based AP.
-> 
-> However, if I remove `[VT160]` capability from the hostapd config, things go back to normal. It does seem that 160 MHz still works even.
-> 
-> Is this expected?
+This series fixes a bug in arm64's implementation of set_huge_pte_at(), which
+can result in an unprivileged user causing a kernel panic. The problem was
+triggered when running the new uffd poison mm selftest for HUGETLB memory. This
+test (and the uffd poison feature) was merged for v6.5-rc7.
 
-Thanks for the report. To be sure the issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-tracking bot:
+Ideally, I'd like to get this fix in for v6.6 and I've cc'ed stable (correctly
+this time) to get it backported to v6.5, where the issue first showed up.
 
-#regzbot ^introduced 3ec5ac12ac8a4e..fe0ea395f0a351
-#regzbot title wifi: mt76: mt7915: removal of VHT160 capability broke hostap
-#regzbot ignore-activity
 
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply and tell me -- ideally
-while also telling regzbot about it, as explained by the page listed in
-the footer of this mail.
+Description of Bug
+------------------
 
-Developers: When fixing the issue, remember to add 'Link:' tags pointing
-to the report (the parent of this mail). See page linked in footer for
-details.
+arm64's huge pte implementation supports multiple huge page sizes, some of which
+are implemented in the page table with multiple contiguous entries. So
+set_huge_pte_at() needs to work out how big the logical pte is, so that it can
+also work out how many physical ptes (or pmds) need to be written. It previously
+did this by grabbing the folio out of the pte and querying its size.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+However, there are cases when the pte being set is actually a swap entry. But
+this also used to work fine, because for huge ptes, we only ever saw migration
+entries and hwpoison entries. And both of these types of swap entries have a PFN
+embedded, so the code would grab that and everything still worked out.
+
+But over time, more calls to set_huge_pte_at() have been added that set swap
+entry types that do not embed a PFN. And this causes the code to go bang. The
+triggering case is for the uffd poison test, commit 99aa77215ad0 ("selftests/mm:
+add uffd unit test for UFFDIO_POISON"), which causes a PTE_MARKER_POISONED swap
+entry to be set, coutesey of commit 8a13897fb0da ("mm: userfaultfd: support
+UFFDIO_POISON for hugetlbfs") - added in v6.5-rc7. Although review shows that
+there are other call sites that set PTE_MARKER_UFFD_WP (which also has no PFN),
+these don't trigger on arm64 because arm64 doesn't support UFFD WP.
+
+If CONFIG_DEBUG_VM is enabled, we do at least get a BUG(), but otherwise, it
+will dereference a bad pointer in page_folio():
+
+    static inline struct folio *hugetlb_swap_entry_to_folio(swp_entry_t entry)
+    {
+        VM_BUG_ON(!is_migration_entry(entry) && !is_hwpoison_entry(entry));
+
+        return page_folio(pfn_to_page(swp_offset_pfn(entry)));
+    }
+
+
+Fix
+---
+
+The simplest fix would have been to revert the dodgy cleanup commit 18f3962953e4
+("mm: hugetlb: kill set_huge_swap_pte_at()"), but since things have moved on,
+this would have required an audit of all the new set_huge_pte_at() call sites to
+see if they should be converted to set_huge_swap_pte_at(). As per the original
+intent of the change, it would also leave us open to future bugs when people
+invariably get it wrong and call the wrong helper.
+
+So instead, I've added a huge page size parameter to set_huge_pte_at(). This
+means that the arm64 code has the size in all cases. It's a bigger change, due
+to needing to touch the arches that implement the function, but it is entirely
+mechanical, so in my view, low risk.
+
+I've compile-tested all touched arches; arm64, parisc, powerpc, riscv, s390,
+sparc (and additionally x86_64). I've additionally booted and run mm selftests
+against arm64, where I observe the uffd poison test is fixed, and there are no
+other regressions.
+
+
+Patches
+-------
+
+patch 1: Convert core mm and arches to pass extra param (no behavioral change)
+patch 8: Fix the arm64 bug
+
+Patches based on v6.6-rc2.
+
+
+Changes since v1 [1]
+--------------------
+
+- Pass extra size param instead of converting mm to vma.
+    - Passing vma was problematic for kernel mapping case without vma
+- Squash all interface changes to single patch
+- Simplify powerpc so that is doesn't require __set_huge_page_at()
+- Added Reviewed-bys
+
+
+[1] https://lore.kernel.org/linux-arm-kernel/20230921162007.1630149-1-ryan.roberts@arm.com/
+
+
+Thanks,
+Ryan
+
+Ryan Roberts (2):
+  mm: hugetlb: Add huge page size param to set_huge_pte_at()
+  arm64: hugetlb: Fix set_huge_pte_at() to work with all swap entries
+
+ arch/arm64/include/asm/hugetlb.h              |  2 +-
+ arch/arm64/mm/hugetlbpage.c                   | 23 +++-------
+ arch/parisc/include/asm/hugetlb.h             |  2 +-
+ arch/parisc/mm/hugetlbpage.c                  |  2 +-
+ .../include/asm/nohash/32/hugetlb-8xx.h       |  3 +-
+ arch/powerpc/mm/book3s64/hugetlbpage.c        |  5 ++-
+ arch/powerpc/mm/book3s64/radix_hugetlbpage.c  |  3 +-
+ arch/powerpc/mm/nohash/8xx.c                  |  3 +-
+ arch/powerpc/mm/pgtable.c                     |  3 +-
+ arch/riscv/include/asm/hugetlb.h              |  3 +-
+ arch/riscv/mm/hugetlbpage.c                   |  3 +-
+ arch/s390/include/asm/hugetlb.h               |  6 ++-
+ arch/s390/mm/hugetlbpage.c                    |  8 +++-
+ arch/sparc/include/asm/hugetlb.h              |  6 ++-
+ arch/sparc/mm/hugetlbpage.c                   |  8 +++-
+ include/asm-generic/hugetlb.h                 |  2 +-
+ include/linux/hugetlb.h                       |  6 ++-
+ mm/damon/vaddr.c                              |  3 +-
+ mm/hugetlb.c                                  | 43 +++++++++++--------
+ mm/migrate.c                                  |  7 ++-
+ mm/rmap.c                                     | 23 +++++++---
+ mm/vmalloc.c                                  |  2 +-
+ 22 files changed, 103 insertions(+), 63 deletions(-)
+
 --
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+2.25.1
+
