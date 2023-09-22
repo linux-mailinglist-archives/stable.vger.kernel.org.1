@@ -2,67 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A8CF7AB8F0
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 20:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F125F7AB90A
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 20:21:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231449AbjIVSPj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 14:15:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41662 "EHLO
+        id S232609AbjIVSVa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 14:21:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbjIVSPi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 14:15:38 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C0AEA9
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 11:15:32 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-cf4cb742715so3312195276.2
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 11:15:32 -0700 (PDT)
+        with ESMTP id S232992AbjIVSV3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 14:21:29 -0400
+Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC989AB
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 11:21:22 -0700 (PDT)
+Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-41761e9181eso40001cf.1
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 11:21:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695406531; x=1696011331; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yisyY0FcmMhu1UJ/oaYmui5M8B9s34gvtt+JkaXaZJE=;
-        b=xKbjJFawPq3P2Rqp0AoelvxFAsmjkVVaYt6RF52xu7mhDWUmn2RIYRafiPyWdLGAdx
-         1HFv9cniAx/PuVPNcOqYzqox0JCKxh3AE9S6oSqiKJZ5UkWVgsXjk7+slaDn6pxBonJh
-         bApAhc7pKa/QKigrL94SXCkbJfwGaWtznY4ieIK5JKzD4AQGQLLlih7bxC0lfH57PZvL
-         /2azdufvdUW3iI1JDAisciV2wrh4uOKZd4GaoK2rkZa3qLHw3hrhJ+dv2jDBsnVb4krP
-         5bpnTGbt7g6dEO93n8f0nHygmpuQTXBT1+z17xeTPRMsfJM6rC/XkxyD2pgB8iSy5MZq
-         bY/g==
+        d=google.com; s=20230601; t=1695406882; x=1696011682; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UFXnvm90AnZS5ugwYzLgHg0vzuSZu/RHex9JeJs8pKc=;
+        b=ckFcenzCQARDq2vH179vjehHy1Up3xZygz0lAwpXe5YuV6AH/z2MtqnVmPvV3BXODA
+         oEUo4Fz7V798hHJ81WLApnVIwRrtRNItLw+Dd8IFyzq0PMjOqqVzPGRezIuE1q2QkZGX
+         1TKts5mHdnzK+AMLp3o5M8/sINAuxBz4ZhVS1cQLsZNHnNkmkE55Q1S0YZLJJVQG/zXR
+         23tA2hZpaGAe9MPXBR1nsd57M5y32F16SShzrH7j0sWDogcmWlXLQOAQgrCHOsQJ9Ocb
+         muakfLyajXLYLZJxIZtmi+LQqAwNc+014fOxeUfyslkkrVGNWiXtIi2O5knCUbB9Q62H
+         xpFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695406531; x=1696011331;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yisyY0FcmMhu1UJ/oaYmui5M8B9s34gvtt+JkaXaZJE=;
-        b=OXaqPTZV3wvPfvGQXntf9aPmz1RcnsvTK4P44jtjuErkBrJ0pf3PO6Tea4S1PzFpZA
-         uk9wiQDQYh5MQBUXxFXyujJytzKNzymbd2tnFIXRmSav1ZuvdxZm8qmVzPuagEh0pxcB
-         8cwRLD6H9jikIZcPq3+qE82qnXhPJXlLTr0czh7yDFyDUtcr28OhWRXCQDWDVCCM1iPf
-         h6U4glNjxTCBOST4YcMaQh2ASrFm3s17kKG4kMINZjGQONktaPf9zPEvaaJjojNVSAXv
-         ZsPV7leyDVWytu8UIavyO+rBdZIuGnnS+Je9e/ySTISgm7XxA14+cEjfNd78MhLwdY2S
-         bYrA==
-X-Gm-Message-State: AOJu0Yy3k6tmhnu5XDyKLh11ltFYLusZBwtlpUmlct22GCC/+oUJ+2SC
-        FF9GasgZWngkpNcv8I92xfaMgSxtGxH2tHw+VEs=
-X-Google-Smtp-Source: AGHT+IFQ1zANXEZ45PUN85d3Byff5vsjkSZ9yZxDFGwfcMj4yS/9JsNcjoZvrTXXNE/JR+PhfTyQ2mp5VnDjWOxSv2c=
-X-Received: from saranyamohan.svl.corp.google.com ([2620:15c:2a3:200:bdd4:4eee:5b8e:9273])
- (user=saranyamohan job=sendgmr) by 2002:a25:316:0:b0:d7b:8d0c:43f1 with SMTP
- id 22-20020a250316000000b00d7b8d0c43f1mr784ybd.9.1695406531401; Fri, 22 Sep
- 2023 11:15:31 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 11:15:28 -0700
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
-Message-ID: <20230922181528.366670-1-saranyamohan@google.com>
-Subject: [PATCH 6.1] block: fix use-after-free of q->q_usage_counter
+        d=1e100.net; s=20230601; t=1695406882; x=1696011682;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UFXnvm90AnZS5ugwYzLgHg0vzuSZu/RHex9JeJs8pKc=;
+        b=GzFBHHuurkBeWUjPKTAnzfMxpx6+f6UFaa9+YIK/E/n0d2n7KksJJmKyT6HpSZK3Ks
+         /USz3hzYY+/xj5tpSCxB8oYPYre9lQ1HoIk/7sZfahQartYACcpSd+jfRfFYfAJKtO//
+         nx1qWtRrYjr1Dpuabyz/LLiAgGAATHrJLZHUk+wfd9or/ylshArPQypS+BCDqnpFUyeh
+         lJt1yfbnKow6h51jGD+a0Wia8IKizjx95UIZRqA1SR1TCSc6m3MA2D9hvJvmBRpdgb9i
+         fGYyhZehKYFoomD5QBzzR5xgXrVrAlBnJdrZsWcOqaSvLYIZ3ooFXopYtkRaUm1xJYeP
+         MdYw==
+X-Gm-Message-State: AOJu0YwKjtJTBC3ShibbyVnKi67hphq2rzhuCzvtYcZo7OOAGP/dERYc
+        9cJbFe0RXpozuxFiciL5Zv+/i+FMLfpakGIxxgi2/w==
+X-Google-Smtp-Source: AGHT+IG+aBHFGKfyx4fK4ZjMyyr00JPufXWbmH7atMAjhgHiFc+jsv5T4h5cZjF7hN68WGhqxxLyCZTr/EufF0l2vSA=
+X-Received: by 2002:a05:622a:1aa6:b0:3ef:5f97:258f with SMTP id
+ s38-20020a05622a1aa600b003ef5f97258fmr30782qtc.16.1695406881586; Fri, 22 Sep
+ 2023 11:21:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230921182012.3965572-1-saranyamohan@google.com> <2023092258-clothing-passerby-e0f2@gregkh>
+In-Reply-To: <2023092258-clothing-passerby-e0f2@gregkh>
 From:   Saranya Muruganandam <saranyamohan@google.com>
-To:     Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
-        Ming Lei <ming.lei@redhat.com>, stable@vger.kernel.org
-Cc:     linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+Date:   Fri, 22 Sep 2023 11:21:10 -0700
+Message-ID: <CAP9s-SrHMFD6Q8t9Htk8W5OrQTAoe2D51ZRf-Zap4O_3E485LA@mail.gmail.com>
+Subject: Re: [PATCH] block: fix use-after-free of q->q_usage_counter
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+        Ming Lei <ming.lei@redhat.com>, stable@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
         Zhang Wensheng <zhangwensheng@huaweicloud.com>,
         Zhong Jinghua <zhongjinghua@huawei.com>,
         Hillf Danton <hdanton@sina.com>, Yu Kuai <yukuai3@huawei.com>,
-        Dennis Zhou <dennis@kernel.org>,
-        Saranya Muruganandam <saranyamohan@google.com>
+        Dennis Zhou <dennis@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,59 +74,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ming Lei <ming.lei@redhat.com>
+Apologies for leaving out the stable release info.
+This is for both 5.10 and patch applies cleanly for 5.15.
 
-commit d36a9ea5e7766961e753ee38d4c331bbe6ef659b upstream.
+I just sent out a (different) modified patch for 6.1 LTS.
 
-For blk-mq, queue release handler is usually called after
-blk_mq_freeze_queue_wait() returns. However, the
-q_usage_counter->release() handler may not be run yet at that time, so
-this can cause a use-after-free.
 
-Fix the issue by moving percpu_ref_exit() into blk_free_queue_rcu().
-Since ->release() is called with rcu read lock held, it is agreed that
-the race should be covered in caller per discussion from the two links.
-
-Backport-notes: Not a clean cherry-pick since a lot has changed,
-however essentially the same fix.
-
-Reported-by: Zhang Wensheng <zhangwensheng@huaweicloud.com>
-Reported-by: Zhong Jinghua <zhongjinghua@huawei.com>
-Link: https://lore.kernel.org/linux-block/Y5prfOjyyjQKUrtH@T590/T/#u
-Link: https://lore.kernel.org/lkml/Y4%2FmzMd4evRg9yDi@fedora/
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20221215021629.74870-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Saranya Muruganandam <saranyamohan@google.com>
----
- block/blk-sysfs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index a582ea0da74f..a82bdec923b2 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -737,6 +737,7 @@ static void blk_free_queue_rcu(struct rcu_head *rcu_head)
- 	struct request_queue *q = container_of(rcu_head, struct request_queue,
- 					       rcu_head);
- 
-+	percpu_ref_exit(&q->q_usage_counter);
- 	kmem_cache_free(blk_get_queue_kmem_cache(blk_queue_has_srcu(q)), q);
- }
- 
-@@ -762,8 +763,6 @@ static void blk_release_queue(struct kobject *kobj)
- 
- 	might_sleep();
- 
--	percpu_ref_exit(&q->q_usage_counter);
--
- 	if (q->poll_stat)
- 		blk_stat_remove_callback(q, q->poll_cb);
- 	blk_stat_free_callback(q->poll_cb);
--- 
-2.42.0.515.g380fc7ccd1-goog
-
+On Fri, Sep 22, 2023 at 2:26=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Thu, Sep 21, 2023 at 11:20:12AM -0700, Saranya Muruganandam wrote:
+> > From: Ming Lei <ming.lei@redhat.com>
+> >
+> > commit d36a9ea5e7766961e753ee38d4c331bbe6ef659b upstream.
+> >
+> > For blk-mq, queue release handler is usually called after
+> > blk_mq_freeze_queue_wait() returns. However, the
+> > q_usage_counter->release() handler may not be run yet at that time, so
+> > this can cause a use-after-free.
+> >
+> > Fix the issue by moving percpu_ref_exit() into blk_free_queue_rcu().
+> > Since ->release() is called with rcu read lock held, it is agreed that
+> > the race should be covered in caller per discussion from the two links.
+> >
+> > Backport-notes: Not a clean cherry-pick since a lot has changed,
+> > however essentially the same fix.
+> >
+> > Reported-by: Zhang Wensheng <zhangwensheng@huaweicloud.com>
+> > Reported-by: Zhong Jinghua <zhongjinghua@huawei.com>
+> > Link: https://lore.kernel.org/linux-block/Y5prfOjyyjQKUrtH@T590/T/#u
+> > Link: https://lore.kernel.org/lkml/Y4%2FmzMd4evRg9yDi@fedora/
+> > Cc: Hillf Danton <hdanton@sina.com>
+> > Cc: Yu Kuai <yukuai3@huawei.com>
+> > Cc: Dennis Zhou <dennis@kernel.org>
+> > Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref=
+ in fast path")
+> > Signed-off-by: Ming Lei <ming.lei@redhat.com>
+> > Link: https://lore.kernel.org/r/20221215021629.74870-1-ming.lei@redhat.=
+com
+> > Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> > Signed-off-by: Saranya Muruganandam <saranyamohan@google.com>
+> > ---
+> >  block/blk-core.c  | 2 --
+> >  block/blk-sysfs.c | 2 ++
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> What stable kernel(s) are you expecting this backport to be applied to?
+>
+> thanks,
+>
+> greg "not a mind reader" k-h
