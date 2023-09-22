@@ -2,73 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC8B27AAFEB
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 12:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC5327AB083
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 13:22:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233411AbjIVKtb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 06:49:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51136 "EHLO
+        id S233621AbjIVLWn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 07:22:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbjIVKta (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 06:49:30 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F25C99;
-        Fri, 22 Sep 2023 03:49:24 -0700 (PDT)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38M79Du1020281;
-        Fri, 22 Sep 2023 10:49:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=hpO/ZP6cwcezFYAfpFZFentrmwNE3+cuCJGJa6/4z90=;
- b=NOEqFXk4ttcd+iqZgyufhpRAyp2pzHxx3cztxChA44mzuyLsDXRj1xgq6F2oSNawmU7g
- JiMqXY0Vds2RpghxVSITtPohKqE6sy/jlyjkKlkxOayXK4npWLzW9Unx5ZT11C6bxu74
- rDknlUyVlyBO5R6sKzAM9NiijuTEcxGDnzAV+bE5fQH7sK5jKUfHnsuwzn48X9QHrb75
- LWmk1z2ew42WUxGcwpoUdeP36uzTEXxNHpLrzmYdASZlBwD6SByY5sRNw++ETKu+qy8p
- l2UOefhpJLDlm76TGlxONxB7p2kLW8DNnZopmUj2XGfQDrXmdXw23r1XS6M2VTDF+Z6E ag== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t8u6rsm7n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Sep 2023 10:49:12 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38MAnBSi012721
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 22 Sep 2023 10:49:11 GMT
-Received: from hu-prashk-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Fri, 22 Sep 2023 03:49:07 -0700
-From:   Prashanth K <quic_prashk@quicinc.com>
-To:     <linux-kernel@vger.kernel.org>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hongyu Xie <xy521521@gmail.com>,
-        Mathias Nyman <mathias.nyman@intel.com>, <stable@kernel.org>,
-        Hongyu Xie <xiehongyu1@kylinos.cn>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
-        "# 5 . 15" <stable@vger.kernel.org>,
-        Prashanth K <quic_prashk@quicinc.com>
-Subject: [PATCH RESEND] xhci: Keep interrupt disabled in initialization until host is running.
-Date:   Fri, 22 Sep 2023 16:18:44 +0530
-Message-ID: <1695379724-28628-1-git-send-email-quic_prashk@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+        with ESMTP id S233551AbjIVLWn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 07:22:43 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CCC28F;
+        Fri, 22 Sep 2023 04:22:36 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qjeF0-0001kI-Kc; Fri, 22 Sep 2023 13:22:34 +0200
+Message-ID: <b5e822ff-4b7c-4617-96c8-5b132df814ab@leemhuis.info>
+Date:   Fri, 22 Sep 2023 13:22:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Ph53r2qVzdc-EYX6FSdrGQHCYTJrw-cC
-X-Proofpoint-ORIG-GUID: Ph53r2qVzdc-EYX6FSdrGQHCYTJrw-cC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-22_08,2023-09-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 mlxlogscore=686 impostorscore=0
- malwarescore=0 mlxscore=0 spamscore=0 bulkscore=0 phishscore=0
- suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2309180000 definitions=main-2309220091
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+User-Agent: Mozilla Thunderbird
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on
+ MT7915
+Content-Language: en-US, de-DE
+To:     Oleksandr Natalenko <oleksandr@natalenko.name>,
+        linux-wireless@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20230726091704.25795-1-nbd@nbd.name>
+ <12289744.O9o76ZdvQC@natalenko.name>
+From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+In-Reply-To: <12289744.O9o76ZdvQC@natalenko.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695381756;a2ff28c2;
+X-HE-SMSGID: 1qjeF0-0001kI-Kc
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -77,94 +49,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hongyu Xie <xy521521@gmail.com>
+[TLDR: I'm adding this report to the list of tracked Linux kernel
+regressions; the text you find below is based on a few templates
+paragraphs you might have encountered already in similar form.
+See link in footer if these mails annoy you.]
 
-[ Upstream commit 808925075fb750804a60ff0710614466c396db4 ]
+On 21.09.23 07:02, Oleksandr Natalenko wrote:
+> 
+> On středa 26. července 2023 11:17:02 CEST Felix Fietkau wrote:
+>> The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half-NSS
+>> 160 MHz support, so it is wrong to also advertise full 160 MHz support.
+>>
+>> Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width support for MT7915")
+>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+>> ---
+>>  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
+>>  1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+>> index ee976657bfc3..78552f10b377 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+>> @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+>>  			if (!dev->dbdc_support)
+>>  				vht_cap->cap |=
+>>  					IEEE80211_VHT_CAP_SHORT_GI_160 |
+>> -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
+>>  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
+>>  		} else {
+>>  			vht_cap->cap |=
+>>
+> 
+> For some reason this got backported into the stable kernel:
+> 
+> ```
+> $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt7915/
+> c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
+> edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
+> 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
+> 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
+> 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
+> 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is active
+> feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is active
+> 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
+> ```
+> 
+> and this broke my mt7915-based AP.
+> 
+> However, if I remove `[VT160]` capability from the hostapd config, things go back to normal. It does seem that 160 MHz still works even.
+> 
+> Is this expected?
 
-irq is disabled in xhci_quiesce(called by xhci_halt, with bit:2 cleared
-in USBCMD register), but xhci_run(called by usb_add_hcd) re-enable it.
-It's possible that you will receive thousands of interrupt requests
-after initialization for 2.0 roothub. And you will get a lot of
-warning like, "xHCI dying, ignoring interrupt. Shouldn't IRQs be
-disabled?". This amount of interrupt requests will cause the entire
-system to freeze.
-This problem was first found on a device with ASM2142 host controller
-on it.
+Thanks for the report. To be sure the issue doesn't fall through the
+cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
+tracking bot:
 
-[tidy up old code while moving it, reword header -Mathias]
+#regzbot ^introduced 3ec5ac12ac8a4e..fe0ea395f0a351
+#regzbot title wifi: mt76: mt7915: removal of VHT160 capability broke hostap
+#regzbot ignore-activity
 
-Cc: stable@kernel.org
-Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20220623111945.1557702-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org> # 5.15
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
----
- drivers/usb/host/xhci.c | 34 +++++++++++++++++++++-------------
- 1 file changed, 21 insertions(+), 13 deletions(-)
+This isn't a regression? This issue or a fix for it are already
+discussed somewhere else? It was fixed already? You want to clarify when
+the regression started to happen? Or point out I got the title or
+something else totally wrong? Then just reply and tell me -- ideally
+while also telling regzbot about it, as explained by the page listed in
+the footer of this mail.
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 541fe4d..7ee747e 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -607,8 +607,27 @@ static int xhci_init(struct usb_hcd *hcd)
- 
- static int xhci_run_finished(struct xhci_hcd *xhci)
- {
-+	unsigned long	flags;
-+	u32		temp;
-+
-+	/*
-+	 * Enable interrupts before starting the host (xhci 4.2 and 5.5.2).
-+	 * Protect the short window before host is running with a lock
-+	 */
-+	spin_lock_irqsave(&xhci->lock, flags);
-+
-+	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Enable interrupts");
-+	temp = readl(&xhci->op_regs->command);
-+	temp |= (CMD_EIE);
-+	writel(temp, &xhci->op_regs->command);
-+
-+	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Enable primary interrupter");
-+	temp = readl(&xhci->ir_set->irq_pending);
-+	writel(ER_IRQ_ENABLE(temp), &xhci->ir_set->irq_pending);
-+
- 	if (xhci_start(xhci)) {
- 		xhci_halt(xhci);
-+		spin_unlock_irqrestore(&xhci->lock, flags);
- 		return -ENODEV;
- 	}
- 	xhci->shared_hcd->state = HC_STATE_RUNNING;
-@@ -619,6 +638,8 @@ static int xhci_run_finished(struct xhci_hcd *xhci)
- 
- 	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
- 			"Finished xhci_run for USB3 roothub");
-+
-+	spin_unlock_irqrestore(&xhci->lock, flags);
- 	return 0;
- }
- 
-@@ -667,19 +688,6 @@ int xhci_run(struct usb_hcd *hcd)
- 	temp |= (xhci->imod_interval / 250) & ER_IRQ_INTERVAL_MASK;
- 	writel(temp, &xhci->ir_set->irq_control);
- 
--	/* Set the HCD state before we enable the irqs */
--	temp = readl(&xhci->op_regs->command);
--	temp |= (CMD_EIE);
--	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
--			"// Enable interrupts, cmd = 0x%x.", temp);
--	writel(temp, &xhci->op_regs->command);
--
--	temp = readl(&xhci->ir_set->irq_pending);
--	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
--			"// Enabling event ring interrupter %p by writing 0x%x to irq_pending",
--			xhci->ir_set, (unsigned int) ER_IRQ_ENABLE(temp));
--	writel(ER_IRQ_ENABLE(temp), &xhci->ir_set->irq_pending);
--
- 	if (xhci->quirks & XHCI_NEC_HOST) {
- 		struct xhci_command *command;
- 
--- 
-2.7.4
+Developers: When fixing the issue, remember to add 'Link:' tags pointing
+to the report (the parent of this mail). See page linked in footer for
+details.
 
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
