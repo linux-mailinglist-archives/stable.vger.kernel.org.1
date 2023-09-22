@@ -2,129 +2,176 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D6D27AB583
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 18:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D25B57AB5AA
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 18:14:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229636AbjIVQHS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 12:07:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52130 "EHLO
+        id S229572AbjIVQOX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 12:14:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230212AbjIVQHR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 12:07:17 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5AAC196
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 09:07:11 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d814634fe4bso2978229276.1
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 09:07:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695398831; x=1696003631; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xr7kuFN6juosnD7pV2K+XCmCrqnUJ7hjGVPi9yEcRC4=;
-        b=4zT5NTfDBouBX/t+CFOSZPiMnOD/u1FPJVea6Mg6nM3pG7fV/mQ8Poen7Y8/7RZrEk
-         qXHDVrWD4jplS5j4LUHHJj4EsHh3RAs67IyPjyvZZcS4e1+W/KwGzVHxQAg9K5TYjJF/
-         jVN41v4E3V9Ckjsa5s0IQQawu7D4BOog7mjb8nKOX8uRaG87hro1bPKi+DZ+GXDY1GBB
-         zdKJ5uNReM8nf/eA6Pwgume4gse8DSI4HknXVSKB2ISNraUR7WBVBzt4pZkcabfFLjjW
-         x2nmv/X6O5Dd7JWa+KgFfZMRZxXmWyN/hu7dMTh0MSY/M/V/4/qrxvOH6pYbcUVnDzvc
-         tjfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695398831; x=1696003631;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xr7kuFN6juosnD7pV2K+XCmCrqnUJ7hjGVPi9yEcRC4=;
-        b=fRWKyu8grlR5JH0UnNTMSLJMsTdzDLZYmADl0oQmmAdm4UaIVqaKkPmVcBSh6k1or3
-         57RKjMwFrj1+WBIHP1KpB5kgt1y0sQBt2SJ1aAlujAfbdy8O/zuRg8BFfb1v6o6cfYar
-         usd9ilKcwn+fa1h2d5utpYWIRQiZ+OLRfS4qjwA4Li5VLhxd5FbqQGsnzqVnwjdGEhLS
-         kT4DY5hTOwfMC7ycNbt1M2ruyWxP8gqZozgGMqYPdr3p6q0Sh+hSL1UKljp1qQ+Gz7ul
-         VHSKCuZDo5HbEYWvVugzOHe1pA/WBE36YPuG+h9V8MPL3LBnuQChOPU2ZW9cQFUV+8mF
-         jtZA==
-X-Gm-Message-State: AOJu0YxLU8PC12rjsMK+Dqh6O/eAU5QwHwsjxGkTiIEuN2Ky13NbsyX0
-        TzXWdHNnl4gSsES73RzSDzjJm8UKMBP1
-X-Google-Smtp-Source: AGHT+IGVb7ofk/0yHXHjCjAofJnuira/SMpyG+N49vFZHQCOf548qiOomD5P0oFa9Ales9KeVgwVz+cdM4tX
-X-Received: from bjg.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:415])
- (user=bgeffon job=sendgmr) by 2002:a25:5090:0:b0:d7e:752f:baee with SMTP id
- e138-20020a255090000000b00d7e752fbaeemr120348ybb.10.1695398830992; Fri, 22
- Sep 2023 09:07:10 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 12:07:04 -0400
-In-Reply-To: <20230922155336.507220-1-bgeffon@google.com>
-Mime-Version: 1.0
-References: <20230922155336.507220-1-bgeffon@google.com>
-X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
-Message-ID: <20230922160704.511283-1-bgeffon@google.com>
-Subject: [PATCH] PM: hibernate: clean up sync_read handling in snapshot_write_next
-From:   Brian Geffon <bgeffon@google.com>
-To:     "Rafael J . Wysocki" <rafael@kernel.org>
-Cc:     Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Brian Geffon <bgeffon@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229503AbjIVQOV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 12:14:21 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13E49102;
+        Fri, 22 Sep 2023 09:14:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A71C433C7;
+        Fri, 22 Sep 2023 16:14:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695399254;
+        bh=ghtojmtAqFRtX4PcgZLlC2VPw2Ttv8ZnkZD0uHf6G3Y=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=r2KQI46MuFtdt7QHNa6AqgiJz/M5ENzMW7kPwq5MHDWzFycJ2+pY4u3MqsA9xu0nC
+         W/HNBy22Xw7JneqjviL2IaJu3dGzWLn16NZ5LDkp581LGZMdDZg4052edSPlLkbLHO
+         EwdDs5kw6QxWcMB8DPa5TapO2QHn2N4oQOpAikE02mi4L04UnKYumRRdcwACdUxhgT
+         xMQKjaY0zqYX4QHMGOi217/faMzXeE4+N/6foqQ34cnGlWvVCbUdZdJPU2NbwsyjUC
+         p3AMpsc8yh3FbtfuQO9iVhIkFE9bRCE4VRqafiuyTvaj8qLItH92nbbD52ZVQBMP1Q
+         LphK+HBo/3yDg==
+Date:   Fri, 22 Sep 2023 17:14:04 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Ryan Roberts <ryan.roberts@arm.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Muchun Song <muchun.song@linux.dev>,
+        SeongJae Park <sj@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Peter Xu <peterx@redhat.com>,
+        Axel Rasmussen <axelrasmussen@google.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] arm64: hugetlb: Fix set_huge_pte_at() to work
+ with all swap entries
+Message-ID: <20230922161404.GA23332@willie-the-truck>
+References: <20230922115804.2043771-1-ryan.roberts@arm.com>
+ <20230922115804.2043771-3-ryan.roberts@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230922115804.2043771-3-ryan.roberts@arm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In snapshot_write_next sync_read is set and unset in three different
-spots unnecessiarly. As a result there is a subtle bug where the first
-page after the meta data has been loaded unconditionally sets sync_read
-to 0. If this first pfn was actually a highmem page then the returned
-buffer will be the global "buffer," and the page needs to be loaded
-synchronously.
+On Fri, Sep 22, 2023 at 12:58:04PM +0100, Ryan Roberts wrote:
+> When called with a swap entry that does not embed a PFN (e.g.
+> PTE_MARKER_POISONED or PTE_MARKER_UFFD_WP), the previous implementation
+> of set_huge_pte_at() would either cause a BUG() to fire (if
+> CONFIG_DEBUG_VM is enabled) or cause a dereference of an invalid address
+> and subsequent panic.
+> 
+> arm64's huge pte implementation supports multiple huge page sizes, some
+> of which are implemented in the page table with multiple contiguous
+> entries. So set_huge_pte_at() needs to work out how big the logical pte
+> is, so that it can also work out how many physical ptes (or pmds) need
+> to be written. It previously did this by grabbing the folio out of the
+> pte and querying its size.
+> 
+> However, there are cases when the pte being set is actually a swap
+> entry. But this also used to work fine, because for huge ptes, we only
+> ever saw migration entries and hwpoison entries. And both of these types
+> of swap entries have a PFN embedded, so the code would grab that and
+> everything still worked out.
+> 
+> But over time, more calls to set_huge_pte_at() have been added that set
+> swap entry types that do not embed a PFN. And this causes the code to go
+> bang. The triggering case is for the uffd poison test, commit
+> 99aa77215ad0 ("selftests/mm: add uffd unit test for UFFDIO_POISON"),
+> which causes a PTE_MARKER_POISONED swap entry to be set, coutesey of
+> commit 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for
+> hugetlbfs") - added in v6.5-rc7. Although review shows that there are
+> other call sites that set PTE_MARKER_UFFD_WP (which also has no PFN),
+> these don't trigger on arm64 because arm64 doesn't support UFFD WP.
+> 
+> Arguably, the root cause is really due to commit 18f3962953e4 ("mm:
+> hugetlb: kill set_huge_swap_pte_at()"), which aimed to simplify the
+> interface to the core code by removing set_huge_swap_pte_at() (which
+> took a page size parameter) and replacing it with calls to
+> set_huge_pte_at() where the size was inferred from the folio, as
+> descibed above. While that commit didn't break anything at the time, it
+> did break the interface because it couldn't handle swap entries without
+> PFNs. And since then new callers have come along which rely on this
+> working. But given the brokeness is only observable after commit
+> 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs"),
+> that one gets the Fixes tag.
+> 
+> Now that we have modified the set_huge_pte_at() interface to pass the
+> huge page size in the previous patch, we can trivially fix this issue.
+> 
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
+> Cc: <stable@vger.kernel.org> # 6.5+
+> ---
+>  arch/arm64/mm/hugetlbpage.c | 17 +++--------------
+>  1 file changed, 3 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> index a7f8c8db3425..13fd592228b1 100644
+> --- a/arch/arm64/mm/hugetlbpage.c
+> +++ b/arch/arm64/mm/hugetlbpage.c
+> @@ -241,13 +241,6 @@ static void clear_flush(struct mm_struct *mm,
+>  	flush_tlb_range(&vma, saddr, addr);
+>  }
+>  
+> -static inline struct folio *hugetlb_swap_entry_to_folio(swp_entry_t entry)
+> -{
+> -	VM_BUG_ON(!is_migration_entry(entry) && !is_hwpoison_entry(entry));
+> -
+> -	return page_folio(pfn_to_page(swp_offset_pfn(entry)));
+> -}
+> -
+>  void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+>  			    pte_t *ptep, pte_t pte, unsigned long sz)
+>  {
+> @@ -257,13 +250,10 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+>  	unsigned long pfn, dpfn;
+>  	pgprot_t hugeprot;
+>  
+> -	if (!pte_present(pte)) {
+> -		struct folio *folio;
+> -
+> -		folio = hugetlb_swap_entry_to_folio(pte_to_swp_entry(pte));
+> -		ncontig = num_contig_ptes(folio_size(folio), &pgsize);
+> +	ncontig = num_contig_ptes(sz, &pgsize);
+>  
+> -		for (i = 0; i < ncontig; i++, ptep++)
+> +	if (!pte_present(pte)) {
+> +		for (i = 0; i < ncontig; i++, ptep++, addr += pgsize)
+>  			set_pte_at(mm, addr, ptep, pte);
 
-That is, I'm not sure we can always assume the following to be safe:
-		handle->buffer = get_buffer(&orig_bm, &ca);
-		handle->sync_read = 0;
+Our set_pte_at() doesn't use 'addr' for anything and the old code didn't
+even bother to increment it here! I'm fine adding that, but it feels
+unrelated to the issue which this patch is actually fixing.
 
-Because get_buffer can call get_highmem_page_buffer which can
-return 'buffer'
+Either way:
 
-The easiest way to address this is just set sync_read before
-snapshot_write_next returns if handle->buffer == buffer.
+Acked-by: Will Deacon <will@kernel.org>
 
-Signed-off-by: Brian Geffon <bgeffon@google.com>
-Fixes: 8357376d3df2 ("[PATCH] swsusp: Improve handling of highmem")
-Cc: stable@vger.kernel.org
----
- kernel/power/snapshot.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
-
-diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-index 190ed707ddcc..362e6bae5891 100644
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -2780,8 +2780,6 @@ int snapshot_write_next(struct snapshot_handle *handle)
- 	if (handle->cur > 1 && handle->cur > nr_meta_pages + nr_copy_pages + nr_zero_pages)
- 		return 0;
- 
--	handle->sync_read = 1;
--
- 	if (!handle->cur) {
- 		if (!buffer)
- 			/* This makes the buffer be freed by swsusp_free() */
-@@ -2824,7 +2822,6 @@ int snapshot_write_next(struct snapshot_handle *handle)
- 			memory_bm_position_reset(&zero_bm);
- 			restore_pblist = NULL;
- 			handle->buffer = get_buffer(&orig_bm, &ca);
--			handle->sync_read = 0;
- 			if (IS_ERR(handle->buffer))
- 				return PTR_ERR(handle->buffer);
- 		}
-@@ -2834,9 +2831,8 @@ int snapshot_write_next(struct snapshot_handle *handle)
- 		handle->buffer = get_buffer(&orig_bm, &ca);
- 		if (IS_ERR(handle->buffer))
- 			return PTR_ERR(handle->buffer);
--		if (handle->buffer != buffer)
--			handle->sync_read = 0;
- 	}
-+	handle->sync_read = (handle->buffer == buffer);
- 	handle->cur++;
- 
- 	/* Zero pages were not included in the image, memset it and move on. */
--- 
-2.42.0.515.g380fc7ccd1-goog
-
+Will
