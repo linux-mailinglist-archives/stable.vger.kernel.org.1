@@ -2,253 +2,177 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88A507AAEF9
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 11:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 339AA7AAF1B
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 12:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232785AbjIVJ6u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 05:58:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36010 "EHLO
+        id S233111AbjIVKGo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 06:06:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232997AbjIVJ6t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 05:58:49 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE63419B
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 02:58:25 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-273d9b1908eso425640a91.0
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 02:58:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1695376705; x=1695981505; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=glhbcKHlOJ++dI91Fd232eTIXjHqf2bx1O8BgYp5lCc=;
-        b=CW9CowE6eFGkLbIno5FWgUMiI7oGMBE16mxr5llVZvF34xDmi62V9zvg2Mu8isfB6Z
-         YKocuRLIZICNayJNLGPz6o7Mba3iMnDofdPv07+MGEhuIq3UKiFgqV9Y7Ji1F8ej2auN
-         tyHGzFwcMjaotBlo8OAvz4wwp+zdn/SS19BTKJXaAJhcU0f1DYqMaS25UrppHAtjFcdX
-         5dhG8G5pca9BhgnMiwjVYwtyfqCJcNwvffXB5IM8XGbGk2aTvncsBJ1PBt9oTFXRYD6B
-         GEkVjpqk0OU1dJ2oKBvjKUB244NGuvdtPBkPvAqrE1wXJYmZjSeRMlGSNu/smKUBtRFJ
-         zdHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695376705; x=1695981505;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=glhbcKHlOJ++dI91Fd232eTIXjHqf2bx1O8BgYp5lCc=;
-        b=RbEO482sAcSjAPtv96Bjan6IaWINEwrlgp0JctsVusxZuAsyy3w6SAzdUK224aLuoO
-         8iy03PTd2S2rpS4WvnclRUOJGNPxUG6iYRKDHDI7xhgRWuocNzHlzK18/vvDqdlErmdT
-         fSquEDJZgUxHbVSzsojUbDnOy12DN+y4UoG8lAfa8+Vqs62NXSXgPZrJxn65EwtO2+BK
-         5Zd2+jIPLq1byJjVV6JjF05BX6PqC+w4KA1mCunqeuyfk7KW78Rkcs8Uj0hZM162DmM8
-         tAOByAzyhSjs5TN/e4zqsZi8aEuaDww06b+gzRyPsdUvIRMEAMgqSD6Ko8tFu6LeUnZM
-         p7gg==
-X-Gm-Message-State: AOJu0YzTiqatQOERrEaMWNu2zowHEENadM9zYeZ3Ful+oir2/Q1ZUaOn
-        G3pTZXDRqo9ggpiBFuLHVFnqnA==
-X-Google-Smtp-Source: AGHT+IEAmOaW7qH1FQ4rMNYW5X5iaduW//iDAeulAsmjkwRxSd+P25fgKl/VoNi7DW4NKppwZJBueA==
-X-Received: by 2002:a17:90a:674b:b0:25c:1ad3:a4a1 with SMTP id c11-20020a17090a674b00b0025c1ad3a4a1mr7316585pjm.1.1695376705244;
-        Fri, 22 Sep 2023 02:58:25 -0700 (PDT)
-Received: from [10.84.155.178] ([203.208.167.146])
-        by smtp.gmail.com with ESMTPSA id lt22-20020a17090b355600b00276d039aecasm2933526pjb.13.2023.09.22.02.58.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Sep 2023 02:58:24 -0700 (PDT)
-Message-ID: <41b6524a-effe-c600-962c-2b6e32526dc8@bytedance.com>
-Date:   Fri, 22 Sep 2023 17:58:11 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v1 8/8] arm64: hugetlb: Fix set_huge_pte_at() to work with
- all swap entries
+        with ESMTP id S233152AbjIVKGn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 06:06:43 -0400
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2046.outbound.protection.outlook.com [40.107.94.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53685192;
+        Fri, 22 Sep 2023 03:06:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Kw9gC44yvAR+zZAVV5uvl+3rw8tV+KeUDBPa1j2rylrcjXsYwzZmosUkqaINdKpfY/ZcKJhLqCR4tAt2lICNagFIh2An3umLFus08iUB2Y/ZLPTAJUjSmpLE9Mw4Ms56sLX4vxx7hhBy5C275EGRzDpkurTLNakeAn+HhNUXLwWT4eBg9UjuXl3qVdbcLHBbJyBfp5LmgyC7h0OdLnblKyVzop6VjoYk8g1Ow0v8KJjMGTfDi6XJaV+pnDyCDwDD3YuWlKS+ZSgCtqgrH356mjCiHQSSlQhvJO3dCjx9L3A4dfasy28+j26hKA2A89UNc0VaouqD1mqtp8fvPJT22w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5xNUY/AqI0Ims47Rhxw9Ye1JsNtjqGuY/EJylZ5GSNI=;
+ b=cuzXmzcIJ25gPSu5DChJ5aV6zt8Yt6i3SOWCSjjujqWl+auO3NIo9hMyO6n1GKxpkUJjPl7XDWhzbkLtHNy5zmAam731n66Svon+VBxL+av17xJO6ICmctT4OqW6OQ4JwoTA/BtW02pO0p1DPtKm6WvHYfzhtKd1E3nP9arg7oG2hMTU3rUgldulFiSwxl+lBk8fAUD/KImEE/5fN2S3zQChBsEaO5d5YUaFYxICz3yeCuCqVQ7+I4/egLoDtzP4vg8VbYYENdZUWXeBQFJQbefQzHpgQxGPZ7D5rl8IXJ96D8u1hteiStPoUJBGhvuosheOMueQu3PlKaWV0GV4tQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5xNUY/AqI0Ims47Rhxw9Ye1JsNtjqGuY/EJylZ5GSNI=;
+ b=gsUg5aHSH0zn3DhFfhHCrxYlFpwi249jAcoAp/K0CyGfzjjbXQh8E04xFbC+d8yHge+hUKdwJgK3SXMO8UiYhHyzFmDSRx1vi4IxVFbTaRYSmXOSK/KT5ZAKg9fqMin486FaO+KJZkNSdB59IhDih6AJLh1a4vOAELaXlvOqo2gKOSnXFu2Qs6BXSe21cQxLM2YYJsjTCjI0J98vwlDHOXjavZ3gxvPLKTzeGpGWdm+Zq5KYE3loN6uIt4QyzFMVv9n4nAvzMUH5cFV/jTjRKgm3VlIhDJyX+JcIr3hxvVHQf4SRLTrswk1Qh1fyBWbO7PVJceCUEpOFNYfwrc5P1w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CO6PR12MB5444.namprd12.prod.outlook.com (2603:10b6:5:35e::8) by
+ CH2PR12MB4953.namprd12.prod.outlook.com (2603:10b6:610:36::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6813.23; Fri, 22 Sep 2023 10:06:34 +0000
+Received: from CO6PR12MB5444.namprd12.prod.outlook.com
+ ([fe80::1d1b:2ca4:1600:a865]) by CO6PR12MB5444.namprd12.prod.outlook.com
+ ([fe80::1d1b:2ca4:1600:a865%4]) with mapi id 15.20.6792.026; Fri, 22 Sep 2023
+ 10:06:34 +0000
+Message-ID: <ab1a38ca-738d-4e1b-9786-b61854f069b2@nvidia.com>
+Date:   Fri, 22 Sep 2023 11:06:25 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 6.5 000/211] 6.5.5-rc1 review
 Content-Language: en-US
-To:     Ryan Roberts <ryan.roberts@arm.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <muchun.song@linux.dev>,
-        SeongJae Park <sj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Peter Xu <peterx@redhat.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
-References: <20230921162007.1630149-1-ryan.roberts@arm.com>
- <20230921162007.1630149-9-ryan.roberts@arm.com>
- <217bb956-b9f6-1057-914b-436d4c775a8b@bytedance.com>
- <3358e732-8df9-4408-8249-384b102f5d75@arm.com>
- <6db7e7e0-4db6-f742-436b-1f4d8ae4e490@bytedance.com>
- <9e8d66fb-1d8d-4ce0-86a7-4c8b04557cca@arm.com>
-From:   Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <9e8d66fb-1d8d-4ce0-86a7-4c8b04557cca@arm.com>
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org,
+        "linux-tegra@vger.kernel.org" <linux-tegra@vger.kernel.org>
+References: <20230920112845.859868994@linuxfoundation.org>
+From:   Jon Hunter <jonathanh@nvidia.com>
+In-Reply-To: <20230920112845.859868994@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-ClientProxiedBy: AM0PR08CA0012.eurprd08.prod.outlook.com
+ (2603:10a6:208:d2::25) To CO6PR12MB5444.namprd12.prod.outlook.com
+ (2603:10b6:5:35e::8)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR12MB5444:EE_|CH2PR12MB4953:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9114a417-f015-4f39-2843-08dbbb5399f9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: qxdceA8MwDoIyaX4m8T0FLB946QKHtSiDM2WCmjFFKx9aD94c7VtI0moVOF+s1JYOAvzVBIW18N/u+cMX31kpPaMY6dwhVvwe8vqZ4Ivs+48CqQ8RkXvfLv8oIZC2IyDkh9AROrmtObTNoHnVRYMjagyX9O6B05cp9VFS+DojSejZNQR3VmN2QBDoPDiAtIf8GPIu27GtwCgNxf5c/JZ7PL1H2GbNkUFodygmzQuX5CI5jb+MaLJhgchaWxywmUazWl5kIx1JNTXs0COIDbahTZadZnDh20k0EHMXWieJpopzBX+3yvsr1JMc+rJxxvk7pNNeWYGZG/YbOPfvk/q73vJWkrYirVZcjP7X8dMK+kSlVYnKMPgx7jSCY0qNDUzbq3qEBbhywhy/dul/bRow5eI2/OeiYQMYduu+ZPu0IdxDNuRmrzrHSlVpCv6Huzm1yBNHAN1VOG64ECf/CB9jnyydY6hp60L8RNGMdY8AzVgKOm9IMaPzhs4P1vSzvXvL5bqxXoJnOog1pOGYmakSfG1g2uiPhmwDPRhdzDWR7VrfCpoGq7RyhVk7wCvQPdmppCcyruTgtmTyJow3uURPg29IVsy1/GodGnRuJ4M+0H5uk4OtPTAxRT6eiyeAP0BFBoAzhegLRLcciN84N2PHCWDR3sRcewNWK0k7PzgJZKqkbkQgI2wAPf0r0BEq0Ue
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5444.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(376002)(396003)(39860400002)(366004)(186009)(1800799009)(451199024)(53546011)(6666004)(966005)(6506007)(6486002)(478600001)(6512007)(41300700001)(316002)(86362001)(2616005)(2906002)(83380400001)(66946007)(66556008)(66476007)(5660300002)(4326008)(8936002)(8676002)(36756003)(31696002)(38100700002)(7416002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NllEYTNWWmY5ZVRwdzNXb2NJMXJJZTk0K0hOUCtTcTRwQ0ZLbWRiRWxibXRP?=
+ =?utf-8?B?V3NyODV0aTM3TEhLcU4zUXVvd2VLYitJTU83N3owMks3dkw1bGFpRGt1Zjds?=
+ =?utf-8?B?bTZPTEVqd3lLOSs3bjJuYVY1M1ZZL0h6YXkvQXRnVkMxWmNEN0lBdTZYVFlT?=
+ =?utf-8?B?M2ZaRzRDVENYcmZLdEE2QXA1VHBjUmpMajFzYjAvdWxUVUlmTW90VjhFZDdl?=
+ =?utf-8?B?SHRjSFhEK3BtRC9DeGZpSDI0S0RpQmd3dGVVNGZIT3dTWDhjYnFvVHNHc3Vi?=
+ =?utf-8?B?SWNKN2pUQUM2WlVlK1VjamUxV1puQVdwWEZQc1BMVFFZN0dCK25ZaEZFcHk2?=
+ =?utf-8?B?b1NpQlQ0ZWpPdjBQU0tIK0UwS3BJeXhGcmRYdGVZZFdjRWpkWUFuMm51ZXA1?=
+ =?utf-8?B?SjIya0FoZFhSSm01QTdYb2t6alEwQzlKbktiMnNBV1FCQzhNdWdnL0NHa25k?=
+ =?utf-8?B?bDFnR1g4Zjh6WDR3eEVldW15U3pXdDRUWEN6amx2VGZwL0pCamoxNzJxV1N3?=
+ =?utf-8?B?S0QyLzJIUHY3WVQ4blY0dzJOdCtONi9jSlpQVEFweUpyN3pIZElsS3VHMURX?=
+ =?utf-8?B?RVhEM0ZVWnk1a3VhUm9YMWZYWVA3TG13ZmNTeUJOeEc2dXVkWFFZd2FCdy93?=
+ =?utf-8?B?aDBOamcxZXp4N2R0YnAvekZOb2xwQmNvanlYaDNCbDlRUWVoWVc5K3hVLzhY?=
+ =?utf-8?B?UzRVR1FUTjRpejl0K0U1WG5IdHhJK2N2VC8zTUpFSE5VMHpsWWJ2RGc1akd6?=
+ =?utf-8?B?bm9QU085cUpVUHIzbFM3Mm5KY0VId2JpTFFDLytIRkFvZmJVbW9YRW5heUJy?=
+ =?utf-8?B?VS9iQXNqU1BoUkxzME5oUUNSSTNrWUpOK2gzM3dpaGRNaDJhT1JpTVV4TUNH?=
+ =?utf-8?B?Y1NzVW9aalluWTAwR25mUzlKamRRbDNrbXdwSE1yTERJRnhqWHJWUThYU0Z3?=
+ =?utf-8?B?TDVVL2JnSjRjQ3Q0WG9MYXlXQWI1QkpCV0VzVWVBYlJpZXNaeXlWWitvZW4y?=
+ =?utf-8?B?RVNtN2lIYkRGdERleHBXL2VQN3RrSnh6RWtwMmZjWDhJUXhJcGxUbHBQSkhj?=
+ =?utf-8?B?TTVCYjEzVlZZOHVEL3Mxbm80MEIweWRXSnp0VnhUdnJtdmZBM1o2ZU5VTERp?=
+ =?utf-8?B?NVNzK0FYTm1MY2Q2TWRSbFNVNHlrL01jWkVqSUR6OUZXakMzQnJHTmJuK0xO?=
+ =?utf-8?B?MkNPRFZIa2t6SzBVejFIK2ZZNERFamJudEUwWWdWNDBEcWt5elZoTE5IUG45?=
+ =?utf-8?B?U3JqZUNkVWd3cFdEalpRc2VMSkV5ZU5nRHJsK1RSM3N3SkpuQXFUTmJGTmJw?=
+ =?utf-8?B?TUtUOFBYVXpuRmsvbUthTERveEFqaTBtNXB5bXJ0eHVuNGV5OHhPQ1M4NnBP?=
+ =?utf-8?B?T1hib2kweDEzSHVadXNFbERHcGh6Z1JyZHUyOGxrNU16TEpHSzlvQUszVzJ2?=
+ =?utf-8?B?T0RlcWZEc3ZObzlzcVV3aDRzR1RjYndOVDNkaHB6aFhCYWFqbU1RV3RXY1c4?=
+ =?utf-8?B?YzFmY1MrTTJ1Vk5NeXVTK3B5eW5WTHRSaTh1VjNmbGdRU3lHU3BXczZ1M0No?=
+ =?utf-8?B?MzQyaFlHQ1kvOGtON2o4MWV3UlVjUFpDNklXalNQTXRMMUoyM0JMcVFEbktF?=
+ =?utf-8?B?K3gyTXN4VVZGNVJWek9mR0EzSFVCMmtVaFQwNlExVXNENjRKRG5UVzI3SEtv?=
+ =?utf-8?B?TjJSNG11eFZoTTcySVVMT0dHZUNLOVl3Sk1FckNtZ3FqeW1yVVdkTnQxZU9N?=
+ =?utf-8?B?UnU5MC95SDEyWVR5dTA0cGt0VS83Q01LSkxsY05vMzZ5bHVFVGxPeGphL1ZM?=
+ =?utf-8?B?cWEzOFpRM3AxOW5ML1ovVmZvQ3MySUxiZTk0ekQ1eTdDZVpqT0ZJbk5LV0w5?=
+ =?utf-8?B?UUdYVzJwdTluWlNoRkEzZUhZSDhvcXdxVmJsSjJJa3dnZjhaUjBDNkdwY1JI?=
+ =?utf-8?B?MkdTUW1aMUREc2dyanVuSUtJVTl4RTh2N2Fsc01FL3U0cTd6bHM5aGZDc2N4?=
+ =?utf-8?B?MVJoNVRBRmFySldKaWp4TWN3clhVajAxM3BMQjBRRnJ3MkRJLysreWwxN2Vk?=
+ =?utf-8?B?ME5oNHRpOVhndVFuUTAyK0p2TlNqYXRwdUFYdXhVTkNwaVR1RmR3aDgwMFM5?=
+ =?utf-8?B?SURUV0k5N2FtVittZmFRbXhvM1A2My81WmhvTEVUd2RZYk5xaFhpZnQ0b3Fq?=
+ =?utf-8?Q?lU5fv7tdeGxg5C3+R1r/m5EBv6EAI6oiWmGLkish6XUd?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9114a417-f015-4f39-2843-08dbbb5399f9
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5444.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2023 10:06:34.5780
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Lp53QsttwhwZsyfBiQNN0WDJD5Cmthb7ngpU/0PGbilKNCPKxwwDGDrW7r/EUnivxp6vbIerkwsbqtKF3y3FVA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4953
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Ryan,
+Hi Greg,
 
-On 2023/9/22 17:35, Ryan Roberts wrote:
-> On 22/09/2023 08:54, Qi Zheng wrote:
->> Hi Ryan,
->>
->> On 2023/9/22 15:40, Ryan Roberts wrote:
->>> On 22/09/2023 03:54, Qi Zheng wrote:
->>>> Hi Ryan,
->>>>
->>>> On 2023/9/22 00:20, Ryan Roberts wrote:
->>>>> When called with a swap entry that does not embed a PFN (e.g.
->>>>> PTE_MARKER_POISONED or PTE_MARKER_UFFD_WP), the previous implementation
->>>>> of set_huge_pte_at() would either cause a BUG() to fire (if
->>>>> CONFIG_DEBUG_VM is enabled) or cause a dereference of an invalid address
->>>>> and subsequent panic.
->>>>>
->>>>> arm64's huge pte implementation supports multiple huge page sizes, some
->>>>> of which are implemented in the page table with contiguous mappings. So
->>>>> set_huge_pte_at() needs to work out how big the logical pte is, so that
->>>>> it can also work out how many physical ptes (or pmds) need to be
->>>>> written. It does this by grabbing the folio out of the pte and querying
->>>>> its size.
->>>>>
->>>>> However, there are cases when the pte being set is actually a swap
->>>>> entry. But this also used to work fine, because for huge ptes, we only
->>>>> ever saw migration entries and hwpoison entries. And both of these types
->>>>> of swap entries have a PFN embedded, so the code would grab that and
->>>>> everything still worked out.
->>>>>
->>>>> But over time, more calls to set_huge_pte_at() have been added that set
->>>>> swap entry types that do not embed a PFN. And this causes the code to go
->>>>> bang. The triggering case is for the uffd poison test, commit
->>>>> 99aa77215ad0 ("selftests/mm: add uffd unit test for UFFDIO_POISON"),
->>>>> which sets a PTE_MARKER_POISONED swap entry. But review shows there are
->>>>> other places too (PTE_MARKER_UFFD_WP).
->>>>>
->>>>> So the root cause is due to commit 18f3962953e4 ("mm: hugetlb: kill
->>>>> set_huge_swap_pte_at()"), which aimed to simplify the interface to the
->>>>> core code by removing set_huge_swap_pte_at() (which took a page size
->>>>> parameter) and replacing it with calls to set_huge_swap_pte_at() where
->>>>> the size was inferred from the folio, as descibed above. While that
->>>>> commit didn't break anything at the time,
->>>>
->>>> If it didn't break anything at that time, then shouldn't the Fixes tag
->>>> be added to this commit?
->>>>
->>>>> it did break the interface
->>>>> because it couldn't handle swap entries without PFNs. And since then new
->>>>> callers have come along which rely on this working.
->>>>
->>>> So the Fixes tag should be added only to the commit that introduces the
->>>> first new callers?
->>>
->>> Well I guess it's a matter of point of view; My view is that 18f3962953e4 is the
->>> buggy change because it broke the interface to not be able to handle swap
->>> entries which do not contain PFNs. The fact that there were no callers that used
->>> the interface in this way at the time of the commit is irrelevant in my view.
->>
->> I understand your point of view.
->>
->> But IIUC, the Fixes tag is used to indicate the version that needs to
->> backport, but the version where the commit 18f3962953e4 is located
->> does not need to backport this bugfix patch.
->>
->>> But I already added 2 fixes tags; one for the buggy commit, and the other for
->>> the commit containing the new user of the interface.
->>
->> I think 2 fixes tags will cause inconvenience to the maintainers.
->>
+On 20/09/2023 12:27, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.5 release.
+> There are 211 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> I did some Archaeology:
+> Responses should be made by Fri, 22 Sep 2023 11:28:09 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.5-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Nice! Thanks for doing this.
+I am also seeing suspend regressions on this update. I am guessing it is 
+the same issue with linux-6.1.y.
 
-> 
-> $ git rev-list --no-walk=sorted --pretty=oneline \
-> 	05e90bd05eea33fc77d6b11e121e2da01fee379f \
-> 	60dfaad65aa97fb6755b9798a6b3c9e79bcd5930 \
-> 	8a13897fb0daa8f56821f263f0c63661e1c6acae \
-> 	18f3962953e40401b7ed98e8524167282c3e626e \
-> 	v6.5 v5.18 v5.17 v5.19 v6.5-rc6 v6.5-rc7
-> 
-> 2dde18cd1d8fac735875f2e4987f11817cc0bc2c Linux 6.5
-> 706a741595047797872e669b3101429ab8d378ef Linux 6.5-rc7
-> 8a13897fb0daa8f56821f263f0c63661e1c6acae mm: userfaultfd: support UFFDIO_POISON for hugetlbfs
-> 2ccdd1b13c591d306f0401d98dedc4bdcd02b421 Linux 6.5-rc6
-> 3d7cb6b04c3f3115719235cc6866b10326de34cd Linux 5.19
-> 18f3962953e40401b7ed98e8524167282c3e626e mm: hugetlb: kill set_huge_swap_pte_at()
-> 4b0986a3613c92f4ec1bdc7f60ec66fea135991f Linux 5.18
-> 05e90bd05eea33fc77d6b11e121e2da01fee379f mm/hugetlb: only drop uffd-wp special pte if required
-> 60dfaad65aa97fb6755b9798a6b3c9e79bcd5930 mm/hugetlb: allow uffd wr-protect none ptes
-> f443e374ae131c168a065ea1748feac6b2e76613 Linux 5.17
-> 
-> 
-> So it turns out that the PTE_MARKER_UFFD_WP markers were added first, using
-> set_huge_pte_at(). At the time, this should have used set_huge_swap_pte_at(), so
-> was arguably buggy for that reason. However, arm64 does not support UFFD_WP so
-> none of the call sites that set the PTE_MARKER_UFFD_WP marker to the pte ever
-> trigger on arm64.
-> 
-> Then "mm: hugetlb: kill set_huge_swap_pte_at()" came along and "broke" the
-> interface, but there were no callers relying on the behavoir that was broken.
-> 
-> Then "mm: userfaultfd: support UFFDIO_POISON for hugetlbfs" came along in
-> v6.5-rc7 and started relying on the broken behaviour of set_huge_pte_at().
+Test results for stable-v6.5:
+     11 builds:	11 pass, 0 fail
+     28 boots:	28 pass, 0 fail
+     116 tests:	110 pass, 6 fail
 
-Got it.
+Linux version:	6.5.5-rc1-g9e47a110b1b5
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                 tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                 tegra20-ventana, tegra210-p2371-2180,
+                 tegra210-p3450-0000, tegra30-cardhu-a04
 
-> 
-> So on that basis, I agree that the first commit where broken behaviour is
-> observable is "mm: userfaultfd: support UFFDIO_POISON for hugetlbfs". So I will
-> tag that one as "Fixes". (Although if set_huge_pte_at() was an exported symbol,
-> then we would want to mark "mm: hugetlb: kill set_huge_swap_pte_at()").
+Test failures:	tegra124-jetson-tk1: pm-system-suspend.sh
+                 tegra186-p2771-0000: tegra-audio-dmic-capture.sh
+                 tegra20-ventana: pm-system-suspend.sh
+                 tegra30-cardhu-a04: pm-system-suspend.sh
 
-Agree. I just checked the time point when 18f3962953e4 was added,
-neither set_huge_pte_at() nor set_huge_swap_pte_at() are exported
-symbols.
+I will see if I can figure out which change is causing this.
 
-Thanks,
-Qi
+Jon
 
-> 
-> Thanks,
-> Ryan
-> 
-> 
-> 
-> 
->> Thanks,
->> Qi
->>
->>>
->>>>
->>>> Other than that, LGTM.
->>>
->>> Thanks!
->>>
->>>>
->>>> Thanks,
->>>> Qi
->>>>
+-- 
+nvpublic
