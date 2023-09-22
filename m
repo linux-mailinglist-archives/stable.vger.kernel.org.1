@@ -2,179 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D9857AB366
-	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 16:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C66777AB36E
+	for <lists+stable@lfdr.de>; Fri, 22 Sep 2023 16:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234204AbjIVOSG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 10:18:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59462 "EHLO
+        id S234146AbjIVOVd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 10:21:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234186AbjIVOSF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 10:18:05 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DF75AB
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 07:17:59 -0700 (PDT)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost)
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <r.czerwinski@pengutronix.de>)
-        id 1qjgyP-0007bx-Fs; Fri, 22 Sep 2023 16:17:52 +0200
-From:   Rouven Czerwinski <r.czerwinski@pengutronix.de>
-To:     =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
-        =?UTF-8?q?M=C3=A5ns=20Rullg=C3=A5rd?= <mans@mansr.com>,
-        Alexander Shiyan <eagle.alexander923@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        JaimeLiao <jaimeliao.tw@gmail.com>
-Cc:     kernel@pengutronix.de,
-        Rouven Czerwinski <r.czerwinski@pengutronix.de>,
-        stable@vger.kernel.org, linux-mtd@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v2] mtd: rawnand: Ensure the nand chip supports cached reads
-Date:   Fri, 22 Sep 2023 16:17:16 +0200
-Message-ID: <20230922141717.35977-1-r.czerwinski@pengutronix.de>
-X-Mailer: git-send-email 2.42.0
+        with ESMTP id S233368AbjIVOVc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 10:21:32 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2D24AAB;
+        Fri, 22 Sep 2023 07:21:24 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D47BCDA7;
+        Fri, 22 Sep 2023 07:22:00 -0700 (PDT)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2EE4D3F67D;
+        Fri, 22 Sep 2023 07:21:22 -0700 (PDT)
+Message-ID: <2ea199a1-d20d-2fde-d1bd-76ecad14a68d@arm.com>
+Date:   Fri, 22 Sep 2023 15:21:17 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: r.czerwinski@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH REGRESSION] iommu: Only allocate FQ domains for IOMMUs
+ that support them
+Content-Language: en-GB
+To:     Hector Martin <marcan@marcan.st>, Joerg Roedel <joro@8bytes.org>,
+        Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Jerry Snitselaar <jsnitsel@redhat.com>
+Cc:     Joerg Roedel <jroedel@suse.de>, Neal Gompa <neal@gompa.dev>,
+        "Justin M. Forbes" <jforbes@fedoraproject.org>,
+        iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+        asahi@lists.linux.dev, stable@vger.kernel.org,
+        regressions@lists.linux.dev
+References: <20230922-iommu-type-regression-v1-1-1ed3825b2c38@marcan.st>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20230922-iommu-type-regression-v1-1-1ed3825b2c38@marcan.st>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Both the JEDEC and ONFI specification say that read cache sequential
-support is an optional command. This means that we not only need to
-check whether the individual controller supports the command, we also
-need to check the parameter pages for both ONFI and JEDEC NAND flashes
-before enabling sequential cache reads.
+On 22/09/2023 2:40 pm, Hector Martin wrote:
+> Commit a4fdd9762272 ("iommu: Use flush queue capability") hid the
+> IOMMU_DOMAIN_DMA_FQ domain type from domain allocation. A check was
+> introduced in iommu_dma_init_domain() to fall back if not supported, but
+> this check runs too late: by that point, devices have been attached to
+> the IOMMU, and the IOMMU driver might not expect FQ domains at
+> ops->attach_dev() time.
+> 
+> Ensure that we immediately clamp FQ domains to plain DMA if not
+> supported by the driver at device attach time, not later.
+> 
+> This regressed apple-dart in v6.5.
 
-This fixes support for NAND flashes which don't support enabling cache
-reads, i.e. Samsung K9F4G08U0F or Toshiba TC58NVG0S3HTA00.
+Apologies, I missed that apple-dart was doing something unusual here. 
+However, could we just fix that directly instead?
 
-Sequential cache reads are now only available for ONFI and JEDEC
-devices, if individual vendors implement this, it needs to be enabled
-per vendor.
+diff --git a/drivers/iommu/apple-dart.c b/drivers/iommu/apple-dart.c
+index 2082081402d3..0b8927508427 100644
+--- a/drivers/iommu/apple-dart.c
++++ b/drivers/iommu/apple-dart.c
+@@ -671,8 +671,7 @@ static int apple_dart_attach_dev(struct iommu_domain 
+*domain,
+  		return ret;
 
-Tested on i.MX6Q with a Samsung NAND flash chip that doesn't support
-sequential reads.
+  	switch (domain->type) {
+-	case IOMMU_DOMAIN_DMA:
+-	case IOMMU_DOMAIN_UNMANAGED:
++	default:
+  		ret = apple_dart_domain_add_streams(dart_domain, cfg);
+  		if (ret)
+  			return ret;
 
-Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential cache reads")
-Cc: stable@vger.kernel.org
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
----
-v2:
-- change title as suggested by Miquel
-- adjust controller sentence from implement to support
-- fix missing true assignement for flashes
-- add CC stable instead of empty line
-- add documentation comment for new supports_read_cache bool inside
-  nand parameter struct
 
- drivers/mtd/nand/raw/nand_base.c  | 3 +++
- drivers/mtd/nand/raw/nand_jedec.c | 3 +++
- drivers/mtd/nand/raw/nand_onfi.c  | 3 +++
- include/linux/mtd/jedec.h         | 3 +++
- include/linux/mtd/onfi.h          | 1 +
- include/linux/mtd/rawnand.h       | 2 ++
- 6 files changed, 15 insertions(+)
+That's pretty much where we're headed with the domain_alloc_paging 
+redesign anyway - at the driver level, operations on a paging domain 
+should not need to know about the higher-level usage intent of that 
+domain. Ideally, blocking and identity domains should have their own 
+distinct ops now as well, but that might be a bit too big a change for 
+an immediate fix here.
 
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index d4b55155aeae..1fcac403cee6 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -5110,6 +5110,9 @@ static void rawnand_check_cont_read_support(struct nand_chip *chip)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 
-+	if (!chip->parameters.supports_read_cache)
-+		return;
-+
- 	if (chip->read_retries)
- 		return;
- 
-diff --git a/drivers/mtd/nand/raw/nand_jedec.c b/drivers/mtd/nand/raw/nand_jedec.c
-index 836757717660..b3cc8f360529 100644
---- a/drivers/mtd/nand/raw/nand_jedec.c
-+++ b/drivers/mtd/nand/raw/nand_jedec.c
-@@ -94,6 +94,9 @@ int nand_jedec_detect(struct nand_chip *chip)
- 		goto free_jedec_param_page;
- 	}
- 
-+	if (p->opt_cmd[0] & JEDEC_OPT_CMD_READ_CACHE)
-+		chip->parameters.supports_read_cache = true;
-+
- 	memorg->pagesize = le32_to_cpu(p->byte_per_page);
- 	mtd->writesize = memorg->pagesize;
- 
-diff --git a/drivers/mtd/nand/raw/nand_onfi.c b/drivers/mtd/nand/raw/nand_onfi.c
-index f15ef90aec8c..861975e44b55 100644
---- a/drivers/mtd/nand/raw/nand_onfi.c
-+++ b/drivers/mtd/nand/raw/nand_onfi.c
-@@ -303,6 +303,9 @@ int nand_onfi_detect(struct nand_chip *chip)
- 			   ONFI_FEATURE_ADDR_TIMING_MODE, 1);
- 	}
- 
-+	if (le16_to_cpu(p->opt_cmd) & ONFI_OPT_CMD_READ_CACHE)
-+		chip->parameters.supports_read_cache = true;
-+
- 	onfi = kzalloc(sizeof(*onfi), GFP_KERNEL);
- 	if (!onfi) {
- 		ret = -ENOMEM;
-diff --git a/include/linux/mtd/jedec.h b/include/linux/mtd/jedec.h
-index 0b6b59f7cfbd..56047a4e54c9 100644
---- a/include/linux/mtd/jedec.h
-+++ b/include/linux/mtd/jedec.h
-@@ -21,6 +21,9 @@ struct jedec_ecc_info {
- /* JEDEC features */
- #define JEDEC_FEATURE_16_BIT_BUS	(1 << 0)
- 
-+/* JEDEC Optional Commands */
-+#define JEDEC_OPT_CMD_READ_CACHE	BIT(1)
-+
- struct nand_jedec_params {
- 	/* rev info and features block */
- 	/* 'J' 'E' 'S' 'D'  */
-diff --git a/include/linux/mtd/onfi.h b/include/linux/mtd/onfi.h
-index a7376f9beddf..55ab2e4d62f9 100644
---- a/include/linux/mtd/onfi.h
-+++ b/include/linux/mtd/onfi.h
-@@ -55,6 +55,7 @@
- #define ONFI_SUBFEATURE_PARAM_LEN	4
- 
- /* ONFI optional commands SET/GET FEATURES supported? */
-+#define ONFI_OPT_CMD_READ_CACHE		BIT(1)
- #define ONFI_OPT_CMD_SET_GET_FEATURES	BIT(2)
- 
- struct nand_onfi_params {
-diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
-index 90a141ba2a5a..c29ace15a053 100644
---- a/include/linux/mtd/rawnand.h
-+++ b/include/linux/mtd/rawnand.h
-@@ -225,6 +225,7 @@ struct gpio_desc;
-  * struct nand_parameters - NAND generic parameters from the parameter page
-  * @model: Model name
-  * @supports_set_get_features: The NAND chip supports setting/getting features
-+ * @supports_read_cache: The NAND chip supports read cache operations
-  * @set_feature_list: Bitmap of features that can be set
-  * @get_feature_list: Bitmap of features that can be get
-  * @onfi: ONFI specific parameters
-@@ -233,6 +234,7 @@ struct nand_parameters {
- 	/* Generic parameters */
- 	const char *model;
- 	bool supports_set_get_features;
-+	bool supports_read_cache;
- 	DECLARE_BITMAP(set_feature_list, ONFI_FEATURE_NUMBER);
- 	DECLARE_BITMAP(get_feature_list, ONFI_FEATURE_NUMBER);
- 
+Thanks,
+Robin.
 
-base-commit: 42dc814987c1feb6410904e58cfd4c36c4146150
--- 
-2.42.0
-
+> 
+> Cc: regressions@lists.linux.dev
+> Cc: stable@vger.kernel.org
+> Fixes: a4fdd9762272 ("iommu: Use flush queue capability")
+> Signed-off-by: Hector Martin <marcan@marcan.st>
+> ---
+>   drivers/iommu/iommu.c | 9 +++++++++
+>   1 file changed, 9 insertions(+)
+> 
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index 3bfc56df4f78..12464eaa8d91 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -2039,6 +2039,15 @@ static int __iommu_attach_device(struct iommu_domain *domain,
+>   	if (unlikely(domain->ops->attach_dev == NULL))
+>   		return -ENODEV;
+>   
+> +	/*
+> +	 * Ensure we do not try to attach devices to FQ domains if the
+> +	 * IOMMU does not support them. We can safely fall back to
+> +	 * non-FQ.
+> +	 */
+> +	if (domain->type == IOMMU_DOMAIN_DMA_FQ &&
+> +	    !device_iommu_capable(dev, IOMMU_CAP_DEFERRED_FLUSH))
+> +		domain->type = IOMMU_DOMAIN_DMA;
+> +
+>   	ret = domain->ops->attach_dev(domain, dev);
+>   	if (ret)
+>   		return ret;
+> 
+> ---
+> base-commit: ce9ecca0238b140b88f43859b211c9fdfd8e5b70
+> change-id: 20230922-iommu-type-regression-25b4f43df770
+> 
+> Best regards,
