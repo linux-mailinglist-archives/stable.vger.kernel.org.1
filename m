@@ -2,113 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E47A7ABC37
-	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 01:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F8117ABCEC
+	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 03:14:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230074AbjIVXSk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 19:18:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38184 "EHLO
+        id S230509AbjIWBOW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 22 Sep 2023 21:14:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230051AbjIVXSk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 19:18:40 -0400
-X-Greylist: delayed 602 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 22 Sep 2023 16:18:32 PDT
-Received: from out-210.mta0.migadu.com (out-210.mta0.migadu.com [91.218.175.210])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C1FF194
-        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 16:18:32 -0700 (PDT)
-Date:   Fri, 22 Sep 2023 23:08:21 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1695424106;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=xpFIobQExILClkKTeW/cYTjEqv/q/JhNQ5dNQFV+wwI=;
-        b=kuu5l9LqbKERXQkbxSoPFZr+vhTqJo0n9KLjbOq+Bw8pI2bWwNuniOOFNrY0pPgXTDHw3V
-        72w3I8obqdyQTx8tLoPTjhE27dMtLWYQx+tP/Z1N4xBa/Jh8q/Zj505aw6lIbnKoJqH+Jq
-        f9RQc0JPWIG5DIG2gUIZHPZOfyByFi4=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Oliver Upton <oliver.upton@linux.dev>
-To:     kvmarm@lists.linux.dev
-Cc:     kvm@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
-        James Morse <james.morse@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>,
-        Vipin Sharma <vipinsh@google.com>,
-        Jing Zhang <jingzhangos@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Always invalidate TLB for stage-2 permission
- faults
-Message-ID: <ZQ4eZcWRO/nHnGc4@linux.dev>
-References: <20230922223229.1608155-1-oliver.upton@linux.dev>
+        with ESMTP id S230322AbjIWBOV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 21:14:21 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 561BDB9
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 18:14:15 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-34f6ce577a4so9508335ab.3
+        for <stable@vger.kernel.org>; Fri, 22 Sep 2023 18:14:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google; t=1695431654; x=1696036454; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3p2Xpy6OB/r139HgDed1FfmEjYksRL9s1sjY3anozVM=;
+        b=Zx9vHbvf85ZewJI63aHShFKxCduNHcBkaJOTiTDvUVrKbXoG4a7FzYS14YXt08iGhH
+         jriK2XJhlQ/DvcHETiTHNYPc2uuQ7dvyrdf3dpIERCBCcQxomMYDxGtb1mOBdiN4TCM1
+         bkqedjmWj5YejyMQK5QULykOjkdSvvlR+66Dg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695431654; x=1696036454;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3p2Xpy6OB/r139HgDed1FfmEjYksRL9s1sjY3anozVM=;
+        b=tqFa+Cw0VQ5X9rGldXuP6UwPhciA62Br+tVRCXDO/euZ9o4bLqYVIIW31NZRHslYH0
+         r6ikP3M13ZTCxCfDNjGm7G2bg70I2fMinEjvG4mWb86D2Pg6eGpnUrbaDAKRt/px+WM1
+         hWbskJbK0zRLTSnXjaq/FvFqiLMazqQL84vqxEk9Arlt4P+KGcCClbOLw9i8d/0Xl5IF
+         qHGI78edv2xFyl++WWxXODhMWzwN6P5AAkXYbDcJkE2VKUeHAIj2tt7K/HPsDjMfg+y8
+         WGSVXmY+CyvIq0j666q6hvqnUofhxiw6aPOUtNmX4SAGqQr2aEULsBROnPgRKkvltB7y
+         WrHw==
+X-Gm-Message-State: AOJu0Yy7oNhwlx6q/khvDan4dZbls/2W2RXwdOuj9S7/Wsd8lP/N4zI9
+        WkminmmWidRHRhSuHmHU36A2Lg==
+X-Google-Smtp-Source: AGHT+IGtZ1mnco63mTfTx8AkpKukDkGuoE1ogUJ28T7vde7TtYncQr/SW/Ad3AcaWIF2YbV09QHyyw==
+X-Received: by 2002:a05:6e02:2189:b0:34f:1e9c:45df with SMTP id j9-20020a056e02218900b0034f1e9c45dfmr1454696ila.4.1695431654589;
+        Fri, 22 Sep 2023 18:14:14 -0700 (PDT)
+Received: from joelboxx5.c.googlers.com.com (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
+        by smtp.gmail.com with ESMTPSA id cg11-20020a0566381bcb00b0042b3dcb1106sm1330089jab.47.2023.09.22.18.14.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Sep 2023 18:14:13 -0700 (PDT)
+From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
+To:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Valentin Schneider <vschneid@redhat.com>
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH] sched/rt: Fix live lock between select_fallback_rq() and RT push
+Date:   Sat, 23 Sep 2023 01:14:08 +0000
+Message-ID: <20230923011409.3522762-1-joel@joelfernandes.org>
+X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230922223229.1608155-1-oliver.upton@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 22, 2023 at 10:32:29PM +0000, Oliver Upton wrote:
-> It is possible for multiple vCPUs to fault on the same IPA and attempt
-> to resolve the fault. One of the page table walks will actually update
-> the PTE and the rest will return -EAGAIN per our race detection scheme.
-> KVM elides the TLB invalidation on the racing threads as the return
-> value is nonzero.
-> 
-> Before commit a12ab1378a88 ("KVM: arm64: Use local TLBI on permission
-> relaxation") KVM always used broadcast TLB invalidations when handling
-> permission faults, which had the convenient property of making the
-> stage-2 updates visible to all CPUs in the system. However now we do a
-> local invalidation, and TLBI elision leads to vCPUs getting stuck in a
-> permission fault loop. Remember that the architecture permits the TLB to
-> cache translations that precipitate a permission fault.
+During RCU-boost testing with the TREE03 rcutorture config, I found that
+after a few hours, the machine locks up.
 
-The effects of this are slightly overstated (got ahead of myself).
-EAGAIN only crops up if the cmpxchg() fails, we return 0 if the PTE
-didn't need to be updated.
+On tracing, I found that there is a live lock happening between 2 CPUs.
+One CPU has an RT task running, while another CPU is being offlined
+which also has an RT task running.  During this offlining, all threads
+are migrated. The migration thread is repeatedly scheduled to migrate
+actively running tasks on the CPU being offlined. This results in a live
+lock because select_fallback_rq() keeps picking the CPU that an RT task
+is already running on only to get pushed back to the CPU being offlined.
 
-On the subsequent permission fault we'll do the right thing and
-invalidate the TLB, so this change is purely an optimization rather than
-a correctness issue.
+It is anyway pointless to pick CPUs for pushing tasks to if they are
+being offlined only to get migrated away to somewhere else. This could
+also add unwanted latency to this task.
 
-> Invalidate the TLB entry responsible for the permission fault if the
-> stage-2 descriptor has been relaxed, regardless of which thread actually
-> did the job.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: a12ab1378a88 ("KVM: arm64: Use local TLBI on permission relaxation")
+Fix these issues by not selecting CPUs in RT if they are not 'active'
+for scheduling, using the cpu_active_mask. Other parts in core.c already
+use cpu_active_mask to prevent tasks from being put on CPUs going
+offline.
 
-I'll drop the stable tag.
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+---
+ kernel/sched/cpupri.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-> ---
->  arch/arm64/kvm/hyp/pgtable.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-> index f155b8c9e98c..286888751793 100644
-> --- a/arch/arm64/kvm/hyp/pgtable.c
-> +++ b/arch/arm64/kvm/hyp/pgtable.c
-> @@ -1314,7 +1314,7 @@ int kvm_pgtable_stage2_relax_perms(struct kvm_pgtable *pgt, u64 addr,
->  	ret = stage2_update_leaf_attrs(pgt, addr, 1, set, clr, NULL, &level,
->  				       KVM_PGTABLE_WALK_HANDLE_FAULT |
->  				       KVM_PGTABLE_WALK_SHARED);
-> -	if (!ret)
-> +	if (!ret || ret == -EAGAIN)
->  		kvm_call_hyp(__kvm_tlb_flush_vmid_ipa_nsh, pgt->mmu, addr, level);
->  	return ret;
->  }
-> 
-> base-commit: ce9ecca0238b140b88f43859b211c9fdfd8e5b70
-> -- 
-> 2.42.0.515.g380fc7ccd1-goog
-> 
-
+diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
+index a286e726eb4b..42c40cfdf836 100644
+--- a/kernel/sched/cpupri.c
++++ b/kernel/sched/cpupri.c
+@@ -101,6 +101,7 @@ static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
+ 
+ 	if (lowest_mask) {
+ 		cpumask_and(lowest_mask, &p->cpus_mask, vec->mask);
++		cpumask_and(lowest_mask, lowest_mask, cpu_active_mask);
+ 
+ 		/*
+ 		 * We have to ensure that we have at least one bit
 -- 
-Thanks,
-Oliver
+2.42.0.515.g380fc7ccd1-goog
+
