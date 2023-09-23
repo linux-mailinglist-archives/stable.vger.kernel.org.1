@@ -2,95 +2,183 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 062237AC37C
-	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 18:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD567AC5AF
+	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 00:33:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbjIWQK0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 23 Sep 2023 12:10:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41846 "EHLO
+        id S229550AbjIWWdO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 23 Sep 2023 18:33:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229868AbjIWQK0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 12:10:26 -0400
+        with ESMTP id S229458AbjIWWdO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 18:33:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4885992
-        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 09:10:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628C4C433C7;
-        Sat, 23 Sep 2023 16:10:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1695485418;
-        bh=BWTTgEfn5uky8+Y7kn4tVruCzhEK9kG71fFGrXDYlgA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SdIKRv5zcVOancQXrAXfxVVJAagRWL7GAgAbcN3ET4owjjdUG49ru2xc1entn0Wh8
-         nOarVbxernEMrQ/tmmPXSSl60iqkRooyCW99/MN5i3VFzAcH9KLJmNTrnP+OMpX0tH
-         ywBU9pXH+FIzxjPPQhaWQ5eGfZ904DmIMsj/s9OQ=
-Date:   Sat, 23 Sep 2023 18:10:15 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Theodore Ts'o <tytso@mit.edu>
-Cc:     Stephen Zhang <starzhangzsd@gmail.com>, stable@vger.kernel.org,
-        Shida Zhang <zhangshida@kylinos.cn>, stable@kernel.org,
-        Andreas Dilger <adilger@dilger.ca>,
-        "Darrick J . Wong" <djwong@kernel.org>
-Subject: Re: [PATCH] ext4: fix rec_len verify error
-Message-ID: <2023092314-cartel-percolate-eee7@gregkh>
-References: <2023092055-disband-unveiling-f6cc@gregkh>
- <20230922025458.2169511-1-zhangshida@kylinos.cn>
- <2023092205-ending-subzero-9778@gregkh>
- <CANubcdVYCFS=UAKX6sfe=jpZCtipDBrxi_O4=RpsAr1LY4Z1BQ@mail.gmail.com>
- <ZQ76gdIz80G8Svt-@mit.edu>
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A09D0192;
+        Sat, 23 Sep 2023 15:33:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B7FC433C9;
+        Sat, 23 Sep 2023 22:33:07 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.96)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1qkBCA-003tuD-32;
+        Sat, 23 Sep 2023 18:33:50 -0400
+Message-ID: <20230923223350.752964923@goodmis.org>
+User-Agent: quilt/0.66
+Date:   Sat, 23 Sep 2023 18:33:32 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        stable@vger.kernel.org, Zheng Yejian <zhengyejian1@huawei.com>
+Subject: [for-linus][PATCH 1/2] ring-buffer: Fix bytes info in per_cpu buffer stats
+References: <20230923223331.720351929@goodmis.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZQ76gdIz80G8Svt-@mit.edu>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Sep 23, 2023 at 10:47:29AM -0400, Theodore Ts'o wrote:
-> On Sat, Sep 23, 2023 at 05:41:19PM +0800, Stephen Zhang wrote:
-> > Apologies for this confusion. It appears that the '--subject-prefix' option
-> > of the 'git send-email' command does not work with the local patch file.
-> 
-> Stephen,
-> 
-> The --subject-prefix option applies to "git format-patch" when the
-> local patch file is generated, as opposed to "git send-email".  So my
-> general workflow is to run "rm -rf /tmp/p ; git format-patch -o /tmp/p
-> ..."  and then examine the files in /tmp/p, and then if they look
-> good, run "git send-email /tmp/p/*".
-> 
-> I suspect it will be easier for Greg if you were to simply regenerate
-> the patches with the proper subject prefix, and then resend them,
-> since he has automation tools that can handle parsing the subject
-> line, which scripts can do much more easily than to disentangling the
-> "In-Reply-To" header to identify e-mail chains, and then parsing
-> human/natural language to figure out which git tree the patches should
-> be applied to.  :-)
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-Just a hint, I can usually NOT see the In-Reply-To headers at all, as
-the email it was in response to is long gone from my system.
+The 'bytes' info in file 'per_cpu/cpu<X>/stats' means the number of
+bytes in cpu buffer that have not been consumed. However, currently
+after consuming data by reading file 'trace_pipe', the 'bytes' info
+was not changed as expected.
 
-Which is why, the description of how to fix up a patch for the stable
-tree that has failed to apply there, tells you how to do this in a way
-that will show the proper version number.
+  # cat per_cpu/cpu0/stats
+  entries: 0
+  overrun: 0
+  commit overrun: 0
+  bytes: 568             <--- 'bytes' is problematical !!!
+  oldest event ts:  8651.371479
+  now ts:  8653.912224
+  dropped events: 0
+  read events: 8
 
-If only anyone would actually read the emails we sent with the helpful
-text, here's one example for a DRM patch that failed to apply:
+The root cause is incorrect stat on cpu_buffer->read_bytes. To fix it:
+  1. When stat 'read_bytes', account consumed event in rb_advance_reader();
+  2. When stat 'entries_bytes', exclude the discarded padding event which
+     is smaller than minimum size because it is invisible to reader. Then
+     use rb_page_commit() instead of BUF_PAGE_SIZE at where accounting for
+     page-based read/remove/overrun.
 
-	To reproduce the conflict and resubmit, you may use the following commands:
+Also correct the comments of ring_buffer_bytes_cpu() in this patch.
 
-	git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-	git checkout FETCH_HEAD
-	git cherry-pick -x ec5fa9fcdeca69edf7dab5ca3b2e0ceb1c08fe9a
-	# <resolve conflicts, build, test, etc.>
-	git commit -s
-	git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023092029-banter-truth-cf72@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+Link: https://lore.kernel.org/linux-trace-kernel/20230921125425.1708423-1-zhengyejian1@huawei.com
 
-thanks,
+Cc: stable@vger.kernel.org
+Fixes: c64e148a3be3 ("trace: Add ring buffer stats to measure rate of events")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/ring_buffer.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-greg k-h
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index a1651edc48d5..28daf0ce95c5 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -354,6 +354,11 @@ static void rb_init_page(struct buffer_data_page *bpage)
+ 	local_set(&bpage->commit, 0);
+ }
+ 
++static __always_inline unsigned int rb_page_commit(struct buffer_page *bpage)
++{
++	return local_read(&bpage->page->commit);
++}
++
+ static void free_buffer_page(struct buffer_page *bpage)
+ {
+ 	free_page((unsigned long)bpage->page);
+@@ -2003,7 +2008,7 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
+ 			 * Increment overrun to account for the lost events.
+ 			 */
+ 			local_add(page_entries, &cpu_buffer->overrun);
+-			local_sub(BUF_PAGE_SIZE, &cpu_buffer->entries_bytes);
++			local_sub(rb_page_commit(to_remove_page), &cpu_buffer->entries_bytes);
+ 			local_inc(&cpu_buffer->pages_lost);
+ 		}
+ 
+@@ -2367,11 +2372,6 @@ rb_reader_event(struct ring_buffer_per_cpu *cpu_buffer)
+ 			       cpu_buffer->reader_page->read);
+ }
+ 
+-static __always_inline unsigned rb_page_commit(struct buffer_page *bpage)
+-{
+-	return local_read(&bpage->page->commit);
+-}
+-
+ static struct ring_buffer_event *
+ rb_iter_head_event(struct ring_buffer_iter *iter)
+ {
+@@ -2517,7 +2517,7 @@ rb_handle_head_page(struct ring_buffer_per_cpu *cpu_buffer,
+ 		 * the counters.
+ 		 */
+ 		local_add(entries, &cpu_buffer->overrun);
+-		local_sub(BUF_PAGE_SIZE, &cpu_buffer->entries_bytes);
++		local_sub(rb_page_commit(next_page), &cpu_buffer->entries_bytes);
+ 		local_inc(&cpu_buffer->pages_lost);
+ 
+ 		/*
+@@ -2660,9 +2660,6 @@ rb_reset_tail(struct ring_buffer_per_cpu *cpu_buffer,
+ 
+ 	event = __rb_page_index(tail_page, tail);
+ 
+-	/* account for padding bytes */
+-	local_add(BUF_PAGE_SIZE - tail, &cpu_buffer->entries_bytes);
+-
+ 	/*
+ 	 * Save the original length to the meta data.
+ 	 * This will be used by the reader to add lost event
+@@ -2676,7 +2673,8 @@ rb_reset_tail(struct ring_buffer_per_cpu *cpu_buffer,
+ 	 * write counter enough to allow another writer to slip
+ 	 * in on this page.
+ 	 * We put in a discarded commit instead, to make sure
+-	 * that this space is not used again.
++	 * that this space is not used again, and this space will
++	 * not be accounted into 'entries_bytes'.
+ 	 *
+ 	 * If we are less than the minimum size, we don't need to
+ 	 * worry about it.
+@@ -2701,6 +2699,9 @@ rb_reset_tail(struct ring_buffer_per_cpu *cpu_buffer,
+ 	/* time delta must be non zero */
+ 	event->time_delta = 1;
+ 
++	/* account for padding bytes */
++	local_add(BUF_PAGE_SIZE - tail, &cpu_buffer->entries_bytes);
++
+ 	/* Make sure the padding is visible before the tail_page->write update */
+ 	smp_wmb();
+ 
+@@ -4215,7 +4216,7 @@ u64 ring_buffer_oldest_event_ts(struct trace_buffer *buffer, int cpu)
+ EXPORT_SYMBOL_GPL(ring_buffer_oldest_event_ts);
+ 
+ /**
+- * ring_buffer_bytes_cpu - get the number of bytes consumed in a cpu buffer
++ * ring_buffer_bytes_cpu - get the number of bytes unconsumed in a cpu buffer
+  * @buffer: The ring buffer
+  * @cpu: The per CPU buffer to read from.
+  */
+@@ -4723,6 +4724,7 @@ static void rb_advance_reader(struct ring_buffer_per_cpu *cpu_buffer)
+ 
+ 	length = rb_event_length(event);
+ 	cpu_buffer->reader_page->read += length;
++	cpu_buffer->read_bytes += length;
+ }
+ 
+ static void rb_advance_iter(struct ring_buffer_iter *iter)
+@@ -5816,7 +5818,7 @@ int ring_buffer_read_page(struct trace_buffer *buffer,
+ 	} else {
+ 		/* update the entry counter */
+ 		cpu_buffer->read += rb_page_entries(reader);
+-		cpu_buffer->read_bytes += BUF_PAGE_SIZE;
++		cpu_buffer->read_bytes += rb_page_commit(reader);
+ 
+ 		/* swap the pages */
+ 		rb_init_page(bpage);
+-- 
+2.40.1
