@@ -2,142 +2,139 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3ED07ABF72
-	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 11:42:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8832F7AC023
+	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 12:17:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231428AbjIWJmo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 23 Sep 2023 05:42:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41398 "EHLO
+        id S231794AbjIWKQN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 23 Sep 2023 06:16:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231317AbjIWJmV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 05:42:21 -0400
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8976E5C
-        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 02:41:56 -0700 (PDT)
-Received: by mail-qt1-x82f.google.com with SMTP id d75a77b69052e-4180f5c51f8so174651cf.1
-        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 02:41:56 -0700 (PDT)
+        with ESMTP id S231778AbjIWKQF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 06:16:05 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC6E649CE
+        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 03:13:48 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-3512b425662so1151065ab.0
+        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 03:13:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695462116; x=1696066916; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kHab9jL3Hzl/bCTFVpOj4EOvp1DJC3G3ya/77N60pm8=;
-        b=WWPAQBjfIY/AtIXh1fRmYTCq+j+H6jfboFjFVZbkejcLj/UcxHvZUT+Ne4q+3afv88
-         yjjvvVNE8060v2G6pE3PHfP9q0eLBrypx/HB0XISBcHk4wXgB5Wt6eLF9LTsn69oGZAm
-         JnDBCgulW13IyPrrAJyGZum5+SuBr3nlmkqHEOY7cFan9FcJx6mBArxKJ11Tq6Fj13cU
-         EpRvuCmT6qky6pdluHcMRIOvNPVYE7FUgbdisUPOuK6T2tHUAG+12eBmFfX9MuH4JbqQ
-         8umUQA0XssZVZzdzmfBswr2vC5+RbGz0l7/JKaTrmiIVSKERG0mv7/vlnWI1q3WgzWvP
-         iImA==
+        d=joelfernandes.org; s=google; t=1695464022; x=1696068822; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RUlZCtFTFaUMAp/xTpZ5qPDOY8dQPvRsRwT1ilDrXWM=;
+        b=edvEjotEzz3hfnXLblP6hHgKW2AYJyuUapHd4KJ5vGWVKZjeAG8AHcBrBouiwxgLJk
+         csoL2KwTpaHYraJHzBt3juYIUSodbrfwwDxG4ObQOV+p1gdaDnbfz8fYdNohDbSbeDlu
+         X/tlt132EJjlBOSYYNiNg1RBlqdo8kPW1deBA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695462116; x=1696066916;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kHab9jL3Hzl/bCTFVpOj4EOvp1DJC3G3ya/77N60pm8=;
-        b=uSeCumUWE51VwBO3zEANbjT95LjFIZQyxc55QaunxiqiCAOYEDPCyvpU4v0gBe3Mh1
-         1NskD74cJdHbYYy0LDGBJOL+wOZpnafTetBMK+3Ne7P+cDcCdFxloa6c1RzzR/KUVrQO
-         Mxozp/TDcUxAz/3WpHewbhAdYZc396S8idRyotGbNH0XKbnki8QcmnEjJN9WxN84bZns
-         nzch+exy3em3chVFuQ+IjE7TisXBur6qnc49GD8M4CFOjyECfJgJgE/g2XG3HSis1vSK
-         X/rjGp3JYHYwDR4hLyCxcLoPTkfGwVAox1jl7T1e9JQS0IlMG6u0MI3uT6QV7Se6ghv0
-         vsXQ==
-X-Gm-Message-State: AOJu0YydxEZCn3l25rGA/gNCTgZJADFReytSwZIaWmMy2NhLaMbqacqK
-        d2DHS2GUypkEOir9n9O2rXGl1NB+io6EOyq8Y78=
-X-Google-Smtp-Source: AGHT+IGM4nlAN8LOvwfEnjGWy3ZLXilBL1u8Z2QIMJ9aHdSLCIJ7AVh+756ugq0M4Bw9Y+wLcOoGSGusQqhkzAKUtWU=
-X-Received: by 2002:a05:622a:1b8b:b0:415:15d2:b892 with SMTP id
- bp11-20020a05622a1b8b00b0041515d2b892mr5986735qtb.12.1695462115707; Sat, 23
- Sep 2023 02:41:55 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695464022; x=1696068822;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RUlZCtFTFaUMAp/xTpZ5qPDOY8dQPvRsRwT1ilDrXWM=;
+        b=iusEfXR2LVT8iYJJVnJiXPXbmxq9mZaFBJAbPEFY9jOB5yGg/aaWwC3NRMUJ11MgC3
+         Ol3xe1Pxp1FhadFMtT0MNDkBSclN3EHxUoSlFvLTxATxUlPLKKawTTW3uUlit/dPBTsd
+         VDF8+FVQnmpwvT7ZeKi/Qxk4rYGpo8srcoOYcCrN6PSQSOJe1oLgX+I8FZnlnU7SB4Xo
+         NzBkKCjCAw8DOMHreE3jGXkNwUxowCB2JrpXapsaTFCSSZOtY68WYctFmf/LFsIM9Rkf
+         pSlWjFeDVN93RHFLqhb1Jgyv/ZVQEmP/Dc4eRAlKerlnTUsX06Un+VuNdnRxcDxkFZso
+         9tMA==
+X-Gm-Message-State: AOJu0Yyh8foWT1voWXpODJPiBsSuZQJSrqqeaM04vRC6ANOaXIqBCxac
+        2BAYR1iLdEoa5QlOlxP+IbL3jA==
+X-Google-Smtp-Source: AGHT+IHHCP+E9+z/kkdmvhDa5gOPd1Cuk+81kxCb0+cTNJHDEBGx8NLQ+ABB0VpkMmUcFKJtZBAxTg==
+X-Received: by 2002:a05:6e02:1b0d:b0:34f:d665:4c2e with SMTP id i13-20020a056e021b0d00b0034fd6654c2emr2252379ilv.30.1695464021895;
+        Sat, 23 Sep 2023 03:13:41 -0700 (PDT)
+Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
+        by smtp.gmail.com with ESMTPSA id j15-20020a02cc6f000000b0043167542398sm1538551jaq.141.2023.09.23.03.13.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Sep 2023 03:13:41 -0700 (PDT)
+Date:   Sat, 23 Sep 2023 10:13:40 +0000
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Valentin Schneider <vschneid@redhat.com>,
+        "Paul E . McKenney" <paulmck@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] sched/rt: Fix live lock between select_fallback_rq() and
+ RT push
+Message-ID: <20230923101340.GA3521658@google.com>
+References: <20230923011409.3522762-1-joel@joelfernandes.org>
+ <20230922214539.4e282609@gandalf.local.home>
 MIME-Version: 1.0
-References: <2023092055-disband-unveiling-f6cc@gregkh> <20230922025458.2169511-1-zhangshida@kylinos.cn>
- <2023092205-ending-subzero-9778@gregkh>
-In-Reply-To: <2023092205-ending-subzero-9778@gregkh>
-From:   Stephen Zhang <starzhangzsd@gmail.com>
-Date:   Sat, 23 Sep 2023 17:41:19 +0800
-Message-ID: <CANubcdVYCFS=UAKX6sfe=jpZCtipDBrxi_O4=RpsAr1LY4Z1BQ@mail.gmail.com>
-Subject: Re: [PATCH] ext4: fix rec_len verify error
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, Shida Zhang <zhangshida@kylinos.cn>,
-        stable@kernel.org, Andreas Dilger <adilger@dilger.ca>,
-        "Darrick J . Wong" <djwong@kernel.org>,
-        "Theodore Ts'o" <tytso@mit.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230922214539.4e282609@gandalf.local.home>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Greg KH <gregkh@linuxfoundation.org> =E4=BA=8E2023=E5=B9=B49=E6=9C=8822=E6=
-=97=A5=E5=91=A8=E4=BA=94 17:27=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Fri, Sep 22, 2023 at 10:54:58AM +0800, zhangshida wrote:
-> > From: Shida Zhang <zhangshida@kylinos.cn>
-> >
-> > [ Upstream commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6 ]
-> >
-> > With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
-> > a problem occurred when more than 13 million files were directly create=
-d
-> > under a directory:
-> >
-> > EXT4-fs error (device xx): ext4_dx_csum_set:492: inode #xxxx: comm xxxx=
-x: dir seems corrupt?  Run e2fsck -D.
-> > EXT4-fs error (device xx): ext4_dx_csum_verify:463: inode #xxxx: comm x=
-xxxx: dir seems corrupt?  Run e2fsck -D.
-> > EXT4-fs error (device xx): dx_probe:856: inode #xxxx: block 8188: comm =
-xxxxx: Directory index failed checksum
-> >
-> > When enough files are created, the fake_dirent->reclen will be 0xffff.
-> > it doesn't equal to the blocksize 65536, i.e. 0x10000.
-> >
-> > But it is not the same condition when blocksize equals to 4k.
-> > when enough files are created, the fake_dirent->reclen will be 0x1000.
-> > it equals to the blocksize 4k, i.e. 0x1000.
-> >
-> > The problem seems to be related to the limitation of the 16-bit field
-> > when the blocksize is set to 64k.
-> > To address this, helpers like ext4_rec_len_{from,to}_disk has already
-> > been introduced to complete the conversion between the encoded and the
-> > plain form of rec_len.
-> >
-> > So fix this one by using the helper, and all the other in this file too=
-.
-> >
-> > Cc: stable@kernel.org
-> > Fixes: dbe89444042a ("ext4: Calculate and verify checksums for htree no=
-des")
-> > Suggested-by: Andreas Dilger <adilger@dilger.ca>
-> > Suggested-by: Darrick J. Wong <djwong@kernel.org>
-> > Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
-> > Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-> > Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-> > Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kyl=
-inos.cn
-> > Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-> > Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Hi Steve,
+
+On Fri, Sep 22, 2023 at 09:45:39PM -0400, Steven Rostedt wrote:
+> On Sat, 23 Sep 2023 01:14:08 +0000
+> "Joel Fernandes (Google)" <joel@joelfernandes.org> wrote:
+> 
+> > During RCU-boost testing with the TREE03 rcutorture config, I found that
+> > after a few hours, the machine locks up.
+> > 
+> > On tracing, I found that there is a live lock happening between 2 CPUs.
+> > One CPU has an RT task running, while another CPU is being offlined
+> > which also has an RT task running.  During this offlining, all threads
+> > are migrated. The migration thread is repeatedly scheduled to migrate
+> > actively running tasks on the CPU being offlined. This results in a live
+> > lock because select_fallback_rq() keeps picking the CPU that an RT task
+> > is already running on only to get pushed back to the CPU being offlined.
+> > 
+> > It is anyway pointless to pick CPUs for pushing tasks to if they are
+> > being offlined only to get migrated away to somewhere else. This could
+> > also add unwanted latency to this task.
+> > 
+> > Fix these issues by not selecting CPUs in RT if they are not 'active'
+> > for scheduling, using the cpu_active_mask. Other parts in core.c already
+> > use cpu_active_mask to prevent tasks from being put on CPUs going
+> > offline.
+> > 
+> > Tested-by: Paul E. McKenney <paulmck@kernel.org>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 > > ---
-> >  fs/ext4/namei.c | 26 +++++++++++++++-----------
-> >  1 file changed, 15 insertions(+), 11 deletions(-)
-> >
->
-> What stable kernel tree(s) are you asking for this to be applied to?
->
-> thanks,
->
-> greg k-h
+> >  kernel/sched/cpupri.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
+> > index a286e726eb4b..42c40cfdf836 100644
+> > --- a/kernel/sched/cpupri.c
+> > +++ b/kernel/sched/cpupri.c
+> > @@ -101,6 +101,7 @@ static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
+> >  
+> >  	if (lowest_mask) {
+> >  		cpumask_and(lowest_mask, &p->cpus_mask, vec->mask);
+> > +		cpumask_and(lowest_mask, lowest_mask, cpu_active_mask);
+> 
+> What happens if the cpu_active_mask changes right here?
+> 
+> Is this just making the race window smaller?
 
-This one is intended for 4.14.y.
-And the other one from zhangshida@kylinos.cn is for 4.19.y.
+It should not be an issue for fixing the live lock because at most that would
+cause a few more bounces between the 2 CPUs but eventually once
+cpu_active_mask is stable, the CPU being offlined will not be selected for
+the push. That's nothing compared to the multi-second live lock that happens
+right now.
 
-Apologies for this confusion. It appears that the '--subject-prefix' option
-of the 'git send-email' command does not work with the local patch file.
+Also, with this patch I ran the tests for days and could not reproduce the
+issue. Without the patch, I hit it in a few hours.
 
-BTW, I forgot to CC my Gmail address in another thread,
-so I reply here only.
+> Something tells me the fix is going to be something a bit more involved.
+> But as I'm getting ready for Paris, I can't look at it at the moment.
 
-Best regards,
-Shida
+Thanks for taking a look and safe travels!
+
+ - Joel
+
