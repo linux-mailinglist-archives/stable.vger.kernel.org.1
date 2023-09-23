@@ -2,139 +2,239 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8832F7AC023
-	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 12:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B87767AC063
+	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 12:18:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231794AbjIWKQN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 23 Sep 2023 06:16:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38522 "EHLO
+        id S231723AbjIWKRl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 23 Sep 2023 06:17:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231778AbjIWKQF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 06:16:05 -0400
-Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC6E649CE
-        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 03:13:48 -0700 (PDT)
-Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-3512b425662so1151065ab.0
-        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 03:13:48 -0700 (PDT)
+        with ESMTP id S231734AbjIWKRa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 06:17:30 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F41D419B3
+        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 03:14:24 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-690fe10b6a4so3244161b3a.3
+        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 03:14:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1695464022; x=1696068822; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RUlZCtFTFaUMAp/xTpZ5qPDOY8dQPvRsRwT1ilDrXWM=;
-        b=edvEjotEzz3hfnXLblP6hHgKW2AYJyuUapHd4KJ5vGWVKZjeAG8AHcBrBouiwxgLJk
-         csoL2KwTpaHYraJHzBt3juYIUSodbrfwwDxG4ObQOV+p1gdaDnbfz8fYdNohDbSbeDlu
-         X/tlt132EJjlBOSYYNiNg1RBlqdo8kPW1deBA=
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1695464057; x=1696068857; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=WQaBr3/ANCvxk22m18znkZmjH5OVkigMIqVSE4vSrpM=;
+        b=IxTX8sdIVtYzJBJ7FniMJaOsU7h97WRmouXXVPVJ/GPaMYUCnS6tOohnu4yu9qeD5h
+         kTS24dBNk01uP6Y28vUIzkINDDUkfxbg85gk4g97MmphOGik0J72nRTyMlFe2JnAykwF
+         m4uWcD7fLs0gzrm7eGTqgq733AT9ublGRpcZSmeMroh25i9lUN7umaPY7rBGCdTrTDrF
+         uGlDACxj6QLPzqGDvEdPnioQAaC3wv/BbPkc4YcIGobw21qaOG/mRJJznDs5wlq1q3N8
+         gL6GcfsRao+6nDkTZXwFA+48wcFf37OMs3WXwPtkWyY1IPNQrqkdCsZub5jq7hj/eM+b
+         0EYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695464022; x=1696068822;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RUlZCtFTFaUMAp/xTpZ5qPDOY8dQPvRsRwT1ilDrXWM=;
-        b=iusEfXR2LVT8iYJJVnJiXPXbmxq9mZaFBJAbPEFY9jOB5yGg/aaWwC3NRMUJ11MgC3
-         Ol3xe1Pxp1FhadFMtT0MNDkBSclN3EHxUoSlFvLTxATxUlPLKKawTTW3uUlit/dPBTsd
-         VDF8+FVQnmpwvT7ZeKi/Qxk4rYGpo8srcoOYcCrN6PSQSOJe1oLgX+I8FZnlnU7SB4Xo
-         NzBkKCjCAw8DOMHreE3jGXkNwUxowCB2JrpXapsaTFCSSZOtY68WYctFmf/LFsIM9Rkf
-         pSlWjFeDVN93RHFLqhb1Jgyv/ZVQEmP/Dc4eRAlKerlnTUsX06Un+VuNdnRxcDxkFZso
-         9tMA==
-X-Gm-Message-State: AOJu0Yyh8foWT1voWXpODJPiBsSuZQJSrqqeaM04vRC6ANOaXIqBCxac
-        2BAYR1iLdEoa5QlOlxP+IbL3jA==
-X-Google-Smtp-Source: AGHT+IHHCP+E9+z/kkdmvhDa5gOPd1Cuk+81kxCb0+cTNJHDEBGx8NLQ+ABB0VpkMmUcFKJtZBAxTg==
-X-Received: by 2002:a05:6e02:1b0d:b0:34f:d665:4c2e with SMTP id i13-20020a056e021b0d00b0034fd6654c2emr2252379ilv.30.1695464021895;
-        Sat, 23 Sep 2023 03:13:41 -0700 (PDT)
-Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
-        by smtp.gmail.com with ESMTPSA id j15-20020a02cc6f000000b0043167542398sm1538551jaq.141.2023.09.23.03.13.40
+        d=1e100.net; s=20230601; t=1695464057; x=1696068857;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WQaBr3/ANCvxk22m18znkZmjH5OVkigMIqVSE4vSrpM=;
+        b=buglPgwo+Fv0nb8Rw8k6gnz3+Zz1brmHD4Ii/Fe6ia5VZGToY0V/vth2ETFXQrsZAU
+         0nTdBJIUR8+UI6/Pca0hHi2fFM5RYuKl7YtEHyqauks948APpWaq4193pkRpM57Y4GeE
+         c6yfLNbMsBw8K3wsZ6jCJa0Zideaiaq01v1DevZj3Ea+CJwikIBFdhutCbjSVdJVvOfl
+         2WGaihU6uXjfLWgoLBZMJj++MHBS0oIkXqZzqhWH5EaPnBBlG2Vqh3hUt/ujH0V7v5g5
+         m0TFBh0+V6sMOLxyTHti0QXiPONcp3/wQ+gwYQCnhofmDjI/NUIl/q9eEsRoY9RYPqok
+         Huxg==
+X-Gm-Message-State: AOJu0Yw9AQjIp34Y+XczHjieXuDddEPu5x5ImEIVAHssWg2aQTT/DHUR
+        rE9IXn8TZbiCXE2IWs195o3TGDQT2vdp8G+ct2vlLw==
+X-Google-Smtp-Source: AGHT+IFgFoMtyXssdWIXyqyAV11hTbmW665uJu+y8MT+F7QgZoLUSSNFezARRrMRWNMWaFiD/xkvsA==
+X-Received: by 2002:a05:6a20:394a:b0:138:2fb8:6b42 with SMTP id r10-20020a056a20394a00b001382fb86b42mr2398753pzg.14.1695464056890;
+        Sat, 23 Sep 2023 03:14:16 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id e12-20020a170902d38c00b001c3cbedbc47sm5021428pld.6.2023.09.23.03.14.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Sep 2023 03:13:41 -0700 (PDT)
-Date:   Sat, 23 Sep 2023 10:13:40 +0000
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        "Paul E . McKenney" <paulmck@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] sched/rt: Fix live lock between select_fallback_rq() and
- RT push
-Message-ID: <20230923101340.GA3521658@google.com>
-References: <20230923011409.3522762-1-joel@joelfernandes.org>
- <20230922214539.4e282609@gandalf.local.home>
+        Sat, 23 Sep 2023 03:14:16 -0700 (PDT)
+Message-ID: <650eba78.170a0220.630bc.9e31@mx.google.com>
+Date:   Sat, 23 Sep 2023 03:14:16 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230922214539.4e282609@gandalf.local.home>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable
+X-Kernelci-Kernel: v5.10.197
+X-Kernelci-Report-Type: build
+Subject: stable/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
+ 6 warnings (v5.10.197)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Steve,
+stable/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 6 warnings (v5.1=
+0.197)
 
-On Fri, Sep 22, 2023 at 09:45:39PM -0400, Steven Rostedt wrote:
-> On Sat, 23 Sep 2023 01:14:08 +0000
-> "Joel Fernandes (Google)" <joel@joelfernandes.org> wrote:
-> 
-> > During RCU-boost testing with the TREE03 rcutorture config, I found that
-> > after a few hours, the machine locks up.
-> > 
-> > On tracing, I found that there is a live lock happening between 2 CPUs.
-> > One CPU has an RT task running, while another CPU is being offlined
-> > which also has an RT task running.  During this offlining, all threads
-> > are migrated. The migration thread is repeatedly scheduled to migrate
-> > actively running tasks on the CPU being offlined. This results in a live
-> > lock because select_fallback_rq() keeps picking the CPU that an RT task
-> > is already running on only to get pushed back to the CPU being offlined.
-> > 
-> > It is anyway pointless to pick CPUs for pushing tasks to if they are
-> > being offlined only to get migrated away to somewhere else. This could
-> > also add unwanted latency to this task.
-> > 
-> > Fix these issues by not selecting CPUs in RT if they are not 'active'
-> > for scheduling, using the cpu_active_mask. Other parts in core.c already
-> > use cpu_active_mask to prevent tasks from being put on CPUs going
-> > offline.
-> > 
-> > Tested-by: Paul E. McKenney <paulmck@kernel.org>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> > ---
-> >  kernel/sched/cpupri.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
-> > index a286e726eb4b..42c40cfdf836 100644
-> > --- a/kernel/sched/cpupri.c
-> > +++ b/kernel/sched/cpupri.c
-> > @@ -101,6 +101,7 @@ static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
-> >  
-> >  	if (lowest_mask) {
-> >  		cpumask_and(lowest_mask, &p->cpus_mask, vec->mask);
-> > +		cpumask_and(lowest_mask, lowest_mask, cpu_active_mask);
-> 
-> What happens if the cpu_active_mask changes right here?
-> 
-> Is this just making the race window smaller?
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-5.10.y/k=
+ernel/v5.10.197/
 
-It should not be an issue for fixing the live lock because at most that would
-cause a few more bounces between the 2 CPUs but eventually once
-cpu_active_mask is stable, the CPU being offlined will not be selected for
-the push. That's nothing compared to the multi-second live lock that happens
-right now.
+Tree: stable
+Branch: linux-5.10.y
+Git Describe: v5.10.197
+Git Commit: 393e225fe8ff80ecc47065235027ce1a7fcbb8e5
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 7 unique architectures
 
-Also, with this patch I ran the tests for days and could not reproduce the
-issue. Without the patch, I hit it in a few hours.
+Warnings Detected:
 
-> Something tells me the fix is going to be something a bit more involved.
-> But as I'm getting ready for Paris, I can't look at it at the moment.
+arc:
 
-Thanks for taking a look and safe travels!
+arm64:
+    defconfig+arm64-chromebook (gcc-10): 1 warning
 
- - Joel
+arm:
 
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: warning: returning =
+=E2=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=
+=80=99 makes pointer from integer without a cast [-Wint-conversion]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warn=
+ing, 0 section mismatches
+
+Warnings:
+    drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: warning: returning =E2=
+=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=80=
+=99 makes pointer from integer without a cast [-Wint-conversion]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
