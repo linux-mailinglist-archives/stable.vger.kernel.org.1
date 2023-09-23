@@ -2,183 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAD567AC5AF
-	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 00:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C2637AC5BE
+	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 00:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbjIWWdO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 23 Sep 2023 18:33:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38156 "EHLO
+        id S229464AbjIWW7M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 23 Sep 2023 18:59:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjIWWdO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 18:33:14 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A09D0192;
-        Sat, 23 Sep 2023 15:33:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B7FC433C9;
-        Sat, 23 Sep 2023 22:33:07 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.96)
-        (envelope-from <rostedt@goodmis.org>)
-        id 1qkBCA-003tuD-32;
-        Sat, 23 Sep 2023 18:33:50 -0400
-Message-ID: <20230923223350.752964923@goodmis.org>
-User-Agent: quilt/0.66
-Date:   Sat, 23 Sep 2023 18:33:32 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        stable@vger.kernel.org, Zheng Yejian <zhengyejian1@huawei.com>
-Subject: [for-linus][PATCH 1/2] ring-buffer: Fix bytes info in per_cpu buffer stats
-References: <20230923223331.720351929@goodmis.org>
+        with ESMTP id S229456AbjIWW7L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 18:59:11 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C00127;
+        Sat, 23 Sep 2023 15:59:05 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-32167a4adaaso4003994f8f.1;
+        Sat, 23 Sep 2023 15:59:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695509943; x=1696114743; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UpqwuhVkG5QUle4XgWvbsNizB7y0ELvTMh0she2TEXo=;
+        b=Ckxl1e60Mke9kh2HnTZO+lJBBIq+dQp6tlGyh7FQeZEHVOmKXlCUUvRYdAUEYvkMEM
+         upHHRLQ7NoHspp7ljzJ1t5BszefLolMVZSF2ezL0HTFuVT6z3s63DYjoPJ/PdkKjKdYA
+         o1EGPw3K8ilVTEezpfAZEoK2B2HesY7vLKkilDocmWb121BehaFLD0wzgIykr8WXbEmH
+         rHQ7Vj0oCRYJQmAUZQsPK0PVHAyuImGEpp6mt1Dr8XqLE5OoeaJ+SK8kyidbonaMc+C6
+         Rg4s3ionZEPN2705EIiq+7Xkys/bfw4V8Bm4+8446yP3zINQfpt0A59gG/fgX5mchRCJ
+         7/5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695509943; x=1696114743;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UpqwuhVkG5QUle4XgWvbsNizB7y0ELvTMh0she2TEXo=;
+        b=u/jcjVMeMjjI2+HNRe9jDi0E/SsoGS+dM42aeAR9MkqaNs9TlRs5yXEkLB03tBPdjd
+         LZ4tsXx5zD0BAuUiKfw45zNiKzzirl0qxV3kW6YTsD93DCJqk5xX+xh+MjuPkljMyMoT
+         JkAiQ/1L2BZfckx6+Hk6rlZxlSWEc+JxOkNwOYLXVn2hRJew6lW5Zo+T7R+B9EENBzGG
+         dJM1tLCBzoWHrXAPNXvt6pFA/Cseczh/JLmUb+CzPlbIK/5g3zh25LIMuvockp2+5VEX
+         CR3ZSuVdM8A7cVWl435V5IpivsKWNBfhm4htBSNbdSJVfsU7sC4aRT1nXqGL9EdLDntF
+         XLGQ==
+X-Gm-Message-State: AOJu0Yy18ub0qIIUGA3925nHHbxvwekBvEtzVJKx/+rqXurK5DQg78GM
+        FqsaGXeYgCDHnx4h+nEXPM4=
+X-Google-Smtp-Source: AGHT+IGyVqTZlygqTRJi0Ur5gP8cGL0gDYBXyC/UAjK4uMnYEFlEhX1ctgjOwCpr/W/NNs3W2O+6Rg==
+X-Received: by 2002:a05:6000:10d:b0:31f:b804:8e44 with SMTP id o13-20020a056000010d00b0031fb8048e44mr2487372wrx.61.1695509943330;
+        Sat, 23 Sep 2023 15:59:03 -0700 (PDT)
+Received: from spiri.. ([2a02:2f08:a301:7000:650d:ac3c:7afc:f897])
+        by smtp.gmail.com with ESMTPSA id w10-20020adfde8a000000b0031fba0a746bsm7939772wrl.9.2023.09.23.15.59.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Sep 2023 15:59:02 -0700 (PDT)
+From:   alisadariana@gmail.com
+Cc:     Alisa-Dariana Roman <alisadariana@gmail.com>,
+        Alisa-Dariana Roman <alisa.roman@analog.com>,
+        stable@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: ad7192: Correct reference voltage
+Date:   Sun, 24 Sep 2023 01:58:27 +0300
+Message-Id: <20230923225827.75681-1-alisadariana@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
 
-The 'bytes' info in file 'per_cpu/cpu<X>/stats' means the number of
-bytes in cpu buffer that have not been consumed. However, currently
-after consuming data by reading file 'trace_pipe', the 'bytes' info
-was not changed as expected.
+The avdd and the reference voltage are two different sources but the
+reference voltage was assigned according to the avdd supply.
 
-  # cat per_cpu/cpu0/stats
-  entries: 0
-  overrun: 0
-  commit overrun: 0
-  bytes: 568             <--- 'bytes' is problematical !!!
-  oldest event ts:  8651.371479
-  now ts:  8653.912224
-  dropped events: 0
-  read events: 8
+Add vref regulator structure and set the reference voltage according to
+the vref supply from the devicetree.
 
-The root cause is incorrect stat on cpu_buffer->read_bytes. To fix it:
-  1. When stat 'read_bytes', account consumed event in rb_advance_reader();
-  2. When stat 'entries_bytes', exclude the discarded padding event which
-     is smaller than minimum size because it is invisible to reader. Then
-     use rb_page_commit() instead of BUF_PAGE_SIZE at where accounting for
-     page-based read/remove/overrun.
+In case vref supply is missing, reference voltage is set according to
+the avdd supply for compatibility with old devicetrees.
 
-Also correct the comments of ring_buffer_bytes_cpu() in this patch.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230921125425.1708423-1-zhengyejian1@huawei.com
-
+Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
+Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 Cc: stable@vger.kernel.org
-Fixes: c64e148a3be3 ("trace: Add ring buffer stats to measure rate of events")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/ring_buffer.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ drivers/iio/adc/ad7192.c | 31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index a1651edc48d5..28daf0ce95c5 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -354,6 +354,11 @@ static void rb_init_page(struct buffer_data_page *bpage)
- 	local_set(&bpage->commit, 0);
- }
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 69d1103b9508..c414fed60dd3 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -177,6 +177,7 @@ struct ad7192_chip_info {
+ struct ad7192_state {
+ 	const struct ad7192_chip_info	*chip_info;
+ 	struct regulator		*avdd;
++	struct regulator		*vref;
+ 	struct clk			*mclk;
+ 	u16				int_vref_mv;
+ 	u32				fclk;
+@@ -1008,10 +1009,32 @@ static int ad7192_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd supply\n");
  
-+static __always_inline unsigned int rb_page_commit(struct buffer_page *bpage)
-+{
-+	return local_read(&bpage->page->commit);
-+}
+-	ret = regulator_get_voltage(st->avdd);
+-	if (ret < 0) {
+-		dev_err(&spi->dev, "Device tree error, reference voltage undefined\n");
+-		return ret;
++	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
++	if (IS_ERR(st->vref)) {
++		if (PTR_ERR(st->vref) != -ENODEV)
++			return PTR_ERR(st->vref);
 +
- static void free_buffer_page(struct buffer_page *bpage)
- {
- 	free_page((unsigned long)bpage->page);
-@@ -2003,7 +2008,7 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
- 			 * Increment overrun to account for the lost events.
- 			 */
- 			local_add(page_entries, &cpu_buffer->overrun);
--			local_sub(BUF_PAGE_SIZE, &cpu_buffer->entries_bytes);
-+			local_sub(rb_page_commit(to_remove_page), &cpu_buffer->entries_bytes);
- 			local_inc(&cpu_buffer->pages_lost);
- 		}
- 
-@@ -2367,11 +2372,6 @@ rb_reader_event(struct ring_buffer_per_cpu *cpu_buffer)
- 			       cpu_buffer->reader_page->read);
- }
- 
--static __always_inline unsigned rb_page_commit(struct buffer_page *bpage)
--{
--	return local_read(&bpage->page->commit);
--}
--
- static struct ring_buffer_event *
- rb_iter_head_event(struct ring_buffer_iter *iter)
- {
-@@ -2517,7 +2517,7 @@ rb_handle_head_page(struct ring_buffer_per_cpu *cpu_buffer,
- 		 * the counters.
- 		 */
- 		local_add(entries, &cpu_buffer->overrun);
--		local_sub(BUF_PAGE_SIZE, &cpu_buffer->entries_bytes);
-+		local_sub(rb_page_commit(next_page), &cpu_buffer->entries_bytes);
- 		local_inc(&cpu_buffer->pages_lost);
- 
- 		/*
-@@ -2660,9 +2660,6 @@ rb_reset_tail(struct ring_buffer_per_cpu *cpu_buffer,
- 
- 	event = __rb_page_index(tail_page, tail);
- 
--	/* account for padding bytes */
--	local_add(BUF_PAGE_SIZE - tail, &cpu_buffer->entries_bytes);
--
- 	/*
- 	 * Save the original length to the meta data.
- 	 * This will be used by the reader to add lost event
-@@ -2676,7 +2673,8 @@ rb_reset_tail(struct ring_buffer_per_cpu *cpu_buffer,
- 	 * write counter enough to allow another writer to slip
- 	 * in on this page.
- 	 * We put in a discarded commit instead, to make sure
--	 * that this space is not used again.
-+	 * that this space is not used again, and this space will
-+	 * not be accounted into 'entries_bytes'.
- 	 *
- 	 * If we are less than the minimum size, we don't need to
- 	 * worry about it.
-@@ -2701,6 +2699,9 @@ rb_reset_tail(struct ring_buffer_per_cpu *cpu_buffer,
- 	/* time delta must be non zero */
- 	event->time_delta = 1;
- 
-+	/* account for padding bytes */
-+	local_add(BUF_PAGE_SIZE - tail, &cpu_buffer->entries_bytes);
++		ret = regulator_get_voltage(st->avdd);
++		if (ret < 0) {
++			dev_err(&spi->dev, "Device tree error, AVdd voltage undefined\n");
++			return ret;
++		}
++	} else {
++		ret = regulator_enable(st->vref);
++		if (ret) {
++			dev_err(&spi->dev, "Failed to enable specified Vref supply\n");
++			return ret;
++		}
 +
- 	/* Make sure the padding is visible before the tail_page->write update */
- 	smp_wmb();
++		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->vref);
++		if (ret)
++			return ret;
++
++		ret = regulator_get_voltage(st->vref);
++		if (ret < 0) {
++			dev_err(&spi->dev, "Device tree error, Vref voltage undefined\n");
++			return ret;
++		}
+ 	}
+ 	st->int_vref_mv = ret / 1000;
  
-@@ -4215,7 +4216,7 @@ u64 ring_buffer_oldest_event_ts(struct trace_buffer *buffer, int cpu)
- EXPORT_SYMBOL_GPL(ring_buffer_oldest_event_ts);
- 
- /**
-- * ring_buffer_bytes_cpu - get the number of bytes consumed in a cpu buffer
-+ * ring_buffer_bytes_cpu - get the number of bytes unconsumed in a cpu buffer
-  * @buffer: The ring buffer
-  * @cpu: The per CPU buffer to read from.
-  */
-@@ -4723,6 +4724,7 @@ static void rb_advance_reader(struct ring_buffer_per_cpu *cpu_buffer)
- 
- 	length = rb_event_length(event);
- 	cpu_buffer->reader_page->read += length;
-+	cpu_buffer->read_bytes += length;
- }
- 
- static void rb_advance_iter(struct ring_buffer_iter *iter)
-@@ -5816,7 +5818,7 @@ int ring_buffer_read_page(struct trace_buffer *buffer,
- 	} else {
- 		/* update the entry counter */
- 		cpu_buffer->read += rb_page_entries(reader);
--		cpu_buffer->read_bytes += BUF_PAGE_SIZE;
-+		cpu_buffer->read_bytes += rb_page_commit(reader);
- 
- 		/* swap the pages */
- 		rb_init_page(bpage);
 -- 
-2.40.1
+2.34.1
+
