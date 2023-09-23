@@ -2,100 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D15367ABD30
-	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 03:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 883BF7ABECB
+	for <lists+stable@lfdr.de>; Sat, 23 Sep 2023 10:14:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230131AbjIWBpK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 22 Sep 2023 21:45:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50006 "EHLO
+        id S230135AbjIWIOu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 23 Sep 2023 04:14:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230047AbjIWBpJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 22 Sep 2023 21:45:09 -0400
+        with ESMTP id S230081AbjIWIOs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 04:14:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94A8D1A7;
-        Fri, 22 Sep 2023 18:45:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4A3C433C8;
-        Sat, 23 Sep 2023 01:45:01 +0000 (UTC)
-Date:   Fri, 22 Sep 2023 21:45:39 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Cc:     linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        "Paul E . McKenney" <paulmck@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] sched/rt: Fix live lock between select_fallback_rq()
- and RT push
-Message-ID: <20230922214539.4e282609@gandalf.local.home>
-In-Reply-To: <20230923011409.3522762-1-joel@joelfernandes.org>
-References: <20230923011409.3522762-1-joel@joelfernandes.org>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1FBD180
+        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 01:14:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E37C433C8;
+        Sat, 23 Sep 2023 08:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1695456882;
+        bh=WvgyNFNZBu/cYYw8P3bLJ8movCPzdtbT9Bj899QTBuc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=KQq/CTr5zRa491De7Za4oYCC7LP+0ycCXDZFyKV4L0onNUJsB2pa9OunoC+IHn0aL
+         4rJKUgPXzJ7yVimc9Rx5EirwcDofvjEbq+dfc0UQUO26db/fPthm+O0cdTMufJkTX1
+         X6wm8KsQzbz7KTrmy1YT0IMJZiUS0eRnqeawCiKw=
+Date:   Sat, 23 Sep 2023 10:14:40 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Thorsten Leemhuis <regressions@leemhuis.info>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Jisheng Zhang <jszhang@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.5 025/211] net: stmmac: use per-queue 64 bit statistics
+ where necessary
+Message-ID: <2023092321-announcer-punctured-2f9f@gregkh>
+References: <20230920112845.859868994@linuxfoundation.org>
+ <20230920112846.582111163@linuxfoundation.org>
+ <c54b9b67-96c7-cdbc-5910-61b1d267fbd2@leemhuis.info>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c54b9b67-96c7-cdbc-5910-61b1d267fbd2@leemhuis.info>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, 23 Sep 2023 01:14:08 +0000
-"Joel Fernandes (Google)" <joel@joelfernandes.org> wrote:
-
-> During RCU-boost testing with the TREE03 rcutorture config, I found that
-> after a few hours, the machine locks up.
+On Wed, Sep 20, 2023 at 02:53:38PM +0200, Thorsten Leemhuis wrote:
+> On 20.09.23 13:27, Greg Kroah-Hartman wrote:
+> > 6.5-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Jisheng Zhang <jszhang@kernel.org>
+> > 
+> > [ Upstream commit 133466c3bbe171f826294161db203f7670bb30c8 ]
 > 
-> On tracing, I found that there is a live lock happening between 2 CPUs.
-> One CPU has an RT task running, while another CPU is being offlined
-> which also has an RT task running.  During this offlining, all threads
-> are migrated. The migration thread is repeatedly scheduled to migrate
-> actively running tasks on the CPU being offlined. This results in a live
-> lock because select_fallback_rq() keeps picking the CPU that an RT task
-> is already running on only to get pushed back to the CPU being offlined.
+> This patch causes a regression in mainline:
+> https://lore.kernel.org/all/20230911171102.cwieugrpthm7ywbm@pengutronix.de/
 > 
-> It is anyway pointless to pick CPUs for pushing tasks to if they are
-> being offlined only to get migrated away to somewhere else. This could
-> also add unwanted latency to this task.
+> A fix is heading towards mainline now:
+> https://lore.kernel.org/all/20230917165328.3403-1-jszhang@kernel.org/
 > 
-> Fix these issues by not selecting CPUs in RT if they are not 'active'
-> for scheduling, using the cpu_active_mask. Other parts in core.c already
-> use cpu_active_mask to prevent tasks from being put on CPUs going
-> offline.
+> Jisheng Zhang already mentioned this and also mentioned that the change
+> depends on another commit not yet backported:
+> https://lore.kernel.org/all/ZQHKiU6SNtq7t1Fi@xhacker/
 > 
-> Tested-by: Paul E. McKenney <paulmck@kernel.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> ---
->  kernel/sched/cpupri.c | 1 +
->  1 file changed, 1 insertion(+)
+> Something feels wrong here; not sure if it is or if I'm missing something.
 > 
-> diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
-> index a286e726eb4b..42c40cfdf836 100644
-> --- a/kernel/sched/cpupri.c
-> +++ b/kernel/sched/cpupri.c
-> @@ -101,6 +101,7 @@ static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
->  
->  	if (lowest_mask) {
->  		cpumask_and(lowest_mask, &p->cpus_mask, vec->mask);
-> +		cpumask_and(lowest_mask, lowest_mask, cpu_active_mask);
+> Ciao, Thorsten (who only noticed this by chance)
 
-What happens if the cpu_active_mask changes right here?
+Thanks, I've dropped this now from the 6.5.y queue.
 
-Is this just making the race window smaller?
-
-Something tells me the fix is going to be something a bit more involved.
-But as I'm getting ready for Paris, I can't look at it at the moment.
-
--- Steve
-
->  
->  		/*
->  		 * We have to ensure that we have at least one bit
-
+greg k-h
