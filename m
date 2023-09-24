@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9F17AC64C
-	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 04:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2027AC64D
+	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 04:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229490AbjIXCUO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 23 Sep 2023 22:20:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38710 "EHLO
+        id S229563AbjIXC1w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 23 Sep 2023 22:27:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbjIXCUO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 22:20:14 -0400
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A947010B
-        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 19:20:07 -0700 (PDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-3231df054c4so552951f8f.0
-        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 19:20:07 -0700 (PDT)
+        with ESMTP id S229437AbjIXC1w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 22:27:52 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B417D109
+        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 19:27:45 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-404fbfac998so49034405e9.3
+        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 19:27:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695522005; x=1696126805; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1695522464; x=1696127264; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ipDK22wS5etgWiSV07SPcEV8HzMBF9D7TF65lxUNyyc=;
-        b=JdmcUnjawlFgzrqSb2UUqJvCn3OTdUVkNHPxjH/z+3XhszLNs7qWaJJcXXvYWrOvBV
-         7QoyR2n5vAwkBwvWP9ofn9ryU1OH4+PIswUISEgptvztslpdphCBuOIy+5ylqc42AJ8w
-         jj0ZAzfsLORclY4u8oYPy1g7oQcIklrrw08qUWhA4C5bZ6nyF7juLHN+EwQKtsMYD4Xn
-         FzMujJhYYn0Fd/xJZ7kII2Ul+oe6ucYzVkeUHiMkiEZBPg1x++7dSH+clgC2xb/SB1dU
-         pVEvMVVN82NplP7/k3WMh8PtE9yRvlYYFk5cW6kzI7HPmWEjr6ZsARvO3ZwhP4JkQbmN
-         +PWA==
+        bh=UMfDZDuksR5eQc4Yl0JfhVvRtgXZ5DRnxfxpGHzX4c4=;
+        b=lj08jMYsy5UELG63+WicvSYCJ+8EimzgDjkWb6OtBks4p4ywJ50ani6zPmkB/KepUK
+         /vj83i0XYmCHktWUvjVHqkD/hRAlEfE2hpYdylKGh8EharmUSkgjfNj+Es0Ea/BjGeVX
+         fOXVYxTBp7sYeaxbe4HTDlzT0es4jCeDTRvy7kr7otlRG6oAUqVN2++lZUc6aKvW3s1+
+         3InAYdvE0xmRJtQNDqcSBA3Rdna23jbAV6JJ41JWqDEQKVjKnBtJO5dGaaQHNUp+qzNe
+         sq8cymEzhCa0jZa1RP+eSNfjUa4H/50zJ2WIcOeVaLZNKZfbnehvfAG8dPuUxynkzOA8
+         nd7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695522005; x=1696126805;
+        d=1e100.net; s=20230601; t=1695522464; x=1696127264;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ipDK22wS5etgWiSV07SPcEV8HzMBF9D7TF65lxUNyyc=;
-        b=iCL1M2ITpQEnIydA4wUqLoHH+gMt5ND9bIDMpllLy8suvuU8P5i2e2wxDj1/qYEN8N
-         KZg1Lj0XF+Guo05iptIzu3nnt48i2XLnSRD3Fq8aOjHdSnwgIf3b3X+QV7n3ZF4h8e1f
-         8LtSASsTZszr9uceRV1jjJzV2oKKNlQO5NxqsikmLIbdz1nix9BvUgy/Lhz5NBN3UMQP
-         ylHHfr3rz0k9MdbvIaGchjLX2BSXc7LDPVe8RZnYIs3Fvo+wELd2XsWlEvLNE7JOy9mG
-         cmxtOj1WodtU2R2ZGfzdC0Yncy0FT2TWYWq9pb/jIM204/tKfM+V7iZkgx2EyBH4uAOa
-         GbKQ==
-X-Gm-Message-State: AOJu0YyneVB/HewErhKeoUVVvF++7nxfo/ZmWJ2cLr88GXuopqHYzyds
-        ZFLqTIjnx1BBcGWukJoZhwdXRdgCMxIwsIMI
-X-Google-Smtp-Source: AGHT+IHx15wMt5oM8pYEWfa4DWtMlKFptKkNDvLU+siii1DTxlFSFEfqqGoyebYau5UtVgdthr3IKQ==
-X-Received: by 2002:a5d:634c:0:b0:320:a4e:6b83 with SMTP id b12-20020a5d634c000000b003200a4e6b83mr2849707wrw.31.1695522004620;
-        Sat, 23 Sep 2023 19:20:04 -0700 (PDT)
+        bh=UMfDZDuksR5eQc4Yl0JfhVvRtgXZ5DRnxfxpGHzX4c4=;
+        b=jvWdp04VFXe6iU0nce6+BgDZ9B4/bu8N+L5ORcLICLxZP52/QCfVPSO/dBRJlRmfSU
+         QlLXpz9bSZ0VFOjHs0DaDUPimqQ2Z/TlrQj2IcNUWYC1b9JA1mIy86uWfj+QdHxcyEyZ
+         srBOahNXB6+pmYDoMiuHZf3TOV4uHiwoSag09R2XChSzVB8eaKyA3Eb8dVlQCN6OHMsr
+         wl7mlmjTIa0C9QNTX7zsENTB86h/xaxgEkPgzjhMfLfBc6MSpGwPOQRBaAmV4FaAtUdt
+         +0xFCqnr5BhZRvDIYkW4oVHTHuutvnJ6ZWB//yXIHGp/QFa7WkRPtKu/fjbfMKKgBcML
+         Cd0Q==
+X-Gm-Message-State: AOJu0YwHQMzkEitW5w/d74VrdbAUZ0QjJLxI7raN3BiQvB/k6BwdyEuN
+        AUUJuCk1cZu0JUon5W9oNX9/T+2hUYDwkjYE
+X-Google-Smtp-Source: AGHT+IFR9bWkrjxdc0c3nfvmaiT52a2qLTOuinBjLmy9PRa+dR9KfCiULXTDhUx3KhBjBJix4qL9dQ==
+X-Received: by 2002:a05:600c:291:b0:404:fc5c:15ed with SMTP id 17-20020a05600c029100b00404fc5c15edmr2812991wmk.35.1695522463659;
+        Sat, 23 Sep 2023 19:27:43 -0700 (PDT)
 Received: from localhost.localdomain ([2a05:f480:1000:b09:5400:4ff:fe6f:7099])
-        by smtp.gmail.com with ESMTPSA id p16-20020a5d6390000000b0031ffa453affsm8168744wru.17.2023.09.23.19.20.01
+        by smtp.gmail.com with ESMTPSA id p13-20020a5d68cd000000b00321673de0d7sm8156299wrw.25.2023.09.23.19.27.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Sep 2023 19:20:04 -0700 (PDT)
+        Sat, 23 Sep 2023 19:27:43 -0700 (PDT)
 From:   zhangshida <starzhangzsd@gmail.com>
 X-Google-Original-From: zhangshida <zhangshida@kylinos.cn>
 To:     stable@vger.kernel.org
@@ -56,12 +56,12 @@ Cc:     starzhangzsd@gmail.com, Shida Zhang <zhangshida@kylinos.cn>,
         stable@kernel.org, Andreas Dilger <adilger@dilger.ca>,
         "Darrick J . Wong" <djwong@kernel.org>,
         Theodore Ts'o <tytso@mit.edu>
-Subject: [PATCH 4.14.y] ext4: fix rec_len verify error
-Date:   Sun, 24 Sep 2023 10:19:55 +0800
-Message-Id: <20230924021955.2256033-1-zhangshida@kylinos.cn>
+Subject: [PATCH 4.19.y] ext4: fix rec_len verify error
+Date:   Sun, 24 Sep 2023 10:27:35 +0800
+Message-Id: <20230924022735.2256466-1-zhangshida@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2023092057-company-unworried-210b@gregkh>
-References: <2023092057-company-unworried-210b@gregkh>
+In-Reply-To: <2023092055-disband-unveiling-f6cc@gregkh>
+References: <2023092055-disband-unveiling-f6cc@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -75,8 +75,6 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 From: Shida Zhang <zhangshida@kylinos.cn>
-
-[ Upstream commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6 ]
 
 With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
 a problem occurred when more than 13 million files were directly created
@@ -110,16 +108,17 @@ Reviewed-by: Andreas Dilger <adilger@dilger.ca>
 Reviewed-by: Darrick J. Wong <djwong@kernel.org>
 Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kylinos.cn
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+(cherry picked from commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6)
 Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
 ---
  fs/ext4/namei.c | 26 +++++++++++++++-----------
  1 file changed, 15 insertions(+), 11 deletions(-)
 
 diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
-index 57c78a7a7425..a763216e1c15 100644
+index db9bba3473b5..93d392576c12 100644
 --- a/fs/ext4/namei.c
 +++ b/fs/ext4/namei.c
-@@ -321,17 +321,17 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
+@@ -322,17 +322,17 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
  						   struct ext4_dir_entry *de)
  {
  	struct ext4_dir_entry_tail *t;
@@ -141,7 +140,7 @@ index 57c78a7a7425..a763216e1c15 100644
  
  	if (d != top)
  		return NULL;
-@@ -342,7 +342,8 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
+@@ -343,7 +343,8 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
  #endif
  
  	if (t->det_reserved_zero1 ||
@@ -151,7 +150,7 @@ index 57c78a7a7425..a763216e1c15 100644
  	    t->det_reserved_zero2 ||
  	    t->det_reserved_ft != EXT4_FT_DIR_CSUM)
  		return NULL;
-@@ -424,13 +425,14 @@ static struct dx_countlimit *get_dx_countlimit(struct inode *inode,
+@@ -425,13 +426,14 @@ static struct dx_countlimit *get_dx_countlimit(struct inode *inode,
  	struct ext4_dir_entry *dp;
  	struct dx_root_info *root;
  	int count_offset;
@@ -170,7 +169,7 @@ index 57c78a7a7425..a763216e1c15 100644
  			return NULL;
  		root = (struct dx_root_info *)(((void *)dp + 12));
  		if (root->reserved_zero ||
-@@ -1243,6 +1245,7 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
+@@ -1244,6 +1246,7 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
  	unsigned int buflen = bh->b_size;
  	char *base = bh->b_data;
  	struct dx_hash_info h = *hinfo;
@@ -178,7 +177,7 @@ index 57c78a7a7425..a763216e1c15 100644
  
  	if (ext4_has_metadata_csum(dir->i_sb))
  		buflen -= sizeof(struct ext4_dir_entry_tail);
-@@ -1256,11 +1259,12 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
+@@ -1257,11 +1260,12 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
  			map_tail--;
  			map_tail->hash = h.hash;
  			map_tail->offs = ((char *) de - base)>>2;
