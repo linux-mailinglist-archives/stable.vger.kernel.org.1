@@ -2,104 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 815B67ACA00
-	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 16:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AE5A7ACA11
+	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 16:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229716AbjIXO3y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 24 Sep 2023 10:29:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45562 "EHLO
+        id S229974AbjIXOk3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 24 Sep 2023 10:40:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229708AbjIXO3y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 10:29:54 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A6E1FB
-        for <stable@vger.kernel.org>; Sun, 24 Sep 2023 07:29:48 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-50336768615so8129683e87.0
-        for <stable@vger.kernel.org>; Sun, 24 Sep 2023 07:29:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695565786; x=1696170586; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=46Qd00mqgwhkkW6amCqEXLEzCc/q28cqM0GW7xvshDA=;
-        b=MPH+uj1XaZn1k6B72MtYgCUK8WKDKjmi1o9XgipSJXsO+Fh/+YNCD5xJMCt3AIdKud
-         K5Fcn6C25BeXOLEZt5/RZad6O0WPG3nuH+6YTuwqfMwGBokffCFLtq+SulTpN6NvG5Zn
-         qNnCi6pV02vTdm8KgTCbvvBjB8k8eAbFRuvCSue+F53f79OV4mA4hSN06I/DxvZEcMZj
-         FRavvwiVxXYlujkMiXEEvognMHWiI+BfdvG/Vcrzay94eqQ+xXDpM6KYlVweDuK1sOed
-         FdGImQQcPRxggiy2Qw9ULCwQJgmoTudY/1psaVEHJuohzOVwNzFTQmk50mmCbAIllov9
-         xyfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695565786; x=1696170586;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=46Qd00mqgwhkkW6amCqEXLEzCc/q28cqM0GW7xvshDA=;
-        b=IbRm4/NgornNyvuOJuJqs8/DgoQVdy4bdId2D3S5s+lrnnkMEwWPp35jrHdMTwuWo7
-         +7qGg1odkbvqD3kx6X4EtWKuC2j+HpZSRI7uw/GouqiRI+NlWHLGbotE9EI5A2WdFuRq
-         oytedgZaXiK0pyL8p7UJEgF5a+o+3TZ/Wf6YAuz0IcNsrlNovxg2aJ0Rl7k1o3Zv3wzM
-         FWlM7x8kOU2g5GKKP5b3oBQcCezPTJloN/U8Vaf56D01STp2dNBD9kRiIQ9itSD/qpsL
-         UrDz9V20oZ+y2Vg1eU0OjZ29Z4WBnlAXocgkF0j10gVk19QYjW2SHwZbbCqPbB1K+uZp
-         CA7A==
-X-Gm-Message-State: AOJu0YxSdjGjGwQTvTtmPZlOmi3pwDUtgqoGIzJD3BWceJci9mzwgKC0
-        Uso6rdx96/NzaMp5pbTub4tr4AI3hMiiTn8TSxw=
-X-Google-Smtp-Source: AGHT+IGLOMWSKXKL8BRjckALi0PwdEPeR/1PD/HLrp5PnqsD0JM2rvwnq3Dvi5PtXrXwCpo4Uv+WsgsAgYIAfyIXZQs=
-X-Received: by 2002:a05:6512:694:b0:503:5cd:998b with SMTP id
- t20-20020a056512069400b0050305cd998bmr4786077lfe.28.1695565785999; Sun, 24
- Sep 2023 07:29:45 -0700 (PDT)
+        with ESMTP id S229795AbjIXOk3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 10:40:29 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D62FF109;
+        Sun, 24 Sep 2023 07:40:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF95C433CC;
+        Sun, 24 Sep 2023 14:40:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695566422;
+        bh=9GRsckWSSu1mlk9vmJKy9J27I3v7LoT+WjbT3ntqne0=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=gCcVsK/CkNAlyMVqWnN4VPt1kzjPoqNo5oo6alEewEruR12Pzpino4CvWoSEgGcO9
+         /Rr00Y0Eua09CO0vZ47JpQ4ZfAewqtiIQGn/ievdlfg+l9gA/P2JsZHOpSKtYjcmOi
+         Z2VSOmKGDykY20pTAlF+gU2khzpEQXGzvE14e7FGIPHLrPivhJKHpyhKUxNoN90hAI
+         o+ys+PbAVXHqOPxaoUULYRreT4jz+eKeyLE6ta0PKw+hQjdRkLKw2FRyl60crpglhM
+         ds1KF+m+Nz2BsZ8sDZPAq6SCGYEYWmhz3fQP7DoMYDeD7lQboBTJQR0YEZi4kMkgrs
+         pkb6lmrpQ3Izg==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5033918c09eso7526031e87.2;
+        Sun, 24 Sep 2023 07:40:22 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwLnoMAmopexRUOZxnLEl7ux2pgmQjwEc0QZxb3bfEg5sRXUJt3
+        ytSVItkaumOpWYkaf6XaCBCzgfeJbjoUsktWzQ==
+X-Google-Smtp-Source: AGHT+IHgb7dlF3spUK7WjEovMRqe4TqCew31OFnTTbuiTomARpVLNlO+VuNaMI73R08m9JXOZ3UuaIZrHQ9jk6PBkA0=
+X-Received: by 2002:ac2:5f97:0:b0:503:200f:47a9 with SMTP id
+ r23-20020ac25f97000000b00503200f47a9mr3453499lfe.15.1695566420722; Sun, 24
+ Sep 2023 07:40:20 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:7412:c645:b0:df:2c16:a783 with HTTP; Sun, 24 Sep 2023
- 07:29:45 -0700 (PDT)
-Reply-To: ab8111977@gmail.com
-From:   Ms Nadage Lassou <c.auglalassss@gmail.com>
-Date:   Sun, 24 Sep 2023 15:29:45 +0100
-Message-ID: <CAPQxt+5kQa5xLV+aoiPmCWAm9-9sjh0SL2LyQ0iO4M7gEtq82Q@mail.gmail.com>
-Subject: YOUR ATTENTION FOR THIS BENEFIT.
-To:     undisclosed-recipients:;
+References: <20230914131058.2472260-1-jani.nikula@intel.com>
+In-Reply-To: <20230914131058.2472260-1-jani.nikula@intel.com>
+From:   Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Date:   Sun, 24 Sep 2023 22:40:04 +0800
+X-Gmail-Original-Message-ID: <CAAOTY_-Vn9eN+OjSWjo=WTrSasJs6h_N93PQgVAUU-NDeQ438Q@mail.gmail.com>
+Message-ID: <CAAOTY_-Vn9eN+OjSWjo=WTrSasJs6h_N93PQgVAUU-NDeQ438Q@mail.gmail.com>
+Subject: Re: [PATCH] drm/mediatek/dp: fix memory leak on ->get_edid callback
+ error path
+To:     Jani Nikula <jani.nikula@intel.com>
+Cc:     dri-devel@lists.freedesktop.org,
+        Markus Schneider-Pargmann <msp@baylibre.com>,
+        Guillaume Ranquet <granquet@baylibre.com>,
+        Bo-Chen Chen <rex-bc.chen@mediatek.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,HK_RANDOM_ENVFROM,HK_RANDOM_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        SUBJ_ATTENTION,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [2a00:1450:4864:20:0:0:0:129 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5007]
-        *  0.0 HK_RANDOM_FROM From username looks random
-        *  0.0 HK_RANDOM_ENVFROM Envelope sender username looks random
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [c.auglalassss[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [ab8111977[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.5 SUBJ_ATTENTION ATTENTION in Subject
-        *  2.6 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Greetings.
+Hi, Jani:
 
-I have something important to tell you.
-i will send you the details once i hear from you.
-Thanks,
-Ms Nadage Lassou
+Jani Nikula <jani.nikula@intel.com> =E6=96=BC 2023=E5=B9=B49=E6=9C=8814=E6=
+=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8B=E5=8D=889:13=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+> Setting new_edid to NULL leaks the buffer.
+
+Applied to mediatek-drm-next [1], thanks.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/chunkuang.hu/linux.git/=
+log/?h=3Dmediatek-drm-next
+
+Regards,
+Chun-Kuang.
+
+>
+> Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort drive=
+r")
+> Cc: Markus Schneider-Pargmann <msp@baylibre.com>
+> Cc: Guillaume Ranquet <granquet@baylibre.com>
+> Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
+> Cc: CK Hu <ck.hu@mediatek.com>
+> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> Cc: Matthias Brugger <matthias.bgg@gmail.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-mediatek@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: <stable@vger.kernel.org> # v6.1+
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>
+> ---
+>
+> UNTESTED
+> ---
+>  drivers/gpu/drm/mediatek/mtk_dp.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek=
+/mtk_dp.c
+> index 2cb47f663756..8fc6eff68e30 100644
+> --- a/drivers/gpu/drm/mediatek/mtk_dp.c
+> +++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+> @@ -2049,6 +2049,7 @@ static struct edid *mtk_dp_get_edid(struct drm_brid=
+ge *bridge,
+>          */
+>         if (mtk_dp_parse_capabilities(mtk_dp)) {
+>                 drm_err(mtk_dp->drm_dev, "Can't parse capabilities\n");
+> +               kfree(new_edid);
+>                 new_edid =3D NULL;
+>         }
+>
+> --
+> 2.39.2
+>
