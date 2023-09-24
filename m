@@ -2,150 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 483E37AC625
-	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 03:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E9F17AC64C
+	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 04:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbjIXBds (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 23 Sep 2023 21:33:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
+        id S229490AbjIXCUO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 23 Sep 2023 22:20:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjIXBdr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 21:33:47 -0400
-Received: from BN3PR00CU001.outbound.protection.outlook.com (mail-eastus2azon11020022.outbound.protection.outlook.com [52.101.56.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC75611D;
-        Sat, 23 Sep 2023 18:33:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jqRPZfiUkatgU/oBiEZO27DpQ3o1UOMSQ+RqNcapj6OGJDxvktNnW4H4LFV5qEwzjIOGQkJbA0At7B69x/S8B6lp+wlotDizjaUioVyd1P/RBIFBM2grYYz/F0TdWSTdGSN6NKkatDA7ruHeXBlkAmXeY0ekUvhWo9BdIYYAmdFzi5PAvbHQORMKuWb6QD9v2bRQpSYsU19bBA6FS4R0mgst7w/LRrjv2yrCcJwWmgHKUp03XUg6gT5JrtRk6I9wYdKSRyKMcvfGLMQyIUVRGr50iHFv7/YdyShniZQVBh2qUCasClBmaagoE0Z46uLjGYFgpiqgDa/EFyt4JOfi7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lPBHGr4d8D8McbJSo9Zz/VAuWF9uuj073tZYcXksau0=;
- b=YXDtg3110MCPeAXB4kTexytQopyh/R1AYV1OQUe08tg/dBu/8Pi71IXKWDwSkb92XQ1hb/jaNrhXyFdzEcpReTKRPibiN87ym1tmY6wDynxzV6kQXxXmYbyXMqRML6kOswUvcwWyXUAULvg8lR7UR8mdfn+Ga+Zv2HE5gJvC02kSNEnoK8lwdS7MyTiPiMQ59U+q/MdRhrduSAsH/JdQ8oMctutTtvvoFRtE2W35cdDeLAybjjnLGAbnm2lVHve+MEvSEmcO7zL6SjOouxZI6v2nMnEj52BnxRnoe0CTFS0C6vkth6CeNyHdRoDkXRw6J+l8Ytm4tUznmKZ3nWNE4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lPBHGr4d8D8McbJSo9Zz/VAuWF9uuj073tZYcXksau0=;
- b=edybGDfK6+Rb2C6WQquo3rQ55PvFHWCtuoMkX80M5Q51zpeccPBcZrPUxtOygTlsg2kcbBcJIdp66IRRRHaIWd2+wmGIxmL0wBHZFfcvVWPmqq3zLGdMVUGYPXFcW/FFHk3hNKUkJJmSZUyskSTyL4yJwEN18GMQ41ReKHXBwpY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-Received: from DM6PR21MB1451.namprd21.prod.outlook.com (2603:10b6:5:25c::16)
- by SJ0PR21MB1323.namprd21.prod.outlook.com (2603:10b6:a03:3e7::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.14; Sun, 24 Sep
- 2023 01:33:38 +0000
-Received: from DM6PR21MB1451.namprd21.prod.outlook.com
- ([fe80::827:4af:136a:236e]) by DM6PR21MB1451.namprd21.prod.outlook.com
- ([fe80::827:4af:136a:236e%3]) with mapi id 15.20.6838.010; Sun, 24 Sep 2023
- 01:33:37 +0000
-From:   Haiyang Zhang <haiyangz@microsoft.com>
-To:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
-Cc:     haiyangz@microsoft.com, decui@microsoft.com, kys@microsoft.com,
-        paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
-        davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
-        longli@microsoft.com, ssengar@linux.microsoft.com,
-        linux-rdma@vger.kernel.org, daniel@iogearbox.net,
-        john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
-        sharmaajay@microsoft.com, hawk@kernel.org, tglx@linutronix.de,
-        shradhagupta@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH net, 2/3] net: mana: Fix the tso_bytes calculation
-Date:   Sat, 23 Sep 2023 18:31:46 -0700
-Message-Id: <1695519107-24139-3-git-send-email-haiyangz@microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1695519107-24139-1-git-send-email-haiyangz@microsoft.com>
-References: <1695519107-24139-1-git-send-email-haiyangz@microsoft.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0043.namprd13.prod.outlook.com
- (2603:10b6:a03:2c2::18) To DM6PR21MB1451.namprd21.prod.outlook.com
- (2603:10b6:5:25c::16)
+        with ESMTP id S229469AbjIXCUO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 22:20:14 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A947010B
+        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 19:20:07 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-3231df054c4so552951f8f.0
+        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 19:20:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695522005; x=1696126805; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ipDK22wS5etgWiSV07SPcEV8HzMBF9D7TF65lxUNyyc=;
+        b=JdmcUnjawlFgzrqSb2UUqJvCn3OTdUVkNHPxjH/z+3XhszLNs7qWaJJcXXvYWrOvBV
+         7QoyR2n5vAwkBwvWP9ofn9ryU1OH4+PIswUISEgptvztslpdphCBuOIy+5ylqc42AJ8w
+         jj0ZAzfsLORclY4u8oYPy1g7oQcIklrrw08qUWhA4C5bZ6nyF7juLHN+EwQKtsMYD4Xn
+         FzMujJhYYn0Fd/xJZ7kII2Ul+oe6ucYzVkeUHiMkiEZBPg1x++7dSH+clgC2xb/SB1dU
+         pVEvMVVN82NplP7/k3WMh8PtE9yRvlYYFk5cW6kzI7HPmWEjr6ZsARvO3ZwhP4JkQbmN
+         +PWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695522005; x=1696126805;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ipDK22wS5etgWiSV07SPcEV8HzMBF9D7TF65lxUNyyc=;
+        b=iCL1M2ITpQEnIydA4wUqLoHH+gMt5ND9bIDMpllLy8suvuU8P5i2e2wxDj1/qYEN8N
+         KZg1Lj0XF+Guo05iptIzu3nnt48i2XLnSRD3Fq8aOjHdSnwgIf3b3X+QV7n3ZF4h8e1f
+         8LtSASsTZszr9uceRV1jjJzV2oKKNlQO5NxqsikmLIbdz1nix9BvUgy/Lhz5NBN3UMQP
+         ylHHfr3rz0k9MdbvIaGchjLX2BSXc7LDPVe8RZnYIs3Fvo+wELd2XsWlEvLNE7JOy9mG
+         cmxtOj1WodtU2R2ZGfzdC0Yncy0FT2TWYWq9pb/jIM204/tKfM+V7iZkgx2EyBH4uAOa
+         GbKQ==
+X-Gm-Message-State: AOJu0YyneVB/HewErhKeoUVVvF++7nxfo/ZmWJ2cLr88GXuopqHYzyds
+        ZFLqTIjnx1BBcGWukJoZhwdXRdgCMxIwsIMI
+X-Google-Smtp-Source: AGHT+IHx15wMt5oM8pYEWfa4DWtMlKFptKkNDvLU+siii1DTxlFSFEfqqGoyebYau5UtVgdthr3IKQ==
+X-Received: by 2002:a5d:634c:0:b0:320:a4e:6b83 with SMTP id b12-20020a5d634c000000b003200a4e6b83mr2849707wrw.31.1695522004620;
+        Sat, 23 Sep 2023 19:20:04 -0700 (PDT)
+Received: from localhost.localdomain ([2a05:f480:1000:b09:5400:4ff:fe6f:7099])
+        by smtp.gmail.com with ESMTPSA id p16-20020a5d6390000000b0031ffa453affsm8168744wru.17.2023.09.23.19.20.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Sep 2023 19:20:04 -0700 (PDT)
+From:   zhangshida <starzhangzsd@gmail.com>
+X-Google-Original-From: zhangshida <zhangshida@kylinos.cn>
+To:     stable@vger.kernel.org
+Cc:     starzhangzsd@gmail.com, Shida Zhang <zhangshida@kylinos.cn>,
+        stable@kernel.org, Andreas Dilger <adilger@dilger.ca>,
+        "Darrick J . Wong" <djwong@kernel.org>,
+        Theodore Ts'o <tytso@mit.edu>
+Subject: [PATCH 4.14.y] ext4: fix rec_len verify error
+Date:   Sun, 24 Sep 2023 10:19:55 +0800
+Message-Id: <20230924021955.2256033-1-zhangshida@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2023092057-company-unworried-210b@gregkh>
+References: <2023092057-company-unworried-210b@gregkh>
 MIME-Version: 1.0
-Sender: LKML haiyangz <lkmlhyz@microsoft.com>
-X-MS-Exchange-MessageSentRepresentingType: 2
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR21MB1451:EE_|SJ0PR21MB1323:EE_
-X-MS-Office365-Filtering-Correlation-Id: 334162eb-c530-4449-d3b5-08dbbc9e4685
-X-LD-Processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /Fgl+lRoWZkDJnC/oYgWOXbr12yzKjfAYVnZgfciZ+Qm97XcyXmWOP6vX0sz/mgLQT4y8hzRPwRqq/7C03r/ZqOQaVO8f1TaOvDqW4NvMWL+lXqtM5L4/MzZyGSLOKtEI4AMbsAznf/ISjCV0n17utHHdg/JjpDiyY68Qh/V1SBvmMaO/qKpkOjeMUYE3l5Id07rxuwM30h+oOtHYuPDmZMgXqXYAkVaYkytK7rRq8hoJTdWDaD3RPmptCSmYnlb2nGMipeiZ98NQ86ghkFWMSBDiE2o3D2EL6FRkhuy1QfySGqbN1aH36oXvmm1q8DarsrNl+JJfJ6htk9+Q0lhwIp00y77bbTWQPboey8JTcsCFmpN/F8fAYVYeDaSlIByvUK1Y70Dye4EaSyw9myBsnpuvYI7Qt4KEr+CixUHb6dezruv2IeWVC9JUA8Pl0CKD3SvwYMCpOO029/Kew3Ydn18wRVMNKUJNa4omLrARMbYgCmdD8IUdnP5sr8NxFEMIRiaGLTQuZ7x8QwtIGnwTllPY+zARTDIO4OVkhG1CjXYzrF0JHfFPNR/epV6VVaIveIGInUSgbJtoVtyKe2oi57U/50/xG0RjDCpJUChQszhqWCsLSHXOB/kKjHBg2wWlgy5WCw66y/gZLdjSs/uPQINmJqccGa9MMNHUwGanVI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR21MB1451.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(39860400002)(376002)(346002)(136003)(230922051799003)(1800799009)(186009)(451199024)(52116002)(10290500003)(6506007)(6486002)(6666004)(478600001)(83380400001)(6512007)(26005)(2616005)(7416002)(4744005)(2906002)(41300700001)(66476007)(8936002)(8676002)(66556008)(66946007)(316002)(4326008)(5660300002)(36756003)(7846003)(82950400001)(82960400001)(38350700002)(38100700002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1k9Pm0/rbZDuyIlafAuARAMTLF8l6G6uieRSTm5Akbf64eMYo4UuoZSNqZTU?=
- =?us-ascii?Q?6/kJrSNwNmTIu1NBAWijmmNSPlHzNN5zyiik/tJ5uzn6OeiStLKApsi7jvYx?=
- =?us-ascii?Q?Up6PfzRuZyYgzpNGSFp5o2+6E7evUFBlABc2esfTWeFcPtBc5rdeqebvpcIX?=
- =?us-ascii?Q?6neGaCrX5wDI5E3GMjuF4g/spKOhW1UUwesNVFNJ//FmmUf2C8NBcVC86HJM?=
- =?us-ascii?Q?m043MctrjHR8TvILIeBaLh/kWIMANsVPd3FY2o/sotPXYzJrUgtlyIFzgvoA?=
- =?us-ascii?Q?Dt++jR9Y8me32PsAcI54jUeLnPayHVkRxCMJTIYBxpLzKdFz7IMVF91sBNTg?=
- =?us-ascii?Q?w0aVZ0FeqI2iAp2jTkhxsx82smKKfm6fsRggh+Z9zkahNjH3QTBWJ2ob0XIE?=
- =?us-ascii?Q?euH55If7FQ51g5IUasIfMCPBkfSDZYql85ooTmjQwbLGehB01epdcnnfgpsj?=
- =?us-ascii?Q?iWsRvvW7YkClfb29c5SLzbOJz3PsC927cWylQRYKsmy8Wtty02PoQLSWhgkT?=
- =?us-ascii?Q?cCrMAWfTacNEvypnKAGQza+8s5WWtY9p+Cvk1WbR9L0BRibVRlesTS1gWydh?=
- =?us-ascii?Q?6W7ARN9qbprmUk2RAT5Bs1MwemSOmzM0HC3DQU4FpgEUIh7m+h4rSVGjDX25?=
- =?us-ascii?Q?LlJlno5upMYllXWXqxHaD7acoU77vaX3Gd85MJUJ94tBwT2uvfTsZ0I404a3?=
- =?us-ascii?Q?UdtzX2K6doL3WQpBHxgSoxy/eupPWj4oBHBpkWNhwhFs8GpexsCnLzoMoYII?=
- =?us-ascii?Q?mR73whRzXMELQoeJsA3zu/EtL6GTqXW4VYmtmkcIlyzCt0kBxs4qTqVzrnoz?=
- =?us-ascii?Q?qFwMnwcZb8Z5Fru81DmnvnM8GS58vL9KRQcNujzQyNKEReZcKFgJmBYMm3/q?=
- =?us-ascii?Q?17kOJ+u4gRWkRmpxXdMFRcD/9oxbuTs12hB30b+Wq7XSjNplsVduBNWSaq+3?=
- =?us-ascii?Q?tF5l7GYQYfERhgEu95bM5nDiL3sLYXzyF+lNpy7RlZcjJvrswrl4qVMKL0bW?=
- =?us-ascii?Q?EXTLlFBX/SV9jk56A3WEoLmcIi1eEBrCAGrqj47auwTNmZCb3MXUAwobT4C7?=
- =?us-ascii?Q?LDIMAyRWK7dQ3/d+ALSOZXPsC+iy/kkndUdjmWlv/DmiySNTPwDs80d3RuuD?=
- =?us-ascii?Q?uNNDvmbgYd3D6YI18mhPnMaRh5mRIzLrAlbvWyo9R13nKfuElFVPoKzYa2Vx?=
- =?us-ascii?Q?4yzdETQN4FyD8UcK7Vp26GpaFzgs9gX2bDIxalhZU/tKJyymPcEtFRRvKmL6?=
- =?us-ascii?Q?3G+T1T4u1v6Au4DOHBfziK7+hsByp9y+zCYV0+qTJnVDLY79+o6g48xGaQJn?=
- =?us-ascii?Q?c1r9GTli9TRrfA+2Wsrl5x2eaDt9FTEuHluQPmMJBYJJ26q51/iUGDlaEZ1R?=
- =?us-ascii?Q?EBbGifNM/3JpVPgUWq6yJISc9ri0ORvYTX5QntDxC9DoLzUSbcS/e39v4PUu?=
- =?us-ascii?Q?ZDCg2BTj4UQvvqv6eo9qItOcVKL8k/aphOadT/NYTAgUXvt/nCq6FL1h5aJi?=
- =?us-ascii?Q?7uEwnWxL16QhObDYkYWxmbhNuMh7xEZHgrx/N8w75YsAkjPnkt4frb4LxcCj?=
- =?us-ascii?Q?+eEBX85wFix2HSJV5MW1150/0Cyr2wmJaum864ez?=
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 334162eb-c530-4449-d3b5-08dbbc9e4685
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR21MB1451.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2023 01:33:37.8773
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NCr8iJ9x9XOrto7M95QBXFnOskYyiRkKkPMYtQSZ8CmFKtFmkjNK0uZ7XGmvlHgjNO8YziEh4Jtiobtz/T59Hg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR21MB1323
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-sizeof(struct hop_jumbo_hdr) is not part of tso_bytes, so remove
-the subtraction from header size.
+From: Shida Zhang <zhangshida@kylinos.cn>
 
-Cc: stable@vger.kernel.org
-Fixes: bd7fc6e1957c ("net: mana: Add new MANA VF performance counters for easier troubleshooting")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+[ Upstream commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6 ]
+
+With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
+a problem occurred when more than 13 million files were directly created
+under a directory:
+
+EXT4-fs error (device xx): ext4_dx_csum_set:492: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): ext4_dx_csum_verify:463: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): dx_probe:856: inode #xxxx: block 8188: comm xxxxx: Directory index failed checksum
+
+When enough files are created, the fake_dirent->reclen will be 0xffff.
+it doesn't equal to the blocksize 65536, i.e. 0x10000.
+
+But it is not the same condition when blocksize equals to 4k.
+when enough files are created, the fake_dirent->reclen will be 0x1000.
+it equals to the blocksize 4k, i.e. 0x1000.
+
+The problem seems to be related to the limitation of the 16-bit field
+when the blocksize is set to 64k.
+To address this, helpers like ext4_rec_len_{from,to}_disk has already
+been introduced to complete the conversion between the encoded and the
+plain form of rec_len.
+
+So fix this one by using the helper, and all the other in this file too.
+
+Cc: stable@kernel.org
+Fixes: dbe89444042a ("ext4: Calculate and verify checksums for htree nodes")
+Suggested-by: Andreas Dilger <adilger@dilger.ca>
+Suggested-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kylinos.cn
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/ext4/namei.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 5cdcf7561b38..86e724c3eb89 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -264,8 +264,6 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 				ihs = skb_transport_offset(skb) + sizeof(struct udphdr);
- 			} else {
- 				ihs = skb_tcp_all_headers(skb);
--				if (ipv6_has_hopopt_jumbo(skb))
--					ihs -= sizeof(struct hop_jumbo_hdr);
- 			}
+diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
+index 57c78a7a7425..a763216e1c15 100644
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -321,17 +321,17 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
+ 						   struct ext4_dir_entry *de)
+ {
+ 	struct ext4_dir_entry_tail *t;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
  
- 			u64_stats_update_begin(&tx_stats->syncp);
+ #ifdef PARANOID
+ 	struct ext4_dir_entry *d, *top;
+ 
+ 	d = de;
+ 	top = (struct ext4_dir_entry *)(((void *)de) +
+-		(EXT4_BLOCK_SIZE(inode->i_sb) -
+-		sizeof(struct ext4_dir_entry_tail)));
+-	while (d < top && d->rec_len)
++		(blocksize - sizeof(struct ext4_dir_entry_tail)));
++	while (d < top && ext4_rec_len_from_disk(d->rec_len, blocksize))
+ 		d = (struct ext4_dir_entry *)(((void *)d) +
+-		    le16_to_cpu(d->rec_len));
++		    ext4_rec_len_from_disk(d->rec_len, blocksize));
+ 
+ 	if (d != top)
+ 		return NULL;
+@@ -342,7 +342,8 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
+ #endif
+ 
+ 	if (t->det_reserved_zero1 ||
+-	    le16_to_cpu(t->det_rec_len) != sizeof(struct ext4_dir_entry_tail) ||
++	    (ext4_rec_len_from_disk(t->det_rec_len, blocksize) !=
++	     sizeof(struct ext4_dir_entry_tail)) ||
+ 	    t->det_reserved_zero2 ||
+ 	    t->det_reserved_ft != EXT4_FT_DIR_CSUM)
+ 		return NULL;
+@@ -424,13 +425,14 @@ static struct dx_countlimit *get_dx_countlimit(struct inode *inode,
+ 	struct ext4_dir_entry *dp;
+ 	struct dx_root_info *root;
+ 	int count_offset;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
++	unsigned int rlen = ext4_rec_len_from_disk(dirent->rec_len, blocksize);
+ 
+-	if (le16_to_cpu(dirent->rec_len) == EXT4_BLOCK_SIZE(inode->i_sb))
++	if (rlen == blocksize)
+ 		count_offset = 8;
+-	else if (le16_to_cpu(dirent->rec_len) == 12) {
++	else if (rlen == 12) {
+ 		dp = (struct ext4_dir_entry *)(((void *)dirent) + 12);
+-		if (le16_to_cpu(dp->rec_len) !=
+-		    EXT4_BLOCK_SIZE(inode->i_sb) - 12)
++		if (ext4_rec_len_from_disk(dp->rec_len, blocksize) != blocksize - 12)
+ 			return NULL;
+ 		root = (struct dx_root_info *)(((void *)dp + 12));
+ 		if (root->reserved_zero ||
+@@ -1243,6 +1245,7 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
+ 	unsigned int buflen = bh->b_size;
+ 	char *base = bh->b_data;
+ 	struct dx_hash_info h = *hinfo;
++	int blocksize = EXT4_BLOCK_SIZE(dir->i_sb);
+ 
+ 	if (ext4_has_metadata_csum(dir->i_sb))
+ 		buflen -= sizeof(struct ext4_dir_entry_tail);
+@@ -1256,11 +1259,12 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
+ 			map_tail--;
+ 			map_tail->hash = h.hash;
+ 			map_tail->offs = ((char *) de - base)>>2;
+-			map_tail->size = le16_to_cpu(de->rec_len);
++			map_tail->size = ext4_rec_len_from_disk(de->rec_len,
++								blocksize);
+ 			count++;
+ 			cond_resched();
+ 		}
+-		de = ext4_next_entry(de, dir->i_sb->s_blocksize);
++		de = ext4_next_entry(de, blocksize);
+ 	}
+ 	return count;
+ }
 -- 
-2.25.1
+2.27.0
 
