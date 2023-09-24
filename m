@@ -2,46 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F39A7AC915
-	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 15:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 283E27AC9FB
+	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 16:27:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230380AbjIXNYa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 24 Sep 2023 09:24:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34666 "EHLO
+        id S229778AbjIXO1f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 24 Sep 2023 10:27:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230329AbjIXNYO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 09:24:14 -0400
+        with ESMTP id S229717AbjIXO1e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 10:27:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 575902D6D;
-        Sun, 24 Sep 2023 06:21:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8E6C433A9;
-        Sun, 24 Sep 2023 13:21:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D333CFC;
+        Sun, 24 Sep 2023 07:27:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7765CC433CD;
+        Sun, 24 Sep 2023 14:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695561663;
-        bh=cDE7TbH1GrrPT/4iJ6Ad/TF93ivVpfNin5uci7xWTV8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aIgqZcK6p20rmHdF5+i4f8Dm0mXaLGoj/40EGk9vmWmw0D0bapdv4C7XvHJcns1zf
-         Igfdbf4kYZETiIJ/HSU3nMSiOnYkrFLzkmgal08Q0Y/h6MJpY3OsupfWEYqLQeBNKc
-         oSbdHyU6UF1bKujKGjoD0UbRrmX9lwlaMrc15TKc4EvKZMwPW1S60bMvoDMoDmBGAk
-         36St8kC4iGy2z/Fjf0r62zUuzZq5t/PWJoCIv1XRf1gww4R9dt+2WsUT85oUymOnzj
-         3OFybviwmKVBr9axKs57QT3UkyBEYem+2bFo27REooQoOhK33FnEzk53N5gYr/emy+
-         BDvBGgi0jDL5g==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Niklas Cassel <niklas.cassel@wdc.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 6/6] ata: libata-eh: do not clear ATA_PFLAG_EH_PENDING in ata_eh_reset()
-Date:   Sun, 24 Sep 2023 09:20:49 -0400
-Message-Id: <20230924132050.1277021-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230924132050.1277021-1-sashal@kernel.org>
-References: <20230924132050.1277021-1-sashal@kernel.org>
+        s=k20201202; t=1695565648;
+        bh=bTCoYBjr017l6wFXONnZTUqQscIlTsYc71hdwazXlvU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=gUGAWIfW7vC1NooiXlxXAW77CGrUMiNfl1d0Cb+Ur1u6pV9vKzFjnH/HrDXCQPWpz
+         VzQhp79Iu77tCMpohvzqwhU2VI6jFcTxIl/PwmgQ/zqrNiGUG5qfp5VPuAEfVezs98
+         3JuLWuvfWl/1R0GAoVToJO3SKOdkdJ68ol7Yk4vODF97IuaSALUuTCxXSPBNEin0jO
+         Uxy2F55OVFSNNiLGrA7Sy+pLvTK3RAka01exn8c0wABlLEzPyTKFwC7xju9Cj3sqOJ
+         KNmno5TjgU1f3Ab9oAHE4z2RHFYTqAfnWTtwjjlz/nm/HbFxIvZgYnHc8dnRdf2+sA
+         Cqd5Eki0be9Lg==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2c12fc235fbso56150171fa.0;
+        Sun, 24 Sep 2023 07:27:28 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyemvH/kfC2Sd1cNrULgtVy+CLzTF922+gZLnFQ5e8Jix7Rzugy
+        azwSLQbpeJNIRjyMHjWnqZJQaAtM4bO7C5Ij6A==
+X-Google-Smtp-Source: AGHT+IHf5vWm0GIZ1hkeawxAEZsjJHRSUs4KnxlkvgtCc373prUzNyF256grHwvaFc81Egmx7IoRA+c1Jovfx/Fg9VA=
+X-Received: by 2002:a2e:b81c:0:b0:2c0:b37:a1cf with SMTP id
+ u28-20020a2eb81c000000b002c00b37a1cfmr2571604ljo.22.1695565646665; Sun, 24
+ Sep 2023 07:27:26 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.326
-Content-Transfer-Encoding: 8bit
+References: <20230914131058.2472260-1-jani.nikula@intel.com>
+ <20230914155317.2511876-1-jani.nikula@intel.com> <CAGXv+5GJxEobJKKWuc_UN+Gf_z8g6eb6KWTz-L+RqtyLYKK3Jg@mail.gmail.com>
+ <87cyyetohx.fsf@intel.com> <CAGXv+5FvmwMW+bxJ9d_ULbOJA9qpd-vybn0VyE5iyQLHCET1=A@mail.gmail.com>
+ <87o7huo840.fsf@intel.com>
+In-Reply-To: <87o7huo840.fsf@intel.com>
+From:   Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Date:   Sun, 24 Sep 2023 22:27:11 +0800
+X-Gmail-Original-Message-ID: <CAAOTY__MYub=0Qkf8rn1W=O0MHSOD7wziO5ipCQEJRSK-EawEg@mail.gmail.com>
+Message-ID: <CAAOTY__MYub=0Qkf8rn1W=O0MHSOD7wziO5ipCQEJRSK-EawEg@mail.gmail.com>
+Subject: Re: [PATCH] drm/mediatek/dp: fix memory leak on ->get_edid callback
+ audio detection
+To:     Jani Nikula <jani.nikula@intel.com>
+Cc:     Chen-Yu Tsai <wenst@chromium.org>, dri-devel@lists.freedesktop.org,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Guillaume Ranquet <granquet@baylibre.com>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Markus Schneider-Pargmann <msp@baylibre.com>,
+        Bo-Chen Chen <rex-bc.chen@mediatek.com>,
+        linux-mediatek@lists.infradead.org,
+        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-arm-kernel@lists.infradead.org,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -52,121 +71,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+Hi, Jani:
 
-[ Upstream commit 80cc944eca4f0baa9c381d0706f3160e491437f2 ]
+Jani Nikula <jani.nikula@intel.com> =E6=96=BC 2023=E5=B9=B49=E6=9C=8822=E6=
+=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=885:44=E5=AF=AB=E9=81=93=EF=BC=9A
+>
+> On Tue, 19 Sep 2023, Chen-Yu Tsai <wenst@chromium.org> wrote:
+> > On Tue, Sep 19, 2023 at 7:02=E2=80=AFPM Jani Nikula <jani.nikula@intel.=
+com> wrote:
+> >>
+> >> On Fri, 15 Sep 2023, Chen-Yu Tsai <wenst@chromium.org> wrote:
+> >> > On Thu, Sep 14, 2023 at 11:53=E2=80=AFPM Jani Nikula <jani.nikula@in=
+tel.com> wrote:
+> >> >>
+> >> >> The sads returned by drm_edid_to_sad() needs to be freed.
+> >> >>
+> >> >> Fixes: e71a8ebbe086 ("drm/mediatek: dp: Audio support for MT8195")
+> >> >> Cc: Guillaume Ranquet <granquet@baylibre.com>
+> >> >> Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
+> >> >> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora=
+.com>
+> >> >> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> >> >> Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+> >> >> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+> >> >> Cc: Matthias Brugger <matthias.bgg@gmail.com>
+> >> >> Cc: dri-devel@lists.freedesktop.org
+> >> >> Cc: linux-mediatek@lists.infradead.org
+> >> >> Cc: linux-kernel@vger.kernel.org
+> >> >> Cc: linux-arm-kernel@lists.infradead.org
+> >> >> Cc: <stable@vger.kernel.org> # v6.1+
+> >> >> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> >> >
+> >> > Looks correct to me.
+> >> >
+> >> > Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+> >>
+> >> Thanks for the reviews Chen-Yu and Guillaume. Will you push this to
+> >> drm-misc-next or shall I?
+> >
+> > Patches for the MediaTek drm driver go through their own separate tree,
+> > maintained by CK (Chun-Kuang).
+>
+> Chun-Kuang, can you confirm picking up these two patches, please?
+>
+> MAINTAINERS does not list a separate git repository for MediaTek drm
+> drivers, so I don't know where that would be. It should probably be
+> added to MAINTAINERS.
 
-ata_scsi_port_error_handler() starts off by clearing ATA_PFLAG_EH_PENDING,
-before calling ap->ops->error_handler() (without holding the ap->lock).
+Applied to mediatek-drm-next [1], thanks.
 
-If an error IRQ is received while ap->ops->error_handler() is running,
-the irq handler will set ATA_PFLAG_EH_PENDING.
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/chunkuang.hu/linux.git/=
+log/?h=3Dmediatek-drm-next
 
-Once ap->ops->error_handler() returns, ata_scsi_port_error_handler()
-checks if ATA_PFLAG_EH_PENDING is set, and if it is, another iteration
-of ATA EH is performed.
+Regards,
+Chun-Kuang.
 
-The problem is that ATA_PFLAG_EH_PENDING is not only cleared by
-ata_scsi_port_error_handler(), it is also cleared by ata_eh_reset().
-
-ata_eh_reset() is called by ap->ops->error_handler(). This additional
-clearing done by ata_eh_reset() breaks the whole retry logic in
-ata_scsi_port_error_handler(). Thus, if an error IRQ is received while
-ap->ops->error_handler() is running, the port will currently remain
-frozen and will never get re-enabled.
-
-The additional clearing in ata_eh_reset() was introduced in commit
-1e641060c4b5 ("libata: clear eh_info on reset completion").
-
-Looking at the original error report:
-https://marc.info/?l=linux-ide&m=124765325828495&w=2
-
-We can see the following happening:
-[    1.074659] ata3: XXX port freeze
-[    1.074700] ata3: XXX hardresetting link, stopping engine
-[    1.074746] ata3: XXX flipping SControl
-
-[    1.411471] ata3: XXX irq_stat=400040 CONN|PHY
-[    1.411475] ata3: XXX port freeze
-
-[    1.420049] ata3: XXX starting engine
-[    1.420096] ata3: XXX rc=0, class=1
-[    1.420142] ata3: XXX clearing IRQs for thawing
-[    1.420188] ata3: XXX port thawed
-[    1.420234] ata3: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
-
-We are not supposed to be able to receive an error IRQ while the port is
-frozen (PxIE is set to 0, i.e. all IRQs for the port are disabled).
-
-AHCI 1.3.1 section 10.7.1.1 First Tier (IS Register) states:
-"Each bit location can be thought of as reporting a '1' if the virtual
-"interrupt line" for that port is indicating it wishes to generate an
-interrupt. That is, if a port has one or more interrupt status bit set,
-and the enables for those status bits are set, then this bit shall be set."
-
-Additionally, AHCI state P:ComInit clearly shows that the state machine
-will only jump to P:ComInitSetIS (which sets IS.IPS(x) to '1'), if PxIE.PCE
-is set to '1'. In our case, PxIE is set to 0, so IS.IPS(x) won't get set.
-
-So IS.IPS(x) only gets set if PxIS and PxIE is set.
-
-AHCI 1.3.1 section 10.7.1.1 First Tier (IS Register) also states:
-"The bits in this register are read/write clear. It is set by the level of
-the virtual interrupt line being a set, and cleared by a write of '1' from
-the software."
-
-So if IS.IPS(x) is set, you need to explicitly clear it by writing a 1 to
-IS.IPS(x) for that port.
-
-Since PxIE is cleared, the only way to get an interrupt while the port is
-frozen, is if IS.IPS(x) is set, and the only way IS.IPS(x) can be set when
-the port is frozen, is if it was set before the port was frozen.
-
-However, since commit 737dd811a3db ("ata: libahci: clear pending interrupt
-status"), we clear both PxIS and IS.IPS(x) after freezing the port, but
-before the COMRESET, so the problem that commit 1e641060c4b5 ("libata:
-clear eh_info on reset completion") fixed can no longer happen.
-
-Thus, revert commit 1e641060c4b5 ("libata: clear eh_info on reset
-completion"), so that the retry logic in ata_scsi_port_error_handler()
-works once again. (The retry logic is still needed, since we can still
-get an error IRQ _after_ the port has been thawed, but before
-ata_scsi_port_error_handler() takes the ap->lock in order to check
-if ATA_PFLAG_EH_PENDING is set.)
-
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/ata/libata-eh.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index cbe9af624a06f..8a789de056807 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -2948,18 +2948,11 @@ int ata_eh_reset(struct ata_link *link, int classify,
- 			postreset(slave, classes);
- 	}
- 
--	/*
--	 * Some controllers can't be frozen very well and may set spurious
--	 * error conditions during reset.  Clear accumulated error
--	 * information and re-thaw the port if frozen.  As reset is the
--	 * final recovery action and we cross check link onlineness against
--	 * device classification later, no hotplug event is lost by this.
--	 */
-+	/* clear cached SError */
- 	spin_lock_irqsave(link->ap->lock, flags);
--	memset(&link->eh_info, 0, sizeof(link->eh_info));
-+	link->eh_info.serror = 0;
- 	if (slave)
--		memset(&slave->eh_info, 0, sizeof(link->eh_info));
--	ap->pflags &= ~ATA_PFLAG_EH_PENDING;
-+		slave->eh_info.serror = 0;
- 	spin_unlock_irqrestore(link->ap->lock, flags);
- 
- 	if (ap->pflags & ATA_PFLAG_FROZEN)
--- 
-2.40.1
-
+>
+> Thanks,
+> Jani.
+>
+> >
+> > ChenYu
+>
+> --
+> Jani Nikula, Intel
