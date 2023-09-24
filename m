@@ -2,100 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D01387AC705
-	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 09:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 696D07AC777
+	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 12:12:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229660AbjIXHty (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 24 Sep 2023 03:49:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39666 "EHLO
+        id S229520AbjIXKMk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 24 Sep 2023 06:12:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229699AbjIXHty (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 03:49:54 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293B710C;
-        Sun, 24 Sep 2023 00:49:44 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qkJrw-0003js-LP; Sun, 24 Sep 2023 09:49:32 +0200
-Message-ID: <16f0e113-9103-408f-bf5f-9f90442c99ed@leemhuis.info>
-Date:   Sun, 24 Sep 2023 09:49:31 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH REGRESSION] iommu: Only allocate FQ domains for IOMMUs
- that support them
-Content-Language: en-US, de-DE
-To:     Hector Martin <marcan@marcan.st>, Joerg Roedel <joro@8bytes.org>,
-        Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Jerry Snitselaar <jsnitsel@redhat.com>
-Cc:     Joerg Roedel <jroedel@suse.de>, Neal Gompa <neal@gompa.dev>,
-        "Justin M. Forbes" <jforbes@fedoraproject.org>,
-        iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-        asahi@lists.linux.dev, stable@vger.kernel.org,
-        regressions@lists.linux.dev
-References: <20230922-iommu-type-regression-v1-1-1ed3825b2c38@marcan.st>
-From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <20230922-iommu-type-regression-v1-1-1ed3825b2c38@marcan.st>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695541784;b11f5da6;
-X-HE-SMSGID: 1qkJrw-0003js-LP
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,T_SPF_TEMPERROR autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229750AbjIXKMk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 06:12:40 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 067BC103;
+        Sun, 24 Sep 2023 03:12:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEB0C433C7;
+        Sun, 24 Sep 2023 10:12:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695550353;
+        bh=iE012DIofnvNiLEBPxa64IhAAtSpcHdUQPnWCWNe0hs=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=VkdbkxTrTIyE6RPsVyRx7EOTaIay5Ow6IZCYlL7n1KqkaPfbPsbp3bFNDdI8jWOp8
+         dh3xLE8ynpKcGJoTzmYmjbyU3H6tH6ztz/xJbFicPZ8y94CUTnOp93Ft0ikh4jJ+3f
+         CMfIZzpxSLhQ0D5BVoG2/u9g2XjmMtWZduoVYEExsg+u9JO20fIxJoVRDNommj85qN
+         WSfMeBvO0Amf+flFSblQL6r4guhqnizM3hjPXeS6Pb6eseJeSmgPWNA9kkZ2qBj7oc
+         BI87XYpNBepX50zFDQ5a7304vry1pEUv1Bdw4HujYEhvgf//6lf3FD+3PiRlZROQ5K
+         ZZcZq5NaCM7ng==
+Received: from [85.255.234.76] (helo=wait-a-minute.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1qkM6J-00Ffma-Fk;
+        Sun, 24 Sep 2023 11:12:31 +0100
+Date:   Sun, 24 Sep 2023 11:12:30 +0100
+Message-ID: <87ttrj5181.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     Oliver Upton <oliver.upton@linux.dev>
+Cc:     kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+        James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Zenghui Yu <yuzenghui@huawei.com>,
+        Vipin Sharma <vipinsh@google.com>,
+        Jing Zhang <jingzhangos@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: arm64: Always invalidate TLB for stage-2 permission faults
+In-Reply-To: <ZQ4eZcWRO/nHnGc4@linux.dev>
+References: <20230922223229.1608155-1-oliver.upton@linux.dev>
+        <ZQ4eZcWRO/nHnGc4@linux.dev>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 85.255.234.76
+X-SA-Exim-Rcpt-To: oliver.upton@linux.dev, kvmarm@lists.linux.dev, kvm@vger.kernel.org, james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, vipinsh@google.com, jingzhangos@google.com, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[TLDR: I'm adding this report to the list of tracked Linux kernel
-regressions; the text you find below is based on a few templates
-paragraphs you might have encountered already in similar form.
-See link in footer if these mails annoy you.]
-
-On 22.09.23 15:40, Hector Martin wrote:
-> Commit a4fdd9762272 ("iommu: Use flush queue capability") hid the
-> IOMMU_DOMAIN_DMA_FQ domain type from domain allocation. A check was
-> introduced in iommu_dma_init_domain() to fall back if not supported, but
-> this check runs too late: by that point, devices have been attached to
-> the IOMMU, and the IOMMU driver might not expect FQ domains at
-> ops->attach_dev() time.
+On Sat, 23 Sep 2023 00:08:21 +0100,
+Oliver Upton <oliver.upton@linux.dev> wrote:
 > 
-> Ensure that we immediately clamp FQ domains to plain DMA if not
-> supported by the driver at device attach time, not later.
+> On Fri, Sep 22, 2023 at 10:32:29PM +0000, Oliver Upton wrote:
+> > It is possible for multiple vCPUs to fault on the same IPA and attempt
+> > to resolve the fault. One of the page table walks will actually update
+> > the PTE and the rest will return -EAGAIN per our race detection scheme.
+> > KVM elides the TLB invalidation on the racing threads as the return
+> > value is nonzero.
+> > 
+> > Before commit a12ab1378a88 ("KVM: arm64: Use local TLBI on permission
+> > relaxation") KVM always used broadcast TLB invalidations when handling
+> > permission faults, which had the convenient property of making the
+> > stage-2 updates visible to all CPUs in the system. However now we do a
+> > local invalidation, and TLBI elision leads to vCPUs getting stuck in a
+> > permission fault loop. Remember that the architecture permits the TLB to
+> > cache translations that precipitate a permission fault.
 > 
-> This regressed apple-dart in v6.5.
-> [...]
+> The effects of this are slightly overstated (got ahead of myself).
+> EAGAIN only crops up if the cmpxchg() fails, we return 0 if the PTE
+> didn't need to be updated.
+> 
+> On the subsequent permission fault we'll do the right thing and
+> invalidate the TLB, so this change is purely an optimization rather than
+> a correctness issue.
 
+Can you measure the actual effect of this change? In my (limited)
+experience, I had to actually trick the guest into doing this, and
+opportunistically invalidating TLBs didn't have any significant
+benefit.
 
-Thanks for the report. To be sure the issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-tracking bot:
+Thanks,
 
-#regzbot ^introduced a4fdd9762272
-#regzbot title iommu: apple-dart regressed
-#regzbot monitor:
-https://lore.kernel.org/all/20230922-iommu-type-regression-v2-1-689b2ba9b673@marcan.st/
-#regzbot fix: iommu/apple-dart: Handle DMA_FQ domains in attach_dev()
-#regzbot ignore-activity
+	M.
 
-This isn't a regression? This issue or a fix for it are already
-discussed somewhere else? It was fixed already? You want to clarify when
-the regression started to happen? Or point out I got the title or
-something else totally wrong? Then just reply and tell me -- ideally
-while also telling regzbot about it, as explained by the page listed in
-the footer of this mail.
-
-Developers: When fixing the issue, remember to add 'Link:' tags pointing
-to the report (the parent of this mail). See page linked in footer for
-details.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+-- 
+Without deviation from the norm, progress is not possible.
