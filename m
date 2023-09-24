@@ -2,63 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AE5A7ACA11
-	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 16:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A66A47ACA1B
+	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 16:50:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229974AbjIXOk3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 24 Sep 2023 10:40:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52156 "EHLO
+        id S230027AbjIXOur (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 24 Sep 2023 10:50:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229795AbjIXOk3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 10:40:29 -0400
+        with ESMTP id S229973AbjIXOuq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 10:50:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D62FF109;
-        Sun, 24 Sep 2023 07:40:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF95C433CC;
-        Sun, 24 Sep 2023 14:40:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08113FC;
+        Sun, 24 Sep 2023 07:50:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC351C433C8;
+        Sun, 24 Sep 2023 14:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695566422;
-        bh=9GRsckWSSu1mlk9vmJKy9J27I3v7LoT+WjbT3ntqne0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=gCcVsK/CkNAlyMVqWnN4VPt1kzjPoqNo5oo6alEewEruR12Pzpino4CvWoSEgGcO9
-         /Rr00Y0Eua09CO0vZ47JpQ4ZfAewqtiIQGn/ievdlfg+l9gA/P2JsZHOpSKtYjcmOi
-         Z2VSOmKGDykY20pTAlF+gU2khzpEQXGzvE14e7FGIPHLrPivhJKHpyhKUxNoN90hAI
-         o+ys+PbAVXHqOPxaoUULYRreT4jz+eKeyLE6ta0PKw+hQjdRkLKw2FRyl60crpglhM
-         ds1KF+m+Nz2BsZ8sDZPAq6SCGYEYWmhz3fQP7DoMYDeD7lQboBTJQR0YEZi4kMkgrs
-         pkb6lmrpQ3Izg==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5033918c09eso7526031e87.2;
-        Sun, 24 Sep 2023 07:40:22 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwLnoMAmopexRUOZxnLEl7ux2pgmQjwEc0QZxb3bfEg5sRXUJt3
-        ytSVItkaumOpWYkaf6XaCBCzgfeJbjoUsktWzQ==
-X-Google-Smtp-Source: AGHT+IHgb7dlF3spUK7WjEovMRqe4TqCew31OFnTTbuiTomARpVLNlO+VuNaMI73R08m9JXOZ3UuaIZrHQ9jk6PBkA0=
-X-Received: by 2002:ac2:5f97:0:b0:503:200f:47a9 with SMTP id
- r23-20020ac25f97000000b00503200f47a9mr3453499lfe.15.1695566420722; Sun, 24
- Sep 2023 07:40:20 -0700 (PDT)
+        s=k20201202; t=1695567039;
+        bh=PA4HpJZ/oM4RsAfWDJNFj966iei9Is4OvBg8CiMxIrc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Dbx1lwT7m8TFgbEUbh0Fsnu2wvoR2AuxgNOMNEKhXWSrvpM2bKoXBATVzpnuPxIsw
+         puNDNe/sZxU5sVsgk8aDSXS8Ocdy5huNObC6XzMgamPUzltP85qtRhy8A7Ju96+uQt
+         H10yyzZfJ1c0Esy6RpYG4B6ZpuNKWfVXVxK5QXRNQX8LR8O6beglAut29btsPQEvLs
+         fvq3FZxZ7rUyv7LhZvxzpdy8JDbba1s6wPpkjIpYQ8FrlGxn+RSMHK9SxKp/N2ngLz
+         D3cNY4aYLVGOLswwZHwi/ETJ719iF3YzjncPNwLu+0I3fDPkaq9qjVPor30C5Dsrv7
+         a0qFqETOy5Wew==
+Date:   Sun, 24 Sep 2023 15:50:32 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     alisadariana@gmail.com
+Cc:     Alisa-Dariana Roman <alisa.roman@analog.com>,
+        stable@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7192: Correct reference voltage
+Message-ID: <20230924155019.1675a37d@jic23-huawei>
+In-Reply-To: <20230923225827.75681-1-alisadariana@gmail.com>
+References: <20230923225827.75681-1-alisadariana@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20230914131058.2472260-1-jani.nikula@intel.com>
-In-Reply-To: <20230914131058.2472260-1-jani.nikula@intel.com>
-From:   Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Date:   Sun, 24 Sep 2023 22:40:04 +0800
-X-Gmail-Original-Message-ID: <CAAOTY_-Vn9eN+OjSWjo=WTrSasJs6h_N93PQgVAUU-NDeQ438Q@mail.gmail.com>
-Message-ID: <CAAOTY_-Vn9eN+OjSWjo=WTrSasJs6h_N93PQgVAUU-NDeQ438Q@mail.gmail.com>
-Subject: Re: [PATCH] drm/mediatek/dp: fix memory leak on ->get_edid callback
- error path
-To:     Jani Nikula <jani.nikula@intel.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Markus Schneider-Pargmann <msp@baylibre.com>,
-        Guillaume Ranquet <granquet@baylibre.com>,
-        Bo-Chen Chen <rex-bc.chen@mediatek.com>,
-        CK Hu <ck.hu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -69,61 +54,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Jani:
+On Sun, 24 Sep 2023 01:58:27 +0300
+alisadariana@gmail.com wrote:
 
-Jani Nikula <jani.nikula@intel.com> =E6=96=BC 2023=E5=B9=B49=E6=9C=8814=E6=
-=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8B=E5=8D=889:13=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> Setting new_edid to NULL leaks the buffer.
+> From: Alisa-Dariana Roman <alisadariana@gmail.com>
+> 
+> The avdd and the reference voltage are two different sources but the
+> reference voltage was assigned according to the avdd supply.
+> 
+> Add vref regulator structure and set the reference voltage according to
+> the vref supply from the devicetree.
+> 
+> In case vref supply is missing, reference voltage is set according to
+> the avdd supply for compatibility with old devicetrees.
+> 
+> Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
+> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+> Cc: stable@vger.kernel.org
 
-Applied to mediatek-drm-next [1], thanks.
+Looks good but I'd prefer dev_err_probe() for the error messages.
+Obviously that wasn't true for the existing one but as we are touching the
+code good to clean it up.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/chunkuang.hu/linux.git/=
-log/?h=3Dmediatek-drm-next
+Thanks,
 
-Regards,
-Chun-Kuang.
+Jonathan
 
->
-> Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort drive=
-r")
-> Cc: Markus Schneider-Pargmann <msp@baylibre.com>
-> Cc: Guillaume Ranquet <granquet@baylibre.com>
-> Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-> Cc: CK Hu <ck.hu@mediatek.com>
-> Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> Cc: Matthias Brugger <matthias.bgg@gmail.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-mediatek@lists.infradead.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: <stable@vger.kernel.org> # v6.1+
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->
 > ---
->
-> UNTESTED
-> ---
->  drivers/gpu/drm/mediatek/mtk_dp.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek=
-/mtk_dp.c
-> index 2cb47f663756..8fc6eff68e30 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_dp.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-> @@ -2049,6 +2049,7 @@ static struct edid *mtk_dp_get_edid(struct drm_brid=
-ge *bridge,
->          */
->         if (mtk_dp_parse_capabilities(mtk_dp)) {
->                 drm_err(mtk_dp->drm_dev, "Can't parse capabilities\n");
-> +               kfree(new_edid);
->                 new_edid =3D NULL;
->         }
->
-> --
-> 2.39.2
->
+>  drivers/iio/adc/ad7192.c | 31 +++++++++++++++++++++++++++----
+>  1 file changed, 27 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> index 69d1103b9508..c414fed60dd3 100644
+> --- a/drivers/iio/adc/ad7192.c
+> +++ b/drivers/iio/adc/ad7192.c
+> @@ -177,6 +177,7 @@ struct ad7192_chip_info {
+>  struct ad7192_state {
+>  	const struct ad7192_chip_info	*chip_info;
+>  	struct regulator		*avdd;
+> +	struct regulator		*vref;
+>  	struct clk			*mclk;
+>  	u16				int_vref_mv;
+>  	u32				fclk;
+> @@ -1008,10 +1009,32 @@ static int ad7192_probe(struct spi_device *spi)
+>  	if (ret)
+>  		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd supply\n");
+>  
+> -	ret = regulator_get_voltage(st->avdd);
+> -	if (ret < 0) {
+> -		dev_err(&spi->dev, "Device tree error, reference voltage undefined\n");
+> -		return ret;
+> +	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
+> +	if (IS_ERR(st->vref)) {
+> +		if (PTR_ERR(st->vref) != -ENODEV)
+> +			return PTR_ERR(st->vref);
+> +
+> +		ret = regulator_get_voltage(st->avdd);
+> +		if (ret < 0) {
+> +			dev_err(&spi->dev, "Device tree error, AVdd voltage undefined\n");
+dev_err_probe()
+
+> +			return ret;
+> +		}
+> +	} else {
+> +		ret = regulator_enable(st->vref);
+> +		if (ret) {
+> +			dev_err(&spi->dev, "Failed to enable specified Vref supply\n");
+dev_err_probe()
+> +			return ret;
+> +		}
+> +
+> +		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->vref);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = regulator_get_voltage(st->vref);
+> +		if (ret < 0) {
+> +			dev_err(&spi->dev, "Device tree error, Vref voltage undefined\n");
+dev_err_probe()
+
+> +			return ret;
+> +		}
+>  	}
+>  	st->int_vref_mv = ret / 1000;
+>  
+
