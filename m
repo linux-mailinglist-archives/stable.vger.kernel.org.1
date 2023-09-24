@@ -2,197 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB4DA7AC664
-	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 04:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D01387AC705
+	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 09:50:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229757AbjIXC7Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 23 Sep 2023 22:59:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40172 "EHLO
+        id S229660AbjIXHty (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 24 Sep 2023 03:49:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjIXC7P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 22:59:15 -0400
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67679127
-        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 19:59:09 -0700 (PDT)
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-405361bb949so43832745e9.1
-        for <stable@vger.kernel.org>; Sat, 23 Sep 2023 19:59:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695524347; x=1696129147; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LnHDBH+0phNRe6YebEoo1p0qE4IciHqlymDW6RNuSOk=;
-        b=mw2CnGRj6+krKE1p2Y1njfKmwxm8chdUyrax9+f3BpFSWlt2rJaN8lWNVXZN0Cb0aW
-         aCC4ORed0WwE3M1nB7Yg+LnXLpSQZqwgpMD7d+fxHa2gqVPfTr6Vqt+ZVT0VLl8LpFjL
-         XZhZc3gmix5gkFqxE3AEUy0Y0wAdW9qaFnOOFjjEA9qmWMAKFNObP6tVRH8hftPNeaDT
-         ZCdQ4IM1QjTFL/t/d9ajaE5Wh2N8K8Da4KLhQlPlq/wDGdmYEyaFRU4cjdGxwrACw468
-         wEjUjt2i7qbWZ3OqeA6wKXIUpKQKLcyVEjvE1f8WDLfjYzHtjLeL65Z4JF1JeE7f0muJ
-         T2dA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695524347; x=1696129147;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LnHDBH+0phNRe6YebEoo1p0qE4IciHqlymDW6RNuSOk=;
-        b=E5q+tz7PodW+3sLxoYuUKhpgQmdFluKsMZA2tSPux2U9p45Ric51IRV8DmWxlaUO4t
-         DhTerl3qtwAvkJKLgfi9mUPkyoIBVRKERqZG9P383Q4onwUFHLo27mUiXm5W1uM5D4uY
-         KHTkHGyQiZZV5Y7W7m7MsbpwY/XoD1pE9y8caY5VlMuG1GyioYbX8/dhM8FrLaleMYah
-         mSWJwaj0UQEEKUJc5Aps6CaxF803IPvVsqAiz0PjOqQLJV7Ox4irkRUXGW6CkHmfrsjp
-         2SThLznB/0O6PkckPeVQIqWZPRD68o9LGxsGywKEqhUM+yqcFwOrQXIip2AvVkdaXI0n
-         198Q==
-X-Gm-Message-State: AOJu0YzcMWcmcGmbIeG83qxmsPdvcq63jtsBIyght6B9LRmqDADEcR14
-        YaA514IeaV6Zo7G71dqP2LtWoyZ904GhWTcu
-X-Google-Smtp-Source: AGHT+IGicabDRyhLw8aRTz4uCqxnxITKcog9DE+fzq2GophpMc0iEBA2dvv4VLOpXEEBeNuJ4mZbEg==
-X-Received: by 2002:a05:600c:20d4:b0:405:3e92:76e3 with SMTP id y20-20020a05600c20d400b004053e9276e3mr2844318wmm.22.1695524347344;
-        Sat, 23 Sep 2023 19:59:07 -0700 (PDT)
-Received: from localhost.localdomain ([2a05:f480:1000:b09:5400:4ff:fe6f:7099])
-        by smtp.gmail.com with ESMTPSA id v19-20020a05600c429300b004047ac770d1sm6335457wmc.8.2023.09.23.19.59.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Sep 2023 19:59:06 -0700 (PDT)
-From:   zhangshida <starzhangzsd@gmail.com>
-X-Google-Original-From: zhangshida <zhangshida@kylinos.cn>
-To:     stable@vger.kernel.org
-Cc:     starzhangzsd@gmail.com, Shida Zhang <zhangshida@kylinos.cn>,
-        stable@kernel.org, Andreas Dilger <adilger@dilger.ca>,
-        "Darrick J . Wong" <djwong@kernel.org>,
-        Theodore Ts'o <tytso@mit.edu>
-Subject: [PATCH 4.19.y] ext4: fix rec_len verify error
-Date:   Sun, 24 Sep 2023 10:58:58 +0800
-Message-Id: <20230924025858.2257923-1-zhangshida@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2023092055-disband-unveiling-f6cc@gregkh>
-References: <2023092055-disband-unveiling-f6cc@gregkh>
+        with ESMTP id S229699AbjIXHty (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 03:49:54 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293B710C;
+        Sun, 24 Sep 2023 00:49:44 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qkJrw-0003js-LP; Sun, 24 Sep 2023 09:49:32 +0200
+Message-ID: <16f0e113-9103-408f-bf5f-9f90442c99ed@leemhuis.info>
+Date:   Sun, 24 Sep 2023 09:49:31 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH REGRESSION] iommu: Only allocate FQ domains for IOMMUs
+ that support them
+Content-Language: en-US, de-DE
+To:     Hector Martin <marcan@marcan.st>, Joerg Roedel <joro@8bytes.org>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Jerry Snitselaar <jsnitsel@redhat.com>
+Cc:     Joerg Roedel <jroedel@suse.de>, Neal Gompa <neal@gompa.dev>,
+        "Justin M. Forbes" <jforbes@fedoraproject.org>,
+        iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+        asahi@lists.linux.dev, stable@vger.kernel.org,
+        regressions@lists.linux.dev
+References: <20230922-iommu-type-regression-v1-1-1ed3825b2c38@marcan.st>
+From:   "Linux regression tracking #adding (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <20230922-iommu-type-regression-v1-1-1ed3825b2c38@marcan.st>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695541784;b11f5da6;
+X-HE-SMSGID: 1qkJrw-0003js-LP
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,T_SPF_TEMPERROR autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shida Zhang <zhangshida@kylinos.cn>
+[TLDR: I'm adding this report to the list of tracked Linux kernel
+regressions; the text you find below is based on a few templates
+paragraphs you might have encountered already in similar form.
+See link in footer if these mails annoy you.]
 
-[ Upstream commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6 ]
+On 22.09.23 15:40, Hector Martin wrote:
+> Commit a4fdd9762272 ("iommu: Use flush queue capability") hid the
+> IOMMU_DOMAIN_DMA_FQ domain type from domain allocation. A check was
+> introduced in iommu_dma_init_domain() to fall back if not supported, but
+> this check runs too late: by that point, devices have been attached to
+> the IOMMU, and the IOMMU driver might not expect FQ domains at
+> ops->attach_dev() time.
+> 
+> Ensure that we immediately clamp FQ domains to plain DMA if not
+> supported by the driver at device attach time, not later.
+> 
+> This regressed apple-dart in v6.5.
+> [...]
 
-With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
-a problem occurred when more than 13 million files were directly created
-under a directory:
 
-EXT4-fs error (device xx): ext4_dx_csum_set:492: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
-EXT4-fs error (device xx): ext4_dx_csum_verify:463: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
-EXT4-fs error (device xx): dx_probe:856: inode #xxxx: block 8188: comm xxxxx: Directory index failed checksum
+Thanks for the report. To be sure the issue doesn't fall through the
+cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
+tracking bot:
 
-When enough files are created, the fake_dirent->reclen will be 0xffff.
-it doesn't equal to the blocksize 65536, i.e. 0x10000.
+#regzbot ^introduced a4fdd9762272
+#regzbot title iommu: apple-dart regressed
+#regzbot monitor:
+https://lore.kernel.org/all/20230922-iommu-type-regression-v2-1-689b2ba9b673@marcan.st/
+#regzbot fix: iommu/apple-dart: Handle DMA_FQ domains in attach_dev()
+#regzbot ignore-activity
 
-But it is not the same condition when blocksize equals to 4k.
-when enough files are created, the fake_dirent->reclen will be 0x1000.
-it equals to the blocksize 4k, i.e. 0x1000.
+This isn't a regression? This issue or a fix for it are already
+discussed somewhere else? It was fixed already? You want to clarify when
+the regression started to happen? Or point out I got the title or
+something else totally wrong? Then just reply and tell me -- ideally
+while also telling regzbot about it, as explained by the page listed in
+the footer of this mail.
 
-The problem seems to be related to the limitation of the 16-bit field
-when the blocksize is set to 64k.
-To address this, helpers like ext4_rec_len_{from,to}_disk has already
-been introduced to complete the conversion between the encoded and the
-plain form of rec_len.
+Developers: When fixing the issue, remember to add 'Link:' tags pointing
+to the report (the parent of this mail). See page linked in footer for
+details.
 
-So fix this one by using the helper, and all the other in this file too.
-
-Cc: stable@kernel.org
-Fixes: dbe89444042a ("ext4: Calculate and verify checksums for htree nodes")
-Suggested-by: Andreas Dilger <adilger@dilger.ca>
-Suggested-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kylinos.cn
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
----
- fs/ext4/namei.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
-
-diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
-index db9bba3473b5..93d392576c12 100644
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -322,17 +322,17 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
- 						   struct ext4_dir_entry *de)
- {
- 	struct ext4_dir_entry_tail *t;
-+	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
- 
- #ifdef PARANOID
- 	struct ext4_dir_entry *d, *top;
- 
- 	d = de;
- 	top = (struct ext4_dir_entry *)(((void *)de) +
--		(EXT4_BLOCK_SIZE(inode->i_sb) -
--		sizeof(struct ext4_dir_entry_tail)));
--	while (d < top && d->rec_len)
-+		(blocksize - sizeof(struct ext4_dir_entry_tail)));
-+	while (d < top && ext4_rec_len_from_disk(d->rec_len, blocksize))
- 		d = (struct ext4_dir_entry *)(((void *)d) +
--		    le16_to_cpu(d->rec_len));
-+		    ext4_rec_len_from_disk(d->rec_len, blocksize));
- 
- 	if (d != top)
- 		return NULL;
-@@ -343,7 +343,8 @@ static struct ext4_dir_entry_tail *get_dirent_tail(struct inode *inode,
- #endif
- 
- 	if (t->det_reserved_zero1 ||
--	    le16_to_cpu(t->det_rec_len) != sizeof(struct ext4_dir_entry_tail) ||
-+	    (ext4_rec_len_from_disk(t->det_rec_len, blocksize) !=
-+	     sizeof(struct ext4_dir_entry_tail)) ||
- 	    t->det_reserved_zero2 ||
- 	    t->det_reserved_ft != EXT4_FT_DIR_CSUM)
- 		return NULL;
-@@ -425,13 +426,14 @@ static struct dx_countlimit *get_dx_countlimit(struct inode *inode,
- 	struct ext4_dir_entry *dp;
- 	struct dx_root_info *root;
- 	int count_offset;
-+	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
-+	unsigned int rlen = ext4_rec_len_from_disk(dirent->rec_len, blocksize);
- 
--	if (le16_to_cpu(dirent->rec_len) == EXT4_BLOCK_SIZE(inode->i_sb))
-+	if (rlen == blocksize)
- 		count_offset = 8;
--	else if (le16_to_cpu(dirent->rec_len) == 12) {
-+	else if (rlen == 12) {
- 		dp = (struct ext4_dir_entry *)(((void *)dirent) + 12);
--		if (le16_to_cpu(dp->rec_len) !=
--		    EXT4_BLOCK_SIZE(inode->i_sb) - 12)
-+		if (ext4_rec_len_from_disk(dp->rec_len, blocksize) != blocksize - 12)
- 			return NULL;
- 		root = (struct dx_root_info *)(((void *)dp + 12));
- 		if (root->reserved_zero ||
-@@ -1244,6 +1246,7 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
- 	unsigned int buflen = bh->b_size;
- 	char *base = bh->b_data;
- 	struct dx_hash_info h = *hinfo;
-+	int blocksize = EXT4_BLOCK_SIZE(dir->i_sb);
- 
- 	if (ext4_has_metadata_csum(dir->i_sb))
- 		buflen -= sizeof(struct ext4_dir_entry_tail);
-@@ -1257,11 +1260,12 @@ static int dx_make_map(struct inode *dir, struct buffer_head *bh,
- 			map_tail--;
- 			map_tail->hash = h.hash;
- 			map_tail->offs = ((char *) de - base)>>2;
--			map_tail->size = le16_to_cpu(de->rec_len);
-+			map_tail->size = ext4_rec_len_from_disk(de->rec_len,
-+								blocksize);
- 			count++;
- 			cond_resched();
- 		}
--		de = ext4_next_entry(de, dir->i_sb->s_blocksize);
-+		de = ext4_next_entry(de, blocksize);
- 	}
- 	return count;
- }
--- 
-2.27.0
-
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
