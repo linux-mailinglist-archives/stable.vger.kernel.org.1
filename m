@@ -2,146 +2,177 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C2637AC5BE
-	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 00:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF3EF7AC624
+	for <lists+stable@lfdr.de>; Sun, 24 Sep 2023 03:33:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229464AbjIWW7M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 23 Sep 2023 18:59:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58892 "EHLO
+        id S229783AbjIXBdO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 23 Sep 2023 21:33:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjIWW7L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 18:59:11 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C00127;
-        Sat, 23 Sep 2023 15:59:05 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-32167a4adaaso4003994f8f.1;
-        Sat, 23 Sep 2023 15:59:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695509943; x=1696114743; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UpqwuhVkG5QUle4XgWvbsNizB7y0ELvTMh0she2TEXo=;
-        b=Ckxl1e60Mke9kh2HnTZO+lJBBIq+dQp6tlGyh7FQeZEHVOmKXlCUUvRYdAUEYvkMEM
-         upHHRLQ7NoHspp7ljzJ1t5BszefLolMVZSF2ezL0HTFuVT6z3s63DYjoPJ/PdkKjKdYA
-         o1EGPw3K8ilVTEezpfAZEoK2B2HesY7vLKkilDocmWb121BehaFLD0wzgIykr8WXbEmH
-         rHQ7Vj0oCRYJQmAUZQsPK0PVHAyuImGEpp6mt1Dr8XqLE5OoeaJ+SK8kyidbonaMc+C6
-         Rg4s3ionZEPN2705EIiq+7Xkys/bfw4V8Bm4+8446yP3zINQfpt0A59gG/fgX5mchRCJ
-         7/5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695509943; x=1696114743;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UpqwuhVkG5QUle4XgWvbsNizB7y0ELvTMh0she2TEXo=;
-        b=u/jcjVMeMjjI2+HNRe9jDi0E/SsoGS+dM42aeAR9MkqaNs9TlRs5yXEkLB03tBPdjd
-         LZ4tsXx5zD0BAuUiKfw45zNiKzzirl0qxV3kW6YTsD93DCJqk5xX+xh+MjuPkljMyMoT
-         JkAiQ/1L2BZfckx6+Hk6rlZxlSWEc+JxOkNwOYLXVn2hRJew6lW5Zo+T7R+B9EENBzGG
-         dJM1tLCBzoWHrXAPNXvt6pFA/Cseczh/JLmUb+CzPlbIK/5g3zh25LIMuvockp2+5VEX
-         CR3ZSuVdM8A7cVWl435V5IpivsKWNBfhm4htBSNbdSJVfsU7sC4aRT1nXqGL9EdLDntF
-         XLGQ==
-X-Gm-Message-State: AOJu0Yy18ub0qIIUGA3925nHHbxvwekBvEtzVJKx/+rqXurK5DQg78GM
-        FqsaGXeYgCDHnx4h+nEXPM4=
-X-Google-Smtp-Source: AGHT+IGyVqTZlygqTRJi0Ur5gP8cGL0gDYBXyC/UAjK4uMnYEFlEhX1ctgjOwCpr/W/NNs3W2O+6Rg==
-X-Received: by 2002:a05:6000:10d:b0:31f:b804:8e44 with SMTP id o13-20020a056000010d00b0031fb8048e44mr2487372wrx.61.1695509943330;
-        Sat, 23 Sep 2023 15:59:03 -0700 (PDT)
-Received: from spiri.. ([2a02:2f08:a301:7000:650d:ac3c:7afc:f897])
-        by smtp.gmail.com with ESMTPSA id w10-20020adfde8a000000b0031fba0a746bsm7939772wrl.9.2023.09.23.15.59.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Sep 2023 15:59:02 -0700 (PDT)
-From:   alisadariana@gmail.com
-Cc:     Alisa-Dariana Roman <alisadariana@gmail.com>,
-        Alisa-Dariana Roman <alisa.roman@analog.com>,
-        stable@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: ad7192: Correct reference voltage
-Date:   Sun, 24 Sep 2023 01:58:27 +0300
-Message-Id: <20230923225827.75681-1-alisadariana@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S229790AbjIXBdN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 23 Sep 2023 21:33:13 -0400
+Received: from BN3PR00CU001.outbound.protection.outlook.com (mail-eastus2azon11020017.outbound.protection.outlook.com [52.101.56.17])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F49192;
+        Sat, 23 Sep 2023 18:33:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=b8Dr5eQHdNeVkz8A7/slJWQbSMuFhsbkAPvJVi38HuqUsH0YFa3VNP0YGRXyn8qxNwMYOzDRxoHPiJzvk+k0TkmBq1UkU9YZ1Gf3htt2hHmUgVEn8oxf5QLxqn0gZmoJXGEIQXrxw4km2zlJroPDIRUSbb4O76fcgEkYf8L1A11GLgrntRqQHyi/3/+agvq8JRsMP0NVOWbBMakpPL+5edSG1GEbcvtg5VoVP7VQh0DYSU347/AVMzC8fy0vp2Swo349V4plvrqtBM47UrgnA6TenCbmnJOaL4w3g8XmrxU/chESpuPpdboX4wmK+DE3wIY26JoFnUXdKgtaU5AcoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dE2PCYv+oUYCqjHEVmZ4YCeUOMeM3DeRepH9vdbt0XM=;
+ b=eH/w7A49ge7nXb1fCGmSxIcC3jZAMWYOEvPBm6QhcHxItuya7KoBlsUBGJSXLhjFU9qGs9VEUprK+79mMdgfMn5OYNfaPCj6HAnF9oAMqFFCmZYXkIbGXidqx7RFg067ky/lgqyY95uGWqlnlpgE/0q6EwGa4X967zgdI7SKeL9DZqQDk571a4jnq+7otxP+Ysfnpe5TyeVYpe6wzgPMdlAMZuFGKc96/rs/5A4NXEwqkGooiShdoKMExqI4l3Dl7J8zAKeILIve5gHg0DkEgnvJoIhFa7FHVEJL32ZTpZqlouzmRx8GUhhfgwh7K+0b33ufGaZ0BuAriW92XkaMsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dE2PCYv+oUYCqjHEVmZ4YCeUOMeM3DeRepH9vdbt0XM=;
+ b=OTzbTCSeBZm0iKEhjSI9uZSBK0mubVqPfIpMsekJeFjBzFLGdAR4Q6M7oBLnvTTh+qtPvqUv3M7jxkK0+mMBJ8YYANlsmZ6zYFChwW+sWFCIhzIw4C88GL5K7RtibtzT3L8OgwOVldXlG3ZgjFiVwnZMlG/Q5Vsde1Wh9POIkJ0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+Received: from DM6PR21MB1451.namprd21.prod.outlook.com (2603:10b6:5:25c::16)
+ by SJ0PR21MB1323.namprd21.prod.outlook.com (2603:10b6:a03:3e7::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.14; Sun, 24 Sep
+ 2023 01:33:03 +0000
+Received: from DM6PR21MB1451.namprd21.prod.outlook.com
+ ([fe80::827:4af:136a:236e]) by DM6PR21MB1451.namprd21.prod.outlook.com
+ ([fe80::827:4af:136a:236e%3]) with mapi id 15.20.6838.010; Sun, 24 Sep 2023
+ 01:33:03 +0000
+From:   Haiyang Zhang <haiyangz@microsoft.com>
+To:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
+Cc:     haiyangz@microsoft.com, decui@microsoft.com, kys@microsoft.com,
+        paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
+        davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
+        longli@microsoft.com, ssengar@linux.microsoft.com,
+        linux-rdma@vger.kernel.org, daniel@iogearbox.net,
+        john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
+        sharmaajay@microsoft.com, hawk@kernel.org, tglx@linutronix.de,
+        shradhagupta@linux.microsoft.com, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH net, 1/3] net: mana: Fix TX CQE error handling
+Date:   Sat, 23 Sep 2023 18:31:45 -0700
+Message-Id: <1695519107-24139-2-git-send-email-haiyangz@microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1695519107-24139-1-git-send-email-haiyangz@microsoft.com>
+References: <1695519107-24139-1-git-send-email-haiyangz@microsoft.com>
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0043.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::18) To DM6PR21MB1451.namprd21.prod.outlook.com
+ (2603:10b6:5:25c::16)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Sender: LKML haiyangz <lkmlhyz@microsoft.com>
+X-MS-Exchange-MessageSentRepresentingType: 2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR21MB1451:EE_|SJ0PR21MB1323:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7afdb778-5fb3-424f-51d2-08dbbc9e31be
+X-LD-Processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: G4LrCQc1+jHX1ws0Nq/Chhiq+T9GWiDO1ogZhBc9lWuEnzGR7J80aABsr7cPok/FW9HHVly0NybBgWmjML4nmNT8AX3+gowFlruyGt7s0OhJfUfTFJs5R10jBagguuFD1jMbkuMKjc6TOoQ5s+mRFhWi54t6cF/xO4puwMxBSCYZcqsSo2Ej5FJSx99j0M4i0xoBBAWerZ8iywjh58qZqw0JYny+7/EXs8XBGUsoEdeHa20AoeGGZR4hbZEvopuy0FAijBI6Uh+ZiAjIoLcUhq/i7WVqpgsNwiZwkfywL3jPYlaOfXe8/UPJINCjxXKcL7Fbwwqz0lwN62I547WB5s1gLWTkXYXmlF3RtFEHu/HJKfhPXU+g5KSMQhB/ozucwaC1KL/eOoXmi4XetvStfSGJqJ6TJiSMyUdl6jZOq3FYbc2chgn8zjAXCE+1cJ+CkrlewsPc1Dy2qbFjX0ceXA+I1IVtn4O7PgbepF6NzptbO9bemdU9r0TWjPm7/ivyJ7NSopOl5bs/bf0Qeu6Jf2ba2sXiMiYgu7QWLvhrjaGMHTxlHRW9Vmm4GnJILmLnUUeJoaD8VRK1Q+aFlvoqgwY+qTu9+AGWWwP8a8Uv74SZjCCWiHACXdUwIxppVkSCfGU7Zpg2PdqmkW/AvdOvEIC5nty2Gvoj2LdYA070+Hk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR21MB1451.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(39860400002)(376002)(346002)(136003)(230922051799003)(1800799009)(186009)(451199024)(52116002)(10290500003)(6506007)(6486002)(6666004)(478600001)(83380400001)(6512007)(26005)(2616005)(7416002)(2906002)(41300700001)(66476007)(8936002)(8676002)(66556008)(66946007)(316002)(4326008)(5660300002)(36756003)(7846003)(82950400001)(82960400001)(38350700002)(38100700002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?1s9sK1bd1/OaYeVXnn9jrdF3Ua1J5Kt5Z7riHo0jodHbwfoUKxz1siDTCG9A?=
+ =?us-ascii?Q?1x2Nl8KBAWDhTuHgY0GxPhBSXOb4QMMso/xxblqjqNZEodcBklNEwJAu8anI?=
+ =?us-ascii?Q?bSPNL/PWsC2BJCa0t47CqgDPC7jejO8LY1Sy1V87715ihBr8l/pzAv+KrtHP?=
+ =?us-ascii?Q?rjCvjjju4QA6FWvWRKuLXSocDuivw6zR2vXZYjqQOGnwuU4z1z7/f5JpoMra?=
+ =?us-ascii?Q?PwwePPIBSnpQZGq6K3GfmFRtpp0Ed6BpjigT9d09iA3gRdE3WzvDDutK2M5U?=
+ =?us-ascii?Q?dRtyGgNDCQ9ZiMr1Lq8/MKxojawCFKpPAtYmZY6UlyMGKcjEeT4zqn47tI7o?=
+ =?us-ascii?Q?s4X3e9CiELG22JWSnQ/kk9MA3E5QQCqU3mG98FoHfGy3s2WJ4xgMHV8y8GuP?=
+ =?us-ascii?Q?2lGT2IaeHehIL24nSP1+IXOsinwvFErL0g8ehfra3My3m0sE8EriWTD3/9/8?=
+ =?us-ascii?Q?N3RSkc2uVf1n5DdYchRFQHwvDB/VYQwbjFXXmX22CdDFoTOne/CQrtjVaxKN?=
+ =?us-ascii?Q?DStmeeSm0PBMn/0IuMEatz4oCj5BG6Pqy/Uot+qmssmM5Y2xSpv10nVjzYHT?=
+ =?us-ascii?Q?G9hMzIupUC9MNj+k6sZs7QyWMVsvbh9ksOAsBTdKZxt0q+gVHmQYW2bY7Z+Z?=
+ =?us-ascii?Q?6J4Dwgnsaw8rpIENVoTTjjROevUUjWUKNlenn8aXm9pRYURKIlM3uaa3N4mw?=
+ =?us-ascii?Q?bIT3MNxvEVWgkjPXLR4P66wsgDZ4BstS7UMjV/UcPzfS0sN+7TkgofTd3IUQ?=
+ =?us-ascii?Q?HjIvDNEmX9KPdo/eGKmPxGwZGPZdlxMuoKiWXU3csYTqleDQbo3P07O0iYAs?=
+ =?us-ascii?Q?gFVo1eViT9InksJn3GL08pyEa61Z/Ns5nu5raKe02TpoBUpyF3lG7zBsOzOE?=
+ =?us-ascii?Q?hz6MP9BLIEzbmDdp0HWW5QnWqiIo6JybfIUJXipaLO+K+J0xSfCNldMQS0LQ?=
+ =?us-ascii?Q?cLRZ5QbcHa0D+XyKiUb8VSTIeQY1U2YL3knbuq/nan6nOB7DRjm+NYtpBDj0?=
+ =?us-ascii?Q?twOwC/V7H3GTgrgSu1Z8k1RrBdwFQpqalDPoxJWZpdXAEp2aKZmiMWIh2Mjx?=
+ =?us-ascii?Q?oifF9F5xaSu/tekJDZWj3kCexDsJYKHSnsqsidvHSdxGSVEpp2/wdmEq5/EJ?=
+ =?us-ascii?Q?yxIZJJJZCAaaQctdGvT1jg2btmd4k7B2trGAU7E3vCxWtMmz3Yq4mw2K+tSL?=
+ =?us-ascii?Q?U074oEOqIQQoHw1t5kMkGxd0Tfd/xh5wTa+TG5XSf4xmHrbWU3C0P+Av2kTP?=
+ =?us-ascii?Q?RmcEf86sKXt+kpO+gkTatrFX86bt/miZsb0rbcgQGVYh3ov5wqioFDwO8EUH?=
+ =?us-ascii?Q?xU38s6GSFZ7SwVuO9AxnB0C16EO39qg6N9GBysblTUT6vnTO5wdTfGQEagvu?=
+ =?us-ascii?Q?2+R3PG3mdF/VsK1xwdBl/gZjhsCS5T320PlrYDZryGDQDeZoRPXzy042q8BF?=
+ =?us-ascii?Q?sBJiEA8UQiMsgK+1mYC2m3NO/9J/j7a1EFBMsCo+3oXBOCEeOgQJ89ewjCwT?=
+ =?us-ascii?Q?Oe+qipXO1uGFeX7/TrDH+M0j3yZ+VxC5ztNLoN+o/9QRjJrTE47aXqSlFA0S?=
+ =?us-ascii?Q?VAdMhrkH6rRhfyYhqO/8JVQWdKAdHTVB0zr2tdzL?=
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7afdb778-5fb3-424f-51d2-08dbbc9e31be
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR21MB1451.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2023 01:33:03.1164
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Y2JyBHBIDiKS17O6Y2zRUoqFmwafT0VkwtmQNrpuiZ74Xvrj36n/wouI6y/SSFbG9g/vgfgUwRRObi7TiH3mLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR21MB1323
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alisa-Dariana Roman <alisadariana@gmail.com>
+For an unknown TX CQE error type (probably from a newer hardware),
+still free the SKB, update the queue tail, etc., otherwise the
+accounting will be wrong.
 
-The avdd and the reference voltage are two different sources but the
-reference voltage was assigned according to the avdd supply.
+Also, TX errors can be triggered by injecting corrupted packets, so
+replace the WARN_ONCE to ratelimited error logging, because we don't
+need stack trace here.
 
-Add vref regulator structure and set the reference voltage according to
-the vref supply from the devicetree.
-
-In case vref supply is missing, reference voltage is set according to
-the avdd supply for compatibility with old devicetrees.
-
-Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 Cc: stable@vger.kernel.org
+Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
 ---
- drivers/iio/adc/ad7192.c | 31 +++++++++++++++++++++++++++----
- 1 file changed, 27 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 69d1103b9508..c414fed60dd3 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -177,6 +177,7 @@ struct ad7192_chip_info {
- struct ad7192_state {
- 	const struct ad7192_chip_info	*chip_info;
- 	struct regulator		*avdd;
-+	struct regulator		*vref;
- 	struct clk			*mclk;
- 	u16				int_vref_mv;
- 	u32				fclk;
-@@ -1008,10 +1009,32 @@ static int ad7192_probe(struct spi_device *spi)
- 	if (ret)
- 		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd supply\n");
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 4a16ebff3d1d..5cdcf7561b38 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1317,19 +1317,23 @@ static void mana_poll_tx_cq(struct mana_cq *cq)
+ 		case CQE_TX_VPORT_IDX_OUT_OF_RANGE:
+ 		case CQE_TX_VPORT_DISABLED:
+ 		case CQE_TX_VLAN_TAGGING_VIOLATION:
+-			WARN_ONCE(1, "TX: CQE error %d: ignored.\n",
+-				  cqe_oob->cqe_hdr.cqe_type);
++			if (net_ratelimit())
++				netdev_err(ndev, "TX: CQE error %d\n",
++					   cqe_oob->cqe_hdr.cqe_type);
++
+ 			apc->eth_stats.tx_cqe_err++;
+ 			break;
  
--	ret = regulator_get_voltage(st->avdd);
--	if (ret < 0) {
--		dev_err(&spi->dev, "Device tree error, reference voltage undefined\n");
--		return ret;
-+	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
-+	if (IS_ERR(st->vref)) {
-+		if (PTR_ERR(st->vref) != -ENODEV)
-+			return PTR_ERR(st->vref);
+ 		default:
+-			/* If the CQE type is unexpected, log an error, assert,
+-			 * and go through the error path.
++			/* If the CQE type is unknown, log an error,
++			 * and still free the SKB, update tail, etc.
+ 			 */
+-			WARN_ONCE(1, "TX: Unexpected CQE type %d: HW BUG?\n",
+-				  cqe_oob->cqe_hdr.cqe_type);
++			if (net_ratelimit())
++				netdev_err(ndev, "TX: unknown CQE type %d\n",
++					   cqe_oob->cqe_hdr.cqe_type);
 +
-+		ret = regulator_get_voltage(st->avdd);
-+		if (ret < 0) {
-+			dev_err(&spi->dev, "Device tree error, AVdd voltage undefined\n");
-+			return ret;
-+		}
-+	} else {
-+		ret = regulator_enable(st->vref);
-+		if (ret) {
-+			dev_err(&spi->dev, "Failed to enable specified Vref supply\n");
-+			return ret;
-+		}
-+
-+		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->vref);
-+		if (ret)
-+			return ret;
-+
-+		ret = regulator_get_voltage(st->vref);
-+		if (ret < 0) {
-+			dev_err(&spi->dev, "Device tree error, Vref voltage undefined\n");
-+			return ret;
-+		}
- 	}
- 	st->int_vref_mv = ret / 1000;
+ 			apc->eth_stats.tx_cqe_unknown_type++;
+-			return;
++			break;
+ 		}
  
+ 		if (WARN_ON_ONCE(txq->gdma_txq_id != completions[i].wq_num))
 -- 
-2.34.1
+2.25.1
 
