@@ -2,114 +2,178 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07AE47AD9B3
-	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 16:07:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBD1E7ADA36
+	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 16:43:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbjIYOHS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 25 Sep 2023 10:07:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39628 "EHLO
+        id S229522AbjIYOnb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 25 Sep 2023 10:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229788AbjIYOHR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 10:07:17 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F2B0CE
-        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 07:07:11 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-d862533ea85so5613271276.0
-        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 07:07:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695650830; x=1696255630; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pbeInWKlUN3Z2QQBrR4UtpzNoToZLCsYpJRewAj23h8=;
-        b=u6KT1EOy4DnS7okQTzXwROIFx2P8jddoRYL+AKF9JeJKCFdlFeZ1mz8ZmqzNoLjtKA
-         1ux1WoOTPuvTMB1EZXr982mOOOxj89bC+SNRrFWtB6IMGJwqLENeWovlgeyBmFmLK5Kl
-         GzP9/9gPBmw3qe50jgBsnCdJg93PAeo1LkNWWoCoZwsfW/YBQKL6nG8xgTgC9N0Yvgrf
-         Mcb/Xn4/3CZlxmfxiFXkTA5rCT4l6YY5lLu92g5buyRh0nSGfFdFdKu7aeR65y04P0YM
-         aS7BAVKv+jRpsxdkT9SRanDPGkqXjNIYAVkKMWI72p9C2PCNq1cUtjir5+H0mLLdK53n
-         q/Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695650830; x=1696255630;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pbeInWKlUN3Z2QQBrR4UtpzNoToZLCsYpJRewAj23h8=;
-        b=TZvTDw1emUHlj75yAIu0E79KJ6p9BmW0Ex2HtRjS55EvkXvZWVyiRdqC0bddWOUssC
-         /U57zbkGdh0xWF20biL10rUmM8n+OIMLXeERCI4Jl2wYCmU01sFHxw3RdcU2+5/6uPdR
-         Nrsok8uyGDrl6x2K7zPEdcq4T5rXVSbbopwnwC/KYVpXURTOH38Mr7QuKQTG1lyt3P8p
-         eCC5b+s67Dppre2XShtam0WDmRiiO7eH9z7kNmczP20Kp61LyjaJahE+ajYcLGEbChF7
-         H2hkHPhDbG37SiCXO5CXw2fo5UsfWTfrJ+XPWS1RozStLcJWLhTtS4wh/XCjIu2RnwZ+
-         XSUQ==
-X-Gm-Message-State: AOJu0YzG+VqUDetbcOYFPqwH7kOctB3p3JHkvZYmwu3q6PX/N33oXM9B
-        +g89SGmQpvHT3pLKdjay8l1hzT8XDNaW6dR9lmFNtw==
-X-Google-Smtp-Source: AGHT+IGybh6b+QMCWVSNtS3PoG9odUy0INJ8lN7t0nCkj2GqRCzX4hr4FBHQ6scP86ZT8zt2NFX8jVlVz6abd2tcvGs=
-X-Received: by 2002:a25:ce4c:0:b0:d80:9ef:928e with SMTP id
- x73-20020a25ce4c000000b00d8009ef928emr5922448ybe.33.1695650830416; Mon, 25
- Sep 2023 07:07:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230921203426.638262-1-beanhuo@iokpp.de>
-In-Reply-To: <20230921203426.638262-1-beanhuo@iokpp.de>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 25 Sep 2023 16:06:34 +0200
-Message-ID: <CAPDyKFqN9xASjqJWmjtkTGdYEG0AauMzCVkR7VJ10Va0oF-B4w@mail.gmail.com>
-Subject: Re: [PATCH v3] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron
- eMMC Q2J54A
-To:     Bean Huo <beanhuo@iokpp.de>
-Cc:     adrian.hunter@intel.com, beanhuo@micron.com,
-        jakub.kwapisz@toradex.com, rafael.beims@toradex.com,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229450AbjIYOna (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 10:43:30 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FAC8101;
+        Mon, 25 Sep 2023 07:43:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693E4C433C7;
+        Mon, 25 Sep 2023 14:43:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695653004;
+        bh=zLu+VnRpIsjtnAXABy7BDzCTOqyINaVoPvsO++Hkwow=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=qw77X9fkt0hBOpDdvTU2WKmu46P3XwVZXqEmHv04wqXA/tZs4NgonJaHKf7T8MZAC
+         oPNae1MmhWZ3eOq+eqzdXMUr7j7oPNnBXePU3V/yvxGYt+LT2sEv94UA86N3ssa4p9
+         fz6Z0JVoPlrWpHUK4hmHg0rA8lKjUp3uYG452ywN2dkQxUZlpqN4ML0W/HvnTG/LnR
+         mQw58kFoNZmb/HPdqzWT0XPfhg/ijXT/GT5Lcx89pnr12GhQ1x5zAlOPlUT4HhfwTS
+         xy1RrnkmKut5d1yXF7k93DE2LrJT+5zXjmyv4CnjDdS+Abrr+nZp1g5CeFrS7FcnLD
+         QhF4td3R7tIOg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 25 Sep 2023 17:43:15 +0300
+Message-Id: <CVS2TK6J4193.2X0455FSP2MLQ@suppilovahvero>
+Cc:     <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
+        <linux-edac@vger.kernel.org>,
+        <acpica-devel@lists.linuxfoundation.org>, <stable@vger.kernel.org>,
+        <x86@kernel.org>, <justin.he@arm.com>, <ardb@kernel.org>,
+        <ying.huang@intel.com>, <ashish.kalra@amd.com>,
+        <baolin.wang@linux.alibaba.com>, <bp@alien8.de>,
+        <tglx@linutronix.de>, <mingo@redhat.com>,
+        <dave.hansen@linux.intel.com>, <lenb@kernel.org>, <hpa@zytor.com>,
+        <robert.moore@intel.com>, <lvying6@huawei.com>,
+        <xiexiuqi@huawei.com>, <zhuo.song@linux.alibaba.com>
+Subject: Re: [RESEND PATCH v8 1/2] ACPI: APEI: set memory failure flags as
+ MF_ACTION_REQUIRED on synchronous events
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Shuai Xue" <xueshuai@linux.alibaba.com>, <rafael@kernel.org>,
+        <wangkefeng.wang@huawei.com>, <tanxiaofei@huawei.com>,
+        <mawupeng1@huawei.com>, <tony.luck@intel.com>,
+        <linmiaohe@huawei.com>, <naoya.horiguchi@nec.com>,
+        <james.morse@arm.com>, <gregkh@linuxfoundation.org>,
+        <will@kernel.org>
+X-Mailer: aerc 0.14.0
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20230919022127.69732-2-xueshuai@linux.alibaba.com>
+In-Reply-To: <20230919022127.69732-2-xueshuai@linux.alibaba.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 21 Sept 2023 at 22:35, Bean Huo <beanhuo@iokpp.de> wrote:
+On Tue Sep 19, 2023 at 5:21 AM EEST, Shuai Xue wrote:
+> There are two major types of uncorrected recoverable (UCR) errors :
 >
-> From: Bean Huo <beanhuo@micron.com>
+> - Action Required (AR): The error is detected and the processor already
+>   consumes the memory. OS requires to take action (for example, offline
+>   failure page/kill failure thread) to recover this uncorrectable error.
 >
-> Micron MTFC4GACAJCN eMMC supports cache but requires that flush cache
-> operation be allowed only after a write has occurred. Otherwise, the
-> cache flush command or subsequent commands will time out.
+> - Action Optional (AO): The error is detected out of processor execution
+>   context. Some data in the memory are corrupted. But the data have not
+>   been consumed. OS is optional to take action to recover this
+>   uncorrectable error.
 >
-> Signed-off-by: Bean Huo <beanhuo@micron.com>
-> Co-developed-by: Rafael Beims <rafael.beims@toradex.com>
-> Cc: stable@vger.kernel.org
+> The essential difference between AR and AO errors is that AR is a
+> synchronous event, while AO is an asynchronous event. The hardware will
+> signal a synchronous exception (Machine Check Exception on X86 and
+> Synchronous External Abort on Arm64) when an error is detected and the
+> memory access has been architecturally executed.
+>
+> When APEI firmware first is enabled, a platform may describe one error
+> source for the handling of synchronous errors (e.g. MCE or SEA notificati=
+on
+> ), or for handling asynchronous errors (e.g. SCI or External Interrupt
+> notification). In other words, we can distinguish synchronous errors by
+> APEI notification. For AR errors, kernel will kill current process
+> accessing the poisoned page by sending SIGBUS with BUS_MCEERR_AR. In
+> addition, for AO errors, kernel will notify the process who owns the
+> poisoned page by sending SIGBUS with BUS_MCEERR_AO in early kill mode.
+> However, the GHES driver always sets mf_flags to 0 so that all UCR errors
+> are handled as AO errors in memory failure.
+>
+> To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronou=
+s
+> events.
+>
+> Fixes: ba61ca4aab47 ("ACPI, APEI, GHES: Add hardware memory error recover=
+y support")'
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > ---
-> Changelog:
+>  drivers/acpi/apei/ghes.c | 29 +++++++++++++++++++++++------
+>  1 file changed, 23 insertions(+), 6 deletions(-)
 >
-> v2--v3:
->     1. Set card->written_flag in mmc_blk_mq_issue_rq().
-> v1--v2:
->     1. Add Rafael's test-tag, and Co-developed-by.
->     2. Check host->card whether NULL or not in __mmc_start_request() before asserting host->card->->quirks
-> ---
->  drivers/mmc/core/block.c  | 4 ++++
->  drivers/mmc/core/mmc.c    | 5 +++++
->  drivers/mmc/core/quirks.h | 7 ++++---
->  include/linux/mmc/card.h  | 2 ++
->  4 files changed, 15 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-> index 3a8f27c3e310..14d0dc7942de 100644
-> --- a/drivers/mmc/core/block.c
-> +++ b/drivers/mmc/core/block.c
-> @@ -2387,6 +2387,10 @@ enum mmc_issued mmc_blk_mq_issue_rq(struct mmc_queue *mq, struct request *req)
->                                 ret = mmc_blk_cqe_issue_rw_rq(mq, req);
->                         else
->                                 ret = mmc_blk_mq_issue_rw_rq(mq, req);
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index ef59d6ea16da..88178aa6222d 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -101,6 +101,20 @@ static inline bool is_hest_type_generic_v2(struct gh=
+es *ghes)
+>  	return ghes->generic->header.type =3D=3D ACPI_HEST_TYPE_GENERIC_ERROR_V=
+2;
+>  }
+> =20
+> +/*
+> + * A platform may describe one error source for the handling of synchron=
+ous
+> + * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. S=
+CI
+> + * or External Interrupt). On x86, the HEST notifications are always
+> + * asynchronous, so only SEA on ARM is delivered as a synchronous
+> + * notification.
+> + */
+> +static inline bool is_hest_sync_notify(struct ghes *ghes)
+> +{
+> +	u8 notify_type =3D ghes->generic->notify.type;
 > +
-> +                       if (host->card->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH &&
+> +	return notify_type =3D=3D ACPI_HEST_NOTIFY_SEA;
+> +}
+> +
+>  /*
+>   * This driver isn't really modular, however for the time being,
+>   * continuing to use module_param is the easiest way to remain
+> @@ -475,7 +489,7 @@ static bool ghes_do_memory_failure(u64 physical_addr,=
+ int flags)
+>  }
+> =20
+>  static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gd=
+ata,
+> -				       int sev)
+> +				       int sev, bool sync)
+>  {
+>  	int flags =3D -1;
+>  	int sec_sev =3D ghes_severity(gdata->error_severity);
+> @@ -489,7 +503,7 @@ static bool ghes_handle_memory_failure(struct acpi_he=
+st_generic_data *gdata,
+>  	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+>  		flags =3D MF_SOFT_OFFLINE;
+>  	if (sev =3D=3D GHES_SEV_RECOVERABLE && sec_sev =3D=3D GHES_SEV_RECOVERA=
+BLE)
+> -		flags =3D 0;
+> +		flags =3D sync ? MF_ACTION_REQUIRED : 0;
 
-Please add an inline helper function for this in
-drivers/mmc/core/card.h, along with the others.
+Not my territory but this branching looks a bit weird to my
+eyes so just in case putting a comment.
 
-[...]
+What *if* the previous condition sets MF_SOFT_OFFLINE and
+this condition overwrites the value?
 
-Kind regards
-Uffe
+I know that earlier it could have been overwritten by zero.
+
+Neither the function comment has any explanation why it is
+ok overwrite like this.
+
+Or if these cannot happen simultaenously why there is not
+immediate return after settting MF_SOFT_OFFLINE?
+
+For someone like me the functions logic is tediously hard
+to understand tbh.
+
+BR, Jarkko
