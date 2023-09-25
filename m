@@ -2,235 +2,200 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A298A7ACEAB
-	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 05:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17CDB7ACEFE
+	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 06:03:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229674AbjIYDVU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 24 Sep 2023 23:21:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59798 "EHLO
+        id S229495AbjIYEDf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 25 Sep 2023 00:03:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230293AbjIYDVT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 23:21:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A91DDBE
-        for <stable@vger.kernel.org>; Sun, 24 Sep 2023 20:20:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695612028;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=TrR3zPpsYfW5fFIFy5P2/fVt+bsSu1JVw5qNlGgU7cU=;
-        b=Lhp3Iux75/TXFqa/ofugAWfaldXrhsTdNXMgdvnvsSNTZJTRcOxoYPyLEv389hFlki50dQ
-        hSu+zhun56HgY96AKa3LsNx/B0+IRVcOYYhThv8N/RrNle+M3q96CD3b9js2ionf/uGv6x
-        dLw70G4mSWWeLPmj/pHcfKS0JwqfX8k=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-399-YtiNrgGnMpKAbqA8IuX8Xg-1; Sun, 24 Sep 2023 23:20:27 -0400
-X-MC-Unique: YtiNrgGnMpKAbqA8IuX8Xg-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3231d7d4ac4so1679960f8f.0
-        for <stable@vger.kernel.org>; Sun, 24 Sep 2023 20:20:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695612026; x=1696216826;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TrR3zPpsYfW5fFIFy5P2/fVt+bsSu1JVw5qNlGgU7cU=;
-        b=H+kVQKFrU5tHK0CjdZdjVNeNGs+2Mqq/rcnG/Zh99Naq+brTx0LGUnCB9XbN0Kq7RZ
-         6inZzC+htLwFgq0R7HP4d5t+3Jn2S01OTyOi3PaI53v4wO7Xtz35orI7gXKww9S//px5
-         sBqD7TR2FG1AY7hfs4tmUz+jS/MVifvetNo0cr/0NVN1qk74Pn9SaA8mSn2Z+z/jef25
-         DgpyJrgqft3ASyiicZfd1/3bEtAwbnnLepmM/ivlTcELvkChI8cXTEbUSNg7JRAHInHG
-         QGjTGPDaIQ6mPHHXFgmvcfFNrCfcU6mc13TnDpGvr64MjYozG6FJ2zNx2r1cfn2rpIGp
-         xMaw==
-X-Gm-Message-State: AOJu0Yx4u6NYVCQfmmLvebus2uQPY/cTH8jbpD3CFlNr4McbUpPyLNbJ
-        DQdXCBYb89I9SerZshY7PTdWU8uQuQUHRJmhy14mnlIK6CqRDlQJ/VA49SOjPmsnYY9GDK1wZdC
-        EQBick+3U/jpYFQfJqnZhJvBnXAqABFcC
-X-Received: by 2002:a5d:46d2:0:b0:321:5211:8e20 with SMTP id g18-20020a5d46d2000000b0032152118e20mr4758435wrs.59.1695612026254;
-        Sun, 24 Sep 2023 20:20:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEbXDBE4JRcEE3biGXQuHAfiqMbcwu40ARqWUHJUoOs6GS1iq/4wyEprZ6iOJlEp6+YDnDyEiJj72z74/YU8Os=
-X-Received: by 2002:a5d:46d2:0:b0:321:5211:8e20 with SMTP id
- g18-20020a5d46d2000000b0032152118e20mr4758423wrs.59.1695612025955; Sun, 24
- Sep 2023 20:20:25 -0700 (PDT)
+        with ESMTP id S230194AbjIYEDd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 00:03:33 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C61DF;
+        Sun, 24 Sep 2023 21:03:26 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38P42l6F032695;
+        Mon, 25 Sep 2023 04:03:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=EJv43BLG4bIBsKldJJ3EqpDZxygtvsu9LxyYIdswit8=;
+ b=TW+PArUdTN7VTw5WEF7ySdNctiYEUo2TzaK832Rewq822cUhvICo/ivr5Sy0I2gZoVXs
+ xPiucO24bc2jH1gz8OGkHIt3CkkZ4HXado+UWLtGzgaIZuJU/Jdt+LairOtRJU3T9OlB
+ jsQwmad+DP4HYTyNYID0GWxf6EWHdhQ46pGpbomdkN49526HFvMvIr+JokwAZLv1NTJw
+ s5uGaSQ9cM88txaVY1Saq2QjOmeVVjojefSIpqZO0j8OD9B6XVEZ4kd09212KdbCHjcG
+ oIANbPOXJXfoIF3EEhAKBUXPDTp6IxJ1c8qYocGXz9QHtWeL8kzfTq3D9Lfk5D2LusNN bg== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3t9r41jk49-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 Sep 2023 04:03:22 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38P43LpO001397
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 Sep 2023 04:03:21 GMT
+Received: from [10.201.2.96] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Sun, 24 Sep
+ 2023 21:03:18 -0700
+Message-ID: <742d8d13-56f7-40d4-8bfe-fe6e4b062104@quicinc.com>
+Date:   Mon, 25 Sep 2023 09:32:31 +0530
 MIME-Version: 1.0
-References: <20230912030008.3599514-1-lulu@redhat.com> <20230912030008.3599514-5-lulu@redhat.com>
- <CACGkMEtCYG8-Pt+V-OOwUV7fYFp_cnxU68Moisfxju9veJ-=qw@mail.gmail.com>
- <CACLfguW3NS_4+YhqTtGqvQb70mVazGVfheryHx4aCBn+=Skf9w@mail.gmail.com> <CACGkMEt-m9bOh9YnqLw0So5wqbZ69D0XRVBbfG73Oh7Q8qTJsQ@mail.gmail.com>
-In-Reply-To: <CACGkMEt-m9bOh9YnqLw0So5wqbZ69D0XRVBbfG73Oh7Q8qTJsQ@mail.gmail.com>
-From:   Cindy Lu <lulu@redhat.com>
-Date:   Mon, 25 Sep 2023 11:19:47 +0800
-Message-ID: <CACLfguWQ=-M1f2QLH-_Y44xd7-AWtWg=v89W_u83NTGjRmAkqg@mail.gmail.com>
-Subject: Re: [RFC v2 4/4] vduse: Add new ioctl VDUSE_GET_RECONNECT_INFO
-To:     Jason Wang <jasowang@redhat.com>
-Cc:     mst@redhat.com, maxime.coquelin@redhat.com,
-        xieyongji@bytedance.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2] firmware: qcom_scm: use the SCM_CONVENTION based on
+ ARM / ARM64
+To:     Elliot Berman <quic_eberman@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+CC:     Trilok Soni <quic_tsoni@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20230607045345.25049-1-quic_kathirav@quicinc.com>
+ <rzxxoofebcyuoktsl72diwv575md62bxqse4uizfns247gyklp@tdoixme3qrjq>
+ <CAA8EJprVQZXXVnNCULDYeUha0-mSyLZr1r6axbmw1MUiP_O9zg@mail.gmail.com>
+ <ww5rr5okemzevgdvueok5k5uaqakmqdtdtjtw4jur2cdgfsep7@hz2y7qfat5jv>
+ <44a46324-d01a-99a4-f358-aad3be1f4a45@quicinc.com>
+Content-Language: en-US
+From:   Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+In-Reply-To: <44a46324-d01a-99a4-f358-aad3be1f4a45@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: xwUv0D9bGAth9NmlCxM_PXOayrur0wG5
+X-Proofpoint-GUID: xwUv0D9bGAth9NmlCxM_PXOayrur0wG5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-25_01,2023-09-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1011
+ priorityscore=1501 impostorscore=0 mlxscore=0 phishscore=0 spamscore=0
+ mlxlogscore=999 malwarescore=0 adultscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309250027
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 25, 2023 at 10:58=E2=80=AFAM Jason Wang <jasowang@redhat.com> w=
-rote:
->
-> On Thu, Sep 21, 2023 at 10:07=E2=80=AFPM Cindy Lu <lulu@redhat.com> wrote=
-:
-> >
-> > On Mon, Sep 18, 2023 at 4:49=E2=80=AFPM Jason Wang <jasowang@redhat.com=
-> wrote:
-> > >
-> > > On Tue, Sep 12, 2023 at 11:01=E2=80=AFAM Cindy Lu <lulu@redhat.com> w=
-rote:
-> > > >
-> > > > In VDUSE_GET_RECONNECT_INFO, the Userspace App can get the map size
-> > > > and The number of mapping memory pages from the kernel. The userspa=
-ce
-> > > > App can use this information to map the pages.
-> > > >
-> > > > Signed-off-by: Cindy Lu <lulu@redhat.com>
-> > > > ---
-> > > >  drivers/vdpa/vdpa_user/vduse_dev.c | 15 +++++++++++++++
-> > > >  include/uapi/linux/vduse.h         | 15 +++++++++++++++
-> > > >  2 files changed, 30 insertions(+)
-> > > >
-> > > > diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa=
-_user/vduse_dev.c
-> > > > index 680b23dbdde2..c99f99892b5c 100644
-> > > > --- a/drivers/vdpa/vdpa_user/vduse_dev.c
-> > > > +++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-> > > > @@ -1368,6 +1368,21 @@ static long vduse_dev_ioctl(struct file *fil=
-e, unsigned int cmd,
-> > > >                 ret =3D 0;
-> > > >                 break;
-> > > >         }
-> > > > +       case VDUSE_GET_RECONNECT_INFO: {
-> > > > +               struct vduse_reconnect_mmap_info info;
-> > > > +
-> > > > +               ret =3D -EFAULT;
-> > > > +               if (copy_from_user(&info, argp, sizeof(info)))
-> > > > +                       break;
-> > > > +
-> > > > +               info.size =3D PAGE_SIZE;
-> > > > +               info.max_index =3D dev->vq_num + 1;
-> > > > +
-> > > > +               if (copy_to_user(argp, &info, sizeof(info)))
-> > > > +                       break;
-> > > > +               ret =3D 0;
-> > > > +               break;
-> > > > +       }
-> > > >         default:
-> > > >                 ret =3D -ENOIOCTLCMD;
-> > > >                 break;
-> > > > diff --git a/include/uapi/linux/vduse.h b/include/uapi/linux/vduse.=
-h
-> > > > index d585425803fd..ce55e34f63d7 100644
-> > > > --- a/include/uapi/linux/vduse.h
-> > > > +++ b/include/uapi/linux/vduse.h
-> > > > @@ -356,4 +356,19 @@ struct vhost_reconnect_vring {
-> > > >         _Bool avail_wrap_counter;
-> > > >  };
-> > > >
-> > > > +/**
-> > > > + * struct vduse_reconnect_mmap_info
-> > > > + * @size: mapping memory size, always page_size here
-> > > > + * @max_index: the number of pages allocated in kernel,just
-> > > > + * use for check
-> > > > + */
-> > > > +
-> > > > +struct vduse_reconnect_mmap_info {
-> > > > +       __u32 size;
-> > > > +       __u32 max_index;
-> > > > +};
-> > >
-> > > One thing I didn't understand is that, aren't the things we used to
-> > > store connection info belong to uAPI? If not, how can we make sure th=
-e
-> > > connections work across different vendors/implementations. If yes,
-> > > where?
-> > >
-> > > Thanks
-> > >
-> > The process for this reconnecttion  is
-> > A.The first-time connection
-> > 1> The userland app checks if the device exists
-> > 2>  use the ioctl to create the vduse device
-> > 3> Mapping the kernel page to userland and save the
-> > App-version/features/other information to this page
-> > 4>  if the Userland app needs to exit, then the Userland app will only
-> > unmap the page and then exit
-> >
-> > B, the re-connection
-> > 1> the userland app finds the device is existing
-> > 2> Mapping the kernel page to userland
-> > 3> check if the information in shared memory is satisfied to
-> > reconnect,if ok then continue to reconnect
-> > 4> continue working
-> >
-> >  For now these information are all from userland,So here the page will
-> > be maintained by the userland App
-> > in the previous code we only saved the api-version by uAPI .  if  we
-> > need to support reconnection maybe we need to add 2 new uAPI for this,
-> > one of the uAPI is to save the reconnect  information and another is
-> > to get the information
-> >
-> > maybe something like
-> >
-> > struct vhost_reconnect_data {
-> > uint32_t version;
-> > uint64_t features;
-> > uint8_t status;
-> > struct virtio_net_config config;
-> > uint32_t nr_vrings;
-> > };
->
-> Probably, then we can make sure the re-connection works across
-> different vduse-daemon implementations.
->
-> >
-> > #define VDUSE_GET_RECONNECT_INFO _IOR (VDUSE_BASE, 0x1c, struct
-> > vhost_reconnect_data)
-> >
-> > #define VDUSE_SET_RECONNECT_INFO  _IOWR(VDUSE_BASE, 0x1d, struct
-> > vhost_reconnect_data)
->
-> Not sure I get this, but the idea is to map those pages to user space,
-> any reason we need this uAPI?
->
-> Thanks
->
-Sorry=EF=BC=8C I didn't write it clearly, I mean if I we don't want to use =
-the
-mmap to sync/check the vduse status, we need to add these 2 new uAPIs,
- these 2 methods are all ok for me.
-For the vq related information still need to use the mmap to sync
-Thanks
-cindy
-> >
-> > Thanks
-> > Cindy
-> >
-> >
-> >
-> >
-> > > > +
-> > > > +#define VDUSE_GET_RECONNECT_INFO \
-> > > > +       _IOWR(VDUSE_BASE, 0x1b, struct vduse_reconnect_mmap_info)
-> > > > +
-> > > >  #endif /* _UAPI_VDUSE_H_ */
-> > > > --
-> > > > 2.34.3
-> > > >
-> > >
-> >
->
 
+On 9/25/2023 8:23 AM, Elliot Berman wrote:
+>
+> On 9/19/2023 8:29 AM, Bjorn Andersson wrote:
+>> On Fri, Sep 15, 2023 at 10:10:32PM +0300, Dmitry Baryshkov wrote:
+>>> On Fri, 15 Sept 2023 at 18:17, Bjorn Andersson <andersson@kernel.org> wrote:
+>>>> On Wed, Jun 07, 2023 at 10:23:45AM +0530, Kathiravan T wrote:
+>>>>> During SCM probe, to identify the SCM convention, scm call is made with
+>>>>> SMC_CONVENTION_ARM_64 followed by SMC_CONVENTION_ARM_32. Based on the
+>>>>> result what convention to be used is decided.
+>>>>>
+>>>>> IPQ chipsets starting from IPQ807x, supports both 32bit and 64bit kernel
+>>>>> variants, however TZ firmware runs in 64bit mode. When running on 32bit
+>>>>> kernel, scm call is made with SMC_CONVENTION_ARM_64 is causing the
+>>>>> system crash, due to the difference in the register sets between ARM and
+>>>>> AARCH64, which is accessed by the TZ.
+>>>>>
+>>>>> To avoid this, use SMC_CONVENTION_ARM_64 only on ARM64 builds.
+>>>>>
+>>>> My memory of this is cloudy, but I feel the logic is complicated because
+>>>> early 64-bit boards all used 32-bit TZ. So, I really would like Elliot's
+>>>> input before picking this change.
+>>> But this codepath is not changed by this patch. Only the 32-bit
+>>> codepath is altered.
+>>>
+>> Ohh, you're right, sorry about that. Would still be nice to see some
+>> feedback from the team here...
+>>
+>>
+>> The commit message is talking about the convention check crashing the
+>> system, the only part of the convention checker that seems to matter to
+>> me is the "calling convention" bit in the smc call.
+>>
+>> Per the "SMC calling convention specification", the 64-bit calling
+>> convention bit can only be used when the client is 64-bit. So perhaps
+>> this is the actual problem?
+>>
+>> Beyond that, another practical problem I can see is if we pass more than
+>> 4 arguments to a call the layout of the extra arguments will not match
+>> between the two worlds (as Linux will pass an array of unsigned long).
+>>
+>>
+>> With this in mind, I'd like the commit message to be more specific.
+>>
+>> Afaict, this is not an issue with the convention detection, but rather
+>> the invalid to call __scm_smc_call() with 64-bit convention on a 32-bit
+>> system. Working around this by having an undocumented #if ARM64 in
+>> another part of the driver isn't clear enough, IMHO.
+>>
+>> Moving the check to __scm_smc_call(), or at least documenting the
+>> behavior there (and next to the #if) seems reasonable.
+>>
+> In terms of disallowing 64-bit convention to be probed on a 32-bit kernel:
+>
+> Reviewed-By: Elliot Berman <quic_eberman@quicinc.com>
+>
+> I first thought moving the check to __scm_smc_call() would be better but
+> then I realized we would be adding an extra runtime check for each SCM call
+> that either always passes or always fails. I think the current #if is best
+> as-is, although it would be good to add some comments explaining why as
+> Bjorn mentioned.
+
+
+Thanks everyone for taking time to review the patch! Will add a comment 
+above the #if block and post the next version.
+
+
+>
+>> Regards,
+>> Bjorn
+>>
+>>
+>>>> Regards,
+>>>> Bjorn
+>>>>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC and legacy conventions")
+>>>>> Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+>>>>> ---
+>>>>> Changes in V2:
+>>>>>        - Added the Fixes tag and cc'd stable mailing list
+>>>>>
+>>>>>   drivers/firmware/qcom_scm.c | 2 ++
+>>>>>   1 file changed, 2 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+>>>>> index fde33acd46b7..db6754db48a0 100644
+>>>>> --- a/drivers/firmware/qcom_scm.c
+>>>>> +++ b/drivers/firmware/qcom_scm.c
+>>>>> @@ -171,6 +171,7 @@ static enum qcom_scm_convention __get_convention(void)
+>>>>>        if (likely(qcom_scm_convention != SMC_CONVENTION_UNKNOWN))
+>>>>>                return qcom_scm_convention;
+>>>>>
+>>>>> +#if IS_ENABLED(CONFIG_ARM64)
+>>>>>        /*
+>>>>>         * Device isn't required as there is only one argument - no device
+>>>>>         * needed to dma_map_single to secure world
+>>>>> @@ -191,6 +192,7 @@ static enum qcom_scm_convention __get_convention(void)
+>>>>>                forced = true;
+>>>>>                goto found;
+>>>>>        }
+>>>>> +#endif
+>>>>>
+>>>>>        probed_convention = SMC_CONVENTION_ARM_32;
+>>>>>        ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
+>>>>> --
+>>>>> 2.17.1
+>>>>>
+>>>
+>>>
+>>> -- 
+>>> With best wishes
+>>> Dmitry
