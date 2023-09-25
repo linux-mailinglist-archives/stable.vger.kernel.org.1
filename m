@@ -2,128 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24D257ADAD5
-	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 17:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03BB77ADB26
+	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 17:15:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232405AbjIYPBM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 25 Sep 2023 11:01:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60140 "EHLO
+        id S232287AbjIYPPN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 25 Sep 2023 11:15:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232413AbjIYPBK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 11:01:10 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4255A111;
-        Mon, 25 Sep 2023 08:01:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE86C433C8;
-        Mon, 25 Sep 2023 15:00:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695654060;
-        bh=GUTPMlEVCxAI4XqyqO0Rqf3KWAa3RuxtFqcc2gmHP1w=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=pOGJqd26WmXtEWG9MwBrMWw6yfwLBt3Fw2NdJtV5xHWOD9eyLgAixcnEsCAXLJ0c4
-         7TJ5DR4cATHHVbGVNr+Q3jly+GM51Q2ZlonAvbt1NhNKnW31AscOFyc1S4kvdkUiFM
-         NWQyqQHZ5bj9XsrhrHNcluOpevJyyVSBpDTTYVHhmrH7/OVKUA4aUkIQWJdMfNAII+
-         Hj8TmgzsACQLRXu6XyBY01uCt3rFzIl5g88tina/t3F2zrwDagissLn4I2EDC7UG+A
-         Rv+zkYxxCros8yPuumZmQe9IYfZiz7vyqRTKGDzfZ1aP8XOR9pCn6QybtRugRVLJVo
-         0+wnUc4uR62/Q==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 25 Sep 2023 18:00:52 +0300
-Message-Id: <CVS371QBH3QK.3354DSBK53OFS@suppilovahvero>
-Subject: Re: [RESEND PATCH v8 2/2] ACPI: APEI: handle synchronous exceptions
- in task work
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Shuai Xue" <xueshuai@linux.alibaba.com>, <rafael@kernel.org>,
-        <wangkefeng.wang@huawei.com>, <tanxiaofei@huawei.com>,
-        <mawupeng1@huawei.com>, <tony.luck@intel.com>,
-        <linmiaohe@huawei.com>, <naoya.horiguchi@nec.com>,
-        <james.morse@arm.com>, <gregkh@linuxfoundation.org>,
-        <will@kernel.org>
-Cc:     <linux-acpi@vger.kernel.org>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <akpm@linux-foundation.org>,
-        <linux-edac@vger.kernel.org>,
-        <acpica-devel@lists.linuxfoundation.org>, <stable@vger.kernel.org>,
-        <x86@kernel.org>, <justin.he@arm.com>, <ardb@kernel.org>,
-        <ying.huang@intel.com>, <ashish.kalra@amd.com>,
-        <baolin.wang@linux.alibaba.com>, <bp@alien8.de>,
-        <tglx@linutronix.de>, <mingo@redhat.com>,
-        <dave.hansen@linux.intel.com>, <lenb@kernel.org>, <hpa@zytor.com>,
-        <robert.moore@intel.com>, <lvying6@huawei.com>,
-        <xiexiuqi@huawei.com>, <zhuo.song@linux.alibaba.com>
-X-Mailer: aerc 0.14.0
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230919022127.69732-3-xueshuai@linux.alibaba.com>
-In-Reply-To: <20230919022127.69732-3-xueshuai@linux.alibaba.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231603AbjIYPPM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 11:15:12 -0400
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79BB910E;
+        Mon, 25 Sep 2023 08:15:03 -0700 (PDT)
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+        by mx0b-001ae601.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38PBieUO025114;
+        Mon, 25 Sep 2023 10:14:50 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding:content-type; s=PODMain02222019; bh=W
+        HXl4xdBH7oIae2xk+WqYNuDkHaLd41yOcEJ0WuOa9g=; b=ZG3777JSKZJLMXkkc
+        yYwRlwAcHfJdGJGlTTl/QO9fkyuE+vILgTaAM+6s7WRy4HCneupT2XWWMpU5o6ry
+        FBkwVtqv1tWjUCtiLO2R/bst+px811E4wmagbC/4ah05h55/ckoQPHBgJPIqIVV7
+        2CGOkJS94nG716VWUariaZP7XQbF54X7p+7Ysrto1IEy6FL4DAuJI5J9Wy3mcBwf
+        jKMOWevfU52O8BYDI00hwCczi8kre4RLfvz0/ohuHmqzI15xUeXw7cFu1JjAdrke
+        2yjH9G4VzRhZeCw8t+YXPhNDGZlvlfOItMynjwBVfcxE0datGr21ihS2Qf8EXa2k
+        NnhWQ==
+Received: from ediex01.ad.cirrus.com ([84.19.233.68])
+        by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3t9veja69h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 25 Sep 2023 10:14:49 -0500 (CDT)
+Received: from ediex01.ad.cirrus.com (198.61.84.80) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.37; Mon, 25 Sep
+ 2023 16:14:48 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by ediex01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.2.1118.37 via Frontend
+ Transport; Mon, 25 Sep 2023 16:14:48 +0100
+Received: from EDIN4L06LR3.ad.cirrus.com (EDIN4L06LR3.ad.cirrus.com [198.90.238.160])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id CEA8C11CD;
+        Mon, 25 Sep 2023 15:14:45 +0000 (UTC)
+From:   Richard Fitzgerald <rf@opensource.cirrus.com>
+To:     <stable@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <alsa-devel@alsa-project.org>,
+        <patches@opensource.cirrus.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.4, 6.5] ASoC: cs35l56: Disable low-power hibernation mode
+Date:   Mon, 25 Sep 2023 16:14:43 +0100
+Message-ID: <20230925151443.28956-1-rf@opensource.cirrus.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: -OFlxHOuJDNx62BothL6OVSGO-mCrdT7
+X-Proofpoint-ORIG-GUID: -OFlxHOuJDNx62BothL6OVSGO-mCrdT7
+X-Proofpoint-Spam-Reason: safe
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue Sep 19, 2023 at 5:21 AM EEST, Shuai Xue wrote:
-> Hardware errors could be signaled by synchronous interrupt, e.g.  when an
-> error is detected by a background scrubber, or signaled by synchronous
-> exception, e.g. when an uncorrected error is consumed. Both synchronous a=
-nd
-> asynchronous error are queued and handled by a dedicated kthread in
-> workqueue.
->
-> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
-> synchronous errors") keep track of whether memory_failure() work was
-> queued, and make task_work pending to flush out the workqueue so that the
-> work for synchronous error is processed before returning to user-space.
-> The trick ensures that the corrupted page is unmapped and poisoned. And
-> after returning to user-space, the task starts at current instruction whi=
-ch
-> triggering a page fault in which kernel will send SIGBUS to current proce=
-ss
-> due to VM_FAULT_HWPOISON.
->
-> However, the memory failure recovery for hwpoison-aware mechanisms does n=
-ot
-> work as expected. For example, hwpoison-aware user-space processes like
-> QEMU register their customized SIGBUS handler and enable early kill mode =
-by
-> seting PF_MCE_EARLY at initialization. Then the kernel will directy notif=
-y
-> the process by sending a SIGBUS signal in memory failure with wrong
-> si_code: the actual user-space process accessing the corrupt memory
-> location, but its memory failure work is handled in a kthread context, so
-> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
-> process instead of BUS_MCEERR_AR in kill_proc().
->
-> To this end, separate synchronous and asynchronous error handling into
-> different paths like X86 platform does:
->
-> - valid synchronous errors: queue a task_work to synchronously send SIGBU=
-S
->   before ret_to_user.
-> - valid asynchronous errors: queue a work into workqueue to asynchronousl=
-y
->   handle memory failure.
-> - abnormal branches such as invalid PA, unexpected severity, no memory
->   failure config support, invalid GUID section, OOM, etc.
->
-> Then for valid synchronous errors, the current context in memory failure =
-is
-> exactly belongs to the task consuming poison data and it will send SIBBUS
-> with proper si_code.
->
-> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for syn=
-chronous errors")
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+commit 18789be8e0d9fbb78b2290dcf93f500726ed19f0 upstream.
+Please apply to 6.4 and 6.5.
 
-Did 7f17b4a121d0 actually break something that was not broken before?
+Do not allow the CS35L56 to be put into its lowest power
+"hibernation" mode. This only affects I2C because "hibernation"
+is already disabled on SPI and SoundWire.
 
-If not, this is (afaik) not a bug fix.
+Recent firmwares need a different wake-up sequence. Until
+that sequence has been specified, the chip "hibernation" mode
+must be disabled otherwise it can intermittently fail to wake.
 
-BR, Jarkko
+Backport note: This is the same change as upstream commit, to delete
+one line, but the upstream commit would not apply cleanly on older
+branches because of minor differences to the surrounding code.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20230912133841.3480466-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/codecs/cs35l56-i2c.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/sound/soc/codecs/cs35l56-i2c.c b/sound/soc/codecs/cs35l56-i2c.c
+index c613a2554fa3..494adabd4f43 100644
+--- a/sound/soc/codecs/cs35l56-i2c.c
++++ b/sound/soc/codecs/cs35l56-i2c.c
+@@ -27,7 +27,6 @@ static int cs35l56_i2c_probe(struct i2c_client *client)
+ 		return -ENOMEM;
+ 
+ 	cs35l56->dev = dev;
+-	cs35l56->can_hibernate = true;
+ 
+ 	i2c_set_clientdata(client, cs35l56);
+ 	cs35l56->regmap = devm_regmap_init_i2c(client, regmap_config);
+-- 
+2.30.2
 
