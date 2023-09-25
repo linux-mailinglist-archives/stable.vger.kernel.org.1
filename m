@@ -2,181 +2,232 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D53B37AD4DE
-	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 11:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90AE77AD645
+	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 12:43:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229584AbjIYJyH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 25 Sep 2023 05:54:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51872 "EHLO
+        id S232335AbjIYKnb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 25 Sep 2023 06:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjIYJyF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 05:54:05 -0400
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E08E8;
-        Mon, 25 Sep 2023 02:53:56 -0700 (PDT)
-Received: from in01.mta.xmission.com ([166.70.13.51]:46656)
-        by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1qkiHo-0085b5-JY; Mon, 25 Sep 2023 03:53:52 -0600
-Received: from ip68-227-168-167.om.om.cox.net ([68.227.168.167]:44374 helo=email.froward.int.ebiederm.org.xmission.com)
-        by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1qkiHn-000L9B-C5; Mon, 25 Sep 2023 03:53:52 -0600
-From:   "Eric W. Biederman" <ebiederm@xmission.com>
-To:     Sebastian Ott <sebott@redhat.com>
-Cc:     Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net>
-        <36e93c8e-4384-b269-be78-479ccc7817b1@redhat.com>
-        <87zg1bm5xo.fsf@email.froward.int.ebiederm.org>
-        <37d3392c-cf33-20a6-b5c9-8b3fb8142658@redhat.com>
-Date:   Mon, 25 Sep 2023 04:50:33 -0500
-In-Reply-To: <37d3392c-cf33-20a6-b5c9-8b3fb8142658@redhat.com> (Sebastian
-        Ott's message of "Mon, 25 Sep 2023 11:20:51 +0200 (CEST)")
-Message-ID: <87ttrimviu.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        with ESMTP id S232312AbjIYKn2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 06:43:28 -0400
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 444A1E8
+        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 03:43:21 -0700 (PDT)
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38PABl4l012852;
+        Mon, 25 Sep 2023 10:43:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-03-30;
+ bh=XUdoET4sY79tEV/B9Ag62XK+BviDkp/Ly6AbzuRVVUM=;
+ b=G9ENNjYtldt5ag7cWIsDbGlRAwQPImrEkWtkvbXJbE6cAz4zd1IAVTUvEJBm15+ZiIYa
+ kkvXoYSvBBnUAz0oOaLPBJwNz7jSG5Be68MqizQvaPzssb34j3REnHLCmtmNWrElDk0j
+ wpBGYfKUshqXP6lk27jAulqsYk4rmIK76/icL1/9uEXKQknHkaASllxv+xymuJbSHgux
+ 6W3OpKun3Qll9NMKrwOMqgm4jlCmvChg3XxmK/qs+wAQVMiVpuzBEdW1ohgk/JTdFf9l
+ RUT4837qzutBbvJcWo59oLFNHZkJVJJYiYgeBusphyGwyKj/Mtk8hrbjdm2bsmGtujAX 3A== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t9pxbude4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 25 Sep 2023 10:43:06 +0000
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 38PA66mt039347;
+        Mon, 25 Sep 2023 10:43:05 GMT
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2175.outbound.protection.outlook.com [104.47.55.175])
+        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3t9pfacffc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 25 Sep 2023 10:43:05 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kqzR+5VRJUdVM2neHCUih2P+RRVNt+WYzaTh29TBNlfN/kDui/LFEPhPwa4ORo9GVvZgD4jDklXPLy9+NsI9RjE/M0G/svWYBCrfwHCT4NEbJ3Lt3t999Bg4eLoOBbv26C+La1LWjeNQJ2ZQptCwVlLsSs+NjVlX8cbtpUAAmR1jM2GVno5LFagq0GEt67bphy1vOZCRdqiFOut2Ywqdn1P+6yYIYmF0TVsWKJbrxTEUICoHcoNZQEcP3Aq7k3UqWFMKffmC4mfWCuIrQPd08lXOTTS0DgEQ9l+KO3N2BMXvl+aytj5y8DmaAZldN7MOJma4DK9NB39J17jj18lfuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XUdoET4sY79tEV/B9Ag62XK+BviDkp/Ly6AbzuRVVUM=;
+ b=R2oOkNb7QgFkESAiAML28mP4Dp5n2ac/u5MHoWmIrJkHCouxL0vHzEjZbq0GPpKmAGGL4BY+IJXiZaZ4BfApr2CiefyHVSvwYBOdsxOZPkRVZ3ZMeYPc3KHOHIjhW7gLJAWskifYR5opcMY/4GlEwUh7/O6SdKu5XQh0SB6+Em4AZPtJCa8FOgaKG7B5cCr7Pay80IoeL9+0kF0q+SeP7mW+ITZwyhnaEXLnALIRC1GzWKiTDNJ4sy9PhCW8YGOUEDT6hx2jMXWauBQTd+itCcIuk9zNmP4mym5/lkRlGpQ0reYesLUrJolkiqqEUkY78fdv4eJ4JIJc+7/29Lu44A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XUdoET4sY79tEV/B9Ag62XK+BviDkp/Ly6AbzuRVVUM=;
+ b=oP8XzyXsrgtvLTHvpXaXkH1lnLPmfxCrQnd1xOkWTa8pdgCIFplUTeaqY+SwR+Y8a+po+3JlwKaVCHbrHXzVE0Jud/hql+FRn/k+EyqSMK0GmPNTklDK1Y8oo04XYK8pNzBVUPLf6f+QUW7sc+G1M8lOKLjp9krp4KEABbr2QLo=
+Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
+ by SA1PR10MB5867.namprd10.prod.outlook.com (2603:10b6:806:233::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.28; Mon, 25 Sep
+ 2023 10:43:03 +0000
+Received: from PH8PR10MB6290.namprd10.prod.outlook.com
+ ([fe80::3ec2:5bfc:fb8e:3ff4]) by PH8PR10MB6290.namprd10.prod.outlook.com
+ ([fe80::3ec2:5bfc:fb8e:3ff4%4]) with mapi id 15.20.6813.027; Mon, 25 Sep 2023
+ 10:43:03 +0000
+Message-ID: <68411d25-c9be-da40-0d42-405654fef7b1@oracle.com>
+Date:   Mon, 25 Sep 2023 16:12:53 +0530
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH 5.4 326/367] libbpf: Free btf_vmlinux when closing
+ bpf_object
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+        patches@lists.linux.dev, Hao Luo <haoluo@google.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Vegard Nossum <vegard.nossum@oracle.com>,
+        Darren Kenny <darren.kenny@oracle.com>
+References: <20230920112858.471730572@linuxfoundation.org>
+ <20230920112906.975001366@linuxfoundation.org>
+ <e7e9df6b-d3c1-0fad-1cea-94dc74dbf281@oracle.com>
+ <2023092303-rotting-strum-1509@gregkh>
+From:   Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <2023092303-rotting-strum-1509@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TYCPR01CA0192.jpnprd01.prod.outlook.com
+ (2603:1096:400:2b0::15) To PH8PR10MB6290.namprd10.prod.outlook.com
+ (2603:10b6:510:1c1::7)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1qkiHn-000L9B-C5;;;mid=<87ttrimviu.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.168.167;;;frm=ebiederm@xmission.com;;;spf=pass
-X-XM-AID: U2FsdGVkX18w5NYq0x4TaF0i1cI2dmUlRdefiwsH+Wc=
-X-SA-Exim-Connect-IP: 68.227.168.167
-X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|SA1PR10MB5867:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9dd4d811-6337-4d67-d675-08dbbdb431a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: dvD9RFgSJ6yLAgiDynoDTWaKjROp6eFrWfRz++9tn9TJKbd4RIRd+VoFzlNGivm3p49wKW1K4gAyMrktS5tQI9jSvNkSpWt1/4eEQooN+1Oy0BvMVdStSk7gpQfRJ80OUkLOIHQ+blDy3yaYDUMtmSIYaTCmMyJ0D5B5Iz/JWZt7jvbFqjKjYRjN8jBlLVbtLz3D5c87wKsDbO8G32ERvdaNBPza6WrPz9ojXUZxZKM/kEO/xkCQyUU0NYVrVjTy8L877SDnVIgIZMP7Kc7tiGRM/77DauG8IuopNOOSDXmIqgtxPQfiIvLSAD4gli+TZvddXJdD+HU80ITbYO+PLWjA/h/6acGabxHj9H+qEgvzxWc+LjyU90AlcZxuWcqai5VA6OpmrTnwXr7ms8J4hEFjAA2HoemM6tvLgwV+oHppdBUlFdFmQnhfMv+lJmi0a1ThviY5EzoAfgj1Wx16MAGGJDWbFoPjwhz9fFtFJ1K/fM2hIfT6b+qMUu0Jr8T6ScsrsYP4vPhHMOh6BcPewpaILvc+kyn1T3qTxVGUEqUaJjfIhDGBGpxL/X4SAc7t5RTl4zDr8GkUwHMge8RBUH5Q845Py64GTq4RBcfg8/1A/jhPCMYDYBYFEjrRmU679NmtFiTJQlRPGQNR3LL0Xg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(39860400002)(376002)(136003)(346002)(396003)(230922051799003)(186009)(1800799009)(451199024)(2906002)(83380400001)(38100700002)(6512007)(66946007)(66556008)(66476007)(54906003)(966005)(53546011)(6666004)(6506007)(6486002)(26005)(5660300002)(316002)(41300700001)(6916009)(478600001)(8936002)(8676002)(4326008)(107886003)(2616005)(31696002)(86362001)(36756003)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RjloRWxwVEpyR1BnWUN2MEcxVXkzUk5QclVjSmZ2N1FlZTRkWUtGdmJqaUZB?=
+ =?utf-8?B?Q2RkS0ticnhpRmp6RVNlQkNsSjJJMk1OU3Q3Wkd2TW1KdlUrbVdSVzA4cG1S?=
+ =?utf-8?B?Z2x0R1pkaDRXQnpvNkdhRGZGUG5FSTBXWGYrNVJ2b2lTaTkyQlBLT3RiTWI0?=
+ =?utf-8?B?NFBiNTdRUnBtMGk0WElxSi9hMVk3MnhxSnZUQTVVUlBLdTIwRGp5dmdVR09p?=
+ =?utf-8?B?RTV3S1lGRmx3di9aNDYwaFRmMU1vbTI2STFGTHFtVHJ4OE5rOVZZWU45N1lq?=
+ =?utf-8?B?YmNyWUxGQUtZRTRBRXNKYlZYN21WYUhBRmVKVkRkWnJscWZ5dWt1cXFudXY5?=
+ =?utf-8?B?MGxmdmdtcE0wTDZkSitLRG0rQzJEYmkxRWt3WHVWemt5RjVOVlBjWHlxOElO?=
+ =?utf-8?B?T29VV1dUVGErTXRnSXcvMytKRnpRUG5KODVPb21RSHJFWFpKQUtmaUNMWTZa?=
+ =?utf-8?B?akwzRFhabGdzdHdZa0JvTzZZeWlxUVVsejVYNnRKQjhLeldzaWR0Sk1mMjM2?=
+ =?utf-8?B?VnI5Y3F1b1BGdkJuWkYzcGFsWnI1RzJVTnVjRllrWU9KaEVHZFJUaWdYWVcv?=
+ =?utf-8?B?WHQrd25FUTJkcFIvMUxNT1JGdWVWS3czaWVSb243QzZBUHhQdEZITHRnSi9p?=
+ =?utf-8?B?MVJtUEQrZ0VmSXFCME9rZ3E2dTJVNjZuN3NnbUR1M0dFbjRGcnZoTnRHWVgw?=
+ =?utf-8?B?SVlCVllJVVBOYWFKcTlUVVNGR3dqc0pHaVRLNVp6V3E5MjUvL0RDTTM1SndW?=
+ =?utf-8?B?akwwOW1GOHdDWkM1N1I2eVZsSWhLeFB5WnZiandsMmZnTEhzWElDQkdnSElG?=
+ =?utf-8?B?TDI0T1pjYWFWNDVZSWR0Sm5kSWdHQzg5V1dtYTBYYkg5UVVUNForTnJyRXVB?=
+ =?utf-8?B?bTd5cEV6cXI5Z0dPUlg4RVhBMnA5RG83bHRicWxyMStlTTF0bUc5OVIrZHRp?=
+ =?utf-8?B?RDlLcHp4MjFQMXpzMjFlVDlJQkVsQzk4SGZpN2gzeWFuUC9zTFRRMEVxN3FV?=
+ =?utf-8?B?WDdrclBHcEpzWE9EV0pmTFhEWXVxRlVWeUFkdk9vUWlocWtKM2Nra0xkSnVr?=
+ =?utf-8?B?TU1UYlh6Qlp2WGhCZWJFa3VIWVFsMVFBbjZscVZiajZIaHhGeVBtZ2JIOVox?=
+ =?utf-8?B?U2huWXVyUmJyMm1wZ2VDTnpvZEpndHFqc3YwL1hJcVlkanJla3NrYnNQVXJn?=
+ =?utf-8?B?SmZUMEhjZnMxMkpBQlRTUVRoQ1dCQUpNQ0dJMVpxNFNseTU5TFZYZGI0MlRI?=
+ =?utf-8?B?ZXJPaVBtMUUwcXU4aVE2NlpsNUViVDM1K015bm1ONVdBdVBMQ3lrdk55U2Z2?=
+ =?utf-8?B?bU52anFPQWVzWUhwR0F2elJrRFhDNXVUOHREc2NnaEFUVUppU21oZ0xyWWpO?=
+ =?utf-8?B?OHV2MW51WitSNmh0cDhDR1JjdklyZytiQW9zV3NzenRUQ2lUejUzUFFrbW9G?=
+ =?utf-8?B?Yk5YWWRONmY4eFpuREJpcEZXWDREZ3lSSTRRblZXL2JrMGc1RGdnU3VmTCsx?=
+ =?utf-8?B?VzdLVHVRckxNaklGVTZXeTJDVm9WWHdXdUNqazV3VDNhMFJjY09Yd0l6M1g0?=
+ =?utf-8?B?eDM1M29pOTJRUkQ1OTdwdksyVDJKOEU4aUcya1QweW1xNVByN2puRG5kVE43?=
+ =?utf-8?B?dTV5S1F4MFpaNW4rOU5CS3BEN3l4d3U4RUZzWHJ6RlQ0czBQZE10MGJDM0I5?=
+ =?utf-8?B?ZmlxdzAxTkdSbEpPc25ORzQ1aGNGWGdoZC9ZdGZrVFpNVCtadVlQOXlncXpN?=
+ =?utf-8?B?c3dHcUlxOFIySlRnQW1sT0hEbWY1ekJuUnc2ajBhRzdibGlxWU9WUDlTU24r?=
+ =?utf-8?B?aTN0MmNyTzRyakhFQ2dXMDA1ZVVXbkVuSkMvTTJ5T3FITklXK3ZpcXpybTdF?=
+ =?utf-8?B?TGFZS1ZQK0JyS2NucllqQXViVGhSOGlVM01ycFpDR0hFZlZyeFBOQyt0azRU?=
+ =?utf-8?B?b05sZHE5VnNEcGZDY3YwOWE0bC84L1hkc3YvZXorNE1xOHhZaEEvKzNmbkpu?=
+ =?utf-8?B?ejhxcWxmN1hDQ25PcjlLRUszSjVaNHh5cjFVVlFyZlNTeThFUlpoSDJLT2Vi?=
+ =?utf-8?B?eTUxcG9ENlBVZDRTcVFBbDVPSzBaU1djemJBWWxIQ1pNeW1tZkYzNFR3YktW?=
+ =?utf-8?B?M2orNGFFVGZyR094cE5lVmI1SmRXTDhhMzRlQTlzNlFQTDhDcWYzK2tZZTJC?=
+ =?utf-8?Q?aFVx6kvB6sW8Y/4xhNvRdNk=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 5SEcmFAh3XopziZUmt+bYevidJZzE9AFjt9o8jeiyVrmeMv4m6Nh1nhgITplzh4LZ1OmkagBazmT+cjzgVo+GU/bRxJfq5t/ahzVytyvfGojSilYLQNcj64+K7Z1KsnHHFJmxCaU7HDnogdDCHAwp8+8IpIjgk+fQHLOtuo7QF/nw07qfUtADTdb3mQKoQgjpJooEmAkPl4X5CkLCIMZcOWr0zJ/xjSBFuARZAF8T9dvbg3nx079kfm14W8n4Jq4QwNjC1JqL8VZH71KqwaggBS0HxF2bgH/P0sJUrRJnf63bYuPYivd2NpIoJzOwoCyGUyyfnqWR8Ksf7yN6L7N0Lr1/gYRrRyoPb8rDwZlL51yB++GL+E/MVRrfOG7N/R7kSOR/DLmYtmWVR1dbPKPGDg9iGKgOGzKGlezsI1EocCTDzUetGp1fDso096oKkdJ6/mYo4a84CO0B+5uCQx3rcgr60d7y4DyQS0iSxvtGoSC2yrtBb/G8pzYBE9kCJtnZp8e0JJmNnRFcH6L7wd48TmprrQz5T3c8U3ED4eEEBZ9b5g4swTqhV+oT9tVJ6GNf18+zDdSAUtNKJqjZy4Poi6y7SS0En5K563oQzqacCNhzOfAvhUyv+5uXeQ5PYlHpnJkmUGPtYb96ye4g1cv5PTrqtDTk9+7wpgWEhQsIWL1TfDTKYkjM10pXmPo7m4VPdNCrEcmgq3GALJT4CdYkGhUbA1RpmMVf/wiZPIZGwwy1oDbxjT/6D8veYrCdiCgfMZl/uq12cKGm8aRPBFn8OSNLtS7//QLfjlB9xIGLAjQxxmjEO+1fdeEWWA3764yC4x50AxuvUUthy8UPGQR3yXDCrK0fvqOh9n9B9sYrD0eyeWlxiuH7HIHk5Se1+O3uuZW6lMTFnFqg54r6k2tbJcyQkZiMCPmXshflFF0TWw=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9dd4d811-6337-4d67-d675-08dbbdb431a1
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2023 10:43:03.3268
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8UOScqH1IXrVgtXLSP3eV3olob8byd3KSUYchdCDe47qpt4Gu3CyTDrtuVmFdk9rh6+d8blqt3s3VPBSUkF3jg1pqjTWkRbrxFQosZ4yeWZEguhdJ+tA0IkD93DjY+9J
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB5867
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-25_07,2023-09-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
+ suspectscore=0 adultscore=0 phishscore=0 mlxscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309250078
+X-Proofpoint-GUID: N7XytusF2_jT1jtT1AnqBwftur7Jfili
+X-Proofpoint-ORIG-GUID: N7XytusF2_jT1jtT1AnqBwftur7Jfili
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: *;Sebastian Ott <sebott@redhat.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 615 ms - load_scoreonly_sql: 0.07 (0.0%),
-        signal_user_changed: 10 (1.7%), b_tie_ro: 9 (1.4%), parse: 1.36 (0.2%),
-         extract_message_metadata: 6 (0.9%), get_uri_detail_list: 3.0 (0.5%),
-        tests_pri_-2000: 3.7 (0.6%), tests_pri_-1000: 3.0 (0.5%),
-        tests_pri_-950: 1.36 (0.2%), tests_pri_-900: 1.10 (0.2%),
-        tests_pri_-200: 0.97 (0.2%), tests_pri_-100: 4.8 (0.8%),
-        tests_pri_-90: 76 (12.3%), check_bayes: 74 (12.0%), b_tokenize: 12
-        (1.9%), b_tok_get_all: 12 (2.0%), b_comp_prob: 4.1 (0.7%),
-        b_tok_touch_all: 40 (6.6%), b_finish: 1.15 (0.2%), tests_pri_0: 455
-        (74.0%), check_dkim_signature: 0.99 (0.2%), check_dkim_adsp: 4.0
-        (0.6%), poll_dns_idle: 1.02 (0.2%), tests_pri_10: 3.3 (0.5%),
-        tests_pri_500: 38 (6.2%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH RFC] binfmt_elf: fully allocate bss pages
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Sebastian Ott <sebott@redhat.com> writes:
+Hi Greg,
 
-> On Sun, 24 Sep 2023, Eric W. Biederman wrote:
->> Sebastian Ott <sebott@redhat.com> writes:
+On 23/09/23 1:55 pm, Greg Kroah-Hartman wrote:
+> On Wed, Sep 20, 2023 at 06:58:45PM +0530, Harshit Mogalapalli wrote:
+>> Hi Greg,
 >>
->>> Hej,
+>> On 20/09/23 5:01 pm, Greg Kroah-Hartman wrote:
+>>> 5.4-stable review patch.  If anyone has any objections, please let me know.
 >>>
->>> since we figured that the proposed patch is not going to work I've spent a
->>> couple more hours looking at this (some static binaries on arm64 segfault
->>> during load [0]). The segfault happens because of a failed clear_user()
->>> call in load_elf_binary(). The address we try to write zeros to is mapped with
->>> correct permissions.
+>>> ------------------
 >>>
->>> After some experiments I've noticed that writing to anonymous mappings work
->>> fine and all the error cases happend on file backed VMAs. Debugging showed that
->>> in elf_map() we call vm_mmap() with a file offset of 15 pages - for a binary
->>> that's less than 1KiB in size.
+>>> From: Hao Luo <haoluo@google.com>
 >>>
->>> Looking at the ELF headers again that 15 pages offset originates from the offset
->>> of the 2nd segment - so, I guess the loader did as instructed and that binary is
->>> just too nasty?
+>>> [ Upstream commit 29d67fdebc42af6466d1909c60fdd1ef4f3e5240 ]
 >>>
->>> Program Headers:
->>>   Type           Offset             VirtAddr           PhysAddr
->>>                  FileSiz            MemSiz              Flags  Align
->>>   LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
->>>                  0x0000000000000178 0x0000000000000178  R E    0x10000
->>>   LOAD           0x000000000000ffe8 0x000000000041ffe8 0x000000000041ffe8
->>>                  0x0000000000000000 0x0000000000000008  RW     0x10000
->>>   NOTE           0x0000000000000120 0x0000000000400120 0x0000000000400120
->>>                  0x0000000000000024 0x0000000000000024  R      0x4
->>>   GNU_STACK      0x0000000000000000 0x0000000000000000 0x0000000000000000
->>>                  0x0000000000000000 0x0000000000000000  RW     0x10
+>>> I hit a memory leak when testing bpf_program__set_attach_target().
+>>> Basically, set_attach_target() may allocate btf_vmlinux, for example,
+>>> when setting attach target for bpf_iter programs. But btf_vmlinux
+>>> is freed only in bpf_object_load(), which means if we only open
+>>> bpf object but not load it, setting attach target may leak
+>>> btf_vmlinux.
 >>>
->>> As an additional test I've added a bunch of zeros at the end of that binary
->>> so that the offset is within that file and it did load just fine.
+>>> So let's free btf_vmlinux in bpf_object__close() anyway.
 >>>
->>> On the other hand there is this section header:
->>>   [ 4] .bss              NOBITS           000000000041ffe8  0000ffe8
->>>        0000000000000008  0000000000000000  WA       0     0     1
+>>> Signed-off-by: Hao Luo <haoluo@google.com>
+>>> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+>>> Link: https://lore.kernel.org/bpf/20230822193840.1509809-1-haoluo@google.com
+>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>> ---
+>>>    tools/lib/bpf/libbpf.c | 1 +
+>>>    1 file changed, 1 insertion(+)
 >>>
->>> "sh_offset
->>> This member's value gives the byte offset from the beginning of the file to
->>> the first byte in the section. One section type, SHT_NOBITS described
->>> below, occupies no space in the file, and its sh_offset member locates
->>> the conceptual placement in the file.
->>> "
->>>
->>> So, still not sure what to do here..
->>>
->>> Sebastian
->>>
->>> [0] https://lore.kernel.org/lkml/5d49767a-fbdc-fbe7-5fb2-d99ece3168cb@redhat.com/
+>>> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+>>> index b8849812449c3..343018632d2d1 100644
+>>> --- a/tools/lib/bpf/libbpf.c
+>>> +++ b/tools/lib/bpf/libbpf.c
+>>> @@ -4202,6 +4202,7 @@ void bpf_object__close(struct bpf_object *obj)
+>>>    	bpf_object__elf_finish(obj);
+>>>    	bpf_object__unload(obj);
+>>>    	btf__free(obj->btf);
+>>> +	btf__free(obj->btf_vmlinux);
 >>
->> I think that .bss section that is being generated is atrocious.
 >>
->> At the same time I looked at what the linux elf loader is trying to do,
->> and the elf loader's handling of program segments with memsz > filesz
->> has serious remnants a.out of programs allocating memory with the brk
->> syscall.
+>> This patch introduces a build failure.
 >>
->> Lots of the structure looks like it started with the assumption that
->> there would only be a single program header with memsz > filesz the way
->> and that was the .bss.   The way things were in the a.out days and
->> handling of other cases has been debugged in later.
+>> libbpf.c: In function 'bpf_object__close':
+>> libbpf.c:4205:22: error: 'struct bpf_object' has no member named
+>> 'btf_vmlinux'
+>>   4205 |         btf__free(obj->btf_vmlinux);
+>>        |                      ^~
 >>
->> So I have modified elf_map to always return successfully when there is
->> a zero filesz in the program header for an elf segment.
+>> This struct member "btf_vmlinux" is added in commit a6ed02cac690 ("libbpf:
+>> Load btf_vmlinux only once per object.") which is not in 5.4.y
 >>
->> Then I have factored out a function clear_tail that ensures the zero
->> padding for an entire elf segment is present.
->>
->> Please test this and see if it causes your test case to work.
->
-> Sadly, that causes issues for other programs:
+>> So I think we should drop this patch.
+> 
+> Now dropped, thanks.
+> 
 
-Bah.  Too much cleanup at once.
+I have tested kernel(5.4.257 final release) where the offending patches 
+are dropped. No regressions seen there.
 
-I will respin.
 
-> [   44.164596] Run /init as init process
-> [   44.168763] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
-> [   44.176409] CPU: 32 PID: 1 Comm: init Not tainted 6.6.0-rc2+ #89
-> [   44.182404] Hardware name: GIGABYTE R181-T92-00/MT91-FS4-00, BIOS F34 08/13/2020
-> [   44.189786] Call trace:
-> [   44.192220]  dump_backtrace+0xa4/0x130
-> [   44.195961]  show_stack+0x20/0x38
-> [   44.199264]  dump_stack_lvl+0x48/0x60
-> [   44.202917]  dump_stack+0x18/0x28
-> [   44.206219]  panic+0x2e0/0x350
-> [   44.209264]  do_exit+0x370/0x390
-> [   44.212481]  do_group_exit+0x3c/0xa0
-> [   44.216044]  get_signal+0x800/0x808
-> [   44.219521]  do_signal+0xfc/0x200
-> [   44.222824]  do_notify_resume+0xc8/0x418
-> [   44.226734]  el0_da+0x114/0x120
-> [   44.229866]  el0t_64_sync_handler+0xb8/0x130
-> [   44.234124]  el0t_64_sync+0x194/0x198
-> [   44.237776] SMP: stopping secondary CPUs
-> [   44.241740] Kernel Offset: disabled
-> [   44.245215] CPU features: 0x03000000,14028142,10004203
-> [   44.250342] Memory Limit: none
-> [   44.253383] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
+Thanks,
+Harshit
 
-Eric
+> greg k-h
