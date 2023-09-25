@@ -2,253 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6243A7ADC50
-	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 17:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E363E7ADD92
+	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 19:06:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233302AbjIYPub (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 25 Sep 2023 11:50:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36402 "EHLO
+        id S229437AbjIYRGK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 25 Sep 2023 13:06:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233360AbjIYPuH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 11:50:07 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03341170B;
-        Mon, 25 Sep 2023 08:49:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE4DC433C7;
-        Mon, 25 Sep 2023 15:49:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1695656950;
-        bh=IWDxADjN+CDjumKsmEAlHuhxqGj5ny/iHUM/VMgmpiQ=;
-        h=Date:To:From:Subject:From;
-        b=cPemGvifFy5c4hWz4Ip0hc3dxbXNYQjbKkhGLBPcljSfv2hLPxVPXGdFW60blufTD
-         Pi1Wnf+Z5sDvo081T0jZJCKgwnPPbRdj1AXf9FahC2c0HbHkrYnE4dz6NyqJGlwrMd
-         AoakRFOHToVbVXbBcSv15QuVqyNCOyqGzc9aFS/U=
-Date:   Mon, 25 Sep 2023 08:49:09 -0700
-To:     mm-commits@vger.kernel.org, willy@infradead.org, vbabka@suse.cz,
-        surenb@google.com, stable@vger.kernel.org, rientjes@google.com,
-        osalvador@suse.de, mhocko@suse.com, kirill@shutemov.name,
-        hughd@google.com, aquini@redhat.com, yang@os.amperecomputing.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-mempolicy-keep-vma-walk-if-both-mpol_mf_strict-and-mpol_mf_move-are-specified.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230925154910.7EE4DC433C7@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232402AbjIYRGJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 13:06:09 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52F2610E
+        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 10:06:03 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1c3d8fb23d9so46089315ad.0
+        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 10:06:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1695661563; x=1696266363; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=d5xMja9yFkheQHqE/iXRfDYgX6Arhzs6tk3qD/XhCzk=;
+        b=lmbPPhmzMhFZBmbhpZJM7/G3wWI2zHz4tWe06inVvBywhiINdVthCsbUCMVLMEM0y9
+         KTwwfucFgIlW+09Mfrv8iqdCPrD5Ksk+M+OF3Mi/PcTEeIdn06v8RoEAQchPHslLD/Xx
+         VURoXtTCmhjGe07NtZRrmeYLbM9ZRunrqG7zs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695661563; x=1696266363;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d5xMja9yFkheQHqE/iXRfDYgX6Arhzs6tk3qD/XhCzk=;
+        b=Q89/+Mcx2VViokBTAWVC4a/6AUySDUEykMPIWaBBE2iYEA0KmG5YOkMo/W8Ejuwc5c
+         kLRZ8aPLaMcxtOKy8Xuxbgrjh+B+SAjFc+CHvHNbdu57rBqV2X7EssOziC46C9jvQzAp
+         HvZY3+5JyrNeS9z9rVxLJMJ614rVngPgcnp0W20D1ctiE0jYIBN+4AEikLLW3U/rWpIL
+         zxzY4SFuz205memNeyBFEtB0bhBWoPqBQ8eHl/dQC+NJrbAxAnXrVpDZjU3mZwjJjtKM
+         Xl7Y8SZNucbCvEU2jI5Z4FnPTkfy9DDpkxRPXFkLlV9EKMoGfyCYTqAQFBED1mpyuIDy
+         COTg==
+X-Gm-Message-State: AOJu0Yzp1flQwnufzhvaFyvbRVYP/0fY6wHBwGUPt5qkXBwHy9cj9fv/
+        Oqnedb8RN/13KZ5rYa6qT1dZnA==
+X-Google-Smtp-Source: AGHT+IHpX/s355Isj57+S+omPh8sCxTjLdauW2heADkSvyIbh1n4SyJZJ9E+Cl2v/svT8YApVibwpg==
+X-Received: by 2002:a17:902:934a:b0:1bc:10cf:50d8 with SMTP id g10-20020a170902934a00b001bc10cf50d8mr4663367plp.23.1695661562783;
+        Mon, 25 Sep 2023 10:06:02 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id d2-20020a170902cec200b001c5fc11c085sm5222785plg.264.2023.09.25.10.06.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Sep 2023 10:06:02 -0700 (PDT)
+Date:   Mon, 25 Sep 2023 10:06:01 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Sebastian Ott <sebott@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Pedro Falcato <pedro.falcato@gmail.com>
+Cc:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
+        sam@gentoo.org, Rich Felker <dalias@libc.org>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] binfmt_elf: Support segments with 0 filesz and
+ misaligned starts
+Message-ID: <202309251001.C050864@keescook>
+References: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net>
+ <36e93c8e-4384-b269-be78-479ccc7817b1@redhat.com>
+ <87zg1bm5xo.fsf@email.froward.int.ebiederm.org>
+ <37d3392c-cf33-20a6-b5c9-8b3fb8142658@redhat.com>
+ <87jzsemmsd.fsf_-_@email.froward.int.ebiederm.org>
+ <84e974d3-ae0d-9eb5-49b2-3348b7dcd336@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <84e974d3-ae0d-9eb5-49b2-3348b7dcd336@redhat.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, Sep 25, 2023 at 05:27:12PM +0200, Sebastian Ott wrote:
+> On Mon, 25 Sep 2023, Eric W. Biederman wrote:
+> > 
+> > Implement a helper elf_load that wraps elf_map and performs all
+> > of the necessary work to ensure that when "memsz > filesz"
+> > the bytes described by "memsz > filesz" are zeroed.
+> > 
+> > Link: https://lkml.kernel.org/r/20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net
+> > Reported-by: Sebastian Ott <sebott@redhat.com>
+> > Reported-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+> > Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
+> > ---
+> > fs/binfmt_elf.c | 111 +++++++++++++++++++++---------------------------
+> > 1 file changed, 48 insertions(+), 63 deletions(-)
+> > 
+> > Can you please test this one?
 
-The patch titled
-     Subject: mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and MPOL_MF_MOVE are specified
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-mempolicy-keep-vma-walk-if-both-mpol_mf_strict-and-mpol_mf_move-are-specified.patch
+Eric thanks for doing this refactoring! This does look similar to the
+earlier attempt:
+https://lore.kernel.org/lkml/20221106021657.1145519-1-pedro.falcato@gmail.com/
+and it's a bit easier to review.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mempolicy-keep-vma-walk-if-both-mpol_mf_strict-and-mpol_mf_move-are-specified.patch
+> That one did the trick! The arm box booted successful, ran the binaries
+> that were used for the repo of this issue, and ran the nolibc compiled
+> binaries from kselftests that initially triggered the loader issues.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Thanks for testing! I need to dig out the other "weird" binaries (like
+the mentioned ppc32 case) and see if I can get those tested too.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Pedro, are you able to test ppc64le musl libc with this patch too?
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+-Kees
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Yang Shi <yang@os.amperecomputing.com>
-Subject: mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and MPOL_MF_MOVE are specified
-Date: Wed, 20 Sep 2023 15:32:42 -0700
-
-When calling mbind() with MPOL_MF_{MOVE|MOVEALL} | MPOL_MF_STRICT, kernel
-should attempt to migrate all existing pages, and return -EIO if there is
-misplaced or unmovable page.  Then commit 6f4576e3687b ("mempolicy: apply
-page table walker on queue_pages_range()") messed up the return value and
-didn't break VMA scan early ianymore when MPOL_MF_STRICT alone.  The
-return value problem was fixed by commit a7f40cfe3b7a ("mm: mempolicy:
-make mbind() return -EIO when MPOL_MF_STRICT is specified"), but it broke
-the VMA walk early if unmovable page is met, it may cause some pages are
-not migrated as expected.
-
-The code should conceptually do:
-
- if (MPOL_MF_MOVE|MOVEALL)
-     scan all vmas
-     try to migrate the existing pages
-     return success
- else if (MPOL_MF_MOVE* | MPOL_MF_STRICT)
-     scan all vmas
-     try to migrate the existing pages
-     return -EIO if unmovable or migration failed
- else /* MPOL_MF_STRICT alone */
-     break early if meets unmovable and don't call mbind_range() at all
- else /* none of those flags */
-     check the ranges in test_walk, EFAULT without mbind_range() if discontig.
-
-Fixed the behavior.
-
-Link: https://lkml.kernel.org/r/20230920223242.3425775-1-yang@os.amperecomputing.com
-Fixes: a7f40cfe3b7a ("mm: mempolicy: make mbind() return -EIO when MPOL_MF_STRICT is specified")
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Rafael Aquini <aquini@redhat.com>
-Cc: Kirill A. Shutemov <kirill@shutemov.name>
-Cc: David Rientjes <rientjes@google.com>
-Cc: <stable@vger.kernel.org>	[4.9+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/mempolicy.c |   39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
-
---- a/mm/mempolicy.c~mm-mempolicy-keep-vma-walk-if-both-mpol_mf_strict-and-mpol_mf_move-are-specified
-+++ a/mm/mempolicy.c
-@@ -426,6 +426,7 @@ struct queue_pages {
- 	unsigned long start;
- 	unsigned long end;
- 	struct vm_area_struct *first;
-+	bool has_unmovable;
- };
- 
- /*
-@@ -446,9 +447,8 @@ static inline bool queue_folio_required(
- /*
-  * queue_folios_pmd() has three possible return values:
-  * 0 - folios are placed on the right node or queued successfully, or
-- *     special page is met, i.e. huge zero page.
-- * 1 - there is unmovable folio, and MPOL_MF_MOVE* & MPOL_MF_STRICT were
-- *     specified.
-+ *     special page is met, i.e. zero page, or unmovable page is found
-+ *     but continue walking (indicated by queue_pages.has_unmovable).
-  * -EIO - is migration entry or only MPOL_MF_STRICT was specified and an
-  *        existing folio was already on a node that does not follow the
-  *        policy.
-@@ -479,7 +479,7 @@ static int queue_folios_pmd(pmd_t *pmd,
- 	if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)) {
- 		if (!vma_migratable(walk->vma) ||
- 		    migrate_folio_add(folio, qp->pagelist, flags)) {
--			ret = 1;
-+			qp->has_unmovable = true;
- 			goto unlock;
- 		}
- 	} else
-@@ -495,9 +495,8 @@ unlock:
-  *
-  * queue_folios_pte_range() has three possible return values:
-  * 0 - folios are placed on the right node or queued successfully, or
-- *     special page is met, i.e. zero page.
-- * 1 - there is unmovable folio, and MPOL_MF_MOVE* & MPOL_MF_STRICT were
-- *     specified.
-+ *     special page is met, i.e. zero page, or unmovable page is found
-+ *     but continue walking (indicated by queue_pages.has_unmovable).
-  * -EIO - only MPOL_MF_STRICT was specified and an existing folio was already
-  *        on a node that does not follow the policy.
-  */
-@@ -508,7 +507,6 @@ static int queue_folios_pte_range(pmd_t
- 	struct folio *folio;
- 	struct queue_pages *qp = walk->private;
- 	unsigned long flags = qp->flags;
--	bool has_unmovable = false;
- 	pte_t *pte, *mapped_pte;
- 	pte_t ptent;
- 	spinlock_t *ptl;
-@@ -538,11 +536,12 @@ static int queue_folios_pte_range(pmd_t
- 		if (!queue_folio_required(folio, qp))
- 			continue;
- 		if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)) {
--			/* MPOL_MF_STRICT must be specified if we get here */
--			if (!vma_migratable(vma)) {
--				has_unmovable = true;
--				break;
--			}
-+			/*
-+			 * MPOL_MF_STRICT must be specified if we get here.
-+			 * Continue walking vmas due to MPOL_MF_MOVE* flags.
-+			 */
-+			if (!vma_migratable(vma))
-+				qp->has_unmovable = true;
- 
- 			/*
- 			 * Do not abort immediately since there may be
-@@ -550,16 +549,13 @@ static int queue_folios_pte_range(pmd_t
- 			 * need migrate other LRU pages.
- 			 */
- 			if (migrate_folio_add(folio, qp->pagelist, flags))
--				has_unmovable = true;
-+				qp->has_unmovable = true;
- 		} else
- 			break;
- 	}
- 	pte_unmap_unlock(mapped_pte, ptl);
- 	cond_resched();
- 
--	if (has_unmovable)
--		return 1;
--
- 	return addr != end ? -EIO : 0;
- }
- 
-@@ -599,7 +595,7 @@ static int queue_folios_hugetlb(pte_t *p
- 		 * Detecting misplaced folio but allow migrating folios which
- 		 * have been queued.
- 		 */
--		ret = 1;
-+		qp->has_unmovable = true;
- 		goto unlock;
- 	}
- 
-@@ -620,7 +616,7 @@ static int queue_folios_hugetlb(pte_t *p
- 			 * Failed to isolate folio but allow migrating pages
- 			 * which have been queued.
- 			 */
--			ret = 1;
-+			qp->has_unmovable = true;
- 	}
- unlock:
- 	spin_unlock(ptl);
-@@ -756,12 +752,15 @@ queue_pages_range(struct mm_struct *mm,
- 		.start = start,
- 		.end = end,
- 		.first = NULL,
-+		.has_unmovable = false,
- 	};
- 	const struct mm_walk_ops *ops = lock_vma ?
- 			&queue_pages_lock_vma_walk_ops : &queue_pages_walk_ops;
- 
- 	err = walk_page_range(mm, start, end, ops, &qp);
- 
-+	if (qp.has_unmovable)
-+		err = 1;
- 	if (!qp.first)
- 		/* whole range in hole */
- 		err = -EFAULT;
-@@ -1361,7 +1360,7 @@ static long do_mbind(unsigned long start
- 				putback_movable_pages(&pagelist);
- 		}
- 
--		if ((ret > 0) || (nr_failed && (flags & MPOL_MF_STRICT)))
-+		if (((ret > 0) || nr_failed) && (flags & MPOL_MF_STRICT))
- 			err = -EIO;
- 	} else {
- up_out:
-_
-
-Patches currently in -mm which might be from yang@os.amperecomputing.com are
-
-mm-mempolicy-keep-vma-walk-if-both-mpol_mf_strict-and-mpol_mf_move-are-specified.patch
-
+-- 
+Kees Cook
