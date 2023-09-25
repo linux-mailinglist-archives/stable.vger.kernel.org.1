@@ -2,129 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC0F67AD89A
-	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 15:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CAC77AD898
+	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 15:07:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231565AbjIYNIB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 25 Sep 2023 09:08:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36588 "EHLO
+        id S231535AbjIYNHh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 25 Sep 2023 09:07:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231506AbjIYNH6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 09:07:58 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94AC19F;
-        Mon, 25 Sep 2023 06:07:51 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id BC9B52184B;
-        Mon, 25 Sep 2023 13:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1695647269;
-        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-         cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=uogSkl/Z/WJ9T6hoo/bSUzNSf4lFK3ehh10RUHSsUbk=;
-        b=WuWEKx9uZNgebRn1eXtir9EL0GP9mnPuaumM2XM5cW+RLX12hK6xegeqM1q2kkX83OB7jJ
-        u3dUveWRAftHa6zIdyE+ykmq0sqYx1hq3we3sJ3jnrR8RocOEC6cp9olX+gwdnSgMX/IMn
-        /DTfy8hKpQJPCzfF8tEmTcH481J21jA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1695647269;
-        h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-         cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=uogSkl/Z/WJ9T6hoo/bSUzNSf4lFK3ehh10RUHSsUbk=;
-        b=dZm2wZEDU14MGy4UEhTV0Ga3DgrWFnu/B+ar28xBiul6F1kx4A8yuuBn8jC5n7B5ztwP5b
-        oOqWTQwozvJo8ZBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 75B4313580;
-        Mon, 25 Sep 2023 13:07:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id H8xEGyWGEWU6BAAAMHmgww
-        (envelope-from <dsterba@suse.cz>); Mon, 25 Sep 2023 13:07:49 +0000
-Date:   Mon, 25 Sep 2023 15:01:12 +0200
-From:   David Sterba <dsterba@suse.cz>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Josef Bacik <josef@toxicpanda.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>, clm@fb.com,
-        linux-btrfs@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.5 13/41] btrfs: do not block starts waiting on
- previous transaction commit
-Message-ID: <20230925130112.GK13697@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <20230924131529.1275335-1-sashal@kernel.org>
- <20230924131529.1275335-13-sashal@kernel.org>
+        with ESMTP id S231487AbjIYNHh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 09:07:37 -0400
+Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A11D9F
+        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 06:07:31 -0700 (PDT)
+Received: from in02.mta.xmission.com ([166.70.13.52]:53354)
+        by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1qklJB-000p2h-Lt; Mon, 25 Sep 2023 07:07:29 -0600
+Received: from ip68-227-168-167.om.om.cox.net ([68.227.168.167]:47200 helo=email.froward.int.ebiederm.org.xmission.com)
+        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1qklJA-008TT1-Ig; Mon, 25 Sep 2023 07:07:29 -0600
+From:   "Eric W. Biederman" <ebiederm@xmission.com>
+To:     kernel test robot <lkp@intel.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+References: <ZRGEZcVhvI2YKx2/@845c4ce01481>
+Date:   Mon, 25 Sep 2023 08:07:21 -0500
+In-Reply-To: <ZRGEZcVhvI2YKx2/@845c4ce01481> (kernel test robot's message of
+        "Mon, 25 Sep 2023 21:00:21 +0800")
+Message-ID: <87a5tammeu.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230924131529.1275335-13-sashal@kernel.org>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-XM-SPF: eid=1qklJA-008TT1-Ig;;;mid=<87a5tammeu.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.168.167;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX1/5pqfAVKwh7eCQGzbtGPJyQrycv0htxxw=
+X-SA-Exim-Connect-IP: 68.227.168.167
+X-SA-Exim-Mail-From: ebiederm@xmission.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: *;kernel test robot <lkp@intel.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 523 ms - load_scoreonly_sql: 0.05 (0.0%),
+        signal_user_changed: 12 (2.2%), b_tie_ro: 10 (2.0%), parse: 1.09
+        (0.2%), extract_message_metadata: 18 (3.5%), get_uri_detail_list: 2.2
+        (0.4%), tests_pri_-2000: 15 (2.9%), tests_pri_-1000: 3.4 (0.6%),
+        tests_pri_-950: 1.77 (0.3%), tests_pri_-900: 1.46 (0.3%),
+        tests_pri_-200: 1.24 (0.2%), tests_pri_-100: 14 (2.7%), tests_pri_-90:
+        230 (44.0%), check_bayes: 218 (41.6%), b_tokenize: 9 (1.7%),
+        b_tok_get_all: 6 (1.1%), b_comp_prob: 2.7 (0.5%), b_tok_touch_all: 196
+        (37.5%), b_finish: 1.03 (0.2%), tests_pri_0: 161 (30.7%),
+        check_dkim_signature: 0.48 (0.1%), check_dkim_adsp: 2.9 (0.6%),
+        poll_dns_idle: 0.37 (0.1%), tests_pri_10: 3.1 (0.6%), tests_pri_500:
+        57 (10.8%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH] binfmt_elf: Support segments with 0 filesz and
+ misaligned starts
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Sep 24, 2023 at 09:15:01AM -0400, Sasha Levin wrote:
-> From: Josef Bacik <josef@toxicpanda.com>
-> 
-> [ Upstream commit 77d20c685b6baeb942606a93ed861c191381b73e ]
-> 
-> Internally I got a report of very long stalls on normal operations like
-> creating a new file when auto relocation was running.  The reporter used
-> the 'bpf offcputime' tracer to show that we would get stuck in
-> start_transaction for 5 to 30 seconds, and were always being woken up by
-> the transaction commit.
-> 
-> Using my timing-everything script, which times how long a function takes
-> and what percentage of that total time is taken up by its children, I
-> saw several traces like this
-> 
-> 1083 took 32812902424 ns
->         29929002926 ns 91.2110% wait_for_commit_duration
->         25568 ns 7.7920e-05% commit_fs_roots_duration
->         1007751 ns 0.00307% commit_cowonly_roots_duration
->         446855602 ns 1.36182% btrfs_run_delayed_refs_duration
->         271980 ns 0.00082% btrfs_run_delayed_items_duration
->         2008 ns 6.1195e-06% btrfs_apply_pending_changes_duration
->         9656 ns 2.9427e-05% switch_commit_roots_duration
->         1598 ns 4.8700e-06% btrfs_commit_device_sizes_duration
->         4314 ns 1.3147e-05% btrfs_free_log_root_tree_duration
-> 
-> Here I was only tracing functions that happen where we are between
-> START_COMMIT and UNBLOCKED in order to see what would be keeping us
-> blocked for so long.  The wait_for_commit() we do is where we wait for a
-> previous transaction that hasn't completed it's commit.  This can
-> include all of the unpin work and other cleanups, which tends to be the
-> longest part of our transaction commit.
-> 
-> There is no reason we should be blocking new things from entering the
-> transaction at this point, it just adds to random latency spikes for no
-> reason.
-> 
-> Fix this by adding a PREP stage.  This allows us to properly deal with
-> multiple committers coming in at the same time, we retain the behavior
-> that the winner waits on the previous transaction and the losers all
-> wait for this transaction commit to occur.  Nothing else is blocked
-> during the PREP stage, and then once the wait is complete we switch to
-> COMMIT_START and all of the same behavior as before is maintained.
-> 
-> Reviewed-by: Filipe Manana <fdmanana@suse.com>
-> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-> Reviewed-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+kernel test robot <lkp@intel.com> writes:
 
-Please postpone adding this patch to stable trees until 6.6 is
-released. Thanks.
+> Hi,
+>
+> Thanks for your patch.
+>
+> FYI: kernel test robot notices the stable kernel rule is not satisfied.
+>
+> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html/#option-1
+>
+> Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+> Subject: [PATCH] binfmt_elf: Support segments with 0 filesz and misaligned starts
+> Link: https://lore.kernel.org/stable/87jzsemmsd.fsf_-_%40email.froward.int.ebiederm.org
+
+My apologies kernel test robot I had realized stable was cc'd on this
+conversation.
+
+This patch as is, is most definitely not stable fodder.  Maybe after
+being tested.  It is definitely not a regression fix, and I am not
+certain even after being tested it could be considered a fix rather than
+just a new feature. AKA "Support very weird compiler generated
+exectuables".
+
+Eric
