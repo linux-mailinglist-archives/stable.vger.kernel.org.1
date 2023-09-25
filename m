@@ -2,148 +2,179 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08D937AD356
-	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 10:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 927A07AD467
+	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 11:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232828AbjIYIaI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 25 Sep 2023 04:30:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57812 "EHLO
+        id S231712AbjIYJVw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 25 Sep 2023 05:21:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232813AbjIYIaH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 04:30:07 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0EAEFC;
-        Mon, 25 Sep 2023 01:30:00 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38P4xcYp021373;
-        Mon, 25 Sep 2023 08:29:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : date :
- subject : mime-version : content-type : content-transfer-encoding :
- message-id : to : cc; s=qcppdkim1;
- bh=N6aWaUoYHhym6q1tyn3LRmP8Pw+KrkZCZ9h7duFCjWQ=;
- b=G2K8JSbZKrXqt8LmueIDfwFRL2BihQ62XglnhIjR/sHcIxiB++nf+RcArHxgnDq+bOBE
- 2Zert5qIV7iwRFdY0RrfWln5EOWb5xgwiIOT50QMrxbDy8OA/7QSnwoF234ClBDEWbcb
- C1hkwkvCo4RCUgHjeZmeLieHe9DUCZpEqD8qIlAeh374NaT2lCpsO8twAbJZkvu1/NPx
- TDBTFyFE7RZNa7a3FPvu/jHfclmTj/5l5ODizsyTE3ZIys/gpaq1ER/KlMySyhq5LRBA
- oKD4XShoWtV3kpOE2tmEed1Tljq0Zb+Z7QH1YsZuYGhcjemElHJpLsKE0xY8ZlovpR+t pA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tb3hfrnf6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 25 Sep 2023 08:29:54 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38P8TXa5012793
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 25 Sep 2023 08:29:33 GMT
-Received: from hu-kathirav-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Mon, 25 Sep 2023 01:29:31 -0700
-From:   Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Date:   Mon, 25 Sep 2023 13:59:22 +0530
-Subject: [PATCH v3] firmware: qcom_scm: use 64-bit calling convention only
- when client is 64-bit
+        with ESMTP id S230429AbjIYJVu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 05:21:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 061C4D3
+        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 02:20:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695633658;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Vs+s8MbEdlPjqhnrrm1uH19re0iD33TvngqTvSoravg=;
+        b=Ofmj+5kHudaoG3Db4SBK+rf1qoes8QbnjAZeSD7XqkEK4lDulyZeC1yNyFD+BfiEa60YYA
+        WaHcxuZbye2z+UPfIyMt40MBeb9RrDxLBhYXzwAlmwhLgTsbRd+bvgbm1Ywb88JpqG81fI
+        WroLiHHt3tomBAVind+KtNLARHFGPeQ=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-384-GXvvPq4zNhKqAv6a3QuaEw-1; Mon, 25 Sep 2023 05:20:56 -0400
+X-MC-Unique: GXvvPq4zNhKqAv6a3QuaEw-1
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-773ed3bb708so1125457385a.2
+        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 02:20:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695633655; x=1696238455;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Vs+s8MbEdlPjqhnrrm1uH19re0iD33TvngqTvSoravg=;
+        b=vPIfJzCHfhdEFHVLxSUMn0wugez7aMB7/jsnoq/hvf+5xA0JWKYWA81tb6MlJlP+rz
+         VXIjPnr2KNjBGs63yjZQxa1k3XdgmX0VOvu9Ci6RUnmTLSP2H6NYD66Zk+A85t60Mf5f
+         MHLZlL+UwNpxj3Bp8jJIKynaBet63SFdLzwlIfg8CuijOhOwdmEfyPCVTcV4R6qZvsU0
+         mVJ5T+L3MPSL3lvMbKOPMICfS7Rr88TxUEwP21938P4203oY/CYU9tve7WPeuwbwQA1m
+         KAwQQqPmxwP81Qcg3QVNSPaEMYE9Em2YGYhPjFxh10YZoHHe9AfY2yaUQwthn/TmreTZ
+         aoog==
+X-Gm-Message-State: AOJu0Ywz39IdaSih2PJGnCY+KUBFqvwq4iYcICUlc6PSh+Eb3EDi1dfW
+        I8DRWMzIPd0sqDsH3BDAvg/cc94mB36pGWchNZpWYNf0Ix3TYDIKtXDfaZ5VH9lSHNA36daj3RU
+        KmnQ6ldMF3Ka+Nc0G
+X-Received: by 2002:a05:620a:2988:b0:774:2e8a:ccc6 with SMTP id r8-20020a05620a298800b007742e8accc6mr3902482qkp.32.1695633655389;
+        Mon, 25 Sep 2023 02:20:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMfVG4q5k9ZPvMkbAHXmeCcChQBeS4lTv+/XiDIhQ/90pemlHQA/z1amKfCLJr6ZjuCedpAg==
+X-Received: by 2002:a05:620a:2988:b0:774:2e8a:ccc6 with SMTP id r8-20020a05620a298800b007742e8accc6mr3902467qkp.32.1695633655100;
+        Mon, 25 Sep 2023 02:20:55 -0700 (PDT)
+Received: from rh (p200300c93f1ec600a890fb4d684902d4.dip0.t-ipconnect.de. [2003:c9:3f1e:c600:a890:fb4d:6849:2d4])
+        by smtp.gmail.com with ESMTPSA id vr10-20020a05620a55aa00b0076ef7810f27sm3633710qkn.58.2023.09.25.02.20.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Sep 2023 02:20:54 -0700 (PDT)
+Date:   Mon, 25 Sep 2023 11:20:51 +0200 (CEST)
+From:   Sebastian Ott <sebott@redhat.com>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+cc:     =?ISO-8859-15?Q?Thomas_Wei=DFschuh?= <linux@weissschuh.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RFC] binfmt_elf: fully allocate bss pages
+In-Reply-To: <87zg1bm5xo.fsf@email.froward.int.ebiederm.org>
+Message-ID: <37d3392c-cf33-20a6-b5c9-8b3fb8142658@redhat.com>
+References: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net> <36e93c8e-4384-b269-be78-479ccc7817b1@redhat.com> <87zg1bm5xo.fsf@email.froward.int.ebiederm.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20230925-scm-v3-1-8790dff6a749@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAOFEEWUC/0XMQQ6CMBCF4auQri0ppYXgynsYY8ow2IlpwSkSE
- 8LdLW5cfnkv/yYSMmES52ITjCslmmJGfSoEeBcfKGnIFlrpWnXaygRBDo2GBoaqM20v8rN3CWX
- PLoI/vsGlBfkYZsaRPr/89ZY98hTk4hndP9qoVhlbG1tqq0wnK/l6E9yfbvHEbr0cogglTEHs+
- xcEWzrysQAAAA==
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Elliot Berman <quic_eberman@quicinc.com>
-CC:     <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>,
-        Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1695630571; l=2034;
- i=quic_kathirav@quicinc.com; s=20230906; h=from:subject:message-id;
- bh=ChQa/Bb1LGd9JUoVHYCpu+dhnFDE745UH//nDZnjRGo=;
- b=5JtAXE60/zRvqiEexLfPMutKkzAGfsHRUZt5ZL+ThVooGdSm3qPATJbR6MkXih5aQ/OOUAXcV
- /2u8eRhs7raDC3SXEQnn8jrojSBWnWXuOgrPr806ym34sfuzu2sMzN1
-X-Developer-Key: i=quic_kathirav@quicinc.com; a=ed25519;
- pk=xWsR7pL6ch+vdZ9MoFGEaP61JUaRf0XaZYWztbQsIiM=
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: bZY13A6LY6Uh6VwdLHgN1u9ldvjgh7yy
-X-Proofpoint-ORIG-GUID: bZY13A6LY6Uh6VwdLHgN1u9ldvjgh7yy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-25_04,2023-09-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- adultscore=0 suspectscore=0 mlxscore=0 clxscore=1015 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309250061
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; format=flowed; charset=US-ASCII
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Per the "SMC calling convention specification", the 64-bit calling
-convention can only be used when the client is 64-bit. Whereas the
-32-bit calling convention can be used by either a 32-bit or a 64-bit
-client.
+On Sun, 24 Sep 2023, Eric W. Biederman wrote:
+> Sebastian Ott <sebott@redhat.com> writes:
+>
+>> Hej,
+>>
+>> since we figured that the proposed patch is not going to work I've spent a
+>> couple more hours looking at this (some static binaries on arm64 segfault
+>> during load [0]). The segfault happens because of a failed clear_user()
+>> call in load_elf_binary(). The address we try to write zeros to is mapped with
+>> correct permissions.
+>>
+>> After some experiments I've noticed that writing to anonymous mappings work
+>> fine and all the error cases happend on file backed VMAs. Debugging showed that
+>> in elf_map() we call vm_mmap() with a file offset of 15 pages - for a binary
+>> that's less than 1KiB in size.
+>>
+>> Looking at the ELF headers again that 15 pages offset originates from the offset
+>> of the 2nd segment - so, I guess the loader did as instructed and that binary is
+>> just too nasty?
+>>
+>> Program Headers:
+>>   Type           Offset             VirtAddr           PhysAddr
+>>                  FileSiz            MemSiz              Flags  Align
+>>   LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
+>>                  0x0000000000000178 0x0000000000000178  R E    0x10000
+>>   LOAD           0x000000000000ffe8 0x000000000041ffe8 0x000000000041ffe8
+>>                  0x0000000000000000 0x0000000000000008  RW     0x10000
+>>   NOTE           0x0000000000000120 0x0000000000400120 0x0000000000400120
+>>                  0x0000000000000024 0x0000000000000024  R      0x4
+>>   GNU_STACK      0x0000000000000000 0x0000000000000000 0x0000000000000000
+>>                  0x0000000000000000 0x0000000000000000  RW     0x10
+>>
+>> As an additional test I've added a bunch of zeros at the end of that binary
+>> so that the offset is within that file and it did load just fine.
+>>
+>> On the other hand there is this section header:
+>>   [ 4] .bss              NOBITS           000000000041ffe8  0000ffe8
+>>        0000000000000008  0000000000000000  WA       0     0     1
+>>
+>> "sh_offset
+>> This member's value gives the byte offset from the beginning of the file to
+>> the first byte in the section. One section type, SHT_NOBITS described
+>> below, occupies no space in the file, and its sh_offset member locates
+>> the conceptual placement in the file.
+>> "
+>>
+>> So, still not sure what to do here..
+>>
+>> Sebastian
+>>
+>> [0] https://lore.kernel.org/lkml/5d49767a-fbdc-fbe7-5fb2-d99ece3168cb@redhat.com/
+>
+> I think that .bss section that is being generated is atrocious.
+>
+> At the same time I looked at what the linux elf loader is trying to do,
+> and the elf loader's handling of program segments with memsz > filesz
+> has serious remnants a.out of programs allocating memory with the brk
+> syscall.
+>
+> Lots of the structure looks like it started with the assumption that
+> there would only be a single program header with memsz > filesz the way
+> and that was the .bss.   The way things were in the a.out days and
+> handling of other cases has been debugged in later.
+>
+> So I have modified elf_map to always return successfully when there is
+> a zero filesz in the program header for an elf segment.
+>
+> Then I have factored out a function clear_tail that ensures the zero
+> padding for an entire elf segment is present.
+>
+> Please test this and see if it causes your test case to work.
 
-Currently during SCM probe, irrespective of the client, 64-bit calling
-convention is made, which is incorrect and may lead to the undefined
-behaviour when the client is 32-bit. Let's fix it.
+Sadly, that causes issues for other programs:
 
-Cc: stable@vger.kernel.org
-Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC and legacy conventions")
-Reviewed-By: Elliot Berman <quic_eberman@quicinc.com>
-Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
----
-Changes in V3:
-	- reworded the commit title and msg
-	- pick up the R-b tag
-
-Changes in V2:
-	- Added the Fixes tag and cc'd stable mailing list
----
- drivers/firmware/qcom_scm.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
-index c2c7fafef34b..520de9b5633a 100644
---- a/drivers/firmware/qcom_scm.c
-+++ b/drivers/firmware/qcom_scm.c
-@@ -215,6 +215,12 @@ static enum qcom_scm_convention __get_convention(void)
- 	if (likely(qcom_scm_convention != SMC_CONVENTION_UNKNOWN))
- 		return qcom_scm_convention;
- 
-+	/*
-+	 * Per the "SMC calling convention specification", the 64-bit calling
-+	 * convention can only be used when the client is 64-bit, otherwise
-+	 * system will encounter the undefined behaviour.
-+	 */
-+#if IS_ENABLED(CONFIG_ARM64)
- 	/*
- 	 * Device isn't required as there is only one argument - no device
- 	 * needed to dma_map_single to secure world
-@@ -235,6 +241,7 @@ static enum qcom_scm_convention __get_convention(void)
- 		forced = true;
- 		goto found;
- 	}
-+#endif
- 
- 	probed_convention = SMC_CONVENTION_ARM_32;
- 	ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
-
----
-base-commit: 8fff9184d1b5810dca5dd1a02726d4f844af88fc
-change-id: 20230925-scm-d62c6cd1947b
-
-Best regards,
--- 
-Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+[   44.164596] Run /init as init process
+[   44.168763] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+[   44.176409] CPU: 32 PID: 1 Comm: init Not tainted 6.6.0-rc2+ #89
+[   44.182404] Hardware name: GIGABYTE R181-T92-00/MT91-FS4-00, BIOS F34 08/13/2020
+[   44.189786] Call trace:
+[   44.192220]  dump_backtrace+0xa4/0x130
+[   44.195961]  show_stack+0x20/0x38
+[   44.199264]  dump_stack_lvl+0x48/0x60
+[   44.202917]  dump_stack+0x18/0x28
+[   44.206219]  panic+0x2e0/0x350
+[   44.209264]  do_exit+0x370/0x390
+[   44.212481]  do_group_exit+0x3c/0xa0
+[   44.216044]  get_signal+0x800/0x808
+[   44.219521]  do_signal+0xfc/0x200
+[   44.222824]  do_notify_resume+0xc8/0x418
+[   44.226734]  el0_da+0x114/0x120
+[   44.229866]  el0t_64_sync_handler+0xb8/0x130
+[   44.234124]  el0t_64_sync+0x194/0x198
+[   44.237776] SMP: stopping secondary CPUs
+[   44.241740] Kernel Offset: disabled
+[   44.245215] CPU features: 0x03000000,14028142,10004203
+[   44.250342] Memory Limit: none
+[   44.253383] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
 
