@@ -2,78 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 767007ADF71
-	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 21:12:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 959E27AE090
+	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 23:11:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233255AbjIYTMc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 25 Sep 2023 15:12:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39038 "EHLO
+        id S230250AbjIYVLH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 25 Sep 2023 17:11:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233148AbjIYTMb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 15:12:31 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CD4CBF;
-        Mon, 25 Sep 2023 12:12:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5F4C433C7;
-        Mon, 25 Sep 2023 19:12:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695669145;
-        bh=PucnFeDcAVN1NNbBCz02YwzzvcIbDN/zcCe/g6iWNXc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ha83ywe8nzG74DwN50jjgF6EqMzm70gYzSy7mDqmlZpHRhpAootFFMoqQPS3eD3KN
-         MJa7lxWCrXQtbGhKWe59lNMIuQAK9jCKPIF6Ysr6uapbY/+FjeYYnzU/yXEy09bVq7
-         r2ZgwdFgQzrCHjZb0IUR0bZRJdWqpCJJ7rc+u/BHr6u1xGgAlOYmEowCNDeWcv4Phf
-         OLAUjPwxKLsGU3QyHSIvIjWReCY5Z04Oo0+Uc0zUun9svRs5JwvXndevgAwVt7KBwC
-         eSfYcYFuvFBAlwKFgOPCYSvvm2Cj6cx3dNojKEaGgn/ESAvaeI0eyKO/Izm/KK7VOs
-         1ICOaviIYQZuQ==
-Date:   Mon, 25 Sep 2023 15:12:23 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Leah Rumancik <leah.rumancik@gmail.com>
-Cc:     stable@vger.kernel.org, linux-xfs@vger.kernel.org,
-        amir73il@gmail.com, chandan.babu@oracle.com,
-        Dave Chinner <dchinner@redhat.com>,
-        "Darrick J . Wong" <djwong@kernel.org>
-Subject: Re: [PATCH 5.15 1/6] xfs: bound maximum wait time for inodegc work
-Message-ID: <ZRHbl0XZlpLBLU4H@sashalap>
-References: <20230922010156.1718782-1-leah.rumancik@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20230922010156.1718782-1-leah.rumancik@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229513AbjIYVLH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 17:11:07 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8552109
+        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 14:11:00 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59f8040b2ffso55024997b3.3
+        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 14:11:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1695676260; x=1696281060; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qADBOd6pnfpqoTGrbUhtJSkTAAgtram3oj8i2hONjF8=;
+        b=e1VXQ1mRjK2bxomKznIaR4jz6nw90SRp2N9h5TOllGLFjf7e7eex07s0mwTu+jEkiW
+         s7bQK8QDjkzavimwInVcUZpH/EKxj3akO1cKGlkWmCitqHUQD85xmD/M2TDX3JMkxF/S
+         hIDj1vPDIw/IHSBVvjFoRcV1pL9eU9nAZGw0VA38j61HgIPCIB8mBtvIFaSOrF/OrIcB
+         ReZdr/38lk/pOF7Y3tKK1k8h/mKtU9N0R06q+vt48jifrfFNT+Jpr2mQH86+7wfdJGWI
+         tjET66TjgUgsXSEsHpakEyMS2WyGGDgNi8Dq2JgdOV7DQF9KXgX8hpBslub6eFsKOVqW
+         aS6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695676260; x=1696281060;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qADBOd6pnfpqoTGrbUhtJSkTAAgtram3oj8i2hONjF8=;
+        b=uFn53NXjSzxilDzplBzDxmaVndDfWh1i6Tn+gAI53gSQ03RpVtc4bEmuGOryalJ3rC
+         pVzc2dSDZMEA5wLRzepr1KbM0gO4qUDoqR4nFfB1f1h16rcbZvcrZTa06RZ/dhC/jF8H
+         mZsajHOn3vYqTpXTehw1LXCCUihdK8FpoUfT02Rm7HFzEtn5G+kir3fgaNfV3Uoz5LEy
+         wk3n+XmLEg2GOxVURWOun7331YWlGgzPRSYbyIzQhXpj9rZIJtZCvhZDTU8bqtD7IkFe
+         8C8LWjdhdhZLrnuB9bSdbmKQytzoGe1yVnGLAN9/oUPPe90Mlf8VUuI+dtz5pp4S1RzF
+         j7qw==
+X-Gm-Message-State: AOJu0YzpMI8XZpivfYENmcgDuTBDmnP0czS+DDKCPY6oP/uZEr7xH5yp
+        TDXp3ddI1U5aTM907X/kvuAT96UQhllktZtzazQAX9tQJMWlEuQwkdtx5YEHFFgL+5LF2GQnzzw
+        /wXhSSqkx+pGKGVnIe0yWCMk/0fkXMbYFGsVVddb3weTMwN8w/WvvlmjNZC4=
+X-Google-Smtp-Source: AGHT+IH+XB2pepvwizZKpzjmRhcTFeZj6aFGCsERUEGf5RrpK61ScseYjJ9DJqmSiK3jp8AP2XShEZgXYg==
+X-Received: from prohr-desktop.mtv.corp.google.com ([2620:15c:211:200:146d:2aa0:7ed1:bbb8])
+ (user=prohr job=sendgmr) by 2002:a81:760c:0:b0:59e:fb27:2a93 with SMTP id
+ r12-20020a81760c000000b0059efb272a93mr88178ywc.2.1695676259924; Mon, 25 Sep
+ 2023 14:10:59 -0700 (PDT)
+Date:   Mon, 25 Sep 2023 14:10:31 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
+Message-ID: <20230925211034.905320-1-prohr@google.com>
+Subject: [PATCH 6.1 0/3] net: add sysctl accept_ra_min_lft
+From:   Patrick Rohr <prohr@google.com>
+To:     stable@vger.kernel.org
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>,
+        Lorenzo Colitti <lorenzo@google.com>,
+        Patrick Rohr <prohr@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 21, 2023 at 06:01:51PM -0700, Leah Rumancik wrote:
->From: Dave Chinner <dchinner@redhat.com>
->
->[ Upstream commit 7cf2b0f9611b9971d663e1fc3206eeda3b902922 ]
->
->Currently inodegc work can sit queued on the per-cpu queue until
->the workqueue is either flushed of the queue reaches a depth that
->triggers work queuing (and later throttling). This means that we
->could queue work that waits for a long time for some other event to
->trigger flushing.
->
->Hence instead of just queueing work at a specific depth, use a
->delayed work that queues the work at a bound time. We can still
->schedule the work immediately at a given depth, but we no long need
->to worry about leaving a number of items on the list that won't get
->processed until external events prevail.
->
->Signed-off-by: Dave Chinner <dchinner@redhat.com>
->Reviewed-by: Darrick J. Wong <djwong@kernel.org>
->Signed-off-by: Darrick J. Wong <djwong@kernel.org>
->Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
->Acked-by: Darrick J. Wong <djwong@kernel.org>
+This series adds a new sysctl accept_ra_min_lft which enforces a minimum
+lifetime value for individual RA sections; in particular, router
+lifetime, PIO preferred lifetime, and RIO lifetime. If any of those
+lifetimes are lower than the configured value, the specific RA section
+is ignored.
 
-Queued up all 6, thanks!
+This fixes a potential denial of service attack vector where rogue WiFi
+routers (or devices) can send RAs with low lifetimes to actively drain a
+mobile device's battery (by preventing sleep).
+
+In addition to this change, Android uses hardware offloads to drop RAs
+for a fraction of the minimum of all lifetimes present in the RA (some
+networks have very frequent RAs (5s) with high lifetimes (2h)). Despite
+this, we have encountered networks that set the router lifetime to 30s
+which results in very frequent CPU wakeups. Instead of disabling IPv6
+(and dropping IPv6 ethertype in the WiFi firmware) entirely on such
+networks, misconfigured routers must be ignored while still processing
+RAs from other IPv6 routers on the same network (i.e. to support IoT
+applications).
+
+Patches:
+- 1671bcfd76fd ("net: add sysctl accept_ra_min_rtr_lft")
+- 5027d54a9c30 ("net: change accept_ra_min_rtr_lft to affect all RA lifetimes")
+- 5cb249686e67 ("net: release reference to inet6_dev pointer")
+
+Patrick Rohr (3):
+  net: add sysctl accept_ra_min_rtr_lft
+  net: change accept_ra_min_rtr_lft to affect all RA lifetimes
+  net: release reference to inet6_dev pointer
+
+ Documentation/networking/ip-sysctl.rst |  8 ++++++++
+ include/linux/ipv6.h                   |  1 +
+ include/uapi/linux/ipv6.h              |  1 +
+ net/ipv6/addrconf.c                    | 13 +++++++++++++
+ net/ipv6/ndisc.c                       | 13 +++++++++++--
+ 5 files changed, 34 insertions(+), 2 deletions(-)
 
 -- 
-Thanks,
-Sasha
+2.42.0.515.g380fc7ccd1-goog
+
