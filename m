@@ -2,154 +2,454 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A08A87ACCAB
-	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 00:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4240E7ACD81
+	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 03:14:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbjIXWlH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 24 Sep 2023 18:41:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44538 "EHLO
+        id S231149AbjIYBOe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 24 Sep 2023 21:14:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbjIXWlG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 18:41:06 -0400
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [95.217.213.242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90C67EE
-        for <stable@vger.kernel.org>; Sun, 24 Sep 2023 15:40:59 -0700 (PDT)
-Received: from [213.219.164.206] (helo=deadeye)
-        by maynard with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1qkXmb-0005Jf-G1; Mon, 25 Sep 2023 00:40:57 +0200
-Received: from ben by deadeye with local (Exim 4.97-RC0)
-        (envelope-from <ben@decadent.org.uk>)
-        id 1qkXma-00000000EJS-2brE;
-        Mon, 25 Sep 2023 00:40:56 +0200
-Message-ID: <95831df76c41a53bc3e1ac8ece64915dd63763a1.camel@decadent.org.uk>
-Subject: Re: [PATCH 4.19 322/323] drivers core: Use sysfs_emit and
- sysfs_emit_at for show(device *...) functions
-From:   Ben Hutchings <ben@decadent.org.uk>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, Joe Perches <joe@perches.com>,
-        Brennan Lamoreaux <blamoreaux@vmware.com>
-Date:   Mon, 25 Sep 2023 00:40:47 +0200
-In-Reply-To: <20230809103712.823902551@linuxfoundation.org>
-References: <20230809103658.104386911@linuxfoundation.org>
-         <20230809103712.823902551@linuxfoundation.org>
-Autocrypt: addr=ben@decadent.org.uk; prefer-encrypt=mutual;
- keydata=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
-Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-MNLm9CPVDTGujNwcdQ0Y"
-User-Agent: Evolution 3.50.0-1 
+        with ESMTP id S230360AbjIYBOd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 24 Sep 2023 21:14:33 -0400
+X-Greylist: delayed 1365 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 24 Sep 2023 18:14:26 PDT
+Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2355DF;
+        Sun, 24 Sep 2023 18:14:26 -0700 (PDT)
+Received: from in01.mta.xmission.com ([166.70.13.51]:46622)
+        by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1qkZp0-0009rb-GN; Sun, 24 Sep 2023 18:51:34 -0600
+Received: from ip68-227-168-167.om.om.cox.net ([68.227.168.167]:57448 helo=email.froward.int.ebiederm.org.xmission.com)
+        by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1qkZoy-00HNGT-UA; Sun, 24 Sep 2023 18:51:34 -0600
+From:   "Eric W. Biederman" <ebiederm@xmission.com>
+To:     Sebastian Ott <sebott@redhat.com>
+Cc:     Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net>
+        <36e93c8e-4384-b269-be78-479ccc7817b1@redhat.com>
+Date:   Sun, 24 Sep 2023 19:50:59 -0500
+In-Reply-To: <36e93c8e-4384-b269-be78-479ccc7817b1@redhat.com> (Sebastian
+        Ott's message of "Thu, 21 Sep 2023 12:36:34 +0200 (CEST)")
+Message-ID: <87zg1bm5xo.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 213.219.164.206
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-XM-SPF: eid=1qkZoy-00HNGT-UA;;;mid=<87zg1bm5xo.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.168.167;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX189MyQi6aZOi7cuLy5Pi8vFZekioLnKdO4=
+X-SA-Exim-Connect-IP: 68.227.168.167
+X-SA-Exim-Mail-From: ebiederm@xmission.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
+X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: *;Sebastian Ott <sebott@redhat.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 930 ms - load_scoreonly_sql: 0.07 (0.0%),
+        signal_user_changed: 12 (1.3%), b_tie_ro: 11 (1.1%), parse: 2.1 (0.2%),
+         extract_message_metadata: 10 (1.0%), get_uri_detail_list: 6 (0.7%),
+        tests_pri_-2000: 4.1 (0.4%), tests_pri_-1000: 2.6 (0.3%),
+        tests_pri_-950: 1.28 (0.1%), tests_pri_-900: 1.03 (0.1%),
+        tests_pri_-200: 0.90 (0.1%), tests_pri_-100: 18 (1.9%), tests_pri_-90:
+        98 (10.5%), check_bayes: 94 (10.1%), b_tokenize: 20 (2.1%),
+        b_tok_get_all: 15 (1.6%), b_comp_prob: 5.0 (0.5%), b_tok_touch_all: 50
+        (5.4%), b_finish: 0.92 (0.1%), tests_pri_0: 754 (81.1%),
+        check_dkim_signature: 0.77 (0.1%), check_dkim_adsp: 2.7 (0.3%),
+        poll_dns_idle: 0.42 (0.0%), tests_pri_10: 2.8 (0.3%), tests_pri_500:
+        12 (1.3%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH RFC] binfmt_elf: fully allocate bss pages
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Sebastian Ott <sebott@redhat.com> writes:
 
---=-MNLm9CPVDTGujNwcdQ0Y
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> Hej,
+>
+> since we figured that the proposed patch is not going to work I've spent a
+> couple more hours looking at this (some static binaries on arm64 segfault
+> during load [0]). The segfault happens because of a failed clear_user()
+> call in load_elf_binary(). The address we try to write zeros to is mapped with
+> correct permissions.
+>
+> After some experiments I've noticed that writing to anonymous mappings work
+> fine and all the error cases happend on file backed VMAs. Debugging showed that
+> in elf_map() we call vm_mmap() with a file offset of 15 pages - for a binary
+> that's less than 1KiB in size.
+>
+> Looking at the ELF headers again that 15 pages offset originates from the offset
+> of the 2nd segment - so, I guess the loader did as instructed and that binary is
+> just too nasty?
+>
+> Program Headers:
+>   Type           Offset             VirtAddr           PhysAddr
+>                  FileSiz            MemSiz              Flags  Align
+>   LOAD           0x0000000000000000 0x0000000000400000 0x0000000000400000
+>                  0x0000000000000178 0x0000000000000178  R E    0x10000
+>   LOAD           0x000000000000ffe8 0x000000000041ffe8 0x000000000041ffe8
+>                  0x0000000000000000 0x0000000000000008  RW     0x10000
+>   NOTE           0x0000000000000120 0x0000000000400120 0x0000000000400120
+>                  0x0000000000000024 0x0000000000000024  R      0x4
+>   GNU_STACK      0x0000000000000000 0x0000000000000000 0x0000000000000000
+>                  0x0000000000000000 0x0000000000000000  RW     0x10
+>
+> As an additional test I've added a bunch of zeros at the end of that binary
+> so that the offset is within that file and it did load just fine.
+>
+> On the other hand there is this section header:
+>   [ 4] .bss              NOBITS           000000000041ffe8  0000ffe8
+>        0000000000000008  0000000000000000  WA       0     0     1
+>
+> "sh_offset
+> This member's value gives the byte offset from the beginning of the file to
+> the first byte in the section. One section type, SHT_NOBITS described
+> below, occupies no space in the file, and its sh_offset member locates
+> the conceptual placement in the file.
+> "
+>
+> So, still not sure what to do here..
+>
+> Sebastian
+>
+> [0] https://lore.kernel.org/lkml/5d49767a-fbdc-fbe7-5fb2-d99ece3168cb@redhat.com/
 
-On Wed, 2023-08-09 at 12:42 +0200, Greg Kroah-Hartman wrote:
-> From: Joe Perches <joe@perches.com>
->=20
-> commit aa838896d87af561a33ecefea1caa4c15a68bc47 upstream.
->=20
-> Convert the various sprintf fmaily calls in sysfs device show functions
-> to sysfs_emit and sysfs_emit_at for PAGE_SIZE buffer safety.
+I think that .bss section that is being generated is atrocious.
 
-[...]
-> Signed-off-by: Joe Perches <joe@perches.com>
-> Link: https://lore.kernel.org/r/3d033c33056d88bbe34d4ddb62afd05ee166ab9a.=
-1600285923.git.joe@perches.com
-> [ Brennan : Regenerated for 4.19 to fix CVE-2022-20166 ]
+At the same time I looked at what the linux elf loader is trying to do,
+and the elf loader's handling of program segments with memsz > filesz
+has serious remnants a.out of programs allocating memory with the brk
+syscall.
 
-When I looked into the referenced security issue, it seemed to only be
-exploitable through wakelock names, and in the upstream kernel only
-after commit c8377adfa781 "PM / wakeup: Show wakeup sources stats in
-sysfs" (first included in 5.4).  So I would be interested to know if
-and why a fix was needed for 4.19.
+Lots of the structure looks like it started with the assumption that
+there would only be a single program header with memsz > filesz the way
+and that was the .bss.   The way things were in the a.out days and
+handling of other cases has been debugged in later.
 
-More importantly, this backported version uniformly converts to
-sysfs_emit(), but there are 3 places sysfs_emit_at() must be used
-instead:
+So I have modified elf_map to always return successfully when there is
+a zero filesz in the program header for an elf segment.
 
-[...]
-> --- a/drivers/base/cpu.c
-> +++ b/drivers/base/cpu.c
-[...]
-> @@ -264,7 +264,7 @@ static ssize_t print_cpus_offline(struct
->  						      nr_cpu_ids, total_cpus-1);
->  	}
-> =20
-> -	n +=3D snprintf(&buf[n], len - n, "\n");
-> +	n +=3D sysfs_emit(&buf[n], "\n");
->  	return n;
->  }
->  static DEVICE_ATTR(offline, 0444, print_cpus_offline, NULL);
-[...]
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-[...]
-> @@ -96,7 +96,7 @@ static ssize_t node_read_meminfo(struct
->  		       nid, K(sum_zone_node_page_state(nid, NR_MLOCK)));
-> =20
->  #ifdef CONFIG_HIGHMEM
-> -	n +=3D sprintf(buf + n,
-> +	n +=3D sysfs_emit(buf + n,
->  		       "Node %d HighTotal:      %8lu kB\n"
->  		       "Node %d HighFree:       %8lu kB\n"
->  		       "Node %d LowTotal:       %8lu kB\n"
-> @@ -106,7 +106,7 @@ static ssize_t node_read_meminfo(struct
->  		       nid, K(i.totalram - i.totalhigh),
->  		       nid, K(i.freeram - i.freehigh));
->  #endif
-> -	n +=3D sprintf(buf + n,
-> +	n +=3D sysfs_emit(buf + n,
->  		       "Node %d Dirty:          %8lu kB\n"
->  		       "Node %d Writeback:      %8lu kB\n"
->  		       "Node %d FilePages:      %8lu kB\n"
-[...]
+Then I have factored out a function clear_tail that ensures the zero
+padding for an entire elf segment is present.
 
-Ben.
+Please test this and see if it causes your test case to work.
 
---=20
-Ben Hutchings
-Kids!  Bringing about Armageddon can be dangerous.  Do not attempt it
-in your own home. - Terry Pratchett and Neil Gaiman, `Good Omens'
+Please also dig into gcc or whichever code generates that horrendous
+.bss section and see if that can be fixed so the code can work on older
+kernels.  A section that only contains .bss has no business not being
+properly aligned.  Even if the data in that section doesn't start at the
+beginning of the page, there is no reason to feed nasty data to other
+programs.  It just increases the odds of complications for no good
+reason.  At a minimum that is going to be needed to run that code on
+older kernels.
+
+Eric
 
 
---=-MNLm9CPVDTGujNwcdQ0Y
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 7b3d2d491407..f6608df75df6 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -110,43 +110,66 @@ static struct linux_binfmt elf_format = {
+ 
+ #define BAD_ADDR(x) (unlikely((unsigned long)(x) >= TASK_SIZE))
+ 
+-static int set_brk(unsigned long start, unsigned long end, int prot)
+-{
+-	start = ELF_PAGEALIGN(start);
+-	end = ELF_PAGEALIGN(end);
+-	if (end > start) {
+-		/*
+-		 * Map the last of the bss segment.
+-		 * If the header is requesting these pages to be
+-		 * executable, honour that (ppc32 needs this).
+-		 */
+-		int error = vm_brk_flags(start, end - start,
+-				prot & PROT_EXEC ? VM_EXEC : 0);
+-		if (error)
+-			return error;
+-	}
+-	current->mm->start_brk = current->mm->brk = end;
+-	return 0;
+-}
+-
+ /* We need to explicitly zero any fractional pages
+    after the data section (i.e. bss).  This would
+    contain the junk from the file that should not
+    be in memory
+  */
+-static int padzero(unsigned long elf_bss)
++static int padzero(unsigned long elf_bss, unsigned long elf_brk)
+ {
+ 	unsigned long nbyte;
+ 
+ 	nbyte = ELF_PAGEOFFSET(elf_bss);
+ 	if (nbyte) {
+ 		nbyte = ELF_MIN_ALIGN - nbyte;
++		if (nbyte > elf_brk - elf_bss)
++			nbyte = elf_brk - elf_bss;
+ 		if (clear_user((void __user *) elf_bss, nbyte))
+ 			return -EFAULT;
+ 	}
+ 	return 0;
+ }
+ 
++static int clear_tail(struct elf_phdr *phdr, unsigned long load_bias, int prot)
++{
++	unsigned long start, end;
++
++	/* Is there a tail to clear? */
++	if (phdr->p_filesz >= phdr->p_memsz)
++		return 0;
++
++	/* Where does the tail start? */
++	if (phdr->p_filesz)
++		start = load_bias + phdr->p_vaddr + phdr->p_filesz;
++	else
++		start = ELF_PAGESTART(load_bias + phdr->p_vaddr);
++
++	/* Where does the tail end? */
++	end = load_bias + phdr->p_vaddr + phdr->p_memsz;
++
++	/*
++	 * This bss-zeroing can fail if the ELF
++	 * file specifies odd protections. So
++	 * we don't check the return value
++	 */
++	padzero(start, end);
++
++	start = ELF_PAGEALIGN(start);
++	end = ELF_PAGEALIGN(end);
++	if (end > start) {
++		/*
++		 * Map the last of the bss segment.
++		 * If the header is requesting these pages to be
++		 * executable, honour that (ppc32 needs this).
++		 */
++		int error = vm_brk_flags(start, end - start,
++				prot & PROT_EXEC ? VM_EXEC : 0);
++		if (error)
++			return error;
++	}
++	return 0;
++}
++
+ /* Let's use some macros to make this stack manipulation a little clearer */
+ #ifdef CONFIG_STACK_GROWSUP
+ #define STACK_ADD(sp, items) ((elf_addr_t __user *)(sp) + (items))
+@@ -379,7 +402,7 @@ static unsigned long elf_map(struct file *filep, unsigned long addr,
+ 
+ 	/* mmap() will return -EINVAL if given a zero size, but a
+ 	 * segment with zero filesize is perfectly valid */
+-	if (!size)
++	if (!eppnt->p_filesz)
+ 		return addr;
+ 
+ 	/*
+@@ -596,8 +619,6 @@ static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
+ 	struct elf_phdr *eppnt;
+ 	unsigned long load_addr = 0;
+ 	int load_addr_set = 0;
+-	unsigned long last_bss = 0, elf_bss = 0;
+-	int bss_prot = 0;
+ 	unsigned long error = ~0UL;
+ 	unsigned long total_size;
+ 	int i;
+@@ -661,50 +682,13 @@ static unsigned long load_elf_interp(struct elfhdr *interp_elf_ex,
+ 				goto out;
+ 			}
+ 
+-			/*
+-			 * Find the end of the file mapping for this phdr, and
+-			 * keep track of the largest address we see for this.
+-			 */
+-			k = load_addr + eppnt->p_vaddr + eppnt->p_filesz;
+-			if (k > elf_bss)
+-				elf_bss = k;
+-
+-			/*
+-			 * Do the same thing for the memory mapping - between
+-			 * elf_bss and last_bss is the bss section.
+-			 */
+-			k = load_addr + eppnt->p_vaddr + eppnt->p_memsz;
+-			if (k > last_bss) {
+-				last_bss = k;
+-				bss_prot = elf_prot;
+-			}
++			/* Map anonymous pages and clear the tail if needed */
++			error = clear_tail(eppnt, load_addr, elf_prot);
++			if (error)
++				goto out;
+ 		}
+ 	}
+ 
+-	/*
+-	 * Now fill out the bss section: first pad the last page from
+-	 * the file up to the page boundary, and zero it from elf_bss
+-	 * up to the end of the page.
+-	 */
+-	if (padzero(elf_bss)) {
+-		error = -EFAULT;
+-		goto out;
+-	}
+-	/*
+-	 * Next, align both the file and mem bss up to the page size,
+-	 * since this is where elf_bss was just zeroed up to, and where
+-	 * last_bss will end after the vm_brk_flags() below.
+-	 */
+-	elf_bss = ELF_PAGEALIGN(elf_bss);
+-	last_bss = ELF_PAGEALIGN(last_bss);
+-	/* Finally, if there is still more bss to allocate, do it. */
+-	if (last_bss > elf_bss) {
+-		error = vm_brk_flags(elf_bss, last_bss - elf_bss,
+-				bss_prot & PROT_EXEC ? VM_EXEC : 0);
+-		if (error)
+-			goto out;
+-	}
+-
+ 	error = load_addr;
+ out:
+ 	return error;
+@@ -828,8 +812,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	unsigned long error;
+ 	struct elf_phdr *elf_ppnt, *elf_phdata, *interp_elf_phdata = NULL;
+ 	struct elf_phdr *elf_property_phdata = NULL;
+-	unsigned long elf_bss, elf_brk;
+-	int bss_prot = 0;
++	unsigned long elf_brk;
+ 	int retval, i;
+ 	unsigned long elf_entry;
+ 	unsigned long e_entry;
+@@ -1020,7 +1003,6 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	if (retval < 0)
+ 		goto out_free_dentry;
+ 
+-	elf_bss = 0;
+ 	elf_brk = 0;
+ 
+ 	start_code = ~0UL;
+@@ -1040,32 +1022,6 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 		if (elf_ppnt->p_type != PT_LOAD)
+ 			continue;
+ 
+-		if (unlikely (elf_brk > elf_bss)) {
+-			unsigned long nbyte;
+-
+-			/* There was a PT_LOAD segment with p_memsz > p_filesz
+-			   before this one. Map anonymous pages, if needed,
+-			   and clear the area.  */
+-			retval = set_brk(elf_bss + load_bias,
+-					 elf_brk + load_bias,
+-					 bss_prot);
+-			if (retval)
+-				goto out_free_dentry;
+-			nbyte = ELF_PAGEOFFSET(elf_bss);
+-			if (nbyte) {
+-				nbyte = ELF_MIN_ALIGN - nbyte;
+-				if (nbyte > elf_brk - elf_bss)
+-					nbyte = elf_brk - elf_bss;
+-				if (clear_user((void __user *)elf_bss +
+-							load_bias, nbyte)) {
+-					/*
+-					 * This bss-zeroing can fail if the ELF
+-					 * file specifies odd protections. So
+-					 * we don't check the return value
+-					 */
+-				}
+-			}
+-		}
+ 
+ 		elf_prot = make_prot(elf_ppnt->p_flags, &arch_state,
+ 				     !!interpreter, false);
+@@ -1208,42 +1164,31 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 			goto out_free_dentry;
+ 		}
+ 
+-		k = elf_ppnt->p_vaddr + elf_ppnt->p_filesz;
++		/* Map anonymous pages and clear the tail if needed */
++		retval = clear_tail(elf_ppnt, load_bias, elf_prot);
++		if (retval)
++			goto out_free_dentry;
+ 
+-		if (k > elf_bss)
+-			elf_bss = k;
++		k = elf_ppnt->p_vaddr + elf_ppnt->p_filesz;
+ 		if ((elf_ppnt->p_flags & PF_X) && end_code < k)
+ 			end_code = k;
+ 		if (end_data < k)
+ 			end_data = k;
+ 		k = elf_ppnt->p_vaddr + elf_ppnt->p_memsz;
+ 		if (k > elf_brk) {
+-			bss_prot = elf_prot;
+ 			elf_brk = k;
+ 		}
+ 	}
+ 
+ 	e_entry = elf_ex->e_entry + load_bias;
+ 	phdr_addr += load_bias;
+-	elf_bss += load_bias;
+ 	elf_brk += load_bias;
+ 	start_code += load_bias;
+ 	end_code += load_bias;
+ 	start_data += load_bias;
+ 	end_data += load_bias;
+ 
+-	/* Calling set_brk effectively mmaps the pages that we need
+-	 * for the bss and break sections.  We must do this before
+-	 * mapping in the interpreter, to make sure it doesn't wind
+-	 * up getting placed where the bss needs to go.
+-	 */
+-	retval = set_brk(elf_bss, elf_brk, bss_prot);
+-	if (retval)
+-		goto out_free_dentry;
+-	if (likely(elf_bss != elf_brk) && unlikely(padzero(elf_bss))) {
+-		retval = -EFAULT; /* Nobody gets to see this, but.. */
+-		goto out_free_dentry;
+-	}
++	current->mm->start_brk = current->mm->brk = ELF_PAGEALIGN(elf_brk);
+ 
+ 	if (interpreter) {
+ 		elf_entry = load_elf_interp(interp_elf_ex,
+@@ -1369,7 +1314,6 @@ static int load_elf_library(struct file *file)
+ {
+ 	struct elf_phdr *elf_phdata;
+ 	struct elf_phdr *eppnt;
+-	unsigned long elf_bss, bss, len;
+ 	int retval, error, i, j;
+ 	struct elfhdr elf_ex;
+ 
+@@ -1425,19 +1369,9 @@ static int load_elf_library(struct file *file)
+ 	if (error != ELF_PAGESTART(eppnt->p_vaddr))
+ 		goto out_free_ph;
+ 
+-	elf_bss = eppnt->p_vaddr + eppnt->p_filesz;
+-	if (padzero(elf_bss)) {
+-		error = -EFAULT;
++	error = clear_tail(eppnt, 0, 0);
++	if (error)
+ 		goto out_free_ph;
+-	}
+-
+-	len = ELF_PAGEALIGN(eppnt->p_filesz + eppnt->p_vaddr);
+-	bss = ELF_PAGEALIGN(eppnt->p_memsz + eppnt->p_vaddr);
+-	if (bss > len) {
+-		error = vm_brk(len, bss - len);
+-		if (error)
+-			goto out_free_ph;
+-	}
+ 	error = 0;
+ 
+ out_free_ph:
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmUQuu8ACgkQ57/I7JWG
-EQncOA/+Nls8rth7qiN25NhYB/vSM9UbaLK0/O7jgtN5XIjhu0Jh19QEk1Qqqgid
-bulI10ygodM9E7YJT6X2Lm5XQUcwbbPwXVn/QQSJKjLKPhustkMqmhuSotKdQqIk
-bul/C3S0fa3nE/uCN4dzmHVx4HRHtcF3PjLF86IeMUTwzgf3mVHJxQFtevj8cPx+
-0EBfhsoEW4OEILJ1qUuE/ZwFfK40EXFmOdW8sqH+wZ4BeCjzvQz4bQBghpTXUeFN
-gSo1iQZ11E/5pXQQbfFHZbwgSjh8qlH2d7AQIH8Az7lPxl8c7rArOErj7XGswSZ9
-phsXIV/Uh0PX8lMcQpa83j1eC47qegyESNI0ivFSYAfYuzVWZJ+sBkHRKCg4WNwj
-/eVmgQDrQnjXFisaarkzmeFfcI7czE8RMKwiERaD/boDkOJPnHDIUs1DkbseAerm
-Qfmxu8PLkRClEynWfdihoCqizr7PBPznXPpW7YFb9FGE7gVw74+kpAa+3/k89pTI
-GMFjp4qJACT241YgmmbsEKiDtfdUYL3tPrA7KXOEKISjiW0SrQH3sES63CEgzkjo
-Kg2Iq2Rlo5cGpYt57W/yLk4HB7j3gLvYioeaXYLfsnT/bh94y4V8wfWgHK7IPRFP
-bOa6l42ngxq6ksdFKiwRk6nMW5ScyW4ZnkmDpiggYgQnGVhsf20=
-=4Tuq
------END PGP SIGNATURE-----
-
---=-MNLm9CPVDTGujNwcdQ0Y--
