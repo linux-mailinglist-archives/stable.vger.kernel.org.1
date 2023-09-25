@@ -2,114 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0CB67ADB66
-	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 17:28:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D5D37ADC4C
+	for <lists+stable@lfdr.de>; Mon, 25 Sep 2023 17:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230076AbjIYP2N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 25 Sep 2023 11:28:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38786 "EHLO
+        id S232118AbjIYPuI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 25 Sep 2023 11:50:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232807AbjIYP2K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 11:28:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB763A3
-        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 08:27:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695655637;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=wckYes9tuj8TsYij0Z4ld4U0TeFfOFKN2Inn7boKvjk=;
-        b=F8U6nQRpCpbSrUMGbjMu2UV/TGzyz5rLFiSF+J3JsUrojlmR5oczxxfYAJPezOscY1YmYf
-        YUfHLGIQcpntxw2Vn+xRX/eZAzvcIXE5k7xlkirYGbUZ2cLkm0HTZ9BpR7CL4eZ/GEahfI
-        JdpOMy9+7kgU2RqLg1Rl6DoFBysDryg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-6qdJZPNmMBao7lfbe4fpsA-1; Mon, 25 Sep 2023 11:27:15 -0400
-X-MC-Unique: 6qdJZPNmMBao7lfbe4fpsA-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40554735995so40713035e9.1
-        for <stable@vger.kernel.org>; Mon, 25 Sep 2023 08:27:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695655634; x=1696260434;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wckYes9tuj8TsYij0Z4ld4U0TeFfOFKN2Inn7boKvjk=;
-        b=Bv2GIZNhiG0EF8my2z38e+OhjsMpOwrn38lnTE+X1cnIbdGSoTGq6vBvEqIfrsKwnT
-         kB63ud0mLE0FGa2pxK8Iz4Gk7mEHr1xYCiS2/nQa7pGS2AEDO9Lt55TJcNFTWupm43Oz
-         QVLl9DT5VnoOwqackLfpvqTjipneLgFN5QeN1K2e7Dyt+LsPU2bmrdHhO+jgU1QBizUn
-         rI3xas2SCu37GMdfAN70C9+DE7AzD3uI7K3Y5RsuAAv8c69z+waI3OAEgr2rowEhHxbF
-         uZkMfwuOusaX6AOk+W7MEaofEw1o9Mi7cBTKac/Pk86O67e8ooUEM35aFAMXxbWwOCvd
-         0SDA==
-X-Gm-Message-State: AOJu0Yyq5Zdm3h9wp1EtTIw/X+lNj3RxR2ECv/xhzm0kVqgQr9bxM/kL
-        dvfVmxL2DHcnfp6aoP32Quw66WKghYvvyjnd2tqz6HQaSEw5xNT5GMRE1urxpboA+3JyvZkTLwc
-        ni0egFFAbj46bM8z1
-X-Received: by 2002:a7b:cbd1:0:b0:405:36e3:e863 with SMTP id n17-20020a7bcbd1000000b0040536e3e863mr6718244wmi.8.1695655634480;
-        Mon, 25 Sep 2023 08:27:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEnUGDIoj3/uAJn5Af95qg7TvdfuoTHpeIxNzT9laP9ft2YNgz4K0T93YKo0VDl+RqviGHKHA==
-X-Received: by 2002:a7b:cbd1:0:b0:405:36e3:e863 with SMTP id n17-20020a7bcbd1000000b0040536e3e863mr6718216wmi.8.1695655634131;
-        Mon, 25 Sep 2023 08:27:14 -0700 (PDT)
-Received: from rh (p200300c93f1ec600a890fb4d684902d4.dip0.t-ipconnect.de. [2003:c9:3f1e:c600:a890:fb4d:6849:2d4])
-        by smtp.gmail.com with ESMTPSA id v21-20020a7bcb55000000b00404719b05b5sm12555738wmj.27.2023.09.25.08.27.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Sep 2023 08:27:13 -0700 (PDT)
-Date:   Mon, 25 Sep 2023 17:27:12 +0200 (CEST)
-From:   Sebastian Ott <sebott@redhat.com>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-cc:     =?ISO-8859-15?Q?Thomas_Wei=DFschuh?= <linux@weissschuh.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] binfmt_elf: Support segments with 0 filesz and misaligned
- starts
-In-Reply-To: <87jzsemmsd.fsf_-_@email.froward.int.ebiederm.org>
-Message-ID: <84e974d3-ae0d-9eb5-49b2-3348b7dcd336@redhat.com>
-References: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net> <36e93c8e-4384-b269-be78-479ccc7817b1@redhat.com> <87zg1bm5xo.fsf@email.froward.int.ebiederm.org> <37d3392c-cf33-20a6-b5c9-8b3fb8142658@redhat.com>
- <87jzsemmsd.fsf_-_@email.froward.int.ebiederm.org>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463795790-784343621-1695655633=:4500"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232812AbjIYPt5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 11:49:57 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C997199B;
+        Mon, 25 Sep 2023 08:48:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70841C433C8;
+        Mon, 25 Sep 2023 15:48:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1695656921;
+        bh=ydw6MbSohqavIDDQv26z7jnbFjP4NN+5JbvGYYNEn+Y=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Et6bCcEb6RTZ/kaR7i4cgQdrb85R3iQhBnO3yW+Ufr5ECgAVL4Cyt46Staj9nUkZU
+         qfH8UwchovmBRYj00gpCCXcY9KFw2nCL6LN8ffmXsoWLc1y5qoPo3O+zkcI41n8d4I
+         fuyGb7stM4MqvlNf2YeoX/VIhBryhPvwRf2oU2Uk=
+Date:   Mon, 25 Sep 2023 08:48:40 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Yang Shi <yang@os.amperecomputing.com>
+Cc:     hughd@google.com, surenb@google.com, willy@infradead.org,
+        mhocko@suse.com, vbabka@suse.cz, osalvador@suse.de,
+        aquini@redhat.com, kirill@shutemov.name, rientjes@google.com,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and
+ MPOL_MF_MOVE are specified
+Message-Id: <20230925084840.af05fefd19a101c71308a8cf@linux-foundation.org>
+In-Reply-To: <20230920223242.3425775-1-yang@os.amperecomputing.com>
+References: <20230920223242.3425775-1-yang@os.amperecomputing.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Wed, 20 Sep 2023 15:32:42 -0700 Yang Shi <yang@os.amperecomputing.com> wrote:
 
----1463795790-784343621-1695655633=:4500
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+> When calling mbind() with MPOL_MF_{MOVE|MOVEALL} | MPOL_MF_STRICT,
+> kernel should attempt to migrate all existing pages, and return -EIO if
+> there is misplaced or unmovable page.  Then commit 6f4576e3687b
+> ("mempolicy: apply page table walker on queue_pages_range()") messed up
+> the return value and didn't break VMA scan early ianymore when MPOL_MF_STRICT
+> alone.  The return value problem was fixed by commit a7f40cfe3b7a
+> ("mm: mempolicy: make mbind() return -EIO when MPOL_MF_STRICT is specified"),
+> but it broke the VMA walk early if unmovable page is met, it may cause some
+> pages are not migrated as expected.
 
-On Mon, 25 Sep 2023, Eric W. Biederman wrote:
->
-> Implement a helper elf_load that wraps elf_map and performs all
-> of the necessary work to ensure that when "memsz > filesz"
-> the bytes described by "memsz > filesz" are zeroed.
->
-> Link: https://lkml.kernel.org/r/20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net
-> Reported-by: Sebastian Ott <sebott@redhat.com>
-> Reported-by: Thomas Weißschuh <linux@weissschuh.net>
-> Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
-> ---
-> fs/binfmt_elf.c | 111 +++++++++++++++++++++---------------------------
-> 1 file changed, 48 insertions(+), 63 deletions(-)
->
-> Can you please test this one?
->
+So I'm thinking that a7f40cfe3b7a is the suitable Fixes: target?
 
-That one did the trick! The arm box booted successful, ran the binaries
-that were used for the repo of this issue, and ran the nolibc compiled
-binaries from kselftests that initially triggered the loader issues.
-
-Thanks,
-Sebastian
----1463795790-784343621-1695655633=:4500--
+> The code should conceptually do:
+> 
+>  if (MPOL_MF_MOVE|MOVEALL)
+>      scan all vmas
+>      try to migrate the existing pages
+>      return success
+>  else if (MPOL_MF_MOVE* | MPOL_MF_STRICT)
+>      scan all vmas
+>      try to migrate the existing pages
+>      return -EIO if unmovable or migration failed
+>  else /* MPOL_MF_STRICT alone */
+>      break early if meets unmovable and don't call mbind_range() at all
+>  else /* none of those flags */
+>      check the ranges in test_walk, EFAULT without mbind_range() if discontig.
+> 
+> Fixed the behavior.
+> 
 
