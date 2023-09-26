@@ -2,156 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1B497AEC1A
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 14:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 410DC7AEC30
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 14:10:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234443AbjIZMDX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 08:03:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54362 "EHLO
+        id S234481AbjIZMLA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 08:11:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234511AbjIZMDW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 08:03:22 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29FCDE6;
-        Tue, 26 Sep 2023 05:03:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695729796; x=1727265796;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FU0AhVxXd739OYSha2yCrO+3VahEjA1ikBLDvuNth4E=;
-  b=m9ULxA4LjFjcnMkL9UFpUEDO+Ddm54ykG8+764geq/0TgQouIp4x0vBH
-   xy2Rk4qzhPfBYKu3a+0///za/4FvO292EN9Yisq0POvQGCag24QGKhuWA
-   sjcYiw5O0kr9Rhr2ZsUSA+g2+aq84jNHkLj65Y8uk7TbzTevUZ6Gf9JM2
-   9siwmaEnqeYzkDGkbeJeVKZfzpeUXJ/tg9Ja0xWZB8TakeQb1OxEdTKwU
-   aRlV9bzSm9UCYJtIRb1IppZJLHfw9CsA96nR/J1kBx/qxYtEUys7WYmdG
-   EUPEkKyfNYLFtYZn2g5uJR/z1MCrfoPjc1XTocVlSYaPJKrakFB1ybqn+
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="378827450"
-X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; 
-   d="scan'208";a="378827450"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 05:02:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="864381703"
-X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; 
-   d="scan'208";a="864381703"
-Received: from lkp-server02.sh.intel.com (HELO 32c80313467c) ([10.239.97.151])
-  by fmsmga002.fm.intel.com with ESMTP; 26 Sep 2023 05:02:32 -0700
-Received: from kbuild by 32c80313467c with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1ql6lq-0002mu-2F;
-        Tue, 26 Sep 2023 12:02:30 +0000
-Date:   Tue, 26 Sep 2023 20:02:14 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Zack Rusin <zack@kde.org>, dri-devel@lists.freedesktop.org
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Thomas =?iso-8859-1?Q?Hellstr=F6m?= 
-        <thomas.hellstrom@linux.intel.com>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Huang Rui <ray.huang@amd.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Subject: Re: [PATCH] drm/ttm: Make sure the mapped tt pages are decrypted
- when needed
-Message-ID: <202309261923.XeaDU2Wg-lkp@intel.com>
-References: <20230926040359.3040017-1-zack@kde.org>
+        with ESMTP id S230231AbjIZMK7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 08:10:59 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB29E6;
+        Tue, 26 Sep 2023 05:10:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDDAC433C7;
+        Tue, 26 Sep 2023 12:10:49 +0000 (UTC)
+From:   Huacai Chen <chenhuacai@loongson.cn>
+To:     Arnd Bergmann <arnd@arndb.de>, Huacai Chen <chenhuacai@kernel.org>
+Cc:     loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
+        Huacai Chen <chenhuacai@loongson.cn>, stable@vger.kernel.org,
+        Chong Qiao <qiaochong@loongson.cn>
+Subject: [PATCH] LoongArch: numa: Fix high_memory calculation
+Date:   Tue, 26 Sep 2023 20:10:31 +0800
+Message-Id: <20230926121031.1901760-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230926040359.3040017-1-zack@kde.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Zack,
+high_memory is the virtual address of the 'highest physical address' in
+the system. But __va(get_num_physpages() << PAGE_SHIFT) is not what we
+want because there may be holes in the physical address space. On the
+other hand, max_low_pfn is calculated from memblock_end_of_DRAM(), which
+is exactly corresponding to the highest physical address, so use it for
+high_memory calculation.
 
-kernel test robot noticed the following build errors:
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/kernel/numa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.6-rc3 next-20230926]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Zack-Rusin/drm-ttm-Make-sure-the-mapped-tt-pages-are-decrypted-when-needed/20230926-120619
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20230926040359.3040017-1-zack%40kde.org
-patch subject: [PATCH] drm/ttm: Make sure the mapped tt pages are decrypted when needed
-config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20230926/202309261923.XeaDU2Wg-lkp@intel.com/config)
-compiler: mips-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230926/202309261923.XeaDU2Wg-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309261923.XeaDU2Wg-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/gpu/drm/ttm/ttm_tt.c: In function 'ttm_tt_create':
->> drivers/gpu/drm/ttm/ttm_tt.c:89:41: error: implicit declaration of function 'cc_platform_has' [-Werror=implicit-function-declaration]
-      89 |         if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_MEM_ENCRYPT))
-         |                                         ^~~~~~~~~~~~~~~
->> drivers/gpu/drm/ttm/ttm_tt.c:89:57: error: 'CC_ATTR_MEM_ENCRYPT' undeclared (first use in this function)
-      89 |         if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_MEM_ENCRYPT))
-         |                                                         ^~~~~~~~~~~~~~~~~~~
-   drivers/gpu/drm/ttm/ttm_tt.c:89:57: note: each undeclared identifier is reported only once for each function it appears in
-   cc1: some warnings being treated as errors
-
-
-vim +/cc_platform_has +89 drivers/gpu/drm/ttm/ttm_tt.c
-
-    56	
-    57	/*
-    58	 * Allocates a ttm structure for the given BO.
-    59	 */
-    60	int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
-    61	{
-    62		struct ttm_device *bdev = bo->bdev;
-    63		uint32_t page_flags = 0;
-    64	
-    65		dma_resv_assert_held(bo->base.resv);
-    66	
-    67		if (bo->ttm)
-    68			return 0;
-    69	
-    70		switch (bo->type) {
-    71		case ttm_bo_type_device:
-    72			if (zero_alloc)
-    73				page_flags |= TTM_TT_FLAG_ZERO_ALLOC;
-    74			break;
-    75		case ttm_bo_type_kernel:
-    76			break;
-    77		case ttm_bo_type_sg:
-    78			page_flags |= TTM_TT_FLAG_EXTERNAL;
-    79			break;
-    80		default:
-    81			pr_err("Illegal buffer object type\n");
-    82			return -EINVAL;
-    83		}
-    84		/*
-    85		 * When using dma_alloc_coherent with memory encryption the
-    86		 * mapped TT pages need to be decrypted or otherwise the drivers
-    87		 * will end up sending encrypted mem to the gpu.
-    88		 */
-  > 89		if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_MEM_ENCRYPT))
-    90			page_flags |= TTM_TT_FLAG_DECRYPTED;
-    91	
-    92		bo->ttm = bdev->funcs->ttm_tt_create(bo, page_flags);
-    93		if (unlikely(bo->ttm == NULL))
-    94			return -ENOMEM;
-    95	
-    96		WARN_ON(bo->ttm->page_flags & TTM_TT_FLAG_EXTERNAL_MAPPABLE &&
-    97			!(bo->ttm->page_flags & TTM_TT_FLAG_EXTERNAL));
-    98	
-    99		return 0;
-   100	}
-   101	
-
+diff --git a/arch/loongarch/kernel/numa.c b/arch/loongarch/kernel/numa.c
+index c7d33c489e04..6e65ff12d5c7 100644
+--- a/arch/loongarch/kernel/numa.c
++++ b/arch/loongarch/kernel/numa.c
+@@ -436,7 +436,7 @@ void __init paging_init(void)
+ 
+ void __init mem_init(void)
+ {
+-	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
++	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+ 	memblock_free_all();
+ }
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.39.3
+
