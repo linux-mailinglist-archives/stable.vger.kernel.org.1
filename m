@@ -2,80 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE1E37AE5E9
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 08:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D77AC7AE613
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 08:38:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233738AbjIZGax (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 02:30:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55596 "EHLO
+        id S233738AbjIZGiT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 02:38:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233751AbjIZGaw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 02:30:52 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8636CF2;
-        Mon, 25 Sep 2023 23:30:45 -0700 (PDT)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38Q4PT08011646;
-        Tue, 26 Sep 2023 06:30:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : from : subject : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=R+ia+cvPbH+bAmUJdDBEKuS5Qt5VtNGnE7cTeyzU36c=;
- b=C0i1sssxbEYTw7HFwLJWS0jO2h86SODfro9WKkN7jtM7CjsFnp3Tr/QOfmlgD2TAc/xW
- 3418N/Iqby07DTxj+35Hk6vvaosfIo/FA+5OiBHl+NgaJDPZ+99EJ0w1gq4ZCZ4zIpCO
- AzTT+X+1X/ItftZq0D4ssZsgeeu+rzl+nGo5CQEEPpPzh5FDrGiIYIpzimH3ahCKwv0D
- ld3TOBhkg1I8tDjznu88yGpMmS+aBZVloB/KItL/eYbvz/5yIkqZlqqmDFmeD1SFdQJd
- gtaRx9WGDOmYAdLbmPXVD+9BBX3f2aqBogkjIMakvy5yQ6EXGkDqPAalt6k3g9jwuB6t AA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tbexgh4n5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 06:30:43 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38Q6UfvU027087
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 06:30:41 GMT
-Received: from [10.216.11.3] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 25 Sep
- 2023 23:30:38 -0700
-Message-ID: <a2b9e73a-e4eb-4c21-9d85-bf643cb353ca@quicinc.com>
-Date:   Tue, 26 Sep 2023 12:00:35 +0530
+        with ESMTP id S231549AbjIZGiS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 02:38:18 -0400
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F760E6;
+        Mon, 25 Sep 2023 23:38:09 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R341e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0Vsvr0J9_1695710284;
+Received: from 30.240.112.49(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vsvr0J9_1695710284)
+          by smtp.aliyun-inc.com;
+          Tue, 26 Sep 2023 14:38:07 +0800
+Message-ID: <078b410f-e3b2-0355-d993-40ac46b99870@linux.alibaba.com>
+Date:   Tue, 26 Sep 2023 14:38:04 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From:   Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>
-Subject: Re: [PATCH v2] usb: gadget: ncm: Handle decoding of multiple NTB's in
- unwrap call
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Linyu Yuan <quic_linyyuan@quicinc.com>,
-        =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>,
-        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_ppratap@quicinc.com>, <quic_wcheng@quicinc.com>,
-        <quic_jackp@quicinc.com>, <stable@vger.kernel.org>
-References: <20230915061001.18884-1-quic_kriskura@quicinc.com>
- <2023091743-tightly-drivable-4360@gregkh>
- <a890ac60-0562-48c3-9aa1-eb06ec21c69d@quicinc.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.14.0
+Subject: Re: [RESEND PATCH v8 2/2] ACPI: APEI: handle synchronous exceptions
+ in task work
 Content-Language: en-US
-In-Reply-To: <a890ac60-0562-48c3-9aa1-eb06ec21c69d@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: uA439euBvtP9-O0uDRSYY4dV1SETZexH
-X-Proofpoint-GUID: uA439euBvtP9-O0uDRSYY4dV1SETZexH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-26_04,2023-09-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 spamscore=0 suspectscore=0 impostorscore=0 mlxlogscore=996
- adultscore=0 clxscore=1015 bulkscore=0 mlxscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309260057
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+To:     Jarkko Sakkinen <jarkko@kernel.org>, rafael@kernel.org,
+        wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+        mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+        naoya.horiguchi@nec.com, james.morse@arm.com,
+        gregkh@linuxfoundation.org, will@kernel.org
+Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+        stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+        ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+        baolin.wang@linux.alibaba.com, bp@alien8.de, tglx@linutronix.de,
+        mingo@redhat.com, dave.hansen@linux.intel.com, lenb@kernel.org,
+        hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
+        xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20230919022127.69732-3-xueshuai@linux.alibaba.com>
+ <CVS371QBH3QK.3354DSBK53OFS@suppilovahvero>
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <CVS371QBH3QK.3354DSBK53OFS@suppilovahvero>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-11.4 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -84,108 +59,67 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 
-On 9/18/2023 1:07 PM, Krishna Kurapati PSSNV wrote:
-> 
-> 
-> On 9/17/2023 1:34 PM, Greg Kroah-Hartman wrote:
->>> Cc: stable@vger.kernel.org
+On 2023/9/25 23:00, Jarkko Sakkinen wrote:
+> On Tue Sep 19, 2023 at 5:21 AM EEST, Shuai Xue wrote:
+>> Hardware errors could be signaled by synchronous interrupt, e.g.  when an
+>> error is detected by a background scrubber, or signaled by synchronous
+>> exception, e.g. when an uncorrected error is consumed. Both synchronous and
+>> asynchronous error are queued and handled by a dedicated kthread in
+>> workqueue.
 >>
->> What commit id does this fix?
+>> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
+>> synchronous errors") keep track of whether memory_failure() work was
+>> queued, and make task_work pending to flush out the workqueue so that the
+>> work for synchronous error is processed before returning to user-space.
+>> The trick ensures that the corrupted page is unmapped and poisoned. And
+>> after returning to user-space, the task starts at current instruction which
+>> triggering a page fault in which kernel will send SIGBUS to current process
+>> due to VM_FAULT_HWPOISON.
 >>
-> 
-> Hi Greg,
-> 
-> This fixes the initial patch that added the driver:
-> 9f6ce4240a2bf456402c15c06768059e5973f28c
-> 
->>> Reviewed-by: Maciej Żenczykowski <maze@google.com>
->>> Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
->>> ---
->>>   drivers/usb/gadget/function/f_ncm.c | 26 +++++++++++++++++++-------
->>>   1 file changed, 19 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/drivers/usb/gadget/function/f_ncm.c 
->>> b/drivers/usb/gadget/function/f_ncm.c
->>> index feccf4c8cc4f..f00f051438ec 100644
->>> --- a/drivers/usb/gadget/function/f_ncm.c
->>> +++ b/drivers/usb/gadget/function/f_ncm.c
->>> @@ -1156,7 +1156,8 @@ static int ncm_unwrap_ntb(struct gether *port,
->>>                 struct sk_buff_head *list)
->>>   {
->>>       struct f_ncm    *ncm = func_to_ncm(&port->func);
->>> -    __le16        *tmp = (void *) skb->data;
->>> +    unsigned char    *ntb_ptr = (void *) skb->data;
+>> However, the memory failure recovery for hwpoison-aware mechanisms does not
+>> work as expected. For example, hwpoison-aware user-space processes like
+>> QEMU register their customized SIGBUS handler and enable early kill mode by
+>> seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
+>> the process by sending a SIGBUS signal in memory failure with wrong
+>> si_code: the actual user-space process accessing the corrupt memory
+>> location, but its memory failure work is handled in a kthread context, so
+>> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
+>> process instead of BUS_MCEERR_AR in kill_proc().
 >>
->> Why persist with the extra ' ', didn't checkpatch complain about this?
+>> To this end, separate synchronous and asynchronous error handling into
+>> different paths like X86 platform does:
 >>
->> And why the cast at all?
+>> - valid synchronous errors: queue a task_work to synchronously send SIGBUS
+>>   before ret_to_user.
+>> - valid asynchronous errors: queue a work into workqueue to asynchronously
+>>   handle memory failure.
+>> - abnormal branches such as invalid PA, unexpected severity, no memory
+>>   failure config support, invalid GUID section, OOM, etc.
 >>
-> My bad. I ran the checkpatch and got the following result:
-> 
-> kriskura@hu-kriskura-hyd:/local/mnt/workspace/krishna/510/testncm/kernel$ ./scripts/checkpatch.pl --strict 0001-usb-gadget-ncm-Handle-decoding-of-multiple-NTB-s-in-.patch
-> WARNING: Prefer a maximum 75 chars per line (possible unwrapped commit 
-> description?)
-> #12:
-> unwraps the obtained request data assuming only one NTB is present, we 
-> loose
-> 
-> CHECK: No space is necessary after a cast
-> #34: FILE: drivers/usb/gadget/function/f_ncm.c:1159:
-> +       unsigned char   *ntb_ptr = (void *) skb->data;
-> 
-> CHECK: No space is necessary after a cast
-> #46: FILE: drivers/usb/gadget/function/f_ncm.c:1176:
-> +       tmp = (void *) ntb_ptr;
-> 
-> CHECK: No space is necessary after a cast
-> #93: FILE: drivers/usb/gadget/function/f_ncm.c:1329:
-> +               ntb_ptr = (unsigned char *) (ntb_ptr + block_len);
-> 
-> total: 0 errors, 1 warnings, 3 checks, 67 lines checked
-> 
-> 
-> I ignored the checks and saw only that errors are 0. Seems like I missed 
-> fixing the commit text wrapping to 75 chars (On line 12 it has 76 
-> chars). Will fix it up in v3.
-> 
-> As per the cast, I initially didn't add any cast and saw that the code 
-> was not able to parse the dwSignature of the NTH and decoding of all 
-> packets was failing. Only when I added the cast, was the function able 
-> to decode all packets properly.
-> 
->>> +    __le16        *tmp;
->>>       unsigned    index, index2;
->>>       int        ndp_index;
->>>       unsigned    dg_len, dg_len2;
->>> @@ -1169,6 +1170,10 @@ static int ncm_unwrap_ntb(struct gether *port,
->>>       const struct ndp_parser_opts *opts = ncm->parser_opts;
->>>       unsigned    crc_len = ncm->is_crc ? sizeof(uint32_t) : 0;
->>>       int        dgram_counter;
->>> +    int        to_process = skb->len;
->>> +
->>> +parse_ntb:
->>> +    tmp = (void *) ntb_ptr;
+>> Then for valid synchronous errors, the current context in memory failure is
+>> exactly belongs to the task consuming poison data and it will send SIBBUS
+>> with proper si_code.
 >>
->> Again, no blank space please.
->>
->> And why the cast?
->>
-> the second cast here was just to be in sync with the original code;
-> __le16        *tmp = (void *) skb->data;
+>> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
+>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+>> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > 
-> I didn't try removing this and running the test. Will check if the 
-> second one is required or if decoding is proper without it or not.
+> Did 7f17b4a121d0 actually break something that was not broken before?
 > 
-> Regards,
-> Krishna,
+> If not, this is (afaik) not a bug fix.
 
-Hi Greg,
+Hi, Jarkko,
 
-  I rechecked the code and I don't see any error if I remove the 
-typecast for ntb_ptr. If I remove the typecast for tmp, I see build 
-errors as ntb_ptr is unsigned char and tmp is __le16. I have pushed v3 
-removing the typecast for ntb_ptr and fixing the checkpatch errors. 
-Thanks for pointing out that the typecast is not needed.
+It did not. It keeps track of whether memory_failure() work was queued,
+and makes task_work pending to flush out the queue. But if no work queued for
+synchronous error due to abnormal branches, it does not do a force kill to
+current process resulting a hard lockup due to exception loop.
 
-Regards,
-Krishna,
+It is fine to me to remove the bug fix tag if you insist on removing it.
+
+Best Regards,
+Shuai
+
