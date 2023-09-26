@@ -2,124 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D77AC7AE613
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 08:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38D187AE6A6
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 09:19:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233738AbjIZGiT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 02:38:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56576 "EHLO
+        id S232300AbjIZHTi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 03:19:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231549AbjIZGiS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 02:38:18 -0400
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F760E6;
-        Mon, 25 Sep 2023 23:38:09 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R341e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046056;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0Vsvr0J9_1695710284;
-Received: from 30.240.112.49(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vsvr0J9_1695710284)
-          by smtp.aliyun-inc.com;
-          Tue, 26 Sep 2023 14:38:07 +0800
-Message-ID: <078b410f-e3b2-0355-d993-40ac46b99870@linux.alibaba.com>
-Date:   Tue, 26 Sep 2023 14:38:04 +0800
+        with ESMTP id S232037AbjIZHTi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 03:19:38 -0400
+X-Greylist: delayed 484 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 26 Sep 2023 00:19:31 PDT
+Received: from out-210.mta0.migadu.com (out-210.mta0.migadu.com [IPv6:2001:41d0:1004:224b::d2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE132DE
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 00:19:31 -0700 (PDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1695712282;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=syqQR+9bPrQHdilL6zKTkrPq1VgSbRvVhw85Q7F9WZ4=;
+        b=B7R2Klencrq0fTtMQPjIqR9iGvs7PJvaVFQliMgF9PNe5Ko1WkYEf6kFLTERkfM5/cf8eh
+        Wu7gwqHpeVik7TI2jErLTf5Uj4xokGz0Gtf2RTq+RaTN/778O4FWJji7emfynVtBDp+U3D
+        lGakHMqUulc7Nj2VfjrRSWWhAZd2It4=
+From:   Yajun Deng <yajun.deng@linux.dev>
+To:     jesse.brandeburg@intel.com, anthony.l.nguyen@intel.com,
+        jacob.e.keller@intel.com, gregkh@linuxfoundation.org
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Yajun Deng <yajun.deng@linux.dev>
+Subject: [PATCH RESEND] i40e: fix the wrong PTP frequency calculation
+Date:   Tue, 26 Sep 2023 15:10:59 +0800
+Message-Id: <20230926071059.1239033-1-yajun.deng@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [RESEND PATCH v8 2/2] ACPI: APEI: handle synchronous exceptions
- in task work
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>, rafael@kernel.org,
-        wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
-        mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
-        naoya.horiguchi@nec.com, james.morse@arm.com,
-        gregkh@linuxfoundation.org, will@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-        stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
-        ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
-        baolin.wang@linux.alibaba.com, bp@alien8.de, tglx@linutronix.de,
-        mingo@redhat.com, dave.hansen@linux.intel.com, lenb@kernel.org,
-        hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
-        xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230919022127.69732-3-xueshuai@linux.alibaba.com>
- <CVS371QBH3QK.3354DSBK53OFS@suppilovahvero>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <CVS371QBH3QK.3354DSBK53OFS@suppilovahvero>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-11.4 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+The new adjustment should be based on the base frequency, not the
+I40E_PTP_40GB_INCVAL in i40e_ptp_adjfine().
 
+This issue was introduced in commit 3626a690b717 ("i40e: use
+mul_u64_u64_div_u64 for PTP frequency calculation"), frequency is left
+just as base I40E_PTP_40GB_INCVAL before the commit. After the commit,
+frequency is the I40E_PTP_40GB_INCVAL times the ptp_adj_mult value.
+But then the diff is applied on the wrong value, and no multiplication
+is done afterwards.
 
-On 2023/9/25 23:00, Jarkko Sakkinen wrote:
-> On Tue Sep 19, 2023 at 5:21 AM EEST, Shuai Xue wrote:
->> Hardware errors could be signaled by synchronous interrupt, e.g.  when an
->> error is detected by a background scrubber, or signaled by synchronous
->> exception, e.g. when an uncorrected error is consumed. Both synchronous and
->> asynchronous error are queued and handled by a dedicated kthread in
->> workqueue.
->>
->> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
->> synchronous errors") keep track of whether memory_failure() work was
->> queued, and make task_work pending to flush out the workqueue so that the
->> work for synchronous error is processed before returning to user-space.
->> The trick ensures that the corrupted page is unmapped and poisoned. And
->> after returning to user-space, the task starts at current instruction which
->> triggering a page fault in which kernel will send SIGBUS to current process
->> due to VM_FAULT_HWPOISON.
->>
->> However, the memory failure recovery for hwpoison-aware mechanisms does not
->> work as expected. For example, hwpoison-aware user-space processes like
->> QEMU register their customized SIGBUS handler and enable early kill mode by
->> seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
->> the process by sending a SIGBUS signal in memory failure with wrong
->> si_code: the actual user-space process accessing the corrupt memory
->> location, but its memory failure work is handled in a kthread context, so
->> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
->> process instead of BUS_MCEERR_AR in kill_proc().
->>
->> To this end, separate synchronous and asynchronous error handling into
->> different paths like X86 platform does:
->>
->> - valid synchronous errors: queue a task_work to synchronously send SIGBUS
->>   before ret_to_user.
->> - valid asynchronous errors: queue a work into workqueue to asynchronously
->>   handle memory failure.
->> - abnormal branches such as invalid PA, unexpected severity, no memory
->>   failure config support, invalid GUID section, OOM, etc.
->>
->> Then for valid synchronous errors, the current context in memory failure is
->> exactly belongs to the task consuming poison data and it will send SIBBUS
->> with proper si_code.
->>
->> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
->> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
->> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> 
-> Did 7f17b4a121d0 actually break something that was not broken before?
-> 
-> If not, this is (afaik) not a bug fix.
+It was accidentally fixed in commit 1060707e3809 ("ptp: introduce helpers
+to adjust by scaled parts per million"). It uses adjust_by_scaled_ppm
+correctly performs the calculation and uses the base adjustment, so
+there's no error here. But it is a new feature and doesn't need to
+backported to the stable releases.
 
-Hi, Jarkko,
+This issue affects both v6.0 and v6.1, and the v6.1 version is an LTS
+release. Therefore, the patch only needs to be applied to v6.1 stable.
 
-It did not. It keeps track of whether memory_failure() work was queued,
-and makes task_work pending to flush out the queue. But if no work queued for
-synchronous error due to abnormal branches, it does not do a force kill to
-current process resulting a hard lockup due to exception loop.
+Fixes: 3626a690b717 ("i40e: use mul_u64_u64_div_u64 for PTP frequency calculation")
+Cc: <stable@vger.kernel.org> # 6.1
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+---
+ drivers/net/ethernet/intel/i40e/i40e_ptp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-It is fine to me to remove the bug fix tag if you insist on removing it.
-
-Best Regards,
-Shuai
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+index ffea0c9c82f1..97a9efe7b713 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+@@ -361,9 +361,9 @@ static int i40e_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
+ 				   1000000ULL << 16);
+ 
+ 	if (neg_adj)
+-		adj = I40E_PTP_40GB_INCVAL - diff;
++		adj = freq - diff;
+ 	else
+-		adj = I40E_PTP_40GB_INCVAL + diff;
++		adj = freq + diff;
+ 
+ 	wr32(hw, I40E_PRTTSYN_INC_L, adj & 0xFFFFFFFF);
+ 	wr32(hw, I40E_PRTTSYN_INC_H, adj >> 32);
+-- 
+2.25.1
 
