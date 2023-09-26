@@ -2,115 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64F907AE989
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 11:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C111F7AEB64
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 13:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234143AbjIZJsu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 05:48:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46158 "EHLO
+        id S229556AbjIZLX2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 07:23:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231284AbjIZJsu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 05:48:50 -0400
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAEBFB3;
-        Tue, 26 Sep 2023 02:48:40 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D60C6C0008;
-        Tue, 26 Sep 2023 09:48:36 +0000 (UTC)
-Date:   Tue, 26 Sep 2023 11:47:56 +0200
-From:   Remi Pommarel <repk@triplefau.lt>
-To:     Paolo Abeni <pabeni@redhat.com>
-Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: stmmac: remove unneeded
- stmmac_poll_controller
-Message-ID: <ZRKozLps8dmDmQgc@pilgrim>
-References: <20230906091330.6817-1-repk@triplefau.lt>
- <626de62327fa25706ab1aaab32d7ba3a93ab26e4.camel@redhat.com>
+        with ESMTP id S229782AbjIZLX1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 07:23:27 -0400
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B67210C
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 04:23:19 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-405524e6769so39115315e9.1
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 04:23:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695727398; x=1696332198; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kMeSzzLlxhV04SlweKcnZdB57NwdycsgJqov1wCWtTc=;
+        b=OXqjNAf7W58kUJdE8jFMQbCKrd1RJAUNMUP6SIkd4Kshr8QzvJT2Y016wPq0cWxEjP
+         yKaWfYqZlysH9Zq4xX2Z86AdqftZtmCoZH6DWU9DHtO5XlRAzncLi1dgEiWC5A3SHf5F
+         5P88golj681nOIJABjKJ2T3PsJn3WhzsyU9RB5TutphxeZb5o2WCiSNA16FfuRaW/nFx
+         +NmA9NUbjgEOAjk72I4nFTi8HHb6443TWTDcPWNiTgaAmHUz40o5/5T2gjiDOjrbJmH9
+         TUwEpwi/6zL8MH2REZvruyypWFzknWfh1dsIkN0WAGnJy4baFs59aTr154kUX1D8Pqck
+         Q3vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695727398; x=1696332198;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kMeSzzLlxhV04SlweKcnZdB57NwdycsgJqov1wCWtTc=;
+        b=G19PF22m8XxfdFf/M6/iV1k6QYO4TY2nR7WdcIJuQSl0MdFIRuQOtRKq/iVBJflWwV
+         ZTwoV3xZSKlbjhGQQhQ7yJL85pp0mYes5VSu1fG4fhPW+vwClSfI+nyHdzR3VU+y07jv
+         GST2K8j2M5rw8hS2ehgYHQztXfBsRaAzTFmW5P/wBb6gswMloxhWKshMK0s0nn4b7KwQ
+         QXnJbXCNuHvgRslygKjpvpYhS69b281RThYZX6zIIFCKlJsvDiHqZq8QvlqPJsoPLU7B
+         wOFhZ9TAFcg0PI+5EJLSb3bVCmpv/KfkRS3ORtWZVzHfyY8uXQcoK6sU3UL+ISj/Mtfk
+         /gAw==
+X-Gm-Message-State: AOJu0YzF+c9oz6hqi3BkjjT5zgHs4cPx8G5NI4p9Hjc4vAB5s/92Zlu7
+        HKxxjmo3DXdnmK/ZjUqE33s=
+X-Google-Smtp-Source: AGHT+IEPmizr+2spNBYC/XCrjjUHvrZN8VOt/YC0yj7mg2vIymhmwjKbjw/gtnZ8KLuTWQZk/BGzgg==
+X-Received: by 2002:a1c:7907:0:b0:402:f8e3:93 with SMTP id l7-20020a1c7907000000b00402f8e30093mr1848145wme.10.1695727397854;
+        Tue, 26 Sep 2023 04:23:17 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id f2-20020a7bc8c2000000b003fefaf299b6sm3330603wml.38.2023.09.26.04.23.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Sep 2023 04:23:14 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+        id 1F994BE2DE0; Tue, 26 Sep 2023 13:23:14 +0200 (CEST)
+Date:   Tue, 26 Sep 2023 13:23:14 +0200
+From:   Salvatore Bonaccorso <carnil@debian.org>
+To:     Ricky WU <ricky_wu@realtek.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Paul Grandperrin <paul.grandperrin@gmail.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Wei_wang <wei_wang@realsil.com.cn>,
+        Roger Tseng <rogerable@realtek.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from
+ drivers/misc/cardreader breaks NVME power state, preventing system boot
+Message-ID: <ZRK_Iqj1ZSjx1fZS@eldamar.lan>
+References: <5DHV0S.D0F751ZF65JA1@gmail.com>
+ <82469f2f-59e4-49d5-823d-344589cbb119@leemhuis.info>
+ <2023091333-fiftieth-trustless-d69d@gregkh>
+ <7991b5bd7fb5469c971a2984194e815f@realtek.com>
+ <2023091921-unscented-renegade-6495@gregkh>
+ <995632624f0e4d26b73fb934a8eeaebc@realtek.com>
+ <2023092041-shopper-prozac-0640@gregkh>
+ <3ddcf5fae0164fbda79081650da79600@realtek.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <626de62327fa25706ab1aaab32d7ba3a93ab26e4.camel@redhat.com>
-X-GND-Sasl: repk@triplefau.lt
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <3ddcf5fae0164fbda79081650da79600@realtek.com>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 07, 2023 at 11:23:16AM +0200, Paolo Abeni wrote:
-> On Wed, 2023-09-06 at 11:13 +0200, Remi Pommarel wrote:
-> > Using netconsole netpoll_poll_dev could be called from interrupt
-> > context, thus using disable_irq() would cause the following kernel
-> > warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
+Hi
+
+[apologies if I missed some followup but was not able to find the
+answer]
+
+On Wed, Sep 20, 2023 at 08:32:17AM +0000, Ricky WU wrote:
+> > On Wed, Sep 20, 2023 at 07:30:00AM +0000, Ricky WU wrote:
+> > > Hi Greg k-h,
+> > >
+> > > This patch is our solution for this issue...
+> > > And now how can I push this?
 > > 
-> >   BUG: sleeping function called from invalid context at kernel/irq/manage.c:137
-> >   in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksoftirqd/0
-> >   CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00075-g816b502b2298-dirty #117
-> >   Hardware name: aml (r1) (DT)
-> >   Call trace:
-> >    dump_backtrace+0x0/0x270
-> >    show_stack+0x14/0x20
-> >    dump_stack_lvl+0x8c/0xac
-> >    dump_stack+0x18/0x30
-> >    ___might_sleep+0x150/0x194
-> >    __might_sleep+0x64/0xbc
-> >    synchronize_irq+0x8c/0x150
-> >    disable_irq+0x2c/0x40
-> >    stmmac_poll_controller+0x140/0x1a0
-> >    netpoll_poll_dev+0x6c/0x220
-> >    netpoll_send_skb+0x308/0x390
-> >    netpoll_send_udp+0x418/0x760
-> >    write_msg+0x118/0x140 [netconsole]
-> >    console_unlock+0x404/0x500
-> >    vprintk_emit+0x118/0x250
-> >    dev_vprintk_emit+0x19c/0x1cc
-> >    dev_printk_emit+0x90/0xa8
-> >    __dev_printk+0x78/0x9c
-> >    _dev_warn+0xa4/0xbc
-> >    ath10k_warn+0xe8/0xf0 [ath10k_core]
-> >    ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
-> >    ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
-> >    __napi_poll+0x58/0x1f4
-> >    net_rx_action+0x504/0x590
-> >    _stext+0x1b8/0x418
-> >    run_ksoftirqd+0x74/0xa4
-> >    smpboot_thread_fn+0x210/0x3c0
-> >    kthread+0x1fc/0x210
-> >    ret_from_fork+0x10/0x20
+> > Submit it properly like any other patch, what is preventing that from
+> > happening?
 > > 
-> > Since [0] .ndo_poll_controller is only needed if driver doesn't or
-> > partially use NAPI. Because stmmac does so, stmmac_poll_controller
-> > can be removed fixing the above warning.
-> > 
-> > [0] commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional")
-> > 
-> > Cc: <stable@vger.kernel.org> # 5.15.x
-> > Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 > 
-> I'm sorry for the incremental feedback, but we also need a suitable
-> Fixes tag, thanks!
+> (commit 8ee39ec) some reader no longer force #CLKREQ to low when system need to enter ASPM.
+> But some platform maybe not implement complete ASPM? I don't know..... it causes problems...
+> 
+> Like in the past Only the platform support L1ss we release the #CLKREQ.
+> But new patch we move the judgment (L1ss) to probe, because we met some host will clean the config space from S3 or some power saving mode 
+> And also we think just to read config space one time when the driver start is enough  
 
-I didn't include Fixes tag because it would go back up to the initial
-driver support commit [0]. I can't be sure that this commit includes
-necessary NAPI implementation to be able to get rid of
-.ndo_poll_controller callback back then. And I am not able to test it on
-older version than 5.15.x hence I only included the 5.15.x Cc tag
-version prerequisite.
+Is there a potential fix which is queued for this or would be the
+safest option to unbreak the regression to revert the commit in the
+stable trees temporarily?
 
-But I surely can add a Fixed tag if it is ok for it to be [0].
+I'm asking because in Debian we got the report at 
+https://bugs.debian.org/1052063 
 
-Also sorry for the long replying delay.
+(and ideally to unbreak the situation for the user I would like to
+include a fix in the next upload we do, but following what you as
+upstream will do ideally).
 
-[0] commit 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers")
-
--- 
-Remi
+Regards,
+Salvatore
