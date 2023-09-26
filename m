@@ -2,133 +2,155 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3187AED17
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 14:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C937F7AEE2B
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 15:54:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233232AbjIZMpX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 08:45:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45420 "EHLO
+        id S234878AbjIZNuO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 09:50:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233754AbjIZMpW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 08:45:22 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BECFDC9;
-        Tue, 26 Sep 2023 05:45:15 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-35142c4cbbdso11101845ab.0;
-        Tue, 26 Sep 2023 05:45:15 -0700 (PDT)
+        with ESMTP id S234882AbjIZNuM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 09:50:12 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B609C101
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 06:50:02 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-31dd10c2b8bso8272831f8f.3
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 06:50:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695732315; x=1696337115; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u8GtOh0Ea37C8rlqo/82aa01wybzYgEjYTXnLH9cgHo=;
-        b=FP08doYd+cMWA49N6cyDx8aRkrh9Cl3pM3Nq+uh4nUnQhXXwGLNJ9ucCAheUUZWvxW
-         1+Gm/ZUR7IEA3RvXhrF3JyrsHWHXqyRodQxvwRNrnJsQosp2PalX1FWkCRKUI5DUi8np
-         g72MWIQMlQI3xe/pAUkYW713YsySY+ThYUrl7ez7mLcVwuc4C2E0VTYOtKYWld3yHUoO
-         YSqhJl10KVQrzGJsKSY/KojSMg91tD4Gec/LmuaHBk1L+3R0BQQFW4KuNr+7yJ5ArAgx
-         agPfU/SFychya6YwG+SP53o8dGmxe4EaYrc7ZqeCy4z46fWa/ijuOLV7jyjba9OpTEjn
-         foyw==
+        d=linaro.org; s=google; t=1695736201; x=1696341001; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cRs3HHfGHaH5W3/uj1x1VaVTGyeeNQR7KwXCiLuCrmM=;
+        b=bz7BUBGI6h61JBq7BxRn1D+HQiufLhNn2a2hvsJ4pr1rTZNqiOQ6xWB8MGtNINuY26
+         ofOqJ/Zq00wEW4hDfz9MuhaT/uj8dBtcw0i4kXr2JNN/DTTVU6wN1zAys0p4ZOtzz4Q+
+         9MI64iukHtMbuB7iXu4FTVIv3IjNrgEkNj3zcF/74MtSrgzWtP6eR6wODi9/CpGsBrai
+         qsSuA0IGwcCzaGMHyIA1SphmKJff+wnUp8sVheWvfR3yP7jZzf5af59UT2iFslxg87C4
+         ueY2oHMa3JAPt4q239D51f5HuxZ2CKlLJuGLxmLrZBk3EgT01JnCpkUn6ApZTb3qzi0e
+         XMIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695732315; x=1696337115;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u8GtOh0Ea37C8rlqo/82aa01wybzYgEjYTXnLH9cgHo=;
-        b=ewU3uvMVhohLoxpClV6cxMoQjFI1FeY6R9s8azgzxI1yQlIqqAwuIAC9RhELOJKzMA
-         95eCo7uL/7M6lA+o5JUsCZILVKcxTMbfCpxMXZq0bjqyv4pAvXnbpzUDPWnUdu8ne7ze
-         Tr5wkLNruRRaLtBWyBAdLEOyW7bUJRbBCLtc45Urs3UDGrp6rcVwpUPs/RBlCR2JUcB9
-         MD6tTEyTNgv47qplvZ1T8C8oAcYwlR5GOHcVay0JQ6p0nOfFGFBkPhutFp0QYPuWAk7H
-         kPM+PifKAL3GGvPsy4QgX0iyrfMoOfTYgl3PJLaK3pOUA3nZvTBSd3VXs5GfCj7h//km
-         BiiA==
-X-Gm-Message-State: AOJu0YykIMqSAAtOZ/Zi/QbVF4KR3l9J7M00i09D0ltp6eAhVIex1RqU
-        L3V77oG4KFu3xGH587xfEWA3+1OVKYU=
-X-Google-Smtp-Source: AGHT+IGOkGqvY6ZKVWlX8YrrjA6IKC/U4gLUzFzY2FohU7Dfm+rQoM3VnISIWiO8CisnCPcCLwc0nA==
-X-Received: by 2002:a05:6e02:2149:b0:34a:a4a5:3f93 with SMTP id d9-20020a056e02214900b0034aa4a53f93mr12753468ilv.5.1695732315064;
-        Tue, 26 Sep 2023 05:45:15 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id a17-20020a056638005100b0043a180a7a94sm3321904jap.121.2023.09.26.05.45.14
+        d=1e100.net; s=20230601; t=1695736201; x=1696341001;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cRs3HHfGHaH5W3/uj1x1VaVTGyeeNQR7KwXCiLuCrmM=;
+        b=KAoh9xYgOMtGBpZoGDOgQxqpMSR5ezCu7/SMG1HZyqt/Oe9DsH2cYSZLN7FgMeKQ2V
+         3plvw45l2+TGK+TlVdUttELkAiLEXBT4A81ZfzMqjzc2yZcVwxe6MSaaxMjNNFxg646u
+         xZyqGMTTc/tz8zZC15biiEcG2SgxIiEGOHODtpSLxHKSrXjCR4FP33KbUXg4lBUBpPWs
+         cbsKQAZcPS2LowbP8nIf9X8Ctp2J1MiE3PNNgFDRpiz/5tPDWOvfB+o5Qnevy43eY0nT
+         /UlAM0sz5iw6htAruALXmzX0TpNiHwTcJRAzbLt7NHe0qtGIiBHwdH8QTkbr44I7Nv7v
+         e3Hw==
+X-Gm-Message-State: AOJu0Ywx4YD/iTsnfjfDl14fLaAFUz1nuDl2/vrEUUDJjnmvv5JSfY14
+        PC6bYJ29l4gchKuBN6qXkYo3EA==
+X-Google-Smtp-Source: AGHT+IF91hGN1iRDS8YgIh/vPtUJ+zpofgOyE21tn2k4Y0dzzbVuW2uJnDRcsiLSCzeUbXQdNsr/9Q==
+X-Received: by 2002:a5d:4fc9:0:b0:31a:dc2e:2db2 with SMTP id h9-20020a5d4fc9000000b0031adc2e2db2mr9310520wrw.49.1695736200924;
+        Tue, 26 Sep 2023 06:50:00 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id o11-20020a056000010b00b0031c52e81490sm14821340wrx.72.2023.09.26.06.49.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 05:45:14 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 26 Sep 2023 05:45:13 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Darren Hart <darren@os.amperecomputing.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        linux-watchdog@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH] sbsa_gwdt: Calculate timeout with 64-bit math
-Message-ID: <bcc41311-075c-44fe-b0f7-30564d7ac58c@roeck-us.net>
-References: <7d1713c5ffab19b0f3de796d82df19e8b1f340de.1695286124.git.darren@os.amperecomputing.com>
+        Tue, 26 Sep 2023 06:50:00 -0700 (PDT)
+Date:   Tue, 26 Sep 2023 16:49:57 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     oe-kbuild@lists.linux.dev,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Sebastian Ott <sebott@redhat.com>
+Cc:     lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+        Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] binfmt_elf: Support segments with 0 filesz and
+ misaligned starts
+Message-ID: <60c7fdeb-da32-4d21-9e34-368050224d6c@kadam.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7d1713c5ffab19b0f3de796d82df19e8b1f340de.1695286124.git.darren@os.amperecomputing.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <87jzsemmsd.fsf_-_@email.froward.int.ebiederm.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 21, 2023 at 02:02:36AM -0700, Darren Hart wrote:
-> Commit abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
-> introduced new timer math for watchdog revision 1 with the 48 bit offset
-> register.
-> 
-> The gwdt->clk and timeout are u32, but the argument being calculated is
-> u64. Without a cast, the compiler performs u32 operations, truncating
-> intermediate steps, resulting in incorrect values.
-> 
-> A watchdog revision 1 implementation with a gwdt->clk of 1GHz and a
-> timeout of 600s writes 3647256576 to the one shot watchdog instead of
-> 300000000000, resulting in the watchdog firing in 3.6s instead of 600s.
-> 
-> Force u64 math by casting the first argument (gwdt->clk) as a u64. Make
-> the order of operations explicit with parenthesis.
-> 
-> Fixes: abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
-> Reported-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-> Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
-> Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
-> Cc: Guenter Roeck <linux@roeck-us.net>
-> Cc: linux-watchdog@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: <stable@vger.kernel.org> # 5.14.x
+Hi Eric,
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+kernel test robot noticed the following build warnings:
 
-> ---
->  drivers/watchdog/sbsa_gwdt.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/watchdog/sbsa_gwdt.c b/drivers/watchdog/sbsa_gwdt.c
-> index fd3cfdda4949..76527324b63c 100644
-> --- a/drivers/watchdog/sbsa_gwdt.c
-> +++ b/drivers/watchdog/sbsa_gwdt.c
-> @@ -153,14 +153,14 @@ static int sbsa_gwdt_set_timeout(struct watchdog_device *wdd,
->  	timeout = clamp_t(unsigned int, timeout, 1, wdd->max_hw_heartbeat_ms / 1000);
->  
->  	if (action)
-> -		sbsa_gwdt_reg_write(gwdt->clk * timeout, gwdt);
-> +		sbsa_gwdt_reg_write((u64)gwdt->clk * timeout, gwdt);
->  	else
->  		/*
->  		 * In the single stage mode, The first signal (WS0) is ignored,
->  		 * the timeout is (WOR * 2), so the WOR should be configured
->  		 * to half value of timeout.
->  		 */
-> -		sbsa_gwdt_reg_write(gwdt->clk / 2 * timeout, gwdt);
-> +		sbsa_gwdt_reg_write(((u64)gwdt->clk / 2) * timeout, gwdt);
->  
->  	return 0;
->  }
-> -- 
-> 2.41.0
-> 
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Eric-W-Biederman/binfmt_elf-Support-segments-with-0-filesz-and-misaligned-starts/20230925-210022
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git for-next/execve
+patch link:    https://lore.kernel.org/r/87jzsemmsd.fsf_-_%40email.froward.int.ebiederm.org
+patch subject: [PATCH] binfmt_elf: Support segments with 0 filesz and misaligned starts
+config: i386-randconfig-141-20230926 (https://download.01.org/0day-ci/archive/20230926/202309261925.QvgPAYL7-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20230926/202309261925.QvgPAYL7-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202309261925.QvgPAYL7-lkp@intel.com/
+
+smatch warnings:
+fs/binfmt_elf.c:431 elf_load() error: uninitialized symbol 'map_addr'.
+
+vim +/map_addr +431 fs/binfmt_elf.c
+
+a6409120b31666 Eric W. Biederman 2023-09-25  390  static unsigned long elf_load(struct file *filep, unsigned long addr,
+a6409120b31666 Eric W. Biederman 2023-09-25  391  		const struct elf_phdr *eppnt, int prot, int type,
+a6409120b31666 Eric W. Biederman 2023-09-25  392  		unsigned long total_size)
+a6409120b31666 Eric W. Biederman 2023-09-25  393  {
+a6409120b31666 Eric W. Biederman 2023-09-25  394  	unsigned long zero_start, zero_end;
+a6409120b31666 Eric W. Biederman 2023-09-25  395  	unsigned long map_addr;
+a6409120b31666 Eric W. Biederman 2023-09-25  396  
+a6409120b31666 Eric W. Biederman 2023-09-25  397  	if (eppnt->p_filesz) {
+a6409120b31666 Eric W. Biederman 2023-09-25  398  		map_addr = elf_map(filep, addr, eppnt, prot, type, total_size);
+a6409120b31666 Eric W. Biederman 2023-09-25  399  		if (BAD_ADDR(map_addr))
+a6409120b31666 Eric W. Biederman 2023-09-25  400  			return map_addr;
+a6409120b31666 Eric W. Biederman 2023-09-25  401  		if (eppnt->p_memsz > eppnt->p_filesz) {
+a6409120b31666 Eric W. Biederman 2023-09-25  402  			zero_start = map_addr + ELF_PAGEOFFSET(eppnt->p_vaddr) +
+a6409120b31666 Eric W. Biederman 2023-09-25  403  				eppnt->p_filesz;
+a6409120b31666 Eric W. Biederman 2023-09-25  404  			zero_end = map_addr + ELF_PAGEOFFSET(eppnt->p_vaddr) +
+a6409120b31666 Eric W. Biederman 2023-09-25  405  				eppnt->p_memsz;
+a6409120b31666 Eric W. Biederman 2023-09-25  406  
+a6409120b31666 Eric W. Biederman 2023-09-25  407  			/* Zero the end of the last mapped page */
+a6409120b31666 Eric W. Biederman 2023-09-25  408  			padzero(zero_start);
+a6409120b31666 Eric W. Biederman 2023-09-25  409  		}
+a6409120b31666 Eric W. Biederman 2023-09-25  410  	} else {
+a6409120b31666 Eric W. Biederman 2023-09-25  411  		zero_start = ELF_PAGESTART(addr);
+a6409120b31666 Eric W. Biederman 2023-09-25  412  		zero_end = zero_start + ELF_PAGEOFFSET(eppnt->p_vaddr) +
+a6409120b31666 Eric W. Biederman 2023-09-25  413  			eppnt->p_memsz;
+
+For this else path, map_addr is only set if there is an error.
+
+a6409120b31666 Eric W. Biederman 2023-09-25  414  	}
+a6409120b31666 Eric W. Biederman 2023-09-25  415  	if (eppnt->p_memsz > eppnt->p_filesz) {
+a6409120b31666 Eric W. Biederman 2023-09-25  416  		/*
+a6409120b31666 Eric W. Biederman 2023-09-25  417  		 * Map the last of the segment.
+a6409120b31666 Eric W. Biederman 2023-09-25  418  		 * If the header is requesting these pages to be
+a6409120b31666 Eric W. Biederman 2023-09-25  419  		 * executable, honour that (ppc32 needs this).
+a6409120b31666 Eric W. Biederman 2023-09-25  420  		 */
+a6409120b31666 Eric W. Biederman 2023-09-25  421  		int error;
+a6409120b31666 Eric W. Biederman 2023-09-25  422  
+a6409120b31666 Eric W. Biederman 2023-09-25  423  		zero_start = ELF_PAGEALIGN(zero_start);
+a6409120b31666 Eric W. Biederman 2023-09-25  424  		zero_end = ELF_PAGEALIGN(zero_end);
+a6409120b31666 Eric W. Biederman 2023-09-25  425  
+a6409120b31666 Eric W. Biederman 2023-09-25  426  		error = vm_brk_flags(zero_start, zero_end - zero_start,
+a6409120b31666 Eric W. Biederman 2023-09-25  427  				     prot & PROT_EXEC ? VM_EXEC : 0);
+a6409120b31666 Eric W. Biederman 2023-09-25  428  		if (error)
+a6409120b31666 Eric W. Biederman 2023-09-25  429  			map_addr = error;
+a6409120b31666 Eric W. Biederman 2023-09-25  430  	}
+a6409120b31666 Eric W. Biederman 2023-09-25 @431  	return map_addr;
+a6409120b31666 Eric W. Biederman 2023-09-25  432  }
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
