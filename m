@@ -2,68 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2237A7AF49D
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 22:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F8E77AF4B1
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 22:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235801AbjIZUDV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 16:03:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60788 "EHLO
+        id S235750AbjIZUFV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 16:05:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235794AbjIZUDS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 16:03:18 -0400
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65F5CD6
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:03:11 -0700 (PDT)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-27762a19386so3528344a91.2
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:03:11 -0700 (PDT)
+        with ESMTP id S235811AbjIZUFU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 16:05:20 -0400
+Received: from mail-io1-xd4a.google.com (mail-io1-xd4a.google.com [IPv6:2607:f8b0:4864:20::d4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D81193
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:05:13 -0700 (PDT)
+Received: by mail-io1-xd4a.google.com with SMTP id ca18e2360f4ac-7919f80dfdcso1240261139f.3
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:05:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695758591; x=1696363391; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fA05+bYS7KOIKR/I8Uj+c2mjDDZM40BJJRZc83kHMhs=;
-        b=pNGxaZJY6XSKDWtaxJ6XWeX4twkjghpOUJXzslSuxvE4vqljxtL/R671TaNpJePTaZ
-         y6A+4UHFA3IHcGokPJgih9tf7BtB9sQUHpzTE5SQ/j1JEAen/3fbt7LQ9x4PpHlYIvO2
-         KDgwnDKN5bTR6VmxViftxxwCtUesGX9bnL/iA2ZTCK3UH47C6qgDJ9tmzCHrj41IwiQ0
-         UjPYKqS/c3quP/1xEshQ/aM8h0fYfMxVf0q0QnlNLkyr3qAf4dByeLbJ/sBykIxcssuH
-         Nou66/kqJi/v3oNXA+ODpltDrfsXlKpUYnsJOyAOzzutRDyJETUn1WrZF2qsdcalN+vT
-         2SWg==
+        d=google.com; s=20230601; t=1695758712; x=1696363512; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3bPJjIsPmHmwi+Eu0+GyNZUXrMn22SrOLV+oVGGBzwU=;
+        b=QdxdKR018VDb7P3I3YlQobzqnoLNRUnnCyIuGMfXhO9cqkO5AeiTcdqria2tHKPDqw
+         wo2i8J7WCXOfI8amssYt0W3+RqJXhJ27F8F6YRyBmXzo+o5Tcqao8vUjxqMoJvjYzjnv
+         lLX4BP13ETlo2B5wYSw+8IX5XvhhkPZBXnx/nAzM35gjVDFiCq0SWSspZDiifpEpPlxa
+         cCfnM7yNy67zdgarNHxXAmptNAZm42yEhLU5QVXf1DNqnaKk8EBQqYedhkiEBJyFtvzH
+         QgB25oVoXgBNvKH7Syx7latiVYRf7ARFpU/eqy6j21L/5jxx+q68OK265WvrHn54JYpl
+         F2pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695758591; x=1696363391;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fA05+bYS7KOIKR/I8Uj+c2mjDDZM40BJJRZc83kHMhs=;
-        b=Wh4uUN1yT/VdSaXY8MAs3DjuQ6KS8IVh4x4IJJWh4xSQcxOcLFf1cU6E4x5e3zX1kP
-         j+h7dl59Em4k7Hzp+Kop0WUsq5D2EvKbRuFVTY0ym8fB+gCK94JiEbx+NV7zVHaR7G53
-         wP56BHsXsOpqM4wrJHNVl5q1jTLSdAxQIsZ1DkW26Ek/cpulwm6bqrCUtfBuPpRrl5+5
-         vPAR+t+3qV1Ex2CM7vdjlDTlx6czl1tFs9AdCv1POxc7n/K9Fl3Y3cL6+xkW0Kv5DVSo
-         Qut+tqeQKpbZxPGV/MfPr7fkWcRWY3O2SIj/EmqHVvtNfeLuthkCCzZCV6WY1ozoLSJ3
-         FiIg==
-X-Gm-Message-State: AOJu0YzJAv5WaRVJxeQ8UEgn2LNxnMtWvW9u0kOUf66XtvJbIDm7YIq6
-        xQBEkEq3mVPdjjM0ClQ3DzPilYb+vdP5omj6TkrIBQ==
-X-Google-Smtp-Source: AGHT+IEQWocucOt77iz92cLf81oVW1Qi0Z2ZvMtVVl9yhDa/wA+LToQsFIZ/7D0ie7+TsWMUTo3dCgff4aufnilluGc=
-X-Received: by 2002:a17:90a:6341:b0:263:4305:4e82 with SMTP id
- v1-20020a17090a634100b0026343054e82mr7899778pjs.6.1695758590638; Tue, 26 Sep
- 2023 13:03:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230922155336.507220-1-bgeffon@google.com> <20230922160704.511283-1-bgeffon@google.com>
- <CAJZ5v0gRmoSaP3T0s9Li3grBB6DkaXf6D_0oHdw3=-UJWjJEKA@mail.gmail.com>
-In-Reply-To: <CAJZ5v0gRmoSaP3T0s9Li3grBB6DkaXf6D_0oHdw3=-UJWjJEKA@mail.gmail.com>
-From:   Brian Geffon <bgeffon@google.com>
-Date:   Tue, 26 Sep 2023 16:02:34 -0400
-Message-ID: <CADyq12wMR0viVN+m6T3rAL0kn1792iB0V5s=_tSxkLuPZk6KxA@mail.gmail.com>
-Subject: Re: [PATCH] PM: hibernate: clean up sync_read handling in snapshot_write_next
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Matthias Kaehlcke <mka@chromium.org>, stable@vger.kernel.org
+        d=1e100.net; s=20230601; t=1695758712; x=1696363512;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3bPJjIsPmHmwi+Eu0+GyNZUXrMn22SrOLV+oVGGBzwU=;
+        b=ZBFp0CRYlsi0/qK6pWwZBJ75+7b+wHqNfWMgunFGnNXXroYV1B5Uo4dZP5L/j9XRuG
+         QW/+vNJFBhG6ACLP7jxfxAGZK8mivDakUqhG6w4I6zfeJiOHWL4VHr0Gg6ut4KZXFZOL
+         hjxOGcM58oUkf9pgVm+CyyC59APxZ123BOMjYb5CHtay8A3GGzadSQ6b1cdA4TaKRVWq
+         tdg3uuUxLlOvgLF4WFAKwkrNfk8/HOo/OoAsC+AW3AfLmjUx76xX32KV1Vlf3TFkYRaH
+         d0Q6acXtnBomv7oU8ZW6KCgNvw7/wPJjrrAirK5ehyhVuQP+Xzk58+lZ4ej2mxHOC9iG
+         oMvg==
+X-Gm-Message-State: AOJu0YzqBahhwd0ttgC11ajU1yM61l2f+up7jEUyAjo14ryBk7bZJCZt
+        Zw24QLd7UKIlweacS6SoLghggV2HgQ==
+X-Google-Smtp-Source: AGHT+IEzIkpre/+4lLTj1Y3n0rLDVitTTn2Hh0vxS4CExp5VXmGekw+m4PiW3pEg4WIhcV6yD7AarCtsHA==
+X-Received: from jrife.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:9f])
+ (user=jrife job=sendgmr) by 2002:a05:6638:3a0c:b0:43c:e73c:74e7 with SMTP id
+ cn12-20020a0566383a0c00b0043ce73c74e7mr39988jab.3.1695758712659; Tue, 26 Sep
+ 2023 13:05:12 -0700 (PDT)
+Date:   Tue, 26 Sep 2023 15:05:03 -0500
+In-Reply-To: <20230926200505.2804266-1-jrife@google.com>
+Mime-Version: 1.0
+References: <20230926200505.2804266-1-jrife@google.com>
+X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
+Message-ID: <20230926200505.2804266-2-jrife@google.com>
+Subject: [PATCH net v6 1/3] net: replace calls to sock->ops->connect() with kernel_connect()
+From:   Jordan Rife <jrife@google.com>
+To:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, willemdebruijn.kernel@gmail.com,
+        netdev@vger.kernel.org
+Cc:     dborkman@kernel.org, horms@verge.net.au, pablo@netfilter.org,
+        kadlec@netfilter.org, fw@strlen.de, santosh.shilimkar@oracle.com,
+        ast@kernel.org, rdna@fb.com, linux-rdma@vger.kernel.org,
+        rds-devel@oss.oracle.com, coreteam@netfilter.org,
+        netfilter-devel@vger.kernel.org, ja@ssi.bg,
+        lvs-devel@vger.kernel.org, kafai@fb.com, daniel@iogearbox.net,
+        daan.j.demeyer@gmail.com, Jordan Rife <jrife@google.com>,
+        stable@vger.kernel.org, Willem de Bruijn <willemb@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,90 +75,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 26, 2023 at 2:24=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Fri, Sep 22, 2023 at 6:07=E2=80=AFPM Brian Geffon <bgeffon@google.com>=
- wrote:
-> >
-> > In snapshot_write_next sync_read is set and unset in three different
-> > spots unnecessiarly. As a result there is a subtle bug where the first
-> > page after the meta data has been loaded unconditionally sets sync_read
-> > to 0. If this first pfn was actually a highmem page then the returned
-> > buffer will be the global "buffer," and the page needs to be loaded
-> > synchronously.
-> >
-> > That is, I'm not sure we can always assume the following to be safe:
-> >                 handle->buffer =3D get_buffer(&orig_bm, &ca);
-> >                 handle->sync_read =3D 0;
-> >
-> > Because get_buffer can call get_highmem_page_buffer which can
-> > return 'buffer'
-> >
-> > The easiest way to address this is just set sync_read before
-> > snapshot_write_next returns if handle->buffer =3D=3D buffer.
-> >
-> > Signed-off-by: Brian Geffon <bgeffon@google.com>
-> > Fixes: 8357376d3df2 ("[PATCH] swsusp: Improve handling of highmem")
-> > Cc: stable@vger.kernel.org
->
-> If you send an update of a patch, it is always better to give it a
-> higher version number to avoid any possible confusion.
+commit 0bdf399342c5 ("net: Avoid address overwrite in kernel_connect")
+ensured that kernel_connect() will not overwrite the address parameter
+in cases where BPF connect hooks perform an address rewrite. This change
+replaces direct calls to sock->ops->connect() in net with kernel_connect()
+to make these call safe.
 
-Yes, I apologize. I wanted to add a Fixes line and I wasn't sure what
-the best practice was. I'll do my best to not create any additional
-work for you going forward!
+Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
+Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Jordan Rife <jrife@google.com>
+---
+ net/netfilter/ipvs/ip_vs_sync.c | 4 ++--
+ net/rds/tcp_connect.c           | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
->
-> > ---
-> >  kernel/power/snapshot.c | 6 +-----
-> >  1 file changed, 1 insertion(+), 5 deletions(-)
-> >
-> > diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-> > index 190ed707ddcc..362e6bae5891 100644
-> > --- a/kernel/power/snapshot.c
-> > +++ b/kernel/power/snapshot.c
-> > @@ -2780,8 +2780,6 @@ int snapshot_write_next(struct snapshot_handle *h=
-andle)
-> >         if (handle->cur > 1 && handle->cur > nr_meta_pages + nr_copy_pa=
-ges + nr_zero_pages)
-> >                 return 0;
-> >
-> > -       handle->sync_read =3D 1;
-> > -
-> >         if (!handle->cur) {
-> >                 if (!buffer)
-> >                         /* This makes the buffer be freed by swsusp_fre=
-e() */
-> > @@ -2824,7 +2822,6 @@ int snapshot_write_next(struct snapshot_handle *h=
-andle)
-> >                         memory_bm_position_reset(&zero_bm);
-> >                         restore_pblist =3D NULL;
-> >                         handle->buffer =3D get_buffer(&orig_bm, &ca);
-> > -                       handle->sync_read =3D 0;
-> >                         if (IS_ERR(handle->buffer))
-> >                                 return PTR_ERR(handle->buffer);
-> >                 }
-> > @@ -2834,9 +2831,8 @@ int snapshot_write_next(struct snapshot_handle *h=
-andle)
-> >                 handle->buffer =3D get_buffer(&orig_bm, &ca);
-> >                 if (IS_ERR(handle->buffer))
-> >                         return PTR_ERR(handle->buffer);
-> > -               if (handle->buffer !=3D buffer)
-> > -                       handle->sync_read =3D 0;
-> >         }
-> > +       handle->sync_read =3D (handle->buffer =3D=3D buffer);
-> >         handle->cur++;
-> >
-> >         /* Zero pages were not included in the image, memset it and mov=
-e on. */
-> > --
->
-> Anyway, applied as 6.7 material with some minor edits in the subject
-> and changelog.
+diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
+index da5af28ff57b5..6e4ed1e11a3b7 100644
+--- a/net/netfilter/ipvs/ip_vs_sync.c
++++ b/net/netfilter/ipvs/ip_vs_sync.c
+@@ -1505,8 +1505,8 @@ static int make_send_sock(struct netns_ipvs *ipvs, int id,
+ 	}
+ 
+ 	get_mcast_sockaddr(&mcast_addr, &salen, &ipvs->mcfg, id);
+-	result = sock->ops->connect(sock, (struct sockaddr *) &mcast_addr,
+-				    salen, 0);
++	result = kernel_connect(sock, (struct sockaddr *)&mcast_addr,
++				salen, 0);
+ 	if (result < 0) {
+ 		pr_err("Error connecting to the multicast addr\n");
+ 		goto error;
+diff --git a/net/rds/tcp_connect.c b/net/rds/tcp_connect.c
+index f0c477c5d1db4..d788c6d28986f 100644
+--- a/net/rds/tcp_connect.c
++++ b/net/rds/tcp_connect.c
+@@ -173,7 +173,7 @@ int rds_tcp_conn_path_connect(struct rds_conn_path *cp)
+ 	 * own the socket
+ 	 */
+ 	rds_tcp_set_callbacks(sock, cp);
+-	ret = sock->ops->connect(sock, addr, addrlen, O_NONBLOCK);
++	ret = kernel_connect(sock, addr, addrlen, O_NONBLOCK);
+ 
+ 	rdsdebug("connect to address %pI6c returned %d\n", &conn->c_faddr, ret);
+ 	if (ret == -EINPROGRESS)
+-- 
+2.42.0.515.g380fc7ccd1-goog
 
-Thank you for taking the time to review!
-Cheers
-
->
-> Thanks!
