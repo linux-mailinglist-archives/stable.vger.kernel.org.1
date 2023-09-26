@@ -2,109 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99A267AF4D7
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 22:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DF9C7AF50F
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 22:27:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231899AbjIZUKd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 16:10:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45450 "EHLO
+        id S235391AbjIZU1i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 16:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbjIZUKc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 16:10:32 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7BD192
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:10:25 -0700 (PDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38QJabN7022252;
-        Tue, 26 Sep 2023 20:10:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=g+3nzDY+6iPIVdg0GcX0AxiTUNU0DsX0xUDrqGI4DIs=;
- b=ejmsYIvC3R2Wwusl0wYvZIyKxRsTtwfOQhBxvhN1pqrfvRwSZcWGxfRbNxxUTldju8Yw
- nma2r/D1YLY6Zo72sNTjbH8xcPkUE1r5LbD1u2eHVnKcCQWN//ggEifIuqSp/Kghwwr2
- 4oTTFaWD0bFYfmL2FqrZKM4HeKPr8Cy9Qpx92hBuG0XC7plUVA2lxDeLtkvpalIQg/FN
- 3EQ2owZGlln5J3sL6WRevMW0fW/7J53NIY6u6RQgmCTb8xxl6uFNbExZVMcLe7bUoxfQ
- wgzXH+QuD6p547EJH41yP+uc8jwOFwM4+QtgvtS6a/itZhdDmSPyuGTuajRLr9ag+JmM ig== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tc4tba0ru-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 20:10:13 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38QJap5X023593;
-        Tue, 26 Sep 2023 20:10:13 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tc4tba0q8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 20:10:12 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38QJFnK8008273;
-        Tue, 26 Sep 2023 20:10:11 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-        by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tabbn62w3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 26 Sep 2023 20:10:11 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-        by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38QKAA8w15860310
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Sep 2023 20:10:10 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A92E058062;
-        Tue, 26 Sep 2023 20:10:10 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 344DD58057;
-        Tue, 26 Sep 2023 20:10:10 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.107.17])
-        by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Tue, 26 Sep 2023 20:10:10 +0000 (GMT)
-Message-ID: <97802d8be17842774a07272cc4f59d34695c969b.camel@linux.ibm.com>
-Subject: Re: [PATCH 5.4 118/367] ima: Remove deprecated IMA_TRUSTED_KEYRING
- Kconfig
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, Nayna Jain <nayna@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Oleksandr Tymoshenko <ovt@google.com>
-Date:   Tue, 26 Sep 2023 16:10:09 -0400
-In-Reply-To: <20230920112901.691830240@linuxfoundation.org>
-References: <20230920112858.471730572@linuxfoundation.org>
-         <20230920112901.691830240@linuxfoundation.org>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+        with ESMTP id S229580AbjIZU1h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 16:27:37 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 106FA126
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:27:31 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-59ee66806d7so181425047b3.0
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:27:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1695760050; x=1696364850; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EdU4ik3Tu4D+QwzpIlWNvwrHhBoMHXPt/qFjpNSs+BU=;
+        b=r5gZQuvgtOa92Je7jWNmHORi3S8iCWLY++wgRBSa6bMVvN7EQm0SaOkKP1oJNdwPf9
+         x2oVpkMEVwwA3PWN1LgVV7CPvGGl836kBmFrcX35i61LpE4n39PjiuaqTC0O1tt0kFu/
+         0Ipp7EwvoykDpAX1FD7q7v4zRPer448+MxmTQBjq3cDvFRSwYzueZwDymtkW1lDkf9h5
+         CMLCD/9OYIQGG2/gtukKiNz4Q8o1+ZD5ZDl/+Cf/gazuCqO4D2hLm7PMTrI9vYaiYqTh
+         Zc43oeS1DxuJ0Xji7zHGjSYL1Gl19Rc/cLLhhFojdDna5ajIdVYtudwXfI+D/6YJsnWY
+         8HVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695760050; x=1696364850;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EdU4ik3Tu4D+QwzpIlWNvwrHhBoMHXPt/qFjpNSs+BU=;
+        b=O9vRqu39Ge8P7zL+scYFm/tS91FItd11UXM0XMqsdYgaEt3MRjjaihtvkHKGWa58eN
+         YSWtLZwWOfNkTU86dkL/UbapOARAlNqdj2iZW+8NkR9J07tIawa9LLkAV24gz3YJHRPX
+         pX6qWewx/OMnVCVa7ijj5lgj1qVVmO0nsRYNy5FQwFI+EVdJpAscxJWBtkdmCDBpE/FC
+         fLPJHC+ts5+/kLzytHoq+J/7iMFm6EkN8IsnX4L0+9vVPw+TZOiBAXH6cz9ZD4CrnHMF
+         jrtvccyRDfLDOy1OceX7+zFKiyHFaO6bU51YtTmY3fwN7ihch34UJnTxLLWXK96K5hjg
+         CwEg==
+X-Gm-Message-State: AOJu0Yy1Tby7J+8UE1L5u42wRL9x+PFbq2jlgL/7GcnSuTwKKSoL45TY
+        ystTmp4/im0yik09szeqy4fWev2Ybmo=
+X-Google-Smtp-Source: AGHT+IFPOQAdc8TRe/tImSYB9Fu0OTGHqt/zZjOX/Assxkqq9ECMf/QKfiMqacQf21wAW/sGgFNTh0KJYa8=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a81:e345:0:b0:59b:db15:498c with SMTP id
+ w5-20020a81e345000000b0059bdb15498cmr572ywl.10.1695760050193; Tue, 26 Sep
+ 2023 13:27:30 -0700 (PDT)
+Date:   Tue, 26 Sep 2023 13:27:28 -0700
+In-Reply-To: <ZRMvd7ZKT6PXDLeK@google.com>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: JFU09qE1Dk5EbPAozDs2Fi5h4CObOJEk
-X-Proofpoint-GUID: CVaPZJIBh8zW0morIMKRWo3G2DTOIi7k
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-26_14,2023-09-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- malwarescore=0 clxscore=1011 spamscore=0 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=496 phishscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2309260172
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <ZQKzKkDEsY1n9dB1@redhat.com> <ZQLOVjLtFnGESG0S@luigi.stachecki.net>
+ <93592292-ab7e-71ac-dd72-74cc76e97c74@oracle.com> <ZQOsQjsa4bEfB28H@luigi.stachecki.net>
+ <ZQQKoIEgFki0KzxB@redhat.com> <ZQRNmsWcOM1xbNsZ@luigi.stachecki.net>
+ <ZRH7F3SlHZEBf1I2@google.com> <ZRJJtWC4ch0RhY/Y@luigi.stachecki.net>
+ <ZRMHY83W/VPjYyhy@google.com> <ZRMvd7ZKT6PXDLeK@google.com>
+Message-ID: <ZRM-sI_KSghTGXYP@google.com>
+Subject: Re: [PATCH] x86/kvm: Account for fpstate->user_xfeatures changes
+From:   Sean Christopherson <seanjc@google.com>
+To:     Tyler Stachecki <stachecki.tyler@gmail.com>
+Cc:     Leonardo Bras <leobras@redhat.com>,
+        Dongli Zhang <dongli.zhang@oracle.com>, kvm@vger.kernel.org,
+        pbonzini@redhat.com, dgilbert@redhat.com, tglx@linutronix.de,
+        mingo@redhat.com, dave.hansen@linux.intel.com, bp@alien8.de,
+        Tyler Stachecki <tstachecki@bloomberg.net>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+On Tue, Sep 26, 2023, Sean Christopherson wrote:
+> There's another related oddity that will be fixed by my approach, assuming the realloc
+> change is also reverted (I missed that in my pasted patch).  Userspace *must* do
+> KVM_SET_CPUID{2} in order to load off-by-default state, whereas there is no such
+> requirement for on-by-default state.
 
-On Wed, 2023-09-20 at 13:28 +0200, Greg Kroah-Hartman wrote:
-> 5.4-stable review patch.  If anyone has any objections, please let me know.
-
-Thanks for holding off on back porting this. Oleksandr Tymoshenko's
-"ima: Finish deprecation of IMA_TRUSTED_KEYRING Kconfig" is needed as
-well.  
-
--- 
-thanks,
-
-Mimi
-
+Scratch that, KVM explicitly requires KVM_SET_CPUID2 to grant the guest access to
+off-by-default features, e.g. so that the kernel/KVM doesn't need to context AMX
+state if it's not exposed to the guest.  Thankfully, that has always been true for
+XFD-based features, i.e. AMX, so it's safe to keep that behavior even though it
+diverges from on-by-default features.
