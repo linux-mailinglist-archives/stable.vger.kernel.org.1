@@ -2,86 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DF9C7AF50F
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 22:27:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0865D7AF57B
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 22:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235391AbjIZU1i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 16:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39658 "EHLO
+        id S232008AbjIZUpN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 16:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbjIZU1h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 16:27:37 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 106FA126
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:27:31 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-59ee66806d7so181425047b3.0
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:27:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695760050; x=1696364850; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EdU4ik3Tu4D+QwzpIlWNvwrHhBoMHXPt/qFjpNSs+BU=;
-        b=r5gZQuvgtOa92Je7jWNmHORi3S8iCWLY++wgRBSa6bMVvN7EQm0SaOkKP1oJNdwPf9
-         x2oVpkMEVwwA3PWN1LgVV7CPvGGl836kBmFrcX35i61LpE4n39PjiuaqTC0O1tt0kFu/
-         0Ipp7EwvoykDpAX1FD7q7v4zRPer448+MxmTQBjq3cDvFRSwYzueZwDymtkW1lDkf9h5
-         CMLCD/9OYIQGG2/gtukKiNz4Q8o1+ZD5ZDl/+Cf/gazuCqO4D2hLm7PMTrI9vYaiYqTh
-         Zc43oeS1DxuJ0Xji7zHGjSYL1Gl19Rc/cLLhhFojdDna5ajIdVYtudwXfI+D/6YJsnWY
-         8HVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695760050; x=1696364850;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EdU4ik3Tu4D+QwzpIlWNvwrHhBoMHXPt/qFjpNSs+BU=;
-        b=O9vRqu39Ge8P7zL+scYFm/tS91FItd11UXM0XMqsdYgaEt3MRjjaihtvkHKGWa58eN
-         YSWtLZwWOfNkTU86dkL/UbapOARAlNqdj2iZW+8NkR9J07tIawa9LLkAV24gz3YJHRPX
-         pX6qWewx/OMnVCVa7ijj5lgj1qVVmO0nsRYNy5FQwFI+EVdJpAscxJWBtkdmCDBpE/FC
-         fLPJHC+ts5+/kLzytHoq+J/7iMFm6EkN8IsnX4L0+9vVPw+TZOiBAXH6cz9ZD4CrnHMF
-         jrtvccyRDfLDOy1OceX7+zFKiyHFaO6bU51YtTmY3fwN7ihch34UJnTxLLWXK96K5hjg
-         CwEg==
-X-Gm-Message-State: AOJu0Yy1Tby7J+8UE1L5u42wRL9x+PFbq2jlgL/7GcnSuTwKKSoL45TY
-        ystTmp4/im0yik09szeqy4fWev2Ybmo=
-X-Google-Smtp-Source: AGHT+IFPOQAdc8TRe/tImSYB9Fu0OTGHqt/zZjOX/Assxkqq9ECMf/QKfiMqacQf21wAW/sGgFNTh0KJYa8=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:e345:0:b0:59b:db15:498c with SMTP id
- w5-20020a81e345000000b0059bdb15498cmr572ywl.10.1695760050193; Tue, 26 Sep
- 2023 13:27:30 -0700 (PDT)
-Date:   Tue, 26 Sep 2023 13:27:28 -0700
-In-Reply-To: <ZRMvd7ZKT6PXDLeK@google.com>
-Mime-Version: 1.0
-References: <ZQKzKkDEsY1n9dB1@redhat.com> <ZQLOVjLtFnGESG0S@luigi.stachecki.net>
- <93592292-ab7e-71ac-dd72-74cc76e97c74@oracle.com> <ZQOsQjsa4bEfB28H@luigi.stachecki.net>
- <ZQQKoIEgFki0KzxB@redhat.com> <ZQRNmsWcOM1xbNsZ@luigi.stachecki.net>
- <ZRH7F3SlHZEBf1I2@google.com> <ZRJJtWC4ch0RhY/Y@luigi.stachecki.net>
- <ZRMHY83W/VPjYyhy@google.com> <ZRMvd7ZKT6PXDLeK@google.com>
-Message-ID: <ZRM-sI_KSghTGXYP@google.com>
-Subject: Re: [PATCH] x86/kvm: Account for fpstate->user_xfeatures changes
-From:   Sean Christopherson <seanjc@google.com>
-To:     Tyler Stachecki <stachecki.tyler@gmail.com>
-Cc:     Leonardo Bras <leobras@redhat.com>,
-        Dongli Zhang <dongli.zhang@oracle.com>, kvm@vger.kernel.org,
-        pbonzini@redhat.com, dgilbert@redhat.com, tglx@linutronix.de,
-        mingo@redhat.com, dave.hansen@linux.intel.com, bp@alien8.de,
-        Tyler Stachecki <tstachecki@bloomberg.net>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S235843AbjIZUpL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 16:45:11 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40CEF12A;
+        Tue, 26 Sep 2023 13:45:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF509C433C7;
+        Tue, 26 Sep 2023 20:45:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1695761104;
+        bh=BO8S085ySt4LdR+kvsStRpPlPQ3rU/7I4K1lPgysQxw=;
+        h=Date:To:From:Subject:From;
+        b=OSRUJUPs97ZeGM7Y4EwLrm91uT0aPN+gaoTH/twvis82K8eBLAcDpTsbKo2bkg0c6
+         r19QiXQWXJfBdewmXvQCu2DNWoN+Nt2u1vYHQXKITstn4Kkqs7Vf3MhfLyK5Rges6A
+         2fnOrxOAgVd40iQ2beXoiQEcPNv2NPzbc3lJeVgc=
+Date:   Tue, 26 Sep 2023 13:45:03 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        shuah@kernel.org, juntong.deng@outlook.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + selftests-mm-fix-awk-usage-in-charge_reserved_hugetlbsh-and-hugetlb_reparenting_testsh-that-may-cause-error.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230926204504.BF509C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 26, 2023, Sean Christopherson wrote:
-> There's another related oddity that will be fixed by my approach, assuming the realloc
-> change is also reverted (I missed that in my pasted patch).  Userspace *must* do
-> KVM_SET_CPUID{2} in order to load off-by-default state, whereas there is no such
-> requirement for on-by-default state.
 
-Scratch that, KVM explicitly requires KVM_SET_CPUID2 to grant the guest access to
-off-by-default features, e.g. so that the kernel/KVM doesn't need to context AMX
-state if it's not exposed to the guest.  Thankfully, that has always been true for
-XFD-based features, i.e. AMX, so it's safe to keep that behavior even though it
-diverges from on-by-default features.
+The patch titled
+     Subject: selftests/mm: fix awk usage in charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh that may cause error
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     selftests-mm-fix-awk-usage-in-charge_reserved_hugetlbsh-and-hugetlb_reparenting_testsh-that-may-cause-error.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fix-awk-usage-in-charge_reserved_hugetlbsh-and-hugetlb_reparenting_testsh-that-may-cause-error.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Juntong Deng <juntong.deng@outlook.com>
+Subject: selftests/mm: fix awk usage in charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh that may cause error
+Date: Wed, 27 Sep 2023 02:19:44 +0800
+
+According to the awk manual, the -e option does not need to be specified
+in front of 'program' (unless you need to mix program-file).
+
+The redundant -e option can cause error when users use awk tools other
+than gawk (for example, mawk does not support the -e option).
+
+Error Example:
+awk: not an option: -e
+
+Link: https://lkml.kernel.org/r/VI1P193MB075228810591AF2FDD7D42C599C3A@VI1P193MB0752.EURP193.PROD.OUTLOOK.COM
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/testing/selftests/mm/charge_reserved_hugetlb.sh  |    4 ++--
+ tools/testing/selftests/mm/hugetlb_reparenting_test.sh |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh~selftests-mm-fix-awk-usage-in-charge_reserved_hugetlbsh-and-hugetlb_reparenting_testsh-that-may-cause-error
++++ a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -25,7 +25,7 @@ if [[ "$1" == "-cgroup-v2" ]]; then
+ fi
+ 
+ if [[ $cgroup2 ]]; then
+-  cgroup_path=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
++  cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+     cgroup_path=/dev/cgroup/memory
+     mount -t cgroup2 none $cgroup_path
+@@ -33,7 +33,7 @@ if [[ $cgroup2 ]]; then
+   fi
+   echo "+hugetlb" >$cgroup_path/cgroup.subtree_control
+ else
+-  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
++  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+     cgroup_path=/dev/cgroup/memory
+     mount -t cgroup memory,hugetlb $cgroup_path
+--- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh~selftests-mm-fix-awk-usage-in-charge_reserved_hugetlbsh-and-hugetlb_reparenting_testsh-that-may-cause-error
++++ a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
+@@ -20,7 +20,7 @@ fi
+ 
+ 
+ if [[ $cgroup2 ]]; then
+-  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
++  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$CGROUP_ROOT" ]]; then
+     CGROUP_ROOT=/dev/cgroup/memory
+     mount -t cgroup2 none $CGROUP_ROOT
+@@ -28,7 +28,7 @@ if [[ $cgroup2 ]]; then
+   fi
+   echo "+hugetlb +memory" >$CGROUP_ROOT/cgroup.subtree_control
+ else
+-  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
++  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+   if [[ -z "$CGROUP_ROOT" ]]; then
+     CGROUP_ROOT=/dev/cgroup/memory
+     mount -t cgroup memory,hugetlb $CGROUP_ROOT
+_
+
+Patches currently in -mm which might be from juntong.deng@outlook.com are
+
+selftests-mm-fix-awk-usage-in-charge_reserved_hugetlbsh-and-hugetlb_reparenting_testsh-that-may-cause-error.patch
+
