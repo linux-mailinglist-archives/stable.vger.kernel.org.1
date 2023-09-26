@@ -2,197 +2,176 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1C827AE412
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 05:27:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D80CA7AE471
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 06:11:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231961AbjIZD1m convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Mon, 25 Sep 2023 23:27:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37946 "EHLO
+        id S233618AbjIZELd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 00:11:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjIZD1l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 23:27:41 -0400
-Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388A6B3;
-        Mon, 25 Sep 2023 20:27:34 -0700 (PDT)
-Received: from in02.mta.xmission.com ([166.70.13.52]:60716)
-        by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1qkyjR-0025XF-KK; Mon, 25 Sep 2023 21:27:29 -0600
-Received: from ip68-227-168-167.om.om.cox.net ([68.227.168.167]:52928 helo=email.froward.int.ebiederm.org.xmission.com)
-        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1qkyjQ-00A2kG-Bx; Mon, 25 Sep 2023 21:27:29 -0600
-From:   "Eric W. Biederman" <ebiederm@xmission.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Sebastian Ott <sebott@redhat.com>,
-        Pedro Falcato <pedro.falcato@gmail.com>,
-        Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
-        sam@gentoo.org, Rich Felker <dalias@libc.org>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        with ESMTP id S232910AbjIZELb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 00:11:31 -0400
+X-Greylist: delayed 411 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 25 Sep 2023 21:11:00 PDT
+Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACAF5CCC;
+        Mon, 25 Sep 2023 21:11:00 -0700 (PDT)
+Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net [173.49.113.140])
+        (Authenticated sender: zack)
+        by letterbox.kde.org (Postfix) with ESMTPSA id 913153262C3;
+        Tue, 26 Sep 2023 05:04:05 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kde.org; s=users;
+        t=1695701046; bh=vGJDsOc10DhRLUT1LCzQuo2Pm74I51KbtwVLKRFGf78=;
+        h=From:To:Cc:Subject:Date:From;
+        b=g7betDjIE59Rr/k9uisX4CM8+ddlEDQTEmxIvnlT2vrz4VJ/U19OV2tPaQsyDnYs0
+         0mVgqS9/RxycOJe5tCjkVpRX5tJ6XATRn6e/Ae/pjyPyUKPnWuU7jNgYMFazgXjwAz
+         L8fmUAT3aIjexX1dzqBQYhR6nnqY/P9mG/rs/EhutlnsZdsXsYSI1JXUV4w7f1nA/M
+         Z8PnSI0Grjr5Uqp6xzfHRoeWKQrvoCITGN1rMNxb/1qwaJBGo2zzWhVPcViqkwYJAG
+         utctrFIZ3z93XMiLflbw/MhO9SOOnuUtkNkbEBJHh563/b4UiOiLza4OytfQYuMTM6
+         W4zJWne5gTavQ==
+From:   Zack Rusin <zack@kde.org>
+To:     dri-devel@lists.freedesktop.org
+Cc:     Zack Rusin <zackr@vmware.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
+        <thomas.hellstrom@linux.intel.com>, Huang Rui <ray.huang@amd.com>,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net>
-        <36e93c8e-4384-b269-be78-479ccc7817b1@redhat.com>
-        <87zg1bm5xo.fsf@email.froward.int.ebiederm.org>
-        <37d3392c-cf33-20a6-b5c9-8b3fb8142658@redhat.com>
-        <87jzsemmsd.fsf_-_@email.froward.int.ebiederm.org>
-        <84e974d3-ae0d-9eb5-49b2-3348b7dcd336@redhat.com>
-        <202309251001.C050864@keescook>
-Date:   Mon, 25 Sep 2023 22:27:02 -0500
-In-Reply-To: <202309251001.C050864@keescook> (Kees Cook's message of "Mon, 25
-        Sep 2023 10:06:01 -0700")
-Message-ID: <87v8bxiph5.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+Subject: [PATCH] drm/ttm: Make sure the mapped tt pages are decrypted when needed
+Date:   Tue, 26 Sep 2023 00:03:59 -0400
+Message-Id: <20230926040359.3040017-1-zack@kde.org>
+X-Mailer: git-send-email 2.39.2
+Reply-To: Zack Rusin <zackr@vmware.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-XM-SPF: eid=1qkyjQ-00A2kG-Bx;;;mid=<87v8bxiph5.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.168.167;;;frm=ebiederm@xmission.com;;;spf=pass
-X-XM-AID: U2FsdGVkX1/wOaQp+8aovEG4tuK61x9uVVX7vY5QjGM=
-X-SA-Exim-Connect-IP: 68.227.168.167
-X-SA-Exim-Mail-From: ebiederm@xmission.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: *;Kees Cook <keescook@chromium.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 668 ms - load_scoreonly_sql: 0.05 (0.0%),
-        signal_user_changed: 12 (1.8%), b_tie_ro: 10 (1.6%), parse: 1.41
-        (0.2%), extract_message_metadata: 35 (5.2%), get_uri_detail_list: 4.9
-        (0.7%), tests_pri_-2000: 43 (6.4%), tests_pri_-1000: 2.8 (0.4%),
-        tests_pri_-950: 1.27 (0.2%), tests_pri_-900: 1.04 (0.2%),
-        tests_pri_-200: 0.88 (0.1%), tests_pri_-100: 10 (1.5%), tests_pri_-90:
-        89 (13.4%), check_bayes: 73 (10.9%), b_tokenize: 13 (1.9%),
-        b_tok_get_all: 13 (2.0%), b_comp_prob: 4.1 (0.6%), b_tok_touch_all: 39
-        (5.8%), b_finish: 0.87 (0.1%), tests_pri_0: 437 (65.4%),
-        check_dkim_signature: 0.58 (0.1%), check_dkim_adsp: 7 (1.1%),
-        poll_dns_idle: 15 (2.3%), tests_pri_10: 3.1 (0.5%), tests_pri_500: 29
-        (4.3%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH] binfmt_elf: Support segments with 0 filesz and
- misaligned starts
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> writes:
+From: Zack Rusin <zackr@vmware.com>
 
-> On Mon, Sep 25, 2023 at 05:27:12PM +0200, Sebastian Ott wrote:
->> On Mon, 25 Sep 2023, Eric W. Biederman wrote:
->> > 
->> > Implement a helper elf_load that wraps elf_map and performs all
->> > of the necessary work to ensure that when "memsz > filesz"
->> > the bytes described by "memsz > filesz" are zeroed.
->> > 
->> > Link: https://lkml.kernel.org/r/20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net
->> > Reported-by: Sebastian Ott <sebott@redhat.com>
->> > Reported-by: Thomas Weißschuh <linux@weissschuh.net>
->> > Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
->> > ---
->> > fs/binfmt_elf.c | 111 +++++++++++++++++++++---------------------------
->> > 1 file changed, 48 insertions(+), 63 deletions(-)
->> > 
->> > Can you please test this one?
->
-> Eric thanks for doing this refactoring! This does look similar to the
-> earlier attempt:
-> https://lore.kernel.org/lkml/20221106021657.1145519-1-pedro.falcato@gmail.com/
-> and it's a bit easier to review.
+Some drivers require the mapped tt pages to be decrypted. In an ideal
+world this would have been handled by the dma layer, but the TTM page
+fault handling would have to be rewritten to able to do that.
 
-I need to context switch away for a while so Kees if you will
-I will let you handle the rest of this one.
+A side-effect of the TTM page fault handling is using a dma allocation
+per order (via ttm_pool_alloc_page) which makes it impossible to just
+trivially use dma_mmap_attrs. As a result ttm has to be very careful
+about trying to make its pgprot for the mapped tt pages match what
+the dma layer thinks it is. At the ttm layer it's possible to
+deduce the requirement to have tt pages decrypted by checking
+whether coherent dma allocations have been requested and the system
+is running with confidential computing technologies.
 
+This approach isn't ideal but keeping TTM matching DMAs expectations
+for the page properties is in general fragile, unfortunately proper
+fix would require a rewrite of TTM's page fault handling.
 
-A couple of thoughts running through my head for anyone whose ambitious
-might include cleaning up binfmt_elf.c
+Fixes vmwgfx with SEV enabled.
 
-The elf_bss variable in load_elf_binary can be removed.
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Fixes: 3bf3710e3718 ("drm/ttm: Add a generic TTM memcpy move for page-based iomem")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-kernel@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v5.14+
+---
+ drivers/gpu/drm/ttm/ttm_bo_util.c | 13 +++++++++++--
+ drivers/gpu/drm/ttm/ttm_tt.c      |  7 +++++++
+ include/drm/ttm/ttm_tt.h          |  9 ++++++++-
+ 3 files changed, 26 insertions(+), 3 deletions(-)
 
-Work for a follow on patch is using my new elf_load in load_elf_interp
-and possibly in load_elf_library.  (More code size reduction).
+diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c b/drivers/gpu/drm/ttm/ttm_bo_util.c
+index fd9fd3d15101..0b3f4267130c 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo_util.c
++++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
+@@ -294,7 +294,13 @@ pgprot_t ttm_io_prot(struct ttm_buffer_object *bo, struct ttm_resource *res,
+ 	enum ttm_caching caching;
+ 
+ 	man = ttm_manager_type(bo->bdev, res->mem_type);
+-	caching = man->use_tt ? bo->ttm->caching : res->bus.caching;
++	if (man->use_tt) {
++		caching = bo->ttm->caching;
++		if (bo->ttm->page_flags & TTM_TT_FLAG_DECRYPTED)
++			tmp = pgprot_decrypted(tmp);
++	} else  {
++		caching = res->bus.caching;
++	}
+ 
+ 	return ttm_prot_from_caching(caching, tmp);
+ }
+@@ -337,6 +343,8 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
+ 		.no_wait_gpu = false
+ 	};
+ 	struct ttm_tt *ttm = bo->ttm;
++	struct ttm_resource_manager *man =
++			ttm_manager_type(bo->bdev, bo->resource->mem_type);
+ 	pgprot_t prot;
+ 	int ret;
+ 
+@@ -346,7 +354,8 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
+ 	if (ret)
+ 		return ret;
+ 
+-	if (num_pages == 1 && ttm->caching == ttm_cached) {
++	if (num_pages == 1 && ttm->caching == ttm_cached &&
++	    !(man->use_tt && (ttm->page_flags & TTM_TT_FLAG_DECRYPTED))) {
+ 		/*
+ 		 * We're mapping a single page, and the desired
+ 		 * page protection is consistent with the bo.
+diff --git a/drivers/gpu/drm/ttm/ttm_tt.c b/drivers/gpu/drm/ttm/ttm_tt.c
+index e0a77671edd6..02dcb728e29c 100644
+--- a/drivers/gpu/drm/ttm/ttm_tt.c
++++ b/drivers/gpu/drm/ttm/ttm_tt.c
+@@ -81,6 +81,13 @@ int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
+ 		pr_err("Illegal buffer object type\n");
+ 		return -EINVAL;
+ 	}
++	/*
++	 * When using dma_alloc_coherent with memory encryption the
++	 * mapped TT pages need to be decrypted or otherwise the drivers
++	 * will end up sending encrypted mem to the gpu.
++	 */
++	if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_MEM_ENCRYPT))
++		page_flags |= TTM_TT_FLAG_DECRYPTED;
+ 
+ 	bo->ttm = bdev->funcs->ttm_tt_create(bo, page_flags);
+ 	if (unlikely(bo->ttm == NULL))
+diff --git a/include/drm/ttm/ttm_tt.h b/include/drm/ttm/ttm_tt.h
+index a4eff85b1f44..2b9d856ff388 100644
+--- a/include/drm/ttm/ttm_tt.h
++++ b/include/drm/ttm/ttm_tt.h
+@@ -79,6 +79,12 @@ struct ttm_tt {
+ 	 *   page_flags = TTM_TT_FLAG_EXTERNAL |
+ 	 *		  TTM_TT_FLAG_EXTERNAL_MAPPABLE;
+ 	 *
++	 * TTM_TT_FLAG_DECRYPTED: The mapped ttm pages should be marked as
++	 * not encrypted. The framework will try to match what the dma layer
++	 * is doing, but note that it is a little fragile because ttm page
++	 * fault handling abuses the DMA api a bit and dma_map_attrs can't be
++	 * used to assure pgprot always matches.
++	 *
+ 	 * TTM_TT_FLAG_PRIV_POPULATED: TTM internal only. DO NOT USE. This is
+ 	 * set by TTM after ttm_tt_populate() has successfully returned, and is
+ 	 * then unset when TTM calls ttm_tt_unpopulate().
+@@ -87,8 +93,9 @@ struct ttm_tt {
+ #define TTM_TT_FLAG_ZERO_ALLOC		BIT(1)
+ #define TTM_TT_FLAG_EXTERNAL		BIT(2)
+ #define TTM_TT_FLAG_EXTERNAL_MAPPABLE	BIT(3)
++#define TTM_TT_FLAG_DECRYPTED		BIT(4)
+ 
+-#define TTM_TT_FLAG_PRIV_POPULATED	BIT(4)
++#define TTM_TT_FLAG_PRIV_POPULATED	BIT(5)
+ 	uint32_t page_flags;
+ 	/** @num_pages: Number of pages in the page array. */
+ 	uint32_t num_pages;
+-- 
+2.39.2
 
-An outstanding issue is if the first segment has filesz 0, and has a
-randomized locations.  But that is the same as today.
-
-There is a whole question does it make sense for the elf loader
-to have it's own helper vm_brk_flags in mm/mmap.c or would it
-make more sense for binfmt_elf to do what binfmt_elf_fdpic does and
-have everything to go through vm_mmap.
-
-I think replacing vm_brk_flags with vm_mmap would allow fixing the
-theoretical issue of filesz 0 and randomizing locations.
-
-
-
-In this change I replaced an open coded padzero that did not clear
-all of the way to the end of the page, with padzero that does.
-
-I also stopped checking the return of padzero as there is at least
-one known case where testing for failure is the wrong thing to do.
-It looks like binfmt_elf_fdpic may have the proper set of tests
-for when error handling can be safely completed.
-
-I found a couple of commits in the old history
-https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git,
-that look very interesting in understanding this code.
-
-commit 39b56d902bf3 ("[PATCH] binfmt_elf: clearing bss may fail")
-commit c6e2227e4a3e ("[SPARC64]: Missing user access return value checks in fs/binfmt_elf.c and fs/compat.c")
-commit 5bf3be033f50 ("v2.4.10.1 -> v2.4.10.2")
-
-Looking at commit 39b56d902bf3 ("[PATCH] binfmt_elf: clearing bss may fail"):
->  commit 39b56d902bf35241e7cba6cc30b828ed937175ad
->  Author: Pavel Machek <pavel@ucw.cz>
->  Date:   Wed Feb 9 22:40:30 2005 -0800
-> 
->     [PATCH] binfmt_elf: clearing bss may fail
->     
->     So we discover that Borland's Kylix application builder emits weird elf
->     files which describe a non-writeable bss segment.
->     
->     So remove the clear_user() check at the place where we zero out the bss.  I
->     don't _think_ there are any security implications here (plus we've never
->     checked that clear_user() return value, so whoops if it is a problem).
->     
->     Signed-off-by: Pavel Machek <pavel@suse.cz>
->     Signed-off-by: Andrew Morton <akpm@osdl.org>
->     Signed-off-by: Linus Torvalds <torvalds@osdl.org>
-
-It seems pretty clear that binfmt_elf_fdpic with skipping clear_user
-for non-writable segments and otherwise calling clear_user (aka padzero)
-and checking it's return code is the right thing to do.
-
-I just skipped the error checking as that avoids breaking things.
-
-It looks like Borland's Kylix died in 2005 so it might be safe to
-just consider read-only segments with memsz > filesz an error.
-
-
-Looking at commit 5bf3be033f50 ("v2.4.10.1 -> v2.4.10.2") the
-binfmt_elf.c bits confirm my guess that the weird structure is because
-before that point binfmt_elf.c assumed there would be only a single
-segment with memsz > filesz.  Which is why the code was structured so
-weirdly.
-
-Looking a little farther it looks like the binfmt_elf.c was introduced
-in Linux v1.0, with essentially the same structure in load_elf_binary as
-it has now.  Prior to that Linux hard coded support for a.out binaries
-in execve.  So if someone wants to add a Fixes tag it should be
-"Fixes: v1.0"
-
-Which finally explains to me why the code is so odd.  For the most part
-the code has only received maintenance for the last 30 years or so.
-Strictly 29 years, but 30 has a better ring to it.
-
-Anyway those are my rambling thoughts that might help someone.
-For now I will be happy if we can get my elf_load helper tested
-to everyone's satisfaction and merged.
-
-Eric
