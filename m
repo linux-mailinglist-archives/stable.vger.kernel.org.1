@@ -2,186 +2,174 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A0D67AE5C0
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 08:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 707E57AE5E5
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 08:30:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233758AbjIZGX5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 02:23:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45602 "EHLO
+        id S232781AbjIZGai (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 02:30:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233804AbjIZGXz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 02:23:55 -0400
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E69C121;
-        Mon, 25 Sep 2023 23:23:46 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R541e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0VsvlMsY_1695709421;
-Received: from 30.240.112.49(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VsvlMsY_1695709421)
-          by smtp.aliyun-inc.com;
-          Tue, 26 Sep 2023 14:23:44 +0800
-Message-ID: <b3e8777d-7621-3842-53b0-2b43ffc25d34@linux.alibaba.com>
-Date:   Tue, 26 Sep 2023 14:23:40 +0800
+        with ESMTP id S229776AbjIZGah (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 02:30:37 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD2ACAF;
+        Mon, 25 Sep 2023 23:30:30 -0700 (PDT)
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38Q5rexA019211;
+        Tue, 26 Sep 2023 06:30:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=nGouHzxWe5kzoMakXT7t21X91AZk6rZC1OKWW3eLQSQ=;
+ b=mV8fk+WbImyzXFJ22ps+pMZIhUMAqSoMkJtYJ+Na2+gHOMTDqh3s/3TVmhWglTW07imn
+ YVDTqfQ9fgNGRzcKBsBq2biuNMARJaWLf/lZibv+L8LOA25J6WhDMu4K+KvGadTqD4SU
+ 2jL463JBYUpxoBioph+DjCTzADARbxJhjmN5OJckAXwscfK2Z8NyP/tKytE0oGWrmO7f
+ 2BtdiKX/5zfV1cNllT8p3/HSoC3w16v3EkBtPU+RfBZJAz7RJobNuQVvSNIiMvs4ccUx
+ zm5JR4CO29eeNT+uivOmZ+peve1AONm9JN/M/jZ35N0qC3u7OK7IchWm9en7uRuM/LXZ xA== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tb72sjdpb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 26 Sep 2023 06:30:28 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38Q6URqo011047
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 26 Sep 2023 06:30:27 GMT
+Received: from hu-kriskura-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Mon, 25 Sep 2023 23:30:24 -0700
+From:   Krishna Kurapati <quic_kriskura@quicinc.com>
+To:     =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+CC:     <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Krishna Kurapati" <quic_kriskura@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v3] usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call
+Date:   Tue, 26 Sep 2023 12:00:15 +0530
+Message-ID: <20230926063015.21189-1-quic_kriskura@quicinc.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [RESEND PATCH v8 1/2] ACPI: APEI: set memory failure flags as
- MF_ACTION_REQUIRED on synchronous events
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>, rafael@kernel.org,
-        wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
-        mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
-        naoya.horiguchi@nec.com, james.morse@arm.com,
-        gregkh@linuxfoundation.org, will@kernel.org
-Cc:     linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-        stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
-        ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
-        baolin.wang@linux.alibaba.com, bp@alien8.de, tglx@linutronix.de,
-        mingo@redhat.com, dave.hansen@linux.intel.com, lenb@kernel.org,
-        hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
-        xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20230919022127.69732-2-xueshuai@linux.alibaba.com>
- <CVS2TK6J4193.2X0455FSP2MLQ@suppilovahvero>
-From:   Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <CVS2TK6J4193.2X0455FSP2MLQ@suppilovahvero>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-11.4 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ESzlIhQeff_KPRETL5hlJwzyPRfa7QbG
+X-Proofpoint-ORIG-GUID: ESzlIhQeff_KPRETL5hlJwzyPRfa7QbG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-26_04,2023-09-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ mlxscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
+ malwarescore=0 adultscore=0 mlxlogscore=978 spamscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309260057
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+When NCM is used with hosts like Windows PC, it is observed that there are
+multiple NTB's contained in one usb request giveback. Since the driver
+unwraps the obtained request data assuming only one NTB is present, we
+loose the subsequent NTB's present resulting in data loss.
 
+Fix this by checking the parsed block length with the obtained data
+length in usb request and continue parsing after the last byte of current
+NTB.
 
-On 2023/9/25 22:43, Jarkko Sakkinen wrote:
-> On Tue Sep 19, 2023 at 5:21 AM EEST, Shuai Xue wrote:
->> There are two major types of uncorrected recoverable (UCR) errors :
->>
->> - Action Required (AR): The error is detected and the processor already
->>   consumes the memory. OS requires to take action (for example, offline
->>   failure page/kill failure thread) to recover this uncorrectable error.
->>
->> - Action Optional (AO): The error is detected out of processor execution
->>   context. Some data in the memory are corrupted. But the data have not
->>   been consumed. OS is optional to take action to recover this
->>   uncorrectable error.
->>
->> The essential difference between AR and AO errors is that AR is a
->> synchronous event, while AO is an asynchronous event. The hardware will
->> signal a synchronous exception (Machine Check Exception on X86 and
->> Synchronous External Abort on Arm64) when an error is detected and the
->> memory access has been architecturally executed.
->>
->> When APEI firmware first is enabled, a platform may describe one error
->> source for the handling of synchronous errors (e.g. MCE or SEA notification
->> ), or for handling asynchronous errors (e.g. SCI or External Interrupt
->> notification). In other words, we can distinguish synchronous errors by
->> APEI notification. For AR errors, kernel will kill current process
->> accessing the poisoned page by sending SIGBUS with BUS_MCEERR_AR. In
->> addition, for AO errors, kernel will notify the process who owns the
->> poisoned page by sending SIGBUS with BUS_MCEERR_AO in early kill mode.
->> However, the GHES driver always sets mf_flags to 0 so that all UCR errors
->> are handled as AO errors in memory failure.
->>
->> To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronous
->> events.
->>
->> Fixes: ba61ca4aab47 ("ACPI, APEI, GHES: Add hardware memory error recovery support")'
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
->> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
->> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->>  drivers/acpi/apei/ghes.c | 29 +++++++++++++++++++++++------
->>  1 file changed, 23 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index ef59d6ea16da..88178aa6222d 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -101,6 +101,20 @@ static inline bool is_hest_type_generic_v2(struct ghes *ghes)
->>  	return ghes->generic->header.type == ACPI_HEST_TYPE_GENERIC_ERROR_V2;
->>  }
->>  
->> +/*
->> + * A platform may describe one error source for the handling of synchronous
->> + * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. SCI
->> + * or External Interrupt). On x86, the HEST notifications are always
->> + * asynchronous, so only SEA on ARM is delivered as a synchronous
->> + * notification.
->> + */
->> +static inline bool is_hest_sync_notify(struct ghes *ghes)
->> +{
->> +	u8 notify_type = ghes->generic->notify.type;
->> +
->> +	return notify_type == ACPI_HEST_NOTIFY_SEA;
->> +}
->> +
->>  /*
->>   * This driver isn't really modular, however for the time being,
->>   * continuing to use module_param is the easiest way to remain
->> @@ -475,7 +489,7 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
->>  }
->>  
->>  static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->> -				       int sev)
->> +				       int sev, bool sync)
->>  {
->>  	int flags = -1;
->>  	int sec_sev = ghes_severity(gdata->error_severity);
->> @@ -489,7 +503,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
->>  	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
->>  		flags = MF_SOFT_OFFLINE;
->>  	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
->> -		flags = 0;
->> +		flags = sync ? MF_ACTION_REQUIRED : 0;
-> 
-> Not my territory but this branching looks a bit weird to my
-> eyes so just in case putting a comment.
-> 
-> What *if* the previous condition sets MF_SOFT_OFFLINE and
-> this condition overwrites the value?
-> 
-> I know that earlier it could have been overwritten by zero.
-> 
-> Neither the function comment has any explanation why it is
-> ok overwrite like this.
-> 
-> Or if these cannot happen simultaenously why there is not
-> immediate return after settting MF_SOFT_OFFLINE?
-> 
-> For someone like me the functions logic is tediously hard
-> to understand tbh.
-> 
-> BR, Jarkko
+Cc: stable@vger.kernel.org
+Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+---
+Changes in v3: Removed explicit typecast for ntb_ptr
 
-Hi, Jarkko,
+ drivers/usb/gadget/function/f_ncm.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-I hope the original source code can help to understand:
+diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
+index 424bb3b666db..9512cec662c8 100644
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1171,7 +1171,8 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 			  struct sk_buff_head *list)
+ {
+ 	struct f_ncm	*ncm = func_to_ncm(&port->func);
+-	__le16		*tmp = (void *) skb->data;
++	unsigned char	*ntb_ptr = skb->data;
++	__le16		*tmp;
+ 	unsigned	index, index2;
+ 	int		ndp_index;
+ 	unsigned	dg_len, dg_len2;
+@@ -1184,6 +1185,10 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 	const struct ndp_parser_opts *opts = ncm->parser_opts;
+ 	unsigned	crc_len = ncm->is_crc ? sizeof(uint32_t) : 0;
+ 	int		dgram_counter;
++	int		to_process = skb->len;
++
++parse_ntb:
++	tmp = (void *)ntb_ptr;
+ 
+ 	/* dwSignature */
+ 	if (get_unaligned_le32(tmp) != opts->nth_sign) {
+@@ -1230,7 +1235,7 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 		 * walk through NDP
+ 		 * dwSignature
+ 		 */
+-		tmp = (void *)(skb->data + ndp_index);
++		tmp = (void *)(ntb_ptr + ndp_index);
+ 		if (get_unaligned_le32(tmp) != ncm->ndp_sign) {
+ 			INFO(port->func.config->cdev, "Wrong NDP SIGN\n");
+ 			goto err;
+@@ -1287,11 +1292,11 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 			if (ncm->is_crc) {
+ 				uint32_t crc, crc2;
+ 
+-				crc = get_unaligned_le32(skb->data +
++				crc = get_unaligned_le32(ntb_ptr +
+ 							 index + dg_len -
+ 							 crc_len);
+ 				crc2 = ~crc32_le(~0,
+-						 skb->data + index,
++						 ntb_ptr + index,
+ 						 dg_len - crc_len);
+ 				if (crc != crc2) {
+ 					INFO(port->func.config->cdev,
+@@ -1318,7 +1323,7 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 							 dg_len - crc_len);
+ 			if (skb2 == NULL)
+ 				goto err;
+-			skb_put_data(skb2, skb->data + index,
++			skb_put_data(skb2, ntb_ptr + index,
+ 				     dg_len - crc_len);
+ 
+ 			skb_queue_tail(list, skb2);
+@@ -1331,10 +1336,17 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 		} while (ndp_len > 2 * (opts->dgram_item_len * 2));
+ 	} while (ndp_index);
+ 
+-	dev_consume_skb_any(skb);
+-
+ 	VDBG(port->func.config->cdev,
+ 	     "Parsed NTB with %d frames\n", dgram_counter);
++
++	to_process -= block_len;
++	if (to_process != 0) {
++		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
++		goto parse_ntb;
++	}
++
++	dev_consume_skb_any(skb);
++
+ 	return 0;
+ err:
+ 	skb_queue_purge(list);
+-- 
+2.42.0
 
-	/* iff following two events can be handled properly by now */
-	if (sec_sev == GHES_SEV_CORRECTED &&
-	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
-		flags = MF_SOFT_OFFLINE;
-	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
-		flags = 0;
-
-	if (flags != -1)
-		return ghes_do_memory_failure(mem_err->physical_addr, flags);
-
-The sec_sev of gdata is either GHES_SEV_CORRECTED or GHES_SEV_RECOVERABLE.
-So the two if-conditions are independent of each other and these cannot
-happen simultaneously. ghes_do_memory_failure() then handle the two events
-with a proper seted flags.
-
-Thanks.
-
-Best Regards,
-Shuai
