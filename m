@@ -2,357 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9327B7AE3E5
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 05:01:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1C827AE412
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 05:27:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229651AbjIZDBm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 25 Sep 2023 23:01:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41456 "EHLO
+        id S231961AbjIZD1m convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Mon, 25 Sep 2023 23:27:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231226AbjIZDBl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 23:01:41 -0400
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB13612A;
-        Mon, 25 Sep 2023 20:01:33 -0700 (PDT)
-Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-7741b18a06aso462660485a.1;
-        Mon, 25 Sep 2023 20:01:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695697293; x=1696302093; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7aanxsiInJCFfKFMnMZwZLA/BO1udgnu96xf6w1IwgY=;
-        b=At14nhubfU4Cem+X+m+khgNMItOnBT80l26yAqmlRrH8a3irBrD8eQfp5N/wDc1FjL
-         1LFENeXTrvlT5jYPrvuEYZSl5vzlI7uFXUOnjIqUIQPfzZeW5Skb3nQG7oX1OZTg6kV3
-         PLFb1d/XUT+cGpgzuiQghcHeikC73CS4azbNY0nB9sRk+q4svde6ndjwLjMCklTQQxB5
-         WO7rRwUjboQfx7EvZzBtO28nWPkvO0SdsN5EoSs/ngqZoHvCoNb1yuQnh5AvRekyxTOj
-         k2q8jqwtG+6RZpwdqtfW5XCtn1uGHNb5siUexRI2xKYabSu5KlcT4saZHLmUbjQt2M2t
-         w8Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695697293; x=1696302093;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7aanxsiInJCFfKFMnMZwZLA/BO1udgnu96xf6w1IwgY=;
-        b=jIObMXOwt+rjHyFhPBM96gn9IAWNySD+Wo0s+4C8cV5gg3nqwZ2mcV2qQgOwpgyZvW
-         38CwxI1Tk+BlZIKDZWykDNPyesDdh49BlKSxl+bXLNJkWJHYiNVTRIFHwoDQPW3hnGoZ
-         KNqYTK1HMEs35GyrWD01Qmuh19KpculvKqUTjYq4hYWwIUmUwAxIVICOirn7QrufcJOX
-         J68edpCTKPnMU9vriXKaFrHBWsSw9kDWtwFdPb2ELe4w6p6hHRtmPL9WOpMYfLXqBVpN
-         1DehPgPQf72YiTwdHBI30lVi8BTn6kSAAR6NtJ2FkRiP/1FNpzRQYieaYIeqvwLbPSeq
-         oC0g==
-X-Gm-Message-State: AOJu0YwluZTbsQNQbThs2Os9ucR2sWVAcBVjIdUdkx6WsxO8gfv479LD
-        TEeq0v7HSVTlGuPDC8vn1Z4=
-X-Google-Smtp-Source: AGHT+IGIEgKcG7JTgF88jl/x37NrfHR2dV1clwUwKPWu+sY9LbDS4NN0ov3k+gz2YItOA6aAFIRyLA==
-X-Received: by 2002:ae9:e918:0:b0:774:1e8f:222d with SMTP id x24-20020ae9e918000000b007741e8f222dmr8681543qkf.62.1695697292668;
-        Mon, 25 Sep 2023 20:01:32 -0700 (PDT)
-Received: from luigi.stachecki.net (pool-108-14-234-238.nycmny.fios.verizon.net. [108.14.234.238])
-        by smtp.gmail.com with ESMTPSA id ow10-20020a05620a820a00b0076d9df37949sm4345226qkn.36.2023.09.25.20.01.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Sep 2023 20:01:32 -0700 (PDT)
-Date:   Mon, 25 Sep 2023 23:02:13 -0400
-From:   Tyler Stachecki <stachecki.tyler@gmail.com>
-To:     Sean Christopherson <seanjc@google.com>
-Cc:     Leonardo Bras <leobras@redhat.com>,
-        Dongli Zhang <dongli.zhang@oracle.com>, kvm@vger.kernel.org,
-        pbonzini@redhat.com, dgilbert@redhat.com, tglx@linutronix.de,
-        mingo@redhat.com, dave.hansen@linux.intel.com, bp@alien8.de,
-        Tyler Stachecki <tstachecki@bloomberg.net>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] x86/kvm: Account for fpstate->user_xfeatures changes
-Message-ID: <ZRJJtWC4ch0RhY/Y@luigi.stachecki.net>
-References: <20230914010003.358162-1-tstachecki@bloomberg.net>
- <ZQKzKkDEsY1n9dB1@redhat.com>
- <ZQLOVjLtFnGESG0S@luigi.stachecki.net>
- <93592292-ab7e-71ac-dd72-74cc76e97c74@oracle.com>
- <ZQOsQjsa4bEfB28H@luigi.stachecki.net>
- <ZQQKoIEgFki0KzxB@redhat.com>
- <ZQRNmsWcOM1xbNsZ@luigi.stachecki.net>
- <ZRH7F3SlHZEBf1I2@google.com>
+        with ESMTP id S229472AbjIZD1l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 25 Sep 2023 23:27:41 -0400
+Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388A6B3;
+        Mon, 25 Sep 2023 20:27:34 -0700 (PDT)
+Received: from in02.mta.xmission.com ([166.70.13.52]:60716)
+        by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1qkyjR-0025XF-KK; Mon, 25 Sep 2023 21:27:29 -0600
+Received: from ip68-227-168-167.om.om.cox.net ([68.227.168.167]:52928 helo=email.froward.int.ebiederm.org.xmission.com)
+        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1qkyjQ-00A2kG-Bx; Mon, 25 Sep 2023 21:27:29 -0600
+From:   "Eric W. Biederman" <ebiederm@xmission.com>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Sebastian Ott <sebott@redhat.com>,
+        Pedro Falcato <pedro.falcato@gmail.com>,
+        Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
+        sam@gentoo.org, Rich Felker <dalias@libc.org>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net>
+        <36e93c8e-4384-b269-be78-479ccc7817b1@redhat.com>
+        <87zg1bm5xo.fsf@email.froward.int.ebiederm.org>
+        <37d3392c-cf33-20a6-b5c9-8b3fb8142658@redhat.com>
+        <87jzsemmsd.fsf_-_@email.froward.int.ebiederm.org>
+        <84e974d3-ae0d-9eb5-49b2-3348b7dcd336@redhat.com>
+        <202309251001.C050864@keescook>
+Date:   Mon, 25 Sep 2023 22:27:02 -0500
+In-Reply-To: <202309251001.C050864@keescook> (Kees Cook's message of "Mon, 25
+        Sep 2023 10:06:01 -0700")
+Message-ID: <87v8bxiph5.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZRH7F3SlHZEBf1I2@google.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-XM-SPF: eid=1qkyjQ-00A2kG-Bx;;;mid=<87v8bxiph5.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.168.167;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX1/wOaQp+8aovEG4tuK61x9uVVX7vY5QjGM=
+X-SA-Exim-Connect-IP: 68.227.168.167
+X-SA-Exim-Mail-From: ebiederm@xmission.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: *;Kees Cook <keescook@chromium.org>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 668 ms - load_scoreonly_sql: 0.05 (0.0%),
+        signal_user_changed: 12 (1.8%), b_tie_ro: 10 (1.6%), parse: 1.41
+        (0.2%), extract_message_metadata: 35 (5.2%), get_uri_detail_list: 4.9
+        (0.7%), tests_pri_-2000: 43 (6.4%), tests_pri_-1000: 2.8 (0.4%),
+        tests_pri_-950: 1.27 (0.2%), tests_pri_-900: 1.04 (0.2%),
+        tests_pri_-200: 0.88 (0.1%), tests_pri_-100: 10 (1.5%), tests_pri_-90:
+        89 (13.4%), check_bayes: 73 (10.9%), b_tokenize: 13 (1.9%),
+        b_tok_get_all: 13 (2.0%), b_comp_prob: 4.1 (0.6%), b_tok_touch_all: 39
+        (5.8%), b_finish: 0.87 (0.1%), tests_pri_0: 437 (65.4%),
+        check_dkim_signature: 0.58 (0.1%), check_dkim_adsp: 7 (1.1%),
+        poll_dns_idle: 15 (2.3%), tests_pri_10: 3.1 (0.5%), tests_pri_500: 29
+        (4.3%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH] binfmt_elf: Support segments with 0 filesz and
+ misaligned starts
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 25, 2023 at 02:26:47PM -0700, Sean Christopherson wrote:
-> On Fri, Sep 15, 2023, Tyler Stachecki wrote:
-> > On Fri, Sep 15, 2023 at 04:41:20AM -0300, Leonardo Bras wrote:
-> > > Other than that, all I can think of is removing the features from guest:
-> > > 
-> > > As you commented, there may be some features that would not be a problem 
-> > > to be removed, and also there may be features which are not used by the 
-> > > workload, and could be removed. But this would depend on the feature, and 
-> > > the workload, beind a custom solution for every case.
-> > 
-> > Yes, the "fixup back" should be refined to pointed and verified cases.
-> >  
-> > > For this (removing guest features), from kernel side, I would suggest using 
-> > > SystemTap (and eBPF, IIRC). The procedures should be something like:
-> > > - Try to migrate VM from host with older kernel: fail
-> > > - Look at qemu error, which features are missing?
-> > > - Are those features safely removable from guest ? 
-> > >   - If so, get an SystemTap / eBPF script masking out the undesired bits.
-> > >   - Try the migration again, it should succeed.
-> > > 
-> > > IIRC, this could also be done in qemu side, with a custom qemu:
-> > > - Try to migrate VM from host with older kernel: fail
-> > > - Look at qemu error, which features are missing?
-> > > - Are those features safely removable from guest ?
-> > >   - If so, get a custom qemu which mask-out the desired flags before the VM 
-> > >     starts
-> > >   - Live migrate (can be inside the source host) to the custom qemu
-> > >   - Live migrate from custom qemu to target host.
-> > > - The custom qemu could be on a auxiliary host, and used only for this
-> > > 
-> > > Yes, it's hard, takes time, and may not solve every case, but it gets a 
-> > > higher chance of the VM surviving in the long run.
-> > 
-> > Thank you for taking the time to throughly consider the issue and suggest some
-> > ways out - I really appreciate it.
-> > 
-> > > But keep in mind this is a hack.
-> > > Taking features from a live guest is not supported in any way, and has a 
-> > > high chance of crashing the VM.
-> >
-> > OK - if there's no interest in the below, I will not push for including this
-> > patch in the kernel tree any longer. I do think the specific case below is what
-> > a vast majority of KVM users will struggle with in the near future, though:
-> >
-> > I have a test environment with Broadwell-based (have only AVX-256) guests
-> > running under Skylake (PKRU, AVX512, ...) hypervisors.
-> 
-> I definitely don't want to take the proposed patch.  As Leo pointed out, silently
-> dropping features that userspace explicitly requests is a recipe for disaster.
-> 
-> However, I do agree with Tyler that is an egregious kernel/KVM bug, as essentially
-> requiring KVM_SET_XSAVE to be a subset of guest supported XCR0, i.e. guest CPUID,
-> is a clearcut breakage of userspace.  KVM_SET_XSAVE worked on kernel X and failed
-> on kernel X+1, there's really no wiggle room there.
-> 
-> Luckily, I'm pretty sure there's no need to take features away from the guest in
-> order to fix the bug Tyler is experiencing.  Prior to commit ad856280ddea, KVM's
-> ABI was that KVM_SET_SAVE just needs a subset of the *host* features, i.e. this
-> chunk from the changelog simply needs to be undone:
-> 
->     As a bonus, it will also fail if userspace tries to set fpu features
->     (with the KVM_SET_XSAVE ioctl) that are not compatible to the guest
->     configuration.  Such features will never be returned by KVM_GET_XSAVE
->     or KVM_GET_XSAVE2.
-> 
-> That can be done by applying guest_supported_xcr0 to *only* the KVM_GET_XSAVE{2}
-> path.  It's not ideal since it means that KVM_GET_XSAVE{2} won't be consistent
-> with the guest model if userspace does KVM_GET_XSAVE{2} before KVM_SET_CPUID, but
-> practically speaking I don't think there's a real world userspace VMM that does
-> that.
-> 
-> Compile tested only, and it needs a changelog, but I think this will do the trick:
-> 
-> ---
->  arch/x86/include/asm/fpu/api.h |  3 ++-
->  arch/x86/kernel/fpu/core.c     |  5 +++--
->  arch/x86/kernel/fpu/xstate.c   |  7 +++++--
->  arch/x86/kernel/fpu/xstate.h   |  3 ++-
->  arch/x86/kvm/cpuid.c           |  8 --------
->  arch/x86/kvm/x86.c             | 37 ++++++++++++++++++++++------------
->  6 files changed, 36 insertions(+), 27 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
-> index 31089b851c4f..a2be3aefff9f 100644
-> --- a/arch/x86/include/asm/fpu/api.h
-> +++ b/arch/x86/include/asm/fpu/api.h
-> @@ -157,7 +157,8 @@ static inline void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd) {
->  static inline void fpu_sync_guest_vmexit_xfd_state(void) { }
->  #endif
->  
-> -extern void fpu_copy_guest_fpstate_to_uabi(struct fpu_guest *gfpu, void *buf, unsigned int size, u32 pkru);
-> +extern void fpu_copy_guest_fpstate_to_uabi(struct fpu_guest *gfpu, void *buf,
-> +					   unsigned int size, u64 xfeatures, u32 pkru);
->  extern int fpu_copy_uabi_to_guest_fpstate(struct fpu_guest *gfpu, const void *buf, u64 xcr0, u32 *vpkru);
->  
->  static inline void fpstate_set_confidential(struct fpu_guest *gfpu)
-> diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-> index a86d37052a64..a21a4d0ecc34 100644
-> --- a/arch/x86/kernel/fpu/core.c
-> +++ b/arch/x86/kernel/fpu/core.c
-> @@ -369,14 +369,15 @@ int fpu_swap_kvm_fpstate(struct fpu_guest *guest_fpu, bool enter_guest)
->  EXPORT_SYMBOL_GPL(fpu_swap_kvm_fpstate);
->  
->  void fpu_copy_guest_fpstate_to_uabi(struct fpu_guest *gfpu, void *buf,
-> -				    unsigned int size, u32 pkru)
-> +				    unsigned int size, u64 xfeatures, u32 pkru)
->  {
->  	struct fpstate *kstate = gfpu->fpstate;
->  	union fpregs_state *ustate = buf;
->  	struct membuf mb = { .p = buf, .left = size };
->  
->  	if (cpu_feature_enabled(X86_FEATURE_XSAVE)) {
-> -		__copy_xstate_to_uabi_buf(mb, kstate, pkru, XSTATE_COPY_XSAVE);
-> +		__copy_xstate_to_uabi_buf(mb, kstate, xfeatures, pkru,
-> +					  XSTATE_COPY_XSAVE);
->  	} else {
->  		memcpy(&ustate->fxsave, &kstate->regs.fxsave,
->  		       sizeof(ustate->fxsave));
-> diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-> index cadf68737e6b..7d31033d176e 100644
-> --- a/arch/x86/kernel/fpu/xstate.c
-> +++ b/arch/x86/kernel/fpu/xstate.c
-> @@ -1049,6 +1049,7 @@ static void copy_feature(bool from_xstate, struct membuf *to, void *xstate,
->   * __copy_xstate_to_uabi_buf - Copy kernel saved xstate to a UABI buffer
->   * @to:		membuf descriptor
->   * @fpstate:	The fpstate buffer from which to copy
-> + * @xfeatures:	Constraint which of user xfeatures to save (XSAVE only)
->   * @pkru_val:	The PKRU value to store in the PKRU component
->   * @copy_mode:	The requested copy mode
->   *
-> @@ -1059,7 +1060,8 @@ static void copy_feature(bool from_xstate, struct membuf *to, void *xstate,
->   * It supports partial copy but @to.pos always starts from zero.
->   */
->  void __copy_xstate_to_uabi_buf(struct membuf to, struct fpstate *fpstate,
-> -			       u32 pkru_val, enum xstate_copy_mode copy_mode)
-> +			       u64 xfeatures, u32 pkru_val,
-> +			       enum xstate_copy_mode copy_mode)
->  {
->  	const unsigned int off_mxcsr = offsetof(struct fxregs_state, mxcsr);
->  	struct xregs_state *xinit = &init_fpstate.regs.xsave;
-> @@ -1083,7 +1085,7 @@ void __copy_xstate_to_uabi_buf(struct membuf to, struct fpstate *fpstate,
->  		break;
->  
->  	case XSTATE_COPY_XSAVE:
-> -		header.xfeatures &= fpstate->user_xfeatures;
-> +		header.xfeatures &= fpstate->user_xfeatures & xfeatures;
->  		break;
+Kees Cook <keescook@chromium.org> writes:
 
-This changes the consideration of the xfeatures copied *into* the uabi buffer
-with respect to the guest xfeatures IIUC (approx guest XCR0, less FP/SSE only).
+> On Mon, Sep 25, 2023 at 05:27:12PM +0200, Sebastian Ott wrote:
+>> On Mon, 25 Sep 2023, Eric W. Biederman wrote:
+>> > 
+>> > Implement a helper elf_load that wraps elf_map and performs all
+>> > of the necessary work to ensure that when "memsz > filesz"
+>> > the bytes described by "memsz > filesz" are zeroed.
+>> > 
+>> > Link: https://lkml.kernel.org/r/20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net
+>> > Reported-by: Sebastian Ott <sebott@redhat.com>
+>> > Reported-by: Thomas Weißschuh <linux@weissschuh.net>
+>> > Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
+>> > ---
+>> > fs/binfmt_elf.c | 111 +++++++++++++++++++++---------------------------
+>> > 1 file changed, 48 insertions(+), 63 deletions(-)
+>> > 
+>> > Can you please test this one?
+>
+> Eric thanks for doing this refactoring! This does look similar to the
+> earlier attempt:
+> https://lore.kernel.org/lkml/20221106021657.1145519-1-pedro.falcato@gmail.com/
+> and it's a bit easier to review.
 
-IOW: we are still trimming guest xfeatures, just at the source...?
+I need to context switch away for a while so Kees if you will
+I will let you handle the rest of this one.
 
-That being said: the patch that I gave siliently allows unacceptable things to
-be accepted at the destination, whereas this maintains status-quo and signals
-an error when the destination cannot wholly process the uabi buffer (i.e.,
-asked to restore more state than the destination processor has present).
 
-The downside of my approach is above -- the flip side, though is that this
-approach requires a patch to be applied on the source. However, we cannot
-apply a patch at the source until it is evacuated of VMs -- chicken and egg
-problem...
+A couple of thoughts running through my head for anyone whose ambitious
+might include cleaning up binfmt_elf.c
 
-Unless I am grossly misunderstanding things here -- forgive me... :-)
+The elf_bss variable in load_elf_binary can be removed.
 
-It almost feels like userspace needs a flag to say: yes, old pre-Leo's-patched
-kernel was broken and sent more state than you might need or want -- eat what
-you can by default. If an additional flag is set, be conservative and ensure
-that you are capable of restoring the xfeatures specified in the uabi buffer.
+Work for a follow on patch is using my new elf_load in load_elf_interp
+and possibly in load_elf_library.  (More code size reduction).
 
-Cheers,
-Tyler
+An outstanding issue is if the first segment has filesz 0, and has a
+randomized locations.  But that is the same as today.
 
->  	}
->  
-> @@ -1185,6 +1187,7 @@ void copy_xstate_to_uabi_buf(struct membuf to, struct task_struct *tsk,
->  			     enum xstate_copy_mode copy_mode)
->  {
->  	__copy_xstate_to_uabi_buf(to, tsk->thread.fpu.fpstate,
-> +				  tsk->thread.fpu.fpstate->user_xfeatures,
->  				  tsk->thread.pkru, copy_mode);
->  }
->  
-> diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
-> index a4ecb04d8d64..3518fb26d06b 100644
-> --- a/arch/x86/kernel/fpu/xstate.h
-> +++ b/arch/x86/kernel/fpu/xstate.h
-> @@ -43,7 +43,8 @@ enum xstate_copy_mode {
->  
->  struct membuf;
->  extern void __copy_xstate_to_uabi_buf(struct membuf to, struct fpstate *fpstate,
-> -				      u32 pkru_val, enum xstate_copy_mode copy_mode);
-> +				      u64 xfeatures, u32 pkru_val,
-> +				      enum xstate_copy_mode copy_mode);
->  extern void copy_xstate_to_uabi_buf(struct membuf to, struct task_struct *tsk,
->  				    enum xstate_copy_mode mode);
->  extern int copy_uabi_from_kernel_to_xstate(struct fpstate *fpstate, const void *kbuf, u32 *pkru);
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index 0544e30b4946..773132c3bf5a 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
-> @@ -360,14 +360,6 @@ static void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
->  	vcpu->arch.guest_supported_xcr0 =
->  		cpuid_get_supported_xcr0(vcpu->arch.cpuid_entries, vcpu->arch.cpuid_nent);
->  
-> -	/*
-> -	 * FP+SSE can always be saved/restored via KVM_{G,S}ET_XSAVE, even if
-> -	 * XSAVE/XCRO are not exposed to the guest, and even if XSAVE isn't
-> -	 * supported by the host.
-> -	 */
-> -	vcpu->arch.guest_fpu.fpstate->user_xfeatures = vcpu->arch.guest_supported_xcr0 |
-> -						       XFEATURE_MASK_FPSSE;
-> -
->  	kvm_update_pv_runtime(vcpu);
->  
->  	vcpu->arch.maxphyaddr = cpuid_query_maxphyaddr(vcpu);
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 9f18b06bbda6..734e2d69329b 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -5382,26 +5382,37 @@ static int kvm_vcpu_ioctl_x86_set_debugregs(struct kvm_vcpu *vcpu,
->  	return 0;
->  }
->  
-> -static void kvm_vcpu_ioctl_x86_get_xsave(struct kvm_vcpu *vcpu,
-> -					 struct kvm_xsave *guest_xsave)
-> -{
-> -	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
-> -		return;
-> -
-> -	fpu_copy_guest_fpstate_to_uabi(&vcpu->arch.guest_fpu,
-> -				       guest_xsave->region,
-> -				       sizeof(guest_xsave->region),
-> -				       vcpu->arch.pkru);
-> -}
->  
->  static void kvm_vcpu_ioctl_x86_get_xsave2(struct kvm_vcpu *vcpu,
->  					  u8 *state, unsigned int size)
->  {
-> +	/*
-> +	 * Only copy state for features that are enabled for the guest.  The
-> +	 * state itself isn't problematic, but setting bits in the header for
-> +	 * features that are supported in *this* host but not exposed to the
-> +	 * guest can result in KVM_SET_XSAVE failing when live migrating to a
-> +	 * compatible host, i.e. a host without the features that are NOT
-> +	 * exposed to the guest.
-> +	 *
-> +	 * FP+SSE can always be saved/restored via KVM_{G,S}ET_XSAVE, even if
-> +	 * XSAVE/XCRO are not exposed to the guest, and even if XSAVE isn't
-> +	 * supported by the host.
-> +	 */
-> +	u64 supported_xcr0 = vcpu->arch.guest_supported_xcr0 |
-> +			     XFEATURE_MASK_FPSSE;
-> +
->  	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
->  		return;
->  
-> -	fpu_copy_guest_fpstate_to_uabi(&vcpu->arch.guest_fpu,
-> -				       state, size, vcpu->arch.pkru);
-> +	fpu_copy_guest_fpstate_to_uabi(&vcpu->arch.guest_fpu, state, size,
-> +				       supported_xcr0, vcpu->arch.pkru);
-> +}
-> +
-> +static void kvm_vcpu_ioctl_x86_get_xsave(struct kvm_vcpu *vcpu,
-> +					 struct kvm_xsave *guest_xsave)
-> +{
-> +	return kvm_vcpu_ioctl_x86_get_xsave2(vcpu, (void *)guest_xsave->region,
-> +					     sizeof(guest_xsave->region));
->  }
->  
->  static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
+There is a whole question does it make sense for the elf loader
+to have it's own helper vm_brk_flags in mm/mmap.c or would it
+make more sense for binfmt_elf to do what binfmt_elf_fdpic does and
+have everything to go through vm_mmap.
+
+I think replacing vm_brk_flags with vm_mmap would allow fixing the
+theoretical issue of filesz 0 and randomizing locations.
+
+
+
+In this change I replaced an open coded padzero that did not clear
+all of the way to the end of the page, with padzero that does.
+
+I also stopped checking the return of padzero as there is at least
+one known case where testing for failure is the wrong thing to do.
+It looks like binfmt_elf_fdpic may have the proper set of tests
+for when error handling can be safely completed.
+
+I found a couple of commits in the old history
+https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git,
+that look very interesting in understanding this code.
+
+commit 39b56d902bf3 ("[PATCH] binfmt_elf: clearing bss may fail")
+commit c6e2227e4a3e ("[SPARC64]: Missing user access return value checks in fs/binfmt_elf.c and fs/compat.c")
+commit 5bf3be033f50 ("v2.4.10.1 -> v2.4.10.2")
+
+Looking at commit 39b56d902bf3 ("[PATCH] binfmt_elf: clearing bss may fail"):
+>  commit 39b56d902bf35241e7cba6cc30b828ed937175ad
+>  Author: Pavel Machek <pavel@ucw.cz>
+>  Date:   Wed Feb 9 22:40:30 2005 -0800
 > 
-> base-commit: 5804c19b80bf625c6a9925317f845e497434d6d3
-> -- 
-> 
+>     [PATCH] binfmt_elf: clearing bss may fail
+>     
+>     So we discover that Borland's Kylix application builder emits weird elf
+>     files which describe a non-writeable bss segment.
+>     
+>     So remove the clear_user() check at the place where we zero out the bss.  I
+>     don't _think_ there are any security implications here (plus we've never
+>     checked that clear_user() return value, so whoops if it is a problem).
+>     
+>     Signed-off-by: Pavel Machek <pavel@suse.cz>
+>     Signed-off-by: Andrew Morton <akpm@osdl.org>
+>     Signed-off-by: Linus Torvalds <torvalds@osdl.org>
+
+It seems pretty clear that binfmt_elf_fdpic with skipping clear_user
+for non-writable segments and otherwise calling clear_user (aka padzero)
+and checking it's return code is the right thing to do.
+
+I just skipped the error checking as that avoids breaking things.
+
+It looks like Borland's Kylix died in 2005 so it might be safe to
+just consider read-only segments with memsz > filesz an error.
+
+
+Looking at commit 5bf3be033f50 ("v2.4.10.1 -> v2.4.10.2") the
+binfmt_elf.c bits confirm my guess that the weird structure is because
+before that point binfmt_elf.c assumed there would be only a single
+segment with memsz > filesz.  Which is why the code was structured so
+weirdly.
+
+Looking a little farther it looks like the binfmt_elf.c was introduced
+in Linux v1.0, with essentially the same structure in load_elf_binary as
+it has now.  Prior to that Linux hard coded support for a.out binaries
+in execve.  So if someone wants to add a Fixes tag it should be
+"Fixes: v1.0"
+
+Which finally explains to me why the code is so odd.  For the most part
+the code has only received maintenance for the last 30 years or so.
+Strictly 29 years, but 30 has a better ring to it.
+
+Anyway those are my rambling thoughts that might help someone.
+For now I will be happy if we can get my elf_load helper tested
+to everyone's satisfaction and merged.
+
+Eric
