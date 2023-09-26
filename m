@@ -2,142 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 243267AEF16
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 16:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 457777AEEA1
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 16:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234912AbjIZOBX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 10:01:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40152 "EHLO
+        id S233792AbjIZO24 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 10:28:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234909AbjIZOBW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 10:01:22 -0400
-Received: from mail-yw1-x1144.google.com (mail-yw1-x1144.google.com [IPv6:2607:f8b0:4864:20::1144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 760DC101
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 07:01:14 -0700 (PDT)
-Received: by mail-yw1-x1144.google.com with SMTP id 00721157ae682-59f6763767dso62644997b3.2
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 07:01:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1695736873; x=1696341673; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7xHsjPqk6JJBUwczwrhg2APBTdxlZcsovPFUPf8oBcY=;
-        b=M9ay2qpQ7AmTwO8+Ktsgpp80OBtSZ/XeqvqK0Wt8fC2KPLmlsX4YXiXNADyURIEHFs
-         53zSz2h2yR78iewy4NFMa4kd98GzzJyfBBan2PQ6OrZY9sMO1ehWcgBo+uOXNLlzru5A
-         6yYNil9qCZ+88Gie84WkgzHyMVHoBcMxO5hns=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695736873; x=1696341673;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7xHsjPqk6JJBUwczwrhg2APBTdxlZcsovPFUPf8oBcY=;
-        b=t3uRDqFnL1aRmAuV9LUYgLxZHP82/mKAgzH3gaVhUnJ1A8rlDkY6yf1YRLpM7M3aOY
-         i1b2gyjt0puFUTC6hUJI75w5sknCrlzps8Mgser3TERh91TdtmjrLTFQxSbmv+g/UflK
-         Op9Brhu5sUPTDrEHJc578oMlMaS8TD87+XUdd7A9G5xESsfy+z7HWeUKzormr0ku9dhJ
-         YMGECmnoMP9ig+wrvsZ+wSXPVf+xjN6jzboWqBsywaYkv673Rr7yExzo6hRFshg2JEH5
-         eXQBaJvcJrE7TuIwqhlnLEmnJT8CUIHzEsEHLDXqHhS5z04rxqhCZ80tuS58y3S1+Gdy
-         LT8g==
-X-Gm-Message-State: AOJu0YyIrQPr8vQxZguL6NTUu6mrzhklskPZaOI6sGVRAnG6NDdSiVON
-        7XrQYNZW4DUDM4cgS8TW+t0z3bCr51rSChN0x1FY4w==
-X-Google-Smtp-Source: AGHT+IHRQWjCnf+1z4BiGKGiibQRq7Ph9T+j4h2Pjol7PnCXtpHRP2XwhQG5pMLdECETFZ8LCCzuvpzFQ+pve6GD7Do=
-X-Received: by 2002:a81:4f4d:0:b0:586:a170:7dbe with SMTP id
- d74-20020a814f4d000000b00586a1707dbemr9693811ywb.13.1695736873520; Tue, 26
- Sep 2023 07:01:13 -0700 (PDT)
+        with ESMTP id S230330AbjIZO24 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 10:28:56 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB95F101
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 07:28:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695738529; x=1727274529;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=S4X8JYWLkzEFTQc5uWVUhRG2/6e5VTT3T8Vo+VOzjS4=;
+  b=ZUrlrtFMLM9yvcqUePvkQYR5MP5IPEMvtUwvlODffzYMFFR+MsVXiIXU
+   OW2b0hIs7GrCvPTTX6sZjEu/ynGZeLGJHss0eklwIE8TLosqwOF2wY80t
+   iyTPbAkRZk9bBmrda5RLYM72LIgK0SWYzvpHboqY8Sdh3xkv9ywWQkdep
+   U8/P9Kp/vUZvDYIKU+m6Cv8cX5I+6CQdy4Me0rbK6VEwMJtP8Sa2Ew/8Q
+   M4DwothJxTvVf9geYnrFoehElwHKhEsGoCYQ+yn6h/RhrlHAqbv084Sza
+   gOQwxWvWkCKSHtTykwZ7dG0D53dcvza9VLCxE3RQaK4gXGxFBsQ7WvaTp
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="467867719"
+X-IronPort-AV: E=Sophos;i="6.03,178,1694761200"; 
+   d="scan'208";a="467867719"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 07:24:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="783964714"
+X-IronPort-AV: E=Sophos;i="6.03,178,1694761200"; 
+   d="scan'208";a="783964714"
+Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 07:24:08 -0700
+From:   Nirmoy Das <nirmoy.das@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        stable@vger.kernel.org, Andrzej Hajda <andrzej.hajda@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Tejas Upadhyay <tejas.upadhyay@intel.com>,
+        Lucas De Marchi <lucas.demarchi@intel.com>,
+        Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>,
+        =?UTF-8?q?Tapani=20P=C3=A4lli?= <tapani.palli@intel.com>,
+        Mark Janes <mark.janes@intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH] drm/i915: Don't set PIPE_CONTROL_FLUSH_L3 for aux inval
+Date:   Tue, 26 Sep 2023 16:24:01 +0200
+Message-ID: <20230926142401.25687-1-nirmoy.das@intel.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230921131201.157767-1-lma@semihalf.com> <20230922063410.23626-1-lma@semihalf.com>
-In-Reply-To: <20230922063410.23626-1-lma@semihalf.com>
-From:   =?UTF-8?Q?Rados=C5=82aw_Biernacki?= <rad@chromium.org>
-Date:   Tue, 26 Sep 2023 16:01:02 +0200
-Message-ID: <CADmiTCTHn+XaNqkAZjLmaYUy+6bsb5chue97g3n0bKP7Lcf9_w@mail.gmail.com>
-Subject: Re: [PATCH v3] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
-To:     Lukasz Majczak <lma@semihalf.com>
-Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-        Guenter Roeck <linux@roeck-us.net>, upstream@semihalf.com,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10, 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928 
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 22, 2023 at 8:34=E2=80=AFAM Lukasz Majczak <lma@semihalf.com> w=
-rote:
->
-> As drm_dp_get_mst_branch_device_by_guid() is called from
-> drm_dp_get_mst_branch_device_by_guid(), mstb parameter has to be checked,
-> otherwise NULL dereference may occur in the call to
-> the memcpy() and cause following:
->
-> [12579.365869] BUG: kernel NULL pointer dereference, address: 00000000000=
-00049
-> [12579.365878] #PF: supervisor read access in kernel mode
-> [12579.365880] #PF: error_code(0x0000) - not-present page
-> [12579.365882] PGD 0 P4D 0
-> [12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> ...
-> [12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
-> [12579.365899] RIP: 0010:memcmp+0xb/0x29
-> [12579.365921] Call Trace:
-> [12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
-> [12579.365930] drm_dp_mst_up_req_work+0x137/0x416
-> [12579.365933] process_one_work+0x1d0/0x419
-> [12579.365935] worker_thread+0x11a/0x289
-> [12579.365938] kthread+0x13e/0x14f
-> [12579.365941] ? process_one_work+0x419/0x419
-> [12579.365943] ? kthread_blkcg+0x31/0x31
-> [12579.365946] ret_from_fork+0x1f/0x30
->
-> As get_mst_branch_device_by_guid_helper() is recursive, moving condition
-> to the first line allow to remove a similar one for step over of NULL ele=
-ments
-> inside a loop.
->
-> Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to onl=
-y mst branch")
-> Cc: <stable@vger.kernel.org> # 4.14+
-> Signed-off-by: Lukasz Majczak <lma@semihalf.com>
-> ---
->
-> v2->v3:
-> * Fixed patch description.
->
->  drivers/gpu/drm/display/drm_dp_mst_topology.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/=
-drm/display/drm_dp_mst_topology.c
-> index ed96cfcfa304..8c929ef72c72 100644
-> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> @@ -2574,14 +2574,14 @@ static struct drm_dp_mst_branch *get_mst_branch_d=
-evice_by_guid_helper(
->         struct drm_dp_mst_branch *found_mstb;
->         struct drm_dp_mst_port *port;
->
-> +       if (!mstb)
-> +               return NULL;
-> +
->         if (memcmp(mstb->guid, guid, 16) =3D=3D 0)
->                 return mstb;
->
->
->         list_for_each_entry(port, &mstb->ports, next) {
-> -               if (!port->mstb)
-> -                       continue;
-> -
->                 found_mstb =3D get_mst_branch_device_by_guid_helper(port-=
->mstb, guid);
->
->                 if (found_mstb)
-> --
-> 2.42.0.515.g380fc7ccd1-goog
->
+PIPE_CONTROL_FLUSH_L3 is not needed for aux invalidation
+so don't set that.
 
-Reviewed-by: Radoslaw Biernacki <rad@chromium.org>
+Fixes: 78a6ccd65fa3 ("drm/i915/gt: Ensure memory quiesced before invalidation")
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.8+
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>
+Cc: Tapani Pälli <tapani.palli@intel.com>
+Cc: Mark Janes <mark.janes@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+index 0143445dba83..ba4c2422b340 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+@@ -271,8 +271,17 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 		if (GRAPHICS_VER_FULL(rq->i915) >= IP_VER(12, 70))
+ 			bit_group_0 |= PIPE_CONTROL_CCS_FLUSH;
+ 
++		/*
++		 * L3 fabric flush is needed for AUX CCS invalidation
++		 * which happens as part of pipe-control so we can
++		 * ignore PIPE_CONTROL_FLUSH_L3. Also PIPE_CONTROL_FLUSH_L3
++		 * deals with Protected Memory which is not needed for
++		 * AUX CCS invalidation and lead to unwanted side effects.
++		 */
++		if (mode & EMIT_FLUSH)
++			bit_group_1 |= PIPE_CONTROL_FLUSH_L3;
++
+ 		bit_group_1 |= PIPE_CONTROL_TILE_CACHE_FLUSH;
+-		bit_group_1 |= PIPE_CONTROL_FLUSH_L3;
+ 		bit_group_1 |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
+ 		bit_group_1 |= PIPE_CONTROL_DEPTH_CACHE_FLUSH;
+ 		/* Wa_1409600907:tgl,adl-p */
+-- 
+2.41.0
+
