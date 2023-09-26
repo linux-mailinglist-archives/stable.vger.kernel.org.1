@@ -2,95 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A97F7AEBED
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 13:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1B497AEC1A
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 14:03:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234609AbjIZLv6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 07:51:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35992 "EHLO
+        id S234443AbjIZMDX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 08:03:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234568AbjIZLvt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 07:51:49 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48BF1725
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 04:51:26 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1ql6b3-0004gD-Li; Tue, 26 Sep 2023 13:51:21 +0200
-Message-ID: <2e9c9b6a-daee-4d6d-ba93-47965fa2b443@leemhuis.info>
-Date:   Tue, 26 Sep 2023 13:51:20 +0200
+        with ESMTP id S234511AbjIZMDW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 08:03:22 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29FCDE6;
+        Tue, 26 Sep 2023 05:03:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695729796; x=1727265796;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FU0AhVxXd739OYSha2yCrO+3VahEjA1ikBLDvuNth4E=;
+  b=m9ULxA4LjFjcnMkL9UFpUEDO+Ddm54ykG8+764geq/0TgQouIp4x0vBH
+   xy2Rk4qzhPfBYKu3a+0///za/4FvO292EN9Yisq0POvQGCag24QGKhuWA
+   sjcYiw5O0kr9Rhr2ZsUSA+g2+aq84jNHkLj65Y8uk7TbzTevUZ6Gf9JM2
+   9siwmaEnqeYzkDGkbeJeVKZfzpeUXJ/tg9Ja0xWZB8TakeQb1OxEdTKwU
+   aRlV9bzSm9UCYJtIRb1IppZJLHfw9CsA96nR/J1kBx/qxYtEUys7WYmdG
+   EUPEkKyfNYLFtYZn2g5uJR/z1MCrfoPjc1XTocVlSYaPJKrakFB1ybqn+
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="378827450"
+X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; 
+   d="scan'208";a="378827450"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2023 05:02:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="864381703"
+X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; 
+   d="scan'208";a="864381703"
+Received: from lkp-server02.sh.intel.com (HELO 32c80313467c) ([10.239.97.151])
+  by fmsmga002.fm.intel.com with ESMTP; 26 Sep 2023 05:02:32 -0700
+Received: from kbuild by 32c80313467c with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1ql6lq-0002mu-2F;
+        Tue, 26 Sep 2023 12:02:30 +0000
+Date:   Tue, 26 Sep 2023 20:02:14 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Zack Rusin <zack@kde.org>, dri-devel@lists.freedesktop.org
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Thomas =?iso-8859-1?Q?Hellstr=F6m?= 
+        <thomas.hellstrom@linux.intel.com>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Huang Rui <ray.huang@amd.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
+Subject: Re: [PATCH] drm/ttm: Make sure the mapped tt pages are decrypted
+ when needed
+Message-ID: <202309261923.XeaDU2Wg-lkp@intel.com>
+References: <20230926040359.3040017-1-zack@kde.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Regression since 6.1.46 (commit 8ee39ec): rtsx_pci from
- drivers/misc/cardreader breaks NVME power state, preventing system boot
-To:     Salvatore Bonaccorso <carnil@debian.org>,
-        Ricky WU <ricky_wu@realtek.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        Paul Grandperrin <paul.grandperrin@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Wei_wang <wei_wang@realsil.com.cn>,
-        Roger Tseng <rogerable@realtek.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-References: <5DHV0S.D0F751ZF65JA1@gmail.com>
- <82469f2f-59e4-49d5-823d-344589cbb119@leemhuis.info>
- <2023091333-fiftieth-trustless-d69d@gregkh>
- <7991b5bd7fb5469c971a2984194e815f@realtek.com>
- <2023091921-unscented-renegade-6495@gregkh>
- <995632624f0e4d26b73fb934a8eeaebc@realtek.com>
- <2023092041-shopper-prozac-0640@gregkh>
- <3ddcf5fae0164fbda79081650da79600@realtek.com> <ZRK_Iqj1ZSjx1fZS@eldamar.lan>
-Content-Language: en-US, de-DE
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <ZRK_Iqj1ZSjx1fZS@eldamar.lan>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695729086;2bb22162;
-X-HE-SMSGID: 1ql6b3-0004gD-Li
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,PDS_BTC_ID,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230926040359.3040017-1-zack@kde.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 26.09.23 13:23, Salvatore Bonaccorso wrote:
-> On Wed, Sep 20, 2023 at 08:32:17AM +0000, Ricky WU wrote:
->>> On Wed, Sep 20, 2023 at 07:30:00AM +0000, Ricky WU wrote:
->
->>>> This patch is our solution for this issue...
->>>> And now how can I push this?
->>>
->>> Submit it properly like any other patch, what is preventing that from
->>> happening?
->>
->> (commit 8ee39ec) some reader no longer force #CLKREQ to low when system need to enter ASPM.
->> But some platform maybe not implement complete ASPM? I don't know..... it causes problems...
->>
->> Like in the past Only the platform support L1ss we release the #CLKREQ.
->> But new patch we move the judgment (L1ss) to probe, because we met some host will clean the config space from S3 or some power saving mode 
->> And also we think just to read config space one time when the driver start is enough  
-> 
-> Is there a potential fix which is queued for this or would be the
-> safest option to unbreak the regression to revert the commit in the
-> stable trees temporarily?
-> 
-> I'm asking because in Debian we got the report at 
-> https://bugs.debian.org/1052063 
-> 
-> (and ideally to unbreak the situation for the user I would like to
-> include a fix in the next upload we do, but following what you as
-> upstream will do ideally).
+Hi Zack,
 
-A fix is out for review and will likely be merged for mainline soon:
-https://lore.kernel.org/all/37b1afb997f14946a8784c73d1f9a4f5@realtek.com/
-https://lore.kernel.org/all/2023092522-climatic-commend-8c99@gregkh/
+kernel test robot noticed the following build errors:
 
-A few distros reverted the culprit for now in their stable trees.
+[auto build test ERROR on linus/master]
+[also build test ERROR on v6.6-rc3 next-20230926]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-HTH, Ciao,  Thorsten
+url:    https://github.com/intel-lab-lkp/linux/commits/Zack-Rusin/drm-ttm-Make-sure-the-mapped-tt-pages-are-decrypted-when-needed/20230926-120619
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20230926040359.3040017-1-zack%40kde.org
+patch subject: [PATCH] drm/ttm: Make sure the mapped tt pages are decrypted when needed
+config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20230926/202309261923.XeaDU2Wg-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230926/202309261923.XeaDU2Wg-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309261923.XeaDU2Wg-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/gpu/drm/ttm/ttm_tt.c: In function 'ttm_tt_create':
+>> drivers/gpu/drm/ttm/ttm_tt.c:89:41: error: implicit declaration of function 'cc_platform_has' [-Werror=implicit-function-declaration]
+      89 |         if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+         |                                         ^~~~~~~~~~~~~~~
+>> drivers/gpu/drm/ttm/ttm_tt.c:89:57: error: 'CC_ATTR_MEM_ENCRYPT' undeclared (first use in this function)
+      89 |         if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+         |                                                         ^~~~~~~~~~~~~~~~~~~
+   drivers/gpu/drm/ttm/ttm_tt.c:89:57: note: each undeclared identifier is reported only once for each function it appears in
+   cc1: some warnings being treated as errors
+
+
+vim +/cc_platform_has +89 drivers/gpu/drm/ttm/ttm_tt.c
+
+    56	
+    57	/*
+    58	 * Allocates a ttm structure for the given BO.
+    59	 */
+    60	int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
+    61	{
+    62		struct ttm_device *bdev = bo->bdev;
+    63		uint32_t page_flags = 0;
+    64	
+    65		dma_resv_assert_held(bo->base.resv);
+    66	
+    67		if (bo->ttm)
+    68			return 0;
+    69	
+    70		switch (bo->type) {
+    71		case ttm_bo_type_device:
+    72			if (zero_alloc)
+    73				page_flags |= TTM_TT_FLAG_ZERO_ALLOC;
+    74			break;
+    75		case ttm_bo_type_kernel:
+    76			break;
+    77		case ttm_bo_type_sg:
+    78			page_flags |= TTM_TT_FLAG_EXTERNAL;
+    79			break;
+    80		default:
+    81			pr_err("Illegal buffer object type\n");
+    82			return -EINVAL;
+    83		}
+    84		/*
+    85		 * When using dma_alloc_coherent with memory encryption the
+    86		 * mapped TT pages need to be decrypted or otherwise the drivers
+    87		 * will end up sending encrypted mem to the gpu.
+    88		 */
+  > 89		if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+    90			page_flags |= TTM_TT_FLAG_DECRYPTED;
+    91	
+    92		bo->ttm = bdev->funcs->ttm_tt_create(bo, page_flags);
+    93		if (unlikely(bo->ttm == NULL))
+    94			return -ENOMEM;
+    95	
+    96		WARN_ON(bo->ttm->page_flags & TTM_TT_FLAG_EXTERNAL_MAPPABLE &&
+    97			!(bo->ttm->page_flags & TTM_TT_FLAG_EXTERNAL));
+    98	
+    99		return 0;
+   100	}
+   101	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
