@@ -2,165 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E609D7AF4BE
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 22:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99A267AF4D7
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 22:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231899AbjIZUF0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 16:05:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52264 "EHLO
+        id S231899AbjIZUKd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 16:10:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235816AbjIZUFZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 16:05:25 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61EC0180
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:05:17 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59f8134ec00so95389457b3.3
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:05:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695758716; x=1696363516; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iUWT+ccHYSlqR7Gmrnq8A76xPWnK8wJVTcz3EkgFwkk=;
-        b=fHvz/oXfN/BEP2dph9JC3zX7RplJK25pHOYQ4k6IYY2hH90LJ9R8h6X9CBSdVPWzOA
-         zZ/uFcKpr7u4eQsd5O2ZSK+xcQXrOywBXajCGjcm0whNsAFfSsrd738LczlzCSllqloF
-         pEzhSw4I1X44/guUCDwGqfzt9QuibRzEndhzaLrYP7lK6AG64NG8oc2alRg7CkTJ7JOZ
-         bOx/0fu4TVsqxt+gD/reQgOiiGqTXzlYIgCQRXfciGybYOOS7c1U9Q1SAtvzHOyiSP4G
-         taSxv0/UENApCkCQ7xsaAMjZBN1Pgu/eEuwoYJpS59T8gWm6HkncOggfOM07dVhLywpq
-         HUEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695758716; x=1696363516;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iUWT+ccHYSlqR7Gmrnq8A76xPWnK8wJVTcz3EkgFwkk=;
-        b=tbqjxiTrdxa0NkblB2NNRvblM+0xHAj4qbuLRXAbWdJbWl+VIT+a81pfiOS/E5HK+Q
-         8MkXahuhSk12AMWdUk+5bln1isHFSmpc6uO7eH3yJIXbwE40P/X9ykWK91s/CB/6WvHG
-         9fKAqXe2rkucPgVdz/AN6DzdJDbwDAb85l2Xy8bZgbRO3KKhgv4kLuniWSB+zUdI/9Xn
-         l2t+r1oAtKA5c1ZfVi02Dmhn5e513E1s/SduuC8n4B9tE1iWiSQj6M1Qn5XcW8TrGo3P
-         WqJhFhWnGoSduM70P/ft0OH1iEdg0l5dPJSNLCuzZyLnaZpmR9P+5XBS88+jbp617TZp
-         u6Uw==
-X-Gm-Message-State: AOJu0YxfW5CL53AjwpQHesah50YGf9WmrjASZjkgQRas+rzdRkZ6gvhs
-        9joBtXMJKgTadTPQTbLOk9qQ5t9/4Q==
-X-Google-Smtp-Source: AGHT+IEUd45Rw2MBKHocGo/lYiGWT9CIksAVWd6cnwx9BMyxx8zuAa0FUl0Vs9Eq31nY+vAcjI1OSk/2lQ==
-X-Received: from jrife.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:9f])
- (user=jrife job=sendgmr) by 2002:a81:af60:0:b0:59b:ca80:919a with SMTP id
- x32-20020a81af60000000b0059bca80919amr428ywj.0.1695758716434; Tue, 26 Sep
- 2023 13:05:16 -0700 (PDT)
-Date:   Tue, 26 Sep 2023 15:05:05 -0500
-In-Reply-To: <20230926200505.2804266-1-jrife@google.com>
+        with ESMTP id S229694AbjIZUKc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 16:10:32 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7BD192
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 13:10:25 -0700 (PDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38QJabN7022252;
+        Tue, 26 Sep 2023 20:10:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=g+3nzDY+6iPIVdg0GcX0AxiTUNU0DsX0xUDrqGI4DIs=;
+ b=ejmsYIvC3R2Wwusl0wYvZIyKxRsTtwfOQhBxvhN1pqrfvRwSZcWGxfRbNxxUTldju8Yw
+ nma2r/D1YLY6Zo72sNTjbH8xcPkUE1r5LbD1u2eHVnKcCQWN//ggEifIuqSp/Kghwwr2
+ 4oTTFaWD0bFYfmL2FqrZKM4HeKPr8Cy9Qpx92hBuG0XC7plUVA2lxDeLtkvpalIQg/FN
+ 3EQ2owZGlln5J3sL6WRevMW0fW/7J53NIY6u6RQgmCTb8xxl6uFNbExZVMcLe7bUoxfQ
+ wgzXH+QuD6p547EJH41yP+uc8jwOFwM4+QtgvtS6a/itZhdDmSPyuGTuajRLr9ag+JmM ig== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tc4tba0ru-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 26 Sep 2023 20:10:13 +0000
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38QJap5X023593;
+        Tue, 26 Sep 2023 20:10:13 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tc4tba0q8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 26 Sep 2023 20:10:12 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38QJFnK8008273;
+        Tue, 26 Sep 2023 20:10:11 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+        by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tabbn62w3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 26 Sep 2023 20:10:11 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+        by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38QKAA8w15860310
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Sep 2023 20:10:10 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A92E058062;
+        Tue, 26 Sep 2023 20:10:10 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 344DD58057;
+        Tue, 26 Sep 2023 20:10:10 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.107.17])
+        by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Tue, 26 Sep 2023 20:10:10 +0000 (GMT)
+Message-ID: <97802d8be17842774a07272cc4f59d34695c969b.camel@linux.ibm.com>
+Subject: Re: [PATCH 5.4 118/367] ima: Remove deprecated IMA_TRUSTED_KEYRING
+ Kconfig
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, Nayna Jain <nayna@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Oleksandr Tymoshenko <ovt@google.com>
+Date:   Tue, 26 Sep 2023 16:10:09 -0400
+In-Reply-To: <20230920112901.691830240@linuxfoundation.org>
+References: <20230920112858.471730572@linuxfoundation.org>
+         <20230920112901.691830240@linuxfoundation.org>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
 Mime-Version: 1.0
-References: <20230926200505.2804266-1-jrife@google.com>
-X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
-Message-ID: <20230926200505.2804266-4-jrife@google.com>
-Subject: [PATCH net v6 3/3] net: prevent address rewrite in kernel_bind()
-From:   Jordan Rife <jrife@google.com>
-To:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, willemdebruijn.kernel@gmail.com,
-        netdev@vger.kernel.org
-Cc:     dborkman@kernel.org, horms@verge.net.au, pablo@netfilter.org,
-        kadlec@netfilter.org, fw@strlen.de, santosh.shilimkar@oracle.com,
-        ast@kernel.org, rdna@fb.com, linux-rdma@vger.kernel.org,
-        rds-devel@oss.oracle.com, coreteam@netfilter.org,
-        netfilter-devel@vger.kernel.org, ja@ssi.bg,
-        lvs-devel@vger.kernel.org, kafai@fb.com, daniel@iogearbox.net,
-        daan.j.demeyer@gmail.com, Jordan Rife <jrife@google.com>,
-        stable@vger.kernel.org, Willem de Bruijn <willemb@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: JFU09qE1Dk5EbPAozDs2Fi5h4CObOJEk
+X-Proofpoint-GUID: CVaPZJIBh8zW0morIMKRWo3G2DTOIi7k
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-26_14,2023-09-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ malwarescore=0 clxscore=1011 spamscore=0 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=496 phishscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2309260172
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Similar to the change in commit 0bdf399342c5("net: Avoid address
-overwrite in kernel_connect"), BPF hooks run on bind may rewrite the
-address passed to kernel_bind(). This change
+Hi Greg,
 
-1) Makes a copy of the bind address in kernel_bind() to insulate
-   callers.
-2) Replaces direct calls to sock->ops->bind() in net with kernel_bind()
+On Wed, 2023-09-20 at 13:28 +0200, Greg Kroah-Hartman wrote:
+> 5.4-stable review patch.  If anyone has any objections, please let me know.
 
-Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
-Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
-Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Jordan Rife <jrife@google.com>
----
- net/netfilter/ipvs/ip_vs_sync.c | 4 ++--
- net/rds/tcp_connect.c           | 2 +-
- net/rds/tcp_listen.c            | 2 +-
- net/socket.c                    | 7 ++++++-
- 4 files changed, 10 insertions(+), 5 deletions(-)
+Thanks for holding off on back porting this. Oleksandr Tymoshenko's
+"ima: Finish deprecation of IMA_TRUSTED_KEYRING Kconfig" is needed as
+well.  
 
-diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
-index 6e4ed1e11a3b7..4174076c66fa7 100644
---- a/net/netfilter/ipvs/ip_vs_sync.c
-+++ b/net/netfilter/ipvs/ip_vs_sync.c
-@@ -1439,7 +1439,7 @@ static int bind_mcastif_addr(struct socket *sock, struct net_device *dev)
- 	sin.sin_addr.s_addr  = addr;
- 	sin.sin_port         = 0;
- 
--	return sock->ops->bind(sock, (struct sockaddr*)&sin, sizeof(sin));
-+	return kernel_bind(sock, (struct sockaddr *)&sin, sizeof(sin));
- }
- 
- static void get_mcast_sockaddr(union ipvs_sockaddr *sa, int *salen,
-@@ -1546,7 +1546,7 @@ static int make_receive_sock(struct netns_ipvs *ipvs, int id,
- 
- 	get_mcast_sockaddr(&mcast_addr, &salen, &ipvs->bcfg, id);
- 	sock->sk->sk_bound_dev_if = dev->ifindex;
--	result = sock->ops->bind(sock, (struct sockaddr *)&mcast_addr, salen);
-+	result = kernel_bind(sock, (struct sockaddr *)&mcast_addr, salen);
- 	if (result < 0) {
- 		pr_err("Error binding to the multicast addr\n");
- 		goto error;
-diff --git a/net/rds/tcp_connect.c b/net/rds/tcp_connect.c
-index d788c6d28986f..a0046e99d6df7 100644
---- a/net/rds/tcp_connect.c
-+++ b/net/rds/tcp_connect.c
-@@ -145,7 +145,7 @@ int rds_tcp_conn_path_connect(struct rds_conn_path *cp)
- 		addrlen = sizeof(sin);
- 	}
- 
--	ret = sock->ops->bind(sock, addr, addrlen);
-+	ret = kernel_bind(sock, addr, addrlen);
- 	if (ret) {
- 		rdsdebug("bind failed with %d at address %pI6c\n",
- 			 ret, &conn->c_laddr);
-diff --git a/net/rds/tcp_listen.c b/net/rds/tcp_listen.c
-index 014fa24418c12..53b3535a1e4a8 100644
---- a/net/rds/tcp_listen.c
-+++ b/net/rds/tcp_listen.c
-@@ -306,7 +306,7 @@ struct socket *rds_tcp_listen_init(struct net *net, bool isv6)
- 		addr_len = sizeof(*sin);
- 	}
- 
--	ret = sock->ops->bind(sock, (struct sockaddr *)&ss, addr_len);
-+	ret = kernel_bind(sock, (struct sockaddr *)&ss, addr_len);
- 	if (ret < 0) {
- 		rdsdebug("could not bind %s listener socket: %d\n",
- 			 isv6 ? "IPv6" : "IPv4", ret);
-diff --git a/net/socket.c b/net/socket.c
-index 107a257a75186..3408bd6bb1e5a 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -3518,7 +3518,12 @@ static long compat_sock_ioctl(struct file *file, unsigned int cmd,
- 
- int kernel_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- {
--	return READ_ONCE(sock->ops)->bind(sock, addr, addrlen);
-+	struct sockaddr_storage address;
-+
-+	memcpy(&address, addr, addrlen);
-+
-+	return READ_ONCE(sock->ops)->bind(sock, (struct sockaddr *)&address,
-+					  addrlen);
- }
- EXPORT_SYMBOL(kernel_bind);
- 
 -- 
-2.42.0.515.g380fc7ccd1-goog
+thanks,
+
+Mimi
 
