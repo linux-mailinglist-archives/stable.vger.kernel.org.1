@@ -2,74 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C937F7AEE2B
-	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 15:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 243267AEF16
+	for <lists+stable@lfdr.de>; Tue, 26 Sep 2023 16:58:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234878AbjIZNuO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 09:50:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32888 "EHLO
+        id S234912AbjIZOBX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 10:01:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234882AbjIZNuM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 09:50:12 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B609C101
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 06:50:02 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-31dd10c2b8bso8272831f8f.3
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 06:50:02 -0700 (PDT)
+        with ESMTP id S234909AbjIZOBW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 10:01:22 -0400
+Received: from mail-yw1-x1144.google.com (mail-yw1-x1144.google.com [IPv6:2607:f8b0:4864:20::1144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 760DC101
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 07:01:14 -0700 (PDT)
+Received: by mail-yw1-x1144.google.com with SMTP id 00721157ae682-59f6763767dso62644997b3.2
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 07:01:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695736201; x=1696341001; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cRs3HHfGHaH5W3/uj1x1VaVTGyeeNQR7KwXCiLuCrmM=;
-        b=bz7BUBGI6h61JBq7BxRn1D+HQiufLhNn2a2hvsJ4pr1rTZNqiOQ6xWB8MGtNINuY26
-         ofOqJ/Zq00wEW4hDfz9MuhaT/uj8dBtcw0i4kXr2JNN/DTTVU6wN1zAys0p4ZOtzz4Q+
-         9MI64iukHtMbuB7iXu4FTVIv3IjNrgEkNj3zcF/74MtSrgzWtP6eR6wODi9/CpGsBrai
-         qsSuA0IGwcCzaGMHyIA1SphmKJff+wnUp8sVheWvfR3yP7jZzf5af59UT2iFslxg87C4
-         ueY2oHMa3JAPt4q239D51f5HuxZ2CKlLJuGLxmLrZBk3EgT01JnCpkUn6ApZTb3qzi0e
-         XMIw==
+        d=chromium.org; s=google; t=1695736873; x=1696341673; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7xHsjPqk6JJBUwczwrhg2APBTdxlZcsovPFUPf8oBcY=;
+        b=M9ay2qpQ7AmTwO8+Ktsgpp80OBtSZ/XeqvqK0Wt8fC2KPLmlsX4YXiXNADyURIEHFs
+         53zSz2h2yR78iewy4NFMa4kd98GzzJyfBBan2PQ6OrZY9sMO1ehWcgBo+uOXNLlzru5A
+         6yYNil9qCZ+88Gie84WkgzHyMVHoBcMxO5hns=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695736201; x=1696341001;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cRs3HHfGHaH5W3/uj1x1VaVTGyeeNQR7KwXCiLuCrmM=;
-        b=KAoh9xYgOMtGBpZoGDOgQxqpMSR5ezCu7/SMG1HZyqt/Oe9DsH2cYSZLN7FgMeKQ2V
-         3plvw45l2+TGK+TlVdUttELkAiLEXBT4A81ZfzMqjzc2yZcVwxe6MSaaxMjNNFxg646u
-         xZyqGMTTc/tz8zZC15biiEcG2SgxIiEGOHODtpSLxHKSrXjCR4FP33KbUXg4lBUBpPWs
-         cbsKQAZcPS2LowbP8nIf9X8Ctp2J1MiE3PNNgFDRpiz/5tPDWOvfB+o5Qnevy43eY0nT
-         /UlAM0sz5iw6htAruALXmzX0TpNiHwTcJRAzbLt7NHe0qtGIiBHwdH8QTkbr44I7Nv7v
-         e3Hw==
-X-Gm-Message-State: AOJu0Ywx4YD/iTsnfjfDl14fLaAFUz1nuDl2/vrEUUDJjnmvv5JSfY14
-        PC6bYJ29l4gchKuBN6qXkYo3EA==
-X-Google-Smtp-Source: AGHT+IF91hGN1iRDS8YgIh/vPtUJ+zpofgOyE21tn2k4Y0dzzbVuW2uJnDRcsiLSCzeUbXQdNsr/9Q==
-X-Received: by 2002:a5d:4fc9:0:b0:31a:dc2e:2db2 with SMTP id h9-20020a5d4fc9000000b0031adc2e2db2mr9310520wrw.49.1695736200924;
-        Tue, 26 Sep 2023 06:50:00 -0700 (PDT)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id o11-20020a056000010b00b0031c52e81490sm14821340wrx.72.2023.09.26.06.49.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Sep 2023 06:50:00 -0700 (PDT)
-Date:   Tue, 26 Sep 2023 16:49:57 +0300
-From:   Dan Carpenter <dan.carpenter@linaro.org>
-To:     oe-kbuild@lists.linux.dev,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Sebastian Ott <sebott@redhat.com>
-Cc:     lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-        Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] binfmt_elf: Support segments with 0 filesz and
- misaligned starts
-Message-ID: <60c7fdeb-da32-4d21-9e34-368050224d6c@kadam.mountain>
+        d=1e100.net; s=20230601; t=1695736873; x=1696341673;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7xHsjPqk6JJBUwczwrhg2APBTdxlZcsovPFUPf8oBcY=;
+        b=t3uRDqFnL1aRmAuV9LUYgLxZHP82/mKAgzH3gaVhUnJ1A8rlDkY6yf1YRLpM7M3aOY
+         i1b2gyjt0puFUTC6hUJI75w5sknCrlzps8Mgser3TERh91TdtmjrLTFQxSbmv+g/UflK
+         Op9Brhu5sUPTDrEHJc578oMlMaS8TD87+XUdd7A9G5xESsfy+z7HWeUKzormr0ku9dhJ
+         YMGECmnoMP9ig+wrvsZ+wSXPVf+xjN6jzboWqBsywaYkv673Rr7yExzo6hRFshg2JEH5
+         eXQBaJvcJrE7TuIwqhlnLEmnJT8CUIHzEsEHLDXqHhS5z04rxqhCZ80tuS58y3S1+Gdy
+         LT8g==
+X-Gm-Message-State: AOJu0YyIrQPr8vQxZguL6NTUu6mrzhklskPZaOI6sGVRAnG6NDdSiVON
+        7XrQYNZW4DUDM4cgS8TW+t0z3bCr51rSChN0x1FY4w==
+X-Google-Smtp-Source: AGHT+IHRQWjCnf+1z4BiGKGiibQRq7Ph9T+j4h2Pjol7PnCXtpHRP2XwhQG5pMLdECETFZ8LCCzuvpzFQ+pve6GD7Do=
+X-Received: by 2002:a81:4f4d:0:b0:586:a170:7dbe with SMTP id
+ d74-20020a814f4d000000b00586a1707dbemr9693811ywb.13.1695736873520; Tue, 26
+ Sep 2023 07:01:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87jzsemmsd.fsf_-_@email.froward.int.ebiederm.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+References: <20230921131201.157767-1-lma@semihalf.com> <20230922063410.23626-1-lma@semihalf.com>
+In-Reply-To: <20230922063410.23626-1-lma@semihalf.com>
+From:   =?UTF-8?Q?Rados=C5=82aw_Biernacki?= <rad@chromium.org>
+Date:   Tue, 26 Sep 2023 16:01:02 +0200
+Message-ID: <CADmiTCTHn+XaNqkAZjLmaYUy+6bsb5chue97g3n0bKP7Lcf9_w@mail.gmail.com>
+Subject: Re: [PATCH v3] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+To:     Lukasz Majczak <lma@semihalf.com>
+Cc:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+        Guenter Roeck <linux@roeck-us.net>, upstream@semihalf.com,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -78,79 +67,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Eric,
+On Fri, Sep 22, 2023 at 8:34=E2=80=AFAM Lukasz Majczak <lma@semihalf.com> w=
+rote:
+>
+> As drm_dp_get_mst_branch_device_by_guid() is called from
+> drm_dp_get_mst_branch_device_by_guid(), mstb parameter has to be checked,
+> otherwise NULL dereference may occur in the call to
+> the memcpy() and cause following:
+>
+> [12579.365869] BUG: kernel NULL pointer dereference, address: 00000000000=
+00049
+> [12579.365878] #PF: supervisor read access in kernel mode
+> [12579.365880] #PF: error_code(0x0000) - not-present page
+> [12579.365882] PGD 0 P4D 0
+> [12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
+> ...
+> [12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
+> [12579.365899] RIP: 0010:memcmp+0xb/0x29
+> [12579.365921] Call Trace:
+> [12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
+> [12579.365930] drm_dp_mst_up_req_work+0x137/0x416
+> [12579.365933] process_one_work+0x1d0/0x419
+> [12579.365935] worker_thread+0x11a/0x289
+> [12579.365938] kthread+0x13e/0x14f
+> [12579.365941] ? process_one_work+0x419/0x419
+> [12579.365943] ? kthread_blkcg+0x31/0x31
+> [12579.365946] ret_from_fork+0x1f/0x30
+>
+> As get_mst_branch_device_by_guid_helper() is recursive, moving condition
+> to the first line allow to remove a similar one for step over of NULL ele=
+ments
+> inside a loop.
+>
+> Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to onl=
+y mst branch")
+> Cc: <stable@vger.kernel.org> # 4.14+
+> Signed-off-by: Lukasz Majczak <lma@semihalf.com>
+> ---
+>
+> v2->v3:
+> * Fixed patch description.
+>
+>  drivers/gpu/drm/display/drm_dp_mst_topology.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/=
+drm/display/drm_dp_mst_topology.c
+> index ed96cfcfa304..8c929ef72c72 100644
+> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> @@ -2574,14 +2574,14 @@ static struct drm_dp_mst_branch *get_mst_branch_d=
+evice_by_guid_helper(
+>         struct drm_dp_mst_branch *found_mstb;
+>         struct drm_dp_mst_port *port;
+>
+> +       if (!mstb)
+> +               return NULL;
+> +
+>         if (memcmp(mstb->guid, guid, 16) =3D=3D 0)
+>                 return mstb;
+>
+>
+>         list_for_each_entry(port, &mstb->ports, next) {
+> -               if (!port->mstb)
+> -                       continue;
+> -
+>                 found_mstb =3D get_mst_branch_device_by_guid_helper(port-=
+>mstb, guid);
+>
+>                 if (found_mstb)
+> --
+> 2.42.0.515.g380fc7ccd1-goog
+>
 
-kernel test robot noticed the following build warnings:
-
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Eric-W-Biederman/binfmt_elf-Support-segments-with-0-filesz-and-misaligned-starts/20230925-210022
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git for-next/execve
-patch link:    https://lore.kernel.org/r/87jzsemmsd.fsf_-_%40email.froward.int.ebiederm.org
-patch subject: [PATCH] binfmt_elf: Support segments with 0 filesz and misaligned starts
-config: i386-randconfig-141-20230926 (https://download.01.org/0day-ci/archive/20230926/202309261925.QvgPAYL7-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20230926/202309261925.QvgPAYL7-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202309261925.QvgPAYL7-lkp@intel.com/
-
-smatch warnings:
-fs/binfmt_elf.c:431 elf_load() error: uninitialized symbol 'map_addr'.
-
-vim +/map_addr +431 fs/binfmt_elf.c
-
-a6409120b31666 Eric W. Biederman 2023-09-25  390  static unsigned long elf_load(struct file *filep, unsigned long addr,
-a6409120b31666 Eric W. Biederman 2023-09-25  391  		const struct elf_phdr *eppnt, int prot, int type,
-a6409120b31666 Eric W. Biederman 2023-09-25  392  		unsigned long total_size)
-a6409120b31666 Eric W. Biederman 2023-09-25  393  {
-a6409120b31666 Eric W. Biederman 2023-09-25  394  	unsigned long zero_start, zero_end;
-a6409120b31666 Eric W. Biederman 2023-09-25  395  	unsigned long map_addr;
-a6409120b31666 Eric W. Biederman 2023-09-25  396  
-a6409120b31666 Eric W. Biederman 2023-09-25  397  	if (eppnt->p_filesz) {
-a6409120b31666 Eric W. Biederman 2023-09-25  398  		map_addr = elf_map(filep, addr, eppnt, prot, type, total_size);
-a6409120b31666 Eric W. Biederman 2023-09-25  399  		if (BAD_ADDR(map_addr))
-a6409120b31666 Eric W. Biederman 2023-09-25  400  			return map_addr;
-a6409120b31666 Eric W. Biederman 2023-09-25  401  		if (eppnt->p_memsz > eppnt->p_filesz) {
-a6409120b31666 Eric W. Biederman 2023-09-25  402  			zero_start = map_addr + ELF_PAGEOFFSET(eppnt->p_vaddr) +
-a6409120b31666 Eric W. Biederman 2023-09-25  403  				eppnt->p_filesz;
-a6409120b31666 Eric W. Biederman 2023-09-25  404  			zero_end = map_addr + ELF_PAGEOFFSET(eppnt->p_vaddr) +
-a6409120b31666 Eric W. Biederman 2023-09-25  405  				eppnt->p_memsz;
-a6409120b31666 Eric W. Biederman 2023-09-25  406  
-a6409120b31666 Eric W. Biederman 2023-09-25  407  			/* Zero the end of the last mapped page */
-a6409120b31666 Eric W. Biederman 2023-09-25  408  			padzero(zero_start);
-a6409120b31666 Eric W. Biederman 2023-09-25  409  		}
-a6409120b31666 Eric W. Biederman 2023-09-25  410  	} else {
-a6409120b31666 Eric W. Biederman 2023-09-25  411  		zero_start = ELF_PAGESTART(addr);
-a6409120b31666 Eric W. Biederman 2023-09-25  412  		zero_end = zero_start + ELF_PAGEOFFSET(eppnt->p_vaddr) +
-a6409120b31666 Eric W. Biederman 2023-09-25  413  			eppnt->p_memsz;
-
-For this else path, map_addr is only set if there is an error.
-
-a6409120b31666 Eric W. Biederman 2023-09-25  414  	}
-a6409120b31666 Eric W. Biederman 2023-09-25  415  	if (eppnt->p_memsz > eppnt->p_filesz) {
-a6409120b31666 Eric W. Biederman 2023-09-25  416  		/*
-a6409120b31666 Eric W. Biederman 2023-09-25  417  		 * Map the last of the segment.
-a6409120b31666 Eric W. Biederman 2023-09-25  418  		 * If the header is requesting these pages to be
-a6409120b31666 Eric W. Biederman 2023-09-25  419  		 * executable, honour that (ppc32 needs this).
-a6409120b31666 Eric W. Biederman 2023-09-25  420  		 */
-a6409120b31666 Eric W. Biederman 2023-09-25  421  		int error;
-a6409120b31666 Eric W. Biederman 2023-09-25  422  
-a6409120b31666 Eric W. Biederman 2023-09-25  423  		zero_start = ELF_PAGEALIGN(zero_start);
-a6409120b31666 Eric W. Biederman 2023-09-25  424  		zero_end = ELF_PAGEALIGN(zero_end);
-a6409120b31666 Eric W. Biederman 2023-09-25  425  
-a6409120b31666 Eric W. Biederman 2023-09-25  426  		error = vm_brk_flags(zero_start, zero_end - zero_start,
-a6409120b31666 Eric W. Biederman 2023-09-25  427  				     prot & PROT_EXEC ? VM_EXEC : 0);
-a6409120b31666 Eric W. Biederman 2023-09-25  428  		if (error)
-a6409120b31666 Eric W. Biederman 2023-09-25  429  			map_addr = error;
-a6409120b31666 Eric W. Biederman 2023-09-25  430  	}
-a6409120b31666 Eric W. Biederman 2023-09-25 @431  	return map_addr;
-a6409120b31666 Eric W. Biederman 2023-09-25  432  }
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+Reviewed-by: Radoslaw Biernacki <rad@chromium.org>
