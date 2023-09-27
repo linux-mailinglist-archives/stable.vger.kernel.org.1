@@ -2,146 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBC817B002B
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 11:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D14A27B0127
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 11:58:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229531AbjI0Jds (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 27 Sep 2023 05:33:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34260 "EHLO
+        id S230499AbjI0J61 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 27 Sep 2023 05:58:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230416AbjI0Jds (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 05:33:48 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F7CEB
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 02:33:46 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1qlQvG-0007Wd-99; Wed, 27 Sep 2023 11:33:34 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1qlQvF-009JAu-M7; Wed, 27 Sep 2023 11:33:33 +0200
-Received: from pengutronix.de (unknown [172.20.34.65])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        (Authenticated sender: mkl-all@blackshift.org)
-        by smtp.blackshift.org (Postfix) with ESMTPSA id 4738F22991B;
-        Wed, 27 Sep 2023 09:33:33 +0000 (UTC)
-Date:   Wed, 27 Sep 2023 11:33:32 +0200
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Wolfgang Grandegger <wg@grandegger.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-        linux-can@vger.kernel.org,
-        =?utf-8?B?SsOpcsOpbWll?= Dautheribes 
-        <jeremie.dautheribes@bootlin.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        sylvain.girard@se.com, pascal.eberhard@se.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH net] can: sja1000: Always restart the Tx queue after an
- overrun
-Message-ID: <20230927-mystified-speak-d6aff435e38d-mkl@pengutronix.de>
-References: <20230922154727.591672-1-miquel.raynal@bootlin.com>
- <20230927-fantasize-refuse-7fef75242672-mkl@pengutronix.de>
+        with ESMTP id S230004AbjI0J60 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 05:58:26 -0400
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70501E6
+        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 02:58:25 -0700 (PDT)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2c17d8745b6so35184361fa.1
+        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 02:58:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695808703; x=1696413503; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=82XOa7q/kbH+exs+CFXiE7rt/QuUvHY6szgIZll4i8A=;
+        b=UvF7/aOxbbfIpJEkKBGAtVoBk0gc8V3PQ4rG0DF8AXKRmGRFyYaVO1uql8sPmEwPZM
+         nic2fYVuC2tftP4ijZeRdfsyY5Y49UbScgQx6C2RQYt+AIR2Q6tnmeAm921G77vCvWJK
+         IfX4iCtTNW3CxviWUgMXFKrhGK8UXM4978inZmK0T/nA8J4iEaONgQIt7p2Vadds7Z1M
+         OXZGKVXMkMm+gosKUnLHAMvMnFB5hzVNme6kpmRRLXZ3f9mbdlZj+p9LOi1Iq/TI4d8X
+         HNBQw+xQUJIZoJnf5l3SVzNi2ohe0EbTlBuLskvgmbEG15eB15kx0+3jpnSriMshTN47
+         g19g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695808703; x=1696413503;
+        h=to:subject:message-id:date:from:sender:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=82XOa7q/kbH+exs+CFXiE7rt/QuUvHY6szgIZll4i8A=;
+        b=Zyy8xfKY0/sg5vLXRSVxVynFSv+W36Hzo5kSKuXLs0YRmQvLF9y7sOleKKCVfNi75J
+         sltE/qHgqKgH7qg8+tAuBzmrFYxOlnSikuuf1hzmSzQ2n3kH15ThasKOY2XROJbzhXtK
+         l1xEdQuqvL7W6rPCSrsViJWJkKbzLlfEk4Ha+HJF0n4RYFu0VhgxZKLDVvVhYd5XqsV/
+         gbWHTxGhb0lzfZzhHxNjRHYrMCwokwGs96dSxu18JKmJeJ9fEX7KVcPdlTxjfgR5BYuS
+         9ERoOT2VPMJWoejVzv/aYbHr5QKAuBR6+paqhQqWQxNS6YRV5IvYv7DJe8uzEL+01mjS
+         1O7A==
+X-Gm-Message-State: AOJu0YwyEPAZCY1QqOizxCAnaoAjGq3XajpZbm4SwXV3T6K6PRG4Lmft
+        3L8vMrrSTkY8qw+epwu9fE6tC1iZNe3tp74h5bc=
+X-Google-Smtp-Source: AGHT+IGiFL62X0pmvOaeYX8pR9IP20wneiLNTKUIFgWLN/Ff5oAXdeuT3z7C4iybBaJj5XthnBJBKzcy2V0KYhnKctI=
+X-Received: by 2002:a05:6512:711:b0:4fe:7dcc:3dc1 with SMTP id
+ b17-20020a056512071100b004fe7dcc3dc1mr1145737lfs.44.1695808703310; Wed, 27
+ Sep 2023 02:58:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="dex5csltamiqw7cb"
-Content-Disposition: inline
-In-Reply-To: <20230927-fantasize-refuse-7fef75242672-mkl@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Sender: julianterry39@gmail.com
+Received: by 2002:a05:6022:34e:b0:47:872e:b33e with HTTP; Wed, 27 Sep 2023
+ 02:58:22 -0700 (PDT)
+From:   "Mrs. Angela Juanni Marcus" <juanniangela@gmail.com>
+Date:   Wed, 27 Sep 2023 02:58:22 -0700
+X-Google-Sender-Auth: 3H7jzWEXOJ_fzYZwupsy3J172ZM
+Message-ID: <CA+Kqa7dySMcW4K7Q3KY602tHFPi0eK8mwtM8F9ayRMD3f6e-gw@mail.gmail.com>
+Subject: PROJECT PROPOSAL....
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Greeting my beloved,
 
---dex5csltamiqw7cb
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I sent you a Humanitarian Gesture Project Proposal, please did you receive it?
 
-On 27.09.2023 11:30:16, Marc Kleine-Budde wrote:
-> On 22.09.2023 17:47:27, Miquel Raynal wrote:
-> > Upstream commit 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with
-> > a soft reset on Renesas SoCs") fixes an issue with Renesas own SJA1000
-> > CAN controller reception: the Rx buffer is only 5 messages long, so when
-> > the bus loaded (eg. a message every 50us), overrun may easily
-> > happen. Upon an overrun situation, due to a possible internal crosstalk
-> > situation, the controller enters a frozen state which only can be
-> > unlocked with a soft reset (experimentally). The solution was to offload
-> > a call to sja1000_start() in a threaded handler. This needs to happen in
-> > process context as this operation requires to sleep. sja1000_start()
-> > basically enters "reset mode", performs a proper software reset and
-> > returns back into "normal mode".
-> >=20
-> > Since this fix was introduced, we no longer observe any stalls in
-> > reception. However it was sporadically observed that the transmit path
-> > would now freeze. Further investigation blamed the fix mentioned above,
-> > and especially the reset operation. Reproducing the reset in a loop
-> > helped identifying what could possibly go wrong. The sja1000 is a single
-> > Tx queue device, which leverages the netdev helpers to process one Tx
-> > message at a time. The logic is: the queue is stopped, the message sent
-> > to the transceiver, once properly transmitted the controller sets a
-> > status bit which triggers an interrupt, in the interrupt handler the
-> > transmission status is checked and the queue woken up. Unfortunately, if
-> > an overrun happens, we might perform the soft reset precisely between
-> > the transmission of the buffer to the transceiver and the advent of the
-> > transmission status bit. We would then stop the transmission operation
-> > without re-enabling the queue, leading to all further transmissions to
-> > be ignored.
-> >=20
-> > The reset interrupt can only happen while the device is "open", and
-> > after a reset we anyway want to resume normal operations, no matter if a
-> > packet to transmit got dropped in the process, so we shall wake up the
-> > queue. Restarting the device and waking-up the queue is exactly what
-> > sja1000_set_mode(CAN_MODE_START) does. In order to be consistent about
-> > the queue state, we must acquire a lock both in the reset handler and in
-> > the transmit path to ensure serialization of both operations. As the
-> > reset handler might still be called after the transmission of a frame to
-> > the transceiver but before it actually gets transmitted, we must ensure
-> > we don't leak the skb, so we free it (the behavior is consistent, no
-> > matter if there was an skb on the stack or not).
->=20
-> Can you make use of netif_tx_disable() and netif_wake_queue() in
-> sja1000_reset_interrupt() instead of the lock?
-
-=2E..or netif_tx_lock()/netif_tx_unlock().
-
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---dex5csltamiqw7cb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmUT9t4ACgkQvlAcSiqK
-BOgJIAgAkK1wcIpn+akoeirv557rjRqSKP8YX/OSciV1TDokElsvR7w/bD7ZKK6u
-nKmA6pVU5qMVwZN1o76G26bLU++Gr/LURA03TiOVDsKQOitc7Mgt9tmJRFBDn/RX
-4ASgtSxZC87X4fXqTzc5wZrSXuhsZpYkna0c3EsXrWBVsnnwQHpTYeaOUG376P4y
-pGS7ar0q2epboujUL6J+NIgmy4fIIfVPq27MBo+jttIgZrwI3fTVX8IkuBL+quM7
-uDWRiguAGKwrdBn7YEnlMqD7U9qXb86m5uXxz7CcH2A11YWFetVU12qJhjG6KW88
-bjzbUmtFMFpUkk2KVwPMDeByxpRYdg==
-=Fzej
------END PGP SIGNATURE-----
-
---dex5csltamiqw7cb--
+From Mrs. Angela Juanni Marcus.
