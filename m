@@ -2,129 +2,216 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A73D37B0781
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 17:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 249357B079A
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 17:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232285AbjI0PBi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 27 Sep 2023 11:01:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60296 "EHLO
+        id S232281AbjI0PF0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 27 Sep 2023 11:05:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232067AbjI0PBg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 11:01:36 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F5D1196;
-        Wed, 27 Sep 2023 08:01:34 -0700 (PDT)
-Date:   Wed, 27 Sep 2023 15:01:32 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695826892;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
+        with ESMTP id S232246AbjI0PF0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 11:05:26 -0400
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0E8F5;
+        Wed, 27 Sep 2023 08:05:23 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A52D440002;
+        Wed, 27 Sep 2023 15:05:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1695827122;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0ZhjOmSStMre4n+1d7k4HxOZCTiNq9yelwWAhe5xHFM=;
-        b=VksODYStvXKNho2lLF7tELW2L0FHJBbGSlP/9czDTTXsLak4fQ/9QpR71/T/8hRZbo5Vyk
-        ISpBA0pJt8jcso+qVeStMv1RkxDmZotu7J5aygVwydcTslp0D7YZYfcT3YN8AmtLIYBfcR
-        8kmez+zK3xXTSr7leYS+gV9SMPsugZ1CUwwjB5B8GWlB+CE/YnQrRPeUAfahdNZN1WxoWS
-        YfnmR4U5hx8Xg9AZbemQ/Lx6j0InEoHvsbaQcpKblOh0pS7NJbtyOtXvhf906SOCJG/kfQ
-        FjiEIeD33T97hOqnGAvZw6xsZI0F3mc8eUH6WvZexl4iiZGJM7hOGGN5VBw/pg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695826892;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0ZhjOmSStMre4n+1d7k4HxOZCTiNq9yelwWAhe5xHFM=;
-        b=4ifXXgSQSnqb1Ezd+9cuijaif3i3PdydetiSXEXVNJpsbwZFFERwJ2WnA0gSAcQHB8F/Su
-        1KTG02d/4zI9rLCw==
-From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timers: Tag (hr)timer softirq as hotplug safe
-Cc:     Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20230912104406.312185-6-frederic@kernel.org>
-References: <20230912104406.312185-6-frederic@kernel.org>
+        bh=XvGJ1llNHjkHCILvhbGiSOqMABBQxPcSPXl/6R2W8Uw=;
+        b=MdhlMbNIJPu1sSSE2pShuMwiPsReYRhd8tLNMKs+5ZfUl4ijWtPbgiP9dHwdzFYyDjbPbd
+        /fHKTBqqqUqGiIZ+nCO5hmSQbmCVMxSwDaZs5cFwLiYWswxrc9BvPp7lvMmox/MeR2H4GR
+        G0Z7IYFLuNiMwGuBpp0wGAqHSHRvN5eiHCEWa9S8TftuXPoTlZjzult2E5pkNUqQos5EvE
+        eogStBIAgYm/3b/Vfdlz5NVPGOOcbktFH6LXB3FxhFnJuesbCEdDktUwzFJl4x+9SQiXnL
+        Vu0fciKwAztEJHxVFQzZJ43EKdpiz1hvXfH2Uk+ggFgDjS6Tgf+8NntoeXqiEw==
+Date:   Wed, 27 Sep 2023 17:05:16 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Martin =?UTF-8?B?SHVuZGViw7hsbA==?= <martin@geanix.com>
+Cc:     Rouven Czerwinski <r.czerwinski@pengutronix.de>,
+        =?UTF-8?B?TcOlbnMg?= =?UTF-8?B?UnVsbGfDpXJk?= <mans@mansr.com>,
+        Alexander Shiyan <eagle.alexander923@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        JaimeLiao <jaimeliao.tw@gmail.com>, kernel@pengutronix.de,
+        stable@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Sean =?UTF-8?B?Tnlla2rDpnI=?= <sean@geanix.com>,
+        Domenico Punzo <dpunzo@micron.com>,
+        Bean Huo <beanhuo@micron.com>
+Subject: Re: [PATCH v2] mtd: rawnand: Ensure the nand chip supports cached
+ reads
+Message-ID: <20230927170516.2604e8f2@xps-13>
+In-Reply-To: <20230926132725.5d570e1b@xps-13>
+References: <20230922141717.35977-1-r.czerwinski@pengutronix.de>
+        <e911f5d9c7def8c80904a17ad3924ecba6625998.camel@geanix.com>
+        <20230926132725.5d570e1b@xps-13>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Message-ID: <169582689232.27769.17167363673386375890.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the timers/core branch of tip:
+Hi Martin,
 
-Commit-ID:     1a6a464774947920dcedcf7409be62495c7cedd0
-Gitweb:        https://git.kernel.org/tip/1a6a464774947920dcedcf7409be62495c7cedd0
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Tue, 12 Sep 2023 12:44:06 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 27 Sep 2023 16:54:03 +02:00
+miquel.raynal@bootlin.com wrote on Tue, 26 Sep 2023 13:27:25 +0200:
 
-timers: Tag (hr)timer softirq as hotplug safe
+> Hi Martin,
+>=20
+> + Bean and Domenico, there is a question for you below.
+>=20
+> martin@geanix.com wrote on Mon, 25 Sep 2023 13:01:06 +0200:
+>=20
+> > Hi Rouven,
+> >=20
+> > On Fri, 2023-09-22 at 16:17 +0200, Rouven Czerwinski wrote: =20
+> > > Both the JEDEC and ONFI specification say that read cache sequential
+> > > support is an optional command. This means that we not only need to
+> > > check whether the individual controller supports the command, we also
+> > > need to check the parameter pages for both ONFI and JEDEC NAND
+> > > flashes
+> > > before enabling sequential cache reads.
+> > >=20
+> > > This fixes support for NAND flashes which don't support enabling
+> > > cache
+> > > reads, i.e. Samsung K9F4G08U0F or Toshiba TC58NVG0S3HTA00.
+> > >=20
+> > > Sequential cache reads are now only available for ONFI and JEDEC
+> > > devices, if individual vendors implement this, it needs to be enabled
+> > > per vendor.
+> > >=20
+> > > Tested on i.MX6Q with a Samsung NAND flash chip that doesn't support
+> > > sequential reads.
+> > >=20
+> > > Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential cache
+> > > reads")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>   =20
+> >=20
+> > Thanks for this. It works as expected for my Toshiba chip, obviously
+> > because it doesn't use ONFI or JEDEC.
+> >=20
+> > Unfortunately, my Micron chip does use ONFI, and it sets the cached-
+> > read-supported bit. It then fails when reading afterwords:
 
-Specific stress involving frequent CPU-hotplug operations, such as
-running rcutorture for example, may trigger the following message:
+I might have over reacted regarding my findings in Micron's datasheet,
+I need to know if you use the on-die ECC engine or if you use the one
+on the controller. In the former case the failure is expected. In the
+latter case, it's not.
 
-  NOHZ tick-stop error: local softirq work is pending, handler #02!!!"
+Thanks,
+Miqu=C3=A8l
 
-This happens in the CPU-down hotplug process, after
-CPUHP_AP_SMPBOOT_THREADS whose teardown callback parks ksoftirqd, and
-before the target CPU shuts down through CPUHP_AP_IDLE_DEAD. In this
-fragile intermediate state, softirqs waiting for threaded handling may be
-forever ignored and eventually reported by the idle task as in the above
-example.
-
-However some vectors are known to be safe as long as the corresponding
-subsystems have teardown callbacks handling the migration of their
-events. The above error message reports pending timers softirq although
-this vector can be considered as hotplug safe because the
-CPUHP_TIMERS_PREPARE teardown callback performs the necessary migration
-of timers after the death of the CPU. Hrtimers also have a similar
-hotplug handling.
-
-Therefore this error message, as far as (hr-)timers are concerned, can
-be considered spurious and the relevant softirq vectors can be marked as
-hotplug safe.
-
-Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230912104406.312185-6-frederic@kernel.org
----
- include/linux/interrupt.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index a92bce4..4a1dc88 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -569,8 +569,12 @@ enum
-  * 	2) rcu_report_dead() reports the final quiescent states.
-  *
-  * _ IRQ_POLL: irq_poll_cpu_dead() migrates the queue
-+ *
-+ * _ (HR)TIMER_SOFTIRQ: (hr)timers_dead_cpu() migrates the queue
-  */
--#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(RCU_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ))
-+#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(TIMER_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ) |\
-+				   BIT(HRTIMER_SOFTIRQ) | BIT(RCU_SOFTIRQ))
-+
- 
- /* map softirq index to softirq name. update 'softirq_to_name' in
-  * kernel/softirq.c when adding a new softirq.
+> > kernel: ONFI_OPT_CMD_READ_CACHE # debug added by me
+> > kernel: nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xdc
+> > kernel: nand: Micron MT29F4G08ABAFAWP
+> > kernel: nand: 512 MiB, SLC, erase size: 256 KiB, page size: 4096, OOB
+> > size: 256
+> > kernel: nand: continued read supported # debug added by me
+> > kernel: Bad block table found at page 131008, version 0x01
+> > kernel: Bad block table found at page 130944, version 0x01
+> > kernel: 2 fixed-partitions partitions found on MTD device gpmi-nand
+> > kernel: Creating 2 MTD partitions on "gpmi-nand":
+> > kernel: 0x000000000000-0x000000800000 : "boot"
+> > kernel: 0x000000800000-0x000020000000 : "ubi"
+> > kernel: gpmi-nand 1806000.nand-controller: driver registered.
+> >=20
+> > ...
+> >=20
+> > kernel: ubi0: default fastmap pool size: 100
+> > kernel: ubi0: default fastmap WL pool size: 50
+> > kernel: ubi0: attaching mtd1
+> > kernel: ubi0: scanning is finished
+> > kernel: ubi0: attached mtd1 (name "ubi", size 504 MiB)
+> > kernel: ubi0: PEB size: 262144 bytes (256 KiB), LEB size: 253952 bytes
+> > kernel: ubi0: min./max. I/O unit sizes: 4096/4096, sub-page size 4096
+> > kernel: ubi0: VID header offset: 4096 (aligned 4096), data offset: 8192
+> > kernel: ubi0: good PEBs: 2012, bad PEBs: 4, corrupted PEBs: 0
+> > kernel: ubi0: user volume: 9, internal volumes: 1, max. volumes count:
+> > 128
+> > kernel: ubi0: max/mean erase counter: 4/2, WL threshold: 4096, image
+> > sequence number: 1431497221
+> > kernel: ubi0: available PEBs: 12, total reserved PEBs: 2000, PEBs
+> > reserved for bad PEB handling: 36
+> > kernel: block ubiblock0_4: created from ubi0:4(rootfs.a)
+> > kernel: ubi0: background thread "ubi_bgt0d" started, PID 36
+> > kernel: block ubiblock0_6: created from ubi0:6(appfs.a)
+> > kernel: block ubiblock0_7: created from ubi0:7(appfs.b)
+> >=20
+> > ...
+> >=20
+> > kernel: SQUASHFS error: Unable to read directory block [4b6d15c:ed1]
+> > kernel: SQUASHFS error: Unable to read directory block [4b6f15e:125]
+> > kernel: SQUASHFS error: Unable to read directory block [4b6d15c:1dae]
+> > kernel: SQUASHFS error: Unable to read directory block [4b6d15c:ed1]
+> > (d-sysctl)[55]: systemd-sysctl.service: Failed to set up credentials:
+> > Protocol error
+> > kernel: SQUASHFS error: Unable to read directory block [4b73162:14f0]
+> > kernel: SQUASHFS error: Unable to read directory block [4b6f15e:838]
+> > systemd[1]: Starting Create Static Device Nodes in /dev...
+> > kernel: SQUASHFS error: Unable to read directory block [4b6d15c:ed1]
+> > kernel: SQUASHFS error: Unable to read directory block [4b6d15c:ed1]
+> > kernel: SQUASHFS error: Unable to read directory block [4b6f15e:838]
+> > kernel: SQUASHFS error: Unable to read directory block [4b6d15c:1dae]
+> > kernel: SQUASHFS error: Unable to read directory block [4b6f15e:125]
+> >=20
+> > I've briefly tried adding some error info the the squashfs error
+> > messages, but it looks like it's getting bad data. I.e. one failure a
+> > sanity check of `dir_count`:
+> >=20
+> > if (dir_count > SQUASHFS_DIR_COUNT)
+> > 	goto data_error;
+> >=20
+> > It fails with `dir_count` being 1952803684 ...
+> >=20
+> > So is this a case of wrong/bad timings?
+> >=20
+> > Miquel:
+> > I can tell from the code, that the READCACHESEQ operations are followed
+> > by NAND_OP_WAIT_RDY(tR_max, tRR_min). From the Micron datasheet[0], it
+> > should be NAND_OP_WAIT_RDY(tRCBSY_max, tRR_min), where tRCBSY is
+> > defined to be between 3 and 25 =C2=B5s. =20
+>=20
+> I found a place in the ONFI spec states taht tRCBSY_max should be
+> between 3 and tR_max, so indeed we should be fine on that regard.
+>=20
+> However, I asked myself whether we could have issues when crossing
+> boundaries. Block boundaries should be fine, however your device does
+> not support crossing plane boundaries, as bit 4 ("read cache
+> supported") of byte 114 ("Multi-plane operation attributes") in the
+> memory organization block of the parameter page is not set (the value
+> of the byte should be 0x0E if I get it right.
+>=20
+> Anyway, our main issue here does not seem related to the boundaries. It
+> does not seem to be explicitly marked anywhere else but on the front
+> page:
+> 	Advanced command set
+> 	=E2=80=93 Program page cache mode (4)
+> 	=E2=80=93 Read page cache mode (4)
+> 	=E2=80=93 Two-plane commands (4)
+>=20
+> 	(4) These commands supported only with ECC disabled.
+>=20
+> Read page cache mode without ECC makes the feature pretty useless IMHO.
+>=20
+> Bean, Domenico, how do we know which devices allow ECC correction
+> during sequential page reads and which don't? Is there a (vendor?) bit
+> somewhere in the parameter page for that? Do we have any way to know
+> besides a list of devices allowing that? If so, can you provide one
+> with a few IDs?=20
+>=20
+> Thanks,
+> Miqu=C3=A8l
