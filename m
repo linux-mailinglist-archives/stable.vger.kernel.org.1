@@ -2,100 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DFF37B0594
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 15:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC8377B062D
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 16:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231766AbjI0NhP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 27 Sep 2023 09:37:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38082 "EHLO
+        id S232032AbjI0OGi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 27 Sep 2023 10:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231915AbjI0NhO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 09:37:14 -0400
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6DEFFC
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 06:37:13 -0700 (PDT)
-Received: by mail-io1-xd2f.google.com with SMTP id ca18e2360f4ac-79f9acc857cso340842539f.2
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 06:37:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695821833; x=1696426633; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=wLkiE2z9JJ6gZFz/EkEVTFVUJ1HqgB4Vkj/VIK5SvrY=;
-        b=EhGkBLgO0HV6xWGoXoScxfKmOhu0pUo43IFrDbnmd2+yO4dRe+o3Xl0RTR+KgUeQtL
-         FiazXGIaOqKbP1hfATjAKm3XYhhRdvRKyQLhRZ1/rgOibbvuxLc7kvjKwPHWnyBrw0ia
-         L1Htjq7ikOuPoyiVxwgQJQOyBkAGOD8ehejRo5ChWjykCbr5jUtkPz2pfU/yh1ktqQ8/
-         hQOzSy2oXuTvlsB9vD0fkTYQlJ4E7mljGlOcxUGQ1GmT1+Hb4+4ymTzGPUe7BLjCrDMB
-         5bdClwgkYiguO6Iayx6ZwNoNiMmbXJoxzseSa7K85f2+wx2hfZXydzZn3qSqSPotkOsR
-         vlLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695821833; x=1696426633;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wLkiE2z9JJ6gZFz/EkEVTFVUJ1HqgB4Vkj/VIK5SvrY=;
-        b=jjMLqCFp3hfYHZldzAc1JJEVW60FYVfh6DwAKg22xc8WIaNbn1gk+ylzuBiTbJAFox
-         +2rRX5z/lwU+7Ek1TKE6wjECJHPnYlnC1ekzza8bD6cKvpeTShyQoyQD4vz9z7eJIK+J
-         kvBxPRHuOt44V40CppnRSEVZvkCRiJ+tOKz5HIpkca7pQ0VnrKng9cwOMdwmH2hiTp8Z
-         vYnn7ev/BNInThGtsjWGC0McGB6toWy4x1o3Zv/BzZnKDZkt4nBSWH97qLJhwc4DpDqN
-         Kfq73ssm6LuC3e92HqkWtPH1d07dypSw0GthsnSF20GgjMzqxn2jeYSdilGmX2j7rV5q
-         QD4w==
-X-Gm-Message-State: AOJu0YxAhtWRJjYz1D/ErBTjMsYcRBG2nWgQjqO/Q73O8fzMVaSBwbur
-        XRyFxEZmcnbfvjkTPaJ2qxlHM+t7Wik=
-X-Google-Smtp-Source: AGHT+IFaOIDA/Iw6brTSoGeXRJQsi9y1p1mqT0Lqy1PBeefrwBRJWL6yT4hVg910g0iPu8agFD8S/g==
-X-Received: by 2002:a05:6602:39a:b0:794:ed2b:2520 with SMTP id f26-20020a056602039a00b00794ed2b2520mr2309961iov.15.1695821832886;
-        Wed, 27 Sep 2023 06:37:12 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id c9-20020a02a609000000b0042b279bb086sm4133545jam.66.2023.09.27.06.37.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Sep 2023 06:37:12 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 27 Sep 2023 06:37:10 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Clark <robdclark@chromium.org>
-Subject: Build failure in v5.15.133
-Message-ID: <e56ced8d-d09d-469b-80df-0cc2bdd943f4@roeck-us.net>
+        with ESMTP id S231758AbjI0OGi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 10:06:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A5A0F3
+        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 07:05:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695823552;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=2yrzCvJKKpyb6A3C4WRH7XAPotWnSI2iCGZEtxqtwTM=;
+        b=UShddOoe9jF71iYsGQuLwguZ+vqVuc1oU5Nx3CwGncj1WlmCCYtt2JpAzNeSh9alDJAuje
+        /QMs52V3ghMiiFe+7kri2qO0w+ZHlJrEOTi7e0Avkhyr4YDRNsZleVFmrKIQsRN9Z7J2jN
+        OuqDcVVZyRwx9wD+YVGRd+IZNyKfcZU=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-275-jzxT90fYPaiCVfzsHq1OBg-1; Wed, 27 Sep 2023 10:05:49 -0400
+X-MC-Unique: jzxT90fYPaiCVfzsHq1OBg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BFDAF280D206;
+        Wed, 27 Sep 2023 14:05:48 +0000 (UTC)
+Received: from laptop.redhat.com (unknown [10.39.192.172])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9990A492B16;
+        Wed, 27 Sep 2023 14:05:46 +0000 (UTC)
+From:   Eric Auger <eric.auger@redhat.com>
+To:     eric.auger.pro@gmail.com, eric.auger@redhat.com, elic@nvidia.com,
+        mail@anirudhrb.com, jasowang@redhat.com, mst@redhat.com,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        netdev@vger.kernel.org, virtualization@lists.linux-foundation.org,
+        kvmarm@lists.linux.dev
+Cc:     stable@vger.kernel.org
+Subject: [RESEND PATCH v2] vhost: Allow null msg.size on VHOST_IOTLB_INVALIDATE
+Date:   Wed, 27 Sep 2023 16:05:44 +0200
+Message-ID: <20230927140544.205088-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Commit e2ae38cf3d91 ("vhost: fix hung thread due to erroneous iotlb
+entries") Forbade vhost iotlb msg with null size to prevent entries
+with size = start = 0 and last = ULONG_MAX to end up in the iotlb.
 
-I see the following build failure with v5.15.133.
+Then commit 95932ab2ea07 ("vhost: allow batching hint without size")
+only applied the check for VHOST_IOTLB_UPDATE and VHOST_IOTLB_INVALIDATE
+message types to fix a regression observed with batching hit.
 
-Build reference: v5.15.133
-Compiler version: aarch64-linux-gcc (GCC) 11.4.0
-Assembler version: GNU assembler (GNU Binutils) 2.40
+Still, the introduction of that check introduced a regression for
+some users attempting to invalidate the whole ULONG_MAX range by
+setting the size to 0. This is the case with qemu/smmuv3/vhost
+integration which does not work anymore. It Looks safe to partially
+revert the original commit and allow VHOST_IOTLB_INVALIDATE messages
+with null size. vhost_iotlb_del_range() will compute a correct end
+iova. Same for vhost_vdpa_iotlb_unmap().
 
-Building arm64:allnoconfig ... passed
-Building arm64:tinyconfig ... passed
-Building arm64:defconfig ... failed
---------------
-Error log:
-drivers/interconnect/core.c: In function 'icc_init':
-drivers/interconnect/core.c:1148:9: error: implicit declaration of function 'fs_reclaim_acquire' [-Werror=implicit-function-declaration]
- 1148 |         fs_reclaim_acquire(GFP_KERNEL);
-      |         ^~~~~~~~~~~~~~~~~~
-drivers/interconnect/core.c:1150:9: error: implicit declaration of function 'fs_reclaim_release' [-Werror=implicit-function-declaration]
- 1150 |         fs_reclaim_release(GFP_KERNEL);
-      |         ^~~~~~~~~~~~~~~~~~
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Fixes: e2ae38cf3d91 ("vhost: fix hung thread due to erroneous iotlb entries")
+Cc: stable@vger.kernel.org # v5.17+
+Acked-by: Jason Wang <jasowang@redhat.com>
+---
+ drivers/vhost/vhost.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-This also affects alpha:allmodconfig and m68k:allmodconfig. The problem
-was introduced with 'interconnect: Teach lockdep about icc_bw_lock order'.
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index c71d573f1c94..e0c181ad17e3 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -1458,9 +1458,7 @@ ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
+ 		goto done;
+ 	}
+ 
+-	if ((msg.type == VHOST_IOTLB_UPDATE ||
+-	     msg.type == VHOST_IOTLB_INVALIDATE) &&
+-	     msg.size == 0) {
++	if (msg.type == VHOST_IOTLB_UPDATE && msg.size == 0) {
+ 		ret = -EINVAL;
+ 		goto done;
+ 	}
+-- 
+2.41.0
 
-#include <linux/sched/mm.h> is missing. Presumably that is included
-indirectly in the upstream kernel, but I wasn't able to determine which
-commit added it.
-
-Guenter
