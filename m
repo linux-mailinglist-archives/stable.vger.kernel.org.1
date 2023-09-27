@@ -2,163 +2,210 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D24797AF8A5
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 05:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CED037AF883
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 05:16:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229708AbjI0D2P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 23:28:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45586 "EHLO
+        id S232861AbjI0DQy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 23:16:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjI0D0P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 23:26:15 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 947639005;
-        Tue, 26 Sep 2023 18:47:53 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-40594a6d1ecso11520805e9.1;
-        Tue, 26 Sep 2023 18:47:53 -0700 (PDT)
+        with ESMTP id S233036AbjI0DOv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 23:14:51 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C816F65BE
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 19:34:52 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6910ea9cca1so7840628b3a.1
+        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 19:34:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695779272; x=1696384072; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eP9N2gfeiWYXcjxAcn/cQZzNl5uPlV6uaT56umiTjo8=;
-        b=mdZBYtkbGXhEIASl9MXbPlNQ4Fh56XGfHyTUP0QwiLyXtvoLaWDMWxHh8VcZJpdy1A
-         tmg3iEPLb7Y/NarmpFuCsqo+B34sWqLs/PyDeKub7ZWqFEfTxC9qQOtM+ZLkm485qHZ8
-         8Vk2ckW1hM9XJZ4f81NeZV2+YMP0XdbhO5kAAJ8UdYQgwGjjKQgASE7MXTWlAyQFc099
-         Mv1PGfBEr3BqkiR5W9dO8Qa6tNwd4fBHfKrgLuJNyJC7CtlfBxQD7qK6T2QAMKhjrr2Z
-         j21Ziah7ETDY+EDfNzh1xQfAfuz+YcYGeGRkmQc6JtbD3lTfr5TT7Th0JDz/zZLycdv9
-         G2JQ==
+        d=chromium.org; s=google; t=1695782092; x=1696386892; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MEoyNhEirsDID+iSINOkm/zSxakfDUSa2NzmIBoMrtU=;
+        b=GMGLItkY20tnShqsQSE1ZhhboeJoA4hi90EFgQw+P5N6+y00MJxEgvvxs8L44DXShX
+         336Qt0yAie1pjEVaU79cnyRBt7skxYSzpxnG/nisuELTEKMCPBJWk5pdOsfs+4/AB0xq
+         5zSFPiqdDv2RHeTYJvUYWap4ai0J42PbGvQno=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695779272; x=1696384072;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eP9N2gfeiWYXcjxAcn/cQZzNl5uPlV6uaT56umiTjo8=;
-        b=lCDZEd4+kiIfHUzAgWpF2OzdWi9ktf8lFvn4C18J/iVF2oyWUcqWoyaz4Am2NzktbP
-         DWUz4DSlvRCmbeh8hU0ONOqyvt4mgxx/Kg7r0jfQsRSbz05C76LZMHjy/edXoK+3jIVj
-         Eg+l24lymIUu5pykLNrhPIkOyHBNpZ/Ip6hjHnFK8+J7JVuHCEvVlcu2lsmGTX9q/X/w
-         TcfOIXkDxDrALNVXkKfMLMf4gKrDmbhEUGh060Dhoxk9UtmJhRjuColgT3ZS85CPPfps
-         pq1Galr098ruUVoG/Yj+Kfw/VJpVOzFdBhi82+7ANkykY0gDP2b4uFktoDK97rcpzSlL
-         i3gg==
-X-Gm-Message-State: AOJu0YxqZW/KWqpheJSyiqv3odn45yjfss9t9qxrWHBwKLGs+l4RTpMd
-        7/rUOTSCsxdoyunDgkSRZOjW/h9l/mj5mmPNdjDHrrIEgSo=
-X-Google-Smtp-Source: AGHT+IEAaKAlOkvmR0LD66XKj8QWzk4M3h/3mWe27gg1G+gi8Qs8/Sv8nOxQdC0XyT/2gKyWkvIM/59GaOUJCyYn1EU=
-X-Received: by 2002:adf:e5cf:0:b0:323:2e5d:b7c6 with SMTP id
- a15-20020adfe5cf000000b003232e5db7c6mr329201wrn.0.1695779271781; Tue, 26 Sep
- 2023 18:47:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695782092; x=1696386892;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MEoyNhEirsDID+iSINOkm/zSxakfDUSa2NzmIBoMrtU=;
+        b=fsCCLvYk8mgTm/9igfMHpQ3BJ/dcwiFdDAwHBXqPemXBi+UYPNzAlDr1uDbTPJZIgY
+         SCyqZgfXWMON+81XO5TvDO2Bb7vEd1RUbwWXIiFD0zxNQ9vdySc/fHCWpwrE3/1P+4J+
+         +X9oiR9ka+8PNOrJv79avM0aQUGERBCRr6nWlUlESCT2dlwP4Oq/pxOE6Aq8d24CZ9H6
+         xmDqNzk6ukIF2szSJi905BUzknTT0/CY9Q+D/tyQgfY8KaokIkPvsBDXy8SMGiugfoUo
+         kdI91GGqvhMU554ZmwLMnF51j7mAmsgDCIomsJqGnhaHW2Qwo08ogvDkh+yn5mDaiO0x
+         4biA==
+X-Gm-Message-State: AOJu0Yw2M9h2ikzP/uHfk4qZ7ayiZEvf52BDRN3p+ll40CwuARl8f5X9
+        +Fiy1Jwm8vv8FxsL5h230NkSmg==
+X-Google-Smtp-Source: AGHT+IH3mtSkhCwY4l5NpnakMGAz2fqDSfIVRDAs1r22pVm2l9sPYt/EIE/sGjn2HyWVPFLAH2dqvA==
+X-Received: by 2002:a05:6a00:139d:b0:692:780a:de89 with SMTP id t29-20020a056a00139d00b00692780ade89mr882056pfg.33.1695782092187;
+        Tue, 26 Sep 2023 19:34:52 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id z26-20020aa785da000000b006883561b421sm10697260pfn.162.2023.09.26.19.34.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Sep 2023 19:34:51 -0700 (PDT)
+Date:   Tue, 26 Sep 2023 19:34:50 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     Sebastian Ott <sebott@redhat.com>,
+        Pedro Falcato <pedro.falcato@gmail.com>,
+        Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Mark Brown <broonie@kernel.org>, Willy Tarreau <w@1wt.eu>,
+        sam@gentoo.org, Rich Felker <dalias@libc.org>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] binfmt_elf: Support segments with 0 filesz and
+ misaligned starts
+Message-ID: <202309261929.BE87B8B7@keescook>
+References: <20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net>
+ <36e93c8e-4384-b269-be78-479ccc7817b1@redhat.com>
+ <87zg1bm5xo.fsf@email.froward.int.ebiederm.org>
+ <37d3392c-cf33-20a6-b5c9-8b3fb8142658@redhat.com>
+ <87jzsemmsd.fsf_-_@email.froward.int.ebiederm.org>
+ <84e974d3-ae0d-9eb5-49b2-3348b7dcd336@redhat.com>
+ <202309251001.C050864@keescook>
+ <87v8bxiph5.fsf@email.froward.int.ebiederm.org>
 MIME-Version: 1.0
-References: <20230925214046.1051350-1-anarsoul@gmail.com> <b0786bf5571050397b5075bac7c1e9023bfa5aec.camel@intel.com>
-In-Reply-To: <b0786bf5571050397b5075bac7c1e9023bfa5aec.camel@intel.com>
-From:   Vasily Khoruzhick <anarsoul@gmail.com>
-Date:   Tue, 26 Sep 2023 18:47:24 -0700
-Message-ID: <CA+E=qVc424VJsqGRR+SZbDmDdtdVmx+Ag6vt_brhZsNv1JTCRw@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: FPDT: break out of the loop if record length is zero
-To:     "Zhang, Rui" <rui.zhang@intel.com>
-Cc:     "rafael@kernel.org" <rafael@kernel.org>,
-        "lenb@kernel.org" <lenb@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87v8bxiph5.fsf@email.froward.int.ebiederm.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 25, 2023 at 10:03=E2=80=AFPM Zhang, Rui <rui.zhang@intel.com> w=
-rote:
->
-> On Mon, 2023-09-25 at 14:40 -0700, Vasily Khoruzhick wrote:
-> > Buggy BIOSes may have zero-length records in FPDT, table, as a result
-> s/FPDT, table/FPDT table
->
->
-> > fpdt_process_subtable() spins in eternal loop.
+On Mon, Sep 25, 2023 at 10:27:02PM -0500, Eric W. Biederman wrote:
+> Kees Cook <keescook@chromium.org> writes:
+> 
+> > On Mon, Sep 25, 2023 at 05:27:12PM +0200, Sebastian Ott wrote:
+> >> On Mon, 25 Sep 2023, Eric W. Biederman wrote:
+> >> > 
+> >> > Implement a helper elf_load that wraps elf_map and performs all
+> >> > of the necessary work to ensure that when "memsz > filesz"
+> >> > the bytes described by "memsz > filesz" are zeroed.
+> >> > 
+> >> > Link: https://lkml.kernel.org/r/20230914-bss-alloc-v1-1-78de67d2c6dd@weissschuh.net
+> >> > Reported-by: Sebastian Ott <sebott@redhat.com>
+> >> > Reported-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+> >> > Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
+> >> > ---
+> >> > fs/binfmt_elf.c | 111 +++++++++++++++++++++---------------------------
+> >> > 1 file changed, 48 insertions(+), 63 deletions(-)
+> >> > 
+> >> > Can you please test this one?
 > >
-> > Break out of the loop if record length is zero.
-> >
-> >
-> > Fixes: d1eb86e59be0 ("ACPI: tables: introduce support for FPDT
-> > table")
-> > Cc: stable@vger.kernel.org
-> >
-> > Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
->
-> Is there a bugzilla or something where such a buggy BIOS is reported?
+> > Eric thanks for doing this refactoring! This does look similar to the
+> > earlier attempt:
+> > https://lore.kernel.org/lkml/20221106021657.1145519-1-pedro.falcato@gmail.com/
+> > and it's a bit easier to review.
+> 
+> I need to context switch away for a while so Kees if you will
+> I will let you handle the rest of this one.
+> 
+> 
+> A couple of thoughts running through my head for anyone whose ambitious
+> might include cleaning up binfmt_elf.c
+> 
+> The elf_bss variable in load_elf_binary can be removed.
+> 
+> Work for a follow on patch is using my new elf_load in load_elf_interp
+> and possibly in load_elf_library.  (More code size reduction).
+> 
+> An outstanding issue is if the first segment has filesz 0, and has a
+> randomized locations.  But that is the same as today.
+> 
+> There is a whole question does it make sense for the elf loader
+> to have it's own helper vm_brk_flags in mm/mmap.c or would it
+> make more sense for binfmt_elf to do what binfmt_elf_fdpic does and
+> have everything to go through vm_mmap.
+> 
+> I think replacing vm_brk_flags with vm_mmap would allow fixing the
+> theoretical issue of filesz 0 and randomizing locations.
+> 
+> 
+> 
+> In this change I replaced an open coded padzero that did not clear
+> all of the way to the end of the page, with padzero that does.
 
-I'm not aware of a bug filed a kernel bugzilla, however I found
-mentions of the issue online:
-https://forum.proxmox.com/threads/acpi-fpdt-duplicate-resume-performance-re=
-cord-found.114530/
+Yeah, the resulting code is way more readable now.
 
-> > ---
-> >  drivers/acpi/acpi_fpdt.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> >
-> > diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
-> > index a2056c4c8cb7..53d8f9601a55 100644
-> > --- a/drivers/acpi/acpi_fpdt.c
-> > +++ b/drivers/acpi/acpi_fpdt.c
-> > @@ -194,6 +194,11 @@ static int fpdt_process_subtable(u64 address,
-> > u32 subtable_type)
-> >                 record_header =3D (void *)subtable_header + offset;
-> >                 offset +=3D record_header->length;
-> >
-> > +               if (!record_header->length) {
-> > +                       pr_info(FW_BUG "Zero-length record
-> > found.\n");
-> > +                       break;
->
-> For cases like this, it implies the FPDT table is far from usable and
-> we should stop processing on such platforms.
+> I also stopped checking the return of padzero as there is at least
+> one known case where testing for failure is the wrong thing to do.
+> It looks like binfmt_elf_fdpic may have the proper set of tests
+> for when error handling can be safely completed.
+> 
+> I found a couple of commits in the old history
+> https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git,
+> that look very interesting in understanding this code.
+> 
+> commit 39b56d902bf3 ("[PATCH] binfmt_elf: clearing bss may fail")
+> commit c6e2227e4a3e ("[SPARC64]: Missing user access return value checks in fs/binfmt_elf.c and fs/compat.c")
+> commit 5bf3be033f50 ("v2.4.10.1 -> v2.4.10.2")
+> 
+> Looking at commit 39b56d902bf3 ("[PATCH] binfmt_elf: clearing bss may fail"):
+> >  commit 39b56d902bf35241e7cba6cc30b828ed937175ad
+> >  Author: Pavel Machek <pavel@ucw.cz>
+> >  Date:   Wed Feb 9 22:40:30 2005 -0800
+> > 
+> >     [PATCH] binfmt_elf: clearing bss may fail
+> >     
+> >     So we discover that Borland's Kylix application builder emits weird elf
+> >     files which describe a non-writeable bss segment.
+> >     
+> >     So remove the clear_user() check at the place where we zero out the bss.  I
+> >     don't _think_ there are any security implications here (plus we've never
+> >     checked that clear_user() return value, so whoops if it is a problem).
+> >     
+> >     Signed-off-by: Pavel Machek <pavel@suse.cz>
+> >     Signed-off-by: Andrew Morton <akpm@osdl.org>
+> >     Signed-off-by: Linus Torvalds <torvalds@osdl.org>
+> 
+> It seems pretty clear that binfmt_elf_fdpic with skipping clear_user
+> for non-writable segments and otherwise calling clear_user (aka padzero)
+> and checking it's return code is the right thing to do.
+> 
+> I just skipped the error checking as that avoids breaking things.
+> 
+> It looks like Borland's Kylix died in 2005 so it might be safe to
+> just consider read-only segments with memsz > filesz an error.
 
-Here's FPDT dump:
+I really feel like having a read-only BSS is a pathological state that
+should be detected early?
 
-00000000: 4650 4454 4400 0000 018c 414c 4153 4b41  FPDTD.....ALASKA
-00000010: 4120 4d20 4920 0000 0920 0701 414d 4920  A M I ... ..AMI
-00000020: 1300 0100 0100 1001 0000 0000 30fe 207f  ............0. .
-00000030: 0000 0000 0000 1001 0000 0000 54fe 207f  ............T. .
-00000040: 0000 0000                                ....
+> Looking at commit 5bf3be033f50 ("v2.4.10.1 -> v2.4.10.2") the
+> binfmt_elf.c bits confirm my guess that the weird structure is because
+> before that point binfmt_elf.c assumed there would be only a single
+> segment with memsz > filesz.  Which is why the code was structured so
+> weirdly.
 
-S3PT at 0x7f20fe30:
+Agreed.
 
-7F20FE30: 53 33 50 54 24 00 00 00-00 00 00 00 00 00 18 01  *S3PT$..........=
-.*
-7F20FE40: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *...............=
-.*
-7F20FE50: 00 00 00 00
+> Looking a little farther it looks like the binfmt_elf.c was introduced
+> in Linux v1.0, with essentially the same structure in load_elf_binary as
+> it has now.  Prior to that Linux hard coded support for a.out binaries
+> in execve.  So if someone wants to add a Fixes tag it should be
+> "Fixes: v1.0"
+> 
+> Which finally explains to me why the code is so odd.  For the most part
+> the code has only received maintenance for the last 30 years or so.
+> Strictly 29 years, but 30 has a better ring to it.
+> 
+> Anyway those are my rambling thoughts that might help someone.
+> For now I will be happy if we can get my elf_load helper tested
+> to everyone's satisfaction and merged.
 
-FBPT at 0x7f20fe54:
+I'm probably going to pull most of this email into the commit log for
+the v2 patch -- there's good history here worth capturing.
 
-7F20FE50: xx xx xx xx 46 42 50 54-3C 00 00 00 46 42 50 54  *....FBPT<...FBP=
-T*
-7F20FE60: 02 00 30 02 00 00 00 00-00 00 00 00 00 00 00 00  *..0............=
-.*
-7F20FE70: 2A A6 BC 6E 0B 00 00 00-1A 44 41 70 0B 00 00 00  **..n.....DAp...=
-.*
-7F20FE80: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *...............=
-.*
-
-It looks like subtables are not usable. S3PT subtable has the first
-record with zero len, and FBPT has its signature again instead of the
-first record header.
-
-So yeah, I agree that FPDT is not usabled in this case, and it
-shouldn't be processed further.
-
-> So, IMO, it is better to
-> 1. return an error here rather than break and return 0.
-> 2. add the error handling for fpdt_process_subtable() failures.
->
-> what do you think?
-
-Agree, I'll implement it in v2.
-
-Regards,
-Vasily
+-- 
+Kees Cook
