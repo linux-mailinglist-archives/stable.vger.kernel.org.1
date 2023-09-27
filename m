@@ -2,101 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C625D7B0CFC
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 21:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35E0A7B0D27
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 22:06:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbjI0T4i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 27 Sep 2023 15:56:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43722 "EHLO
+        id S229721AbjI0UGj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 27 Sep 2023 16:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229874AbjI0T4c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 15:56:32 -0400
-Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5178BCCD
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 12:56:06 -0700 (PDT)
-Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-65af7e20f39so51956156d6.2
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 12:56:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695844565; x=1696449365; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5A+e538uMQ9k/uzyhmViIJnbml3dasNee8PoGBFz6DE=;
-        b=BqJDPi3nE9KrsT9B4rKadDIVer7uZPDG5+cSjP46xSzcNmFBN93qyflPy4CxhZ7y9R
-         nh5DTaQ/JvDo7tBsxIjIFkBVpDOSETNBtFof1FLvVidQl7YS3JeaYlrP28KB9hxFOEgm
-         S5YzEczLyTfrxIqvzv82Fk3ofIaJo+Mew0/Nk8eVhmI4Wuf8ro1DHh/UaqiqEHL3cyY/
-         9tA/NpCDqhrARSJt8aek60T2T7TtfTUDUjjjCaCALqb9chzwq+bIJ9KGBIUxHkEOMdpk
-         yUjwiCl5VbO+cPZfzHpQgPws9C6+jlcxysSwLtaEckz0u7X5O1KIhGBfCaDOXyEBMqyc
-         u8+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695844565; x=1696449365;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5A+e538uMQ9k/uzyhmViIJnbml3dasNee8PoGBFz6DE=;
-        b=uRaLj+rGajyY+rxwlivFVcr/sJgyfL2Wc5ihXuXwGWHr7oH5sfrfZsdNs9RYY8X57+
-         CTYFefK3RC/l8rWyqBYrSP5wsy6b4oXQLEjq+c+nawL9x+t7NAdridLYxw5aF03GHEkZ
-         h6Q67rQR85S2GaIePk/6iWwyYUGSvugfiHI/xYXcpPP2HsNBqvVI2OTKcofgOKV/GeZ0
-         l7c/n1EhjkME4n1HFyCLU7SIGn3d1iBEAx0mXRqXadS5LzrZcW/n1sqA7OANwOT8QPiw
-         dovYqjwR/r9Ia6IJB/oAsPeUzywVsuGd4h5QEusblBfYZdDd1U5Np04BYP6e1NKGRQjE
-         JZ2w==
-X-Gm-Message-State: AOJu0YyXiZuif1OthS8dBZVQoxKs1kCbAYNuqIInwmQW5xxHnrQ5QQHe
-        Fzc/jQMZMVhllZxM35sjsfAwXq7GQay9cDzxwzLSp7AO43WfOQIh
-X-Google-Smtp-Source: AGHT+IGHzPPg4FYPmcv6LpEYvSLXtkhXZXZ6WSl/my37BuK9tBvcubscOLBy5wWBmJcEfgA2qADHhdeBIf2VV86idc8=
-X-Received: by 2002:a0c:e4c9:0:b0:656:34c5:13b9 with SMTP id
- g9-20020a0ce4c9000000b0065634c513b9mr3489700qvm.34.1695844564830; Wed, 27 Sep
- 2023 12:56:04 -0700 (PDT)
+        with ESMTP id S229664AbjI0UGi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 16:06:38 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A31DA10A;
+        Wed, 27 Sep 2023 13:06:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=5CIG4IN+NULdj6GDXp85UVQu/M7lEt+lk7D7J1xFff4=; b=XaLZv/B8s0zD31RKwX7U3qW6VG
+        oPGodBmh1pBJJkZTC/2i1KbCUy6vQCsLB0t7I4bMeJdms5EFe/GltInDYHWXOU/bzjLVKBc+olvuv
+        7I7By2Uqq49Mi+lsIyXmK7jIU+C9S00LOK0BLgL4raNGWaTMoElaQNBh0sU5G6xMwBuNqsG3VHpdp
+        f7S8rjtHGp92uNjrdFUtI7LQIOITCTjzVZtWN3n7CpKReC2vEco3ZYJnVSbT2364P1TLeoQ+7ptGY
+        vf+zn3B1Q2sc51++AFk+ASRSV9eehPszFOHr7m4uNpfhi++XKXeLAlANvz3+B/FXHvdMBvS18ZZqJ
+        WQiyvykA==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qlank-00FpkC-EK; Wed, 27 Sep 2023 20:06:28 +0000
+Date:   Wed, 27 Sep 2023 21:06:28 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Suren Baghdasaryan <surenb@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] mmap: Fix vma_iterator in error path of vma_merge()
+Message-ID: <ZRSLRN1Yfku/2dMZ@casper.infradead.org>
+References: <20230927160746.1928098-1-Liam.Howlett@oracle.com>
+ <20230927160746.1928098-2-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
-From:   Simon Kaegi <simon.kaegi@gmail.com>
-Date:   Wed, 27 Sep 2023 15:55:49 -0400
-Message-ID: <CACW2H-5W6KE6UJ8HwD6r9pOx4Ow_W6ACZyg9LpTykjU6tHHB3g@mail.gmail.com>
-Subject: [REGRESSION] EINVAL with mount in selinux_set_mnt_opts when mounting
- in a guest vm with selinux disabled
-To:     stable@vger.kernel.org
-Cc:     regressions@lists.linux.dev, dhowells@redhat.com,
-        jpiotrowski@linux.microsoft.com, jlayton@kernel.org,
-        brauner@kernel.org, sashal@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230927160746.1928098-2-Liam.Howlett@oracle.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-#regzbot introduced v6.1.52..v6.1.53
-#regzbot introduced: ed134f284b4ed85a70d5f760ed0686e3cd555f9b
+On Wed, Sep 27, 2023 at 12:07:44PM -0400, Liam R. Howlett wrote:
+> +++ b/mm/mmap.c
+> @@ -968,14 +968,14 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
+>  				vma_pgoff = curr->vm_pgoff;
+>  				vma_start_write(curr);
+>  				remove = curr;
+> -				err = dup_anon_vma(next, curr);
+> +				err = dup_anon_vma(next, curr, &anon_dup);
 
-We hit this regression when updating our guest vm kernel from 6.1.52 to
-6.1.53 -- bisecting this problem was introduced
-in ed134f284b4ed85a70d5f760ed0686e3cd555f9b -- vfs, security: Fix automount
-superblock LSM init problem, preventing NFS sb sharing --
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.53&id=ed134f284b4ed85a70d5f760ed0686e3cd555f9b
+This isn't bisectable.  dup_anon_vma() doesn't gain a third argument
+until patch 2.
 
-We're getting an EINVAL in `selinux_set_mnt_opts` in
-`security/selinux/hooks.c` when mounting a folder in a guest VM where
-selinux is disabled. We're mounting from another folder that we suspect has
-selinux labels set from the host. The EINVAL is getting set in the
-following block...
-```
-if (!selinux_initialized(&selinux_state)) {
-        if (!opts) {
-                /* Defer initialization until selinux_complete_init,
-                        after the initial policy is loaded and the security
-                        server is ready to handle calls. */
-                goto out;
-        }
-        rc = -EINVAL;
-        pr_warn("SELinux: Unable to set superblock options "
-                "before the security server is initialized\n");
-        goto out;
-}
-```
-We can reproduce 100% of the time but don't currently have a simple
-reproducer as the problem was found in our build service which uses
-kata-containers (with cloud-hypervisor and rootfs mounted via virtio-blk).
-
-We have not checked the mainline as we currently are tied to 6.1.x.
-
--Simon
