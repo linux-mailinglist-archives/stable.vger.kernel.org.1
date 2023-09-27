@@ -2,60 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F6EE7B020A
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 12:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60B417B0245
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 12:59:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230523AbjI0KlL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 27 Sep 2023 06:41:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55986 "EHLO
+        id S229539AbjI0K7a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 27 Sep 2023 06:59:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230464AbjI0KlF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 06:41:05 -0400
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D2E4191
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 03:41:04 -0700 (PDT)
-Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-d8168d08bebso12336943276.0
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 03:41:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1695811263; x=1696416063; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2TfCQZsnh0ySphxADEFX5shF0ZakwOqKiQEzJJfwjao=;
-        b=J3a5rKIyc3qQr96Og1x+bZmG/7XLa3qXBqEtNsHFX/PeM1H1kyOJUAsaZHO0zpLA4w
-         +kih2eNEmkRMS+u8hL/fy/nQVj/koJcTGMcI2S9Y/LH0NiMYkFfxXP8a8kY/GFYDWx1q
-         8ANDd1sSTLzE8WCMSLmviy+55n9//I9VDHL8hekYMaDIPx8RoztKy7bJjrUzkcqQ48pz
-         Qu2jkdxNlrax4qgbUkNV5H3WQ3expYBcxlkhUCMNTCnd6op66K4SC0/sU74adUmXk+fo
-         jH2Uot9aCgjVGanLDOmz2JNsCY+VFfoIWNEo7PyIWPGjirhFwiIenwe9oVaByeEU+NIk
-         PhfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695811263; x=1696416063;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2TfCQZsnh0ySphxADEFX5shF0ZakwOqKiQEzJJfwjao=;
-        b=ATZ5SJxrji4/mKN+R6gNAXjmVtk35hv0w783HlCa38PJVMo0zhlY+zu7E6n5cPvHH3
-         AgQDUBrjMeZF9UCUlSkEKgbpAdamTXEUhx+1MsB05Feq7yjoUEa1gHAMvqD5f+sE9uBV
-         RzFQEoqGtjQXM/HSzC0lqaZ4DNa7QybPBFlhpGstl76bCVAUddgmRVtLjZCUojPXB5K7
-         xTD3KI8COh3iTDBf+wq5KSwFX8hYeSbj2kRoJPN5nYYDSrC/DsT8ILuzoqRa+3VuLdvy
-         EDFYt0QqLp0+leA6qrKEt43XAxzQE2oVq9xRQJfUNMWMVVisY+aSWjhkDylzAgKnV28u
-         Hraw==
-X-Gm-Message-State: AOJu0Yxef98ipE5QiUXwc++nGx4UZr1YFtOwNf0h6BGTcQNc5YCp6uxU
-        vDskkeXhl6Ya9mdhPxY8g4FOFAfCYux3kkSorETkbA==
-X-Google-Smtp-Source: AGHT+IFyMmVzJBGh1WTSI82sfENWHz6YtmJoSZXjxxhHza4LSBIxODX2BFzHgtXg4ninj58ZBLw4XsSxNcSnz1Uzem4=
-X-Received: by 2002:a25:378c:0:b0:d7f:3f07:722d with SMTP id
- e134-20020a25378c000000b00d7f3f07722dmr1598572yba.3.1695811263390; Wed, 27
- Sep 2023 03:41:03 -0700 (PDT)
+        with ESMTP id S230164AbjI0K73 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 06:59:29 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7296813A;
+        Wed, 27 Sep 2023 03:59:27 -0700 (PDT)
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38RAZ7mc010443;
+        Wed, 27 Sep 2023 10:59:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=rOuf5MtDCQLRUngQ4awgcDV/nMQsPByOw/Aas90rjfw=;
+ b=m4tfZO5gw3QrvzniLLjwfqhOX6kts1VAlYwHbzMXdNORWR1tWQGsPWNbS5hdYNlTb1N5
+ LG0ybPasFLzA1B4ciMwi8I4+mIdDajG6DaX1EmVXH9vRJQP0FxAhoJ3zJ3chTW71CumI
+ x+acZneAWxRxvTjSYqG/4C3rUJBn2Pu/+9XfXibzHbu3N6NPQPLIwJqlB0odGjgFnWiK
+ cHRuPbavI1ODSEQhHwp6anvMRIqlIbub9nhUVlVE0JegEImVErkAC6aO/o6jCz8g40At
+ lZ1qe20eBGOWoTW8afA2coA4bOSW1VKlb4OOuF4FTpaMqdR22gVbHbcwjqyGBsznoHGs Cw== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tc4rxhk0y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Sep 2023 10:59:18 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 38RAxBZ7009250
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 27 Sep 2023 10:59:11 GMT
+Received: from hu-kriskura-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Wed, 27 Sep 2023 03:59:08 -0700
+From:   Krishna Kurapati <quic_kriskura@quicinc.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
+CC:     <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_ppratap@quicinc.com>, <quic_wcheng@quicinc.com>,
+        <quic_jackp@quicinc.com>,
+        Krishna Kurapati <quic_kriskura@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v4] usb: gadget: ncm: Handle decoding of multiple NTB's in unwrap call
+Date:   Wed, 27 Sep 2023 16:28:58 +0530
+Message-ID: <20230927105858.12950-1-quic_kriskura@quicinc.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-References: <20230927071500.1791882-1-avri.altman@wdc.com>
-In-Reply-To: <20230927071500.1791882-1-avri.altman@wdc.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 27 Sep 2023 12:40:27 +0200
-Message-ID: <CAPDyKFqnY-2QEwrjXm92spT4ETRcuuL-zCLnVqHGuipUecX7HQ@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: Capture correct oemid
-To:     Avri Altman <avri.altman@wdc.com>
-Cc:     linux-mmc@vger.kernel.org, Alex Fetters <Alex.Fetters@garmin.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 9no8INfMF3GZqaPbkRh4wKLkb_pHmU4H
+X-Proofpoint-ORIG-GUID: 9no8INfMF3GZqaPbkRh4wKLkb_pHmU4H
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-27_06,2023-09-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 suspectscore=0 mlxlogscore=958 adultscore=0
+ lowpriorityscore=0 mlxscore=0 priorityscore=1501 phishscore=0 bulkscore=0
+ clxscore=1015 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309270091
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -65,55 +77,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 27 Sept 2023 at 09:16, Avri Altman <avri.altman@wdc.com> wrote:
->
-> The OEMID is an 8-bit binary number that identifies the Device OEM
-> and/or the Device contents (when used as a distribution media either on
-> ROM or FLASH Devices).  It occupies bits [111:104] in the CID register:
-> see the eMMC spec JESD84-B51 paragraph 7.2.3.
->
-> So it is 8 bits, and has been so since ever - this bug is so ancients I
-> couldn't even find its source.  The furthest I could go is to commit
-> 335eadf2ef6a (sd: initialize SD cards) but its already was wrong.  Could
-> be because in SD its indeed 16 bits (a 2-characters ASCII string).
-> Another option as pointed out by Alex (offlist), it seems like this
-> comes from the legacy MMC specs (v3.31 and before).
->
-> It is important to fix it because we are using it as one of our quirk's
-> token, as well as other tools, e.g. the LVFS
-> (https://github.com/fwupd/fwupd/).
->
-> Signed-off-by: Avri Altman <avri.altman@wdc.com>
-> Cc: stable@vger.kernel.org
+When NCM is used with hosts like Windows PC, it is observed that there are
+multiple NTB's contained in one usb request giveback. Since the driver
+unwraps the obtained request data assuming only one NTB is present, we
+loose the subsequent NTB's present resulting in data loss.
 
-Applied for fixes, thanks!
+Fix this by checking the parsed block length with the obtained data
+length in usb request and continue parsing after the last byte of current
+NTB.
 
-Kind regards
-Uffe
+Cc: stable@vger.kernel.org
+Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+---
+Changes in v4: Replaced void* with __le16* typecast for tmp variable
+Changes in v3: Removed explicit void* typecast for ntb_ptr variable
 
+ drivers/usb/gadget/function/f_ncm.c | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-> ---
-> Changelog:
->
-> v1--v2:
-> Add Alex's note of the possible origin of this bug.
-> ---
->  drivers/mmc/core/mmc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-> index 89cd48fcec79..4a4bab9aa726 100644
-> --- a/drivers/mmc/core/mmc.c
-> +++ b/drivers/mmc/core/mmc.c
-> @@ -104,7 +104,7 @@ static int mmc_decode_cid(struct mmc_card *card)
->         case 3: /* MMC v3.1 - v3.3 */
->         case 4: /* MMC v4 */
->                 card->cid.manfid        = UNSTUFF_BITS(resp, 120, 8);
-> -               card->cid.oemid         = UNSTUFF_BITS(resp, 104, 16);
-> +               card->cid.oemid         = UNSTUFF_BITS(resp, 104, 8);
->                 card->cid.prod_name[0]  = UNSTUFF_BITS(resp, 96, 8);
->                 card->cid.prod_name[1]  = UNSTUFF_BITS(resp, 88, 8);
->                 card->cid.prod_name[2]  = UNSTUFF_BITS(resp, 80, 8);
-> --
-> 2.42.0
->
+diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
+index 424bb3b666db..faf90a217419 100644
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1171,7 +1171,8 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 			  struct sk_buff_head *list)
+ {
+ 	struct f_ncm	*ncm = func_to_ncm(&port->func);
+-	__le16		*tmp = (void *) skb->data;
++	unsigned char	*ntb_ptr = skb->data;
++	__le16		*tmp;
+ 	unsigned	index, index2;
+ 	int		ndp_index;
+ 	unsigned	dg_len, dg_len2;
+@@ -1184,6 +1185,10 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 	const struct ndp_parser_opts *opts = ncm->parser_opts;
+ 	unsigned	crc_len = ncm->is_crc ? sizeof(uint32_t) : 0;
+ 	int		dgram_counter;
++	int		to_process = skb->len;
++
++parse_ntb:
++	tmp = (__le16 *)ntb_ptr;
+ 
+ 	/* dwSignature */
+ 	if (get_unaligned_le32(tmp) != opts->nth_sign) {
+@@ -1230,7 +1235,7 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 		 * walk through NDP
+ 		 * dwSignature
+ 		 */
+-		tmp = (void *)(skb->data + ndp_index);
++		tmp = (__le16 *)(ntb_ptr + ndp_index);
+ 		if (get_unaligned_le32(tmp) != ncm->ndp_sign) {
+ 			INFO(port->func.config->cdev, "Wrong NDP SIGN\n");
+ 			goto err;
+@@ -1287,11 +1292,11 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 			if (ncm->is_crc) {
+ 				uint32_t crc, crc2;
+ 
+-				crc = get_unaligned_le32(skb->data +
++				crc = get_unaligned_le32(ntb_ptr +
+ 							 index + dg_len -
+ 							 crc_len);
+ 				crc2 = ~crc32_le(~0,
+-						 skb->data + index,
++						 ntb_ptr + index,
+ 						 dg_len - crc_len);
+ 				if (crc != crc2) {
+ 					INFO(port->func.config->cdev,
+@@ -1318,7 +1323,7 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 							 dg_len - crc_len);
+ 			if (skb2 == NULL)
+ 				goto err;
+-			skb_put_data(skb2, skb->data + index,
++			skb_put_data(skb2, ntb_ptr + index,
+ 				     dg_len - crc_len);
+ 
+ 			skb_queue_tail(list, skb2);
+@@ -1331,10 +1336,17 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 		} while (ndp_len > 2 * (opts->dgram_item_len * 2));
+ 	} while (ndp_index);
+ 
+-	dev_consume_skb_any(skb);
+-
+ 	VDBG(port->func.config->cdev,
+ 	     "Parsed NTB with %d frames\n", dgram_counter);
++
++	to_process -= block_len;
++	if (to_process != 0) {
++		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
++		goto parse_ntb;
++	}
++
++	dev_consume_skb_any(skb);
++
+ 	return 0;
+ err:
+ 	skb_queue_purge(list);
+-- 
+2.42.0
+
