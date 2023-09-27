@@ -2,48 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A52A57B0D47
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 22:21:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1519A7B0E31
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 23:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbjI0UV6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 27 Sep 2023 16:21:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50214 "EHLO
+        id S229460AbjI0Vji (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 27 Sep 2023 17:39:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjI0UV6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 16:21:58 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A538B11D
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 13:21:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6C0C433C8;
-        Wed, 27 Sep 2023 20:21:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695846116;
-        bh=Zzz4VsjLRN0k9sQiBjLgrvvrT3aJ/bCSF5TgMvK3B/o=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=YVyh9vF1FOGAbZAERGckWyCFZB3gNyThQVkXYAL6cBKBjHUFhgGt6AJYCeSgZWDDh
-         uml9PdgJ1HZSOivof5N/zr+CzmQbAiXcB7OnLeUqb0zx0ki1ShDNdDbzl4Kb84Fj9w
-         eOYNsjZNo0gY94gJndkiZlwXJk9um1/QhAjLQGO2afTl253dHenQf3OAvrUICSC7dn
-         g8bp7CxpO2ee5J/7OBvILltAIp59DnaZl2Oi5Xkwbzhgg4EEoShSRZPFVLAMqEsqNq
-         DKDb+pkKu1dtn8qTNh0Yu9Nmxi9oKAdF06OPy0ScfmE8b7mf+UllSQ/NhvQKaDOs6k
-         kujC6craqEG6g==
-Message-ID: <9c208dd856b82a4012370b201c08b2d73a6c130e.camel@kernel.org>
-Subject: Re: [REGRESSION] EINVAL with mount in selinux_set_mnt_opts when
- mounting in a guest vm with selinux disabled
-From:   Jeff Layton <jlayton@kernel.org>
-To:     Simon Kaegi <simon.kaegi@gmail.com>, stable@vger.kernel.org
-Cc:     regressions@lists.linux.dev, dhowells@redhat.com,
-        jpiotrowski@linux.microsoft.com, brauner@kernel.org,
-        sashal@kernel.org
-Date:   Wed, 27 Sep 2023 16:21:54 -0400
-In-Reply-To: <CACW2H-5W6KE6UJ8HwD6r9pOx4Ow_W6ACZyg9LpTykjU6tHHB3g@mail.gmail.com>
-References: <CACW2H-5W6KE6UJ8HwD6r9pOx4Ow_W6ACZyg9LpTykjU6tHHB3g@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S229882AbjI0Vjh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 17:39:37 -0400
+Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 589C1121
+        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 14:39:36 -0700 (PDT)
+Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-59f6492b415so112439657b3.0
+        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 14:39:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1695850775; x=1696455575; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tmIn/dsnWBGcOkNyP3wbdNzRj2XOsqPnxvNyHRusvkY=;
+        b=gxXSZZlVNU528/50fdr+jfPDJ4hkFDA/+wX9r6IbldCcW30VSS302JjYkwzescC30X
+         6A+CTMLvaC8n4vye5xNolesnq/hSTHZ/mpiQQJEZpI6Z4SF54EcB3fsxrPf+fDlQ9/Vf
+         tL4csEhmWrwpT0jneBz6HKsJRefRLHywM78CHsDYLqtATTwrUOVNtw7pR+NXux05jz5a
+         bFJuDaiHeDwX4r/deAjyoFgLmCsiAZk6Q0TVipGZHq1s+iZTGAJDFnTvfALJ6KhxQr+E
+         KJLqZUuVkEwUiIKdM/K8coopSgNDfx2B2dyGETyNnAtMiz2Wh61FClYbzW45TAZudaby
+         dx/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695850775; x=1696455575;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tmIn/dsnWBGcOkNyP3wbdNzRj2XOsqPnxvNyHRusvkY=;
+        b=wTSJoIUYwRhXjpj6dWsfiaIupy7fIwxI/48x58P1/g/HEBPJwygxYFQ1WURS2oh+k6
+         8mrkvW966F730iokOdGHy1Gd6qlegJ4+blvIOkxUT9WmZfFCriq55vUBipH+xKn0/LH2
+         oVNvACW/V754hgarE6l7+Q53xsBJsbqBenW0Ot6FwPFo5MxVe/w+aCxfAOaEX7D1t3GO
+         EWxNcYVimyzt0GFzjVgUBc1BhNEC8NaOdiCtSqwGcmphkzSgeP9LdYb8o04RpO2Jd/MM
+         HAkGuZzdcoOCA68diZOvI++t602P9NjyAPnQAu3VVov6mU1w3y6aVwrz3SmuwP5QTvW2
+         LDbQ==
+X-Gm-Message-State: AOJu0YwjSE3u2g92SUW47kszg46RGv2FnP5cNv79SCMpuJEeMMZN+BW5
+        wbxKq2tEs+WhOcMNose0R9hWAUJk4qfa/hEmlH5rEQ==
+X-Google-Smtp-Source: AGHT+IEgtxvEZTS7nj888nK+ibjNHsD4ifyjOceNKNWggrpLBaTJimKk+ph8GiVbZOQYshyOmycJsvLK022QeVxaMwY=
+X-Received: by 2002:a81:52cd:0:b0:570:2542:cc9b with SMTP id
+ g196-20020a8152cd000000b005702542cc9bmr2585219ywb.18.1695850775325; Wed, 27
+ Sep 2023 14:39:35 -0700 (PDT)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20230920223242.3425775-1-yang@os.amperecomputing.com>
+ <20230925084840.af05fefd19a101c71308a8cf@linux-foundation.org> <90fc0e8d-f378-4d6f-5f52-c14583200a2e@os.amperecomputing.com>
+In-Reply-To: <90fc0e8d-f378-4d6f-5f52-c14583200a2e@os.amperecomputing.com>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Wed, 27 Sep 2023 14:39:21 -0700
+Message-ID: <CAJuCfpExMWXHfZjgZ=UKf4k=zxrNOLx2R-a_wQdZ3O_+JTOq4w@mail.gmail.com>
+Subject: Re: [PATCH] mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and
+ MPOL_MF_MOVE are specified
+To:     Yang Shi <yang@os.amperecomputing.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, hughd@google.com,
+        willy@infradead.org, mhocko@suse.com, vbabka@suse.cz,
+        osalvador@suse.de, aquini@redhat.com, kirill@shutemov.name,
+        rientjes@google.com, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,53 +74,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 2023-09-27 at 15:55 -0400, Simon Kaegi wrote:
-> #regzbot introduced v6.1.52..v6.1.53
-> #regzbot introduced: ed134f284b4ed85a70d5f760ed0686e3cd555f9b
->=20
-> We hit this regression when updating our guest vm kernel from 6.1.52 to
-> 6.1.53 -- bisecting this problem was introduced
-> in ed134f284b4ed85a70d5f760ed0686e3cd555f9b -- vfs, security: Fix automou=
-nt
-> superblock LSM init problem, preventing NFS sb sharing --
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?=
-h=3Dv6.1.53&id=3Ded134f284b4ed85a70d5f760ed0686e3cd555f9b
->=20
-> We're getting an EINVAL in `selinux_set_mnt_opts` in
-> `security/selinux/hooks.c` when mounting a folder in a guest VM where
-> selinux is disabled. We're mounting from another folder that we suspect h=
-as
-> selinux labels set from the host. The EINVAL is getting set in the
-> following block...
-> ```
-> if (!selinux_initialized(&selinux_state)) {
->         if (!opts) {
->                 /* Defer initialization until selinux_complete_init,
->                         after the initial policy is loaded and the securi=
-ty
->                         server is ready to handle calls. */
->                 goto out;
->         }
->         rc =3D -EINVAL;
->         pr_warn("SELinux: Unable to set superblock options "
->                 "before the security server is initialized\n");
->         goto out;
-> }
-> ```
-> We can reproduce 100% of the time but don't currently have a simple
-> reproducer as the problem was found in our build service which uses
-> kata-containers (with cloud-hypervisor and rootfs mounted via virtio-blk)=
-.
->=20
-> We have not checked the mainline as we currently are tied to 6.1.x.
->=20
-> -Simon
+On Mon, Sep 25, 2023 at 10:16=E2=80=AFAM Yang Shi <yang@os.amperecomputing.=
+com> wrote:
+>
+>
+>
+> On 9/25/23 8:48 AM, Andrew Morton wrote:
+> > On Wed, 20 Sep 2023 15:32:42 -0700 Yang Shi <yang@os.amperecomputing.co=
+m> wrote:
+> >
+> >> When calling mbind() with MPOL_MF_{MOVE|MOVEALL} | MPOL_MF_STRICT,
+> >> kernel should attempt to migrate all existing pages, and return -EIO i=
+f
+> >> there is misplaced or unmovable page.  Then commit 6f4576e3687b
+> >> ("mempolicy: apply page table walker on queue_pages_range()") messed u=
+p
+> >> the return value and didn't break VMA scan early ianymore when MPOL_MF=
+_STRICT
+> >> alone.  The return value problem was fixed by commit a7f40cfe3b7a
+> >> ("mm: mempolicy: make mbind() return -EIO when MPOL_MF_STRICT is speci=
+fied"),
+> >> but it broke the VMA walk early if unmovable page is met, it may cause=
+ some
+> >> pages are not migrated as expected.
+> > So I'm thinking that a7f40cfe3b7a is the suitable Fixes: target?
+>
+> Yes, thanks. My follow-up email also added this.
+>
+> >
+> >> The code should conceptually do:
+> >>
+> >>   if (MPOL_MF_MOVE|MOVEALL)
+> >>       scan all vmas
+> >>       try to migrate the existing pages
+> >>       return success
+> >>   else if (MPOL_MF_MOVE* | MPOL_MF_STRICT)
+> >>       scan all vmas
+> >>       try to migrate the existing pages
+> >>       return -EIO if unmovable or migration failed
+> >>   else /* MPOL_MF_STRICT alone */
+> >>       break early if meets unmovable and don't call mbind_range() at a=
+ll
+> >>   else /* none of those flags */
+> >>       check the ranges in test_walk, EFAULT without mbind_range() if d=
+iscontig.
 
-This sounds very similar to the bug that Ondrej fixed here:
+With this change I think my temporary fix at
+https://lore.kernel.org/all/20230918211608.3580629-1-surenb@google.com/
+can be removed because we either scan all vmas (which means we locked
+them all) or we break early and do not call mbind_range() at all (in
+which case we don't need vmas to be locked).
 
-    https://lore.kernel.org/selinux/20230911142358.883728-1-omosnace@redhat=
-.com/
-
-You may want to try that patch and see if it helps.
---=20
-Jeff Layton <jlayton@kernel.org>
+> >>
+> >> Fixed the behavior.
+> >>
+>
