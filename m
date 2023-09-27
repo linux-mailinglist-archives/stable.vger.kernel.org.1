@@ -2,81 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDDEF7AFB32
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 08:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 013BB7AFBC5
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 09:16:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbjI0Giw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 27 Sep 2023 02:38:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45212 "EHLO
+        id S229757AbjI0HQe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 27 Sep 2023 03:16:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjI0Giv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 02:38:51 -0400
-Received: from mail11.truemail.it (mail11.truemail.it [IPv6:2001:4b7e:0:8::81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFBCA3
-        for <stable@vger.kernel.org>; Tue, 26 Sep 2023 23:38:49 -0700 (PDT)
-Received: from francesco-nb.int.toradex.com (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-        by mail11.truemail.it (Postfix) with ESMTPA id 0AF442065C;
-        Wed, 27 Sep 2023 08:38:46 +0200 (CEST)
-Date:   Wed, 27 Sep 2023 08:38:42 +0200
-From:   Francesco Dolcini <francesco@dolcini.it>
-To:     stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Marek Vasut <marex@denx.de>, dri-devel@lists.freedesktop.org,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Robert Foss <rfoss@kernel.org>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Michael Walle <michael@walle.cc>,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH] drm/bridge: ti-sn65dsi83: Do not generate HFP/HBP/HSA
- and EOT packet
-Message-ID: <ZRPN8ii6jqQqZi6r@francesco-nb.int.toradex.com>
-References: <20230403190242.224490-1-marex@denx.de>
+        with ESMTP id S229648AbjI0HQd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 03:16:33 -0400
+Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CF9D10E;
+        Wed, 27 Sep 2023 00:16:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1695798993; x=1727334993;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=HnwmIUpF4rR+iQji+SOxSN+MPrsMRnb5JliJdurMx9U=;
+  b=ZoTDX1X3gmAGglEEHQQ6vs8JN7LFNRUCyDsll27iZ10hKah7DTbNRDNS
+   M1hfcLDg81HEEn1aoXxJ8gOGiI4qhlR/w0OjyC3hMgFAAYfvtihRlJ0hO
+   cqja8FkTtr2in6xtlCfBg/y01QBb6H+GxjoWToICerk+oeuYLhSeNfmqW
+   KEtLg58NUnp2E/BDLUyo4KK1SWpNySM4Lzh1c2yhddThXrIWNWKej6qxB
+   4sH3S2BVryc65H97vnA/Xf/jA41pRuccghcWNSghTW4gNuwXsZBJyqo75
+   nKNgcbNFS5hyEryE+q99iSQESE42tZQGY5O7jRGD8XvleBuPYFshfUzxG
+   Q==;
+X-CSE-ConnectionGUID: rCzh9KPAQp+j4XJ2F4emjw==
+X-CSE-MsgGUID: DtJUjY3XTquPZNS3V+E7qQ==
+X-IronPort-AV: E=Sophos;i="6.03,179,1694707200"; 
+   d="scan'208";a="357153112"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 27 Sep 2023 15:16:30 +0800
+IronPort-SDR: PlpGxjWo7XvhnCZPoTjKUkR+/AxYSl8IhOXr2svbg9ouUnPa6jG5Lgy1S5Uq3H+5Rwy7UgJ3BM
+ jlEjc8LTKTPgjCiNX+XNutOAXo4ky7hOAS03+9gGS0qZzaoSEHe2mc+7G90w2Ofxtvn4pselgB
+ aXNZEDLRXc2Rv102DD22mEEXzH0K2Qmiy2NRdS5aYjwVSLyfoy2QvwdFncPAwZ7MZg2xfo1uad
+ GsZBFP/UOvaBAD/SssvxhdKOZAzNlHvu/YepdJVRivmawMhdYnx4/6LQnOaEXKDoOlH0Bjil7G
+ Ebg=
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 26 Sep 2023 23:28:56 -0700
+IronPort-SDR: jYkYDNv7x7FE2qM3g3s0uNitSWQKFqLilVnHPnrEmK+sc5FRKFEZ18deR8ciSxfRZqEVQtieFw
+ JvT+c+p7Ot0cYyBc23RCx5amS8il6G66AfJfDgETkOWVoZZetF1R0fVsktyTsJEp7swricf2Hx
+ VtsxQiKzrTM3xmYYzZ599FL843fJYjidMT2R16kk411YsRUsP4hoQqVPGwk0bgxl1+0wmPvhhc
+ IdRY/Ck7rv/q/gh7NDGW2iu9MKzblL2vn7D+KXjN67Odx7h/JTfbPdc1WC3GkbknctWJ8lebrK
+ u8Y=
+WDCIronportException: Internal
+Received: from avri-office.ad.shared (HELO avri-office.sdcorp.global.sandisk.com) ([10.45.31.142])
+  by uls-op-cesaip01.wdc.com with ESMTP; 27 Sep 2023 00:16:27 -0700
+From:   Avri Altman <avri.altman@wdc.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
+Cc:     Alex Fetters <Alex.Fetters@garmin.com>,
+        Avri Altman <avri.altman@wdc.com>, stable@vger.kernel.org
+Subject: [PATCH v2] mmc: Capture correct oemid
+Date:   Wed, 27 Sep 2023 10:15:00 +0300
+Message-Id: <20230927071500.1791882-1-avri.altman@wdc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230403190242.224490-1-marex@denx.de>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Apr 03, 2023 at 09:02:42PM +0200, Marek Vasut wrote:
-> Do not generate the HS front and back porch gaps, the HSA gap and
-> EOT packet, as per "SN65DSI83 datasheet SLLSEC1I - SEPTEMBER 2012
-> - REVISED OCTOBER 2020", page 22, these packets are not required.
-> This makes the TI SN65DSI83 bridge work with Samsung DSIM on i.MX8MN.
-> 
-> Signed-off-by: Marek Vasut <marex@denx.de>
+The OEMID is an 8-bit binary number that identifies the Device OEM
+and/or the Device contents (when used as a distribution media either on
+ROM or FLASH Devices).  It occupies bits [111:104] in the CID register:
+see the eMMC spec JESD84-B51 paragraph 7.2.3.
 
-Hello,
-can you please queue up this to kernel v6.1-stable ?
+So it is 8 bits, and has been so since ever - this bug is so ancients I
+couldn't even find its source.  The furthest I could go is to commit
+335eadf2ef6a (sd: initialize SD cards) but its already was wrong.  Could
+be because in SD its indeed 16 bits (a 2-characters ASCII string).
+Another option as pointed out by Alex (offlist), it seems like this
+comes from the legacy MMC specs (v3.31 and before).
 
-commit ca161b259cc84fe1f4a2ce4c73c3832cf6f713f1
-Author: Marek Vasut <marex@denx.de>
-Commit: Robert Foss <rfoss@kernel.org>
+It is important to fix it because we are using it as one of our quirk's
+token, as well as other tools, e.g. the LVFS
+(https://github.com/fwupd/fwupd/).
 
-    drm/bridge: ti-sn65dsi83: Do not generate HFP/HBP/HSA and EOT packet
-    
-    Do not generate the HS front and back porch gaps, the HSA gap and
-    EOT packet, as per "SN65DSI83 datasheet SLLSEC1I - SEPTEMBER 2012
-    - REVISED OCTOBER 2020", page 22, these packets are not required.
-    This makes the TI SN65DSI83 bridge work with Samsung DSIM on i.MX8MN.
-    
-    Signed-off-by: Marek Vasut <marex@denx.de>
-    Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-    Signed-off-by: Robert Foss <rfoss@kernel.org>
-    Link: https://patchwork.freedesktop.org/patch/msgid/20230403190242.224490-1-marex@denx.de
+Signed-off-by: Avri Altman <avri.altman@wdc.com>
+Cc: stable@vger.kernel.org
+---
+Changelog:
 
+v1--v2:
+Add Alex's note of the possible origin of this bug.
+---
+ drivers/mmc/core/mmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It solves a real issue with some displays not working without it.
-
-Thanks,
-Francesco
+diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+index 89cd48fcec79..4a4bab9aa726 100644
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -104,7 +104,7 @@ static int mmc_decode_cid(struct mmc_card *card)
+ 	case 3: /* MMC v3.1 - v3.3 */
+ 	case 4: /* MMC v4 */
+ 		card->cid.manfid	= UNSTUFF_BITS(resp, 120, 8);
+-		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 16);
++		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 8);
+ 		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
+ 		card->cid.prod_name[1]	= UNSTUFF_BITS(resp, 88, 8);
+ 		card->cid.prod_name[2]	= UNSTUFF_BITS(resp, 80, 8);
+-- 
+2.42.0
 
