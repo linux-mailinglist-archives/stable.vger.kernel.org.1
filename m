@@ -2,103 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC8377B062D
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 16:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A73D37B0781
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 17:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232032AbjI0OGi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 27 Sep 2023 10:06:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41550 "EHLO
+        id S232285AbjI0PBi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 27 Sep 2023 11:01:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231758AbjI0OGi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 10:06:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A5A0F3
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 07:05:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695823552;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=2yrzCvJKKpyb6A3C4WRH7XAPotWnSI2iCGZEtxqtwTM=;
-        b=UShddOoe9jF71iYsGQuLwguZ+vqVuc1oU5Nx3CwGncj1WlmCCYtt2JpAzNeSh9alDJAuje
-        /QMs52V3ghMiiFe+7kri2qO0w+ZHlJrEOTi7e0Avkhyr4YDRNsZleVFmrKIQsRN9Z7J2jN
-        OuqDcVVZyRwx9wD+YVGRd+IZNyKfcZU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-275-jzxT90fYPaiCVfzsHq1OBg-1; Wed, 27 Sep 2023 10:05:49 -0400
-X-MC-Unique: jzxT90fYPaiCVfzsHq1OBg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BFDAF280D206;
-        Wed, 27 Sep 2023 14:05:48 +0000 (UTC)
-Received: from laptop.redhat.com (unknown [10.39.192.172])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9990A492B16;
-        Wed, 27 Sep 2023 14:05:46 +0000 (UTC)
-From:   Eric Auger <eric.auger@redhat.com>
-To:     eric.auger.pro@gmail.com, eric.auger@redhat.com, elic@nvidia.com,
-        mail@anirudhrb.com, jasowang@redhat.com, mst@redhat.com,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        netdev@vger.kernel.org, virtualization@lists.linux-foundation.org,
-        kvmarm@lists.linux.dev
-Cc:     stable@vger.kernel.org
-Subject: [RESEND PATCH v2] vhost: Allow null msg.size on VHOST_IOTLB_INVALIDATE
-Date:   Wed, 27 Sep 2023 16:05:44 +0200
-Message-ID: <20230927140544.205088-1-eric.auger@redhat.com>
+        with ESMTP id S232067AbjI0PBg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 11:01:36 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F5D1196;
+        Wed, 27 Sep 2023 08:01:34 -0700 (PDT)
+Date:   Wed, 27 Sep 2023 15:01:32 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1695826892;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0ZhjOmSStMre4n+1d7k4HxOZCTiNq9yelwWAhe5xHFM=;
+        b=VksODYStvXKNho2lLF7tELW2L0FHJBbGSlP/9czDTTXsLak4fQ/9QpR71/T/8hRZbo5Vyk
+        ISpBA0pJt8jcso+qVeStMv1RkxDmZotu7J5aygVwydcTslp0D7YZYfcT3YN8AmtLIYBfcR
+        8kmez+zK3xXTSr7leYS+gV9SMPsugZ1CUwwjB5B8GWlB+CE/YnQrRPeUAfahdNZN1WxoWS
+        YfnmR4U5hx8Xg9AZbemQ/Lx6j0InEoHvsbaQcpKblOh0pS7NJbtyOtXvhf906SOCJG/kfQ
+        FjiEIeD33T97hOqnGAvZw6xsZI0F3mc8eUH6WvZexl4iiZGJM7hOGGN5VBw/pg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1695826892;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=0ZhjOmSStMre4n+1d7k4HxOZCTiNq9yelwWAhe5xHFM=;
+        b=4ifXXgSQSnqb1Ezd+9cuijaif3i3PdydetiSXEXVNJpsbwZFFERwJ2WnA0gSAcQHB8F/Su
+        1KTG02d/4zI9rLCw==
+From:   "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/core] timers: Tag (hr)timer softirq as hotplug safe
+Cc:     Frederic Weisbecker <frederic@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        stable@vger.kernel.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20230912104406.312185-6-frederic@kernel.org>
+References: <20230912104406.312185-6-frederic@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Message-ID: <169582689232.27769.17167363673386375890.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit e2ae38cf3d91 ("vhost: fix hung thread due to erroneous iotlb
-entries") Forbade vhost iotlb msg with null size to prevent entries
-with size = start = 0 and last = ULONG_MAX to end up in the iotlb.
+The following commit has been merged into the timers/core branch of tip:
 
-Then commit 95932ab2ea07 ("vhost: allow batching hint without size")
-only applied the check for VHOST_IOTLB_UPDATE and VHOST_IOTLB_INVALIDATE
-message types to fix a regression observed with batching hit.
+Commit-ID:     1a6a464774947920dcedcf7409be62495c7cedd0
+Gitweb:        https://git.kernel.org/tip/1a6a464774947920dcedcf7409be62495c7cedd0
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Tue, 12 Sep 2023 12:44:06 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 27 Sep 2023 16:54:03 +02:00
 
-Still, the introduction of that check introduced a regression for
-some users attempting to invalidate the whole ULONG_MAX range by
-setting the size to 0. This is the case with qemu/smmuv3/vhost
-integration which does not work anymore. It Looks safe to partially
-revert the original commit and allow VHOST_IOTLB_INVALIDATE messages
-with null size. vhost_iotlb_del_range() will compute a correct end
-iova. Same for vhost_vdpa_iotlb_unmap().
+timers: Tag (hr)timer softirq as hotplug safe
 
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Fixes: e2ae38cf3d91 ("vhost: fix hung thread due to erroneous iotlb entries")
-Cc: stable@vger.kernel.org # v5.17+
-Acked-by: Jason Wang <jasowang@redhat.com>
+Specific stress involving frequent CPU-hotplug operations, such as
+running rcutorture for example, may trigger the following message:
+
+  NOHZ tick-stop error: local softirq work is pending, handler #02!!!"
+
+This happens in the CPU-down hotplug process, after
+CPUHP_AP_SMPBOOT_THREADS whose teardown callback parks ksoftirqd, and
+before the target CPU shuts down through CPUHP_AP_IDLE_DEAD. In this
+fragile intermediate state, softirqs waiting for threaded handling may be
+forever ignored and eventually reported by the idle task as in the above
+example.
+
+However some vectors are known to be safe as long as the corresponding
+subsystems have teardown callbacks handling the migration of their
+events. The above error message reports pending timers softirq although
+this vector can be considered as hotplug safe because the
+CPUHP_TIMERS_PREPARE teardown callback performs the necessary migration
+of timers after the death of the CPU. Hrtimers also have a similar
+hotplug handling.
+
+Therefore this error message, as far as (hr-)timers are concerned, can
+be considered spurious and the relevant softirq vectors can be marked as
+hotplug safe.
+
+Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230912104406.312185-6-frederic@kernel.org
 ---
- drivers/vhost/vhost.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/linux/interrupt.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index c71d573f1c94..e0c181ad17e3 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -1458,9 +1458,7 @@ ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
- 		goto done;
- 	}
+diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+index a92bce4..4a1dc88 100644
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -569,8 +569,12 @@ enum
+  * 	2) rcu_report_dead() reports the final quiescent states.
+  *
+  * _ IRQ_POLL: irq_poll_cpu_dead() migrates the queue
++ *
++ * _ (HR)TIMER_SOFTIRQ: (hr)timers_dead_cpu() migrates the queue
+  */
+-#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(RCU_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ))
++#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(TIMER_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ) |\
++				   BIT(HRTIMER_SOFTIRQ) | BIT(RCU_SOFTIRQ))
++
  
--	if ((msg.type == VHOST_IOTLB_UPDATE ||
--	     msg.type == VHOST_IOTLB_INVALIDATE) &&
--	     msg.size == 0) {
-+	if (msg.type == VHOST_IOTLB_UPDATE && msg.size == 0) {
- 		ret = -EINVAL;
- 		goto done;
- 	}
--- 
-2.41.0
-
+ /* map softirq index to softirq name. update 'softirq_to_name' in
+  * kernel/softirq.c when adding a new softirq.
