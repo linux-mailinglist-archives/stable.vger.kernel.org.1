@@ -2,180 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A44587B027E
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 13:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BDB17B02FE
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 13:32:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231345AbjI0LNQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 27 Sep 2023 07:13:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33544 "EHLO
+        id S230507AbjI0Lcn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 27 Sep 2023 07:32:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231339AbjI0LNP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 07:13:15 -0400
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 594B2180
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 04:13:13 -0700 (PDT)
-Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-41958410e5cso550131cf.0
-        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 04:13:13 -0700 (PDT)
+        with ESMTP id S230204AbjI0Lcm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 27 Sep 2023 07:32:42 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50276FC
+        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 04:32:41 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-50307acd445so17284328e87.0
+        for <stable@vger.kernel.org>; Wed, 27 Sep 2023 04:32:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695813192; x=1696417992; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q3T0uZM81nh3MMMeHJ0x5DLvTiX2DwUPL7g6/tO7DRc=;
-        b=P2TCvwtaihwVYoXCO/s5A+oQmNqWiAJYQ7bIcJS9ylkXHxLfhQNQFqtM9fwB8f5LiB
-         gsFGX4Msi8YNfpkgxTbGuQKWzRWFT+kJmJdZdjomKd5Z0oamGymZHxTKfkLs+5t06Zjt
-         n4J/15j/Wqwcns9QYBSclWrVb3f8Aa2F10OekCqD73wrk0O+YNVaNtViHJkE8/5x9gHn
-         SxC+/4zh9bvsMvqUl7EORzLHG5C1C/ocVgj4bqQxtrb45FMKA6JguhKyCl3ebpIv+R4y
-         Cpsw9n+LYpxkIeWXk0iiR29JXpS9B16vpA/a41piyyJUXxWco/5McAcQjNS35YUAqs5v
-         L07A==
+        d=linaro.org; s=google; t=1695814359; x=1696419159; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HdUWFQCLZSrl7zH0hUj4VOl1H38sQ0R60GSX/EJE7tU=;
+        b=lJ/LQqTW5sSn9i5DLLaUrXB4f4b3Hv0edhg1Z9rtkkHXiNc/yY6qrNvyvkURHrGvkE
+         A5Sjj1DO57GDXlkw1CHwvRY//kwwufhvGs1ca68x3nBT5xy3YaV8F2WhgvbQ1yhAvMuj
+         HnQoO/NxNjaWa26Ah6Abh46fC8bb3WzchOOJvfEzTPSqMG54AezSidzJaTx6F89vnA7Q
+         JKXeIpLfPhPspnCpgeq8NSXHGr1ZG0v8GPIkC3uOw/YitrzPw/+ZRuHWfO640Xiw71QW
+         Wjorl1Tk97WAmHIn7soTfZrI6YhVJ131Sy1fgO2HeCf5k6hc6CO8vTNhzTfBGxpw4LW2
+         62CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695813192; x=1696417992;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q3T0uZM81nh3MMMeHJ0x5DLvTiX2DwUPL7g6/tO7DRc=;
-        b=qNPb9dJkKys1DGA6Ku1e0VyeQLiPZTz8uKcfxjU5osVMixcs9Z0XBTyN6g7GzANlay
-         8uhWV/6S8bFQ/rHGuTOnHcoz+MK/f6w3uWfr7mOYmh+cUjCDohKvfkPwPz/kwmew/xUV
-         pMcLI6oU7W02+PZYX9rvI57+358Ml00pT2W9NMraFvH9dyYl1LTJkVT3E7HVJi1iQOqk
-         Z3DSJNKMc9NIeqOGLp4uIHcUxE8Il1hXlo9IXn+PZC7vYLoiwcS+5nnU/lJziAcauIk2
-         vZFoqhrW3vPMVUZBvlqJL26/+nVevjc7w+JbrUpdbB52JsFvU6Enm3+lCtiHOsrIStME
-         p4jQ==
-X-Gm-Message-State: AOJu0YwkCTsuqoZMupGZAVSTDI8BkIrdh3jxdDVevJT4xzIsiyusSwCQ
-        ZRBThQzk3BJeDAGB5udG59TrKCE8WAZsjxXXNvwcXQ==
-X-Google-Smtp-Source: AGHT+IGlYUe+ty9S5L6G+a9UM05DUyiLGpED/5fz3M2kc6vqSgpuXjGJtjhwJ7K3Ne82Jhis9uR7jvtLWCq4xjMbd2I=
-X-Received: by 2002:ac8:7d0b:0:b0:410:653f:90e8 with SMTP id
- g11-20020ac87d0b000000b00410653f90e8mr535228qtb.11.1695813192307; Wed, 27 Sep
- 2023 04:13:12 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695814359; x=1696419159;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HdUWFQCLZSrl7zH0hUj4VOl1H38sQ0R60GSX/EJE7tU=;
+        b=ZWxpbrLY8B3LIBKKQesnbk+c0bXJsr8MM/qw63knKYg80MqrlOX/JDKPR0oJoUWfFW
+         Pqk/ckDrclzKTrRDZc1FnFcNj/mpKQfRrOwkPCSZLedshOSyJcLuKxadj76x6v03N9op
+         G+crCOzG0EhKy3sz1ELmRs0UqjXQN6wRvxoyLip2kWxjo6mI6v+7B5kpE3NXyscu4roe
+         GpFQQvl/zrTDyqFli6WzrwEjFpo0qseoGi1OqHcgnd4EiMRe271HukRahe6dYM7+KFDd
+         zv+sRMvXVxXNTFIP3g48DS2FsIP0xppBX1ZMctXSgm37oMZuowFGEQ7txpbbMxCzyKjG
+         vM3Q==
+X-Gm-Message-State: AOJu0YzcMB9D3mk6V6utX6n4egJzCIz3XAiBrUbip/08PAHVQcKiTt2g
+        GNZOjDbxhJ/XGbT4JfksmfHZLA==
+X-Google-Smtp-Source: AGHT+IEkHEK00EpmVPI8WUnrrnY+GIf2d6DWtNHZOcPr9e85S75Znl7+fMzO4eTxiWoYIfCLIKjDnQ==
+X-Received: by 2002:a19:f718:0:b0:503:1746:6882 with SMTP id z24-20020a19f718000000b0050317466882mr1260506lfe.37.1695814359385;
+        Wed, 27 Sep 2023 04:32:39 -0700 (PDT)
+Received: from [192.168.33.189] (178235177023.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.23])
+        by smtp.gmail.com with ESMTPSA id a2-20020aa7cf02000000b005232ea6a330sm8065681edy.2.2023.09.27.04.32.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 27 Sep 2023 04:32:39 -0700 (PDT)
+Message-ID: <bef962c8-a1ff-4309-8381-fb748f198a40@linaro.org>
+Date:   Wed, 27 Sep 2023 13:32:37 +0200
 MIME-Version: 1.0
-References: <20230927105858.12950-1-quic_kriskura@quicinc.com>
-In-Reply-To: <20230927105858.12950-1-quic_kriskura@quicinc.com>
-From:   =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
-Date:   Wed, 27 Sep 2023 04:13:00 -0700
-Message-ID: <CANP3RGd1ZzQXE2-kDDNyfxuLZCDYoJKJQ-2uBsq++StqTDkCRg@mail.gmail.com>
-Subject: Re: [PATCH v4] usb: gadget: ncm: Handle decoding of multiple NTB's in
- unwrap call
-To:     Krishna Kurapati <quic_kriskura@quicinc.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_ppratap@quicinc.com, quic_wcheng@quicinc.com,
-        quic_jackp@quicinc.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/11] clk: qcom: ipq6018: drop the CLK_SET_RATE_PARENT
+ flag from PLL clocks
+Content-Language: en-US
+To:     Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+        Gokul Sriram Palanisamy <quic_gokulsri@quicinc.com>,
+        Varadarajan Narayanan <quic_varada@quicinc.com>,
+        Anusha Rao <quic_anusha@quicinc.com>,
+        Devi Priya <quic_devipriy@quicinc.com>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20230913-gpll_cleanup-v2-0-c8ceb1a37680@quicinc.com>
+ <20230913-gpll_cleanup-v2-2-c8ceb1a37680@quicinc.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
+ BB/OmIWU6X+LZW6P88ZmHe+KeyABLMP5s1tJNK1j4ntT7mECcWZDzafPWF4F6m4WJOG27kTJ
+ HGWdmtO+RvadOVi6CoUDqALsmfS3MUG5Pj2Ne9+0jRg4hEnB92AyF9rW2G3qisFcwPgvatt7
+ TXD5E38mLyOPOUyXNj9XpDbt1hNwKQfiidmPh5e7VNAWRnW1iCMMoKqzM1Anzq7e5Afyeifz
+ zRcQPLaqrPjnKqZGL2BKQSZDh6NkI5ZLRhhHQf61fkWcUpTp1oDC6jWVfT7hwRVIQLrrNj9G
+ MpPzrlN4YuAqKeIer1FMt8cq64ifgTzxHzXsMcUdclzq2LTk2RXaPl6Jg/IXWqUClJHbamSk
+ t1bfif3SnmhA6TiNvEpDKPiT3IDs42THU6ygslrBxyROQPWLI9IL1y8S6RtEh8H+NZQWZNzm
+ UQ3imZirlPjxZtvz1BtnnBWS06e7x/UEAguj7VHCuymVgpl2Za17d1jj81YN5Rp5L9GXxkV1
+ aUEwONM3eCI3qcYm5JNc5X+JthZOWsbIPSC1Rhxz3JmWIwP1udr5E3oNRe9u2LIEq+wH/toH
+ kpPDhTeMkvt4KfE5m5ercid9+ZXAqoaYLUL4HCEw+HW0DXcKDwARAQABzShLb25yYWQgRHli
+ Y2lvIDxrb25yYWQuZHliY2lvQGxpbmFyby5vcmc+wsGOBBMBCAA4FiEEU24if9oCL2zdAAQV
+ R4cBcg5dfFgFAmQ5bqwCGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AACgkQR4cBcg5dfFjO
+ BQ//YQV6fkbqQCceYebGg6TiisWCy8LG77zV7DB0VMIWJv7Km7Sz0QQrHQVzhEr3trNenZrf
+ yy+o2tQOF2biICzbLM8oyQPY8B///KJTWI2khoB8IJSJq3kNG68NjPg2vkP6CMltC/X3ohAo
+ xL2UgwN5vj74QnlNneOjc0vGbtA7zURNhTz5P/YuTudCqcAbxJkbqZM4WymjQhe0XgwHLkiH
+ 5LHSZ31MRKp/+4Kqs4DTXMctc7vFhtUdmatAExDKw8oEz5NbskKbW+qHjW1XUcUIrxRr667V
+ GWH6MkVceT9ZBrtLoSzMLYaQXvi3sSAup0qiJiBYszc/VOu3RbIpNLRcXN3KYuxdQAptacTE
+ mA+5+4Y4DfC3rUSun+hWLDeac9z9jjHm5rE998OqZnOU9aztbd6zQG5VL6EKgsVXAZD4D3RP
+ x1NaAjdA3MD06eyvbOWiA5NSzIcC8UIQvgx09xm7dThCuQYJR4Yxjd+9JPJHI6apzNZpDGvQ
+ BBZzvwxV6L1CojUEpnilmMG1ZOTstktWpNzw3G2Gis0XihDUef0MWVsQYJAl0wfiv/0By+XK
+ mm2zRR+l/dnzxnlbgJ5pO0imC2w0TVxLkAp0eo0LHw619finad2u6UPQAkZ4oj++iIGrJkt5
+ Lkn2XgB+IW8ESflz6nDY3b5KQRF8Z6XLP0+IEdLOOARkOW7yEgorBgEEAZdVAQUBAQdAwmUx
+ xrbSCx2ksDxz7rFFGX1KmTkdRtcgC6F3NfuNYkYDAQgHwsF2BBgBCAAgFiEEU24if9oCL2zd
+ AAQVR4cBcg5dfFgFAmQ5bvICGwwACgkQR4cBcg5dfFju1Q//Xta1ShwL0MLSC1KL1lXGXeRM
+ 8arzfyiB5wJ9tb9U/nZvhhdfilEDLe0jKJY0RJErbdRHsalwQCrtq/1ewQpMpsRxXzAjgfRN
+ jc4tgxRWmI+aVTzSRpywNahzZBT695hMz81cVZJoZzaV0KaMTlSnBkrviPz1nIGHYCHJxF9r
+ cIu0GSIyUjZ/7xslxdvjpLth16H27JCWDzDqIQMtg61063gNyEyWgt1qRSaK14JIH/DoYRfn
+ jfFQSC8bffFjat7BQGFz4ZpRavkMUFuDirn5Tf28oc5ebe2cIHp4/kajTx/7JOxWZ80U70mA
+ cBgEeYSrYYnX+UJsSxpzLc/0sT1eRJDEhI4XIQM4ClIzpsCIN5HnVF76UQXh3a9zpwh3dk8i
+ bhN/URmCOTH+LHNJYN/MxY8wuukq877DWB7k86pBs5IDLAXmW8v3gIDWyIcgYqb2v8QO2Mqx
+ YMqL7UZxVLul4/JbllsQB8F/fNI8AfttmAQL9cwo6C8yDTXKdho920W4WUR9k8NT/OBqWSyk
+ bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
+ nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
+ izWDgYvmBE8=
+In-Reply-To: <20230913-gpll_cleanup-v2-2-c8ceb1a37680@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 27, 2023 at 3:59=E2=80=AFAM Krishna Kurapati
-<quic_kriskura@quicinc.com> wrote:
->
-> When NCM is used with hosts like Windows PC, it is observed that there ar=
-e
-> multiple NTB's contained in one usb request giveback. Since the driver
-> unwraps the obtained request data assuming only one NTB is present, we
-> loose the subsequent NTB's present resulting in data loss.
->
-> Fix this by checking the parsed block length with the obtained data
-> length in usb request and continue parsing after the last byte of current
-> NTB.
->
+On 14.09.2023 08:59, Kathiravan Thirumoorthy wrote:
+> GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
+> on the request from dependent clocks. Doing so will result in the
+> unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
+> clocks.
+> 
 > Cc: stable@vger.kernel.org
-> Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
-> Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+> Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
+> Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
 > ---
-> Changes in v4: Replaced void* with __le16* typecast for tmp variable
-> Changes in v3: Removed explicit void* typecast for ntb_ptr variable
->
->  drivers/usb/gadget/function/f_ncm.c | 26 +++++++++++++++++++-------
->  1 file changed, 19 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/fun=
-ction/f_ncm.c
-> index 424bb3b666db..faf90a217419 100644
-> --- a/drivers/usb/gadget/function/f_ncm.c
-> +++ b/drivers/usb/gadget/function/f_ncm.c
-> @@ -1171,7 +1171,8 @@ static int ncm_unwrap_ntb(struct gether *port,
->                           struct sk_buff_head *list)
->  {
->         struct f_ncm    *ncm =3D func_to_ncm(&port->func);
-> -       __le16          *tmp =3D (void *) skb->data;
-> +       unsigned char   *ntb_ptr =3D skb->data;
-> +       __le16          *tmp;
->         unsigned        index, index2;
->         int             ndp_index;
->         unsigned        dg_len, dg_len2;
-> @@ -1184,6 +1185,10 @@ static int ncm_unwrap_ntb(struct gether *port,
->         const struct ndp_parser_opts *opts =3D ncm->parser_opts;
->         unsigned        crc_len =3D ncm->is_crc ? sizeof(uint32_t) : 0;
->         int             dgram_counter;
-> +       int             to_process =3D skb->len;
-> +
-> +parse_ntb:
-> +       tmp =3D (__le16 *)ntb_ptr;
->
->         /* dwSignature */
->         if (get_unaligned_le32(tmp) !=3D opts->nth_sign) {
-> @@ -1230,7 +1235,7 @@ static int ncm_unwrap_ntb(struct gether *port,
->                  * walk through NDP
->                  * dwSignature
->                  */
-> -               tmp =3D (void *)(skb->data + ndp_index);
-> +               tmp =3D (__le16 *)(ntb_ptr + ndp_index);
->                 if (get_unaligned_le32(tmp) !=3D ncm->ndp_sign) {
->                         INFO(port->func.config->cdev, "Wrong NDP SIGN\n")=
-;
->                         goto err;
-> @@ -1287,11 +1292,11 @@ static int ncm_unwrap_ntb(struct gether *port,
->                         if (ncm->is_crc) {
->                                 uint32_t crc, crc2;
->
-> -                               crc =3D get_unaligned_le32(skb->data +
-> +                               crc =3D get_unaligned_le32(ntb_ptr +
->                                                          index + dg_len -
->                                                          crc_len);
->                                 crc2 =3D ~crc32_le(~0,
-> -                                                skb->data + index,
-> +                                                ntb_ptr + index,
->                                                  dg_len - crc_len);
->                                 if (crc !=3D crc2) {
->                                         INFO(port->func.config->cdev,
-> @@ -1318,7 +1323,7 @@ static int ncm_unwrap_ntb(struct gether *port,
->                                                          dg_len - crc_len=
-);
->                         if (skb2 =3D=3D NULL)
->                                 goto err;
-> -                       skb_put_data(skb2, skb->data + index,
-> +                       skb_put_data(skb2, ntb_ptr + index,
->                                      dg_len - crc_len);
->
->                         skb_queue_tail(list, skb2);
-> @@ -1331,10 +1336,17 @@ static int ncm_unwrap_ntb(struct gether *port,
->                 } while (ndp_len > 2 * (opts->dgram_item_len * 2));
->         } while (ndp_index);
->
-> -       dev_consume_skb_any(skb);
-> -
->         VDBG(port->func.config->cdev,
->              "Parsed NTB with %d frames\n", dgram_counter);
-> +
-> +       to_process -=3D block_len;
-> +       if (to_process !=3D 0) {
-> +               ntb_ptr =3D (unsigned char *)(ntb_ptr + block_len);
-> +               goto parse_ntb;
-> +       }
-> +
-> +       dev_consume_skb_any(skb);
-> +
->         return 0;
->  err:
->         skb_queue_purge(list);
-> --
-> 2.42.0
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Reviewed-by: Maciej =C5=BBenczykowski <maze@google.com>
+Konrad
