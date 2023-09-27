@@ -2,58 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEBBF7AF86A
-	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 05:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D24797AF8A5
+	for <lists+stable@lfdr.de>; Wed, 27 Sep 2023 05:28:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232161AbjI0DEw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 26 Sep 2023 23:04:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57570 "EHLO
+        id S229708AbjI0D2P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 26 Sep 2023 23:28:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235293AbjI0DCv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 23:02:51 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B19A976B2;
-        Tue, 26 Sep 2023 17:45:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4528EC433CB;
-        Wed, 27 Sep 2023 00:45:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695775539;
-        bh=2czlUODplVLqlPwrGiCVrixmp6cbiBPmEv+rpDMNXbE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=gNE3/ylOvhRAAoz/vsvv9pN5ZobXtP1piV0MjWp1L0UZj699jNMZbSqPNIug9aveo
-         EXIR25LqshXk+WtroxcOWzrX8sHUzX+k3t/iTkQb+0n4hSJqcQBpyIvyXfu9I/C4qo
-         9Zcm00JBw0DvFNlOAz8fWYvCC6GGgCZEazaYZbI4zHTzyIbKvT4Zq2Gka+8StvxJbm
-         v29idUfwAetZBi/R+2RCOPbQnmrZa09PJdhkBCs59xhijWkwu3iPnjtNfdBBwFsRss
-         5a1oyOE+sSaJlNVxR/r5r6JsojfIp8MQYqDhtGqcBdm7bx+thdBaWvs1SwDfT2zeNm
-         JIGs47bCHE4wA==
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4053c6f0e50so94643995e9.1;
-        Tue, 26 Sep 2023 17:45:39 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yx8stZjqNN2cxNj12+4RuiCBQlvRdYPKhR+B4BsTiAYy4yxzfU8
-        3Y1ofQQin7Q4dEyq4ZjQx7zutu8yBik1zCTt5LY=
-X-Google-Smtp-Source: AGHT+IH7TiTSw495lHvxkQDLdhAGLVNGCEfgqX0IVQetkEk4oU2/PQH5vwKZCIneHOZYWfI/8AGboWlwslKgZwyqJJY=
-X-Received: by 2002:adf:ecce:0:b0:31f:98b4:4b62 with SMTP id
- s14-20020adfecce000000b0031f98b44b62mr229081wro.37.1695775537680; Tue, 26 Sep
- 2023 17:45:37 -0700 (PDT)
+        with ESMTP id S229506AbjI0D0P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 26 Sep 2023 23:26:15 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 947639005;
+        Tue, 26 Sep 2023 18:47:53 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-40594a6d1ecso11520805e9.1;
+        Tue, 26 Sep 2023 18:47:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695779272; x=1696384072; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eP9N2gfeiWYXcjxAcn/cQZzNl5uPlV6uaT56umiTjo8=;
+        b=mdZBYtkbGXhEIASl9MXbPlNQ4Fh56XGfHyTUP0QwiLyXtvoLaWDMWxHh8VcZJpdy1A
+         tmg3iEPLb7Y/NarmpFuCsqo+B34sWqLs/PyDeKub7ZWqFEfTxC9qQOtM+ZLkm485qHZ8
+         8Vk2ckW1hM9XJZ4f81NeZV2+YMP0XdbhO5kAAJ8UdYQgwGjjKQgASE7MXTWlAyQFc099
+         Mv1PGfBEr3BqkiR5W9dO8Qa6tNwd4fBHfKrgLuJNyJC7CtlfBxQD7qK6T2QAMKhjrr2Z
+         j21Ziah7ETDY+EDfNzh1xQfAfuz+YcYGeGRkmQc6JtbD3lTfr5TT7Th0JDz/zZLycdv9
+         G2JQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695779272; x=1696384072;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eP9N2gfeiWYXcjxAcn/cQZzNl5uPlV6uaT56umiTjo8=;
+        b=lCDZEd4+kiIfHUzAgWpF2OzdWi9ktf8lFvn4C18J/iVF2oyWUcqWoyaz4Am2NzktbP
+         DWUz4DSlvRCmbeh8hU0ONOqyvt4mgxx/Kg7r0jfQsRSbz05C76LZMHjy/edXoK+3jIVj
+         Eg+l24lymIUu5pykLNrhPIkOyHBNpZ/Ip6hjHnFK8+J7JVuHCEvVlcu2lsmGTX9q/X/w
+         TcfOIXkDxDrALNVXkKfMLMf4gKrDmbhEUGh060Dhoxk9UtmJhRjuColgT3ZS85CPPfps
+         pq1Galr098ruUVoG/Yj+Kfw/VJpVOzFdBhi82+7ANkykY0gDP2b4uFktoDK97rcpzSlL
+         i3gg==
+X-Gm-Message-State: AOJu0YxqZW/KWqpheJSyiqv3odn45yjfss9t9qxrWHBwKLGs+l4RTpMd
+        7/rUOTSCsxdoyunDgkSRZOjW/h9l/mj5mmPNdjDHrrIEgSo=
+X-Google-Smtp-Source: AGHT+IEAaKAlOkvmR0LD66XKj8QWzk4M3h/3mWe27gg1G+gi8Qs8/Sv8nOxQdC0XyT/2gKyWkvIM/59GaOUJCyYn1EU=
+X-Received: by 2002:adf:e5cf:0:b0:323:2e5d:b7c6 with SMTP id
+ a15-20020adfe5cf000000b003232e5db7c6mr329201wrn.0.1695779271781; Tue, 26 Sep
+ 2023 18:47:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230926121031.1901760-1-chenhuacai@loongson.cn> <4abf8ddb-ff93-436f-a834-39e7f4d7a503@xen0n.name>
-In-Reply-To: <4abf8ddb-ff93-436f-a834-39e7f4d7a503@xen0n.name>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Wed, 27 Sep 2023 08:45:24 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5z5a45PobUQ5xU3rP6bqenoqtuuceX2=ijYhTN6a_vqg@mail.gmail.com>
-Message-ID: <CAAhV-H5z5a45PobUQ5xU3rP6bqenoqtuuceX2=ijYhTN6a_vqg@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: numa: Fix high_memory calculation
-To:     WANG Xuerui <kernel@xen0n.name>
-Cc:     Huacai Chen <chenhuacai@loongson.cn>,
-        Arnd Bergmann <arnd@arndb.de>, loongarch@lists.linux.dev,
-        linux-arch@vger.kernel.org, Xuefeng Li <lixuefeng@loongson.cn>,
-        Guo Ren <guoren@kernel.org>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
-        stable@vger.kernel.org, Chong Qiao <qiaochong@loongson.cn>
+References: <20230925214046.1051350-1-anarsoul@gmail.com> <b0786bf5571050397b5075bac7c1e9023bfa5aec.camel@intel.com>
+In-Reply-To: <b0786bf5571050397b5075bac7c1e9023bfa5aec.camel@intel.com>
+From:   Vasily Khoruzhick <anarsoul@gmail.com>
+Date:   Tue, 26 Sep 2023 18:47:24 -0700
+Message-ID: <CA+E=qVc424VJsqGRR+SZbDmDdtdVmx+Ag6vt_brhZsNv1JTCRw@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: FPDT: break out of the loop if record length is zero
+To:     "Zhang, Rui" <rui.zhang@intel.com>
+Cc:     "rafael@kernel.org" <rafael@kernel.org>,
+        "lenb@kernel.org" <lenb@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,48 +71,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 26, 2023 at 11:26=E2=80=AFPM WANG Xuerui <kernel@xen0n.name> wr=
-ote:
+On Mon, Sep 25, 2023 at 10:03=E2=80=AFPM Zhang, Rui <rui.zhang@intel.com> w=
+rote:
 >
-> On 9/26/23 20:10, Huacai Chen wrote:
-> > high_memory is the virtual address of the 'highest physical address' in
-> > the system. But __va(get_num_physpages() << PAGE_SHIFT) is not what we
-> > want because there may be holes in the physical address space. On the
-> > other hand, max_low_pfn is calculated from memblock_end_of_DRAM(), whic=
-h
-> > is exactly corresponding to the highest physical address, so use it for
-> > high_memory calculation.
+> On Mon, 2023-09-25 at 14:40 -0700, Vasily Khoruzhick wrote:
+> > Buggy BIOSes may have zero-length records in FPDT, table, as a result
+> s/FPDT, table/FPDT table
+>
+>
+> > fpdt_process_subtable() spins in eternal loop.
 > >
-> > Cc: <stable@vger.kernel.org>
-> Which commit is this patch intended to amend? A "Fixes:" tag may be
-> helpful for stable backporting.
-OK, I will add a Fixes: tag.
+> > Break out of the loop if record length is zero.
+> >
+> >
+> > Fixes: d1eb86e59be0 ("ACPI: tables: introduce support for FPDT
+> > table")
+> > Cc: stable@vger.kernel.org
+> >
+> > Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+>
+> Is there a bugzilla or something where such a buggy BIOS is reported?
 
-Huacai
+I'm not aware of a bug filed a kernel bugzilla, however I found
+mentions of the issue online:
+https://forum.proxmox.com/threads/acpi-fpdt-duplicate-resume-performance-re=
+cord-found.114530/
 
-> > Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 > > ---
-> >   arch/loongarch/kernel/numa.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >  drivers/acpi/acpi_fpdt.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
 > >
-> > diff --git a/arch/loongarch/kernel/numa.c b/arch/loongarch/kernel/numa.=
-c
-> > index c7d33c489e04..6e65ff12d5c7 100644
-> > --- a/arch/loongarch/kernel/numa.c
-> > +++ b/arch/loongarch/kernel/numa.c
-> > @@ -436,7 +436,7 @@ void __init paging_init(void)
+> > diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
+> > index a2056c4c8cb7..53d8f9601a55 100644
+> > --- a/drivers/acpi/acpi_fpdt.c
+> > +++ b/drivers/acpi/acpi_fpdt.c
+> > @@ -194,6 +194,11 @@ static int fpdt_process_subtable(u64 address,
+> > u32 subtable_type)
+> >                 record_header =3D (void *)subtable_header + offset;
+> >                 offset +=3D record_header->length;
 > >
-> >   void __init mem_init(void)
-> >   {
-> > -     high_memory =3D (void *) __va(get_num_physpages() << PAGE_SHIFT);
-> > +     high_memory =3D (void *) __va(max_low_pfn << PAGE_SHIFT);
-> >       memblock_free_all();
-> >   }
-> >
+> > +               if (!record_header->length) {
+> > +                       pr_info(FW_BUG "Zero-length record
+> > found.\n");
+> > +                       break;
 >
-> --
-> WANG "xen0n" Xuerui
+> For cases like this, it implies the FPDT table is far from usable and
+> we should stop processing on such platforms.
+
+Here's FPDT dump:
+
+00000000: 4650 4454 4400 0000 018c 414c 4153 4b41  FPDTD.....ALASKA
+00000010: 4120 4d20 4920 0000 0920 0701 414d 4920  A M I ... ..AMI
+00000020: 1300 0100 0100 1001 0000 0000 30fe 207f  ............0. .
+00000030: 0000 0000 0000 1001 0000 0000 54fe 207f  ............T. .
+00000040: 0000 0000                                ....
+
+S3PT at 0x7f20fe30:
+
+7F20FE30: 53 33 50 54 24 00 00 00-00 00 00 00 00 00 18 01  *S3PT$..........=
+.*
+7F20FE40: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *...............=
+.*
+7F20FE50: 00 00 00 00
+
+FBPT at 0x7f20fe54:
+
+7F20FE50: xx xx xx xx 46 42 50 54-3C 00 00 00 46 42 50 54  *....FBPT<...FBP=
+T*
+7F20FE60: 02 00 30 02 00 00 00 00-00 00 00 00 00 00 00 00  *..0............=
+.*
+7F20FE70: 2A A6 BC 6E 0B 00 00 00-1A 44 41 70 0B 00 00 00  **..n.....DAp...=
+.*
+7F20FE80: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *...............=
+.*
+
+It looks like subtables are not usable. S3PT subtable has the first
+record with zero len, and FBPT has its signature again instead of the
+first record header.
+
+So yeah, I agree that FPDT is not usabled in this case, and it
+shouldn't be processed further.
+
+> So, IMO, it is better to
+> 1. return an error here rather than break and return 0.
+> 2. add the error handling for fpdt_process_subtable() failures.
 >
-> Linux/LoongArch mailing list: https://lore.kernel.org/loongarch/
->
+> what do you think?
+
+Agree, I'll implement it in v2.
+
+Regards,
+Vasily
