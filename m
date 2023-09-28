@@ -2,141 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BB247B21CA
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 17:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 680567B21CD
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 17:54:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232029AbjI1Pxq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 11:53:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57006 "EHLO
+        id S231310AbjI1PyN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 11:54:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbjI1Pxp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 11:53:45 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B9AED6
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 08:53:43 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-59b59e1ac70so263329857b3.1
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 08:53:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695916422; x=1696521222; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9+KF8Dx6gkORPNY9sE+tILxrgD0oMG3WrnAvRuzUSWM=;
-        b=KXiXbrkpQlP+lSXsiWVTqR4slreLDNcPdZCtJdV1ZzhKA79VJPMzmCPW/wUKuPp6Ky
-         +cSCaHVHUo3c6jJTXAQC/gs9iwCiZPIfWGRFFXGRsXXJGyJDJnOSar+aDPtDCWNgRV9f
-         YPZsyb6TGZWmvfllkdpoy7GWaXRdDAj6nxfqC9Nq/CVu1wEm83O9su4jKtHl3+wCD9nZ
-         mwAPqS6VcvBzB7mV5Hbu7Lh5wxdNSfxLxe7ETQ1xK18S0ZWsB2UAmr7L0+vSJC96n2mj
-         KTYmZoRItSzeX4wylE9lZBeAccAhoZlqAeVeL5PmKBcP/BSpOAGodEpt8VoUi7RysDu9
-         D/uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695916422; x=1696521222;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9+KF8Dx6gkORPNY9sE+tILxrgD0oMG3WrnAvRuzUSWM=;
-        b=IECCdireCsVMAj4C8HcxVZwli98RkCV2Mt4dr/NONrcejnCDVD8ulanAFimcs0XNHR
-         4Oc8e3V5L8qrC0imp3EZ3PHahXB+6AllsDRvrfvfhzzENk7PBr4gATJVPN20T6Ac6pUA
-         v+4N2ksvEBL8PFW2dJD0EEyUXY05XHQLxME9gfqk+Sf7bzzJQySSnbsibUfx+ZAymC3a
-         njB6u9u7d6ZYLQc4gyEU3OFl0IJyzmzvl99R3IIxiA4WthnKPI4YZhWTQbp+3fMIU9bU
-         1bhscRULJUTLDIUOgM5S7nEd78n1B19BMHh485Oqme5wH6WPDUJST+CHxOhwaVpZQVjK
-         Njkw==
-X-Gm-Message-State: AOJu0Yxbijml9HKOJGTTpktqUewQ44FbSqZDtTx7OtbX+UrNd9FDEe8l
-        8n38qEqs9AKwD4FSUJphB7N3JrMDwr0=
-X-Google-Smtp-Source: AGHT+IH4A7qKg2XydOJbmIvwuoLA9BPXAXOV4ldgBhSu0+Vajy3UmXpajmDHZC2VBSfPhVz068mClgDbRP0=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a81:bc05:0:b0:59b:f138:c843 with SMTP id
- a5-20020a81bc05000000b0059bf138c843mr31557ywi.3.1695916422752; Thu, 28 Sep
- 2023 08:53:42 -0700 (PDT)
-Date:   Thu, 28 Sep 2023 08:53:41 -0700
-In-Reply-To: <20230928150428.199929-2-mlevitsk@redhat.com>
-Mime-Version: 1.0
-References: <20230928150428.199929-1-mlevitsk@redhat.com> <20230928150428.199929-2-mlevitsk@redhat.com>
-Message-ID: <ZRWhhTvQuE2MN9KB@google.com>
-Subject: Re: [PATCH 1/5] x86: KVM: SVM: fix for x2avic CVE-2023-5090
-From:   Sean Christopherson <seanjc@google.com>
-To:     Maxim Levitsky <mlevitsk@redhat.com>
-Cc:     kvm@vger.kernel.org, Will Deacon <will@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org,
-        Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <joro@8bytes.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229946AbjI1PyM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 11:54:12 -0400
+Received: from esa5.hgst.iphmx.com (esa5.hgst.iphmx.com [216.71.153.144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0550CB7
+        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 08:54:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1695916451; x=1727452451;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=OwYxfNMAvLPySsToAAeJAxdm8BOe3vV6MO0rHehrKNc=;
+  b=pUb+z6tNDWnkkb5Npu2swOIAHXGhfdJVKNAnKdOWnXiqsgdX8EUchQhl
+   BLrMlZrYG/NwxFK7LeL2UsWytBGqXkj/u8glCT1/z/pSlWT7w32rtyDlh
+   klXmw6rhxiiq7QgJ9nj2HduyUr7evx6STlT7Lhma74LfRgeIgTpTSxzLq
+   OAv/0AuBMEMBtkhv8BCEm4NGeBoXc+uee9zkrUUpGDoPWIUJGx5QdaBBY
+   KWHTzD9hIMv9SlxHn4R0nyXJqDzv2J6hI+eiqsdi+xfFrSt0pxT1uN7Cb
+   xkFUd4K0fXDIHvL0TnOnibeFZzd0jCIfUQMsWOuEieP6ZvawQg7ebb9oW
+   g==;
+X-CSE-ConnectionGUID: 9RfvNnQXTZyZtvei1Pb8fg==
+X-CSE-MsgGUID: a4y9wr/fS0q5N8N16csgrw==
+X-IronPort-AV: E=Sophos;i="6.03,184,1694707200"; 
+   d="scan'208";a="245195332"
+Received: from uls-op-cesaip02.wdc.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
+  by ob1.hgst.iphmx.com with ESMTP; 28 Sep 2023 23:54:11 +0800
+IronPort-SDR: JfwaXUWMf0zEXDCHtiKflw3PyYSjfw0yjwQMbS/v9KjcfdBhbd/SPCWmO5RamzyfYLEcW1ECBQ
+ v3NsFwsOJrPWqoyvSUAQJ2RH5vnyP0NCwbelW9IaHIsNdekzK8vIBWv4jXMzUr4f5lhVHuh2oF
+ GSn6nxLY4jOcE/DMXU+Qr4vVKwIBlCtMQzymWBNninYoV8AyfavR9JAMKcbET5O0nQ1VaJn6lx
+ IHUo9vLcZ3CSD19cAQaHDOrx8Thzesl03VyozLYMHuRWEuMlNOAVsz6z5eisnVbPBmgW1tMIeX
+ Iq8=
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Sep 2023 08:00:55 -0700
+IronPort-SDR: 10PoteundSU0yUVb/Xq1x0fzuEVNNg+Hpj9Xva3VomWDmr17LNO4rHV5G8ybGiPXR4UMbkXefN
+ uwKF1YSq1XGSL9XGmIDBLyZiBUO33wDIymNd5f+o4VMOGDYoTHr1O1N0VPKMDf3EMe6dPE5Vqz
+ TFQ1zfKBTfgFQaWKaWgIplunXpkNKyajZjxNZz3g1INiMWKUIiJw3yFo1pEdC3jXFWp15L8hal
+ PXlJUdBTmFK62Wy0YElXLj7Ub2S/Xyk0AAxx1eTdEet8dp3Wu9HfcWM1QB6sWKkKTgwvv+mG+e
+ ARE=
+WDCIronportException: Internal
+Received: from unknown (HELO x1-carbon.wdc.com) ([10.225.163.111])
+  by uls-op-cesaip02.wdc.com with ESMTP; 28 Sep 2023 08:54:07 -0700
+From:   Niklas Cassel <niklas.cassel@wdc.com>
+To:     stable@vger.kernel.org
+Cc:     Niklas Cassel <niklas.cassel@wdc.com>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 4.14.y] ata: libata: disallow dev-initiated LPM transitions to unsupported states
+Date:   Thu, 28 Sep 2023 17:53:57 +0200
+Message-ID: <20230928155357.9807-1-niklas.cassel@wdc.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <2023092002-mobster-onset-2af9@gregkh>
+References: <2023092002-mobster-onset-2af9@gregkh>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-KVM: SVM: for the shortlog scope
+In AHCI 1.3.1, the register description for CAP.SSC:
+"When cleared to ‘0’, software must not allow the HBA to initiate
+transitions to the Slumber state via agressive link power management nor
+the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+must be programmed to disallow device initiated Slumber requests."
 
-And my preference is to have the shortlog explain the code change and leave the
-CVE reference to a line in the changelog.  CVE numbers are meaningless without
-context, e.g. listing the CVE isn't going to be at all helpful for future readers
-that look at shortlogs.
+In AHCI 1.3.1, the register description for CAP.PSC:
+"When cleared to ‘0’, software must not allow the HBA to initiate
+transitions to the Partial state via agressive link power management nor
+the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+must be programmed to disallow device initiated Partial requests."
 
-E.g.
+Ensure that we always set the corresponding bits in PxSCTL.IPM, such that
+a device is not allowed to initiate transitions to power states which are
+unsupported by the HBA.
 
-  KVM: SVM: Always refresh x2APIC MSR intercepts when x2AVIC is enabled
+DevSleep is always initiated by the HBA, however, for completeness, set the
+corresponding bit in PxSCTL.IPM such that agressive link power management
+cannot transition to DevSleep if DevSleep is not supported.
 
-or 
+sata_link_scr_lpm() is used by libahci, ata_piix and libata-pmp.
+However, only libahci has the ability to read the CAP/CAP2 register to see
+if these features are supported. Therefore, in order to not introduce any
+regressions on ata_piix or libata-pmp, create flags that indicate that the
+respective feature is NOT supported. This way, the behavior for ata_piix
+and libata-pmp should remain unchanged.
 
-  KVM: SVM: Update MSR intercepts for x2AVIC when guest disables x2APIC
+This change is based on a patch originally submitted by Runa Guo-oc.
 
-On Thu, Sep 28, 2023, Maxim Levitsky wrote:
-> The following problem exists since the x2avic was enabled in the KVM:
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Fixes: 1152b2617a6e ("libata: implement sata_link_scr_lpm() and make ata_dev_set_feature() global")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+(cherry picked from commit 24e0e61db3cb86a66824531989f1df80e0939f26)
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+---
+ drivers/ata/ahci.c        |  9 +++++++++
+ drivers/ata/libata-core.c | 19 ++++++++++++++++---
+ include/linux/libata.h    |  4 ++++
+ 3 files changed, 29 insertions(+), 3 deletions(-)
 
-Just "x2avic"
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 0905c07b8c7e..abb3dd048556 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1777,6 +1777,15 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	else
+ 		dev_info(&pdev->dev, "SSS flag set, parallel bus scan disabled\n");
+ 
++	if (!(hpriv->cap & HOST_CAP_PART))
++		host->flags |= ATA_HOST_NO_PART;
++
++	if (!(hpriv->cap & HOST_CAP_SSC))
++		host->flags |= ATA_HOST_NO_SSC;
++
++	if (!(hpriv->cap2 & HOST_CAP2_SDS))
++		host->flags |= ATA_HOST_NO_DEVSLP;
++
+ 	if (pi.flags & ATA_FLAG_EM)
+ 		ahci_reset_em(host);
+ 
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 08dc37a62f5a..69002ad15500 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -3993,10 +3993,23 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
+ 		scontrol |= (0x6 << 8);
+ 		break;
+ 	case ATA_LPM_MIN_POWER:
+-		if (ata_link_nr_enabled(link) > 0)
+-			/* no restrictions on LPM transitions */
++		if (ata_link_nr_enabled(link) > 0) {
++			/* assume no restrictions on LPM transitions */
+ 			scontrol &= ~(0x7 << 8);
+-		else {
++
++			/*
++			 * If the controller does not support partial, slumber,
++			 * or devsleep, then disallow these transitions.
++			 */
++			if (link->ap->host->flags & ATA_HOST_NO_PART)
++				scontrol |= (0x1 << 8);
++
++			if (link->ap->host->flags & ATA_HOST_NO_SSC)
++				scontrol |= (0x2 << 8);
++
++			if (link->ap->host->flags & ATA_HOST_NO_DEVSLP)
++				scontrol |= (0x4 << 8);
++		} else {
+ 			/* empty port, power off */
+ 			scontrol &= ~0xf;
+ 			scontrol |= (0x1 << 2);
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index 0e9f8fd37eb9..ab2c5d6cabed 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -279,6 +279,10 @@ enum {
+ 	ATA_HOST_PARALLEL_SCAN	= (1 << 2),	/* Ports on this host can be scanned in parallel */
+ 	ATA_HOST_IGNORE_ATA	= (1 << 3),	/* Ignore ATA devices on this host. */
+ 
++	ATA_HOST_NO_PART	= (1 << 4), /* Host does not support partial */
++	ATA_HOST_NO_SSC		= (1 << 5), /* Host does not support slumber */
++	ATA_HOST_NO_DEVSLP	= (1 << 6), /* Host does not support devslp */
++
+ 	/* bits 24:31 of host->flags are reserved for LLD specific flags */
+ 
+ 	/* various lengths of time */
+-- 
+2.41.0
 
-> svm_set_x2apic_msr_interception is called to enable the interception of
-
-() after functions
-
-> the x2apic msrs.
-> 
-> In particular it is called at the moment the guest resets its apic.
-> 
-> Assuming that the guest's apic was in x2apic mode, the reset will bring
-> it back to the xapic mode.
-> 
-> The svm_set_x2apic_msr_interception however has an erroneous check for
-> '!apic_x2apic_mode()' which prevents it from doing anything in this case.
-> 
-> As a result of this, all x2apic msrs are left unintercepted, and that
-> exposes the bare metal x2apic (if enabled) to the guest.
-> Oops.
-> 
-> Remove the erroneous '!apic_x2apic_mode()' check to fix that.
-> 
-> Cc: stable@vger.kernel.org
-
-Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
-
-> Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-> ---
->  arch/x86/kvm/svm/svm.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> index 9507df93f410a63..acdd0b89e4715a3 100644
-> --- a/arch/x86/kvm/svm/svm.c
-> +++ b/arch/x86/kvm/svm/svm.c
-> @@ -913,8 +913,7 @@ void svm_set_x2apic_msr_interception(struct vcpu_svm *svm, bool intercept)
->  	if (intercept == svm->x2avic_msrs_intercepted)
->  		return;
->  
-> -	if (!x2avic_enabled ||
-> -	    !apic_x2apic_mode(svm->vcpu.arch.apic))
-> +	if (!x2avic_enabled)
->  		return;
->  
->  	for (i = 0; i < MAX_DIRECT_ACCESS_MSRS; i++) {
-> -- 
-> 2.26.3
-> 
