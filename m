@@ -2,91 +2,275 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C03787B1375
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 09:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 907E67B149E
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 09:20:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230316AbjI1HAU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 03:00:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55918 "EHLO
+        id S230316AbjI1HUE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 03:20:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230293AbjI1HAT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 03:00:19 -0400
-Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D60E6B7;
-        Thu, 28 Sep 2023 00:00:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1695884404;
-        bh=SiszJ3AInp3rrBHb2XuUaqcNBc77i/EMr6oPxAb1mLQ=;
-        h=From:To:Cc:Subject:Date;
-        b=m4N4MDux7v8DsHD1TjAz2x+u1B8D/h7p2UR4UnNms63zAd0EcpB381tPXhGpyeOv1
-         nyFywJaTL7RhH1Hh4Q2jc2jnMRDlZe3SNbc9sgs8y96mvProP9qmd2B2LPtPro23FT
-         Ze71HQa9in2zbVb40Rf6EsEay7gQ9RExYO1rO9bM=
-Received: from hygon4.hygon.cn ([175.152.51.41])
-        by newxmesmtplogicsvrszc2-1.qq.com (NewEsmtp) with SMTP
-        id ED2B607C; Thu, 28 Sep 2023 14:59:18 +0800
-X-QQ-mid: xmsmtpt1695884358t2s9z7rzc
-Message-ID: <tencent_4A14812842F104E93AA722EC939483CEFF05@qq.com>
-X-QQ-XMAILINFO: NT+xk6rB66UcYYsfhhQx3EfAgqLG6odk2aekW7AXMue/nhJp6JbDGwd5TY9dkW
-         OQ7aLE5CN5/N72w3WZcav6MqKgB4AxXpW4zXfZQQI8PBcfC1Qi4jNjOgmAMHZnr040Tg84Lk5FaA
-         YFrfh2PhZPP1yFgyJANO49boZGejJljubERD3lWR5KA2Q3FTf65vO7NmgU5xlszbrZ/jzfp8TTVk
-         w0M5EGpHoFB+mnD6N1VMAFWrKpmqcqc8HpqSVD/gy5OS85RXUEQ4lJkhVpzIVOflLgNo5J0bULEK
-         MX5wChYnJqq3Ww7pkAk0j9FQudpkbjblKgXL3vlG2DKKC7frulfYxyNDkdf+tL6bG12CoMBGOXQF
-         Mouh+1K1qOCxv427F5jkx9Ps1COywEnkKtnUTtygRuiCKx/Ossyg5kNlwEhE1h5eEoL3PPuRCXfz
-         krW1a4Orx/MwAq03aqSxobfpHfLjNj7XOUxROayTcd2SR1Ci7HQ8zDCEL4FmCeilja3lWbHgCVMW
-         80rClNv1dXCXPEaxHwRA6axUoanwPsG2miW4nKicbpbMrJMrH7xV7lUMss2ZP3CvvEhfLf4Q6MFF
-         9w+xfMWmxNScMih2yjZcu1OMeALZbT/I9wJJjlWWOTi1Ys0+PEpjDW/Dji7PY2EtN6N19pvDP6kk
-         116d8PRPj+DJv8Cy+4bZC93wnkNu1N6y9G9BZ/hyW9AFQDMTnCSfVI+w1/zbt9BaKePkLjtqp37m
-         +CQ3fzkKJX2KSJCiPuh0ZCJIPMgknzj9Sd15ML379J9sI8ZkTYpmcuxGIv8tLG8ULrrTfhbPFqFX
-         j+VGl7CPi8p8vTR1UIyedwMwmK6pTbUiT8IvDd1cuiRwbHvxtDfALGsrrA1fyASne5t99+qRZbtX
-         csUsjav485D4q/VlNqKIZF62veTI7hM6Wg3cB9NLC3Xzy87FH5reeOOWeIE3N+5K1MrUbZ2qqos+
-         9TMGZYQ9m1yXyBdyOk6JjzBApvIoY7Q1yjRFK3Sj+JnqhPWtaXmg==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-From:   Pu Wen <pu_wen@foxmail.com>
-To:     bp@alien8.de, mingo@redhat.com, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, peterz@infradead.org,
-        kim.phillips@amd.com
-Cc:     linux-kernel@vger.kernel.org, Pu Wen <puwen@hygon.cn>,
-        stable@vger.kernel.org
-Subject: [PATCH] x86/srso: Add SRSO mitigation for Hygon processors
-Date:   Thu, 28 Sep 2023 14:59:16 +0800
-X-OQ-MSGID: <20230928065916.133119-1-pu_wen@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230308AbjI1HUE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 03:20:04 -0400
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77C6297;
+        Thu, 28 Sep 2023 00:20:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+        s=default2211; h=MIME-Version:Content-Transfer-Encoding:Content-Type:
+        References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=RBCM5H0kOHgHkWWp/QdhnvvSVmSAf3h/ZRPz0Fbpw4U=; b=GGoQrpz0kz7nIsARQIag1+/XnV
+        uwam5cFCLKdEFPwY1YSplezDFuNz+JGy8ZVNIat/WgpS8HVZ9Pfdyf1bMybDmVFTMPTsJ5OEYw0SN
+        mYo3pbmeq+syYLacdnOMe6UQRfCwmWIcA4G5zzKtaA8O5e7bjqRA/PsaqN5aJ6kKnWj9czTauxBYw
+        ugnaApyRaIICxC+bom3ZXXxjFMf7e9ZNLMe96ibgGt8HP6E4+rHmIY+YhYz1Y5S4gAjYMgwVM94Z9
+        2EQPaIVGPrci4EadROHxqMNcYPJR+ZQ+cpG+pdcAu1RE0rQ1Sh65VhLiacv2q/ufKxhCXCtbLfX/m
+        cHJFi5uA==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+        by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <martin@geanix.com>)
+        id 1qllJV-000IR2-Qg; Thu, 28 Sep 2023 09:19:57 +0200
+Received: from [185.17.218.86] (helo=[192.168.64.151])
+        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <martin@geanix.com>)
+        id 1qllJV-000QYk-4j; Thu, 28 Sep 2023 09:19:57 +0200
+Message-ID: <b8de26e243afa3e5920455a4d8e5a3451a06d074.camel@geanix.com>
+Subject: Re: [PATCH v2] mtd: rawnand: Ensure the nand chip supports cached
+ reads
+From:   Martin =?ISO-8859-1?Q?Hundeb=F8ll?= <martin@geanix.com>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Rouven Czerwinski <r.czerwinski@pengutronix.de>,
+        =?ISO-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>,
+        Alexander Shiyan <eagle.alexander923@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        JaimeLiao <jaimeliao.tw@gmail.com>, kernel@pengutronix.de,
+        stable@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Sean =?ISO-8859-1?Q?Nyekj=E6r?= <sean@geanix.com>,
+        Domenico Punzo <dpunzo@micron.com>,
+        Bean Huo <beanhuo@micron.com>
+Date:   Thu, 28 Sep 2023 09:19:56 +0200
+In-Reply-To: <20230927170516.2604e8f2@xps-13>
+References: <20230922141717.35977-1-r.czerwinski@pengutronix.de>
+         <e911f5d9c7def8c80904a17ad3924ecba6625998.camel@geanix.com>
+         <20230926132725.5d570e1b@xps-13> <20230927170516.2604e8f2@xps-13>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_BLOCKED,RDNS_DYNAMIC,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Authenticated-Sender: martin@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27044/Wed Sep 27 09:43:59 2023)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pu Wen <puwen@hygon.cn>
+Hi Miquel,
 
-Add mitigation for the speculative return stack overflow vulnerability
-which exists on Hygon processors.
+On Wed, 2023-09-27 at 17:05 +0200, Miquel Raynal wrote:
+> Hi Martin,
+>=20
+> miquel.raynal@bootlin.com=C2=A0wrote on Tue, 26 Sep 2023 13:27:25 +0200:
+>=20
+> > Hi Martin,
+> >=20
+> > + Bean and Domenico, there is a question for you below.
+> >=20
+> > martin@geanix.com=C2=A0wrote on Mon, 25 Sep 2023 13:01:06 +0200:
+> >=20
+> > > Hi Rouven,
+> > >=20
+> > > On Fri, 2023-09-22 at 16:17 +0200, Rouven Czerwinski wrote:=C2=A0=20
+> > > > Both the JEDEC and ONFI specification say that read cache
+> > > > sequential
+> > > > support is an optional command. This means that we not only
+> > > > need to
+> > > > check whether the individual controller supports the command,
+> > > > we also
+> > > > need to check the parameter pages for both ONFI and JEDEC NAND
+> > > > flashes
+> > > > before enabling sequential cache reads.
+> > > >=20
+> > > > This fixes support for NAND flashes which don't support
+> > > > enabling
+> > > > cache
+> > > > reads, i.e. Samsung K9F4G08U0F or Toshiba TC58NVG0S3HTA00.
+> > > >=20
+> > > > Sequential cache reads are now only available for ONFI and
+> > > > JEDEC
+> > > > devices, if individual vendors implement this, it needs to be
+> > > > enabled
+> > > > per vendor.
+> > > >=20
+> > > > Tested on i.MX6Q with a Samsung NAND flash chip that doesn't
+> > > > support
+> > > > sequential reads.
+> > > >=20
+> > > > Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential
+> > > > cache
+> > > > reads")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Rouven Czerwinski
+> > > > <r.czerwinski@pengutronix.de>=C2=A0=C2=A0=C2=A0=20
+> > >=20
+> > > Thanks for this. It works as expected for my Toshiba chip,
+> > > obviously
+> > > because it doesn't use ONFI or JEDEC.
+> > >=20
+> > > Unfortunately, my Micron chip does use ONFI, and it sets the
+> > > cached-
+> > > read-supported bit. It then fails when reading afterwords:
+>=20
+> I might have over reacted regarding my findings in Micron's
+> datasheet,
+> I need to know if you use the on-die ECC engine or if you use the one
+> on the controller. In the former case the failure is expected. In the
+> latter case, it's not.
 
-Signed-off-by: Pu Wen <puwen@hygon.cn>
-Cc: <stable@vger.kernel.org>
----
- arch/x86/kernel/cpu/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I use the default, which seems to be the controller engine?
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 382d4e6b848d..4e5ffc8b0e46 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1303,7 +1303,7 @@ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_AMD(0x15, RETBLEED),
- 	VULNBL_AMD(0x16, RETBLEED),
- 	VULNBL_AMD(0x17, RETBLEED | SMT_RSB | SRSO),
--	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB),
-+	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB | SRSO),
- 	VULNBL_AMD(0x19, SRSO),
- 	{}
- };
--- 
-2.23.0
+// Martin
+
+> Thanks,
+> Miqu=C3=A8l
+>=20
+> > > kernel: ONFI_OPT_CMD_READ_CACHE # debug added by me
+> > > kernel: nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xdc
+> > > kernel: nand: Micron MT29F4G08ABAFAWP
+> > > kernel: nand: 512 MiB, SLC, erase size: 256 KiB, page size: 4096,
+> > > OOB
+> > > size: 256
+> > > kernel: nand: continued read supported # debug added by me
+> > > kernel: Bad block table found at page 131008, version 0x01
+> > > kernel: Bad block table found at page 130944, version 0x01
+> > > kernel: 2 fixed-partitions partitions found on MTD device gpmi-
+> > > nand
+> > > kernel: Creating 2 MTD partitions on "gpmi-nand":
+> > > kernel: 0x000000000000-0x000000800000 : "boot"
+> > > kernel: 0x000000800000-0x000020000000 : "ubi"
+> > > kernel: gpmi-nand 1806000.nand-controller: driver registered.
+> > >=20
+> > > ...
+> > >=20
+> > > kernel: ubi0: default fastmap pool size: 100
+> > > kernel: ubi0: default fastmap WL pool size: 50
+> > > kernel: ubi0: attaching mtd1
+> > > kernel: ubi0: scanning is finished
+> > > kernel: ubi0: attached mtd1 (name "ubi", size 504 MiB)
+> > > kernel: ubi0: PEB size: 262144 bytes (256 KiB), LEB size: 253952
+> > > bytes
+> > > kernel: ubi0: min./max. I/O unit sizes: 4096/4096, sub-page size
+> > > 4096
+> > > kernel: ubi0: VID header offset: 4096 (aligned 4096), data
+> > > offset: 8192
+> > > kernel: ubi0: good PEBs: 2012, bad PEBs: 4, corrupted PEBs: 0
+> > > kernel: ubi0: user volume: 9, internal volumes: 1, max. volumes
+> > > count:
+> > > 128
+> > > kernel: ubi0: max/mean erase counter: 4/2, WL threshold: 4096,
+> > > image
+> > > sequence number: 1431497221
+> > > kernel: ubi0: available PEBs: 12, total reserved PEBs: 2000, PEBs
+> > > reserved for bad PEB handling: 36
+> > > kernel: block ubiblock0_4: created from ubi0:4(rootfs.a)
+> > > kernel: ubi0: background thread "ubi_bgt0d" started, PID 36
+> > > kernel: block ubiblock0_6: created from ubi0:6(appfs.a)
+> > > kernel: block ubiblock0_7: created from ubi0:7(appfs.b)
+> > >=20
+> > > ...
+> > >=20
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b6d15c:ed1]
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b6f15e:125]
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b6d15c:1dae]
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b6d15c:ed1]
+> > > (d-sysctl)[55]: systemd-sysctl.service: Failed to set up
+> > > credentials:
+> > > Protocol error
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b73162:14f0]
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b6f15e:838]
+> > > systemd[1]: Starting Create Static Device Nodes in /dev...
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b6d15c:ed1]
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b6d15c:ed1]
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b6f15e:838]
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b6d15c:1dae]
+> > > kernel: SQUASHFS error: Unable to read directory block
+> > > [4b6f15e:125]
+> > >=20
+> > > I've briefly tried adding some error info the the squashfs error
+> > > messages, but it looks like it's getting bad data. I.e. one
+> > > failure a
+> > > sanity check of `dir_count`:
+> > >=20
+> > > if (dir_count > SQUASHFS_DIR_COUNT)
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0goto data_error;
+> > >=20
+> > > It fails with `dir_count` being 1952803684 ...
+> > >=20
+> > > So is this a case of wrong/bad timings?
+> > >=20
+> > > Miquel:
+> > > I can tell from the code, that the READCACHESEQ operations are
+> > > followed
+> > > by NAND_OP_WAIT_RDY(tR_max, tRR_min). From the Micron
+> > > datasheet[0], it
+> > > should be NAND_OP_WAIT_RDY(tRCBSY_max, tRR_min), where tRCBSY is
+> > > defined to be between 3 and 25 =C2=B5s.=C2=A0=20
+> >=20
+> > I found a place in the ONFI spec states taht tRCBSY_max should be
+> > between 3 and tR_max, so indeed we should be fine on that regard.
+> >=20
+> > However, I asked myself whether we could have issues when crossing
+> > boundaries. Block boundaries should be fine, however your device
+> > does
+> > not support crossing plane boundaries, as bit 4 ("read cache
+> > supported") of byte 114 ("Multi-plane operation attributes") in the
+> > memory organization block of the parameter page is not set (the
+> > value
+> > of the byte should be 0x0E if I get it right.
+> >=20
+> > Anyway, our main issue here does not seem related to the
+> > boundaries. It
+> > does not seem to be explicitly marked anywhere else but on the
+> > front
+> > page:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Advanced command set
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=E2=80=93 Program page =
+cache mode (4)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=E2=80=93 Read page cac=
+he mode (4)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=E2=80=93 Two-plane com=
+mands (4)
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0(4) These commands supp=
+orted only with ECC disabled.
+> >=20
+> > Read page cache mode without ECC makes the feature pretty useless
+> > IMHO.
+> >=20
+> > Bean, Domenico, how do we know which devices allow ECC correction
+> > during sequential page reads and which don't? Is there a (vendor?)
+> > bit
+> > somewhere in the parameter page for that? Do we have any way to
+> > know
+> > besides a list of devices allowing that? If so, can you provide one
+> > with a few IDs?=20
+> >=20
+> > Thanks,
+> > Miqu=C3=A8l
 
