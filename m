@@ -2,78 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EF957B26BB
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 22:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D50047B272E
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 23:11:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjI1Ult (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 16:41:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37594 "EHLO
+        id S230325AbjI1VLQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 17:11:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230251AbjI1Uls (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 16:41:48 -0400
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AF0F19C
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 13:41:47 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-79fa7e33573so381857739f.0
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 13:41:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695933706; x=1696538506; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jIWceKcbN6JDqokRfv7C9OS6f1Cw+cC7U+PN8WoJO5c=;
-        b=hipZ3NXiBPxaw5zNmWgoL01S518ZEt3t82wpW23zRmjXeHJlWaDdawnX8o/tfyPnbS
-         F/JqdRx1NlDBeNcKPy3dreAEkRRIBEi9RtC16EQg30traAVGOiR+1O6O3GVIkVzgq5NI
-         +eRy0vX8Gh8soi1TshUUi1WOCn6GTjVq1ixObcgBk392FqfVyKVqdpV5SyvHeoS2LYR0
-         tDU5ORbVDHAn+kSEbDQSQrxf+MOSHsuR746Oz0msGhm0zaLVIwr4t8vE43SdZwQj0/9v
-         Z3XNbNaOL3dw9Flg7e6b4ETXQeC3AZTHY/qMX8dv6ji0ebD4kRFYXQ6+2BKOOS7cGMFW
-         SY1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695933706; x=1696538506;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jIWceKcbN6JDqokRfv7C9OS6f1Cw+cC7U+PN8WoJO5c=;
-        b=Aq9bKbJBCjzL88E7w7pexWalv771xtEvozhdoLWNWvBH4cpbOSNbJsgkKxmTyZigO8
-         q4eQa42bVKE1ibh2m0cwPUePmLcukc0faZtxw5BDSUVjM4zMHlCJfeCc6kxIR4PM5Hm/
-         h7kkFbf7rBJ6s/7Ze4gKlkoAKQn2QujJbcX/MvITaqYlZ1EP91/j67SJcMuYvx7RTi4o
-         f0hRd6Fd3sfRp8pER1VtGuPqlennqa+sZ/C2TIXjaoh/XPOdPIXP2y78Y7opxzMUoGPT
-         G0eUjH1FX0+eEWwsV8My+ZrTQ9fP13BcByDcJQKU+r0eHhZkFjJ7LoJdCoZgvhUzLuke
-         EmOQ==
-X-Gm-Message-State: AOJu0YxTS8GRC9cVGITJyNPGB4+n1law/7hFzt0cNznC6g4cgBKVg5XE
-        ZqyqH8yMFsUU2i5W8S3hBZID2eqhnDUGvjiKWzakT4cTr1Y=
-X-Google-Smtp-Source: AGHT+IH0fYCwRE+aruMjDfKsDd94bfpdrwhHQK6RT+lMpXj4W+IRrM4KFxaRReAHkHrOXkCYEDcvCoZjpkIJqyVnuBo=
-X-Received: by 2002:a5d:9ed9:0:b0:783:550e:33c0 with SMTP id
- a25-20020a5d9ed9000000b00783550e33c0mr2552736ioe.7.1695933706098; Thu, 28 Sep
- 2023 13:41:46 -0700 (PDT)
+        with ESMTP id S232052AbjI1VLP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 17:11:15 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55A101A2;
+        Thu, 28 Sep 2023 14:11:12 -0700 (PDT)
+Date:   Thu, 28 Sep 2023 21:11:10 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1695935470;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=oe1hnQ8O830GEjIaYbkhYp049qinjisAloma8VEM6yo=;
+        b=n1L6U/qBJfah3tECd9qQQtOPJ+fbVsqTdcwU2zV/XnQ7PJhm1HpvstxL/bdNGrvU3LpLCp
+        0Z7j3OTQWQA+ZdcNE9qlqci2n1BvGRz7c9kPeACQ5F4G+WUdTEqJYKlkLlwIVORZ8VFaUV
+        j3NZmYknkZI/JpUmrtKTMeEefd/fAGtdv8s9u+IYGY4+U3ZwDJ2RDXZx71kO25ykOTlacS
+        e5sE7ZQ5roOsoKMIIVU1ZqoEUeg2lAK+t+nDL2Jyb63UYQ88HPbCv02sH2Ej/2f6e2S6FB
+        54thRvmJ9AmxP6z36/UMP/S8fjHY2mhqHukHyprqtLLKBfFuPE1kkZEECfUh3w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1695935470;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=oe1hnQ8O830GEjIaYbkhYp049qinjisAloma8VEM6yo=;
+        b=sI/kCc2n9pPftBQJdDM20sOsXVUVhVgFlQ3QPrc5vTCLEJTzlwu5PNMezk5JTeugJIViH6
+        bH12Y2/z35QR52Dw==
+From:   "tip-bot2 for Joel Fernandes (Google)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/urgent] sched/rt: Fix live lock between
+ select_fallback_rq() and RT push
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230923011409.3522762-1-joel@joelfernandes.org>
+References: <20230923011409.3522762-1-joel@joelfernandes.org>
 MIME-Version: 1.0
-From:   Namhyung Kim <namhyung@gmail.com>
-Date:   Thu, 28 Sep 2023 13:41:34 -0700
-Message-ID: <CAM9d7cggeTaXR5VBD1BoPr9TLPoE7s9YSS2y0w-PGzTMAGsFWA@mail.gmail.com>
-Subject: 6.5-stable backport request
-To:     stable@vger.kernel.org
-Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Akemi Yagi <toracat@elrepo.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <169593547011.27769.15927547566549866294.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
+The following commit has been merged into the sched/urgent branch of tip:
 
-Please queue up this commit for 6.5-stable:
+Commit-ID:     fc09027786c900368de98d03d40af058bcb01ad9
+Gitweb:        https://git.kernel.org/tip/fc09027786c900368de98d03d40af058bcb01ad9
+Author:        Joel Fernandes (Google) <joel@joelfernandes.org>
+AuthorDate:    Sat, 23 Sep 2023 01:14:08 
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 28 Sep 2023 22:58:13 +02:00
 
- * commit: 88cc47e24597971b05b6e94c28a2fc81d2a8d61a
-   ("perf build: Define YYNOMEM as YYNOABORT for bison < 3.81")
- * Author: Arnaldo Carvalho de Melo <acme@redhat.com>
+sched/rt: Fix live lock between select_fallback_rq() and RT push
 
-The recent change v6.5 series added YYNOMEM changes
-in the perf tool and it caused a build failure on machines with
-older bison.  The above commit should be applied to fix it.
+During RCU-boost testing with the TREE03 rcutorture config, I found that
+after a few hours, the machine locks up.
 
-Thanks,
-Namhyung
+On tracing, I found that there is a live lock happening between 2 CPUs.
+One CPU has an RT task running, while another CPU is being offlined
+which also has an RT task running.  During this offlining, all threads
+are migrated. The migration thread is repeatedly scheduled to migrate
+actively running tasks on the CPU being offlined. This results in a live
+lock because select_fallback_rq() keeps picking the CPU that an RT task
+is already running on only to get pushed back to the CPU being offlined.
+
+It is anyway pointless to pick CPUs for pushing tasks to if they are
+being offlined only to get migrated away to somewhere else. This could
+also add unwanted latency to this task.
+
+Fix these issues by not selecting CPUs in RT if they are not 'active'
+for scheduling, using the cpu_active_mask. Other parts in core.c already
+use cpu_active_mask to prevent tasks from being put on CPUs going
+offline.
+
+With this fix I ran the tests for days and could not reproduce the
+hang. Without the patch, I hit it in a few hours.
+
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230923011409.3522762-1-joel@joelfernandes.org
+---
+ kernel/sched/cpupri.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/kernel/sched/cpupri.c b/kernel/sched/cpupri.c
+index a286e72..42c40cf 100644
+--- a/kernel/sched/cpupri.c
++++ b/kernel/sched/cpupri.c
+@@ -101,6 +101,7 @@ static inline int __cpupri_find(struct cpupri *cp, struct task_struct *p,
+ 
+ 	if (lowest_mask) {
+ 		cpumask_and(lowest_mask, &p->cpus_mask, vec->mask);
++		cpumask_and(lowest_mask, lowest_mask, cpu_active_mask);
+ 
+ 		/*
+ 		 * We have to ensure that we have at least one bit
