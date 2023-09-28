@@ -2,295 +2,196 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC5167B2369
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 19:10:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98A467B2389
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 19:17:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231953AbjI1RKS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 13:10:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47778 "EHLO
+        id S231617AbjI1RRE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 13:17:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231701AbjI1RKK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 13:10:10 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFCDA1BB;
-        Thu, 28 Sep 2023 10:10:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1695921006; x=1727457006;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=3LiT6oMmo4gaYdiHui064T/ioR1Db23XGnHHoTcquXY=;
-  b=BUBn7c+xhjrv7xGnYdeIgEZnGWvbN0XnXTqFNsZe78imLXgsK72c5MhP
-   x0ztFUZ/1QhmJDFy6+DkIfE4HTDO4HC3P5sstWQCBF8SEeINtzH6Rn31q
-   Mq1zhDxCRMC24tEK2PaCjIZHmr/rWAKwr6g+bL13DH2MaBinzYZ30w7km
-   PAcyOz9hXAsaEpIiyVOQdRL07XE0mpIqJ+TrP9Jh9PO+BRn7FNwdWnuXP
-   W3734DYtGtX+Y60/fYT3lxtu8iciWdOLjGOxZBueOIqC7jtrS2gMWMfjs
-   G83WWnzEKYckl4h8KD5BbuyubtOHgq5SIIsnRmF8EG0I+ohos/TXEcSYU
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="379394957"
-X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; 
-   d="scan'208";a="379394957"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 10:10:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="873342388"
-X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; 
-   d="scan'208";a="873342388"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orsmga004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 28 Sep 2023 10:10:06 -0700
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Thu, 28 Sep 2023 10:10:05 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Thu, 28 Sep 2023 10:10:05 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Thu, 28 Sep 2023 10:10:05 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.101)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Thu, 28 Sep 2023 10:10:02 -0700
+        with ESMTP id S231653AbjI1RRC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 13:17:02 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E9851A8;
+        Thu, 28 Sep 2023 10:17:00 -0700 (PDT)
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38SGi9Hl011469;
+        Thu, 28 Sep 2023 17:16:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : content-transfer-encoding : content-type :
+ mime-version; s=corp-2023-03-30;
+ bh=8N9bQT4OfARgJz8z2dDRPsDy+ABDtcJbYYwl5l2osV0=;
+ b=HyhqoUlEM4YV1KFprmlJM028Dn4YNPSYFbrk91mUC1zOLwbLulX96NOdcQaJv2FTnIz7
+ gfXdPkTUTg+e7I9kOkLVG7N1yw0HhG/lYTeDVBbeVyNJ0UjmJPHkkIuJ/tzcYrnfYbib
+ NzAj98G31vwQThgxvPXXVAdXfFONL0IYzIxZI9qTkIqKhW7UlH9rm3bHRHZySn4W3NpD
+ Myc8lTYGTAtmxUnxIvLwWIqDvssevI7PY1m6XeGXiRsRSiGWP+0Yn8rqo4ORcjsGlKaq
+ PG9eT39uNIkLxMSSAmDMksCcq12vmA8hZHZ3HRGrmQLieQjcZNAjNizRPAl/lvAiFXTX iQ== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t9pt3w2qq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 28 Sep 2023 17:16:44 +0000
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 38SH0WCt015788;
+        Thu, 28 Sep 2023 17:16:43 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2049.outbound.protection.outlook.com [104.47.66.49])
+        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3t9pffyuuk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 28 Sep 2023 17:16:43 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VlgpZrFUSKBvs6BPB0T6xjpoeO5m9Qx+n1RpR9oOtkmqlWe96m0p0CCUab31eVj1FBJ4imLDiHgwMF//HPA/DC5hZp2bGicncc9h8s13zOVaLdR5fU4EP/mC/w4I2uTf7zDCklpOSDWuDBrxpT5DMdMo2gopfQXDWP15TUtbv9U4QfnUOXSfjGIbe/DVpC6eKPXXhmExMCabji/Wak+sGXR7usYb4S5uKmdUk+xOYDb7NjcEMG0XJGX6A9jMInLnYCFYAjRACmOztao0y8i65ftpo8yAoeYHwzPmET5b2dvHP1ZBVSGwhIVIlZsHee3yCG2D6nyzMieMvJsu8+NCSg==
+ b=nFepxrxV47lmzG51OiN/2br7qp6ozweqAzGui1JRmSrO45b1j1hITGa5HiByED6s1Xp66BlVpIEr1TwUf4ov11TLLJJ5UC5w0IxZfJqwk1eKwrVXSv3y+AzMYOOWBdAQ9VtTwcU4Aw+4L3V9KO/dE/h2wuwx7TUEqa4WlEhr96Tg3EkFOdaqvYGmX0LSTeV5j9zOZLD6xFcJ+IVVY9O604lgvRDYpABdulA4q30wbEh2URtQpYWBnGtDNp/LD3POagbRhEQhOxz7Exj6qVwxd0UsTjs0SZS6PoaISAMquAR4baiRDZeCfTviyyTwZQi9S6vuGwxoXuM9nY1qUfLaCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rdEPNGMmdz0fsFzU0L32ScD3qLH6NZSxJm6MjmkDlHM=;
- b=F9buZzUOnPlkZcY940yRQ/3e8qRAoIsVqxBjY4Iz7VtYhZbrYESiLIKuNbe66TSLS8mbElX8SwXX6xWGUGwKr+XU4xXhFX06Ajm73refUyg2NmHaGcUYfPFQUruthjlpH6oWw9aIUIptBmzqJW+gefBEZy7bPrrckd/sH0eLoC30jEg9YtNh+e2bbOxJ2PW6OZuPScRvAGYDhyctSLkJR0ktwc0WLLRY2WWvByQRwlBTig13D5UXcLxe8BI4lSFa2e9YCERP2sI3Bld0aDkTJFiJ6vNQ81RM5rqQ6bLzkLbDKiMxY37yNJ/BtJshe4m/DQqDD7xCk17h3MCrsAScrA==
+ bh=8N9bQT4OfARgJz8z2dDRPsDy+ABDtcJbYYwl5l2osV0=;
+ b=OC3oZp7KpNh7NA2sXQhXOBptpRX8Ssm54Xzd7hLtIGR/L0hB8lFvzxqSf2SW8MATYiihUtuBwkLokP1NqA/hCiQBQkabARocXucMIXYhpd4bfXVlQBT2UrwhNTNUwPrcO7Eb3ToINvbmRGYx6jARNtU2emakTDsF8CmE381+E3HKNQz10H2V+misDzYOrMF6kP7FGhvdfVYyh0qzRnVVt71STRQQ/xP9RfLxffInTE+lifbekgWtYp2yfdnmwPjG7FH7SEuNEtG9w7Zv49IBeRH0ozbLD0rqiAiG0p9SbrA2HbNvBt95mBK76b9KGezFDHns0vI9mAyW0m3V2PsAyw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com (2603:10b6:a03:4d2::10)
- by BL3PR11MB6508.namprd11.prod.outlook.com (2603:10b6:208:38f::5) with
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8N9bQT4OfARgJz8z2dDRPsDy+ABDtcJbYYwl5l2osV0=;
+ b=d9Bq+XJ0aaXz4/0I5l6c5Ba9fqBOW9Kg4BPN7XrmKAtx2u4uqbwBaI0bl+D2wvGx2qNE/a32+fnb5J8rDQyzgygyTWiG5ISLS+yZDzMnIo7KELcPIG8i4YE+atCiTXcKitOaLv8yDrbGOQzQsfgS38D7p+TkB1sRxbnvZLUQfOM=
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
+ by CH0PR10MB5273.namprd10.prod.outlook.com (2603:10b6:610:db::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.20; Thu, 28 Sep
- 2023 17:10:00 +0000
-Received: from SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::bd70:f215:4a97:c84e]) by SJ2PR11MB7573.namprd11.prod.outlook.com
- ([fe80::bd70:f215:4a97:c84e%6]) with mapi id 15.20.6813.017; Thu, 28 Sep 2023
- 17:10:00 +0000
-Message-ID: <c4a8ca3c-c847-6930-db20-5de34ecd9437@intel.com>
-Date:   Thu, 28 Sep 2023 10:09:58 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/6] selftests/resctrl: Extend signal handler coverage
- to unmount on receiving signal
-Content-Language: en-US
-To:     =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>
-CC:     Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        <linux-kselftest@vger.kernel.org>,
-        =?UTF-8?Q?Maciej_Wiecz=c3=b3r-Retman?= 
-        <maciej.wieczor-retman@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
-        <stable@vger.kernel.org>
-References: <20230915154438.82931-1-ilpo.jarvinen@linux.intel.com>
- <20230915154438.82931-2-ilpo.jarvinen@linux.intel.com>
- <d2d94def-742d-7661-3632-b9f7e4996415@intel.com>
- <19f893e4-45e3-4e8f-c22-13241d5ff467@linux.intel.com>
-From:   Reinette Chatre <reinette.chatre@intel.com>
-In-Reply-To: <19f893e4-45e3-4e8f-c22-13241d5ff467@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.28; Thu, 28 Sep
+ 2023 17:16:40 +0000
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::8979:3e3f:c3e0:8dfa]) by SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::8979:3e3f:c3e0:8dfa%4]) with mapi id 15.20.6813.027; Thu, 28 Sep 2023
+ 17:16:40 +0000
+From:   "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Matthew Wilcox <willy@infradead.org>, stable@vger.kernel.org,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: [PATCH 0/3] Fixes for vma_merge() error path
+Date:   Thu, 28 Sep 2023 13:16:31 -0400
+Message-Id: <20230928171634.2245042-1-Liam.Howlett@oracle.com>
+X-Mailer: git-send-email 2.40.1
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4P223CA0009.NAMP223.PROD.OUTLOOK.COM
- (2603:10b6:303:80::14) To SJ2PR11MB7573.namprd11.prod.outlook.com
- (2603:10b6:a03:4d2::10)
+Content-Type: text/plain
+X-ClientProxiedBy: YT3PR01CA0120.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:85::13) To SN6PR10MB3022.namprd10.prod.outlook.com
+ (2603:10b6:805:d8::25)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB7573:EE_|BL3PR11MB6508:EE_
-X-MS-Office365-Filtering-Correlation-Id: e4727e90-0885-4e4e-ca28-08dbc045bfaf
+X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|CH0PR10MB5273:EE_
+X-MS-Office365-Filtering-Correlation-Id: f17fec8f-08bf-4606-86f9-08dbc046ae40
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: q7AtfMTRIKSbIhwoXUiWDRqJ4vASYdUCPtNiDcLtWh4t+Reu2xqY+74V5oBJa03Cz2uuaBWzAImC4+CiKCmabSTa4vgTQlHWBXkH0b0W3bQPkwD/ui+IVvp5dD1XREw758KCTR3TfRsFESD5ZQPk/xq9Wc7IgNjai6SuMEiV8nQnA16COQSEZf42sDiZftNwN38Iz1bazl+892S7iEjuo8m39uShm5G9Be5T6Fo/YveYbvOrL0U6HYSqULX0HY9WQiYX/hF/HDkaSZZZqh//xFAe5Ha7CQgCL0tkrzhwhVDYih//H1k/22faxCxUDyDr9+1BwiRpcmoHWvPky1XmLR/pvPHIR4hmZqVukKGhm7sgZbaoqvAcNF8TcJmUVqZvJzWoK7Xr5T6HymAbryIs2hOisqVSfPnLrh5TcWJOPAQIXf1UZwVGK38HZKWJUiNr0U9+eYLXFA6PdQ0zRxqNUvnq8tWkOmDVZvL+Ax5SkEG5pPvqqbyg4KWHiZY4uPyhjscUlB5qPGi5BgOT/wbyhPkvqT2p/EhpsYMkWi4Aiq75+hKNVW3HQhp+R5guPHM+ilsAS7ACqe/9/CQpXjg/rcNdb2N4iR6LfZXg5C5lI0zcrlXj7whrj9dxZRk+KLIkNmF7ShR+QkvCi31QW5aERw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB7573.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(396003)(366004)(39860400002)(136003)(346002)(230922051799003)(64100799003)(186009)(451199024)(1800799009)(31686004)(66556008)(66946007)(5660300002)(82960400001)(6486002)(41300700001)(44832011)(38100700002)(66476007)(2906002)(36756003)(83380400001)(8676002)(4326008)(8936002)(6506007)(6512007)(53546011)(66574015)(54906003)(6916009)(478600001)(31696002)(2616005)(316002)(86362001)(26005)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: fGzn1YrNTZ8tp4QbQAoMgcPg7oa+s0eJTwyIvNIlGr/PTG9mXtxj/0GKXsYZNSoAQ9D/0pw2HxXLjXYtqbXDUYcptH9nZT9/XsZ4zqoLtIbSGe4xr1mag6+UM/7oxkBdeyQjVo8qNWwQggk221H8o1CkzE4Lk/xtlMTC0SdkruiBpH1uLLFC0JJ76zbEQ8yQ3xy04QBt15salH6QCtSzrRaVOxJKo4DPdoriPZE1Z6ow7FqAMYwHRPEov9ORcPR4/iiHuwEfnnfkJcnki9gywn77TdPT1IMS9P7yka34mfJa4RPhCwq/N/7k5FuMBueMJf9dxA/H1IQL6lRrgYbY7oPNX1Qw0H5BoZB7x6BqAbyqKUGgO0brpIFggfkF2PAb1GpYGfynmklE/x/kOTSUVIvjpl1+wEmxcAMR0RpXoNqJ2AS5PfMI9G6qyXC5VDrGydAy1JCLYdiWKmkff4yy/TY4cjw9rg0vRZVdFwsh8Wka7yzJ67eV89LGx1nYgMsZ9rxpwe++6Dy7bHGiEJzbvjRw67TkP05CxHnhpG+pOPg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(396003)(366004)(346002)(39860400002)(136003)(230922051799003)(186009)(64100799003)(451199024)(1800799009)(4326008)(5660300002)(107886003)(66556008)(26005)(83380400001)(1076003)(66476007)(8936002)(54906003)(316002)(478600001)(66946007)(2906002)(2616005)(6916009)(966005)(41300700001)(6486002)(6666004)(8676002)(6512007)(7416002)(6506007)(36756003)(38100700002)(86362001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TFBtcnh5d2I5VVVQSUhIZHBReFNiTkdIZHJHdlI4SVplWXZiazJvaDJHaGNP?=
- =?utf-8?B?cmVJbXoyc1NmL3hjWUlxc3hXYWZlY3lVR3VLcnI2bGV3WlA2NmVtQ3V6bnJl?=
- =?utf-8?B?SkU3TFI4M1gwTlBSTGVBNytyVk5Ob292T0NLcWdUVHNBZzNRUVhkSXI0QzlF?=
- =?utf-8?B?MTZDWTVRT1g3VUdwdkV5YUFtY2FlcTNGeU1iRFQ1cXNMcTZaT1lEY2YrYmNY?=
- =?utf-8?B?RXNFR2kybTBmc3ozWFdaMUJSdStDbERkZVJsWll6QzBsU1k0Z05kNjJhanRo?=
- =?utf-8?B?VDlXRHdyOHgxa29WRlUvUi93OXUyREk5eWRick9mZ2ZOMFRRNkw1TGZ3RnFj?=
- =?utf-8?B?UHhnSFF4a0lKTTJwcUk3Z1UybjVsQzNqeGU2ZjgzVGdTRGI1T1g0TzE0aFJZ?=
- =?utf-8?B?NGZUNXBVRDNTdFozamtqUTJvR1pyN2pXZ3c1Z0UveGZJRUxiZFBwcGNEMmhN?=
- =?utf-8?B?RmZiMFg5emNnUlF0L1NkMUw0OTA3c0xjMHhpZmxUYXdFUHRjWm0rUjRFTW5T?=
- =?utf-8?B?UFJMK0J4YllMb09qS1pVcTM5QzFHSkQ5U2ZnSnVHcGx2djlmMW5RK1JMUHNK?=
- =?utf-8?B?L01rMEFPSy9MOHNLRVZ6bnJheE04ZjQ3MEJTejhqYWhoZmhHNlpHT3YwdmtD?=
- =?utf-8?B?YlY0aEc4NmY0Y1REQkJ5bHQ3KzI0cFovSVhFa3lDdjJIeUh3cXhFVnRoZjhp?=
- =?utf-8?B?Qlg1T244UEo1ZUU1b3R4RzFtWU1GdE52b1FWUlY2b3NPWE9ud0dFUG5kYTdp?=
- =?utf-8?B?VnAvZXJEVFBKMnplTUxhOEhvZ216YXg5Nm9YTWZOUTErbzRDL1FaSEJqeUY3?=
- =?utf-8?B?eXNPUGNtcjY2Mm4zRWJvMEErYzJLOW5sWTRYVk9FWE5zcXJvNzFxa0FZbUhk?=
- =?utf-8?B?TmEweDFmd01QWWhHNWVHeFdCQ2hyVDVFR3A5Rk1mQWNiZ1JHUXZucU5PTkFO?=
- =?utf-8?B?S0NEeU1WNWNMeVZLaVhJVXNMNU5IQXZPa0plOUFvOUkwUHd4ZmtBeG43UGwy?=
- =?utf-8?B?TmdYOWFubzN5OU9oVG5CQ1hQb1JoazA4cHhxTU9MUmdDVXU5b053WTUxVWxO?=
- =?utf-8?B?bDVmZE1aZTVoL3V1bzBJZGZqd29PMTZudEFaVWI5azZlMUZnV2w4SVUxR0dl?=
- =?utf-8?B?TmRlQVRyMDViYWc5ZEpWSkZqWlBLcjRwUkRiZ3Nib0owdEo4dHFudUFxcHNu?=
- =?utf-8?B?bnNYSW1ScHlUVWlnbE43MEU5WUpKanF3a3N4WUNsUWhvSVdORXJ3L3lkY1Fk?=
- =?utf-8?B?SWVnQUNvMXVWQ2dhaVY5bmxBcTg2UkxTUEQ2R3NwOEc1YkU3STljYzVPKzI1?=
- =?utf-8?B?S1ppVWVqNU1jeUtaeHRvWE5wY3FhMlFkS0V6aHFxV3EwcERiZDdzMUg5OFZw?=
- =?utf-8?B?bVNucEpDa2twdzBodDdSNDZBYzAyVlRyMm81akZYMGlTdW1aSkIrU3Z3N3J1?=
- =?utf-8?B?Z3U3UkNDQWRHUFNMdmZHaVEzc1BsTEJnL0FpOW9wUGovOGNMaWFLZEZGYWNH?=
- =?utf-8?B?TWFxSUJnUWt1dURRSC8xTDhsYjEzbk84Zk5meWdTQ1pOaExXaElsdlM2cWhW?=
- =?utf-8?B?aE1CWktMbWxVK3NvbTc3bGRwS2dqQ2daajlXSG4xMzQrMlJyQnFhRi9XTm9u?=
- =?utf-8?B?TFpZd3gvM1I4TGx4QjFrVk14SFltdWhlZXkwbE1IL3JjMnhvMUMvTjk1SlFv?=
- =?utf-8?B?eUZDQlBGZ1FlakVnVS82NXNqcENnbDNLWHdaR29pRlNEWFpGdzRTU3hqemsz?=
- =?utf-8?B?Z1p0cTlscUx2MFo1bVFZK2pCcFZTdm0zVEQrYXBMWDVXQkJEOXJjd3F0bm9T?=
- =?utf-8?B?blFJWVJnY0I3bGoyMXFveDNYRDd3Vm8zQkJnSEg5ek80ZHZIVit2Um1FK1Nm?=
- =?utf-8?B?UEFMeVNRc3dOdUNaQUFxRktacDEyUHFKU3dZdGtXMFcwbXNLQU9ZWm0vbCtn?=
- =?utf-8?B?OXRidDBEUnhRSW04eGVncjZnQU1rVlQwYTFPREg4L0pjSG4yRWFjWU1ONXlz?=
- =?utf-8?B?UTZ6aVdzKzhlTHRnYjFiRFJuRng0QVFUTXpjc1IrQ212OGpWNFhzaDIrRi96?=
- =?utf-8?B?cTNiSjlxVzFHNmJtbGJETzRsT1c2UTdkQ1FBMTc5eDVSMGJrakRrenFJdXYv?=
- =?utf-8?B?bWl1NW9IUnlzVy9MNW9sQWszbTVXRXhyZjVFZFNXVVZhb3A5VWphT1g0S1Rn?=
- =?utf-8?B?Q0E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e4727e90-0885-4e4e-ca28-08dbc045bfaf
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7573.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?4Tjlrh97fXfeZDl3dbqXq2+aejpmM/A6TwQ8CMa3VG56DyHVVoT6LTTBSkfq?=
+ =?us-ascii?Q?OQWjn9FGLDhBSKDhK5R6Jdo+uXKH+L0goIezvdfnS+QQNNtJE4SrcEyT0wpS?=
+ =?us-ascii?Q?5hBtG7KjKz9REYXNijiBRGJvSHtC/qoTft4MOEc5mpt7nk4CMTOsBg6Zl0MW?=
+ =?us-ascii?Q?PhJlmcJ3HEWykGszSWdAtlcJa6cZNoIPUzfLgumCvUZhMltU3mF+oMG0STZz?=
+ =?us-ascii?Q?ukKQ2IQkRlpoOD3OcmXaawChk6OH/+kjn3+7ja9qHiEuEpOcYUw2m8uezWTy?=
+ =?us-ascii?Q?mIkHD1qPCeS3IoASs8UnBbI3yON8cHCUC8TNdB5K6m8jMJENxha2k1aVL1RU?=
+ =?us-ascii?Q?vS/FWebJlugDRpkpHrDLxSwZ0T6RiHFmj9d/Lkxxz/ocw9Vp6XUf6S9YQ1Zl?=
+ =?us-ascii?Q?v5hOTin6m+/JeHBAtDPoJebkRjDqMAjgfL64I16R5dwsAdn9hTgKPtxhcnDf?=
+ =?us-ascii?Q?sCXtnl5fb1ZwX31f8WitILh3T9jzFP7AhMLfgJyAQ/MrqwCtTBqfmJstUjrs?=
+ =?us-ascii?Q?7ec7xSwU9EVrZJUeD1xDYc9Kqfv53sYrTqPAzNv6tFm5SC+SQ8g++PE4epiC?=
+ =?us-ascii?Q?QMYfxUUrZsl/GQyNYfdUfa5gP37YT8XWIPYkqMu00mjlDi5j2ON/w9ObmXSp?=
+ =?us-ascii?Q?dHkZDBGOITQFIJkKQPzMWTYR4e4nYoWP5hbaF3LbitPR3XtgE+NFSngt9oyh?=
+ =?us-ascii?Q?eri3B2KshZ9rwC1fsuqLrBeWF90e5XqvkozLM8AWoZDsfsuLNXNSFpGH7cPa?=
+ =?us-ascii?Q?3z3nZAlro+mHrTeEcBiGZ3D0uZXTVuKwPXMeCF8iSxEaxVuknW8YVLX8DFku?=
+ =?us-ascii?Q?6sa7/Rfh1cBAyKWpwxl0Y/SJOQB3K77ci5C7njGodpZ4JEK8qITWu/leOn/g?=
+ =?us-ascii?Q?Qzo8ZMhwmo2UTwOjBW+dnkoXt7AKlew9Z87+VCgF3/xd1XA7Gw4RmFTWq18g?=
+ =?us-ascii?Q?f50Z3NWsEi/+cRzDm1E5p0ZMB0lunurYtjc/7SwtVIvT/00Drhl9m3id16Sq?=
+ =?us-ascii?Q?Q83Dsp8PZKbzxphyl3iDGFsxoIFXkkbhwcS0B1aDpobD+ceDc5d8GzsfIqk6?=
+ =?us-ascii?Q?isjBNLDDYNAbocYtLj+iLwhv/M+UrfVdf9FiVMRhVOzLC7ujsWToQI07iGYd?=
+ =?us-ascii?Q?cyeDNZTitJSIlAM6Y13jIymjXN4BK4ua1OTLXIeSNcUlQgWsxvOGxr9ED+eH?=
+ =?us-ascii?Q?NiEBpaBJ+gXzS+SDFeZd0+xR7EkyAxhrcxB3fa8NgUCGpE7D+2DAcbxMbRD1?=
+ =?us-ascii?Q?Uel7A83u4bVYT7mbhs768k0zSu0UEBS0FrJhCRoklA2BLYQPIn9P5zvF7R3b?=
+ =?us-ascii?Q?zIKp3W4LusjLOJrcgTMxKvG2YDvU0rVM7N0JQDeBYIooCtVkSI0tnT/rKRDM?=
+ =?us-ascii?Q?vwx/Lp5xgPvhZHa6g83ZNLg/bT0YrYNQIzzRhAgU9ASPBgEeRWNVtR7EAKDL?=
+ =?us-ascii?Q?LoY4wbKWNEni9WJXwNEsXcsJxx4LTH21ntrbUBW3z22HBJQXkXwhAuTHbotP?=
+ =?us-ascii?Q?5KXBxa/eA44cW3d2qtu9pnoe5UXGjPIUssBZ5p4iriRG7rtabkpReTXj00+W?=
+ =?us-ascii?Q?mcbUeO3SDGo5VzAABag1wUVHoKOUjKxxwY+YzG5H?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?aZI33zM1wAXZae+Y8qolrMHJ9ik/KbJa2PkrmJKYteQerUyfQTSEGPBAF0/1?=
+ =?us-ascii?Q?cTUBClEqvKjFfJQ2GTi+syi0g7ivHwdtEPTLHfz+IPtAXzCZTzGTE4ZePyo/?=
+ =?us-ascii?Q?v3f9vOzVhMcTAMB0dv24PCSbR0A1Ir0dYyAOqDacGfsgoJz36061qFxqqt8l?=
+ =?us-ascii?Q?vcAp1xWPJiLywAxpDhHe1Pez0OwkVnfhcgeSOsSFVbtdlNfwRyTRcxHg3PHq?=
+ =?us-ascii?Q?/x6NoJLgQb4znAPV/LydKsYp/9i6sB5MewE3oKHlG5wupbrP/2p6F1jLmHXI?=
+ =?us-ascii?Q?AVh+62/5HYx6Edz6mIzgUl4KVU/DQZFoJX0ZbqSEnR3UPOzaz7m5XLIk0/KY?=
+ =?us-ascii?Q?4GmcE5ouwwGKftbjAd4tysF7QXOSWpTAjDqTxN0/gvkgpUA9ROjdvNsAin19?=
+ =?us-ascii?Q?mnfoFA7NQKk9ogFVJqiZlMkuyyDZRom8GTyleeSVtUi8BQPcHiWjZOmppa8M?=
+ =?us-ascii?Q?owTMPm6Fg4Kh+W9jzdJWJLErC5nlQrf+za8lpZFyb8lhcTDHh7C4skKtllzZ?=
+ =?us-ascii?Q?WcVDxY5/F+2gfvzvhT7/bED34J89glBUKz2AkFVJwLELT6WsrcYa2Ih5aCUz?=
+ =?us-ascii?Q?55vPD3pF7MRpBaqRuNMyMZL+DoXh2rStGSzHSoRtoN9npczUe5c1dg33O/VJ?=
+ =?us-ascii?Q?nE7xG+IsBvRlWMgy/uo7KeZnf5ABTMqOIu5hZE+Rds7reveKFi+hKy+Ijmur?=
+ =?us-ascii?Q?a3Sh1hgsM/pwbkaOENVpTSEpzBznIsCNGIY9dKbYXy5Umcpe4XdJmWqygYyV?=
+ =?us-ascii?Q?Toz/fGncHHdkMxt+PkZr0TSewdoeJTCjsyF1C5F88k8j9LZy97TE7t8czYpU?=
+ =?us-ascii?Q?cHkvHrlK19A+o3ZqIVaFzqV7dpxUmakeQGwSiPAybLi74ku9UDRx2JvY15p6?=
+ =?us-ascii?Q?C8lVl0lKvBrBy9UHEhjJ5FNRbPStxakjoB2g+3oUnDl+qA/G+YnJq0ah3RBv?=
+ =?us-ascii?Q?e6IBQL3MXuVcCBnIsuZ7uoLcR00CuLScHusO1YllVUK54qPgGl7g2ZvFXuhR?=
+ =?us-ascii?Q?7wxH?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f17fec8f-08bf-4606-86f9-08dbc046ae40
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2023 17:10:00.5786
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2023 17:16:40.7552
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q21RrTarfejVS/UQxyRcsSVVpqr5zuSe7i6aqXLgln8+/z7TFuF+g8+enYBfREJzgqP/mwBUZYiIrJ3vFg2gD+fEcKGahQLvvKt5kCBt2zs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6508
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: jOyakHA5CxGg5TjUcBeqvsP6FBbARqWXg4DT2NVW67lZZki1KuDmRLBDzmvCCobtmYyvCzfLEcMH9u4tyYsBnQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5273
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-28_16,2023-09-28_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 mlxscore=0
+ malwarescore=0 suspectscore=0 bulkscore=0 mlxlogscore=550 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2309280150
+X-Proofpoint-ORIG-GUID: f2zBmCU_cijtLLXm_pTwn1yJvNESit2X
+X-Proofpoint-GUID: f2zBmCU_cijtLLXm_pTwn1yJvNESit2X
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Ilpo,
+Jann Horn reported a potential vma iterator issue in the failure path of
+the vma_merge() code.  After examining the interface, it seemed the best
+course of action is to simply add an undo path in the unlikely case of
+an error.
 
-On 9/28/2023 5:47 AM, Ilpo Järvinen wrote:
-> On Tue, 26 Sep 2023, Reinette Chatre wrote:
->> On 9/15/2023 8:44 AM, Ilpo Järvinen wrote:
+On examining the vma iterator issue, another issue was discovered that
+would increase the memory usage during failure scenarios, so this is
+addressed in patch 2.
 
-...
+Since it is unclear in the code, another patch adds comments to the
+vma_merge() function on why dup_anon_vma() is safe in 'case 6'.
 
->>> +
->>> +static void run_mbm_test(const char * const *benchmark_cmd, int cpu_no)
->>> +{
->>> +	int res;
->>> +
->>> +	ksft_print_msg("Starting MBM BW change ...\n");
->>> +
->>> +	if (test_prepare())
->>> +		return;
->>>  
->>
->> I am not sure about this. With this exit the kselftest machinery is not
->> aware of the test passing or failing. I wonder if there should not rather
->> be a "goto" here that triggers ksft_test_result()?
-> 
-> Yes, ksft_test_result() is needed here (I forgot to add it).
-> 
->> This needs some more 
->> thought though. First, with this change test_prepare() officially gains
->> responsibility to determine if a failure is transient (just a single test
->> fails) or permanent (no use trying any other tests if this fails). For
->> the former it would then be up to the caller to call ksft_test_result()
->> and for the latter test_prepare() will call ksft_exit_fail_msg().
-> 
-> Well, I didn't initially have test_prepare() at all but all this was 
-> within the test functions (which will be consolidated to a single function 
-> by the series that comes after the two series are done + one patch from 
-> Maciej).
-> 
-> I was just trying to do what was done previously but it seems I forgot to 
-> handle the result status on signal reg fail path.
-> 
-> TBH, I wouldn't mind if also the signal reg fail is just up'ed to 
-> ksft_exit_fail_msg(). I don't think it can ever fail with the parameters 
-> given to it so its error handling feels pretty much dead-code (unless some 
-> crazy thing such as apparmor does something out of the blue, I don't know 
-> if apparmor has capability override sigaction() but I've seen apparmor to
-> create errors that from the surface make no sense whatsoever comparable
-> to this case).
-> 
-> So basically this discussion is now about what to do with the mount 
-> failing which already does _exit() before this patch (and possibly some
-> hypotethical, new prepare code after the consolidation work which also
-> will have some impact and I believe we might actually want to kill 
-> test_prepare() at that point anyway).
+Changes since v1:
+ - Moved dup_anon_vma() call update from patch 1 to patch 2 - Thanks
+   Matthew Wilcox
+ - Changed comment on patch 1 - Thanks Andrew Morton
 
-Having failure during signal handler registration also trigger ksft_exit_fail_msg()
-sounds fair to me. I am also ok with keeping the exit when mount fails.
+v1: https://lore.kernel.org/linux-mm/20230927160746.1928098-1-Liam.Howlett@oracle.com/
 
-If any future test_prepare() code does not imply a test exit then I hope it would
-be obvious that ksft_test_result() needs to be called. Perhaps that can
-be accomplished if test_prepare() does not exit the test but instead just
-returns an error code (if needed it can use ksft_print_msg() internally for
-any details about particular failures) and the caller call ksft_exit_fail_msg()
-if test_prepare() fails? With the caller responsible for the ksft_exit_fail_msg()
-as well as ksft_test_result() then any new addition may be guided to the
-right calls. This considers hypothetical future changes to code that is
-being consolidated so surely no strong opinions from my side.
+Liam R. Howlett (3):
+  mmap: Fix vma_iterator in error path of vma_merge()
+  mmap: Fix error paths with dup_anon_vma()
+  mmap: Add clarifying comment to vma_merge() code
 
->> Second, that SNC warning may be an inconvenience with a new goto. Here
->> it may be ok to print that message before the test failure?
-> 
-> I don't follow what you're referring to with "that SNC warning". To the 
-> "Intel CMT may be inaccurate ..." one?
+ mm/mmap.c | 37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
-Yes, that is the warning. I envisioned addressing the issue by adding a
-goto label right before the ksft_test_result() call within run_cmt_test()
-in this case (but also in run_mbm_test()). Doing so would solve the issue
-that test counters are incremented on test_prepare() failure but it will
-also trigger the message you note and that would be confusing to the user if
-the test failure was because of signal handler registration failure.
+-- 
+2.40.1
 
-...
-
->>> diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
->>> index 51963a6f2186..a9fe61133119 100644
->>> --- a/tools/testing/selftests/resctrl/resctrl_val.c
->>> +++ b/tools/testing/selftests/resctrl/resctrl_val.c
->>> @@ -468,7 +468,9 @@ pid_t bm_pid, ppid;
->>>  
->>>  void ctrlc_handler(int signum, siginfo_t *info, void *ptr)
->>>  {
->>> -	kill(bm_pid, SIGKILL);
->>> +	/* Only kill child after bm_pid is set after fork() */
->>> +	if (bm_pid)
->>> +		kill(bm_pid, SIGKILL);
->>>  	umount_resctrlfs();
->>>  	tests_cleanup();
->>>  	ksft_print_msg("Ending\n\n");
->>> @@ -485,6 +487,8 @@ int signal_handler_register(void)
->>>  	struct sigaction sigact;
->>>  	int ret = 0;
->>>  
->>> +	bm_pid = 0;
->>> +
->>
->> Since this is an initialization fix in this area ... what
->> do you think of also initializing sigact? It could just be
->> a change to
->> 	struct sigaction sigact = {};
->>
->> This will prevent registering a signal handler with 
->> uninitialized sa_flags.
-> 
-> Nice catch. It seems quite bad bug, I'll add another patch to fix it.
-> 
-> Thanks once again for your reviews! I'll also address the changelog 
-> improvements you mentioned against the other patches.
-> 
-
-Thanks to you for improving the resctrl selftests so significantly.
-This work is very valuable because we use it to measure and gain
-confidence in the health of the resctrl subsystem.
-
-Reinette
- 
