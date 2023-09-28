@@ -2,112 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03C8A7B21EB
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 18:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22E297B228E
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 18:37:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232148AbjI1QDg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 12:03:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42940 "EHLO
+        id S230212AbjI1Qhl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 12:37:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232147AbjI1QDe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 12:03:34 -0400
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0DA81A7
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 09:03:32 -0700 (PDT)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-1c73fb50da6so2726685ad.0
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 09:03:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695917012; x=1696521812; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MFUmYNpX6rTwdApxep2QFE0XCc25ZJa3cg6mPE92sAo=;
-        b=ne5ac2d9XhOSetla4lMicK663QBj/eBPFpXZbXBBfyMNcYrDIecMO8r/a/YApklWWE
-         eAkYaCLCYIFsvGrUEdIZQpdFvARP/jEPpEMttsI4dptKzj0A4l9HjC6696ifIqkpK/U+
-         /QzEZTH1DddU6gOQZ2/4o2G6dBdF8Y//lbDM8qK6hZWy+J9ZgVCC7+r97pijyBBqjZxh
-         sRQLWgLFWppabJA/2+ly7rmSVhyosWk+baUmMfNS8V2rBSsdnBMiULwBwbj0nANdTuGY
-         oyvLDfsKpd3JmnY+j3DSRfanqbjj4H3MXmQwogpdo5g18KskYDgUhqB0UgObqnRMOexZ
-         TfOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695917012; x=1696521812;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MFUmYNpX6rTwdApxep2QFE0XCc25ZJa3cg6mPE92sAo=;
-        b=R2fLnm1Ise9BxCFMXeGpT5SB2f/3B/jn4f7DL9GoCsqu7GBD+bTRhTWcEeLvKGkbry
-         FQItJ7cA3EzA76U5F+9BdCQadGvLrARVsR32lxTDRaeZiN0xtnJl5JMnVFaP/75GnOI7
-         bjRMrDv0ljjuQqzLqxdWphE6JD21tMhkAX835olKVt6YUua/BLTA4GFZidB+niSlRXg5
-         Yv+7NzkJjBGwOUOa3uEaupJW3N1qQO22ClxWGOnoFh582KtOSZII7e8eZSM5VNk0OaeP
-         0DahPyTB8DypVzYe3mgd8nziT4aXZSo3bV/KBKJjLePr3GgxwgyuvdYCqZwFOpQMOi9B
-         KavQ==
-X-Gm-Message-State: AOJu0YwZAcH047y5BnH/YNuzAp9zqTMKzBSHj3ihKkSx64/GRXlK+HUu
-        SqGpcfO5FBOSSJuYonPoBkWtBxy1O8A=
-X-Google-Smtp-Source: AGHT+IFNYZN6ptDJkMmwLSNuZPQjEWOAcWQREE8N0qlp/jqzMy/uAdJQYt5rwc8mhcDZlWu1erWrGHWMPok=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:e5c7:b0:1bb:c7c6:3462 with SMTP id
- u7-20020a170902e5c700b001bbc7c63462mr21438plf.8.1695917012352; Thu, 28 Sep
- 2023 09:03:32 -0700 (PDT)
-Date:   Thu, 28 Sep 2023 09:03:31 -0700
-In-Reply-To: <20230928150428.199929-4-mlevitsk@redhat.com>
-Mime-Version: 1.0
-References: <20230928150428.199929-1-mlevitsk@redhat.com> <20230928150428.199929-4-mlevitsk@redhat.com>
-Message-ID: <ZRWj0_VGvrg148He@google.com>
-Subject: Re: [PATCH 3/5] x86: KVM: SVM: refresh AVIC inhibition in svm_leave_nested()
-From:   Sean Christopherson <seanjc@google.com>
-To:     Maxim Levitsky <mlevitsk@redhat.com>
-Cc:     kvm@vger.kernel.org, Will Deacon <will@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org,
-        Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
-        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <joro@8bytes.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229581AbjI1Qhk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 12:37:40 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46EAF98;
+        Thu, 28 Sep 2023 09:37:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D428BC433C8;
+        Thu, 28 Sep 2023 16:37:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1695919058;
+        bh=MmGDBtL7vWwLKH0oOK2GPmhNtX8tnZqWovjVu4q+8WM=;
+        h=Date:To:From:Subject:From;
+        b=O7/Wrkb9VCJWLWVuhHyORkup0+3i90DZmwiIKlxaLDvQIWOyuVnmdz+AyudBXfNXv
+         VHF8jl3rYa8X3UUZk7bU2iF2vl5sT/yc8gxJv0ooxFOfZrcdik2/ayWiUhKUTDvTgu
+         0QnoP72+Z08xOztykWGjn4IMzvH56jAT9c8o89/s=
+Date:   Thu, 28 Sep 2023 09:37:38 -0700
+To:     mm-commits@vger.kernel.org, willy@infradead.org, vbabka@suse.cz,
+        stable@vger.kernel.org, shy828301@gmail.com, mhocko@suse.com,
+        hughd@google.com, surenb@google.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [obsolete] mm-lock-vmas-skipped-by-a-failed-queue_pages_range.patch removed from -mm tree
+Message-Id: <20230928163738.D428BC433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 28, 2023, Maxim Levitsky wrote:
-> svm_leave_nested() similar to a nested VM exit, get the vCPU out of nested
-> mode and thus should end the local inhibition of AVIC on this vCPU.
-> 
-> Failure to do so, can lead to hangs on guest reboot.
-> 
-> Raise the KVM_REQ_APICV_UPDATE request to refresh the AVIC state of the
-> current vCPU in this case.
-> 
-> Cc: stable@vger.kernel.org
 
-Unnecessary newline.
+The quilt patch titled
+     Subject: mm: lock VMAs skipped by a failed queue_pages_range()
+has been removed from the -mm tree.  Its filename was
+     mm-lock-vmas-skipped-by-a-failed-queue_pages_range.patch
 
-Fixes: f44509f849fe ("KVM: x86: SVM: allow AVIC to co-exist with a nested guest running")
+This patch was dropped because it is obsolete
 
-> Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-> ---
->  arch/x86/kvm/svm/nested.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index dd496c9e5f91f28..3fea8c47679e689 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -1253,6 +1253,9 @@ void svm_leave_nested(struct kvm_vcpu *vcpu)
->  
->  		nested_svm_uninit_mmu_context(vcpu);
->  		vmcb_mark_all_dirty(svm->vmcb);
-> +
-> +		if (kvm_apicv_activated(vcpu->kvm))
-> +			kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
->  	}
->  
->  	kvm_clear_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
-> -- 
-> 2.26.3
-> 
+------------------------------------------------------
+From: Suren Baghdasaryan <surenb@google.com>
+Subject: mm: lock VMAs skipped by a failed queue_pages_range()
+Date: Mon, 18 Sep 2023 14:16:08 -0700
+
+When queue_pages_range() encounters an unmovable page, it terminates its
+page walk.  This walk, among other things, locks the VMAs in the range. 
+This termination might result in some VMAs being left unlocked after
+queue_pages_range() completes.  Since do_mbind() continues to operate on
+these VMAs despite the failure from queue_pages_range(), it will encounter
+an unlocked VMA, leading to a BUG().
+
+This mbind() behavior has been modified several times before and might
+need some changes to either finish the page walk even in the presence of
+unmovable pages or to error out immediately after the failure to
+queue_pages_range().  However that requires more discussions, so to fix
+the immediate issue, explicitly lock the VMAs in the range if
+queue_pages_range() failed.  The added condition does not save much but is
+added for documentation purposes to understand when this extra locking is
+needed.
+
+Link: https://lkml.kernel.org/r/20230918211608.3580629-1-surenb@google.com
+Fixes: 49b0638502da ("mm: enable page walking API to lock vmas during the walk")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reported-by: syzbot+b591856e0f0139f83023@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000f392a60604a65085@google.com/
+Acked-by: Hugh Dickins <hughd@google.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/mempolicy.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/mm/mempolicy.c~mm-lock-vmas-skipped-by-a-failed-queue_pages_range
++++ a/mm/mempolicy.c
+@@ -1342,6 +1342,9 @@ static long do_mbind(unsigned long start
+ 	vma_iter_init(&vmi, mm, start);
+ 	prev = vma_prev(&vmi);
+ 	for_each_vma_range(vmi, vma, end) {
++		/* If queue_pages_range failed then not all VMAs might be locked */
++		if (ret)
++			vma_start_write(vma);
+ 		err = mbind_range(&vmi, vma, &prev, start, end, new);
+ 		if (err)
+ 			break;
+_
+
+Patches currently in -mm which might be from surenb@google.com are
+
+selftests-mm-add-uffdio_remap-ioctl-test.patch
+
