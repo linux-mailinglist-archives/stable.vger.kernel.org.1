@@ -2,101 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEDF87B14E4
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 09:30:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A4097B150B
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 09:38:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbjI1Ha2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 03:30:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47836 "EHLO
+        id S230373AbjI1Hie (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 03:38:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230245AbjI1Ha1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 03:30:27 -0400
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB25299
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 00:30:25 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id EC4FE40E01AD;
-        Thu, 28 Sep 2023 07:30:16 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-        header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id IBMkuN1e-nE3; Thu, 28 Sep 2023 07:30:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1695886213; bh=z4BG31Q1gkVUkJg2uGgLI1FzyDQbxyqhIJweL2kvhrg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Eg9bkgdEIrXwjBRPVaUr8phKBDya5ezmFYUAfqMOiOxBw15uQXoXoTF1QyA755K1Y
-         nF00ARrCcYTBD8c4nr7Pv7ls7u+pm9KXKTI20bKtji9HLnQOBWORvFmpALcmYH4fbd
-         MLeE719JLewMfhwqOe9JImG8o12rhwStpw5T/Cl1Ula5NTxO75+BNcc9mypBeMAGFp
-         STFlYox30G+aANS9f86mYNREtM9Vd05INPRajkyy7cogcJSXWpKep1HYbVpKa1bwoK
-         16Ds1Uee2qRN6tjnTmkpazXd+Ht3vF1U8dkPfvJwa1MOF9tl6c8Qazl7W1/n5ujAXv
-         Ef2U/gsFTMx/YLPBv4Y9XcxIvwFTbw/Rhc3t7gEACko/IXM/EMoS8Ba70tn55jvSWD
-         FRqwvxLyT6M4FbklE3AHidaHbGiF9WdD0X8ay5aSG/WUwKW76ghnNtdKJ/qUniGmrs
-         MQ4jqSEyXWYkDWpR9GfveS5xiPEuym0+7+VAqb50lsSTP4wZ8mlyIvPUjbn6mXqofL
-         88QkG9WKUBgorFdJLFljXA0Tszas4Va90F4h3lfC0szFKv7qRo4A9eqdigqIsBZEpK
-         IJEa8mtAAog4Hh/o8O3l5UUJ5OfkbIkFLQy06hGXYf85zR+OGn1rbnO3PiHg2YmkXJ
-         e5Du2TfdXRWPihITiIMSQWCQ=
-Received: from nazgul.tnic (cust-west-par-46-193-35-178.cust.wifirst.net [46.193.35.178])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-        (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 1185340E014B;
-        Thu, 28 Sep 2023 07:30:03 +0000 (UTC)
-Date:   Thu, 28 Sep 2023 09:30:22 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Pu Wen <pu_wen@foxmail.com>
-Cc:     mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, peterz@infradead.org, kim.phillips@amd.com,
-        linux-kernel@vger.kernel.org, Pu Wen <puwen@hygon.cn>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] x86/srso: Add SRSO mitigation for Hygon processors
-Message-ID: <20230928073022.GAZRUrjgwn50bkYa6J@fat_crate.local>
-References: <tencent_4A14812842F104E93AA722EC939483CEFF05@qq.com>
+        with ESMTP id S230394AbjI1Hic (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 03:38:32 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8200DBE
+        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 00:38:28 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1qllbM-0007jY-JW; Thu, 28 Sep 2023 09:38:24 +0200
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ore@pengutronix.de>)
+        id 1qllbM-009WiC-2O; Thu, 28 Sep 2023 09:38:24 +0200
+Received: from ore by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+        (envelope-from <ore@pengutronix.de>)
+        id 1qllbL-00BpgX-WC; Thu, 28 Sep 2023 09:38:24 +0200
+Date:   Thu, 28 Sep 2023 09:38:23 +0200
+From:   Oleksij Rempel <o.rempel@pengutronix.de>
+To:     Robin van der Gracht <robin@protonic.nl>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        linux-can@vger.kernel.org, kernel@pengutronix.de,
+        Sili Luo <rootlab@huawei.com>
+Subject: Re: [PATCH v1] can: j1939: Fix UAF in j1939_sk_match_filter during
+ setsockopt(SO_J1939_FILTER)
+Message-ID: <20230928073823.GA2820185@pengutronix.de>
+References: <20230927161456.82772-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <tencent_4A14812842F104E93AA722EC939483CEFF05@qq.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <20230927161456.82772-1-o.rempel@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL:  http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 28, 2023 at 02:59:16PM +0800, Pu Wen wrote:
-> From: Pu Wen <puwen@hygon.cn>
-> 
-> Add mitigation for the speculative return stack overflow vulnerability
-> which exists on Hygon processors.
-> 
-> Signed-off-by: Pu Wen <puwen@hygon.cn>
-> Cc: <stable@vger.kernel.org>
-> ---
->  arch/x86/kernel/cpu/common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-> index 382d4e6b848d..4e5ffc8b0e46 100644
-> --- a/arch/x86/kernel/cpu/common.c
-> +++ b/arch/x86/kernel/cpu/common.c
-> @@ -1303,7 +1303,7 @@ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
->  	VULNBL_AMD(0x15, RETBLEED),
->  	VULNBL_AMD(0x16, RETBLEED),
->  	VULNBL_AMD(0x17, RETBLEED | SMT_RSB | SRSO),
-> -	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB),
-> +	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB | SRSO),
->  	VULNBL_AMD(0x19, SRSO),
->  	{}
->  };
-> -- 
+On Wed, Sep 27, 2023 at 06:14:56PM +0200, Oleksij Rempel wrote:
+> Lock jsk->sk to prevent UAF when setsockopt(..., SO_J1939_FILTER, ...)
+> modifies jsk->filters while receiving packets.
 
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+...
+
+> Fixes: 9d71dd0c70099 ("can: add support of SAE J1939 protocol")
+> Reported-by: Sili Luo <rootlab@huawei.com>
+> Suggested-by: Sili Luo <rootlab@huawei.com>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Cc: stable@vger.kernel.org
+
+Tested-by: Sili Luo <rootlab@huawei.com>
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
