@@ -2,62 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 680567B21CD
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 17:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6CD37B21D1
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 17:54:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231310AbjI1PyN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 11:54:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48356 "EHLO
+        id S230274AbjI1Pyl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 11:54:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229946AbjI1PyM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 11:54:12 -0400
+        with ESMTP id S231985AbjI1Pyk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 11:54:40 -0400
 Received: from esa5.hgst.iphmx.com (esa5.hgst.iphmx.com [216.71.153.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0550CB7
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 08:54:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58E59B7
+        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 08:54:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1695916451; x=1727452451;
+  t=1695916479; x=1727452479;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=OwYxfNMAvLPySsToAAeJAxdm8BOe3vV6MO0rHehrKNc=;
-  b=pUb+z6tNDWnkkb5Npu2swOIAHXGhfdJVKNAnKdOWnXiqsgdX8EUchQhl
-   BLrMlZrYG/NwxFK7LeL2UsWytBGqXkj/u8glCT1/z/pSlWT7w32rtyDlh
-   klXmw6rhxiiq7QgJ9nj2HduyUr7evx6STlT7Lhma74LfRgeIgTpTSxzLq
-   OAv/0AuBMEMBtkhv8BCEm4NGeBoXc+uee9zkrUUpGDoPWIUJGx5QdaBBY
-   KWHTzD9hIMv9SlxHn4R0nyXJqDzv2J6hI+eiqsdi+xfFrSt0pxT1uN7Cb
-   xkFUd4K0fXDIHvL0TnOnibeFZzd0jCIfUQMsWOuEieP6ZvawQg7ebb9oW
-   g==;
-X-CSE-ConnectionGUID: 9RfvNnQXTZyZtvei1Pb8fg==
-X-CSE-MsgGUID: a4y9wr/fS0q5N8N16csgrw==
+  bh=ETvm/kW+shr98Qm5IZsbtYfh9i7I2fgNxCgnD+UjNyg=;
+  b=PzjuI/r6OQdU3m9dNqU33aHFhKQQkly2ha1Sr+Rn+NlYjmclMQpl4C0m
+   MY3Tuky/nX+rA3YSgxCclsqTpDWxXqWsyDpsyXaGRi5Vm3YP0qfkYZlan
+   /FntA5BGfsf9UTWRb5eXZjh60E9coW5t0Lqh4jefuynzkaWXPRFquhxdR
+   1jyQVBtqzazRUm0OedrFnkoo0yMiwOdSPhfvNZBlk8CJFOpGrpFKWUoHi
+   67nLxJR6nWAsdgCRRth7ePQBGNAG8ZTmHOmEwtTFdHBw9vvo66+Roj90x
+   qzhzc6sW9b43eFMlaT6NyC7CY7GYqzoQYDg+oLDz9H9KlEdPIPTaAJ8Rn
+   A==;
+X-CSE-ConnectionGUID: 8Of0hG85S3qOMLvq4GeSkg==
+X-CSE-MsgGUID: s8b0XY/3TsWhy464MbtgqA==
 X-IronPort-AV: E=Sophos;i="6.03,184,1694707200"; 
-   d="scan'208";a="245195332"
+   d="scan'208";a="245195358"
 Received: from uls-op-cesaip02.wdc.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 28 Sep 2023 23:54:11 +0800
-IronPort-SDR: JfwaXUWMf0zEXDCHtiKflw3PyYSjfw0yjwQMbS/v9KjcfdBhbd/SPCWmO5RamzyfYLEcW1ECBQ
- v3NsFwsOJrPWqoyvSUAQJ2RH5vnyP0NCwbelW9IaHIsNdekzK8vIBWv4jXMzUr4f5lhVHuh2oF
- GSn6nxLY4jOcE/DMXU+Qr4vVKwIBlCtMQzymWBNninYoV8AyfavR9JAMKcbET5O0nQ1VaJn6lx
- IHUo9vLcZ3CSD19cAQaHDOrx8Thzesl03VyozLYMHuRWEuMlNOAVsz6z5eisnVbPBmgW1tMIeX
- Iq8=
+  by ob1.hgst.iphmx.com with ESMTP; 28 Sep 2023 23:54:39 +0800
+IronPort-SDR: x1CSxPm8EiNEH6tutSiKmZl81Mmsf0Cgnf15+ClaM9oobFSzWa8gL1jtGzEiUn5FNKbZ2Pi5A+
+ YkrkaXX/9JWVxEK6PLR4rFW9OG6R1eK0fN797eUmGjVG5Uv7LTOdYjhf3BAFXVeL9K6qFK2nVP
+ pVvrj/kYhGKMeKAsBdLY5q+1aasu6Yjh7DQRMOPcFmpGx5WnUsOSDsPkappCaPE1szIueunz2D
+ CtxFUBHK80BlI2DxJDkwDEXeOayDYztiGw8kp3UeCKXxQpS/tVdbaMuvHL+7KCdg/dEYp6B0Gl
+ 2rM=
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Sep 2023 08:00:55 -0700
-IronPort-SDR: 10PoteundSU0yUVb/Xq1x0fzuEVNNg+Hpj9Xva3VomWDmr17LNO4rHV5G8ybGiPXR4UMbkXefN
- uwKF1YSq1XGSL9XGmIDBLyZiBUO33wDIymNd5f+o4VMOGDYoTHr1O1N0VPKMDf3EMe6dPE5Vqz
- TFQ1zfKBTfgFQaWKaWgIplunXpkNKyajZjxNZz3g1INiMWKUIiJw3yFo1pEdC3jXFWp15L8hal
- PXlJUdBTmFK62Wy0YElXLj7Ub2S/Xyk0AAxx1eTdEet8dp3Wu9HfcWM1QB6sWKkKTgwvv+mG+e
- ARE=
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Sep 2023 08:01:24 -0700
+IronPort-SDR: Nq31qymqAbbvLJUVmCNxn8EQNhISP/n6xlPprziQLCTrXT5T4nieMVbsv98u/RqG8GmurTAeSo
+ BFZ5kWubO0dzlzzNkfsX2d5SF5HEnkX98iFNNItVN0Mr+22WDTnjrjkXUydC2nm2fZhkHBS6BT
+ PuLz/H9Z3r+ShqV4HiJUGRZot+QfI0VYkIrQRwCy1b+pVUOtL9KeNRw5f5IynjjiPEasDi41es
+ vd4tCbetzfCQVrD30hOSPB3kqkNb2UkXCGcBZfl+LI3EQnAX3FoEraxSeT8ZXYtoQYjfMLf3rn
+ qK4=
 WDCIronportException: Internal
 Received: from unknown (HELO x1-carbon.wdc.com) ([10.225.163.111])
-  by uls-op-cesaip02.wdc.com with ESMTP; 28 Sep 2023 08:54:07 -0700
+  by uls-op-cesaip02.wdc.com with ESMTP; 28 Sep 2023 08:54:36 -0700
 From:   Niklas Cassel <niklas.cassel@wdc.com>
 To:     stable@vger.kernel.org
 Cc:     Niklas Cassel <niklas.cassel@wdc.com>,
         Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 4.14.y] ata: libata: disallow dev-initiated LPM transitions to unsupported states
-Date:   Thu, 28 Sep 2023 17:53:57 +0200
-Message-ID: <20230928155357.9807-1-niklas.cassel@wdc.com>
+Subject: [PATCH 4.19.y] ata: libata: disallow dev-initiated LPM transitions to unsupported states
+Date:   Thu, 28 Sep 2023 17:54:26 +0200
+Message-ID: <20230928155426.9839-1-niklas.cassel@wdc.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023092002-mobster-onset-2af9@gregkh>
-References: <2023092002-mobster-onset-2af9@gregkh>
+In-Reply-To: <2023092000-constrict-congested-cec9@gregkh>
+References: <2023092000-constrict-congested-cec9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -112,10 +112,10 @@ Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
  3 files changed, 29 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 0905c07b8c7e..abb3dd048556 100644
+index 13fb983b3413..274e72eb4c81 100644
 --- a/drivers/ata/ahci.c
 +++ b/drivers/ata/ahci.c
-@@ -1777,6 +1777,15 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+@@ -1866,6 +1866,15 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
  	else
  		dev_info(&pdev->dev, "SSS flag set, parallel bus scan disabled\n");
  
@@ -132,12 +132,12 @@ index 0905c07b8c7e..abb3dd048556 100644
  		ahci_reset_em(host);
  
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 08dc37a62f5a..69002ad15500 100644
+index 4a7da8f744e0..f3a288b2e20b 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -3993,10 +3993,23 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
- 		scontrol |= (0x6 << 8);
- 		break;
+@@ -3997,10 +3997,23 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
+ 	case ATA_LPM_MED_POWER_WITH_DIPM:
+ 	case ATA_LPM_MIN_POWER_WITH_PARTIAL:
  	case ATA_LPM_MIN_POWER:
 -		if (ata_link_nr_enabled(link) > 0)
 -			/* no restrictions on LPM transitions */
@@ -163,10 +163,10 @@ index 08dc37a62f5a..69002ad15500 100644
  			scontrol &= ~0xf;
  			scontrol |= (0x1 << 2);
 diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 0e9f8fd37eb9..ab2c5d6cabed 100644
+index 73cd0182452c..02239183e3f4 100644
 --- a/include/linux/libata.h
 +++ b/include/linux/libata.h
-@@ -279,6 +279,10 @@ enum {
+@@ -278,6 +278,10 @@ enum {
  	ATA_HOST_PARALLEL_SCAN	= (1 << 2),	/* Ports on this host can be scanned in parallel */
  	ATA_HOST_IGNORE_ATA	= (1 << 3),	/* Ignore ATA devices on this host. */
  
