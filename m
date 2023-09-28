@@ -2,114 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AA877B2039
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 16:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4E6A7B2061
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 17:05:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231262AbjI1OzK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 10:55:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52604 "EHLO
+        id S231428AbjI1PF0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 11:05:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230430AbjI1OzJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 10:55:09 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2326AF9
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 07:55:06 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qlsPx-0005QP-6N; Thu, 28 Sep 2023 16:55:05 +0200
-Message-ID: <19565eb0-9130-45b1-ba15-b77987a5bca6@leemhuis.info>
-Date:   Thu, 28 Sep 2023 16:55:04 +0200
+        with ESMTP id S230523AbjI1PFZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 11:05:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B97BB19E
+        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 08:04:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695913479;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=E+PIeCSrfaW18zOkmenj4XNWXbjicG5Z3Ntw9Ymuv4Q=;
+        b=hKhbVjYcOCCoJZENaeFkesCcbu0el+ixtNvWKdprkRvrIrmrEBe1AON206O4HkAZ752oHY
+        yUWutzhExmUGo0aQ0c8ssib4zDSDklz1zcT/aewxuC1X+mvc0XOSHk7357eTaE79rBMK5r
+        sMr3eY04Z9h1qhwEIL8u5/D8aX+QoOk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-448-cZx1yAeFPPeI-OiQmsVxAA-1; Thu, 28 Sep 2023 11:04:37 -0400
+X-MC-Unique: cZx1yAeFPPeI-OiQmsVxAA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8B782858F19;
+        Thu, 28 Sep 2023 15:04:36 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.45.226.141])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0F9CF40C6E76;
+        Thu, 28 Sep 2023 15:04:32 +0000 (UTC)
+From:   Maxim Levitsky <mlevitsk@redhat.com>
+To:     kvm@vger.kernel.org
+Cc:     Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org,
+        Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <joro@8bytes.org>,
+        Sean Christopherson <seanjc@google.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+        Maxim Levitsky <mlevitsk@redhat.com>, stable@vger.kernel.org
+Subject: [PATCH 1/5] x86: KVM: SVM: fix for x2avic CVE-2023-5090
+Date:   Thu, 28 Sep 2023 18:04:24 +0300
+Message-Id: <20230928150428.199929-2-mlevitsk@redhat.com>
+In-Reply-To: <20230928150428.199929-1-mlevitsk@redhat.com>
+References: <20230928150428.199929-1-mlevitsk@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] EINVAL with mount in selinux_set_mnt_opts when
- mounting in a guest vm with selinux disabled
-Content-Language: en-US, de-DE
-To:     Simon Kaegi <simon.kaegi@gmail.com>,
-        Jeff Layton <jlayton@kernel.org>
-Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
-        dhowells@redhat.com, jpiotrowski@linux.microsoft.com,
-        brauner@kernel.org, sashal@kernel.org
-References: <CACW2H-5W6KE6UJ8HwD6r9pOx4Ow_W6ACZyg9LpTykjU6tHHB3g@mail.gmail.com>
- <9c208dd856b82a4012370b201c08b2d73a6c130e.camel@kernel.org>
- <CACW2H-7-KyYrAcnO+QKBV9fs4mGfzOpKvAutbj6hkq7D0m+EzQ@mail.gmail.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CACW2H-7-KyYrAcnO+QKBV9fs4mGfzOpKvAutbj6hkq7D0m+EzQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695912907;5371253e;
-X-HE-SMSGID: 1qlsPx-0005QP-6N
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 28.09.23 16:43, Simon Kaegi wrote:
-> Thanks Jeff. I've confirmed that Ondrej's patch fixes the issue we
-> were having. Definitely would be great to get this in 6.1.x. soon.
+The following problem exists since the x2avic was enabled in the KVM:
 
-That patch afaics is already part of 6.1.55
+svm_set_x2apic_msr_interception is called to enable the interception of
+the x2apic msrs.
 
-#regzbot fix: 978b86fbdb2acf69
+In particular it is called at the moment the guest resets its apic.
 
-HTH!
+Assuming that the guest's apic was in x2apic mode, the reset will bring
+it back to the xapic mode.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+The svm_set_x2apic_msr_interception however has an erroneous check for
+'!apic_x2apic_mode()' which prevents it from doing anything in this case.
 
-> On Wed, Sep 27, 2023 at 4:21 PM Jeff Layton <jlayton@kernel.org> wrote:
->>
->> On Wed, 2023-09-27 at 15:55 -0400, Simon Kaegi wrote:
->>> #regzbot introduced v6.1.52..v6.1.53
->>> #regzbot introduced: ed134f284b4ed85a70d5f760ed0686e3cd555f9b
->>>
->>> We hit this regression when updating our guest vm kernel from 6.1.52 to
->>> 6.1.53 -- bisecting this problem was introduced
->>> in ed134f284b4ed85a70d5f760ed0686e3cd555f9b -- vfs, security: Fix automount
->>> superblock LSM init problem, preventing NFS sb sharing --
->>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.53&id=ed134f284b4ed85a70d5f760ed0686e3cd555f9b
->>>
->>> We're getting an EINVAL in `selinux_set_mnt_opts` in
->>> `security/selinux/hooks.c` when mounting a folder in a guest VM where
->>> selinux is disabled. We're mounting from another folder that we suspect has
->>> selinux labels set from the host. The EINVAL is getting set in the
->>> following block...
->>> ```
->>> if (!selinux_initialized(&selinux_state)) {
->>>         if (!opts) {
->>>                 /* Defer initialization until selinux_complete_init,
->>>                         after the initial policy is loaded and the security
->>>                         server is ready to handle calls. */
->>>                 goto out;
->>>         }
->>>         rc = -EINVAL;
->>>         pr_warn("SELinux: Unable to set superblock options "
->>>                 "before the security server is initialized\n");
->>>         goto out;
->>> }
->>> ```
->>> We can reproduce 100% of the time but don't currently have a simple
->>> reproducer as the problem was found in our build service which uses
->>> kata-containers (with cloud-hypervisor and rootfs mounted via virtio-blk).
->>>
->>> We have not checked the mainline as we currently are tied to 6.1.x.
->>>
->>> -Simon
->>
->> This sounds very similar to the bug that Ondrej fixed here:
->>
->>     https://lore.kernel.org/selinux/20230911142358.883728-1-omosnace@redhat.com/
->>
->> You may want to try that patch and see if it helps.
->> --
->> Jeff Layton <jlayton@kernel.org>
-> 
-> 
+As a result of this, all x2apic msrs are left unintercepted, and that
+exposes the bare metal x2apic (if enabled) to the guest.
+Oops.
+
+Remove the erroneous '!apic_x2apic_mode()' check to fix that.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+---
+ arch/x86/kvm/svm/svm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 9507df93f410a63..acdd0b89e4715a3 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -913,8 +913,7 @@ void svm_set_x2apic_msr_interception(struct vcpu_svm *svm, bool intercept)
+ 	if (intercept == svm->x2avic_msrs_intercepted)
+ 		return;
+ 
+-	if (!x2avic_enabled ||
+-	    !apic_x2apic_mode(svm->vcpu.arch.apic))
++	if (!x2avic_enabled)
+ 		return;
+ 
+ 	for (i = 0; i < MAX_DIRECT_ACCESS_MSRS; i++) {
+-- 
+2.26.3
+
