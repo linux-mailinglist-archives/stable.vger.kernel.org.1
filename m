@@ -2,204 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BE417B156B
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 09:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15AEE7B157B
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 10:01:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230434AbjI1Hxf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 03:53:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47714 "EHLO
+        id S230251AbjI1IBD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 04:01:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230435AbjI1Hxe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 03:53:34 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C476D92
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 00:53:31 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1qllpn-0001KQ-JF; Thu, 28 Sep 2023 09:53:19 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1qllpm-009WkC-In; Thu, 28 Sep 2023 09:53:18 +0200
-Received: from pengutronix.de (unknown [172.20.34.65])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        (Authenticated sender: mkl-all@blackshift.org)
-        by smtp.blackshift.org (Postfix) with ESMTPSA id 2CBB322A28F;
-        Thu, 28 Sep 2023 07:53:18 +0000 (UTC)
-Date:   Thu, 28 Sep 2023 09:53:17 +0200
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Wolfgang Grandegger <wg@grandegger.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-        linux-can@vger.kernel.org,
-        =?utf-8?B?SsOpcsOpbWll?= Dautheribes 
-        <jeremie.dautheribes@bootlin.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        sylvain.girard@se.com, pascal.eberhard@se.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] can: sja1000: Always restart the Tx queue after an
- overrun
-Message-ID: <20230928-headphone-premiere-d92deb9c29e5-mkl@pengutronix.de>
-References: <20230927164442.128204-1-miquel.raynal@bootlin.com>
+        with ESMTP id S229639AbjI1IBC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 04:01:02 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560D492;
+        Thu, 28 Sep 2023 01:01:01 -0700 (PDT)
+Date:   Thu, 28 Sep 2023 08:00:58 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1695888059;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=y8b9q38myYZXgEZ8xuimBDP6RUNofjH0Ic81MrIcnGE=;
+        b=JtEx1TwmMZq11ZYN8Lhi08+7TqyGq/JC92AyNl1TJZF5cDd0Trly4sBV9O3qlg4EdzDe0h
+        BE+z8TxbaFpFz0ADQV2SlXmVjudJvblbhla6kKRGMepPEd2U/FrdqKc1sulXI2VFjjzG4d
+        Euw+tQLDtmTGdsSXQhTEKseBExvYTXJoyW0ZVqE8ClO0YemjpNKRPE0+fuoXW3erY/J50e
+        v6lGF9BcLl5JXvT9f02WAId0UqIpYiNaWEcSETFYfX++48zPmtlWgaE9sPjydiLg7CQa4S
+        WO72lYtE6y9NbTXINZV4goBCwxiRaVzUXtKKK3KJ4Y5WxDfDp9Ua5oEvzbtuIw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1695888059;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=y8b9q38myYZXgEZ8xuimBDP6RUNofjH0Ic81MrIcnGE=;
+        b=bsIj1MwN1I9uphbtoUNGV/CTJTryqfFfS7mnk99gQsJV6VBRhSYWM25FBMf7hU/0xLnwKR
+        vohvaSsIrUdaTpDg==
+From:   "tip-bot2 for Pu Wen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/srso: Add SRSO mitigation for Hygon processors
+Cc:     Pu Wen <puwen@hygon.cn>, Ingo Molnar <mingo@kernel.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, <stable@vger.kernel.org>,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <tencent_4A14812842F104E93AA722EC939483CEFF05@qq.com>
+References: <tencent_4A14812842F104E93AA722EC939483CEFF05@qq.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ubhnszgeqgcjawt6"
-Content-Disposition: inline
-In-Reply-To: <20230927164442.128204-1-miquel.raynal@bootlin.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Message-ID: <169588805808.27769.603081620807141672.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+The following commit has been merged into the x86/urgent branch of tip:
 
---ubhnszgeqgcjawt6
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Commit-ID:     a5ef7d68cea1344cf524f04981c2b3f80bedbb0d
+Gitweb:        https://git.kernel.org/tip/a5ef7d68cea1344cf524f04981c2b3f80bedbb0d
+Author:        Pu Wen <puwen@hygon.cn>
+AuthorDate:    Thu, 28 Sep 2023 14:59:16 +08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 28 Sep 2023 09:57:07 +02:00
 
-On 27.09.2023 18:44:42, Miquel Raynal wrote:
-> Upstream commit 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with
-> a soft reset on Renesas SoCs") fixes an issue with Renesas own SJA1000
-> CAN controller reception: the Rx buffer is only 5 messages long, so when
-> the bus loaded (eg. a message every 50us), overrun may easily
-> happen. Upon an overrun situation, due to a possible internal crosstalk
-> situation, the controller enters a frozen state which only can be
-> unlocked with a soft reset (experimentally). The solution was to offload
-> a call to sja1000_start() in a threaded handler. This needs to happen in
-> process context as this operation requires to sleep. sja1000_start()
-> basically enters "reset mode", performs a proper software reset and
-> returns back into "normal mode".
->=20
-> Since this fix was introduced, we no longer observe any stalls in
-> reception. However it was sporadically observed that the transmit path
-> would now freeze. Further investigation blamed the fix mentioned above,
-> and especially the reset operation. Reproducing the reset in a loop
-> helped identifying what could possibly go wrong. The sja1000 is a single
-> Tx queue device, which leverages the netdev helpers to process one Tx
-> message at a time. The logic is: the queue is stopped, the message sent
-> to the transceiver, once properly transmitted the controller sets a
-> status bit which triggers an interrupt, in the interrupt handler the
-> transmission status is checked and the queue woken up. Unfortunately, if
-> an overrun happens, we might perform the soft reset precisely between
-> the transmission of the buffer to the transceiver and the advent of the
-> transmission status bit. We would then stop the transmission operation
-> without re-enabling the queue, leading to all further transmissions to
-> be ignored.
->=20
-> The reset interrupt can only happen while the device is "open", and
-> after a reset we anyway want to resume normal operations, no matter if a
-> packet to transmit got dropped in the process, so we shall wake up the
-> queue. Restarting the device and waking-up the queue is exactly what
-> sja1000_set_mode(CAN_MODE_START) does. In order to be consistent about
-> the queue state, we must acquire a lock both in the reset handler and in
-> the transmit path to ensure serialization of both operations. As the
-> reset handler might still be called after the transmission of a frame to
-> the transceiver but before it actually gets transmitted, we must ensure
-> we don't leak the skb, so we free it (the behavior is consistent, no
-> matter if there was an skb on the stack or not).
->=20
-> Fixes: 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with a soft re=
-set on Renesas SoCs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> ---
->=20
-> Changes in v2:
-> * As Marc sugested, use netif_tx_{,un}lock() instead of our own
->   spin_lock.
->=20
->  drivers/net/can/sja1000/sja1000.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/=
-sja1000.c
-> index ae47fc72aa96..91e3fb3eed20 100644
-> --- a/drivers/net/can/sja1000/sja1000.c
-> +++ b/drivers/net/can/sja1000/sja1000.c
-> @@ -297,6 +297,7 @@ static netdev_tx_t sja1000_start_xmit(struct sk_buff =
-*skb,
->  	if (can_dropped_invalid_skb(dev, skb))
->  		return NETDEV_TX_OK;
-> =20
-> +	netif_tx_lock(dev);
->  	netif_stop_queue(dev);
-> =20
->  	fi =3D dlc =3D cf->can_dlc;
-> @@ -335,6 +336,8 @@ static netdev_tx_t sja1000_start_xmit(struct sk_buff =
-*skb,
-> =20
->  	sja1000_write_cmdreg(priv, cmd_reg_val);
-> =20
-> +	netif_tx_unlock(dev);
-> +
+x86/srso: Add SRSO mitigation for Hygon processors
 
-I think netif_tx_lock() should be used in a different way. As far as I
-understand it, you should call it only in the sja1000_reset_interrupt(),
-where you want to tx path to interfere.
+Add mitigation for the speculative return stack overflow vulnerability
+which exists on Hygon processors too.
 
-Please test the new code with lockdep enabled.
+Signed-off-by: Pu Wen <puwen@hygon.cn>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/tencent_4A14812842F104E93AA722EC939483CEFF05@qq.com
+---
+ arch/x86/kernel/cpu/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Marc
-
->  	return NETDEV_TX_OK;
->  }
-> =20
-> @@ -396,7 +399,13 @@ static irqreturn_t sja1000_reset_interrupt(int irq, =
-void *dev_id)
->  	struct net_device *dev =3D (struct net_device *)dev_id;
-> =20
->  	netdev_dbg(dev, "performing a soft reset upon overrun\n");
-> -	sja1000_start(dev);
-> +
-> +	netif_tx_lock(dev);
-> +
-> +	can_free_echo_skb(dev, 0);
-> +	sja1000_set_mode(dev, CAN_MODE_START);
-> +
-> +	netif_tx_unlock(dev);
-> =20
->  	return IRQ_HANDLED;
->  }
-> --=20
-> 2.34.1
->=20
->=20
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---ubhnszgeqgcjawt6
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmUVMOoACgkQvlAcSiqK
-BOglxgf+Kwi7Em2vSA6/cuQGPluAhGuXsyUHgOY0hkuRW47y63FhXrkUTylD0/Jy
-Bf5WX2gm+fFQZvo3BJphPalQq7pQopv4ewDBKBC1wtRWFSqQqaFS86eIzQ2su19f
-Ox9QliSCS6QI91K+5eZguv0FnsHn48mDe076NpLUrERsQjb0M9ocxjeNChknqk+3
-JZQILGjmF/moHS8oISZj6YCQ8dj/EnBZVieKJFWHunbxqep2Q9U/j897apUjOGXr
-N1Okes5SIA+ou51FxRgR/jhywyZUIjyMN0uNc3K5lufHQHKBt0GKqyTIZCzrYd+X
-maJNukSC0G55y55Gx2ZkNC4iO2mljQ==
-=Pj/g
------END PGP SIGNATURE-----
-
---ubhnszgeqgcjawt6--
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 382d4e6..4e5ffc8 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1303,7 +1303,7 @@ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
+ 	VULNBL_AMD(0x15, RETBLEED),
+ 	VULNBL_AMD(0x16, RETBLEED),
+ 	VULNBL_AMD(0x17, RETBLEED | SMT_RSB | SRSO),
+-	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB),
++	VULNBL_HYGON(0x18, RETBLEED | SMT_RSB | SRSO),
+ 	VULNBL_AMD(0x19, SRSO),
+ 	{}
+ };
