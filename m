@@ -2,68 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BEF77B20FE
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 17:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65B127B21A0
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 17:46:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231559AbjI1PUo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 11:20:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54874 "EHLO
+        id S232025AbjI1Pqf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 11:46:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231699AbjI1PUo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 11:20:44 -0400
-Received: from mail-qv1-xf30.google.com (mail-qv1-xf30.google.com [IPv6:2607:f8b0:4864:20::f30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAEE2E5
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 08:20:40 -0700 (PDT)
-Received: by mail-qv1-xf30.google.com with SMTP id 6a1803df08f44-65b0216b067so42883256d6.1
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 08:20:40 -0700 (PDT)
+        with ESMTP id S231922AbjI1Pqe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 11:46:34 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEF35C0
+        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 08:46:31 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d7fd4c23315so20546178276.2
+        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 08:46:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695914440; x=1696519240; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AETJrlvFJ0cIdb5tq1g9p7AMJQG7QgUXqW2J3LTW7GM=;
-        b=SDAEt/5oQvcGQcX7jyxV2xwYlUeqWI8WRqO3avzg4GP04CDmhs1/6VYNU82Cu7ns2+
-         RUt5mr8vVdTSFLZS5HYBOatbL6XweKzj9+QU/cHDLzzsMvSoFl9EIPkC7OHmMyuSFG5+
-         pFd6iGfUiIkNH2pNG+A6E2dHyecuUagg4n0YeWVKU4l+9ZTafbMsHLbRVEEz0LpN5dQ5
-         e5+cMnnlXWQYA3AbIYqX82/m0mcNbNMw+HwbENEQwah20Gw9MIFqxENZEpi9bs3s8RX9
-         +Rp+UAtwnBl1HBiJ/bU3KbZalpcZX6KQ+qXOvrhv3wFFcyxjPFAOpLo3sE+XOKx47Fk1
-         A0Cg==
+        d=google.com; s=20230601; t=1695915991; x=1696520791; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UkV6DJLEp14NQoEGpYmTcHsFBbLNhclSblSFOKPN4t4=;
+        b=bcCmjl+EprAvjn1eZIfev+s5ctSXE3a39Ncr6++juAnghiOXv2Qlact2Hyll1lFRRS
+         Kmj/SzC8F9qnZJoJMlpP9/Oo1grFz3Pxpys6yxsh0MaWGe3UUpzHN+Sf7iV9AhDKjoxE
+         INpSsKiyyyVMY0iSZyFkrSA764NGY/lXnlBsUOiCfmA4DFisVv3nMg8jeY0xP4QisesH
+         JTnBLXZgDKJCU17I4l+eZ6ELoHj5yZZLk0i4Y0IOa1ycwWUJzw9Ulo5syLYveXlDCPFG
+         U0MeOAsaZmoXPPokgmVIRF9TmFDc5nt2NFR8lEWfr7ZunFn1C9zzY2HHPji43YrNdmJG
+         ttrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695914440; x=1696519240;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AETJrlvFJ0cIdb5tq1g9p7AMJQG7QgUXqW2J3LTW7GM=;
-        b=Y50DxDKF6SBfN2nrSiKnG1Ex/l0tzRhMosU2KvLXATccgfGRMv52N0gRQrYdcJHeRx
-         82evvQQ9HLAVtef8Zg6v6Lk9z1y5MNWJRvBpHk+FNMNI3S0CQmk7zFzuf9/wjWFoPFaE
-         oSGSKBmgUSZUF4vvrSSifDo/xa0bZhNYczvwibXJEV/SvkxrOuMlHT8XQfDk5f6ZcIaf
-         vLkIkucQ8AR5InWTg957StCsJGnHlPdZWc2GMnA5xSUtmq0LLmEjV7UNkMC0eyroKnim
-         IgXz5R3rTupsZWgz/AOa4pJt2+ilqPfprPwLwuuvq5cVzTCuZahPb2pTGR1WHmCp3ubO
-         WVbQ==
-X-Gm-Message-State: AOJu0YzRIcMr3dLH3YhmpxqCwnoSqdCjOHxeOrPLnBpVIf9BEqofLMgW
-        pn3doYBEj6sbR+8sL9aTzTNI8VRvIe4LGliCAGTM788Xa0olFQ==
-X-Google-Smtp-Source: AGHT+IGBzt2VnTIFh/akvUGAGezV0EEpqe6DzZVnHJCqNHU31whUJvU8YnPWWJvzlzMFV8jyNaATUg8e0xzrjKUq72E=
-X-Received: by 2002:a0c:ab10:0:b0:648:190c:bdd5 with SMTP id
- h16-20020a0cab10000000b00648190cbdd5mr1387953qvb.9.1695914439717; Thu, 28 Sep
- 2023 08:20:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <CACW2H-5W6KE6UJ8HwD6r9pOx4Ow_W6ACZyg9LpTykjU6tHHB3g@mail.gmail.com>
- <9c208dd856b82a4012370b201c08b2d73a6c130e.camel@kernel.org> <CACW2H-7-KyYrAcnO+QKBV9fs4mGfzOpKvAutbj6hkq7D0m+EzQ@mail.gmail.com>
-In-Reply-To: <CACW2H-7-KyYrAcnO+QKBV9fs4mGfzOpKvAutbj6hkq7D0m+EzQ@mail.gmail.com>
-From:   Simon Kaegi <simon.kaegi@gmail.com>
-Date:   Thu, 28 Sep 2023 11:20:28 -0400
-Message-ID: <CACW2H-4ABAXpPrUVAE=THOpJNzED_CkcBgysCw6PtVM2vGSd+Q@mail.gmail.com>
-Subject: Re: [REGRESSION] EINVAL with mount in selinux_set_mnt_opts when
- mounting in a guest vm with selinux disabled
-To:     Jeff Layton <jlayton@kernel.org>
-Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
-        dhowells@redhat.com, jpiotrowski@linux.microsoft.com,
-        brauner@kernel.org, sashal@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        d=1e100.net; s=20230601; t=1695915991; x=1696520791;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UkV6DJLEp14NQoEGpYmTcHsFBbLNhclSblSFOKPN4t4=;
+        b=cIl3VdHeiTEhoCcIxt3OLkKX5oxvMjOiTtsbKb44YxIS6WkPM/fnWqmp846R5U9Aho
+         larM8p7bTMrzEDKlLlmfMB+yyCVLjfEmoPf4WLymvA8aFhbDKfjy4aaX+XjgZQXtp6np
+         QMm1bafX1wSZBG7zBLp8RPWyySJ/Nb9SCCVexQNlZC+2iRjrPjS0/t4UsvefhophQ7K1
+         TndRQuWbBGAKQ7jTmRNcT7tFyoIx18O6lFfgmHngAYvq9YXUwpu4T3CBWFPySq+wzJWH
+         5BP77aqh0x8YCuZaA4MjolgVn9yrgaLfkX7pWMr1/YegZ7d6P8SyQuke6Jz5MOOpTopv
+         Pyqw==
+X-Gm-Message-State: AOJu0YyHzIvFyglTaVSfD27b9czFkceextkkqB2gnWV+4AR7AhBHO9Qg
+        8iGrn2BSOLZiOlCkPV1YTVzLFqfIdvQ=
+X-Google-Smtp-Source: AGHT+IEWX4T56HPfxAmtAicLu3EcKVpChcE7iMMF3BlcUKBkp8bJf66fPphCxJhGyetbdNcj2NdIprAzUe8=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a25:5f4d:0:b0:d7b:8acc:beb8 with SMTP id
+ h13-20020a255f4d000000b00d7b8accbeb8mr24990ybm.2.1695915990966; Thu, 28 Sep
+ 2023 08:46:30 -0700 (PDT)
+Date:   Thu, 28 Sep 2023 08:46:29 -0700
+In-Reply-To: <20230928150428.199929-3-mlevitsk@redhat.com>
+Mime-Version: 1.0
+References: <20230928150428.199929-1-mlevitsk@redhat.com> <20230928150428.199929-3-mlevitsk@redhat.com>
+Message-ID: <ZRWf1Z7JCMUT92zt@google.com>
+Subject: Re: [PATCH 2/5] x86: KVM: SVM: add support for Invalid IPI Vector interception
+From:   Sean Christopherson <seanjc@google.com>
+To:     Maxim Levitsky <mlevitsk@redhat.com>
+Cc:     kvm@vger.kernel.org, Will Deacon <will@kernel.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org,
+        Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
+        Ingo Molnar <mingo@redhat.com>, Joerg Roedel <joro@8bytes.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,69 +74,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Ah... I see it's already in 6.1.55 -- tested that and confirmed we're all g=
-ood.
-Thanks.
--Simon
+On Thu, Sep 28, 2023, Maxim Levitsky wrote:
+> In later revisions of AMD's APM, there is a new 'incomplete IPI' exit code:
+> 
+> "Invalid IPI Vector - The vector for the specified IPI was set to an
+> illegal value (VEC < 16)"
+> 
+> Note that tests on Zen2 machine show that this VM exit doesn't happen and
+> instead AVIC just does nothing.
+> 
+> Add support for this exit code by doing nothing, instead of filling
+> the kernel log with errors.
+> 
+> Also replace an unthrottled 'pr_err()' if another unknown incomplete
+> IPI exit happens with WARN_ON_ONCE()
+> 
+> (e.g in case AMD adds yet another 'Invalid IPI' exit reason)
+> 
+> Cc: <stable@vger.kernel.org>
+> 
+> Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+> ---
+>  arch/x86/include/asm/svm.h | 1 +
+>  arch/x86/kvm/svm/avic.c    | 5 ++++-
+>  2 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+> index 19bf955b67e0da0..3ac0ffc4f3e202b 100644
+> --- a/arch/x86/include/asm/svm.h
+> +++ b/arch/x86/include/asm/svm.h
+> @@ -268,6 +268,7 @@ enum avic_ipi_failure_cause {
+>  	AVIC_IPI_FAILURE_TARGET_NOT_RUNNING,
+>  	AVIC_IPI_FAILURE_INVALID_TARGET,
+>  	AVIC_IPI_FAILURE_INVALID_BACKING_PAGE,
+> +	AVIC_IPI_FAILURE_INVALID_IPI_VECTOR,
+>  };
+>  
+>  #define AVIC_PHYSICAL_MAX_INDEX_MASK	GENMASK_ULL(8, 0)
+> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+> index 2092db892d7d052..c44b65af494e3ff 100644
+> --- a/arch/x86/kvm/svm/avic.c
+> +++ b/arch/x86/kvm/svm/avic.c
+> @@ -529,8 +529,11 @@ int avic_incomplete_ipi_interception(struct kvm_vcpu *vcpu)
+>  	case AVIC_IPI_FAILURE_INVALID_BACKING_PAGE:
+>  		WARN_ONCE(1, "Invalid backing page\n");
+>  		break;
+> +	case AVIC_IPI_FAILURE_INVALID_IPI_VECTOR:
+> +		/* Invalid IPI with vector < 16 */
+> +		break;
+>  	default:
+> -		pr_err("Unknown IPI interception\n");
+> +		WARN_ONCE(1, "Unknown avic incomplete IPI interception\n");
 
-On Thu, Sep 28, 2023 at 10:43=E2=80=AFAM Simon Kaegi <simon.kaegi@gmail.com=
-> wrote:
->
-> Thanks Jeff. I've confirmed that Ondrej's patch fixes the issue we
-> were having. Definitely would be great to get this in 6.1.x. soon.
-> -Simon
->
-> On Wed, Sep 27, 2023 at 4:21=E2=80=AFPM Jeff Layton <jlayton@kernel.org> =
-wrote:
-> >
-> > On Wed, 2023-09-27 at 15:55 -0400, Simon Kaegi wrote:
-> > > #regzbot introduced v6.1.52..v6.1.53
-> > > #regzbot introduced: ed134f284b4ed85a70d5f760ed0686e3cd555f9b
-> > >
-> > > We hit this regression when updating our guest vm kernel from 6.1.52 =
-to
-> > > 6.1.53 -- bisecting this problem was introduced
-> > > in ed134f284b4ed85a70d5f760ed0686e3cd555f9b -- vfs, security: Fix aut=
-omount
-> > > superblock LSM init problem, preventing NFS sb sharing --
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/comm=
-it/?h=3Dv6.1.53&id=3Ded134f284b4ed85a70d5f760ed0686e3cd555f9b
-> > >
-> > > We're getting an EINVAL in `selinux_set_mnt_opts` in
-> > > `security/selinux/hooks.c` when mounting a folder in a guest VM where
-> > > selinux is disabled. We're mounting from another folder that we suspe=
-ct has
-> > > selinux labels set from the host. The EINVAL is getting set in the
-> > > following block...
-> > > ```
-> > > if (!selinux_initialized(&selinux_state)) {
-> > >         if (!opts) {
-> > >                 /* Defer initialization until selinux_complete_init,
-> > >                         after the initial policy is loaded and the se=
-curity
-> > >                         server is ready to handle calls. */
-> > >                 goto out;
-> > >         }
-> > >         rc =3D -EINVAL;
-> > >         pr_warn("SELinux: Unable to set superblock options "
-> > >                 "before the security server is initialized\n");
-> > >         goto out;
-> > > }
-> > > ```
-> > > We can reproduce 100% of the time but don't currently have a simple
-> > > reproducer as the problem was found in our build service which uses
-> > > kata-containers (with cloud-hypervisor and rootfs mounted via virtio-=
-blk).
-> > >
-> > > We have not checked the mainline as we currently are tied to 6.1.x.
-> > >
-> > > -Simon
-> >
-> > This sounds very similar to the bug that Ondrej fixed here:
-> >
-> >     https://lore.kernel.org/selinux/20230911142358.883728-1-omosnace@re=
-dhat.com/
-> >
-> > You may want to try that patch and see if it helps.
-> > --
-> > Jeff Layton <jlayton@kernel.org>
+Hrm, I'm not sure KVM should WARN here.  E.g. if someone runs with panic_on_warn=1,
+running on new hardware might crash the host.  I hope that AMD is smart enough to
+make any future failure types "optional" in the sense that they're either opt-in,
+or are largely informational-only (like AVIC_IPI_FAILURE_INVALID_IPI_VECTOR).
+
+I think switching to vcpu_unimpl(), or maybe even pr_err_once(), is more appropriate.
