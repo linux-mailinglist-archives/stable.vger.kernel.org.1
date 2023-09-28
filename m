@@ -2,176 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D808F7B23EF
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 19:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A9187B23FB
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 19:35:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231384AbjI1RaO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 13:30:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42612 "EHLO
+        id S231935AbjI1RfB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 13:35:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231584AbjI1RaM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 13:30:12 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D411A5;
-        Thu, 28 Sep 2023 10:30:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E69C433C9;
-        Thu, 28 Sep 2023 17:30:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1695922206;
-        bh=jXvSDRKMLltIn4c0oMq0mM/6OU4Eg9P2bUNhe3fMx4o=;
-        h=Date:To:From:Subject:From;
-        b=QzvV/m0T00kBgHDVc3OsjsSKVpN5KAQR8mdN4uta9Onpl8OR+f/7W3j2QgtujvaPS
-         n5XRaFcnIn+xnBxWoOiYAfZ0zjmUxalU7cp+zE5fUCN+H2auRA4NgA+EAmp+qj7xqZ
-         EcmfbSjGyoQE9IcWf8l2wKHtjfSQN8yblKxC3iQU=
-Date:   Thu, 28 Sep 2023 10:30:06 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        jannh@google.com, Liam.Howlett@oracle.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mmap-fix-error-paths-with-dup_anon_vma.patch removed from -mm tree
-Message-Id: <20230928173006.D5E69C433C9@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229478AbjI1RfA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 13:35:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C5FA19E
+        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 10:34:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695922450;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=oOqP2ppbORxupNPRbUHGH6nf4SvE0P2uUesTtFRc8Ik=;
+        b=FZT/E3pOWqsQ1PGe7FiamhZKRvhJrb9CjbCv50Vqu6n7bRTMnWOmiZIpeksb95fm0nrMa6
+        27TJr4vY5TNHxtq/buyx4OcXVwXlJABdvrTpLy/YJi0eMCJBTKEsGnav5kiAHN+0Q7Pxcs
+        4g/1cK2eMvnf+z1jTOzTAtUIxnOT/Mw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-436-Df1GUGMiNMW4qntqZxmpqQ-1; Thu, 28 Sep 2023 13:34:04 -0400
+X-MC-Unique: Df1GUGMiNMW4qntqZxmpqQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6EBE92810D42;
+        Thu, 28 Sep 2023 17:34:03 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.45.226.141])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 723E314171B6;
+        Thu, 28 Sep 2023 17:33:59 +0000 (UTC)
+From:   Maxim Levitsky <mlevitsk@redhat.com>
+To:     kvm@vger.kernel.org
+Cc:     iommu@lists.linux.dev, "H. Peter Anvin" <hpa@zytor.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Maxim Levitsky <mlevitsk@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, Joerg Roedel <joro@8bytes.org>,
+        x86@kernel.org,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        linux-kernel@vger.kernel.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Will Deacon <will@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Robin Murphy <robin.murphy@arm.com>, stable@vger.kernel.org
+Subject: [PATCH v2 1/4] x86: KVM: SVM: always update the x2avic msr interception
+Date:   Thu, 28 Sep 2023 20:33:51 +0300
+Message-Id: <20230928173354.217464-2-mlevitsk@redhat.com>
+In-Reply-To: <20230928173354.217464-1-mlevitsk@redhat.com>
+References: <20230928173354.217464-1-mlevitsk@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+The following problem exists since x2avic was enabled in the KVM:
 
-The quilt patch titled
-     Subject: mmap: fix error paths with dup_anon_vma()
-has been removed from the -mm tree.  Its filename was
-     mmap-fix-error-paths-with-dup_anon_vma.patch
+svm_set_x2apic_msr_interception is called to enable the interception of
+the x2apic msrs.
 
-This patch was dropped because an updated version will be merged
+In particular it is called at the moment the guest resets its apic.
 
-------------------------------------------------------
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: mmap: fix error paths with dup_anon_vma()
-Date: Wed, 27 Sep 2023 12:07:45 -0400
+Assuming that the guest's apic was in x2apic mode, the reset will bring
+it back to the xapic mode.
 
-When the calling function fails after the dup_anon_vma(), the duplication
-of the anon_vma is not being undone.  Add the necessary unlink_anon_vma()
-call to the error paths that are missing them.
+The svm_set_x2apic_msr_interception however has an erroneous check for
+'!apic_x2apic_mode()' which prevents it from doing anything in this case.
 
-This issue showed up during inspection of the error path in vma_merge()
-for an unrelated vma iterator issue.
+As a result of this, all x2apic msrs are left unintercepted, and that
+exposes the bare metal x2apic (if enabled) to the guest.
+Oops.
 
-Users may experience increased memory usage, which may be problematic as
-the failure would likely be caused by a low memory situation.
+Remove the erroneous '!apic_x2apic_mode()' check to fix that.
 
-Link: https://lkml.kernel.org/r/20230927160746.1928098-3-Liam.Howlett@oracle.com
-Fixes: d4af56c5c7c6 ("mm: start tracking VMAs with maple tree")
-Cc: Jann Horn <jannh@google.com>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This fixes CVE-2023-5090
+
+Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
 ---
+ arch/x86/kvm/svm/svm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
- mm/mmap.c |   20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
-
---- a/mm/mmap.c~mmap-fix-error-paths-with-dup_anon_vma
-+++ a/mm/mmap.c
-@@ -587,7 +587,7 @@ again:
-  * Returns: 0 on success.
-  */
- static inline int dup_anon_vma(struct vm_area_struct *dst,
--			       struct vm_area_struct *src)
-+		struct vm_area_struct *src, struct vm_area_struct **dup)
- {
- 	/*
- 	 * Easily overlooked: when mprotect shifts the boundary, make sure the
-@@ -597,6 +597,7 @@ static inline int dup_anon_vma(struct vm
- 	if (src->anon_vma && !dst->anon_vma) {
- 		vma_assert_write_locked(dst);
- 		dst->anon_vma = src->anon_vma;
-+		*dup = dst;
- 		return anon_vma_clone(dst, src);
- 	}
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 9507df93f410a63..acdd0b89e4715a3 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -913,8 +913,7 @@ void svm_set_x2apic_msr_interception(struct vcpu_svm *svm, bool intercept)
+ 	if (intercept == svm->x2avic_msrs_intercepted)
+ 		return;
  
-@@ -624,6 +625,7 @@ int vma_expand(struct vma_iterator *vmi,
- 	       unsigned long start, unsigned long end, pgoff_t pgoff,
- 	       struct vm_area_struct *next)
- {
-+	struct vm_area_struct *anon_dup = NULL;
- 	bool remove_next = false;
- 	struct vma_prepare vp;
+-	if (!x2avic_enabled ||
+-	    !apic_x2apic_mode(svm->vcpu.arch.apic))
++	if (!x2avic_enabled)
+ 		return;
  
-@@ -633,7 +635,7 @@ int vma_expand(struct vma_iterator *vmi,
- 
- 		remove_next = true;
- 		vma_start_write(next);
--		ret = dup_anon_vma(vma, next);
-+		ret = dup_anon_vma(vma, next, &anon_dup);
- 		if (ret)
- 			return ret;
- 	}
-@@ -661,6 +663,8 @@ int vma_expand(struct vma_iterator *vmi,
- 	return 0;
- 
- nomem:
-+	if (anon_dup)
-+		unlink_anon_vmas(anon_dup);
- 	return -ENOMEM;
- }
- 
-@@ -860,6 +864,7 @@ struct vm_area_struct *vma_merge(struct
- {
- 	struct vm_area_struct *curr, *next, *res;
- 	struct vm_area_struct *vma, *adjust, *remove, *remove2;
-+	struct vm_area_struct *anon_dup = NULL;
- 	struct vma_prepare vp;
- 	pgoff_t vma_pgoff;
- 	int err = 0;
-@@ -927,18 +932,18 @@ struct vm_area_struct *vma_merge(struct
- 		vma_start_write(next);
- 		remove = next;				/* case 1 */
- 		vma_end = next->vm_end;
--		err = dup_anon_vma(prev, next);
-+		err = dup_anon_vma(prev, next, &anon_dup);
- 		if (curr) {				/* case 6 */
- 			vma_start_write(curr);
- 			remove = curr;
- 			remove2 = next;
- 			if (!next->anon_vma)
--				err = dup_anon_vma(prev, curr);
-+				err = dup_anon_vma(prev, curr, &anon_dup);
- 		}
- 	} else if (merge_prev) {			/* case 2 */
- 		if (curr) {
- 			vma_start_write(curr);
--			err = dup_anon_vma(prev, curr);
-+			err = dup_anon_vma(prev, curr, &anon_dup);
- 			if (end == curr->vm_end) {	/* case 7 */
- 				remove = curr;
- 			} else {			/* case 5 */
-@@ -954,7 +959,7 @@ struct vm_area_struct *vma_merge(struct
- 			vma_end = addr;
- 			adjust = next;
- 			adj_start = -(prev->vm_end - addr);
--			err = dup_anon_vma(next, prev);
-+			err = dup_anon_vma(next, prev, &anon_dup);
- 		} else {
- 			/*
- 			 * Note that cases 3 and 8 are the ONLY ones where prev
-@@ -1018,6 +1023,9 @@ struct vm_area_struct *vma_merge(struct
- 	return res;
- 
- prealloc_fail:
-+	if (anon_dup)
-+		unlink_anon_vmas(anon_dup);
-+
- anon_vma_fail:
- 	if (merge_prev)
- 		vma_next(vmi);
-_
-
-Patches currently in -mm which might be from Liam.Howlett@oracle.com are
-
-maple_tree-add-mas_active-to-detect-in-tree-walks.patch
-maple_tree-add-mas_underflow-and-mas_overflow-states.patch
-mmap-add-clarifying-comment-to-vma_merge-code.patch
+ 	for (i = 0; i < MAX_DIRECT_ACCESS_MSRS; i++) {
+-- 
+2.26.3
 
