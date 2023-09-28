@@ -2,82 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A4097B150B
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 09:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 407757B1540
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 09:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230373AbjI1Hie (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 03:38:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52492 "EHLO
+        id S230265AbjI1HqG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 03:46:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230394AbjI1Hic (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 03:38:32 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8200DBE
-        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 00:38:28 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1qllbM-0007jY-JW; Thu, 28 Sep 2023 09:38:24 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1qllbM-009WiC-2O; Thu, 28 Sep 2023 09:38:24 +0200
-Received: from ore by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1qllbL-00BpgX-WC; Thu, 28 Sep 2023 09:38:24 +0200
-Date:   Thu, 28 Sep 2023 09:38:23 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Robin van der Gracht <robin@protonic.nl>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linux-can@vger.kernel.org, kernel@pengutronix.de,
-        Sili Luo <rootlab@huawei.com>
-Subject: Re: [PATCH v1] can: j1939: Fix UAF in j1939_sk_match_filter during
- setsockopt(SO_J1939_FILTER)
-Message-ID: <20230928073823.GA2820185@pengutronix.de>
-References: <20230927161456.82772-1-o.rempel@pengutronix.de>
+        with ESMTP id S229605AbjI1HqF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 03:46:05 -0400
+Received: from mail.marketnova.pl (mail.marketnova.pl [51.38.127.96])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F6497
+        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 00:46:02 -0700 (PDT)
+Received: by mail.marketnova.pl (Postfix, from userid 1002)
+        id 2CFD4A549F; Thu, 28 Sep 2023 07:45:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marketnova.pl;
+        s=mail; t=1695887160;
+        bh=q6g+ObtCV61LlnEBi7yLnSiOU+IF64224rZgvBJLEss=;
+        h=Date:From:To:Subject:From;
+        b=FAc2mmpoNKP7RlzEvF1CpYgfSxYzP2DE9R8gDJKS4+z9/79NdlcuPbxHcDSX6uyUc
+         RcfiayM1GZPCJuzCjm6XA3oeXAlG5ljNIskxZjpd7Skwj/qXFJDDui3Yysazg/aAjf
+         nuS1qW5Vf1pMxvgIxxFvJy9XpvGNsp8kwS6KeKcMFvUxLpbQX0+j18UUu4j0ZFVhGk
+         2nrlye2OPn8i3JzSUgzWMoIdlwWwvAIhAw8y/wgycgUAKS7sU4QT1FK/C16ur7VAnS
+         ejR6xLBB16btCVggWj0sqQnlRIUeCUR8UzMTQYE1QEZLcyTzI9hPBKH07vlIM+l1Ky
+         QFqTrNn7+Bsvw==
+Received: by mail.marketnova.pl for <stable@vger.kernel.org>; Thu, 28 Sep 2023 07:45:32 GMT
+Message-ID: <20230928064500-0.1.cc.1am9g.0.9p8j5703jb@marketnova.pl>
+Date:   Thu, 28 Sep 2023 07:45:32 GMT
+From:   "Wiktor Nurek" <wiktor.nurek@marketnova.pl>
+To:     <stable@vger.kernel.org>
+Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
+X-Mailer: mail.marketnova.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230927161456.82772-1-o.rempel@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 27, 2023 at 06:14:56PM +0200, Oleksij Rempel wrote:
-> Lock jsk->sk to prevent UAF when setsockopt(..., SO_J1939_FILTER, ...)
-> modifies jsk->filters while receiving packets.
+Dzie=C5=84 dobry,
 
-...
+chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
+skania nowych zlece=C5=84 ze strony www.
 
-> Fixes: 9d71dd0c70099 ("can: add support of SAE J1939 protocol")
-> Reported-by: Sili Luo <rootlab@huawei.com>
-> Suggested-by: Sili Luo <rootlab@huawei.com>
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Cc: stable@vger.kernel.org
+Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
+, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
+=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
+jonowania strony w Google.
 
-Tested-by: Sili Luo <rootlab@huawei.com>
+Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+Pozdrawiam serdecznie
+Wiktor Nurek
