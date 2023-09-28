@@ -2,117 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF74F7B243C
-	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 19:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EF957B26BB
+	for <lists+stable@lfdr.de>; Thu, 28 Sep 2023 22:41:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231377AbjI1RnI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 13:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56884 "EHLO
+        id S229478AbjI1Ult (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 16:41:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjI1RnI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 13:43:08 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37188DD;
-        Thu, 28 Sep 2023 10:43:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2965C433C7;
-        Thu, 28 Sep 2023 17:43:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1695922985;
-        bh=ECEEYqLWAZwOkfbAxXJu7dButZ2nV/3thHHIm3kFRBc=;
-        h=Date:To:From:Subject:From;
-        b=nM4VYCi0a9xsWB76CLYHFkpCaSMnfixOpwHoTwEV/eBDW3dk2Q7y6rJ+mOQ7jWkoT
-         cbKl15T9Iir0pnOud1Qntpm/XUxYH39L+DTJdIk50Muo8AL8W8jBT3YO4wMvrBndKE
-         1DytgU8pvzePd74VLJaQZb/af6zwUnyI1yAB3fpk=
-Date:   Thu, 28 Sep 2023 10:43:05 -0700
-To:     mm-commits@vger.kernel.org, yikebaer61@gmail.com,
-        stable@vger.kernel.org, lstoakes@gmail.com,
-        Liam.Howlett@oracle.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-mempolicy-fix-set_mempolicy_home_node-previous-vma-pointer.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230928174305.C2965C433C7@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230251AbjI1Uls (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 16:41:48 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AF0F19C
+        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 13:41:47 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-79fa7e33573so381857739f.0
+        for <stable@vger.kernel.org>; Thu, 28 Sep 2023 13:41:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695933706; x=1696538506; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jIWceKcbN6JDqokRfv7C9OS6f1Cw+cC7U+PN8WoJO5c=;
+        b=hipZ3NXiBPxaw5zNmWgoL01S518ZEt3t82wpW23zRmjXeHJlWaDdawnX8o/tfyPnbS
+         F/JqdRx1NlDBeNcKPy3dreAEkRRIBEi9RtC16EQg30traAVGOiR+1O6O3GVIkVzgq5NI
+         +eRy0vX8Gh8soi1TshUUi1WOCn6GTjVq1ixObcgBk392FqfVyKVqdpV5SyvHeoS2LYR0
+         tDU5ORbVDHAn+kSEbDQSQrxf+MOSHsuR746Oz0msGhm0zaLVIwr4t8vE43SdZwQj0/9v
+         Z3XNbNaOL3dw9Flg7e6b4ETXQeC3AZTHY/qMX8dv6ji0ebD4kRFYXQ6+2BKOOS7cGMFW
+         SY1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695933706; x=1696538506;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jIWceKcbN6JDqokRfv7C9OS6f1Cw+cC7U+PN8WoJO5c=;
+        b=Aq9bKbJBCjzL88E7w7pexWalv771xtEvozhdoLWNWvBH4cpbOSNbJsgkKxmTyZigO8
+         q4eQa42bVKE1ibh2m0cwPUePmLcukc0faZtxw5BDSUVjM4zMHlCJfeCc6kxIR4PM5Hm/
+         h7kkFbf7rBJ6s/7Ze4gKlkoAKQn2QujJbcX/MvITaqYlZ1EP91/j67SJcMuYvx7RTi4o
+         f0hRd6Fd3sfRp8pER1VtGuPqlennqa+sZ/C2TIXjaoh/XPOdPIXP2y78Y7opxzMUoGPT
+         G0eUjH1FX0+eEWwsV8My+ZrTQ9fP13BcByDcJQKU+r0eHhZkFjJ7LoJdCoZgvhUzLuke
+         EmOQ==
+X-Gm-Message-State: AOJu0YxTS8GRC9cVGITJyNPGB4+n1law/7hFzt0cNznC6g4cgBKVg5XE
+        ZqyqH8yMFsUU2i5W8S3hBZID2eqhnDUGvjiKWzakT4cTr1Y=
+X-Google-Smtp-Source: AGHT+IH0fYCwRE+aruMjDfKsDd94bfpdrwhHQK6RT+lMpXj4W+IRrM4KFxaRReAHkHrOXkCYEDcvCoZjpkIJqyVnuBo=
+X-Received: by 2002:a5d:9ed9:0:b0:783:550e:33c0 with SMTP id
+ a25-20020a5d9ed9000000b00783550e33c0mr2552736ioe.7.1695933706098; Thu, 28 Sep
+ 2023 13:41:46 -0700 (PDT)
+MIME-Version: 1.0
+From:   Namhyung Kim <namhyung@gmail.com>
+Date:   Thu, 28 Sep 2023 13:41:34 -0700
+Message-ID: <CAM9d7cggeTaXR5VBD1BoPr9TLPoE7s9YSS2y0w-PGzTMAGsFWA@mail.gmail.com>
+Subject: 6.5-stable backport request
+To:     stable@vger.kernel.org
+Cc:     Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Akemi Yagi <toracat@elrepo.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hello,
 
-The patch titled
-     Subject: mm/mempolicy: fix set_mempolicy_home_node() previous VMA pointer
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-mempolicy-fix-set_mempolicy_home_node-previous-vma-pointer.patch
+Please queue up this commit for 6.5-stable:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mempolicy-fix-set_mempolicy_home_node-previous-vma-pointer.patch
+ * commit: 88cc47e24597971b05b6e94c28a2fc81d2a8d61a
+   ("perf build: Define YYNOMEM as YYNOABORT for bison < 3.81")
+ * Author: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The recent change v6.5 series added YYNOMEM changes
+in the perf tool and it caused a build failure on machines with
+older bison.  The above commit should be applied to fix it.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: mm/mempolicy: fix set_mempolicy_home_node() previous VMA pointer
-Date: Thu, 28 Sep 2023 13:24:32 -0400
-
-The two users of mbind_range() are expecting that mbind_range() will
-update the pointer to the previous VMA, or return an error.  However,
-set_mempolicy_home_node() does not call mbind_range() if there is no VMA
-policy.  The fix is to update the pointer to the previous VMA prior to
-continuing iterating the VMAs when there is no policy.
-
-Users may experience a WARN_ON() during VMA policy updates when updating
-a range of VMAs on the home node.
-
-Link: https://lkml.kernel.org/r/20230928172432.2246534-1-Liam.Howlett@oracle.com
-Link: https://lore.kernel.org/linux-mm/CALcu4rbT+fMVNaO_F2izaCT+e7jzcAciFkOvk21HGJsmLcUuwQ@mail.gmail.com/
-Fixes: f4e9e0e69468 ("mm/mempolicy: fix use-after-free of VMA iterator")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
-Closes: https://lore.kernel.org/linux-mm/CALcu4rbT+fMVNaO_F2izaCT+e7jzcAciFkOvk21HGJsmLcUuwQ@mail.gmail.com/
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/mempolicy.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
---- a/mm/mempolicy.c~mm-mempolicy-fix-set_mempolicy_home_node-previous-vma-pointer
-+++ a/mm/mempolicy.c
-@@ -1543,8 +1543,10 @@ SYSCALL_DEFINE4(set_mempolicy_home_node,
- 		 * the home node for vmas we already updated before.
- 		 */
- 		old = vma_policy(vma);
--		if (!old)
-+		if (!old) {
-+			prev = vma;
- 			continue;
-+		}
- 		if (old->mode != MPOL_BIND && old->mode != MPOL_PREFERRED_MANY) {
- 			err = -EOPNOTSUPP;
- 			break;
-_
-
-Patches currently in -mm which might be from Liam.Howlett@oracle.com are
-
-maple_tree-add-mas_active-to-detect-in-tree-walks.patch
-maple_tree-add-mas_underflow-and-mas_overflow-states.patch
-mmap-fix-vma_iterator-in-error-path-of-vma_merge.patch
-mmap-fix-error-paths-with-dup_anon_vma.patch
-mm-mempolicy-fix-set_mempolicy_home_node-previous-vma-pointer.patch
-mmap-add-clarifying-comment-to-vma_merge-code.patch
-
+Thanks,
+Namhyung
