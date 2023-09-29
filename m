@@ -2,71 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A1BC7B3C96
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 00:28:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E47EC7B3CAF
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 00:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229962AbjI2W2s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 18:28:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42880 "EHLO
+        id S233897AbjI2WpJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 18:45:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjI2W2s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 18:28:48 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D078F1;
-        Fri, 29 Sep 2023 15:28:45 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-31f7400cb74so13250113f8f.2;
-        Fri, 29 Sep 2023 15:28:45 -0700 (PDT)
+        with ESMTP id S233809AbjI2WpI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 18:45:08 -0400
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB5D3193;
+        Fri, 29 Sep 2023 15:45:05 -0700 (PDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-31fa15f4cc6so13847246f8f.2;
+        Fri, 29 Sep 2023 15:45:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696026524; x=1696631324; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1696027504; x=1696632304; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ojq66DYQP0PdZxJFspae4896e0n9cWPdtlOpAHGIcv4=;
-        b=l+PLUQDRgcoSw73UNf1H3vHUqvdEh2nmaLM2ilHr1zgkhscDZX9fKTr+rWYHTv4L6U
-         FLQPBbgnRLIqHFxVA4uIvuGDmGpw+9Jatzc38jRzlI7wNRdyU0Hh3ZmF11hlKs47cIck
-         6N2301oDMEFMO5FgxCzQ8aXjif+oG84K7NowdgEDE7njru7iCmnEqUWTzzFJAj0V+okG
-         0LQpY1+rOdWUpZmXeFymopw12wYJenJEL1RVjrJ7Haw53gd/+6bl5gqt5vGNcn1/6Q8j
-         3vRf1zlx2ucTCRv3huEXtmxdrdU2IALFk/tYYcT0wlcXhZ4N6SK2/gnKmKdN1pBd2LAD
-         G1NQ==
+        bh=W3AZdgAbXxIxX67W7zXRgmBiBYYg4CVuMev8xbcA4Ww=;
+        b=SgVqgjgmG3hqDEMtTzJiML0bjPf1hN10cI3cOgFmpnxK4DppOSxELsmtEOf5Nwd221
+         SkCDTLL8TK65yQo85g0xhTWM2kRZ/orjOWXAT+1E//qOuCAPi0O+w9xkT8l8UCYs2W5Q
+         V6kY2og/6H93TBaqE5k5WWkdtL4IrE1cUsXnl3WWV41FcxluZs5zMKofNkR6Jp3U56zO
+         8i3PHCVhX1RG23KaBOtO1HfkoFWjeNF7oYbo2wN3fd7XSp1N4Vt88gnZUp5kqNeM8izB
+         DsqxK0k/WlD/8dQ6cERxYNe9IwdSFWmRQZGTskyCXg6bV2Nz4PCvcFgnAaAi7deYU1io
+         QpQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696026524; x=1696631324;
+        d=1e100.net; s=20230601; t=1696027504; x=1696632304;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ojq66DYQP0PdZxJFspae4896e0n9cWPdtlOpAHGIcv4=;
-        b=sT2smLrJSYSE8Smof/A9jNJ2a18YZkowoFXqFyxAEfGfr/MQRfnEX3pgagEK2tLCR9
-         ucbPa+F3RCMP9y0iPfGk/INQnKGP1+GYNviylMIdjasd76ThcTdHkDOAkVwp6xhTOss1
-         SqEBL5Lery4lahW8/qAgMRwVCwTC9F2b3fj4v+85rvsZS3+IQ6wDyY1+G97ldvzCFwIV
-         fgbt2Che2IFDq9D1dcCa9wscsWFkG2nrY5AsuSQ0Q6AJX2No9AjvJ4sjpvgPnUHktqnh
-         LmYfjxbbHD70mSAuh9hW8RyCYDbuSq1ezdUdlVP2LVAMCnlnOvNtJ+D6Xpsgc+2NC2j1
-         YeBg==
-X-Gm-Message-State: AOJu0YzYAdC6ertUW6QI9tWRkJO927znzs04boHCQWQbhx2ySH8Rr+BC
-        1LYiDD9+EBj6GOcar4VpsCQ=
-X-Google-Smtp-Source: AGHT+IE/nRAGW3TuLc3zOGLZH8EsqMxQyvoagnVPerL5NY7ZyUeIJkuWzsTdAHMsxGMYMFkK1OqeBA==
-X-Received: by 2002:a5d:4f8a:0:b0:317:5f13:5c2f with SMTP id d10-20020a5d4f8a000000b003175f135c2fmr5059956wru.0.1696026523393;
-        Fri, 29 Sep 2023 15:28:43 -0700 (PDT)
+        bh=W3AZdgAbXxIxX67W7zXRgmBiBYYg4CVuMev8xbcA4Ww=;
+        b=MX15uvAAHNCLp1LISJsmymMiSLW3jB1nX6+yKRH2+Hxbmue0TVxpifhevCCgl+WhC5
+         VgPA6EPzucrTg1Uj1lQkQ+iQVw6SXQ1V1+YzHrX5uEqf/DZJOAoPPKYYbhGu14ZsOz2W
+         YjFBG3sTCH6lwZWJcN40vKR4Q3mWpQc7hrTBEatXazcntYZ4lkVzE5TBTp7dFmHzjdEB
+         mOI2olLB66xBlEj0bZGj3pPMhevQ21cVgQ0SoetpxGAsFn2ZXoFTie8ENoJS6uNZKIMo
+         q+F2A2T+hjHLC0V7X8OF5clj11NgxAigPBL9vlwrzK0VkYzan6tePdZXKOY2yamfKyD4
+         5L6g==
+X-Gm-Message-State: AOJu0YyX8nAMp6La5WorxuL4epxN4S2U6UxkVh8CdUPCDrElLmlU5hZM
+        r8V5P2zSS8OaZuiWWSMl601dfnN2K1Q=
+X-Google-Smtp-Source: AGHT+IE7CcZqMJ7N9YJVqzwtt5ORehS/NU44ZxNTap0IgZfOtNwcEvBT3dyN1LAr+OdK1fJUX8oVOw==
+X-Received: by 2002:adf:db48:0:b0:319:6327:6adb with SMTP id f8-20020adfdb48000000b0031963276adbmr4718831wrj.70.1696027503939;
+        Fri, 29 Sep 2023 15:45:03 -0700 (PDT)
 Received: from localhost ([2a00:23c5:dc8c:8701:1663:9a35:5a7b:1d76])
-        by smtp.gmail.com with ESMTPSA id x17-20020a5d6511000000b0031fd849e797sm22328639wru.105.2023.09.29.15.28.42
+        by smtp.gmail.com with ESMTPSA id z15-20020a5d4d0f000000b00324ae863ac1sm3544532wrt.35.2023.09.29.15.45.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Sep 2023 15:28:42 -0700 (PDT)
-Date:   Fri, 29 Sep 2023 23:28:41 +0100
+        Fri, 29 Sep 2023 15:45:02 -0700 (PDT)
+Date:   Fri, 29 Sep 2023 23:45:02 +0100
 From:   Lorenzo Stoakes <lstoakes@gmail.com>
 To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Matthew Wilcox <willy@infradead.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] mmap: Fix error paths with dup_anon_vma()
-Message-ID: <843f059f-dd54-4481-b46a-e87e56274db3@lucifer.local>
-References: <20230929183041.2835469-1-Liam.Howlett@oracle.com>
- <20230929183041.2835469-3-Liam.Howlett@oracle.com>
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Yikebaer Aizezi <yikebaer61@gmail.com>
+Subject: Re: [PATCH] mm/mempolicy: Fix set_mempolicy_home_node() previous VMA
+ pointer
+Message-ID: <b88ef554-ea55-48c1-a42a-564faf8a16e6@lucifer.local>
+References: <20230928172432.2246534-1-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230929183041.2835469-3-Liam.Howlett@oracle.com>
+In-Reply-To: <20230928172432.2246534-1-Liam.Howlett@oracle.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,163 +72,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 29, 2023 at 02:30:40PM -0400, Liam R. Howlett wrote:
-> When the calling function fails after the dup_anon_vma(), the
-> duplication of the anon_vma is not being undone.  Add the necessary
-> unlink_anon_vma() call to the error paths that are missing them.
+On Thu, Sep 28, 2023 at 01:24:32PM -0400, Liam R. Howlett wrote:
+> The two users of mbind_range() are expecting that mbind_range() will
+> update the pointer to the previous VMA, or return an error.  However,
+> set_mempolicy_home_node() does not call mbind_range() if there is no VMA
+> policy.  The fix is to update the pointer to the previous VMA prior to
+> continuing iterating the VMAs when there is no policy.
 >
-> This issue showed up during inspection of the error path in vma_merge()
-> for an unrelated vma iterator issue.
+> Users may experience a WARN_ON() during VMA policy updates when updating
+> a range of VMAs on the home node.
 >
-> Users may experience increased memory usage, which may be problematic as
-> the failure would likely be caused by a low memory situation.
->
-> Fixes: d4af56c5c7c6 ("mm: start tracking VMAs with maple tree")
+> Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
+> Closes: https://lore.kernel.org/linux-mm/CALcu4rbT+fMVNaO_F2izaCT+e7jzcAciFkOvk21HGJsmLcUuwQ@mail.gmail.com/
+> Link: https://lore.kernel.org/linux-mm/CALcu4rbT+fMVNaO_F2izaCT+e7jzcAciFkOvk21HGJsmLcUuwQ@mail.gmail.com/
+> Fixes: f4e9e0e69468 ("mm/mempolicy: fix use-after-free of VMA iterator")
 > Cc: stable@vger.kernel.org
-> Cc: Jann Horn <jannh@google.com>
+> Cc: Lorenzo Stoakes <lstoakes@gmail.com>
 > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 > ---
->  mm/mmap.c | 30 ++++++++++++++++++++++--------
->  1 file changed, 22 insertions(+), 8 deletions(-)
+>  mm/mempolicy.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index acb7dea49e23..f9f0a5fe4db4 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -583,11 +583,12 @@ static inline void vma_complete(struct vma_prepare *vp,
->   * dup_anon_vma() - Helper function to duplicate anon_vma
->   * @dst: The destination VMA
->   * @src: The source VMA
-> + * @dup: Pointer to the destination VMA when successful.
->   *
->   * Returns: 0 on success.
-
-Being a bit nitpicky/refactory here, but anon_vma_clone() appears to have
-two possible return values - 0 for success, and -ENOMEM.
-
-As a result, it's not really gaining us much passing through this value.
-
-It'd be nice if dup_anon_vma() and anon_vma_clone() were therefore updated
-to instead return NULL on ENOMEM and the dst otherwise.
-
-Then we could de-clunk this whole code path, and the quite natural fact of
-'thing didn't return a pointer therefore had no memory to allocate it' fals
-out.
-
-But this isn't exactly an earth-shattering concern :)
-
->   */
->  static inline int dup_anon_vma(struct vm_area_struct *dst,
-> -			       struct vm_area_struct *src)
-> +		struct vm_area_struct *src, struct vm_area_struct **dup)
->  {
->  	/*
->  	 * Easily overlooked: when mprotect shifts the boundary, make sure the
-> @@ -595,9 +596,15 @@ static inline int dup_anon_vma(struct vm_area_struct *dst,
->  	 * anon pages imported.
->  	 */
->  	if (src->anon_vma && !dst->anon_vma) {
-> +		int ret;
-> +
->  		vma_assert_write_locked(dst);
->  		dst->anon_vma = src->anon_vma;
-> -		return anon_vma_clone(dst, src);
-> +		ret = anon_vma_clone(dst, src);
-> +		if (ret)
-> +			return ret;
-> +
-> +		*dup = dst;
->  	}
 >
->  	return 0;
-> @@ -624,6 +631,7 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	       unsigned long start, unsigned long end, pgoff_t pgoff,
->  	       struct vm_area_struct *next)
->  {
-> +	struct vm_area_struct *anon_dup = NULL;
->  	bool remove_next = false;
->  	struct vma_prepare vp;
+> For completeness, here is the syzbot reproducer so that it is available
+> from the mailing list:
 >
-> @@ -633,7 +641,7 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> #define _GNU_SOURCE
 >
->  		remove_next = true;
->  		vma_start_write(next);
-> -		ret = dup_anon_vma(vma, next);
-> +		ret = dup_anon_vma(vma, next, &anon_dup);
->  		if (ret)
->  			return ret;
->  	}
-> @@ -661,6 +669,8 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	return 0;
+> #include <endian.h>
+> #include <stdint.h>
+> #include <stdio.h>
+> #include <stdlib.h>
+> #include <string.h>
+> #include <sys/syscall.h>
+> #include <sys/types.h>
+> #include <unistd.h>
 >
->  nomem:
-> +	if (anon_dup)
-> +		unlink_anon_vmas(anon_dup);
->  	return -ENOMEM;
->  }
+> #ifndef __NR_set_mempolicy_home_node
+> #define __NR_set_mempolicy_home_node 450
+> #endif
 >
-> @@ -860,6 +870,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
->  {
->  	struct vm_area_struct *curr, *next, *res;
->  	struct vm_area_struct *vma, *adjust, *remove, *remove2;
-> +	struct vm_area_struct *anon_dup = NULL;
->  	struct vma_prepare vp;
->  	pgoff_t vma_pgoff;
->  	int err = 0;
-> @@ -927,18 +938,18 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
->  		vma_start_write(next);
->  		remove = next;				/* case 1 */
->  		vma_end = next->vm_end;
-> -		err = dup_anon_vma(prev, next);
-> +		err = dup_anon_vma(prev, next, &anon_dup);
->  		if (curr) {				/* case 6 */
->  			vma_start_write(curr);
->  			remove = curr;
->  			remove2 = next;
->  			if (!next->anon_vma)
-> -				err = dup_anon_vma(prev, curr);
-> +				err = dup_anon_vma(prev, curr, &anon_dup);
->  		}
->  	} else if (merge_prev) {			/* case 2 */
->  		if (curr) {
->  			vma_start_write(curr);
-> -			err = dup_anon_vma(prev, curr);
-> +			err = dup_anon_vma(prev, curr, &anon_dup);
->  			if (end == curr->vm_end) {	/* case 7 */
->  				remove = curr;
->  			} else {			/* case 5 */
-> @@ -954,7 +965,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
->  			vma_end = addr;
->  			adjust = next;
->  			adj_start = -(prev->vm_end - addr);
-> -			err = dup_anon_vma(next, prev);
-> +			err = dup_anon_vma(next, prev, &anon_dup);
->  		} else {
->  			/*
->  			 * Note that cases 3 and 8 are the ONLY ones where prev
-> @@ -968,7 +979,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
->  				vma_pgoff = curr->vm_pgoff;
->  				vma_start_write(curr);
->  				remove = curr;
-> -				err = dup_anon_vma(next, curr);
-> +				err = dup_anon_vma(next, curr, &anon_dup);
->  			}
->  		}
->  	}
-> @@ -1018,6 +1029,9 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
->  	return res;
+> int main(void)
+> {
+>                 syscall(__NR_mmap, /*addr=*/0x1ffff000ul, /*len=*/0x1000ul, /*prot=*/0ul, /*flags=*/0x32ul, /*fd=*/-1, /*offset=*/0ul);
+>         syscall(__NR_mmap, /*addr=*/0x20000000ul, /*len=*/0x1000000ul, /*prot=*/7ul, /*flags=*/0x32ul, /*fd=*/-1, /*offset=*/0ul);
+>         syscall(__NR_mmap, /*addr=*/0x21000000ul, /*len=*/0x1000ul, /*prot=*/0ul, /*flags=*/0x32ul, /*fd=*/-1, /*offset=*/0ul);
 >
->  prealloc_fail:
-> +	if (anon_dup)
-> +		unlink_anon_vmas(anon_dup);
-> +
->  anon_vma_fail:
->  	vma_iter_set(vmi, addr);
->  	vma_iter_load(vmi);
+> *(uint64_t*)0x20000000 = 0xffffffffffffff81;
+>         syscall(__NR_mbind, /*addr=*/0x20ffa000ul, /*len=*/0x4000ul, /*mode=*/2ul, /*nodemask=*/0x20000000ul, /*maxnode=*/7ul, /*flags=*/0ul);
+>         syscall(__NR_mbind, /*addr=*/0x20ff9000ul, /*len=*/0x3000ul, /*mode=*/0ul, /*nodemask=*/0ul, /*maxnode=*/0ul, /*flags=*/0ul);
+>         syscall(__NR_set_mempolicy_home_node, /*addr=*/0x20ffa000ul, /*len=*/0x4000ul, /*home_node=*/0ul, /*flags=*/0ul);
+>         return 0;
+> }
+>
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index 42b5567e3773..717d93c175f2 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+> @@ -1544,8 +1544,10 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
+>  		 * the home node for vmas we already updated before.
+>  		 */
+>  		old = vma_policy(vma);
+> -		if (!old)
+> +		if (!old) {
+> +			prev = vma;
+>  			continue;
+> +		}
+>  		if (old->mode != MPOL_BIND && old->mode != MPOL_PREFERRED_MANY) {
+>  			err = -EOPNOTSUPP;
+>  			break;
 > --
 > 2.40.1
 >
 
-Other than the nice-to-have, this looks good to me:
+It feels a bit like the prev assignment is in the wrong place, however
+looking at mbind_range() it's because of the possible merge that this is so
+I guess. Just a pity the two bits get separated, as obviously it is at this
+upper loop where the assignment of prev is most meaningful.
+
+But definitely looks correct,
 
 Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
