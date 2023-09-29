@@ -2,94 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCDF67B3274
-	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 14:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 508AE7B32F9
+	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 14:59:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232997AbjI2MZe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 08:25:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36752 "EHLO
+        id S233131AbjI2M7m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 08:59:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232834AbjI2MZd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 08:25:33 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11556BE;
-        Fri, 29 Sep 2023 05:25:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
- t=1695990303; x=1696595103; i=linosanfilippo@gmx.de;
- bh=TenpcTfOohBab9z9eVMlTxbvlVMgx1dJkTKbPhjwukk=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=WuIVEcPk5a1WvpY9W2Y8nqujqULZ6iEZ5jOY/6EQUVCdiHF/raRelwH5F2tXcj8Yo4+4ozgpN1s
- xOZqSd8/WhY4Oq9HXxL6kBkOcPeKs77tfCUD/POxZo1LaYFG+7s8BNcsN44Ckc53Pb0FQZ/PZ2GfF
- tPg32tNJhfAGXoo+dnEklFOKZLgfC1DYHrUCs24p+ZO241r8wsXg/1WhUJDlPSr6V7zrGWcZOHa7p
- MOySmRJKFZnvyqcmsObooEbCTTW2R5pFV+9SMELhrOrzprYeG6oA0sy/GkILf7StaLWh+Nd3NgyCU
- d6aiWNOtDKgZk/dG+YXQKpi3VToqXZ5A9wPA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.2.42] ([84.162.21.41]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmDIo-1rU61e3t7g-00iEo2; Fri, 29
- Sep 2023 14:25:03 +0200
-Message-ID: <f02ec46b-e5b4-9dc5-438b-a30e78fc75a2@gmx.de>
-Date:   Fri, 29 Sep 2023 14:25:00 +0200
+        with ESMTP id S232732AbjI2M7l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 08:59:41 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 551E51A4;
+        Fri, 29 Sep 2023 05:59:39 -0700 (PDT)
+Received: from [192.168.0.66] ([85.168.41.102]) by mrelayeu.kundenserver.de
+ (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1MekvT-1rKS2k0pe9-00aocR; Fri, 29 Sep 2023 14:59:27 +0200
+Message-ID: <eab8e74b-61e0-4ef4-bfb3-751047d879bc@green-communications.fr>
+Date:   Fri, 29 Sep 2023 14:59:26 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 5/6] serial: core: make sure RS485 is cannot be enabled
- when it is not supported
+User-Agent: Mozilla Thunderbird
+To:     Oleksandr Natalenko <oleksandr@natalenko.name>,
+        linux-wireless@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+References: <20230726091704.25795-1-nbd@nbd.name>
+ <12289744.O9o76ZdvQC@natalenko.name>
 Content-Language: en-US
-To:     Hugo Villeneuve <hugo@hugovil.com>
-Cc:     gregkh@linuxfoundation.org, jirislaby@kernel.org,
-        shawnguo@kernel.org, s.hauer@pengutronix.de,
-        ilpo.jarvinen@linux.intel.com, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, linux-kernel@vger.kernel.org,
-        linux-serial@vger.kernel.org, l.sanfilippo@kunbus.com,
-        lukas@wunner.de, p.rosenberger@kunbus.com, stable@vger.kernel.org
-References: <20230928221246.13689-1-LinoSanfilippo@gmx.de>
- <20230928221246.13689-6-LinoSanfilippo@gmx.de>
- <20230929081712.7824dca40828ff873b3352ff@hugovil.com>
-From:   Lino Sanfilippo <LinoSanfilippo@gmx.de>
-In-Reply-To: <20230929081712.7824dca40828ff873b3352ff@hugovil.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:84dlL3fttkr2NESD1TPWrzphRjfJQepQN6MMFoeHnH0oHQrxWYi
- j3/FagZ21ujnSqzGbiF9iJYj/JDfGXFxgymKIr9E3Rs+kcDPwrvmrHuFLx8IDr3ygc+qvCB
- d5d1LrcdbS3CLzl+mnrf6+kWkHwA6HaeFpFZsxiydgHdl/o+053kEankiZgZ8rqZGkUPwFH
- U8o0n3+2Sj0G4ZED/PbhQ==
-UI-OutboundReport: notjunk:1;M01:P0:0dBSFCuOJAU=;55FRe+lvo4AdB3hLG4D/9ePWkT+
- xssTCNduB8w+KSUrYtDRqCfLJjlHik0OLQDl2BPLxV1UnA/pSUL1kccfplyjNJ9NiIU6kxKWw
- JWgNX6q9F4fTv51BWzp1kubnoDm5sQQSYivUsFTtZ8g+7o43JCSxQCy29EbKlUXSOFlp0qCmO
- scDf/iR2AGHK9Lrqf6CGYFnr7ES0PZvcaaw1vysPgzQkXIdBj5HjFCz24PpyjOoiBnR2tX2K1
- r8BlMkaKddFsJeAdyFHK0G6+aeqwCZub9J8xwcUtmQWADDcBtWUJhh7gL2+UNinfunOGCgtDB
- bzsa1yw4Izadu42FVViv8DKhV8fr0QP7li2/bm7ocUc8n90o8kAEV2trOAlUCrOumTzpC1sil
- JeAOSxqo7wVNSmt8+muS7PBJ/5/SPeR/Bszlm5wwzZq+8M82V795XGoD37RXOTC38JCFNFt4M
- 87qnlKVw6c/dlGHiQdoI904LKp5D9mFCbttOnWthMH25yhwQd6qOXHylyc5oUd53xG+uJKED+
- 8qR3yIi0ZSwonJG01JYpNyWoIto1O8OX5kkA4u3SxKxfC8NQDgwT/bPuFLyFafrtOxKktKMs5
- 0ivCzO1AGpb6Tc4PLQSHHsyJQFlM2FDEMx2wFDeRuwcS6IUkPNxuVpl7Qs8PlcId+ZH5puUu2
- T9gnFL5ydyZv0qGKVxs+wBYFChb7jr+ZgvIAxe5FiJYIlTI9npORnznixe7vjt/OIFn/FVqyr
- ryXeJ0sVFLeFB094dQ9doTiPp0fQrbVFKs4GvpOPHrCVFN1r2xVpjVk6+X1CAIJzOM0HepM4m
- Z/1O06MQmjJ2uQh9t4eIjuQQgId1Ax9pmtYVbXfgy5SPM1Vdi6OBh/noY82Rx8DdmZ2RIW/dF
- wHBneTBOI1cNQEP4gwK2WjwCuXPCDOeqTiLueWxmLwEdExg7e5e9ytNes3BLcj/P1m8xyEi22
- IhB8Jw==
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+From:   Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>
+Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on
+ MT7915
+In-Reply-To: <12289744.O9o76ZdvQC@natalenko.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:2HYlcBW+86/1S82W+ZndkYNpC8Tl20HTFU5mCcNv0DKMhs7q22t
+ 4+tR+DFMJpLemjPKdl6/JFb2QaG9h1ZZjWSpcSlRPbJTFQ4a6ZEfctaIyCwAlfKCZGmrK53
+ o25ndXAg+mORuMKS+aNhtzJUboxhNwcyXGlpGgW56WNsLUUGdx92HB1Al6/Q45kPWYrh9FC
+ tzFkpeWa9j6CW0+lhgDDg==
+UI-OutboundReport: notjunk:1;M01:P0:KryucuwLa2g=;c17xto/1dxvPCftMFcBs8uTQcpl
+ YpacGxpRyXWbEhnqZ9XfvUBs3t204lSp5GVGvhoEJCPvCnLLd2mQyymXIsYPsV0oty5G+JClO
+ VRA10Ynxq9pBO/RYvoYQsDJbMkXQX7jJUODkqVVL/5n761HanlhM/TlzfPIgrxHDG0VBPazk3
+ Z5Hx7orgKCKcsP/2LQxj8U0RUh7gmOtLtck6+pDvkTUpXaADtjXaQyzEu16tX3x9O3pVDzanC
+ tbLmS8oOBm/Glz7UO5/a6Z3kJJwZkCnDBwLJkqIJYJnTbjN6svJq3ZVWuPKD9eEPrCe5SMDfq
+ FcEgARa3XimtdZnsS2ySQeO9y3GTwJAP2VzjnHy191FZnoJOfYyQPlbB4VITiAnkRKfnFE8gp
+ MPRcZu7LtcBzbnlm9LadPKWz++Xh9/imtQDCOdohsZB3kNADf9JxWOZioyAUYOKzQiqZf0xDc
+ I9hPPd/kElecVQliTS/EAMm1hLZvHgaDy5XvTOTTVuLL1p8lVf20W0vmZeBbwuHbubzrP3jNf
+ OSoAr/Y7raevvTDWGv5Utji3cWM7Erb/mLsQ3/eZyE0H4mf0oDvX5SJdyvhTyl34cWjjKPRXI
+ UP9teDbaQozp1IrNTL+zPyvl4drsrRaJjDUr+B10BtakMMnJH3DWoOpgpvTmYBksiRW+id62Y
+ J7Tvl97zn2nZeR12FyLIEMjrFIYTsvoRLm4OdytfWSoNK9Lp9V+aysWn7Kk99/UDZqbhDqC+2
+ WmBDS8Wr1b8FRmBkS8uzX2oFnZIMkKSlt3pRIbMo/GqLMCuqq2o/pv8gmpHAUfNtwqJYGjUas
+ zLYD6JcudylK3us37weRHeIMGyaNpDPM9FZ5GHpnBnqkQLoQ6pBvWhmCfAri28JM3Hm7BqR7X
+ CYkIESnFeA1hpmA==
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On 21/09/2023 07:02, Oleksandr Natalenko wrote:
+> Hello Felix.
+> 
+> On středa 26. července 2023 11:17:02 CEST Felix Fietkau wrote:
+>> The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half-NSS
+>> 160 MHz support, so it is wrong to also advertise full 160 MHz support.
+>>
+>> Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width support for MT7915")
+>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+>> ---
+>>   drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+>> index ee976657bfc3..78552f10b377 100644
+>> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+>> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+>> @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
+>>   			if (!dev->dbdc_support)
+>>   				vht_cap->cap |=
+>>   					IEEE80211_VHT_CAP_SHORT_GI_160 |
+>> -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
+>>   					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
+>>   		} else {
+>>   			vht_cap->cap |=
+>>
+> 
+> For some reason this got backported into the stable kernel:
+> 
+> ```
+> $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt7915/
+> c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
+> edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
+> 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
+> 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
+> 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
+> 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is active
+> feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is active
+> 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
+> ```
+> 
+> and this broke my mt7915-based AP.
+> 
+> However, if I remove `[VT160]` capability from the hostapd config, things go back to normal. It does seem that 160 MHz still works even.
+> 
+> Is this expected?
 
-On 29.09.23 14:17, Hugo Villeneuve wrote:
-> Hi,
-> remove superfluous "is" after RS485 in patch title.
->
-> Hugo.
->
+I would say it is expected.
 
-Indeed, I will fix this, thanks!
+hostapd seems to solely rely on the VHT Supported Channel Width and does not 
+seem to support the VHT Extended NSS BW stuff.  So it only knows about full VHT 
+160 MHz support and not about half NSS VHT 160 MHz.
 
-BR,
-Lino
+The hardware does not actually support full 160 MHz (despite the driver 
+erroneously claiming support for it before this patch) so it make sense that 
+hostapd fails to start the AP if the config file requests (full) VHT 160 MHz.
 
+However, hostapd knows about half NSS HE 160 MHz and I suspect your 
+configuration also requests HE 160 MHz, so 160 MHz works fine in HE but not in VHT.
 
+In any case, it would help to know the hostapd version and your configuration file.
