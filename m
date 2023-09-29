@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB8F77B3AD4
-	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 21:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBB1B7B3ADB
+	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 21:58:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233173AbjI2T4n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 15:56:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60830 "EHLO
+        id S233418AbjI2T6C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 15:58:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233260AbjI2T4n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 15:56:43 -0400
+        with ESMTP id S232834AbjI2T6B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 15:58:01 -0400
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEAF2B4
-        for <stable@vger.kernel.org>; Fri, 29 Sep 2023 12:56:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AAA0B4
+        for <stable@vger.kernel.org>; Fri, 29 Sep 2023 12:57:59 -0700 (PDT)
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
         by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <a.fatoum@pengutronix.de>)
-        id 1qmJbL-00056x-Gl; Fri, 29 Sep 2023 21:56:39 +0200
-Message-ID: <e85da95c-5451-31ea-cae9-76d697fb548f@pengutronix.de>
-Date:   Fri, 29 Sep 2023 21:56:39 +0200
+        id 1qmJcb-0005KL-TK; Fri, 29 Sep 2023 21:57:57 +0200
+Message-ID: <7df69de2-1b3a-5226-7dc2-d1489e48f6a2@pengutronix.de>
+Date:   Fri, 29 Sep 2023 21:57:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 5.10 329/406] clk: imx: pll14xx: dynamically configure PLL
+Subject: Re: [PATCH 5.15 399/511] clk: imx: pll14xx: dynamically configure PLL
  for 393216000/361267200Hz
 Content-Language: en-US
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
 Cc:     patches@lists.linux.dev, Marco Felsch <m.felsch@pengutronix.de>,
         Abel Vesa <abel.vesa@linaro.org>
-References: <20230917191101.035638219@linuxfoundation.org>
- <20230917191109.976825265@linuxfoundation.org>
+References: <20230917191113.831992765@linuxfoundation.org>
+ <20230917191123.425955062@linuxfoundation.org>
 From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230917191109.976825265@linuxfoundation.org>
+In-Reply-To: <20230917191123.425955062@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
@@ -49,10 +49,10 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Hi Greg,
 
 On 17.09.23 21:13, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me know.
+> 5.15-stable review patch.  If anyone has any objections, please let me know.
 > 
 > ------------------
 > 
@@ -104,7 +104,10 @@ On 17.09.23 21:13, Greg Kroah-Hartman wrote:
 > Fixes: 053a4ffe2988 ("clk: imx: imx8mm: fix audio pll setting")
 > Cc: stable@vger.kernel.org # v5.18+
 
-Patch is only correct for v5.18 onward. Please drop for v5.10.
+Patch is only correct for v5.18 onward. Please drop for v5.15.
+
+Is there another syntax that we should've used instead that your tools
+pick up?
 
 Thanks,
 Ahmad
