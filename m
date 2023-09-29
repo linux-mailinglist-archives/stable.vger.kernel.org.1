@@ -2,143 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB1B7B3ADB
-	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 21:58:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A0077B3B0E
+	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 22:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233418AbjI2T6C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 15:58:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60290 "EHLO
+        id S233427AbjI2UOh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 16:14:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232834AbjI2T6B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 15:58:01 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AAA0B4
-        for <stable@vger.kernel.org>; Fri, 29 Sep 2023 12:57:59 -0700 (PDT)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-        by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1qmJcb-0005KL-TK; Fri, 29 Sep 2023 21:57:57 +0200
-Message-ID: <7df69de2-1b3a-5226-7dc2-d1489e48f6a2@pengutronix.de>
-Date:   Fri, 29 Sep 2023 21:57:58 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 5.15 399/511] clk: imx: pll14xx: dynamically configure PLL
- for 393216000/361267200Hz
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S233365AbjI2UOg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 16:14:36 -0400
+X-Greylist: delayed 360 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 29 Sep 2023 13:14:33 PDT
+Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [71.19.156.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FB161AB;
+        Fri, 29 Sep 2023 13:14:32 -0700 (PDT)
+Received: from hatter.bewilderbeest.net (unknown [IPv6:2602:61:7e5d:5300::2])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: zev)
+        by thorn.bewilderbeest.net (Postfix) with ESMTPSA id 6E1BC674;
+        Fri, 29 Sep 2023 13:08:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
+        s=thorn; t=1696018112;
+        bh=XaRQ3hF7+3HvdPllkPSlqP2DtFhNZG/Nd/UsLFqUiwk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ih8LvmwmLvPNHvlZgHhZs0XrrvesXFkQ72sE/2t303C89uFRkEvlBBkfuKFLonnLf
+         PdPzGWKFMJU31pD3Cvc/LzS6nfRMiQb+kJPDJEv54r8wvxEflSoQX+D6sjSsI3XH0j
+         HFhjHthMflQ6oq4eE56OKnUP3+fnTq+z+LmIwvVo=
+From:   Zev Weiss <zev@bewilderbeest.net>
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+Cc:     Zev Weiss <zev@bewilderbeest.net>, Joel Stanley <joel@jms.id.au>,
+        linux-kernel@vger.kernel.org, Thomas Zajic <zlatko@gmx.at>,
         stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, Marco Felsch <m.felsch@pengutronix.de>,
-        Abel Vesa <abel.vesa@linaro.org>
-References: <20230917191113.831992765@linuxfoundation.org>
- <20230917191123.425955062@linuxfoundation.org>
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230917191123.425955062@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: [PATCH] hwmon: nct6775: Fix incorrect variable reuse in fan_div calculation
+Date:   Fri, 29 Sep 2023 13:08:23 -0700
+Message-ID: <20230929200822.964-2-zev@bewilderbeest.net>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+In the regmap conversion in commit 4ef2774511dc ("hwmon: (nct6775)
+Convert register access to regmap API") I reused the 'reg' variable
+for all three register reads in the fan speed calculation loop in
+nct6775_update_device(), but failed to notice that the value from the
+first one (data->REG_FAN[i]) is actually used in the call to
+nct6775_select_fan_div() at the end of the loop body.  Since that
+patch the register value passed to nct6775_select_fan_div() has been
+(conditionally) incorrectly clobbered with the value of a different
+register than intended, which has in at least some cases resulted in
+fan speeds being adjusted down to zero.
 
-On 17.09.23 21:13, Greg Kroah-Hartman wrote:
-> 5.15-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> commit 72d00e560d10665e6139c9431956a87ded6e9880 upstream.
-> 
-> Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates"),
-> the driver has the ability to dynamically compute PLL parameters to
-> approximate the requested rates. This is not always used, because the
-> logic is as follows:
-> 
->   - Check if the target rate is hardcoded in the frequency table
->   - Check if varying only kdiv is possible, so switch over is glitch free
->   - Compute rate dynamically by iterating over pdiv range
-> 
-> If we skip the frequency table for the 1443x PLL, we find that the
-> computed values differ to the hardcoded ones. This can be valid if the
-> hardcoded values guarantee for example an earlier lock-in or if the
-> divisors are chosen, so that other important rates are more likely to
-> be reached glitch-free.
-> 
-> For rates (393216000 and 361267200, this doesn't seem to be the case:
-> They are only approximated by existing parameters (393215995 and
-> 361267196 Hz, respectively) and they aren't reachable glitch-free from
-> other hardcoded frequencies. Dropping them from the table allows us
-> to lock-in to these frequencies exactly.
-> 
-> This is immediately noticeable because they are the assigned-clock-rates
-> for IMX8MN_AUDIO_PLL1 and IMX8MN_AUDIO_PLL2, respectively and a look
-> into clk_summary so far showed that they were a few Hz short of the target:
-> 
-> imx8mn-board:~# grep audio_pll[12]_out /sys/kernel/debug/clk/clk_summary
-> audio_pll2_out           0        0        0   361267196 0     0  50000   N
-> audio_pll1_out           1        1        0   393215995 0     0  50000   Y
-> 
-> and afterwards:
-> 
-> imx8mn-board:~# grep audio_pll[12]_out /sys/kernel/debug/clk/clk_summary
-> audio_pll2_out           0        0        0   361267200 0     0  50000   N
-> audio_pll1_out           1        1        0   393216000 0     0  50000   Y
-> 
-> This change is equivalent to adding following hardcoded values:
-> 
->   /*               rate     mdiv  pdiv  sdiv   kdiv */
->   PLL_1443X_RATE(393216000, 655,    5,    3,  23593),
->   PLL_1443X_RATE(361267200, 497,   33,    0, -16882),
-> 
-> Fixes: 053a4ffe2988 ("clk: imx: imx8mm: fix audio pll setting")
-> Cc: stable@vger.kernel.org # v5.18+
+Fix this by using dedicated temporaries for the two intermediate
+register reads instead of 'reg'.
 
-Patch is only correct for v5.18 onward. Please drop for v5.15.
+Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
+Fixes: 4ef2774511dc ("hwmon: (nct6775) Convert register access to regmap API")
+Reported-by: Thomas Zajic <zlatko@gmx.at>
+Tested-by: Thomas Zajic <zlatko@gmx.at>
+Cc: stable@vger.kernel.org # v5.19+
+---
+ drivers/hwmon/nct6775-core.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Is there another syntax that we should've used instead that your tools
-pick up?
-
-Thanks,
-Ahmad
-
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> Link: https://lore.kernel.org/r/20230807084744.1184791-2-m.felsch@pengutronix.de
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  drivers/clk/imx/clk-pll14xx.c |    2 --
->  1 file changed, 2 deletions(-)
-> 
-> --- a/drivers/clk/imx/clk-pll14xx.c
-> +++ b/drivers/clk/imx/clk-pll14xx.c
-> @@ -60,8 +60,6 @@ static const struct imx_pll14xx_rate_tab
->  	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
->  	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
->  	PLL_1443X_RATE(519750000U, 173, 2, 2, 16384),
-> -	PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
-> -	PLL_1443X_RATE(361267200U, 361, 3, 3, 17511),
->  };
->  
->  struct imx_pll14xx_clk imx_1443x_pll = {
-> 
-> 
-> 
-
+diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
+index b5b81bd83bb1..d928eb8ae5a3 100644
+--- a/drivers/hwmon/nct6775-core.c
++++ b/drivers/hwmon/nct6775-core.c
+@@ -1614,17 +1614,21 @@ struct nct6775_data *nct6775_update_device(struct device *dev)
+ 							  data->fan_div[i]);
+ 
+ 			if (data->has_fan_min & BIT(i)) {
+-				err = nct6775_read_value(data, data->REG_FAN_MIN[i], &reg);
++				u16 tmp;
++
++				err = nct6775_read_value(data, data->REG_FAN_MIN[i], &tmp);
+ 				if (err)
+ 					goto out;
+-				data->fan_min[i] = reg;
++				data->fan_min[i] = tmp;
+ 			}
+ 
+ 			if (data->REG_FAN_PULSES[i]) {
+-				err = nct6775_read_value(data, data->REG_FAN_PULSES[i], &reg);
++				u16 tmp;
++
++				err = nct6775_read_value(data, data->REG_FAN_PULSES[i], &tmp);
+ 				if (err)
+ 					goto out;
+-				data->fan_pulses[i] = (reg >> data->FAN_PULSE_SHIFT[i]) & 0x03;
++				data->fan_pulses[i] = (tmp >> data->FAN_PULSE_SHIFT[i]) & 0x03;
+ 			}
+ 
+ 			err = nct6775_select_fan_div(dev, data, i, reg);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.42.0
 
