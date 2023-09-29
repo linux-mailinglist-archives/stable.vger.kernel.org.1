@@ -2,120 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A21C87B3B68
-	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 22:43:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 080C47B3B92
+	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 22:48:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233712AbjI2Unn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 16:43:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60374 "EHLO
+        id S233782AbjI2UsR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 16:48:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233739AbjI2Unj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 16:43:39 -0400
-Received: from BN3PR00CU001.outbound.protection.outlook.com (mail-eastus2azon11020024.outbound.protection.outlook.com [52.101.56.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DE971B9;
-        Fri, 29 Sep 2023 13:43:38 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hIoxStDkUulpjhGQVEDvBRQ3006hOqhO6wNfJBh5GqFjOjS4h0hVX4giCliGHolE96a0xKwOkapCHald8u3boH/pQGOhI96MxDetvt05/OzCO3zsxjOB4zNBrRs54DaW/J4kdpRNv9SKXphgQcn8AbX0zvhi346k1CuTAo1WHv09UYA8F7+0KP61amO3V+IYItw12OccH4myySO0VMzlCj7Qu2sXDtfiL0bWMlt1a81yYyR53VnMV6tnFba+hTQlXpcCYwbdMGnd+ZVOL+puDNmEXYaqoO5sb5dubbf57vq3pPEw8Kby2CPWS5mKOAClL8aAFhL8Gew6GIrmvZc8oQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bO61FgGwPpmJ4QfoMvSiX7Vk3sqhPzpyEaU/2v0N10U=;
- b=JCrXyjiYhOXHpyPev7kW0H+dutr7eYq2nJCWpkD35huVOE5OVkrnlk6yKtuvEj+PcYQmzLbik7F6iOIuat6WdRwBuRXOifhuxRApaESgcKExjGOwBWXq5/mNiZYNPafE7Eviv2e44J+OA9Lm+Nv0kkUUtNso61nFpWjogaKNExvAio23onYJN3BhUmmUQ9aWduvkHrj4t2Ls8sahL/wWuZn/YUt+18fapOqDLBFnaUI8GMJImY+TWGs2neeLm66O3smKvS8N2+LpxIUcggdIKzGTm37g48PLFqNvAB6tkJuei2XLHqwshd9il7HwalujQjQJw2wPj+Et0PkSV0/eBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bO61FgGwPpmJ4QfoMvSiX7Vk3sqhPzpyEaU/2v0N10U=;
- b=A3HjZ7xSeRpKHuiA9ViEKEYMUU7veYH3OMqbGAMEnPETMJAmE0KMNSlWVl9xwlyF7KwKzEOtUX7l3L92/ZVOnrz2tYgzw/Tvum+Tfc9f0RyC0YwCMEPR9JIigXzhFNM5gE5DpgTqmXVoyMYeIaGOFP6xA5jNUmtzS6wJSP3j70g=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-Received: from BY5PR21MB1443.namprd21.prod.outlook.com (2603:10b6:a03:21f::18)
- by DM4PR21MB3178.namprd21.prod.outlook.com (2603:10b6:8:66::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6863.9; Fri, 29 Sep 2023 20:43:35 +0000
-Received: from BY5PR21MB1443.namprd21.prod.outlook.com
- ([fe80::1d4f:5006:aed7:78aa]) by BY5PR21MB1443.namprd21.prod.outlook.com
- ([fe80::1d4f:5006:aed7:78aa%6]) with mapi id 15.20.6863.016; Fri, 29 Sep 2023
- 20:43:35 +0000
-From:   Haiyang Zhang <haiyangz@microsoft.com>
-To:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
-Cc:     haiyangz@microsoft.com, decui@microsoft.com,
-        stephen@networkplumber.org, kys@microsoft.com,
-        paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
-        davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
-        longli@microsoft.com, ssengar@linux.microsoft.com,
-        linux-rdma@vger.kernel.org, daniel@iogearbox.net,
-        john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
-        sharmaajay@microsoft.com, hawk@kernel.org, tglx@linutronix.de,
-        shradhagupta@linux.microsoft.com, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH net,v2, 2/3] net: mana: Fix the tso_bytes calculation
-Date:   Fri, 29 Sep 2023 13:42:26 -0700
-Message-Id: <1696020147-14989-3-git-send-email-haiyangz@microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1696020147-14989-1-git-send-email-haiyangz@microsoft.com>
-References: <1696020147-14989-1-git-send-email-haiyangz@microsoft.com>
-Content-Type: text/plain
-X-ClientProxiedBy: MW4PR03CA0209.namprd03.prod.outlook.com
- (2603:10b6:303:b8::34) To BY5PR21MB1443.namprd21.prod.outlook.com
- (2603:10b6:a03:21f::18)
+        with ESMTP id S232748AbjI2UsQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 16:48:16 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCCAA1A7;
+        Fri, 29 Sep 2023 13:48:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF49C433C9;
+        Fri, 29 Sep 2023 20:48:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696020494;
+        bh=8Oeq2oyvclFb8e5vneLF5O4C3f3cxRlcpro2BcWHes4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=tdCCKVkwLs8N/mkl3LWPdO47xAroH163igwOK4121omnkF3zit2PjnHPyFyuQa3JJ
+         PXsc9FWOpRPA7HOdlwRviTYwenh/GaL1KGo187fLHcYs+ODFlYqgQy6DyDwA8ArVMG
+         RN03+3cjx2oII8/ai9bkeIUhqWiXxUiL0YQxGh2IrY1uXvWHNzSETDA1/+sWc+eQko
+         sHHJe1IdhYjKAuH/4c3WcsD4sixUmFxxxvqd+8ACcu6FykHqZJvjHzjnhnzijXhgqW
+         Jw4b5m9tjYtk+qVKdBM8IpY9Ao/h7xDouDu3E4E+ivoM7K3HbTEGV089tvuOI7ttJm
+         7IZEd8jF9V97A==
+Date:   Fri, 29 Sep 2023 15:48:12 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Sricharan Ramabadhran <quic_srichara@quicinc.com>
+Cc:     agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        robh@kernel.org, mani@kernel.org, lpieralisi@kernel.org,
+        bhelgaas@google.com, kw@linux.com, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        gregkh@linuxfoundation.org, dmitry.baryshkov@linaro.org,
+        stable@vger.kernel.org, robimarko@gmail.com
+Subject: Re: [PATCH V6] PCI: qcom: Fix broken pcie enumeration for 2_3_3
+ configs ops
+Message-ID: <20230929204812.GA553836@bhelgaas>
 MIME-Version: 1.0
-Sender: LKML haiyangz <lkmlhyz@microsoft.com>
-X-MS-Exchange-MessageSentRepresentingType: 2
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR21MB1443:EE_|DM4PR21MB3178:EE_
-X-MS-Office365-Filtering-Correlation-Id: 252a30d5-8eee-4757-8365-08dbc12cc032
-X-LD-Processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: RmtjItMvE5UYEoSnI8w8GU8H7WVOFLdbw7buUhSa2jvkQGNKUzVZD/MY+ihr5QN7uQuvBPudy9K6RoUKDpCruzHm+TXqvsz9Kny41P5k+3nZ/YFMouzF0b0EGUP1OinesaGlMxReSut60R0EZY3qxeg2xSjfJqW2zLaEsqu9/oxDFHgokGxc7JGVyliE2z3JFwEelmTs8CCZErlK+476BxVcyfsWWsWkT1ACONrTi3EKMlpATHr30z7PHehz6eh2kIgzPDaxAID9BDBuCo38DVrbUM+UIMG800CtAbY3XbyZ2vKf9Tp+Cjakxi6I9QdXwYd/O8oP1lV9FGcs5NCErsQQC0GrfJANAEIHJaL0VV++5w/Ewu+G562ViRhnGaZlPh9h4zylt3A2hcOc2kebTVJcMGokXVZx95xZJASPcoaX2RnGY26nw6I/gUWu8dXIgRr8ZllSZupNxIkOsWFr0DSt5jbvY4TKP5lId0m4JkvitmK4yej7dxGPRwuYV7xhEXASdbrfBehHeXjZeRgHaxnyP3VwDvkBwSZV2pWnNsyF2cfo3IcKirMkR5Y6BBBRvjfoGGoLqQnp/ygy5BMXukNwrWwgPBFWIuc60tKep0IXd+aKI2FttXGYDOiwowTFbz5h64rijB+6F26hNxyUSI0uJhekWvzfTz8RtbGCNhM=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR21MB1443.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(346002)(39860400002)(366004)(396003)(136003)(230922051799003)(64100799003)(186009)(451199024)(1800799009)(7416002)(4744005)(2906002)(6486002)(10290500003)(41300700001)(8676002)(66556008)(66946007)(8936002)(5660300002)(4326008)(66476007)(6666004)(478600001)(6512007)(7846003)(6506007)(52116002)(26005)(2616005)(316002)(83380400001)(38100700002)(36756003)(82960400001)(82950400001)(38350700002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?sls80MKSXIytK138hjVf9dyNBUpCkn4x7O9fOFItU9sGfhd0OddknLXjnosH?=
- =?us-ascii?Q?oLdxMUtVtZSRGTSofqeaRnFptJynHr7Vpx/b60pDkX+TWCk1YP9rwJVLXavN?=
- =?us-ascii?Q?yovkjfBt/ARDanuvPw5A2AD6dHWjVzfjOJTD/e4Ak8B1y6pX8b3DzA19Am0n?=
- =?us-ascii?Q?pEWmKus8qy8QZ2v8Wb6zVCWcZVSV/SDMDrSyyMxNmjo3Q+2Jai+j3fQK5pX5?=
- =?us-ascii?Q?H02qx2IBhljo+oGqzMhFaqir+d6Tu8rBz5ySW7LokBb15HHTPfed4YB5SGLn?=
- =?us-ascii?Q?0EDV2tY4zGI00+h/pPALiic3+vlrh/Kula+d1O2E2W4M5UhPiIB/ZOCsjIEH?=
- =?us-ascii?Q?LM75XzUNkFVBQ+EZZkMwWCyOBJXMM+5bB/xlDtImCVI2aDMcACenkv6/Y+WJ?=
- =?us-ascii?Q?YsqSAVr39yCDE7pVaPhVIm7SyMkAq0ovvYuPtDwXVt7e7mV4JpBXm1lZ2N1v?=
- =?us-ascii?Q?wT9Wa46bnaZiDTyjXSEf2apwIIJFTTOrsItnAG3Wir8r/m3D1MKo/EGAWuuE?=
- =?us-ascii?Q?iKFYMSI2W85kxKO1zUf5TwrPDoW0nVwm0GX74z+a3aq6gxY1cey02uRV0H/m?=
- =?us-ascii?Q?F+umclXc4cpTBsH9QUjr/iez7LtjbPsTBtSLuEURyVoaStUhzJ136RCBWCUj?=
- =?us-ascii?Q?3wUSy7uHFQGQRdhhE7jV8Bicyr84DK45HHIUBJX7JbR8BoVB/UCe+3Vz0VZW?=
- =?us-ascii?Q?FjHZwenIfCBKxjXGxIvMUZ8ozBvHjUyMHu9DKgEhdzI5hs31W3UBMtkOzlo7?=
- =?us-ascii?Q?5R9jX+FlBn45KmiF44zMTT4jzbvUaYiRMtAOjL+VjpjRrEl2hBGBC5Y+jK1s?=
- =?us-ascii?Q?FdhJUXkNOJzCwFMxczAUSmv5U16f4jlI0/qdNWPXpfAVEGU4wj0ynbFS+s8a?=
- =?us-ascii?Q?JLsE/EcuYHySOMEyzXF3H0pOQsUHTqKV5JuMFds2JuZPBPzMwO0ZN65kFNPZ?=
- =?us-ascii?Q?Jg2U1+eyRmD0bGhNK0gwIB72V8zDOBRzE3v/ZHHcKKslxJtjys7BA890EoeX?=
- =?us-ascii?Q?qkb7r6ZTniQPQe+xbHnnhRW3U/EzKCPiOmF/wnkrh8tvz/ZqPLS9cAJ0ktzy?=
- =?us-ascii?Q?gcwV3cO77nGaH4mYAb6tvRzxChiW2DUV4Jn6nXzFa33zXhGgwiFut1EBDkGh?=
- =?us-ascii?Q?G1g02EX5oPJtFJK++wZCLaJEP4uunxP/DoiPW6gm5AGEDDOMB1+a69QMQa3E?=
- =?us-ascii?Q?Hw3rWUspTkIm5WU4cG1QCObDVgViVlRGZxiDmFhIRnidniMB8/3h6doC5p8j?=
- =?us-ascii?Q?JyA+mLNnMB9xFdxEacLC5Y5CQQXdIZn04R4FR+Q72xKp/rSTLlCqXAjXZram?=
- =?us-ascii?Q?LVQ3iXaF71wi/V1cJbY6oCP32YmgTRsOT95zCPIM3LdRjI0PI3AX11w4uevZ?=
- =?us-ascii?Q?9p9l4qJ4CMQsjxkzPHYQw2tYO7Mf33hyHO267ItnF1IJoMOReCNAtHbe+cAZ?=
- =?us-ascii?Q?CWqnlPUUQAdBqyYR2RJ/JFsAMnCFhhmvAmJmZ27QLk8FrNLq95IlswInVyCw?=
- =?us-ascii?Q?fUdhGfwP/DH12h9l7FjrFNn2sWak/BGJZcuwyXsTXaZzZdnHAIcK9t8HyE4S?=
- =?us-ascii?Q?vNR87+Ukxp402uHYtmx5eCJiYbLSbWh9JIIchT0v?=
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 252a30d5-8eee-4757-8365-08dbc12cc032
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR21MB1443.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2023 20:43:35.1742
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VJT2jyGPcXLfN0C4s1Fo0WzWPaUZh4/5nD/lzx2iYYboSdxSZFF0Ed8T4yPfGBtaevur5T1ctYSKjMujJkJugA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR21MB3178
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230919102948.1844909-1-quic_srichara@quicinc.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -123,30 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-sizeof(struct hop_jumbo_hdr) is not part of tso_bytes, so remove
-the subtraction from header size.
+On Tue, Sep 19, 2023 at 03:59:48PM +0530, Sricharan Ramabadhran wrote:
+> PARF_SLV_ADDR_SPACE_SIZE_2_3_3 macro is used for qcom_pcie_post_init_2_3_3.
+> PCIe slave address space size register offset is 0x358, but was wrongly
+> changed to 0x16c as a part of commit 39171b33f652 ("PCI: qcom: Remove
+> PCIE20_ prefix from register definitions"). Fixing it, by using the right
+> macro and remove the unused PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
+> 
+> Without this access to the registers of slave addr space like iATU etc
+> are broken leading to PCIe enumeration failure on IPQ8074.
+> 
+> Fixes: 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from register definitions")
+> Cc: <Stable@vger.kernel.org>
+> Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+> Tested-by: Robert Marko <robimarko@gmail.com>
+> Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
 
-Cc: stable@vger.kernel.org
-Fixes: bd7fc6e1957c ("net: mana: Add new MANA VF performance counters for easier troubleshooting")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 2 --
- 1 file changed, 2 deletions(-)
+Applied to for-linus for v6.6, thanks!
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 5cdcf7561b38..86e724c3eb89 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -264,8 +264,6 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 				ihs = skb_transport_offset(skb) + sizeof(struct udphdr);
- 			} else {
- 				ihs = skb_tcp_all_headers(skb);
--				if (ipv6_has_hopopt_jumbo(skb))
--					ihs -= sizeof(struct hop_jumbo_hdr);
- 			}
- 
- 			u64_stats_update_begin(&tx_stats->syncp);
--- 
-2.25.1
-
+> ---
+>  [V6] Fixed subject and commit text as per Bjorn Helgaas
+> 
+>  drivers/pci/controller/dwc/pcie-qcom.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+> index e2f29404c84e..64420ecc24d1 100644
+> --- a/drivers/pci/controller/dwc/pcie-qcom.c
+> +++ b/drivers/pci/controller/dwc/pcie-qcom.c
+> @@ -43,7 +43,6 @@
+>  #define PARF_PHY_REFCLK				0x4c
+>  #define PARF_CONFIG_BITS			0x50
+>  #define PARF_DBI_BASE_ADDR			0x168
+> -#define PARF_SLV_ADDR_SPACE_SIZE_2_3_3		0x16c /* Register offset specific to IP ver 2.3.3 */
+>  #define PARF_MHI_CLOCK_RESET_CTRL		0x174
+>  #define PARF_AXI_MSTR_WR_ADDR_HALT		0x178
+>  #define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1a8
+> @@ -797,8 +796,7 @@ static int qcom_pcie_post_init_2_3_3(struct qcom_pcie *pcie)
+>  	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+>  	u32 val;
+>  
+> -	writel(SLV_ADDR_SPACE_SZ,
+> -		pcie->parf + PARF_SLV_ADDR_SPACE_SIZE_2_3_3);
+> +	writel(SLV_ADDR_SPACE_SZ, pcie->parf + PARF_SLV_ADDR_SPACE_SIZE);
+>  
+>  	val = readl(pcie->parf + PARF_PHY_CTRL);
+>  	val &= ~PHY_TEST_PWR_DOWN;
+> -- 
+> 2.34.1
+> 
