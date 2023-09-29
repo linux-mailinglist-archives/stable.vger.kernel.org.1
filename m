@@ -2,112 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B5017B303A
-	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 12:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61CF27B312A
+	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 13:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233074AbjI2K3w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 06:29:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59802 "EHLO
+        id S231774AbjI2LUy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 07:20:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233210AbjI2K3c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 06:29:32 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 382941BE;
-        Fri, 29 Sep 2023 03:29:04 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id D97F11F390;
-        Fri, 29 Sep 2023 10:29:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1695983342; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YI7Ztywt2LP6ZcfMdUFyA7x6td6Q5w3HHThS4KJiN20=;
-        b=X1vS2aRDHPDytEwMy+aMU/AsSK5x2ZyiLaTUg7jxLgBPni7pRZ4IGGjwGQgaDf/ecqRKSG
-        wMpTQ+YqG+/LctkJkX191DAwnQvVzEDy5KmfJ2lE9HQ09OL48aEiWzyms6ekhyhH9rMp+y
-        8iZbdD7Q21k/hQ9NEsnGqpJsEVmKmwU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1695983342;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=YI7Ztywt2LP6ZcfMdUFyA7x6td6Q5w3HHThS4KJiN20=;
-        b=XXhDjW4L2RqjigtCsUpjVRZ0rVUgtHZMGWOUGcMsrSeyT6ZiCjfH5wZJKP5vLnDzlfLOpd
-        GU8TNzZUZc0JScBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B12621390A;
-        Fri, 29 Sep 2023 10:29:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id UfGEKu6mFmWgJwAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Fri, 29 Sep 2023 10:29:02 +0000
-Message-ID: <78bedfc2-0edc-fa64-8718-88767f7842ee@suse.cz>
-Date:   Fri, 29 Sep 2023 12:29:02 +0200
+        with ESMTP id S229754AbjI2LUx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 07:20:53 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD663B7;
+        Fri, 29 Sep 2023 04:20:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695986451; x=1727522451;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=QXUMqBfSGsGhYFch5ouPdVeZ7w7T5gbJgbet+vA/gDU=;
+  b=n31Kxup6vMg5NHYtgtwyeE1Dm2or0VT2yGk9eKQHm0eHJCl+yqaGQX3v
+   4oKupdjMRlM/crKrN6s6DFpPpVn8F0khqDQdjMaLKq4Z0JdO4jrwTCRTz
+   8EEugg49OyJPqohgxIm/pl4GDHKla9++m3RjVhYGstJGxOPjkQW72GbiE
+   f0fjLdMP+0sYdQSrTvOdhj89cRSk5ZSvxjqhCY7U3deONGrfToSw1vtyZ
+   6hUfmtc6NZzEMbdstXSjSqCC8WgP9kPsBi5MutaADDP8s2LYp+n/Jroib
+   OuF85gAwrPnh70M3NEywFSoGU/xSFGB08kkcWRqWDxVCFtXTf8H4xmeMB
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="468558396"
+X-IronPort-AV: E=Sophos;i="6.03,187,1694761200"; 
+   d="scan'208";a="468558396"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2023 04:20:51 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="923571025"
+X-IronPort-AV: E=Sophos;i="6.03,187,1694761200"; 
+   d="scan'208";a="923571025"
+Received: from valeks2x-mobl.ger.corp.intel.com (HELO localhost) ([10.252.53.242])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2023 04:20:47 -0700
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     linux-kselftest@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        =?UTF-8?q?Maciej=20Wiecz=C3=B3r-Retman?= 
+        <maciej.wieczor-retman@intel.com>,
+        Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v3 0/7] selftests/resctrl: Fixes to failing tests
+Date:   Fri, 29 Sep 2023 14:20:32 +0300
+Message-Id: <20230929112039.7488-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 3/3] mmap: Add clarifying comment to vma_merge() code
-Content-Language: en-US
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Matthew Wilcox <willy@infradead.org>, stable@vger.kernel.org
-References: <20230928171634.2245042-1-Liam.Howlett@oracle.com>
- <20230928171634.2245042-4-Liam.Howlett@oracle.com>
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20230928171634.2245042-4-Liam.Howlett@oracle.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/28/23 19:16, Liam R. Howlett wrote:
-> When tracing through the code in vma_merge(), it was not completely
-> clear why the error return to a dup_anon_vma() call would not overwrite
-> a previous attempt to the same function.  This commit adds a comment
-> specifying why it is safe.
-> 
-> Suggested-by: Jann Horn <jannh@google.com>
-> Link: https://lore.kernel.org/linux-mm/CAG48ez3iDwFPR=Ed1BfrNuyUJPMK_=StjxhUsCkL6po1s7bONg@mail.gmail.com/
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Fix four issues with resctrl selftests.
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+The signal handling fix became necessary after the mount/umount fixes
+and the uninitialized member bug was discovered during the review.
 
-> ---
->  mm/mmap.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> index 2f0ee489db8a..3c78afb707cf 100644
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -937,6 +937,11 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
->  			vma_start_write(curr);
->  			remove = curr;
->  			remove2 = next;
-> +			/*
-> +			 * Note that the dup_anon_vma below cannot overwrite err
-> +			 * since the first caller would do nothing unless next
-> +			 * has an anon_vma.
-> +			 */
->  			if (!next->anon_vma)
->  				err = dup_anon_vma(prev, curr, &anon_dup);
->  		}
+The other two came up when I ran resctrl selftests across the server
+fleet in our lab to validate the upcoming CAT test rewrite (the rewrite
+is not part of this series).
+
+These are developed and should apply cleanly at least on top the
+benchmark cleanup series (might apply cleanly also w/o the benchmark
+series, I didn't test).
+
+v3:
+- Add fix to uninitialized sa_flags
+- Handle ksft_exit_fail_msg() in per test functions
+- Make signal handler register fails to also exit
+- Improve changelogs
+
+v2:
+- Include patch to move _GNU_SOURCE to Makefile to allow normal #include
+  placement
+- Rework the signal register/unregister into patch to use helpers
+- Fixed incorrect function parameter description
+- Use return !!res to avoid confusing implicit boolean conversion
+- Improve MBA/MBM success bound patch's changelog
+- Tweak Cc: stable dependencies (make it a chain).
+
+
+Ilpo Järvinen (7):
+  selftests/resctrl: Fix uninitialized .sa_flags
+  selftests/resctrl: Extend signal handler coverage to unmount on
+    receiving signal
+  selftests/resctrl: Remove duplicate feature check from CMT test
+  selftests/resctrl: Move _GNU_SOURCE define into Makefile
+  selftests/resctrl: Refactor feature check to use resource and feature
+    name
+  selftests/resctrl: Fix feature checks
+  selftests/resctrl: Reduce failures due to outliers in MBA/MBM tests
+
+ tools/testing/selftests/resctrl/Makefile      |  2 +-
+ tools/testing/selftests/resctrl/cat_test.c    |  8 --
+ tools/testing/selftests/resctrl/cmt_test.c    |  3 -
+ tools/testing/selftests/resctrl/mba_test.c    |  2 +-
+ tools/testing/selftests/resctrl/mbm_test.c    |  2 +-
+ tools/testing/selftests/resctrl/resctrl.h     |  7 +-
+ .../testing/selftests/resctrl/resctrl_tests.c | 82 ++++++++++++-------
+ tools/testing/selftests/resctrl/resctrl_val.c | 24 +++---
+ tools/testing/selftests/resctrl/resctrlfs.c   | 69 ++++++----------
+ 9 files changed, 96 insertions(+), 103 deletions(-)
+
+-- 
+2.30.2
 
