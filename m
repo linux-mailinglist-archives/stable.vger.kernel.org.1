@@ -2,177 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DC5B7B28E0
-	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 01:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F3507B2969
+	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 02:11:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229972AbjI1XiV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 28 Sep 2023 19:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48024 "EHLO
+        id S229654AbjI2ALV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 28 Sep 2023 20:11:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbjI1XiU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 19:38:20 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF22195;
-        Thu, 28 Sep 2023 16:38:18 -0700 (PDT)
-Date:   Thu, 28 Sep 2023 23:38:15 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1695944296;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=8CmroMhSfWyOMfTzhtju1lshDiYJj149VGMIuDkgZ5o=;
-        b=kNrvUWMfxPrZZHUDBxt6XnyuP8wSYOvBWORu5yUGfVdwlKSomdhFLRX4VoKCBqnN6cMlkJ
-        w9WtUhOuP7MvBARKsMcuaFvd102RI16a6ePVBCzZ2DNbNzi9ekjxSmkzHg4Aj6As6enfdu
-        P+GUONCf0fhiVxrzhKfLnz0EDlUidrRAO7sjKlFgdbPKWrUMW2Gm0tQi/q2FiplW0cm6TC
-        7G7Zuvm3Z5gMZ4/BfV5KeRcddCapCqI05wvoBPkrNpig7vATJFCCyZNGpjq48HfLTKaghk
-        JV5k2zrgdRbVQP01PdqP+RaryqAq4knD+bmhOeRzNr51RekeGR0VtHyuc8piVg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1695944296;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=8CmroMhSfWyOMfTzhtju1lshDiYJj149VGMIuDkgZ5o=;
-        b=8/RiImtIhpcTEQ7NvznRc3ZMrnIvYqF4VMN3Y2vW/EKXVTEy3zkyhC8Vavn0pbGtv9IPkr
-        KtfoSwnz4hi5S9Cg==
-From:   "tip-bot2 for Haitao Huang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sgx: Resolves SECS reclaim vs. page fault for EAUG race
-Cc:     Haitao Huang <haitao.huang@linux.intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kai Huang <kai.huang@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        with ESMTP id S229541AbjI2ALV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 28 Sep 2023 20:11:21 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC0F92;
+        Thu, 28 Sep 2023 17:11:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1695946279; x=1727482279;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=gjkSVOUjK8t1WLURW1YR+vElGQY+naItEdlppoHYujM=;
+  b=Q4qCXFgV4Fa6QLjLwMj8GiSms2OFihc7O0WiLRcSzb7RlEcb0O+XbuBZ
+   IZQgsic/2hdibxe3Rz5wKI8PL7dZ1FQZbMU4svknDb+A6g/c4vx0SHC6q
+   ObFXVQfXEZEYivcZN9EUVuw+Q73TeaU9NtRxVuGWCGkx2iO8oNv4D0Wfu
+   xQApaNrZcZ/ar8QmZE0aXp9PXGu8mm23f4QS9jqL1FuoVCaQZ337xOOCz
+   KhdOZt4WcPLXuGGON4xg3gtEpi+MvcTq4toHFRPVBQ/xOvMGU8dRv3N2R
+   3Eczk2Aud+6wLUB9+ogZ9hUvLhQOi/ekQwqTbBW2u6bFF1TZZ7vHuedk3
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="379475787"
+X-IronPort-AV: E=Sophos;i="6.03,185,1694761200"; 
+   d="scan'208";a="379475787"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 17:11:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10847"; a="873486737"
+X-IronPort-AV: E=Sophos;i="6.03,185,1694761200"; 
+   d="scan'208";a="873486737"
+Received: from jveerasa-mobl.amr.corp.intel.com (HELO [10.255.231.134]) ([10.255.231.134])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2023 17:11:11 -0700
+Message-ID: <e24da7cd-fcfd-e4d3-16dd-9bb102adcab4@intel.com>
+Date:   Thu, 28 Sep 2023 17:11:11 -0700
 MIME-Version: 1.0
-Message-ID: <169594429559.27769.15062614937556087965.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v6] x86/sgx: Resolves SECS reclaim vs. page fault for EAUG
+ race
+Content-Language: en-US
+To:     Reinette Chatre <reinette.chatre@intel.com>,
+        Haitao Huang <haitao.huang@linux.intel.com>,
+        dave.hansen@linux.intel.com, kai.huang@intel.com,
+        jarkko@kernel.org, linux-kernel@vger.kernel.org,
+        linux-sgx@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Cc:     kristen@linux.intel.com, seanjc@google.com, stable@vger.kernel.org,
+        sohil.mehta@intel.com
+References: <20230728051024.33063-1-haitao.huang@linux.intel.com>
+ <f2b00069-e837-ff1e-2d03-b446df49bff0@intel.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <f2b00069-e837-ff1e-2d03-b446df49bff0@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On 9/28/23 16:08, Reinette Chatre wrote:
+> I'd like to check in on the status of this patch. This two month old
+> patch looks to be a needed fix and has Jarkko and Kai's review tags,
+> but I am not able to find it queued or merged in tip or upstream.
+> Apologies if I did not look in the right spot, I just want to make
+> sure it did not fall through the cracks if deemed needed.
 
-Commit-ID:     c6c2adcba50c2622ed25ba5d5e7f05f584711358
-Gitweb:        https://git.kernel.org/tip/c6c2adcba50c2622ed25ba5d5e7f05f584711358
-Author:        Haitao Huang <haitao.huang@linux.intel.com>
-AuthorDate:    Thu, 27 Jul 2023 22:10:24 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 28 Sep 2023 16:16:40 -07:00
-
-x86/sgx: Resolves SECS reclaim vs. page fault for EAUG race
-
-The SGX EPC reclaimer (ksgxd) may reclaim the SECS EPC page for an
-enclave and set secs.epc_page to NULL. The SECS page is used for EAUG
-and ELDU in the SGX page fault handler. However, the NULL check for
-secs.epc_page is only done for ELDU, not EAUG before being used.
-
-Fix this by doing the same NULL check and reloading of the SECS page as
-needed for both EAUG and ELDU.
-
-The SECS page holds global enclave metadata. It can only be reclaimed
-when there are no other enclave pages remaining. At that point,
-virtually nothing can be done with the enclave until the SECS page is
-paged back in.
-
-An enclave can not run nor generate page faults without a resident SECS
-page. But it is still possible for a #PF for a non-SECS page to race
-with paging out the SECS page: when the last resident non-SECS page A
-triggers a #PF in a non-resident page B, and then page A and the SECS
-both are paged out before the #PF on B is handled.
-
-Hitting this bug requires that race triggered with a #PF for EAUG.
-Following is a trace when it happens.
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-RIP: 0010:sgx_encl_eaug_page+0xc7/0x210
-Call Trace:
- ? __kmem_cache_alloc_node+0x16a/0x440
- ? xa_load+0x6e/0xa0
- sgx_vma_fault+0x119/0x230
- __do_fault+0x36/0x140
- do_fault+0x12f/0x400
- __handle_mm_fault+0x728/0x1110
- handle_mm_fault+0x105/0x310
- do_user_addr_fault+0x1ee/0x750
- ? __this_cpu_preempt_check+0x13/0x20
- exc_page_fault+0x76/0x180
- asm_exc_page_fault+0x27/0x30
-
-Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized enclave")
-Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20230728051024.33063-1-haitao.huang%40linux.intel.com
----
- arch/x86/kernel/cpu/sgx/encl.c | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
-
-diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
-index 91fa70e..279148e 100644
---- a/arch/x86/kernel/cpu/sgx/encl.c
-+++ b/arch/x86/kernel/cpu/sgx/encl.c
-@@ -235,6 +235,21 @@ static struct sgx_epc_page *sgx_encl_eldu(struct sgx_encl_page *encl_page,
- 	return epc_page;
- }
- 
-+/*
-+ * Ensure the SECS page is not swapped out.  Must be called with encl->lock
-+ * to protect the enclave states including SECS and ensure the SECS page is
-+ * not swapped out again while being used.
-+ */
-+static struct sgx_epc_page *sgx_encl_load_secs(struct sgx_encl *encl)
-+{
-+	struct sgx_epc_page *epc_page = encl->secs.epc_page;
-+
-+	if (!epc_page)
-+		epc_page = sgx_encl_eldu(&encl->secs, NULL);
-+
-+	return epc_page;
-+}
-+
- static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
- 						  struct sgx_encl_page *entry)
- {
-@@ -248,11 +263,9 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
- 		return entry;
- 	}
- 
--	if (!(encl->secs.epc_page)) {
--		epc_page = sgx_encl_eldu(&encl->secs, NULL);
--		if (IS_ERR(epc_page))
--			return ERR_CAST(epc_page);
--	}
-+	epc_page = sgx_encl_load_secs(encl);
-+	if (IS_ERR(epc_page))
-+		return ERR_CAST(epc_page);
- 
- 	epc_page = sgx_encl_eldu(entry, encl->secs.epc_page);
- 	if (IS_ERR(epc_page))
-@@ -339,6 +352,13 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
- 
- 	mutex_lock(&encl->lock);
- 
-+	epc_page = sgx_encl_load_secs(encl);
-+	if (IS_ERR(epc_page)) {
-+		if (PTR_ERR(epc_page) == -EBUSY)
-+			vmret = VM_FAULT_NOPAGE;
-+		goto err_out_unlock;
-+	}
-+
- 	epc_page = sgx_alloc_epc_page(encl_page, false);
- 	if (IS_ERR(epc_page)) {
- 		if (PTR_ERR(epc_page) == -EBUSY)
+It fell through the cracks.  Sorry about that.  It's in x86/urgent now.
