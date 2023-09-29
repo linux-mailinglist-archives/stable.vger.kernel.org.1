@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87CE37B3323
-	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 15:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1BA67B3325
+	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 15:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233139AbjI2NN6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 09:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34718 "EHLO
+        id S232786AbjI2NOQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 09:14:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232786AbjI2NN5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 09:13:57 -0400
+        with ESMTP id S232925AbjI2NOP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 09:14:15 -0400
 Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D682B7
-        for <stable@vger.kernel.org>; Fri, 29 Sep 2023 06:13:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 368F8E7
+        for <stable@vger.kernel.org>; Fri, 29 Sep 2023 06:14:13 -0700 (PDT)
 Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-        by mx0a-0064b401.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38T9bj7F021065;
-        Fri, 29 Sep 2023 06:13:51 -0700
+        by mx0a-0064b401.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 38T9gils029796;
+        Fri, 29 Sep 2023 06:13:53 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-         h=from:to:cc:subject:date:message-id:content-transfer-encoding
-        :content-type:mime-version; s=PPS06212021; bh=SovPI1aSt+gw4BLLpm
-        2FQx0+CdOUKAJeRqX1+HU1lOU=; b=dmZdYnpLMhipXsnvtPjVIN8qR6otwyZ6Y+
-        U1wkqiGXgMuJnYbXVgTonIsI6SzqMH3U0PaV366rBzA6kYhrsF7hqGQ7sTJcqpON
-        hXGry90xTDcIEvXMW7KMt/t4iS9D37L1neJDNX91Cieb9fG/phN+WHMdnjxRrkn+
-        zX+1OvW6Eufgy5EHWCTtIpbmjob25ipfB36QgRpFqOP/x8GKgsPbWWf1+f0WxpY9
-        Ey2uW3U5h3VwOLj0Py7imP6yiT33mXnej9GamaSQnRNCFaL7q9ysqDGojqQMcTbQ
-        YaKYoPFPo2mRzXCCnCz2nZ4yaBYkHGUrOqfuH1lokEuZ8nLnO63Q==
-Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04lp2046.outbound.protection.outlook.com [104.47.74.46])
-        by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3t9yhgnw8r-1
+         h=from:to:cc:subject:date:message-id:in-reply-to:references
+        :content-transfer-encoding:content-type:mime-version; s=
+        PPS06212021; bh=0+8mFzuG3OtPtyejp6AZ/jOzJlsPTqMXWwKE46fB21U=; b=
+        SpDCJy3qUtAYp4DveF6aKfGdFdYYrE3sJMe+umVVqm3q7OvrvCDTQUD2DsivQoft
+        Wz89CjEbj06gLIla1htqa783yljF+QRGKvFtJiKcWxnnZvV3QakvgIDbQ1fd3EeX
+        /cQhpyor3xx9rumHVeIS92ea1hZPM+TauS4v90yo5Y6LlN5HR/glfzFRPk5ZyzOC
+        PcXv6r/qnuYlpW4UQ6WMCuBok4T3LUVZvgZeQ9It9VfArdvnGSlSQknAN06vIz0B
+        T+NJ8EQAs0RZFdTuuKW/KedA1/aaLEqW8gPzR/pbvjRoLeFogMUvBTJ+PyEDGwTf
+        diFKqaLXM9nZgUgi9GTXSQ==
+Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04lp2042.outbound.protection.outlook.com [104.47.74.42])
+        by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3t9yhgnw8t-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 29 Sep 2023 06:13:51 -0700 (PDT)
+        Fri, 29 Sep 2023 06:13:53 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m1XVh0aW7epDGSadysiue452CpF4IR6To1stlakENgBlhWIYZkoS9TOjnWnyhs0r8BwiHEB/XdoGpRd2K0bmCaySthcP4ucdmc0PYmx6Ym581w4igOAA0R6hF3mu3aJeqmLiUS/c0/J78u90Fmb24MNOpWcPwbyrYzw+l9AsLWSMOyLsJjgvumTnl/UyuBqWwgNeIAUyvIVhYv3pMOaXbYtIP0c7KV4Zs1rcyjlkBn241CEKEWap1mUxRG9AN+bqBE2/dJRTAIZaLzZXjrVW3dXGxzPw/VGHLUNV4tVeI9y7E01/RvBnLewKoMC+Lg8Ffq2SSVwxnYm/Yd5aVpch7Q==
+ b=EFLU+RjfCVRfUj1h/vvPZl6e0hu3N+/PyiLyZoWdTR1v594izku9yik/n9sNvLPIv8j7l5pGg91e0QpxewvhnYq9CfqCmnsOUGpB8e7PzbbTB/YmtU42cIJ6nHpoa8bOMd0oQyyPAx2UuIYMjch6favmNrqObfp0+UkgbYqNeCvyxFsH9f6FMATOkwwJMUUSF53/wAxrWSMRC0AdJ5kg71IeUOpw4Uqg0HwkUXNwyQmsEpUWUlJCdo/X/ECsA7Zdfo0RGydWUN+WZqf935ttzUruLeggPVzZyhEPKCMgX4lOSBCes5WoM+1ROneb9imMbs2kK9MbY4KP/oCwWIAfsw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SovPI1aSt+gw4BLLpm2FQx0+CdOUKAJeRqX1+HU1lOU=;
- b=JnxC8sIgRrINw6fbypGo9vksUYmprMGciMXbZfRJ6DyixsITLP/b8wcHQ0VyiSC7LrAsReIW/J2IftCYoeRDtdZ1uB0GC9zzakugPreXx2P7vATHPi+u46eeybGOznI3ikdXynu4rHeFpn88pcOOMSVM0MCjB2ChBEcx0TSa5F+3ey5WZn+352xzRMAwuG6LAiFPFKc7Acdg48ZXyf5nM1kxY4Ma8dm1fvE09wpnG0m3vVzrtb2EB0TGVDkChf35WLp9EHjVmRejyoJwZimx4I4riTcgNaK8LaZSDxoyRPDG8E/TloBFjbQn1vrpFaYhqTJmBq+D0/j2iEIsaObURQ==
+ bh=0+8mFzuG3OtPtyejp6AZ/jOzJlsPTqMXWwKE46fB21U=;
+ b=ajTrvEEh8w3FlFsUbPyQXDOCjtNyVXoroQX6BNAC0sF5Ks0vuAD87HvnKpIu9O87XEeHkP5De7iEdCElyxbETl32uL+ZxjrU6BA+0QQTT55l+XCt8OLLHE4MrQKCDPKsxr5JGksLTCwjYGV2APUqWN5u8XK7tgjYp2Ys5BxCl66ViNlSg7vadWQPq6/GArUlvfFctO28RgITzpY5hoeMNuyIG91jnuyJt21xWip5Wai30oHaSNAF/eHhRp06q9zLZHLA94Mga3ujxainyuqVFe2GtJtkbp93eO9EtetBBkik4mP4WhOnCcYu3s+bDT7EpAGm5CkKrG6ocG/81meYUw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=windriver.com; dmarc=pass action=none
  header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
@@ -44,18 +45,24 @@ Received: from DM4PR11MB5327.namprd11.prod.outlook.com (2603:10b6:5:392::22)
  by DM8PR11MB5575.namprd11.prod.outlook.com (2603:10b6:8:38::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.25; Fri, 29 Sep
- 2023 13:13:49 +0000
+ 2023 13:13:51 +0000
 Received: from DM4PR11MB5327.namprd11.prod.outlook.com
  ([fe80::c461:13df:b26f:b828]) by DM4PR11MB5327.namprd11.prod.outlook.com
  ([fe80::c461:13df:b26f:b828%6]) with mapi id 15.20.6838.027; Fri, 29 Sep 2023
- 13:13:49 +0000
+ 13:13:51 +0000
 From:   ovidiu.panait@windriver.com
 To:     stable@vger.kernel.org
-Cc:     qyousef@layalina.io, Ovidiu Panait <ovidiu.panait@windriver.com>
-Subject: [PATCH 5.10 0/4] cgroup: Fix suspicious rcu_dereference_check() warning
-Date:   Fri, 29 Sep 2023 16:14:14 +0300
-Message-Id: <20230929131418.821640-1-ovidiu.panait@windriver.com>
+Cc:     qyousef@layalina.io, Andrey Ryabinin <arbn@yandex-team.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Daniel Jordan <daniel.m.jordan@oracle.com>,
+        Tejun Heo <tj@kernel.org>,
+        Ovidiu Panait <ovidiu.panait@windriver.com>
+Subject: [PATCH 5.10 1/4] sched/cpuacct: Fix user/system in shown cpuacct.usage*
+Date:   Fri, 29 Sep 2023 16:14:15 +0300
+Message-Id: <20230929131418.821640-2-ovidiu.panait@windriver.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20230929131418.821640-1-ovidiu.panait@windriver.com>
+References: <20230929131418.821640-1-ovidiu.panait@windriver.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: VI1PR03CA0070.eurprd03.prod.outlook.com
@@ -64,59 +71,59 @@ X-ClientProxiedBy: VI1PR03CA0070.eurprd03.prod.outlook.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR11MB5327:EE_|DM8PR11MB5575:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95ab187d-572b-4e54-8580-08dbc0edeb31
+X-MS-Office365-Filtering-Correlation-Id: 3cbeaef9-ef48-44d5-41f3-08dbc0edec60
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: OEZQ8Wv4HCfKpXwpTcXOodgyMUqWSwzUOsn6PLa5UET9lZDMcOvTwbxvfmY57C94BL2aTz2HN8gCNWJBBPG+07+TSDnQHzdkdatayukwokgJzwPoYdIfWpnbQmaT/jq2YV8PAcL8hTseH13fi7E5niHZZ/rd4UmYNrzisWMgPxy8I+7ceqd5nVK9fZoypBQallOtTr3gWGXF9rm8ZqwXRqFCp4ErCmduDzqcny+epIi7sHbqs0r9OYpv+b5q9an9eJGn13dYHtY9cHCrIov6cOvqAUfgw1xpvgmdeYtIvgZlaWaCHNTWRLPvP/vgQVVlLHBWEGVG+G81uys4ITtMSeLDiltpLkWF3H+gLQdX32n/QIv9QX3FcFnhCzKGqDLUHOjUgQ2925B3hz+MqO60PQ635W2FRUJWuAFe541KXQ/lZEXm8dN42vHcTyUdDy+ZvsxOo6IhaSQPOtaaD0Bd+WwZH9Q/Y+zdOhet9IYF9NI5PpHrosrVE2MdSPcFqh0ZgFt+UraqrpYiTWumU1B0Ic4DZGbbaLHipw8hdcLqcxvN7qITVngOkqK8lvb/EEiTyInOuP8ltRrnb84PpkzNPu7K7z2tY1zEVCZ2PbzS7VI=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5327.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(396003)(376002)(136003)(39850400004)(230922051799003)(451199024)(1800799009)(64100799003)(186009)(9686003)(2906002)(6506007)(52116002)(6666004)(2616005)(38350700002)(38100700002)(107886003)(478600001)(66476007)(66946007)(6512007)(1076003)(86362001)(6486002)(6916009)(966005)(83380400001)(26005)(66556008)(5660300002)(36756003)(41300700001)(4326008)(316002)(8936002)(8676002);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: p4sRdKTkSfoD36eIgxuvdAli6lFkcc+IebVcZlkHv4Ty/hN+x7Scdd5jtbriQpNv3+YLwIuRz+5Cjn/dX3iVZZNHlVJ54hb/fmKHuWdMtL5pGfa9nZLUj2mXqiBUrZn9M4s6nc1F8Z1Pqz5G8fEvxeGXEqw7d4z/2Ml/yhZm3KpMXnpVkoxj+bZLz7d1JzgtnQwBfwjgLdhQ+3YMcWQTPdLz81oEDSVCoByyJdJjs6D+f3pMiwaAfzelATdveE7+HjesznKAdJ8bHI+Ui8/ypUMvR49/+jPUetos75gZAsqWf/5EcKZSnIc6njkYyqlcFgyRNG8BZTMO11R4fRvUK5jslC1bTvWCXNLmxOHGqmm5SijuY7W7ZpTxu08UeqHoPs4XGRRrRL3TzPa1B1F8XyQVeVMpjeA0WsBbPHnetwzLrBP5UTqVMtBILkKrhO82qtvffqlMAjF+eHDuHlDt9P+nDfAtHagzszZnHEJylybNg0T1zvU+W6oohNhfmi04A9TmpAtfDkyj50O3RX9j0Th8EvvETRqnC9qLZZQkO0vOEzJeKJKmwmMhHmLQ3xrgNKuCQQNqIjgGxjSNw0Yhqhvi2oSLG+DgFmc7Qw3MPdzK5IQO6idksuL2MMR34KFPVAdAIjHiwksBKeKZf+LJNQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB5327.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(396003)(376002)(136003)(39850400004)(230922051799003)(451199024)(1800799009)(64100799003)(186009)(9686003)(2906002)(6506007)(52116002)(6666004)(2616005)(38350700002)(38100700002)(107886003)(478600001)(54906003)(66476007)(66946007)(6512007)(1076003)(86362001)(6486002)(6916009)(966005)(83380400001)(26005)(66556008)(5660300002)(36756003)(41300700001)(4326008)(316002)(8936002)(8676002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?wQxwJ2HIk/Bnc1b6vbWDSc7auC614pZyzfHaaZDLbbwmllFLKlqPZbYOEQDc?=
- =?us-ascii?Q?8F3XC+pCExEpYo6EHcOGXX0vgTAX+lVK6Tbe2OyOGjKiFJqBKUuYc678txNq?=
- =?us-ascii?Q?bsv8xvS2QlGTv5yMKkxernGqiikpofnisQDJN6ng9wfnkrx2chI8ZmOklDeS?=
- =?us-ascii?Q?BDexIJS2Z9khqAxWmpu3cAHKH83JLNHzF9fQsbQxNy/PhHNaJrKLJKVU6hDS?=
- =?us-ascii?Q?o3wosoUZ3VgcZcjF/jRr4GC2NZVHNuNLwGewVAXIa14C600lyFMzz456Dddm?=
- =?us-ascii?Q?hM9QG1pfGq8cttQDMwZ75e2vG8s06KrtT9wKs8MDTmP+/81hS33TNHgvXAUT?=
- =?us-ascii?Q?U7cod+4YYUPAa+Er1tIzKcUZjvaPZOJMOvBfoAoVZ7Hbrfy2XFuTvgE6am00?=
- =?us-ascii?Q?4hRvTBS3fm9Ue8TPp3kKDtloyNwzpQb5a3OGTqZv5OL5z4iSschHQ/uPi68R?=
- =?us-ascii?Q?o6xTBRdtAkpmPm98Iz9wJ3sOmXptdvPHLg+6cBlRr4QV/tv4lcmt7OxS/IiF?=
- =?us-ascii?Q?sgJLyXiDnod4FhMBIduZAdIfOCoRIQ5yVL1K232XkDtig4iZ12da19XI9NHC?=
- =?us-ascii?Q?Jl+go8KvG4NUceyGRi463nm6awXZ1Ot7jV9pQv6btbUxcyv740OFyu1MZgug?=
- =?us-ascii?Q?S2V3HkjDwSSudX0zUtvVwxnd0xWNwCsC8mpBwRanmvDcBtUFa/i4/v1mrA1t?=
- =?us-ascii?Q?vjRyR2Eb4r/K6ctCy1OayznjimQNT8BFO7xaRjFUV8cmd2dORPCGe9PqxVML?=
- =?us-ascii?Q?BMx9TTnWJaxYXXfSX7XRWxlEP3X863+uiIm3tV12xuEC6pHrfqlmL1iSw0d0?=
- =?us-ascii?Q?THHD/nYqllVs3wxbP+FdHufa9hXXl+VC4igN31pGayaCoQRZiSvNskgnFtRk?=
- =?us-ascii?Q?zi8vFCzBZzFn+TKuH/0SFXITn8eBXFUOlirOQ3IB3tpuerLAZfrxvqunKZi1?=
- =?us-ascii?Q?NmRgy78p3WCN3bd7PVrA1GdwQs+bUHg/QBziInz5XQpx831rOdPJ7iH1gRlD?=
- =?us-ascii?Q?sy0iXsTYIxo2DKfw/aaBqDK5XwlSn0DsKzNOt8c6WSULyTZjokP/hkryuaw4?=
- =?us-ascii?Q?WHeH1S4w2/hOcuDp4QaDZ/c2tag4RQxya2yC4ly7/r+ZGPy3e3iKtPCJaXbu?=
- =?us-ascii?Q?cD9gE+T1o0gibOSdu8rvmCyk4a8tZfisFgDVRgEOguXBz+6Pkgc8mdAvk2tH?=
- =?us-ascii?Q?UVW4wB/mANP9UDXhloX+LEI+YHf6x53tqP7qW/Of9+eTeiwyBJ6AuILbW8o+?=
- =?us-ascii?Q?LtK0oKAIMvKJP2Br8HpaTPijNd4A/wN+kNvU9TNCY+/eTk8xGiq5iC20hynZ?=
- =?us-ascii?Q?l39pdepny+hPtoZGEQ8zb29E/eyWwexouH8kbMf3ZA3ykWeuvnqQ9jGe3L+L?=
- =?us-ascii?Q?oCxdJXu94AnQaXCoK7jX0kzzwXf89thM2U6/2laoQmLUuipQTxV0fVDqktQS?=
- =?us-ascii?Q?bHcp85GBPHJbFaC+raxOUnxRN+8yA+g3+np9xUpkEacVQkRcIGPWshVLTN6i?=
- =?us-ascii?Q?dwVzTTeJwOdTI2jperIccls9iZ3ugzLHMIriasNsFmXuewDe5px3GZBZ9O5t?=
- =?us-ascii?Q?+A3IQ6oTniGnAhROABb7NNm5/GwLmBD7qwVrz16tA8bjw+GvuCLThepVpO+q?=
- =?us-ascii?Q?1Q=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OR8sgigIoqc+WqVU/XId6UXaHd3miE08pIP7ZWn6L957BX1//bf4I/1Stcgo?=
+ =?us-ascii?Q?ugZhg+/jnN3lPZWfJkoFQKbn5NmIqy2Rq0bhfq9X1tEnhUBJuu6C4g+/FLZw?=
+ =?us-ascii?Q?7iiYrF+jTJP7AdisPI21rAJxUBfOKM3ZTmTwXZkqAxmS+E6cSc+onTnzTAKj?=
+ =?us-ascii?Q?aq2Z62tXsjVwgPsGnER+/xvL/c/9OGuXI372lz201K1EBQYQ4zmiZt7CHoke?=
+ =?us-ascii?Q?HigjvX0Lbf8qDYtfEyQ++5MytSpV7YzD6wAznBHswj/M9/h6k4B64FO65bbg?=
+ =?us-ascii?Q?Ht+A8Fq4t6VSqTAxmts1uit0KOm1hKYEoevV/wS7KUiL7DuJxBRQl4RFdPFZ?=
+ =?us-ascii?Q?5Uzgq8KFUacdGuoTvF8GsVy9j5KaA7+KThA74/FohXZh46V90u3mjg1p3Abj?=
+ =?us-ascii?Q?0J0kbym94ChOOiDxjc7YUfN+DLPLVEspWNHqIl7+a0rBDiDlIS/mQf+DNQ0x?=
+ =?us-ascii?Q?CEhjVoiNB83n8wOWFS066x1pc7ZDKZlYze4R8GmZbIzYr7yns+8KbST8Zl5N?=
+ =?us-ascii?Q?w/GzeObFbrQ7ZLY8qV6soM3tyTHe+9UIpQQ1JdWsfulKpM7gci/yxYhqMdrp?=
+ =?us-ascii?Q?EUJjA3lAVFwXVndEPbesJEduG2HiMtkcu1Wae0hlRuAAlrQ444l7uWEr7+MC?=
+ =?us-ascii?Q?7sDCGHtQDnu7fq8/HMwKnvGZdT0XlE95Wm6rpw76IYi2rZ1xGJFrgNpqrZrv?=
+ =?us-ascii?Q?p7+sQLzHQQ8gCsPoebXiANrmlGUWBD1/L2vmlkdHFm3XOA1K00MXb/lDyMrN?=
+ =?us-ascii?Q?nfYA5NndXLfPPu6/FsPfpmfsTDVsagSOliRiJnNImq69Z10V0liBSuCovQLa?=
+ =?us-ascii?Q?KCP3PMgOYYCNeVrawUK+ceEqwmWJBAaVroWQAMPinDJP1kByefp9Bu6t+oxN?=
+ =?us-ascii?Q?H7DYGw0ZgnaTWYKPDYewmeIJshexbLFSxbd0U5xHe/3Ozt22DjZ0yHY+8vAx?=
+ =?us-ascii?Q?6F3co8j64hqMGCXqgK9ImG3sgiUCJ+4bqB57NaD/L3/hgBMrdk5TfwKjVB4s?=
+ =?us-ascii?Q?2lJ+Wm5goL4vYRGXO+QATDEarAQrUpYgIglDKxd2WcStsCzLq6pAZhz2FHOL?=
+ =?us-ascii?Q?Yap32NzLfxUf1ehDF5esxz5pTNEfvDXbf64M8+9hN8Hlb/iA8c0Y32Zojh5v?=
+ =?us-ascii?Q?bGL9wmSEBC1Ts2gxuu/ux67wc5LGGkjMCm5Qb5eKFTdt3f9S16H7ZndbBnSC?=
+ =?us-ascii?Q?yC2G631Ei195yEcuwJhlNNTvRjgIM3iu5qL59MeEo+bhXLtVPbl4p1/Vtk81?=
+ =?us-ascii?Q?V3s1rtMUn/LMZbe43eRvoQ3szCmtRvjEWcHGxKTMHUtLg6CsHbveoFVPunqO?=
+ =?us-ascii?Q?Gh3XczinNe6HoUbY/b8NkmTYlqUSPfOz3DlZWHsHWt96mhTtAB192nVsVVWY?=
+ =?us-ascii?Q?8zuRYT7JtLADHNDQCBOHQx7KLhKdaKlltjSJLB9Y3y3ZFkvmr0K/YEJiLyW7?=
+ =?us-ascii?Q?Fi1YRsc0HUO/r2IhcUbcH1B4ezjQh+wuQp0A/jqd5d1ggB38WxZeDBHajfyg?=
+ =?us-ascii?Q?Lo4kRPx/PXLLgw/MkBnwuz3yVlgj5SnzVJnOSyOABozo8Men3Hycvj0LYox2?=
+ =?us-ascii?Q?xQpWQIVTU6cBtCBWVjrMbzjgUiHv3w7/xMnT6MgPflkvhsEv/qFx1yfcf/Tc?=
+ =?us-ascii?Q?Wg=3D=3D?=
 X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95ab187d-572b-4e54-8580-08dbc0edeb31
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3cbeaef9-ef48-44d5-41f3-08dbc0edec60
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5327.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2023 13:13:49.0624
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2023 13:13:51.0040
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P+Et64HvCtOjFaQVtG31b+0MD+/Y9QYI1/I3uqjEyky6v018led4Kga9ZchAaZndTZoYFe87qctHNVmDNS/bv1xAdJbxfhilO0kViZslWyo=
+X-MS-Exchange-CrossTenant-UserPrincipalName: VAMYIIVqcFu2pEFcvw85MTP0OM9Eq0PocgYFOp/m8XpewVQ/G4VIChQf1THSUOg+t1SNAlnkG1G5DqUm9q9HqqiP/c0+hZJ3ubueya73bRA=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR11MB5575
-X-Proofpoint-GUID: VD5Qy8Yld9W--Pse4rjfiIdYJGzl4skA
-X-Proofpoint-ORIG-GUID: VD5Qy8Yld9W--Pse4rjfiIdYJGzl4skA
+X-Proofpoint-GUID: sjfC4g6crw06ZO8s2opT4iVK4w9vF96f
+X-Proofpoint-ORIG-GUID: sjfC4g6crw06ZO8s2opT4iVK4w9vF96f
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.254,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-09-29_11,2023-09-28_03,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- mlxlogscore=966 phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ mlxlogscore=999 phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
  spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1011
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2309180000
  definitions=main-2309290113
@@ -130,86 +137,216 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Andrey Ryabinin <arbn@yandex-team.com>
 
-When booting the 5.10-stable kernel on the zcu102 board with
-CONFIG_PROVE_RCU=y, the following warning is present:
-=============================
-WARNING: suspicious RCU usage
-5.10.194-yocto-standard #1 Not tainted
------------------------------
-include/linux/cgroup.h:495 suspicious rcu_dereference_check() usage!
+commit dd02d4234c9a2214a81c57a16484304a1a51872a upstream.
 
-other info that might help us debug this:
+cpuacct has 2 different ways of accounting and showing user
+and system times.
 
-rcu_scheduler_active = 2, debug_locks = 1
-9 locks held by kworker/2:2/106:
- #0: ffffff8800048948 ((wq_completion)events){..}-{0:0}, at: process_one_work+0x1f8/0x634
- #1: ffffffc014c4bda8 (deferred_probe_work){..}-{0:0}, at: process_one_work+0x1f8/0x634
- #2: ffffff880005d9a0 (&dev->mutex){....}-{3:3}, at: __device_attach+0x40/0x1c0
- #3: ffffffc011c70cb0 (cpu_hotplug_lock){++++}-{0:0}, at: cpus_read_lock+0x18/0x24
- #4: ffffff8800b10928 (subsys mutex#5){..}-{3:3}, at: subsys_interface_register+0x58/0x120
- #5: ffffff8805e78c00 (&policy->rwsem){..}-{3:3}, at: cpufreq_online+0x590/0x960
- #6: ffffffc012a9e770 (cpuset_mutex){..}-{3:3}, at: cpuset_lock+0x24/0x30
- #7: ffffff880567bd80 (&p->pi_lock){..}-{2:2}, at: task_rq_lock+0x44/0xf0
- #8: ffffff887aff50d8 (&rq->lock){..}-{2:2}, at: task_rq_lock+0x5c/0xf0
+The first one uses cpuacct_account_field() to account times
+and cpuacct.stat file to expose them. And this one seems to work ok.
 
-stack backtrace:
-CPU: 2 PID: 106 Comm: kworker/2:2 Not tainted 5.10.194-yocto-standard #1
-Hardware name: ZynqMP ZCU102 Rev1.0 (DT)
-Workqueue: events deferred_probe_work_func
-Call trace:
- dump_backtrace+0x0/0x1a4
- show_stack+0x20/0x2c
- dump_stack+0xf0/0x13c
- lockdep_rcu_suspicious+0xe4/0xf8
- inc_dl_tasks_cs+0xb8/0xbc
- switched_to_dl+0x38/0x280
- __sched_setscheduler+0x204/0x860
- sched_setattr_nocheck+0x20/0x30
- sugov_init+0x1b8/0x380
- cpufreq_init_governor.part.0+0x60/0xe0
- cpufreq_set_policy+0x1d0/0x33c
- cpufreq_online+0x35c/0x960
- cpufreq_add_dev+0x8c/0xa0
- subsys_interface_register+0x10c/0x120
- cpufreq_register_driver+0x148/0x2a4
- dt_cpufreq_probe+0x288/0x3d0
- platform_drv_probe+0x5c/0xb0
- really_probe+0xe0/0x4ac
- driver_probe_device+0x60/0xf4
- __device_attach_driver+0xc0/0x12c
- bus_for_each_drv+0x80/0xe0
- __device_attach+0xb0/0x1c0
- device_initial_probe+0x1c/0x30
- bus_probe_device+0xa8/0xb0
- deferred_probe_work_func+0x94/0xd0
- process_one_work+0x2b8/0x634
- worker_thread+0x7c/0x474
- kthread+0x154/0x160
- ret_from_fork+0x10/0x34
+The second one is uses cpuacct_charge() function for accounting and
+set of cpuacct.usage* files to show times. Despite some attempts to
+fix it in the past it still doesn't work. Sometimes while running KVM
+guest the cpuacct_charge() accounts most of the guest time as
+system time. This doesn't match with user&system times shown in
+cpuacct.stat or proc/<pid>/stat.
 
-The warning was introduced in v5.10.193 by commit:
-5ac05ce56843 "(sched/cpuset: Keep track of SCHED_DEADLINE task in cpusets)"
+Demonstration:
+ # git clone https://github.com/aryabinin/kvmsample
+ # make
+ # mkdir /sys/fs/cgroup/cpuacct/test
+ # echo $$ > /sys/fs/cgroup/cpuacct/test/tasks
+ # ./kvmsample &
+ # for i in {1..5}; do cat /sys/fs/cgroup/cpuacct/test/cpuacct.usage_sys; sleep 1; done
+ 1976535645
+ 2979839428
+ 3979832704
+ 4983603153
+ 5983604157
 
-This issue was also reported for 5.15 here:
-https://lore.kernel.org/lkml/CA+G9fYv9xTu4bKJGy=e=KZSG5pZ+tJAmfZr=0dbuKNs=9OOKhA@mail.gmail.com/
+Use cpustats accounted in cpuacct_account_field() as the source
+of user/sys times for cpuacct.usage* files. Make cpuacct_charge()
+to account only summary execution time.
 
-Backport commit f2aa197e4794 ("cgroup: Fix suspicious rcu_dereference_check()
-usage warning") and its dependencies to get rid of this warning.
+Fixes: d740037fac70 ("sched/cpuacct: Split usage accounting into user_usage and sys_usage")
+Signed-off-by: Andrey Ryabinin <arbn@yandex-team.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20211115164607.23784-3-arbn@yandex-team.com
+[OP: adjusted context for v5.10]
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+---
+ kernel/sched/cpuacct.c | 79 +++++++++++++++++-------------------------
+ 1 file changed, 32 insertions(+), 47 deletions(-)
 
-Andrey Ryabinin (1):
-  sched/cpuacct: Fix user/system in shown cpuacct.usage*
-
-Chengming Zhou (3):
-  sched/cpuacct: Fix charge percpu cpuusage
-  sched/cpuacct: Optimize away RCU read lock
-  cgroup: Fix suspicious rcu_dereference_check() usage warning
-
- include/linux/cgroup.h |  3 +-
- kernel/sched/cpuacct.c | 84 +++++++++++++++++-------------------------
- 2 files changed, 35 insertions(+), 52 deletions(-)
-
+diff --git a/kernel/sched/cpuacct.c b/kernel/sched/cpuacct.c
+index 941c28cf9738..8a260115a137 100644
+--- a/kernel/sched/cpuacct.c
++++ b/kernel/sched/cpuacct.c
+@@ -21,15 +21,11 @@ static const char * const cpuacct_stat_desc[] = {
+ 	[CPUACCT_STAT_SYSTEM] = "system",
+ };
+ 
+-struct cpuacct_usage {
+-	u64	usages[CPUACCT_STAT_NSTATS];
+-};
+-
+ /* track CPU usage of a group of tasks and its child groups */
+ struct cpuacct {
+ 	struct cgroup_subsys_state	css;
+ 	/* cpuusage holds pointer to a u64-type object on every CPU */
+-	struct cpuacct_usage __percpu	*cpuusage;
++	u64 __percpu	*cpuusage;
+ 	struct kernel_cpustat __percpu	*cpustat;
+ };
+ 
+@@ -49,7 +45,7 @@ static inline struct cpuacct *parent_ca(struct cpuacct *ca)
+ 	return css_ca(ca->css.parent);
+ }
+ 
+-static DEFINE_PER_CPU(struct cpuacct_usage, root_cpuacct_cpuusage);
++static DEFINE_PER_CPU(u64, root_cpuacct_cpuusage);
+ static struct cpuacct root_cpuacct = {
+ 	.cpustat	= &kernel_cpustat,
+ 	.cpuusage	= &root_cpuacct_cpuusage,
+@@ -68,7 +64,7 @@ cpuacct_css_alloc(struct cgroup_subsys_state *parent_css)
+ 	if (!ca)
+ 		goto out;
+ 
+-	ca->cpuusage = alloc_percpu(struct cpuacct_usage);
++	ca->cpuusage = alloc_percpu(u64);
+ 	if (!ca->cpuusage)
+ 		goto out_free_ca;
+ 
+@@ -99,7 +95,8 @@ static void cpuacct_css_free(struct cgroup_subsys_state *css)
+ static u64 cpuacct_cpuusage_read(struct cpuacct *ca, int cpu,
+ 				 enum cpuacct_stat_index index)
+ {
+-	struct cpuacct_usage *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
++	u64 *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
++	u64 *cpustat = per_cpu_ptr(ca->cpustat, cpu)->cpustat;
+ 	u64 data;
+ 
+ 	/*
+@@ -115,14 +112,17 @@ static u64 cpuacct_cpuusage_read(struct cpuacct *ca, int cpu,
+ 	raw_spin_lock_irq(&cpu_rq(cpu)->lock);
+ #endif
+ 
+-	if (index == CPUACCT_STAT_NSTATS) {
+-		int i = 0;
+-
+-		data = 0;
+-		for (i = 0; i < CPUACCT_STAT_NSTATS; i++)
+-			data += cpuusage->usages[i];
+-	} else {
+-		data = cpuusage->usages[index];
++	switch (index) {
++	case CPUACCT_STAT_USER:
++		data = cpustat[CPUTIME_USER] + cpustat[CPUTIME_NICE];
++		break;
++	case CPUACCT_STAT_SYSTEM:
++		data = cpustat[CPUTIME_SYSTEM] + cpustat[CPUTIME_IRQ] +
++			cpustat[CPUTIME_SOFTIRQ];
++		break;
++	case CPUACCT_STAT_NSTATS:
++		data = *cpuusage;
++		break;
+ 	}
+ 
+ #ifndef CONFIG_64BIT
+@@ -132,10 +132,14 @@ static u64 cpuacct_cpuusage_read(struct cpuacct *ca, int cpu,
+ 	return data;
+ }
+ 
+-static void cpuacct_cpuusage_write(struct cpuacct *ca, int cpu, u64 val)
++static void cpuacct_cpuusage_write(struct cpuacct *ca, int cpu)
+ {
+-	struct cpuacct_usage *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
+-	int i;
++	u64 *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
++	u64 *cpustat = per_cpu_ptr(ca->cpustat, cpu)->cpustat;
++
++	/* Don't allow to reset global kernel_cpustat */
++	if (ca == &root_cpuacct)
++		return;
+ 
+ #ifndef CONFIG_64BIT
+ 	/*
+@@ -143,9 +147,10 @@ static void cpuacct_cpuusage_write(struct cpuacct *ca, int cpu, u64 val)
+ 	 */
+ 	raw_spin_lock_irq(&cpu_rq(cpu)->lock);
+ #endif
+-
+-	for (i = 0; i < CPUACCT_STAT_NSTATS; i++)
+-		cpuusage->usages[i] = val;
++	*cpuusage = 0;
++	cpustat[CPUTIME_USER] = cpustat[CPUTIME_NICE] = 0;
++	cpustat[CPUTIME_SYSTEM] = cpustat[CPUTIME_IRQ] = 0;
++	cpustat[CPUTIME_SOFTIRQ] = 0;
+ 
+ #ifndef CONFIG_64BIT
+ 	raw_spin_unlock_irq(&cpu_rq(cpu)->lock);
+@@ -196,7 +201,7 @@ static int cpuusage_write(struct cgroup_subsys_state *css, struct cftype *cft,
+ 		return -EINVAL;
+ 
+ 	for_each_possible_cpu(cpu)
+-		cpuacct_cpuusage_write(ca, cpu, 0);
++		cpuacct_cpuusage_write(ca, cpu);
+ 
+ 	return 0;
+ }
+@@ -243,25 +248,10 @@ static int cpuacct_all_seq_show(struct seq_file *m, void *V)
+ 	seq_puts(m, "\n");
+ 
+ 	for_each_possible_cpu(cpu) {
+-		struct cpuacct_usage *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
+-
+ 		seq_printf(m, "%d", cpu);
+-
+-		for (index = 0; index < CPUACCT_STAT_NSTATS; index++) {
+-#ifndef CONFIG_64BIT
+-			/*
+-			 * Take rq->lock to make 64-bit read safe on 32-bit
+-			 * platforms.
+-			 */
+-			raw_spin_lock_irq(&cpu_rq(cpu)->lock);
+-#endif
+-
+-			seq_printf(m, " %llu", cpuusage->usages[index]);
+-
+-#ifndef CONFIG_64BIT
+-			raw_spin_unlock_irq(&cpu_rq(cpu)->lock);
+-#endif
+-		}
++		for (index = 0; index < CPUACCT_STAT_NSTATS; index++)
++			seq_printf(m, " %llu",
++				   cpuacct_cpuusage_read(ca, cpu, index));
+ 		seq_puts(m, "\n");
+ 	}
+ 	return 0;
+@@ -339,16 +329,11 @@ static struct cftype files[] = {
+ void cpuacct_charge(struct task_struct *tsk, u64 cputime)
+ {
+ 	struct cpuacct *ca;
+-	int index = CPUACCT_STAT_SYSTEM;
+-	struct pt_regs *regs = get_irq_regs() ? : task_pt_regs(tsk);
+-
+-	if (regs && user_mode(regs))
+-		index = CPUACCT_STAT_USER;
+ 
+ 	rcu_read_lock();
+ 
+ 	for (ca = task_ca(tsk); ca; ca = parent_ca(ca))
+-		__this_cpu_add(ca->cpuusage->usages[index], cputime);
++		__this_cpu_add(*ca->cpuusage, cputime);
+ 
+ 	rcu_read_unlock();
+ }
 -- 
 2.31.1
 
