@@ -2,388 +2,206 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5871B7B3846
-	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 19:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AF597B388C
+	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 19:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233539AbjI2RB3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 13:01:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36942 "EHLO
+        id S232954AbjI2RYE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 13:24:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233700AbjI2RBZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 13:01:25 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEEB81BE;
-        Fri, 29 Sep 2023 10:01:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1696006879; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=ELcoQqitbuh5QdUYiVG8Rnt+JD6sXbYawK/KlsXip2upmaBl6b2xy04L3gdovRDLKz
-    ZT6J1fa6WIN19YMYV00JMfRTeL5mb4W62ZMsd/bUzuwwYNYQfacQUZ3o1eIpomhWtHxF
-    cfd34Mmxbw562wpKPoVmB8bP0ilBlgXRqPTvdjwljsMigJ8jEfJGZUThTGREEM4/zf+F
-    fF+vmCz9PujyWCxT7Q9Cf5mo6YjakrYjvwyPHeGrUN261KHp/JybKkElkOA+kp0ECMCl
-    nyf5y8rSYFMbAOMujDDcXZVaUIsN8JPNogHPQb8RzZsZ2S+j4enOwABhA8IRSbHjy6AA
-    F3Hw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1696006879;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=c1LZOAquz+98eoqb9/BPIKYFm1QoBh+bs+Yd6UWIzlw=;
-    b=XYdv6GdZarmwMw8y8bVYrj7EodVZ9akDC+G8y8w8wAO4TWij3Ty3NDYO+8Qwku2Qlf
-    q5aXZMjUAjaFxnqc9b5DjB8EeR91uMT9yI9a6cYUPjy9KiHzwouQawRLWbQgxGG0tUzr
-    zHa9lcTTx6gjYiObqM7rESiSQHqoNaUae0jxZSKeeQnhGJZacGgJM1W51QxKcRouNzkB
-    3ycCtdSmuqxUaErPWwcduUkDBDGrgEyThp5AZqc+UaJTsr0NTYeiDQHnwMy9GCKXtPmm
-    P/IAOvrdQytFzMIzKBXCgmEseEmFNOXtwt8/5iJ/Xu+oLv8B7gd+rCkfEC5NcttM8lkw
-    6UdQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1696006879;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=c1LZOAquz+98eoqb9/BPIKYFm1QoBh+bs+Yd6UWIzlw=;
-    b=jvlgKpP/uRc5xocd7MWVTfXUURRfsnJlHWhZqNDwnKHkzAM8QAR/bnNBMWhhoGVsq4
-    R7qN5HQzw9MCAbtbopi0Rz1fhGhtCkLnaFpHm4RyzTzes+7MNmM80khZJCZIwRL61PoW
-    WCmoU+6axKnyLKfEqQJkcQ2bUqwjSHP6jHSj0koXg6UFgR9gfRBFqCTuxqL+I/djAdHY
-    HaRLcpL4w2rkfLg1o/YCgnk+bE4CBsksLpN5b7IpA6BHugsXXJH3enTzVw2Qt8olAGjC
-    sCtJyxEwM7JSJK0kNyl5qCGmzJEQQHkSUu2niWnFXJt6OyPZeR9hJngmLXG8/+ks/2g6
-    2HIA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1696006879;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=c1LZOAquz+98eoqb9/BPIKYFm1QoBh+bs+Yd6UWIzlw=;
-    b=QnBR3urVd889J9a7/uaadrOTG9OqqN8fZn0KB/qwahXxXaIiYMVBUtG316jmYQwOqz
-    px0jJXliBkw1Ek4xiyDA==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA95vh"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.8.2 SBL|AUTH)
-    with ESMTPSA id R04c57z8TH1IrLK
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Fri, 29 Sep 2023 19:01:18 +0200 (CEST)
-Date:   Fri, 29 Sep 2023 19:01:12 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] cpufreq: qcom-nvmem: Enable virtual power domain
- devices
-Message-ID: <ZRcC2IRRv6dtKY65@gerhold.net>
-References: <20230912-msm8909-cpufreq-v1-0-767ce66b544b@kernkonzept.com>
- <20230912-msm8909-cpufreq-v1-1-767ce66b544b@kernkonzept.com>
- <CAPDyKFq6U-MR4Bd+GmixYseRECDh142RhydtKbiPd3NHV2g6aw@mail.gmail.com>
- <ZQGqfMigCFZP_HLA@gerhold.net>
- <CAPDyKFppdXe1AZo1jm2Bc_ZR18hw5Bmh1x+2P7Obhb_rJ2gc4Q@mail.gmail.com>
+        with ESMTP id S232800AbjI2RYD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 13:24:03 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A56D01A7;
+        Fri, 29 Sep 2023 10:24:01 -0700 (PDT)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38TGhnsC012554;
+        Fri, 29 Sep 2023 17:23:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Gk4ZHt3MTuWoi7y6+C5IwawFLRF+6dy1zufE7xwekcE=;
+ b=UXaK8yjfA3iNytPHPOE6F9MeZ287l2Jj/bI0QVL1cYeV3evFEn+yaZepB31rJEY5F8AH
+ uC5Tb7u7SJIQeZKxfmqkO/h/jH0wF3pCArcxh4ECw2dpM4LjBDH9aDUalSxzlHZqjGXp
+ UifDUpUVDxqIJDx3ifuky9aFCyzQC9qDD3/FvAlojVzt53D7C7ciBG9M1Hw2/qjJ99OW
+ vuD5lGNFYI9S5XjKNZNMmqrlggJNM9GI1omX2lDIMcMfGbrwSq/ZJ6mmF+O9D5T9iQt5
+ pF6Dl4FObyFr3tCkqreZ/rk8+Xaf7eGVHiJSsoM2q8FBLVx327zm+FGtAJYlpxFx/Q3R QQ== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3te1mja89k-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 29 Sep 2023 17:23:48 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38TFQeac008253;
+        Fri, 29 Sep 2023 17:23:47 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+        by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tabbnxb3c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 29 Sep 2023 17:23:47 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+        by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38THNipg17302100
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 29 Sep 2023 17:23:44 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 700AB2004B;
+        Fri, 29 Sep 2023 17:23:44 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BD0C820040;
+        Fri, 29 Sep 2023 17:23:42 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.101.140])
+        by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Fri, 29 Sep 2023 17:23:42 +0000 (GMT)
+From:   Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To:     mpe@ellerman.id.au
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org,
+        maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.ibm.com,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        stable@vger.kernel.org, Naveen N Rao <naveen@kernel.org>
+Subject: [PATCH 1/2] powerpc/platforms/pseries: Fix STK_PARAM access in the hcall tracing code
+Date:   Fri, 29 Sep 2023 22:53:36 +0530
+Message-Id: <20230929172337.7906-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFppdXe1AZo1jm2Bc_ZR18hw5Bmh1x+2P7Obhb_rJ2gc4Q@mail.gmail.com>
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: M_IRifdDBn4KIkhlzVdycDshh6X8jSox
+X-Proofpoint-ORIG-GUID: M_IRifdDBn4KIkhlzVdycDshh6X8jSox
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-29_15,2023-09-28_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ impostorscore=0 mlxlogscore=999 lowpriorityscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 priorityscore=1501 adultscore=0 clxscore=1011 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2309290147
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 29, 2023 at 03:14:07PM +0200, Ulf Hansson wrote:
-> On Wed, 13 Sept 2023 at 14:26, Stephan Gerhold <stephan@gerhold.net> wrote:
-> > On Wed, Sep 13, 2023 at 12:56:16PM +0200, Ulf Hansson wrote:
-> > > On Tue, 12 Sept 2023 at 11:40, Stephan Gerhold
-> > > <stephan.gerhold@kernkonzept.com> wrote:
-> > > > [...]
-> > > > However, at the
-> > > > moment nothing ever enables the virtual devices created in
-> > > > qcom-cpufreq-nvmem for the cpufreq power domain scaling, so they are
-> > > > permanently runtime-suspended.
-> > > >
-> > > > Fix this by enabling the devices after attaching them and use
-> > > > dev_pm_syscore_device() to ensure the power domain also stays on when
-> > > > going to suspend. Since it supplies the CPU we can never turn it off
-> > > > from Linux. There are other mechanisms to turn it off when needed,
-> > > > usually in the RPM firmware or the cpuidle path.
-> > > >
-> > > > Without this fix performance states votes are silently ignored, and the
-> > > > CPU/CPR voltage is never adjusted. This has been broken since 5.14 but
-> > > > for some reason no one noticed this on QCS404 so far.
-> > > >
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 1cb8339ca225 ("cpufreq: qcom: Add support for qcs404 on nvmem driver")
-> > > > Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-> > > > ---
-> > > >  drivers/cpufreq/qcom-cpufreq-nvmem.c | 21 ++++++++++++++++++++-
-> > > >  1 file changed, 20 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-> > > > index 84d7033e5efe..17d6ab14c909 100644
-> > > > --- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
-> > > > +++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-> > > > @@ -25,6 +25,7 @@
-> > > >  #include <linux/platform_device.h>
-> > > >  #include <linux/pm_domain.h>
-> > > >  #include <linux/pm_opp.h>
-> > > > +#include <linux/pm_runtime.h>
-> > > >  #include <linux/slab.h>
-> > > >  #include <linux/soc/qcom/smem.h>
-> > > >
-> > > > @@ -280,6 +281,7 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
-> > > >         }
-> > > >
-> > > >         for_each_possible_cpu(cpu) {
-> > > > +               struct device **virt_devs = NULL;
-> > > >                 struct dev_pm_opp_config config = {
-> > > >                         .supported_hw = NULL,
-> > > >                 };
-> > > > @@ -300,7 +302,7 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
-> > > >
-> > > >                 if (drv->data->genpd_names) {
-> > > >                         config.genpd_names = drv->data->genpd_names;
-> > > > -                       config.virt_devs = NULL;
-> > > > +                       config.virt_devs = &virt_devs;
-> > > >                 }
-> > > >
-> > > >                 if (config.supported_hw || config.genpd_names) {
-> > > > @@ -311,6 +313,23 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
-> > > >                                 goto free_opp;
-> > > >                         }
-> > > >                 }
-> > > > +
-> > > > +               if (virt_devs) {
-> > > > +                       const char * const *name = config.genpd_names;
-> > > > +                       int i;
-> > > > +
-> > > > +                       for (i = 0; *name; i++, name++) {
-> > > > +                               ret = pm_runtime_resume_and_get(virt_devs[i]);
-> > > > +                               if (ret) {
-> > > > +                                       dev_err(cpu_dev, "failed to resume %s: %d\n",
-> > > > +                                               *name, ret);
-> > > > +                                       goto free_opp;
-> > > > +                               }
-> > >
-> > > Shouldn't we restore the usage count at ->remove() too?
-> > >
-> > > > +
-> > > > +                               /* Keep CPU power domain always-on */
-> > > > +                               dev_pm_syscore_device(virt_devs[i], true);
-> > >
-> > > Is this really correct? cpufreq is suspended/resumed by the PM core
-> > > during system wide suspend/resume. See dpm_suspend|resume(). Isn't
-> > > that sufficient?
-> > >
-> > > Moreover, it looks like the cpr genpd provider supports genpd's
-> > > ->power_on|off() callbacks. Is there something wrong with this, that I
-> > > am missing?
-> > >
-> >
-> > I think this question is a quite fundamental one. To explain this
-> > properly I will need to delve a bit into the implementation details of
-> > the two different GENPD providers that are applicable here:
-> >
-> > Fundamentally, we are describing the main power supply for the CPU here.
-> > Consider a simple regulator with adjustable voltage. From the Linux
-> > point of view this regulator should be marked as "regulator-always-on".
-> > If we would turn off this regulator, the CPU would be immediately dead
-> > without proper shutdown done by firmware or hardware.
-> >
-> > Representing the regulator as power domain does not change much, except
-> > that we now have abstract "performance states" instead of actual voltages.
-> > However, for power domains there is currently no generic mechanism like
-> > "regulator-always-on" in the DT, only drivers can specify
-> > GENPD_FLAG_ALWAYS_ON.
-> 
-> We have relied on genpd providers to act on their compatible strings
-> to make the correct configuration. If that isn't sufficient, I don't
-> see why we couldn't add a new DT property corresponding to
-> GENPD_FLAG_ALWAYS_ON.
-> 
+In powerpc pseries system, below behaviour is observed while
+enabling tracing on hcall:
+	# cd /sys/kernel/debug/tracing/
+	# cat events/powerpc/hcall_exit/enable
+	0
+	# echo 1 > events/powerpc/hcall_exit/enable
 
-Right. It's not completely trivial though, since a DT node may provide
-many different power domains with #power-domain-cells = <N>. A regulator
-on the other hand has a dedicated DT node where you can just add
-"regulator-always-on". :')
+	# ls
+	-bash: fork: Bad address
 
-> >
-> > The special situation on MSM8909 is that there are two possible setups
-> > for the CPU power supply depending on the PMIC that is used (see
-> > "[PATCH 4/4] cpufreq: qcom-nvmem: Add MSM8909"): CPR or RPMPD. Both are
-> > GENPD providers so in theory we can just have either
-> >
-> >   cpu@0 { power-domains = <&cpr>; }; // or
-> >   cpu@0 { power-domains = <&rpmpd MSM8909_VDDCX_AO>; };
-> >
-> > in the DT, without handling this specifically on the cpufreq side.
-> 
-> Looks like it would be nice to get a patch for the MSM8909 DTS too, as
-> part of the series, to get a better picture of how this is going to be
-> used. Would that be possible for you to provide?
-> 
+Above is from power9 lpar with latest kernel. Past this, softlockup
+is observed. Initially while attempting via perf_event_open to
+use "PERF_TYPE_TRACEPOINT", kernel panic was observed.
 
-Sure! Right now I cannot include it as working patch in this series
-since I don't have the base SoC DT (msm8909.dtsi) upstream yet. It's
-mostly a copy-paste of msm8916.dtsi so I was trying to finish up the
-SoC-specific parts before sending it.
+perf config used:
+================
+	memset(&pe[1],0,sizeof(struct perf_event_attr));
+	pe[1].type=PERF_TYPE_TRACEPOINT;
+	pe[1].size=96;
+	pe[1].config=0x26ULL; /* 38 raw_syscalls/sys_exit */
+	pe[1].sample_type=0; /* 0 */
+	pe[1].read_format=PERF_FORMAT_TOTAL_TIME_ENABLED|PERF_FORMAT_TOTAL_TIME_RUNNING|PERF_FORMAT_ID|PERF_FORMAT_GROUP|0x10ULL; /* 1f */
+	pe[1].inherit=1;
+	pe[1].precise_ip=0; /* arbitrary skid */
+	pe[1].wakeup_events=0;
+	pe[1].bp_type=HW_BREAKPOINT_EMPTY;
+	pe[1].config1=0x1ULL;
 
-I'm happy to provide links to the full DT and my changes though. Does
-that help? If you would like to comment inline I could copy paste the
-diffs in a mail or include some kind of RFC patch. It just wouldn't be
-possible to apply it successfully. :')
+Kernel panic logs:
+==================
 
-Here are the two commits with the my current DT changes (WIP):
-  - MSM8909+PM8909 (RPMPD only):
-    https://github.com/msm8916-mainline/linux/commit/791e0c5a3162372a0738bc7b0f4a5e87247923db
-  - MSM8916 (CPR+RPMPD):
-    https://github.com/msm8916-mainline/linux/commit/8880f39108206d7a60a0a8351c0373bddf58657c
-  (- QCS404 (CPR only): already in mainline (see qcs404.dtsi))
+	Kernel attempted to read user page (8) - exploit attempt? (uid: 0)
+	 BUG: Kernel NULL pointer dereference on read at 0x00000008
+	 Faulting instruction address: 0xc0000000004c2814
+	 Oops: Kernel access of bad area, sig: 11 [#1]
+	 LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+ 	Modules linked in: nfnetlink bonding tls rfkill sunrpc dm_service_time dm_multipath pseries_rng xts vmx_crypto xfs libcrc32c sd_mod t10_pi crc64_rocksoft crc64 sg ibmvfc scsi_transport_fc ibmveth dm_mirror dm_region_hash dm_log dm_mod fuse
+ 	CPU: 0 PID: 1431 Comm: login Not tainted 6.4.0+ #1
+ 	Hardware name: IBM,8375-42A POWER9 (raw) 0x4e0202 0xf000005 of:IBM,FW950.30 (VL950_892) hv:phyp pSeries
+ 	NIP [c0000000004c2814] page_remove_rmap+0x44/0x320
+	LR [c00000000049c2a4] wp_page_copy+0x384/0xec0
+	Call Trace:
+	[c0000000098c7ad0] [c00000001416e400] 0xc00000001416e400 (unreliable)
+	[c0000000098c7b20] [c00000000049c2a4] wp_page_copy+0x384/0xec0
+	[c0000000098c7bf0] [c0000000004a4f64] __handle_mm_fault+0x9d4/0xfb0
+	[c0000000098c7cf0] [c0000000004a5630] handle_mm_fault+0xf0/0x350
+	[c0000000098c7d40] [c000000000094e8c] ___do_page_fault+0x48c/0xc90
+	[c0000000098c7df0] [c0000000000958a0] hash__do_page_fault+0x30/0x70
+	[c0000000098c7e20] [c00000000009e244] do_hash_fault+0x1a4/0x330
+	[c0000000098c7e50] [c000000000008918] data_access_common_virt+0x198/0x1f0
+	 --- interrupt: 300 at 0x7fffae971abc
 
-> >
-> > The two GENPD providers behave quite differently though:
-> >
-> >  - CPR: CPR is not really a power domain itself. It's more like a monitor
-> >    on a power supply line coming from some other regulator. CPR provides
-> >    suggestions how to adjust the voltage for best power/stability.
-> >
-> >    The GENPD .power_off() disables the CPR state machine and forwards
-> >    this to the regulator with regulator_disable(). On QCS404 the
-> >    regulator is marked regulator-always-on, so it will never be disabled
-> >    from Linux. The SAW/SPM hardware component on Qualcomm SoCs will
-> >    usually disable the regulator during deep cpuidle states.
-> 
-> Parts of this sound a bit odd to me. The CPR/CPUfreq shouldn't really
-> need to vote for the CPU's power-rail(s) from a powered-on/off (CPU
-> idle states) point of view, but only from a performance (voltage
-> level) point of view.
-> 
-> If the enable/disable voting on the regulator really has an impact on
-> some platforms, it sounds like it could prevent deeper CPU idle states
-> too. That's probably not what we want, right?
-> 
+git bisect tracked this down to below commit:
+'commit baa49d81a94b ("powerpc/pseries: hvcall stack frame overhead")'
 
-I think this heavily depends on what exactly this "regulator"
-represents. Are we talking about a physical regulator with a binary
-enable/disable signal or actually some hardware/firmware magic that
-combines multiple independent "votes"?
+This commit changed STACK_FRAME_OVERHEAD (112 ) to
+STACK_FRAME_MIN_SIZE (32 ) since 32 bytes is the minimum size
+for ELFv2 stack. With the latest kernel, when running on ELFv2,
+STACK_FRAME_MIN_SIZE is used to allocate stack size.
 
-If we are talking about a physical regulator then we can never disable
-it from Linux. Not even during CPU idle states. It would just cut off
-all power immediately and kill the CPU without proper shutdown. Instead,
-the platform might have special hardware/firmware functionality that
-will control the actual physical enable/disable signal of the regulator.
+During plpar_hcall_trace, first call is made to HCALL_INST_PRECALL
+which saves the registers and allocates new stack frame. In the
+plpar_hcall_trace code, STK_PARAM is accessed at two places.
+	1. To save r4: std     r4,STK_PARAM(R4)(r1)
+	2. To access r4 back: ld      r12,STK_PARAM(R4)(r1)
 
-> I also had a look at the existing CPR genpd provider's probe
-> function/path (cpr_probe()) - and it turns out there is no call to
-> regulator_enable(). Whatever that means to us.
+HCALL_INST_PRECALL precall allocates a new stack frame. So all
+the stack parameter access after the precall, needs to be accessed
+with +STACK_FRAME_MIN_SIZE. So the store instruction should be:
+	std     r4,STACK_FRAME_MIN_SIZE+STK_PARAM(R4)(r1)
 
-In most (all?) setups the CPR genpd provider will manage the actual
-physical regulator. It could be part of the PMIC or even some
-off-the-shelf regulator with I2C control. It doesn't matter. There is
-nothing special about that regulator. You have the standard Linux
-regulator driver, set up the DT node for it and hook it up to CPR.
+If the "std" is not updated with STACK_FRAME_MIN_SIZE, we will
+end up with overwriting stack contents and cause corruption.
+But instead of updating 'std', we can instead remove it since
+HCALL_INST_PRECALL already saves it to the correct location.
 
-Now, to prevent the regulator driver in Linux from touching the physical
-enable signal (see above) we add "regulator-always-on". When Linux
-requests deep CPU idle states via PSCI the hardware will toggle the
-physical enable/disable signal of the regulator for us (after the CPU
-has been shut down).
+similarly load instruction should be:
+	ld      r12,STACK_FRAME_MIN_SIZE+STK_PARAM(R4)(r1)
 
-On some platforms CPR is also used for the GPU or other power rails that
-are not critical for the CPU to run. In that case it's fine to disable
-the regulator directly from Linux. Just not for the CPU.
+Fix the load instruction to correctly access the stack parameter
+with +STACK_FRAME_MIN_SIZE and remove the store of r4 since the
+precall saves it correctly.
 
-> 
-> >
-> >  - RPMPD: This is the generic driver for all the SoC power domains
-> >    managed by the RPM firmware. It's not CPU-specific. However, as
-> >    special feature each power domain is exposed twice in Linux, e.g.
-> >    "MSM8909_VDDCX" and "MSM8909_VDDCX_AO". The _AO ("active-only")
-> >    variant tells the RPM firmware that the performance/enable vote only
-> >    applies when the CPU is active (not in deep cpuidle state).
-> >
-> >    The GENPD .power_off() drops all performance state votes and also
-> >    releases the "enable" vote for the power domain.
-> >
-> > Now, imagine what happens during system wide suspend/resume:
-> >
-> >  - CPR: The CPR state machine gets disabled. The voltage stays as-is.
-> >      - With "regulator-always-on": The CPU keeps running until WFI.
-> >      - Without: I would expect the CPU is dead immediately(?)
-> 
-> As I indicated above, I am starting to feel that this is a bit upside
-> down. CPR/CPUfreq should vote on voltages to scale performance, but
-> not for cpu idle states.
-> 
-> Perhaps what is missing is a synchronization point or a notification,
-> to inform the CPR driver that its state machine (registers) needs to
-> be saved/restored, when the power-rails get turned on/off. In fact, we
-> have a couple mechanisms at hand to support this.
-> 
+Cc: stable@vger.kernel.org
+Fixes: baa49d81a94b ("powerpc/pseries: hvcall stack frame overhead")
+Co-developed-by: Naveen N Rao <naveen@kernel.org>
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ arch/powerpc/platforms/pseries/hvCall.S | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-I think we can ignore this part of CPR for now. AFAICT Qualcomm's vendor
-driver does not explicitly disable the CPR state machine during CPU idle
-when the power rails are potentially turned off. They only do it during
-system wide suspend, for whatever reason. For that we don't need such a
-notification mechanism.
+diff --git a/arch/powerpc/platforms/pseries/hvCall.S b/arch/powerpc/platforms/pseries/hvCall.S
+index bae45b358a09..2addf2ea03f0 100644
+--- a/arch/powerpc/platforms/pseries/hvCall.S
++++ b/arch/powerpc/platforms/pseries/hvCall.S
+@@ -184,7 +184,6 @@ _GLOBAL_TOC(plpar_hcall)
+ plpar_hcall_trace:
+ 	HCALL_INST_PRECALL(R5)
+ 
+-	std	r4,STK_PARAM(R4)(r1)
+ 	mr	r0,r4
+ 
+ 	mr	r4,r5
+@@ -196,7 +195,7 @@ plpar_hcall_trace:
+ 
+ 	HVSC
+ 
+-	ld	r12,STK_PARAM(R4)(r1)
++	ld	r12,STACK_FRAME_MIN_SIZE+STK_PARAM(R4)(r1)
+ 	std	r4,0(r12)
+ 	std	r5,8(r12)
+ 	std	r6,16(r12)
+@@ -296,7 +295,6 @@ _GLOBAL_TOC(plpar_hcall9)
+ plpar_hcall9_trace:
+ 	HCALL_INST_PRECALL(R5)
+ 
+-	std	r4,STK_PARAM(R4)(r1)
+ 	mr	r0,r4
+ 
+ 	mr	r4,r5
+-- 
+2.39.3
 
-> >
-> >  - RPMPD: The performance/enable vote is dropped. The power domain might
-> >    go to minimal voltage or even turn off completely. However, the CPU
-> >    actually needs to keep running at the same frequency until WFI!
-> >    Worst case, the CPU is dead immediately when the power domain votes
-> >    get dropped.
-> 
-> Since RPMPD is managing the voting for both performance and low power
-> states for different kinds of devices, this certainly gets a bit more
-> complicated.
-> 
-> On the other hand, the CPUfreq driver should really only vote for
-> performance states for the CPUs and not for low power states. The
-> latter is a job for cpuidle and other consumers of the RPMPD to
-> manage, I think.
-> 
-> So, while thinking of this, I just realized that it may not always be
-> a good idea for genpd to cache a performance state request, for an
-> attached device and for which pm_runtime_suspended() returns true for
-> it. As this is the default behaviour in genpd, I am thinking that we
-> need a way to make that behaviour configurable for an attached device.
-> What do you think about that?
-> 
-
-Hm. This would be a bit of a special case of course. But I think this
-would be fine to solve the regression for CPR on QCS404.
-
-Then we "just" need to solve the fundamental question from a few years
-ago: Who *will* actually vote for enabling the power domains/regulators
-required by the CPU? :D
-
-I agree that enabling/disabling power supplies feels closer to cpuidle.
-But it's not a perfect fit either, given that we don't actually want to
-change our vote while entering CPU idle states. I think on all platforms
-I'm looking at here we need a permanent enable vote (effectively making
-the regulator/power domains always-on from the Linux point of view).
-
-We could solve this by adding a "regulator-always-on" mechanism in the
-DT for power domains. This feels more like a workaround to me than an
-actual solution. With this the CPU won't appear as always-on consumer of
-the power domains in debugfs. There will just be a "suspended" consumer
-attributed to the CPU (from CPUfreq, since we don't have a dedicated
-device for CPUfreq).
-
-While this patch is a bit strange from a conceptual perspective, on the
-implementation side it effectively makes that CPU consumer appear as
-active. So the end result is actually kind of the one we need. :'D
-
-Thanks,
-Stephan
