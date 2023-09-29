@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 438637B3C8D
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 00:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A1BC7B3C96
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 00:28:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232748AbjI2WVn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 18:21:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49920 "EHLO
+        id S229962AbjI2W2s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 18:28:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjI2WVm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 18:21:42 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92906139;
-        Fri, 29 Sep 2023 15:21:40 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-4053c6f1087so139437295e9.0;
-        Fri, 29 Sep 2023 15:21:40 -0700 (PDT)
+        with ESMTP id S229508AbjI2W2s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 18:28:48 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D078F1;
+        Fri, 29 Sep 2023 15:28:45 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-31f7400cb74so13250113f8f.2;
+        Fri, 29 Sep 2023 15:28:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696026099; x=1696630899; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1696026524; x=1696631324; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cfkoZtZzWFKUAXVfkTw1XT497sJpCWkeZgREXpBpHnM=;
-        b=PCnhW8Ij7IAB8ISKHsPVHuMun5syvcVSYeeY0ROHQSbUEsA3Ha9nQJLLH8dV3fK+ml
-         MompR5YKyEtzKAeIeFvG9MCKEENUlVTPTk4s1cMjHKs3U1WUJdbdOU+JgWTcvY3IPfIJ
-         KuZkaf1V7GNTwagBDVQ7/s4bHEhPYrAYc3SbaGTLTwLDb0Lqhcc1WXa2URyiKVta/t3x
-         LbN77918kMgtf03NifewgzhGwGH26245KzEGAF2yyVlJZN/31Rn/HILdVByPFSdUx6cO
-         EQcPHffN3e5D5pESEtjBsZ5klhJROSnaWI05bjPlRwsbL+SLXJEOgrWoZO/bBkd+ccIW
-         4dwA==
+        bh=ojq66DYQP0PdZxJFspae4896e0n9cWPdtlOpAHGIcv4=;
+        b=l+PLUQDRgcoSw73UNf1H3vHUqvdEh2nmaLM2ilHr1zgkhscDZX9fKTr+rWYHTv4L6U
+         FLQPBbgnRLIqHFxVA4uIvuGDmGpw+9Jatzc38jRzlI7wNRdyU0Hh3ZmF11hlKs47cIck
+         6N2301oDMEFMO5FgxCzQ8aXjif+oG84K7NowdgEDE7njru7iCmnEqUWTzzFJAj0V+okG
+         0LQpY1+rOdWUpZmXeFymopw12wYJenJEL1RVjrJ7Haw53gd/+6bl5gqt5vGNcn1/6Q8j
+         3vRf1zlx2ucTCRv3huEXtmxdrdU2IALFk/tYYcT0wlcXhZ4N6SK2/gnKmKdN1pBd2LAD
+         G1NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696026099; x=1696630899;
+        d=1e100.net; s=20230601; t=1696026524; x=1696631324;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cfkoZtZzWFKUAXVfkTw1XT497sJpCWkeZgREXpBpHnM=;
-        b=A7D5cf+ZeaxUIG8UE/Ll2y1fkIMolR1FfHRR5EOadSsVe2yOWFMWTUgdfeuQvAADUF
-         pHi7OzPU6Jdall0lUnEvRhEY9DV9poMcCssjuuik9Eg8/8a0pX86Tjw/7uiSJgz+VFRz
-         kwnMKgXOTuFAvdGk8rFB7jLj/CiQPEEbWQI3O7Ms5iZS6Gb6zkdBe3nDZv8g2925g2Db
-         4a+QtVSSjezLUh278HXyEIa9ZqGrFbnTK0RpL3kCmU9FbDSLKiQgHxqve1L8x/Wi4l2w
-         OaDIdRaTY2ucrcQCvgwFUlApfsHpOXPWIPLmTNuE9qKKUh/ASTuXlOAYXG4hUlcqtu3e
-         3agw==
-X-Gm-Message-State: AOJu0YyfmuiWnD4EH6i1xHaP8QEpdJm+o5JCjkzHTiqHbgwWRgMs4M7o
-        ghvZkJJc+RL5ly53qcqJ3cs=
-X-Google-Smtp-Source: AGHT+IHp2979RLyG4yl77VxrPIQnP1hdoLxq2OeMecv7VB0xcyOg9BAYIcfLgRQ7K1Hy9R295KDl3Q==
-X-Received: by 2002:a05:600c:2145:b0:401:c338:ab94 with SMTP id v5-20020a05600c214500b00401c338ab94mr5418356wml.29.1696026098484;
-        Fri, 29 Sep 2023 15:21:38 -0700 (PDT)
+        bh=ojq66DYQP0PdZxJFspae4896e0n9cWPdtlOpAHGIcv4=;
+        b=sT2smLrJSYSE8Smof/A9jNJ2a18YZkowoFXqFyxAEfGfr/MQRfnEX3pgagEK2tLCR9
+         ucbPa+F3RCMP9y0iPfGk/INQnKGP1+GYNviylMIdjasd76ThcTdHkDOAkVwp6xhTOss1
+         SqEBL5Lery4lahW8/qAgMRwVCwTC9F2b3fj4v+85rvsZS3+IQ6wDyY1+G97ldvzCFwIV
+         fgbt2Che2IFDq9D1dcCa9wscsWFkG2nrY5AsuSQ0Q6AJX2No9AjvJ4sjpvgPnUHktqnh
+         LmYfjxbbHD70mSAuh9hW8RyCYDbuSq1ezdUdlVP2LVAMCnlnOvNtJ+D6Xpsgc+2NC2j1
+         YeBg==
+X-Gm-Message-State: AOJu0YzYAdC6ertUW6QI9tWRkJO927znzs04boHCQWQbhx2ySH8Rr+BC
+        1LYiDD9+EBj6GOcar4VpsCQ=
+X-Google-Smtp-Source: AGHT+IE/nRAGW3TuLc3zOGLZH8EsqMxQyvoagnVPerL5NY7ZyUeIJkuWzsTdAHMsxGMYMFkK1OqeBA==
+X-Received: by 2002:a5d:4f8a:0:b0:317:5f13:5c2f with SMTP id d10-20020a5d4f8a000000b003175f135c2fmr5059956wru.0.1696026523393;
+        Fri, 29 Sep 2023 15:28:43 -0700 (PDT)
 Received: from localhost ([2a00:23c5:dc8c:8701:1663:9a35:5a7b:1d76])
-        by smtp.gmail.com with ESMTPSA id t16-20020a5d49d0000000b0031c5b380291sm22386092wrs.110.2023.09.29.15.21.37
+        by smtp.gmail.com with ESMTPSA id x17-20020a5d6511000000b0031fd849e797sm22328639wru.105.2023.09.29.15.28.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Sep 2023 15:21:37 -0700 (PDT)
-Date:   Fri, 29 Sep 2023 23:21:36 +0100
+        Fri, 29 Sep 2023 15:28:42 -0700 (PDT)
+Date:   Fri, 29 Sep 2023 23:28:41 +0100
 From:   Lorenzo Stoakes <lstoakes@gmail.com>
 To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
@@ -56,15 +56,14 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
         Vlastimil Babka <vbabka@suse.cz>,
         Suren Baghdasaryan <surenb@google.com>,
         Matthew Wilcox <willy@infradead.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] mmap: Fix vma_iterator in error path of
- vma_merge()
-Message-ID: <f3193ba5-32de-4f61-9b36-07373a21d751@lucifer.local>
+Subject: Re: [PATCH v3 2/3] mmap: Fix error paths with dup_anon_vma()
+Message-ID: <843f059f-dd54-4481-b46a-e87e56274db3@lucifer.local>
 References: <20230929183041.2835469-1-Liam.Howlett@oracle.com>
- <20230929183041.2835469-2-Liam.Howlett@oracle.com>
+ <20230929183041.2835469-3-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230929183041.2835469-2-Liam.Howlett@oracle.com>
+In-Reply-To: <20230929183041.2835469-3-Liam.Howlett@oracle.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -75,63 +74,163 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 29, 2023 at 02:30:39PM -0400, Liam R. Howlett wrote:
-> During the error path, the vma iterator may not be correctly positioned
-> or set to the correct range.  Undo the vma_prev() call by resetting to
-> the passed in address.  Re-walking to the same range will fix the range
-> to the area previously passed in.
+On Fri, Sep 29, 2023 at 02:30:40PM -0400, Liam R. Howlett wrote:
+> When the calling function fails after the dup_anon_vma(), the
+> duplication of the anon_vma is not being undone.  Add the necessary
+> unlink_anon_vma() call to the error paths that are missing them.
 >
-> Users would notice increased cycles as vma_merge() would be called an
-> extra time with vma == prev, and thus would fail to merge and return.
+> This issue showed up during inspection of the error path in vma_merge()
+> for an unrelated vma iterator issue.
 >
-> Link: https://lore.kernel.org/linux-mm/CAG48ez12VN1JAOtTNMY+Y2YnsU45yL5giS-Qn=ejtiHpgJAbdQ@mail.gmail.com/
-> Closes: https://lore.kernel.org/linux-mm/CAG48ez12VN1JAOtTNMY+Y2YnsU45yL5giS-Qn=ejtiHpgJAbdQ@mail.gmail.com/
-> Fixes: 18b098af2890 ("vma_merge: set vma iterator to correct position.")
+> Users may experience increased memory usage, which may be problematic as
+> the failure would likely be caused by a low memory situation.
+>
+> Fixes: d4af56c5c7c6 ("mm: start tracking VMAs with maple tree")
 > Cc: stable@vger.kernel.org
 > Cc: Jann Horn <jannh@google.com>
 > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 > ---
->  mm/mmap.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+>  mm/mmap.c | 30 ++++++++++++++++++++++--------
+>  1 file changed, 22 insertions(+), 8 deletions(-)
 >
 > diff --git a/mm/mmap.c b/mm/mmap.c
-> index b56a7f0c9f85..acb7dea49e23 100644
+> index acb7dea49e23..f9f0a5fe4db4 100644
 > --- a/mm/mmap.c
 > +++ b/mm/mmap.c
-> @@ -975,7 +975,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
->
->  	/* Error in anon_vma clone. */
->  	if (err)
-> -		return NULL;
-> +		goto anon_vma_fail;
->
->  	if (vma_start < vma->vm_start || vma_end > vma->vm_end)
->  		vma_expanded = true;
-> @@ -988,7 +988,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
+> @@ -583,11 +583,12 @@ static inline void vma_complete(struct vma_prepare *vp,
+>   * dup_anon_vma() - Helper function to duplicate anon_vma
+>   * @dst: The destination VMA
+>   * @src: The source VMA
+> + * @dup: Pointer to the destination VMA when successful.
+>   *
+>   * Returns: 0 on success.
+
+Being a bit nitpicky/refactory here, but anon_vma_clone() appears to have
+two possible return values - 0 for success, and -ENOMEM.
+
+As a result, it's not really gaining us much passing through this value.
+
+It'd be nice if dup_anon_vma() and anon_vma_clone() were therefore updated
+to instead return NULL on ENOMEM and the dst otherwise.
+
+Then we could de-clunk this whole code path, and the quite natural fact of
+'thing didn't return a pointer therefore had no memory to allocate it' fals
+out.
+
+But this isn't exactly an earth-shattering concern :)
+
+>   */
+>  static inline int dup_anon_vma(struct vm_area_struct *dst,
+> -			       struct vm_area_struct *src)
+> +		struct vm_area_struct *src, struct vm_area_struct **dup)
+>  {
+>  	/*
+>  	 * Easily overlooked: when mprotect shifts the boundary, make sure the
+> @@ -595,9 +596,15 @@ static inline int dup_anon_vma(struct vm_area_struct *dst,
+>  	 * anon pages imported.
+>  	 */
+>  	if (src->anon_vma && !dst->anon_vma) {
+> +		int ret;
+> +
+>  		vma_assert_write_locked(dst);
+>  		dst->anon_vma = src->anon_vma;
+> -		return anon_vma_clone(dst, src);
+> +		ret = anon_vma_clone(dst, src);
+> +		if (ret)
+> +			return ret;
+> +
+> +		*dup = dst;
 >  	}
 >
->  	if (vma_iter_prealloc(vmi, vma))
-> -		return NULL;
-> +		goto prealloc_fail;
+>  	return 0;
+> @@ -624,6 +631,7 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	       unsigned long start, unsigned long end, pgoff_t pgoff,
+>  	       struct vm_area_struct *next)
+>  {
+> +	struct vm_area_struct *anon_dup = NULL;
+>  	bool remove_next = false;
+>  	struct vma_prepare vp;
 >
->  	init_multi_vma_prep(&vp, vma, adjust, remove, remove2);
->  	VM_WARN_ON(vp.anon_vma && adjust && adjust->anon_vma &&
-> @@ -1016,6 +1016,12 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
->  	vma_complete(&vp, vmi, mm);
->  	khugepaged_enter_vma(res, vm_flags);
->  	return res;
-> +
-> +prealloc_fail:
-> +anon_vma_fail:
-> +	vma_iter_set(vmi, addr);
-> +	vma_iter_load(vmi);
-> +	return NULL;
+> @@ -633,7 +641,7 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>
+>  		remove_next = true;
+>  		vma_start_write(next);
+> -		ret = dup_anon_vma(vma, next);
+> +		ret = dup_anon_vma(vma, next, &anon_dup);
+>  		if (ret)
+>  			return ret;
+>  	}
+> @@ -661,6 +669,8 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
+>  	return 0;
+>
+>  nomem:
+> +	if (anon_dup)
+> +		unlink_anon_vmas(anon_dup);
+>  	return -ENOMEM;
 >  }
 >
->  /*
+> @@ -860,6 +870,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
+>  {
+>  	struct vm_area_struct *curr, *next, *res;
+>  	struct vm_area_struct *vma, *adjust, *remove, *remove2;
+> +	struct vm_area_struct *anon_dup = NULL;
+>  	struct vma_prepare vp;
+>  	pgoff_t vma_pgoff;
+>  	int err = 0;
+> @@ -927,18 +938,18 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
+>  		vma_start_write(next);
+>  		remove = next;				/* case 1 */
+>  		vma_end = next->vm_end;
+> -		err = dup_anon_vma(prev, next);
+> +		err = dup_anon_vma(prev, next, &anon_dup);
+>  		if (curr) {				/* case 6 */
+>  			vma_start_write(curr);
+>  			remove = curr;
+>  			remove2 = next;
+>  			if (!next->anon_vma)
+> -				err = dup_anon_vma(prev, curr);
+> +				err = dup_anon_vma(prev, curr, &anon_dup);
+>  		}
+>  	} else if (merge_prev) {			/* case 2 */
+>  		if (curr) {
+>  			vma_start_write(curr);
+> -			err = dup_anon_vma(prev, curr);
+> +			err = dup_anon_vma(prev, curr, &anon_dup);
+>  			if (end == curr->vm_end) {	/* case 7 */
+>  				remove = curr;
+>  			} else {			/* case 5 */
+> @@ -954,7 +965,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
+>  			vma_end = addr;
+>  			adjust = next;
+>  			adj_start = -(prev->vm_end - addr);
+> -			err = dup_anon_vma(next, prev);
+> +			err = dup_anon_vma(next, prev, &anon_dup);
+>  		} else {
+>  			/*
+>  			 * Note that cases 3 and 8 are the ONLY ones where prev
+> @@ -968,7 +979,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
+>  				vma_pgoff = curr->vm_pgoff;
+>  				vma_start_write(curr);
+>  				remove = curr;
+> -				err = dup_anon_vma(next, curr);
+> +				err = dup_anon_vma(next, curr, &anon_dup);
+>  			}
+>  		}
+>  	}
+> @@ -1018,6 +1029,9 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
+>  	return res;
+>
+>  prealloc_fail:
+> +	if (anon_dup)
+> +		unlink_anon_vmas(anon_dup);
+> +
+>  anon_vma_fail:
+>  	vma_iter_set(vmi, addr);
+>  	vma_iter_load(vmi);
 > --
 > 2.40.1
 >
-Looks good to me,
+
+Other than the nice-to-have, this looks good to me:
 
 Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
