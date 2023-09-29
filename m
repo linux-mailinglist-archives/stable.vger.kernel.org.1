@@ -2,46 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BB7E7B314E
-	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 13:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA8B97B31B2
+	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 13:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231774AbjI2L0M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 07:26:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60504 "EHLO
+        id S233044AbjI2Lqz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 07:46:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjI2L0M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 07:26:12 -0400
+        with ESMTP id S233069AbjI2Lqo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 07:46:44 -0400
 Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2426FB7;
-        Fri, 29 Sep 2023 04:26:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE28B1B4;
+        Fri, 29 Sep 2023 04:46:36 -0700 (PDT)
 Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
         by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qmBdH-00016J-Jk; Fri, 29 Sep 2023 13:26:07 +0200
-Message-ID: <9c1b89af-4002-4275-88e5-59d6ae1f4bcd@leemhuis.info>
-Date:   Fri, 29 Sep 2023 13:26:06 +0200
+        id 1qmBx0-00054T-AZ; Fri, 29 Sep 2023 13:46:30 +0200
+Message-ID: <89dded30-d250-4b7a-b5a8-b18e3b509bf1@leemhuis.info>
+Date:   Fri, 29 Sep 2023 13:46:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH 1/3] wifi: mt76: mt7915: remove VHT160 capability on
- MT7915
+Subject: Re: Regression: Commit "netfilter: nf_tables: disallow rule addition
+ to bound chain via NFTA_RULE_CHAIN_ID" breaks ruleset loading in linux-stable
 Content-Language: en-US, de-DE
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>
-Cc:     linux-wireless@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Oleksandr Natalenko <oleksandr@natalenko.name>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20230726091704.25795-1-nbd@nbd.name>
- <12289744.O9o76ZdvQC@natalenko.name> <2023092145-luxury-fender-d5b9@gregkh>
- <4862789.31r3eYUQgx@natalenko.name>
+To:     Florian Westphal <fw@strlen.de>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Pablo Neira Ayuso <pablo@netfilter.org>,
+        Timo Sigurdsson <public_timo.s@silentcreek.de>,
+        kadlec@netfilter.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, sashal@kernel.org, carnil@debian.org,
+        1051592@bugs.debian.org
+References: <20230911213750.5B4B663206F5@dd20004.kasserver.com>
+ <ZP+bUpxJiFcmTWhy@calendula>
+ <b30a81fa-6b59-4bac-b109-99a4dca689de@leemhuis.info>
+ <20230912102701.GA13516@breakpoint.cc>
 From:   "Linux regression tracking (Thorsten Leemhuis)" 
         <regressions@leemhuis.info>
-In-Reply-To: <4862789.31r3eYUQgx@natalenko.name>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <20230912102701.GA13516@breakpoint.cc>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695986770;987ca405;
-X-HE-SMSGID: 1qmBdH-00016J-Jk
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1695987996;3a87d281;
+X-HE-SMSGID: 1qmBx0-00054T-AZ
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,75 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Seems nothing happened since this regression was reported more that a
-week ago. From a quick search on lore it seems Felix is not around
-currently; thus bringing the other mt76 maintainers in, maybe they can
-help out here to get this fixed rather sooner than later, as the culprit
-unfortunately made it to various stable trees. Ciao, Thorsten.
-
-On 21.09.23 18:03, Oleksandr Natalenko wrote:
-> On čtvrtek 21. září 2023 9:19:58 CEST Greg Kroah-Hartman wrote:
->> On Thu, Sep 21, 2023 at 07:02:41AM +0200, Oleksandr Natalenko wrote:
->>>
->>> On středa 26. července 2023 11:17:02 CEST Felix Fietkau wrote:
->>>> The IEEE80211_VHT_CAP_EXT_NSS_BW value already indicates support for half-NSS
->>>> 160 MHz support, so it is wrong to also advertise full 160 MHz support.
->>>>
->>>> Fixes: c2f73eacee3b ("wifi: mt76: mt7915: add back 160MHz channel width support for MT7915")
->>>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
->>>> ---
->>>>  drivers/net/wireless/mediatek/mt76/mt7915/init.c | 1 -
->>>>  1 file changed, 1 deletion(-)
->>>>
->>>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->>>> index ee976657bfc3..78552f10b377 100644
->>>> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->>>> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
->>>> @@ -414,7 +414,6 @@ mt7915_init_wiphy(struct mt7915_phy *phy)
->>>>  			if (!dev->dbdc_support)
->>>>  				vht_cap->cap |=
->>>>  					IEEE80211_VHT_CAP_SHORT_GI_160 |
->>>> -					IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ |
->>>>  					FIELD_PREP(IEEE80211_VHT_CAP_EXT_NSS_BW_MASK, 1);
->>>>  		} else {
->>>>  			vht_cap->cap |=
->>>>
->>>
->>> For some reason this got backported into the stable kernel:
->>>
->>> ```
->>> $ git log --oneline v6.5.2..v6.5.4 -- drivers/net/wireless/mediatek/mt76/mt7915/
->>> c43017fbebcc3 wifi: mt76: mt7915: fix power-limits while chan_switch
->>> edb1afe042c74 wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
->>> 9ec0dec0baea3 wifi: mt76: mt7915: remove VHT160 capability on MT7915
->>> 0e61f73e6ebc0 wifi: mt76: mt7915: fix capabilities in non-AP mode
->>> 6bce28ce28390 wifi: mt76: mt7915: fix command timeout in AP stop period
->>> 7af917d4864c6 wifi: mt76: mt7915: rework tx bytes counting when WED is active
->>> feae00c6468ce wifi: mt76: mt7915: rework tx packets counting when WED is active
->>> 70bbcc4ad6544 wifi: mt76: mt7915: fix background radar event being blocked
->>> ```
->>>
->>> and this broke my mt7915-based AP.
->>>
->>> However, if I remove `[VT160]` capability from the hostapd config, things go back to normal. It does seem that 160 MHz still works even.
->>>
->>> Is this expected?
+On 12.09.23 12:27, Florian Westphal wrote:
+> Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info> wrote:
+>> On 12.09.23 00:57, Pablo Neira Ayuso wrote:
+>>> Userspace nftables v1.0.6 generates incorrect bytecode that hits a new
+>>> kernel check that rejects adding rules to bound chains. The incorrect
+>>> bytecode adds the chain binding, attach it to the rule and it adds the
+>>> rules to the chain binding. I have cherry-picked these three patches
+>>> for nftables v1.0.6 userspace and your ruleset restores fine.
+>>> [...]
 >>
->> Is your device also broken in 6.6-rc2?
+>> Hmmmm. Well, this sounds like a kernel regression to me that normally
+>> should be dealt with on the kernel level, as users after updating the
+>> kernel should never have to update any userspace stuff to continue what
+>> they have been doing before the kernel update.
 > 
-> Yes, the same behaviour is observed with v6.6-rc2:
+> This is a combo of a userspace bug and this new sanity check that
+> rejects the incorrect ordering (adding rules to the already-bound
+> anonymous chain).
 > 
-> ```
-> hostapd[1316]: Configured VHT capability [VHT_CAP_SUPP_CHAN_WIDTH_MASK] exceeds max value supported by the driver (1 > 0)
-> ```
+> nf_tables uses a transaction allor-nothing model, this means that any
+> error that occurs during a transaction has to be reverse/undo all the
+> pending changes.  This has caused a myriad of bugs already.
 > 
-> while having `[VT160]` in `vht_capab=`.
+> So while this can be theoretically fixed in the kernel I don't see
+> a sane way to do it.  Error unwinding / recovery from deeply nested
+> errors is already too complex for my taste.
+> 
+>> Can't the kernel somehow detect the incorrect bytecode and do the right
+>> thing(tm) somehow?
+> 
+> Theoretically yes, but I don't feel competent enough to do it, just look
+> at all the UaF bugs of the past month.
+
+Thx for the answer. FWIW, as this was a judgement call I mentioned this
+in my last regression report to Linus; he didn't reply, so I guess it is
+-- and will remove this issue from my tracking:
+
+#regzbot resolve: can be solved by a nftables userspace update; not
+nice, but likely best solution in this case
+#regzbot ignore-activity
 
 Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
 --
 Everything you wanna know about Linux kernel regression tracking:
 https://linux-regtracking.leemhuis.info/about/#tldr
 If I did something stupid, please tell me, as explained on that page.
-
-#regzbot introduced 3ec5ac12ac8a4e
-#regzbot ignore-activity
