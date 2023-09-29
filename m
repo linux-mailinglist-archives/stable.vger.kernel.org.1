@@ -2,71 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5FD77B377F
-	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 18:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 144497B3788
+	for <lists+stable@lfdr.de>; Fri, 29 Sep 2023 18:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233257AbjI2QJG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 12:09:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34990 "EHLO
+        id S233147AbjI2QLQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 12:11:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233141AbjI2QJG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 12:09:06 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B7D139;
-        Fri, 29 Sep 2023 09:09:04 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-505748580ceso51086e87.3;
-        Fri, 29 Sep 2023 09:09:04 -0700 (PDT)
+        with ESMTP id S229826AbjI2QLP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 12:11:15 -0400
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B97F5BE
+        for <stable@vger.kernel.org>; Fri, 29 Sep 2023 09:11:13 -0700 (PDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-4065f29e933so7103535e9.1
+        for <stable@vger.kernel.org>; Fri, 29 Sep 2023 09:11:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696003742; x=1696608542; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qCN934VhabHlWJc9p5aUyxuMGd+S4iIxKk262wTizkQ=;
-        b=WXYTwTnP+PrU4HfGUzRVWDFTZ4E8jucN5WaPFMPEbJE/x864LMMfU8+gB7fXdUAApQ
-         7a0dLO0jgybjDpkPcljh6kokbDnvqM7cLP6g3/AktUIRkYwr4k7dDI2tuHsc8B/fXgDi
-         2JKup1yxhJU6nKzoCMds8n+2q278kh0ciXW2noYcrnZX0rBOC+Sn8XMLN1GGtKZlKgHq
-         LASv4ceQIVMMdztSJl1YGQ4rEnfKZTQoOj3eo8uRuRUWPdPzxTfSuwU88IHtCx9/Q3+D
-         ivW5bw1VQE/4K5z1v9tyy8rtgpWawGQZimUUW5QPMB1gWq6freupHY0PWspn3iU7zc8R
-         mEMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696003742; x=1696608542;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1696003872; x=1696608672; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qCN934VhabHlWJc9p5aUyxuMGd+S4iIxKk262wTizkQ=;
-        b=YvFdUn6cJIBt6izGvwyG4NYeyN7c5R1qtxgkH3MQb5hPb8hKq4mvcbrwAOzHO3HP9q
-         5GKpo4D927zJhfAJ3SFk0I7EsngLSQu1p6aVCqG3ml0qzQi26WJ0hm9ZWnnJuxTK8fuu
-         60jBQQ6VJpkXBTClTFvUJX6KRViYlq5SkyCZUNt0hOEl9e9tu1b22keZqH854621GZEO
-         Rycuoo9BxwxB8C6ogohIQi3HiQ/XZwU4PIxWHaWmynJ6s4lpz++/WOGNjUbl4f14U/wO
-         WotVbV+6yVOnzm+MwDomPeVg4HcKqdiiqY9h8L75BvfB8br0PpXfmr/tc7WTkjSSCEhU
-         AT0g==
-X-Gm-Message-State: AOJu0Yx4nbe4s4EaMxg+O+LTdcz22y9xMP4BOv80YkP3A99nPCg2mi6D
-        RIeLrqJWCFp/9IqzveqqGmU=
-X-Google-Smtp-Source: AGHT+IHOnFq1zeqSSK3P/A5O+MTaHM4TSDzr6YY7Q+M2Qa7yO9OEpAsyizPdPF7tKw/bdEsCGEwhIQ==
-X-Received: by 2002:a19:3817:0:b0:4ff:70d2:4512 with SMTP id f23-20020a193817000000b004ff70d24512mr3820036lfa.23.1696003741534;
-        Fri, 29 Sep 2023 09:09:01 -0700 (PDT)
-Received: from mobilestation ([178.176.56.174])
-        by smtp.gmail.com with ESMTPSA id h21-20020a056512221500b00502b04e2722sm1296268lfu.3.2023.09.29.09.09.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Sep 2023 09:09:00 -0700 (PDT)
-Date:   Fri, 29 Sep 2023 19:08:57 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
-Cc:     linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        patches@amperecomputing.com, jarkko.nikula@linux.intel.com,
-        andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
-        jsd@semihalf.com, chuong@os.amperecomputing.com,
-        darren@os.amperecomputing.com, stable@vger.kernel.org
-Subject: Re: [PATCH v1] i2c: designware: Disable TX_EMPTY irq while waiting
- for block length byte
-Message-ID: <avd7jhwexehgbvi6euzdwvf5zvqqgjx4ozo6uxu2qpmlarvva3@sgkce3rvovwk>
-References: <20230929035356.6435-1-tamnguyenchi@os.amperecomputing.com>
+        bh=WIPQ+mq4ibCqI5jqpIgOMLXR3PB1xuDdnJNEgz17YYw=;
+        b=cNuDA3tv4pNz7IONothlNC6q4HG2+WalHh9807nGYx9Z1c6ImMPXyE5K7CCaL7Ibdl
+         Znp4NQ9ETIkAoJpKxA1hAKr0OwjFvdlj/MkziNzdHU+kHT95hXBgIpXVBuliDsqiRdsG
+         W/j/9GqRDsz3+1FccuNSIr1+7kcIhikb/ME4fsnpE60me6V5KhnLs2UbdJZwBEbWAneE
+         pUkNkS0fA1oeaWNpj7OpHXkGYL3F/XPTG2pigSpFfVJiXUeIw+H2ix0di3hJVIooTN8D
+         /RaPlkNuqOxcxw0fFnKOAFqo/Eh0C4FxE0dffi92jti6aMGtOpzq3WGbpDWOR8tjSbcl
+         EkGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696003872; x=1696608672;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WIPQ+mq4ibCqI5jqpIgOMLXR3PB1xuDdnJNEgz17YYw=;
+        b=qN3W0nSkfXIDd1rqu1UXwUtP3XxjATEjDMt+pVc4M6lX/uhAiO/lTdIZmS6cBr5ABP
+         CrTdzvSaQjF4XcGo/J1RQU58d/Wda3glIYbKPl6n5i8c1VtvIYaMnkhxI6r1tlpRc+LU
+         XLbT+vlnjWrXGi+u1wimn7NVMyJcrmiesnpbXOqAs3fzT6Oic+ArAsx825L+mO/O4Yiz
+         5uxnyeiTDibZyFkXG03MirhvAJy/lfyz8luWh4+b7K1zO7FDROd0kckP4ZdFkNfWqczU
+         WWusRH7+t3H5W8ExUxS22/015lHFv1Cf/hk4ViuFu+vBaT8xQwsH+s3Us1Wapt5QSVJV
+         utnw==
+X-Gm-Message-State: AOJu0YyzjG3kmTkIH0O2Xl0N/f98oh8REwx4ULjRk25E0PuxcXriu7zy
+        FQuaFO25RCFVVYNzROaWwgjty16T17KZkwbEZh1XWg==
+X-Google-Smtp-Source: AGHT+IHTkXbH1QknEI9Ysx3L+jH5s7p8b7Rc2XdNP9tA/fdwT11V/0psMIJDE4SeahHKIE8IAqZpA9dtji9ugui/hZw=
+X-Received: by 2002:a5d:58cd:0:b0:314:152d:f8db with SMTP id
+ o13-20020a5d58cd000000b00314152df8dbmr3503480wrf.58.1696003872116; Fri, 29
+ Sep 2023 09:11:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230929035356.6435-1-tamnguyenchi@os.amperecomputing.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20230922-5-10-fix-drm-mediatek-backport-v1-1-912d76cd4a96@kernel.org>
+In-Reply-To: <20230922-5-10-fix-drm-mediatek-backport-v1-1-912d76cd4a96@kernel.org>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Fri, 29 Sep 2023 09:11:00 -0700
+Message-ID: <CAKwvOdkvJgrstZdVCMRMy+QC4VqHYq0+n5fRGbH7iYDxgAov1Q@mail.gmail.com>
+Subject: Re: [PATCH 5.10] drm/mediatek: Fix backport issue in mtk_drm_gem_prime_vmap()
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Cc:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        linux-mediatek@lists.infradead.org, stable@vger.kernel.org,
+        llvm@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,99 +72,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 29, 2023 at 10:53:56AM +0700, Tam Nguyen wrote:
-> During SMBus block data read process, we have seen high interrupt rate
-> because of TX_EMPTY irq status while waiting for block length byte (the
-> first data byte after the address phase). The interrupt handler does not
-> do anything because the internal state is kept as STATUS_WRITE_IN_PROGRESS.
-> Hence, we should disable TX_EMPTY irq until I2C DW receives first data
-> byte from I2C device, then re-enable it.
-> 
-> It takes 0.789 ms for host to receive data length from slave.
-> Without the patch, i2c_dw_isr is called 99 times by TX_EMPTY interrupt.
-> And it is none after applying the patch.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chuong Tran <chuong@os.amperecomputing.com>
-> Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+On Fri, Sep 22, 2023 at 8:51=E2=80=AFAM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
+>
+> When building with clang:
+>
+>   drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: error: incompatible inte=
+ger to pointer conversion returning 'int' from a function with result type =
+'void *' [-Wint-conversion]
+>     255 |                 return -ENOMEM;
+>         |                        ^~~~~~~
+>   1 error generated.
+>
+> GCC reports the same issue as a warning, rather than an error.
+>
+> Prior to commit 7e542ff8b463 ("drm/mediatek: Use struct dma_buf_map in
+> GEM vmap ops"), this function returned a pointer rather than an integer.
+> This function is indirectly called in drm_gem_vmap(), which treats NULL
+> as -ENOMEM through an error pointer. Return NULL in this block to
+> resolve the warning but keep the same end result.
+>
+> Fixes: 43f561e809aa ("drm/mediatek: Fix potential memory leak if vmap() f=
+ail")
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+
+(resending as text/plain)
+Did this get picked up? Our CI has been red for a few days on
+linux-5.10.y over this.
+
 > ---
->  drivers/i2c/busses/i2c-designware-master.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
-> index 55ea91a63382..2152b1f9b27c 100644
-> --- a/drivers/i2c/busses/i2c-designware-master.c
-> +++ b/drivers/i2c/busses/i2c-designware-master.c
-> @@ -462,6 +462,13 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
+> This is a fix for a 5.10 backport, so it has no upstream relevance but
+> I've still cc'd the relevant maintainers in case they have any comments
+> or want to double check my work.
+> ---
+>  drivers/gpu/drm/mediatek/mtk_drm_gem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/med=
+iatek/mtk_drm_gem.c
+> index fe64bf2176f3..b20ea58907c2 100644
+> --- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+> +++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+> @@ -252,7 +252,7 @@ void *mtk_drm_gem_prime_vmap(struct drm_gem_object *o=
+bj)
+>         if (!mtk_gem->kvaddr) {
+>                 kfree(sgt);
+>                 kfree(mtk_gem->pages);
+> -               return -ENOMEM;
+> +               return NULL;
+>         }
+>  out:
+>         kfree(sgt);
+>
+> ---
+> base-commit: ff0bfa8f23eb4c5a65ee6b0d0b7dc2e3439f1063
+> change-id: 20230922-5-10-fix-drm-mediatek-backport-0ee69329fef0
+>
+> Best regards,
+> --
+> Nathan Chancellor <nathan@kernel.org>
+>
+>
 
->  		if (buf_len > 0 || flags & I2C_M_RECV_LEN) {
->  			/* more bytes to be written */
->  			dev->status |= STATUS_WRITE_IN_PROGRESS;
-> +			/*
-> +			 * In I2C_FUNC_SMBUS_BLOCK_DATA case, there is no data
-> +			 * to send before receiving data length from slave.
-> +			 * Disable TX_EMPTY while waiting for data length byte
-> +			 */
-> +			if (flags & I2C_M_RECV_LEN)
-> +				intr_mask &= ~DW_IC_INTR_TX_EMPTY;
 
-Is it possible to reduce the indentations level? Like this:
-
-		/*
-		 * Because we don't know the buffer length in the
-		 * I2C_FUNC_SMBUS_BLOCK_DATA case, we can't stop the
-		 * transaction here. Also disable the TX_EMPTY IRQ
-		 * while waiting for the data length byte to avoid the
-		 * bogus interrupts flood.
-		 */
-		if (flags & I2C_M_RECV_LEN) {
-  			dev->status |= STATUS_WRITE_IN_PROGRESS;
-			intr_mask &= ~DW_IC_INTR_TX_EMPTY;
-			break;
-		} else if (buf_len > 0) {
-  			/* more bytes to be written */
-  			dev->status |= STATUS_WRITE_IN_PROGRESS;
-			break;
-		} else {
-			dev->status &= ~STATUS_WRITE_IN_PROGRESS;
-		}
-
->  			break;
->  		} else
->  			dev->status &= ~STATUS_WRITE_IN_PROGRESS;
-> @@ -485,6 +492,7 @@ i2c_dw_recv_len(struct dw_i2c_dev *dev, u8 len)
->  {
->  	struct i2c_msg *msgs = dev->msgs;
->  	u32 flags = msgs[dev->msg_read_idx].flags;
-
-> +	u32 intr_mask;
->  
->  	/*
->  	 * Adjust the buffer length and mask the flag
-> @@ -495,6 +503,11 @@ i2c_dw_recv_len(struct dw_i2c_dev *dev, u8 len)
->  	msgs[dev->msg_read_idx].len = len;
->  	msgs[dev->msg_read_idx].flags &= ~I2C_M_RECV_LEN;
->  
-> +	/* Re-enable TX_EMPTY interrupt. */
-> +	regmap_read(dev->map, DW_IC_INTR_MASK, &intr_mask);
-> +	intr_mask |= DW_IC_INTR_TX_EMPTY;
-> +	regmap_write(dev->map, DW_IC_INTR_MASK, intr_mask);
-
-1. What about just:
-	regmap_update_bits(dev->map, DW_IC_INTR_MASK, DW_IC_INTR_TX_EMPTY,
-			   DW_IC_INTR_TX_EMPTY);
-
-2. The in-situ comment is pointless because the statement already
-implies the IRQ re-enabling. I suggest to add more details of _why_
-the IRQ needs to be re-enabled (what is supposed to be done after it's
-re-enabled?).
-
--Serge(y)
-
-> +
->  	return len;
->  }
->  
-> -- 
-> 2.25.1
-> 
+--=20
+Thanks,
+~Nick Desaulniers
