@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEA057B3D3C
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47FFE7B3D3E
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233969AbjI3AVn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 20:21:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36428 "EHLO
+        id S233951AbjI3AVr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 20:21:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233929AbjI3AVb (ORCPT
+        with ESMTP id S233952AbjI3AVb (ORCPT
         <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 20:21:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA8E21B5;
-        Fri, 29 Sep 2023 17:21:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869A4C433CC;
-        Sat, 30 Sep 2023 00:21:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC8871B4;
+        Fri, 29 Sep 2023 17:21:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8161C433C9;
+        Sat, 30 Sep 2023 00:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696033288;
-        bh=MeQMMsZ8qk62I/hyQDThFgnjl1Y7BUpLYvqWlVqNGgs=;
+        s=korg; t=1696033289;
+        bh=KWCr9dYQNzeQe6FCZub4/z6A8j+mp/OhQUm5ZVb38Uo=;
         h=Date:To:From:Subject:From;
-        b=uTuY4gdDS/Z+grY/qBUGEqA5nNNG/HGxDweV272L3dPOkRtga8H0PZoMWOvuOh3RX
-         0bd4nf2KxLBY50f0J7GotHQv+6aneZFNhykeeOvk3eDUqBu1IqwDjUv+M/omqaPWmm
-         D/2H07OJBYy3LDymNAhTPvoaC+ParG0DJtmszLK0=
-Date:   Fri, 29 Sep 2023 17:21:28 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        shuah@kernel.org, juntong.deng@outlook.com,
-        akpm@linux-foundation.org
+        b=bOXTHTFpBHX6DRokhqQBBDPz1/C1ne45jK0niWgqASeAXxHBAnIQIddD1Lg9zByX1
+         tWbPHFTcrsmIWj1PrV6RL0HFL8WqY0tzlHoh1vJ+hwFivgFvPFdBoi0vX5ErAOLM0V
+         zf4GZCRIuEMafgkJ+EpuAOCn/Zy869zWI8JtwJoM=
+Date:   Fri, 29 Sep 2023 17:21:29 -0700
+To:     mm-commits@vger.kernel.org, vschneid@redhat.com,
+        stable@vger.kernel.org, sourabhjain@linux.ibm.com,
+        eric.devolder@oracle.com, bhe@redhat.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] selftests-mm-fix-awk-usage-in-charge_reserved_hugetlbsh-and-hugetlb_reparenting_testsh-that-may-cause-error.patch removed from -mm tree
-Message-Id: <20230930002128.869A4C433CC@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] crash-add-lock-to-serialize-crash-hotplug-handling.patch removed from -mm tree
+Message-Id: <20230930002129.A8161C433C9@smtp.kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -41,80 +41,125 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: selftests/mm: fix awk usage in charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh that may cause error
+     Subject: Crash: add lock to serialize crash hotplug handling
 has been removed from the -mm tree.  Its filename was
-     selftests-mm-fix-awk-usage-in-charge_reserved_hugetlbsh-and-hugetlb_reparenting_testsh-that-may-cause-error.patch
+     crash-add-lock-to-serialize-crash-hotplug-handling.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Juntong Deng <juntong.deng@outlook.com>
-Subject: selftests/mm: fix awk usage in charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh that may cause error
-Date: Wed, 27 Sep 2023 02:19:44 +0800
+From: Baoquan He <bhe@redhat.com>
+Subject: Crash: add lock to serialize crash hotplug handling
+Date: Tue, 26 Sep 2023 20:09:05 +0800
 
-According to the awk manual, the -e option does not need to be specified
-in front of 'program' (unless you need to mix program-file).
+Eric reported that handling corresponding crash hotplug event can be
+failed easily when many memory hotplug event are notified in a short
+period.  They failed because failing to take __kexec_lock.
 
-The redundant -e option can cause error when users use awk tools other
-than gawk (for example, mawk does not support the -e option).
+=======
+[   78.714569] Fallback order for Node 0: 0
+[   78.714575] Built 1 zonelists, mobility grouping on.  Total pages: 1817886
+[   78.717133] Policy zone: Normal
+[   78.724423] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+[   78.727207] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
+[   80.056643] PEFILE: Unsigned PE binary
+=======
 
-Error Example:
-awk: not an option: -e
+The memory hotplug events are notified very quickly and very many, while
+the handling of crash hotplug is much slower relatively.  So the atomic
+variable __kexec_lock and kexec_trylock() can't guarantee the
+serialization of crash hotplug handling.
 
-Link: https://lkml.kernel.org/r/VI1P193MB075228810591AF2FDD7D42C599C3A@VI1P193MB0752.EURP193.PROD.OUTLOOK.COM
-Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
-Cc: Shuah Khan <shuah@kernel.org>
+Here, add a new mutex lock __crash_hotplug_lock to serialize crash hotplug
+handling specifically.  This doesn't impact the usage of __kexec_lock.
+
+Link: https://lkml.kernel.org/r/20230926120905.392903-1-bhe@redhat.com
+Fixes: 247262756121 ("crash: add generic infrastructure for crash hotplug support")
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Tested-by: Eric DeVolder <eric.devolder@oracle.com>
+Reviewed-by: Eric DeVolder <eric.devolder@oracle.com>
+Reviewed-by: Valentin Schneider <vschneid@redhat.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh  |    4 ++--
- tools/testing/selftests/mm/hugetlb_reparenting_test.sh |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ kernel/crash_core.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh~selftests-mm-fix-awk-usage-in-charge_reserved_hugetlbsh-and-hugetlb_reparenting_testsh-that-may-cause-error
-+++ a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -25,7 +25,7 @@ if [[ "$1" == "-cgroup-v2" ]]; then
- fi
+--- a/kernel/crash_core.c~crash-add-lock-to-serialize-crash-hotplug-handling
++++ a/kernel/crash_core.c
+@@ -740,6 +740,17 @@ subsys_initcall(crash_notes_memory_init)
+ #define pr_fmt(fmt) "crash hp: " fmt
  
- if [[ $cgroup2 ]]; then
--  cgroup_path=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
-+  cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
-     cgroup_path=/dev/cgroup/memory
-     mount -t cgroup2 none $cgroup_path
-@@ -33,7 +33,7 @@ if [[ $cgroup2 ]]; then
-   fi
-   echo "+hugetlb" >$cgroup_path/cgroup.subtree_control
- else
--  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
-+  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
-     cgroup_path=/dev/cgroup/memory
-     mount -t cgroup memory,hugetlb $cgroup_path
---- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh~selftests-mm-fix-awk-usage-in-charge_reserved_hugetlbsh-and-hugetlb_reparenting_testsh-that-may-cause-error
-+++ a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-@@ -20,7 +20,7 @@ fi
+ /*
++ * Different than kexec/kdump loading/unloading/jumping/shrinking which
++ * usually rarely happen, there will be many crash hotplug events notified
++ * during one short period, e.g one memory board is hot added and memory
++ * regions are online. So mutex lock  __crash_hotplug_lock is used to
++ * serialize the crash hotplug handling specifically.
++ */
++DEFINE_MUTEX(__crash_hotplug_lock);
++#define crash_hotplug_lock() mutex_lock(&__crash_hotplug_lock)
++#define crash_hotplug_unlock() mutex_unlock(&__crash_hotplug_lock)
++
++/*
+  * This routine utilized when the crash_hotplug sysfs node is read.
+  * It reflects the kernel's ability/permission to update the crash
+  * elfcorehdr directly.
+@@ -748,9 +759,11 @@ int crash_check_update_elfcorehdr(void)
+ {
+ 	int rc = 0;
  
++	crash_hotplug_lock();
+ 	/* Obtain lock while reading crash information */
+ 	if (!kexec_trylock()) {
+ 		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
++		crash_hotplug_unlock();
+ 		return 0;
+ 	}
+ 	if (kexec_crash_image) {
+@@ -761,6 +774,7 @@ int crash_check_update_elfcorehdr(void)
+ 	}
+ 	/* Release lock now that update complete */
+ 	kexec_unlock();
++	crash_hotplug_unlock();
  
- if [[ $cgroup2 ]]; then
--  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
-+  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
-     CGROUP_ROOT=/dev/cgroup/memory
-     mount -t cgroup2 none $CGROUP_ROOT
-@@ -28,7 +28,7 @@ if [[ $cgroup2 ]]; then
-   fi
-   echo "+hugetlb +memory" >$CGROUP_ROOT/cgroup.subtree_control
- else
--  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
-+  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
-     CGROUP_ROOT=/dev/cgroup/memory
-     mount -t cgroup memory,hugetlb $CGROUP_ROOT
+ 	return rc;
+ }
+@@ -783,9 +797,11 @@ static void crash_handle_hotplug_event(u
+ {
+ 	struct kimage *image;
+ 
++	crash_hotplug_lock();
+ 	/* Obtain lock while changing crash information */
+ 	if (!kexec_trylock()) {
+ 		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
++		crash_hotplug_unlock();
+ 		return;
+ 	}
+ 
+@@ -852,6 +868,7 @@ static void crash_handle_hotplug_event(u
+ out:
+ 	/* Release lock now that update complete */
+ 	kexec_unlock();
++	crash_hotplug_unlock();
+ }
+ 
+ static int crash_memhp_notifier(struct notifier_block *nb, unsigned long val, void *v)
 _
 
-Patches currently in -mm which might be from juntong.deng@outlook.com are
+Patches currently in -mm which might be from bhe@redhat.com are
 
+crash_corec-remove-unnecessary-parameter-of-function.patch
+crash_core-change-the-prototype-of-function-parse_crashkernel.patch
+crash_core-change-parse_crashkernel-to-support-crashkernel=highlow-parsing.patch
+crash_core-add-generic-function-to-do-reservation.patch
+crash_core-move-crashk_res-definition-into-crash_corec.patch
+x86-kdump-use-generic-interface-to-simplify-crashkernel-reservation-code.patch
+x86-kdump-use-generic-interface-to-simplify-crashkernel-reservation-code-fix.patch
+arm64-kdump-use-generic-interface-to-simplify-crashkernel-reservation.patch
+riscv-kdump-use-generic-interface-to-simplify-crashkernel-reservation.patch
+crash_corec-remove-unneeded-functions.patch
 
