@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F6E37B3D3A
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C9B87B3D3B
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233918AbjI3AVa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 20:21:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36390 "EHLO
+        id S233965AbjI3AVh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 20:21:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233929AbjI3AV2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 20:21:28 -0400
+        with ESMTP id S233947AbjI3AV3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 20:21:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA8A1B4;
-        Fri, 29 Sep 2023 17:21:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C78C433C9;
-        Sat, 30 Sep 2023 00:21:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B44501B1;
+        Fri, 29 Sep 2023 17:21:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6A9C433C7;
+        Sat, 30 Sep 2023 00:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696033284;
-        bh=NHzgICZF/1YO5r+7PCHj6xljjv971/ww0O6TRI5U3fs=;
+        s=korg; t=1696033286;
+        bh=0VpC8Ck4QACR0UT/vB/uYef0P+ahdInotOaCj5B7X5E=;
         h=Date:To:From:Subject:From;
-        b=e0I0IJEwJ47Q4OLzlySgCyJ9PzbL8U8nX7/Cpks96+45jBZDCfNTH5hEmG/v30upf
-         YMIznUE8aBGSc6HZoak3885jnE8EIZ71dS1PSlT+lmjbnL91wkUxdCYrgVP7UFJigC
-         pEZ5RDsejQoZCbNBsHxfRVWdx7izTW27QROAJtWc=
-Date:   Fri, 29 Sep 2023 17:21:23 -0700
-To:     mm-commits@vger.kernel.org, tj@kernel.org, stable@vger.kernel.org,
-        shakeelb@google.com, roman.gushchin@linux.dev,
-        muchun.song@linux.dev, jpiotrowski@linux.microsoft.com,
-        hannes@cmpxchg.org, gregkh@linuxfoundation.org, mhocko@suse.com,
-        akpm@linux-foundation.org
+        b=krB86km1W2Txu671EyxuKiJYNGcojNXiNZY4a8EouitnKst4jQ8tsd0utw88DI0o2
+         Sd+M1ITnrZc2X8QqGCIyIbeLysFrKquxt8wP8VIJ7AADF5PXMIGLqc9W8P10ri8vBW
+         QhJEGcm+BSlRA8LF5H7Bkkzpopw+39Ye07psnOTI=
+Date:   Fri, 29 Sep 2023 17:21:25 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
+        ruanjinjie@huawei.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memcg-reconsider-kmemlimit_in_bytes-deprecation.patch removed from -mm tree
-Message-Id: <20230930002124.84C78C433C9@smtp.kernel.org>
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: [merged mm-hotfixes-stable] mm-damon-vaddr-test-fix-memory-leak-in-damon_do_test_apply_three_regions.patch removed from -mm tree
+Message-Id: <20230930002126.4D6A9C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -43,112 +40,181 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm, memcg: reconsider kmem.limit_in_bytes deprecation
+     Subject: mm/damon/vaddr-test: fix memory leak in damon_do_test_apply_three_regions()
 has been removed from the -mm tree.  Its filename was
-     mm-memcg-reconsider-kmemlimit_in_bytes-deprecation.patch
+     mm-damon-vaddr-test-fix-memory-leak-in-damon_do_test_apply_three_regions.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Michal Hocko <mhocko@suse.com>
-Subject: mm, memcg: reconsider kmem.limit_in_bytes deprecation
-Date: Thu, 21 Sep 2023 09:38:29 +0200
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+Subject: mm/damon/vaddr-test: fix memory leak in damon_do_test_apply_three_regions()
+Date: Mon, 25 Sep 2023 15:20:59 +0800
 
-This reverts commits 86327e8eb94c ("memcg: drop kmem.limit_in_bytes") and
-partially reverts 58056f77502f ("memcg, kmem: further deprecate
-kmem.limit_in_bytes") which have incrementally removed support for the
-kernel memory accounting hard limit.  Unfortunately it has turned out that
-there is still userspace depending on the existence of
-memory.kmem.limit_in_bytes [1].  The underlying functionality is not
-really required but the non-existent file just confuses the userspace
-which fails in the result.  The patch to fix this on the userspace side
-has been submitted but it is hard to predict how it will propagate through
-the maze of 3rd party consumers of the software.
+When CONFIG_DAMON_VADDR_KUNIT_TEST=y and making CONFIG_DEBUG_KMEMLEAK=y
+and CONFIG_DEBUG_KMEMLEAK_AUTO_SCAN=y, the below memory leak is detected.
 
-Now, reverting alone 86327e8eb94c is not an option because there is
-another set of userspace which cannot cope with ENOTSUPP returned when
-writing to the file.  Therefore we have to go and revisit 58056f77502f as
-well.  There are two ways to go ahead.  Either we give up on the
-deprecation and fully revert 58056f77502f as well or we can keep
-kmem.limit_in_bytes but make the write a noop and warn about the fact. 
-This should work for both known breaking workloads which depend on the
-existence but do not depend on the hard limit enforcement.
+Since commit 9f86d624292c ("mm/damon/vaddr-test: remove unnecessary
+variables"), the damon_destroy_ctx() is removed, but still call
+damon_new_target() and damon_new_region(), the damon_region which is
+allocated by kmem_cache_alloc() in damon_new_region() and the damon_target
+which is allocated by kmalloc in damon_new_target() are not freed.  And
+the damon_region which is allocated in damon_new_region() in
+damon_set_regions() is also not freed.
 
-Note to backporters to stable trees.  a8c49af3be5f ("memcg: add per-memcg
-total kernel memory stat") introduced in 4.18 has added memcg_account_kmem
-so the accounting is not done by obj_cgroup_charge_pages directly for v1
-anymore.  Prior kernels need to add it explicitly (thanks to Johannes for
-pointing this out).
+So use damon_destroy_target to free all the damon_regions and damon_target.
 
-[akpm@linux-foundation.org: fix build - remove unused local]
-Link: http://lkml.kernel.org/r/20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net [1]
-Link: https://lkml.kernel.org/r/ZRE5VJozPZt9bRPy@dhcp22.suse.cz
-Fixes: 86327e8eb94c ("memcg: drop kmem.limit_in_bytes")
-Fixes: 58056f77502f ("memcg, kmem: further deprecate kmem.limit_in_bytes")
-Signed-off-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Tejun heo <tj@kernel.org>
+    unreferenced object 0xffff888107c9a940 (size 64):
+      comm "kunit_try_catch", pid 1069, jiffies 4294670592 (age 732.761s)
+      hex dump (first 32 bytes):
+        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
+        60 c7 9c 07 81 88 ff ff f8 cb 9c 07 81 88 ff ff  `...............
+      backtrace:
+        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
+        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
+        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
+        [<ffffffff819c82be>] damon_test_apply_three_regions1+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff8881079cc740 (size 56):
+      comm "kunit_try_catch", pid 1069, jiffies 4294670592 (age 732.761s)
+      hex dump (first 32 bytes):
+        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
+        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
+      backtrace:
+        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
+        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
+        [<ffffffff819c82be>] damon_test_apply_three_regions1+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff888107c9ac40 (size 64):
+      comm "kunit_try_catch", pid 1071, jiffies 4294670595 (age 732.843s)
+      hex dump (first 32 bytes):
+        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
+        a0 cc 9c 07 81 88 ff ff 78 a1 76 07 81 88 ff ff  ........x.v.....
+      backtrace:
+        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
+        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
+        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
+        [<ffffffff819c851e>] damon_test_apply_three_regions2+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff8881079ccc80 (size 56):
+      comm "kunit_try_catch", pid 1071, jiffies 4294670595 (age 732.843s)
+      hex dump (first 32 bytes):
+        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
+        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
+      backtrace:
+        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
+        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
+        [<ffffffff819c851e>] damon_test_apply_three_regions2+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff888107c9af40 (size 64):
+      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.011s)
+      hex dump (first 32 bytes):
+        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
+        20 a2 76 07 81 88 ff ff b8 a6 76 07 81 88 ff ff   .v.......v.....
+      backtrace:
+        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
+        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
+        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
+        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff88810776a200 (size 56):
+      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.011s)
+      hex dump (first 32 bytes):
+        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
+        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
+      backtrace:
+        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
+        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
+        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff88810776a740 (size 56):
+      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.025s)
+      hex dump (first 32 bytes):
+        3d 00 00 00 00 00 00 00 3f 00 00 00 00 00 00 00  =.......?.......
+        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
+      backtrace:
+        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
+        [<ffffffff819bfcc2>] damon_set_regions+0x4c2/0x8e0
+        [<ffffffff819c7dbb>] damon_do_test_apply_three_regions.constprop.0+0xfb/0x3e0
+        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff888108038240 (size 64):
+      comm "kunit_try_catch", pid 1075, jiffies 4294670600 (age 733.022s)
+      hex dump (first 32 bytes):
+        00 00 00 00 00 00 00 00 03 00 00 00 6b 6b 6b 6b  ............kkkk
+        48 ad 76 07 81 88 ff ff 98 ae 76 07 81 88 ff ff  H.v.......v.....
+      backtrace:
+        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
+        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
+        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
+        [<ffffffff819c898d>] damon_test_apply_three_regions4+0x1cd/0x210
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff88810776ad28 (size 56):
+      comm "kunit_try_catch", pid 1075, jiffies 4294670600 (age 733.022s)
+      hex dump (first 32 bytes):
+        05 00 00 00 00 00 00 00 07 00 00 00 00 00 00 00  ................
+        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
+      backtrace:
+        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
+        [<ffffffff819bfcc2>] damon_set_regions+0x4c2/0x8e0
+        [<ffffffff819c7dbb>] damon_do_test_apply_three_regions.constprop.0+0xfb/0x3e0
+        [<ffffffff819c898d>] damon_test_apply_three_regions4+0x1cd/0x210
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+
+Link: https://lkml.kernel.org/r/20230925072100.3725620-1-ruanjinjie@huawei.com
+Fixes: 9f86d624292c ("mm/damon/vaddr-test: remove unnecessary variables")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- Documentation/admin-guide/cgroup-v1/memory.rst |    7 +++++++
- mm/memcontrol.c                                |   13 +++++++++++++
- 2 files changed, 20 insertions(+)
+ mm/damon/vaddr-test.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/Documentation/admin-guide/cgroup-v1/memory.rst~mm-memcg-reconsider-kmemlimit_in_bytes-deprecation
-+++ a/Documentation/admin-guide/cgroup-v1/memory.rst
-@@ -92,6 +92,13 @@ Brief summary of control files.
-  memory.oom_control		     set/show oom controls.
-  memory.numa_stat		     show the number of memory usage per numa
- 				     node
-+ memory.kmem.limit_in_bytes          Deprecated knob to set and read the kernel
-+                                     memory hard limit. Kernel hard limit is not
-+                                     supported since 5.16. Writing any value to
-+                                     do file will not have any effect same as if
-+                                     nokmem kernel parameter was specified.
-+                                     Kernel memory is still charged and reported
-+                                     by memory.kmem.usage_in_bytes.
-  memory.kmem.usage_in_bytes          show current kernel memory allocation
-  memory.kmem.failcnt                 show the number of kernel memory usage
- 				     hits limits
---- a/mm/memcontrol.c~mm-memcg-reconsider-kmemlimit_in_bytes-deprecation
-+++ a/mm/memcontrol.c
-@@ -3867,6 +3867,13 @@ static ssize_t mem_cgroup_write(struct k
- 		case _MEMSWAP:
- 			ret = mem_cgroup_resize_max(memcg, nr_pages, true);
- 			break;
-+		case _KMEM:
-+			pr_warn_once("kmem.limit_in_bytes is deprecated and will be removed. "
-+				     "Writing any value to this file has no effect. "
-+				     "Please report your usecase to linux-mm@kvack.org if you "
-+				     "depend on this functionality.\n");
-+			ret = 0;
-+			break;
- 		case _TCP:
- 			ret = memcg_update_tcp_max(memcg, nr_pages);
- 			break;
-@@ -5078,6 +5085,12 @@ static struct cftype mem_cgroup_legacy_f
- 	},
- #endif
- 	{
-+		.name = "kmem.limit_in_bytes",
-+		.private = MEMFILE_PRIVATE(_KMEM, RES_LIMIT),
-+		.write = mem_cgroup_write,
-+		.read_u64 = mem_cgroup_read_u64,
-+	},
-+	{
- 		.name = "kmem.usage_in_bytes",
- 		.private = MEMFILE_PRIVATE(_KMEM, RES_USAGE),
- 		.read_u64 = mem_cgroup_read_u64,
+--- a/mm/damon/vaddr-test.h~mm-damon-vaddr-test-fix-memory-leak-in-damon_do_test_apply_three_regions
++++ a/mm/damon/vaddr-test.h
+@@ -148,6 +148,8 @@ static void damon_do_test_apply_three_re
+ 		KUNIT_EXPECT_EQ(test, r->ar.start, expected[i * 2]);
+ 		KUNIT_EXPECT_EQ(test, r->ar.end, expected[i * 2 + 1]);
+ 	}
++
++	damon_destroy_target(t);
+ }
+ 
+ /*
 _
 
-Patches currently in -mm which might be from mhocko@suse.com are
+Patches currently in -mm which might be from ruanjinjie@huawei.com are
 
+mm-damon-core-test-fix-memory-leak-in-damon_new_region.patch
+mm-damon-core-test-fix-memory-leak-in-damon_new_ctx.patch
 
