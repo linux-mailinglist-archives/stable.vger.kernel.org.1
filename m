@@ -2,164 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47FFE7B3D3E
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C7E27B4289
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 19:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233951AbjI3AVr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 20:21:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36466 "EHLO
+        id S234596AbjI3RMc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 30 Sep 2023 13:12:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233952AbjI3AVb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 20:21:31 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC8871B4;
-        Fri, 29 Sep 2023 17:21:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8161C433C9;
-        Sat, 30 Sep 2023 00:21:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696033289;
-        bh=KWCr9dYQNzeQe6FCZub4/z6A8j+mp/OhQUm5ZVb38Uo=;
-        h=Date:To:From:Subject:From;
-        b=bOXTHTFpBHX6DRokhqQBBDPz1/C1ne45jK0niWgqASeAXxHBAnIQIddD1Lg9zByX1
-         tWbPHFTcrsmIWj1PrV6RL0HFL8WqY0tzlHoh1vJ+hwFivgFvPFdBoi0vX5ErAOLM0V
-         zf4GZCRIuEMafgkJ+EpuAOCn/Zy869zWI8JtwJoM=
-Date:   Fri, 29 Sep 2023 17:21:29 -0700
-To:     mm-commits@vger.kernel.org, vschneid@redhat.com,
-        stable@vger.kernel.org, sourabhjain@linux.ibm.com,
-        eric.devolder@oracle.com, bhe@redhat.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] crash-add-lock-to-serialize-crash-hotplug-handling.patch removed from -mm tree
-Message-Id: <20230930002129.A8161C433C9@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S234461AbjI3RMc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 30 Sep 2023 13:12:32 -0400
+X-Greylist: delayed 318 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 30 Sep 2023 10:12:29 PDT
+Received: from smtp-42aa.mail.infomaniak.ch (smtp-42aa.mail.infomaniak.ch [IPv6:2001:1600:4:17::42aa])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82CF8DA
+        for <stable@vger.kernel.org>; Sat, 30 Sep 2023 10:12:29 -0700 (PDT)
+Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
+        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4RyYY75kYHzMq3Zr;
+        Sat, 30 Sep 2023 17:07:07 +0000 (UTC)
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4RyYY72HStz3W;
+        Sat, 30 Sep 2023 19:07:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=delahaye.me;
+        s=20230709; t=1696093627;
+        bh=WyCaWu6be0MHjELghEbFNkmXm0SlJ0xwr8J9ahhdlEA=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=UMSSo3Xlx52gVf1WN9RvHbMW6li6/rNMi47vEGmylVTsqh/UFddq9/7Qn/A+b9OfA
+         nFc2OwbXRKKgyh+LQcqrMRilwSN76Xmnjb9vCibg5E+3dEZ9iCD6N5RF1iLDB9Wp50
+         6c5+66diL1cvcw6NvzUx2zJJKlHXmBY9F+i1TywYkPBs1ECnN4na/4cdPqRfRKaOPY
+         sLgrxC1oQSnUi9maPptMA43rGZKq89VQlDDuEnyEQNNu6qs5Rl189Pnkcg83l2dNvx
+         ISiA6FWRuEM9j6zXhxwyiRuXBEPOv34VmidnVlU7tdOyfpTKW2E9GIIc6cgCGv/DMg
+         DlIjSN4i8ysMQ==
+Message-ID: <94a7f9171b60c0d2430106632db84276f516d454.camel@delahaye.me>
+Subject: [Kernel 6.5] Important read()/write() performance regression
+From:   Florent DELAHAYE <florent@delahaye.me>
+To:     stable@vger.kernel.org
+Cc:     regressions@lists.linux.dev
+Date:   Sat, 30 Sep 2023 19:07:06 +0200
+In-Reply-To: <28df26a419a041f3c4f44c5e2a6697adbaee83f3.camel@delahaye.me>
+References: <28df26a419a041f3c4f44c5e2a6697adbaee83f3.camel@delahaye.me>
+Autocrypt: addr=florent@delahaye.me; prefer-encrypt=mutual;
+ keydata=mQINBFiOKngBEADTLMfJdCgTqe1aHNZ09D3kFyMXx9UvKP25RbQUhzZdC7Z2YzRJImp/KXeuLtqRYONxzrmdVRnX4YvnohdE8NgvFnp4O6Jqn2VnkGj2ezl7tQgaVyMbl+frPQn39PgdeWWuhMrvYcVRSPAdKBulLp9W3zUshyVks6pVYImZfaqojCazuCj1kA1FVwt0VGbVUS4M1SER2EbCufbwIHbxFQVbHEGc6LTyOTJAPr44rEGapkQTdIC90gXFk7wO33vbJUaTi8wkMYLSiY4K2vAtYeqrmrauEn8plgV97gwuWx5DxIKp0J/Fgs5GsgbLFAssnNOxkatvlx+qWL8XYMlQ6dRpJdsAQ6C585vIfljvE6sI1WfvBM0jI9oPWxIK4Py4Nrq7SMRGGv9pyz7zxNgoW5aFiivxTvnESIW2ZAqr+G6AGVir3dj5HoQ05Rm+Y87tuqkFu1Vp8poiC33JUP/DvfgLxCryH6UTAU2QmTzVGBMxz3eSVS5qa5Y/ySLj11PG47LqN68nXjR/NcpkpYQXLZzz9JtVhppp8o5arQL1hK0u8rAlRUlddb6Whd0ErKRAnIE6JNyxWZAsftimkx/2hWCmoM9kM5RTQgwA0H1OZn/2zszWC3pXsuEKe9SzdAiOAQhwDbSh4b3aR6+O8EHpTz37EJLxZ079SeCNGvuID7jwfwARAQABtCZGbG9yZW50IERFTEFIQVlFIDxmbG9yZW50QGRlbGFoYXllLm1lPokCVAQTAQoAPhYhBCEQSCRTDLM0FBnp770r9ueawshnBQJdimV+AhsBBQkOYjwRBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEL0r9ueawshn6uQQAM6JERU6CC70AiFv7nz9PmDCYF7lRxS15EKI30HfXeRp+RriQMYeNsk6/pUqJRReYcCgz9zyEj4JE+E8B52mtX+CtvLRmRmbwurGs38G9CnrkWZkhQXoO
+        e5F+woA0SX8+rBpixPbXrlBHv1PV4tYCet+P1lBFkcSPyWmskRbbpYiJV13MVxrFaEfQvGXIgdE9wzKtJIwEXOLZm7gUW6uLHHDtNZgo4CwJL371XD3vKwrEFOh4ptyMGaxYqN6nlWvc0+u9Zfnqo+0sCumP8DydNrAZ4KyTfzgo8YfChQE6/DHN9PTfNSREKhcUCar6GHAaI++v91EhkAsuvlP7Uiia4oH5ZPOBBKD7aDnWwIlZMjFt8AGJf0gDPmcg+yIS8MzF2GBMRt3zIS9hamRxF/+x8zBVK2DTIqt4zmKVde5pAWLV4N98m59HfvJKgiwXNoWc4Na61FA0FN39uqD+PTo9dm9a37JcnFrSXfoAjTQJ/aupwyS8z5FuWdDuLuqE0sLzvLC2Mu6HOh7aSEUaxQWWlBm3rvAa2n1YtYZ6yFxfyrlVnqjZsTTJp0DLBKUXfRQ2bXv42oC7WbooX1X0wU649DWPVODfWJScIsGh3i/unl8HEb/3aiKpeJa4frHunZzlrFq7Lmuybpoyx0E2lOqeF6XbqxPQOQdpeNsaQmbS+nV
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.0-1 
+MIME-Version: 1.0
+X-Infomaniak-Routing: alpha
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hello guys,
 
-The quilt patch titled
-     Subject: Crash: add lock to serialize crash hotplug handling
-has been removed from the -mm tree.  Its filename was
-     crash-add-lock-to-serialize-crash-hotplug-handling.patch
+During the last few months, I felt a performance regression when using
+read() and write() on my high-speed Nvme SSD (about 7GB/s).
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+To get more precise information about it I quickly developed benchmark
+tool basically running read() or write() in a loop to simulate a
+sequential file read or write. The tool also measures the real time
+consumed by the loop. Finally, the tool can call open() with or without
+O_DIRECT.
 
-------------------------------------------------------
-From: Baoquan He <bhe@redhat.com>
-Subject: Crash: add lock to serialize crash hotplug handling
-Date: Tue, 26 Sep 2023 20:09:05 +0800
+I ran the tests on EXT4 and Exfat with following settings (buffer
+values have been set for best result): =20
+- Write settings: buffer 400mb * 100 =20
+- Read settings: buffer 200mb =20
+- Drop caches before non-direct read/write test
 
-Eric reported that handling corresponding crash hotplug event can be
-failed easily when many memory hotplug event are notified in a short
-period.  They failed because failing to take __kexec_lock.
+With this hardware: =20
+- CPU AMD Ryzen 7600X =20
+- RAM DDR5 5200 32GB =20
+- SSD Kingston Fury Renegade 4TB with 4K LBA
 
-=======
-[   78.714569] Fallback order for Node 0: 0
-[   78.714575] Built 1 zonelists, mobility grouping on.  Total pages: 1817886
-[   78.717133] Policy zone: Normal
-[   78.724423] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
-[   78.727207] crash hp: kexec_trylock() failed, elfcorehdr may be inaccurate
-[   80.056643] PEFILE: Unsigned PE binary
-=======
 
-The memory hotplug events are notified very quickly and very many, while
-the handling of crash hotplug is much slower relatively.  So the atomic
-variable __kexec_lock and kexec_trylock() can't guarantee the
-serialization of crash hotplug handling.
+Here are some results I got with last upstream kernels (default
+config):
++------------------+----------+------------------+------------------+--
+----------------+------------------+------------------+
+| ~42GB            | O_DIRECT | Linux 6.2.0      | Linux 6.3.0      |
+Linux 6.4.0      | Linux 6.5.0      | Linux 6.5.5      |
++------------------+----------+------------------+------------------+--
+----------------+------------------+------------------+
+| Ext4 (sector 4k) |          |                  |                  |=20
+|                  |                  |
+| Read             | no       | 7.2s (5800MB/s)  | 7.1s (5890MB/s)  |
+8.3s (5050MB/s)  | 13.2s (3180MB/s) | 13.2s (3180MB/s) |
+| Write            | no       | 12.0s (3500MB/s) | 12.6s (3340MB/s) |
+12.2s (3440MB/s) | 28.9s (1450MB/s) | 28.9s (1450MB/s) |
+| Read             | yes      | 6.0s (7000MB/s)  | 6.0s (7020MB/s)  |
+5.9s (7170MB/s)  | 5.9s (7100MB/s)  | 5.9s (7100MB/s)  |
+| Write            | yes      | 6.7s (6220MB/s)  | 6.7s (6290MB/s)  |
+6.9s (6080MB/s)  | 6.9s (6080MB/s)  | 6.9s (6970MB/s)  |
+| Exfat (sector ?) |          |                  |                  |=20
+|                  |                  |
+| Read             | no       | 7.3s (5770MB/s)  | 7.2s (5830MB/s)  |
+9s (4620MB/s)    | 13.3s (3150MB/s) | 13.2s (3180MB/s) |
+| Write            | no       | 8.3s (5040MB/s)  | 8.9s (4750MB/s)  |
+8.3s (5040MB/s)  | 18.3s (2290MB/s) | 18.5s (2260MB/s) |
+| Read             | yes      | 6.2s (6760MB/s)  | 6.1s (6870MB/s)  |
+6.0s (6980MB/s)  | 6.5s (6440MB/s)  | 6.6s (6320MB/s)  |
+| Write            | yes      | 16.1s (2610MB/s) | 16.0s (2620MB/s) |
+18.7s (2240MB/s) | 34.1s (1230MB/s) | 34.5s (1220MB/s) |
++------------------+----------+------------------+------------------+--
+----------------+------------------+------------------+
 
-Here, add a new mutex lock __crash_hotplug_lock to serialize crash hotplug
-handling specifically.  This doesn't impact the usage of __kexec_lock.
+Please note that I rounded some values to clarify readiness. Small
+variations can be considered as margin error.
 
-Link: https://lkml.kernel.org/r/20230926120905.392903-1-bhe@redhat.com
-Fixes: 247262756121 ("crash: add generic infrastructure for crash hotplug support")
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Tested-by: Eric DeVolder <eric.devolder@oracle.com>
-Reviewed-by: Eric DeVolder <eric.devolder@oracle.com>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+Ext4 results: cached reads/writes time have increased of almost 100%
+from 6.2.0 to 6.5.0 with a first increase with 6.4.0. Direct access
+times have stayed similar though. =20
+Exfat results: performance decrease too with and without direct access
+this time.
 
- kernel/crash_core.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+I realize there are thousands of commits between, plus the issue can
+come from multiple kernel parts such as the page cache, the file system
+implementation (especially for Exfat), the IO engine, a driver, etc.
+The results also showed that there is not only a specific version
+impacted. Anyway, at the end the performance have highly decreased.
 
---- a/kernel/crash_core.c~crash-add-lock-to-serialize-crash-hotplug-handling
-+++ a/kernel/crash_core.c
-@@ -740,6 +740,17 @@ subsys_initcall(crash_notes_memory_init)
- #define pr_fmt(fmt) "crash hp: " fmt
- 
- /*
-+ * Different than kexec/kdump loading/unloading/jumping/shrinking which
-+ * usually rarely happen, there will be many crash hotplug events notified
-+ * during one short period, e.g one memory board is hot added and memory
-+ * regions are online. So mutex lock  __crash_hotplug_lock is used to
-+ * serialize the crash hotplug handling specifically.
-+ */
-+DEFINE_MUTEX(__crash_hotplug_lock);
-+#define crash_hotplug_lock() mutex_lock(&__crash_hotplug_lock)
-+#define crash_hotplug_unlock() mutex_unlock(&__crash_hotplug_lock)
-+
-+/*
-  * This routine utilized when the crash_hotplug sysfs node is read.
-  * It reflects the kernel's ability/permission to update the crash
-  * elfcorehdr directly.
-@@ -748,9 +759,11 @@ int crash_check_update_elfcorehdr(void)
- {
- 	int rc = 0;
- 
-+	crash_hotplug_lock();
- 	/* Obtain lock while reading crash information */
- 	if (!kexec_trylock()) {
- 		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
-+		crash_hotplug_unlock();
- 		return 0;
- 	}
- 	if (kexec_crash_image) {
-@@ -761,6 +774,7 @@ int crash_check_update_elfcorehdr(void)
- 	}
- 	/* Release lock now that update complete */
- 	kexec_unlock();
-+	crash_hotplug_unlock();
- 
- 	return rc;
- }
-@@ -783,9 +797,11 @@ static void crash_handle_hotplug_event(u
- {
- 	struct kimage *image;
- 
-+	crash_hotplug_lock();
- 	/* Obtain lock while changing crash information */
- 	if (!kexec_trylock()) {
- 		pr_info("kexec_trylock() failed, elfcorehdr may be inaccurate\n");
-+		crash_hotplug_unlock();
- 		return;
- 	}
- 
-@@ -852,6 +868,7 @@ static void crash_handle_hotplug_event(u
- out:
- 	/* Release lock now that update complete */
- 	kexec_unlock();
-+	crash_hotplug_unlock();
- }
- 
- static int crash_memhp_notifier(struct notifier_block *nb, unsigned long val, void *v)
-_
+If you want to verify my benchmark tool source code, please ask.
 
-Patches currently in -mm which might be from bhe@redhat.com are
+PS: sending again as only text body is accepted
 
-crash_corec-remove-unnecessary-parameter-of-function.patch
-crash_core-change-the-prototype-of-function-parse_crashkernel.patch
-crash_core-change-parse_crashkernel-to-support-crashkernel=highlow-parsing.patch
-crash_core-add-generic-function-to-do-reservation.patch
-crash_core-move-crashk_res-definition-into-crash_corec.patch
-x86-kdump-use-generic-interface-to-simplify-crashkernel-reservation-code.patch
-x86-kdump-use-generic-interface-to-simplify-crashkernel-reservation-code-fix.patch
-arm64-kdump-use-generic-interface-to-simplify-crashkernel-reservation.patch
-riscv-kdump-use-generic-interface-to-simplify-crashkernel-reservation.patch
-crash_corec-remove-unneeded-functions.patch
+Regards
+
+Florent DELAHAYE
+
 
