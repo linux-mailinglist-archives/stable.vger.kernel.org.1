@@ -2,35 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E41387B3D34
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6121C7B3D35
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233913AbjI3AVT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 20:21:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51130 "EHLO
+        id S229767AbjI3AVU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 20:21:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231650AbjI3AVT (ORCPT
+        with ESMTP id S232410AbjI3AVT (ORCPT
         <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 20:21:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3E881BF;
-        Fri, 29 Sep 2023 17:21:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618E6C433CA;
-        Sat, 30 Sep 2023 00:21:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B8C1B4;
+        Fri, 29 Sep 2023 17:21:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED7F4C433CB;
+        Sat, 30 Sep 2023 00:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696033272;
-        bh=TcrDacEPisU942e9RSHrZ3LKTons19KIidG5A7i52b0=;
+        s=korg; t=1696033276;
+        bh=0u6nvM6N7YKlakyLnTe1DpAtiIlzRUOGJm8qIAfbOOA=;
         h=Date:To:From:Subject:From;
-        b=axi39thPiXzItBOkz/1FFWHeLTt10Hj2jpPQ8RwYcdDfXR3+9/0j/qTRA5lAScF8l
-         kZo+cp/IITdxsKj09VZmoSZy+PPD7PQvNJnK8sdc1S+Fwu/FFrhKuKEvGCj0gg87N0
-         Vn6tYAe3wqK1CBSN2nNku+Fqyz3JBdMyZXz5w+Aw=
-Date:   Fri, 29 Sep 2023 17:21:11 -0700
-To:     mm-commits@vger.kernel.org, viro@zeniv.linux.org.uk,
-        stable@vger.kernel.org, keescook@chromium.org,
-        ebiederm@xmission.com, brauner@kernel.org, gerg@kernel.org,
-        akpm@linux-foundation.org
+        b=lng713ohl9JE6mKmMTMpCrKnmBgy9nmL8HCLx1MsV2k8YAYkaongJSIZyTBtaFIIe
+         mkMRS2D/rrd+TbJ036i+ZK5taXPbLcZzqNRlVG6vDA1sSkJT7+BzUzVB58cVWoOjQX
+         jziMe+indvmypWvNBLezyQNqmTBxOHck0mEuzJu0=
+Date:   Fri, 29 Sep 2023 17:21:15 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        mengferry@linux.alibaba.com, konishi.ryusuke@gmail.com,
+        bianpan2016@163.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] fs-binfmt_elf_efpic-fix-personality-for-elf-fdpic.patch removed from -mm tree
-Message-Id: <20230930002112.618E6C433CA@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] nilfs2-fix-potential-use-after-free-in-nilfs_gccache_submit_read_data.patch removed from -mm tree
+Message-Id: <20230930002115.ED7F4C433CB@smtp.kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -42,74 +41,72 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: fs: binfmt_elf_efpic: fix personality for ELF-FDPIC
+     Subject: nilfs2: fix potential use after free in nilfs_gccache_submit_read_data()
 has been removed from the -mm tree.  Its filename was
-     fs-binfmt_elf_efpic-fix-personality-for-elf-fdpic.patch
+     nilfs2-fix-potential-use-after-free-in-nilfs_gccache_submit_read_data.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Greg Ungerer <gerg@kernel.org>
-Subject: fs: binfmt_elf_efpic: fix personality for ELF-FDPIC
-Date: Thu, 7 Sep 2023 11:18:08 +1000
+From: Pan Bian <bianpan2016@163.com>
+Subject: nilfs2: fix potential use after free in nilfs_gccache_submit_read_data()
+Date: Thu, 21 Sep 2023 23:17:31 +0900
 
-The elf-fdpic loader hard sets the process personality to either
-PER_LINUX_FDPIC for true elf-fdpic binaries or to PER_LINUX for normal ELF
-binaries (in this case they would be constant displacement compiled with
--pie for example).  The problem with that is that it will lose any other
-bits that may be in the ELF header personality (such as the "bug
-emulation" bits).
+In nilfs_gccache_submit_read_data(), brelse(bh) is called to drop the
+reference count of bh when the call to nilfs_dat_translate() fails.  If
+the reference count hits 0 and its owner page gets unlocked, bh may be
+freed.  However, bh->b_page is dereferenced to put the page after that,
+which may result in a use-after-free bug.  This patch moves the release
+operation after unlocking and putting the page.
 
-On the ARM architecture the ADDR_LIMIT_32BIT flag is used to signify a
-normal 32bit binary - as opposed to a legacy 26bit address binary.  This
-matters since start_thread() will set the ARM CPSR register as required
-based on this flag.  If the elf-fdpic loader loses this bit the process
-will be mis-configured and crash out pretty quickly.
+NOTE: The function in question is only called in GC, and in combination
+with current userland tools, address translation using DAT does not occur
+in that function, so the code path that causes this issue will not be
+executed.  However, it is possible to run that code path by intentionally
+modifying the userland GC library or by calling the GC ioctl directly.
 
-Modify elf-fdpic loader personality setting so that it preserves the upper
-three bytes by using the SET_PERSONALITY macro to set it.  This macro in
-the generic case sets PER_LINUX and preserves the upper bytes. 
-Architectures can override this for their specific use case, and ARM does
-exactly this.
-
-The problem shows up quite easily running under qemu using the ARM
-architecture, but not necessarily on all types of real ARM hardware.  If
-the underlying ARM processor does not support the legacy 26-bit addressing
-mode then everything will work as expected.
-
-Link: https://lkml.kernel.org/r/20230907011808.2985083-1-gerg@kernel.org
-Fixes: 1bde925d23547 ("fs/binfmt_elf_fdpic.c: provide NOMMU loader for regular ELF binaries")
-Signed-off-by: Greg Ungerer <gerg@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: Greg Ungerer <gerg@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
+[konishi.ryusuke@gmail.com: NOTE added to the commit log]
+Link: https://lkml.kernel.org/r/1543201709-53191-1-git-send-email-bianpan2016@163.com
+Link: https://lkml.kernel.org/r/20230921141731.10073-1-konishi.ryusuke@gmail.com
+Fixes: a3d93f709e89 ("nilfs2: block cache for garbage collection")
+Signed-off-by: Pan Bian <bianpan2016@163.com>
+Reported-by: Ferry Meng <mengferry@linux.alibaba.com>
+Closes: https://lkml.kernel.org/r/20230818092022.111054-1-mengferry@linux.alibaba.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/binfmt_elf_fdpic.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/nilfs2/gcinode.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/binfmt_elf_fdpic.c~fs-binfmt_elf_efpic-fix-personality-for-elf-fdpic
-+++ a/fs/binfmt_elf_fdpic.c
-@@ -345,10 +345,9 @@ static int load_elf_fdpic_binary(struct
- 	/* there's now no turning back... the old userspace image is dead,
- 	 * defunct, deceased, etc.
- 	 */
-+	SET_PERSONALITY(exec_params.hdr);
- 	if (elf_check_fdpic(&exec_params.hdr))
--		set_personality(PER_LINUX_FDPIC);
--	else
--		set_personality(PER_LINUX);
-+		current->personality |= PER_LINUX_FDPIC;
- 	if (elf_read_implies_exec(&exec_params.hdr, executable_stack))
- 		current->personality |= READ_IMPLIES_EXEC;
+--- a/fs/nilfs2/gcinode.c~nilfs2-fix-potential-use-after-free-in-nilfs_gccache_submit_read_data
++++ a/fs/nilfs2/gcinode.c
+@@ -73,10 +73,8 @@ int nilfs_gccache_submit_read_data(struc
+ 		struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
+ 
+ 		err = nilfs_dat_translate(nilfs->ns_dat, vbn, &pbn);
+-		if (unlikely(err)) { /* -EIO, -ENOMEM, -ENOENT */
+-			brelse(bh);
++		if (unlikely(err)) /* -EIO, -ENOMEM, -ENOENT */
+ 			goto failed;
+-		}
+ 	}
+ 
+ 	lock_buffer(bh);
+@@ -102,6 +100,8 @@ int nilfs_gccache_submit_read_data(struc
+  failed:
+ 	unlock_page(bh->b_page);
+ 	put_page(bh->b_page);
++	if (unlikely(err))
++		brelse(bh);
+ 	return err;
+ }
  
 _
 
-Patches currently in -mm which might be from gerg@kernel.org are
+Patches currently in -mm which might be from bianpan2016@163.com are
 
 
