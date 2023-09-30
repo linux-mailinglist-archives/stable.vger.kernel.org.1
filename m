@@ -2,50 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C7E27B4289
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 19:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F7607B42CC
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 19:47:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234596AbjI3RMc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 30 Sep 2023 13:12:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38134 "EHLO
+        id S234641AbjI3RrE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 30 Sep 2023 13:47:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234461AbjI3RMc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 30 Sep 2023 13:12:32 -0400
-X-Greylist: delayed 318 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 30 Sep 2023 10:12:29 PDT
-Received: from smtp-42aa.mail.infomaniak.ch (smtp-42aa.mail.infomaniak.ch [IPv6:2001:1600:4:17::42aa])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82CF8DA
-        for <stable@vger.kernel.org>; Sat, 30 Sep 2023 10:12:29 -0700 (PDT)
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [10.4.36.107])
-        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4RyYY75kYHzMq3Zr;
-        Sat, 30 Sep 2023 17:07:07 +0000 (UTC)
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4RyYY72HStz3W;
-        Sat, 30 Sep 2023 19:07:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=delahaye.me;
-        s=20230709; t=1696093627;
-        bh=WyCaWu6be0MHjELghEbFNkmXm0SlJ0xwr8J9ahhdlEA=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=UMSSo3Xlx52gVf1WN9RvHbMW6li6/rNMi47vEGmylVTsqh/UFddq9/7Qn/A+b9OfA
-         nFc2OwbXRKKgyh+LQcqrMRilwSN76Xmnjb9vCibg5E+3dEZ9iCD6N5RF1iLDB9Wp50
-         6c5+66diL1cvcw6NvzUx2zJJKlHXmBY9F+i1TywYkPBs1ECnN4na/4cdPqRfRKaOPY
-         sLgrxC1oQSnUi9maPptMA43rGZKq89VQlDDuEnyEQNNu6qs5Rl189Pnkcg83l2dNvx
-         ISiA6FWRuEM9j6zXhxwyiRuXBEPOv34VmidnVlU7tdOyfpTKW2E9GIIc6cgCGv/DMg
-         DlIjSN4i8ysMQ==
-Message-ID: <94a7f9171b60c0d2430106632db84276f516d454.camel@delahaye.me>
-Subject: [Kernel 6.5] Important read()/write() performance regression
-From:   Florent DELAHAYE <florent@delahaye.me>
-To:     stable@vger.kernel.org
-Cc:     regressions@lists.linux.dev
-Date:   Sat, 30 Sep 2023 19:07:06 +0200
-In-Reply-To: <28df26a419a041f3c4f44c5e2a6697adbaee83f3.camel@delahaye.me>
-References: <28df26a419a041f3c4f44c5e2a6697adbaee83f3.camel@delahaye.me>
-Autocrypt: addr=florent@delahaye.me; prefer-encrypt=mutual;
- keydata=mQINBFiOKngBEADTLMfJdCgTqe1aHNZ09D3kFyMXx9UvKP25RbQUhzZdC7Z2YzRJImp/KXeuLtqRYONxzrmdVRnX4YvnohdE8NgvFnp4O6Jqn2VnkGj2ezl7tQgaVyMbl+frPQn39PgdeWWuhMrvYcVRSPAdKBulLp9W3zUshyVks6pVYImZfaqojCazuCj1kA1FVwt0VGbVUS4M1SER2EbCufbwIHbxFQVbHEGc6LTyOTJAPr44rEGapkQTdIC90gXFk7wO33vbJUaTi8wkMYLSiY4K2vAtYeqrmrauEn8plgV97gwuWx5DxIKp0J/Fgs5GsgbLFAssnNOxkatvlx+qWL8XYMlQ6dRpJdsAQ6C585vIfljvE6sI1WfvBM0jI9oPWxIK4Py4Nrq7SMRGGv9pyz7zxNgoW5aFiivxTvnESIW2ZAqr+G6AGVir3dj5HoQ05Rm+Y87tuqkFu1Vp8poiC33JUP/DvfgLxCryH6UTAU2QmTzVGBMxz3eSVS5qa5Y/ySLj11PG47LqN68nXjR/NcpkpYQXLZzz9JtVhppp8o5arQL1hK0u8rAlRUlddb6Whd0ErKRAnIE6JNyxWZAsftimkx/2hWCmoM9kM5RTQgwA0H1OZn/2zszWC3pXsuEKe9SzdAiOAQhwDbSh4b3aR6+O8EHpTz37EJLxZ079SeCNGvuID7jwfwARAQABtCZGbG9yZW50IERFTEFIQVlFIDxmbG9yZW50QGRlbGFoYXllLm1lPokCVAQTAQoAPhYhBCEQSCRTDLM0FBnp770r9ueawshnBQJdimV+AhsBBQkOYjwRBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEL0r9ueawshn6uQQAM6JERU6CC70AiFv7nz9PmDCYF7lRxS15EKI30HfXeRp+RriQMYeNsk6/pUqJRReYcCgz9zyEj4JE+E8B52mtX+CtvLRmRmbwurGs38G9CnrkWZkhQXoO
-        e5F+woA0SX8+rBpixPbXrlBHv1PV4tYCet+P1lBFkcSPyWmskRbbpYiJV13MVxrFaEfQvGXIgdE9wzKtJIwEXOLZm7gUW6uLHHDtNZgo4CwJL371XD3vKwrEFOh4ptyMGaxYqN6nlWvc0+u9Zfnqo+0sCumP8DydNrAZ4KyTfzgo8YfChQE6/DHN9PTfNSREKhcUCar6GHAaI++v91EhkAsuvlP7Uiia4oH5ZPOBBKD7aDnWwIlZMjFt8AGJf0gDPmcg+yIS8MzF2GBMRt3zIS9hamRxF/+x8zBVK2DTIqt4zmKVde5pAWLV4N98m59HfvJKgiwXNoWc4Na61FA0FN39uqD+PTo9dm9a37JcnFrSXfoAjTQJ/aupwyS8z5FuWdDuLuqE0sLzvLC2Mu6HOh7aSEUaxQWWlBm3rvAa2n1YtYZ6yFxfyrlVnqjZsTTJp0DLBKUXfRQ2bXv42oC7WbooX1X0wU649DWPVODfWJScIsGh3i/unl8HEb/3aiKpeJa4frHunZzlrFq7Lmuybpoyx0E2lOqeF6XbqxPQOQdpeNsaQmbS+nV
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.0-1 
+        with ESMTP id S234585AbjI3RrE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 30 Sep 2023 13:47:04 -0400
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABEE8E1
+        for <stable@vger.kernel.org>; Sat, 30 Sep 2023 10:47:01 -0700 (PDT)
+Received: by mail-il1-x12a.google.com with SMTP id e9e14a558f8ab-35133097583so40333295ab.1
+        for <stable@vger.kernel.org>; Sat, 30 Sep 2023 10:47:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google; t=1696096021; x=1696700821; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RKqIHaosAw2qI5kHOFkLuyhg0rOLeHVcoTzGWdYEVOE=;
+        b=AaMGLYeZ4BQ3JOTkvw/ULAeII5LK/E6KUWNx+ItK+R1bsTFDY3EYH3Ub9iihRjDWiG
+         OA0Up0Z6YKIQL1At+HLSdaNqSPqAoMsW0YcnxuNC6kUWxbISLvTueNkRnDGQBrfIlKaz
+         TodGmRZ3RVuEHgJLJ9PrifU5D9+TJA9Yf4w+k=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696096021; x=1696700821;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RKqIHaosAw2qI5kHOFkLuyhg0rOLeHVcoTzGWdYEVOE=;
+        b=ORyY0YpDt4kEHFCywdYy4Rtw35UcQc3vF/NseMErbqu/yLIKyB5v3hp7PgHWJUC1P6
+         tY2HLXd6sVdFkF1H1bJdPu8aVI5FULbDoUtoDRIYyK3GJyprPkOnKrAcbJrdb4bVWfK6
+         ChTkhHmoIwMIFFzMHitGAxduz35Z40wDufMK5EXGPaVgy15ddbTfwOghei735nm/eY/S
+         2gBp1KibWa/5+Pj14zRxVbjnhzuiwa9w3HntzMYm+7oIjhFbiv74O01hvtedUu3AowEB
+         tSgyLSyXPrGCJJxNrYXM34tDez9VbNjy44smfFDp6JguR5LMr7FRK2UPoAE3I7zKQgYU
+         EiwA==
+X-Gm-Message-State: AOJu0Ywtv1tv3YFe8VmXa5d00FxDF5S11OvRKXFaG9nfZeUavSpC+6h7
+        fJCZuelgeCDI8kpElV6+xpMG7w==
+X-Google-Smtp-Source: AGHT+IEeRLDoJnr+xa+kRhIoy7UxPJbpr8f2S+GA/nCXzlpbbIBUpQwKBzpSAqt0cCAz3cGsIRCrtw==
+X-Received: by 2002:a05:6e02:1c46:b0:34f:d665:4c2e with SMTP id d6-20020a056e021c4600b0034fd6654c2emr9306390ilg.30.1696096020883;
+        Sat, 30 Sep 2023 10:47:00 -0700 (PDT)
+Received: from joelboxx5.c.googlers.com.com (161.74.123.34.bc.googleusercontent.com. [34.123.74.161])
+        by smtp.gmail.com with ESMTPSA id f4-20020a02a804000000b00418a5e0e93esm5884180jaj.162.2023.09.30.10.47.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 Sep 2023 10:47:00 -0700 (PDT)
+From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
+To:     linux-kernel@vger.kernel.org,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Zqiang <qiang.zhang1211@gmail.com>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Christoph Paasch <cpaasch@apple.com>, stable@vger.kernel.org,
+        rcu@vger.kernel.org
+Subject: [PATCH] rcu: kmemleak: Ignore kmemleak false positives when RCU-freeing objects
+Date:   Sat, 30 Sep 2023 17:46:56 +0000
+Message-ID: <20230930174657.800551-1-joel@joelfernandes.org>
+X-Mailer: git-send-email 2.42.0.582.g8ccd20d70d-goog
 MIME-Version: 1.0
-X-Infomaniak-Routing: alpha
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -55,81 +75,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello guys,
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-During the last few months, I felt a performance regression when using
-read() and write() on my high-speed Nvme SSD (about 7GB/s).
+Since the actual slab freeing is deferred when calling kvfree_rcu(), so
+is the kmemleak_free() callback informing kmemleak of the object
+deletion. From the perspective of the kvfree_rcu() caller, the object is
+freed and it may remove any references to it. Since kmemleak does not
+scan RCU internal data storing the pointer, it will report such objects
+as leaks during the grace period.
 
-To get more precise information about it I quickly developed benchmark
-tool basically running read() or write() in a loop to simulate a
-sequential file read or write. The tool also measures the real time
-consumed by the loop. Finally, the tool can call open() with or without
-O_DIRECT.
+Tell kmemleak to ignore such objects on the kvfree_call_rcu() path. Note
+that the tiny RCU implementation does not have such issue since the
+objects can be tracked from the rcu_ctrlblk structure.
 
-I ran the tests on EXT4 and Exfat with following settings (buffer
-values have been set for best result): =20
-- Write settings: buffer 400mb * 100 =20
-- Read settings: buffer 200mb =20
-- Drop caches before non-direct read/write test
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://lore.kernel.org/all/F903A825-F05F-4B77-A2B5-7356282FBA2C@apple.com/
+Cc: <stable@vger.kernel.org>
+Tested-by: Christoph Paasch <cpaasch@apple.com>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+---
+ kernel/rcu/tree.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-With this hardware: =20
-- CPU AMD Ryzen 7600X =20
-- RAM DDR5 5200 32GB =20
-- SSD Kingston Fury Renegade 4TB with 4K LBA
-
-
-Here are some results I got with last upstream kernels (default
-config):
-+------------------+----------+------------------+------------------+--
-----------------+------------------+------------------+
-| ~42GB            | O_DIRECT | Linux 6.2.0      | Linux 6.3.0      |
-Linux 6.4.0      | Linux 6.5.0      | Linux 6.5.5      |
-+------------------+----------+------------------+------------------+--
-----------------+------------------+------------------+
-| Ext4 (sector 4k) |          |                  |                  |=20
-|                  |                  |
-| Read             | no       | 7.2s (5800MB/s)  | 7.1s (5890MB/s)  |
-8.3s (5050MB/s)  | 13.2s (3180MB/s) | 13.2s (3180MB/s) |
-| Write            | no       | 12.0s (3500MB/s) | 12.6s (3340MB/s) |
-12.2s (3440MB/s) | 28.9s (1450MB/s) | 28.9s (1450MB/s) |
-| Read             | yes      | 6.0s (7000MB/s)  | 6.0s (7020MB/s)  |
-5.9s (7170MB/s)  | 5.9s (7100MB/s)  | 5.9s (7100MB/s)  |
-| Write            | yes      | 6.7s (6220MB/s)  | 6.7s (6290MB/s)  |
-6.9s (6080MB/s)  | 6.9s (6080MB/s)  | 6.9s (6970MB/s)  |
-| Exfat (sector ?) |          |                  |                  |=20
-|                  |                  |
-| Read             | no       | 7.3s (5770MB/s)  | 7.2s (5830MB/s)  |
-9s (4620MB/s)    | 13.3s (3150MB/s) | 13.2s (3180MB/s) |
-| Write            | no       | 8.3s (5040MB/s)  | 8.9s (4750MB/s)  |
-8.3s (5040MB/s)  | 18.3s (2290MB/s) | 18.5s (2260MB/s) |
-| Read             | yes      | 6.2s (6760MB/s)  | 6.1s (6870MB/s)  |
-6.0s (6980MB/s)  | 6.5s (6440MB/s)  | 6.6s (6320MB/s)  |
-| Write            | yes      | 16.1s (2610MB/s) | 16.0s (2620MB/s) |
-18.7s (2240MB/s) | 34.1s (1230MB/s) | 34.5s (1220MB/s) |
-+------------------+----------+------------------+------------------+--
-----------------+------------------+------------------+
-
-Please note that I rounded some values to clarify readiness. Small
-variations can be considered as margin error.
-
-Ext4 results: cached reads/writes time have increased of almost 100%
-from 6.2.0 to 6.5.0 with a first increase with 6.4.0. Direct access
-times have stayed similar though. =20
-Exfat results: performance decrease too with and without direct access
-this time.
-
-I realize there are thousands of commits between, plus the issue can
-come from multiple kernel parts such as the page cache, the file system
-implementation (especially for Exfat), the IO engine, a driver, etc.
-The results also showed that there is not only a specific version
-impacted. Anyway, at the end the performance have highly decreased.
-
-If you want to verify my benchmark tool source code, please ask.
-
-PS: sending again as only text body is accepted
-
-Regards
-
-Florent DELAHAYE
-
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index cb1caefa8bd0..24423877962c 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -31,6 +31,7 @@
+ #include <linux/bitops.h>
+ #include <linux/export.h>
+ #include <linux/completion.h>
++#include <linux/kmemleak.h>
+ #include <linux/moduleparam.h>
+ #include <linux/panic.h>
+ #include <linux/panic_notifier.h>
+@@ -3388,6 +3389,14 @@ void kvfree_call_rcu(struct rcu_head *head, void *ptr)
+ 		success = true;
+ 	}
+ 
++	/*
++	 * The kvfree_rcu() caller considers the pointer freed at this point
++	 * and likely removes any references to it. Since the actual slab
++	 * freeing (and kmemleak_free()) is deferred, tell kmemleak to ignore
++	 * this object (no scanning or false positives reporting).
++	 */
++	kmemleak_ignore(ptr);
++
+ 	// Set timer to drain after KFREE_DRAIN_JIFFIES.
+ 	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING)
+ 		schedule_delayed_monitor_work(krcp);
+-- 
+2.42.0.582.g8ccd20d70d-goog
 
