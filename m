@@ -2,34 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A18DF7B3D37
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 545017B3D39
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233955AbjI3AV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 20:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51130 "EHLO
+        id S233939AbjI3AV1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 20:21:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233908AbjI3AVW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 20:21:22 -0400
+        with ESMTP id S233929AbjI3AVY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 20:21:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7B2A1B1;
-        Fri, 29 Sep 2023 17:21:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B86C433C9;
-        Sat, 30 Sep 2023 00:21:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F9951B0;
+        Fri, 29 Sep 2023 17:21:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA783C433CA;
+        Sat, 30 Sep 2023 00:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696033278;
-        bh=BSUZA57osnHSNzmJFxR97q/FwRLuJjLaKY9ObMoJjEg=;
+        s=korg; t=1696033280;
+        bh=OKIPEHsMKvQnLXlqa3FIMrre3eT0QoQQc2mjAfowh+E=;
         h=Date:To:From:Subject:From;
-        b=paTJW44DdKZ5/2EYMcN1HdArtLXpKGUf3D48w5cDhGLt0J8TqDBEXfbvd/6XGgilj
-         c1rwZlMWLJK8m3Ma1ROB5wjlGqtVCooh46fxRy4FHZxoGR1YxVSVIiEXmvhQzrXWpR
-         V2p3MI3iJf53rFIbEssVbO2Go/nqsC2N47zRuA7g=
-Date:   Fri, 29 Sep 2023 17:21:17 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        pedro.falcato@gmail.com, Liam.Howlett@oracle.com,
+        b=mzl/NGBjt7pyRO+uZj0m1x59PeQrCKyWarwnA6LWRo81sdlQ8Vr/WUBikGgkuAi2x
+         2VBSdpaC4eWqBVZfVoPtCbl8REr8CM60eQMCQa4n3bdBNxYjOyLOBbKfFHTxXA31lW
+         ymJ/CDUscAPdRa0GjrZTR00pm2vVhYb+b3JKoX5I=
+Date:   Fri, 29 Sep 2023 17:21:19 -0700
+To:     mm-commits@vger.kernel.org, zhengqi.arch@bytedance.com,
+        will@kernel.org, urezki@gmail.com, svens@linux.ibm.com,
+        stable@vger.kernel.org, sj@kernel.org, peterx@redhat.com,
+        paul.walmsley@sifive.com, palmer@dabbelt.com, npiggin@gmail.com,
+        muchun.song@linux.dev, mike.kravetz@oracle.com, lstoakes@gmail.com,
+        James.Bottomley@HansenPartnership.com, hch@infradead.org,
+        hca@linux.ibm.com, gor@linux.ibm.com,
+        gerald.schaefer@linux.ibm.com, deller@gmx.de, davem@davemloft.net,
+        christophe.leroy@csgroup.eu, catalin.marinas@arm.com,
+        borntraeger@linux.ibm.com, axelrasmussen@google.com, arnd@arndb.de,
+        aou@eecs.berkeley.edu, anshuman.khandual@arm.com, alex@ghiti.fr,
+        agordeev@linux.ibm.com, ryan.roberts@arm.com,
         akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] maple_tree-add-mas_underflow-and-mas_overflow-states.patch removed from -mm tree
-Message-Id: <20230930002118.58B86C433C9@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at.patch removed from -mm tree
+Message-Id: <20230930002119.EA783C433CA@smtp.kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -41,770 +51,777 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: maple_tree: add MAS_UNDERFLOW and MAS_OVERFLOW states
+     Subject: mm: hugetlb: add huge page size param to set_huge_pte_at()
 has been removed from the -mm tree.  Its filename was
-     maple_tree-add-mas_underflow-and-mas_overflow-states.patch
+     mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: maple_tree: add MAS_UNDERFLOW and MAS_OVERFLOW states
-Date: Thu, 21 Sep 2023 14:12:36 -0400
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm: hugetlb: add huge page size param to set_huge_pte_at()
+Date: Fri, 22 Sep 2023 12:58:03 +0100
 
-When updating the maple tree iterator to avoid rewalks, an issue was
-introduced when shifting beyond the limits.  This can be seen by trying to
-go to the previous address of 0, which would set the maple node to
-MAS_NONE and keep the range as the last entry.
+Patch series "Fix set_huge_pte_at() panic on arm64", v2.
 
-Subsequent calls to mas_find() would then search upwards from mas->last
-and skip the value at mas->index/mas->last.  This showed up as a bug in
-mprotect which skips the actual VMA at the current range after attempting
-to go to the previous VMA from 0.
+This series fixes a bug in arm64's implementation of set_huge_pte_at(),
+which can result in an unprivileged user causing a kernel panic.  The
+problem was triggered when running the new uffd poison mm selftest for
+HUGETLB memory.  This test (and the uffd poison feature) was merged for
+v6.5-rc7.
 
-Since MAS_NONE may already be set when searching for a value that isn't
-contained within a node, changing the handling of MAS_NONE in mas_find()
-would make the code more complicated and error prone.  Furthermore, there
-was no way to tell which limit was hit, and thus which action to take
-(next or the entry at the current range).
+Ideally, I'd like to get this fix in for v6.6 and I've cc'ed stable
+(correctly this time) to get it backported to v6.5, where the issue first
+showed up.
 
-This solution is to add two states to track what happened with the
-previous iterator action.  This allows for the expected behaviour of the
-next command to return the correct item (either the item at the range
-requested, or the next/previous).
 
-Tests are also added and updated accordingly.
+Description of Bug
+==================
 
-Link: https://lkml.kernel.org/r/20230921181236.509072-3-Liam.Howlett@oracle.com
-Link: https://gist.github.com/heatd/85d2971fae1501b55b6ea401fbbe485b
-Link: https://lore.kernel.org/linux-mm/20230921181236.509072-1-Liam.Howlett@oracle.com/
-Fixes: 39193685d585 ("maple_tree: try harder to keep active node with mas_prev()")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reported-by: Pedro Falcato <pedro.falcato@gmail.com>
-Closes: https://gist.github.com/heatd/85d2971fae1501b55b6ea401fbbe485b
-Closes: https://bugs.archlinux.org/task/79656
-Cc: <stable@vger.kernel.org>
+arm64's huge pte implementation supports multiple huge page sizes, some of
+which are implemented in the page table with multiple contiguous entries. 
+So set_huge_pte_at() needs to work out how big the logical pte is, so that
+it can also work out how many physical ptes (or pmds) need to be written. 
+It previously did this by grabbing the folio out of the pte and querying
+its size.
+
+However, there are cases when the pte being set is actually a swap entry. 
+But this also used to work fine, because for huge ptes, we only ever saw
+migration entries and hwpoison entries.  And both of these types of swap
+entries have a PFN embedded, so the code would grab that and everything
+still worked out.
+
+But over time, more calls to set_huge_pte_at() have been added that set
+swap entry types that do not embed a PFN.  And this causes the code to go
+bang.  The triggering case is for the uffd poison test, commit
+99aa77215ad0 ("selftests/mm: add uffd unit test for UFFDIO_POISON"), which
+causes a PTE_MARKER_POISONED swap entry to be set, coutesey of commit
+8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs") -
+added in v6.5-rc7.  Although review shows that there are other call sites
+that set PTE_MARKER_UFFD_WP (which also has no PFN), these don't trigger
+on arm64 because arm64 doesn't support UFFD WP.
+
+If CONFIG_DEBUG_VM is enabled, we do at least get a BUG(), but otherwise,
+it will dereference a bad pointer in page_folio():
+
+    static inline struct folio *hugetlb_swap_entry_to_folio(swp_entry_t entry)
+    {
+        VM_BUG_ON(!is_migration_entry(entry) && !is_hwpoison_entry(entry));
+
+        return page_folio(pfn_to_page(swp_offset_pfn(entry)));
+    }
+
+
+Fix
+===
+
+The simplest fix would have been to revert the dodgy cleanup commit
+18f3962953e4 ("mm: hugetlb: kill set_huge_swap_pte_at()"), but since
+things have moved on, this would have required an audit of all the new
+set_huge_pte_at() call sites to see if they should be converted to
+set_huge_swap_pte_at().  As per the original intent of the change, it
+would also leave us open to future bugs when people invariably get it
+wrong and call the wrong helper.
+
+So instead, I've added a huge page size parameter to set_huge_pte_at(). 
+This means that the arm64 code has the size in all cases.  It's a bigger
+change, due to needing to touch the arches that implement the function,
+but it is entirely mechanical, so in my view, low risk.
+
+I've compile-tested all touched arches; arm64, parisc, powerpc, riscv,
+s390, sparc (and additionally x86_64).  I've additionally booted and run
+mm selftests against arm64, where I observe the uffd poison test is fixed,
+and there are no other regressions.
+
+
+This patch (of 2):
+
+In order to fix a bug, arm64 needs to be told the size of the huge page
+for which the pte is being set in set_huge_pte_at().  Provide for this by
+adding an `unsigned long sz` parameter to the function.  This follows the
+same pattern as huge_pte_clear().
+
+This commit makes the required interface modifications to the core mm as
+well as all arches that implement this function (arm64, parisc, powerpc,
+riscv, s390, sparc).  The actual arm64 bug will be fixed in a separate
+commit.
+
+No behavioral changes intended.
+
+Link: https://lkml.kernel.org/r/20230922115804.2043771-1-ryan.roberts@arm.com
+Link: https://lkml.kernel.org/r/20230922115804.2043771-2-ryan.roberts@arm.com
+Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>	[powerpc 8xx]
+Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>	[vmalloc change]
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.5+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/maple_tree.h |    2 
- lib/maple_tree.c           |  221 +++++++++++++++++++++++++----------
- lib/test_maple_tree.c      |   87 +++++++++++--
- 3 files changed, 237 insertions(+), 73 deletions(-)
+ arch/arm64/include/asm/hugetlb.h                 |    2 
+ arch/arm64/mm/hugetlbpage.c                      |    6 +
+ arch/parisc/include/asm/hugetlb.h                |    2 
+ arch/parisc/mm/hugetlbpage.c                     |    2 
+ arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h |    3 
+ arch/powerpc/mm/book3s64/hugetlbpage.c           |    5 +
+ arch/powerpc/mm/book3s64/radix_hugetlbpage.c     |    3 
+ arch/powerpc/mm/nohash/8xx.c                     |    3 
+ arch/powerpc/mm/pgtable.c                        |    3 
+ arch/riscv/include/asm/hugetlb.h                 |    3 
+ arch/riscv/mm/hugetlbpage.c                      |    3 
+ arch/s390/include/asm/hugetlb.h                  |    6 +
+ arch/s390/mm/hugetlbpage.c                       |    8 ++
+ arch/sparc/include/asm/hugetlb.h                 |    6 +
+ arch/sparc/mm/hugetlbpage.c                      |    8 ++
+ include/asm-generic/hugetlb.h                    |    2 
+ include/linux/hugetlb.h                          |    6 +
+ mm/damon/vaddr.c                                 |    3 
+ mm/hugetlb.c                                     |   43 +++++++------
+ mm/migrate.c                                     |    7 +-
+ mm/rmap.c                                        |   23 +++++-
+ mm/vmalloc.c                                     |    2 
+ 22 files changed, 100 insertions(+), 49 deletions(-)
 
---- a/include/linux/maple_tree.h~maple_tree-add-mas_underflow-and-mas_overflow-states
-+++ a/include/linux/maple_tree.h
-@@ -428,6 +428,8 @@ struct ma_wr_state {
- #define MAS_ROOT	((struct maple_enode *)5UL)
- #define MAS_NONE	((struct maple_enode *)9UL)
- #define MAS_PAUSE	((struct maple_enode *)17UL)
-+#define MAS_OVERFLOW	((struct maple_enode *)33UL)
-+#define MAS_UNDERFLOW	((struct maple_enode *)65UL)
- #define MA_ERROR(err) \
- 		((struct maple_enode *)(((unsigned long)err << 2) | 2UL))
- 
---- a/lib/maple_tree.c~maple_tree-add-mas_underflow-and-mas_overflow-states
-+++ a/lib/maple_tree.c
-@@ -256,6 +256,22 @@ bool mas_is_err(struct ma_state *mas)
- 	return xa_is_err(mas->node);
+--- a/arch/arm64/include/asm/hugetlb.h~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/arm64/include/asm/hugetlb.h
+@@ -28,7 +28,7 @@ pte_t arch_make_huge_pte(pte_t entry, un
+ #define arch_make_huge_pte arch_make_huge_pte
+ #define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+ extern void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+-			    pte_t *ptep, pte_t pte);
++			    pte_t *ptep, pte_t pte, unsigned long sz);
+ #define __HAVE_ARCH_HUGE_PTEP_SET_ACCESS_FLAGS
+ extern int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+ 				      unsigned long addr, pte_t *ptep,
+--- a/arch/arm64/mm/hugetlbpage.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/arm64/mm/hugetlbpage.c
+@@ -249,7 +249,7 @@ static inline struct folio *hugetlb_swap
  }
  
-+static __always_inline bool mas_is_overflow(struct ma_state *mas)
-+{
-+	if (unlikely(mas->node == MAS_OVERFLOW))
-+		return true;
-+
-+	return false;
-+}
-+
-+static __always_inline bool mas_is_underflow(struct ma_state *mas)
-+{
-+	if (unlikely(mas->node == MAS_UNDERFLOW))
-+		return true;
-+
-+	return false;
-+}
-+
- static inline bool mas_searchable(struct ma_state *mas)
+ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+-			    pte_t *ptep, pte_t pte)
++			    pte_t *ptep, pte_t pte, unsigned long sz)
  {
- 	if (mas_is_none(mas))
-@@ -4415,10 +4431,13 @@ no_entry:
-  *
-  * @mas: The maple state
-  * @max: The minimum starting range
-+ * @empty: Can be empty
-+ * @set_underflow: Set the @mas->node to underflow state on limit.
-  *
-  * Return: The entry in the previous slot which is possibly NULL
-  */
--static void *mas_prev_slot(struct ma_state *mas, unsigned long min, bool empty)
-+static void *mas_prev_slot(struct ma_state *mas, unsigned long min, bool empty,
-+			   bool set_underflow)
+ 	size_t pgsize;
+ 	int i;
+@@ -571,5 +571,7 @@ pte_t huge_ptep_modify_prot_start(struct
+ void huge_ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
+ 				  pte_t old_pte, pte_t pte)
  {
- 	void *entry;
- 	void __rcu **slots;
-@@ -4435,7 +4454,6 @@ retry:
- 	if (unlikely(mas_rewalk_if_dead(mas, node, save_point)))
- 		goto retry;
- 
--again:
- 	if (mas->min <= min) {
- 		pivot = mas_safe_min(mas, pivots, mas->offset);
- 
-@@ -4443,9 +4461,10 @@ again:
- 			goto retry;
- 
- 		if (pivot <= min)
--			return NULL;
-+			goto underflow;
- 	}
- 
-+again:
- 	if (likely(mas->offset)) {
- 		mas->offset--;
- 		mas->last = mas->index - 1;
-@@ -4457,7 +4476,7 @@ again:
- 		}
- 
- 		if (mas_is_none(mas))
--			return NULL;
-+			goto underflow;
- 
- 		mas->last = mas->max;
- 		node = mas_mn(mas);
-@@ -4474,10 +4493,19 @@ again:
- 	if (likely(entry))
- 		return entry;
- 
--	if (!empty)
-+	if (!empty) {
-+		if (mas->index <= min)
-+			goto underflow;
+-	set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
++	unsigned long psize = huge_page_size(hstate_vma(vma));
 +
- 		goto again;
-+	}
++	set_huge_pte_at(vma->vm_mm, addr, ptep, pte, psize);
+ }
+--- a/arch/parisc/include/asm/hugetlb.h~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/parisc/include/asm/hugetlb.h
+@@ -6,7 +6,7 @@
  
- 	return entry;
-+
-+underflow:
-+	if (set_underflow)
-+		mas->node = MAS_UNDERFLOW;
-+	return NULL;
+ #define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+-		     pte_t *ptep, pte_t pte);
++		     pte_t *ptep, pte_t pte, unsigned long sz);
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+--- a/arch/parisc/mm/hugetlbpage.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/parisc/mm/hugetlbpage.c
+@@ -140,7 +140,7 @@ static void __set_huge_pte_at(struct mm_
  }
  
- /*
-@@ -4567,10 +4595,13 @@ no_entry:
-  * @mas: The maple state
-  * @max: The maximum starting range
-  * @empty: Can be empty
-+ * @set_overflow: Should @mas->node be set to overflow when the limit is
-+ * reached.
-  *
-  * Return: The entry in the next slot which is possibly NULL
-  */
--static void *mas_next_slot(struct ma_state *mas, unsigned long max, bool empty)
-+static void *mas_next_slot(struct ma_state *mas, unsigned long max, bool empty,
-+			   bool set_overflow)
+ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+-		     pte_t *ptep, pte_t entry)
++		     pte_t *ptep, pte_t entry, unsigned long sz)
  {
- 	void __rcu **slots;
- 	unsigned long *pivots;
-@@ -4589,22 +4620,22 @@ retry:
- 	if (unlikely(mas_rewalk_if_dead(mas, node, save_point)))
- 		goto retry;
- 
--again:
- 	if (mas->max >= max) {
- 		if (likely(mas->offset < data_end))
- 			pivot = pivots[mas->offset];
- 		else
--			return NULL; /* must be mas->max */
-+			goto overflow;
- 
- 		if (unlikely(mas_rewalk_if_dead(mas, node, save_point)))
- 			goto retry;
- 
- 		if (pivot >= max)
--			return NULL;
-+			goto overflow;
- 	}
- 
- 	if (likely(mas->offset < data_end)) {
- 		mas->index = pivots[mas->offset] + 1;
-+again:
- 		mas->offset++;
- 		if (likely(mas->offset < data_end))
- 			mas->last = pivots[mas->offset];
-@@ -4616,8 +4647,11 @@ again:
- 			goto retry;
- 		}
- 
--		if (mas_is_none(mas))
-+		if (WARN_ON_ONCE(mas_is_none(mas))) {
-+			mas->node = MAS_OVERFLOW;
- 			return NULL;
-+			goto overflow;
-+		}
- 
- 		mas->offset = 0;
- 		mas->index = mas->min;
-@@ -4636,12 +4670,20 @@ again:
- 		return entry;
- 
- 	if (!empty) {
--		if (!mas->offset)
--			data_end = 2;
-+		if (mas->last >= max)
-+			goto overflow;
-+
-+		mas->index = mas->last + 1;
-+		/* Node cannot end on NULL, so it's safe to short-cut here */
- 		goto again;
- 	}
- 
- 	return entry;
-+
-+overflow:
-+	if (set_overflow)
-+		mas->node = MAS_OVERFLOW;
-+	return NULL;
+ 	__set_huge_pte_at(mm, addr, ptep, entry);
+ }
+--- a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/powerpc/include/asm/nohash/32/hugetlb-8xx.h
+@@ -46,7 +46,8 @@ static inline int check_and_get_huge_psi
  }
  
- /*
-@@ -4651,17 +4693,20 @@ again:
-  *
-  * Set the @mas->node to the next entry and the range_start to
-  * the beginning value for the entry.  Does not check beyond @limit.
-- * Sets @mas->index and @mas->last to the limit if it is hit.
-+ * Sets @mas->index and @mas->last to the range, Does not update @mas->index and
-+ * @mas->last on overflow.
-  * Restarts on dead nodes.
-  *
-  * Return: the next entry or %NULL.
-  */
- static inline void *mas_next_entry(struct ma_state *mas, unsigned long limit)
- {
--	if (mas->last >= limit)
-+	if (mas->last >= limit) {
-+		mas->node = MAS_OVERFLOW;
- 		return NULL;
-+	}
+ #define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+-void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep, pte_t pte);
++void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
++		     pte_t pte, unsigned long sz);
  
--	return mas_next_slot(mas, limit, false);
-+	return mas_next_slot(mas, limit, false, true);
+ #define __HAVE_ARCH_HUGE_PTE_CLEAR
+ static inline void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+--- a/arch/powerpc/mm/book3s64/hugetlbpage.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/powerpc/mm/book3s64/hugetlbpage.c
+@@ -143,11 +143,14 @@ pte_t huge_ptep_modify_prot_start(struct
+ void huge_ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
+ 				  pte_t *ptep, pte_t old_pte, pte_t pte)
+ {
++	unsigned long psize;
+ 
+ 	if (radix_enabled())
+ 		return radix__huge_ptep_modify_prot_commit(vma, addr, ptep,
+ 							   old_pte, pte);
+-	set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
++
++	psize = huge_page_size(hstate_vma(vma));
++	set_huge_pte_at(vma->vm_mm, addr, ptep, pte, psize);
  }
  
- /*
-@@ -4837,7 +4882,7 @@ void *mas_walk(struct ma_state *mas)
+ void __init hugetlbpage_init_defaultsize(void)
+--- a/arch/powerpc/mm/book3s64/radix_hugetlbpage.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/powerpc/mm/book3s64/radix_hugetlbpage.c
+@@ -47,6 +47,7 @@ void radix__huge_ptep_modify_prot_commit
+ 					 pte_t old_pte, pte_t pte)
  {
- 	void *entry;
- 
--	if (mas_is_none(mas) || mas_is_paused(mas) || mas_is_ptr(mas))
-+	if (!mas_is_active(mas) || !mas_is_start(mas))
- 		mas->node = MAS_START;
- retry:
- 	entry = mas_state_walk(mas);
-@@ -5294,14 +5339,22 @@ static inline void mte_destroy_walk(stru
- 
- static void mas_wr_store_setup(struct ma_wr_state *wr_mas)
- {
--	if (mas_is_start(wr_mas->mas))
--		return;
-+	if (!mas_is_active(wr_mas->mas)) {
-+		if (mas_is_start(wr_mas->mas))
-+			return;
- 
--	if (unlikely(mas_is_paused(wr_mas->mas)))
--		goto reset;
-+		if (unlikely(mas_is_paused(wr_mas->mas)))
-+			goto reset;
- 
--	if (unlikely(mas_is_none(wr_mas->mas)))
--		goto reset;
-+		if (unlikely(mas_is_none(wr_mas->mas)))
-+			goto reset;
-+
-+		if (unlikely(mas_is_overflow(wr_mas->mas)))
-+			goto reset;
-+
-+		if (unlikely(mas_is_underflow(wr_mas->mas)))
-+			goto reset;
-+	}
+ 	struct mm_struct *mm = vma->vm_mm;
++	unsigned long psize = huge_page_size(hstate_vma(vma));
  
  	/*
- 	 * A less strict version of mas_is_span_wr() where we allow spanning
-@@ -5595,8 +5648,25 @@ static inline bool mas_next_setup(struct
+ 	 * POWER9 NMMU must flush the TLB after clearing the PTE before
+@@ -58,5 +59,5 @@ void radix__huge_ptep_modify_prot_commit
+ 	    atomic_read(&mm->context.copros) > 0)
+ 		radix__flush_hugetlb_page(vma, addr);
+ 
+-	set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
++	set_huge_pte_at(vma->vm_mm, addr, ptep, pte, psize);
+ }
+--- a/arch/powerpc/mm/nohash/8xx.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/powerpc/mm/nohash/8xx.c
+@@ -91,7 +91,8 @@ static int __ref __early_map_kernel_huge
+ 	if (new && WARN_ON(pte_present(*ptep) && pgprot_val(prot)))
+ 		return -EINVAL;
+ 
+-	set_huge_pte_at(&init_mm, va, ptep, pte_mkhuge(pfn_pte(pa >> PAGE_SHIFT, prot)));
++	set_huge_pte_at(&init_mm, va, ptep,
++			pte_mkhuge(pfn_pte(pa >> PAGE_SHIFT, prot)), psize);
+ 
+ 	return 0;
+ }
+--- a/arch/powerpc/mm/pgtable.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/powerpc/mm/pgtable.c
+@@ -288,7 +288,8 @@ int huge_ptep_set_access_flags(struct vm
+ }
+ 
+ #if defined(CONFIG_PPC_8xx)
+-void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep, pte_t pte)
++void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
++		     pte_t pte, unsigned long sz)
  {
- 	bool was_none = mas_is_none(mas);
+ 	pmd_t *pmd = pmd_off(mm, addr);
+ 	pte_basic_t val;
+--- a/arch/riscv/include/asm/hugetlb.h~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/riscv/include/asm/hugetlb.h
+@@ -18,7 +18,8 @@ void huge_pte_clear(struct mm_struct *mm
  
--	if (mas_is_none(mas) || mas_is_paused(mas))
-+	if (unlikely(mas->last >= max)) {
-+		mas->node = MAS_OVERFLOW;
-+		return true;
-+	}
-+
-+	if (mas_is_active(mas))
-+		return false;
-+
-+	if (mas_is_none(mas) || mas_is_paused(mas)) {
-+		mas->node = MAS_START;
-+	} else if (mas_is_overflow(mas)) {
-+		/* Overflowed before, but the max changed */
- 		mas->node = MAS_START;
-+	} else if (mas_is_underflow(mas)) {
-+		mas->node = MAS_START;
-+		*entry = mas_walk(mas);
-+		if (*entry)
-+			return true;
-+	}
+ #define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+ void set_huge_pte_at(struct mm_struct *mm,
+-		     unsigned long addr, pte_t *ptep, pte_t pte);
++		     unsigned long addr, pte_t *ptep, pte_t pte,
++		     unsigned long sz);
  
- 	if (mas_is_start(mas))
- 		*entry = mas_walk(mas); /* Retries on dead nodes handled by mas_walk */
-@@ -5615,6 +5685,7 @@ static inline bool mas_next_setup(struct
- 
- 	if (mas_is_none(mas))
- 		return true;
-+
- 	return false;
- }
- 
-@@ -5637,7 +5708,7 @@ void *mas_next(struct ma_state *mas, uns
- 		return entry;
- 
- 	/* Retries on dead nodes handled by mas_next_slot */
--	return mas_next_slot(mas, max, false);
-+	return mas_next_slot(mas, max, false, true);
- }
- EXPORT_SYMBOL_GPL(mas_next);
- 
-@@ -5660,7 +5731,7 @@ void *mas_next_range(struct ma_state *ma
- 		return entry;
- 
- 	/* Retries on dead nodes handled by mas_next_slot */
--	return mas_next_slot(mas, max, true);
-+	return mas_next_slot(mas, max, true, true);
- }
- EXPORT_SYMBOL_GPL(mas_next_range);
- 
-@@ -5691,18 +5762,31 @@ EXPORT_SYMBOL_GPL(mt_next);
- static inline bool mas_prev_setup(struct ma_state *mas, unsigned long min,
- 		void **entry)
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+--- a/arch/riscv/mm/hugetlbpage.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/riscv/mm/hugetlbpage.c
+@@ -180,7 +180,8 @@ pte_t arch_make_huge_pte(pte_t entry, un
+ void set_huge_pte_at(struct mm_struct *mm,
+ 		     unsigned long addr,
+ 		     pte_t *ptep,
+-		     pte_t pte)
++		     pte_t pte,
++		     unsigned long sz)
  {
--	if (mas->index <= min)
--		goto none;
-+	if (unlikely(mas->index <= min)) {
-+		mas->node = MAS_UNDERFLOW;
-+		return true;
-+	}
+ 	int i, pte_num;
  
--	if (mas_is_none(mas) || mas_is_paused(mas))
-+	if (mas_is_active(mas))
-+		return false;
+--- a/arch/s390/include/asm/hugetlb.h~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/s390/include/asm/hugetlb.h
+@@ -16,6 +16,8 @@
+ #define hugepages_supported()			(MACHINE_HAS_EDAT1)
+ 
+ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
++		     pte_t *ptep, pte_t pte, unsigned long sz);
++void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 		     pte_t *ptep, pte_t pte);
+ pte_t huge_ptep_get(pte_t *ptep);
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm,
+@@ -65,7 +67,7 @@ static inline int huge_ptep_set_access_f
+ 	int changed = !pte_same(huge_ptep_get(ptep), pte);
+ 	if (changed) {
+ 		huge_ptep_get_and_clear(vma->vm_mm, addr, ptep);
+-		set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
++		__set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
+ 	}
+ 	return changed;
+ }
+@@ -74,7 +76,7 @@ static inline void huge_ptep_set_wrprote
+ 					   unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t pte = huge_ptep_get_and_clear(mm, addr, ptep);
+-	set_huge_pte_at(mm, addr, ptep, pte_wrprotect(pte));
++	__set_huge_pte_at(mm, addr, ptep, pte_wrprotect(pte));
+ }
+ 
+ static inline pte_t mk_huge_pte(struct page *page, pgprot_t pgprot)
+--- a/arch/s390/mm/hugetlbpage.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/s390/mm/hugetlbpage.c
+@@ -142,7 +142,7 @@ static void clear_huge_pte_skeys(struct
+ 		__storage_key_init_range(paddr, paddr + size - 1);
+ }
+ 
+-void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
++void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 		     pte_t *ptep, pte_t pte)
+ {
+ 	unsigned long rste;
+@@ -163,6 +163,12 @@ void set_huge_pte_at(struct mm_struct *m
+ 	set_pte(ptep, __pte(rste));
+ }
+ 
++void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
++		     pte_t *ptep, pte_t pte, unsigned long sz)
++{
++	__set_huge_pte_at(mm, addr, ptep, pte);
++}
 +
-+	if (mas_is_overflow(mas)) {
- 		mas->node = MAS_START;
-+		*entry = mas_walk(mas);
-+		if (*entry)
-+			return true;
-+	}
+ pte_t huge_ptep_get(pte_t *ptep)
+ {
+ 	return __rste_to_pte(pte_val(*ptep));
+--- a/arch/sparc/include/asm/hugetlb.h~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/sparc/include/asm/hugetlb.h
+@@ -14,6 +14,8 @@ extern struct pud_huge_patch_entry __pud
  
--	if (mas_is_start(mas)) {
--		mas_walk(mas);
--		if (!mas->index)
--			goto none;
-+	if (mas_is_none(mas) || mas_is_paused(mas)) {
-+		mas->node = MAS_START;
-+	} else if (mas_is_underflow(mas)) {
-+		/* underflowed before but the min changed */
-+		mas->node = MAS_START;
+ #define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
++		     pte_t *ptep, pte_t pte, unsigned long sz);
++void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 		     pte_t *ptep, pte_t pte);
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+@@ -32,7 +34,7 @@ static inline void huge_ptep_set_wrprote
+ 					   unsigned long addr, pte_t *ptep)
+ {
+ 	pte_t old_pte = *ptep;
+-	set_huge_pte_at(mm, addr, ptep, pte_wrprotect(old_pte));
++	__set_huge_pte_at(mm, addr, ptep, pte_wrprotect(old_pte));
+ }
+ 
+ #define __HAVE_ARCH_HUGE_PTEP_SET_ACCESS_FLAGS
+@@ -42,7 +44,7 @@ static inline int huge_ptep_set_access_f
+ {
+ 	int changed = !pte_same(*ptep, pte);
+ 	if (changed) {
+-		set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
++		__set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
+ 		flush_tlb_page(vma, addr);
+ 	}
+ 	return changed;
+--- a/arch/sparc/mm/hugetlbpage.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/arch/sparc/mm/hugetlbpage.c
+@@ -328,7 +328,7 @@ pte_t *huge_pte_offset(struct mm_struct
+ 	return pte_offset_huge(pmd, addr);
+ }
+ 
+-void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
++void __set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 		     pte_t *ptep, pte_t entry)
+ {
+ 	unsigned int nptes, orig_shift, shift;
+@@ -364,6 +364,12 @@ void set_huge_pte_at(struct mm_struct *m
+ 				    orig_shift);
+ }
+ 
++void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
++		     pte_t *ptep, pte_t entry, unsigned long sz)
++{
++	__set_huge_pte_at(mm, addr, ptep, entry);
++}
++
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+ 			      pte_t *ptep)
+ {
+--- a/include/asm-generic/hugetlb.h~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/include/asm-generic/hugetlb.h
+@@ -76,7 +76,7 @@ static inline void hugetlb_free_pgd_rang
+ 
+ #ifndef __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+ static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+-		pte_t *ptep, pte_t pte)
++		pte_t *ptep, pte_t pte, unsigned long sz)
+ {
+ 	set_pte_at(mm, addr, ptep, pte);
+ }
+--- a/include/linux/hugetlb.h~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/include/linux/hugetlb.h
+@@ -984,7 +984,9 @@ static inline void huge_ptep_modify_prot
+ 						unsigned long addr, pte_t *ptep,
+ 						pte_t old_pte, pte_t pte)
+ {
+-	set_huge_pte_at(vma->vm_mm, addr, ptep, pte);
++	unsigned long psize = huge_page_size(hstate_vma(vma));
++
++	set_huge_pte_at(vma->vm_mm, addr, ptep, pte, psize);
+ }
+ #endif
+ 
+@@ -1173,7 +1175,7 @@ static inline pte_t huge_ptep_clear_flus
+ }
+ 
+ static inline void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+-				   pte_t *ptep, pte_t pte)
++				   pte_t *ptep, pte_t pte, unsigned long sz)
+ {
+ }
+ 
+--- a/mm/damon/vaddr.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/mm/damon/vaddr.c
+@@ -341,13 +341,14 @@ static void damon_hugetlb_mkold(pte_t *p
+ 	bool referenced = false;
+ 	pte_t entry = huge_ptep_get(pte);
+ 	struct folio *folio = pfn_folio(pte_pfn(entry));
++	unsigned long psize = huge_page_size(hstate_vma(vma));
+ 
+ 	folio_get(folio);
+ 
+ 	if (pte_young(entry)) {
+ 		referenced = true;
+ 		entry = pte_mkold(entry);
+-		set_huge_pte_at(mm, addr, pte, entry);
++		set_huge_pte_at(mm, addr, pte, entry, psize);
  	}
  
-+	if (mas_is_start(mas))
-+		mas_walk(mas);
-+
- 	if (unlikely(mas_is_ptr(mas))) {
- 		if (!mas->index)
- 			goto none;
-@@ -5747,7 +5831,7 @@ void *mas_prev(struct ma_state *mas, uns
- 	if (mas_prev_setup(mas, min, &entry))
- 		return entry;
+ #ifdef CONFIG_MMU_NOTIFIER
+--- a/mm/hugetlb.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/mm/hugetlb.c
+@@ -4980,7 +4980,7 @@ static bool is_hugetlb_entry_hwpoisoned(
  
--	return mas_prev_slot(mas, min, false);
-+	return mas_prev_slot(mas, min, false, true);
- }
- EXPORT_SYMBOL_GPL(mas_prev);
- 
-@@ -5770,7 +5854,7 @@ void *mas_prev_range(struct ma_state *ma
- 	if (mas_prev_setup(mas, min, &entry))
- 		return entry;
- 
--	return mas_prev_slot(mas, min, true);
-+	return mas_prev_slot(mas, min, true, true);
- }
- EXPORT_SYMBOL_GPL(mas_prev_range);
- 
-@@ -5828,24 +5912,35 @@ EXPORT_SYMBOL_GPL(mas_pause);
- static inline bool mas_find_setup(struct ma_state *mas, unsigned long max,
- 		void **entry)
+ static void
+ hugetlb_install_folio(struct vm_area_struct *vma, pte_t *ptep, unsigned long addr,
+-		      struct folio *new_folio, pte_t old)
++		      struct folio *new_folio, pte_t old, unsigned long sz)
  {
--	*entry = NULL;
-+	if (mas_is_active(mas)) {
-+		if (mas->last < max)
-+			return false;
-+
-+		return true;
-+	}
+ 	pte_t newpte = make_huge_pte(vma, &new_folio->page, 1);
  
--	if (unlikely(mas_is_none(mas))) {
-+	if (mas_is_paused(mas)) {
- 		if (unlikely(mas->last >= max))
- 			return true;
- 
--		mas->index = mas->last;
-+		mas->index = ++mas->last;
- 		mas->node = MAS_START;
--	} else if (unlikely(mas_is_paused(mas))) {
-+	} else if (mas_is_none(mas)) {
- 		if (unlikely(mas->last >= max))
- 			return true;
- 
-+		mas->index = mas->last;
- 		mas->node = MAS_START;
--		mas->index = ++mas->last;
--	} else if (unlikely(mas_is_ptr(mas)))
--		goto ptr_out_of_range;
-+	} else if (mas_is_overflow(mas) || mas_is_underflow(mas)) {
-+		if (mas->index > max) {
-+			mas->node = MAS_OVERFLOW;
-+			return true;
-+		}
- 
--	if (unlikely(mas_is_start(mas))) {
-+		mas->node = MAS_START;
-+	}
-+
-+	if (mas_is_start(mas)) {
- 		/* First run or continue */
- 		if (mas->index > max)
- 			return true;
-@@ -5895,7 +5990,7 @@ void *mas_find(struct ma_state *mas, uns
- 		return entry;
- 
- 	/* Retries on dead nodes handled by mas_next_slot */
--	return mas_next_slot(mas, max, false);
-+	return mas_next_slot(mas, max, false, false);
+@@ -4988,7 +4988,7 @@ hugetlb_install_folio(struct vm_area_str
+ 	hugepage_add_new_anon_rmap(new_folio, vma, addr);
+ 	if (userfaultfd_wp(vma) && huge_pte_uffd_wp(old))
+ 		newpte = huge_pte_mkuffd_wp(newpte);
+-	set_huge_pte_at(vma->vm_mm, addr, ptep, newpte);
++	set_huge_pte_at(vma->vm_mm, addr, ptep, newpte, sz);
+ 	hugetlb_count_add(pages_per_huge_page(hstate_vma(vma)), vma->vm_mm);
+ 	folio_set_hugetlb_migratable(new_folio);
  }
- EXPORT_SYMBOL_GPL(mas_find);
+@@ -5065,7 +5065,7 @@ again:
+ 		} else if (unlikely(is_hugetlb_entry_hwpoisoned(entry))) {
+ 			if (!userfaultfd_wp(dst_vma))
+ 				entry = huge_pte_clear_uffd_wp(entry);
+-			set_huge_pte_at(dst, addr, dst_pte, entry);
++			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
+ 		} else if (unlikely(is_hugetlb_entry_migration(entry))) {
+ 			swp_entry_t swp_entry = pte_to_swp_entry(entry);
+ 			bool uffd_wp = pte_swp_uffd_wp(entry);
+@@ -5080,18 +5080,18 @@ again:
+ 				entry = swp_entry_to_pte(swp_entry);
+ 				if (userfaultfd_wp(src_vma) && uffd_wp)
+ 					entry = pte_swp_mkuffd_wp(entry);
+-				set_huge_pte_at(src, addr, src_pte, entry);
++				set_huge_pte_at(src, addr, src_pte, entry, sz);
+ 			}
+ 			if (!userfaultfd_wp(dst_vma))
+ 				entry = huge_pte_clear_uffd_wp(entry);
+-			set_huge_pte_at(dst, addr, dst_pte, entry);
++			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
+ 		} else if (unlikely(is_pte_marker(entry))) {
+ 			pte_marker marker = copy_pte_marker(
+ 				pte_to_swp_entry(entry), dst_vma);
  
-@@ -5913,13 +6008,13 @@ EXPORT_SYMBOL_GPL(mas_find);
-  */
- void *mas_find_range(struct ma_state *mas, unsigned long max)
- {
--	void *entry;
-+	void *entry = NULL;
+ 			if (marker)
+ 				set_huge_pte_at(dst, addr, dst_pte,
+-						make_pte_marker(marker));
++						make_pte_marker(marker), sz);
+ 		} else {
+ 			entry = huge_ptep_get(src_pte);
+ 			pte_folio = page_folio(pte_page(entry));
+@@ -5145,7 +5145,7 @@ again:
+ 					goto again;
+ 				}
+ 				hugetlb_install_folio(dst_vma, dst_pte, addr,
+-						      new_folio, src_pte_old);
++						      new_folio, src_pte_old, sz);
+ 				spin_unlock(src_ptl);
+ 				spin_unlock(dst_ptl);
+ 				continue;
+@@ -5166,7 +5166,7 @@ again:
+ 			if (!userfaultfd_wp(dst_vma))
+ 				entry = huge_pte_clear_uffd_wp(entry);
  
- 	if (mas_find_setup(mas, max, &entry))
- 		return entry;
- 
- 	/* Retries on dead nodes handled by mas_next_slot */
--	return mas_next_slot(mas, max, true);
-+	return mas_next_slot(mas, max, true, false);
- }
- EXPORT_SYMBOL_GPL(mas_find_range);
- 
-@@ -5934,26 +6029,36 @@ EXPORT_SYMBOL_GPL(mas_find_range);
- static inline bool mas_find_rev_setup(struct ma_state *mas, unsigned long min,
- 		void **entry)
- {
--	*entry = NULL;
--
--	if (unlikely(mas_is_none(mas))) {
--		if (mas->index <= min)
--			goto none;
-+	if (mas_is_active(mas)) {
-+		if (mas->index > min)
-+			return false;
- 
--		mas->last = mas->index;
--		mas->node = MAS_START;
-+		return true;
- 	}
- 
--	if (unlikely(mas_is_paused(mas))) {
-+	if (mas_is_paused(mas)) {
- 		if (unlikely(mas->index <= min)) {
- 			mas->node = MAS_NONE;
- 			return true;
+-			set_huge_pte_at(dst, addr, dst_pte, entry);
++			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
+ 			hugetlb_count_add(npages, dst);
  		}
- 		mas->node = MAS_START;
- 		mas->last = --mas->index;
-+	} else if (mas_is_none(mas)) {
-+		if (mas->index <= min)
-+			goto none;
-+
-+		mas->last = mas->index;
-+		mas->node = MAS_START;
-+	} else if (mas_is_underflow(mas) || mas_is_overflow(mas)) {
-+		if (mas->last <= min) {
-+			mas->node = MAS_UNDERFLOW;
-+			return true;
-+		}
-+
-+		mas->node = MAS_START;
+ 		spin_unlock(src_ptl);
+@@ -5184,7 +5184,8 @@ again:
+ }
+ 
+ static void move_huge_pte(struct vm_area_struct *vma, unsigned long old_addr,
+-			  unsigned long new_addr, pte_t *src_pte, pte_t *dst_pte)
++			  unsigned long new_addr, pte_t *src_pte, pte_t *dst_pte,
++			  unsigned long sz)
+ {
+ 	struct hstate *h = hstate_vma(vma);
+ 	struct mm_struct *mm = vma->vm_mm;
+@@ -5202,7 +5203,7 @@ static void move_huge_pte(struct vm_area
+ 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+ 
+ 	pte = huge_ptep_get_and_clear(mm, old_addr, src_pte);
+-	set_huge_pte_at(mm, new_addr, dst_pte, pte);
++	set_huge_pte_at(mm, new_addr, dst_pte, pte, sz);
+ 
+ 	if (src_ptl != dst_ptl)
+ 		spin_unlock(src_ptl);
+@@ -5259,7 +5260,7 @@ int move_hugetlb_page_tables(struct vm_a
+ 		if (!dst_pte)
+ 			break;
+ 
+-		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte);
++		move_huge_pte(vma, old_addr, new_addr, src_pte, dst_pte, sz);
  	}
  
--	if (unlikely(mas_is_start(mas))) {
-+	if (mas_is_start(mas)) {
- 		/* First run or continue */
- 		if (mas->index < min)
- 			return true;
-@@ -6004,13 +6109,13 @@ none:
-  */
- void *mas_find_rev(struct ma_state *mas, unsigned long min)
- {
--	void *entry;
-+	void *entry = NULL;
+ 	if (shared_pmd)
+@@ -5337,7 +5338,8 @@ static void __unmap_hugepage_range(struc
+ 			if (pte_swp_uffd_wp_any(pte) &&
+ 			    !(zap_flags & ZAP_FLAG_DROP_MARKER))
+ 				set_huge_pte_at(mm, address, ptep,
+-						make_pte_marker(PTE_MARKER_UFFD_WP));
++						make_pte_marker(PTE_MARKER_UFFD_WP),
++						sz);
+ 			else
+ 				huge_pte_clear(mm, address, ptep, sz);
+ 			spin_unlock(ptl);
+@@ -5371,7 +5373,8 @@ static void __unmap_hugepage_range(struc
+ 		if (huge_pte_uffd_wp(pte) &&
+ 		    !(zap_flags & ZAP_FLAG_DROP_MARKER))
+ 			set_huge_pte_at(mm, address, ptep,
+-					make_pte_marker(PTE_MARKER_UFFD_WP));
++					make_pte_marker(PTE_MARKER_UFFD_WP),
++					sz);
+ 		hugetlb_count_sub(pages_per_huge_page(h), mm);
+ 		page_remove_rmap(page, vma, true);
  
- 	if (mas_find_rev_setup(mas, min, &entry))
- 		return entry;
+@@ -5676,7 +5679,7 @@ retry_avoidcopy:
+ 		hugepage_add_new_anon_rmap(new_folio, vma, haddr);
+ 		if (huge_pte_uffd_wp(pte))
+ 			newpte = huge_pte_mkuffd_wp(newpte);
+-		set_huge_pte_at(mm, haddr, ptep, newpte);
++		set_huge_pte_at(mm, haddr, ptep, newpte, huge_page_size(h));
+ 		folio_set_hugetlb_migratable(new_folio);
+ 		/* Make the old page be freed below */
+ 		new_folio = old_folio;
+@@ -5972,7 +5975,7 @@ static vm_fault_t hugetlb_no_page(struct
+ 	 */
+ 	if (unlikely(pte_marker_uffd_wp(old_pte)))
+ 		new_pte = huge_pte_mkuffd_wp(new_pte);
+-	set_huge_pte_at(mm, haddr, ptep, new_pte);
++	set_huge_pte_at(mm, haddr, ptep, new_pte, huge_page_size(h));
  
- 	/* Retries on dead nodes handled by mas_prev_slot */
--	return mas_prev_slot(mas, min, false);
-+	return mas_prev_slot(mas, min, false, false);
+ 	hugetlb_count_add(pages_per_huge_page(h), mm);
+ 	if ((flags & FAULT_FLAG_WRITE) && !(vma->vm_flags & VM_SHARED)) {
+@@ -6261,7 +6264,8 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
+ 		}
  
- }
- EXPORT_SYMBOL_GPL(mas_find_rev);
-@@ -6030,13 +6135,13 @@ EXPORT_SYMBOL_GPL(mas_find_rev);
-  */
- void *mas_find_range_rev(struct ma_state *mas, unsigned long min)
- {
--	void *entry;
-+	void *entry = NULL;
+ 		_dst_pte = make_pte_marker(PTE_MARKER_POISONED);
+-		set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte);
++		set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte,
++				huge_page_size(h));
  
- 	if (mas_find_rev_setup(mas, min, &entry))
- 		return entry;
+ 		/* No need to invalidate - it was non-present before */
+ 		update_mmu_cache(dst_vma, dst_addr, dst_pte);
+@@ -6412,7 +6416,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_
+ 	if (wp_enabled)
+ 		_dst_pte = huge_pte_mkuffd_wp(_dst_pte);
  
- 	/* Retries on dead nodes handled by mas_prev_slot */
--	return mas_prev_slot(mas, min, true);
-+	return mas_prev_slot(mas, min, true, false);
- }
- EXPORT_SYMBOL_GPL(mas_find_range_rev);
+-	set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte);
++	set_huge_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte, huge_page_size(h));
  
---- a/lib/test_maple_tree.c~maple_tree-add-mas_underflow-and-mas_overflow-states
-+++ a/lib/test_maple_tree.c
-@@ -2166,7 +2166,7 @@ static noinline void __init next_prev_te
- 	MT_BUG_ON(mt, val != NULL);
- 	MT_BUG_ON(mt, mas.index != 0);
- 	MT_BUG_ON(mt, mas.last != 5);
--	MT_BUG_ON(mt, mas.node != MAS_NONE);
-+	MT_BUG_ON(mt, mas.node != MAS_UNDERFLOW);
+ 	hugetlb_count_add(pages_per_huge_page(h), dst_mm);
  
- 	mas.index = 0;
- 	mas.last = 5;
-@@ -2917,6 +2917,7 @@ static noinline void __init check_empty_
-  *		exists	MAS_NONE	active		range
-  *		exists	active		active		range
-  *		DNE	active		active		set to last range
-+ *		ERANGE	active		MAS_OVERFLOW	last range
-  *
-  * Function	ENTRY	Start		Result		index & last
-  * mas_prev()
-@@ -2945,6 +2946,7 @@ static noinline void __init check_empty_
-  *		any	MAS_ROOT	MAS_NONE	0
-  *		exists	active		active		range
-  *		DNE	active		active		last range
-+ *		ERANGE	active		MAS_UNDERFLOW	last range
-  *
-  * Function	ENTRY	Start		Result		index & last
-  * mas_find()
-@@ -2955,7 +2957,7 @@ static noinline void __init check_empty_
-  *		DNE	MAS_START	MAS_NONE	0
-  *		DNE	MAS_PAUSE	MAS_NONE	0
-  *		DNE	MAS_ROOT	MAS_NONE	0
-- *		DNE	MAS_NONE	MAS_NONE	0
-+ *		DNE	MAS_NONE	MAS_NONE	1
-  *				if index ==  0
-  *		exists	MAS_START	MAS_ROOT	0
-  *		exists	MAS_PAUSE	MAS_ROOT	0
-@@ -2967,7 +2969,7 @@ static noinline void __init check_empty_
-  *		DNE	MAS_START	active		set to max
-  *		exists	MAS_PAUSE	active		range
-  *		DNE	MAS_PAUSE	active		set to max
-- *		exists	MAS_NONE	active		range
-+ *		exists	MAS_NONE	active		range (start at last)
-  *		exists	active		active		range
-  *		DNE	active		active		last range (max < last)
-  *
-@@ -2992,7 +2994,7 @@ static noinline void __init check_empty_
-  *		DNE	MAS_START	active		set to min
-  *		exists	MAS_PAUSE	active		range
-  *		DNE	MAS_PAUSE	active		set to min
-- *		exists	MAS_NONE	active		range
-+ *		exists	MAS_NONE	active		range (start at index)
-  *		exists	active		active		range
-  *		DNE	active		active		last range (min > index)
-  *
-@@ -3039,10 +3041,10 @@ static noinline void __init check_state_
- 	mtree_store_range(mt, 0, 0, ptr, GFP_KERNEL);
+@@ -6598,7 +6602,7 @@ long hugetlb_change_protection(struct vm
+ 			else if (uffd_wp_resolve)
+ 				newpte = pte_swp_clear_uffd_wp(newpte);
+ 			if (!pte_same(pte, newpte))
+-				set_huge_pte_at(mm, address, ptep, newpte);
++				set_huge_pte_at(mm, address, ptep, newpte, psize);
+ 		} else if (unlikely(is_pte_marker(pte))) {
+ 			/* No other markers apply for now. */
+ 			WARN_ON_ONCE(!pte_marker_uffd_wp(pte));
+@@ -6623,7 +6627,8 @@ long hugetlb_change_protection(struct vm
+ 			if (unlikely(uffd_wp))
+ 				/* Safe to modify directly (none->non-present). */
+ 				set_huge_pte_at(mm, address, ptep,
+-						make_pte_marker(PTE_MARKER_UFFD_WP));
++						make_pte_marker(PTE_MARKER_UFFD_WP),
++						psize);
+ 		}
+ 		spin_unlock(ptl);
+ 	}
+--- a/mm/migrate.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/mm/migrate.c
+@@ -243,7 +243,9 @@ static bool remove_migration_pte(struct
  
- 	mas_lock(&mas);
--	/* prev: Start -> none */
-+	/* prev: Start -> underflow*/
- 	entry = mas_prev(&mas, 0);
- 	MT_BUG_ON(mt, entry != NULL);
--	MT_BUG_ON(mt, mas.node != MAS_NONE);
-+	MT_BUG_ON(mt, mas.node != MAS_UNDERFLOW);
+ #ifdef CONFIG_HUGETLB_PAGE
+ 		if (folio_test_hugetlb(folio)) {
+-			unsigned int shift = huge_page_shift(hstate_vma(vma));
++			struct hstate *h = hstate_vma(vma);
++			unsigned int shift = huge_page_shift(h);
++			unsigned long psize = huge_page_size(h);
  
- 	/* prev: Start -> root */
- 	mas_set(&mas, 10);
-@@ -3069,7 +3071,7 @@ static noinline void __init check_state_
- 	MT_BUG_ON(mt, entry != NULL);
- 	MT_BUG_ON(mt, mas.node != MAS_NONE);
+ 			pte = arch_make_huge_pte(pte, shift, vma->vm_flags);
+ 			if (folio_test_anon(folio))
+@@ -251,7 +253,8 @@ static bool remove_migration_pte(struct
+ 						       rmap_flags);
+ 			else
+ 				page_dup_file_rmap(new, true);
+-			set_huge_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
++			set_huge_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte,
++					psize);
+ 		} else
+ #endif
+ 		{
+--- a/mm/rmap.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/mm/rmap.c
+@@ -1480,6 +1480,7 @@ static bool try_to_unmap_one(struct foli
+ 	struct mmu_notifier_range range;
+ 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
+ 	unsigned long pfn;
++	unsigned long hsz = 0;
  
--	/* next: start -> none */
-+	/* next: start -> none*/
- 	mas_set(&mas, 10);
- 	entry = mas_next(&mas, ULONG_MAX);
- 	MT_BUG_ON(mt, mas.index != 1);
-@@ -3268,25 +3270,46 @@ static noinline void __init check_state_
- 	MT_BUG_ON(mt, mas.last != 0x2500);
- 	MT_BUG_ON(mt, !mas_active(mas));
- 
--	/* next:active -> active out of range*/
-+	/* next:active -> active beyond data */
- 	entry = mas_next(&mas, 0x2999);
- 	MT_BUG_ON(mt, entry != NULL);
- 	MT_BUG_ON(mt, mas.index != 0x2501);
- 	MT_BUG_ON(mt, mas.last != 0x2fff);
- 	MT_BUG_ON(mt, !mas_active(mas));
- 
--	/* Continue after out of range*/
-+	/* Continue after last range ends after max */
- 	entry = mas_next(&mas, ULONG_MAX);
- 	MT_BUG_ON(mt, entry != ptr3);
- 	MT_BUG_ON(mt, mas.index != 0x3000);
- 	MT_BUG_ON(mt, mas.last != 0x3500);
- 	MT_BUG_ON(mt, !mas_active(mas));
- 
--	/* next:active -> active out of range*/
-+	/* next:active -> active continued */
-+	entry = mas_next(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.index != 0x3501);
-+	MT_BUG_ON(mt, mas.last != ULONG_MAX);
-+	MT_BUG_ON(mt, !mas_active(mas));
+ 	/*
+ 	 * When racing against e.g. zap_pte_range() on another cpu,
+@@ -1511,6 +1512,9 @@ static bool try_to_unmap_one(struct foli
+ 		 */
+ 		adjust_range_if_pmd_sharing_possible(vma, &range.start,
+ 						     &range.end);
 +
-+	/* next:active -> overflow  */
- 	entry = mas_next(&mas, ULONG_MAX);
- 	MT_BUG_ON(mt, entry != NULL);
- 	MT_BUG_ON(mt, mas.index != 0x3501);
- 	MT_BUG_ON(mt, mas.last != ULONG_MAX);
-+	MT_BUG_ON(mt, mas.node != MAS_OVERFLOW);
-+
-+	/* next:overflow -> overflow  */
-+	entry = mas_next(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.index != 0x3501);
-+	MT_BUG_ON(mt, mas.last != ULONG_MAX);
-+	MT_BUG_ON(mt, mas.node != MAS_OVERFLOW);
-+
-+	/* prev:overflow -> active  */
-+	entry = mas_prev(&mas, 0);
-+	MT_BUG_ON(mt, entry != ptr3);
-+	MT_BUG_ON(mt, mas.index != 0x3000);
-+	MT_BUG_ON(mt, mas.last != 0x3500);
- 	MT_BUG_ON(mt, !mas_active(mas));
++		/* We need the huge page size for set_huge_pte_at() */
++		hsz = huge_page_size(hstate_vma(vma));
+ 	}
+ 	mmu_notifier_invalidate_range_start(&range);
  
- 	/* next: none -> active, skip value at location */
-@@ -3307,11 +3330,46 @@ static noinline void __init check_state_
- 	MT_BUG_ON(mt, mas.last != 0x1500);
- 	MT_BUG_ON(mt, !mas_active(mas));
+@@ -1628,7 +1632,8 @@ static bool try_to_unmap_one(struct foli
+ 			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+ 			if (folio_test_hugetlb(folio)) {
+ 				hugetlb_count_sub(folio_nr_pages(folio), mm);
+-				set_huge_pte_at(mm, address, pvmw.pte, pteval);
++				set_huge_pte_at(mm, address, pvmw.pte, pteval,
++						hsz);
+ 			} else {
+ 				dec_mm_counter(mm, mm_counter(&folio->page));
+ 				set_pte_at(mm, address, pvmw.pte, pteval);
+@@ -1820,6 +1825,7 @@ static bool try_to_migrate_one(struct fo
+ 	struct mmu_notifier_range range;
+ 	enum ttu_flags flags = (enum ttu_flags)(long)arg;
+ 	unsigned long pfn;
++	unsigned long hsz = 0;
  
--	/* prev:active -> active out of range*/
-+	/* prev:active -> active spanning end range */
-+	entry = mas_prev(&mas, 0x0100);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.index != 0);
-+	MT_BUG_ON(mt, mas.last != 0x0FFF);
-+	MT_BUG_ON(mt, !mas_active(mas));
+ 	/*
+ 	 * When racing against e.g. zap_pte_range() on another cpu,
+@@ -1855,6 +1861,9 @@ static bool try_to_migrate_one(struct fo
+ 		 */
+ 		adjust_range_if_pmd_sharing_possible(vma, &range.start,
+ 						     &range.end);
 +
-+	/* prev:active -> underflow */
-+	entry = mas_prev(&mas, 0);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.index != 0);
-+	MT_BUG_ON(mt, mas.last != 0x0FFF);
-+	MT_BUG_ON(mt, mas.node != MAS_UNDERFLOW);
-+
-+	/* prev:underflow -> underflow */
- 	entry = mas_prev(&mas, 0);
- 	MT_BUG_ON(mt, entry != NULL);
- 	MT_BUG_ON(mt, mas.index != 0);
- 	MT_BUG_ON(mt, mas.last != 0x0FFF);
-+	MT_BUG_ON(mt, mas.node != MAS_UNDERFLOW);
-+
-+	/* next:underflow -> active */
-+	entry = mas_next(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != ptr);
-+	MT_BUG_ON(mt, mas.index != 0x1000);
-+	MT_BUG_ON(mt, mas.last != 0x1500);
-+	MT_BUG_ON(mt, !mas_active(mas));
-+
-+	/* prev:first value -> underflow */
-+	entry = mas_prev(&mas, 0x1000);
-+	MT_BUG_ON(mt, entry != NULL);
-+	MT_BUG_ON(mt, mas.index != 0x1000);
-+	MT_BUG_ON(mt, mas.last != 0x1500);
-+	MT_BUG_ON(mt, mas.node != MAS_UNDERFLOW);
-+
-+	/* find:underflow -> first value */
-+	entry = mas_find(&mas, ULONG_MAX);
-+	MT_BUG_ON(mt, entry != ptr);
-+	MT_BUG_ON(mt, mas.index != 0x1000);
-+	MT_BUG_ON(mt, mas.last != 0x1500);
- 	MT_BUG_ON(mt, !mas_active(mas));
++		/* We need the huge page size for set_huge_pte_at() */
++		hsz = huge_page_size(hstate_vma(vma));
+ 	}
+ 	mmu_notifier_invalidate_range_start(&range);
  
- 	/* prev: pause ->active */
-@@ -3325,14 +3383,14 @@ static noinline void __init check_state_
- 	MT_BUG_ON(mt, mas.last != 0x2500);
- 	MT_BUG_ON(mt, !mas_active(mas));
+@@ -2020,7 +2029,8 @@ static bool try_to_migrate_one(struct fo
+ 			pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
+ 			if (folio_test_hugetlb(folio)) {
+ 				hugetlb_count_sub(folio_nr_pages(folio), mm);
+-				set_huge_pte_at(mm, address, pvmw.pte, pteval);
++				set_huge_pte_at(mm, address, pvmw.pte, pteval,
++						hsz);
+ 			} else {
+ 				dec_mm_counter(mm, mm_counter(&folio->page));
+ 				set_pte_at(mm, address, pvmw.pte, pteval);
+@@ -2044,7 +2054,8 @@ static bool try_to_migrate_one(struct fo
  
--	/* prev:active -> active out of range*/
-+	/* prev:active -> active spanning min */
- 	entry = mas_prev(&mas, 0x1600);
- 	MT_BUG_ON(mt, entry != NULL);
- 	MT_BUG_ON(mt, mas.index != 0x1501);
- 	MT_BUG_ON(mt, mas.last != 0x1FFF);
- 	MT_BUG_ON(mt, !mas_active(mas));
+ 			if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+ 				if (folio_test_hugetlb(folio))
+-					set_huge_pte_at(mm, address, pvmw.pte, pteval);
++					set_huge_pte_at(mm, address, pvmw.pte,
++							pteval, hsz);
+ 				else
+ 					set_pte_at(mm, address, pvmw.pte, pteval);
+ 				ret = false;
+@@ -2058,7 +2069,8 @@ static bool try_to_migrate_one(struct fo
+ 			if (anon_exclusive &&
+ 			    page_try_share_anon_rmap(subpage)) {
+ 				if (folio_test_hugetlb(folio))
+-					set_huge_pte_at(mm, address, pvmw.pte, pteval);
++					set_huge_pte_at(mm, address, pvmw.pte,
++							pteval, hsz);
+ 				else
+ 					set_pte_at(mm, address, pvmw.pte, pteval);
+ 				ret = false;
+@@ -2090,7 +2102,8 @@ static bool try_to_migrate_one(struct fo
+ 			if (pte_uffd_wp(pteval))
+ 				swp_pte = pte_swp_mkuffd_wp(swp_pte);
+ 			if (folio_test_hugetlb(folio))
+-				set_huge_pte_at(mm, address, pvmw.pte, swp_pte);
++				set_huge_pte_at(mm, address, pvmw.pte, swp_pte,
++						hsz);
+ 			else
+ 				set_pte_at(mm, address, pvmw.pte, swp_pte);
+ 			trace_set_migration_pte(address, pte_val(swp_pte),
+--- a/mm/vmalloc.c~mm-hugetlb-add-huge-page-size-param-to-set_huge_pte_at
++++ a/mm/vmalloc.c
+@@ -111,7 +111,7 @@ static int vmap_pte_range(pmd_t *pmd, un
+ 			pte_t entry = pfn_pte(pfn, prot);
  
--	/* prev: active ->active, continue*/
-+	/* prev: active ->active, continue */
- 	entry = mas_prev(&mas, 0);
- 	MT_BUG_ON(mt, entry != ptr);
- 	MT_BUG_ON(mt, mas.index != 0x1000);
-@@ -3379,7 +3437,7 @@ static noinline void __init check_state_
- 	MT_BUG_ON(mt, mas.last != 0x2FFF);
- 	MT_BUG_ON(mt, !mas_active(mas));
- 
--	/* find: none ->active */
-+	/* find: overflow ->active */
- 	entry = mas_find(&mas, 0x5000);
- 	MT_BUG_ON(mt, entry != ptr3);
- 	MT_BUG_ON(mt, mas.index != 0x3000);
-@@ -3778,7 +3836,6 @@ static int __init maple_tree_seed(void)
- 	check_empty_area_fill(&tree);
- 	mtree_destroy(&tree);
- 
--
- 	mt_init_flags(&tree, MT_FLAGS_ALLOC_RANGE);
- 	check_state_handling(&tree);
- 	mtree_destroy(&tree);
+ 			entry = arch_make_huge_pte(entry, ilog2(size), 0);
+-			set_huge_pte_at(&init_mm, addr, pte, entry);
++			set_huge_pte_at(&init_mm, addr, pte, entry, size);
+ 			pfn += PFN_DOWN(size);
+ 			continue;
+ 		}
 _
 
-Patches currently in -mm which might be from Liam.Howlett@oracle.com are
+Patches currently in -mm which might be from ryan.roberts@arm.com are
 
-mm-mempolicy-fix-set_mempolicy_home_node-previous-vma-pointer.patch
-mmap-fix-vma_iterator-in-error-path-of-vma_merge.patch
-mmap-fix-error-paths-with-dup_anon_vma.patch
-mmap-add-clarifying-comment-to-vma_merge-code.patch
-radix-tree-test-suite-fix-allocation-calculation-in-kmem_cache_alloc_bulk.patch
+arm64-hugetlb-fix-set_huge_pte_at-to-work-with-all-swap-entries.patch
+mm-allow-deferred-splitting-of-arbitrary-anon-large-folios.patch
+mm-non-pmd-mappable-large-folios-for-folio_add_new_anon_rmap.patch
+mm-thp-account-pte-mapped-anonymous-thp-usage.patch
+mm-thp-introduce-anon_orders-and-anon_always_mask-sysfs-files.patch
+mm-thp-extend-thp-to-allocate-anonymous-large-folios.patch
+mm-thp-add-recommend-option-for-anon_orders.patch
+arm64-mm-override-arch_wants_pte_order.patch
+selftests-mm-cow-generalize-do_run_with_thp-helper.patch
+selftests-mm-cow-add-tests-for-small-order-anon-thp.patch
 
