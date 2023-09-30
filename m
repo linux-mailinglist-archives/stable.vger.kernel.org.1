@@ -2,69 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BC2E7B42EC
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 20:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF1F7B430B
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 20:33:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234683AbjI3SQd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 30 Sep 2023 14:16:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43956 "EHLO
+        id S234582AbjI3SdQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 30 Sep 2023 14:33:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233050AbjI3SQc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 30 Sep 2023 14:16:32 -0400
+        with ESMTP id S232535AbjI3SdP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 30 Sep 2023 14:33:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADA90D3;
-        Sat, 30 Sep 2023 11:16:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755A5C433C8;
-        Sat, 30 Sep 2023 18:16:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696097790;
-        bh=4KxrdWQII7ZMqg05ZoYUeAYx7P3qwGPcbUzEt9FXv8o=;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07B42D3
+        for <stable@vger.kernel.org>; Sat, 30 Sep 2023 11:33:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE44C433C8;
+        Sat, 30 Sep 2023 18:33:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696098792;
+        bh=NxvCnJ9ozRIO7kqIKzF4vstghP2Ga5o0ppsKL1vsXOQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lJbU2vc+5yly5IaO2oXd/4pi4tBp5Ef08ulv77sXkiMk25ulICEZnnhOmlKpte9Bi
-         QRNhWkE26HfPQzGpdmtyC5pb1nqnKk2Q+XKmopDUD5vaQwdZsPaqYk+YGgkZekdTNZ
-         aSFYvSeG1gMDiG7FEvfsn/hBi5FYVnv3u0bQkL5jJbqyXQ6DiwkpqN5hacO0akhEDc
-         O+MsPjfqEIC6oNtB1O1d5FeB2mlvGFs1FoEgcpefnUrUVlGlp8oBI60Br+ktff4xt3
-         kN/ZU1GnqufKENMcNBtG5uHe07IuxKYlgvyaTc8yS3u/8F4RN4/f4oGpUT1NswVAph
-         i726jlQVEB7zQ==
-Date:   Sat, 30 Sep 2023 20:16:23 +0200
-From:   Simon Horman <horms@kernel.org>
-To:     Haiyang Zhang <haiyangz@microsoft.com>
-Cc:     "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Dexuan Cui <decui@microsoft.com>,
-        KY Srinivasan <kys@microsoft.com>,
-        Paul Rosswurm <paulros@microsoft.com>,
-        "olaf@aepfle.de" <olaf@aepfle.de>, vkuznets <vkuznets@redhat.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "leon@kernel.org" <leon@kernel.org>,
-        Long Li <longli@microsoft.com>,
-        "ssengar@linux.microsoft.com" <ssengar@linux.microsoft.com>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "daniel@iogearbox.net" <daniel@iogearbox.net>,
-        "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "ast@kernel.org" <ast@kernel.org>,
-        Ajay Sharma <sharmaajay@microsoft.com>,
-        "hawk@kernel.org" <hawk@kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "shradhagupta@linux.microsoft.com" <shradhagupta@linux.microsoft.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH net, 1/3] net: mana: Fix TX CQE error handling
-Message-ID: <20230930181623.GF92317@kernel.org>
-References: <1695519107-24139-1-git-send-email-haiyangz@microsoft.com>
- <1695519107-24139-2-git-send-email-haiyangz@microsoft.com>
- <20230929054757.GQ24230@kernel.org>
- <20230929055030.GS24230@kernel.org>
- <PH7PR21MB3116CC4A402211384A28F13DCAC0A@PH7PR21MB3116.namprd21.prod.outlook.com>
+        b=wuW3Oo0oqPZd4gWvU4rs8uzXxfEEmS70mSIug4I8tCo5ubBQJ8msHjGzVKEwaA54I
+         JTJie8CUtzPNk9YkaM5eXsdZZGWlOQeUHyiLE6pFhTYmQgAV4kvWWybbZse5QU9/bU
+         XswzSa49gIdM5QL9j7QTDRUXH7YvV7ifK0YKFDK8=
+Date:   Sat, 30 Sep 2023 20:33:09 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Florent DELAHAYE <florent@delahaye.me>
+Cc:     stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: [Kernel 6.5] Important read()/write() performance regression
+Message-ID: <2023093036-swear-snowbird-aeda@gregkh>
+References: <28df26a419a041f3c4f44c5e2a6697adbaee83f3.camel@delahaye.me>
+ <94a7f9171b60c0d2430106632db84276f516d454.camel@delahaye.me>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PH7PR21MB3116CC4A402211384A28F13DCAC0A@PH7PR21MB3116.namprd21.prod.outlook.com>
+In-Reply-To: <94a7f9171b60c0d2430106632db84276f516d454.camel@delahaye.me>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -75,49 +45,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 29, 2023 at 03:51:48PM +0000, Haiyang Zhang wrote:
+On Sat, Sep 30, 2023 at 07:07:06PM +0200, Florent DELAHAYE wrote:
+> Hello guys,
+> 
+> During the last few months, I felt a performance regression when using
+> read() and write() on my high-speed Nvme SSD (about 7GB/s).
+> 
+> To get more precise information about it I quickly developed benchmark
+> tool basically running read() or write() in a loop to simulate a
+> sequential file read or write. The tool also measures the real time
+> consumed by the loop. Finally, the tool can call open() with or without
+> O_DIRECT.
+> 
+> I ran the tests on EXT4 and Exfat with following settings (buffer
+> values have been set for best result):  
+> - Write settings: buffer 400mb * 100  
+> - Read settings: buffer 200mb  
+> - Drop caches before non-direct read/write test
+> 
+> With this hardware:  
+> - CPU AMD Ryzen 7600X  
+> - RAM DDR5 5200 32GB  
+> - SSD Kingston Fury Renegade 4TB with 4K LBA
 > 
 > 
-> > -----Original Message-----
-> > From: Simon Horman <horms@kernel.org>
-> > Sent: Friday, September 29, 2023 1:51 AM
-> > To: Haiyang Zhang <haiyangz@microsoft.com>
-> > Cc: linux-hyperv@vger.kernel.org; netdev@vger.kernel.org; Dexuan Cui
-> > <decui@microsoft.com>; KY Srinivasan <kys@microsoft.com>; Paul Rosswurm
-> > <paulros@microsoft.com>; olaf@aepfle.de; vkuznets
-> > <vkuznets@redhat.com>; davem@davemloft.net; wei.liu@kernel.org;
-> > edumazet@google.com; kuba@kernel.org; pabeni@redhat.com;
-> > leon@kernel.org; Long Li <longli@microsoft.com>;
-> > ssengar@linux.microsoft.com; linux-rdma@vger.kernel.org;
-> > daniel@iogearbox.net; john.fastabend@gmail.com; bpf@vger.kernel.org;
-> > ast@kernel.org; Ajay Sharma <sharmaajay@microsoft.com>;
-> > hawk@kernel.org; tglx@linutronix.de; shradhagupta@linux.microsoft.com;
-> > linux-kernel@vger.kernel.org; stable@vger.kernel.org
-> > Subject: Re: [PATCH net, 1/3] net: mana: Fix TX CQE error handling
-> > 
-> > On Fri, Sep 29, 2023 at 07:47:57AM +0200, Simon Horman wrote:
-> > > On Sat, Sep 23, 2023 at 06:31:45PM -0700, Haiyang Zhang wrote:
-> > > > For an unknown TX CQE error type (probably from a newer hardware),
-> > > > still free the SKB, update the queue tail, etc., otherwise the
-> > > > accounting will be wrong.
-> > > >
-> > > > Also, TX errors can be triggered by injecting corrupted packets, so
-> > > > replace the WARN_ONCE to ratelimited error logging, because we don't
-> > > > need stack trace here.
-> > > >
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure
-> > Network Adapter (MANA)")
-> > > > Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-> > >
-> > > Reviewed-by: Simon Horman <horms@kernel.org>
-> > 
-> > Sorry, one latent question.
-> > 
-> > The patch replaces WARN_ONCE with a net_ratelimit()'d netdev_err().
-> > But I do wonder if, as a fix, netdev_err_once() would be more appropriate.
+> Here are some results I got with last upstream kernels (default
+> config):
+> +------------------+----------+------------------+------------------+--
+> ----------------+------------------+------------------+
+> | ~42GB            | O_DIRECT | Linux 6.2.0      | Linux 6.3.0      |
+> Linux 6.4.0      | Linux 6.5.0      | Linux 6.5.5      |
+> +------------------+----------+------------------+------------------+--
+> ----------------+------------------+------------------+
+> | Ext4 (sector 4k) |          |                  |                  | 
+> |                  |                  |
+> | Read             | no       | 7.2s (5800MB/s)  | 7.1s (5890MB/s)  |
+> 8.3s (5050MB/s)  | 13.2s (3180MB/s) | 13.2s (3180MB/s) |
+> | Write            | no       | 12.0s (3500MB/s) | 12.6s (3340MB/s) |
+> 12.2s (3440MB/s) | 28.9s (1450MB/s) | 28.9s (1450MB/s) |
+> | Read             | yes      | 6.0s (7000MB/s)  | 6.0s (7020MB/s)  |
+> 5.9s (7170MB/s)  | 5.9s (7100MB/s)  | 5.9s (7100MB/s)  |
+> | Write            | yes      | 6.7s (6220MB/s)  | 6.7s (6290MB/s)  |
+> 6.9s (6080MB/s)  | 6.9s (6080MB/s)  | 6.9s (6970MB/s)  |
+> | Exfat (sector ?) |          |                  |                  | 
+> |                  |                  |
+> | Read             | no       | 7.3s (5770MB/s)  | 7.2s (5830MB/s)  |
+> 9s (4620MB/s)    | 13.3s (3150MB/s) | 13.2s (3180MB/s) |
+> | Write            | no       | 8.3s (5040MB/s)  | 8.9s (4750MB/s)  |
+> 8.3s (5040MB/s)  | 18.3s (2290MB/s) | 18.5s (2260MB/s) |
+> | Read             | yes      | 6.2s (6760MB/s)  | 6.1s (6870MB/s)  |
+> 6.0s (6980MB/s)  | 6.5s (6440MB/s)  | 6.6s (6320MB/s)  |
+> | Write            | yes      | 16.1s (2610MB/s) | 16.0s (2620MB/s) |
+> 18.7s (2240MB/s) | 34.1s (1230MB/s) | 34.5s (1220MB/s) |
+> +------------------+----------+------------------+------------------+--
+> ----------------+------------------+------------------+
 > 
-> This error may happen with different CQE error types, so I use netdev_err() 
-> to display them, and added rate limit.
+> Please note that I rounded some values to clarify readiness. Small
+> variations can be considered as margin error.
+> 
+> Ext4 results: cached reads/writes time have increased of almost 100%
+> from 6.2.0 to 6.5.0 with a first increase with 6.4.0. Direct access
+> times have stayed similar though.  
+> Exfat results: performance decrease too with and without direct access
+> this time.
+> 
+> I realize there are thousands of commits between, plus the issue can
+> come from multiple kernel parts such as the page cache, the file system
+> implementation (especially for Exfat), the IO engine, a driver, etc.
+> The results also showed that there is not only a specific version
+> impacted. Anyway, at the end the performance have highly decreased.
+> 
+> If you want to verify my benchmark tool source code, please ask.
 
-Thanks for the clarification.
+Have you tried something like fio instead of a new benchmark tool?  That
+way others can test and verify the results on their systems as that is a
+well-known and tested benchmark tool.
+
+Also, are you sure you just haven't been hit by the spectre fixes that
+slow down the I/O path a lot?  Be sure you have feature parity on those
+older kernels please.  Many of the ones you list above do NOT have those
+required changes.
+
+thanks,
+
+greg k-h
