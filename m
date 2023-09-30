@@ -2,47 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32C257B3D38
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F6E37B3D3A
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 02:21:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233908AbjI3AV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 29 Sep 2023 20:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51214 "EHLO
+        id S233918AbjI3AVa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 29 Sep 2023 20:21:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233927AbjI3AVY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 20:21:24 -0400
+        with ESMTP id S233929AbjI3AV2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 29 Sep 2023 20:21:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC5371B2;
-        Fri, 29 Sep 2023 17:21:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791BDC433C8;
-        Sat, 30 Sep 2023 00:21:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDA8A1B4;
+        Fri, 29 Sep 2023 17:21:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C78C433C9;
+        Sat, 30 Sep 2023 00:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696033281;
-        bh=jecVQqkIDaJF/QtgKa8Za6FzuiLTKhOEK1ybeSyyu1Q=;
+        s=korg; t=1696033284;
+        bh=NHzgICZF/1YO5r+7PCHj6xljjv971/ww0O6TRI5U3fs=;
         h=Date:To:From:Subject:From;
-        b=pnrofHH91QvLNEn2kQ6MNiu4jV8SYHqb9s3CtqP3Vrl1l8kwJgalqhsAFyhEAfAV0
-         MC8JdtaZWIWXZiRQLjfHkOi9rIGGoi22Fm9Mv0fWQCaiqFWUXFlKN/AYpSZfD/9YUl
-         xTGHMqbUx8K3mPEWNfoedNYOVpBGjboLKPQAfMj0=
-Date:   Fri, 29 Sep 2023 17:21:20 -0700
-To:     mm-commits@vger.kernel.org, zhengqi.arch@bytedance.com,
-        will@kernel.org, urezki@gmail.com, svens@linux.ibm.com,
-        stable@vger.kernel.org, sj@kernel.org, peterx@redhat.com,
-        paul.walmsley@sifive.com, palmer@dabbelt.com, npiggin@gmail.com,
-        muchun.song@linux.dev, mike.kravetz@oracle.com, lstoakes@gmail.com,
-        James.Bottomley@HansenPartnership.com, hch@infradead.org,
-        hca@linux.ibm.com, gor@linux.ibm.com,
-        gerald.schaefer@linux.ibm.com, deller@gmx.de, davem@davemloft.net,
-        christophe.leroy@csgroup.eu, catalin.marinas@arm.com,
-        borntraeger@linux.ibm.com, axelrasmussen@google.com, arnd@arndb.de,
-        aou@eecs.berkeley.edu, anshuman.khandual@arm.com, alex@ghiti.fr,
-        agordeev@linux.ibm.com, ryan.roberts@arm.com,
+        b=e0I0IJEwJ47Q4OLzlySgCyJ9PzbL8U8nX7/Cpks96+45jBZDCfNTH5hEmG/v30upf
+         YMIznUE8aBGSc6HZoak3885jnE8EIZ71dS1PSlT+lmjbnL91wkUxdCYrgVP7UFJigC
+         pEZ5RDsejQoZCbNBsHxfRVWdx7izTW27QROAJtWc=
+Date:   Fri, 29 Sep 2023 17:21:23 -0700
+To:     mm-commits@vger.kernel.org, tj@kernel.org, stable@vger.kernel.org,
+        shakeelb@google.com, roman.gushchin@linux.dev,
+        muchun.song@linux.dev, jpiotrowski@linux.microsoft.com,
+        hannes@cmpxchg.org, gregkh@linuxfoundation.org, mhocko@suse.com,
         akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] arm64-hugetlb-fix-set_huge_pte_at-to-work-with-all-swap-entries.patch removed from -mm tree
-Message-Id: <20230930002121.791BDC433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: [merged mm-hotfixes-stable] mm-memcg-reconsider-kmemlimit_in_bytes-deprecation.patch removed from -mm tree
+Message-Id: <20230930002124.84C78C433C9@smtp.kernel.org>
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -51,151 +43,112 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: arm64: hugetlb: fix set_huge_pte_at() to work with all swap entries
+     Subject: mm, memcg: reconsider kmem.limit_in_bytes deprecation
 has been removed from the -mm tree.  Its filename was
-     arm64-hugetlb-fix-set_huge_pte_at-to-work-with-all-swap-entries.patch
+     mm-memcg-reconsider-kmemlimit_in_bytes-deprecation.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Ryan Roberts <ryan.roberts@arm.com>
-Subject: arm64: hugetlb: fix set_huge_pte_at() to work with all swap entries
-Date: Fri, 22 Sep 2023 12:58:04 +0100
+From: Michal Hocko <mhocko@suse.com>
+Subject: mm, memcg: reconsider kmem.limit_in_bytes deprecation
+Date: Thu, 21 Sep 2023 09:38:29 +0200
 
-When called with a swap entry that does not embed a PFN (e.g. 
-PTE_MARKER_POISONED or PTE_MARKER_UFFD_WP), the previous implementation of
-set_huge_pte_at() would either cause a BUG() to fire (if CONFIG_DEBUG_VM
-is enabled) or cause a dereference of an invalid address and subsequent
-panic.
+This reverts commits 86327e8eb94c ("memcg: drop kmem.limit_in_bytes") and
+partially reverts 58056f77502f ("memcg, kmem: further deprecate
+kmem.limit_in_bytes") which have incrementally removed support for the
+kernel memory accounting hard limit.  Unfortunately it has turned out that
+there is still userspace depending on the existence of
+memory.kmem.limit_in_bytes [1].  The underlying functionality is not
+really required but the non-existent file just confuses the userspace
+which fails in the result.  The patch to fix this on the userspace side
+has been submitted but it is hard to predict how it will propagate through
+the maze of 3rd party consumers of the software.
 
-arm64's huge pte implementation supports multiple huge page sizes, some of
-which are implemented in the page table with multiple contiguous entries. 
-So set_huge_pte_at() needs to work out how big the logical pte is, so that
-it can also work out how many physical ptes (or pmds) need to be written. 
-It previously did this by grabbing the folio out of the pte and querying
-its size.
+Now, reverting alone 86327e8eb94c is not an option because there is
+another set of userspace which cannot cope with ENOTSUPP returned when
+writing to the file.  Therefore we have to go and revisit 58056f77502f as
+well.  There are two ways to go ahead.  Either we give up on the
+deprecation and fully revert 58056f77502f as well or we can keep
+kmem.limit_in_bytes but make the write a noop and warn about the fact. 
+This should work for both known breaking workloads which depend on the
+existence but do not depend on the hard limit enforcement.
 
-However, there are cases when the pte being set is actually a swap entry. 
-But this also used to work fine, because for huge ptes, we only ever saw
-migration entries and hwpoison entries.  And both of these types of swap
-entries have a PFN embedded, so the code would grab that and everything
-still worked out.
+Note to backporters to stable trees.  a8c49af3be5f ("memcg: add per-memcg
+total kernel memory stat") introduced in 4.18 has added memcg_account_kmem
+so the accounting is not done by obj_cgroup_charge_pages directly for v1
+anymore.  Prior kernels need to add it explicitly (thanks to Johannes for
+pointing this out).
 
-But over time, more calls to set_huge_pte_at() have been added that set
-swap entry types that do not embed a PFN.  And this causes the code to go
-bang.  The triggering case is for the uffd poison test, commit
-99aa77215ad0 ("selftests/mm: add uffd unit test for UFFDIO_POISON"), which
-causes a PTE_MARKER_POISONED swap entry to be set, coutesey of commit
-8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs") -
-added in v6.5-rc7.  Although review shows that there are other call sites
-that set PTE_MARKER_UFFD_WP (which also has no PFN), these don't trigger
-on arm64 because arm64 doesn't support UFFD WP.
-
-Arguably, the root cause is really due to commit 18f3962953e4 ("mm:
-hugetlb: kill set_huge_swap_pte_at()"), which aimed to simplify the
-interface to the core code by removing set_huge_swap_pte_at() (which took
-a page size parameter) and replacing it with calls to set_huge_pte_at()
-where the size was inferred from the folio, as descibed above.  While that
-commit didn't break anything at the time, it did break the interface
-because it couldn't handle swap entries without PFNs.  And since then new
-callers have come along which rely on this working.  But given the
-brokeness is only observable after commit 8a13897fb0da ("mm: userfaultfd:
-support UFFDIO_POISON for hugetlbfs"), that one gets the Fixes tag.
-
-Now that we have modified the set_huge_pte_at() interface to pass the huge
-page size in the previous patch, we can trivially fix this issue.
-
-Link: https://lkml.kernel.org/r/20230922115804.2043771-3-ryan.roberts@arm.com
-Fixes: 8a13897fb0da ("mm: userfaultfd: support UFFDIO_POISON for hugetlbfs")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
+[akpm@linux-foundation.org: fix build - remove unused local]
+Link: http://lkml.kernel.org/r/20230920081101.GA12096@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net [1]
+Link: https://lkml.kernel.org/r/ZRE5VJozPZt9bRPy@dhcp22.suse.cz
+Fixes: 86327e8eb94c ("memcg: drop kmem.limit_in_bytes")
+Fixes: 58056f77502f ("memcg, kmem: further deprecate kmem.limit_in_bytes")
+Signed-off-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
 Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.5+]
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Tejun heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/arm64/mm/hugetlbpage.c |   17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ Documentation/admin-guide/cgroup-v1/memory.rst |    7 +++++++
+ mm/memcontrol.c                                |   13 +++++++++++++
+ 2 files changed, 20 insertions(+)
 
---- a/arch/arm64/mm/hugetlbpage.c~arm64-hugetlb-fix-set_huge_pte_at-to-work-with-all-swap-entries
-+++ a/arch/arm64/mm/hugetlbpage.c
-@@ -241,13 +241,6 @@ static void clear_flush(struct mm_struct
- 	flush_tlb_range(&vma, saddr, addr);
- }
- 
--static inline struct folio *hugetlb_swap_entry_to_folio(swp_entry_t entry)
--{
--	VM_BUG_ON(!is_migration_entry(entry) && !is_hwpoison_entry(entry));
--
--	return page_folio(pfn_to_page(swp_offset_pfn(entry)));
--}
--
- void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
- 			    pte_t *ptep, pte_t pte, unsigned long sz)
- {
-@@ -257,13 +250,10 @@ void set_huge_pte_at(struct mm_struct *m
- 	unsigned long pfn, dpfn;
- 	pgprot_t hugeprot;
- 
--	if (!pte_present(pte)) {
--		struct folio *folio;
--
--		folio = hugetlb_swap_entry_to_folio(pte_to_swp_entry(pte));
--		ncontig = num_contig_ptes(folio_size(folio), &pgsize);
-+	ncontig = num_contig_ptes(sz, &pgsize);
- 
--		for (i = 0; i < ncontig; i++, ptep++)
-+	if (!pte_present(pte)) {
-+		for (i = 0; i < ncontig; i++, ptep++, addr += pgsize)
- 			set_pte_at(mm, addr, ptep, pte);
- 		return;
- 	}
-@@ -273,7 +263,6 @@ void set_huge_pte_at(struct mm_struct *m
- 		return;
- 	}
- 
--	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
- 	pfn = pte_pfn(pte);
- 	dpfn = pgsize >> PAGE_SHIFT;
- 	hugeprot = pte_pgprot(pte);
+--- a/Documentation/admin-guide/cgroup-v1/memory.rst~mm-memcg-reconsider-kmemlimit_in_bytes-deprecation
++++ a/Documentation/admin-guide/cgroup-v1/memory.rst
+@@ -92,6 +92,13 @@ Brief summary of control files.
+  memory.oom_control		     set/show oom controls.
+  memory.numa_stat		     show the number of memory usage per numa
+ 				     node
++ memory.kmem.limit_in_bytes          Deprecated knob to set and read the kernel
++                                     memory hard limit. Kernel hard limit is not
++                                     supported since 5.16. Writing any value to
++                                     do file will not have any effect same as if
++                                     nokmem kernel parameter was specified.
++                                     Kernel memory is still charged and reported
++                                     by memory.kmem.usage_in_bytes.
+  memory.kmem.usage_in_bytes          show current kernel memory allocation
+  memory.kmem.failcnt                 show the number of kernel memory usage
+ 				     hits limits
+--- a/mm/memcontrol.c~mm-memcg-reconsider-kmemlimit_in_bytes-deprecation
++++ a/mm/memcontrol.c
+@@ -3867,6 +3867,13 @@ static ssize_t mem_cgroup_write(struct k
+ 		case _MEMSWAP:
+ 			ret = mem_cgroup_resize_max(memcg, nr_pages, true);
+ 			break;
++		case _KMEM:
++			pr_warn_once("kmem.limit_in_bytes is deprecated and will be removed. "
++				     "Writing any value to this file has no effect. "
++				     "Please report your usecase to linux-mm@kvack.org if you "
++				     "depend on this functionality.\n");
++			ret = 0;
++			break;
+ 		case _TCP:
+ 			ret = memcg_update_tcp_max(memcg, nr_pages);
+ 			break;
+@@ -5078,6 +5085,12 @@ static struct cftype mem_cgroup_legacy_f
+ 	},
+ #endif
+ 	{
++		.name = "kmem.limit_in_bytes",
++		.private = MEMFILE_PRIVATE(_KMEM, RES_LIMIT),
++		.write = mem_cgroup_write,
++		.read_u64 = mem_cgroup_read_u64,
++	},
++	{
+ 		.name = "kmem.usage_in_bytes",
+ 		.private = MEMFILE_PRIVATE(_KMEM, RES_USAGE),
+ 		.read_u64 = mem_cgroup_read_u64,
 _
 
-Patches currently in -mm which might be from ryan.roberts@arm.com are
+Patches currently in -mm which might be from mhocko@suse.com are
 
-mm-allow-deferred-splitting-of-arbitrary-anon-large-folios.patch
-mm-non-pmd-mappable-large-folios-for-folio_add_new_anon_rmap.patch
-mm-thp-account-pte-mapped-anonymous-thp-usage.patch
-mm-thp-introduce-anon_orders-and-anon_always_mask-sysfs-files.patch
-mm-thp-extend-thp-to-allocate-anonymous-large-folios.patch
-mm-thp-add-recommend-option-for-anon_orders.patch
-arm64-mm-override-arch_wants_pte_order.patch
-selftests-mm-cow-generalize-do_run_with_thp-helper.patch
-selftests-mm-cow-add-tests-for-small-order-anon-thp.patch
 
