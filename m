@@ -2,57 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DDC47B4388
-	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 22:28:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E6407B4398
+	for <lists+stable@lfdr.de>; Sat, 30 Sep 2023 22:37:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232418AbjI3U2b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 30 Sep 2023 16:28:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57624 "EHLO
+        id S231436AbjI3UhZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 30 Sep 2023 16:37:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232105AbjI3U2a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 30 Sep 2023 16:28:30 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9783F9;
-        Sat, 30 Sep 2023 13:28:28 -0700 (PDT)
-Received: from mercury (unknown [185.254.75.28])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: sre)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id A09F16607295;
-        Sat, 30 Sep 2023 21:28:27 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1696105707;
-        bh=5H7NbrsgqULN82SuDa6zSGealrTVrOF+2Ikbmj0ec6U=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=jJYWVNPkUmKZ2usi5PEOqnrSdjkJB6ZmaU+jEsvH0zV09bN6sO30gcON49Y7sQ4VI
-         ND+czJgr02BKj6bX4RWFC7GTyY3n3jw1JEnHXpvXjWmBFWqP8+UfIkmsYPA1hQut/N
-         nTBlwBwPrNNgObz/Y4s1p9V73SJ5OKj7G3vBE7loDf8CohHpyPBwXFmy6rK+3LRLLI
-         kmBeKhpldjglQ/kDdmxiTzOv9OUCeljMIORdnxoAXNURJQf25gqGA8eed4RAX53sIz
-         To9TXAsg2ZIGATPFGuxlusSP6b4ZGY8w8apDUd9izWos8L6Gi0apGsodoN3ASy+BmI
-         eXgjjXqJdGpgQ==
-Received: by mercury (Postfix, from userid 1000)
-        id AE0C210605D7; Sat, 30 Sep 2023 22:28:25 +0200 (CEST)
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Sebastian Reichel <sre@kernel.org>,
-        Johan Hovold <johan+linaro@kernel.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20230929101649.20206-1-johan+linaro@kernel.org>
-References: <20230929101649.20206-1-johan+linaro@kernel.org>
-Subject: Re: [PATCH] power: supply: qcom_battmgr: fix enable request
- endianness
-Message-Id: <169610570570.215050.7442025506091281047.b4-ty@collabora.com>
-Date:   Sat, 30 Sep 2023 22:28:25 +0200
+        with ESMTP id S230516AbjI3UhY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 30 Sep 2023 16:37:24 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B35FCA;
+        Sat, 30 Sep 2023 13:37:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC9EC433C9;
+        Sat, 30 Sep 2023 20:37:22 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.96)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1qmgjF-004MzV-1y;
+        Sat, 30 Sep 2023 16:38:21 -0400
+Message-ID: <20230930203821.422832821@goodmis.org>
+User-Agent: quilt/0.66
+Date:   Sat, 30 Sep 2023 16:32:14 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        stable@vger.kernel.org, Julia Lawall <julia.lawall@inria.fr>
+Subject: [for-linus][PATCH 1/4] ring-buffer: Update "shortest_full" in polling
+References: <20230930203213.826737400@goodmis.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,21 +42,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-On Fri, 29 Sep 2023 12:16:49 +0200, Johan Hovold wrote:
-> Add the missing endianness conversion when sending the enable request so
-> that the driver will work also on a hypothetical big-endian machine.
-> 
-> This issue was reported by sparse.
-> 
-> 
+It was discovered that the ring buffer polling was incorrectly stating
+that read would not block, but that's because polling did not take into
+account that reads will block if the "buffer-percent" was set. Instead,
+the ring buffer polling would say reads would not block if there was any
+data in the ring buffer. This was incorrect behavior from a user space
+point of view. This was fixed by commit 42fb0a1e84ff by having the polling
+code check if the ring buffer had more data than what the user specified
+"buffer percent" had.
 
-Applied, thanks!
+The problem now is that the polling code did not register itself to the
+writer that it wanted to wait for a specific "full" value of the ring
+buffer. The result was that the writer would wake the polling waiter
+whenever there was a new event. The polling waiter would then wake up, see
+that there's not enough data in the ring buffer to notify user space and
+then go back to sleep. The next event would wake it up again.
 
-[1/1] power: supply: qcom_battmgr: fix enable request endianness
-      commit: 8894b432548851f705f72ff135d3dcbd442a18d1
+Before the polling fix was added, the code would wake up around 100 times
+for a hackbench 30 benchmark. After the "fix", due to the constant waking
+of the writer, it would wake up over 11,0000 times! It would never leave
+the kernel, so the user space behavior was still "correct", but this
+definitely is not the desired effect.
 
-Best regards,
+To fix this, have the polling code add what it's waiting for to the
+"shortest_full" variable, to tell the writer not to wake it up if the
+buffer is not as full as it expects to be.
+
+Note, after this fix, it appears that the waiter is now woken up around 2x
+the times it was before (~200). This is a tremendous improvement from the
+11,000 times, but I will need to spend some time to see why polling is
+more aggressive in its wakeups than the read blocking code.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230929180113.01c2cae3@rorschach.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Fixes: 42fb0a1e84ff ("tracing/ring-buffer: Have polling block on watermark")
+Reported-by: Julia Lawall <julia.lawall@inria.fr>
+Tested-by: Julia Lawall <julia.lawall@inria.fr>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/ring_buffer.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 28daf0ce95c5..515cafdb18d9 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1137,6 +1137,9 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
+ 	if (full) {
+ 		poll_wait(filp, &work->full_waiters, poll_table);
+ 		work->full_waiters_pending = true;
++		if (!cpu_buffer->shortest_full ||
++		    cpu_buffer->shortest_full > full)
++			cpu_buffer->shortest_full = full;
+ 	} else {
+ 		poll_wait(filp, &work->waiters, poll_table);
+ 		work->waiters_pending = true;
 -- 
-Sebastian Reichel <sebastian.reichel@collabora.com>
-
+2.40.1
