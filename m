@@ -2,125 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16FAD7B457A
-	for <lists+stable@lfdr.de>; Sun,  1 Oct 2023 07:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69AB47B457B
+	for <lists+stable@lfdr.de>; Sun,  1 Oct 2023 07:51:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234332AbjJAFvT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 1 Oct 2023 01:51:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42702 "EHLO
+        id S234276AbjJAFvt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 1 Oct 2023 01:51:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229455AbjJAFvQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 1 Oct 2023 01:51:16 -0400
-Received: from zg8tndyumtaxlji0oc4xnzya.icoremail.net (zg8tndyumtaxlji0oc4xnzya.icoremail.net [46.101.248.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 847D2C6
-        for <stable@vger.kernel.org>; Sat, 30 Sep 2023 22:51:13 -0700 (PDT)
-Received: from localhost.localdomain (unknown [10.192.195.11])
-        by mail-app3 (Coremail) with SMTP id cC_KCgDHz8N_CBlllGwtAQ--.64662S4;
-        Sun, 01 Oct 2023 13:50:07 +0800 (CST)
-From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
-To:     dinghao.liu@zju.edu.cn
-Cc:     stable@vger.kernel.org, Alexander Aring <alex.aring@gmail.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Harry Morris <harrymorris12@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] [v3] ieee802154: ca8210: Fix a potential UAF in ca8210_probe
-Date:   Sun,  1 Oct 2023 13:49:49 +0800
-Message-Id: <20231001054949.14624-1-dinghao.liu@zju.edu.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID: cC_KCgDHz8N_CBlllGwtAQ--.64662S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7WF4fGFW5ury5Cry5JFW3GFg_yoW8uF4fpa
-        1Ska4UJryqvF4jga18Ar48Zr98C3W7KayruF95K392k3ZxuryxKanrAFW3JF4rAFWUCan8
-        C3yUJ3y5uFs5AF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvm1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-        IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
-        87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
-        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
-        Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IY
-        c2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8uw4UJr1UMxC20s026xCaFVCjc4AY6r1j6r
-        4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-        67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-        x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-        z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-        UI43ZEXa7VUbXdbUUUUUU==
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgMPBmUYLyEI2QADsp
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229455AbjJAFvt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 1 Oct 2023 01:51:49 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65A48D3
+        for <stable@vger.kernel.org>; Sat, 30 Sep 2023 22:51:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696139507; x=1727675507;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=1Il7lXxxltgnw0Gsx46x1lNQDoJ/ZFdyp1U7Bwo8qHM=;
+  b=a9+Cw371MnF4R0a9iV2hGclMQHWO2xVIdpshc7WRxv5lAiuzahtoXhRT
+   X8kWYEXdYxu8Pk9kQuq/dRASCAKN/SSZyESMUtohJHbpprlTDOeujZV+b
+   ijWhBAhHeyFkeFo/0cKVYRB94MlkxkPpJpLhwhzs1N2vw/f2nqVS+rx4J
+   gFFPOTQ9N0VJwR9um5JlwqIhr/7ElOQIU6myP2sLtS3eL78jn/a1n9ILq
+   4FXEeKoGXwcoYrnB8pW8QzAi55J3BLRPKr427maYyQVFHI3ZglLNCV/Mh
+   +F/DggiW1O1fw1KAgHVxsp5OuZ9ZA4PRdrtcG+rGMGNq1dfGg8AWspw7U
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10849"; a="379780987"
+X-IronPort-AV: E=Sophos;i="6.03,191,1694761200"; 
+   d="scan'208";a="379780987"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2023 22:51:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10849"; a="785472787"
+X-IronPort-AV: E=Sophos;i="6.03,191,1694761200"; 
+   d="scan'208";a="785472787"
+Received: from lkp-server02.sh.intel.com (HELO c3b01524d57c) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 30 Sep 2023 22:51:45 -0700
+Received: from kbuild by c3b01524d57c with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qmpMf-0004oD-09;
+        Sun, 01 Oct 2023 05:51:41 +0000
+Date:   Sun, 1 Oct 2023 13:51:30 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] [v3] ieee802154: ca8210: Fix a potential UAF in
+ ca8210_probe
+Message-ID: <ZRkI4j2+dXZ9sjQ4@f61ccfac960a>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231001054949.14624-1-dinghao.liu@zju.edu.cn>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-If of_clk_add_provider() fails in ca8210_register_ext_clock(),
-it calls clk_unregister() to release priv->clk and returns an
-error. However, the caller ca8210_probe() then calls ca8210_remove(),
-where priv->clk is freed again in ca8210_unregister_ext_clock(). In
-this case, a use-after-free may happen in the second time we call
-clk_unregister().
+Hi,
 
-Fix this by removing the first clk_unregister(). Also, priv->clk could
-be an error code on failure of clk_register_fixed_rate(). Use
-IS_ERR_OR_NULL to catch this case in ca8210_unregister_ext_clock().
+Thanks for your patch.
 
-Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
----
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Changelog:
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html/#option-1
 
-v2: -Remove the first clk_unregister() instead of nulling priv->clk.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] [v3] ieee802154: ca8210: Fix a potential UAF in ca8210_probe
+Link: https://lore.kernel.org/stable/20231001054949.14624-1-dinghao.liu%40zju.edu.cn
 
-v3: -Simplify ca8210_register_ext_clock().
-    -Add a ';' after return in ca8210_unregister_ext_clock().
----
- drivers/net/ieee802154/ca8210.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index aebb19f1b3a4..ae44a9133937 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -2757,18 +2757,8 @@ static int ca8210_register_ext_clock(struct spi_device *spi)
- 		dev_crit(&spi->dev, "Failed to register external clk\n");
- 		return PTR_ERR(priv->clk);
- 	}
--	ret = of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
--	if (ret) {
--		clk_unregister(priv->clk);
--		dev_crit(
--			&spi->dev,
--			"Failed to register external clock as clock provider\n"
--		);
--	} else {
--		dev_info(&spi->dev, "External clock set as clock provider\n");
--	}
- 
--	return ret;
-+	return of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
- }
- 
- /**
-@@ -2780,8 +2770,8 @@ static void ca8210_unregister_ext_clock(struct spi_device *spi)
- {
- 	struct ca8210_priv *priv = spi_get_drvdata(spi);
- 
--	if (!priv->clk)
--		return
-+	if (IS_ERR_OR_NULL(priv->clk))
-+		return;
- 
- 	of_clk_del_provider(spi->dev.of_node);
- 	clk_unregister(priv->clk);
 -- 
-2.17.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
