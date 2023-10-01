@@ -2,106 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37C917B4574
-	for <lists+stable@lfdr.de>; Sun,  1 Oct 2023 07:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16FAD7B457A
+	for <lists+stable@lfdr.de>; Sun,  1 Oct 2023 07:51:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229455AbjJAFsJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 1 Oct 2023 01:48:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
+        id S234332AbjJAFvT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 1 Oct 2023 01:51:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234292AbjJAFsI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 1 Oct 2023 01:48:08 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C865FD8
-        for <stable@vger.kernel.org>; Sat, 30 Sep 2023 22:48:05 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-d7f0a60a159so17015428276.0
-        for <stable@vger.kernel.org>; Sat, 30 Sep 2023 22:48:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696139285; x=1696744085; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+1fmPe6WMvk3im7q7AOd7CniGXDE59np7BKG5YTRWzY=;
-        b=BcFU32nsfFoSBgccjMjDz7YmvFr1+k/d0McjANV5iiqgaug4W/z5WDW5M1XnadHxKw
-         73SI+xJq//fyg0nKSQVDysGxMOqczIUSIg1lOFVucenKEuJ0gC1OwicTUk1/g/aXO8U3
-         lKYDBuhoqSiGuOC7ZGO2oBCxWIL6u9UKmLGQIzSvtJSBoN1Vrsn4yMh22nQZEo0ca70s
-         0SiyyRLEsG8d5KD2TurU9SwobR48wUeapc9jtMI9e+qv2O2QqjSzMCUF8QJ/Avz18Wg7
-         lT4SOeh12EQJN1p6F76bGW1Hg64V3JBBY8KN3oEj000P6NmOSIHJLhiHopY95ktb8QUC
-         iaPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696139285; x=1696744085;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+1fmPe6WMvk3im7q7AOd7CniGXDE59np7BKG5YTRWzY=;
-        b=LmczJGwkq5JzNB0OaNFAl7AdNs4nT7xecwq94pEvwyT5voIFCaZbwOh5IXCuhE6Nsn
-         GoWzP78ZzDKob8FEYCgL0TiGcuibpuAAw+BtpDxrWEGj+hKqtb5vY6Cb7xphOjo+B0/6
-         l8YcbrZtanhl/2GuM71iDKsVFDotht7Sv81dlPgnU8i+71AZSyYv/VLGipv51fX7GQ+w
-         wCtVOMQX8rxK/js/0GEzKO5qeXEBP81CQQeOuaz7lYmncLYLFakKML34bXM3R/+yRnoW
-         rpub0K+ZEBxXx9VS22fUeSrpQwjjNHScupOGuoHu+KZSDpGAiBzyYiTc8EDBcDlxdNej
-         s/NQ==
-X-Gm-Message-State: AOJu0Yy79/q9vPR627BXAzoB2GIsUlnYda33GX/Jfdvnh7MApDY04w/V
-        N4z+zMuiGtZ3LuCrn4dHWeD1srSJMvQwVF3+qfLyRdU5vEk=
-X-Google-Smtp-Source: AGHT+IHraowkFc6hku+Kg7tM4N5Ez2BpI0V9WoKKnESAX8eM7M/HGUoqMBgaxgbh2iorEr0zXqXUfucmd69uJdrEz1Q=
-X-Received: by 2002:a25:db02:0:b0:d85:d280:cafb with SMTP id
- g2-20020a25db02000000b00d85d280cafbmr7485261ybf.56.1696139284960; Sat, 30 Sep
- 2023 22:48:04 -0700 (PDT)
-MIME-Version: 1.0
-From:   =?UTF-8?Q?Erik_Dob=C3=A1k?= <erik.dobak@gmail.com>
-Date:   Sun, 1 Oct 2023 07:47:54 +0200
-Message-ID: <CAH7-e5sb+kT_LRb1_y-c5JaFN0=KrrRT97otUPKzTCgzGsVdrQ@mail.gmail.com>
-Subject: bluetooth issues since kernel 6.4 - not discovering other bt devices
- - /linux/drivers/bluetooth/btusb.c
-To:     stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229455AbjJAFvQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 1 Oct 2023 01:51:16 -0400
+Received: from zg8tndyumtaxlji0oc4xnzya.icoremail.net (zg8tndyumtaxlji0oc4xnzya.icoremail.net [46.101.248.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 847D2C6
+        for <stable@vger.kernel.org>; Sat, 30 Sep 2023 22:51:13 -0700 (PDT)
+Received: from localhost.localdomain (unknown [10.192.195.11])
+        by mail-app3 (Coremail) with SMTP id cC_KCgDHz8N_CBlllGwtAQ--.64662S4;
+        Sun, 01 Oct 2023 13:50:07 +0800 (CST)
+From:   Dinghao Liu <dinghao.liu@zju.edu.cn>
+To:     dinghao.liu@zju.edu.cn
+Cc:     stable@vger.kernel.org, Alexander Aring <alex.aring@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Harry Morris <harrymorris12@gmail.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] [v3] ieee802154: ca8210: Fix a potential UAF in ca8210_probe
+Date:   Sun,  1 Oct 2023 13:49:49 +0800
+Message-Id: <20231001054949.14624-1-dinghao.liu@zju.edu.cn>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: cC_KCgDHz8N_CBlllGwtAQ--.64662S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7WF4fGFW5ury5Cry5JFW3GFg_yoW8uF4fpa
+        1Ska4UJryqvF4jga18Ar48Zr98C3W7KayruF95K392k3ZxuryxKanrAFW3JF4rAFWUCan8
+        C3yUJ3y5uFs5AF7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvm1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+        IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+        87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c
+        8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_
+        Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+        xGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IY
+        c2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8uw4UJr1UMxC20s026xCaFVCjc4AY6r1j6r
+        4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+        67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+        x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+        z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
+        UI43ZEXa7VUbXdbUUUUUU==
+X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgMPBmUYLyEI2QADsp
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello!
+If of_clk_add_provider() fails in ca8210_register_ext_clock(),
+it calls clk_unregister() to release priv->clk and returns an
+error. However, the caller ca8210_probe() then calls ca8210_remove(),
+where priv->clk is freed again in ca8210_unregister_ext_clock(). In
+this case, a use-after-free may happen in the second time we call
+clk_unregister().
 
-I bought a new laptop fujitsu life book and everything is going fine
-on artix just the bt makes trouble:
+Fix this by removing the first clk_unregister(). Also, priv->clk could
+be an error code on failure of clk_register_fixed_rate(). Use
+IS_ERR_OR_NULL to catch this case in ca8210_unregister_ext_clock().
 
-/var/log/error.log
-Sep 30 18:43:48 nexus bluetoothd[2266]:
-src/adapter.c:reset_adv_monitors_complete() Failed to reset Adv
-Monitors: Failed (0x03)
-Sep 30 18:43:48 nexus bluetoothd[2266]: Failed to clear UUIDs: Failed (0x03)
-Sep 30 18:43:48 nexus bluetoothd[2266]: Failed to add UUID: Failed (0x03)
-Sep 30 18:43:48 nexus bluetoothd[2266]: Failed to add UUID: Failed (0x03)
+Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+---
 
-i searched a bit the webs and found a new commit at kernel org that
-does do the trouble:
-https://bugs.archlinux.org/task/78980
+Changelog:
 
-follow the linkeys inside the commits there or read this one:
+v2: -Remove the first clk_unregister() instead of nulling priv->clk.
 
----------------before------------------------------------
-/* interface numbers are hardcoded in the spec */
-        if (intf->cur_altsetting->desc.bInterfaceNumber != 0) {
-                if (!(id->driver_info & BTUSB_IFNUM_2))
-                        return -ENODEV;
-                if (intf->cur_altsetting->desc.bInterfaceNumber != 2)
-                        return -ENODEV;
-        }
------------after----------------------------------------------------
-if ((id->driver_info & BTUSB_IFNUM_2) &&
-    (intf->cur_altsetting->desc.bInterfaceNumber != 0) &&
-    (intf->cur_altsetting->desc.bInterfaceNumber != 2))
-return -ENODEV;
---------------------------------------------------------
+v3: -Simplify ca8210_register_ext_clock().
+    -Add a ';' after return in ca8210_unregister_ext_clock().
+---
+ drivers/net/ieee802154/ca8210.c | 16 +++-------------
+ 1 file changed, 3 insertions(+), 13 deletions(-)
 
-the dude just hooked up 3 conditions in a row with && where before it
-was 2 conditions in 1 condition. + the comment was removed.
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index aebb19f1b3a4..ae44a9133937 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -2757,18 +2757,8 @@ static int ca8210_register_ext_clock(struct spi_device *spi)
+ 		dev_crit(&spi->dev, "Failed to register external clk\n");
+ 		return PTR_ERR(priv->clk);
+ 	}
+-	ret = of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
+-	if (ret) {
+-		clk_unregister(priv->clk);
+-		dev_crit(
+-			&spi->dev,
+-			"Failed to register external clock as clock provider\n"
+-		);
+-	} else {
+-		dev_info(&spi->dev, "External clock set as clock provider\n");
+-	}
+ 
+-	return ret;
++	return of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
+ }
+ 
+ /**
+@@ -2780,8 +2770,8 @@ static void ca8210_unregister_ext_clock(struct spi_device *spi)
+ {
+ 	struct ca8210_priv *priv = spi_get_drvdata(spi);
+ 
+-	if (!priv->clk)
+-		return
++	if (IS_ERR_OR_NULL(priv->clk))
++		return;
+ 
+ 	of_clk_del_provider(spi->dev.of_node);
+ 	clk_unregister(priv->clk);
+-- 
+2.17.1
 
-
-please reconsider this commit.
-
-Yours
-
-E
