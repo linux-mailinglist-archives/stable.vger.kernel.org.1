@@ -2,137 +2,215 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B34C7B4CC4
-	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 09:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E77E7B4D27
+	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 10:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230011AbjJBHns (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 2 Oct 2023 03:43:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41604 "EHLO
+        id S235803AbjJBIQt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 2 Oct 2023 04:16:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbjJBHns (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 03:43:48 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48AAFAB;
-        Mon,  2 Oct 2023 00:43:45 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-5041bb9ce51so24792726e87.1;
-        Mon, 02 Oct 2023 00:43:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696232623; x=1696837423; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=o+nReRagUozu8z0tWV2+jg0w12ucMifR6ov/hT+a2As=;
-        b=VftKKsWBUF+XRm4W5NE1Ov/odMnZ4R7qFW3EfbzgyrDetMxcJOUP+BDIyDzaO3Wcp3
-         WyipHmZvm4WU3+Ya3e4fwHuenB0VonlVSRflko2/5q8GKWaVD3Z8w2cApiR88dcr0RUU
-         XNqPyobqMS3n/1vDo7ohiSYuX4rBMqyj25kAYSvXXXgqGaTThWbD2PNm0R/w5WPO8T2C
-         88O3opfHZ4Dyqs9u9QsAs8DiqALbm4s+x9SlVo3a/zSPxBi3Xp9SWqgOahIKsdasNLuD
-         WwZd8Q8Wqufeuk+LWXJ4t1vmDKliaaZqqvDkmphdg/ZfAMYlOD07Iesg5zmuU2ZghGYO
-         sFDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696232623; x=1696837423;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o+nReRagUozu8z0tWV2+jg0w12ucMifR6ov/hT+a2As=;
-        b=NmEHQhJYmSFSfOo32v0rtzzZEhftIZbfggMU9iufAW4xzWSD7bqcBeqfgBemll1UGf
-         bphTj7Lb9Cby4axR35hAElhJ/+omr4z6aCqg8AW978rnf1U5uia0r+OxowUXdHBsi7OI
-         QhyfT9Fk77uuqyYUkV9qghkiKV2gdycwBx9xH+agXTzxCwXAk9OchMehZh9ntdVmqR4v
-         EBdGz4fxcaQ8copA3zNuu65MZbt2DtCbyquLARCZl9OZC5yIg0+xQk9jKs9jsJoKESRj
-         4UG7QU+kASBVlu9VgQw1AO+WI/+zygjImI/SWBlZJBru/yMa/HGyeILugVquPyAkT+Td
-         D26Q==
-X-Gm-Message-State: AOJu0YwnqItfeIVCH5iLM87ZzT4sCI3ABd233sIdLb8tORIWHSNr2vOl
-        8pX6vVlJowqh4FXVYycTTIGcvPiA6iI=
-X-Google-Smtp-Source: AGHT+IEEisoHnB4dHSYvzwRawwJ8vQwMufIusH62krxfUfH8omy30RCu3+e/jnlvbnT0qcWMK+gjsQ==
-X-Received: by 2002:a19:7b0b:0:b0:503:1ca6:c590 with SMTP id w11-20020a197b0b000000b005031ca6c590mr6238199lfc.22.1696232623342;
-        Mon, 02 Oct 2023 00:43:43 -0700 (PDT)
-Received: from localhost ([2a00:23c5:dc8c:8701:1663:9a35:5a7b:1d76])
-        by smtp.gmail.com with ESMTPSA id a11-20020a05600c2d4b00b004065daba6casm6541786wmg.46.2023.10.02.00.43.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Oct 2023 00:43:42 -0700 (PDT)
-Date:   Mon, 2 Oct 2023 08:43:41 +0100
-From:   Lorenzo Stoakes <lstoakes@gmail.com>
-To:     Vlastimil Babka <vbabka@suse.cz>
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Matthew Wilcox <willy@infradead.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/3] mmap: Fix error paths with dup_anon_vma()
-Message-ID: <6f85e46d-78e3-426d-9a24-3aadfd91bdc6@lucifer.local>
-References: <20230929183041.2835469-1-Liam.Howlett@oracle.com>
- <20230929183041.2835469-3-Liam.Howlett@oracle.com>
- <843f059f-dd54-4481-b46a-e87e56274db3@lucifer.local>
- <db77d8e7-4b29-2348-c034-3a2cf120b7b2@suse.cz>
+        with ESMTP id S235773AbjJBIQs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 04:16:48 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B877BD;
+        Mon,  2 Oct 2023 01:16:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696234605; x=1727770605;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=CCm0nCaUAWiZf/2jiZ9UIxoAuD9LhOTJ2OhX2TS+RIA=;
+  b=cdRGPp+aNuYehGWNHSd2m2aYXoNn01XAXhV8dqyTzpLsDTa61VjFms8R
+   0BlRHB6Nr+GK1Y1AH9OGmeLjfWkh0y8/xUxrYVwYHjJpeJEpIyVejVYfC
+   oHFqXdTmSQWIqTcEGihbro64cLtFe63UonrdiMNgOOYKgMt9DdaOQel9s
+   irr+7gjfot1+Dwzlq4/gVAJ/hqCLYdqvvTedehQ7/Gf0BqymtoStO/WXI
+   QCg8Bg7r8uPRbL2x++kBkxW49WYZKAd/VEPML3CNbq0/aIrq4gtb2sUkE
+   KMKofiUdB1dGIVGXrJaSNB5ePjpzCie3ySCHbCrOXHML5V6cXgDTlSDcI
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="449090682"
+X-IronPort-AV: E=Sophos;i="6.03,193,1694761200"; 
+   d="scan'208";a="449090682"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 01:16:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="1081578756"
+X-IronPort-AV: E=Sophos;i="6.03,193,1694761200"; 
+   d="scan'208";a="1081578756"
+Received: from satiarax-mobl1.gar.corp.intel.com (HELO [10.249.254.231]) ([10.249.254.231])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 01:16:43 -0700
+Message-ID: <2b5648aa-f83d-d8f7-b0fd-39c859f32f33@linux.intel.com>
+Date:   Mon, 2 Oct 2023 10:16:40 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <db77d8e7-4b29-2348-c034-3a2cf120b7b2@suse.cz>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] drm/ttm: Make sure the mapped tt pages are decrypted
+ when needed
+To:     Zack Rusin <zackr@vmware.com>, dri-devel@lists.freedesktop.org
+Cc:     =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Huang Rui <ray.huang@amd.com>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20230926040359.3040017-1-zack@kde.org>
+ <20230926175113.679880-1-zack@kde.org>
+Content-Language: en-US
+From:   =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= 
+        <thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20230926175113.679880-1-zack@kde.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Oct 02, 2023 at 09:26:03AM +0200, Vlastimil Babka wrote:
-> On 9/30/23 00:28, Lorenzo Stoakes wrote:
-> > On Fri, Sep 29, 2023 at 02:30:40PM -0400, Liam R. Howlett wrote:
-> >> When the calling function fails after the dup_anon_vma(), the
-> >> duplication of the anon_vma is not being undone.  Add the necessary
-> >> unlink_anon_vma() call to the error paths that are missing them.
-> >>
-> >> This issue showed up during inspection of the error path in vma_merge()
-> >> for an unrelated vma iterator issue.
-> >>
-> >> Users may experience increased memory usage, which may be problematic as
-> >> the failure would likely be caused by a low memory situation.
-> >>
-> >> Fixes: d4af56c5c7c6 ("mm: start tracking VMAs with maple tree")
-> >> Cc: stable@vger.kernel.org
-> >> Cc: Jann Horn <jannh@google.com>
-> >> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> >> ---
-> >>  mm/mmap.c | 30 ++++++++++++++++++++++--------
-> >>  1 file changed, 22 insertions(+), 8 deletions(-)
-> >>
-> >> diff --git a/mm/mmap.c b/mm/mmap.c
-> >> index acb7dea49e23..f9f0a5fe4db4 100644
-> >> --- a/mm/mmap.c
-> >> +++ b/mm/mmap.c
-> >> @@ -583,11 +583,12 @@ static inline void vma_complete(struct vma_prepare *vp,
-> >>   * dup_anon_vma() - Helper function to duplicate anon_vma
-> >>   * @dst: The destination VMA
-> >>   * @src: The source VMA
-> >> + * @dup: Pointer to the destination VMA when successful.
-> >>   *
-> >>   * Returns: 0 on success.
-> >
-> > Being a bit nitpicky/refactory here, but anon_vma_clone() appears to have
-> > two possible return values - 0 for success, and -ENOMEM.
-> >
-> > As a result, it's not really gaining us much passing through this value.
-> >
-> > It'd be nice if dup_anon_vma() and anon_vma_clone() were therefore updated
-> > to instead return NULL on ENOMEM and the dst otherwise.
->
-> But we also need to represent that dup_anon_vma() had nothing to do, because
-> "(src->anon_vma && !dst->anon_vma)" was false, and in that case we should
-> not be returning dst from there?
->
-> So maybe we could return NULL for that case and ERR_PTR(ret) for the -ENOMEM
-> from anon_vma_clone() ?
+Hi, Zack
 
-Yeah, you're right, actually I think that would probably be the best
-approach as you'd both eliminate the awkward out parameter but retain the
-fact that there's 3 possible return states (dup'd, no need to dup, error).
+On 9/26/23 19:51, Zack Rusin wrote:
+> From: Zack Rusin <zackr@vmware.com>
+>
+> Some drivers require the mapped tt pages to be decrypted. In an ideal
+> world this would have been handled by the dma layer, but the TTM page
+> fault handling would have to be rewritten to able to do that.
+>
+> A side-effect of the TTM page fault handling is using a dma allocation
+> per order (via ttm_pool_alloc_page) which makes it impossible to just
+> trivially use dma_mmap_attrs. As a result ttm has to be very careful
+> about trying to make its pgprot for the mapped tt pages match what
+> the dma layer thinks it is. At the ttm layer it's possible to
+> deduce the requirement to have tt pages decrypted by checking
+> whether coherent dma allocations have been requested and the system
+> is running with confidential computing technologies.
+>
+> This approach isn't ideal but keeping TTM matching DMAs expectations
+> for the page properties is in general fragile, unfortunately proper
+> fix would require a rewrite of TTM's page fault handling.
+>
+> Fixes vmwgfx with SEV enabled.
+>
+> v2: Explicitly include cc_platform.h
+>
+> Signed-off-by: Zack Rusin <zackr@vmware.com>
+> Fixes: 3bf3710e3718 ("drm/ttm: Add a generic TTM memcpy move for page-based iomem")
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Huang Rui <ray.huang@amd.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: <stable@vger.kernel.org> # v5.14+
+> ---
+>   drivers/gpu/drm/ttm/ttm_bo_util.c | 13 +++++++++++--
+>   drivers/gpu/drm/ttm/ttm_tt.c      |  8 ++++++++
+>   include/drm/ttm/ttm_tt.h          |  9 ++++++++-
+>   3 files changed, 27 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c b/drivers/gpu/drm/ttm/ttm_bo_util.c
+> index fd9fd3d15101..0b3f4267130c 100644
+> --- a/drivers/gpu/drm/ttm/ttm_bo_util.c
+> +++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
+> @@ -294,7 +294,13 @@ pgprot_t ttm_io_prot(struct ttm_buffer_object *bo, struct ttm_resource *res,
+>   	enum ttm_caching caching;
+>   
+>   	man = ttm_manager_type(bo->bdev, res->mem_type);
+> -	caching = man->use_tt ? bo->ttm->caching : res->bus.caching;
+> +	if (man->use_tt) {
+> +		caching = bo->ttm->caching;
+> +		if (bo->ttm->page_flags & TTM_TT_FLAG_DECRYPTED)
+> +			tmp = pgprot_decrypted(tmp);
+> +	} else  {
+> +		caching = res->bus.caching;
+> +	}
+>   
+>   	return ttm_prot_from_caching(caching, tmp);
+>   }
+> @@ -337,6 +343,8 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
+>   		.no_wait_gpu = false
+>   	};
+>   	struct ttm_tt *ttm = bo->ttm;
+> +	struct ttm_resource_manager *man =
+> +			ttm_manager_type(bo->bdev, bo->resource->mem_type);
+>   	pgprot_t prot;
+>   	int ret;
+>   
+> @@ -346,7 +354,8 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
+>   	if (ret)
+>   		return ret;
+>   
+> -	if (num_pages == 1 && ttm->caching == ttm_cached) {
+> +	if (num_pages == 1 && ttm->caching == ttm_cached &&
+> +	    !(man->use_tt && (ttm->page_flags & TTM_TT_FLAG_DECRYPTED))) {
+>   		/*
+>   		 * We're mapping a single page, and the desired
+>   		 * page protection is consistent with the bo.
+> diff --git a/drivers/gpu/drm/ttm/ttm_tt.c b/drivers/gpu/drm/ttm/ttm_tt.c
+> index e0a77671edd6..e4966e2c988d 100644
+> --- a/drivers/gpu/drm/ttm/ttm_tt.c
+> +++ b/drivers/gpu/drm/ttm/ttm_tt.c
+> @@ -31,6 +31,7 @@
+>   
+>   #define pr_fmt(fmt) "[TTM] " fmt
+>   
+> +#include <linux/cc_platform.h>
+>   #include <linux/sched.h>
+>   #include <linux/shmem_fs.h>
+>   #include <linux/file.h>
+> @@ -81,6 +82,13 @@ int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
+>   		pr_err("Illegal buffer object type\n");
+>   		return -EINVAL;
+>   	}
+> +	/*
+> +	 * When using dma_alloc_coherent with memory encryption the
+> +	 * mapped TT pages need to be decrypted or otherwise the drivers
+> +	 * will end up sending encrypted mem to the gpu.
+> +	 */
+> +	if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_MEM_ENCRYPT))
 
->
-> > Then we could de-clunk this whole code path, and the quite natural fact of
-> > 'thing didn't return a pointer therefore had no memory to allocate it' fals
-> > out.
-> >
-> > But this isn't exactly an earth-shattering concern :)
-> >
->
+You need to use CC_ATTR_GUEST_MEM_ENCRYPT here rather than 
+CC_ATTR_MEM_ENCRYPT to avoid touching and breaking the SME case and only 
+fix the SEV / SEV-ES case. I'd also hold off the stable inclusion until 
+it's completely verified that this doesn't break anything because if it 
+does, I suspect all hell will break loose.
+
+With that said, for the functionality
+
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+
+But I think this needs a wider Ack at the ttm / drm level for the 
+approach taken.
+
+/Thomas.
+
+> +		page_flags |= TTM_TT_FLAG_DECRYPTED;
+>   
+>   	bo->ttm = bdev->funcs->ttm_tt_create(bo, page_flags);
+>   	if (unlikely(bo->ttm == NULL))
+> diff --git a/include/drm/ttm/ttm_tt.h b/include/drm/ttm/ttm_tt.h
+> index a4eff85b1f44..2b9d856ff388 100644
+> --- a/include/drm/ttm/ttm_tt.h
+> +++ b/include/drm/ttm/ttm_tt.h
+> @@ -79,6 +79,12 @@ struct ttm_tt {
+>   	 *   page_flags = TTM_TT_FLAG_EXTERNAL |
+>   	 *		  TTM_TT_FLAG_EXTERNAL_MAPPABLE;
+>   	 *
+> +	 * TTM_TT_FLAG_DECRYPTED: The mapped ttm pages should be marked as
+> +	 * not encrypted. The framework will try to match what the dma layer
+> +	 * is doing, but note that it is a little fragile because ttm page
+> +	 * fault handling abuses the DMA api a bit and dma_map_attrs can't be
+> +	 * used to assure pgprot always matches.
+> +	 *
+>   	 * TTM_TT_FLAG_PRIV_POPULATED: TTM internal only. DO NOT USE. This is
+>   	 * set by TTM after ttm_tt_populate() has successfully returned, and is
+>   	 * then unset when TTM calls ttm_tt_unpopulate().
+> @@ -87,8 +93,9 @@ struct ttm_tt {
+>   #define TTM_TT_FLAG_ZERO_ALLOC		BIT(1)
+>   #define TTM_TT_FLAG_EXTERNAL		BIT(2)
+>   #define TTM_TT_FLAG_EXTERNAL_MAPPABLE	BIT(3)
+> +#define TTM_TT_FLAG_DECRYPTED		BIT(4)
+>   
+> -#define TTM_TT_FLAG_PRIV_POPULATED	BIT(4)
+> +#define TTM_TT_FLAG_PRIV_POPULATED	BIT(5)
+>   	uint32_t page_flags;
+>   	/** @num_pages: Number of pages in the page array. */
+>   	uint32_t num_pages;
