@@ -2,215 +2,131 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E77E7B4D27
-	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 10:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEAF37B4EEA
+	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 11:21:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235803AbjJBIQt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 2 Oct 2023 04:16:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43316 "EHLO
+        id S236033AbjJBJVE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 2 Oct 2023 05:21:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235773AbjJBIQs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 04:16:48 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B877BD;
-        Mon,  2 Oct 2023 01:16:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696234605; x=1727770605;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=CCm0nCaUAWiZf/2jiZ9UIxoAuD9LhOTJ2OhX2TS+RIA=;
-  b=cdRGPp+aNuYehGWNHSd2m2aYXoNn01XAXhV8dqyTzpLsDTa61VjFms8R
-   0BlRHB6Nr+GK1Y1AH9OGmeLjfWkh0y8/xUxrYVwYHjJpeJEpIyVejVYfC
-   oHFqXdTmSQWIqTcEGihbro64cLtFe63UonrdiMNgOOYKgMt9DdaOQel9s
-   irr+7gjfot1+Dwzlq4/gVAJ/hqCLYdqvvTedehQ7/Gf0BqymtoStO/WXI
-   QCg8Bg7r8uPRbL2x++kBkxW49WYZKAd/VEPML3CNbq0/aIrq4gtb2sUkE
-   KMKofiUdB1dGIVGXrJaSNB5ePjpzCie3ySCHbCrOXHML5V6cXgDTlSDcI
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="449090682"
-X-IronPort-AV: E=Sophos;i="6.03,193,1694761200"; 
-   d="scan'208";a="449090682"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 01:16:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="1081578756"
-X-IronPort-AV: E=Sophos;i="6.03,193,1694761200"; 
-   d="scan'208";a="1081578756"
-Received: from satiarax-mobl1.gar.corp.intel.com (HELO [10.249.254.231]) ([10.249.254.231])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 01:16:43 -0700
-Message-ID: <2b5648aa-f83d-d8f7-b0fd-39c859f32f33@linux.intel.com>
-Date:   Mon, 2 Oct 2023 10:16:40 +0200
+        with ESMTP id S236037AbjJBJVD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 05:21:03 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E858694
+        for <stable@vger.kernel.org>; Mon,  2 Oct 2023 02:20:57 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-692a885f129so11599202b3a.0
+        for <stable@vger.kernel.org>; Mon, 02 Oct 2023 02:20:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1696238457; x=1696843257; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HZEAIvCKjKxg1y/mOTHgOyfszBWrD2m6dpbpnehzSJo=;
+        b=ZqfyTGpdx4cHBBaywa94Vq5fo/UHc4MRsJHY09S/5912GoLcdtLmSe3N7PRJwCn9kE
+         o/uDZyntDBH4mKf/4gdLOEy0A8YUPwHkWDNmxomViV4egb5RlJVnoFTP4hBqpn4iluPp
+         6gGFszHq+DwHXK3zjg0VmHzRrX0lUjBgdG+jo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696238457; x=1696843257;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HZEAIvCKjKxg1y/mOTHgOyfszBWrD2m6dpbpnehzSJo=;
+        b=OCatowk8iCVIjZzxiSynNIQ9e2sLG222slg1QoZ4eLddOpleectOGZWOFF2WlfAQoF
+         ea985zop8Xz+QtNn3qwLHe0KZhg3Rt2bIVegzyTntQp/60HN659Ft2KZHA2nkxyxjE9e
+         pt3H1xiemGMkGVF1Dlf8DXLourRVacdTj8nkS/daiY41IR8Lrv1app0ZKzYXCklB0GtN
+         0rsQa1JPwHXdPZ3Orhi9fPuJvFfAnGte5z83RguEAbey3JYTBnJLSXHAqDv0O/jjAgHp
+         6VpyCZGHHv+3rwHu4K6vsmlY4Yb5qPLNYhTJHsteZ1MRbDktoxv5XORQOE2Lqn+tVEx/
+         pZrQ==
+X-Gm-Message-State: AOJu0YwXlzlBr0khDuFCG2VvjroXou4vk1cqmiSnZvXkDhhQ0Hpa9RY+
+        RLzVj2y8W8VBZAYZrmJ6VjSI0w==
+X-Google-Smtp-Source: AGHT+IH+tG+Aai4uuggMfO+rGGTM2xMUkfQN5lWyX+UpJgbKOheJR2hXD3NjLu95wgcSCgr7dLlOhA==
+X-Received: by 2002:a05:6a00:21ce:b0:68f:c865:5ba8 with SMTP id t14-20020a056a0021ce00b0068fc8655ba8mr10744096pfj.18.1696238457377;
+        Mon, 02 Oct 2023 02:20:57 -0700 (PDT)
+Received: from wenstp920.tpe.corp.google.com ([2401:fa00:1:10:16ed:daa5:ae8c:12dd])
+        by smtp.gmail.com with ESMTPSA id x26-20020aa784da000000b0068c0fcb40d3sm19164936pfn.211.2023.10.02.02.20.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Oct 2023 02:20:57 -0700 (PDT)
+From:   Chen-Yu Tsai <wenst@chromium.org>
+To:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+Cc:     Chen-Yu Tsai <wenst@chromium.org>, dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: [PATCH] drm/mediatek: Correctly free sg_table in gem prime vmap
+Date:   Mon,  2 Oct 2023 17:20:48 +0800
+Message-ID: <20231002092051.555479-1-wenst@chromium.org>
+X-Mailer: git-send-email 2.42.0.582.g8ccd20d70d-goog
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] drm/ttm: Make sure the mapped tt pages are decrypted
- when needed
-To:     Zack Rusin <zackr@vmware.com>, dri-devel@lists.freedesktop.org
-Cc:     =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20230926040359.3040017-1-zack@kde.org>
- <20230926175113.679880-1-zack@kde.org>
-Content-Language: en-US
-From:   =?UTF-8?Q?Thomas_Hellstr=c3=b6m?= 
-        <thomas.hellstrom@linux.intel.com>
-In-Reply-To: <20230926175113.679880-1-zack@kde.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Zack
+The MediaTek DRM driver implements GEM PRIME vmap by fetching the
+sg_table for the object, iterating through the pages, and then
+vmapping them. In essence, unlike the GEM DMA helpers which vmap
+when the object is first created or imported, the MediaTek version
+does it on request.
 
-On 9/26/23 19:51, Zack Rusin wrote:
-> From: Zack Rusin <zackr@vmware.com>
->
-> Some drivers require the mapped tt pages to be decrypted. In an ideal
-> world this would have been handled by the dma layer, but the TTM page
-> fault handling would have to be rewritten to able to do that.
->
-> A side-effect of the TTM page fault handling is using a dma allocation
-> per order (via ttm_pool_alloc_page) which makes it impossible to just
-> trivially use dma_mmap_attrs. As a result ttm has to be very careful
-> about trying to make its pgprot for the mapped tt pages match what
-> the dma layer thinks it is. At the ttm layer it's possible to
-> deduce the requirement to have tt pages decrypted by checking
-> whether coherent dma allocations have been requested and the system
-> is running with confidential computing technologies.
->
-> This approach isn't ideal but keeping TTM matching DMAs expectations
-> for the page properties is in general fragile, unfortunately proper
-> fix would require a rewrite of TTM's page fault handling.
->
-> Fixes vmwgfx with SEV enabled.
->
-> v2: Explicitly include cc_platform.h
->
-> Signed-off-by: Zack Rusin <zackr@vmware.com>
-> Fixes: 3bf3710e3718 ("drm/ttm: Add a generic TTM memcpy move for page-based iomem")
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Huang Rui <ray.huang@amd.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: <stable@vger.kernel.org> # v5.14+
-> ---
->   drivers/gpu/drm/ttm/ttm_bo_util.c | 13 +++++++++++--
->   drivers/gpu/drm/ttm/ttm_tt.c      |  8 ++++++++
->   include/drm/ttm/ttm_tt.h          |  9 ++++++++-
->   3 files changed, 27 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c b/drivers/gpu/drm/ttm/ttm_bo_util.c
-> index fd9fd3d15101..0b3f4267130c 100644
-> --- a/drivers/gpu/drm/ttm/ttm_bo_util.c
-> +++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
-> @@ -294,7 +294,13 @@ pgprot_t ttm_io_prot(struct ttm_buffer_object *bo, struct ttm_resource *res,
->   	enum ttm_caching caching;
->   
->   	man = ttm_manager_type(bo->bdev, res->mem_type);
-> -	caching = man->use_tt ? bo->ttm->caching : res->bus.caching;
-> +	if (man->use_tt) {
-> +		caching = bo->ttm->caching;
-> +		if (bo->ttm->page_flags & TTM_TT_FLAG_DECRYPTED)
-> +			tmp = pgprot_decrypted(tmp);
-> +	} else  {
-> +		caching = res->bus.caching;
-> +	}
->   
->   	return ttm_prot_from_caching(caching, tmp);
->   }
-> @@ -337,6 +343,8 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
->   		.no_wait_gpu = false
->   	};
->   	struct ttm_tt *ttm = bo->ttm;
-> +	struct ttm_resource_manager *man =
-> +			ttm_manager_type(bo->bdev, bo->resource->mem_type);
->   	pgprot_t prot;
->   	int ret;
->   
-> @@ -346,7 +354,8 @@ static int ttm_bo_kmap_ttm(struct ttm_buffer_object *bo,
->   	if (ret)
->   		return ret;
->   
-> -	if (num_pages == 1 && ttm->caching == ttm_cached) {
-> +	if (num_pages == 1 && ttm->caching == ttm_cached &&
-> +	    !(man->use_tt && (ttm->page_flags & TTM_TT_FLAG_DECRYPTED))) {
->   		/*
->   		 * We're mapping a single page, and the desired
->   		 * page protection is consistent with the bo.
-> diff --git a/drivers/gpu/drm/ttm/ttm_tt.c b/drivers/gpu/drm/ttm/ttm_tt.c
-> index e0a77671edd6..e4966e2c988d 100644
-> --- a/drivers/gpu/drm/ttm/ttm_tt.c
-> +++ b/drivers/gpu/drm/ttm/ttm_tt.c
-> @@ -31,6 +31,7 @@
->   
->   #define pr_fmt(fmt) "[TTM] " fmt
->   
-> +#include <linux/cc_platform.h>
->   #include <linux/sched.h>
->   #include <linux/shmem_fs.h>
->   #include <linux/file.h>
-> @@ -81,6 +82,13 @@ int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
->   		pr_err("Illegal buffer object type\n");
->   		return -EINVAL;
->   	}
-> +	/*
-> +	 * When using dma_alloc_coherent with memory encryption the
-> +	 * mapped TT pages need to be decrypted or otherwise the drivers
-> +	 * will end up sending encrypted mem to the gpu.
-> +	 */
-> +	if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_MEM_ENCRYPT))
+Unfortunately, the code never correctly frees the sg_table contents.
+This results in a kernel memory leak. On a Hayato device with a text
+console on the internal display, this results in the system running
+out of memory in a few days from all the console screen cursor updates.
 
-You need to use CC_ATTR_GUEST_MEM_ENCRYPT here rather than 
-CC_ATTR_MEM_ENCRYPT to avoid touching and breaking the SME case and only 
-fix the SEV / SEV-ES case. I'd also hold off the stable inclusion until 
-it's completely verified that this doesn't break anything because if it 
-does, I suspect all hell will break loose.
+Add sg_free_table() to correctly free the contents of the sg_table. This
+was missing despite explicitly required by mtk_gem_prime_get_sg_table().
 
-With that said, for the functionality
+Fixes: 3df64d7b0a4f ("drm/mediatek: Implement gem prime vmap/vunmap function")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+---
+Please merge for v6.6 fixes.
 
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Also, I was wondering why the MediaTek DRM driver implements a lot of
+the GEM functionality itself, instead of using the GEM DMA helpers.
+From what I could tell, the code closely follows the DMA helpers, except
+that it vmaps the buffers only upon request.
 
-But I think this needs a wider Ack at the ttm / drm level for the 
-approach taken.
 
-/Thomas.
+ drivers/gpu/drm/mediatek/mtk_drm_gem.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> +		page_flags |= TTM_TT_FLAG_DECRYPTED;
->   
->   	bo->ttm = bdev->funcs->ttm_tt_create(bo, page_flags);
->   	if (unlikely(bo->ttm == NULL))
-> diff --git a/include/drm/ttm/ttm_tt.h b/include/drm/ttm/ttm_tt.h
-> index a4eff85b1f44..2b9d856ff388 100644
-> --- a/include/drm/ttm/ttm_tt.h
-> +++ b/include/drm/ttm/ttm_tt.h
-> @@ -79,6 +79,12 @@ struct ttm_tt {
->   	 *   page_flags = TTM_TT_FLAG_EXTERNAL |
->   	 *		  TTM_TT_FLAG_EXTERNAL_MAPPABLE;
->   	 *
-> +	 * TTM_TT_FLAG_DECRYPTED: The mapped ttm pages should be marked as
-> +	 * not encrypted. The framework will try to match what the dma layer
-> +	 * is doing, but note that it is a little fragile because ttm page
-> +	 * fault handling abuses the DMA api a bit and dma_map_attrs can't be
-> +	 * used to assure pgprot always matches.
-> +	 *
->   	 * TTM_TT_FLAG_PRIV_POPULATED: TTM internal only. DO NOT USE. This is
->   	 * set by TTM after ttm_tt_populate() has successfully returned, and is
->   	 * then unset when TTM calls ttm_tt_unpopulate().
-> @@ -87,8 +93,9 @@ struct ttm_tt {
->   #define TTM_TT_FLAG_ZERO_ALLOC		BIT(1)
->   #define TTM_TT_FLAG_EXTERNAL		BIT(2)
->   #define TTM_TT_FLAG_EXTERNAL_MAPPABLE	BIT(3)
-> +#define TTM_TT_FLAG_DECRYPTED		BIT(4)
->   
-> -#define TTM_TT_FLAG_PRIV_POPULATED	BIT(4)
-> +#define TTM_TT_FLAG_PRIV_POPULATED	BIT(5)
->   	uint32_t page_flags;
->   	/** @num_pages: Number of pages in the page array. */
->   	uint32_t num_pages;
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+index 9f364df52478..297ee090e02e 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+@@ -239,6 +239,7 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *obj, struct iosys_map *map)
+ 	npages = obj->size >> PAGE_SHIFT;
+ 	mtk_gem->pages = kcalloc(npages, sizeof(*mtk_gem->pages), GFP_KERNEL);
+ 	if (!mtk_gem->pages) {
++		sg_free_table(sgt);
+ 		kfree(sgt);
+ 		return -ENOMEM;
+ 	}
+@@ -248,11 +249,13 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *obj, struct iosys_map *map)
+ 	mtk_gem->kvaddr = vmap(mtk_gem->pages, npages, VM_MAP,
+ 			       pgprot_writecombine(PAGE_KERNEL));
+ 	if (!mtk_gem->kvaddr) {
++		sg_free_table(sgt);
+ 		kfree(sgt);
+ 		kfree(mtk_gem->pages);
+ 		return -ENOMEM;
+ 	}
+ out:
++	sg_free_table(sgt);
+ 	kfree(sgt);
+ 	iosys_map_set_vaddr(map, mtk_gem->kvaddr);
+ 
+-- 
+2.42.0.582.g8ccd20d70d-goog
+
