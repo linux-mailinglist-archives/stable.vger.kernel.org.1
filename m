@@ -2,303 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0AB57B5504
-	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 16:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CE5F7B55B4
+	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 17:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237636AbjJBO2O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 2 Oct 2023 10:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37850 "EHLO
+        id S237799AbjJBOgq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 2 Oct 2023 10:36:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237494AbjJBO2N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 10:28:13 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E86AD;
-        Mon,  2 Oct 2023 07:28:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696256890; x=1727792890;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=4u2GIkPC8Lows7A66aUJtgItXyNMtyyFEmXHHDFAewg=;
-  b=R79+aQkWFnX/WvZu0iJ3LDseTHmJZLLtSCJusrBjFrHks8W6RlzBR9Mz
-   1nuF/1ve7KFd5lNm0k1vy5DYFsLimX1fiXFR6OTW0KGevNMU2fjbpAaIZ
-   eMGbkq7t186C4513D+s6uq90EEVno2zO87whzf2iEKjuftr3a9QXvaYP/
-   JfC3kk/Om7fG1pYFPP7nu678g2AWtBNGV/0E1ENjiuIww3wAayprAJOvU
-   mEW2lZQNsSAUyNRX77SH8ORd7OkxlL9e8UA8l1Ts8BASE6MAMJ758Mb8R
-   m9NfFdGIqwt7qAIRwCE3KcV9235rzLzvd6OoprtqBRe+LldcSTWYkFwrr
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="382558369"
-X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
-   d="scan'208";a="382558369"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 07:28:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="924288970"
-X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
-   d="scan'208";a="924288970"
-Received: from satiarax-mobl1.gar.corp.intel.com (HELO [10.249.254.231]) ([10.249.254.231])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 07:27:52 -0700
-Message-ID: <09fedce26475023fb1089f8b0b77801e1d2363c0.camel@linux.intel.com>
-Subject: Re: [PATCH v2] drm/ttm: Make sure the mapped tt pages are decrypted
- when needed
-From:   Thomas =?ISO-8859-1?Q?Hellstr=F6m?= 
-        <thomas.hellstrom@linux.intel.com>
-To:     Zack Rusin <zackr@vmware.com>, dri-devel@lists.freedesktop.org
-Cc:     Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Date:   Mon, 02 Oct 2023 16:27:49 +0200
-In-Reply-To: <2b5648aa-f83d-d8f7-b0fd-39c859f32f33@linux.intel.com>
-References: <20230926040359.3040017-1-zack@kde.org>
-         <20230926175113.679880-1-zack@kde.org>
-         <2b5648aa-f83d-d8f7-b0fd-39c859f32f33@linux.intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        with ESMTP id S237841AbjJBOgo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 10:36:44 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0D72B0;
+        Mon,  2 Oct 2023 07:36:40 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qnK2D-0007cK-38; Mon, 02 Oct 2023 16:36:33 +0200
+Message-ID: <5ef915d0-82af-4b85-88e4-d4078228c38d@leemhuis.info>
+Date:   Mon, 2 Oct 2023 16:36:32 +0200
 MIME-Version: 1.0
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] ASoC: amd: yc: Fix non-functional mic on Lenovo 82YM
+Content-Language: en-US, de-DE
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Mark Brown <broonie@kernel.org>
+Cc:     Sven Frotscher <sven.frotscher@gmail.com>, git@augustwikerfors.se,
+        alsa-devel@alsa-project.org, lgirdwood@gmail.com,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Takashi Iwai <tiwai@suse.com>
+References: <20230927223758.18870-1-sven.frotscher@gmail.com>
+ <46560887-0b6e-42ac-96c3-b4dbc1d7cb61@leemhuis.info>
+ <4fa7d39d-dc34-4550-97fa-2b089f364cca@sirena.org.uk>
+ <0a3feafc-b843-420a-9b04-c835f8210c1a@amd.com>
+ <048d9715-9cb2-4bc0-b8b0-5e30a0db54c7@leemhuis.info>
+ <28e38593-4861-4d61-b27d-994328ea4e82@amd.com>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <28e38593-4861-4d61-b27d-994328ea4e82@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1696257401;54b82d18;
+X-HE-SMSGID: 1qnK2D-0007cK-38
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 2023-10-02 at 10:16 +0200, Thomas Hellstr=C3=B6m wrote:
-> Hi, Zack
->=20
-> On 9/26/23 19:51, Zack Rusin wrote:
-> > From: Zack Rusin <zackr@vmware.com>
-> >=20
-> > Some drivers require the mapped tt pages to be decrypted. In an
-> > ideal
-> > world this would have been handled by the dma layer, but the TTM
-> > page
-> > fault handling would have to be rewritten to able to do that.
-> >=20
-> > A side-effect of the TTM page fault handling is using a dma
-> > allocation
-> > per order (via ttm_pool_alloc_page) which makes it impossible to
-> > just
-> > trivially use dma_mmap_attrs. As a result ttm has to be very
-> > careful
-> > about trying to make its pgprot for the mapped tt pages match what
-> > the dma layer thinks it is. At the ttm layer it's possible to
-> > deduce the requirement to have tt pages decrypted by checking
-> > whether coherent dma allocations have been requested and the system
-> > is running with confidential computing technologies.
-> >=20
-> > This approach isn't ideal but keeping TTM matching DMAs
-> > expectations
-> > for the page properties is in general fragile, unfortunately proper
-> > fix would require a rewrite of TTM's page fault handling.
-> >=20
-> > Fixes vmwgfx with SEV enabled.
-> >=20
-> > v2: Explicitly include cc_platform.h
-> >=20
-> > Signed-off-by: Zack Rusin <zackr@vmware.com>
-> > Fixes: 3bf3710e3718 ("drm/ttm: Add a generic TTM memcpy move for
-> > page-based iomem")
-> > Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
-> > Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-> > Cc: Huang Rui <ray.huang@amd.com>
-> > Cc: dri-devel@lists.freedesktop.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: <stable@vger.kernel.org> # v5.14+
-> > ---
-> > =C2=A0 drivers/gpu/drm/ttm/ttm_bo_util.c | 13 +++++++++++--
-> > =C2=A0 drivers/gpu/drm/ttm/ttm_tt.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0 8 ++++++++
-> > =C2=A0 include/drm/ttm/ttm_tt.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 9 ++++++++-
-> > =C2=A0 3 files changed, 27 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/drivers/gpu/drm/ttm/ttm_bo_util.c
-> > b/drivers/gpu/drm/ttm/ttm_bo_util.c
-> > index fd9fd3d15101..0b3f4267130c 100644
-> > --- a/drivers/gpu/drm/ttm/ttm_bo_util.c
-> > +++ b/drivers/gpu/drm/ttm/ttm_bo_util.c
-> > @@ -294,7 +294,13 @@ pgprot_t ttm_io_prot(struct ttm_buffer_object
-> > *bo, struct ttm_resource *res,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0enum ttm_caching cachin=
-g;
-> > =C2=A0=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0man =3D ttm_manager_typ=
-e(bo->bdev, res->mem_type);
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0caching =3D man->use_tt ? bo=
-->ttm->caching : res-
-> > >bus.caching;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (man->use_tt) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0caching =3D bo->ttm->caching;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0if (bo->ttm->page_flags & TTM_TT_FLAG_DECRYPTED)
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tmp =
-=3D pgprot_decrypted(tmp);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else=C2=A0 {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0caching =3D res->bus.caching;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > =C2=A0=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return ttm_prot_from_ca=
-ching(caching, tmp);
-> > =C2=A0 }
-> > @@ -337,6 +343,8 @@ static int ttm_bo_kmap_ttm(struct
-> > ttm_buffer_object *bo,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0.no_wait_gpu =3D false
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0};
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct ttm_tt *ttm =3D =
-bo->ttm;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct ttm_resource_manager =
-*man =3D
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ttm_ma=
-nager_type(bo->bdev, bo->resource-
-> > >mem_type);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0pgprot_t prot;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int ret;
-> > =C2=A0=20
-> > @@ -346,7 +354,8 @@ static int ttm_bo_kmap_ttm(struct
-> > ttm_buffer_object *bo,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0return ret;
-> > =C2=A0=20
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (num_pages =3D=3D 1 && tt=
-m->caching =3D=3D ttm_cached) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (num_pages =3D=3D 1 && tt=
-m->caching =3D=3D ttm_cached &&
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !(man->us=
-e_tt && (ttm->page_flags &
-> > TTM_TT_FLAG_DECRYPTED))) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 * We're mapping a single page, and the desired
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 * page protection is consistent with the bo.
-> > diff --git a/drivers/gpu/drm/ttm/ttm_tt.c
-> > b/drivers/gpu/drm/ttm/ttm_tt.c
-> > index e0a77671edd6..e4966e2c988d 100644
-> > --- a/drivers/gpu/drm/ttm/ttm_tt.c
-> > +++ b/drivers/gpu/drm/ttm/ttm_tt.c
-> > @@ -31,6 +31,7 @@
-> > =C2=A0=20
-> > =C2=A0 #define pr_fmt(fmt) "[TTM] " fmt
-> > =C2=A0=20
-> > +#include <linux/cc_platform.h>
-> > =C2=A0 #include <linux/sched.h>
-> > =C2=A0 #include <linux/shmem_fs.h>
-> > =C2=A0 #include <linux/file.h>
-> > @@ -81,6 +82,13 @@ int ttm_tt_create(struct ttm_buffer_object *bo,
-> > bool zero_alloc)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0pr_err("Illegal buffer object type\n");
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0return -EINVAL;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * When using dma_alloc_cohe=
-rent with memory encryption the
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * mapped TT pages need to b=
-e decrypted or otherwise the
-> > drivers
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * will end up sending encry=
-pted mem to the gpu.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (bdev->pool.use_dma_alloc=
- &&
-> > cc_platform_has(CC_ATTR_MEM_ENCRYPT))
->=20
-> You need to use CC_ATTR_GUEST_MEM_ENCRYPT here rather than=20
-> CC_ATTR_MEM_ENCRYPT to avoid touching and breaking the SME case and
-> only=20
-> fix the SEV / SEV-ES case. I'd also hold off the stable inclusion
-> until=20
-> it's completely verified that this doesn't break anything because if
-> it=20
-> does, I suspect all hell will break loose.
->=20
-> With that said, for the functionality
->=20
-> Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
->=20
-> But I think this needs a wider Ack at the ttm / drm level for the=20
-> approach taken.
->=20
-> /Thomas.
+On 02.10.23 16:20, Mario Limonciello wrote:
+> On 10/2/2023 09:13, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> On 02.10.23 15:47, Mario Limonciello wrote:
+>>> On 10/2/2023 06:52, Mark Brown wrote:
+>>>> On Mon, Oct 02, 2023 at 11:32:48AM +0200, Linux regression tracking
+>>>> (Thorsten Leemhuis) wrote:
+>>>>
+>>>>> Makes me wonder: How many more such quirk entries will be needed? Will
+>>>>> we have all machines listed soon, or do we expect that future Lenovo
+>>>>> hardware will need entries as well? If it's the latter: are quirks
+>>>>> really the right solution here, or do they just hide some bug or then
+>>>>> need for code that automatically handles things?
+>>>>
+>>>> x86 firmware descriptions are terrible, it's just an endless procession
+>>>> of quirks.  The model for ACPI is not to describe key information in
+>>>> the
+>>>> kernel and instead on Windows load device specific information from
+>>>> separately supplied tables.  On Linux that translates into these
+>>>> endless
+>>>> quirks, on Windows it's platform specific drivers for otherwise generic
+>>>> audio hardware.
+>>>
+>>> I knew there was a TON of "82" prefix systems from Lenovo so it was an
+>>> educated guess that all of them needed DMIC support.  This was incorrect
+>>> because one of them didn't have DMIC and that caused a no mic support
+>>> problem on that system.
+>>>
+>>> So in the case of this seemingly endless list of systems being added to
+>>> enable DMIC support Mark is right, Windows does it differently.
+>>
+>> Now I understand things better, many thx. But please allow me one more
+>> question from the cheap seats:
+>>
+>> Seems before c008323fe361 things worked for a lot of systems for about
+>> one year thx to 2232b2dd8cd4 (which added the wide "82" prefix quirk).
+>> We then made that one machine work with c008323fe361, but broke a lot of
+>> others with it that now need to be fixed with additional quirks; that
+>> "TON of 82 prefix systems" sounds like we might not be close to the end
+>> of that journey.
+>>
+>> So can't we just do it the other way around and assume DMIC support on
+>> Lenovo 82* machines, except on those where we know it to cause trouble?
+>>
+>> Again: you are the experts here. If you are positive that we soon got
+>> all machines covered where c008323fe361 causes a regression, then I
+>> guess it's best to continue the patch we're on.
+> 
+> I don't like lists
 
-FWIW, I think that if TTM_TT_FLAG_DECRYPTED is set, it should be
-possible to add a debug WARN_ON_ONCE() if the first PTE of the dma
-page's kernel virtual address does not use a decrypted pgprot_t. One
-way of accessing the PTEs in a platform-generic fashion is
-apply_to_page_range().
+And I don't like if we let people run into regressions knowingly. ;)
 
-/Thomas
+> that enable something for a ton of systems and then
+> lists that disable something for a subset of them.  This becomes
+> difficult to maintain.
 
+Well, I had more thought along the lines of "do enable DMIC on Lenovo
+82*, unless the following dmi (the one from c008323fe361) matches". But
+I assume that's not easy to realize with the quirks table, so I guess
+that is out. Whatever.
 
+Well, I rest my case. But I guess I might come back to this if multiple
+additional regressions reports come it due to c008323fe361.
 
-
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0page_flags |=3D TTM_TT_FLAG_DECRYPTED;
-> > =C2=A0=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0bo->ttm =3D bdev->funcs=
-->ttm_tt_create(bo, page_flags);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (unlikely(bo->ttm =
-=3D=3D NULL))
-> > diff --git a/include/drm/ttm/ttm_tt.h b/include/drm/ttm/ttm_tt.h
-> > index a4eff85b1f44..2b9d856ff388 100644
-> > --- a/include/drm/ttm/ttm_tt.h
-> > +++ b/include/drm/ttm/ttm_tt.h
-> > @@ -79,6 +79,12 @@ struct ttm_tt {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *=C2=A0=C2=A0 page_fla=
-gs =3D TTM_TT_FLAG_EXTERNAL |
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 TTM_T=
-T_FLAG_EXTERNAL_MAPPABLE;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * TTM_TT_FLAG_DECRYPTED: Th=
-e mapped ttm pages should be
-> > marked as
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * not encrypted. The framew=
-ork will try to match what the
-> > dma layer
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * is doing, but note that i=
-t is a little fragile because
-> > ttm page
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * fault handling abuses the=
- DMA api a bit and
-> > dma_map_attrs can't be
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * used to assure pgprot alw=
-ays matches.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * TTM_TT_FLAG_PRIV_POP=
-ULATED: TTM internal only. DO NOT
-> > USE. This is
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * set by TTM after ttm=
-_tt_populate() has successfully
-> > returned, and is
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * then unset when TTM =
-calls ttm_tt_unpopulate().
-> > @@ -87,8 +93,9 @@ struct ttm_tt {
-> > =C2=A0 #define TTM_TT_FLAG_ZERO_ALLOC=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(1)
-> > =C2=A0 #define TTM_TT_FLAG_EXTERNAL=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0BIT(2)
-> > =C2=A0 #define TTM_TT_FLAG_EXTERNAL_MAPPABLE=C2=A0BIT(3)
-> > +#define TTM_TT_FLAG_DECRYPTED=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0BIT(4)
-> > =C2=A0=20
-> > -#define TTM_TT_FLAG_PRIV_POPULATED=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(4)
-> > +#define TTM_TT_FLAG_PRIV_POPULATED=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(5)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uint32_t page_flags;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/** @num_pages: Number =
-of pages in the page array. */
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uint32_t num_pages;
-
+Ciao, Thorsten
