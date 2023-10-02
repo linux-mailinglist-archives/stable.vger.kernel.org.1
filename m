@@ -2,85 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F36967B5077
-	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 12:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7BC37B51B2
+	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 13:50:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236515AbjJBKke (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 2 Oct 2023 06:40:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46364 "EHLO
+        id S231338AbjJBLuZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 2 Oct 2023 07:50:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236501AbjJBKke (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 06:40:34 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D45259D;
-        Mon,  2 Oct 2023 03:40:30 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 0944B6607079;
-        Mon,  2 Oct 2023 11:40:28 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1696243229;
-        bh=zdwCD43UfICihrrGOtD5MsrAfDo/vCHnNja+3qedKhI=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=T/l3DasIV6nFyGmVrtCMB1QOuyi8SauQTEgbdq3mzWoViVA7SPyiSTOUrUQ5O2umH
-         ux4j/p7snMoFI5zOjn7GZ2vSRyoZ2kX7Jwoa4dGnWytaQ3MKB1aimgSnYDSR8qqlbZ
-         hR/6Fa6mMVQAegrDLr/RUBpv1ZryWzCSllPahKVr8En7j39cananl4hyFRRam7kE4I
-         m1SLexmP4XxBmQiDKngddSkyEsAAz9Q+cZuD8AMpACBRZ4iq8DiiOelMm+khan6S9r
-         qzfIfbQZckAIaDTstVQ5ZVA/3F2XtuZ9n8Kdc06Ec8opuINIpJp00SJ8LmUuJ1MGDa
-         WX2F19nY0Bp2w==
-Message-ID: <57e41130-8a29-212b-df93-8fe0786ac08c@collabora.com>
-Date:   Mon, 2 Oct 2023 12:40:26 +0200
+        with ESMTP id S236786AbjJBLb0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 07:31:26 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA33CD8;
+        Mon,  2 Oct 2023 04:31:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696246283; x=1727782283;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=aCTNRtcJs2aRsXatRFnEc0X1XOXxvpcVCPYjfzR4Hds=;
+  b=SGfOxKMjrYXZUJCXWbRioYOHY2UcBPNkQo1uMwBJn/7mY3zZzSnUDhmb
+   BM+RvCQGRAx5yd7+w4TZcFP+gmus8VtBqXBJPDHllK9o4hx88S9tz9rEC
+   QA6yrsf0OGIMmFibve9L+uu4kuV+B6NuitUUfICzurf52eNn43SzMx7ll
+   XW8JVVepxZuYgC+tu36PLiCm6cuN3zg31ELIrQO3lRWmot5mKjiPwbX+W
+   0tKrEvvYsH5/4JoE7YV1wHfrygTgxmkqtnweicbpgFsDUARfnOUiPl5mU
+   6VWi8FVorCaeSSpc1f5OzicxZspfJbVSn0Hb+NovmonH+brMj966jWvkO
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="382529557"
+X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
+   d="scan'208";a="382529557"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 04:31:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="866474806"
+X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
+   d="scan'208";a="866474806"
+Received: from roliveir-mobl1.ger.corp.intel.com ([10.251.222.16])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 04:31:20 -0700
+Date:   Mon, 2 Oct 2023 14:31:18 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Shuah Khan <shuah@kernel.org>
+cc:     linux-kselftest@vger.kernel.org,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        =?ISO-8859-15?Q?Maciej_Wiecz=F3r-Retman?= 
+        <maciej.wieczor-retman@intel.com>,
+        Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 0/7] selftests/resctrl: Fixes to failing tests
+In-Reply-To: <20231002094813.6633-1-ilpo.jarvinen@linux.intel.com>
+Message-ID: <6a826da8-a94d-261b-cfe8-c494d7237a0@linux.intel.com>
+References: <20231002094813.6633-1-ilpo.jarvinen@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH] drm/mediatek: Correctly free sg_table in gem prime vmap
-Content-Language: en-US
-To:     Chen-Yu Tsai <wenst@chromium.org>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <20231002092051.555479-1-wenst@chromium.org>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20231002092051.555479-1-wenst@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; boundary="8323329-198948541-1696246282=:2459"
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Il 02/10/23 11:20, Chen-Yu Tsai ha scritto:
-> The MediaTek DRM driver implements GEM PRIME vmap by fetching the
-> sg_table for the object, iterating through the pages, and then
-> vmapping them. In essence, unlike the GEM DMA helpers which vmap
-> when the object is first created or imported, the MediaTek version
-> does it on request.
-> 
-> Unfortunately, the code never correctly frees the sg_table contents.
-> This results in a kernel memory leak. On a Hayato device with a text
-> console on the internal display, this results in the system running
-> out of memory in a few days from all the console screen cursor updates.
-> 
-> Add sg_free_table() to correctly free the contents of the sg_table. This
-> was missing despite explicitly required by mtk_gem_prime_get_sg_table().
-> 
-> Fixes: 3df64d7b0a4f ("drm/mediatek: Implement gem prime vmap/vunmap function")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+--8323329-198948541-1696246282=:2459
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+
+On Mon, 2 Oct 2023, Ilpo Järvinen wrote:
+
+> Fix four issues with resctrl selftests.
+> 
+> The signal handling fix became necessary after the mount/umount fixes
+> and the uninitialized member bug was discovered during the review.
+> 
+> The other two came up when I ran resctrl selftests across the server
+> fleet in our lab to validate the upcoming CAT test rewrite (the rewrite
+> is not part of this series).
+> 
+> These are developed and should apply cleanly at least on top the
+> benchmark cleanup series (might apply cleanly also w/o the benchmark
+> series, I didn't test).
+
+LKP seems to no longer happy to apply this cleanly without the benchmark 
+rework series as the signal handling fix got now a bigger footprint 
+(maybe LKP didn't build v3 at all as the changes from v3->v4 were really 
+small and I did not get error out of v3).
+
+Shuah, would you want me to reorganize this such that it goes in before 
+the benchmark series? In any case, I'll wait until Reinette has had time 
+to look at the first patch if I'm to send the series reordered.
 
 
+-- 
+ i.
+
+--8323329-198948541-1696246282=:2459--
