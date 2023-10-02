@@ -2,76 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 809CE7B547A
-	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 16:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85AB57B54E7
+	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 16:31:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237490AbjJBOIh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 2 Oct 2023 10:08:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60554 "EHLO
+        id S237555AbjJBOOA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 2 Oct 2023 10:14:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236201AbjJBOIg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 10:08:36 -0400
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC059B;
-        Mon,  2 Oct 2023 07:08:33 -0700 (PDT)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-405361bb9f7so169895375e9.2;
-        Mon, 02 Oct 2023 07:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696255712; x=1696860512; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cTarZETHcAW0O9gfgdeOmaYr0S0MXF7s2VIEeHUmcR4=;
-        b=SJje1GeqxE8qTzdXRLfHvTodMBGbPVSReWgR1T910IUdNMUQQsMR71fugaZ3+N8q7/
-         x5A2O3bt2bx90rcM/Yhj3nkZgF41jGILmalbsJCiWLQEjOnlpdrzeIyF5Cnuc3y6XR6Z
-         A0hP78El6h6XnKOj67c4NgXWNAhJdHo/Dd4A0KzYT1CPdGHMZiP9bbZ+kCg++Hc9frGw
-         EwMuoovrjyWhUlpnYcQ6CJSvx1FGsuwwbJt6DwVAqmjdElHIckYAExfngPCu322skAH9
-         WSch4LylOqH4Lxu0IMHfLK9VaMYEtRtzTVENEIpu/ZGrePR/36/zyV+JZfD9iZjRlpOs
-         Uqgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696255712; x=1696860512;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cTarZETHcAW0O9gfgdeOmaYr0S0MXF7s2VIEeHUmcR4=;
-        b=D6qdVBYtq/hXzXPn2R+z3ZwdjBuDUYj/MIe3hECasXoWplGaOQD19/B6EEa1iIXCzK
-         +mHMfT0+MyvFjJO/HFaE5bWXD9rYQ1WWtXyY9bg39fbSKcEXloRvjDxbNUVcAFXnRLqH
-         QAshxzFchJkeSENeZ3m+JarQbK/jmoo2++b2o36ALAmcbpIvuIt2bIQfjcQetME2EqRe
-         cr1YI4ZTtvFB13DJ5N+vPAqxjHnaywq1HKk/Z4qWHiqC77/LrYzBA4Y4p7pVuMUY8XnT
-         msKULqj6SDws7d0px7R/2Y+EHlwChBfXpCHHvT5qZUbMg2xBSK7UAhKUJ8fBVYOqYg5P
-         EI2w==
-X-Gm-Message-State: AOJu0Yw52gWk7d89Jg0QyOK7V+H9IYwWprfz9qm63dI7gtaY3qd+SXn9
-        n6Y9gQYdXbSQCyu5HxIfJ18=
-X-Google-Smtp-Source: AGHT+IHTjP7xN/k5l+ale+TeCr5ZaZiwPFG0fqsQfhW/XlK6NBRW1AXXmqSYhc7YJirO93LThQiL2A==
-X-Received: by 2002:a7b:ce09:0:b0:405:3dbc:8821 with SMTP id m9-20020a7bce09000000b004053dbc8821mr9371184wmc.22.1696255711367;
-        Mon, 02 Oct 2023 07:08:31 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id d29-20020adfa41d000000b003197869bcd7sm23150227wra.13.2023.10.02.07.08.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Oct 2023 07:08:31 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Felix Fietkau <nbd@nbd.name>, John Crispin <john@phrozen.org>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Mark Lee <Mark-MC.Lee@mediatek.com>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Michael Lee <igvtee@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     Christian Marangi <ansuelsmth@gmail.com>, stable@vger.kernel.org
-Subject: [net PATCH] net: ethernet: mediatek: disable irq before schedule napi
-Date:   Mon,  2 Oct 2023 16:08:05 +0200
-Message-Id: <20231002140805.568-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S237540AbjJBOOA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 10:14:00 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0082AD;
+        Mon,  2 Oct 2023 07:13:57 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qnJgH-0003Y1-AM; Mon, 02 Oct 2023 16:13:53 +0200
+Message-ID: <048d9715-9cb2-4bc0-b8b0-5e30a0db54c7@leemhuis.info>
+Date:   Mon, 2 Oct 2023 16:13:52 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] ASoC: amd: yc: Fix non-functional mic on Lenovo 82YM
+Content-Language: en-US, de-DE
+To:     Mario Limonciello <mario.limonciello@amd.com>,
+        Mark Brown <broonie@kernel.org>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Sven Frotscher <sven.frotscher@gmail.com>, git@augustwikerfors.se,
+        alsa-devel@alsa-project.org, lgirdwood@gmail.com,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Takashi Iwai <tiwai@suse.com>
+References: <20230927223758.18870-1-sven.frotscher@gmail.com>
+ <46560887-0b6e-42ac-96c3-b4dbc1d7cb61@leemhuis.info>
+ <4fa7d39d-dc34-4550-97fa-2b089f364cca@sirena.org.uk>
+ <0a3feafc-b843-420a-9b04-c835f8210c1a@amd.com>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <0a3feafc-b843-420a-9b04-c835f8210c1a@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1696256037;2750f13f;
+X-HE-SMSGID: 1qnJgH-0003Y1-AM
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,55 +51,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-While searching for possible refactor of napi_schedule_prep and
-__napi_schedule it was notice that the mtk eth driver disable the
-interrupt for rx and tx AFTER napi is scheduled.
+On 02.10.23 15:47, Mario Limonciello wrote:
+> On 10/2/2023 06:52, Mark Brown wrote:
+>> On Mon, Oct 02, 2023 at 11:32:48AM +0200, Linux regression tracking
+>> (Thorsten Leemhuis) wrote:
+>>
+>>> Makes me wonder: How many more such quirk entries will be needed? Will
+>>> we have all machines listed soon, or do we expect that future Lenovo
+>>> hardware will need entries as well? If it's the latter: are quirks
+>>> really the right solution here, or do they just hide some bug or then
+>>> need for code that automatically handles things?
+>>
+>> x86 firmware descriptions are terrible, it's just an endless procession
+>> of quirks.  The model for ACPI is not to describe key information in the
+>> kernel and instead on Windows load device specific information from
+>> separately supplied tables.  On Linux that translates into these endless
+>> quirks, on Windows it's platform specific drivers for otherwise generic
+>> audio hardware.
+> 
+> I knew there was a TON of "82" prefix systems from Lenovo so it was an
+> educated guess that all of them needed DMIC support.  This was incorrect
+> because one of them didn't have DMIC and that caused a no mic support
+> problem on that system.
+> 
+> So in the case of this seemingly endless list of systems being added to
+> enable DMIC support Mark is right, Windows does it differently.
 
-While this is a very hard to repro case it might happen to have
-situation where the interrupt is disabled and never enabled again as the
-napi completes and the interrupt is enabled before.
+Now I understand things better, many thx. But please allow me one more
+question from the cheap seats:
 
-This is caused by the fact that a napi driven by interrupt expect a
-logic with:
-1. interrupt received. napi prepared -> interrupt disabled -> napi
-   scheduled
-2. napi triggered. ring cleared -> interrupt enabled -> wait for new
-   interrupt
+Seems before c008323fe361 things worked for a lot of systems for about
+one year thx to 2232b2dd8cd4 (which added the wide "82" prefix quirk).
+We then made that one machine work with c008323fe361, but broke a lot of
+others with it that now need to be fixed with additional quirks; that
+"TON of 82 prefix systems" sounds like we might not be close to the end
+of that journey.
 
-To prevent this case, disable the interrupt BEFORE the napi is
-scheduled.
+So can't we just do it the other way around and assume DMIC support on
+Lenovo 82* machines, except on those where we know it to cause trouble?
 
-Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Again: you are the experts here. If you are positive that we soon got
+all machines covered where c008323fe361 causes a regression, then I
+guess it's best to continue the patch we're on.
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 82b51072aad8..7669b446915a 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -3172,8 +3172,8 @@ static irqreturn_t mtk_handle_irq_rx(int irq, void *_eth)
- 
- 	eth->rx_events++;
- 	if (likely(napi_schedule_prep(&eth->rx_napi))) {
--		__napi_schedule(&eth->rx_napi);
- 		mtk_rx_irq_disable(eth, eth->soc->txrx.rx_irq_done_mask);
-+		__napi_schedule(&eth->rx_napi);
- 	}
- 
- 	return IRQ_HANDLED;
-@@ -3185,8 +3185,8 @@ static irqreturn_t mtk_handle_irq_tx(int irq, void *_eth)
- 
- 	eth->tx_events++;
- 	if (likely(napi_schedule_prep(&eth->tx_napi))) {
--		__napi_schedule(&eth->tx_napi);
- 		mtk_tx_irq_disable(eth, MTK_TX_DONE_INT);
-+		__napi_schedule(&eth->tx_napi);
- 	}
- 
- 	return IRQ_HANDLED;
--- 
-2.40.1
-
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
