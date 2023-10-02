@@ -2,139 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0B097B57B2
-	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 18:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AB257B593A
+	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 19:42:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238371AbjJBQCP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 2 Oct 2023 12:02:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52468 "EHLO
+        id S238578AbjJBRBG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 2 Oct 2023 13:01:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238422AbjJBQCP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 12:02:15 -0400
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFCA3E5;
-        Mon,  2 Oct 2023 09:02:10 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 71297240004;
-        Mon,  2 Oct 2023 16:02:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1696262529;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=VceR3KZ7j/tRvYYnO2ZWLO0nUF4+UHbP0i80WdJuN3s=;
-        b=GG7WmlMedaqR7tTwyF8niW1i9CBEBj8f9xTfUhkr5VmpSgNCSFds5MecI5Do43C6eh+1+R
-        4AxOUX/PR4z5S7TdSXep3QcIn65x4OdUN/4IieMjidzIoLhxqcZedu9PreEVub1HhDLJlJ
-        Iwm2HQN7uHnZtJDNGSZsJeqnQF1I02VM8A2d+LFYyl1CvL5Dfs/PG7Og0Zdji0LF+og27/
-        ZPVXGcI2aemCouo8ZAiTnNrKJVoJ9yh8jhBoS9wcUh8WmGLYPj/pMksmaFFBT/vQCgG/si
-        ZYt9Dy83BO2wA66j3E50/t02VT4cP8CVQCDKFU2vuMdCySYwL0btG3Om8v/inw==
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-        linux-can@vger.kernel.org,
-        =?UTF-8?q?J=C3=A9r=C3=A9mie=20Dautheribes?= 
-        <jeremie.dautheribes@bootlin.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        sylvain.girard@se.com, pascal.eberhard@se.com,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v3] can: sja1000: Always restart the Tx queue after an overrun
-Date:   Mon,  2 Oct 2023 18:02:06 +0200
-Message-Id: <20231002160206.190953-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S238668AbjJBRA6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 13:00:58 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EEA5124;
+        Mon,  2 Oct 2023 10:00:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E05C433C7;
+        Mon,  2 Oct 2023 17:00:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1696266053;
+        bh=VsiIVNsqIQtSnF7xs64ASGFa7W0PWXXPzV3FzncPx9U=;
+        h=Date:To:From:Subject:From;
+        b=JArhRZ8uF7ycmxV86HYvlRO2bYyILIWa/6outlqopmJamxhITT09ViQ7O2qgWBYl+
+         CIS3B6xrkyqHKOqfRG3iHg/lzwsEAAx2ZHaYNZsnmMNs/3pwyrJggzEy+ZgjOSUFzJ
+         T84sKUfFqGkJemqe+j3NTIs1L12M2k4domVc2Uk8=
+Date:   Mon, 02 Oct 2023 10:00:52 -0700
+To:     mm-commits@vger.kernel.org, tvrtko.ursulin@linux.intel.com,
+        stable@vger.kernel.org, rodrigo.vivi@intel.com,
+        oleksandr@natalenko.name, joonas.lahtinen@linux.intel.com,
+        jani.nikula@linux.intel.com, andrzej.hajda@intel.com,
+        willy@infradead.org, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged] i915-limit-the-length-of-an-sg-list-to-the-requested-length.patch removed from -mm tree
+Message-Id: <20231002170053.A8E05C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Upstream commit 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with
-a soft reset on Renesas SoCs") fixes an issue with Renesas own SJA1000
-CAN controller reception: the Rx buffer is only 5 messages long, so when
-the bus loaded (eg. a message every 50us), overrun may easily
-happen. Upon an overrun situation, due to a possible internal crosstalk
-situation, the controller enters a frozen state which only can be
-unlocked with a soft reset (experimentally). The solution was to offload
-a call to sja1000_start() in a threaded handler. This needs to happen in
-process context as this operation requires to sleep. sja1000_start()
-basically enters "reset mode", performs a proper software reset and
-returns back into "normal mode".
 
-Since this fix was introduced, we no longer observe any stalls in
-reception. However it was sporadically observed that the transmit path
-would now freeze. Further investigation blamed the fix mentioned above,
-and especially the reset operation. Reproducing the reset in a loop
-helped identifying what could possibly go wrong. The sja1000 is a single
-Tx queue device, which leverages the netdev helpers to process one Tx
-message at a time. The logic is: the queue is stopped, the message sent
-to the transceiver, once properly transmitted the controller sets a
-status bit which triggers an interrupt, in the interrupt handler the
-transmission status is checked and the queue woken up. Unfortunately, if
-an overrun happens, we might perform the soft reset precisely between
-the transmission of the buffer to the transceiver and the advent of the
-transmission status bit. We would then stop the transmission operation
-without re-enabling the queue, leading to all further transmissions to
-be ignored.
+The quilt patch titled
+     Subject: i915: limit the length of an sg list to the requested length
+has been removed from the -mm tree.  Its filename was
+     i915-limit-the-length-of-an-sg-list-to-the-requested-length.patch
 
-The reset interrupt can only happen while the device is "open", and
-after a reset we anyway want to resume normal operations, no matter if a
-packet to transmit got dropped in the process, so we shall wake up the
-queue. Restarting the device and waking-up the queue is exactly what
-sja1000_set_mode(CAN_MODE_START) does. In order to be consistent about
-the queue state, we must acquire a lock both in the reset handler and in
-the transmit path to ensure serialization of both operations. It turns
-out, a lock is already held when entering the transmit path, so we can
-just acquire/release it as well with the regular net helpers inside the
-threaded interrupt handler and this way we should be safe. As the
-reset handler might still be called after the transmission of a frame to
-the transceiver but before it actually gets transmitted, we must ensure
-we don't leak the skb, so we free it (the behavior is consistent, no
-matter if there was an skb on the stack or not).
+This patch was dropped because it was merged into mainline or a subsystem tree
 
-Fixes: 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with a soft reset on Renesas SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+------------------------------------------------------
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: i915: limit the length of an sg list to the requested length
+Date: Tue, 19 Sep 2023 20:48:55 +0100
+
+The folio conversion changed the behaviour of shmem_sg_alloc_table() to
+put the entire length of the last folio into the sg list, even if the sg
+list should have been shorter.  gen8_ggtt_insert_entries() relied on the
+list being the right length and would overrun the end of the page tables. 
+Other functions may also have been affected.
+
+Clamp the length of the last entry in the sg list to be the expected
+length.
+
+Link: https://lkml.kernel.org/r/20230919194855.347582-1-willy@infradead.org
+Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9256
+Fixes: 0b62af28f249 ("i915: convert shmem_sg_free_table() to use a folio_batch")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Closes: https://lore.kernel.org/lkml/6287208.lOV4Wx5bFT@natalenko.name/
+Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: <stable@vger.kernel.org>	[6.5.x]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-Changes in v3:
-* Fix new implementation by just acquiring the tx lock when required.
+ drivers/gpu/drm/i915/gem/i915_gem_shmem.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-Changes in v2:
-* As Marc sugested, use netif_tx_{,un}lock() instead of our own
-  spin_lock.
-
- drivers/net/can/sja1000/sja1000.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
-index ae47fc72aa96..9531684d47cd 100644
---- a/drivers/net/can/sja1000/sja1000.c
-+++ b/drivers/net/can/sja1000/sja1000.c
-@@ -396,7 +396,13 @@ static irqreturn_t sja1000_reset_interrupt(int irq, void *dev_id)
- 	struct net_device *dev = (struct net_device *)dev_id;
+--- a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c~i915-limit-the-length-of-an-sg-list-to-the-requested-length
++++ a/drivers/gpu/drm/i915/gem/i915_gem_shmem.c
+@@ -100,6 +100,7 @@ int shmem_sg_alloc_table(struct drm_i915
+ 	st->nents = 0;
+ 	for (i = 0; i < page_count; i++) {
+ 		struct folio *folio;
++		unsigned long nr_pages;
+ 		const unsigned int shrink[] = {
+ 			I915_SHRINK_BOUND | I915_SHRINK_UNBOUND,
+ 			0,
+@@ -150,6 +151,8 @@ int shmem_sg_alloc_table(struct drm_i915
+ 			}
+ 		} while (1);
  
- 	netdev_dbg(dev, "performing a soft reset upon overrun\n");
--	sja1000_start(dev);
-+
-+	netif_tx_lock(dev);
-+
-+	can_free_echo_skb(dev, 0);
-+	sja1000_set_mode(dev, CAN_MODE_START);
-+
-+	netif_tx_unlock(dev);
++		nr_pages = min_t(unsigned long,
++				folio_nr_pages(folio), page_count - i);
+ 		if (!i ||
+ 		    sg->length >= max_segment ||
+ 		    folio_pfn(folio) != next_pfn) {
+@@ -157,13 +160,13 @@ int shmem_sg_alloc_table(struct drm_i915
+ 				sg = sg_next(sg);
  
- 	return IRQ_HANDLED;
- }
--- 
-2.34.1
+ 			st->nents++;
+-			sg_set_folio(sg, folio, folio_size(folio), 0);
++			sg_set_folio(sg, folio, nr_pages * PAGE_SIZE, 0);
+ 		} else {
+ 			/* XXX: could overflow? */
+-			sg->length += folio_size(folio);
++			sg->length += nr_pages * PAGE_SIZE;
+ 		}
+-		next_pfn = folio_pfn(folio) + folio_nr_pages(folio);
+-		i += folio_nr_pages(folio) - 1;
++		next_pfn = folio_pfn(folio) + nr_pages;
++		i += nr_pages - 1;
+ 
+ 		/* Check that the i965g/gm workaround works. */
+ 		GEM_BUG_ON(gfp & __GFP_DMA32 && next_pfn >= 0x00100000UL);
+_
+
+Patches currently in -mm which might be from willy@infradead.org are
+
+mm-convert-dax-lock-unlock-page-to-lock-unlock-folio.patch
+buffer-pass-gfp-flags-to-folio_alloc_buffers.patch
+buffer-hoist-gfp-flags-from-grow_dev_page-to-__getblk_gfp.patch
+buffer-hoist-gfp-flags-from-grow_dev_page-to-__getblk_gfp-fix.patch
+ext4-use-bdev_getblk-to-avoid-memory-reclaim-in-readahead-path.patch
+buffer-use-bdev_getblk-to-avoid-memory-reclaim-in-readahead-path.patch
+buffer-convert-getblk_unmovable-and-__getblk-to-use-bdev_getblk.patch
+buffer-convert-sb_getblk-to-call-__getblk.patch
+ext4-call-bdev_getblk-from-sb_getblk_gfp.patch
+buffer-remove-__getblk_gfp.patch
+hugetlb-use-a-folio-in-free_hpage_workfn.patch
+hugetlb-remove-a-few-calls-to-page_folio.patch
+hugetlb-convert-remove_pool_huge_page-to-remove_pool_hugetlb_folio.patch
+mm-make-lock_folio_maybe_drop_mmap-vma-lock-aware.patch
+mm-call-wp_page_copy-under-the-vma-lock.patch
+mm-handle-shared-faults-under-the-vma-lock.patch
+mm-handle-cow-faults-under-the-vma-lock.patch
+mm-handle-read-faults-under-the-vma-lock.patch
+mm-handle-write-faults-to-ro-pages-under-the-vma-lock.patch
 
