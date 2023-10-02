@@ -2,99 +2,195 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7BC37B51B2
-	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 13:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBC4A7B51B9
+	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 13:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231338AbjJBLuZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 2 Oct 2023 07:50:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49106 "EHLO
+        id S236790AbjJBLwA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 2 Oct 2023 07:52:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236786AbjJBLb0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 07:31:26 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA33CD8;
-        Mon,  2 Oct 2023 04:31:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696246283; x=1727782283;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=aCTNRtcJs2aRsXatRFnEc0X1XOXxvpcVCPYjfzR4Hds=;
-  b=SGfOxKMjrYXZUJCXWbRioYOHY2UcBPNkQo1uMwBJn/7mY3zZzSnUDhmb
-   BM+RvCQGRAx5yd7+w4TZcFP+gmus8VtBqXBJPDHllK9o4hx88S9tz9rEC
-   QA6yrsf0OGIMmFibve9L+uu4kuV+B6NuitUUfICzurf52eNn43SzMx7ll
-   XW8JVVepxZuYgC+tu36PLiCm6cuN3zg31ELIrQO3lRWmot5mKjiPwbX+W
-   0tKrEvvYsH5/4JoE7YV1wHfrygTgxmkqtnweicbpgFsDUARfnOUiPl5mU
-   6VWi8FVorCaeSSpc1f5OzicxZspfJbVSn0Hb+NovmonH+brMj966jWvkO
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="382529557"
-X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
-   d="scan'208";a="382529557"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 04:31:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10850"; a="866474806"
-X-IronPort-AV: E=Sophos;i="6.03,194,1694761200"; 
-   d="scan'208";a="866474806"
-Received: from roliveir-mobl1.ger.corp.intel.com ([10.251.222.16])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2023 04:31:20 -0700
-Date:   Mon, 2 Oct 2023 14:31:18 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Shuah Khan <shuah@kernel.org>
-cc:     linux-kselftest@vger.kernel.org,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        =?ISO-8859-15?Q?Maciej_Wiecz=F3r-Retman?= 
-        <maciej.wieczor-retman@intel.com>,
-        Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
-        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 0/7] selftests/resctrl: Fixes to failing tests
-In-Reply-To: <20231002094813.6633-1-ilpo.jarvinen@linux.intel.com>
-Message-ID: <6a826da8-a94d-261b-cfe8-c494d7237a0@linux.intel.com>
-References: <20231002094813.6633-1-ilpo.jarvinen@linux.intel.com>
+        with ESMTP id S236786AbjJBLv7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 07:51:59 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A091EE0
+        for <stable@vger.kernel.org>; Mon,  2 Oct 2023 04:51:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92342C433C8;
+        Mon,  2 Oct 2023 11:51:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696247515;
+        bh=D+iN734XSgPnTM4EbBe7LZePPiuWNNjRHxfeQ534OXM=;
+        h=Subject:To:From:Date:From;
+        b=R/n1JshQDBwpeCa6V2+z99mSFxWaLquixlKemG8lfd9BKmmboKlC3clLPETRsfjXR
+         a0/rqDo5SmDpqU09UpW7wUvZ5qovv/RbTF/yE3Su7wKq1QSwLowbAdvzdL7cFp6vjD
+         ntQ1RyN9CpnGke2jlP+myrqVJZqdKl3jAApMjd/Y=
+Subject: patch "usb: hub: Guard against accesses to uninitialized BOS descriptors" added to usb-linus
+To:     ricardo.canuelo@collabora.com, gregkh@linuxfoundation.org,
+        stable@vger.kernel.org
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 02 Oct 2023 13:51:51 +0200
+Message-ID: <2023100251-cruelty-willfully-dd81@gregkh>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-198948541-1696246282=:2459"
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-198948541-1696246282=:2459
+This is a note to let you know that I've just added the patch titled
+
+    usb: hub: Guard against accesses to uninitialized BOS descriptors
+
+to my usb git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
+in the usb-linus branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
+
+If you have any questions about this process, please let me know.
+
+
+From f74a7afc224acd5e922c7a2e52244d891bbe44ee Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ricardo=20Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
+Date: Wed, 30 Aug 2023 12:04:18 +0200
+Subject: usb: hub: Guard against accesses to uninitialized BOS descriptors
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2 Oct 2023, Ilpo Järvinen wrote:
+Many functions in drivers/usb/core/hub.c and drivers/usb/core/hub.h
+access fields inside udev->bos without checking if it was allocated and
+initialized. If usb_get_bos_descriptor() fails for whatever
+reason, udev->bos will be NULL and those accesses will result in a
+crash:
 
-> Fix four issues with resctrl selftests.
-> 
-> The signal handling fix became necessary after the mount/umount fixes
-> and the uninitialized member bug was discovered during the review.
-> 
-> The other two came up when I ran resctrl selftests across the server
-> fleet in our lab to validate the upcoming CAT test rewrite (the rewrite
-> is not part of this series).
-> 
-> These are developed and should apply cleanly at least on top the
-> benchmark cleanup series (might apply cleanly also w/o the benchmark
-> series, I didn't test).
+BUG: kernel NULL pointer dereference, address: 0000000000000018
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 5 PID: 17818 Comm: kworker/5:1 Tainted: G W 5.15.108-18910-gab0e1cb584e1 #1 <HASH:1f9e 1>
+Hardware name: Google Kindred/Kindred, BIOS Google_Kindred.12672.413.0 02/03/2021
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:hub_port_reset+0x193/0x788
+Code: 89 f7 e8 20 f7 15 00 48 8b 43 08 80 b8 96 03 00 00 03 75 36 0f b7 88 92 03 00 00 81 f9 10 03 00 00 72 27 48 8b 80 a8 03 00 00 <48> 83 78 18 00 74 19 48 89 df 48 8b 75 b0 ba 02 00 00 00 4c 89 e9
+RSP: 0018:ffffab740c53fcf8 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffffa1bc5f678000 RCX: 0000000000000310
+RDX: fffffffffffffdff RSI: 0000000000000286 RDI: ffffa1be9655b840
+RBP: ffffab740c53fd70 R08: 00001b7d5edaa20c R09: ffffffffb005e060
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+R13: ffffab740c53fd3e R14: 0000000000000032 R15: 0000000000000000
+FS: 0000000000000000(0000) GS:ffffa1be96540000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000018 CR3: 000000022e80c005 CR4: 00000000003706e0
+Call Trace:
+hub_event+0x73f/0x156e
+? hub_activate+0x5b7/0x68f
+process_one_work+0x1a2/0x487
+worker_thread+0x11a/0x288
+kthread+0x13a/0x152
+? process_one_work+0x487/0x487
+? kthread_associate_blkcg+0x70/0x70
+ret_from_fork+0x1f/0x30
 
-LKP seems to no longer happy to apply this cleanly without the benchmark 
-rework series as the signal handling fix got now a bigger footprint 
-(maybe LKP didn't build v3 at all as the changes from v3->v4 were really 
-small and I did not get error out of v3).
+Fall back to a default behavior if the BOS descriptor isn't accessible
+and skip all the functionalities that depend on it: LPM support checks,
+Super Speed capabilitiy checks, U1/U2 states setup.
 
-Shuah, would you want me to reorganize this such that it goes in before 
-the benchmark series? In any case, I'll wait until Reinette has had time 
-to look at the first patch if I'm to send the series reordered.
+Signed-off-by: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
+Cc: stable <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230830100418.1952143-1-ricardo.canuelo@collabora.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/usb/core/hub.c | 25 ++++++++++++++++++++++---
+ drivers/usb/core/hub.h |  2 +-
+ 2 files changed, 23 insertions(+), 4 deletions(-)
 
-
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 3c54b218301c..0ff47eeffb49 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -151,6 +151,10 @@ int usb_device_supports_lpm(struct usb_device *udev)
+ 	if (udev->quirks & USB_QUIRK_NO_LPM)
+ 		return 0;
+ 
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return 0;
++
+ 	/* USB 2.1 (and greater) devices indicate LPM support through
+ 	 * their USB 2.0 Extended Capabilities BOS descriptor.
+ 	 */
+@@ -327,6 +331,10 @@ static void usb_set_lpm_parameters(struct usb_device *udev)
+ 	if (!udev->lpm_capable || udev->speed < USB_SPEED_SUPER)
+ 		return;
+ 
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return;
++
+ 	hub = usb_hub_to_struct_hub(udev->parent);
+ 	/* It doesn't take time to transition the roothub into U0, since it
+ 	 * doesn't have an upstream link.
+@@ -2704,13 +2712,17 @@ int usb_authorize_device(struct usb_device *usb_dev)
+ static enum usb_ssp_rate get_port_ssp_rate(struct usb_device *hdev,
+ 					   u32 ext_portstatus)
+ {
+-	struct usb_ssp_cap_descriptor *ssp_cap = hdev->bos->ssp_cap;
++	struct usb_ssp_cap_descriptor *ssp_cap;
+ 	u32 attr;
+ 	u8 speed_id;
+ 	u8 ssac;
+ 	u8 lanes;
+ 	int i;
+ 
++	if (!hdev->bos)
++		goto out;
++
++	ssp_cap = hdev->bos->ssp_cap;
+ 	if (!ssp_cap)
+ 		goto out;
+ 
+@@ -4215,8 +4227,15 @@ static void usb_enable_link_state(struct usb_hcd *hcd, struct usb_device *udev,
+ 		enum usb3_link_state state)
+ {
+ 	int timeout;
+-	__u8 u1_mel = udev->bos->ss_cap->bU1devExitLat;
+-	__le16 u2_mel = udev->bos->ss_cap->bU2DevExitLat;
++	__u8 u1_mel;
++	__le16 u2_mel;
++
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return;
++
++	u1_mel = udev->bos->ss_cap->bU1devExitLat;
++	u2_mel = udev->bos->ss_cap->bU2DevExitLat;
+ 
+ 	/* If the device says it doesn't have *any* exit latency to come out of
+ 	 * U1 or U2, it's probably lying.  Assume it doesn't implement that link
+diff --git a/drivers/usb/core/hub.h b/drivers/usb/core/hub.h
+index 37897afd1b64..d44dd7f6623e 100644
+--- a/drivers/usb/core/hub.h
++++ b/drivers/usb/core/hub.h
+@@ -153,7 +153,7 @@ static inline int hub_is_superspeedplus(struct usb_device *hdev)
+ {
+ 	return (hdev->descriptor.bDeviceProtocol == USB_HUB_PR_SS &&
+ 		le16_to_cpu(hdev->descriptor.bcdUSB) >= 0x0310 &&
+-		hdev->bos->ssp_cap);
++		hdev->bos && hdev->bos->ssp_cap);
+ }
+ 
+ static inline unsigned hub_power_on_good_delay(struct usb_hub *hub)
 -- 
- i.
+2.42.0
 
---8323329-198948541-1696246282=:2459--
+
