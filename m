@@ -2,95 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 723387B5449
-	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 15:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A7BA7B54A7
+	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 16:10:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237494AbjJBNsE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 2 Oct 2023 09:48:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55738 "EHLO
+        id S237578AbjJBNuO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 2 Oct 2023 09:50:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237479AbjJBNsD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 09:48:03 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E50B7;
-        Mon,  2 Oct 2023 06:48:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D613C433C7;
-        Mon,  2 Oct 2023 13:47:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696254479;
-        bh=bbYKXZTl9YSdySAEA++jPVV9QQyRDBWMWVktu8dI+gA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qDxkhaSil/n9GhT+RwXlX5YqDYkw46UgUqPMJIvq+FlwnKpxAFAQ56hCrrVZfaNX1
-         FznHYoFC87kGxr0xhsr96G/aM9IwqjSzCmurcSJ3mbx8Lpb4MMuT9G7D8gXT04VEgN
-         w3oOGTWrA1DxfF2+VXijB9iLu7dhuFI1mwu771sYMKmpib3ewEtfNfFGmYfiKQ3CIW
-         PiIgVRA9akXzzz0oIpcmaaKcZbyTckf6XCWhWK4A0VnxWyuTsMosbwsPKmhZvqWIZ8
-         Uquy4WIbZVCdUye+eFhRJ7/AemMnYXaIKpA82G5/Oltud8ey6Ht1dt8gjslzGyVAll
-         Cgb+dGCruwoFg==
-Date:   Mon, 2 Oct 2023 14:47:54 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Sven Frotscher <sven.frotscher@gmail.com>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        mario.limonciello@amd.com, git@augustwikerfors.se,
-        alsa-devel@alsa-project.org, lgirdwood@gmail.com,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Re: [PATCH v4] ASoC: amd: yc: Fix non-functional mic on Lenovo 82YM
-Message-ID: <37101767-9bca-419c-9ce5-92c4c1360c81@sirena.org.uk>
-References: <20230927223758.18870-1-sven.frotscher@gmail.com>
- <46560887-0b6e-42ac-96c3-b4dbc1d7cb61@leemhuis.info>
- <4fa7d39d-dc34-4550-97fa-2b089f364cca@sirena.org.uk>
- <541ac45b-8de7-4fa2-85ee-456d34e60aa9@leemhuis.info>
- <64c78944-4d62-4eda-b92b-3b415fea3333@sirena.org.uk>
- <65KW1S.A6C8VBV29YCM@gmail.com>
- <89698b5f-a616-4f49-802a-21326a868c7f@sirena.org.uk>
- <9XKW1S.IRRCIDM08XWX1@gmail.com>
+        with ESMTP id S237567AbjJBNuG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 09:50:06 -0400
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC2A11B1;
+        Mon,  2 Oct 2023 06:49:49 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5AA4324000D;
+        Mon,  2 Oct 2023 13:49:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1696254587;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4paVPeEF9ZLJzDxaKPdD/mR7tqf5kQ9/5kHc/DvHhlA=;
+        b=UIU5d6aGGKL6D6KCkhLdPeAbU+VlRdNenyDOL4h5JCr7mdCK0cF81jnxFzn2VZAApdGu9V
+        /TdCXnRvnYb0PQlvWdeLsivGVY7GG7UCQLl2ZcmHfnhYv3V6wB/nGglgx1pQ6blCu7HQzY
+        HiI2Qbpr4JbVZHT8+ya6BWHZ5jeDlSECvN0w7u1m27DbmzULPWoRe+6+CnLGYeziNZyr8E
+        LbJ5g/1+Clz/d/6ZE9GXNXScrYSSO1XtHVEPdamxnDHp5J/k87l8FIBvfFhYX4epsZOmvM
+        6fGlpXEDsqBIWuL81FXIPBCaVJT2iRZGz/5xRKfdFx5x1Sw78gBfrkkAcqrDAw==
+Date:   Mon, 2 Oct 2023 15:49:43 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Martin =?UTF-8?B?SHVuZGViw7hsbA==?= <martin@geanix.com>
+Cc:     Rouven Czerwinski <r.czerwinski@pengutronix.de>,
+        =?UTF-8?B?TcOlbnMg?= =?UTF-8?B?UnVsbGfDpXJk?= <mans@mansr.com>,
+        Alexander Shiyan <eagle.alexander923@gmail.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        JaimeLiao <jaimeliao.tw@gmail.com>, kernel@pengutronix.de,
+        stable@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Sean =?UTF-8?B?Tnlla2rDpnI=?= <sean@geanix.com>,
+        Domenico Punzo <dpunzo@micron.com>,
+        Bean Huo <beanhuo@micron.com>
+Subject: Re: [PATCH v2] mtd: rawnand: Ensure the nand chip supports cached
+ reads
+Message-ID: <20231002154943.361e31b0@xps-13>
+In-Reply-To: <b8de26e243afa3e5920455a4d8e5a3451a06d074.camel@geanix.com>
+References: <20230922141717.35977-1-r.czerwinski@pengutronix.de>
+        <e911f5d9c7def8c80904a17ad3924ecba6625998.camel@geanix.com>
+        <20230926132725.5d570e1b@xps-13>
+        <20230927170516.2604e8f2@xps-13>
+        <b8de26e243afa3e5920455a4d8e5a3451a06d074.camel@geanix.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="rV9cXJVA+sC7cXdh"
-Content-Disposition: inline
-In-Reply-To: <9XKW1S.IRRCIDM08XWX1@gmail.com>
-X-Cookie: Postage will be paid by addressee.
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Martin,
 
---rV9cXJVA+sC7cXdh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+martin@geanix.com wrote on Thu, 28 Sep 2023 09:19:56 +0200:
 
-On Mon, Oct 02, 2023 at 03:17:33PM +0200, Sven Frotscher wrote:
+> Hi Miquel,
+>=20
+> On Wed, 2023-09-27 at 17:05 +0200, Miquel Raynal wrote:
+> > Hi Martin,
+> >=20
+> > miquel.raynal@bootlin.com=C2=A0wrote on Tue, 26 Sep 2023 13:27:25 +0200:
+> >  =20
+> > > Hi Martin,
+> > >=20
+> > > + Bean and Domenico, there is a question for you below.
+> > >=20
+> > > martin@geanix.com=C2=A0wrote on Mon, 25 Sep 2023 13:01:06 +0200:
+> > >  =20
+> > > > Hi Rouven,
+> > > >=20
+> > > > On Fri, 2023-09-22 at 16:17 +0200, Rouven Czerwinski wrote:=C2=A0  =
+=20
+> > > > > Both the JEDEC and ONFI specification say that read cache
+> > > > > sequential
+> > > > > support is an optional command. This means that we not only
+> > > > > need to
+> > > > > check whether the individual controller supports the command,
+> > > > > we also
+> > > > > need to check the parameter pages for both ONFI and JEDEC NAND
+> > > > > flashes
+> > > > > before enabling sequential cache reads.
+> > > > >=20
+> > > > > This fixes support for NAND flashes which don't support
+> > > > > enabling
+> > > > > cache
+> > > > > reads, i.e. Samsung K9F4G08U0F or Toshiba TC58NVG0S3HTA00.
+> > > > >=20
+> > > > > Sequential cache reads are now only available for ONFI and
+> > > > > JEDEC
+> > > > > devices, if individual vendors implement this, it needs to be
+> > > > > enabled
+> > > > > per vendor.
+> > > > >=20
+> > > > > Tested on i.MX6Q with a Samsung NAND flash chip that doesn't
+> > > > > support
+> > > > > sequential reads.
+> > > > >=20
+> > > > > Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential
+> > > > > cache
+> > > > > reads")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Rouven Czerwinski
+> > > > > <r.czerwinski@pengutronix.de>=C2=A0=C2=A0=C2=A0  =20
+> > > >=20
+> > > > Thanks for this. It works as expected for my Toshiba chip,
+> > > > obviously
+> > > > because it doesn't use ONFI or JEDEC.
+> > > >=20
+> > > > Unfortunately, my Micron chip does use ONFI, and it sets the
+> > > > cached-
+> > > > read-supported bit. It then fails when reading afterwords: =20
+> >=20
+> > I might have over reacted regarding my findings in Micron's
+> > datasheet,
+> > I need to know if you use the on-die ECC engine or if you use the one
+> > on the controller. In the former case the failure is expected. In the
+> > latter case, it's not. =20
+>=20
+> I use the default, which seems to be the controller engine?
 
-> > We need to know what magic set of quirks makes the thing work.  Are you
-> > saying that your patch doesn't actually do that?
+Yeah, you're using the gpmi NAND controller right? If that's the case,
+it seems that only ECC correction is supported.
 
-> It does.
-
-> Maybe the non-quirk check (ll. 395-403, seems to be using ACPI) is too
-> specific? But I'm a bit out of my depth here, so I can't investigate that by
-> myself.
-
-Like I say it's all just guesses without someone providing information.
-
---rV9cXJVA+sC7cXdh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUaygkACgkQJNaLcl1U
-h9CGmQf/Vc1+y1dKGunpBhuliT2pZe10C87on6X9xclHZuRaeHgIR0yc9BkNFk+c
-CYPJbCQnlKHIFMGijfyRVPuxZ31YhpjpDgCPn7i4fUVAvpN5n/AJm2TuDP1mZJk3
-TrbnQO5ye2tPA3XPgdRCgtX8B/PrhD5c0mp38mwOqlYRGq2b5/FdGGOpe47snler
-L2l2AHSX64vLBi/PxUyHSIIok2M1QpJSCobqdU9sUIYOTMWm3QXpxO9DfLcpFyXi
-k55bVdm4PEOPxqOnP1QmmSWEUjjjHTHWEZ9vTHUrB1zb/tCYgHpuEnFPs5zKKp/5
-eUFQoE/I/ymdnkka2oDtQmmFjeAZBA==
-=MCug
------END PGP SIGNATURE-----
-
---rV9cXJVA+sC7cXdh--
+Thanks,
+Miqu=C3=A8l
