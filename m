@@ -2,138 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE0527B4C35
-	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 09:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3490B7B4C44
+	for <lists+stable@lfdr.de>; Mon,  2 Oct 2023 09:09:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235678AbjJBHFs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 2 Oct 2023 03:05:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52266 "EHLO
+        id S235600AbjJBHJ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 2 Oct 2023 03:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235686AbjJBHFq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 03:05:46 -0400
-Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51CF1BD
-        for <stable@vger.kernel.org>; Mon,  2 Oct 2023 00:05:43 -0700 (PDT)
-Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 20231002070541e3a86ba6387074e6ea
-        for <stable@vger.kernel.org>;
-        Mon, 02 Oct 2023 09:05:41 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=jan.kiszka@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=Rv4hUMKk2v8xsK+vx7AN42bMv3pzRiwWQuC3GPbDA5M=;
- b=XzO7tUyJCjKMbIYz4EzYkdkh47OhFL8qR5KHoIeuV6ZKX3zt1MDd2QsCeMtDm0XjZB04wN
- LMQ5APGDuZQc+1MyXbfrUt9k+K4sylUR8vqaIzclFNv6thSZjGYwpPvUhNePhQ26aTBQcih6
- PDNt3gJqnmVShyxvjMBxbWK/asqek=;
-From:   Jan Kiszka <jan.kiszka@siemens.com>
-To:     stable@vger.kernel.org,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        linux-watchdog@vger.kernel.org,
-        =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 2/2] watchdog: iTCO_wdt: Set NO_REBOOT if the watchdog is not already running
-Date:   Mon,  2 Oct 2023 09:05:40 +0200
-Message-Id: <b4d2c0e6559b1d0f9fada5076336ac01882883ad.1696230340.git.jan.kiszka@siemens.com>
-In-Reply-To: <cover.1696230340.git.jan.kiszka@siemens.com>
-References: <cover.1696230340.git.jan.kiszka@siemens.com>
+        with ESMTP id S235599AbjJBHJ0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 03:09:26 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C5218E;
+        Mon,  2 Oct 2023 00:09:24 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id BD2C121853;
+        Mon,  2 Oct 2023 07:09:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1696230562; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8vcbNq67Xl3f2iKsCH4we0sJgW4X2ca2S7bOAsiex1Q=;
+        b=sYBuE9DmG1frwKtVsSRTG3Ale2r5OTm85xqfZD4SMQgyARAWCQuqkgePAMH2qt5USeFSzU
+        +3vTGLz702iOSggMMRZMufC+M6m+JAsB/esv//AAAKxAUUcVtuITmwd1siIpONwABSppuA
+        O+ZYuCQ4dJgnDNq4hb0wZ7Qj8p6sC3Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1696230562;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8vcbNq67Xl3f2iKsCH4we0sJgW4X2ca2S7bOAsiex1Q=;
+        b=Je9vocE06l6uaNRhWqNdvU+Sf0X8KCDs3p9+1pNsnpesOSRzY1tacE+DfjZuDBsZ5JmuP6
+        Mk1KJum7qrwXhKCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 92F6613456;
+        Mon,  2 Oct 2023 07:09:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id xE9RI6JsGmWqeAAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Mon, 02 Oct 2023 07:09:22 +0000
+Message-ID: <8055dadf-a8ee-6706-79b3-6fc61d77c71e@suse.cz>
+Date:   Mon, 2 Oct 2023 09:09:22 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v3 1/3] mmap: Fix vma_iterator in error path of
+ vma_merge()
+Content-Language: en-US
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Jann Horn <jannh@google.com>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Matthew Wilcox <willy@infradead.org>, stable@vger.kernel.org
+References: <20230929183041.2835469-1-Liam.Howlett@oracle.com>
+ <20230929183041.2835469-2-Liam.Howlett@oracle.com>
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20230929183041.2835469-2-Liam.Howlett@oracle.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-294854:519-21489:flowmailer
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+On 9/29/23 20:30, Liam R. Howlett wrote:
+> During the error path, the vma iterator may not be correctly positioned
+> or set to the correct range.  Undo the vma_prev() call by resetting to
+> the passed in address.  Re-walking to the same range will fix the range
+> to the area previously passed in.
+> 
+> Users would notice increased cycles as vma_merge() would be called an
+> extra time with vma == prev, and thus would fail to merge and return.
+> 
+> Link: https://lore.kernel.org/linux-mm/CAG48ez12VN1JAOtTNMY+Y2YnsU45yL5giS-Qn=ejtiHpgJAbdQ@mail.gmail.com/
+> Closes: https://lore.kernel.org/linux-mm/CAG48ez12VN1JAOtTNMY+Y2YnsU45yL5giS-Qn=ejtiHpgJAbdQ@mail.gmail.com/
+> Fixes: 18b098af2890 ("vma_merge: set vma iterator to correct position.")
+> Cc: stable@vger.kernel.org
+> Cc: Jann Horn <jannh@google.com>
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-commit ef9b7bf52c2f47f0a9bf988543c577b92c92d15e upstream.
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-Daniel reported that the commit 1ae3e78c0820 ("watchdog: iTCO_wdt: No
-need to stop the timer in probe") makes QEMU implementation of the iTCO
-watchdog not to trigger reboot anymore when NO_REBOOT flag is initially
-cleared using this option (in QEMU command line):
-
-  -global ICH9-LPC.noreboot=false
-
-The problem with the commit is that it left the unconditional setting of
-NO_REBOOT that is not cleared anymore when the kernel keeps pinging the
-watchdog (as opposed to the previous code that called iTCO_wdt_stop()
-that cleared it).
-
-Fix this so that we only set NO_REBOOT if the watchdog was not initially
-running.
-
-Fixes: 1ae3e78c0820 ("watchdog: iTCO_wdt: No need to stop the timer in probe")
-Reported-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Tested-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20221028062750.45451-1-mika.westerberg@linux.intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
----
- drivers/watchdog/iTCO_wdt.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
-index 930798bac582..5ec52032117a 100644
---- a/drivers/watchdog/iTCO_wdt.c
-+++ b/drivers/watchdog/iTCO_wdt.c
-@@ -401,14 +401,18 @@ static unsigned int iTCO_wdt_get_timeleft(struct watchdog_device *wd_dev)
- 	return time_left;
- }
- 
--static void iTCO_wdt_set_running(struct iTCO_wdt_private *p)
-+/* Returns true if the watchdog was running */
-+static bool iTCO_wdt_set_running(struct iTCO_wdt_private *p)
- {
- 	u16 val;
- 
--	/* Bit 11: TCO Timer Halt -> 0 = The TCO timer is * enabled */
-+	/* Bit 11: TCO Timer Halt -> 0 = The TCO timer is enabled */
- 	val = inw(TCO1_CNT(p));
--	if (!(val & BIT(11)))
-+	if (!(val & BIT(11))) {
- 		set_bit(WDOG_HW_RUNNING, &p->wddev.status);
-+		return true;
-+	}
-+	return false;
- }
- 
- /*
-@@ -486,9 +490,6 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
- 		return -ENODEV;	/* Cannot reset NO_REBOOT bit */
- 	}
- 
--	/* Set the NO_REBOOT bit to prevent later reboots, just for sure */
--	p->update_no_reboot_bit(p->no_reboot_priv, true);
--
- 	/* The TCO logic uses the TCO_EN bit in the SMI_EN register */
- 	if (!devm_request_region(dev, p->smi_res->start,
- 				 resource_size(p->smi_res),
-@@ -547,7 +548,13 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
- 	watchdog_set_drvdata(&p->wddev, p);
- 	platform_set_drvdata(pdev, p);
- 
--	iTCO_wdt_set_running(p);
-+	if (!iTCO_wdt_set_running(p)) {
-+		/*
-+		 * If the watchdog was not running set NO_REBOOT now to
-+		 * prevent later reboots.
-+		 */
-+		p->update_no_reboot_bit(p->no_reboot_priv, true);
-+	}
- 
- 	/* Check that the heartbeat value is within it's range;
- 	   if not reset to the default */
--- 
-2.35.3
+> ---
+>  mm/mmap.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index b56a7f0c9f85..acb7dea49e23 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -975,7 +975,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
+>  
+>  	/* Error in anon_vma clone. */
+>  	if (err)
+> -		return NULL;
+> +		goto anon_vma_fail;
+>  
+>  	if (vma_start < vma->vm_start || vma_end > vma->vm_end)
+>  		vma_expanded = true;
+> @@ -988,7 +988,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
+>  	}
+>  
+>  	if (vma_iter_prealloc(vmi, vma))
+> -		return NULL;
+> +		goto prealloc_fail;
+>  
+>  	init_multi_vma_prep(&vp, vma, adjust, remove, remove2);
+>  	VM_WARN_ON(vp.anon_vma && adjust && adjust->anon_vma &&
+> @@ -1016,6 +1016,12 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
+>  	vma_complete(&vp, vmi, mm);
+>  	khugepaged_enter_vma(res, vm_flags);
+>  	return res;
+> +
+> +prealloc_fail:
+> +anon_vma_fail:
+> +	vma_iter_set(vmi, addr);
+> +	vma_iter_load(vmi);
+> +	return NULL;
+>  }
+>  
+>  /*
 
