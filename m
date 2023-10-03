@@ -2,162 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 012F07B6CC3
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 17:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ECDF7B6CE1
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 17:19:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229469AbjJCPOs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 3 Oct 2023 11:14:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40716 "EHLO
+        id S230338AbjJCPTS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 3 Oct 2023 11:19:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230242AbjJCPOs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 11:14:48 -0400
-Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BBFDA6
-        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 08:14:45 -0700 (PDT)
-Received: by mail-vs1-xe32.google.com with SMTP id ada2fe7eead31-452749f6c47so577326137.1
-        for <stable@vger.kernel.org>; Tue, 03 Oct 2023 08:14:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1696346084; x=1696950884; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G502n/pwsi2xTvXRats/u+gp/KdtO1vpg74dn53OTQA=;
-        b=KfmNOFLqCS+lSSOgcbphofXlnxSqCS+9qJZ4baHQnOOMsa5qaZhbtZ5VvQ/5FEUE58
-         tBDiXS3+dnR2aETNg4Ovm2t9NQ63VigILPawUn4BvQro5Of0g60Ta2xXrAie87EBmAHb
-         nrSb1UPrNB6AuvVA+QL1gCbfYFR0bAb4d0AMM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696346084; x=1696950884;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G502n/pwsi2xTvXRats/u+gp/KdtO1vpg74dn53OTQA=;
-        b=PuFEEnVYhx3xrpJqgQG75DCSmPtcvWGulO9lZt7rHLrqRLusVaQg2irGuGv8lrORvU
-         ju5FUVIMgmD2DSPuHaeHHjT/Z4gY3hw7/RBtY4Dy9mGPFOcajA2Uuje2hsqXcdUxz4NP
-         V0J9Fngp3vMoTI12eu/aMmJ4o6RCb6Q6b+tbHzDlYKhf+OHIXo1MqYHtGQLqWsX9Orcl
-         U0BUdP50evSTIcuXEprQyPTmoxg7qzSOs1Cxp/1Y7C/3EnVD2uCzIz/ShTxKqBH95TaW
-         66IfDwGjYS4X9Bg3nv9MwBXDzTbJefDnfGZsToaqgvVqiXjJSqCYO9/Rnw1XhsI6t13Q
-         Wxng==
-X-Gm-Message-State: AOJu0YxjG29KO9txvCUBvKdk0HZe6dexBEgFWX8vcoRjjZO8iI8Pwgli
-        JcPtePEDD2QhLDStPlY0E5WLRRJcnvuw1QqJvKPjdA==
-X-Google-Smtp-Source: AGHT+IGu4llupNvUdFq1gkRLTjp2qMYOUldKCmzu/UhFyKqb0DB3x+At54a4tU0zCbY/el6lQSvxxw==
-X-Received: by 2002:a05:6102:2e4:b0:452:8afa:e1ac with SMTP id j4-20020a05610202e400b004528afae1acmr13224743vsj.26.1696346083751;
-        Tue, 03 Oct 2023 08:14:43 -0700 (PDT)
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com. [209.85.217.54])
-        by smtp.gmail.com with ESMTPSA id q5-20020ab054c5000000b007a89b13f2a8sm207495uaa.33.2023.10.03.08.14.43
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Oct 2023 08:14:43 -0700 (PDT)
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-45274236ef6so570786137.3
-        for <stable@vger.kernel.org>; Tue, 03 Oct 2023 08:14:43 -0700 (PDT)
-X-Received: by 2002:a05:6102:274c:b0:452:9384:139a with SMTP id
- p12-20020a056102274c00b004529384139amr13589952vsu.22.1696346082550; Tue, 03
- Oct 2023 08:14:42 -0700 (PDT)
+        with ESMTP id S229469AbjJCPTR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 11:19:17 -0400
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4A1183;
+        Tue,  3 Oct 2023 08:19:13 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2601:281:8300:73::646])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id 4209F2B4;
+        Tue,  3 Oct 2023 15:19:12 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 4209F2B4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+        t=1696346352; bh=VKedhyMIgkQjXvL+hZvItrCFqi/RzTxxfS8XYS7wSfQ=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=ca7PDA0a4sWmOp9W17zjZ/0mH7IU4T6U9NYrx1gKDWUM6JxfQOCoWleWJtYCcDdu7
+         mrb7r+NLJoXF7/qJrfgeqmGSd3prExOfJCxSGXSKwtduSW7ntD+ickEEQqqGIPNTBe
+         3P+DXO904F5gfkckwGTpeRnwJY36vp8wml0z0TeSsZHGe5VEyP8M0kV6ZNYLNUhwFm
+         CaRq3zBHCpWSLG4Y+lKv+aVnC+m8yniFFPY1KGFrnDfcAurRAH4ZRfCdFX9+VevxDS
+         fgKgBr1qOethWdjN6ljNc6LmP/KF7ETVXn0wo8JxgmSSir26nEX0MYTMlzmEBWI8Sf
+         Au+HSozBeSI8A==
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Vegard Nossum <vegard.nossum@oracle.com>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, backports@vger.kernel.org,
+        Vegard Nossum <vegard.nossum@oracle.com>,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>,
+        Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Subject: Re: [PATCH v2] docs: add backporting and conflict resolution document
+In-Reply-To: <20230824092325.1464227-1-vegard.nossum@oracle.com>
+References: <20230824092325.1464227-1-vegard.nossum@oracle.com>
+Date:   Tue, 03 Oct 2023 09:19:11 -0600
+Message-ID: <87bkdfg2ds.fsf@meer.lwn.net>
 MIME-Version: 1.0
-References: <20231002092051.555479-1-wenst@chromium.org>
-In-Reply-To: <20231002092051.555479-1-wenst@chromium.org>
-From:   Fei Shao <fshao@chromium.org>
-Date:   Tue, 3 Oct 2023 23:14:06 +0800
-X-Gmail-Original-Message-ID: <CAC=S1ng3_z0H48awhum7unXTTk0yfn61pTWqSmPJ9fWdoURL=A@mail.gmail.com>
-Message-ID: <CAC=S1ng3_z0H48awhum7unXTTk0yfn61pTWqSmPJ9fWdoURL=A@mail.gmail.com>
-Subject: Re: [PATCH] drm/mediatek: Correctly free sg_table in gem prime vmap
-To:     Chen-Yu Tsai <wenst@chromium.org>
-Cc:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        dri-devel@lists.freedesktop.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Vegard Nossum <vegard.nossum@oracle.com> writes:
 
-On Mon, Oct 2, 2023 at 5:21=E2=80=AFPM Chen-Yu Tsai <wenst@chromium.org> wr=
-ote:
+> This is a new document based on my 2022 blog post:
 >
-> The MediaTek DRM driver implements GEM PRIME vmap by fetching the
-> sg_table for the object, iterating through the pages, and then
-> vmapping them. In essence, unlike the GEM DMA helpers which vmap
-> when the object is first created or imported, the MediaTek version
-> does it on request.
+>   https://blogs.oracle.com/linux/post/backporting-patches-using-git
 >
-> Unfortunately, the code never correctly frees the sg_table contents.
-> This results in a kernel memory leak. On a Hayato device with a text
-> console on the internal display, this results in the system running
-> out of memory in a few days from all the console screen cursor updates.
+> Although this is aimed at stable contributors and distro maintainers,
+> it does also contain useful tips and tricks for anybody who needs to
+> resolve merge conflicts.
 >
-> Add sg_free_table() to correctly free the contents of the sg_table. This
-> was missing despite explicitly required by mtk_gem_prime_get_sg_table().
+> By adding this to the kernel as documentation we can more easily point
+> to it e.g. from stable emails about failed backports, as well as allow
+> the community to modify it over time if necessary.
 >
-> Fixes: 3df64d7b0a4f ("drm/mediatek: Implement gem prime vmap/vunmap funct=
-ion")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-> ---
-> Please merge for v6.6 fixes.
+> I've added this under process/ since it also has
+> process/applying-patches.rst. Another interesting document is
+> maintainer/rebasing-and-merging.rst which maybe should eventually refer
+> to this one, but I'm leaving that as a future cleanup.
 >
-> Also, I was wondering why the MediaTek DRM driver implements a lot of
-> the GEM functionality itself, instead of using the GEM DMA helpers.
-> From what I could tell, the code closely follows the DMA helpers, except
-> that it vmaps the buffers only upon request.
+> Thanks to Harshit Mogalapalli for helping with the original blog post
+> as well as this updated document and Bagas Sanjaya for providing
+> thoughtful feedback.
 >
->
->  drivers/gpu/drm/mediatek/mtk_drm_gem.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/med=
-iatek/mtk_drm_gem.c
-> index 9f364df52478..297ee090e02e 100644
-> --- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-> +++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-> @@ -239,6 +239,7 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *obj=
-, struct iosys_map *map)
->         npages =3D obj->size >> PAGE_SHIFT;
->         mtk_gem->pages =3D kcalloc(npages, sizeof(*mtk_gem->pages), GFP_K=
-ERNEL);
->         if (!mtk_gem->pages) {
-> +               sg_free_table(sgt);
->                 kfree(sgt);
->                 return -ENOMEM;
->         }
-> @@ -248,11 +249,13 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *o=
-bj, struct iosys_map *map)
->         mtk_gem->kvaddr =3D vmap(mtk_gem->pages, npages, VM_MAP,
->                                pgprot_writecombine(PAGE_KERNEL));
->         if (!mtk_gem->kvaddr) {
-> +               sg_free_table(sgt);
->                 kfree(sgt);
->                 kfree(mtk_gem->pages);
->                 return -ENOMEM;
->         }
->  out:
-> +       sg_free_table(sgt);
+> v2: fixed heading style, link style, placeholder style, other comments
 
-I think this will cause invalid access from the "goto out" path -
-sg_free_table() accesses the provided sg table pointer, but it doesn't
-handle NULL pointers like kfree() does.
+So this seems generally good and useful.  I have a few small comments,
+none of which necessarily block merging it in its current form:
 
-Regards,
-Fei
+- I would like to see an ack/reviewed-by tag by others with experience
+  with this task if possible.  The lack of complaints is a good start,
+  but not always indicative of a lack of disagreement...:)
 
+- Might this be better placed in Documentation/maintainer?
 
->         kfree(sgt);
->         iosys_map_set_vaddr(map, mtk_gem->kvaddr);
->
-> --
-> 2.42.0.582.g8ccd20d70d-goog
->
->
+- Colordiff looks cool, but I'd at least drop in a mention of the Emacs
+  ediff mode, which offers (I believe) a lot of the same functionality.
+
+Thanks,
+
+jon
