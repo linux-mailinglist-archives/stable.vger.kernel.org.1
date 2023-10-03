@@ -2,95 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E52E7B65B8
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 11:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3B297B6632
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 12:17:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231903AbjJCJli (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 3 Oct 2023 05:41:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55002 "EHLO
+        id S230360AbjJCKRv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 3 Oct 2023 06:17:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231626AbjJCJlh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 05:41:37 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 362559B;
-        Tue,  3 Oct 2023 02:41:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696326094; x=1727862094;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=T3HBmbH4u4NfbMBHXFNCryjhQYhNC51pfF+ukvqnyIQ=;
-  b=F8Im1UQbp0L9tygyvSZCTbkpXdtGQZJyqmppyVy05wDGI8026X7aL7Cr
-   zXkcmI9KDo5aCS4TDwTgjqk0FFfmG2vd5UPgBx7qmeeJJr6lJ/ef3Rpmv
-   ksuT91Bil1U1pG70TxCBHqSS0hV504l9KLgjVNue1yUMgXLWR6iSCBJK0
-   C31IhLnrHweuM7hzIA4KCX7vY2tfXL1JGC4RJKpu6C0i344ekFsmQDDXs
-   X6V9lW4/LjEE1DiRVpkG4iYFzV8KrNzJqzPJTardW5P5bUZneIT4j7B/Y
-   0x7rp32fzKForjAGREQ7H8m/wPTDVfO5Mh94RO0G4XdQJB0nK9bPfN3+4
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="362205220"
-X-IronPort-AV: E=Sophos;i="6.03,196,1694761200"; 
-   d="scan'208";a="362205220"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 02:41:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="744428301"
-X-IronPort-AV: E=Sophos;i="6.03,196,1694761200"; 
-   d="scan'208";a="744428301"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga007.jf.intel.com with ESMTP; 03 Oct 2023 02:41:30 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-        id AA399194A; Tue,  3 Oct 2023 12:41:29 +0300 (EEST)
-Date:   Tue, 3 Oct 2023 12:41:29 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        iain@orangesquash.org.uk,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
-        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>, stable@vger.kernel.org
-Subject: Re: [PATCH v21] PCI: Avoid D3 at suspend for AMD PCIe root ports w/
- USB4 controllers
-Message-ID: <20231003094129.GF3208943@black.fi.intel.com>
-References: <20231002180906.82089-1-mario.limonciello@amd.com>
+        with ESMTP id S229758AbjJCKRv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 06:17:51 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D74E893;
+        Tue,  3 Oct 2023 03:17:48 -0700 (PDT)
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+        id 477DB20B74C0; Tue,  3 Oct 2023 03:17:48 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 477DB20B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1696328268;
+        bh=rPoWxArSPTX73zRYqxSh03l9OCqoYJW886p1zjn4TkE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lgkAWGaEOC3pMX+wazaPs/M9R0m0veb/24KBGsMHsZ7MzKCfUocTtLXWo3JjVnqEE
+         kSwh/5P+V5mJJNzFzbnpLFuZ7bB7k4I4CKfjiFnKj9g82mnXlm9xmFsUOCAmFZolOk
+         OFVHYqeqwAlnttFBqL8TBEivQ8xLQuAmNYRFRz3E=
+Date:   Tue, 3 Oct 2023 03:17:48 -0700
+From:   Shradha Gupta <shradhagupta@linux.microsoft.com>
+To:     Haiyang Zhang <haiyangz@microsoft.com>
+Cc:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+        decui@microsoft.com, stephen@networkplumber.org, kys@microsoft.com,
+        paulros@microsoft.com, olaf@aepfle.de, vkuznets@redhat.com,
+        davem@davemloft.net, wei.liu@kernel.org, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
+        longli@microsoft.com, ssengar@linux.microsoft.com,
+        linux-rdma@vger.kernel.org, daniel@iogearbox.net,
+        john.fastabend@gmail.com, bpf@vger.kernel.org, ast@kernel.org,
+        sharmaajay@microsoft.com, hawk@kernel.org, tglx@linutronix.de,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net,v2, 2/3] net: mana: Fix the tso_bytes calculation
+Message-ID: <20231003101748.GA32191@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1696020147-14989-1-git-send-email-haiyangz@microsoft.com>
+ <1696020147-14989-3-git-send-email-haiyangz@microsoft.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231002180906.82089-1-mario.limonciello@amd.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <1696020147-14989-3-git-send-email-haiyangz@microsoft.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Oct 02, 2023 at 01:09:06PM -0500, Mario Limonciello wrote:
-> Iain reports that USB devices can't be used to wake a Lenovo Z13 from
-> suspend.  This occurs because on some AMD platforms, even though the Root
-> Ports advertise PME_Support for D3hot and D3cold, they don't handle PME
-> messages and generate wakeup interrupts from those states when amd-pmc has
-> put the platform in a hardware sleep state.
+On Fri, Sep 29, 2023 at 01:42:26PM -0700, Haiyang Zhang wrote:
+> sizeof(struct hop_jumbo_hdr) is not part of tso_bytes, so remove
+> the subtraction from header size.
 > 
-> Iain reported this on an AMD Rembrandt platform, but it also affects
-> Phoenix SoCs.  On Iain's system, a USB4 router below the affected Root Port
-> generates the PME. To avoid this issue, disable D3 for the root port
-> associated with USB4 controllers at suspend time.
+> Cc: stable@vger.kernel.org
+> Fixes: bd7fc6e1957c ("net: mana: Add new MANA VF performance counters for easier troubleshooting")
+> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> ---
+>  drivers/net/ethernet/microsoft/mana/mana_en.c | 2 --
+>  1 file changed, 2 deletions(-)
 > 
-> Restore D3 support at resume so that it can be used by runtime suspend.
-> The amd-pmc driver doesn't put the platform in a hardware sleep state for
-> runtime suspend, so PMEs work as advertised.
-> 
-> Cc: stable@vger.kernel.org # 6.1.y: 70b70a4: PCI/sysfs: Protect driver's D3cold preference from user space
-> Cc: stable@vger.kernel.org # 6.5.y: 70b70a4: PCI/sysfs: Protect driver's D3cold preference from user space
-> Cc: stable@vger.kernel.org # 6.6.y: 70b70a4: PCI/sysfs: Protect driver's D3cold preference from user space
-> Link: https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/platform-design-for-modern-standby#low-power-core-silicon-cpu-soc-dram [1]
-> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> Reported-by: Iain Lane <iain@orangesquash.org.uk>
-> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> index 5cdcf7561b38..86e724c3eb89 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> @@ -264,8 +264,6 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+>  				ihs = skb_transport_offset(skb) + sizeof(struct udphdr);
+>  			} else {
+>  				ihs = skb_tcp_all_headers(skb);
+> -				if (ipv6_has_hopopt_jumbo(skb))
+> -					ihs -= sizeof(struct hop_jumbo_hdr);
+>  			}
+>  
+>  			u64_stats_update_begin(&tx_stats->syncp);
+> -- 
+> 2.25.1
+Reviewed-by:Shradha Gupta <shradhagupta@linux.microsoft.com>
