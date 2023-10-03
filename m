@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3845E7B67CB
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 13:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 351817B67D7
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 13:27:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232042AbjJCLZa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 3 Oct 2023 07:25:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53574 "EHLO
+        id S231337AbjJCL1C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 3 Oct 2023 07:27:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231548AbjJCLZa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 07:25:30 -0400
+        with ESMTP id S239926AbjJCL1C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 07:27:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F294B7
-        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 04:25:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A3AC433C7;
-        Tue,  3 Oct 2023 11:25:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59F7B4
+        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 04:26:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA298C433C8;
+        Tue,  3 Oct 2023 11:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696332322;
-        bh=N/valvlXOXORDjKihkY13jGQW1p1+ccz/In5bFSgxBI=;
+        s=k20201202; t=1696332419;
+        bh=vsC9fNFwTXIiE5q4fNXiP0xBI0mqnfXfb/uuds1PQ+8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Ff4uQkC25Y4/xsZ2JRS/WTfklbvdSmwGirdx5sfXhaPq2PLp5x6gWkTnUGMSJYTPQ
-         lF+kgv4zjXWuNf4B1arWb9JmI0Sd++Iu0s8uooISwqCe7ciJx6pXCHEwzIVw8xKUvf
-         7AwhtK8tx+VXWb3b2zdr6syY4wyyHQU+EjDq/c/Ie/rpiiiT+4I2Pnq72tVZMdo5KF
-         Do7igCob4aJNUojIMQlvYFavhr4dE1tp6oj6oQUlI31ykhOedv4y1vGkf37u9PVO4l
-         JHV3gurLTB6mrIUrhIazyDPCpc7QSaafreYyuBlQOJAguh/pLmVx8bp5Zm44MRBxfK
-         9rau6jrbo8zJA==
-Date:   Tue, 3 Oct 2023 07:25:20 -0400
+        b=MTj7suKh1i+pUMEI0f1d7Gw/LXmnkgj3bqDLhJr10dbxSqvgJFp0jL2ebteqE+iFc
+         M0lpUluktExaFp4UHI8nhxv8A/PKbKOuTu9c1Nvb9PI1T6a3fuW7+v9V+XqXtxyUf0
+         7x3C3pwiQMZ62GFgIQ/GYLtOy8Ip1cVORob8FuROvxD1NZCDM52zeq6a0HTEcQh0Eb
+         dUw+r6LjgedyuoGAD5g42OyAHoJtmeISu2w/YLXuwt8d8WdvFffAN+fMcVZJQ/NKiv
+         vnbl7SYB0Q2hpWFOMNhQHUipt/vnV7e2e/RRwSkUnNukkV6JSPdkXZmo1y855IjyMh
+         JBccGWPduxFJg==
+Date:   Tue, 3 Oct 2023 07:26:57 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Namhyung Kim <namhyung@gmail.com>
-Cc:     stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Akemi Yagi <toracat@elrepo.org>
-Subject: Re: 6.5-stable backport request
-Message-ID: <ZRv6IFKjB+KMr6CH@sashalap>
-References: <CAM9d7cggeTaXR5VBD1BoPr9TLPoE7s9YSS2y0w-PGzTMAGsFWA@mail.gmail.com>
+To:     Munehisa Kamata <kamatam@amazon.com>
+Cc:     stable@vger.kernel.org, casey@schaufler-ca.com,
+        vishal.goel@samsung.com, roberto.sassu@huawei.com
+Subject: Re: [PATCH for 4.19.y 0/3] Backport Smack fixes for 4.19.y
+Message-ID: <ZRv6gaFF0hPrhj+D@sashalap>
+References: <20230929015033.835263-1-kamatam@amazon.com>
+ <20230929015138.835462-1-kamatam@amazon.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <CAM9d7cggeTaXR5VBD1BoPr9TLPoE7s9YSS2y0w-PGzTMAGsFWA@mail.gmail.com>
+In-Reply-To: <20230929015138.835462-1-kamatam@amazon.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -47,20 +48,23 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 28, 2023 at 01:41:34PM -0700, Namhyung Kim wrote:
->Hello,
+On Thu, Sep 28, 2023 at 06:51:35PM -0700, Munehisa Kamata wrote:
+>This series backports the following fixes for Smack problems with overlayfs
+>to 4.19.y.
 >
->Please queue up this commit for 6.5-stable:
+>2c085f3a8f23 smack: Record transmuting in smk_transmuted
+>3a3d8fce31a4 smack: Retrieve transmuting information in smack_inode_getsecurity()
+>387ef964460f Smack:- Use overlay inode label in smack_inode_copy_up()
 >
-> * commit: 88cc47e24597971b05b6e94c28a2fc81d2a8d61a
->   ("perf build: Define YYNOMEM as YYNOABORT for bison < 3.81")
-> * Author: Arnaldo Carvalho de Melo <acme@redhat.com>
->
->The recent change v6.5 series added YYNOMEM changes
->in the perf tool and it caused a build failure on machines with
->older bison.  The above commit should be applied to fix it.
+>This slightly modifies the original commits, because the commits rely on
+>some helper functions introduced after v4.19 by different commits that
+>touch more code than just Smack, require even more prerequisite commits and
+>also need some adjustments for 4.19.y.  Instead, this series makes minor
+>modifications for only the overlayfs-related fixes to not use the helper
+>functions rather than backporting everything.
 
-Queued up, thanks!
+What about newer trees? We can't take fixes for 4.19 if the fixes don't
+exist in 5.4+.
 
 -- 
 Thanks,
