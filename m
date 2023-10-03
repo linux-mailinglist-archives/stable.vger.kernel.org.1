@@ -2,101 +2,220 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F1067B7173
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 21:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5057B7B7191
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 21:14:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231406AbjJCTCh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 3 Oct 2023 15:02:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43204 "EHLO
+        id S231389AbjJCTOb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Tue, 3 Oct 2023 15:14:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231262AbjJCTCg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 15:02:36 -0400
-Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AC24AB
-        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 12:02:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1696359752; x=1727895752;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cNw4XMLJcZ7mM9NZjfypiKg3VY+aSDaTH/GtvGkySfc=;
-  b=HO5ps3ldtJKYPoVvu2TF7D/ETpXHZ+rACU+DzCJFI30Rgdz/q8FAM82Q
-   KgQGmNLYZyQgTRc8y4e9sTKxUPIgpgYHVVImSwjHN2v5w8O9cbcZknWh/
-   7usIZjRzjj22d+utdCdNUY0aBPOz0M74M6Qs/qIAIOVuFxO4im/+Blhkk
-   U=;
-X-IronPort-AV: E=Sophos;i="6.03,198,1694736000"; 
-   d="scan'208";a="362080372"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-93c3b254.us-east-1.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 19:02:31 +0000
-Received: from EX19MTAUWB002.ant.amazon.com (iad55-ws-svc-p15-lb9-vlan3.iad.amazon.com [10.40.159.166])
-        by email-inbound-relay-iad-1a-m6i4x-93c3b254.us-east-1.amazon.com (Postfix) with ESMTPS id E9EE3E18E3;
-        Tue,  3 Oct 2023 19:02:29 +0000 (UTC)
-Received: from EX19D010UWA004.ant.amazon.com (10.13.138.204) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Tue, 3 Oct 2023 19:02:29 +0000
-Received: from u0acfa43c8cad58.ant.amazon.com (10.187.171.33) by
- EX19D010UWA004.ant.amazon.com (10.13.138.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Tue, 3 Oct 2023 19:02:29 +0000
-From:   Munehisa Kamata <kamatam@amazon.com>
-To:     <sashal@kernel.org>
-CC:     <casey@schaufler-ca.com>, <kamatam@amazon.com>,
-        <roberto.sassu@huawei.com>, <stable@vger.kernel.org>,
-        <vishal.goel@samsung.com>
-Subject: Re: [PATCH for 4.19.y 0/3] Backport Smack fixes for 4.19.y
-Date:   Tue, 3 Oct 2023 12:02:17 -0700
-Message-ID: <20231003190217.35669-1-kamatam@amazon.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <ZRv6gaFF0hPrhj+D@sashalap>
-References: <ZRv6gaFF0hPrhj+D@sashalap>
+        with ESMTP id S230239AbjJCTOb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 15:14:31 -0400
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55DB88E;
+        Tue,  3 Oct 2023 12:14:28 -0700 (PDT)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-57ddba5ba84so109659eaf.0;
+        Tue, 03 Oct 2023 12:14:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696360467; x=1696965267;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GLnxI+9L7q2hlugZd5feFm7zHcxH+KjWd0T7wlo3ADI=;
+        b=v1TVmZNx4eI341piPL9lK8D0TwkNaGEQw4A/ddwWtkyx56OaELlwBNYObszBCJ4q/C
+         w3jGiZ1eBLvr/x68YP4BJ1lbkEBIOeACIgsxKbCOJ4EitUd4oLUiIF9cyi2s0st6iuKc
+         2p4koZAm/8T50Fl0RDGC9sX21hY7J9wmvCypYsQgMfApraXKwJnJgj3zJtgkbQtYNEPk
+         1B1Al4Vtdx2b0hVZ8u/i83hDWLuiGQnI2EDsCWGH43EFDW2XB7x0i37GaSY23WUKjFCM
+         By/oNzy2BvBAmobgCiBVvr6Hzu9OPK/Bjd5JNmBB4jf7ehPdK3FK1ishQUPiytisPohK
+         fQVw==
+X-Gm-Message-State: AOJu0YzvQ9EKTad8POJTLKeMUgAXn+ZT9W0kqKAkuydTjZKBD1onyRkL
+        /hQ/riI/LFHNl73GIEYeWlPcx+KKOz/hUp1Kr+Q=
+X-Google-Smtp-Source: AGHT+IEDCjGTpWeYK5y5ChirNp8+//sSGWalh6YtnjNXarMJX525NELg/Fo1WneB/mwT/A2IVVdrn2CyBICzzkpm+9Y=
+X-Received: by 2002:a4a:b588:0:b0:578:c2af:45b5 with SMTP id
+ t8-20020a4ab588000000b00578c2af45b5mr314352ooo.0.1696360467236; Tue, 03 Oct
+ 2023 12:14:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.187.171.33]
-X-ClientProxiedBy: EX19D031UWC003.ant.amazon.com (10.13.139.252) To
- EX19D010UWA004.ant.amazon.com (10.13.138.204)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230927195035.2174949-1-anarsoul@gmail.com>
+In-Reply-To: <20230927195035.2174949-1-anarsoul@gmail.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 3 Oct 2023 21:14:16 +0200
+Message-ID: <CAJZ5v0gUOt3v+rsfD0D8JrHCTR_5qrp7PZxCF=0_ZVFVpg6XMQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ACPI: FPDT: properly handle invalid FPDT subtables
+To:     Vasily Khoruzhick <anarsoul@gmail.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Sasha,
-
-On Tue, 2023-10-03 11:26:57 +0000, Sasha Levin wrote:
+On Wed, Sep 27, 2023 at 9:50 PM Vasily Khoruzhick <anarsoul@gmail.com> wrote:
 >
-> On Thu, Sep 28, 2023 at 06:51:35PM -0700, Munehisa Kamata wrote:
-> >This series backports the following fixes for Smack problems with overlayfs
-> >to 4.19.y.
-> >
-> >2c085f3a8f23 smack: Record transmuting in smk_transmuted
-> >3a3d8fce31a4 smack: Retrieve transmuting information in smack_inode_getsecurity()
-> >387ef964460f Smack:- Use overlay inode label in smack_inode_copy_up()
-> >
-> >This slightly modifies the original commits, because the commits rely on
-> >some helper functions introduced after v4.19 by different commits that
-> >touch more code than just Smack, require even more prerequisite commits and
-> >also need some adjustments for 4.19.y.  Instead, this series makes minor
-> >modifications for only the overlayfs-related fixes to not use the helper
-> >functions rather than backporting everything.
-> 
-> What about newer trees? We can't take fixes for 4.19 if the fixes don't
-> exist in 5.4+.
+> Buggy BIOSes may have invalid FPDT subtables, e.g. on my hardware:
+>
+> S3PT subtable:
+>
+> 7F20FE30: 53 33 50 54 24 00 00 00-00 00 00 00 00 00 18 01  *S3PT$...........*
+> 7F20FE40: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *................*
+> 7F20FE50: 00 00 00 00
+>
+> Here the first record has zero length.
+>
+> FBPT subtable:
+>
+> 7F20FE50:             46 42 50 54-3C 00 00 00 46 42 50 54  *....FBPT<...FBPT*
+> 7F20FE60: 02 00 30 02 00 00 00 00-00 00 00 00 00 00 00 00  *..0.............*
+> 7F20FE70: 2A A6 BC 6E 0B 00 00 00-1A 44 41 70 0B 00 00 00  **..n.....DAp....*
+> 7F20FE80: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *................*
+>
+> And here FBPT table has FBPT signature repeated instead of the first
+> record.
+>
+> Current code will be looping indefinitely due to zero length records, so
+> break out of the loop if record length is zero.
+>
+> While we are here, add proper handling for fpdt_process_subtable()
+> failures.
+>
+> Fixes: d1eb86e59be0 ("ACPI: tables: introduce support for FPDT table")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+> ---
+> v2: return error from fpdt_process_subtable() if zero-length record is
+> found and handle fpdt_process_subtable() failures
+>
+>  drivers/acpi/acpi_fpdt.c | 42 ++++++++++++++++++++++++++++++++--------
+>  1 file changed, 34 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/acpi/acpi_fpdt.c b/drivers/acpi/acpi_fpdt.c
+> index a2056c4c8cb7..c97c6e3936cc 100644
+> --- a/drivers/acpi/acpi_fpdt.c
+> +++ b/drivers/acpi/acpi_fpdt.c
+> @@ -194,12 +194,19 @@ static int fpdt_process_subtable(u64 address, u32 subtable_type)
+>                 record_header = (void *)subtable_header + offset;
+>                 offset += record_header->length;
+>
+> +               if (!record_header->length) {
+> +                       pr_err(FW_BUG "Zero-length record found.\n");
+> +                       result = -EINVAL;
+> +                       goto err;
+> +               }
+> +
+>                 switch (record_header->type) {
+>                 case RECORD_S3_RESUME:
+>                         if (subtable_type != SUBTABLE_S3PT) {
+>                                 pr_err(FW_BUG "Invalid record %d for subtable %s\n",
+>                                      record_header->type, signature);
+> -                               return -EINVAL;
+> +                               result = -EINVAL;
+> +                               goto err;
+>                         }
+>                         if (record_resume) {
+>                                 pr_err("Duplicate resume performance record found.\n");
+> @@ -208,7 +215,7 @@ static int fpdt_process_subtable(u64 address, u32 subtable_type)
+>                         record_resume = (struct resume_performance_record *)record_header;
+>                         result = sysfs_create_group(fpdt_kobj, &resume_attr_group);
+>                         if (result)
+> -                               return result;
+> +                               goto err;
+>                         break;
+>                 case RECORD_S3_SUSPEND:
+>                         if (subtable_type != SUBTABLE_S3PT) {
+> @@ -223,13 +230,14 @@ static int fpdt_process_subtable(u64 address, u32 subtable_type)
+>                         record_suspend = (struct suspend_performance_record *)record_header;
+>                         result = sysfs_create_group(fpdt_kobj, &suspend_attr_group);
+>                         if (result)
+> -                               return result;
+> +                               goto err;
+>                         break;
+>                 case RECORD_BOOT:
+>                         if (subtable_type != SUBTABLE_FBPT) {
+>                                 pr_err(FW_BUG "Invalid %d for subtable %s\n",
+>                                      record_header->type, signature);
+> -                               return -EINVAL;
+> +                               result = -EINVAL;
+> +                               goto err;
+>                         }
+>                         if (record_boot) {
+>                                 pr_err("Duplicate boot performance record found.\n");
+> @@ -238,7 +246,7 @@ static int fpdt_process_subtable(u64 address, u32 subtable_type)
+>                         record_boot = (struct boot_performance_record *)record_header;
+>                         result = sysfs_create_group(fpdt_kobj, &boot_attr_group);
+>                         if (result)
+> -                               return result;
+> +                               goto err;
+>                         break;
+>
+>                 default:
+> @@ -247,6 +255,16 @@ static int fpdt_process_subtable(u64 address, u32 subtable_type)
+>                 }
+>         }
+>         return 0;
+> +
+> +err:
+> +       if (record_boot)
+> +               sysfs_remove_group(fpdt_kobj, &boot_attr_group);
+> +       if (record_suspend)
+> +               sysfs_remove_group(fpdt_kobj, &suspend_attr_group);
+> +       if (record_resume)
+> +               sysfs_remove_group(fpdt_kobj, &resume_attr_group);
+> +
+> +       return result;
+>  }
+>
+>  static int __init acpi_init_fpdt(void)
+> @@ -255,6 +273,7 @@ static int __init acpi_init_fpdt(void)
+>         struct acpi_table_header *header;
+>         struct fpdt_subtable_entry *subtable;
+>         u32 offset = sizeof(*header);
+> +       int result;
+>
+>         status = acpi_get_table(ACPI_SIG_FPDT, 0, &header);
+>
+> @@ -263,8 +282,8 @@ static int __init acpi_init_fpdt(void)
+>
+>         fpdt_kobj = kobject_create_and_add("fpdt", acpi_kobj);
+>         if (!fpdt_kobj) {
+> -               acpi_put_table(header);
+> -               return -ENOMEM;
+> +               result = -ENOMEM;
+> +               goto err_nomem;
+>         }
+>
+>         while (offset < header->length) {
+> @@ -272,8 +291,10 @@ static int __init acpi_init_fpdt(void)
+>                 switch (subtable->type) {
+>                 case SUBTABLE_FBPT:
+>                 case SUBTABLE_S3PT:
+> -                       fpdt_process_subtable(subtable->address,
+> +                       result = fpdt_process_subtable(subtable->address,
+>                                               subtable->type);
+> +                       if (result)
+> +                               goto err_subtable;
+>                         break;
+>                 default:
+>                         /* Other types are reserved in ACPI 6.4 spec. */
+> @@ -282,6 +303,11 @@ static int __init acpi_init_fpdt(void)
+>                 offset += sizeof(*subtable);
+>         }
+>         return 0;
+> +err_subtable:
+> +       kobject_put(fpdt_kobj);
+> +err_nomem:
+> +       acpi_put_table(header);
+> +       return result;
+>  }
+>
+>  fs_initcall(acpi_init_fpdt);
+> --
 
-Sorry if it was not clear enough in the first post[1]. For 5.4+, please just
-cherry-pick the 3 commits. Those should apply cleanly.
-
-[1] https://lore.kernel.org/stable/20230929015033.835263-1-kamatam@amazon.com/
-
-Thanks,
-Munehisa
- 
-> -- 
-> Thanks,
-> Sasha
-> 
+Applied (with some minor tweaks) as 6.7 material, thanks!
