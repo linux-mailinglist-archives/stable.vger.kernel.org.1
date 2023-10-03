@@ -2,82 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF50A7B5DD3
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 01:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE0907B5F3B
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 05:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229970AbjJBXrI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 2 Oct 2023 19:47:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47992 "EHLO
+        id S229765AbjJCDIR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 2 Oct 2023 23:08:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjJBXrI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 19:47:08 -0400
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29DDA83;
-        Mon,  2 Oct 2023 16:47:05 -0700 (PDT)
-Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-578b4997decso186005a12.0;
-        Mon, 02 Oct 2023 16:47:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696290424; x=1696895224; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MsrzhgDbcJtwYX/2EGwafIR0w5juOFXJIQAbPgvHjTw=;
-        b=BNSzChieo1c8zE1ZESxP6nS9C1dZj3+U/zZh8dQO/EIFTc9BygTKvbStJ0QubiPjVO
-         MZWdunWKvI50eGCFKxWO/kzTiIgioa2Wvfl8iyX7ufSxL4jBWnJ1LVwobMh+mdmqYnJS
-         mwnxA9mr53RiVdpoYYty3GOx1Np5XmUmdxolIKcTSY0YK3k+y/6o3Ww8Zy+y87vcZ5Lp
-         m2VluND9St5oi2ShkwZay6PHuKf1xw4GgEQ2TDTUsbPHvAD0vX7uSypyY5cBNKnSgduG
-         V6gKz4eTlsoLe4RgB/Eh4afmlO4s++gODKpFK3Cf7ky3RCrtxPwsEDxXC8aATEP76W2a
-         pWvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696290424; x=1696895224;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MsrzhgDbcJtwYX/2EGwafIR0w5juOFXJIQAbPgvHjTw=;
-        b=AX4NzU/c4tdYrJ2IXmVjY1O2HYoKhcwsQzv5AbyVARFMLS2+L7wbqI4UK4U2XOsNWR
-         I421oAi5LuA0HGsyFOoYmtIaLqu3JN5uoQEvp4M0ShM2OD+RDcHivoTOZZaIYF18HQSl
-         5zLsSjVGab/IyY27kyRLbZ3VC1AyV9A3X8B1DNIUg6rR5X3B/31qIDwCBj5fjBiJhsEG
-         p/MUXqb1v162tvJuJ3hu4Q0SLub2IpaEP3Qh9lQgI4phDutbpOWmfyQK/kPb1ZyH8/S+
-         fknZ/MAJNOCfZkpQ3oALsmh7044X5ZX+uCCflJUgp58orcoD0+7IL48JdxorSCYeysab
-         7Bqg==
-X-Gm-Message-State: AOJu0YypGlm7iznDNKlwe8PoNFF8hSEB8pbIUU8GU6v4y6IpIfNe/G+e
-        XiBhjhwq4MzDhaTUPIzUK0Y=
-X-Google-Smtp-Source: AGHT+IEBCTbSZM/8E/uKaeav4fYt2K5qKUh3CuUFJFJQXANJT3CbxyYRJqvtwNk3zj/OuJrUW2TzCQ==
-X-Received: by 2002:a17:90b:1194:b0:269:32d2:5ac4 with SMTP id gk20-20020a17090b119400b0026932d25ac4mr13277538pjb.25.1696290424438;
-        Mon, 02 Oct 2023 16:47:04 -0700 (PDT)
-Received: from debian.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id ft13-20020a17090b0f8d00b00276b60aa43bsm6884452pjb.17.2023.10.02.16.47.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Oct 2023 16:47:03 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 8117881A3121; Tue,  3 Oct 2023 06:46:58 +0700 (WIB)
-Date:   Tue, 3 Oct 2023 06:46:58 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Erik =?utf-8?B?RG9iw6Fr?= <erik.dobak@gmail.com>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux Bluetooth <linux-bluetooth@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Mediatek <linux-mediatek@lists.infradead.org>,
-        Linux Regressions <regressions@lists.linux.dev>
-Cc:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Tomasz =?utf-8?Q?Mo=C5=84?= <tomasz.mon@nordicsemi.no>
-Subject: Re: bluetooth issues since kernel 6.4 - not discovering other bt
- devices - /linux/drivers/bluetooth/btusb.c
-Message-ID: <ZRtWcgiH5JhD5NU2@debian.me>
-References: <CAH7-e5sb+kT_LRb1_y-c5JaFN0=KrrRT97otUPKzTCgzGsVdrQ@mail.gmail.com>
+        with ESMTP id S229464AbjJCDIQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 2 Oct 2023 23:08:16 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7F95BF
+        for <stable@vger.kernel.org>; Mon,  2 Oct 2023 20:08:13 -0700 (PDT)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3932iiUa006895;
+        Tue, 3 Oct 2023 03:08:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=Yo8EUY2YOGr9oAHgGUiF2K1wXSEfsaq5SiB+5Hvijzc=;
+ b=eE4oEvG3KF1/n5SXznUwXrvHa72x85O33YSqXoYGejFc7ilnybLuhE3u17CUHr/kMhJQ
+ Bi07+ZZ4gIIFLaM3v3RCAsVKOTXZwHjqMVI4u+YwysGYwLPvfPkOPNcjHZpebBIWfGHb
+ hqLhgEfEpNr4Hc5E3LPtkRD04w0AFLZK5WqTZ7+ToOmXP4X5Xbfg5mUGZzfc7fR1rMT2
+ PvujURmt6MfVSpESNOqe/nN8AcKRnGlEcNZB24fw5iOe01fUgvXmqyfVCbDbSk9pb8kz
+ svlwe2PXXv3Xsu0hNDWj+wEINJixAfswqlOBS+nv9HrXa0+aMSDyj5X0K8li5blfNC/J 5w== 
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tgaen8c8y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 03 Oct 2023 03:08:05 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3931lZZm025087;
+        Tue, 3 Oct 2023 03:08:04 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3texcxxhwe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 03 Oct 2023 03:08:04 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+        by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 393383kx62128606
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 3 Oct 2023 03:08:04 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B3AF158052;
+        Tue,  3 Oct 2023 03:08:03 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F235958056;
+        Tue,  3 Oct 2023 03:08:02 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.67.151.197])
+        by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Tue,  3 Oct 2023 03:08:02 +0000 (GMT)
+From:   Gaurav Batra <gbatra@linux.vnet.ibm.com>
+To:     mpe@ellerman.id.au
+Cc:     linuxppc-dev@lists.ozlabs.org, brking@linux.vnet.ibm.com,
+        gjoyce@linux.vnet.ibm.com,
+        Gaurav Batra <gbatra@linux.vnet.ibm.com>,
+        stable@vger.kernel.org
+Subject: [PATCH v2] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
+Date:   Mon,  2 Oct 2023 22:08:02 -0500
+Message-Id: <20231003030802.47914-1-gbatra@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="fW063juLwqeEFwfL"
-Content-Disposition: inline
-In-Reply-To: <CAH7-e5sb+kT_LRb1_y-c5JaFN0=KrrRT97otUPKzTCgzGsVdrQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: eIfEegy60LjzXvOkJjBlp_l8g01auFfk
+X-Proofpoint-ORIG-GUID: eIfEegy60LjzXvOkJjBlp_l8g01auFfk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-02_16,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ mlxlogscore=898 impostorscore=0 malwarescore=0 lowpriorityscore=0
+ spamscore=0 suspectscore=0 clxscore=1011 priorityscore=1501 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310030024
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,75 +82,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+When a device is initialized, the driver invokes dma_supported() twice -
+first for streaming mappings followed by coherent mappings. For an
+SR-IOV device, default window is deleted and DDW created. With vPMEM
+enabled, TCE mappings are dynamically created for both vPMEM and SR-IOV
+device.  There are no direct mappings.
 
---fW063juLwqeEFwfL
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+First time when dma_supported() is called with 64 bit mask, DDW is created
+and marked as dynamic window. The second time dma_supported() is called,
+enable_ddw() finds existing window for the device and incorrectly returns
+it as "direct mapping".
 
-On Sun, Oct 01, 2023 at 07:47:54AM +0200, Erik Dob=C3=A1k wrote:
-> Hello!
->=20
-> I bought a new laptop fujitsu life book and everything is going fine
-> on artix just the bt makes trouble:
->=20
-> /var/log/error.log
-> Sep 30 18:43:48 nexus bluetoothd[2266]:
-> src/adapter.c:reset_adv_monitors_complete() Failed to reset Adv
-> Monitors: Failed (0x03)
-> Sep 30 18:43:48 nexus bluetoothd[2266]: Failed to clear UUIDs: Failed (0x=
-03)
-> Sep 30 18:43:48 nexus bluetoothd[2266]: Failed to add UUID: Failed (0x03)
-> Sep 30 18:43:48 nexus bluetoothd[2266]: Failed to add UUID: Failed (0x03)
->=20
-> i searched a bit the webs and found a new commit at kernel org that
-> does do the trouble:
-> https://bugs.archlinux.org/task/78980
->=20
-> follow the linkeys inside the commits there or read this one:
->=20
-> ---------------before------------------------------------
-> /* interface numbers are hardcoded in the spec */
->         if (intf->cur_altsetting->desc.bInterfaceNumber !=3D 0) {
->                 if (!(id->driver_info & BTUSB_IFNUM_2))
->                         return -ENODEV;
->                 if (intf->cur_altsetting->desc.bInterfaceNumber !=3D 2)
->                         return -ENODEV;
->         }
-> -----------after----------------------------------------------------
-> if ((id->driver_info & BTUSB_IFNUM_2) &&
->     (intf->cur_altsetting->desc.bInterfaceNumber !=3D 0) &&
->     (intf->cur_altsetting->desc.bInterfaceNumber !=3D 2))
-> return -ENODEV;
-> --------------------------------------------------------
->=20
-> the dude just hooked up 3 conditions in a row with && where before it
-> was 2 conditions in 1 condition. + the comment was removed.
->=20
->=20
+This only happens when size of DDW is big enough to map max LPAR memory.
 
-Try latest mainline first (currently v6.6-rc4). Because you have to
-compile your own kernel, please refer to
-Documentation/admin-guide/quickly-build-trimmed-linux.rst if you don't know=
- how to do the compilation.
+This results in streaming TCEs to not get dynamically mapped, since code
+incorrently assumes these are already pre-mapped. The adapter initially
+comes up but goes down due to EEH.
 
-Also, don't top-post when replying; reply inline with appropriate context
-instead.
+Fixes: 381ceda88c4c ("powerpc/pseries/iommu: Make use of DDW for indirect mapping")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+---
+ arch/powerpc/platforms/pseries/iommu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Thanks.
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 16d93b580f61..496e16c588aa 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -914,7 +914,8 @@ static int remove_ddw(struct device_node *np, bool remove_prop, const char *win_
+ 	return 0;
+ }
+ 
+-static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift)
++static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift,
++			      bool *direct_mapping)
+ {
+ 	struct dma_win *window;
+ 	const struct dynamic_dma_window_prop *dma64;
+@@ -927,6 +928,7 @@ static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *windo
+ 			dma64 = window->prop;
+ 			*dma_addr = be64_to_cpu(dma64->dma_base);
+ 			*window_shift = be32_to_cpu(dma64->window_shift);
++			*direct_mapping = window->direct;
+ 			found = true;
+ 			break;
+ 		}
+@@ -1270,10 +1272,8 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 
+ 	mutex_lock(&dma_win_init_mutex);
+ 
+-	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
+-		direct_mapping = (len >= max_ram_len);
++	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len, &direct_mapping))
+ 		goto out_unlock;
+-	}
+ 
+ 	/*
+ 	 * If we already went through this for a previous function of
+-- 
+2.39.2 (Apple Git-143)
 
---=20
-An old man doll... just what I always wanted! - Clara
-
---fW063juLwqeEFwfL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZRtWagAKCRD2uYlJVVFO
-o0d+AP4oNwd9Cjay1Ao/Mm5lLmmn0rZYovuJO9UIOSdBN/w/sAEAuTvELS2Y3NZ+
-a45nNYc16F/Qn5lYdAjNfJcrgNQwyQE=
-=X3ML
------END PGP SIGNATURE-----
-
---fW063juLwqeEFwfL--
