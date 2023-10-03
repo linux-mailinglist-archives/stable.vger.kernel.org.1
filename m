@@ -2,103 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 939057B6594
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 11:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E52E7B65B8
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 11:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231685AbjJCJe1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 3 Oct 2023 05:34:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51212 "EHLO
+        id S231903AbjJCJli (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 3 Oct 2023 05:41:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231199AbjJCJe0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 05:34:26 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D344090;
-        Tue,  3 Oct 2023 02:34:23 -0700 (PDT)
-Date:   Tue, 03 Oct 2023 09:34:21 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696325662;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wiaEifUQZM+72IROgiZLrf+fS5npBuehugw6N+3/MPA=;
-        b=4IaB+AD9kQCJZoD8zsu8wudfovUnF5pDakpY2OOYNqQgt74qSQ+r81471OiDjFazbBt1YL
-        yVAEA5YWqQmq1AWw42qbIJxW2LC2q7pW9wKXn5xTOIhbtS+cdIu8LMDLjFc2TUjSVGy5dp
-        WDeUmK9li7dJ7OnhpFmXpyCZ7qm1SwEgBegj1Zf3PVN9VZiXbCRQV/oaRVMvh26BffTVYS
-        AtDYtKQRKKe8bHatXNrL6+VMqPTPRSDBi3LwH91X29aBO4ZimdsQzF8/axkxCFTJxIANGA
-        +pidHH2c13rQg7Nd7LsBWG5nmo5CScuoc2zRAsoDvY77sUjWSMXDPZqt2DIFkw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696325662;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wiaEifUQZM+72IROgiZLrf+fS5npBuehugw6N+3/MPA=;
-        b=oJZ9AFF/qSaT1hMHEkpp0RC3cviUkFlExRZmV7XLQmKxMfsw+VUma9g/DEYq1pU4fx4PM9
-        v8g6FR8oZWYqORCA==
-From:   "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/amd_nb: Use Family 19h Models 60h-7Fh Function 4 IDs
-Cc:     Yazen Ghannam <yazen.ghannam@amd.com>,
-        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20230803150430.3542854-1-yazen.ghannam@amd.com>
-References: <20230803150430.3542854-1-yazen.ghannam@amd.com>
+        with ESMTP id S231626AbjJCJlh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 05:41:37 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 362559B;
+        Tue,  3 Oct 2023 02:41:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696326094; x=1727862094;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=T3HBmbH4u4NfbMBHXFNCryjhQYhNC51pfF+ukvqnyIQ=;
+  b=F8Im1UQbp0L9tygyvSZCTbkpXdtGQZJyqmppyVy05wDGI8026X7aL7Cr
+   zXkcmI9KDo5aCS4TDwTgjqk0FFfmG2vd5UPgBx7qmeeJJr6lJ/ef3Rpmv
+   ksuT91Bil1U1pG70TxCBHqSS0hV504l9KLgjVNue1yUMgXLWR6iSCBJK0
+   C31IhLnrHweuM7hzIA4KCX7vY2tfXL1JGC4RJKpu6C0i344ekFsmQDDXs
+   X6V9lW4/LjEE1DiRVpkG4iYFzV8KrNzJqzPJTardW5P5bUZneIT4j7B/Y
+   0x7rp32fzKForjAGREQ7H8m/wPTDVfO5Mh94RO0G4XdQJB0nK9bPfN3+4
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="362205220"
+X-IronPort-AV: E=Sophos;i="6.03,196,1694761200"; 
+   d="scan'208";a="362205220"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 02:41:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="744428301"
+X-IronPort-AV: E=Sophos;i="6.03,196,1694761200"; 
+   d="scan'208";a="744428301"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 03 Oct 2023 02:41:30 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id AA399194A; Tue,  3 Oct 2023 12:41:29 +0300 (EEST)
+Date:   Tue, 3 Oct 2023 12:41:29 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Hans de Goede <hdegoede@redhat.com>,
+        iain@orangesquash.org.uk,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
+        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>, stable@vger.kernel.org
+Subject: Re: [PATCH v21] PCI: Avoid D3 at suspend for AMD PCIe root ports w/
+ USB4 controllers
+Message-ID: <20231003094129.GF3208943@black.fi.intel.com>
+References: <20231002180906.82089-1-mario.limonciello@amd.com>
 MIME-Version: 1.0
-Message-ID: <169632566187.3135.7497896905004308037.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231002180906.82089-1-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the x86/platform branch of tip:
+On Mon, Oct 02, 2023 at 01:09:06PM -0500, Mario Limonciello wrote:
+> Iain reports that USB devices can't be used to wake a Lenovo Z13 from
+> suspend.  This occurs because on some AMD platforms, even though the Root
+> Ports advertise PME_Support for D3hot and D3cold, they don't handle PME
+> messages and generate wakeup interrupts from those states when amd-pmc has
+> put the platform in a hardware sleep state.
+> 
+> Iain reported this on an AMD Rembrandt platform, but it also affects
+> Phoenix SoCs.  On Iain's system, a USB4 router below the affected Root Port
+> generates the PME. To avoid this issue, disable D3 for the root port
+> associated with USB4 controllers at suspend time.
+> 
+> Restore D3 support at resume so that it can be used by runtime suspend.
+> The amd-pmc driver doesn't put the platform in a hardware sleep state for
+> runtime suspend, so PMEs work as advertised.
+> 
+> Cc: stable@vger.kernel.org # 6.1.y: 70b70a4: PCI/sysfs: Protect driver's D3cold preference from user space
+> Cc: stable@vger.kernel.org # 6.5.y: 70b70a4: PCI/sysfs: Protect driver's D3cold preference from user space
+> Cc: stable@vger.kernel.org # 6.6.y: 70b70a4: PCI/sysfs: Protect driver's D3cold preference from user space
+> Link: https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/platform-design-for-modern-standby#low-power-core-silicon-cpu-soc-dram [1]
+> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> Reported-by: Iain Lane <iain@orangesquash.org.uk>
+> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-Commit-ID:     2a565258b3f4bbdc7a3c09cd02082cb286a7bffc
-Gitweb:        https://git.kernel.org/tip/2a565258b3f4bbdc7a3c09cd02082cb286a7bffc
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Thu, 03 Aug 2023 10:04:30 -05:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 03 Oct 2023 11:25:01 +02:00
-
-x86/amd_nb: Use Family 19h Models 60h-7Fh Function 4 IDs
-
-Three PCI IDs for DF Function 4 were defined but not used.
-
-Add them to the "link" list.
-
-Fixes: f8faf3496633 ("x86/amd_nb: Add AMD PCI IDs for SMN communication")
-Fixes: 23a5b8bb022c ("x86/amd_nb: Add PCI ID for family 19h model 78h")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230803150430.3542854-1-yazen.ghannam@amd.com
----
- arch/x86/kernel/amd_nb.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 10c2a3c..43238ac 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -116,6 +116,9 @@ static const struct pci_device_id amd_nb_link_ids[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M10H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M40H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M50H_DF_F4) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M60H_DF_F4) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M70H_DF_F4) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_19H_M78H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_CNB17H_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M00H_DF_F4) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_MI200_DF_F4) },
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
