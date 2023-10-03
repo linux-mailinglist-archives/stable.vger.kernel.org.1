@@ -2,269 +2,261 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFFD77B71B1
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 21:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C082C7B71E2
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 21:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231919AbjJCTYh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 3 Oct 2023 15:24:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50494 "EHLO
+        id S232388AbjJCTk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 3 Oct 2023 15:40:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230239AbjJCTYg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 15:24:36 -0400
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2049.outbound.protection.outlook.com [40.107.95.49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 084F79E;
-        Tue,  3 Oct 2023 12:24:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nOhKSHPB+1E5G/fyEHw5xD7WrgO+P/PTyDWciP5w/BfADw0DSic2+vCef20bAYcwZ2sRQ3mxJLiwOCgiwU+pd0YOfnM9PEat54Me4mxO4gagQyTecZHK/9IBXzTuxd/HxDlHnAIzrv1mhXRr44/dRhiKg40z6Es6MuuAcGYTxo231wB2xuQ08WlY1ae/twCszzHBkQ+Y8y9wXLKm22bFlXZHgJy9sG+QE9CYIvO9+e2hi18fIy0QBzKwkc968Q9OkxhBiPpMmobWVLG2Pj+BSqlfhIhr+E16ysB1Jg4LmBsepM/zb21B3ciPYs8+96PdXmELDgO9Bj33vRRAUEKVlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mQDIFXYiIxr8PTEgSNWgT+ywsPj7M0jIU2y+/skcqEQ=;
- b=OSjhAfvrVoffKudSyt8uNwLPTwOm5wjvyAqP69JkPFV8XxOuwz39jBlz9iklH/TyHn1u449hgtCBRJ236yaEC8WUFaocTAtoMrcil+NuiP4vttzKBjvCCI8Jp6jieuLNNP6F2RmsOWrzDSz5cc+/X9SsGh63oOR9ALrfJGQ9BkXrOPQ+7yPRagJJMD/dRQqCk0TqPGU2HSLJvHRyQMH88hUTd4gHsmKeK/FXGBMd/rT8CK3suh6UDKtwg9u/lXGfHnJFieSFDhSfPoGEBkGNQVmlYg7kIuPYkRjsVGWyMOnIu4NbkWIzIpE0deIXEJ1B0byLxg/REs4I4HawAF42dA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mQDIFXYiIxr8PTEgSNWgT+ywsPj7M0jIU2y+/skcqEQ=;
- b=n6JA2zG06nw0+1JqLzldwsPMD/0CSYit5yp1tN+RpqUUUtsx+abiq8AT7T434SO+HXx8J3giJjbjFT8DcSi1bnBwVCK/zDQuN7sWTmEO3r8LzXygjvDo+fZO2FkdR+T+jy2gSAxF42tWpXnGSiIGtptClpx+ZqK6T56FBZmvWAM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by DM4PR12MB5771.namprd12.prod.outlook.com (2603:10b6:8:62::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.27; Tue, 3 Oct
- 2023 19:24:29 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::3e65:d396:58fb:27d4]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::3e65:d396:58fb:27d4%3]) with mapi id 15.20.6838.028; Tue, 3 Oct 2023
- 19:24:28 +0000
-Message-ID: <215fbc3b-e7ed-4100-808f-ce5df292039f@amd.com>
-Date:   Tue, 3 Oct 2023 14:24:26 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v21] PCI: Avoid D3 at suspend for AMD PCIe root ports w/
- USB4 controllers
-Content-Language: en-US
-To:     Bjorn Helgaas <helgaas@kernel.org>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        iain@orangesquash.org.uk,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
-        =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Lukas Wunner <lukas@wunner.de>, stable@vger.kernel.org
-References: <20231003191622.GA682654@bhelgaas>
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20231003191622.GA682654@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DM6PR02CA0046.namprd02.prod.outlook.com
- (2603:10b6:5:177::23) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S232069AbjJCTk0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 15:40:26 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D04D9E
+        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 12:40:23 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-59f7f2b1036so16012607b3.3
+        for <stable@vger.kernel.org>; Tue, 03 Oct 2023 12:40:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1696362022; x=1696966822; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lfr2egyOR1+C8mShorjIOzO6y7VY3Fj1mtMvJxoOK94=;
+        b=PQQqyYd+6uXF9D80Z40ld/X+JOpKdDMrgI1lB1FVGEowbemslL8lvrbY+GZZV0u349
+         LuktTORcUrE/PssAcwYuRPqB6Q6AJjUS33kg1bPX1ueikglwVACWevDjHgH3yDbn3fha
+         VtxxRaIAKhoeLu7jIiYB6BBnAfIncsKEQXN7ktHutF4/R2BnvnUGk9uSVdlt2ZAAzdtg
+         sqoDRgAO5qhazmggFZKDrNtm9z5hyrOt4ipbNRTlI8ZGXlPsxWXo3yTKMOlMsWtU92zi
+         yzPUoxC6dMm06FPmg3yOzyIAj1li21u622jep2tUrcKYSb5JfvOc4ZZVgOI0Jr3HR5eO
+         Q2Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696362022; x=1696966822;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lfr2egyOR1+C8mShorjIOzO6y7VY3Fj1mtMvJxoOK94=;
+        b=edBbW+vSQNISdgUhhoVEbPDiMCAtwF5UuAVAzdrSY1ym5K95fUMmvtIFOSZfOlzHLf
+         z6tXDk+gNZrVPdOUhGvNG+6s/A3jWSmS3kxoIhme9N43tsfB3EH7SuJ8OC2ljCoqjcc6
+         AuDtDfWeujO3gx3Etw0lr3zlo1Ep+5rOW//HKrzUP4iavMd5zu3mRslS3Mr5LBxX7sF/
+         gq7ePh5lzBIVZmFMQk4URHeSRq0YHHRkdBSeEV+rBcI0DcCtPUDImoHYCEXjPmqzm5r8
+         Ba/ld2w9dqYoQMz3XPviN0FRqs50DcoUWDQ9xUVeUZ1KPNWNU8ezW951tnobNUdmZcZ0
+         Iy8w==
+X-Gm-Message-State: AOJu0Yyz3q/EkYXb0smTJwR72uOqpFflACBAEzXvhAJVHb0VOkLMR/90
+        skV4Lid03S9dn9HbNRXYFbhdvBfvEgQTI0TLNuNywg==
+X-Google-Smtp-Source: AGHT+IHMRHSRLs+lH7EW8L10zxsOV/xPpBMFnE87yJyz8Bgq+zHVJ8yFa+IWyhMreU9et69QGkrqkHneSbi5sLXaf+4=
+X-Received: by 2002:a0d:e001:0:b0:59e:7fc1:dba0 with SMTP id
+ j1-20020a0de001000000b0059e7fc1dba0mr523083ywe.44.1696362022441; Tue, 03 Oct
+ 2023 12:40:22 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DM4PR12MB5771:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f34e601-0ff8-43de-512b-08dbc4465ccf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kyFjI+eueXd3feR0PSqTzXK03XWT+U13M4Mu33M2TiflDIWsrKc+AYP7yzhEnIFpJqfDjVEvi1c1eimqhKWUva4q4fcsDcVHE/LWyVka1Jf0RVYwREKo6ARvnaFM/8c2imQaeaZkCXhxdckCRy8qGlyAcP3fa+1nj5pwg/iqs31csU5SqoS/vzXmvjBVyXTk96Ir5uPP8pNcVqiyB+QkgW664SATbgGCHXi4AmBitBdjrgZnXWqgM+BHtE9kRPpY6vPPynAj5pCCHpSI1mmnBd9wy2q545WL6DyqPDQVdEggUwb40fdoFqbPYZj04a03Vf5cl+DNFmnA0pW5CktVgjz3d56Rlp2NHqzzVwqPbOx5bd9x3h45cnVWp1wxrQRNBUQqUByHZFl6FRGGs1K20BYuupvtV2o4X194K9BFiD/NJdNwNfktwgs41JDf8+tWrIYj4zrM/tlSxLxT5PuD1tMZN5w6H/zTjBy5Y/Y5V0ZDwwIsqVs8SnojRzkJpzztazz8Tl98mpgYqo9kic/T5rKLR3OF5NdYg2t8jN1tC6kROMbhGkbeH6WMPW3MDdZ4o0meckpB3zWnCwuG24Dj+w43WCG3Q1ANGKRC8RFcqGeChXJYcWiy3Jg5SckyJWIHiTuDby5K4HKVrp1fBqIIdw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(136003)(396003)(39860400002)(376002)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(478600001)(6506007)(53546011)(6486002)(83380400001)(8676002)(66946007)(6512007)(2616005)(66476007)(15650500001)(26005)(316002)(2906002)(7416002)(41300700001)(4326008)(36756003)(66556008)(5660300002)(6916009)(54906003)(8936002)(44832011)(31696002)(38100700002)(86362001)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MlZvL3FhT1hYbnRIQlBLTDg1dXBLc09GdVhjMzdyMU5mRTlSVU1aMlZvNWJq?=
- =?utf-8?B?cm5jS00wQW1tZnRnZ3UzSDFLYlhSUWlpVGNiMEhmaFp1bUE2b2FRM0JBWjRY?=
- =?utf-8?B?Z20wNCtCN2VYSld3Z3FTUmp5UmpZcmRvRDNURkp2eXhMQ1JJZHJ2a2k4TFJU?=
- =?utf-8?B?YWYzVW1tRnU1S2tkdjFzUktlQjZXNFJDaEU3S3dIVXVUYmd1K0hyV1ZSMklu?=
- =?utf-8?B?TDc2NU9wMWUrTXhyMm5XcTZNbytBbDlQNnFMcFFGaXN2citOMmQ1bkphMzBU?=
- =?utf-8?B?MHdMK0F6czAya28vVnQzeFhWUjRLQjliZlFEQXQ0ZHFkTDB3Z0c1VzBHeWpW?=
- =?utf-8?B?VlhLMVlmWkxKbnNYR0t3MkxzMzdkdUk4eWt4dGNWdG5ZYlR3bXh4MlBJN0Vy?=
- =?utf-8?B?VG5DeU4wZy9tWU9Hdk9BZHlhSGRtYkQ5QWJyRGZFMVhiR0xHRGN5bXhwMzg3?=
- =?utf-8?B?SEtXTGZ4bjNFUjlOTWZ5RWZtOGVqZGRlSmNiSDY5Zlk2ZXFka0YrWGttWjFa?=
- =?utf-8?B?enJOUCtza1I4bWVlNEdaaS85UHo2STNPRm1neVUzMi9wVk00dk9OM3dsVm0z?=
- =?utf-8?B?aXZKMWxBSTRqREdtUzZha0JmOGFYaktqaldkWFMxOXVRQzd6VzlhV0RCSEpP?=
- =?utf-8?B?SXNGUGw3QWNYbXlzUHNvQmdNM1MrTzNVbmdnZkZrYnlHVmdYSENrMU5CSTB6?=
- =?utf-8?B?QlIyN0s2YnBtSmMwVEhlNzJkWDdYaUdTQU9KdEx4ejcyZDAxc2ROQVJWZXJa?=
- =?utf-8?B?OXF2YUE2Z3ZpbUl3ZFFIK3czSEpxZG9KRTlYNFFHUGIvS3FxOEQzQWZ2VTFW?=
- =?utf-8?B?QkZvRnBDTTg0Y2J3czhSZXJtamRZa3RjRjNRYVR1R0FQcTFBMmJhQXViSml4?=
- =?utf-8?B?TXF1eWo4UUtoYzA2U25LZzdOemlNY2pJaUxEeXRHUkV1a3lrTFpSVGVVWUNN?=
- =?utf-8?B?UHZVN1p2OWJFQVZwbVlKdVZJNm5HRE9KTlNMSTFyKy9Zc2krZXpjcnh3c0xq?=
- =?utf-8?B?TlNDdU9UckQ5eHV1d0VUL1lJK25wY3U2VkppRjFVODd1akt6SDQyYnlNMXBq?=
- =?utf-8?B?aGtKUmlmOGJhY2xnMjVGWTBiMTdPNDM5dU9JQ05LR2l5VzdqN0dUbTFZbC9n?=
- =?utf-8?B?ZVlCb2dzQ2t0R3UxVElGMWE2eHdXSU9xdVBkSnR4ZW5uOHFhZWEyWWIwMHJn?=
- =?utf-8?B?dVBMaFFSUXN6ZUU1VDhXNUl2N3F4UUVRNnYvZU1Oem9ZVTN2T0xkcFoyUklu?=
- =?utf-8?B?YXVVRW1Tb3QxVlFqMkJudmxudnlTYW16ajNRemhvRHJRVCtLeU5GTng4TDM3?=
- =?utf-8?B?NEZzaDN0THg1azJlMGlyUTEvN1ZqcWdUeW52UXhzbVhSdU5ZdzNXcnpGcjRr?=
- =?utf-8?B?UFhJcS9WUDUzU08wMk03aC90RjJ2VGx5MGxKaTZLQlFRNGIwZTBoUVVrWEJt?=
- =?utf-8?B?Qm1qbTRtWU5EcHZ0NzBCdnJ4TFlSUU81Nk5ON3pmdjlhYUNKcTlsSVg2RTZh?=
- =?utf-8?B?bjRUSk82RkpCeVEvSXI5VmpIWXhrei9CVVp0ZG5nMXAyVWdhaGplZldabnc5?=
- =?utf-8?B?c1lyUjFQL3pYdmFtZ1o3bkZCQjNQQ05tMkVQNVB2cTFnUDEyajdVakxBTEg5?=
- =?utf-8?B?Q1NOUEFUMng4b2VaK1BiL2pzdDY5NWlUM1JBS1h0Z1NrUmhENEFMcFBoZ1pW?=
- =?utf-8?B?bUVnYXR2WkJta1hHTExuR1M0bHY4SzVWeXFOY0ZkNjd1WVltandoeWdIWjFV?=
- =?utf-8?B?V0t5eE9raW1wZDB2b3NVd3NzaWVUSmlCWXdzY01BK2xrUklrbVZZUU9lb0Mw?=
- =?utf-8?B?YWQ0VzJ4alFSQkU3ZmpLdmw1ZjlZOTB1dzFYRTZ5WlRFWkUzdHpXRi9yMVBx?=
- =?utf-8?B?Y1VRdkVXbUVmdFNDeStCdGVPYzRsejJHZWFjN1lRMEo2YmU1b3Y3T09LUjNH?=
- =?utf-8?B?YmsyOEFXVEdCUmJJbnNSZS80OS9HcGJtUURUNUMzRjRyYnB0OUFpYkVNZDdw?=
- =?utf-8?B?VWNJN3ZPMEwySjJVZ1BlL0JDTDdrNVBjUHF1NERrQkx6NFRwOUpsanMyYU5Q?=
- =?utf-8?B?Tzl6TFJXUzJ1NEVKOXFCQlU4MS9MR1pZTkVQMHhXdFNRMjVlaWlCRUJJM1FM?=
- =?utf-8?Q?s9n5poC6WACPxayGTvyZxvKAS?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f34e601-0ff8-43de-512b-08dbc4465ccf
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2023 19:24:28.8106
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TqIg7zhbwlU8AtVTzcjJ0hyHfLFg1CGztAfKdhkK3I53pb821LY7Qw9eOFQAwctfEhSwEr8Sj5jULPe4t33XMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5771
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <20230929183041.2835469-1-Liam.Howlett@oracle.com>
+ <20230929183041.2835469-3-Liam.Howlett@oracle.com> <CAJuCfpFx3zxv1ZgkLh4dkafOCHvL_674cysJiuQPQhKXX9BuzQ@mail.gmail.com>
+ <20231003185149.brbzyu2ivn25tkeu@revolver>
+In-Reply-To: <20231003185149.brbzyu2ivn25tkeu@revolver>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Tue, 3 Oct 2023 12:40:07 -0700
+Message-ID: <CAJuCfpGh6pnX_bcV0ArdAdbE=Dkru0EKf=zLd_tAATcqyx6i2w@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] mmap: Fix error paths with dup_anon_vma()
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Matthew Wilcox <willy@infradead.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/3/2023 14:16, Bjorn Helgaas wrote:
-> On Tue, Oct 03, 2023 at 01:37:34PM -0500, Mario Limonciello wrote:
->> On 10/3/2023 13:31, Bjorn Helgaas wrote:
->>> On Tue, Oct 03, 2023 at 01:06:48PM -0500, Mario Limonciello wrote:
->>>> On 10/3/2023 12:24, Bjorn Helgaas wrote:
->>>>> On Mon, Oct 02, 2023 at 01:09:06PM -0500, Mario Limonciello wrote:
->>>>>> Iain reports that USB devices can't be used to wake a Lenovo Z13 from
->>>>>> suspend.  This occurs because on some AMD platforms, even though the Root
->>>>>> Ports advertise PME_Support for D3hot and D3cold, they don't handle PME
->>>>>> messages and generate wakeup interrupts from those states when amd-pmc has
->>>>>> put the platform in a hardware sleep state.
->>>>> ...
->>>
->>>>> Two questions:
->>>>>
->>>>>      - PME also doesn't work in D3hot, right?
->>>>
->>>> Right.
->>>>
->>>> IMO pci_d3cold_*() is poorly named.
->>>> It's going to prevent D3 on the bridge.
->>>
->>> I agree, that name is super irritating.  I don't even know how to
->>> figure out or verify that pci_d3cold_disable() also disables D3hot.
->>>
->>>>>      - Is it OK to use D3hot and D3cold if we don't have a wakeup device
->>>>>        below the Root Port?  I assume that scenario is possible?
->>>>
->>>> Yes; it's "fine to do that" if there is no wakeup device below the
->>>> root port.
->>>>
->>>> If a user intentionally turns off power/wakeup for the child devices
->>>> (which as said before was USB4 and XHCI PCIe devices) then wakeup
->>>> won't be set.
->>>>
->>>> So in this case as the quirk is implemented I expect the root port
->>>> will be left in D0 even if a user intentionally turns off
->>>> power/wakeup for the USB4 and XHCI devices.
->>>
->>> Even if users don't intentionally turn off wakeup, there are devices
->>> like mass storage and NICs without wake-on-LAN that don't require
->>> wakeup.
->>>
->>> I assume that if there's no downstream device that needs wakeup, this
->>> quirk means we will keep the Root Port in D0 even though we could
->>> safely put it in D3hot or D3cold.
->>
->> Yes that matches my expectation as well.
->>
->>> That's one thing I liked about the v20 iteration -- instead of
->>> pci_d3cold_disable(), we changed dev->pme_support, which should mean
->>> that we only avoid D3hot/D3cold if we need PMEs while in those states,
->>> so I assumed that we *could* use D3 when we don't need the wakeups.
->>
->> If you think it's worth spinning again for this optimization I think a
->> device_may_wakeup() check on the root port can achieve the same result as
->> the v20 PME solution did, but without the walking of a tree in the quirk.
-> 
-> Why would we use device_may_wakeup() here?  That seems like too much
-> assumption about the suspend path,
+On Tue, Oct 3, 2023 at 11:51=E2=80=AFAM Liam R. Howlett <Liam.Howlett@oracl=
+e.com> wrote:
+>
+> * Suren Baghdasaryan <surenb@google.com> [231003 12:21]:
+> > On Fri, Sep 29, 2023 at 11:30=E2=80=AFAM Liam R. Howlett
+> > <Liam.Howlett@oracle.com> wrote:
+> > >
+> > > When the calling function fails after the dup_anon_vma(), the
+> > > duplication of the anon_vma is not being undone.  Add the necessary
+> > > unlink_anon_vma() call to the error paths that are missing them.
+> > >
+> > > This issue showed up during inspection of the error path in vma_merge=
+()
+> > > for an unrelated vma iterator issue.
+> > >
+> > > Users may experience increased memory usage, which may be problematic=
+ as
+> > > the failure would likely be caused by a low memory situation.
+> > >
+> > > Fixes: d4af56c5c7c6 ("mm: start tracking VMAs with maple tree")
+> > > Cc: stable@vger.kernel.org
+> > > Cc: Jann Horn <jannh@google.com>
+> > > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > > ---
+> > >  mm/mmap.c | 30 ++++++++++++++++++++++--------
+> > >  1 file changed, 22 insertions(+), 8 deletions(-)
+> > >
+> > > diff --git a/mm/mmap.c b/mm/mmap.c
+> > > index acb7dea49e23..f9f0a5fe4db4 100644
+> > > --- a/mm/mmap.c
+> > > +++ b/mm/mmap.c
+> > > @@ -583,11 +583,12 @@ static inline void vma_complete(struct vma_prep=
+are *vp,
+> > >   * dup_anon_vma() - Helper function to duplicate anon_vma
+> > >   * @dst: The destination VMA
+> > >   * @src: The source VMA
+> > > + * @dup: Pointer to the destination VMA when successful.
+> > >   *
+> > >   * Returns: 0 on success.
+> > >   */
+> > >  static inline int dup_anon_vma(struct vm_area_struct *dst,
+> > > -                              struct vm_area_struct *src)
+> > > +               struct vm_area_struct *src, struct vm_area_struct **d=
+up)
+> > >  {
+> > >         /*
+> > >          * Easily overlooked: when mprotect shifts the boundary, make=
+ sure the
+> > > @@ -595,9 +596,15 @@ static inline int dup_anon_vma(struct vm_area_st=
+ruct *dst,
+> > >          * anon pages imported.
+> > >          */
+> > >         if (src->anon_vma && !dst->anon_vma) {
+> > > +               int ret;
+> > > +
+> > >                 vma_assert_write_locked(dst);
+> > >                 dst->anon_vma =3D src->anon_vma;
+> > > -               return anon_vma_clone(dst, src);
+> > > +               ret =3D anon_vma_clone(dst, src);
+> > > +               if (ret)
+> > > +                       return ret;
+> > > +
+> > > +               *dup =3D dst;
+> > >         }
+> > >
+> > >         return 0;
+> > > @@ -624,6 +631,7 @@ int vma_expand(struct vma_iterator *vmi, struct v=
+m_area_struct *vma,
+> > >                unsigned long start, unsigned long end, pgoff_t pgoff,
+> > >                struct vm_area_struct *next)
+> > >  {
+> > > +       struct vm_area_struct *anon_dup =3D NULL;
+> > >         bool remove_next =3D false;
+> > >         struct vma_prepare vp;
+> > >
+> > > @@ -633,7 +641,7 @@ int vma_expand(struct vma_iterator *vmi, struct v=
+m_area_struct *vma,
+> > >
+> > >                 remove_next =3D true;
+> > >                 vma_start_write(next);
+> > > -               ret =3D dup_anon_vma(vma, next);
+> > > +               ret =3D dup_anon_vma(vma, next, &anon_dup);
+> > >                 if (ret)
+> > >                         return ret;
+> >
+> > Shouldn't the above be changed to a "goto nomem" instead of "return ret=
+" ?
+> >
+> >
+> > >         }
+> > > @@ -661,6 +669,8 @@ int vma_expand(struct vma_iterator *vmi, struct v=
+m_area_struct *vma,
+> > >         return 0;
+> > >
+> > >  nomem:
+> > > +       if (anon_dup)
+> > > +               unlink_anon_vmas(anon_dup);
+> > >         return -ENOMEM;
+> > >  }
+> > >
+> > > @@ -860,6 +870,7 @@ struct vm_area_struct *vma_merge(struct vma_itera=
+tor *vmi, struct mm_struct *mm,
+> > >  {
+> > >         struct vm_area_struct *curr, *next, *res;
+> > >         struct vm_area_struct *vma, *adjust, *remove, *remove2;
+> > > +       struct vm_area_struct *anon_dup =3D NULL;
+> > >         struct vma_prepare vp;
+> > >         pgoff_t vma_pgoff;
+> > >         int err =3D 0;
+> > > @@ -927,18 +938,18 @@ struct vm_area_struct *vma_merge(struct vma_ite=
+rator *vmi, struct mm_struct *mm,
+> > >                 vma_start_write(next);
+> > >                 remove =3D next;                          /* case 1 *=
+/
+> > >                 vma_end =3D next->vm_end;
+> > > -               err =3D dup_anon_vma(prev, next);
+> > > +               err =3D dup_anon_vma(prev, next, &anon_dup);
+> > >                 if (curr) {                             /* case 6 */
+> > >                         vma_start_write(curr);
+> > >                         remove =3D curr;
+> > >                         remove2 =3D next;
+> > >                         if (!next->anon_vma)
+> > > -                               err =3D dup_anon_vma(prev, curr);
+> > > +                               err =3D dup_anon_vma(prev, curr, &ano=
+n_dup);
+> > >                 }
+> > >         } else if (merge_prev) {                        /* case 2 */
+> > >                 if (curr) {
+> > >                         vma_start_write(curr);
+> > > -                       err =3D dup_anon_vma(prev, curr);
+> > > +                       err =3D dup_anon_vma(prev, curr, &anon_dup);
+> > >                         if (end =3D=3D curr->vm_end) {      /* case 7=
+ */
+> > >                                 remove =3D curr;
+> > >                         } else {                        /* case 5 */
+> > > @@ -954,7 +965,7 @@ struct vm_area_struct *vma_merge(struct vma_itera=
+tor *vmi, struct mm_struct *mm,
+> > >                         vma_end =3D addr;
+> > >                         adjust =3D next;
+> > >                         adj_start =3D -(prev->vm_end - addr);
+> > > -                       err =3D dup_anon_vma(next, prev);
+> > > +                       err =3D dup_anon_vma(next, prev, &anon_dup);
+> > >                 } else {
+> > >                         /*
+> > >                          * Note that cases 3 and 8 are the ONLY ones =
+where prev
+> > > @@ -968,7 +979,7 @@ struct vm_area_struct *vma_merge(struct vma_itera=
+tor *vmi, struct mm_struct *mm,
+> > >                                 vma_pgoff =3D curr->vm_pgoff;
+> > >                                 vma_start_write(curr);
+> > >                                 remove =3D curr;
+> > > -                               err =3D dup_anon_vma(next, curr);
+> > > +                               err =3D dup_anon_vma(next, curr, &ano=
+n_dup);
+> > >                         }
+> > >                 }
+> > >         }
+> > > @@ -1018,6 +1029,9 @@ struct vm_area_struct *vma_merge(struct vma_ite=
+rator *vmi, struct mm_struct *mm,
+> > >         return res;
+> > >
+> > >  prealloc_fail:
+> > > +       if (anon_dup)
+> > > +               unlink_anon_vmas(anon_dup);
+> >
+> > Maybe a stupid question, but why can't we do this unlinking inside
+> > dup_anon_vma() itself when anon_vma_clone() fails? That would
+> > eliminate the need for the out parameter in that function. I suspect
+> > that there is a reason for that which I'm missing.
+>
+> It's too late.  This is to undo the link when the preallocation for the
+> maple tree fails.  So we had memory to dup the anon vma, but not to put
+> it in the tree.
 
-Because that's what pci_target_state() passes as well to determine if a 
-wakeup is needed.
+Ah, I see what I missed now. Sorry for the noise.
 
-> and we already have the Root Port
-> pci_dev, so rp->pme_support is available.  What about something like
-> this:
-> 
-
-It includes the round trip to config space which Lukas called out as 
-negative previously but it should work.
-
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index eeec1d6f9023..4b601b1c0830 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -6188,3 +6188,60 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
->   DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5020, of_pci_make_dev_node);
->   DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5021, of_pci_make_dev_node);
->   DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_REDHAT, 0x0005, of_pci_make_dev_node);
-> +
-> +#ifdef CONFIG_SUSPEND
-> +/*
-> + * Root Ports on some AMD SoCs advertise PME_Support for D3hot and D3cold, but
-> + * if the SoC is put into a hardware sleep state by the amd-pmc driver, the
-> + * Root Ports don't generate wakeup interrupts for USB devices.
-> + *
-> + * When suspending, remove D3hot and D3cold from the PME_Support advertised
-> + * by the Root Port so we don't use those states if we're expecting wakeup
-> + * interrupts.  Restore the advertised PME_Support when resuming.
-> + */
-> +static void amd_rp_pme_suspend(struct pci_dev *dev)
-> +{
-> +	struct pci_dev *rp;
-> +
-> +	/*
-> +	 * PM_SUSPEND_ON means we're doing runtime suspend, which means
-> +	 * amd-pmc will not be involved so PMEs during D3 work as advertised.
-> +	 *
-> +	 * The PMEs *do* work if amd-pmc doesn't put the SoC in the hardware
-> +	 * sleep state, but we assume amd-pmc is always present.
-> +	 */
-> +	if (pm_suspend_target_state == PM_SUSPEND_ON)
-> +		return;
-> +
-> +	rp = pcie_find_root_port(dev);
-> +	if (!rp->pm_cap)
-> +		return;
-> +
-> +	rp->pme_support &= ~((PCI_PM_CAP_PME_D3hot|PCI_PM_CAP_PME_D3cold) >>
-> +				    PCI_PM_CAP_PME_SHIFT);
-> +	dev_info_once(&rp->dev, "quirk: disabling D3cold for suspend\n");
-> +}
-> +
-> +static void amd_rp_pme_resume(struct pci_dev *dev)
-> +{
-> +	struct pci_dev *rp;
-> +	u16 pmc;
-> +
-> +	rp = pcie_find_root_port(dev);
-> +	if (!rp->pm_cap)
-> +		return;
-> +
-> +	pci_read_config_word(rp, rp->pm_cap + PCI_PM_PMC, &pmc);
-> +	rp->pme_support = FIELD_GET(PCI_PM_CAP_PME_MASK, pmc);
-> +}
-> +/* Rembrandt (yellow_carp) */
-> +DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x162e, amd_rp_pme_suspend);
-> +DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x162e, amd_rp_pme_resume);
-> +DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x162f, amd_rp_pme_suspend);
-> +DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x162f, amd_rp_pme_resume);
-> +/* Phoenix (pink_sardine) */
-> +DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_suspend);
-> +DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_resume);
-> +DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_suspend);
-> +DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_resume);
-> +#endif /* CONFIG_SUSPEND */
-
+>
+> >
+> > > +
+> > >  anon_vma_fail:
+> > >         vma_iter_set(vmi, addr);
+> > >         vma_iter_load(vmi);
+> > > --
+> > > 2.40.1
+> > >
