@@ -2,78 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD177B693E
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 14:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB9397B6962
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 14:48:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229692AbjJCMnH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 3 Oct 2023 08:43:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34806 "EHLO
+        id S230500AbjJCMsk convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Tue, 3 Oct 2023 08:48:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229515AbjJCMnH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 08:43:07 -0400
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 346FF83;
-        Tue,  3 Oct 2023 05:43:04 -0700 (PDT)
-Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-d862533ea85so1006543276.0;
-        Tue, 03 Oct 2023 05:43:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696336983; x=1696941783; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4D5yrQwAB5o2ihQ86wqsOMYFEN0hjw1F6HyvBzf1fiE=;
-        b=N7xCFCx+c3B9EHsZqBLrjvalPyPXL/pgNuL2ckc400gpkhwk26yDRlNBVcYy4kQe8/
-         HVLTK8sjd6+qsnAy5Ho/Hb//LbSOxN+GTpZaZF2P6tsRAV3kMX003/NYzEHHNCV4F8zP
-         RueS3ZfpJ/Plmdrv8bGUT6khqlnGLU6ddemMf3L+YtkxHjXzgglKekhuuMoeulsbRzDl
-         CMT2Fkx/7QU3LTAkAkYJEqMbCP+puLV0R/eMGEU78kF1lqWN7JoSv9FCwtqP5Oxv91FM
-         PPqvCWbnv4WSCm4OVK2vnKhv6/SByEtV1LPrhtTXoOs61eb2jPkpFm72hsbY3XfcRDig
-         mnBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696336983; x=1696941783;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4D5yrQwAB5o2ihQ86wqsOMYFEN0hjw1F6HyvBzf1fiE=;
-        b=UjbBRsb6Tgp/GuiV4kXAXbw2hIyZTo58eptBpuTkXw5BFJxPtE3VurN0K2hi+ZJYZ7
-         l69FUhmq4QPyG8bj/3oAt/OXdGxjF89wtkj7pWt+5vGj/36Bxaddj40k585May2ra1oP
-         op8DODVOY1NxaFMajk9Qvdq2PLx4CUz8HEmU5v5qm9vn76zwAR6u0c0wQWNxyx5VSeRZ
-         /xw5+rqs32vNCpF7TJvpaiiS9XOwKgzTau424Dz3nfDQ0u5ihVq1RgOYGxYmJsKl36vR
-         KCUoW6TJdLmmQvMcv23JyIfjOxT5FKyCvwpHx+oFj7S5z8tXTwZrOAEFW/nd9NzzAq6y
-         DlSA==
-X-Gm-Message-State: AOJu0YwvmgGMNPdGwyBlLnEo9L3U3No5mWVv80gP0zH9KYd9S0qpI37C
-        sI65FhX6vqsqfHhMT6HDU4NqiQ6x3uFxq1lKkJQ=
-X-Google-Smtp-Source: AGHT+IGKRsmT9DgPHuTJmO3N9CH6pljRjBRrifC5fsGPjYUKRDiNean3VywF0pwdC17BP1/gPJNHu4wjqF28NCD2LIU=
-X-Received: by 2002:a25:cbd7:0:b0:d06:f0ab:e17b with SMTP id
- b206-20020a25cbd7000000b00d06f0abe17bmr12013032ybg.55.1696336983056; Tue, 03
- Oct 2023 05:43:03 -0700 (PDT)
+        with ESMTP id S229689AbjJCMsj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 08:48:39 -0400
+Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BD2BB3;
+        Tue,  3 Oct 2023 05:48:36 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.astralinux.ru (Postfix) with ESMTP id CBD1F186375F;
+        Tue,  3 Oct 2023 15:48:34 +0300 (MSK)
+Received: from mail.astralinux.ru ([127.0.0.1])
+        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ocIQr9C3wiQj; Tue,  3 Oct 2023 15:48:34 +0300 (MSK)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.astralinux.ru (Postfix) with ESMTP id 7D3471867983;
+        Tue,  3 Oct 2023 15:48:34 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at astralinux.ru
+Received: from mail.astralinux.ru ([127.0.0.1])
+        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 4m9gmqCtRmgR; Tue,  3 Oct 2023 15:48:34 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.177.185.103])
+        by mail.astralinux.ru (Postfix) with ESMTPS id 1D9B518669E3;
+        Tue,  3 Oct 2023 15:48:33 +0300 (MSK)
+Received: from [10.177.20.58] (unknown [10.177.20.58])
+        by new-mail.astralinux.ru (Postfix) with ESMTPA id 4S0HgP3HqqzhXXG;
+        Tue,  3 Oct 2023 15:48:33 +0300 (MSK)
+Message-ID: <422765f7-20a8-4fc0-8768-59c806332275@astralinux.ru>
+Date:   Tue, 3 Oct 2023 15:48:11 +0300
 MIME-Version: 1.0
-References: <CAH7-e5sb+kT_LRb1_y-c5JaFN0=KrrRT97otUPKzTCgzGsVdrQ@mail.gmail.com>
- <ZRtWcgiH5JhD5NU2@debian.me> <CAH7-e5uspavg_VBJxKLOKJfU3nAq-OrPqzihF2opffY-ReiC-w@mail.gmail.com>
- <834062302e6a98e773dc4b03d7ed568a0f1c44fc.camel@nordicsemi.no>
-In-Reply-To: <834062302e6a98e773dc4b03d7ed568a0f1c44fc.camel@nordicsemi.no>
-From:   =?UTF-8?Q?Erik_Dob=C3=A1k?= <erik.dobak@gmail.com>
-Date:   Tue, 3 Oct 2023 14:42:52 +0200
-Message-ID: <CAH7-e5uZzmnFJAJrG664G6_JbK--DfbKC50aeVN5gMMxDJ51UA@mail.gmail.com>
-Subject: Re: bluetooth issues since kernel 6.4 - not discovering other bt
- devices - /linux/drivers/bluetooth/btusb.c
-To:     =?UTF-8?Q?Tomasz_Mo=C5=84?= <tomasz.mon@nordicsemi.no>
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux Bluetooth <linux-bluetooth@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Mediatek <linux-mediatek@lists.infradead.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: RuPost Desktop
+Subject: Re: [PATCH 5.10] btrfs: fix region size in count_bitmap_extents
+Content-Language: ru
+From:   =?UTF-8?B?0JDQvdCw0YHRgtCw0YHQuNGPINCb0Y7QsdC40LzQvtCy0LA=?= 
+        <abelova@astralinux.ru>
+To:     Chris Mason <clm@fb.com>
+Cc:     Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Dennis Zhou <dennis@kernel.org>, linux-btrfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+References: <20230914094555.25657-1-abelova@astralinux.ru>
+ <798207fe-35ea-46b4-9e52-73efcbb061de@astralinux.ru>
+In-Reply-To: <798207fe-35ea-46b4-9e52-73efcbb061de@astralinux.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -82,272 +62,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 3 Oct 2023 at 14:32, Tomasz Mo=C5=84 <tomasz.mon@nordicsemi.no> wro=
-te:
->
-> On Tue, 2023-10-03 at 14:25 +0200, Erik Dob=C3=A1k wrote:
-> > Hi i booted now into linux-6.6-rc4 and the issue is still there. No
-> > bluetooth devices are discovered.
-> > with this device: Bus 001 Device 004: ID 04c5:1670 Fujitsu, Ltd Bluetoo=
-th Radio
->
-> Can you please be more specific and for example attach the full
-> descriptor? One way to get the descriptor would be to run:
->   lsusb -d 04c5:1760 -v
->
-> Best Regards,
-> Tomasz Mo=C5=84
 
-Sure here you go:
-
-# lsusb -d 04c5:1670 -v
-
-Bus 001 Device 004: ID 04c5:1670 Fujitsu, Ltd Bluetooth Radio
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               1.00
-  bDeviceClass          224 Wireless
-  bDeviceSubClass         1 Radio Frequency
-  bDeviceProtocol         1 Bluetooth
-  bMaxPacketSize0        64
-  idVendor           0x04c5 Fujitsu, Ltd
-  idProduct          0x1670
-  bcdDevice            0.00
-  iManufacturer           1 Realtek
-  iProduct                2 Bluetooth Radio
-  iSerial                 3 00e04c000001
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x00b1
-    bNumInterfaces          2
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0xe0
-      Self Powered
-      Remote Wakeup
-    MaxPower              500mA
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           3
-      bInterfaceClass       224 Wireless
-      bInterfaceSubClass      1 Radio Frequency
-      bInterfaceProtocol      1 Bluetooth
-      iInterface              4 Bluetooth Radio
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            3
-          Transfer Type            Interrupt
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0010  1x 16 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x02  EP 2 OUT
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x82  EP 2 IN
-        bmAttributes            2
-          Transfer Type            Bulk
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0040  1x 64 bytes
-        bInterval               0
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        1
-      bAlternateSetting       0
-      bNumEndpoints           2
-      bInterfaceClass       224 Wireless
-      bInterfaceSubClass      1 Radio Frequency
-      bInterfaceProtocol      1 Bluetooth
-      iInterface              4 Bluetooth Radio
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x03  EP 3 OUT
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0000  1x 0 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x83  EP 3 IN
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0000  1x 0 bytes
-        bInterval               1
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        1
-      bAlternateSetting       1
-      bNumEndpoints           2
-      bInterfaceClass       224 Wireless
-      bInterfaceSubClass      1 Radio Frequency
-      bInterfaceProtocol      1 Bluetooth
-      iInterface              4 Bluetooth Radio
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x03  EP 3 OUT
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0009  1x 9 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x83  EP 3 IN
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0009  1x 9 bytes
-        bInterval               1
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        1
-      bAlternateSetting       2
-      bNumEndpoints           2
-      bInterfaceClass       224 Wireless
-      bInterfaceSubClass      1 Radio Frequency
-      bInterfaceProtocol      1 Bluetooth
-      iInterface              4 Bluetooth Radio
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x03  EP 3 OUT
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0011  1x 17 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x83  EP 3 IN
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0011  1x 17 bytes
-        bInterval               1
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        1
-      bAlternateSetting       3
-      bNumEndpoints           2
-      bInterfaceClass       224 Wireless
-      bInterfaceSubClass      1 Radio Frequency
-      bInterfaceProtocol      1 Bluetooth
-      iInterface              4 Bluetooth Radio
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x03  EP 3 OUT
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0019  1x 25 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x83  EP 3 IN
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0019  1x 25 bytes
-        bInterval               1
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        1
-      bAlternateSetting       4
-      bNumEndpoints           2
-      bInterfaceClass       224 Wireless
-      bInterfaceSubClass      1 Radio Frequency
-      bInterfaceProtocol      1 Bluetooth
-      iInterface              4 Bluetooth Radio
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x03  EP 3 OUT
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0021  1x 33 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x83  EP 3 IN
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0021  1x 33 bytes
-        bInterval               1
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        1
-      bAlternateSetting       5
-      bNumEndpoints           2
-      bInterfaceClass       224 Wireless
-      bInterfaceSubClass      1 Radio Frequency
-      bInterfaceProtocol      1 Bluetooth
-      iInterface              4 Bluetooth Radio
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x03  EP 3 OUT
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0031  1x 49 bytes
-        bInterval               1
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x83  EP 3 IN
-        bmAttributes            1
-          Transfer Type            Isochronous
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0031  1x 49 bytes
-        bInterval               1
-Device Status:     0x0001
-  Self Powered
+03/10/23 15:39, Anastasia Belova пишет:
+>
+> 14/09/23 12:45, Anastasia Belova пишет:
+>> count_bitmap_extents was deleted in version 5.11, but
+>> there is possible mistake in versions 5.6-5.10.
+>>
+>> Region size should be calculated by subtracting
+>> the end from the beginning.
+> Do I understand correctly that bytes should decrease and
+> (rs - re) is always negative and should be replaced by (re - rs)?
+>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>>
+>> Fixes: dfb79ddb130e ("btrfs: track discardable extents for async discard")
+>> Signed-off-by: Anastasia Belova<abelova@astralinux.ru>
+>> ---
+>>   fs/btrfs/free-space-cache.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
+>> index 4989c60b1df9..a34e266a0969 100644
+>> --- a/fs/btrfs/free-space-cache.c
+>> +++ b/fs/btrfs/free-space-cache.c
+>> @@ -1930,7 +1930,7 @@ static int count_bitmap_extents(struct btrfs_free_space_ctl *ctl,
+>>   
+>>   	bitmap_for_each_set_region(bitmap_info->bitmap, rs, re, 0,
+>>   				   BITS_PER_BITMAP) {
+>> -		bytes -= (rs - re) * ctl->unit;
+>> +		bytes -= (re - rs) * ctl->unit;
+>>   		count++;
+>>   
+>>   		if (!bytes)
+> Anastasia
+Sorry for sending html accidentally
