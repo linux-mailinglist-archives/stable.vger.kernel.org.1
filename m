@@ -2,174 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B39C37B6F75
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 19:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FD257B6FA8
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 19:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230119AbjJCRSo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 3 Oct 2023 13:18:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36358 "EHLO
+        id S240524AbjJCRYx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 3 Oct 2023 13:24:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231974AbjJCRSn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 13:18:43 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A77E5B0
-        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 10:18:39 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id 6a1803df08f44-65af8d30b33so257156d6.1
-        for <stable@vger.kernel.org>; Tue, 03 Oct 2023 10:18:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696353519; x=1696958319; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lR+LzcOsWe5o7C55KvgeLgyC5UugjXBR7+grahrSdD4=;
-        b=X35rorxgm7I/Q6ST7z7AdejGjih+9mFppH8FCOczrMDwsqLB07LRrkRbuyR0v9uZqs
-         THy0vNqlfe+fDxxS7c/k5qx10anRibcurKaCkXFUEhogw/g6m9Vhdd4oygeE3X2l3nQc
-         utnXsyRukuCHVSf1NWzZeS6sQ6Z1sJ4CeG9UHCBQLmGMbEs3KnagPUJBcV0vzGGwJbw5
-         dTRIDc+xh0xYPF6u6RpbUXmP5ORqqlJRRyGj4E8HPbGb6WG2ndrb5Swb/Igh36vy3bwF
-         l4BlGUnJuWy/J+b+HbQ+CJXgmNGv+fmNC8TO/y8OYcABCqp5XbJBoLnrY1rdbFoP0tdd
-         5zlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696353519; x=1696958319;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lR+LzcOsWe5o7C55KvgeLgyC5UugjXBR7+grahrSdD4=;
-        b=LAzcKuOdxWjCmsVJYxSkMmJSEQIAI5W8C8oaopqWiEDTr4Lr2hjEOkFzmYqr1CcXRT
-         v9t6ooo+1nUl8QAQ0G/rmfCgDev0FGqdC9xhRtaGDn6ndwWAVUyaxqeuIYEgK612YbHl
-         ye6RquA1FWCJlyBJ38CK2YkHCFtM7oHJyUzsVLEeVBedUv5J+JEaQ3Q/DuphGITaErzl
-         Cd7PGpiadM8DCj/r9hQ4Lb0LIqxZCZR44YZ9XpGUIOvOB3y1XoWS7LZpy/GHasP6cY2r
-         vGC5aq2XU/et2u5nTxrbjg9XorwRqeRH67HtW5csc3Uzav7V4A2ppKl7jPqu9mcrBr18
-         vAdw==
-X-Gm-Message-State: AOJu0YyYlwXg98ekIK2fwzANrMhGtnMoJXsVf59PVxsC+l8Hs4dAR+yC
-        EeEg+6U848OhHR9Cjd8jwcOBVy0YIN0topg5HT4+jA==
-X-Google-Smtp-Source: AGHT+IFJGJ3O+FiyXs6ht2zkV2aewucJG1Rba3k4Ae0h6AX4cXMLktEIXK2fKtnFyCJDgBw9/DFj0rI9BDTEWQX8YLM=
-X-Received: by 2002:a05:6214:3018:b0:64c:2339:ec8c with SMTP id
- ke24-20020a056214301800b0064c2339ec8cmr3703754qvb.13.1696353518775; Tue, 03
- Oct 2023 10:18:38 -0700 (PDT)
+        with ESMTP id S231791AbjJCRYw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 13:24:52 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D35795;
+        Tue,  3 Oct 2023 10:24:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F53C433C8;
+        Tue,  3 Oct 2023 17:24:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696353889;
+        bh=t5TcwtsV75eUu3K2UjTEvRlUunCyPNKs2VnPat85+zQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=P1JZ8MamuBpf8X+5XKHGBmCngnqcmcmRz/Gt+QzvIDAB7iZyRJYDMKOpzNMcHcjRH
+         /0zdnzFrs2qrYHOH5ocvnp3hmRuAOelgG2C7n9vWhCtXwrHysn+t7mTkCskBiW9UWt
+         ZPavDslsiqztB0CzRT09uYPNLVrS482xFGB4IesY4jYj1VIMKhjgBGXx4tJgNnpIXX
+         J5Pz+6o/A5AezKOrt+yya55Owihn6Vp9QwNgNkxevvg4aq0ALCSk/kgWAFb0xeXKGb
+         VhD88mesrKvJh6dRDl0mN4xM0yO5n+7lmaW6UvMlLVNXP/+xouv0g/Gfip16X0DMPm
+         Af1yGX2kg044A==
+Date:   Tue, 3 Oct 2023 12:24:47 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        iain@orangesquash.org.uk,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>,
+        Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+        Lukas Wunner <lukas@wunner.de>, stable@vger.kernel.org
+Subject: Re: [PATCH v21] PCI: Avoid D3 at suspend for AMD PCIe root ports w/
+ USB4 controllers
+Message-ID: <20231003172447.GA679295@bhelgaas>
 MIME-Version: 1.0
-References: <0a535fc59c3ec89b52ef76574232fab8457ebd7e.1695970674.git.Rijo-john.Thomas@amd.com>
- <CAFA6WYN9xHUmxrJJM_o1P-gcfYS=UrBQXEO7w4Nt9g=xErbxrQ@mail.gmail.com>
-In-Reply-To: <CAFA6WYN9xHUmxrJJM_o1P-gcfYS=UrBQXEO7w4Nt9g=xErbxrQ@mail.gmail.com>
-From:   Jens Wiklander <jens.wiklander@linaro.org>
-Date:   Tue, 3 Oct 2023 19:18:27 +0200
-Message-ID: <CAHUa44HLnuuv2k+rVsMecHwDPFYD8yViVKn++fnqT99UEG0_Ow@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] tee: amdtee: fix use-after-free vulnerability in amdtee_close_session
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     Rijo Thomas <Rijo-john.Thomas@amd.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        op-tee@lists.trustedfirmware.org,
-        Mythri PK <Mythri.Pandeshwarakrishna@amd.com>,
-        Deepak Sharma <deepak.sharma@amd.com>,
-        Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
-        Nimesh Easow <nimesh.easow@amd.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231002180906.82089-1-mario.limonciello@amd.com>
+X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URI_TRY_3LD autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 3, 2023 at 7:14=E2=80=AFAM Sumit Garg <sumit.garg@linaro.org> w=
-rote:
->
-> On Fri, 29 Sept 2023 at 12:30, Rijo Thomas <Rijo-john.Thomas@amd.com> wro=
-te:
-> >
-> > There is a potential race condition in amdtee_close_session that may
-> > cause use-after-free in amdtee_open_session. For instance, if a session
-> > has refcount =3D=3D 1, and one thread tries to free this session via:
-> >
-> >     kref_put(&sess->refcount, destroy_session);
-> >
-> > the reference count will get decremented, and the next step would be to
-> > call destroy_session(). However, if in another thread,
-> > amdtee_open_session() is called before destroy_session() has completed
-> > execution, alloc_session() may return 'sess' that will be freed up
-> > later in destroy_session() leading to use-after-free in
-> > amdtee_open_session.
-> >
-> > To fix this issue, treat decrement of sess->refcount and removal of
-> > 'sess' from session list in destroy_session() as a critical section, so
-> > that it is executed atomically.
-> >
-> > Fixes: 757cc3e9ff1d ("tee: add AMD-TEE driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Rijo Thomas <Rijo-john.Thomas@amd.com>
-> > ---
-> > v2:
-> > * Introduced kref_put_mutex() as suggested by Sumit Garg.
-> >
-> >  drivers/tee/amdtee/core.c | 10 ++++++----
-> >  1 file changed, 6 insertions(+), 4 deletions(-)
-> >
->
-> Reviewed-by: Sumit Garg <sumit.garg@linaro.org>
+On Mon, Oct 02, 2023 at 01:09:06PM -0500, Mario Limonciello wrote:
+> Iain reports that USB devices can't be used to wake a Lenovo Z13 from
+> suspend.  This occurs because on some AMD platforms, even though the Root
+> Ports advertise PME_Support for D3hot and D3cold, they don't handle PME
+> messages and generate wakeup interrupts from those states when amd-pmc has
+> put the platform in a hardware sleep state.
+> 
+> Iain reported this on an AMD Rembrandt platform, but it also affects
+> Phoenix SoCs.  On Iain's system, a USB4 router below the affected Root Port
+> generates the PME. To avoid this issue, disable D3 for the root port
+> associated with USB4 controllers at suspend time.
+> 
+> Restore D3 support at resume so that it can be used by runtime suspend.
+> The amd-pmc driver doesn't put the platform in a hardware sleep state for
+> runtime suspend, so PMEs work as advertised.
+> 
+> Cc: stable@vger.kernel.org # 6.1.y: 70b70a4: PCI/sysfs: Protect driver's D3cold preference from user space
+> Cc: stable@vger.kernel.org # 6.5.y: 70b70a4: PCI/sysfs: Protect driver's D3cold preference from user space
+> Cc: stable@vger.kernel.org # 6.6.y: 70b70a4: PCI/sysfs: Protect driver's D3cold preference from user space
+> Link: https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/platform-design-for-modern-standby#low-power-core-silicon-cpu-soc-dram [1]
+> Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+> Reported-by: Iain Lane <iain@orangesquash.org.uk>
+> Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v20-v21:
+>  * Rewrite commit message, lifting most of what Bjorn clipped down to on v20.
+>  * Use pci_d3cold_disable()/pci_d3cold_enable() instead
+>  * Do the quirk on the USB4 controller instead of RP->USB->RP
+> ---
+>  drivers/pci/quirks.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 44 insertions(+)
+> 
+> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+> index eeec1d6f9023..5674065011e7 100644
+> --- a/drivers/pci/quirks.c
+> +++ b/drivers/pci/quirks.c
+> @@ -6188,3 +6188,47 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5020, of_pci_make_dev_node);
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5021, of_pci_make_dev_node);
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_REDHAT, 0x0005, of_pci_make_dev_node);
+> +
+> +#ifdef CONFIG_SUSPEND
+> +/*
+> + * Root Ports on some AMD SoCs advertise PME_Support for D3hot and D3cold, but
+> + * if the SoC is put into a hardware sleep state by the amd-pmc driver, the
+> + * Root Ports don't generate wakeup interrupts for USB devices.
+> + *
+> + * When suspending, disable D3 support for the Root Port so we don't use it.
+> + * Restore D3 support when resuming.
+> + */
+> +static void quirk_enable_rp_d3cold(struct pci_dev *dev)
+> +{
+> +	pci_d3cold_enable(pcie_find_root_port(dev));
+> +}
+> +
+> +static void quirk_disable_rp_d3cold_suspend(struct pci_dev *dev)
+> +{
+> +	struct pci_dev *rp;
+> +
+> +	/*
+> +	 * PM_SUSPEND_ON means we're doing runtime suspend, which means
+> +	 * amd-pmc will not be involved so PMEs during D3 work as advertised.
+> +	 *
+> +	 * The PMEs *do* work if amd-pmc doesn't put the SoC in the hardware
+> +	 * sleep state, but we assume amd-pmc is always present.
+> +	 */
+> +	if (pm_suspend_target_state == PM_SUSPEND_ON)
+> +		return;
+> +
+> +	rp = pcie_find_root_port(dev);
+> +	pci_d3cold_disable(rp);
 
+I think this prevents D3cold from being used at all, right?
 
-I'm picking up this.
+Two questions:
 
-Thanks,
-Jens
+  - PME also doesn't work in D3hot, right?
 
->
-> -Sumit
->
-> > diff --git a/drivers/tee/amdtee/core.c b/drivers/tee/amdtee/core.c
-> > index 372d64756ed6..3c15f6a9e91c 100644
-> > --- a/drivers/tee/amdtee/core.c
-> > +++ b/drivers/tee/amdtee/core.c
-> > @@ -217,12 +217,12 @@ static int copy_ta_binary(struct tee_context *ctx=
-, void *ptr, void **ta,
-> >         return rc;
-> >  }
-> >
-> > +/* mutex must be held by caller */
-> >  static void destroy_session(struct kref *ref)
-> >  {
-> >         struct amdtee_session *sess =3D container_of(ref, struct amdtee=
-_session,
-> >                                                    refcount);
-> >
-> > -       mutex_lock(&session_list_mutex);
-> >         list_del(&sess->list_node);
-> >         mutex_unlock(&session_list_mutex);
-> >         kfree(sess);
-> > @@ -272,7 +272,8 @@ int amdtee_open_session(struct tee_context *ctx,
-> >         if (arg->ret !=3D TEEC_SUCCESS) {
-> >                 pr_err("open_session failed %d\n", arg->ret);
-> >                 handle_unload_ta(ta_handle);
-> > -               kref_put(&sess->refcount, destroy_session);
-> > +               kref_put_mutex(&sess->refcount, destroy_session,
-> > +                              &session_list_mutex);
-> >                 goto out;
-> >         }
-> >
-> > @@ -290,7 +291,8 @@ int amdtee_open_session(struct tee_context *ctx,
-> >                 pr_err("reached maximum session count %d\n", TEE_NUM_SE=
-SSIONS);
-> >                 handle_close_session(ta_handle, session_info);
-> >                 handle_unload_ta(ta_handle);
-> > -               kref_put(&sess->refcount, destroy_session);
-> > +               kref_put_mutex(&sess->refcount, destroy_session,
-> > +                              &session_list_mutex);
-> >                 rc =3D -ENOMEM;
-> >                 goto out;
-> >         }
-> > @@ -331,7 +333,7 @@ int amdtee_close_session(struct tee_context *ctx, u=
-32 session)
-> >         handle_close_session(ta_handle, session_info);
-> >         handle_unload_ta(ta_handle);
-> >
-> > -       kref_put(&sess->refcount, destroy_session);
-> > +       kref_put_mutex(&sess->refcount, destroy_session, &session_list_=
-mutex);
-> >
-> >         return 0;
-> >  }
-> > --
-> > 2.25.1
-> >
+  - Is it OK to use D3hot and D3cold if we don't have a wakeup device
+    below the Root Port?  I assume that scenario is possible?
+
+I like the fact that we don't have to walk the hierarchy with
+pci_walk_bus().
+
+> +	dev_info_once(&rp->dev, "quirk: disabling D3cold for suspend\n");
+> +}
+> +/* Rembrandt (yellow_carp) */
+> +DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x162e, quirk_disable_rp_d3cold_suspend);
+> +DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x162e, quirk_enable_rp_d3cold);
+> +DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x162f, quirk_disable_rp_d3cold_suspend);
+> +DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x162f, quirk_enable_rp_d3cold);
+> +/* Phoenix (pink_sardine) */
+> +DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1668, quirk_disable_rp_d3cold_suspend);
+> +DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1668, quirk_enable_rp_d3cold);
+> +DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1669, quirk_disable_rp_d3cold_suspend);
+> +DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1669, quirk_enable_rp_d3cold);
+> +#endif /* CONFIG_SUSPEND */
+> -- 
+> 2.34.1
+> 
