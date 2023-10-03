@@ -2,111 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFEBC7B63DF
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 10:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DA317B647C
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 10:39:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239338AbjJCIQJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 3 Oct 2023 04:16:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56868 "EHLO
+        id S230425AbjJCIjj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 3 Oct 2023 04:39:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239972AbjJCIPe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 04:15:34 -0400
-X-Greylist: delayed 154 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 03 Oct 2023 01:15:03 PDT
-Received: from smtpout140.security-mail.net (smtpout140.security-mail.net [85.31.212.146])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74EFF9EDB
-        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 01:15:03 -0700 (PDT)
-Received: from localhost (fx601.security-mail.net [127.0.0.1])
-        by fx601.security-mail.net (Postfix) with ESMTP id 204A0349F12
-        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 10:11:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
-        s=sec-sig-email; t=1696320706;
-        bh=ao/oMi93VK2bOMHnLSBscEElfMHKMxbZkhSl67JDLI4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Cawh3i7pyejTw3E6EMDTFtNntgRZYoKpL2xBfc3i0HgWG8LHd8QahyVQn9Ki1YA0F
-         UNyjXD/Io0drPe0uxYggOKDv/4XqJyhGmhdd9iKf8hTQkET3HiV3FdxyX9+myDg04u
-         inNaYRAFh6idoZsU5cIDzsGlqxd5LXdMMIW0oHdk=
-Received: from fx601 (fx601.security-mail.net [127.0.0.1]) by
- fx601.security-mail.net (Postfix) with ESMTP id D3746349DC2 for
- <stable@vger.kernel.org>; Tue,  3 Oct 2023 10:11:44 +0200 (CEST)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on0101.outbound.protection.outlook.com [104.47.25.101]) by
- fx601.security-mail.net (Postfix) with ESMTPS id C0288349D2E; Tue,  3 Oct
- 2023 10:11:43 +0200 (CEST)
-Received: from MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:13::5)
- by MRZP264MB1944.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:17::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.33; Tue, 3 Oct
- 2023 08:11:40 +0000
-Received: from MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM
- ([fe80::dcdd:d6bb:ccc7:a854]) by MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM
- ([fe80::dcdd:d6bb:ccc7:a854%6]) with mapi id 15.20.6838.033; Tue, 3 Oct 2023
- 08:11:39 +0000
-X-Virus-Scanned: E-securemail
-Secumail-id: <15006.651bccbf.bde9d.0>
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=U+qM8vWKvUv6+uUuu1ehjlFRNTQRvM8i5HXfSz9bLu1qqD8wDqjKFFaYF6dLe5FUi5gWxc/vRv0rRfIqHQuSM/CdFQZg4BLIUNoK41BOkMrWknRUG24sfSEIwPPJCcdM5ALB90EGac3GhSadnMM4tawouJ5y8T/SvAIVtaBUdUxx70kFBvvtNu1yCSvgQ5QFJV0mwWPKnFx4q2EfsShhWj1pP52AKqzU+TsLEsQIoBOCM8nk4SuqjuGDcnkr9AWMZHwgXgUIxGSO+bAiyEcvJplLxwOY+FWiXFMlhBIh4yHQiYNji19YWUkn6wK01iB/KD4Auf0vsxvfCIJHUA50vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microsoft.com; s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KGCsTMEbPj7aEFZYWvlpSxoieBZc9V2RoWK6wa8CuHI=;
- b=RjEGxB3rloW7wpvegWkpR+5KmnHZMNh7hMi+FBao6NIi4B0hRBusnBArwd4zP4Dgm0up5pDeIUSmt985Q72cvQM0mhVyitotVEu0kKQNlgvr0ZyIFFd6WpDaYWcK4trBXxMTfPizkQGdnov2RjeqO+65KIXh9wqzZxyzC5zOeX67NfW90J8m8PAgTsuc9FUSCwXGpCGYNNL++fPSdJcgU422trhL9wLz8VjRc5bL04U64a5oLAYNcRxbT0V1pmbipdBKL5bovT0Xond8scN26ZV5aDl5w2Ar4fG/JQmAAgHBPly5+85ffLP2J7QRXRo22SBKuwOatHSBKEDPUwghJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kalrayinc.com; dmarc=pass action=none
- header.from=kalrayinc.com; dkim=pass header.d=kalrayinc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalrayinc.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KGCsTMEbPj7aEFZYWvlpSxoieBZc9V2RoWK6wa8CuHI=;
- b=OeYyg0A0Uyiur+qEpfsU42656ftXXqURkGHshVCsnyx5fpqMXCrBsLp/hg3cDx3g2/ULNvBW6Y1bz2jeYc3IhfWCMPQqlIXgzJFonTzBiRWko5NTlwhLCFbzP67pzTlXTTmoSdx4bEDmTobdTyuXoMhOmmcJ80Pc9YqiHjB7TL6SHSM1KH+FWKOzZHbgSFe7jtmjhHxdRJEdhd/urvwO8HHI1ZX4dPVs/vrdUgUgHH1Nxuz4wC/XeyhrAlAmhBI/i/FpXJtGbqxD/RxvdkhhXLYCh0/nYY6LcUx4DElfdmZ5Hri5hOc8/ujkb76GdbRnaDoyZf6NaRknxcnlubhMEg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kalrayinc.com;
-Message-ID: <9e737b85-95bb-66cd-301c-3a2d1d41f4c8@kalrayinc.com>
-Date:   Tue, 3 Oct 2023 10:11:36 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v1] i2c: designware: Disable TX_EMPTY irq while waiting
- for block length byte
-Content-Language: en-us
-To:     Tam Nguyen <tamnguyenchi@os.amperecomputing.com>,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org
-Cc:     patches@amperecomputing.com, jarkko.nikula@linux.intel.com,
-        andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
-        jsd@semihalf.com, chuong@os.amperecomputing.com,
-        darren@os.amperecomputing.com, stable@vger.kernel.org
-References: <20230929035356.6435-1-tamnguyenchi@os.amperecomputing.com>
-From:   Yann Sionneau <ysionneau@kalrayinc.com>
-In-Reply-To: <20230929035356.6435-1-tamnguyenchi@os.amperecomputing.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: LO4P265CA0010.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2ad::21) To MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:501:13::5)
+        with ESMTP id S231232AbjJCIjj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 04:39:39 -0400
+X-Greylist: delayed 611 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 03 Oct 2023 01:39:31 PDT
+Received: from out-199.mta0.migadu.com (out-199.mta0.migadu.com [IPv6:2001:41d0:1004:224b::c7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF48AB0
+        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 01:39:31 -0700 (PDT)
+Date:   Tue, 3 Oct 2023 17:28:58 +0900
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+        t=1696321756;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=SvHEdL127DkwY1o1/aHJZdaismZDLKyIFOf23kZMKII=;
+        b=SnZnaakkCBrskHWe8xJL1L5kXJ04u9tThP9M8iKTR/CDUx+XLVjReoLcedlF6WCxvIyGD6
+        OhdcyIniVLeOQ4Kzd3U+6O26XoRzrW7252N8bpgQy1lQ/Hvcody5jaKDq/8yQ6j4TdM4hz
+        ijfc3ipmQGWFZBIAd/Eq8b9RfxVpS2E=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From:   Naoya Horiguchi <naoya.horiguchi@linux.dev>
+To:     Shuai Xue <xueshuai@linux.alibaba.com>
+Cc:     rafael@kernel.org, wangkefeng.wang@huawei.com,
+        tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
+        linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com,
+        gregkh@linuxfoundation.org, will@kernel.org,
+        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+        stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+        ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+        baolin.wang@linux.alibaba.com, bp@alien8.de, tglx@linutronix.de,
+        mingo@redhat.com, dave.hansen@linux.intel.com, jarkko@kernel.org,
+        lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com,
+        lvying6@huawei.com, xiexiuqi@huawei.com,
+        zhuo.song@linux.alibaba.com
+Subject: Re: [RESEND PATCH v8 2/2] ACPI: APEI: handle synchronous exceptions
+ in task work
+Message-ID: <20231003082858.GA750796@ik1-406-35019.vs.sakura.ne.jp>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20230919022127.69732-3-xueshuai@linux.alibaba.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MR1P264MB1890:EE_|MRZP264MB1944:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc887e50-7a23-4885-5514-08dbc3e85e51
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ZbY18OSofxHYRsg0nNgj5IIfxfeU3j9EkG8k2EOGmN9rUn3qZBTeQHXC4yprl1LVHuInxlefExYfb6bwC4GgkNnJDSRHQsk6sm31cUBRhh0RoGmi+RdSpfnNUrZZht7aOcYu98bhRt9TkzTee2vArVLuPwwmRAPU+Z3C2Z2ZSTRXnXQy/3QdU4lfJaM08LONlkfrIvQujTPikUj7Bo0bTEX0LrDcRbhMqFu/seOkBagW3VBoLGo9BpNRrUy3qPEGSBbh4dHSvKIIEBV0cGM0mmZhbwvxZK9ghP9r+2ntQeJcCo65O+Md2dMOQj0vvKn6+lAk9w0E6cVEit+C3G0b1yu/hjl5LMomLLZ1q3eo/iIlt3nKg5gOC+RxT/0QeCq5UDBgq5O9z576QoclEyFaLvWUz8SgHGXhmm0bOVoCm2BKllYbXH4TCCfI69NWQ/thhMxrFzUyLu40kIphtmuyEYWiFJCiHCARvhS82rT41gKzAg6n+1cHTmIeQhxBrkNjoDpvSceHHRaDGLrGrETH9MQADzMt90xwEct9LJG2f5qdek8iBKE3YeFHdndwDLcU/nNHvqoSgbdYd33ihheG6G4fApyi10P84E+AHxm+7ZcpXbRI5NbNWuxYt93mPY+fwONTe6df+3Rg/WTcgFurWA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(376002)(366004)(136003)(39850400004)(230922051799003)(1800799009)(451199024)(186009)(64100799003)(41300700001)(6486002)(2616005)(53546011)(6506007)(6512007)(316002)(66946007)(66556008)(66476007)(4326008)(8676002)(8936002)(5660300002)(26005)(6666004)(478600001)(31686004)(7416002)(2906002)(83380400001)(36756003)(38100700002)(31696002)(86362001)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: ZgVmLvbJbq+TC3zopfsOrQoQaGXn5xJvi28IWHD0/pcH9Ych0IhTsnpHvVfcP539ebYVIolK0PGGiBJdRjl/BDwgM1F16F6GuUmTM3hbWoJHFnA1DclwKYOLqJvdSo31AJM0wMrca43Odk7vuZEALF/YtHSa5dvSIB7hBFnR/jtAA/5+czNlUjOZcofDEFKLzOSDpW6JxIdmMKtd47bSclNs2mNfVShOHwzj/QYoewV2YIFtgPlfITT97x2TXCl7/h44YcoJxMMh7msa+r/FdnAXui4El3u8T/yYoqqMR0V+PGIf5y7tGPRCyRBXC8mL8XgfoxOA+DSUCX0q6cP0raYJ4EnVgKU1bPJ7SX+bbPNZuOox3VBD3sR4sVuslEiyuqP0Do4OKAGUsPL5pBmSQ7k2lRbKWTPH5mFo7eBDBYiOMzxMp/Secm/x5dAnnzgwk6VqHVcSX9SVSFCvPM4QFSj8piKJVsUAX4y930UofPELHf8t0+oEWCg+vJl4Gsnzsx010cLRgnkFuuekIJN4sSeAE8gDOWgco03ivUiOuZA6fB9ILDzLhwwgCINbfRz0ghRc9Zsp+87clXtDGPIKKhuCtwHRnQT+FOBTAB62Ue5ANVNeYFIfGrQs8Nh/BsfPeoph9u1s94+QQ7coBUBtWIB6DzXIE/L4JjKWc7vQSH1UGf9kDBAQoFgvZhGBhpDmUZzj6AKMRA99p6wDu3PMcPao4cp+jVEdHs2bpnpNzuqgmbcM2Xp4opxKQ0n/oKFNkWOBxWnmuxkpHtTtIv/z4nkf62ffEmCh50x48s1BIQWlPDOL06nY8yfQXWJ3/7/OiqhBVTdlM+wVP1SgN1DSk546acGedPkJTmjbD4ZLZMeVbOb5hYdVdrYtHmCIJGkTYSRd7t0tlN/w5K5Q8zS2u2m2z1PPGVlHLj2G+VjlnsJhJEYxgdGR82nxGIXxlW2g
- Zl7q8LjHUE7ukYZ0vIPZ2mP+tXjp7Oo1O7uAsQ0QM6joCGzJmHpnVsxXB1qO1c3X1hCx4GSM2RvuvvMPS4wZtigOwh13uLEiWWQdIoskpTo7eOeDNXyoohIxMgs4xsMyEGFJL73F4//jefsvdgKqdWES9wFyEaIqlKWFK5yxa3WyGyVZKENcuJVH1k5Zg2wHCcBw6zDemu4bFcx2ZQ18VPm2Ph6GzCx6SnqekR0gKZflUkRkmlGsN0CIhBQ+RRywAZ1AkyXSvYuOX9fdSAsso9cvW9gHYAMbQArzjE0SPbaISXXIGRrYEElR4LvcQGoh732430ZnGuQvlx9JEM9xq8mqobzcSM+oZZ4AqJWG0exFrdbn4tH5mVK/CyJ8VlgQrUDNS6CFF+O9Rt3aOFeXoHdpx09BcH8iDdRUsMrQj9w60ne/5yI4pwxFA3zRtOVNIqyeHT9H+JwEzsgno72wquWVXxV3BBOiKukupQr6Exyr+b/4IKXfO9igt2h4P3JyhMffbcz4HmnC4/fUq6hte5Isuh55tb4TkqDAZAlfdBG++a+0pL5Z+HzbNkZvCgKml6Y7edYzqZYgCcj653j5mrpor8EK0AvOEZoA4AntTsaKgCFE+APRDaKHR3i6UsfT2T2v2PMH5fsFZ4SFyAVh7A==
-X-OriginatorOrg: kalrayinc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc887e50-7a23-4885-5514-08dbc3e85e51
-X-MS-Exchange-CrossTenant-AuthSource: MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2023 08:11:39.8995
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tBiDeMd9NuuePeZ5LZD2xzWL9PHYCFFxuL1p2VhDLumEAli9BP4X/qG66r9pkCVqt84vcVNtn2EJgJSDg0DNoA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB1944
-X-ALTERMIMEV2_out: done
-X-Spam-Status: No, score=-5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230919022127.69732-3-xueshuai@linux.alibaba.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -115,75 +62,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Tam,
-
-On 9/29/23 05:53, Tam Nguyen wrote:
-> During SMBus block data read process, we have seen high interrupt rate
-> because of TX_EMPTY irq status while waiting for block length byte (the
-> first data byte after the address phase). The interrupt handler does not
-> do anything because the internal state is kept as STATUS_WRITE_IN_PROGRESS.
-> Hence, we should disable TX_EMPTY irq until I2C DW receives first data
-> byte from I2C device, then re-enable it.
->
-> It takes 0.789 ms for host to receive data length from slave.
-> Without the patch, i2c_dw_isr is called 99 times by TX_EMPTY interrupt.
-> And it is none after applying the patch.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Chuong Tran <chuong@os.amperecomputing.com>
-> Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+On Tue, Sep 19, 2023 at 10:21:27AM +0800, Shuai Xue wrote:
+> Hardware errors could be signaled by synchronous interrupt, e.g.  when an
+> error is detected by a background scrubber, or signaled by synchronous
+> exception, e.g. when an uncorrected error is consumed. Both synchronous and
+> asynchronous error are queued and handled by a dedicated kthread in
+> workqueue.
+> 
+> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
+> synchronous errors") keep track of whether memory_failure() work was
+> queued, and make task_work pending to flush out the workqueue so that the
+> work for synchronous error is processed before returning to user-space.
+> The trick ensures that the corrupted page is unmapped and poisoned. And
+> after returning to user-space, the task starts at current instruction which
+> triggering a page fault in which kernel will send SIGBUS to current process
+> due to VM_FAULT_HWPOISON.
+> 
+> However, the memory failure recovery for hwpoison-aware mechanisms does not
+> work as expected. For example, hwpoison-aware user-space processes like
+> QEMU register their customized SIGBUS handler and enable early kill mode by
+> seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
+> the process by sending a SIGBUS signal in memory failure with wrong
+> si_code: the actual user-space process accessing the corrupt memory
+> location, but its memory failure work is handled in a kthread context, so
+> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
+> process instead of BUS_MCEERR_AR in kill_proc().
+> 
+> To this end, separate synchronous and asynchronous error handling into
+> different paths like X86 platform does:
+> 
+> - valid synchronous errors: queue a task_work to synchronously send SIGBUS
+>   before ret_to_user.
+> - valid asynchronous errors: queue a work into workqueue to asynchronously
+>   handle memory failure.
+> - abnormal branches such as invalid PA, unexpected severity, no memory
+>   failure config support, invalid GUID section, OOM, etc.
+> 
+> Then for valid synchronous errors, the current context in memory failure is
+> exactly belongs to the task consuming poison data and it will send SIBBUS
+> with proper si_code.
+> 
+> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > ---
->   drivers/i2c/busses/i2c-designware-master.c | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
->
-> diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
-> index 55ea91a63382..2152b1f9b27c 100644
-> --- a/drivers/i2c/busses/i2c-designware-master.c
-> +++ b/drivers/i2c/busses/i2c-designware-master.c
-> @@ -462,6 +462,13 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
->   		if (buf_len > 0 || flags & I2C_M_RECV_LEN) {
->   			/* more bytes to be written */
->   			dev->status |= STATUS_WRITE_IN_PROGRESS;
-> +			/*
-> +			 * In I2C_FUNC_SMBUS_BLOCK_DATA case, there is no data
-> +			 * to send before receiving data length from slave.
-> +			 * Disable TX_EMPTY while waiting for data length byte
-> +			 */
-> +			if (flags & I2C_M_RECV_LEN)
-> +				intr_mask &= ~DW_IC_INTR_TX_EMPTY;
->   			break;
->   		} else
->   			dev->status &= ~STATUS_WRITE_IN_PROGRESS;
-> @@ -485,6 +492,7 @@ i2c_dw_recv_len(struct dw_i2c_dev *dev, u8 len)
->   {
->   	struct i2c_msg *msgs = dev->msgs;
->   	u32 flags = msgs[dev->msg_read_idx].flags;
-> +	u32 intr_mask;
->   
->   	/*
->   	 * Adjust the buffer length and mask the flag
-> @@ -495,6 +503,11 @@ i2c_dw_recv_len(struct dw_i2c_dev *dev, u8 len)
->   	msgs[dev->msg_read_idx].len = len;
->   	msgs[dev->msg_read_idx].flags &= ~I2C_M_RECV_LEN;
->   
-> +	/* Re-enable TX_EMPTY interrupt. */
-> +	regmap_read(dev->map, DW_IC_INTR_MASK, &intr_mask);
-> +	intr_mask |= DW_IC_INTR_TX_EMPTY;
-> +	regmap_write(dev->map, DW_IC_INTR_MASK, intr_mask);
-> +
->   	return len;
->   }
+>  arch/x86/kernel/cpu/mce/core.c |  9 +---
+>  drivers/acpi/apei/ghes.c       | 84 +++++++++++++++++++++-------------
+>  include/acpi/ghes.h            |  3 --
+>  mm/memory-failure.c            | 17 ++-----
+>  4 files changed, 56 insertions(+), 57 deletions(-)
+> 
+...
 
-I tested this patch on Kalray k200 and k200lp boards (Coolidge SoC, kvx 
-arch). With this patch all our CI pipelines are green.
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 4d6e43c88489..80e1ea1cc56d 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2163,7 +2163,9 @@ static int memory_failure_dev_pagemap(unsigned long pfn, int flags,
+>   *
+>   * Return: 0 for successfully handled the memory error,
+>   *         -EOPNOTSUPP for hwpoison_filter() filtered the error event,
+> - *         < 0(except -EOPNOTSUPP) on failure.
+> + *         -EHWPOISON for already sent SIGBUS to the current process with
+> + *         the proper error info,
 
-Tested-by: Yann Sionneau <ysionneau@kalrayinc.com>
+The meaning of this comment is understood, but the sentence seems to be
+a little too long. Could you sort this out with bullet points (like below)?
 
--- 
+ * Return values:
+ *   0             - success
+ *   -EOPNOTSUPP   - hwpoison_filter() filtered the error event.
+ *   -EHWPOISON    - sent SIGBUS to the current process with the proper
+ *                   error info by kill_accessing_process().
+ *   other negative values - failure
 
-Yann
+> + *         other negative error code on failure.
+>   */
+>  int memory_failure(unsigned long pfn, int flags)
+>  {
+> @@ -2445,19 +2447,6 @@ static void memory_failure_work_func(struct work_struct *work)
+>  	}
+>  }
+>  
+> -/*
+> - * Process memory_failure work queued on the specified CPU.
+> - * Used to avoid return-to-userspace racing with the memory_failure workqueue.
+> - */
+> -void memory_failure_queue_kick(int cpu)
+> -{
+> -	struct memory_failure_cpu *mf_cpu;
+> -
+> -	mf_cpu = &per_cpu(memory_failure_cpu, cpu);
+> -	cancel_work_sync(&mf_cpu->work);
+> -	memory_failure_work_func(&mf_cpu->work);
+> -}
+> -
 
+The declaration of memory_failure_queue_kick() still remains in include/linux/mm.h,
+so you can remove it together.
 
-
-
-
+Thanks,
+Naoya Horiguchi
