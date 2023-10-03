@@ -2,54 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A0B07B6D18
-	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 17:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 390EB7B6D79
+	for <lists+stable@lfdr.de>; Tue,  3 Oct 2023 17:54:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232588AbjJCP3i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 3 Oct 2023 11:29:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46302 "EHLO
+        id S231879AbjJCPyc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 3 Oct 2023 11:54:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232156AbjJCP3i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 11:29:38 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E5BAB;
-        Tue,  3 Oct 2023 08:29:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7FAC433CB;
-        Tue,  3 Oct 2023 15:29:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696346975;
-        bh=w6oW3CA5lhvBRe2ooxRAdYwa2HiP0AiSXwLhfx4hsQ4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u/bqTduxmjG7fM8rnm8Fuso35m9V9ijdiz/GM66mSY81rVf16I8i2ceQn4yr41eKh
-         hu5DQUBbpwSsvpG9fKoOBsXtgBcGTxIb4zDnOGGbdDDhAIpde18qyutjeClG78vm4X
-         3H7Pp3vrDinug7UMjQ4eazdvqczupeszGb+RtBDUtYgymoNchYMOkuEBN6Z8ZJ5nrX
-         TBvyJJ8mZskREjk66lsGFGU1CJmn4FmhLvpZ+Bs6QmI05AzvnPswdEbpmcN/I7CPyB
-         AIZtygRliI0v9KWrzXpagYIDHCcJrdSZtLPU1RWcIbgOlQfcZZm2ICUCL+QEbWzdVY
-         SmhZUixDbKppw==
-Received: from johan by xi.lan with local (Exim 4.96)
-        (envelope-from <johan+linaro@kernel.org>)
-        id 1qnhLF-0003uN-2a;
-        Tue, 03 Oct 2023 17:29:45 +0200
-From:   Johan Hovold <johan+linaro@kernel.org>
-To:     Lee Jones <lee@kernel.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 2/5] mfd: qcom-spmi-pmic: fix revid implementation
-Date:   Tue,  3 Oct 2023 17:29:24 +0200
-Message-ID: <20231003152927.15000-3-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231003152927.15000-1-johan+linaro@kernel.org>
-References: <20231003152927.15000-1-johan+linaro@kernel.org>
+        with ESMTP id S231733AbjJCPyb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 3 Oct 2023 11:54:31 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D8ADBB
+        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 08:54:27 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-9ad8bf9bfabso204527966b.3
+        for <stable@vger.kernel.org>; Tue, 03 Oct 2023 08:54:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696348465; x=1696953265; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9qwggqM5g4H2kMBZ1deteV2yt6E9yc4Vqh+Tp6Hnvgo=;
+        b=mmaSiZcCH+DXUmz09lDemy233/CUEnRFt4ROlBjTnoPtncwzi3DvB120qaewocHnCa
+         LKj4R+yOVHAGZHHvqruATzl7ZPqdd68v1FBvvFCfOJWilwivm0HVQbbenGFzyF/gnlEm
+         t5rt2qq7Jh7kgwydcNP5O/CUL8GP93x723YSqDny1Mml67Fx4gX646D1FToTd/2M3blD
+         N+7EdNsQfwixdYxz/W09XwFXpnf2VwSfvcr4rpg04SRS/vkmFlexE45C6WUYK98NB/Oa
+         DFbWpuElM0PBr+/NHT+FZ/Cz0ROwZ7aUdGLKJw2BUgEG2mX0FVTtPYV4vRHaFHzOqtSj
+         nv5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696348465; x=1696953265;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9qwggqM5g4H2kMBZ1deteV2yt6E9yc4Vqh+Tp6Hnvgo=;
+        b=GH0GwONXQpN6ibDX2HwlGBcyc7KA2ccLLX4iw87PBVxCTSy9haRBk5fFMNcjeGSMDE
+         5v65Ruz/pohAcCIk2KWWPsggOnUTOJhh4EVCw/n/G+3hPgX3Vqy2NUn6saUY9mca4VtD
+         5ia4UUP4DnK+P9UOKDI03MAhEmmJRcLx89F4ZOFMNZ6+/69CjgFwljEleEddXVi/SkPH
+         ieepxnQlnb3o1GTRc9Kr4L9LNslZJDPFKEwpu5cLXupKU0l5JYnV4DUrahO/WrQB6OFN
+         5t65tiQJXgRYNrUgWu/6qbXB8P78ezoW8iYYLpLcNNkwSTK0h9GqaQ+KLI3tTuBIYiOT
+         pSnQ==
+X-Gm-Message-State: AOJu0YzW4hHFirFZgkQ/2mje236xruKcgWNJZHKeeHLikocU5RI21Afu
+        +JE7a/WyiqdYPrn1ba0A0IqhFg==
+X-Google-Smtp-Source: AGHT+IH09d6DTdcKc37AqByhCIppHQNpciXplK+DYeKcZhmAvum3wYCeGF8amKbOLfAWBgKm2xynPQ==
+X-Received: by 2002:a17:906:5349:b0:9b2:9a0e:9973 with SMTP id j9-20020a170906534900b009b29a0e9973mr13823175ejo.42.1696348465487;
+        Tue, 03 Oct 2023 08:54:25 -0700 (PDT)
+Received: from krzk-bin.. (5-157-101-10.dyn.eolo.it. [5.157.101.10])
+        by smtp.gmail.com with ESMTPSA id sa18-20020a170906edb200b0098733a40bb7sm1268948ejb.155.2023.10.03.08.54.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Oct 2023 08:54:25 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Banajit Goswami <bgoswami@quicinc.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        stable@vger.kernel.org
+Subject: [PATCH] ASoC: codecs: wsa-macro: fix uninitialized stack variables with name prefix
+Date:   Tue,  3 Oct 2023 17:54:22 +0200
+Message-Id: <20231003155422.801160-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,174 +74,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The Qualcomm SPMI PMIC revid implementation is broken in multiple ways.
+Driver compares widget name in wsa_macro_spk_boost_event() widget event
+callback, however it does not handle component's name prefix.  This
+leads to using uninitialized stack variables as registers and register
+values.  Handle gracefully such case.
 
-First, it assumes that just because the sibling base device has been
-registered that means that it is also bound to a driver, which may not
-be the case (e.g. due to probe deferral or asynchronous probe). This
-could trigger a NULL-pointer dereference when attempting to access the
-driver data of the unbound device.
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Second, it accesses driver data of a sibling device directly and without
-any locking, which means that the driver data may be freed while it is
-being accessed (e.g. on driver unbind).
-
-Third, it leaks a struct device reference to the sibling device which is
-looked up using the spmi_device_from_of() every time a function (child)
-device is calling the revid function (e.g. on probe).
-
-Fix this mess by reimplementing the revid lookup so that it is done only
-at probe of the PMIC device; the base device fetches the revid info from
-the hardware, while any secondary SPMI device fetches the information
-from the base device and caches it so that it can be accessed safely
-from its children. If the base device has not been probed yet then probe
-of a secondary device is deferred.
-
-Fixes: e9c11c6e3a0e ("mfd: qcom-spmi-pmic: expose the PMIC revid information to clients")
-Cc: stable@vger.kernel.org      # 6.0
-Cc: Caleb Connolly <caleb.connolly@linaro.org>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- drivers/mfd/qcom-spmi-pmic.c | 69 +++++++++++++++++++++++++++---------
- 1 file changed, 53 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/mfd/qcom-spmi-pmic.c b/drivers/mfd/qcom-spmi-pmic.c
-index 47738f7e492c..8e449cff5cec 100644
---- a/drivers/mfd/qcom-spmi-pmic.c
-+++ b/drivers/mfd/qcom-spmi-pmic.c
-@@ -30,6 +30,8 @@ struct qcom_spmi_dev {
- 	struct qcom_spmi_pmic pmic;
- };
- 
-+static DEFINE_MUTEX(pmic_spmi_revid_lock);
-+
- #define N_USIDS(n)		((void *)n)
- 
- static const struct of_device_id pmic_spmi_id_table[] = {
-@@ -76,24 +78,21 @@ static const struct of_device_id pmic_spmi_id_table[] = {
-  *
-  * This only supports PMICs with 1 or 2 USIDs.
-  */
--static struct spmi_device *qcom_pmic_get_base_usid(struct device *dev)
-+static struct spmi_device *qcom_pmic_get_base_usid(struct spmi_device *sdev, struct qcom_spmi_dev *ctx)
- {
--	struct spmi_device *sdev;
--	struct qcom_spmi_dev *ctx;
- 	struct device_node *spmi_bus;
- 	struct device_node *child;
- 	int function_parent_usid, ret;
- 	u32 pmic_addr;
- 
--	sdev = to_spmi_device(dev);
--	ctx = dev_get_drvdata(&sdev->dev);
--
- 	/*
- 	 * Quick return if the function device is already in the base
- 	 * USID. This will always be hit for PMICs with only 1 USID.
- 	 */
--	if (sdev->usid % ctx->num_usids == 0)
-+	if (sdev->usid % ctx->num_usids == 0) {
-+		get_device(&sdev->dev);
- 		return sdev;
-+	}
- 
- 	function_parent_usid = sdev->usid;
- 
-@@ -118,10 +117,8 @@ static struct spmi_device *qcom_pmic_get_base_usid(struct device *dev)
- 			sdev = spmi_device_from_of(child);
- 			if (!sdev) {
- 				/*
--				 * If the base USID for this PMIC hasn't probed yet
--				 * but the secondary USID has, then we need to defer
--				 * the function driver so that it will attempt to
--				 * probe again when the base USID is ready.
-+				 * If the base USID for this PMIC hasn't been
-+				 * registered yet then we need to defer.
- 				 */
- 				sdev = ERR_PTR(-EPROBE_DEFER);
- 			}
-@@ -135,6 +132,35 @@ static struct spmi_device *qcom_pmic_get_base_usid(struct device *dev)
- 	return sdev;
- }
- 
-+static int pmic_spmi_get_base_revid(struct spmi_device *sdev, struct qcom_spmi_dev *ctx)
-+{
-+	struct qcom_spmi_dev *base_ctx;
-+	struct spmi_device *base;
-+	int ret = 0;
-+
-+	base = qcom_pmic_get_base_usid(sdev, ctx);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	/*
-+	 * Copy revid info from base device if it has probed and is still
-+	 * bound to its driver.
-+	 */
-+	mutex_lock(&pmic_spmi_revid_lock);
-+	base_ctx = spmi_device_get_drvdata(base);
-+	if (!base_ctx) {
-+		ret = -EPROBE_DEFER;
-+		goto out_unlock;
-+	}
-+	memcpy(&ctx->pmic, &base_ctx->pmic, sizeof(ctx->pmic));
-+out_unlock:
-+	mutex_unlock(&pmic_spmi_revid_lock);
-+
-+	put_device(&base->dev);
-+
-+	return ret;
-+}
-+
- static int pmic_spmi_load_revid(struct regmap *map, struct device *dev,
- 				 struct qcom_spmi_pmic *pmic)
- {
-@@ -210,11 +236,7 @@ const struct qcom_spmi_pmic *qcom_pmic_get(struct device *dev)
- 	if (!of_match_device(pmic_spmi_id_table, dev->parent))
- 		return ERR_PTR(-EINVAL);
- 
--	sdev = qcom_pmic_get_base_usid(dev->parent);
--
--	if (IS_ERR(sdev))
--		return ERR_CAST(sdev);
--
-+	sdev = to_spmi_device(dev->parent);
- 	spmi = dev_get_drvdata(&sdev->dev);
- 
- 	return &spmi->pmic;
-@@ -249,16 +271,31 @@ static int pmic_spmi_probe(struct spmi_device *sdev)
- 		ret = pmic_spmi_load_revid(regmap, &sdev->dev, &ctx->pmic);
- 		if (ret < 0)
- 			return ret;
+This is a fix only for uninitialized values case.  The fix for including
+name prefixes will be sent separate, because I think it is not a stable
+material.  Happy to combine patches if needed.
+---
+ sound/soc/codecs/lpass-wsa-macro.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/sound/soc/codecs/lpass-wsa-macro.c b/sound/soc/codecs/lpass-wsa-macro.c
+index ec6859ec0d38..ea6e3fa7e9e1 100644
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -1685,6 +1685,9 @@ static int wsa_macro_spk_boost_event(struct snd_soc_dapm_widget *w,
+ 		boost_path_cfg1 = CDC_WSA_RX1_RX_PATH_CFG1;
+ 		reg = CDC_WSA_RX1_RX_PATH_CTL;
+ 		reg_mix = CDC_WSA_RX1_RX_PATH_MIX_CTL;
 +	} else {
-+		ret = pmic_spmi_get_base_revid(sdev, ctx);
-+		if (ret)
-+			return ret;
++		dev_warn(component->dev, "Incorrect widget name in the driver\n");
++		return -EINVAL;
  	}
-+
-+	mutex_lock(&pmic_spmi_revid_lock);
- 	spmi_device_set_drvdata(sdev, ctx);
-+	mutex_unlock(&pmic_spmi_revid_lock);
  
- 	return devm_of_platform_populate(&sdev->dev);
- }
- 
-+static void pmic_spmi_remove(struct spmi_device *sdev)
-+{
-+	mutex_lock(&pmic_spmi_revid_lock);
-+	spmi_device_set_drvdata(sdev, NULL);
-+	mutex_unlock(&pmic_spmi_revid_lock);
-+}
-+
- MODULE_DEVICE_TABLE(of, pmic_spmi_id_table);
- 
- static struct spmi_driver pmic_spmi_driver = {
- 	.probe = pmic_spmi_probe,
-+	.remove = pmic_spmi_remove,
- 	.driver = {
- 		.name = "pmic-spmi",
- 		.of_match_table = pmic_spmi_id_table,
+ 	switch (event) {
 -- 
-2.41.0
+2.34.1
 
