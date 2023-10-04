@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A12BB7B8835
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 891D97B8998
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243928AbjJDSNq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:13:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41886 "EHLO
+        id S244227AbjJDS1Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:27:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243752AbjJDSNp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:45 -0400
+        with ESMTP id S244216AbjJDS1W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5682C1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3674C433C8;
-        Wed,  4 Oct 2023 18:13:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCC4C98
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3128FC433C9;
+        Wed,  4 Oct 2023 18:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443222;
-        bh=heSel1K3MXLrWOifxDd12lcx6fbJdCUClwsOzOxJyqA=;
+        s=korg; t=1696444038;
+        bh=QenUVkLac7uqXtCdafclVFbN2LShplMcuWcJG+o2icw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1sBwck/njPfzF2It6MllMxRFuC3JF1441C5qBkVbk3LGZLji0PA/gVgLQCQS0Vydv
-         XI906o7B9DfV97Wcw9uqBdHoGj3JQSn9DDeDfkFWKw2ZSx4PbP0e5l3yWdrhYFK3wt
-         mZMRHbsvWmrzcNtlduZJQofb+z+xcyxcwOPjIo7o=
+        b=VYzcZqbFDv1yHZtvPfhBoevAMXR/1Tzehnl1g/iqiYeLLeA3crvY8jJtk36Pc4rAC
+         AmLbH2IRhztis0YCjNssOUg9ZUNngt799qnA1CFRYtli9HAFvuZcglVk7PwU9Aocmh
+         3PCGgScRHZ/fHy93ukXU3MriLcypsfS0UxogWKU8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/259] locking/seqlock: Do the lockdep annotation before locking in do_write_seqcount_begin_nested()
+        patches@lists.linux.dev, Xiaoke Wang <xkernel.wang@foxmail.com>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 108/321] i2c: mux: demux-pinctrl: check the return value of devm_kstrdup()
 Date:   Wed,  4 Oct 2023 19:54:13 +0200
-Message-ID: <20231004175221.043937326@linuxfoundation.org>
+Message-ID: <20231004175234.247373017@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,60 +49,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Xiaoke Wang <xkernel.wang@foxmail.com>
 
-[ Upstream commit 41b43b6c6e30a832c790b010a06772e793bca193 ]
+[ Upstream commit 7c0195fa9a9e263df204963f88a22b21688ffb66 ]
 
-It was brought up by Tetsuo that the following sequence:
+devm_kstrdup() returns pointer to allocated string on success,
+NULL on failure. So it is better to check the return value of it.
 
-   write_seqlock_irqsave()
-   printk_deferred_enter()
-
-could lead to a deadlock if the lockdep annotation within
-write_seqlock_irqsave() triggers.
-
-The problem is that the sequence counter is incremented before the lockdep
-annotation is performed. The lockdep splat would then attempt to invoke
-printk() but the reader side, of the same seqcount, could have a
-tty_port::lock acquired waiting for the sequence number to become even again.
-
-The other lockdep annotations come before the actual locking because "we
-want to see the locking error before it happens". There is no reason why
-seqcount should be different here.
-
-Do the lockdep annotation first then perform the locking operation (the
-sequence increment).
-
-Fixes: 1ca7d67cf5d5a ("seqcount: Add lockdep functionality to seqcount/seqlock structures")
-Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230920104627._DTHgPyA@linutronix.de
-
-Closes: https://lore.kernel.org/20230621130641.-5iueY1I@linutronix.de
+Fixes: e35478eac030 ("i2c: mux: demux-pinctrl: run properly with multiple instances")
+Signed-off-by: Xiaoke Wang <xkernel.wang@foxmail.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/seqlock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/muxes/i2c-demux-pinctrl.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 3926e90279477..d778af83c8f36 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -512,8 +512,8 @@ do {									\
+diff --git a/drivers/i2c/muxes/i2c-demux-pinctrl.c b/drivers/i2c/muxes/i2c-demux-pinctrl.c
+index a3a122fae71e0..22f2280eab7f7 100644
+--- a/drivers/i2c/muxes/i2c-demux-pinctrl.c
++++ b/drivers/i2c/muxes/i2c-demux-pinctrl.c
+@@ -243,6 +243,10 @@ static int i2c_demux_pinctrl_probe(struct platform_device *pdev)
  
- static inline void do_write_seqcount_begin_nested(seqcount_t *s, int subclass)
- {
--	do_raw_write_seqcount_begin(s);
- 	seqcount_acquire(&s->dep_map, subclass, 0, _RET_IP_);
-+	do_raw_write_seqcount_begin(s);
- }
+ 		props[i].name = devm_kstrdup(&pdev->dev, "status", GFP_KERNEL);
+ 		props[i].value = devm_kstrdup(&pdev->dev, "ok", GFP_KERNEL);
++		if (!props[i].name || !props[i].value) {
++			err = -ENOMEM;
++			goto err_rollback;
++		}
+ 		props[i].length = 3;
  
- /**
+ 		of_changeset_init(&priv->chan[i].chgset);
 -- 
 2.40.1
 
