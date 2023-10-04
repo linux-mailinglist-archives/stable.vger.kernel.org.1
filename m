@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C7277B88AB
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 628CD7B88E5
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232954AbjJDSSZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:18:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39704 "EHLO
+        id S243989AbjJDSUl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243892AbjJDSJU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:20 -0400
+        with ESMTP id S243935AbjJDSUk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E26E9C9
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFE9C433C8;
-        Wed,  4 Oct 2023 18:09:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB934CE
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36434C433C9;
+        Wed,  4 Oct 2023 18:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442955;
-        bh=IRofGcQLhywcNGP1TyhfFty64M6KwyUFRifPZjmLgOs=;
+        s=korg; t=1696443636;
+        bh=DZToq7SM9arp5nvAqBqMxlRLkqMNZ98L7amOcqwJm0c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m4Ur+VuNwZtddrkaPAY09fuaHM1vJGCv7dKACbQQFdm7fhd+1nfjgycXl7KbpoNNX
-         mUe4fmnSN8tZONtxkuwMRoeNM4YvS6cMfEF7H6Bm8nHq039x/7ypj28YfxK8S9bnZO
-         gbMPv3t6RokxE1fqMksxI4qaJMHbF/GJD2s0URfU=
+        b=r7rbW550WGBTNvsi7Rj8qGcvIGweATorVLGnpln4gOUjO1j/8nZAV+mQBZ/OljWJ0
+         myawSZUhvqvt7C2bUdm7axFx9J104yjdG8jbQeCn4AArUKhEFtSneDxIvNeU0pGe1V
+         BshtIZvsSeeV6L/DmNkMEe2TH1Qh1SxiSC+PEVCw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Leonard <talex5@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 169/183] io_uring/fs: remove sqe->rw_flags checking from LINKAT
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Jean Delvare <jdelvare@suse.de>, Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 6.1 227/259] i2c: i801: unregister tco_pdev in i801_probe() error path
 Date:   Wed,  4 Oct 2023 19:56:40 +0200
-Message-ID: <20231004175211.118225963@linuxfoundation.org>
+Message-ID: <20231004175227.771810429@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +50,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit a52d4f657568d6458e873f74a9602e022afe666f upstream.
+commit 3914784553f68c931fc666dbe7e86fe881aada38 upstream.
 
-This is unionized with the actual link flags, so they can of course be
-set and they will be evaluated further down. If not we fail any LINKAT
-that has to set option flags.
+We have to unregister tco_pdev also if i2c_add_adapter() fails.
 
-Fixes: cf30da90bc3a ("io_uring: add support for IORING_OP_LINKAT")
+Fixes: 9424693035a5 ("i2c: i801: Create iTCO device on newer Intel PCHs")
 Cc: stable@vger.kernel.org
-Reported-by: Thomas Leonard <talex5@gmail.com>
-Link: https://github.com/axboe/liburing/issues/955
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-i801.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -4038,7 +4038,7 @@ static int io_linkat_prep(struct io_kioc
- 
- 	if (unlikely(req->ctx->flags & IORING_SETUP_IOPOLL))
- 		return -EINVAL;
--	if (sqe->ioprio || sqe->rw_flags || sqe->buf_index || sqe->splice_fd_in)
-+	if (sqe->ioprio || sqe->buf_index || sqe->splice_fd_in)
- 		return -EINVAL;
- 	if (unlikely(req->flags & REQ_F_FIXED_FILE))
- 		return -EBADF;
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -1754,6 +1754,7 @@ static int i801_probe(struct pci_dev *de
+ 		"SMBus I801 adapter at %04lx", priv->smba);
+ 	err = i2c_add_adapter(&priv->adapter);
+ 	if (err) {
++		platform_device_unregister(priv->tco_pdev);
+ 		i801_acpi_remove(priv);
+ 		return err;
+ 	}
 
 
