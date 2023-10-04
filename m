@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A428C7B8A67
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D9127B88EE
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244414AbjJDSfM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:35:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49836 "EHLO
+        id S244003AbjJDSVG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:21:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244431AbjJDSfL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:35:11 -0400
+        with ESMTP id S244017AbjJDSVG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7125BC9
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:35:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F74C433C8;
-        Wed,  4 Oct 2023 18:35:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 450E19E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:21:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85288C433C8;
+        Wed,  4 Oct 2023 18:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444507;
-        bh=kZ8Kf+MG/OpMw3kPU4hWOc6lwcVjDxk5BpNVngPrUkM=;
+        s=korg; t=1696443661;
+        bh=DGfsvxRTN74dnqX81BjiS8TBez3Hf/5l3SpAW8gDtGA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S+xO/PaGQCeVW6zDzQvJDn2ZWSVuCaYdJJQok4JLqc2v/P++ZCr18o5X5wYC5uDj4
-         n/3Wip/kPH6niwaJcC53F56ao7xT74E2cLT7Zc4/VA/rz7I2EIoF8Kwx3NXYBXYBuh
-         WEeNhNsjZO1OlXg3Mk5hufAlh2eJe2yAHFafjbF8=
+        b=zT3h/H/I6AC31ZLsDBDA0LNRtKshI/+fMeHEketrFI+ZjlnT1FV4Ci9EvAiorQkkA
+         BK0HFtjGsSX13CjT0N0v6IN9hOVejzXJjvBJcL7lAHP8rctQVyb/7hYTCr6XiO/BnE
+         +eKLEyKP/ho+PPifbjcQCIZcyH1uuXkI+9AWniqI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.5 246/321] KVM: x86/mmu: Do not filter address spaces in for_each_tdp_mmu_root_yield_safe()
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.1 218/259] serial: 8250_port: Check IRQ data before use
 Date:   Wed,  4 Oct 2023 19:56:31 +0200
-Message-ID: <20231004175240.657125383@linuxfoundation.org>
+Message-ID: <20231004175227.329124087@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,126 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 441a5dfcd96854cbcb625709e2694a9c60adfaab upstream.
+commit cce7fc8b29961b64fadb1ce398dc5ff32a79643b upstream.
 
-All callers except the MMU notifier want to process all address spaces.
-Remove the address space ID argument of for_each_tdp_mmu_root_yield_safe()
-and switch the MMU notifier to use __for_each_tdp_mmu_root_yield_safe().
+In case the leaf driver wants to use IRQ polling (irq = 0) and
+IIR register shows that an interrupt happened in the 8250 hardware
+the IRQ data can be NULL. In such a case we need to skip the wake
+event as we came to this path from the timer interrupt and quite
+likely system is already awake.
 
-Extracted out of a patch by Sean Christopherson <seanjc@google.com>
+Without this fix we have got an Oops:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+    serial8250: ttyS0 at I/O 0x3f8 (irq = 0, base_baud = 115200) is a 16550A
+    ...
+    BUG: kernel NULL pointer dereference, address: 0000000000000010
+    RIP: 0010:serial8250_handle_irq+0x7c/0x240
+    Call Trace:
+     ? serial8250_handle_irq+0x7c/0x240
+     ? __pfx_serial8250_timeout+0x10/0x10
+
+Fixes: 0ba9e3a13c6a ("serial: 8250: Add missing wakeup event reporting")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20230831222555.614426-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c     |    8 ++------
- arch/x86/kvm/mmu/tdp_mmu.c |   22 +++++++++++-----------
- arch/x86/kvm/mmu/tdp_mmu.h |    3 +--
- 3 files changed, 14 insertions(+), 19 deletions(-)
+ drivers/tty/serial/8250/8250_port.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -6294,7 +6294,6 @@ static bool kvm_rmap_zap_gfn_range(struc
- void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end)
- {
- 	bool flush;
--	int i;
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1953,7 +1953,10 @@ int serial8250_handle_irq(struct uart_po
+ 		skip_rx = true;
  
- 	if (WARN_ON_ONCE(gfn_end <= gfn_start))
- 		return;
-@@ -6305,11 +6304,8 @@ void kvm_zap_gfn_range(struct kvm *kvm,
- 
- 	flush = kvm_rmap_zap_gfn_range(kvm, gfn_start, gfn_end);
- 
--	if (tdp_mmu_enabled) {
--		for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++)
--			flush = kvm_tdp_mmu_zap_leafs(kvm, i, gfn_start,
--						      gfn_end, flush);
--	}
-+	if (tdp_mmu_enabled)
-+		flush = kvm_tdp_mmu_zap_leafs(kvm, gfn_start, gfn_end, flush);
- 
- 	if (flush)
- 		kvm_flush_remote_tlbs_range(kvm, gfn_start, gfn_end - gfn_start);
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -211,8 +211,12 @@ static struct kvm_mmu_page *tdp_mmu_next
- #define for_each_valid_tdp_mmu_root_yield_safe(_kvm, _root, _as_id, _shared)	\
- 	__for_each_tdp_mmu_root_yield_safe(_kvm, _root, _as_id, _shared, true)
- 
--#define for_each_tdp_mmu_root_yield_safe(_kvm, _root, _as_id)			\
--	__for_each_tdp_mmu_root_yield_safe(_kvm, _root, _as_id, false, false)
-+#define for_each_tdp_mmu_root_yield_safe(_kvm, _root)			\
-+	for (_root = tdp_mmu_next_root(_kvm, NULL, false, false);		\
-+	     _root;								\
-+	     _root = tdp_mmu_next_root(_kvm, _root, false, false))		\
-+		if (!kvm_lockdep_assert_mmu_lock_held(_kvm, false)) {		\
-+		} else
- 
- /*
-  * Iterate over all TDP MMU roots.  Requires that mmu_lock be held for write,
-@@ -877,12 +881,11 @@ static bool tdp_mmu_zap_leafs(struct kvm
-  * true if a TLB flush is needed before releasing the MMU lock, i.e. if one or
-  * more SPTEs were zapped since the MMU lock was last acquired.
-  */
--bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, int as_id, gfn_t start, gfn_t end,
--			   bool flush)
-+bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, gfn_t start, gfn_t end, bool flush)
- {
- 	struct kvm_mmu_page *root;
- 
--	for_each_tdp_mmu_root_yield_safe(kvm, root, as_id)
-+	for_each_tdp_mmu_root_yield_safe(kvm, root)
- 		flush = tdp_mmu_zap_leafs(kvm, root, start, end, true, flush);
- 
- 	return flush;
-@@ -891,7 +894,6 @@ bool kvm_tdp_mmu_zap_leafs(struct kvm *k
- void kvm_tdp_mmu_zap_all(struct kvm *kvm)
- {
- 	struct kvm_mmu_page *root;
--	int i;
- 
- 	/*
- 	 * Zap all roots, including invalid roots, as all SPTEs must be dropped
-@@ -905,10 +907,8 @@ void kvm_tdp_mmu_zap_all(struct kvm *kvm
- 	 * is being destroyed or the userspace VMM has exited.  In both cases,
- 	 * KVM_RUN is unreachable, i.e. no vCPUs will ever service the request.
- 	 */
--	for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++) {
--		for_each_tdp_mmu_root_yield_safe(kvm, root, i)
--			tdp_mmu_zap_root(kvm, root, false);
--	}
-+	for_each_tdp_mmu_root_yield_safe(kvm, root)
-+		tdp_mmu_zap_root(kvm, root, false);
- }
- 
- /*
-@@ -1148,7 +1148,7 @@ bool kvm_tdp_mmu_unmap_gfn_range(struct
- {
- 	struct kvm_mmu_page *root;
- 
--	for_each_tdp_mmu_root_yield_safe(kvm, root, range->slot->as_id)
-+	__for_each_tdp_mmu_root_yield_safe(kvm, root, range->slot->as_id, false, false)
- 		flush = tdp_mmu_zap_leafs(kvm, root, range->start, range->end,
- 					  range->may_block, flush);
- 
---- a/arch/x86/kvm/mmu/tdp_mmu.h
-+++ b/arch/x86/kvm/mmu/tdp_mmu.h
-@@ -20,8 +20,7 @@ __must_check static inline bool kvm_tdp_
- void kvm_tdp_mmu_put_root(struct kvm *kvm, struct kvm_mmu_page *root,
- 			  bool shared);
- 
--bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, int as_id, gfn_t start, gfn_t end,
--			   bool flush);
-+bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, gfn_t start, gfn_t end, bool flush);
- bool kvm_tdp_mmu_zap_sp(struct kvm *kvm, struct kvm_mmu_page *sp);
- void kvm_tdp_mmu_zap_all(struct kvm *kvm);
- void kvm_tdp_mmu_invalidate_all_roots(struct kvm *kvm);
+ 	if (status & (UART_LSR_DR | UART_LSR_BI) && !skip_rx) {
+-		if (irqd_is_wakeup_set(irq_get_irq_data(port->irq)))
++		struct irq_data *d;
++
++		d = irq_get_irq_data(port->irq);
++		if (d && irqd_is_wakeup_set(d))
+ 			pm_wakeup_event(tport->tty->dev, 0);
+ 		if (!up->dma || handle_rx_dma(up, iir))
+ 			status = serial8250_rx_chars(up, status);
 
 
