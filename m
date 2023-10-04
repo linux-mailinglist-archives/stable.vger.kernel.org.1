@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C374D7B87D2
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B36C7B88EF
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243897AbjJDSJo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:09:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34724 "EHLO
+        id S244017AbjJDSVK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:21:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243872AbjJDSJo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:44 -0400
+        with ESMTP id S244015AbjJDSVJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09C9CAD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC5FC433C8;
-        Wed,  4 Oct 2023 18:09:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F254998
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:21:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49304C433CA;
+        Wed,  4 Oct 2023 18:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442980;
-        bh=+KJw2UGpOlq8kRfmY2FLkahzWjmTIkzcEa+oAjKT3ew=;
+        s=korg; t=1696443664;
+        bh=oGNO3npaFikIZAPFMiSLTQwe3CBCdKXhXJ7k9HskuEE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yxqk6q0Hpzxy2U5SiP0QvqPa66l0XPT7P18feoKMvgr2rC8QlwH0xaSVt4PLJWPH2
-         XSyVbrByvEytxkoQ9aPkhkP/Gu/DkO2TW3cbgiSH3bqo2o65EDgc6V2akA0aOzHL73
-         cYTFxQKQBpGzn8RBPXaMuo5GVDsoOfMVNJxOzK2o=
+        b=cOFyXWwY1/37elFZICypixs43akL5oMOKGGJ8nq0LfXPEF9hb+hg5Sc/j0Wkj9eIP
+         7rFKEL7W4hjnPZNsViaAivAOhH0fkg6w5no51mV7e4ofmFXogH/gf4R4bGUIgyJ35j
+         2NFOx1mQ+W3YdC9NtkQyDnRGTxDGfqDTrWi38rkc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Hannes Reinecke <hare@suse.de>,
-        "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Bart Van Assche <bvanassche@acm.org>
-Subject: [PATCH 5.15 177/183] ata: libata-core: Fix ata_port_request_pm() locking
-Date:   Wed,  4 Oct 2023 19:56:48 +0200
-Message-ID: <20231004175211.496855196@linuxfoundation.org>
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        SeongJae Park <sj@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 236/259] mm/damon/vaddr-test: fix memory leak in damon_do_test_apply_three_regions()
+Date:   Wed,  4 Oct 2023 19:56:49 +0200
+Message-ID: <20231004175228.208352872@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,77 +50,170 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 3b8e0af4a7a331d1510e963b8fd77e2fca0a77f1 upstream.
+commit 45120b15743fa7c0aa53d5db6dfb4c8f87be4abd upstream.
 
-The function ata_port_request_pm() checks the port flag
-ATA_PFLAG_PM_PENDING and calls ata_port_wait_eh() if this flag is set to
-ensure that power management operations for a port are not scheduled
-simultaneously. However, this flag check is done without holding the
-port lock.
+When CONFIG_DAMON_VADDR_KUNIT_TEST=y and making CONFIG_DEBUG_KMEMLEAK=y
+and CONFIG_DEBUG_KMEMLEAK_AUTO_SCAN=y, the below memory leak is detected.
 
-Fix this by taking the port lock on entry to the function and checking
-the flag under this lock. The lock is released and re-taken if
-ata_port_wait_eh() needs to be called. The two WARN_ON() macros checking
-that the ATA_PFLAG_PM_PENDING flag was cleared are removed as the first
-call is racy and the second one done without holding the port lock.
+Since commit 9f86d624292c ("mm/damon/vaddr-test: remove unnecessary
+variables"), the damon_destroy_ctx() is removed, but still call
+damon_new_target() and damon_new_region(), the damon_region which is
+allocated by kmem_cache_alloc() in damon_new_region() and the damon_target
+which is allocated by kmalloc in damon_new_target() are not freed.  And
+the damon_region which is allocated in damon_new_region() in
+damon_set_regions() is also not freed.
 
-Fixes: 5ef41082912b ("ata: add ata port system PM callbacks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+So use damon_destroy_target to free all the damon_regions and damon_target.
+
+    unreferenced object 0xffff888107c9a940 (size 64):
+      comm "kunit_try_catch", pid 1069, jiffies 4294670592 (age 732.761s)
+      hex dump (first 32 bytes):
+        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
+        60 c7 9c 07 81 88 ff ff f8 cb 9c 07 81 88 ff ff  `...............
+      backtrace:
+        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
+        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
+        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
+        [<ffffffff819c82be>] damon_test_apply_three_regions1+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff8881079cc740 (size 56):
+      comm "kunit_try_catch", pid 1069, jiffies 4294670592 (age 732.761s)
+      hex dump (first 32 bytes):
+        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
+        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
+      backtrace:
+        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
+        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
+        [<ffffffff819c82be>] damon_test_apply_three_regions1+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff888107c9ac40 (size 64):
+      comm "kunit_try_catch", pid 1071, jiffies 4294670595 (age 732.843s)
+      hex dump (first 32 bytes):
+        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
+        a0 cc 9c 07 81 88 ff ff 78 a1 76 07 81 88 ff ff  ........x.v.....
+      backtrace:
+        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
+        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
+        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
+        [<ffffffff819c851e>] damon_test_apply_three_regions2+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff8881079ccc80 (size 56):
+      comm "kunit_try_catch", pid 1071, jiffies 4294670595 (age 732.843s)
+      hex dump (first 32 bytes):
+        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
+        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
+      backtrace:
+        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
+        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
+        [<ffffffff819c851e>] damon_test_apply_three_regions2+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff888107c9af40 (size 64):
+      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.011s)
+      hex dump (first 32 bytes):
+        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
+        20 a2 76 07 81 88 ff ff b8 a6 76 07 81 88 ff ff   .v.......v.....
+      backtrace:
+        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
+        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
+        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
+        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff88810776a200 (size 56):
+      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.011s)
+      hex dump (first 32 bytes):
+        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
+        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
+      backtrace:
+        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
+        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
+        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff88810776a740 (size 56):
+      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.025s)
+      hex dump (first 32 bytes):
+        3d 00 00 00 00 00 00 00 3f 00 00 00 00 00 00 00  =.......?.......
+        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
+      backtrace:
+        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
+        [<ffffffff819bfcc2>] damon_set_regions+0x4c2/0x8e0
+        [<ffffffff819c7dbb>] damon_do_test_apply_three_regions.constprop.0+0xfb/0x3e0
+        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff888108038240 (size 64):
+      comm "kunit_try_catch", pid 1075, jiffies 4294670600 (age 733.022s)
+      hex dump (first 32 bytes):
+        00 00 00 00 00 00 00 00 03 00 00 00 6b 6b 6b 6b  ............kkkk
+        48 ad 76 07 81 88 ff ff 98 ae 76 07 81 88 ff ff  H.v.......v.....
+      backtrace:
+        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
+        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
+        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
+        [<ffffffff819c898d>] damon_test_apply_three_regions4+0x1cd/0x210
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+    unreferenced object 0xffff88810776ad28 (size 56):
+      comm "kunit_try_catch", pid 1075, jiffies 4294670600 (age 733.022s)
+      hex dump (first 32 bytes):
+        05 00 00 00 00 00 00 00 07 00 00 00 00 00 00 00  ................
+        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
+      backtrace:
+        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
+        [<ffffffff819bfcc2>] damon_set_regions+0x4c2/0x8e0
+        [<ffffffff819c7dbb>] damon_do_test_apply_three_regions.constprop.0+0xfb/0x3e0
+        [<ffffffff819c898d>] damon_test_apply_three_regions4+0x1cd/0x210
+        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+        [<ffffffff81237cf6>] kthread+0x2b6/0x380
+        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
+        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+
+Link: https://lkml.kernel.org/r/20230925072100.3725620-1-ruanjinjie@huawei.com
+Fixes: 9f86d624292c ("mm/damon/vaddr-test: remove unnecessary variables")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ mm/damon/vaddr-test.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4999,17 +4999,19 @@ static void ata_port_request_pm(struct a
- 	struct ata_link *link;
- 	unsigned long flags;
- 
--	/* Previous resume operation might still be in
--	 * progress.  Wait for PM_PENDING to clear.
-+	spin_lock_irqsave(ap->lock, flags);
-+
-+	/*
-+	 * A previous PM operation might still be in progress. Wait for
-+	 * ATA_PFLAG_PM_PENDING to clear.
- 	 */
- 	if (ap->pflags & ATA_PFLAG_PM_PENDING) {
-+		spin_unlock_irqrestore(ap->lock, flags);
- 		ata_port_wait_eh(ap);
--		WARN_ON(ap->pflags & ATA_PFLAG_PM_PENDING);
-+		spin_lock_irqsave(ap->lock, flags);
+--- a/mm/damon/vaddr-test.h
++++ b/mm/damon/vaddr-test.h
+@@ -140,6 +140,8 @@ static void damon_do_test_apply_three_re
+ 		KUNIT_EXPECT_EQ(test, r->ar.start, expected[i * 2]);
+ 		KUNIT_EXPECT_EQ(test, r->ar.end, expected[i * 2 + 1]);
  	}
- 
--	/* request PM ops to EH */
--	spin_lock_irqsave(ap->lock, flags);
--
-+	/* Request PM operation to EH */
- 	ap->pm_mesg = mesg;
- 	ap->pflags |= ATA_PFLAG_PM_PENDING;
- 	ata_for_each_link(link, ap, HOST_FIRST) {
-@@ -5021,10 +5023,8 @@ static void ata_port_request_pm(struct a
- 
- 	spin_unlock_irqrestore(ap->lock, flags);
- 
--	if (!async) {
-+	if (!async)
- 		ata_port_wait_eh(ap);
--		WARN_ON(ap->pflags & ATA_PFLAG_PM_PENDING);
--	}
++
++	damon_destroy_target(t);
  }
  
  /*
