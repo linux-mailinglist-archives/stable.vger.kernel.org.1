@@ -2,569 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A01A7B8A4A
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B52277B87C7
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:09:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244397AbjJDSeE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:34:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53068 "EHLO
+        id S243871AbjJDSJI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:09:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244395AbjJDSeD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:03 -0400
+        with ESMTP id S243856AbjJDSJI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C424A98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139D2C433C9;
-        Wed,  4 Oct 2023 18:33:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB279DD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38111C433C8;
+        Wed,  4 Oct 2023 18:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444439;
-        bh=p660lP899Yr3AiosO17N+K67K8O5ksW2rL5oYrYQUpY=;
+        s=korg; t=1696442944;
+        bh=j5VYygMeyjvVyTY86HZkv0UNYIce+DChBKL9eNtt11U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p2VReahyrAF5CYRiafIUWa15tKgpJduYyqckWNhv30Pw8k27uhT9UNahXznQgHVGP
-         eRGmvMb5KYjv5zwNjaQdvfo8bTd8dG4vtQeO/B8qfcJt3Fr7I/TWPFzzGhAt+nbM8s
-         XyF7o7fI1SgrGDMiJEeo/cyxAnqwZpgLWqlmpkn4=
+        b=xRaaDbP6Fr1QxbU+LeMp/9v1W3pZIKLssZf8Esu0ndMJ8SSkP55zY4SLVyKnZLFVP
+         xRNd/cry0Vmo5/54diQItqwExvV8u2rtA72hndUW0q00rRS22N28wXH3uYAwlsIUUa
+         wjOY2vI/nyMjQmDygKYaIV1pfxP/9xYpKckk4nDM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Paul Grandperrin <paul.grandperrin@gmail.com>,
-        Ricky Wu <ricky_wu@realtek.com>, Jade Lovelace <lists@jade.fyi>
-Subject: [PATCH 6.5 251/321] misc: rtsx: Fix some platforms can not boot and move the l1ss judgment to probe
+        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.15 165/183] ata: libata-scsi: ignore reserved bits for REPORT SUPPORTED OPERATION CODES
 Date:   Wed,  4 Oct 2023 19:56:36 +0200
-Message-ID: <20231004175240.904080787@linuxfoundation.org>
+Message-ID: <20231004175210.938460726@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PDS_BTC_ID,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricky WU <ricky_wu@realtek.com>
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-commit 0e4cac557531a4c93de108d9ff11329fcad482ff upstream.
+commit 3ef600923521616ebe192c893468ad0424de2afb upstream.
 
-commit 101bd907b424 ("misc: rtsx: judge ASPM Mode to set PETXCFG Reg")
-some readers no longer force #CLKREQ to low
-when the system need to enter ASPM.
-But some platform maybe not implement complete ASPM?
-it causes some platforms can not boot
+For REPORT SUPPORTED OPERATION CODES command, the service action field is
+defined as bits 0-4 in the second byte in the CDB. Bits 5-7 in the second
+byte are reserved.
 
-Like in the past only the platform support L1ss we release the #CLKREQ.
-Move the judgment (L1ss) to probe,
-we think read config space one time when the driver start is enough
+Only look at the service action field in the second byte when determining
+if the MAINTENANCE IN opcode is a REPORT SUPPORTED OPERATION CODES command.
 
-Fixes: 101bd907b424 ("misc: rtsx: judge ASPM Mode to set PETXCFG Reg")
-Cc: stable <stable@kernel.org>
-Reported-by: Paul Grandperrin <paul.grandperrin@gmail.com>
-Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
-Tested-By: Jade Lovelace <lists@jade.fyi>
-Link: https://lore.kernel.org/r/37b1afb997f14946a8784c73d1f9a4f5@realtek.com
+This matches how we only look at the service action field in the second
+byte when determining if the SERVICE ACTION IN(16) opcode is a READ
+CAPACITY(16) command (reserved bits 5-7 in the second byte are ignored).
+
+Fixes: 7b2030942859 ("libata: Add support for SCT Write Same")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/cardreader/rts5227.c  |   55 +++--------------------------------
- drivers/misc/cardreader/rts5228.c  |   57 +++++++++++--------------------------
- drivers/misc/cardreader/rts5249.c  |   56 ++++--------------------------------
- drivers/misc/cardreader/rts5260.c  |   43 ++++++++-------------------
- drivers/misc/cardreader/rts5261.c  |   52 ++++++++-------------------------
- drivers/misc/cardreader/rtsx_pcr.c |   51 +++++++++++++++++++++++++++++----
- 6 files changed, 102 insertions(+), 212 deletions(-)
+ drivers/ata/libata-scsi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/cardreader/rts5227.c
-+++ b/drivers/misc/cardreader/rts5227.c
-@@ -83,63 +83,20 @@ static void rts5227_fetch_vendor_setting
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4214,7 +4214,7 @@ void ata_scsi_simulate(struct ata_device
+ 		break;
  
- static void rts5227_init_from_cfg(struct rtsx_pcr *pcr)
- {
--	struct pci_dev *pdev = pcr->pci;
--	int l1ss;
--	u32 lval;
- 	struct rtsx_cr_option *option = &pcr->option;
- 
--	l1ss = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_L1SS);
--	if (!l1ss)
--		return;
--
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
--
- 	if (CHK_PCI_PID(pcr, 0x522A)) {
--		if (0 == (lval & 0x0F))
--			rtsx_pci_enable_oobs_polling(pcr);
--		else
-+		if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
-+				| PM_L1_1_EN | PM_L1_2_EN))
- 			rtsx_pci_disable_oobs_polling(pcr);
-+		else
-+			rtsx_pci_enable_oobs_polling(pcr);
- 	}
- 
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
--		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
--		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_2_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
--		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
--	else
--		rtsx_clear_dev_flag(pcr, PM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
--		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, PM_L1_2_EN);
--
- 	if (option->ltr_en) {
--		u16 val;
--
--		pcie_capability_read_word(pcr->pci, PCI_EXP_DEVCTL2, &val);
--		if (val & PCI_EXP_DEVCTL2_LTR_EN) {
--			option->ltr_enabled = true;
--			option->ltr_active = true;
-+		if (option->ltr_enabled)
- 			rtsx_set_ltr_latency(pcr, option->ltr_active_latency);
--		} else {
--			option->ltr_enabled = false;
--		}
- 	}
--
--	if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
--				| PM_L1_1_EN | PM_L1_2_EN))
--		option->force_clkreq_0 = false;
--	else
--		option->force_clkreq_0 = true;
--
- }
- 
- static int rts5227_extra_init_hw(struct rtsx_pcr *pcr)
-@@ -195,7 +152,7 @@ static int rts5227_extra_init_hw(struct
- 		}
- 	}
- 
--	if (option->force_clkreq_0 && pcr->aspm_mode == ASPM_MODE_CFG)
-+	if (option->force_clkreq_0)
- 		rtsx_pci_add_cmd(pcr, WRITE_REG_CMD, PETXCFG,
- 				FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_LOW);
- 	else
---- a/drivers/misc/cardreader/rts5228.c
-+++ b/drivers/misc/cardreader/rts5228.c
-@@ -386,59 +386,25 @@ static void rts5228_process_ocp(struct r
- 
- static void rts5228_init_from_cfg(struct rtsx_pcr *pcr)
- {
--	struct pci_dev *pdev = pcr->pci;
--	int l1ss;
--	u32 lval;
- 	struct rtsx_cr_option *option = &pcr->option;
- 
--	l1ss = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_L1SS);
--	if (!l1ss)
--		return;
--
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
--
--	if (0 == (lval & 0x0F))
--		rtsx_pci_enable_oobs_polling(pcr);
--	else
-+	if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
-+				| PM_L1_1_EN | PM_L1_2_EN))
- 		rtsx_pci_disable_oobs_polling(pcr);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
--		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
--		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_2_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
--		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
- 	else
--		rtsx_clear_dev_flag(pcr, PM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
--		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, PM_L1_2_EN);
-+		rtsx_pci_enable_oobs_polling(pcr);
- 
- 	rtsx_pci_write_register(pcr, ASPM_FORCE_CTL, 0xFF, 0);
--	if (option->ltr_en) {
--		u16 val;
- 
--		pcie_capability_read_word(pcr->pci, PCI_EXP_DEVCTL2, &val);
--		if (val & PCI_EXP_DEVCTL2_LTR_EN) {
--			option->ltr_enabled = true;
--			option->ltr_active = true;
-+	if (option->ltr_en) {
-+		if (option->ltr_enabled)
- 			rtsx_set_ltr_latency(pcr, option->ltr_active_latency);
--		} else {
--			option->ltr_enabled = false;
--		}
- 	}
- }
- 
- static int rts5228_extra_init_hw(struct rtsx_pcr *pcr)
- {
-+	struct rtsx_cr_option *option = &pcr->option;
- 
- 	rtsx_pci_write_register(pcr, RTS5228_AUTOLOAD_CFG1,
- 			CD_RESUME_EN_MASK, CD_RESUME_EN_MASK);
-@@ -469,6 +435,17 @@ static int rts5228_extra_init_hw(struct
- 	else
- 		rtsx_pci_write_register(pcr, PETXCFG, 0x30, 0x00);
- 
-+	/*
-+	 * If u_force_clkreq_0 is enabled, CLKREQ# PIN will be forced
-+	 * to drive low, and we forcibly request clock.
-+	 */
-+	if (option->force_clkreq_0)
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_LOW);
-+	else
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_HIGH);
-+
- 	rtsx_pci_write_register(pcr, PWD_SUSPEND_EN, 0xFF, 0xFB);
- 
- 	if (pcr->rtd3_en) {
---- a/drivers/misc/cardreader/rts5249.c
-+++ b/drivers/misc/cardreader/rts5249.c
-@@ -86,64 +86,22 @@ static void rtsx_base_fetch_vendor_setti
- 
- static void rts5249_init_from_cfg(struct rtsx_pcr *pcr)
- {
--	struct pci_dev *pdev = pcr->pci;
--	int l1ss;
- 	struct rtsx_cr_option *option = &(pcr->option);
--	u32 lval;
--
--	l1ss = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_L1SS);
--	if (!l1ss)
--		return;
--
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
- 
- 	if (CHK_PCI_PID(pcr, PID_524A) || CHK_PCI_PID(pcr, PID_525A)) {
--		if (0 == (lval & 0x0F))
--			rtsx_pci_enable_oobs_polling(pcr);
--		else
-+		if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
-+				| PM_L1_1_EN | PM_L1_2_EN))
- 			rtsx_pci_disable_oobs_polling(pcr);
-+		else
-+			rtsx_pci_enable_oobs_polling(pcr);
- 	}
- 
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
--		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
--		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
--		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
--		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
--
- 	if (option->ltr_en) {
--		u16 val;
--
--		pcie_capability_read_word(pdev, PCI_EXP_DEVCTL2, &val);
--		if (val & PCI_EXP_DEVCTL2_LTR_EN) {
--			option->ltr_enabled = true;
--			option->ltr_active = true;
-+		if (option->ltr_enabled)
- 			rtsx_set_ltr_latency(pcr, option->ltr_active_latency);
--		} else {
--			option->ltr_enabled = false;
--		}
- 	}
- }
- 
--static int rts5249_init_from_hw(struct rtsx_pcr *pcr)
--{
--	struct rtsx_cr_option *option = &(pcr->option);
--
--	if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
--				| PM_L1_1_EN | PM_L1_2_EN))
--		option->force_clkreq_0 = false;
--	else
--		option->force_clkreq_0 = true;
--
--	return 0;
--}
--
- static void rts52xa_force_power_down(struct rtsx_pcr *pcr, u8 pm_state, bool runtime)
- {
- 	/* Set relink_time to 0 */
-@@ -276,7 +234,6 @@ static int rts5249_extra_init_hw(struct
- 	struct rtsx_cr_option *option = &(pcr->option);
- 
- 	rts5249_init_from_cfg(pcr);
--	rts5249_init_from_hw(pcr);
- 
- 	rtsx_pci_init_cmd(pcr);
- 
-@@ -327,11 +284,12 @@ static int rts5249_extra_init_hw(struct
- 		}
- 	}
- 
-+
- 	/*
- 	 * If u_force_clkreq_0 is enabled, CLKREQ# PIN will be forced
- 	 * to drive low, and we forcibly request clock.
- 	 */
--	if (option->force_clkreq_0 && pcr->aspm_mode == ASPM_MODE_CFG)
-+	if (option->force_clkreq_0)
- 		rtsx_pci_write_register(pcr, PETXCFG,
- 			FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_LOW);
- 	else
---- a/drivers/misc/cardreader/rts5260.c
-+++ b/drivers/misc/cardreader/rts5260.c
-@@ -480,47 +480,19 @@ static void rts5260_pwr_saving_setting(s
- 
- static void rts5260_init_from_cfg(struct rtsx_pcr *pcr)
- {
--	struct pci_dev *pdev = pcr->pci;
--	int l1ss;
- 	struct rtsx_cr_option *option = &pcr->option;
--	u32 lval;
--
--	l1ss = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_L1SS);
--	if (!l1ss)
--		return;
--
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
--		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
--		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
--		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
--		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
- 
- 	rts5260_pwr_saving_setting(pcr);
- 
- 	if (option->ltr_en) {
--		u16 val;
--
--		pcie_capability_read_word(pdev, PCI_EXP_DEVCTL2, &val);
--		if (val & PCI_EXP_DEVCTL2_LTR_EN) {
--			option->ltr_enabled = true;
--			option->ltr_active = true;
-+		if (option->ltr_enabled)
- 			rtsx_set_ltr_latency(pcr, option->ltr_active_latency);
--		} else {
--			option->ltr_enabled = false;
--		}
- 	}
- }
- 
- static int rts5260_extra_init_hw(struct rtsx_pcr *pcr)
- {
-+	struct rtsx_cr_option *option = &pcr->option;
- 
- 	/* Set mcu_cnt to 7 to ensure data can be sampled properly */
- 	rtsx_pci_write_register(pcr, 0xFC03, 0x7F, 0x07);
-@@ -539,6 +511,17 @@ static int rts5260_extra_init_hw(struct
- 
- 	rts5260_init_hw(pcr);
- 
-+	/*
-+	 * If u_force_clkreq_0 is enabled, CLKREQ# PIN will be forced
-+	 * to drive low, and we forcibly request clock.
-+	 */
-+	if (option->force_clkreq_0)
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_LOW);
-+	else
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_HIGH);
-+
- 	rtsx_pci_write_register(pcr, pcr->reg_pm_ctrl3, 0x10, 0x00);
- 
- 	return 0;
---- a/drivers/misc/cardreader/rts5261.c
-+++ b/drivers/misc/cardreader/rts5261.c
-@@ -454,54 +454,17 @@ static void rts5261_init_from_hw(struct
- 
- static void rts5261_init_from_cfg(struct rtsx_pcr *pcr)
- {
--	struct pci_dev *pdev = pcr->pci;
--	int l1ss;
--	u32 lval;
- 	struct rtsx_cr_option *option = &pcr->option;
- 
--	l1ss = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_L1SS);
--	if (!l1ss)
--		return;
--
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
--		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
--		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_2_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
--		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
--	else
--		rtsx_clear_dev_flag(pcr, PM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
--		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, PM_L1_2_EN);
--
--	rtsx_pci_write_register(pcr, ASPM_FORCE_CTL, 0xFF, 0);
- 	if (option->ltr_en) {
--		u16 val;
--
--		pcie_capability_read_word(pdev, PCI_EXP_DEVCTL2, &val);
--		if (val & PCI_EXP_DEVCTL2_LTR_EN) {
--			option->ltr_enabled = true;
--			option->ltr_active = true;
-+		if (option->ltr_enabled)
- 			rtsx_set_ltr_latency(pcr, option->ltr_active_latency);
--		} else {
--			option->ltr_enabled = false;
--		}
- 	}
- }
- 
- static int rts5261_extra_init_hw(struct rtsx_pcr *pcr)
- {
-+	struct rtsx_cr_option *option = &pcr->option;
- 	u32 val;
- 
- 	rtsx_pci_write_register(pcr, RTS5261_AUTOLOAD_CFG1,
-@@ -547,6 +510,17 @@ static int rts5261_extra_init_hw(struct
- 	else
- 		rtsx_pci_write_register(pcr, PETXCFG, 0x30, 0x00);
- 
-+	/*
-+	 * If u_force_clkreq_0 is enabled, CLKREQ# PIN will be forced
-+	 * to drive low, and we forcibly request clock.
-+	 */
-+	if (option->force_clkreq_0)
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_LOW);
-+	else
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_HIGH);
-+
- 	rtsx_pci_write_register(pcr, PWD_SUSPEND_EN, 0xFF, 0xFB);
- 
- 	if (pcr->rtd3_en) {
---- a/drivers/misc/cardreader/rtsx_pcr.c
-+++ b/drivers/misc/cardreader/rtsx_pcr.c
-@@ -1326,11 +1326,8 @@ static int rtsx_pci_init_hw(struct rtsx_
- 			return err;
- 	}
- 
--	if (pcr->aspm_mode == ASPM_MODE_REG) {
-+	if (pcr->aspm_mode == ASPM_MODE_REG)
- 		rtsx_pci_write_register(pcr, ASPM_FORCE_CTL, 0x30, 0x30);
--		rtsx_pci_write_register(pcr, PETXCFG,
--				FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_HIGH);
--	}
- 
- 	/* No CD interrupt if probing driver with card inserted.
- 	 * So we need to initialize pcr->card_exist here.
-@@ -1345,7 +1342,9 @@ static int rtsx_pci_init_hw(struct rtsx_
- 
- static int rtsx_pci_init_chip(struct rtsx_pcr *pcr)
- {
--	int err;
-+	struct rtsx_cr_option *option = &(pcr->option);
-+	int err, l1ss;
-+	u32 lval;
- 	u16 cfg_val;
- 	u8 val;
- 
-@@ -1430,6 +1429,48 @@ static int rtsx_pci_init_chip(struct rts
- 			pcr->aspm_enabled = true;
- 	}
- 
-+	l1ss = pci_find_ext_capability(pcr->pci, PCI_EXT_CAP_ID_L1SS);
-+	if (l1ss) {
-+		pci_read_config_dword(pcr->pci, l1ss + PCI_L1SS_CTL1, &lval);
-+
-+		if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
-+			rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
-+		else
-+			rtsx_clear_dev_flag(pcr, ASPM_L1_1_EN);
-+
-+		if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
-+			rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
-+		else
-+			rtsx_clear_dev_flag(pcr, ASPM_L1_2_EN);
-+
-+		if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
-+			rtsx_set_dev_flag(pcr, PM_L1_1_EN);
-+		else
-+			rtsx_clear_dev_flag(pcr, PM_L1_1_EN);
-+
-+		if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
-+			rtsx_set_dev_flag(pcr, PM_L1_2_EN);
-+		else
-+			rtsx_clear_dev_flag(pcr, PM_L1_2_EN);
-+
-+		pcie_capability_read_word(pcr->pci, PCI_EXP_DEVCTL2, &cfg_val);
-+		if (cfg_val & PCI_EXP_DEVCTL2_LTR_EN) {
-+			option->ltr_enabled = true;
-+			option->ltr_active = true;
-+		} else {
-+			option->ltr_enabled = false;
-+		}
-+
-+		if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
-+				| PM_L1_1_EN | PM_L1_2_EN))
-+			option->force_clkreq_0 = false;
-+		else
-+			option->force_clkreq_0 = true;
-+	} else {
-+		option->ltr_enabled = false;
-+		option->force_clkreq_0 = true;
-+	}
-+
- 	if (pcr->ops->fetch_vendor_settings)
- 		pcr->ops->fetch_vendor_settings(pcr);
- 
+ 	case MAINTENANCE_IN:
+-		if (scsicmd[1] == MI_REPORT_SUPPORTED_OPERATION_CODES)
++		if ((scsicmd[1] & 0x1f) == MI_REPORT_SUPPORTED_OPERATION_CODES)
+ 			ata_scsi_rbuf_fill(&args, ata_scsiop_maint_in);
+ 		else
+ 			ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
 
 
