@@ -2,88 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 875C37B7D12
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 12:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 718837B7DCC
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 13:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242171AbjJDKZ1 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 4 Oct 2023 06:25:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46112 "EHLO
+        id S233158AbjJDLHW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 07:07:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242181AbjJDKZY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 06:25:24 -0400
-Received: from esa2.hc5620-63.iphmx.com (esa2.hc5620-63.iphmx.com [68.232.149.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92293BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 03:25:16 -0700 (PDT)
-X-CSE-ConnectionGUID: cZFWFZ7rTYCRIENV/nyFHQ==
-X-CSE-MsgGUID: 2rOOsvnjSTmpz4WlWg44GQ==
-Message-Id: <bc8e20$rdev@esa2.hc5620-63.iphmx.com>
-X-IronPort-RemoteIP: 185.225.73.120
-X-IronPort-MID: 898527
-X-IronPort-Reputation: -5.6
-X-IronPort-Listener: MailFlow
-X-IronPort-SenderGroup: RELAY_O365
-X-IronPort-MailFlowPolicy: $RELAYED
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from unknown (HELO [185.225.73.120]) ([185.225.73.120])
-  by esa2.hc5620-63.iphmx.com with ESMTP; 04 Oct 2023 06:25:11 -0400
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S233001AbjJDLHW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 07:07:22 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A14B0;
+        Wed,  4 Oct 2023 04:07:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39D9C433C7;
+        Wed,  4 Oct 2023 11:07:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696417639;
+        bh=1JJrIUPl6pbHzZ7I1g6oBNmULdlUHsuIiITpgEf24Mw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hhs3iQMnZx4oR08DZ/GXEIWmgD/VHwaRYw1qbKslBmAbCUM9ZyX25b0+KROSz41FY
+         rRv07clWP2HIEdfy10yH9XaQbE5BMbVlNn5roem8f5jXtDmbH2ebesao2KAylq12Dw
+         TDt/dD698mjX0ymhnx9LD23Of1aDtzEtL7yBKjxkhGH1AyBct8Co5+hDF9Ocq30QlH
+         q7P2GQnEwSzRpli39K+TnLPNfZLwamYKoC2c7ptjaS+Cm7fodSp1GFRLU7pYkzyAL2
+         048rvKKMkUXmnz55TIYo4hVordZq6g4y/in9hXRRrzn7EmWqgD0gdotKUswvHkwtsl
+         DvM7n2d8mwSpg==
+Date:   Wed, 4 Oct 2023 13:07:14 +0200
+From:   Simon Horman <horms@kernel.org>
+To:     =?utf-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>
+Cc:     Michal Kubecek <mkubecek@suse.cz>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        stable@vger.kernel.org, thomas.petazzoni@bootlin.com,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net 1/1] ethtool: Fix mod state of verbose no_mask bitset
+Message-ID: <ZR1HYg2ElUjy2aud@kernel.org>
+References: <20231003085653.3104411-1-kory.maincent@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: business reminder please call me +2378124804975
-To:     Recipients <test@mail2world.com>
-From:   "Mr. mohd" <test@mail2world.com>
-Date:   Wed, 04 Oct 2023 03:25:05 -0700
-Reply-To: mohamedabdulahmed1950@gmail.com
-X-Spam-Status: Yes, score=6.7 required=5.0 tests=BAYES_50,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,HK_NAME_FM_MR_MRS,
-        MSGID_FROM_MTA_HEADER,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL,SPF_FAIL,
-        SPF_HELO_PASS,SPOOFED_FREEMAIL,SPOOFED_FREEM_REPTO,
-        TO_EQ_FM_DOM_SPF_FAIL,TO_EQ_FM_SPF_FAIL autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *      [185.225.73.120 listed in zen.spamhaus.org]
-        *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [68.232.149.158 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [test[at]mail2world.com]
-        *  0.0 SPF_FAIL SPF: sender does not match SPF record (fail)
-        *      [SPF failed: Please see http://www.openspf.org/Why?s=mfrom;id=test%40mail2world.com;ip=68.232.149.158;r=lindbergh.monkeyblade.net]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mohamedabdulahmed1950[at]gmail.com]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        *  1.5 HK_NAME_FM_MR_MRS No description available.
-        *  0.0 MSGID_FROM_MTA_HEADER Message-Id was added by a relay
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 TO_EQ_FM_DOM_SPF_FAIL To domain == From domain and external SPF
-        *       failed
-        *  0.0 TO_EQ_FM_SPF_FAIL To == From and external SPF failed
-        *  2.0 SPOOFED_FREEMAIL No description available.
-        *  1.0 SPOOFED_FREEM_REPTO Forged freemail sender with freemail
-        *      reply-to
-X-Spam-Level: ******
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231003085653.3104411-1-kory.maincent@bootlin.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, Oct 03, 2023 at 10:56:52AM +0200, Köry Maincent wrote:
+> From: Kory Maincent <kory.maincent@bootlin.com>
+> 
+> A bitset without mask in a _SET request means we want exactly the bits in
+> the bitset to be set. This works correctly for compact format but when
+> verbose format is parsed, ethnl_update_bitset32_verbose() only sets the
+> bits present in the request bitset but does not clear the rest. The commit
+> 6699170376ab fixes this issue by clearing the whole target bitmap before we
+> start iterating. The solution proposed brought an issue with the behavior
+> of the mod variable. As the bitset is always cleared the old val will
+> always differ to the new val.
+> 
+> Fix it by adding a new temporary variable which save the state of the old
+> bitmap.
+> 
+> Fixes: 6699170376ab ("ethtool: fix application of verbose no_mask bitset")
+> Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  net/ethtool/bitset.c | 25 +++++++++++++++++++------
+>  1 file changed, 19 insertions(+), 6 deletions(-)
+> 
+> diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
+> index 0515d6604b3b..95f11b0a38b4 100644
+> --- a/net/ethtool/bitset.c
+> +++ b/net/ethtool/bitset.c
+> @@ -432,7 +432,9 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+>  			      struct netlink_ext_ack *extack, bool *mod)
+>  {
+>  	struct nlattr *bit_attr;
+> +	u32 *tmp = NULL;
+>  	bool no_mask;
+> +	bool dummy;
+>  	int rem;
+>  	int ret;
+>  
+> @@ -448,8 +450,11 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+>  	}
+>  
+>  	no_mask = tb[ETHTOOL_A_BITSET_NOMASK];
+> -	if (no_mask)
+> -		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
+> +	if (no_mask) {
+> +		tmp = kcalloc(nbits, sizeof(u32), GFP_KERNEL);
+> +		memcpy(tmp, bitmap, nbits);
 
-Dear
-My name is Mohamed Abdul I have the capacity to inject a considerable
-amount of capital in any viable project 
-1,cell phone number 
-2,full name
+Hi Köry,
 
+I'm no expert on etnhl bitmaps. But the above doesn't seem correct to me.
+Given that sizeof(u32) == 4:
 
-yours truly
-Mohamed Abdul Ahmed
+* The allocation is for nbits * 4 bytes
+* The copy is for its for nbits bytes
+* I believe that bitmap contains space for the value followed by a mask.
+  So it seems to me the size of bitmap, in words, is
+  DIV_ROUND_UP(nbits, 32) * 2
+  And in bytes: DIV_ROUND_UP(nbits, 32) * 16
+  But perhaps only half is needed if only the value part of tmp is used.
+
+If I'm on the right track here I'd suggest helpers might be in order.
+
+> +		ethnl_bitmap32_clear(bitmap, 0, nbits, &dummy);
+> +	}
+>  
+>  	nla_for_each_nested(bit_attr, tb[ETHTOOL_A_BITSET_BITS], rem) {
+>  		bool old_val, new_val;
+> @@ -458,13 +463,18 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+>  		if (nla_type(bit_attr) != ETHTOOL_A_BITSET_BITS_BIT) {
+>  			NL_SET_ERR_MSG_ATTR(extack, bit_attr,
+>  					    "only ETHTOOL_A_BITSET_BITS_BIT allowed in ETHTOOL_A_BITSET_BITS");
+> -			return -EINVAL;
+> +			ret = -EINVAL;
+> +			goto out;
+>  		}
+>  		ret = ethnl_parse_bit(&idx, &new_val, nbits, bit_attr, no_mask,
+>  				      names, extack);
+>  		if (ret < 0)
+> -			return ret;
+> -		old_val = bitmap[idx / 32] & ((u32)1 << (idx % 32));
+> +			goto out;
+> +		if (no_mask)
+> +			old_val = tmp[idx / 32] & ((u32)1 << (idx % 32));
+> +		else
+> +			old_val = bitmap[idx / 32] & ((u32)1 << (idx % 32));
+> +
+>  		if (new_val != old_val) {
+>  			if (new_val)
+>  				bitmap[idx / 32] |= ((u32)1 << (idx % 32));
+> @@ -474,7 +484,10 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+>  		}
+>  	}
+>  
+> -	return 0;
+> +	ret = 0;
+> +out:
+> +	kfree(tmp);
+> +	return ret;
+>  }
+>  
+>  static int ethnl_compact_sanity_checks(unsigned int nbits,
+> -- 
+> 2.25.1
+> 
+> 
