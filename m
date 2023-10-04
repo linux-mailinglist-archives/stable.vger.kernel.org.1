@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 574C47B898E
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A12BB7B8835
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244212AbjJDS1U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33966 "EHLO
+        id S243928AbjJDSNq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:13:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244210AbjJDS1T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:19 -0400
+        with ESMTP id S243752AbjJDSNp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2953C98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCE7C433C8;
-        Wed,  4 Oct 2023 18:27:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5682C1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3674C433C8;
+        Wed,  4 Oct 2023 18:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444035;
-        bh=foDrQBpj3AgYgWKDMljYUKjKKFe/mKX0ziWXTGaq0KI=;
+        s=korg; t=1696443222;
+        bh=heSel1K3MXLrWOifxDd12lcx6fbJdCUClwsOzOxJyqA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A1QItBieypSlOKZcusI5YbysPslX07QqMDz3+zWG2I0D0LOcs74B09Qr+moek4wz8
-         QEuMPUDhNEBnNJWfpsvc52XmlbEPXH7tZYPjrCFOzcgoaLPnkJYugFbJ2t8wcINPjg
-         X1i9huCBWXeGfs4fpkO1dM7IUbWXebv9Tgkln04w=
+        b=1sBwck/njPfzF2It6MllMxRFuC3JF1441C5qBkVbk3LGZLji0PA/gVgLQCQS0Vydv
+         XI906o7B9DfV97Wcw9uqBdHoGj3JQSn9DDeDfkFWKw2ZSx4PbP0e5l3yWdrhYFK3wt
+         mZMRHbsvWmrzcNtlduZJQofb+z+xcyxcwOPjIo7o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 107/321] gpio: tb10x: Fix an error handling path in tb10x_gpio_probe()
-Date:   Wed,  4 Oct 2023 19:54:12 +0200
-Message-ID: <20231004175234.203326277@linuxfoundation.org>
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 080/259] locking/seqlock: Do the lockdep annotation before locking in do_write_seqcount_begin_nested()
+Date:   Wed,  4 Oct 2023 19:54:13 +0200
+Message-ID: <20231004175221.043937326@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +51,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit b547b5e52a0587e6b25ea520bf2f9e03d00cbcb6 ]
+[ Upstream commit 41b43b6c6e30a832c790b010a06772e793bca193 ]
 
-If an error occurs after a successful irq_domain_add_linear() call, it
-should be undone by a corresponding irq_domain_remove(), as already done
-in the remove function.
+It was brought up by Tetsuo that the following sequence:
 
-Fixes: c6ce2b6bffe5 ("gpio: add TB10x GPIO driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+   write_seqlock_irqsave()
+   printk_deferred_enter()
+
+could lead to a deadlock if the lockdep annotation within
+write_seqlock_irqsave() triggers.
+
+The problem is that the sequence counter is incremented before the lockdep
+annotation is performed. The lockdep splat would then attempt to invoke
+printk() but the reader side, of the same seqcount, could have a
+tty_port::lock acquired waiting for the sequence number to become even again.
+
+The other lockdep annotations come before the actual locking because "we
+want to see the locking error before it happens". There is no reason why
+seqcount should be different here.
+
+Do the lockdep annotation first then perform the locking operation (the
+sequence increment).
+
+Fixes: 1ca7d67cf5d5a ("seqcount: Add lockdep functionality to seqcount/seqlock structures")
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230920104627._DTHgPyA@linutronix.de
+
+Closes: https://lore.kernel.org/20230621130641.-5iueY1I@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tb10x.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/linux/seqlock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tb10x.c b/drivers/gpio/gpio-tb10x.c
-index 78f8790168ae1..f96d260a4a19d 100644
---- a/drivers/gpio/gpio-tb10x.c
-+++ b/drivers/gpio/gpio-tb10x.c
-@@ -195,7 +195,7 @@ static int tb10x_gpio_probe(struct platform_device *pdev)
- 				handle_edge_irq, IRQ_NOREQUEST, IRQ_NOPROBE,
- 				IRQ_GC_INIT_MASK_CACHE);
- 		if (ret)
--			return ret;
-+			goto err_remove_domain;
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index 3926e90279477..d778af83c8f36 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -512,8 +512,8 @@ do {									\
  
- 		gc = tb10x_gpio->domain->gc->gc[0];
- 		gc->reg_base                         = tb10x_gpio->base;
-@@ -209,6 +209,10 @@ static int tb10x_gpio_probe(struct platform_device *pdev)
- 	}
- 
- 	return 0;
-+
-+err_remove_domain:
-+	irq_domain_remove(tb10x_gpio->domain);
-+	return ret;
+ static inline void do_write_seqcount_begin_nested(seqcount_t *s, int subclass)
+ {
+-	do_raw_write_seqcount_begin(s);
+ 	seqcount_acquire(&s->dep_map, subclass, 0, _RET_IP_);
++	do_raw_write_seqcount_begin(s);
  }
  
- static int tb10x_gpio_remove(struct platform_device *pdev)
+ /**
 -- 
 2.40.1
 
