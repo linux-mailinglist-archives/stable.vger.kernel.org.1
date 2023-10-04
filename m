@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B73C7B889A
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77E9F7B8788
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244104AbjJDSRr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:17:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40168 "EHLO
+        id S243611AbjJDSGc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:06:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244108AbjJDSRq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:46 -0400
+        with ESMTP id S243825AbjJDSG1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 307A8D7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7708CC433CA;
-        Wed,  4 Oct 2023 18:17:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B7BDAD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35CAC433C8;
+        Wed,  4 Oct 2023 18:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443460;
-        bh=1Izj812awqPG0tD/2/d63sEEw3HRNJAngleLWVem+vE=;
+        s=korg; t=1696442784;
+        bh=GXBByhq0YBShr1fh1TJSTur68iDnKVQwK3yuLRitksY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SrzGcyxSLlskFQxRqbdab7qxInGlNDhbpvpfdlaCzeu0c7A9VLp7KG2bjcD7h4McA
-         tm36zhss9THo9Bk55WqIIEJUWkhpKFMn3ZlBWSqTT7algJLVljyDmZuHyxLLElvZ1J
-         Aw+hex/ur/LXNe7qyS6Q4NZ/nBM1ZzQLn3n1ts3E=
+        b=j2Gz3VFjT0DrLX/lKopPGCOUjjVOtQOPY8rZ9f4wfi4Iyjh5zYEnIM4k7noXJY3dj
+         P33G8q013fxdQ4NBBWa+j1+2fignesMB4Q5KXN0XySnt5IEiS38DgDs0v7V+Mz3Aej
+         IbwTOENMoqbljjngSfRhZYBJDpm29EWQowiOODRg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wenjing Liu <wenjing.liu@amd.com>,
-        Stylon Wang <stylon.wang@amd.com>,
-        Swapnil Patel <swapnil.patel@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Wenhua Lin <Wenhua.Lin@unisoc.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 165/259] drm/amd/display: Dont check registers, if using AUX BL control
-Date:   Wed,  4 Oct 2023 19:55:38 +0200
-Message-ID: <20231004175224.855162727@linuxfoundation.org>
+Subject: [PATCH 5.15 108/183] gpio: pmic-eic-sprd: Add can_sleep flag for PMIC EIC chip
+Date:   Wed,  4 Oct 2023 19:55:39 +0200
+Message-ID: <20231004175208.431087633@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Swapnil Patel <swapnil.patel@amd.com>
+From: Wenhua Lin <Wenhua.Lin@unisoc.com>
 
-[ Upstream commit f5b2c10b57615828b531bb0ae56bd6325a41167e ]
+[ Upstream commit 26d9e5640d2130ee16df7b1fb6a908f460ab004c ]
 
-[Why]
-Currently the driver looks DCN registers to access if BL is on or not.
-This check is not valid if we are using AUX based brightness control.
-This causes driver to not send out "backlight off" command during power off
-sequence as it already thinks it is off.
+The drivers uses a mutex and I2C bus access in its PMIC EIC chip
+get implementation. This means these functions can sleep and the PMIC EIC
+chip should set the can_sleep property to true.
 
-[How]
-Only check DCN registers if we aren't using AUX based brightness control.
+This will ensure that a warning is printed when trying to get the
+value from a context that potentially can't sleep.
 
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Stylon Wang <stylon.wang@amd.com>
-Signed-off-by: Swapnil Patel <swapnil.patel@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 348f3cde84ab ("gpio: Add Spreadtrum PMIC EIC driver support")
+Signed-off-by: Wenhua Lin <Wenhua.Lin@unisoc.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-pmic-eic-sprd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-index 9378c98d02cfe..508f5fe268484 100644
---- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-@@ -973,7 +973,9 @@ void dce110_edp_backlight_control(
- 		return;
- 	}
+diff --git a/drivers/gpio/gpio-pmic-eic-sprd.c b/drivers/gpio/gpio-pmic-eic-sprd.c
+index 9382851905662..e969ce9131ddf 100644
+--- a/drivers/gpio/gpio-pmic-eic-sprd.c
++++ b/drivers/gpio/gpio-pmic-eic-sprd.c
+@@ -338,6 +338,7 @@ static int sprd_pmic_eic_probe(struct platform_device *pdev)
+ 	pmic_eic->chip.set_config = sprd_pmic_eic_set_config;
+ 	pmic_eic->chip.set = sprd_pmic_eic_set;
+ 	pmic_eic->chip.get = sprd_pmic_eic_get;
++	pmic_eic->chip.can_sleep = true;
  
--	if (link->panel_cntl) {
-+	if (link->panel_cntl && !(link->dpcd_sink_ext_caps.bits.oled ||
-+		link->dpcd_sink_ext_caps.bits.hdr_aux_backlight_control == 1 ||
-+		link->dpcd_sink_ext_caps.bits.sdr_aux_backlight_control == 1)) {
- 		bool is_backlight_on = link->panel_cntl->funcs->is_panel_backlight_on(link->panel_cntl);
- 
- 		if ((enable && is_backlight_on) || (!enable && !is_backlight_on)) {
+ 	pmic_eic->intc.name = dev_name(&pdev->dev);
+ 	pmic_eic->intc.irq_mask = sprd_pmic_eic_irq_mask;
 -- 
 2.40.1
 
