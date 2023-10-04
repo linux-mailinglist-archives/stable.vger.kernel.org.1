@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FF777B8A44
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3744A7B88DD
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244224AbjJDSdx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:33:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53550 "EHLO
+        id S243892AbjJDSUS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244386AbjJDSdw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:52 -0400
+        with ESMTP id S243886AbjJDSUR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99AA0C1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1116C433C8;
-        Wed,  4 Oct 2023 18:33:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45899A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872F4C433C7;
+        Wed,  4 Oct 2023 18:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444428;
-        bh=+STsLGGtghiXNmNc2EpcgkYOLwCU9zFI0koNLTB7zKI=;
+        s=korg; t=1696443613;
+        bh=LFMdoiQ0/nTzfDXIp+8SiIT10Adn3xB2eseE8OG4q/4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mKdlZg169wkilnlK0aFSZrT5T2JnDbidT7yXg1yzYcxjTDDisFSYnH4jVcSYH3/zg
-         hrQiR2ZmshTeGv01V4hS8ZXPG2rFyMMowSuQC8/vY+fpX/z6mq32y2RtVTne9D2sxg
-         Cgl7WI5iITpx9tG/VJg7bHKB0UQqEnxmerB8X4NU=
+        b=Pdl0lUme+07NUCsKXvQDgY9mzrfP61H8kAI3OmaF3Yv/YNXKPJjpZxiUgPUbAwMN4
+         a1qkRwKzBgPWoqUkGHY1KgZTQ//gRpZCB2Xer35C0ezc2L75ac02Jc+Enh8VtKZa2s
+         rxFK0rwj4z9GT7XdoWRBUT00zLBtcswZdp6HM2Gs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Mike Rapoport (IBM)" <rppt@kernel.org>,
+        patches@lists.linux.dev, Benjamin Gray <bgray@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: =?UTF-8?q?=5BPATCH=206=2E5=20218/321=5D=20=3D=3FUTF-8=3Fq=3Fmemblock=3D20tests=3A=3D20fix=3D20warning=3D20=3DE2=3D80=3D98struct=3D20s=3F=3D=20=3D=3FUTF-8=3Fq=3Feq=3D5Ffile=3DE2=3D80=3D99=3D20declared=3D20inside=3D20parameter=3D20list=3F=3D?=
+Subject: [PATCH 6.1 190/259] powerpc/watchpoints: Disable preemption in thread_change_pc()
 Date:   Wed,  4 Oct 2023 19:56:03 +0200
-Message-ID: <20231004175239.336289834@linuxfoundation.org>
+Message-ID: <20231004175226.015092353@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,71 +50,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (IBM) <rppt@kernel.org>
+From: Benjamin Gray <bgray@linux.ibm.com>
 
-[ Upstream commit 55122e0130e51eb71f5ec62d10525db0468f28e8 ]
+[ Upstream commit cc879ab3ce39bc39f9b1d238b283f43a5f6f957d ]
 
-Building memblock tests produces the following warning:
+thread_change_pc() uses CPU local data, so must be protected from
+swapping CPUs while it is reading the breakpoint struct.
 
-cc -I. -I../../include -Wall -O2 -fsanitize=address -fsanitize=undefined -D CONFIG_PHYS_ADDR_T_64BIT   -c -o main.o main.c
-In file included from tests/common.h:9,
-                 from tests/basic_api.h:5,
-                 from main.c:2:
-./linux/memblock.h:601:50: warning: ‘struct seq_file’ declared inside parameter list will not be visible outside of this definition or declaration
-  601 | static inline void memtest_report_meminfo(struct seq_file *m) { }
-      |                                                  ^~~~~~~~
+The error is more noticeable after 1e60f3564bad ("powerpc/watchpoints:
+Track perf single step directly on the breakpoint"), which added an
+unconditional __this_cpu_read() call in thread_change_pc(). However the
+existing __this_cpu_read() that runs if a breakpoint does need to be
+re-inserted has the same issue.
 
-Add declaration of 'struct seq_file' to tools/include/linux/seq_file.h
-to fix it.
-
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230829063457.54157-2-bgray@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/linux/seq_file.h           | 2 ++
- tools/testing/memblock/tests/basic_api.c | 2 +-
- tools/testing/memblock/tests/common.h    | 1 +
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/hw_breakpoint.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/include/linux/seq_file.h b/tools/include/linux/seq_file.h
-index 102fd9217f1f9..f6bc226af0c1d 100644
---- a/tools/include/linux/seq_file.h
-+++ b/tools/include/linux/seq_file.h
-@@ -1,4 +1,6 @@
- #ifndef _TOOLS_INCLUDE_LINUX_SEQ_FILE_H
- #define _TOOLS_INCLUDE_LINUX_SEQ_FILE_H
+diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+index 8db1a15d7acbe..a72f86c130488 100644
+--- a/arch/powerpc/kernel/hw_breakpoint.c
++++ b/arch/powerpc/kernel/hw_breakpoint.c
+@@ -505,11 +505,13 @@ void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs)
+ 	struct arch_hw_breakpoint *info;
+ 	int i;
  
-+struct seq_file;
++	preempt_disable();
 +
- #endif /* _TOOLS_INCLUDE_LINUX_SEQ_FILE_H */
-diff --git a/tools/testing/memblock/tests/basic_api.c b/tools/testing/memblock/tests/basic_api.c
-index 411647094cc37..57bf2688edfd6 100644
---- a/tools/testing/memblock/tests/basic_api.c
-+++ b/tools/testing/memblock/tests/basic_api.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
-+#include "basic_api.h"
- #include <string.h>
- #include <linux/memblock.h>
--#include "basic_api.h"
+ 	for (i = 0; i < nr_wp_slots(); i++) {
+ 		if (unlikely(tsk->thread.last_hit_ubp[i]))
+ 			goto reset;
+ 	}
+-	return;
++	goto out;
  
- #define EXPECTED_MEMBLOCK_REGIONS			128
- #define FUNC_ADD					"memblock_add"
-diff --git a/tools/testing/memblock/tests/common.h b/tools/testing/memblock/tests/common.h
-index 4f23302ee6779..b5ec59aa62d72 100644
---- a/tools/testing/memblock/tests/common.h
-+++ b/tools/testing/memblock/tests/common.h
-@@ -5,6 +5,7 @@
- #include <stdlib.h>
- #include <assert.h>
- #include <linux/types.h>
-+#include <linux/seq_file.h>
- #include <linux/memblock.h>
- #include <linux/sizes.h>
- #include <linux/printk.h>
+ reset:
+ 	regs_set_return_msr(regs, regs->msr & ~MSR_SE);
+@@ -518,6 +520,9 @@ void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs)
+ 		__set_breakpoint(i, info);
+ 		tsk->thread.last_hit_ubp[i] = NULL;
+ 	}
++
++out:
++	preempt_enable();
+ }
+ 
+ static bool is_larx_stcx_instr(int type)
 -- 
 2.40.1
 
