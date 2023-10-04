@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1786A7B8A16
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77C217B87AA
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244331AbjJDScJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:32:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33218 "EHLO
+        id S243705AbjJDSH7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:07:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244351AbjJDScJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:09 -0400
+        with ESMTP id S243841AbjJDSH6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 613E6C9
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B22C433C7;
-        Wed,  4 Oct 2023 18:32:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C849EC6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148C0C433C7;
+        Wed,  4 Oct 2023 18:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444323;
-        bh=MBl4Y+j+pXWAk+Fb9ZvyvthEvJYmloRCDijp7rIVYvY=;
+        s=korg; t=1696442874;
+        bh=+5ebbVmJ+WwEVSUgG4dPBRD4y+jpkGpNoBR2w4WnWG0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CbhHYaxNK4PjOD+0qXrZSF4knAWpiz+RCR0WkLo09QFCD6CS/4FATg9KVbLSwQYKw
-         u2l7f0aKlGdP4iEzlLAcIDngjkcdai9DmCLF0WPatV2VLFLElCiNpu+0ZtpLDpRIXA
-         38aj6YsS18nYgerAh6E0MJBDjaf/PiXHpJ4VLE6k=
+        b=lXLACPGVnMASSR0mCHYtUDiziQakv2uy94jDJH81cHaD/wQR+3pyvDQV/Pi3Y0Qe7
+         ST6VF30MOrV6nr2Aat1IFKRmCQfKePVKoOoodpdDiDRTQyIRUsL63KjB9G28AOxkfA
+         JrgC9mk9LRQC407uDlkYdcCxs7qGgOceAQrVSsPI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>,
-        Hou Tao <houtao1@huawei.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 208/321] bpf: Ensure unit_size is matched with slab cache object size
+        patches@lists.linux.dev,
+        "Ricardo B. Marliere" <rbmarliere@gmail.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 122/183] selftests: fix dependency checker script
 Date:   Wed,  4 Oct 2023 19:55:53 +0200
-Message-ID: <20231004175238.880991000@linuxfoundation.org>
+Message-ID: <20231004175209.063043872@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,100 +51,181 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Ricardo B. Marliere <rbmarliere@gmail.com>
 
-[ Upstream commit c930472552022bd09aab3cd946ba3f243070d5c7 ]
+[ Upstream commit 5f9dd2e896a91bfca90f8463eb6808c03d535d8a ]
 
-Add extra check in bpf_mem_alloc_init() to ensure the unit_size of
-bpf_mem_cache is matched with the object_size of underlying slab cache.
-If these two sizes are unmatched, print a warning once and return
--EINVAL in bpf_mem_alloc_init(), so the mismatch can be found early and
-the potential issue can be prevented.
+This patch fixes inconsistencies in the parsing rules of the levels 1
+and 2 of the kselftest_deps.sh.  It was added the levels 4 and 5 to
+account for a few edge cases that are present in some tests, also some
+minor identation styling have been fixed (s/    /\t/g).
 
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20230908133923.2675053-4-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Ricardo B. Marliere <rbmarliere@gmail.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/memalloc.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ tools/testing/selftests/kselftest_deps.sh | 77 +++++++++++++++++++----
+ 1 file changed, 65 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/bpf/memalloc.c b/kernel/bpf/memalloc.c
-index 0668bcd7c926f..bcf84e71f549c 100644
---- a/kernel/bpf/memalloc.c
-+++ b/kernel/bpf/memalloc.c
-@@ -370,6 +370,24 @@ static void prefill_mem_cache(struct bpf_mem_cache *c, int cpu)
- 	alloc_bulk(c, c->unit_size <= 256 ? 4 : 1, cpu_to_node(cpu));
+diff --git a/tools/testing/selftests/kselftest_deps.sh b/tools/testing/selftests/kselftest_deps.sh
+index 00e60d6eb16bc..7e51f4a373d35 100755
+--- a/tools/testing/selftests/kselftest_deps.sh
++++ b/tools/testing/selftests/kselftest_deps.sh
+@@ -46,11 +46,11 @@ fi
+ print_targets=0
+ 
+ while getopts "p" arg; do
+-    case $arg in
+-        p)
++	case $arg in
++		p)
+ 		print_targets=1
+ 	shift;;
+-    esac
++	esac
+ done
+ 
+ if [ $# -eq 0 ]
+@@ -92,6 +92,10 @@ pass_cnt=0
+ # Get all TARGETS from selftests Makefile
+ targets=$(egrep "^TARGETS +|^TARGETS =" Makefile | cut -d "=" -f2)
+ 
++# Initially, in LDLIBS related lines, the dep checker needs
++# to ignore lines containing the following strings:
++filter="\$(VAR_LDLIBS)\|pkg-config\|PKG_CONFIG\|IOURING_EXTRA_LIBS"
++
+ # Single test case
+ if [ $# -eq 2 ]
+ then
+@@ -100,6 +104,8 @@ then
+ 	l1_test $test
+ 	l2_test $test
+ 	l3_test $test
++	l4_test $test
++	l5_test $test
+ 
+ 	print_results $1 $2
+ 	exit $?
+@@ -113,7 +119,7 @@ fi
+ # Append space at the end of the list to append more tests.
+ 
+ l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
+-		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
++		grep -v "$filter" | awk -F: '{print $1}' | uniq)
+ 
+ # Level 2: LDLIBS set dynamically.
+ #
+@@ -126,7 +132,7 @@ l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
+ # Append space at the end of the list to append more tests.
+ 
+ l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
+-		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
++		grep -v "$filter" | awk -F: '{print $1}' | uniq)
+ 
+ # Level 3
+ # memfd and others use pkg-config to find mount and fuse libs
+@@ -138,11 +144,32 @@ l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
+ #	VAR_LDLIBS := $(shell pkg-config fuse --libs 2>/dev/null)
+ 
+ l3_tests=$(grep -r --include=Makefile "^VAR_LDLIBS" | \
+-		grep -v "pkg-config" | awk -F: '{print $1}')
++		grep -v "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
+ 
+-#echo $l1_tests
+-#echo $l2_1_tests
+-#echo $l3_tests
++# Level 4
++# some tests may fall back to default using `|| echo -l<libname>`
++# if pkg-config doesn't find the libs, instead of using VAR_LDLIBS
++# as per level 3 checks.
++# e.g:
++# netfilter/Makefile
++#	LDLIBS += $(shell $(HOSTPKG_CONFIG) --libs libmnl 2>/dev/null || echo -lmnl)
++l4_tests=$(grep -r --include=Makefile "^LDLIBS" | \
++		grep "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
++
++# Level 5
++# some tests may use IOURING_EXTRA_LIBS to add extra libs to LDLIBS,
++# which in turn may be defined in a sub-Makefile
++# e.g.:
++# mm/Makefile
++#	$(OUTPUT)/gup_longterm: LDLIBS += $(IOURING_EXTRA_LIBS)
++l5_tests=$(grep -r --include=Makefile "LDLIBS +=.*\$(IOURING_EXTRA_LIBS)" | \
++	awk -F: '{print $1}' | uniq)
++
++#echo l1_tests $l1_tests
++#echo l2_tests $l2_tests
++#echo l3_tests $l3_tests
++#echo l4_tests $l4_tests
++#echo l5_tests $l5_tests
+ 
+ all_tests
+ print_results $1 $2
+@@ -164,24 +191,32 @@ all_tests()
+ 	for test in $l3_tests; do
+ 		l3_test $test
+ 	done
++
++	for test in $l4_tests; do
++		l4_test $test
++	done
++
++	for test in $l5_tests; do
++		l5_test $test
++	done
  }
  
-+static int check_obj_size(struct bpf_mem_cache *c, unsigned int idx)
+ # Use same parsing used for l1_tests and pick libraries this time.
+ l1_test()
+ {
+ 	test_libs=$(grep --include=Makefile "^LDLIBS" $test | \
+-			grep -v "VAR_LDLIBS" | \
++			grep -v "$filter" | \
+ 			sed -e 's/\:/ /' | \
+ 			sed -e 's/+/ /' | cut -d "=" -f 2)
+ 
+ 	check_libs $test $test_libs
+ }
+ 
+-# Use same parsing used for l2__tests and pick libraries this time.
++# Use same parsing used for l2_tests and pick libraries this time.
+ l2_test()
+ {
+ 	test_libs=$(grep --include=Makefile ": LDLIBS" $test | \
+-			grep -v "VAR_LDLIBS" | \
++			grep -v "$filter" | \
+ 			sed -e 's/\:/ /' | sed -e 's/+/ /' | \
+ 			cut -d "=" -f 2)
+ 
+@@ -197,6 +232,24 @@ l3_test()
+ 	check_libs $test $test_libs
+ }
+ 
++l4_test()
 +{
-+	struct llist_node *first;
-+	unsigned int obj_size;
++	test_libs=$(grep --include=Makefile "^VAR_LDLIBS\|^LDLIBS" $test | \
++			grep "\(pkg-config\|PKG_CONFIG\).*|| echo " | \
++			sed -e 's/.*|| echo //' | sed -e 's/)$//')
 +
-+	first = c->free_llist.first;
-+	if (!first)
-+		return 0;
-+
-+	obj_size = ksize(first);
-+	if (obj_size != c->unit_size) {
-+		WARN_ONCE(1, "bpf_mem_cache[%u]: unexpected object size %u, expect %u\n",
-+			  idx, obj_size, c->unit_size);
-+		return -EINVAL;
-+	}
-+	return 0;
++	check_libs $test $test_libs
 +}
 +
- /* When size != 0 bpf_mem_cache for each cpu.
-  * This is typical bpf hash map use case when all elements have equal size.
-  *
-@@ -380,10 +398,10 @@ static void prefill_mem_cache(struct bpf_mem_cache *c, int cpu)
- int bpf_mem_alloc_init(struct bpf_mem_alloc *ma, int size, bool percpu)
- {
- 	static u16 sizes[NUM_CACHES] = {96, 192, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
-+	int cpu, i, err, unit_size, percpu_size = 0;
- 	struct bpf_mem_caches *cc, __percpu *pcc;
- 	struct bpf_mem_cache *c, __percpu *pc;
- 	struct obj_cgroup *objcg = NULL;
--	int cpu, i, unit_size, percpu_size = 0;
- 
- 	if (size) {
- 		pc = __alloc_percpu_gfp(sizeof(*pc), 8, GFP_KERNEL);
-@@ -419,6 +437,7 @@ int bpf_mem_alloc_init(struct bpf_mem_alloc *ma, int size, bool percpu)
- 	pcc = __alloc_percpu_gfp(sizeof(*cc), 8, GFP_KERNEL);
- 	if (!pcc)
- 		return -ENOMEM;
-+	err = 0;
- #ifdef CONFIG_MEMCG_KMEM
- 	objcg = get_obj_cgroup_from_current();
- #endif
-@@ -429,10 +448,20 @@ int bpf_mem_alloc_init(struct bpf_mem_alloc *ma, int size, bool percpu)
- 			c->unit_size = sizes[i];
- 			c->objcg = objcg;
- 			prefill_mem_cache(c, cpu);
-+			err = check_obj_size(c, i);
-+			if (err)
-+				goto out;
- 		}
- 	}
++l5_test()
++{
++	tests=$(find $(dirname "$test") -type f -name "*.mk")
++	test_libs=$(grep "^IOURING_EXTRA_LIBS +\?=" $tests | \
++			cut -d "=" -f 2)
 +
-+out:
- 	ma->caches = pcc;
--	return 0;
-+	/* refill_work is either zeroed or initialized, so it is safe to
-+	 * call irq_work_sync().
-+	 */
-+	if (err)
-+		bpf_mem_alloc_destroy(ma);
-+	return err;
- }
++	check_libs $test $test_libs
++}
++
+ check_libs()
+ {
  
- static void drain_mem_cache(struct bpf_mem_cache *c)
 -- 
 2.40.1
 
