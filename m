@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A6AB7B8A31
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 959DA7B88CA
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:19:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244373AbjJDSdH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59144 "EHLO
+        id S243691AbjJDST3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:19:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244372AbjJDSdG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:06 -0400
+        with ESMTP id S233899AbjJDST2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:19:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B34E98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4538C433C9;
-        Wed,  4 Oct 2023 18:33:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5FA298
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:19:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDC5C433C7;
+        Wed,  4 Oct 2023 18:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444383;
-        bh=6rd0l23x3+8dIKyn7jH/PqnVEFfELCwhaOIJKmTXCnY=;
+        s=korg; t=1696443565;
+        bh=ONvQbaegzO+f6hTgrVsRbLp0mOwm4lbuCy+6+JcqIIY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h7NPWid3XtSXrCbCooIVFjAN9a98QRXYdDVCUCMPBHJTLkrrPQj+1rPPhQgwUqBlZ
-         7XtyO2rZ+d9LbV8KBXdjg+i3rl8twBQx+n8yA4zsg+owsaOIpiFUnGomyv6gfqW76/
-         B+Qn/dBwFsFe67Lgwcmmqse4jFUDISYQ+MP2NRWg=
+        b=CX74sgtpCVKVu+up8Gs8z7KL05tYBLtkYfGd9J+DZUNQ+ufxk25o/07IZFOZvyS8H
+         BAyr/YSlH61efXTq5u78D9uzhS2UxNJtAAKzYor8FuZ/mG/vd68khZBmC5SLmZE4Sq
+         zCgzIJPL/6tzfT2ad3wHss7emQ1POMRtC1ka0w5A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Gerhard Engleder <gerhard@engleder-embedded.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Pratyush Yadav <ptyadav@amazon.de>,
+        Keith Busch <kbusch@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 230/321] tsnep: Fix ethtool channels
+Subject: [PATCH 6.1 202/259] nvme-pci: do not set the NUMA node of device if it has none
 Date:   Wed,  4 Oct 2023 19:56:15 +0200
-Message-ID: <20231004175239.880087694@linuxfoundation.org>
+Message-ID: <20231004175226.541149057@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,45 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
+From: Pratyush Yadav <ptyadav@amazon.de>
 
-[ Upstream commit a7f991953d73dd50c4c23b5437c0139960e1fad4 ]
+[ Upstream commit dad651b2a44eb6b201738f810254279dca29d30d ]
 
-According to the NAPI documentation networking/napi.rst, for the ethtool
-API a channel is a IRQ/NAPI which services queues of a given type.
+If a device has no NUMA node information associated with it, the driver
+puts the device in node first_memory_node (say node 0). Not having a
+NUMA node and being associated with node 0 are completely different
+things and it makes little sense to mix the two.
 
-tsnep uses a single IRQ/NAPI instance for every TX/RX queue pair.
-Therefore, combined channels shall be returned instead of separate tx/rx
-channels.
-
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/engleder/tsnep_ethtool.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/nvme/host/pci.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/engleder/tsnep_ethtool.c b/drivers/net/ethernet/engleder/tsnep_ethtool.c
-index 716815dad7d21..65ec1abc94421 100644
---- a/drivers/net/ethernet/engleder/tsnep_ethtool.c
-+++ b/drivers/net/ethernet/engleder/tsnep_ethtool.c
-@@ -300,10 +300,8 @@ static void tsnep_ethtool_get_channels(struct net_device *netdev,
- {
- 	struct tsnep_adapter *adapter = netdev_priv(netdev);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 42e85b1bf6591..f28f50ea273a9 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3115,9 +3115,6 @@ static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
+ 	struct nvme_dev *dev;
+ 	int ret = -ENOMEM;
  
--	ch->max_rx = adapter->num_rx_queues;
--	ch->max_tx = adapter->num_tx_queues;
--	ch->rx_count = adapter->num_rx_queues;
--	ch->tx_count = adapter->num_tx_queues;
-+	ch->max_combined = adapter->num_queues;
-+	ch->combined_count = adapter->num_queues;
- }
- 
- static int tsnep_ethtool_get_ts_info(struct net_device *netdev,
+-	if (node == NUMA_NO_NODE)
+-		set_dev_node(&pdev->dev, first_memory_node);
+-
+ 	dev = kzalloc_node(sizeof(*dev), GFP_KERNEL, node);
+ 	if (!dev)
+ 		return NULL;
 -- 
 2.40.1
 
