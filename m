@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0319E7B8A34
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 032A07B87B2
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244374AbjJDSdP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:33:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
+        id S243817AbjJDSIV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:08:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244301AbjJDSdP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:15 -0400
+        with ESMTP id S243846AbjJDSIU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1F6D98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0359BC433C8;
-        Wed,  4 Oct 2023 18:33:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B122A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73310C433CA;
+        Wed,  4 Oct 2023 18:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444391;
-        bh=ie8HpCjJq/Qos7BcUA/bDkgofWHFL2lQb9w3aHe2Rvg=;
+        s=korg; t=1696442896;
+        bh=m9w7ZcEZp9EK3UGqC8oryKeKJUzm/qdW9mkRM7nvmgA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PjLhdNf3voRm3WhBPkL39hmqFUvm50CKsDY5Sb5KeK5oKJAN3xwfdEMdHhUllnI6e
-         Bf9S8XAnCvvgbOzu2wRqhbDmShceMuBLXnZcjas4ApY2UZpaT7Kb+D9fJP+7iYQOjp
-         J2NlE2lCHJhhX0WKVtbR5qQVZGUllg10ylxyHJuM=
+        b=j+UXatmeg53+nlWQlER14ShjLS1wr5v+LoZwUubMjw9GX1ev7NiK+o3D4w1xvc9YV
+         uHgHiZvNDFxXDzxsHEPL9H3aLtXTpx/mj6c6wCOpGYeKijKXiHY4ozLAPq1ZXboo7G
+         5A7iTyoUkJIUtVItlAMX1Li4mDEkNxwu6aVS2ftQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonathan Borne <jborne@kalray.eu>,
-        Yann Sionneau <ysionneau@kalray.eu>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 233/321] i2c: designware: fix __i2c_dw_disable() in case master is holding SCL low
+        patches@lists.linux.dev, Pratyush Yadav <ptyadav@amazon.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 147/183] nvme-pci: do not set the NUMA node of device if it has none
 Date:   Wed,  4 Oct 2023 19:56:18 +0200
-Message-ID: <20231004175240.026955392@linuxfoundation.org>
+Message-ID: <20231004175210.174588416@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,96 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yann Sionneau <ysionneau@kalray.eu>
+From: Pratyush Yadav <ptyadav@amazon.de>
 
-[ Upstream commit 2409205acd3c7c877f3d0080cac6a5feb3358f83 ]
+[ Upstream commit dad651b2a44eb6b201738f810254279dca29d30d ]
 
-The DesignWare IP can be synthesized with the IC_EMPTYFIFO_HOLD_MASTER_EN
-parameter.
-In this case, when the TX FIFO gets empty and the last command didn't have
-the STOP bit (IC_DATA_CMD[9]), the controller will hold SCL low until
-a new command is pushed into the TX FIFO or the transfer is aborted.
+If a device has no NUMA node information associated with it, the driver
+puts the device in node first_memory_node (say node 0). Not having a
+NUMA node and being associated with node 0 are completely different
+things and it makes little sense to mix the two.
 
-When the controller is holding SCL low, it cannot be disabled.
-The transfer must first be aborted.
-Also, the bus recovery won't work because SCL is held low by the master.
-
-Check if the master is holding SCL low in __i2c_dw_disable() before trying
-to disable the controller. If SCL is held low, an abort is initiated.
-When the abort is done, then proceed with disabling the controller.
-
-This whole situation can happen for instance during SMBus read data block
-if the slave just responds with "byte count == 0".
-This puts the driver in an unrecoverable state, because the controller is
-holding SCL low and the current __i2c_dw_disable() procedure is not
-working. In this situation only a SoC reset can fix the i2c bus.
-
-Co-developed-by: Jonathan Borne <jborne@kalray.eu>
-Signed-off-by: Jonathan Borne <jborne@kalray.eu>
-Signed-off-by: Yann Sionneau <ysionneau@kalray.eu>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-common.c | 17 +++++++++++++++++
- drivers/i2c/busses/i2c-designware-core.h   |  3 +++
- 2 files changed, 20 insertions(+)
+ drivers/nvme/host/pci.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware-common.c b/drivers/i2c/busses/i2c-designware-common.c
-index cdd8c67d91298..affcfb243f0f5 100644
---- a/drivers/i2c/busses/i2c-designware-common.c
-+++ b/drivers/i2c/busses/i2c-designware-common.c
-@@ -441,8 +441,25 @@ int i2c_dw_set_sda_hold(struct dw_i2c_dev *dev)
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 0779bf2378264..e5980df2094ad 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2975,9 +2975,6 @@ static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
+ 	struct nvme_dev *dev;
+ 	int ret = -ENOMEM;
  
- void __i2c_dw_disable(struct dw_i2c_dev *dev)
- {
-+	unsigned int raw_intr_stats;
-+	unsigned int enable;
- 	int timeout = 100;
-+	bool abort_needed;
- 	unsigned int status;
-+	int ret;
-+
-+	regmap_read(dev->map, DW_IC_RAW_INTR_STAT, &raw_intr_stats);
-+	regmap_read(dev->map, DW_IC_ENABLE, &enable);
-+
-+	abort_needed = raw_intr_stats & DW_IC_INTR_MST_ON_HOLD;
-+	if (abort_needed) {
-+		regmap_write(dev->map, DW_IC_ENABLE, enable | DW_IC_ENABLE_ABORT);
-+		ret = regmap_read_poll_timeout(dev->map, DW_IC_ENABLE, enable,
-+					       !(enable & DW_IC_ENABLE_ABORT), 10,
-+					       100);
-+		if (ret)
-+			dev_err(dev->dev, "timeout while trying to abort current transfer\n");
-+	}
- 
- 	do {
- 		__i2c_dw_disable_nowait(dev);
-diff --git a/drivers/i2c/busses/i2c-designware-core.h b/drivers/i2c/busses/i2c-designware-core.h
-index cf4f684f53566..a7f6f3eafad7d 100644
---- a/drivers/i2c/busses/i2c-designware-core.h
-+++ b/drivers/i2c/busses/i2c-designware-core.h
-@@ -98,6 +98,7 @@
- #define DW_IC_INTR_START_DET			BIT(10)
- #define DW_IC_INTR_GEN_CALL			BIT(11)
- #define DW_IC_INTR_RESTART_DET			BIT(12)
-+#define DW_IC_INTR_MST_ON_HOLD			BIT(13)
- 
- #define DW_IC_INTR_DEFAULT_MASK			(DW_IC_INTR_RX_FULL | \
- 						 DW_IC_INTR_TX_ABRT | \
-@@ -108,6 +109,8 @@
- 						 DW_IC_INTR_RX_UNDER | \
- 						 DW_IC_INTR_RD_REQ)
- 
-+#define DW_IC_ENABLE_ABORT			BIT(1)
-+
- #define DW_IC_STATUS_ACTIVITY			BIT(0)
- #define DW_IC_STATUS_TFE			BIT(2)
- #define DW_IC_STATUS_RFNE			BIT(3)
+-	if (node == NUMA_NO_NODE)
+-		set_dev_node(&pdev->dev, first_memory_node);
+-
+ 	dev = kzalloc_node(sizeof(*dev), GFP_KERNEL, node);
+ 	if (!dev)
+ 		return NULL;
 -- 
 2.40.1
 
