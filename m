@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 871767B8907
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:22:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D713F7B8A8E
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243769AbjJDSWD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:22:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57732 "EHLO
+        id S244474AbjJDSgy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:36:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244072AbjJDSWD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:22:03 -0400
+        with ESMTP id S244531AbjJDSgf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:36:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27FFAD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:21:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78ACC433CA;
-        Wed,  4 Oct 2023 18:21:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8592898
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:36:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75B0C433C7;
+        Wed,  4 Oct 2023 18:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443718;
-        bh=qvxX9FhBhNzRpiUqhra1TSqqxjvbWQPjMV6rnQaq2Ds=;
+        s=korg; t=1696444591;
+        bh=wbwfJ0itzcuIv3JZd0SIsq69uqbZ0e6SLW4akD8yyKU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oSFd0qA150V+AI0DKdGPx3h+dTYAb72Kr2WE78pRTJDxSAKLnV0qkw6NlyZnc9YqF
-         2Pl8rrXXPYA3FXgoafGu1HO2AWjzcLTYva8CEOz2X2WZS2CFxzuHmsLog0gRmMHXAB
-         QqUxo36SU7n0Ox4lFaraseET1b5eCBXORicNsoKE=
+        b=WX5u1l7qP4/cx8+qB9ccsr883x6SlPOfzm7qeRfvZg6zflO840u4ZRHxEr6ct08Z8
+         2Uw5U4o7uC6h9+GBOEEtBsHaoTpAZe3Pws/Xkzu0s/ccJyOpTWnbRD+0EH+CXHgDzs
+         iWccf1m+BqwE7GruqQgUVdNt4kI7F51WaRtztcwM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Hannes Reinecke <hare@suse.de>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 248/259] ata: libata-core: Fix port and device removal
+        patches@lists.linux.dev, Frederic Weisbecker <frederic@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Subject: [PATCH 6.5 276/321] timers: Tag (hr)timer softirq as hotplug safe
 Date:   Wed,  4 Oct 2023 19:57:01 +0200
-Message-ID: <20231004175228.765069577@linuxfoundation.org>
+Message-ID: <20231004175242.075544293@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,85 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-commit 84d76529c650f887f1e18caee72d6f0589e1baf9 upstream.
+commit 1a6a464774947920dcedcf7409be62495c7cedd0 upstream.
 
-Whenever an ATA adapter driver is removed (e.g. rmmod),
-ata_port_detach() is called repeatedly for all the adapter ports to
-remove (unload) the devices attached to the port and delete the port
-device itself. Removing of devices is done using libata EH with the
-ATA_PFLAG_UNLOADING port flag set. This causes libata EH to execute
-ata_eh_unload() which disables all devices attached to the port.
+Specific stress involving frequent CPU-hotplug operations, such as
+running rcutorture for example, may trigger the following message:
 
-ata_port_detach() finishes by calling scsi_remove_host() to remove the
-scsi host associated with the port. This function will trigger the
-removal of all scsi devices attached to the host and in the case of
-disks, calls to sd_shutdown() which will flush the device write cache
-and stop the device. However, given that the devices were already
-disabled by ata_eh_unload(), the synchronize write cache command and
-start stop unit commands fail. E.g. running "rmmod ahci" with first
-removing sd_mod results in error messages like:
+  NOHZ tick-stop error: local softirq work is pending, handler #02!!!"
 
-ata13.00: disable device
-sd 0:0:0:0: [sda] Synchronizing SCSI cache
-sd 0:0:0:0: [sda] Synchronize Cache(10) failed: Result: hostbyte=DID_BAD_TARGET driverbyte=DRIVER_OK
-sd 0:0:0:0: [sda] Stopping disk
-sd 0:0:0:0: [sda] Start/Stop Unit failed: Result: hostbyte=DID_BAD_TARGET driverbyte=DRIVER_OK
+This happens in the CPU-down hotplug process, after
+CPUHP_AP_SMPBOOT_THREADS whose teardown callback parks ksoftirqd, and
+before the target CPU shuts down through CPUHP_AP_IDLE_DEAD. In this
+fragile intermediate state, softirqs waiting for threaded handling may be
+forever ignored and eventually reported by the idle task as in the above
+example.
 
-Fix this by removing all scsi devices of the ata devices connected to
-the port before scheduling libata EH to disable the ATA devices.
+However some vectors are known to be safe as long as the corresponding
+subsystems have teardown callbacks handling the migration of their
+events. The above error message reports pending timers softirq although
+this vector can be considered as hotplug safe because the
+CPUHP_TIMERS_PREPARE teardown callback performs the necessary migration
+of timers after the death of the CPU. Hrtimers also have a similar
+hotplug handling.
 
-Fixes: 720ba12620ee ("[PATCH] libata-hp: update unload-unplug")
+Therefore this error message, as far as (hr-)timers are concerned, can
+be considered spurious and the relevant softirq vectors can be marked as
+hotplug safe.
+
+Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20230912104406.312185-6-frederic@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c |   21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ include/linux/interrupt.h |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5906,11 +5906,30 @@ static void ata_port_detach(struct ata_p
- 	if (!ap->ops->error_handler)
- 		goto skip_eh;
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -569,8 +569,12 @@ enum
+  * 	2) rcu_report_dead() reports the final quiescent states.
+  *
+  * _ IRQ_POLL: irq_poll_cpu_dead() migrates the queue
++ *
++ * _ (HR)TIMER_SOFTIRQ: (hr)timers_dead_cpu() migrates the queue
+  */
+-#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(RCU_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ))
++#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(TIMER_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ) |\
++				   BIT(HRTIMER_SOFTIRQ) | BIT(RCU_SOFTIRQ))
++
  
--	/* tell EH we're leaving & flush EH */
-+	/* Wait for any ongoing EH */
-+	ata_port_wait_eh(ap);
-+
-+	mutex_lock(&ap->scsi_scan_mutex);
- 	spin_lock_irqsave(ap->lock, flags);
-+
-+	/* Remove scsi devices */
-+	ata_for_each_link(link, ap, HOST_FIRST) {
-+		ata_for_each_dev(dev, link, ALL) {
-+			if (dev->sdev) {
-+				spin_unlock_irqrestore(ap->lock, flags);
-+				scsi_remove_device(dev->sdev);
-+				spin_lock_irqsave(ap->lock, flags);
-+				dev->sdev = NULL;
-+			}
-+		}
-+	}
-+
-+	/* Tell EH to disable all devices */
- 	ap->pflags |= ATA_PFLAG_UNLOADING;
- 	ata_port_schedule_eh(ap);
-+
- 	spin_unlock_irqrestore(ap->lock, flags);
-+	mutex_unlock(&ap->scsi_scan_mutex);
- 
- 	/* wait till EH commits suicide */
- 	ata_port_wait_eh(ap);
+ /* map softirq index to softirq name. update 'softirq_to_name' in
+  * kernel/softirq.c when adding a new softirq.
 
 
