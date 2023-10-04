@@ -2,123 +2,208 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4E5E7B7CE8
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 12:15:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6A7D7B7D2F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 12:32:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242067AbjJDKPa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 06:15:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56092 "EHLO
+        id S232937AbjJDKca (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 06:32:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242062AbjJDKP3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 06:15:29 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2080.outbound.protection.outlook.com [40.107.243.80])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68A9690;
-        Wed,  4 Oct 2023 03:15:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LcUvHfdjv94aqXtNryDCXUW3pU1eanDe62SgF3KAojdDlFgUmEhtHw40+Nh1e0mCKqObntZ0RK2yfzu+spyzwdy0vxopIMvzqEtEuySKMIS2OAQ0NLI9GQ34CXHzmzHxalOiLOUWA1bHHzPl3eb5GTG44UaREDLb1p24rnHjRL/LmNdDBWLPREN/SXe+ehbNlDDVYRMSinpdUfu8bPNtEg8Jl8wLVstb6TWL3O94bTQB0FueIFE9m1qTGE+1w/zFwWd5x+8NXyu2H8NAFiAAAfL4dXnuTsqcKTitZmR6eShL0vS7J0ywzNTNeJ//YmE9TcIUBjY4qurnBFSRDDvaSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YN/BEqbbuu2dme09mMaR6jP2r3CprAjGRjRs0WNAOSo=;
- b=j0HWaM/U4wJmgfdnJhlYzw9utirLE8EDddnK/eyPgJ5/QF6cSkc8a/t9gdttgEZRf12gLTJPmkxPhCySUt4Q+in/maEJO46OeoDSi8A/+8c8bRHxNZQjn/UBmXu3dcjqB7Ou7h6Vx1mhYWENn5mp/9NCFwfaWZNq8pL4whfTpkQHQgTMBXWPWgRf8IG4BC+Bgx09jKE5Ro0cWgDjNrORgHZ0rDJUJlq/Yv6vjrcvSneJ+IdhMKTGfk6WCLQGRYMCpiwjXZ/IVGXu09IVIITHpvleegxsV2OKRGCvv5rRqa+8C6kIBITBrYm0CuvVzVif5ZvXVNjDOfi5LV0GRK59Sg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YN/BEqbbuu2dme09mMaR6jP2r3CprAjGRjRs0WNAOSo=;
- b=TL1yt3xDSbMncnzXnS+O1vcGoaTDEPanCbHW2vPnutLpMzlWTMLusbSnGgOnv5SOpTbIFliOQSSqTQPm4KvcGsDLmtVEyEEpr/RBKI9Xbt1zK+Wxj09biJvH6tFbyQKHKDC7TcZycifCAzHlGrV7RnoliXjSNWsdKY8eGEKDvDkSjNYrbvb9v16mLdQq5ZmL4xSCLskxbctmF7BFSVSuN6qVmoYIvQTwuLZKDNMKLHCoy2vdJ4UcSCjRMbrfJ8Kx8R9zyKZViwbvYgWFOGe3cUWV7QhDeCoPG4s0nakkjiNNv+yflEudTZG7Wp4uOjCfaxkXa7tVbBc++w1Yqq2Flg==
-Received: from MN2PR22CA0029.namprd22.prod.outlook.com (2603:10b6:208:238::34)
- by DM3PR12MB9349.namprd12.prod.outlook.com (2603:10b6:0:49::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.28; Wed, 4 Oct
- 2023 10:15:22 +0000
-Received: from MN1PEPF0000ECDA.namprd02.prod.outlook.com
- (2603:10b6:208:238:cafe::a5) by MN2PR22CA0029.outlook.office365.com
- (2603:10b6:208:238::34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.26 via Frontend
- Transport; Wed, 4 Oct 2023 10:15:22 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- MN1PEPF0000ECDA.mail.protection.outlook.com (10.167.242.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6838.14 via Frontend Transport; Wed, 4 Oct 2023 10:15:22 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 4 Oct 2023
- 03:15:11 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Wed, 4 Oct 2023 03:15:11 -0700
-Received: from Asurada-Nvidia (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
- Transport; Wed, 4 Oct 2023 03:15:10 -0700
-Date:   Wed, 4 Oct 2023 03:15:09 -0700
-From:   Nicolin Chen <nicolinc@nvidia.com>
-To:     Sasha Levin <sashal@kernel.org>
-CC:     <stable@vger.kernel.org>, <will@kernel.org>,
-        <robin.murphy@arm.com>, <joro@8bytes.org>, <jgg@nvidia.com>,
-        <jean-philippe@linaro.org>, <baolu.lu@linux.intel.com>,
-        <apopple@nvidia.com>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>
-Subject: Re: [PATCH][6.5, 6.1, 5.15] iommu/arm-smmu-v3: Fix soft lockup
- triggered by arm_smmu_mm_invalidate_range
-Message-ID: <ZR07LWh9JqnHc4v2@Asurada-Nvidia>
-References: <20231003233549.33678-1-nicolinc@nvidia.com>
- <ZR05sWtiMmM0w2sb@sashalap>
+        with ESMTP id S242152AbjJDKSR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 06:18:17 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2432F95
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 03:18:13 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qnyx6-0006El-5K; Wed, 04 Oct 2023 12:18:00 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qnyx2-00B0Vy-Kt; Wed, 04 Oct 2023 12:17:56 +0200
+Received: from pengutronix.de (unknown [172.20.34.65])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        (Authenticated sender: mkl-all@blackshift.org)
+        by smtp.blackshift.org (Postfix) with ESMTPSA id 4E0FC22ECF8;
+        Wed,  4 Oct 2023 10:17:56 +0000 (UTC)
+Date:   Wed, 4 Oct 2023 12:17:55 +0200
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     Oleksij Rempel <o.rempel@pengutronix.de>
+Cc:     Robin van der Gracht <robin@protonic.nl>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Sili Luo <rootlab@huawei.com>, stable@vger.kernel.org,
+        kernel@pengutronix.de, linux-can@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] can: j1939: Fix UAF in j1939_sk_match_filter during
+ setsockopt(SO_J1939_FILTER)
+Message-ID: <20231004-clip-hardwired-7ae19dc03342-mkl@pengutronix.de>
+References: <20230927161456.82772-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="by6d54iafa3giwd6"
 Content-Disposition: inline
-In-Reply-To: <ZR05sWtiMmM0w2sb@sashalap>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000ECDA:EE_|DM3PR12MB9349:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9793d3c8-1b07-456f-addc-08dbc4c2d1b4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: nVAECBPsa3nF92PYBmHlsv7qoRafOmdhyPIqxirlHi3RRYygvKLPjD2LB9r8ikuV/jh1P6I8pFLOqEajWXk+3uSgzsQC/Z1g2sF8EJn5ucL7Hf4YsFvw/ynm/0C0VK5gXfd1/6zvq4uh+biSUWjslhXsV0DUtmJ0/QQOt19MZYOo+xKrz16wJifVpRJ5hbL6NVhWNGTLr8/wWCVQEsZGVuhywBSFnmHw1AqupDi08Ny4IZHm0bp7DCyNl9LI9OnmLQAMflZC2zS869ae+G/DcEB/KXy0PpnlRhSBbdUYOJfxwnqOc5iJ8DEY8BSrU215NyxI7fVh3bEaTCbbH3Cfa5EvcPZsvZyXsj3/LEnZFbU2B+Ywt6DTWdKvUzxyQ+GsbqZmFGSODrvxZSdSDmvpqzp98Ix9H9VUzDGdryCAIIHwZ3VSifOzP8WJ8SazpEfP5lbNvOPgFRJ5smJc/POWzh+ZsWApj8TH0Mz47g1zvv8QeocfJqLE1g89B+Sg6GxARQVEj8Tl3uSa+mpvjwAHfsaL8STXSogOaKtPyDqyuplf+B9NGzEYbO6JDx1ursDbS+xxC0F01tpiI6I/PuTxlWbdtH1ZSAbmefVH+X1o3lyyJPAngWAY9WH3s9c0K8PMGBZOGdivsCLiX0g/JUgjSjceWWzl3jUVUOOit1WMvzQmyQ4AFUVe++JNk439SVxtIodBsiNSAnGRT1XQIetqxv0i5s97iWs9I2aCjamsIlmfNb8yJ6+r7UPY3NhgcMmO
-X-Forefront-Antispam-Report: CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(396003)(136003)(376002)(346002)(230922051799003)(186009)(64100799003)(82310400011)(451199024)(1800799009)(40470700004)(46966006)(36840700001)(336012)(426003)(9686003)(478600001)(47076005)(6916009)(36860700001)(8676002)(8936002)(70206006)(70586007)(54906003)(316002)(4326008)(26005)(41300700001)(82740400003)(5660300002)(86362001)(7416002)(7636003)(4744005)(356005)(2906002)(40460700003)(40480700001)(55016003)(33716001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2023 10:15:22.2004
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9793d3c8-1b07-456f-addc-08dbc4c2d1b4
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: MN1PEPF0000ECDA.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9349
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20230927161456.82772-1-o.rempel@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 04, 2023 at 06:08:49AM -0400, Sasha Levin wrote:
- 
-> On Tue, Oct 03, 2023 at 04:35:49PM -0700, Nicolin Chen wrote:
-> > commit d5afb4b47e13161b3f33904d45110f9e6463bad6 upstream.
-> 
-> Queued up, thanks!
-> 
-> We don't need the addition of a stable tag here as the bot suggests,
-> it's just being silly... 
 
-I see. Will ignore next time. Thanks!
+--by6d54iafa3giwd6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Nicolin
+On 27.09.2023 18:14:56, Oleksij Rempel wrote:
+> Lock jsk->sk to prevent UAF when setsockopt(..., SO_J1939_FILTER, ...)
+> modifies jsk->filters while receiving packets.
+>=20
+> Following trace was seen on affected system:
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>  BUG: KASAN: slab-use-after-free in j1939_sk_recv_match_one+0x1af/0x2d0 [=
+can_j1939]
+>  Read of size 4 at addr ffff888012144014 by task j1939/350
+>=20
+>  CPU: 0 PID: 350 Comm: j1939 Tainted: G        W  OE      6.5.0-rc5 #1
+>  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubun=
+tu1.1 04/01/2014
+>  Call Trace:
+>   print_report+0xd3/0x620
+>   ? kasan_complete_mode_report_info+0x7d/0x200
+>   ? j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+>   kasan_report+0xc2/0x100
+>   ? j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+>   __asan_load4+0x84/0xb0
+>   j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+>   j1939_sk_recv+0x20b/0x320 [can_j1939]
+>   ? __kasan_check_write+0x18/0x20
+>   ? __pfx_j1939_sk_recv+0x10/0x10 [can_j1939]
+>   ? j1939_simple_recv+0x69/0x280 [can_j1939]
+>   ? j1939_ac_recv+0x5e/0x310 [can_j1939]
+>   j1939_can_recv+0x43f/0x580 [can_j1939]
+>   ? __pfx_j1939_can_recv+0x10/0x10 [can_j1939]
+>   ? raw_rcv+0x42/0x3c0 [can_raw]
+>   ? __pfx_j1939_can_recv+0x10/0x10 [can_j1939]
+>   can_rcv_filter+0x11f/0x350 [can]
+>   can_receive+0x12f/0x190 [can]
+>   ? __pfx_can_rcv+0x10/0x10 [can]
+>   can_rcv+0xdd/0x130 [can]
+>   ? __pfx_can_rcv+0x10/0x10 [can]
+>   __netif_receive_skb_one_core+0x13d/0x150
+>   ? __pfx___netif_receive_skb_one_core+0x10/0x10
+>   ? __kasan_check_write+0x18/0x20
+>   ? _raw_spin_lock_irq+0x8c/0xe0
+>   __netif_receive_skb+0x23/0xb0
+>   process_backlog+0x107/0x260
+>   __napi_poll+0x69/0x310
+>   net_rx_action+0x2a1/0x580
+>   ? __pfx_net_rx_action+0x10/0x10
+>   ? __pfx__raw_spin_lock+0x10/0x10
+>   ? handle_irq_event+0x7d/0xa0
+>   __do_softirq+0xf3/0x3f8
+>   do_softirq+0x53/0x80
+>   </IRQ>
+>   <TASK>
+>   __local_bh_enable_ip+0x6e/0x70
+>   netif_rx+0x16b/0x180
+>   can_send+0x32b/0x520 [can]
+>   ? __pfx_can_send+0x10/0x10 [can]
+>   ? __check_object_size+0x299/0x410
+>   raw_sendmsg+0x572/0x6d0 [can_raw]
+>   ? __pfx_raw_sendmsg+0x10/0x10 [can_raw]
+>   ? apparmor_socket_sendmsg+0x2f/0x40
+>   ? __pfx_raw_sendmsg+0x10/0x10 [can_raw]
+>   sock_sendmsg+0xef/0x100
+>   sock_write_iter+0x162/0x220
+>   ? __pfx_sock_write_iter+0x10/0x10
+>   ? __rtnl_unlock+0x47/0x80
+>   ? security_file_permission+0x54/0x320
+>   vfs_write+0x6ba/0x750
+>   ? __pfx_vfs_write+0x10/0x10
+>   ? __fget_light+0x1ca/0x1f0
+>   ? __rcu_read_unlock+0x5b/0x280
+>   ksys_write+0x143/0x170
+>   ? __pfx_ksys_write+0x10/0x10
+>   ? __kasan_check_read+0x15/0x20
+>   ? fpregs_assert_state_consistent+0x62/0x70
+>   __x64_sys_write+0x47/0x60
+>   do_syscall_64+0x60/0x90
+>   ? do_syscall_64+0x6d/0x90
+>   ? irqentry_exit+0x3f/0x50
+>   ? exc_page_fault+0x79/0xf0
+>   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+>=20
+>  Allocated by task 348:
+>   kasan_save_stack+0x2a/0x50
+>   kasan_set_track+0x29/0x40
+>   kasan_save_alloc_info+0x1f/0x30
+>   __kasan_kmalloc+0xb5/0xc0
+>   __kmalloc_node_track_caller+0x67/0x160
+>   j1939_sk_setsockopt+0x284/0x450 [can_j1939]
+>   __sys_setsockopt+0x15c/0x2f0
+>   __x64_sys_setsockopt+0x6b/0x80
+>   do_syscall_64+0x60/0x90
+>   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+>=20
+>  Freed by task 349:
+>   kasan_save_stack+0x2a/0x50
+>   kasan_set_track+0x29/0x40
+>   kasan_save_free_info+0x2f/0x50
+>   __kasan_slab_free+0x12e/0x1c0
+>   __kmem_cache_free+0x1b9/0x380
+>   kfree+0x7a/0x120
+>   j1939_sk_setsockopt+0x3b2/0x450 [can_j1939]
+>   __sys_setsockopt+0x15c/0x2f0
+>   __x64_sys_setsockopt+0x6b/0x80
+>   do_syscall_64+0x60/0x90
+>   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+>=20
+> Fixes: 9d71dd0c70099 ("can: add support of SAE J1939 protocol")
+> Reported-by: Sili Luo <rootlab@huawei.com>
+> Suggested-by: Sili Luo <rootlab@huawei.com>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> Cc: stable@vger.kernel.org
+
+Applied to linux-can/testing.
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--by6d54iafa3giwd6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmUdO9EACgkQvlAcSiqK
+BOjfDQf/fbuozQwwUwpn5CilE5CMErLSg6zWdXLPxScStaVCt0OjDiipCmIUCINJ
+QBdRzihHtFCLKoDVWJVkU7aonXsJ0B3pAMEEODS80/uY85RXVg+eN1hozHvmkMsZ
+nRRnN63+p9P/bkfVMuTiobNnU3LkWNKlXG3FYsa2x//hFgHH16c6Os7VhBpLJ6uC
+U33n160g7Ia9Rvf1WBBYZZmmNn9U0T9dQ28oshu2qzj/vn90BjiZdvwE2Z5U5NXP
+BDPVRc8M2vCrZ4RYxu1GIfHUmsbmJ/Rb5bVKv4V6Snd2IU1QB9wQAO2yjY4dLNce
+4grUDOWCG7PflmWvFUuc8eFK8DQe9Q==
+=25U6
+-----END PGP SIGNATURE-----
+
+--by6d54iafa3giwd6--
