@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4BD17B8DFA
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 22:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEA6B7B8DF7
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 22:23:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244890AbjJDUXC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 16:23:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38696 "EHLO
+        id S244901AbjJDUXD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 16:23:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244955AbjJDUWa (ORCPT
+        with ESMTP id S244961AbjJDUWa (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 16:22:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8ED31981;
-        Wed,  4 Oct 2023 13:21:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD76C433C8;
-        Wed,  4 Oct 2023 20:21:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015811982;
+        Wed,  4 Oct 2023 13:21:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A922C433C8;
+        Wed,  4 Oct 2023 20:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696450912;
-        bh=GNS6BSFj6u2Xy5tBd1EB4TiDf/VVcuu/3YFfEVqIK80=;
+        s=korg; t=1696450914;
+        bh=cRYSfJimCTCwZs7nFXQZEeEExX/dmX48HRwaEXnOdPg=;
         h=Date:To:From:Subject:From;
-        b=pMdCFiDp4M5KLV2aVBVraXpOdlDlWRcmOchxXxcxnshY2CQZHzRsQbF8GrRf+1BoB
-         JvunuOGnbv6J7Hoc/+BGBzD9ZHTL5k6Sr+UPJ4enyTfAlEQjra2M1WUWebX7jb6v5A
-         PDaIgX5NpiqLNFZGIkwJSaDddWgivm6ynfU/liiI=
-Date:   Wed, 04 Oct 2023 13:21:50 -0700
+        b=0VFADzf+zd+4gBazVrW9t6zBgdYlQf9KF/gk9aGgfXfSpDn+zEqmYv4T2cbOS7O3l
+         KizqguzTehgHthBc5wnni4HR8zFVftTCmg7V1Il5PXNSw6wY1AgZn1e60uFSFJEjXB
+         E7B/ttYuCzDjqI7M/9OXN/EwgOJ6sGVAWNVWWvd4=
+Date:   Wed, 04 Oct 2023 13:21:52 -0700
 To:     mm-commits@vger.kernel.org, willy@infradead.org,
         tsbogend@alpha.franken.de, stable@vger.kernel.org,
         songmuchun@bytedance.com, rppt@kernel.org, mike.kravetz@oracle.com,
         david@redhat.com, ziy@nvidia.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] fs-use-nth_page-in-place-of-direct-struct-page-manipulation.patch removed from -mm tree
-Message-Id: <20231004202152.2CD76C433C8@smtp.kernel.org>
+Subject: [merged mm-stable] mm-cma-use-nth_page-in-place-of-direct-struct-page-manipulation.patch removed from -mm tree
+Message-Id: <20231004202154.4A922C433C8@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -43,28 +43,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: fs: use nth_page() in place of direct struct page manipulation
+     Subject: mm/cma: use nth_page() in place of direct struct page manipulation
 has been removed from the -mm tree.  Its filename was
-     fs-use-nth_page-in-place-of-direct-struct-page-manipulation.patch
+     mm-cma-use-nth_page-in-place-of-direct-struct-page-manipulation.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
 From: Zi Yan <ziy@nvidia.com>
-Subject: fs: use nth_page() in place of direct struct page manipulation
-Date: Wed, 13 Sep 2023 16:12:47 -0400
+Subject: mm/cma: use nth_page() in place of direct struct page manipulation
+Date: Wed, 13 Sep 2023 16:12:44 -0400
 
-When dealing with hugetlb pages, struct page is not guaranteed to be
-contiguous on SPARSEMEM without VMEMMAP.  Use nth_page() to handle it
-properly.
+Patch series "Use nth_page() in place of direct struct page manipulation",
+v3.
 
-Without the fix, a wrong subpage might be checked for HWPoison, causing wrong
-number of bytes of a page copied to user space. No bug is reported. The fix
+On SPARSEMEM without VMEMMAP, struct page is not guaranteed to be
+contiguous, since each memory section's memmap might be allocated
+independently.  hugetlb pages can go beyond a memory section size, thus
+direct struct page manipulation on hugetlb pages/subpages might give wrong
+struct page.  Kernel provides nth_page() to do the manipulation properly. 
+Use that whenever code can see hugetlb pages.
+
+
+This patch (of 5):
+
+When dealing with hugetlb pages, manipulating struct page pointers
+directly can get to wrong struct page, since struct page is not guaranteed
+to be contiguous on SPARSEMEM without VMEMMAP.  Use nth_page() to handle
+it properly.
+
+Without the fix, page_kasan_tag_reset() could reset wrong page tags,
+causing a wrong kasan result.  No related bug is reported.  The fix
 comes from code inspection.
 
-Link: https://lkml.kernel.org/r/20230913201248.452081-5-zi.yan@sent.com
-Fixes: 38c1ddbde6c6 ("hugetlbfs: improve read HWPOISON hugepage")
+Link: https://lkml.kernel.org/r/20230913201248.452081-1-zi.yan@sent.com
+Link: https://lkml.kernel.org/r/20230913201248.452081-2-zi.yan@sent.com
+Fixes: 2813b9c02962 ("kasan, mm, arm64: tag non slab memory allocated via pagealloc")
 Signed-off-by: Zi Yan <ziy@nvidia.com>
 Reviewed-by: Muchun Song <songmuchun@bytedance.com>
 Cc: David Hildenbrand <david@redhat.com>
@@ -76,29 +91,20 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/hugetlbfs/inode.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/cma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/hugetlbfs/inode.c~fs-use-nth_page-in-place-of-direct-struct-page-manipulation
-+++ a/fs/hugetlbfs/inode.c
-@@ -295,7 +295,7 @@ static size_t adjust_range_hwpoison(stru
- 	size_t res = 0;
- 
- 	/* First subpage to start the loop. */
--	page += offset / PAGE_SIZE;
-+	page = nth_page(page, offset / PAGE_SIZE);
- 	offset %= PAGE_SIZE;
- 	while (1) {
- 		if (is_raw_hwpoison_page_in_hugepage(page))
-@@ -309,7 +309,7 @@ static size_t adjust_range_hwpoison(stru
- 			break;
- 		offset += n;
- 		if (offset == PAGE_SIZE) {
--			page++;
-+			page = nth_page(page, 1);
- 			offset = 0;
- 		}
+--- a/mm/cma.c~mm-cma-use-nth_page-in-place-of-direct-struct-page-manipulation
++++ a/mm/cma.c
+@@ -505,7 +505,7 @@ struct page *cma_alloc(struct cma *cma,
+ 	 */
+ 	if (page) {
+ 		for (i = 0; i < count; i++)
+-			page_kasan_tag_reset(page + i);
++			page_kasan_tag_reset(nth_page(page, i));
  	}
+ 
+ 	if (ret && !no_warn) {
 _
 
 Patches currently in -mm which might be from ziy@nvidia.com are
