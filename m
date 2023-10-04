@@ -2,46 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADEF07B898C
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C8827B8832
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244209AbjJDS1N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:27:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53068 "EHLO
+        id S243963AbjJDSNi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:13:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244207AbjJDS1N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:13 -0400
+        with ESMTP id S243956AbjJDSNh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5726C9E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7DFC433C9;
-        Wed,  4 Oct 2023 18:27:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 152C49E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B963C433CA;
+        Wed,  4 Oct 2023 18:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444030;
-        bh=jkvekIAWo/EoE6ZP0qvU3sgJ5uR/FzdxHdRCgwUtZTs=;
+        s=korg; t=1696443213;
+        bh=1JcdUqcdrg+Btaxs6nnfe0UoBUWjzfs2PHtFxWml1eQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QNMgy+eQAfMbWH7D6UZ4/7aIm4NmsgNzAWW4L0Y0l5cCPR4vEMf1nGCXjCuA9mQ2/
-         LHav3uglppuKFiHcyX/UmEs3fN4PABtV+fhbC+m6SdF7DWAYeFu3qeEbajGqD1I1nE
-         RZLV5xn6YVPg6NlN9YBpT5lXi/lO0OpeT6pMCPsk=
+        b=HnHU6GZ2dUVeiw0sENI4AfVUfILQvBlLLoD8Sg9i0cGNEsq4uGO2cEWS6AJm3Fru7
+         mN4ev3ht/L8GPudPStrvuIGc7sA3vyMTnrlKZ0QEtjp+tDzcyME2ATOEX0UKJMHhPW
+         ADHNkf9Iox54sgNYk6Na5hkGnEdLDRhpsW9cgfTU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Giulio Benetti <giulio.benetti@benettiengineering.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        "Lee, Cherie-Anne" <cherie.lee@starlabs.sg>,
+        Bing-Jhong Billy Jheng <billy@starlabs.sg>, info@starlabs.sg,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 105/321] proc: nommu: fix empty /proc/<pid>/maps
+Subject: [PATCH 6.1 077/259] netfilter: nf_tables: disable toggling dormant table state more than once
 Date:   Wed,  4 Oct 2023 19:54:10 +0200
-Message-ID: <20231004175234.106640406@linuxfoundation.org>
+Message-ID: <20231004175220.911829777@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,125 +52,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit fe4419801617514765974f3e796269bc512ad146 ]
+[ Upstream commit c9bd26513b3a11b3adb3c2ed8a31a01a87173ff1 ]
 
-On no-MMU, /proc/<pid>/maps reads as an empty file.  This happens because
-find_vma(mm, 0) always returns NULL (assuming no vma actually contains the
-zero address, which is normally the case).
+nft -f -<<EOF
+add table ip t
+add table ip t { flags dormant; }
+add chain ip t c { type filter hook input priority 0; }
+add table ip t
+EOF
 
-To fix this bug and improve the maintainability in the future, this patch
-makes the no-MMU implementation as similar as possible to the MMU
-implementation.
+Triggers a splat from nf core on next table delete because we lose
+track of right hook register state:
 
-The only remaining differences are the lack of hold/release_task_mempolicy
-and the extra code to shoehorn the gate vma into the iterator.
+WARNING: CPU: 2 PID: 1597 at net/netfilter/core.c:501 __nf_unregister_net_hook
+RIP: 0010:__nf_unregister_net_hook+0x41b/0x570
+ nf_unregister_net_hook+0xb4/0xf0
+ __nf_tables_unregister_hook+0x160/0x1d0
+[..]
 
-This has been tested on top of 6.5.3 on an STM32F746.
+The above should have table in *active* state, but in fact no
+hooks were registered.
 
-Link: https://lkml.kernel.org/r/20230915160055.971059-2-ben.wolsieffer@hefring.com
-Fixes: 0c563f148043 ("proc: remove VMA rbtree use from nommu")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reject on/off/on games rather than attempting to fix this.
+
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Reported-by: "Lee, Cherie-Anne" <cherie.lee@starlabs.sg>
+Cc: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Cc: info@starlabs.sg
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/internal.h   |  2 --
- fs/proc/task_nommu.c | 37 ++++++++++++++++++++++---------------
- 2 files changed, 22 insertions(+), 17 deletions(-)
+ net/netfilter/nf_tables_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index 9dda7e54b2d0d..9a8f32f21ff56 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -289,9 +289,7 @@ struct proc_maps_private {
- 	struct inode *inode;
- 	struct task_struct *task;
- 	struct mm_struct *mm;
--#ifdef CONFIG_MMU
- 	struct vma_iterator iter;
--#endif
- #ifdef CONFIG_NUMA
- 	struct mempolicy *task_mempolicy;
- #endif
-diff --git a/fs/proc/task_nommu.c b/fs/proc/task_nommu.c
-index 061bd3f82756e..d3e19080df4af 100644
---- a/fs/proc/task_nommu.c
-+++ b/fs/proc/task_nommu.c
-@@ -188,15 +188,28 @@ static int show_map(struct seq_file *m, void *_p)
- 	return nommu_vma_show(m, _p);
- }
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 521f8c3cb6987..1d6a37430ff6b 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1211,6 +1211,10 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
+ 	     flags & NFT_TABLE_F_OWNER))
+ 		return -EOPNOTSUPP;
  
--static void *m_start(struct seq_file *m, loff_t *pos)
-+static struct vm_area_struct *proc_get_vma(struct proc_maps_private *priv,
-+						loff_t *ppos)
-+{
-+	struct vm_area_struct *vma = vma_next(&priv->iter);
++	/* No dormant off/on/off/on games in single transaction */
++	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
++		return -EINVAL;
 +
-+	if (vma) {
-+		*ppos = vma->vm_start;
-+	} else {
-+		*ppos = -1UL;
-+	}
-+
-+	return vma;
-+}
-+
-+static void *m_start(struct seq_file *m, loff_t *ppos)
- {
- 	struct proc_maps_private *priv = m->private;
-+	unsigned long last_addr = *ppos;
- 	struct mm_struct *mm;
--	struct vm_area_struct *vma;
--	unsigned long addr = *pos;
- 
--	/* See m_next(). Zero at the start or after lseek. */
--	if (addr == -1UL)
-+	/* See proc_get_vma(). Zero at the start or after lseek. */
-+	if (last_addr == -1UL)
- 		return NULL;
- 
- 	/* pin the task and mm whilst we play with them */
-@@ -218,12 +231,9 @@ static void *m_start(struct seq_file *m, loff_t *pos)
- 		return ERR_PTR(-EINTR);
- 	}
- 
--	/* start the next element from addr */
--	vma = find_vma(mm, addr);
--	if (vma)
--		return vma;
-+	vma_iter_init(&priv->iter, mm, last_addr);
- 
--	return NULL;
-+	return proc_get_vma(priv, ppos);
- }
- 
- static void m_stop(struct seq_file *m, void *v)
-@@ -240,12 +250,9 @@ static void m_stop(struct seq_file *m, void *v)
- 	priv->task = NULL;
- }
- 
--static void *m_next(struct seq_file *m, void *_p, loff_t *pos)
-+static void *m_next(struct seq_file *m, void *_p, loff_t *ppos)
- {
--	struct vm_area_struct *vma = _p;
--
--	*pos = vma->vm_end;
--	return find_vma(vma->vm_mm, vma->vm_end);
-+	return proc_get_vma(m->private, ppos);
- }
- 
- static const struct seq_operations proc_pid_maps_ops = {
+ 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWTABLE,
+ 				sizeof(struct nft_trans_table));
+ 	if (trans == NULL)
 -- 
 2.40.1
 
