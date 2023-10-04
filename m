@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 313137B882F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C28487B898B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243945AbjJDSNd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:13:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58974 "EHLO
+        id S244173AbjJDS1M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:27:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243982AbjJDSNb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:31 -0400
+        with ESMTP id S244210AbjJDS1L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F200C1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D43C433C8;
-        Wed,  4 Oct 2023 18:13:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B2ABC1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC36C433C9;
+        Wed,  4 Oct 2023 18:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443208;
-        bh=jW8WcbdaQVeddCVh2Q7WT2U5b0rqxkGhFdj+dtu8m4E=;
+        s=korg; t=1696444027;
+        bh=AUp46Xzkj6u5vblIaofoez1opd213YYhpgt0v8SIvQ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w9LKC8hMF8YuaAgLOABpW59ygjsbaB52p0Sucwak7Kqvi8cFrbvit+cuL5Ase/VKS
-         fdz8TZoSkWWaaRqzmg1JtajrFqIxPzjswZ6bnnLNH+dGD07J+53rU9F59igVR+FTVX
-         gQkTUuEPVIQPctFcyePX8fROdIhAjCw0dvvmjuHM=
+        b=N+9FhG44UxAR+Pjr/iyTmbIIrNiIIwO5ctpSJ514JAZb0duHgA6+SG3m7HSCNlqvy
+         hE1PFMArduDsU3VMiej7xQHoBOnqtsR5SGr9jMmEk41eD8cnM/fz7LrvrWB/F7/fFc
+         zjopagQYMrqsMWqLgZpePcJ3OFXv3uX5pEQX8MXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangbin Liu <liuhangbin@gmail.com>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Giulio Benetti <giulio.benetti@benettiengineering.com>,
+        Greg Ungerer <gerg@uclinux.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/259] team: fix null-ptr-deref when team device type is changed
-Date:   Wed,  4 Oct 2023 19:54:08 +0200
-Message-ID: <20231004175220.824969298@linuxfoundation.org>
+Subject: [PATCH 6.5 104/321] proc: nommu: /proc/<pid>/maps: release mmap read lock
+Date:   Wed,  4 Oct 2023 19:54:09 +0200
+Message-ID: <20231004175234.064911162@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,123 +54,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Ben Wolsieffer <Ben.Wolsieffer@hefring.com>
 
-[ Upstream commit 492032760127251e5540a5716a70996bacf2a3fd ]
+[ Upstream commit 578d7699e5c2add8c2e9549d9d75dfb56c460cb3 ]
 
-Get a null-ptr-deref bug as follows with reproducer [1].
+The no-MMU implementation of /proc/<pid>/map doesn't normally release
+the mmap read lock, because it uses !IS_ERR_OR_NULL(_vml) to determine
+whether to release the lock.  Since _vml is NULL when the end of the
+mappings is reached, the lock is not released.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000228
-...
-RIP: 0010:vlan_dev_hard_header+0x35/0x140 [8021q]
-...
-Call Trace:
- <TASK>
- ? __die+0x24/0x70
- ? page_fault_oops+0x82/0x150
- ? exc_page_fault+0x69/0x150
- ? asm_exc_page_fault+0x26/0x30
- ? vlan_dev_hard_header+0x35/0x140 [8021q]
- ? vlan_dev_hard_header+0x8e/0x140 [8021q]
- neigh_connected_output+0xb2/0x100
- ip6_finish_output2+0x1cb/0x520
- ? nf_hook_slow+0x43/0xc0
- ? ip6_mtu+0x46/0x80
- ip6_finish_output+0x2a/0xb0
- mld_sendpack+0x18f/0x250
- mld_ifc_work+0x39/0x160
- process_one_work+0x1e6/0x3f0
- worker_thread+0x4d/0x2f0
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xe5/0x120
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x34/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
+Reading /proc/1/maps twice doesn't cause a hang because it only
+takes the read lock, which can be taken multiple times and therefore
+doesn't show any problem if the lock isn't released. Instead, you need
+to perform some operation that attempts to take the write lock after
+reading /proc/<pid>/maps. To actually reproduce the bug, compile the
+following code as 'proc_maps_bug':
 
-[1]
-$ teamd -t team0 -d -c '{"runner": {"name": "loadbalance"}}'
-$ ip link add name t-dummy type dummy
-$ ip link add link t-dummy name t-dummy.100 type vlan id 100
-$ ip link add name t-nlmon type nlmon
-$ ip link set t-nlmon master team0
-$ ip link set t-nlmon nomaster
-$ ip link set t-dummy up
-$ ip link set team0 up
-$ ip link set t-dummy.100 down
-$ ip link set t-dummy.100 master team0
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/mman.h>
 
-When enslave a vlan device to team device and team device type is changed
-from non-ether to ether, header_ops of team device is changed to
-vlan_header_ops. That is incorrect and will trigger null-ptr-deref
-for vlan->real_dev in vlan_dev_hard_header() because team device is not
-a vlan device.
+int main(int argc, char *argv[]) {
+        void *buf;
+        sleep(1);
+        buf = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        puts("mmap returned");
+        return 0;
+}
 
-Cache eth_header_ops in team_setup(), then assign cached header_ops to
-header_ops of team net device when its type is changed from non-ether
-to ether to fix the bug.
+Then, run:
 
-Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
-Suggested-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230918123011.1884401-1-william.xuanziyang@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+  ./proc_maps_bug &; cat /proc/$!/maps; fg
+
+Without this patch, mmap() will hang and the command will never
+complete.
+
+This code was incorrectly adapted from the MMU implementation, which at
+the time released the lock in m_next() before returning the last entry.
+
+The MMU implementation has diverged further from the no-MMU version since
+then, so this patch brings their locking and error handling into sync,
+fixing the bug and hopefully avoiding similar issues in the future.
+
+Link: https://lkml.kernel.org/r/20230914163019.4050530-2-ben.wolsieffer@hefring.com
+Fixes: 47fecca15c09 ("fs/proc/task_nommu.c: don't use priv->task->mm")
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
+Cc: Greg Ungerer <gerg@uclinux.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: fe4419801617 ("proc: nommu: fix empty /proc/<pid>/maps")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team.c | 10 +++++++++-
- include/linux/if_team.h |  2 ++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ fs/proc/task_nommu.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index 921ca59822b0f..556b2d1cd2aca 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2127,7 +2127,12 @@ static const struct ethtool_ops team_ethtool_ops = {
- static void team_setup_by_port(struct net_device *dev,
- 			       struct net_device *port_dev)
+diff --git a/fs/proc/task_nommu.c b/fs/proc/task_nommu.c
+index 2c8b622659814..061bd3f82756e 100644
+--- a/fs/proc/task_nommu.c
++++ b/fs/proc/task_nommu.c
+@@ -205,11 +205,16 @@ static void *m_start(struct seq_file *m, loff_t *pos)
+ 		return ERR_PTR(-ESRCH);
+ 
+ 	mm = priv->mm;
+-	if (!mm || !mmget_not_zero(mm))
++	if (!mm || !mmget_not_zero(mm)) {
++		put_task_struct(priv->task);
++		priv->task = NULL;
+ 		return NULL;
++	}
+ 
+ 	if (mmap_read_lock_killable(mm)) {
+ 		mmput(mm);
++		put_task_struct(priv->task);
++		priv->task = NULL;
+ 		return ERR_PTR(-EINTR);
+ 	}
+ 
+@@ -218,23 +223,21 @@ static void *m_start(struct seq_file *m, loff_t *pos)
+ 	if (vma)
+ 		return vma;
+ 
+-	mmap_read_unlock(mm);
+-	mmput(mm);
+ 	return NULL;
+ }
+ 
+-static void m_stop(struct seq_file *m, void *_vml)
++static void m_stop(struct seq_file *m, void *v)
  {
--	dev->header_ops	= port_dev->header_ops;
-+	struct team *team = netdev_priv(dev);
+ 	struct proc_maps_private *priv = m->private;
++	struct mm_struct *mm = priv->mm;
+ 
+-	if (!IS_ERR_OR_NULL(_vml)) {
+-		mmap_read_unlock(priv->mm);
+-		mmput(priv->mm);
+-	}
+-	if (priv->task) {
+-		put_task_struct(priv->task);
+-		priv->task = NULL;
+-	}
++	if (!priv->task)
++		return;
 +
-+	if (port_dev->type == ARPHRD_ETHER)
-+		dev->header_ops	= team->header_ops_cache;
-+	else
-+		dev->header_ops	= port_dev->header_ops;
- 	dev->type = port_dev->type;
- 	dev->hard_header_len = port_dev->hard_header_len;
- 	dev->needed_headroom = port_dev->needed_headroom;
-@@ -2174,8 +2179,11 @@ static int team_dev_type_check_change(struct net_device *dev,
++	mmap_read_unlock(mm);
++	mmput(mm);
++	put_task_struct(priv->task);
++	priv->task = NULL;
+ }
  
- static void team_setup(struct net_device *dev)
- {
-+	struct team *team = netdev_priv(dev);
-+
- 	ether_setup(dev);
- 	dev->max_mtu = ETH_MAX_MTU;
-+	team->header_ops_cache = dev->header_ops;
- 
- 	dev->netdev_ops = &team_netdev_ops;
- 	dev->ethtool_ops = &team_ethtool_ops;
-diff --git a/include/linux/if_team.h b/include/linux/if_team.h
-index 8de6b6e678295..34bcba5a70677 100644
---- a/include/linux/if_team.h
-+++ b/include/linux/if_team.h
-@@ -189,6 +189,8 @@ struct team {
- 	struct net_device *dev; /* associated netdevice */
- 	struct team_pcpu_stats __percpu *pcpu_stats;
- 
-+	const struct header_ops *header_ops_cache;
-+
- 	struct mutex lock; /* used for overall locking, e.g. port lists write */
- 
- 	/*
+ static void *m_next(struct seq_file *m, void *_p, loff_t *pos)
 -- 
 2.40.1
 
