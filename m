@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0FF17B8A54
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CD487B88E9
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244400AbjJDSeY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:34:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59542 "EHLO
+        id S244018AbjJDSUw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244391AbjJDSeX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:23 -0400
+        with ESMTP id S243992AbjJDSUv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64C6F98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5B2C433C8;
-        Wed,  4 Oct 2023 18:34:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1269CC4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D53C433C8;
+        Wed,  4 Oct 2023 18:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444459;
-        bh=FhlYNP8s0C2GPD77lu3sMT418PsrvcWJjaNCrXLFbBs=;
+        s=korg; t=1696443647;
+        bh=8ll9amaR68Q4L69JOIP7eJroORqxon+dSSHdKux+H6U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zbQHpZQzj1wjO0l6SVrIrV9hpGZjFhGZOhIupwNSwre8v8gt/xfmLrw82SM67YE5W
-         /+Qir+v7L33rs9ByZHChp7yscU+zsO5/xvKDz//GXcFIb0Ld8WWWyNDA8wChFs0j8T
-         Y/WpUBHGzmERMT885NXZm/fkn7EtI+/dHf8W3LM8=
+        b=IuxTZLSTou/IdOEV8tx26Ll4T33gKcwSt6e6vkakNlTE89i5WSaxYCLOJhXV+TG8Q
+         vWjzMiXtG1cChUL8WZZVdIeqnAVggxh8RvEBl3D8IUvItFDjhLIbkbwdu5NJJG2zUd
+         HYM4rk3hegeuUDxkhc+OqYYCigmj9qZAzcF4FBxs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.5 258/321] ALSA: hda: Disable power save for solving pop issue on Lenovo ThinkCentre M70q
-Date:   Wed,  4 Oct 2023 19:56:43 +0200
-Message-ID: <20231004175241.207265789@linuxfoundation.org>
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.1 231/259] netfilter: nf_tables: fix kdoc warnings after gc rework
+Date:   Wed,  4 Oct 2023 19:56:44 +0200
+Message-ID: <20231004175227.952503046@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,35 +49,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 057a28ef93bdbe84326d34cdb5543afdaab49fe1 upstream.
+commit 08713cb006b6f07434f276c5ee214fb20c7fd965 upstream.
 
-Lenovo ThinkCentre M70q had boot up pop noise.
-Disable power save will solve pop issue.
+Jakub Kicinski says:
+  We've got some new kdoc warnings here:
+  net/netfilter/nft_set_pipapo.c:1557: warning: Function parameter or member '_set' not described in 'pipapo_gc'
+  net/netfilter/nft_set_pipapo.c:1557: warning: Excess function parameter 'set' description in 'pipapo_gc'
+  include/net/netfilter/nf_tables.h:577: warning: Function parameter or member 'dead' not described in 'nft_set'
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/315900e2efef42fd9855eacfeb443abd@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/netdev/20230810104638.746e46f1@kernel.org/
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_intel.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/netfilter/nf_tables.h |    1 +
+ net/netfilter/nft_set_pipapo.c    |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2223,6 +2223,7 @@ static const struct snd_pci_quirk power_
- 	SND_PCI_QUIRK(0x8086, 0x2068, "Intel NUC7i3BNB", 0),
- 	/* https://bugzilla.kernel.org/show_bug.cgi?id=198611 */
- 	SND_PCI_QUIRK(0x17aa, 0x2227, "Lenovo X1 Carbon 3rd Gen", 0),
-+	SND_PCI_QUIRK(0x17aa, 0x316e, "Lenovo ThinkCentre M70q", 0),
- 	/* https://bugzilla.redhat.com/show_bug.cgi?id=1689623 */
- 	SND_PCI_QUIRK(0x17aa, 0x367b, "Lenovo IdeaCentre B550", 0),
- 	/* https://bugzilla.redhat.com/show_bug.cgi?id=1572975 */
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -529,6 +529,7 @@ struct nft_set_elem_expr {
+  *	@expr: stateful expression
+  * 	@ops: set ops
+  * 	@flags: set flags
++ *	@dead: set will be freed, never cleared
+  *	@genmask: generation mask
+  * 	@klen: key length
+  * 	@dlen: data length
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1550,7 +1550,7 @@ static void nft_pipapo_gc_deactivate(str
+ 
+ /**
+  * pipapo_gc() - Drop expired entries from set, destroy start and end elements
+- * @set:	nftables API set representation
++ * @_set:	nftables API set representation
+  * @m:		Matching data
+  */
+ static void pipapo_gc(const struct nft_set *_set, struct nft_pipapo_match *m)
 
 
