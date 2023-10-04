@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DD187B8A21
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95B447B87A3
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244304AbjJDSch (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:32:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46722 "EHLO
+        id S243837AbjJDSHl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:07:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244224AbjJDScg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:36 -0400
+        with ESMTP id S243840AbjJDSHl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 712CDA7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B93C433C8;
-        Wed,  4 Oct 2023 18:32:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02454C6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AE0C433C8;
+        Wed,  4 Oct 2023 18:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444352;
-        bh=pyzqGPDu5SuEgWdy1QLEDdGJHR/p+EpUaBGCqBv+sQc=;
+        s=korg; t=1696442857;
+        bh=ZDXBuIFMcRZimpJ6M98K5ZfIuh/R21imaYt+nRXs7+8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CO6vUvrUN9Jp0R+SEBd8/VbhPpNUtK1uFZWhT1goqLTcfeCCvTJTCU7gFssSv4tfL
-         4gmDnYejxPPc0l+NXXncYoipU4pN2nknSWD/TzoPAbm86/3sn1Ywh3NniR8HKEucgX
-         iDY0msWzzlJAjZQdjOktiEzdLOPKaDtk1cMb+8iw=
+        b=i3CUs3wWs5XmMLEFr6vmBITUEWe1GrE/V/2n2YkXNlqFczMSdTTyqfK+mJgY6SsOG
+         5S9ovgybawYuAg4ry2eMu98rk4XRISpWXjmpOd48Xk1gHc9AlQtyIXXW+fn07qGfX3
+         Rbze3LAeE6eQBUahGOfLHaietdBPJ5Om0WEui5To=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Daniel Borkmann <daniel@iogearbox.net>,
+        Stanislav Fomichev <sdf@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 220/321] ASoC: SOF: sof-audio: Fix DSP core put imbalance on widget setup failure
+Subject: [PATCH 5.15 134/183] bpf: Clarify error expectations from bpf_clone_redirect
 Date:   Wed,  4 Oct 2023 19:56:05 +0200
-Message-ID: <20231004175239.417778889@linuxfoundation.org>
+Message-ID: <20231004175209.551641816@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,46 +50,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Stanislav Fomichev <sdf@google.com>
 
-[ Upstream commit bb0216d4db9ecaa51af45d8504757becbe5c050d ]
+[ Upstream commit 7cb779a6867fea00b4209bcf6de2f178a743247d ]
 
-In case the widget setup fails we should only decrement the core usage
-count if the sof_widget_free_unlocked() has not been called as part of
-the error handling.
-sof_widget_free_unlocked() calls snd_sof_dsp_core_put() and the additional
-core_put will cause imbalance in core usage count.
-Use the existing use_count_decremented to handle this issue.
+Commit 151e887d8ff9 ("veth: Fixing transmit return status for dropped
+packets") exposed the fact that bpf_clone_redirect is capable of
+returning raw NET_XMIT_XXX return codes.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230914124725.17397-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This is in the conflict with its UAPI doc which says the following:
+"0 on success, or a negative error in case of failure."
+
+Update the UAPI to reflect the fact that bpf_clone_redirect can
+return positive error numbers, but don't explicitly define
+their meaning.
+
+Reported-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230911194731.286342-1-sdf@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/sof-audio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/uapi/linux/bpf.h       | 4 +++-
+ tools/include/uapi/linux/bpf.h | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/sof-audio.c b/sound/soc/sof/sof-audio.c
-index e7ef77012c358..e5405f854a910 100644
---- a/sound/soc/sof/sof-audio.c
-+++ b/sound/soc/sof/sof-audio.c
-@@ -212,7 +212,8 @@ static int sof_widget_setup_unlocked(struct snd_sof_dev *sdev,
- 	sof_widget_free_unlocked(sdev, swidget);
- 	use_count_decremented = true;
- core_put:
--	snd_sof_dsp_core_put(sdev, swidget->core);
-+	if (!use_count_decremented)
-+		snd_sof_dsp_core_put(sdev, swidget->core);
- pipe_widget_free:
- 	if (swidget->id != snd_soc_dapm_scheduler)
- 		sof_widget_free_unlocked(sdev, swidget->spipe->pipe_widget);
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index a887e582f0e78..9fb06a511250f 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -1762,7 +1762,9 @@ union bpf_attr {
+  * 		performed again, if the helper is used in combination with
+  * 		direct packet access.
+  * 	Return
+- * 		0 on success, or a negative error in case of failure.
++ * 		0 on success, or a negative error in case of failure. Positive
++ * 		error indicates a potential drop or congestion in the target
++ * 		device. The particular positive error codes are not defined.
+  *
+  * u64 bpf_get_current_pid_tgid(void)
+  * 	Return
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 8330e3ca8fbfb..1e3e3f16eabcb 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -1762,7 +1762,9 @@ union bpf_attr {
+  * 		performed again, if the helper is used in combination with
+  * 		direct packet access.
+  * 	Return
+- * 		0 on success, or a negative error in case of failure.
++ * 		0 on success, or a negative error in case of failure. Positive
++ * 		error indicates a potential drop or congestion in the target
++ * 		device. The particular positive error codes are not defined.
+  *
+  * u64 bpf_get_current_pid_tgid(void)
+  * 	Return
 -- 
 2.40.1
 
