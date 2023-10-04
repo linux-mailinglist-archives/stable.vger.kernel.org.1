@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F15167B87B9
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88CF87B8A3C
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243818AbjJDSIk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:08:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39080 "EHLO
+        id S244381AbjJDSdc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:33:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243700AbjJDSIj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:39 -0400
+        with ESMTP id S244385AbjJDSdb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3F6EA6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A667C433C8;
-        Wed,  4 Oct 2023 18:08:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0817AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0051C433C7;
+        Wed,  4 Oct 2023 18:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442916;
-        bh=9A/h1t3VKutMdNYAvLRjwBgjOtcuAszQgsSHjKHIkPo=;
+        s=korg; t=1696444408;
+        bh=GlOyA4DV6DaLZgzsGgfkotpTtO+FE/MsIqty39FtQNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=piN5t4NSpAvc9it1p5JU6g5XczOwHPoBUqd8VvdfPwrgEflntg3hQ7XY+EPEezjSe
-         bUAv67VZNaIeKGysqaRwARrBSR8LTyHbZL8CiTdx7axQamlvLaNrK8N+odWLQ43eAT
-         NNYR7fI1EH+NrLcmfqywVUhnl2dNJJoFKHJQrDCY=
+        b=Bq9PDavUyu1H4KNjW9XlIMMfRV7y9cGasIS00+uqkVvPmeNy9yWz2z9nd6v9coLtZ
+         jS+f25oIuRTxQqyISBdpAZ8woYunpJlsX6ArNSju2gdUoibw1VzqhvUXBL0I9GI9uo
+         GxphIzATMrOYKWXXLTuoiBV7DbA/XrjE4KA+Vyiw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>,
-        David Francis <David.Francis@amd.com>,
+        patches@lists.linux.dev,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Stefan Binding <sbinding@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 126/183] drm/amdgpu: Handle null atom context in VBIOS info ioctl
+Subject: [PATCH 6.5 212/321] ASoC: cs42l42: Ensure a reset pulse meets minimum pulse width.
 Date:   Wed,  4 Oct 2023 19:55:57 +0200
-Message-ID: <20231004175209.237982202@linuxfoundation.org>
+Message-ID: <20231004175239.075709613@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Francis <David.Francis@amd.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 5e7e82254270c8cf8b107451c5de01cee2f135ae ]
+[ Upstream commit 41dac81b56c82c51a6d00fda5f3af7691ffee2d7 ]
 
-On some APU systems, there is no atom context and so the
-atom_context struct is null.
+The CS42L42 can accept very short reset pulses of a few microseconds
+but there's no reason to force a very short pulse.
+Allow a wide range for the usleep_range() so it can be relaxed about
+the choice of timing source.
 
-Add a check to the VBIOS_INFO branch of amdgpu_info_ioctl
-to handle this case, returning all zeroes.
-
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: David Francis <David.Francis@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20230913150012.604775-2-sbinding@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ sound/soc/codecs/cs42l42.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-index e8485b1f02ed6..70d49b998ee9e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -926,12 +926,17 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 			struct atom_context *atom_context;
+diff --git a/sound/soc/codecs/cs42l42.c b/sound/soc/codecs/cs42l42.c
+index a0de0329406a1..56d2857a4f01c 100644
+--- a/sound/soc/codecs/cs42l42.c
++++ b/sound/soc/codecs/cs42l42.c
+@@ -2320,6 +2320,10 @@ int cs42l42_common_probe(struct cs42l42_private *cs42l42,
  
- 			atom_context = adev->mode_info.atom_context;
--			memcpy(vbios_info.name, atom_context->name, sizeof(atom_context->name));
--			memcpy(vbios_info.vbios_pn, atom_context->vbios_pn, sizeof(atom_context->vbios_pn));
--			vbios_info.version = atom_context->version;
--			memcpy(vbios_info.vbios_ver_str, atom_context->vbios_ver_str,
--						sizeof(atom_context->vbios_ver_str));
--			memcpy(vbios_info.date, atom_context->date, sizeof(atom_context->date));
-+			if (atom_context) {
-+				memcpy(vbios_info.name, atom_context->name,
-+				       sizeof(atom_context->name));
-+				memcpy(vbios_info.vbios_pn, atom_context->vbios_pn,
-+				       sizeof(atom_context->vbios_pn));
-+				vbios_info.version = atom_context->version;
-+				memcpy(vbios_info.vbios_ver_str, atom_context->vbios_ver_str,
-+				       sizeof(atom_context->vbios_ver_str));
-+				memcpy(vbios_info.date, atom_context->date,
-+				       sizeof(atom_context->date));
-+			}
- 
- 			return copy_to_user(out, &vbios_info,
- 						min((size_t)size, sizeof(vbios_info))) ? -EFAULT : 0;
+ 	if (cs42l42->reset_gpio) {
+ 		dev_dbg(cs42l42->dev, "Found reset GPIO\n");
++
++		/* Ensure minimum reset pulse width */
++		usleep_range(10, 500);
++
+ 		gpiod_set_value_cansleep(cs42l42->reset_gpio, 1);
+ 	}
+ 	usleep_range(CS42L42_BOOT_TIME_US, CS42L42_BOOT_TIME_US * 2);
 -- 
 2.40.1
 
