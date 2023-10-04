@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E0187B8798
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0ADD7B888A
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243831AbjJDSHK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:07:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47638 "EHLO
+        id S243765AbjJDSRN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:17:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243827AbjJDSHH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:07 -0400
+        with ESMTP id S243756AbjJDSRM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED0209E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEACC433C7;
-        Wed,  4 Oct 2023 18:07:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CD3A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59D4C433C7;
+        Wed,  4 Oct 2023 18:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442823;
-        bh=7wrCc1L429Nm5i+Ty3Y2Wjb0JAkwd9SufH44hrM+cy4=;
+        s=korg; t=1696443427;
+        bh=IMcEmVfD2IB6bYbj+3cI54YRTsAaVUj+LJhUTyM4GzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gR8MXqOyTWnF68cqeUal8sBzaMTkOYEDx1m//zuSXFZ9sY+S1DNrLlWd2Me3AAVc6
-         icY7bD+UqtMXLpvh2zFbXFlUntlANtn/vQaQc4SjDPWeKvJxqnmaBT6XtT8Nok0igN
-         0UPhspeg3yDCm++fkH85WF1HnnaUEz/+KjNvNr3Q=
+        b=VcXG/yVZsHPD6SXE6Ch7wERn8TNmMKM40KxauVUukpFu14Il4bWHDLshuiaUxGB6U
+         CxAerjtXWsS4rzIl6GI4dpG0TgYs+q0m8hcqG2HrfHfFPJXLMVE0qi3wJGpuG3V+tK
+         LFFn+QF3GT3SlsmHtY1F8iMR2n9BRLXfS9HtA1wg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Julien Panis <jpanis@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Javed Hasan <jhasan@marvell.com>,
+        Saurav Kashyap <skashyap@marvell.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 093/183] bus: ti-sysc: Use fsleep() instead of usleep_range() in sysc_reset()
-Date:   Wed,  4 Oct 2023 19:55:24 +0200
-Message-ID: <20231004175207.806727403@linuxfoundation.org>
+Subject: [PATCH 6.1 152/259] scsi: qedf: Add synchronization between I/O completions and abort
+Date:   Wed,  4 Oct 2023 19:55:25 +0200
+Message-ID: <20231004175224.279666649@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +51,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Panis <jpanis@baylibre.com>
+From: Javed Hasan <jhasan@marvell.com>
 
-[ Upstream commit d929b2b7464f95ec01e47f560b1e687482ba8929 ]
+[ Upstream commit 7df0b2605489bef3f4223ad66f1f9bb8d50d4cd2 ]
 
-The am335x-evm started producing boot errors because of subtle timing
-changes:
+Avoid race condition between I/O completion and abort processing by
+protecting the cmd_type with the rport lock.
 
-Unhandled fault: external abort on non-linefetch (0x1008) at 0xf03c1010
-...
-sysc_reset from sysc_probe+0xf60/0x1514
-sysc_probe from platform_probe+0x5c/0xbc
-...
-
-The fix consists in using the appropriate sleep function in sysc reset.
-For flexible sleeping, fsleep is recommended. Here, sysc delay parameter
-can take any value in [0 - 255] us range. As a result, fsleep() should
-be used, calling udelay() for a sysc delay lower than 10 us.
-
-Signed-off-by: Julien Panis <jpanis@baylibre.com>
-Fixes: e709ed70d122 ("bus: ti-sysc: Fix missing reset delay handling")
-Message-ID: <20230821-fix-ti-sysc-reset-v1-1-5a0a5d8fae55@baylibre.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Javed Hasan <jhasan@marvell.com>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Link: https://lore.kernel.org/r/20230901060646.27885-1-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/qedf/qedf_io.c   | 10 ++++++++--
+ drivers/scsi/qedf/qedf_main.c |  7 ++++++-
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 74ab6cf031ce0..dacda1eb140cf 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2096,8 +2096,7 @@ static int sysc_reset(struct sysc *ddata)
+diff --git a/drivers/scsi/qedf/qedf_io.c b/drivers/scsi/qedf/qedf_io.c
+index 4750ec5789a80..10fe3383855c0 100644
+--- a/drivers/scsi/qedf/qedf_io.c
++++ b/drivers/scsi/qedf/qedf_io.c
+@@ -1904,6 +1904,7 @@ int qedf_initiate_abts(struct qedf_ioreq *io_req, bool return_scsi_cmd_on_abts)
+ 		goto drop_rdata_kref;
  	}
  
- 	if (ddata->cfg.srst_udelay)
--		usleep_range(ddata->cfg.srst_udelay,
--			     ddata->cfg.srst_udelay * 2);
-+		fsleep(ddata->cfg.srst_udelay);
++	spin_lock_irqsave(&fcport->rport_lock, flags);
+ 	if (!test_bit(QEDF_CMD_OUTSTANDING, &io_req->flags) ||
+ 	    test_bit(QEDF_CMD_IN_CLEANUP, &io_req->flags) ||
+ 	    test_bit(QEDF_CMD_IN_ABORT, &io_req->flags)) {
+@@ -1911,17 +1912,20 @@ int qedf_initiate_abts(struct qedf_ioreq *io_req, bool return_scsi_cmd_on_abts)
+ 			 "io_req xid=0x%x sc_cmd=%p already in cleanup or abort processing or already completed.\n",
+ 			 io_req->xid, io_req->sc_cmd);
+ 		rc = 1;
++		spin_unlock_irqrestore(&fcport->rport_lock, flags);
+ 		goto drop_rdata_kref;
+ 	}
  
- 	if (ddata->post_reset_quirk)
- 		ddata->post_reset_quirk(ddata);
++	/* Set the command type to abort */
++	io_req->cmd_type = QEDF_ABTS;
++	spin_unlock_irqrestore(&fcport->rport_lock, flags);
++
+ 	kref_get(&io_req->refcount);
+ 
+ 	xid = io_req->xid;
+ 	qedf->control_requests++;
+ 	qedf->packet_aborts++;
+ 
+-	/* Set the command type to abort */
+-	io_req->cmd_type = QEDF_ABTS;
+ 	io_req->return_scsi_cmd_on_abts = return_scsi_cmd_on_abts;
+ 
+ 	set_bit(QEDF_CMD_IN_ABORT, &io_req->flags);
+@@ -2210,7 +2214,9 @@ int qedf_initiate_cleanup(struct qedf_ioreq *io_req,
+ 		  refcount, fcport, fcport->rdata->ids.port_id);
+ 
+ 	/* Cleanup cmds re-use the same TID as the original I/O */
++	spin_lock_irqsave(&fcport->rport_lock, flags);
+ 	io_req->cmd_type = QEDF_CLEANUP;
++	spin_unlock_irqrestore(&fcport->rport_lock, flags);
+ 	io_req->return_scsi_cmd_on_abts = return_scsi_cmd_on_abts;
+ 
+ 	init_completion(&io_req->cleanup_done);
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index c4f293d39f228..d969b0dc97326 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -2807,6 +2807,8 @@ void qedf_process_cqe(struct qedf_ctx *qedf, struct fcoe_cqe *cqe)
+ 	struct qedf_ioreq *io_req;
+ 	struct qedf_rport *fcport;
+ 	u32 comp_type;
++	u8 io_comp_type;
++	unsigned long flags;
+ 
+ 	comp_type = (cqe->cqe_data >> FCOE_CQE_CQE_TYPE_SHIFT) &
+ 	    FCOE_CQE_CQE_TYPE_MASK;
+@@ -2840,11 +2842,14 @@ void qedf_process_cqe(struct qedf_ctx *qedf, struct fcoe_cqe *cqe)
+ 		return;
+ 	}
+ 
++	spin_lock_irqsave(&fcport->rport_lock, flags);
++	io_comp_type = io_req->cmd_type;
++	spin_unlock_irqrestore(&fcport->rport_lock, flags);
+ 
+ 	switch (comp_type) {
+ 	case FCOE_GOOD_COMPLETION_CQE_TYPE:
+ 		atomic_inc(&fcport->free_sqes);
+-		switch (io_req->cmd_type) {
++		switch (io_comp_type) {
+ 		case QEDF_SCSI_CMD:
+ 			qedf_scsi_completion(qedf, cqe, io_req);
+ 			break;
 -- 
 2.40.1
 
