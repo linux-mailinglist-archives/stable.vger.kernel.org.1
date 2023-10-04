@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C96087B88B8
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F15167B87B9
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233767AbjJDSSp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:18:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57094 "EHLO
+        id S243818AbjJDSIk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:08:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233594AbjJDSSp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:45 -0400
+        with ESMTP id S243700AbjJDSIj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5FBBE9
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB8EC433C7;
-        Wed,  4 Oct 2023 18:18:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3F6EA6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A667C433C8;
+        Wed,  4 Oct 2023 18:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443520;
-        bh=042rId0dKZIb7Eje3+Oo6xSPE4TguqI3MMosyc1oMXo=;
+        s=korg; t=1696442916;
+        bh=9A/h1t3VKutMdNYAvLRjwBgjOtcuAszQgsSHjKHIkPo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uB5sQW/zeqJTqWDZcl4F5sdLOeQ7pmP7SW3/SXcLpOxX+lxyRIqfT/gl8f+DOuJNA
-         PsczyAeK3FIYxkmgKhPesdb5P4Eb/elqbcHFq6CyK2a/3tR1hAwJIyuum/zTkrCme/
-         PhJORoKuafXOs2aoR+0xQZ/vcRqARRafNh5JU914=
+        b=piN5t4NSpAvc9it1p5JU6g5XczOwHPoBUqd8VvdfPwrgEflntg3hQ7XY+EPEezjSe
+         bUAv67VZNaIeKGysqaRwARrBSR8LTyHbZL8CiTdx7axQamlvLaNrK8N+odWLQ43eAT
+         NNYR7fI1EH+NrLcmfqywVUhnl2dNJJoFKHJQrDCY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Mike Rapoport (IBM)" <rppt@kernel.org>,
+        patches@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>,
+        David Francis <David.Francis@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/259] memblock tests: fix warning: "__ALIGN_KERNEL" redefined
+Subject: [PATCH 5.15 126/183] drm/amdgpu: Handle null atom context in VBIOS info ioctl
 Date:   Wed,  4 Oct 2023 19:55:57 +0200
-Message-ID: <20231004175225.740055447@linuxfoundation.org>
+Message-ID: <20231004175209.237982202@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,61 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (IBM) <rppt@kernel.org>
+From: David Francis <David.Francis@amd.com>
 
-[ Upstream commit 5e1bffbdb63baf89f3bf0b6bafb50903432a7434 ]
+[ Upstream commit 5e7e82254270c8cf8b107451c5de01cee2f135ae ]
 
-Building memblock tests produces the following warning:
+On some APU systems, there is no atom context and so the
+atom_context struct is null.
 
-cc -I. -I../../include -Wall -O2 -fsanitize=address -fsanitize=undefined -D CONFIG_PHYS_ADDR_T_64BIT   -c -o main.o main.c
-In file included from ../../include/linux/pfn.h:5,
-                 from ./linux/memory_hotplug.h:6,
-                 from ./linux/init.h:7,
-                 from ./linux/memblock.h:11,
-                 from tests/common.h:8,
-                 from tests/basic_api.h:5,
-                 from main.c:2:
-../../include/linux/mm.h:14: warning: "__ALIGN_KERNEL" redefined
-   14 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
-      |
-In file included from ../../include/linux/mm.h:6,
-                 from ../../include/linux/pfn.h:5,
-                 from ./linux/memory_hotplug.h:6,
-                 from ./linux/init.h:7,
-                 from ./linux/memblock.h:11,
-                 from tests/common.h:8,
-                 from tests/basic_api.h:5,
-                 from main.c:2:
-../../include/uapi/linux/const.h:31: note: this is the location of the previous definition
-   31 | #define __ALIGN_KERNEL(x, a)            __ALIGN_KERNEL_MASK(x, (__typeof__(x))(a) - 1)
-      |
+Add a check to the VBIOS_INFO branch of amdgpu_info_ioctl
+to handle this case, returning all zeroes.
 
-Remove definitions of __ALIGN_KERNEL and __ALIGN_KERNEL_MASK from
-tools/include/linux/mm.h to fix it.
-
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: David Francis <David.Francis@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/linux/mm.h | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/tools/include/linux/mm.h b/tools/include/linux/mm.h
-index a03d9bba51514..43be27bcc897d 100644
---- a/tools/include/linux/mm.h
-+++ b/tools/include/linux/mm.h
-@@ -11,8 +11,6 @@
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+index e8485b1f02ed6..70d49b998ee9e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
+@@ -926,12 +926,17 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
+ 			struct atom_context *atom_context;
  
- #define PHYS_ADDR_MAX	(~(phys_addr_t)0)
+ 			atom_context = adev->mode_info.atom_context;
+-			memcpy(vbios_info.name, atom_context->name, sizeof(atom_context->name));
+-			memcpy(vbios_info.vbios_pn, atom_context->vbios_pn, sizeof(atom_context->vbios_pn));
+-			vbios_info.version = atom_context->version;
+-			memcpy(vbios_info.vbios_ver_str, atom_context->vbios_ver_str,
+-						sizeof(atom_context->vbios_ver_str));
+-			memcpy(vbios_info.date, atom_context->date, sizeof(atom_context->date));
++			if (atom_context) {
++				memcpy(vbios_info.name, atom_context->name,
++				       sizeof(atom_context->name));
++				memcpy(vbios_info.vbios_pn, atom_context->vbios_pn,
++				       sizeof(atom_context->vbios_pn));
++				vbios_info.version = atom_context->version;
++				memcpy(vbios_info.vbios_ver_str, atom_context->vbios_ver_str,
++				       sizeof(atom_context->vbios_ver_str));
++				memcpy(vbios_info.date, atom_context->date,
++				       sizeof(atom_context->date));
++			}
  
--#define __ALIGN_KERNEL(x, a)		__ALIGN_KERNEL_MASK(x, (typeof(x))(a) - 1)
--#define __ALIGN_KERNEL_MASK(x, mask)	(((x) + (mask)) & ~(mask))
- #define ALIGN(x, a)			__ALIGN_KERNEL((x), (a))
- #define ALIGN_DOWN(x, a)		__ALIGN_KERNEL((x) - ((a) - 1), (a))
- 
+ 			return copy_to_user(out, &vbios_info,
+ 						min((size_t)size, sizeof(vbios_info))) ? -EFAULT : 0;
 -- 
 2.40.1
 
