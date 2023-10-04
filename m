@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6A057B817C
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 15:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04C877B817E
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 15:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242645AbjJDN5X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 09:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45202 "EHLO
+        id S242745AbjJDN5a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 09:57:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242728AbjJDN5W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 09:57:22 -0400
+        with ESMTP id S242713AbjJDN53 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 09:57:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC89BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 06:57:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2DEC433C8;
-        Wed,  4 Oct 2023 13:57:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63CEDA1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 06:57:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0DBC433C8;
+        Wed,  4 Oct 2023 13:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696427838;
-        bh=ksMfvhx0Uyh31ibVylGxUYxxIV5vdmRWtfxZuMAOofE=;
+        s=korg; t=1696427846;
+        bh=FCii/F77an7eBrawsy9uAxnEvceV3AE5XnWjsu7vUW4=;
         h=Subject:To:Cc:From:Date:From;
-        b=tcst5oX3iuhlY9Q/7H/qw962uD1U7a4TLW+qsPqiJJc89CPZ4eXfUez7UsTyuawIL
-         y4nzl+6DqgSBoCC7Dm5aX+SbupKk1Dji5n+ANYWKpcGt0tQSvtD5ZT4fOXoM57QdvN
-         GrPgVRqtZMpB46YfQqgWtPBk2dbnQSciZh3dTlto=
-Subject: FAILED: patch "[PATCH] spi: zynqmp-gqspi: fix clock imbalance on probe failure" failed to apply to 5.4-stable tree
+        b=y2ecUX33uU4k36g4UMNeFIlzt56NcGgNG9EO7nD4Sck2AGNZmJIOXBGl0PdvncXMN
+         j4qn5cmDSDShq+H2i3pQVZHQtAjh09mLjLSPLuZYIsSfQih7dKRXonqnsHKMW7qTwc
+         cdHUnzvykpIGgnBYDJxte8WzHO5bcX5T4mDu6Vus=
+Subject: FAILED: patch "[PATCH] spi: zynqmp-gqspi: fix clock imbalance on probe failure" failed to apply to 4.19-stable tree
 To:     johan+linaro@kernel.org, broonie@kernel.org,
         naga.sureshkumar.relli@xilinx.com, shubhrajyoti.datta@xilinx.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 15:57:15 +0200
-Message-ID: <2023100413-clothing-muscular-2532@gregkh>
+Date:   Wed, 04 Oct 2023 15:57:22 +0200
+Message-ID: <2023100421-tribute-plausible-7fed@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1527b076ae2cb6a9c590a02725ed39399fcad1cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100413-clothing-muscular-2532@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100421-tribute-plausible-7fed@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
