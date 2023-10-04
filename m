@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A6507B87BD
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17C937B88C0
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:19:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243861AbjJDSIr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:08:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39162 "EHLO
+        id S233831AbjJDSTI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:19:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243856AbjJDSIr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:47 -0400
+        with ESMTP id S233785AbjJDSTH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:19:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C11CBF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E450DC433C8;
-        Wed,  4 Oct 2023 18:08:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 251A4A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:19:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6F9C433C7;
+        Wed,  4 Oct 2023 18:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442922;
-        bh=wvAcKerCwqIFaiSh1x/YuS2wGKIl248m+T+e3cWhTtc=;
+        s=korg; t=1696443542;
+        bh=0QxYENzu4fX5bKSNoJqCfMXQnL1TJg5QfxEMmI52GXk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ao1CHvNJV+fvB54E3UdmJyIrQpxDSoBId1tQSYJRaHiPQbkpA4sOfffnbMRscQNjl
-         r/FgY6O764T2bTurNi7V8hdE5yatPLVOQST5wvwYaSpPsq1j9t7wu62u9kIjCPvRAL
-         hXlVj2S9+NXFoE9Ijz+TwXzMuBT4PFwA6fA3jr3w=
+        b=d9Xb3/eB6Xp6Q+P5g23uHII8BKmdbd7TWRg1rsfnEKjHVZ2X3EW6+rE0EpZaqYecL
+         doRhWKUSXpbvrWzAdFZTG8GYDKzfeQ5hrOBL76bLRrQpwknZ/f3j7OXij2TWk2+XaZ
+         yXJbCHjd+6CjatSWMpXqxYhe/p0DTBPKKQHwQ+xs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Grzedzicki <mge@meta.com>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Chancel Liu <chancel.liu@nxp.com>,
+        Shengjiu Wang <shengjiu.wang@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/183] scsi: pm80xx: Avoid leaking tags when processing OPC_INB_SET_CONTROLLER_CONFIG command
+Subject: [PATCH 6.1 186/259] ASoC: imx-rpmsg: Set ignore_pmdown_time for dai_link
 Date:   Wed,  4 Oct 2023 19:55:59 +0200
-Message-ID: <20231004175209.319771485@linuxfoundation.org>
+Message-ID: <20231004175225.837539012@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +51,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Grzedzicki <mge@meta.com>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-[ Upstream commit c13e7331745852d0dd7c35eabbe181cbd5b01172 ]
+[ Upstream commit fac58baf8fcfcd7481e8f6d60206ce2a47c1476c ]
 
-Tags allocated for OPC_INB_SET_CONTROLLER_CONFIG command need to be freed
-when we receive the response.
+i.MX rpmsg sound cards work on codec slave mode. MCLK will be disabled
+by CPU DAI driver in hw_free(). Some codec requires MCLK present at
+power up/down sequence. So need to set ignore_pmdown_time to power down
+codec immediately before MCLK is turned off.
 
-Signed-off-by: Michal Grzedzicki <mge@meta.com>
-Link: https://lore.kernel.org/r/20230911170340.699533-2-mge@meta.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Take WM8962 as an example, if MCLK is disabled before DAPM power down
+playback stream, FIFO error will arise in WM8962 which will have bad
+impact on playback next.
+
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://lore.kernel.org/r/20230913102656.2966757-1-chancel.liu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm80xx_hwi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/fsl/imx-rpmsg.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
-index ea305d093c871..d37b1bdb29b49 100644
---- a/drivers/scsi/pm8001/pm80xx_hwi.c
-+++ b/drivers/scsi/pm8001/pm80xx_hwi.c
-@@ -3793,10 +3793,12 @@ static int mpi_set_controller_config_resp(struct pm8001_hba_info *pm8001_ha,
- 			(struct set_ctrl_cfg_resp *)(piomb + 4);
- 	u32 status = le32_to_cpu(pPayload->status);
- 	u32 err_qlfr_pgcd = le32_to_cpu(pPayload->err_qlfr_pgcd);
-+	u32 tag = le32_to_cpu(pPayload->tag);
+diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
+index 4d99f4858a14f..76c6febf24990 100644
+--- a/sound/soc/fsl/imx-rpmsg.c
++++ b/sound/soc/fsl/imx-rpmsg.c
+@@ -88,6 +88,14 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
+ 			    SND_SOC_DAIFMT_NB_NF |
+ 			    SND_SOC_DAIFMT_CBC_CFC;
  
- 	pm8001_dbg(pm8001_ha, MSG,
- 		   "SET CONTROLLER RESP: status 0x%x qlfr_pgcd 0x%x\n",
- 		   status, err_qlfr_pgcd);
-+	pm8001_tag_free(pm8001_ha, tag);
- 
- 	return 0;
- }
++	/*
++	 * i.MX rpmsg sound cards work on codec slave mode. MCLK will be
++	 * disabled by CPU DAI driver in hw_free(). Some codec requires MCLK
++	 * present at power up/down sequence. So need to set ignore_pmdown_time
++	 * to power down codec immediately before MCLK is turned off.
++	 */
++	data->dai.ignore_pmdown_time = 1;
++
+ 	/* Optional codec node */
+ 	ret = of_parse_phandle_with_fixed_args(np, "audio-codec", 0, 0, &args);
+ 	if (ret) {
 -- 
 2.40.1
 
