@@ -2,73 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C7367B8327
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E9177B835F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:16:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233192AbjJDPEb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 11:04:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55038 "EHLO
+        id S233648AbjJDPQl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 11:16:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232995AbjJDPEa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:04:30 -0400
-Received: from mail-yw1-x1129.google.com (mail-yw1-x1129.google.com [IPv6:2607:f8b0:4864:20::1129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2DBDBD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:04:27 -0700 (PDT)
-Received: by mail-yw1-x1129.google.com with SMTP id 00721157ae682-5a229ac185aso26632197b3.1
-        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 08:04:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bizlibraries-com.20230601.gappssmtp.com; s=20230601; t=1696431867; x=1697036667; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=LixL85EGKjZ0SM0APnrtawO3yBsSUoEgqhQptyLcfS4=;
-        b=LdFdkl8opWxNb8QVTFUWBYkAYyYbUnUmmggYTksOX0PxBhl4bmJJpjgHya2r1x8pRM
-         bjoxqcCfabO7faRIcP9BLEZqbK5ytgRTsx6IiClNsoD6S/XlfcK57USJLfQGWCP2CJvn
-         t6GHwpLkyWtDTijqlgQQnR4icWaBXPUoDPgwRzLyMSPQWxDDVVeINtYNqwFn0tcEz+Vm
-         Kr1F6QnaYAa+n5Kh6ez/1wiVVUS9t7HHZwz/cE3KU53vl7bodygtr6fTG2fz2aTj6NTT
-         jw5QinxQQGnjdB62IPKcCj50VrwrPeXN/crrCdSsZsqbCKYAeDoCX1LNRZbkjdYdsYPA
-         lAfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696431867; x=1697036667;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LixL85EGKjZ0SM0APnrtawO3yBsSUoEgqhQptyLcfS4=;
-        b=iccEyUjAUAGDrOMdUGjLB7uevln6oEkrLiiSjV14edTuuRSUBH5niDyrbQ8mMRH5Cp
-         jgEoT7+hKcaV176ZOos4qNlqXpBwPcDd+KhpEnZgA4CVQBibqsp065Xn/a9wznm696M+
-         AZkGav6RpBOdP2efJeRz1XwJc7X+kxHivKoOB+r5JIEx3Y4KTrgv0deEfzjxZ/GEI9td
-         tzD41KMRGUI3qVF1atXXzt7QEzP5/h91TD8V4VxZeNtBIU0k0wheF65PAVWCyglHQVNv
-         cIhyqAck4sE079neVMk4pJUABlxUoRzaXUNkf7lfwkM/sNIlEvKTdLc+t5IcopT/qOmn
-         kumQ==
-X-Gm-Message-State: AOJu0Yzwu8sm3i4Ztmnfyum4cfwETWHRAzncxM2m9nbcSFo+k7kdztYt
-        H+c1iARXjhz1bwmVG9VjqifJmKvqo4OEoRThHn4+Jw==
-X-Google-Smtp-Source: AGHT+IFrl6QKvzHt52oIIxsspfzWCVMhki6M80BeBRSwOTs9rPwXRnh16f+yxO0rmy6IPGP7Wx1qM2U6XIRICRmZesc=
-X-Received: by 2002:a81:72c4:0:b0:5a4:ed60:37c1 with SMTP id
- n187-20020a8172c4000000b005a4ed6037c1mr2701543ywc.37.1696431866881; Wed, 04
- Oct 2023 08:04:26 -0700 (PDT)
+        with ESMTP id S243116AbjJDPQk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:16:40 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C8D93;
+        Wed,  4 Oct 2023 08:16:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696432597; x=1727968597;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vH2FpBp/Jh+emhQL+yQf5eMDW7Ker5BK1A4xOIPfb8c=;
+  b=e7RNUZ42PYiIA633DOjjbHCO0xrlys0Dp0wv0AOiis/Lm4mCVou1H7Hh
+   6h9pEQ2HoGAYrXlxFAtOEy5ixN3LQJxdzSIs0gvjEX3PCfFmk8Q2oNawl
+   JdJQOzuqpo7OkGLpsMIs6sRZtaNKYXR0Srx7+iUrq5qXKyw+2cHoRwLqR
+   lYo3hcjB5lUPMW+OGfVqIW/YuCrZhl8P25APNHfz1dCAZHovIj2HIikZP
+   gdiIgpq1326hm2TuyZbp6teJdDf8SxSshGicChpZOyRUCMLsoXFfz0M9f
+   px7/KoIJVLHSup85kQD/dKSg0rKQkEnoAKXot7ZwSrW5djTFV6JGGmE+M
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="383101087"
+X-IronPort-AV: E=Sophos;i="6.03,200,1694761200"; 
+   d="scan'208";a="383101087"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 08:16:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="751336493"
+X-IronPort-AV: E=Sophos;i="6.03,200,1694761200"; 
+   d="scan'208";a="751336493"
+Received: from mfmousa-mobl1.amr.corp.intel.com (HELO [10.212.98.56]) ([10.212.98.56])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 08:16:11 -0700
+Message-ID: <04c5911a-a894-44b3-9f0e-fe9e6de203f2@linux.intel.com>
+Date:   Wed, 4 Oct 2023 11:16:09 -0400
 MIME-Version: 1.0
-From:   Mary Liyana <mary@bizlibraries.com>
-Date:   Wed, 4 Oct 2023 10:04:14 -0500
-Message-ID: <CADgBp9NmQpZGXzu0pYzT-Sj5QgSYuQ5hmqdKxyGhCm9LCEt=Cg@mail.gmail.com>
-Subject: RE: Money20/20 USA in Las Vegas Attendees Data-List 2023
-To:     Mary Liyana <mary@bizlibraries.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soundwire: fix initializing sysfs for same devices on
+ different buses
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Takashi Iwai <tiwai@suse.de>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>
+References: <20231004130243.493617-1-krzysztof.kozlowski@linaro.org>
+ <6628a5f6-ed22-4039-b5c2-2301c05c7e3e@linux.intel.com>
+ <2023100453-perfected-palm-3503@gregkh>
+ <624b044a-1f0f-4961-8b57-cb5346e7b0d3@linux.intel.com>
+ <2023100452-craziness-unpopular-7d97@gregkh>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <2023100452-craziness-unpopular-7d97@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-Would you be interested in acquiring Money20/20 USA Email List?
+>>>>> If same devices with same device IDs are present on different soundwire
+>>>>> buses, the probe fails due to conflicting device names and sysfs
+>>>>> entries:
+>>>>>
+>>>>>   sysfs: cannot create duplicate filename '/bus/soundwire/devices/sdw:0:0217:0204:00:0'
+>>>>>
+>>>>> The link ID is 0 for both devices, so they should be differentiated by
+>>>>> bus ID.  Add the bus ID so, the device names and sysfs entries look
+>>>>> like:
+>>>>
+>>>> I am pretty sure this will break Intel platforms by changing the device
+>>>> names.
+>>>>
+>>>> sof_sdw.c:      else if (is_unique_device(adr_link, sdw_version, mfg_id,
+>>>> part_id,
+>>>> sof_sdw.c:
+>>>> "sdw:%01x:%04x:%04x:%02x", link_id,
+>>>> sof_sdw.c:
+>>>> "sdw:%01x:%04x:%04x:%02x:%01x", link_id,
+>>>
+>>> device id name changes shouldn't break things, what is requring them to
+>>> look a specific way?
+>>
+>> it's the ASoC dailink creation that relies on strings, we have similar
+>> cases for I2C.
+>>
+>> There's no requirement that the name follows any specific convention,
+>> just that when you want to rely on a specific device for an ASoC card
+>> you need to use the string that matches its device name.
+> 
+> matching the name is fine (if you are matching it against an existing
+> name) but expecting the name to be anything specific is not going to
+> work as the name is dynamic and can/will change each boot.
 
-Number of Contacts: 11,542
-Cost: $ 1,687
+Not following, sorry.
 
-Interested? Email me back; I would love to provide more information on the list.
+In the SoundWire context, the device name directly follows the ACPI or
+Device Tree information, I don't really see how its name could change on
+each boot (assuming no DSDT override or overlays of course). The
+platform descriptors are pretty much fixed, aren't they?
 
-Kind Regards,
-Mary Liyana
-Marketing Coordinator
+Intel and AMD make such assumptions on names for pretty much all machine
+drivers, it's not really something new - probably 15+ years? Adding Mark
+Brown in CC: to make sure he's aware of this thread.
