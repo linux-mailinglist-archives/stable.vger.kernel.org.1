@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19FAA7B8782
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B508D7B89FD
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243806AbjJDSGM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:06:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55752 "EHLO
+        id S244335AbjJDSbH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:31:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243557AbjJDSGL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:11 -0400
+        with ESMTP id S244333AbjJDSbG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:31:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C21039E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F8BC433C8;
-        Wed,  4 Oct 2023 18:06:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 151A7AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:31:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DAF2C433C8;
+        Wed,  4 Oct 2023 18:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442767;
-        bh=+Byd9ztfPgP5sCwW3zOBpwuNvn4rmxL+jjKhN4Te4m4=;
+        s=korg; t=1696444261;
+        bh=Gc3EBUno5FyO6A5O7cA5nCmv1hHCSpOTW5mQO9rWr0s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=phYc6xf+lJ5A5D6g38Eu0oNT2GeCMCagbUWpa9d56QqEYWdMsAaErvz14KfiXcyFL
-         ZDCELti6fYO5ZoxaVEd6CDpSHGEdnQaQdmn9x1pTfmOvks2m0wgLYjsPSrLqWDteoF
-         SUDI3JJOhqNOVpqCszUdFy9Lvh7duLyop6QGE/QE=
+        b=yAPq0EJz/lSLHgTQdPDHavz60+C/QP8YzdRNCcYbLmrDBXNuu56KzcjcMGgpt2ONQ
+         HLJzsmUImw4v1iWYiZdH4jIwFWlR5ibFyOfTUZm6CXbIsGUDpS8MArwCI36RR2yMHk
+         TJOeWA35e5z7xSv4jeq+zhbiaA3Btasg07Hlhioc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Mukul Joshi <mukul.joshi@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 102/183] firmware: imx-dsp: Fix an error handling path in imx_dsp_setup_channels()
+Subject: [PATCH 6.5 188/321] drm/amdkfd: Update CU masking for GFX 9.4.3
 Date:   Wed,  4 Oct 2023 19:55:33 +0200
-Message-ID: <20231004175208.152913487@linuxfoundation.org>
+Message-ID: <20231004175237.946516396@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,38 +51,252 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Mukul Joshi <mukul.joshi@amd.com>
 
-[ Upstream commit e527adfb9b7d9d05a4577c116519e59a2bda4b05 ]
+[ Upstream commit fc6efed2c728c9c10b058512fc9c1613f870a8e8 ]
 
-If mbox_request_channel_byname() fails, the memory allocated a few lines
-above still need to be freed before going to the error handling path.
+The CU mask passed from user-space will change based on
+different spatial partitioning mode. As a result, update
+CU masking code for GFX9.4.3 to work for all partitioning
+modes.
 
-Fixes: 046326989a18 ("firmware: imx: Save channel name for further use")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/imx/imx-dsp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c  | 28 ++++++++---
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.h  |  2 +-
+ .../gpu/drm/amd/amdkfd/kfd_mqd_manager_cik.c  |  2 +-
+ .../gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c  |  2 +-
+ .../gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c  |  2 +-
+ .../gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c   | 46 ++++++++++++-------
+ .../gpu/drm/amd/amdkfd/kfd_mqd_manager_vi.c   |  2 +-
+ 7 files changed, 56 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/firmware/imx/imx-dsp.c b/drivers/firmware/imx/imx-dsp.c
-index a6c06d7476c32..1f410809d3ee4 100644
---- a/drivers/firmware/imx/imx-dsp.c
-+++ b/drivers/firmware/imx/imx-dsp.c
-@@ -115,6 +115,7 @@ static int imx_dsp_setup_channels(struct imx_dsp_ipc *dsp_ipc)
- 		dsp_chan->idx = i % 2;
- 		dsp_chan->ch = mbox_request_channel_byname(cl, chan_name);
- 		if (IS_ERR(dsp_chan->ch)) {
-+			kfree(dsp_chan->name);
- 			ret = PTR_ERR(dsp_chan->ch);
- 			if (ret != -EPROBE_DEFER)
- 				dev_err(dev, "Failed to request mbox chan %s ret %d\n",
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
+index 35e05ee89eac5..254f343f967a3 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.c
+@@ -97,14 +97,16 @@ void free_mqd_hiq_sdma(struct mqd_manager *mm, void *mqd,
+ 
+ void mqd_symmetrically_map_cu_mask(struct mqd_manager *mm,
+ 		const uint32_t *cu_mask, uint32_t cu_mask_count,
+-		uint32_t *se_mask)
++		uint32_t *se_mask, uint32_t inst)
+ {
+ 	struct kfd_cu_info cu_info;
+ 	uint32_t cu_per_sh[KFD_MAX_NUM_SE][KFD_MAX_NUM_SH_PER_SE] = {0};
+ 	bool wgp_mode_req = KFD_GC_VERSION(mm->dev) >= IP_VERSION(10, 0, 0);
+ 	uint32_t en_mask = wgp_mode_req ? 0x3 : 0x1;
+-	int i, se, sh, cu, cu_bitmap_sh_mul, inc = wgp_mode_req ? 2 : 1;
++	int i, se, sh, cu, cu_bitmap_sh_mul, cu_inc = wgp_mode_req ? 2 : 1;
+ 	uint32_t cu_active_per_node;
++	int inc = cu_inc * NUM_XCC(mm->dev->xcc_mask);
++	int xcc_inst = inst + ffs(mm->dev->xcc_mask) - 1;
+ 
+ 	amdgpu_amdkfd_get_cu_info(mm->dev->adev, &cu_info);
+ 
+@@ -143,7 +145,8 @@ void mqd_symmetrically_map_cu_mask(struct mqd_manager *mm,
+ 	for (se = 0; se < cu_info.num_shader_engines; se++)
+ 		for (sh = 0; sh < cu_info.num_shader_arrays_per_engine; sh++)
+ 			cu_per_sh[se][sh] = hweight32(
+-				cu_info.cu_bitmap[0][se % 4][sh + (se / 4) * cu_bitmap_sh_mul]);
++				cu_info.cu_bitmap[xcc_inst][se % 4][sh + (se / 4) *
++				cu_bitmap_sh_mul]);
+ 
+ 	/* Symmetrically map cu_mask to all SEs & SHs:
+ 	 * se_mask programs up to 2 SH in the upper and lower 16 bits.
+@@ -166,20 +169,33 @@ void mqd_symmetrically_map_cu_mask(struct mqd_manager *mm,
+ 	 * cu_mask[0] bit8 -> se_mask[0] bit1 (SE0,SH0,CU1)
+ 	 * ...
+ 	 *
++	 * For GFX 9.4.3, the following code only looks at a
++	 * subset of the cu_mask corresponding to the inst parameter.
++	 * If we have n XCCs under one GPU node
++	 * cu_mask[0] bit0 -> XCC0 se_mask[0] bit0 (XCC0,SE0,SH0,CU0)
++	 * cu_mask[0] bit1 -> XCC1 se_mask[0] bit0 (XCC1,SE0,SH0,CU0)
++	 * ..
++	 * cu_mask[0] bitn -> XCCn se_mask[0] bit0 (XCCn,SE0,SH0,CU0)
++	 * cu_mask[0] bit n+1 -> XCC0 se_mask[1] bit0 (XCC0,SE1,SH0,CU0)
++	 *
++	 * For example, if there are 6 XCCs under 1 KFD node, this code
++	 * running for each inst, will look at the bits as:
++	 * inst, inst + 6, inst + 12...
++	 *
+ 	 * First ensure all CUs are disabled, then enable user specified CUs.
+ 	 */
+ 	for (i = 0; i < cu_info.num_shader_engines; i++)
+ 		se_mask[i] = 0;
+ 
+-	i = 0;
+-	for (cu = 0; cu < 16; cu += inc) {
++	i = inst;
++	for (cu = 0; cu < 16; cu += cu_inc) {
+ 		for (sh = 0; sh < cu_info.num_shader_arrays_per_engine; sh++) {
+ 			for (se = 0; se < cu_info.num_shader_engines; se++) {
+ 				if (cu_per_sh[se][sh] > cu) {
+ 					if (cu_mask[i / 32] & (en_mask << (i % 32)))
+ 						se_mask[se] |= en_mask << (cu + sh * 16);
+ 					i += inc;
+-					if (i == cu_mask_count)
++					if (i >= cu_mask_count)
+ 						return;
+ 				}
+ 			}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.h b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.h
+index 23158db7da035..57bf5e513f4d1 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager.h
+@@ -138,7 +138,7 @@ void free_mqd_hiq_sdma(struct mqd_manager *mm, void *mqd,
+ 
+ void mqd_symmetrically_map_cu_mask(struct mqd_manager *mm,
+ 		const uint32_t *cu_mask, uint32_t cu_mask_count,
+-		uint32_t *se_mask);
++		uint32_t *se_mask, uint32_t inst);
+ 
+ int kfd_hiq_load_mqd_kiq(struct mqd_manager *mm, void *mqd,
+ 		uint32_t pipe_id, uint32_t queue_id,
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_cik.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_cik.c
+index 65c9f01a1f86c..faa01ee0d1655 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_cik.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_cik.c
+@@ -52,7 +52,7 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
+ 		return;
+ 
+ 	mqd_symmetrically_map_cu_mask(mm,
+-		minfo->cu_mask.ptr, minfo->cu_mask.count, se_mask);
++		minfo->cu_mask.ptr, minfo->cu_mask.count, se_mask, 0);
+ 
+ 	m = get_mqd(mqd);
+ 	m->compute_static_thread_mgmt_se0 = se_mask[0];
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
+index 94c0fc2e57b7f..0fcb176601295 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
+@@ -52,7 +52,7 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
+ 		return;
+ 
+ 	mqd_symmetrically_map_cu_mask(mm,
+-		minfo->cu_mask.ptr, minfo->cu_mask.count, se_mask);
++		minfo->cu_mask.ptr, minfo->cu_mask.count, se_mask, 0);
+ 
+ 	m = get_mqd(mqd);
+ 	m->compute_static_thread_mgmt_se0 = se_mask[0];
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+index 23b30783dce31..97f754949ca92 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+@@ -71,7 +71,7 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
+ 	}
+ 
+ 	mqd_symmetrically_map_cu_mask(mm,
+-		minfo->cu_mask.ptr, minfo->cu_mask.count, se_mask);
++		minfo->cu_mask.ptr, minfo->cu_mask.count, se_mask, 0);
+ 
+ 	m->compute_static_thread_mgmt_se0 = se_mask[0];
+ 	m->compute_static_thread_mgmt_se1 = se_mask[1];
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+index 601bb9f68048c..a76ae27c8a919 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
+@@ -60,7 +60,7 @@ static inline struct v9_sdma_mqd *get_sdma_mqd(void *mqd)
+ }
+ 
+ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
+-			struct mqd_update_info *minfo)
++			struct mqd_update_info *minfo, uint32_t inst)
+ {
+ 	struct v9_mqd *m;
+ 	uint32_t se_mask[KFD_MAX_NUM_SE] = {0};
+@@ -69,27 +69,36 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
+ 		return;
+ 
+ 	mqd_symmetrically_map_cu_mask(mm,
+-		minfo->cu_mask.ptr, minfo->cu_mask.count, se_mask);
++		minfo->cu_mask.ptr, minfo->cu_mask.count, se_mask, inst);
+ 
+ 	m = get_mqd(mqd);
++
+ 	m->compute_static_thread_mgmt_se0 = se_mask[0];
+ 	m->compute_static_thread_mgmt_se1 = se_mask[1];
+ 	m->compute_static_thread_mgmt_se2 = se_mask[2];
+ 	m->compute_static_thread_mgmt_se3 = se_mask[3];
+-	m->compute_static_thread_mgmt_se4 = se_mask[4];
+-	m->compute_static_thread_mgmt_se5 = se_mask[5];
+-	m->compute_static_thread_mgmt_se6 = se_mask[6];
+-	m->compute_static_thread_mgmt_se7 = se_mask[7];
+-
+-	pr_debug("update cu mask to %#x %#x %#x %#x %#x %#x %#x %#x\n",
+-		m->compute_static_thread_mgmt_se0,
+-		m->compute_static_thread_mgmt_se1,
+-		m->compute_static_thread_mgmt_se2,
+-		m->compute_static_thread_mgmt_se3,
+-		m->compute_static_thread_mgmt_se4,
+-		m->compute_static_thread_mgmt_se5,
+-		m->compute_static_thread_mgmt_se6,
+-		m->compute_static_thread_mgmt_se7);
++	if (KFD_GC_VERSION(mm->dev) != IP_VERSION(9, 4, 3)) {
++		m->compute_static_thread_mgmt_se4 = se_mask[4];
++		m->compute_static_thread_mgmt_se5 = se_mask[5];
++		m->compute_static_thread_mgmt_se6 = se_mask[6];
++		m->compute_static_thread_mgmt_se7 = se_mask[7];
++
++		pr_debug("update cu mask to %#x %#x %#x %#x %#x %#x %#x %#x\n",
++			m->compute_static_thread_mgmt_se0,
++			m->compute_static_thread_mgmt_se1,
++			m->compute_static_thread_mgmt_se2,
++			m->compute_static_thread_mgmt_se3,
++			m->compute_static_thread_mgmt_se4,
++			m->compute_static_thread_mgmt_se5,
++			m->compute_static_thread_mgmt_se6,
++			m->compute_static_thread_mgmt_se7);
++	} else {
++		pr_debug("inst: %u, update cu mask to %#x %#x %#x %#x\n",
++			inst, m->compute_static_thread_mgmt_se0,
++			m->compute_static_thread_mgmt_se1,
++			m->compute_static_thread_mgmt_se2,
++			m->compute_static_thread_mgmt_se3);
++	}
+ }
+ 
+ static void set_priority(struct v9_mqd *m, struct queue_properties *q)
+@@ -290,7 +299,8 @@ static void update_mqd(struct mqd_manager *mm, void *mqd,
+ 	if (mm->dev->kfd->cwsr_enabled && q->ctx_save_restore_area_address)
+ 		m->cp_hqd_ctx_save_control = 0;
+ 
+-	update_cu_mask(mm, mqd, minfo);
++	if (KFD_GC_VERSION(mm->dev) != IP_VERSION(9, 4, 3))
++		update_cu_mask(mm, mqd, minfo, 0);
+ 	set_priority(m, q);
+ 
+ 	q->is_active = QUEUE_IS_ACTIVE(*q);
+@@ -654,6 +664,8 @@ static void update_mqd_v9_4_3(struct mqd_manager *mm, void *mqd,
+ 		m = get_mqd(mqd + size * xcc);
+ 		update_mqd(mm, m, q, minfo);
+ 
++		update_cu_mask(mm, mqd, minfo, xcc);
++
+ 		if (q->format == KFD_QUEUE_FORMAT_AQL) {
+ 			switch (xcc) {
+ 			case 0:
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_vi.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_vi.c
+index d1e962da51dd3..2551a7529b5e0 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_vi.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_vi.c
+@@ -55,7 +55,7 @@ static void update_cu_mask(struct mqd_manager *mm, void *mqd,
+ 		return;
+ 
+ 	mqd_symmetrically_map_cu_mask(mm,
+-		minfo->cu_mask.ptr, minfo->cu_mask.count, se_mask);
++		minfo->cu_mask.ptr, minfo->cu_mask.count, se_mask, 0);
+ 
+ 	m = get_mqd(mqd);
+ 	m->compute_static_thread_mgmt_se0 = se_mask[0];
 -- 
 2.40.1
 
