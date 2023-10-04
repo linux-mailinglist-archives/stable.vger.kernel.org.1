@@ -2,124 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 498F67B8EBE
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 23:28:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D235C7B9681
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 23:33:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239897AbjJDV1x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 17:27:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54160 "EHLO
+        id S243899AbjJDVc6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 17:32:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243788AbjJDV1x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 17:27:53 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E65DC1;
-        Wed,  4 Oct 2023 14:27:49 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1c723f1c80fso1811765ad.1;
-        Wed, 04 Oct 2023 14:27:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696454869; x=1697059669; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2N0dnBiYnsoWAV6PUavYyqmB/GEUEgsbsYCRyDLs984=;
-        b=F9QAgDQ+YBHOQAIkFjb5ke/mI83TkTD1aUcj6CsRvmf5quAJBkDOjumTO22MU86YDJ
-         Sw/O1UfC8Q0QdGsGcWLwvEfu3+ybjgNdY6gW6/GiXDETzQo0QSJnSj9cfEbWVy4lX+kc
-         ge7rRklhawrPxfPZAbEpjOSszrN3TFA6aIaIRmR3TA0+GURLDzIsM2sxs1AnURC9lGjx
-         dcLxpV7xF3/WYRUZvwXEQ+3TRdVJo+mpdL4+MEYVC8FMA2FZ1bsnl49ocquobyv/LBuF
-         dBkADiq+NckacweF7YnpMJKvsyRE8mFkJ3T/CHGWWoqNCEyqAkrWukx1a8qkp31DNsEz
-         vnSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696454869; x=1697059669;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2N0dnBiYnsoWAV6PUavYyqmB/GEUEgsbsYCRyDLs984=;
-        b=A9Vq+cYaq8/i91kGzVnFboveapXCD7DoH7aNfBl5/7O5+ECmkxucD4tAYeYP3b5lDh
-         +GOAfhIoKYgy93BCbC8hSPtc4BQ6IgtxsGEiieQOfX2nvgMQEUzuHe6c+DPAv2LrzF+m
-         L4usw32f3kznHAdjs4MjK45OxufjjT4OtxdGZsr8gFYHtlCLixJZZkeK1HglHJDRwsJC
-         GOtsbpfUtXud9IYjOuDvk9Ea7A4DC9qUbe2tG6c+jl3ES/6tLbORzmsKymA/WK0T5GwZ
-         /fsr2pN8sqJFRZkrBBZcsrZyLXNFjIwqi2ye5YBtZwu4L0rq4UUiD1fRkTbVc5O8bmxE
-         Mryg==
-X-Gm-Message-State: AOJu0YzljvK+wm25FWW+xhZPsT/bHEHGks+ZTRzWlMydS3NUf2ni0wuQ
-        QWAW8+OTpR1HWPiogIxFdJGE5C/X5Uc=
-X-Google-Smtp-Source: AGHT+IF3BtfMNn02t6De0PlA0h5eBp2FTJTlZSbCnNH8hWqc4yP7+Msjw8BStX7tdXdUvQNZ9tmWqA==
-X-Received: by 2002:a17:903:2451:b0:1c8:7364:a3ab with SMTP id l17-20020a170903245100b001c87364a3abmr3758446pls.17.1696454869037;
-        Wed, 04 Oct 2023 14:27:49 -0700 (PDT)
-Received: from google.com ([2620:15c:2c0:5:2489:7e4:8212:9753])
-        by smtp.gmail.com with ESMTPSA id l4-20020a17090270c400b001c619fbd5fbsm4023plt.298.2023.10.04.14.27.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 14:27:48 -0700 (PDT)
-Sender: Namhyung Kim <namhyung@gmail.com>
-Date:   Wed, 4 Oct 2023 14:27:46 -0700
-From:   Namhyung Kim <namhyung@kernel.org>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] perf/core: Introduce cpuctx->cgrp_ctx_list
-Message-ID: <ZR3Y0sqMJICfJuDF@google.com>
-References: <20231004040844.797044-1-namhyung@kernel.org>
- <ZR0TtjhGT+Em+/ti@gmail.com>
- <CAM9d7cjvs_CYZH6rGdujSQ8d+MBa616t95dr9oAFs-Nzr_XUOQ@mail.gmail.com>
- <ZR2H+WtRexpOffTw@gmail.com>
+        with ESMTP id S233818AbjJDVc6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 17:32:58 -0400
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69C8C0;
+        Wed,  4 Oct 2023 14:32:54 -0700 (PDT)
+Received: from i53875a3c.versanet.de ([83.135.90.60] helo=phil.lan)
+        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <heiko@sntech.de>)
+        id 1qo9UB-0005RF-08; Wed, 04 Oct 2023 23:32:51 +0200
+From:   Heiko Stuebner <heiko@sntech.de>
+To:     Conor Dooley <conor+dt@kernel.org>,
+        Jakob Unterwurzacher <jakob.unterwurzacher@theobroma-systems.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Jakob Unterwurzacher <jakobunt@gmail.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Ermin Sunj <ermin.sunj@theobroma-systems.com>,
+        Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Cc:     Heiko Stuebner <heiko@sntech.de>, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 1/2] arm64: dts: rockchip: use codec as clock master on px30-ringneck-haikou
+Date:   Wed,  4 Oct 2023 23:32:42 +0200
+Message-Id: <169645508392.141514.933069936235927740.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230907151725.198347-1-jakob.unterwurzacher@theobroma-systems.com>
+References: <20230907151725.198347-1-jakob.unterwurzacher@theobroma-systems.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZR2H+WtRexpOffTw@gmail.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
+        T_SPF_HELO_TEMPERROR autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 04, 2023 at 05:42:49PM +0200, Ingo Molnar wrote:
+On Thu, 7 Sep 2023 17:17:15 +0200, Jakob Unterwurzacher wrote:
+> From: Ermin Sunj <ermin.sunj@theobroma-systems.com>
 > 
-> * Namhyung Kim <namhyung@kernel.org> wrote:
+> If the codec is not the clock master, the MCLK needs to be
+> synchronous to both I2S_SCL ans I2S_LRCLK. We do not have that
+> on Haikou, causing distorted audio.
 > 
-> > Maybe I can add an option to perf bench sched to place
-> > senders and receivers in different cgroups.
+> Before:
 > 
-> That would certainly be useful to measure cgroups overhead.
+> [...]
 
-Sent out the change:
+Applied, thanks!
 
-  https://lore.kernel.org/all/20231004204741.985422-1-namhyung@kernel.org/
+[1/2] arm64: dts: rockchip: use codec as clock master on px30-ringneck-haikou
+      commit: 84fa1865edbb3800f3344e2a5bc73c187adf42d0
+[2/2] arm64: dts: rockchip: set codec system-clock-fixed on px30-ringneck-haikou
+      commit: 1e585cd0aad3d491938230318d6d479f09589fd8
 
-With that, the numbers became stable. :)
-
-Before)
-
-  $ taskset -c 0 ./perf bench sched pipe -l 10000 -G AAA,BBB
-  # Running 'sched/pipe' benchmark:
-  # Executed 10000 pipe operations between two processes
-  
-       Total time: 0.901 [sec]
-  
-        90.128700 usecs/op
-            11095 ops/sec
-
-
-After)
-
-  $ taskset -c 0 ./perf bench sched pipe -l 10000 -G AAA,BBB
-  # Running 'sched/pipe' benchmark:
-  # Executed 10000 pipe operations between two processes
-  
-       Total time: 0.065 [sec]
-  
-         6.560100 usecs/op
-           152436 ops/sec
-
-
-Thanks,
-Namhyung
-
+Best regards,
+-- 
+Heiko Stuebner <heiko@sntech.de>
