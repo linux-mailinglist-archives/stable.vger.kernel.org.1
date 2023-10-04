@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B09427B89BE
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:28:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98FA37B8859
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244274AbjJDS2w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:28:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47778 "EHLO
+        id S243973AbjJDSPN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:15:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244264AbjJDS2v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:28:51 -0400
+        with ESMTP id S244024AbjJDSPM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9066103
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:28:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AB1C433C7;
-        Wed,  4 Oct 2023 18:28:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65FE29E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BBFC433CA;
+        Wed,  4 Oct 2023 18:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444126;
-        bh=XW29GKVbWhaaAyPpFPOP15NKFhfhtjQZCsUybsRDoQg=;
+        s=korg; t=1696443309;
+        bh=8v8O5RC3CTmnnogEIhD0NTQYDcEqhVkiQJwPYG620Qc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HNFMD4NbH6WVQx4/dnytzNBglym++46CzF3ar8dBhwwr912iC9ZSDFW+4OMtuzpiw
-         VhXyIsaQxgiEsVXtjq5tyV6q4rzPZAMOHcW36OkMq7CxZ//7uHtY9ehPPr6qb1Y708
-         UGd38wXkBfVsGeAFa6oNNm678ckLcfmAXzznshY0=
+        b=FVpJvKAVCMQGsADyJVSXSHHl3L505HfaGDwt/f27mIxV6J6wLG0VFpjG5c/GN0ofJ
+         RnIPtwVy2CDwVG3OcHsI0v//+uUDifNm+CwVrFPsP1/WDaY0jalkFF1OeCZOj9kSeo
+         1yp3AwUImXUvPirC6dnt+jZxeeNXLCHjHSeyfCME=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 139/321] xtensa: iss/network: make functions static
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 111/259] drm/bridge: ti-sn65dsi83: Do not generate HFP/HBP/HSA and EOT packet
 Date:   Wed,  4 Oct 2023 19:54:44 +0200
-Message-ID: <20231004175235.684937793@linuxfoundation.org>
+Message-ID: <20231004175222.442987814@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,55 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 1b59efeb59851277266318f4e0132aa61ce3455e ]
+[ Upstream commit ca161b259cc84fe1f4a2ce4c73c3832cf6f713f1 ]
 
-Make 2 functions static to prevent build warnings:
+Do not generate the HS front and back porch gaps, the HSA gap and
+EOT packet, as per "SN65DSI83 datasheet SLLSEC1I - SEPTEMBER 2012
+- REVISED OCTOBER 2020", page 22, these packets are not required.
+This makes the TI SN65DSI83 bridge work with Samsung DSIM on i.MX8MN.
 
-arch/xtensa/platforms/iss/network.c:204:16: warning: no previous prototype for 'tuntap_protocol' [-Wmissing-prototypes]
-  204 | unsigned short tuntap_protocol(struct sk_buff *skb)
-arch/xtensa/platforms/iss/network.c:444:6: warning: no previous prototype for 'iss_net_user_timer_expire' [-Wmissing-prototypes]
-  444 | void iss_net_user_timer_expire(struct timer_list *unused)
-
-Fixes: 7282bee78798 ("xtensa: Architecture support for Tensilica Xtensa Part 8")
-Fixes: d8479a21a98b ("xtensa: Convert timers to use timer_setup()")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Message-Id: <20230920052139.10570-14-rdunlap@infradead.org>
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230403190242.224490-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/xtensa/platforms/iss/network.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/xtensa/platforms/iss/network.c b/arch/xtensa/platforms/iss/network.c
-index 85c82cd42188a..e89f27f2bb18d 100644
---- a/arch/xtensa/platforms/iss/network.c
-+++ b/arch/xtensa/platforms/iss/network.c
-@@ -201,7 +201,7 @@ static int tuntap_write(struct iss_net_private *lp, struct sk_buff **skb)
- 	return simc_write(lp->tp.info.tuntap.fd, (*skb)->data, (*skb)->len);
- }
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+index 55efd3eb66723..3f43b44145a89 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+@@ -655,7 +655,9 @@ static int sn65dsi83_host_attach(struct sn65dsi83 *ctx)
  
--unsigned short tuntap_protocol(struct sk_buff *skb)
-+static unsigned short tuntap_protocol(struct sk_buff *skb)
- {
- 	return eth_type_trans(skb, skb->dev);
- }
-@@ -441,7 +441,7 @@ static int iss_net_change_mtu(struct net_device *dev, int new_mtu)
- 	return -EINVAL;
- }
+ 	dsi->lanes = dsi_lanes;
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
+-	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST;
++	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
++			  MIPI_DSI_MODE_VIDEO_NO_HFP | MIPI_DSI_MODE_VIDEO_NO_HBP |
++			  MIPI_DSI_MODE_VIDEO_NO_HSA | MIPI_DSI_MODE_NO_EOT_PACKET;
  
--void iss_net_user_timer_expire(struct timer_list *unused)
-+static void iss_net_user_timer_expire(struct timer_list *unused)
- {
- }
- 
+ 	ret = devm_mipi_dsi_attach(dev, dsi);
+ 	if (ret < 0) {
 -- 
 2.40.1
 
