@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 247057B8500
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:25:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F18F27B8502
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:25:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243360AbjJDQZS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 12:25:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41746 "EHLO
+        id S243350AbjJDQZX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 12:25:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243366AbjJDQZR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:25:17 -0400
+        with ESMTP id S243371AbjJDQZX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:25:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86597D9
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:25:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C426AC433C7;
-        Wed,  4 Oct 2023 16:25:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2EBFD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:25:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85608C433C8;
+        Wed,  4 Oct 2023 16:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696436713;
-        bh=ksV6gqetF451apV4pvn48Clj7msN0cqybuh51oi2IG8=;
+        s=korg; t=1696436718;
+        bh=idnrQxdFdWxrs1QTMxxdxc8ktanXeKCcFuu573FEBlA=;
         h=Subject:To:Cc:From:Date:From;
-        b=aaSO0y6NuYJxPw5qLD8A/Vln+AfQDqJpxvd6v+CQ4k4yuNYpi32VkwC0eLHZX8rm7
-         kqDsy0k1i8w6it1nKHzkP+KFzvdH1j+qqlksnqeZs5cAH+suHS/CA1C4ZVVQ0pI/Jj
-         I/FxD9cemb+ME2shkQe/Uq6DWZoSDnJPcTCGhV8M=
-Subject: FAILED: patch "[PATCH] rbd: move rbd_dev_refresh() definition" failed to apply to 5.15-stable tree
+        b=nXWEaajKjClVEwLmCXaPNQXuoS2OAavUPLgxlJfrjIg4KCcTrFnqTna7DWqq/dLQA
+         /pE1fv5ZtP/4xRd2otT1QyETmPAfHR3i8B+cdI/nifIKMOLPYSbgLBwCxjR2I9E6QU
+         naEfd9XXJjN/VZRslgXDXC+ZCq0CQxwN/fxRrsDo=
+Subject: FAILED: patch "[PATCH] rbd: move rbd_dev_refresh() definition" failed to apply to 5.10-stable tree
 To:     idryomov@gmail.com, dongsheng.yang@easystack.cn
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 18:25:02 +0200
-Message-ID: <2023100402-gaffe-unsafe-73ee@gregkh>
+Date:   Wed, 04 Oct 2023 18:25:03 +0200
+Message-ID: <2023100402-cobbler-happy-ee24@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0b035401c570
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100402-gaffe-unsafe-73ee@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100402-cobbler-happy-ee24@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
