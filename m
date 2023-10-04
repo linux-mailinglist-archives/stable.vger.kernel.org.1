@@ -2,47 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41EDB7B8A70
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8B777B8911
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:22:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244427AbjJDSfb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:35:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41574 "EHLO
+        id S243887AbjJDSW2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:22:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244423AbjJDSfa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:35:30 -0400
+        with ESMTP id S244070AbjJDSW1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:22:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066D4C0
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:35:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2613BC433C8;
-        Wed,  4 Oct 2023 18:35:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDCABBF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:22:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29953C433C8;
+        Wed,  4 Oct 2023 18:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444526;
-        bh=qcGq7FE8j8jXwbeSkbb5pvW39duYzmFd39h3Dsy21hE=;
+        s=korg; t=1696443743;
+        bh=cHmfy+mBpw8TLdBtjWuNeLFC5SGeb3I7ZQkrcMHjOnw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CSHh7tI+prUqNGOyEKvVcZHq8zCD4DN433fP97bITKmte8Sq5S2I7zE4kP10moxrM
-         sUT1WD0WqJVfFd7SK4Y6L99BR52A09uCJUboc5/B7tlkUOqgCTQrv2j5ZdPYzWqyRh
-         ILsYWYfVqkwU9O4b4jeuedMg7cAWkEYS0T9cc24g=
+        b=QRZ7KK9TYtPHJVsAfAZGk4due9I21lI83LjgWhqj3kNiatzNfTeA1PqvJnPcE+5YG
+         Exj3pfKg8QHgI1Gg6rJXhsYC2TqT1t02Cq8qVsd1vn9RuFJHKOqGkji+ybfSMwId4X
+         Op30634I0dcGHbzo0ReeGhBVSmKWt3x6FQnHyw1Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Shi <yang@os.amperecomputing.com>,
-        Hugh Dickins <hughd@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Oscar Salvador <osalvador@suse.de>,
-        Rafael Aquini <aquini@redhat.com>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>,
-        David Rientjes <rientjes@google.com>,
+        patches@lists.linux.dev, Greg Ungerer <gerg@kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Kees Cook <keescook@chromium.org>,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 282/321] mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and MPOL_MF_MOVE are specified
+Subject: [PATCH 6.1 254/259] fs: binfmt_elf_efpic: fix personality for ELF-FDPIC
 Date:   Wed,  4 Oct 2023 19:57:07 +0200
-Message-ID: <20231004175242.341407610@linuxfoundation.org>
+Message-ID: <20231004175229.068322971@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,189 +53,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shi <yang@os.amperecomputing.com>
+From: Greg Ungerer <gerg@kernel.org>
 
-commit 24526268f4e38c9ec0c4a30de4f37ad2a2a84e47 upstream.
+commit 7c3151585730b7095287be8162b846d31e6eee61 upstream.
 
-When calling mbind() with MPOL_MF_{MOVE|MOVEALL} | MPOL_MF_STRICT, kernel
-should attempt to migrate all existing pages, and return -EIO if there is
-misplaced or unmovable page.  Then commit 6f4576e3687b ("mempolicy: apply
-page table walker on queue_pages_range()") messed up the return value and
-didn't break VMA scan early ianymore when MPOL_MF_STRICT alone.  The
-return value problem was fixed by commit a7f40cfe3b7a ("mm: mempolicy:
-make mbind() return -EIO when MPOL_MF_STRICT is specified"), but it broke
-the VMA walk early if unmovable page is met, it may cause some pages are
-not migrated as expected.
+The elf-fdpic loader hard sets the process personality to either
+PER_LINUX_FDPIC for true elf-fdpic binaries or to PER_LINUX for normal ELF
+binaries (in this case they would be constant displacement compiled with
+-pie for example).  The problem with that is that it will lose any other
+bits that may be in the ELF header personality (such as the "bug
+emulation" bits).
 
-The code should conceptually do:
+On the ARM architecture the ADDR_LIMIT_32BIT flag is used to signify a
+normal 32bit binary - as opposed to a legacy 26bit address binary.  This
+matters since start_thread() will set the ARM CPSR register as required
+based on this flag.  If the elf-fdpic loader loses this bit the process
+will be mis-configured and crash out pretty quickly.
 
- if (MPOL_MF_MOVE|MOVEALL)
-     scan all vmas
-     try to migrate the existing pages
-     return success
- else if (MPOL_MF_MOVE* | MPOL_MF_STRICT)
-     scan all vmas
-     try to migrate the existing pages
-     return -EIO if unmovable or migration failed
- else /* MPOL_MF_STRICT alone */
-     break early if meets unmovable and don't call mbind_range() at all
- else /* none of those flags */
-     check the ranges in test_walk, EFAULT without mbind_range() if discontig.
+Modify elf-fdpic loader personality setting so that it preserves the upper
+three bytes by using the SET_PERSONALITY macro to set it.  This macro in
+the generic case sets PER_LINUX and preserves the upper bytes.
+Architectures can override this for their specific use case, and ARM does
+exactly this.
 
-Fixed the behavior.
+The problem shows up quite easily running under qemu using the ARM
+architecture, but not necessarily on all types of real ARM hardware.  If
+the underlying ARM processor does not support the legacy 26-bit addressing
+mode then everything will work as expected.
 
-Link: https://lkml.kernel.org/r/20230920223242.3425775-1-yang@os.amperecomputing.com
-Fixes: a7f40cfe3b7a ("mm: mempolicy: make mbind() return -EIO when MPOL_MF_STRICT is specified")
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Rafael Aquini <aquini@redhat.com>
-Cc: Kirill A. Shutemov <kirill@shutemov.name>
-Cc: David Rientjes <rientjes@google.com>
-Cc: <stable@vger.kernel.org>	[4.9+]
+Link: https://lkml.kernel.org/r/20230907011808.2985083-1-gerg@kernel.org
+Fixes: 1bde925d23547 ("fs/binfmt_elf_fdpic.c: provide NOMMU loader for regular ELF binaries")
+Signed-off-by: Greg Ungerer <gerg@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Greg Ungerer <gerg@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mempolicy.c |   39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ fs/binfmt_elf_fdpic.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -426,6 +426,7 @@ struct queue_pages {
- 	unsigned long start;
- 	unsigned long end;
- 	struct vm_area_struct *first;
-+	bool has_unmovable;
- };
+--- a/fs/binfmt_elf_fdpic.c
++++ b/fs/binfmt_elf_fdpic.c
+@@ -345,10 +345,9 @@ static int load_elf_fdpic_binary(struct
+ 	/* there's now no turning back... the old userspace image is dead,
+ 	 * defunct, deceased, etc.
+ 	 */
++	SET_PERSONALITY(exec_params.hdr);
+ 	if (elf_check_fdpic(&exec_params.hdr))
+-		set_personality(PER_LINUX_FDPIC);
+-	else
+-		set_personality(PER_LINUX);
++		current->personality |= PER_LINUX_FDPIC;
+ 	if (elf_read_implies_exec(&exec_params.hdr, executable_stack))
+ 		current->personality |= READ_IMPLIES_EXEC;
  
- /*
-@@ -446,9 +447,8 @@ static inline bool queue_folio_required(
- /*
-  * queue_folios_pmd() has three possible return values:
-  * 0 - folios are placed on the right node or queued successfully, or
-- *     special page is met, i.e. huge zero page.
-- * 1 - there is unmovable folio, and MPOL_MF_MOVE* & MPOL_MF_STRICT were
-- *     specified.
-+ *     special page is met, i.e. zero page, or unmovable page is found
-+ *     but continue walking (indicated by queue_pages.has_unmovable).
-  * -EIO - is migration entry or only MPOL_MF_STRICT was specified and an
-  *        existing folio was already on a node that does not follow the
-  *        policy.
-@@ -479,7 +479,7 @@ static int queue_folios_pmd(pmd_t *pmd,
- 	if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)) {
- 		if (!vma_migratable(walk->vma) ||
- 		    migrate_folio_add(folio, qp->pagelist, flags)) {
--			ret = 1;
-+			qp->has_unmovable = true;
- 			goto unlock;
- 		}
- 	} else
-@@ -495,9 +495,8 @@ unlock:
-  *
-  * queue_folios_pte_range() has three possible return values:
-  * 0 - folios are placed on the right node or queued successfully, or
-- *     special page is met, i.e. zero page.
-- * 1 - there is unmovable folio, and MPOL_MF_MOVE* & MPOL_MF_STRICT were
-- *     specified.
-+ *     special page is met, i.e. zero page, or unmovable page is found
-+ *     but continue walking (indicated by queue_pages.has_unmovable).
-  * -EIO - only MPOL_MF_STRICT was specified and an existing folio was already
-  *        on a node that does not follow the policy.
-  */
-@@ -508,7 +507,6 @@ static int queue_folios_pte_range(pmd_t
- 	struct folio *folio;
- 	struct queue_pages *qp = walk->private;
- 	unsigned long flags = qp->flags;
--	bool has_unmovable = false;
- 	pte_t *pte, *mapped_pte;
- 	pte_t ptent;
- 	spinlock_t *ptl;
-@@ -538,11 +536,12 @@ static int queue_folios_pte_range(pmd_t
- 		if (!queue_folio_required(folio, qp))
- 			continue;
- 		if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)) {
--			/* MPOL_MF_STRICT must be specified if we get here */
--			if (!vma_migratable(vma)) {
--				has_unmovable = true;
--				break;
--			}
-+			/*
-+			 * MPOL_MF_STRICT must be specified if we get here.
-+			 * Continue walking vmas due to MPOL_MF_MOVE* flags.
-+			 */
-+			if (!vma_migratable(vma))
-+				qp->has_unmovable = true;
- 
- 			/*
- 			 * Do not abort immediately since there may be
-@@ -550,16 +549,13 @@ static int queue_folios_pte_range(pmd_t
- 			 * need migrate other LRU pages.
- 			 */
- 			if (migrate_folio_add(folio, qp->pagelist, flags))
--				has_unmovable = true;
-+				qp->has_unmovable = true;
- 		} else
- 			break;
- 	}
- 	pte_unmap_unlock(mapped_pte, ptl);
- 	cond_resched();
- 
--	if (has_unmovable)
--		return 1;
--
- 	return addr != end ? -EIO : 0;
- }
- 
-@@ -599,7 +595,7 @@ static int queue_folios_hugetlb(pte_t *p
- 		 * Detecting misplaced folio but allow migrating folios which
- 		 * have been queued.
- 		 */
--		ret = 1;
-+		qp->has_unmovable = true;
- 		goto unlock;
- 	}
- 
-@@ -620,7 +616,7 @@ static int queue_folios_hugetlb(pte_t *p
- 			 * Failed to isolate folio but allow migrating pages
- 			 * which have been queued.
- 			 */
--			ret = 1;
-+			qp->has_unmovable = true;
- 	}
- unlock:
- 	spin_unlock(ptl);
-@@ -756,12 +752,15 @@ queue_pages_range(struct mm_struct *mm,
- 		.start = start,
- 		.end = end,
- 		.first = NULL,
-+		.has_unmovable = false,
- 	};
- 	const struct mm_walk_ops *ops = lock_vma ?
- 			&queue_pages_lock_vma_walk_ops : &queue_pages_walk_ops;
- 
- 	err = walk_page_range(mm, start, end, ops, &qp);
- 
-+	if (qp.has_unmovable)
-+		err = 1;
- 	if (!qp.first)
- 		/* whole range in hole */
- 		err = -EFAULT;
-@@ -1358,7 +1357,7 @@ static long do_mbind(unsigned long start
- 				putback_movable_pages(&pagelist);
- 		}
- 
--		if ((ret > 0) || (nr_failed && (flags & MPOL_MF_STRICT)))
-+		if (((ret > 0) || nr_failed) && (flags & MPOL_MF_STRICT))
- 			err = -EIO;
- 	} else {
- up_out:
 
 
