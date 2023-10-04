@@ -2,28 +2,28 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A41DF7B8434
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5576F7B8435
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:52:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242962AbjJDPw2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 11:52:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60254 "EHLO
+        id S243086AbjJDPwc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 11:52:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242929AbjJDPw1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:52:27 -0400
+        with ESMTP id S242929AbjJDPwb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:52:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11B1C98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:52:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE88C433C7;
-        Wed,  4 Oct 2023 15:52:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 469B098
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:52:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C1BC433C8;
+        Wed,  4 Oct 2023 15:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696434743;
-        bh=vL3OISoVuDI2p3FNGmOxLQdH6BRShMIw23jHSW1uK/k=;
+        s=korg; t=1696434747;
+        bh=lm3ewgkgk0Ej8p9fdAHC6gdhEyH/J/CnO4UBt+atZAM=;
         h=Subject:To:Cc:From:Date:From;
-        b=TAqnAzIV+KXf1ZYtFFeZ8rxWZgITOL+KasCOZ4jshE1qAVOOnx1EZHkpWNBaZuZdQ
-         dPSkuqAsGluIs7BEvovSBas+bYRZIJMBtXkTOPubcHRmUYrmKhKZDev08+6cnpPqBd
-         otur8tVUTE18jcsAmzuX5dZDxqHrs03khDkT6pFM=
-Subject: FAILED: patch "[PATCH] mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and" failed to apply to 6.1-stable tree
+        b=OauuWtmjdzOO569v6QfRf3biqM8p2mWzLY8fYdaLGs15P20ENaSY+hl69ScZETS7B
+         2k+occ9+gWOtaXmeyopi+/QPO1hu/BcTAB6+40ZmJzdzqgnZquf95KFuwwwgCwsAec
+         55gOvC5gZsbXegZt9YVaEYb0j20b4QMHiFNt1fWw=
+Subject: FAILED: patch "[PATCH] mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and" failed to apply to 5.15-stable tree
 To:     yang@os.amperecomputing.com, akpm@linux-foundation.org,
         aquini@redhat.com, hughd@google.com, kirill@shutemov.name,
         mhocko@suse.com, osalvador@suse.de, rientjes@google.com,
@@ -31,8 +31,8 @@ To:     yang@os.amperecomputing.com, akpm@linux-foundation.org,
         willy@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 17:52:20 +0200
-Message-ID: <2023100420-grafting-raft-1e1b@gregkh>
+Date:   Wed, 04 Oct 2023 17:52:23 +0200
+Message-ID: <2023100422-twistable-umbrella-a71d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -47,19 +47,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 24526268f4e38c9ec0c4a30de4f37ad2a2a84e47
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100420-grafting-raft-1e1b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100422-twistable-umbrella-a71d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
