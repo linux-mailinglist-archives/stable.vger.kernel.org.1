@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 846067B8964
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DF457B8826
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244190AbjJDSZY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:25:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52452 "EHLO
+        id S243974AbjJDSNH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244168AbjJDSZS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:18 -0400
+        with ESMTP id S243976AbjJDSNG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35BB4AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:25:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B5CC433C7;
-        Wed,  4 Oct 2023 18:25:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DC4FD7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F06CC433CA;
+        Wed,  4 Oct 2023 18:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443913;
-        bh=v4BrXiLFFKS9ZhU1e7Mc29U11oaavRZNm6bgGDca54s=;
+        s=korg; t=1696443182;
+        bh=rTIbxPCd63oFyXmEwNCZaZsNIcV01NMFh3p+URhi62w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IZIuZYVYgAoLfRoziJUKfHrAMSMh/7otLpw8rm8Shd+BX6n7t1Xf9kxjC25H4aF1z
-         3R0ATLznwfJhnoHX/1tLaIs1quXPWQSwZmLSutsRbraURpoKv4/e8qlBMB1BjPPVjK
-         cEUcwMdiRltHQo5S32KePwvr2Xh/JoKBBlIdpPD4=
+        b=H1c7jfsWtQe3CSHIy7U6KYC0PgZCyNW1ez68dmstgDtGwOLs6aLO/7eSnCN6kyLPn
+         knoB5ZfMSQ59Ygsq5dWE8fOXgQjx2RB8+1FXDts9QlIya5DV5Ms47C85YenB2nnw2P
+         764XqUTNUncU/Z+jjEOJ4XpR38iqH2Mi7W/KcALU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ferenc Fejes <ferenc.fejes@ericsson.com>,
-        Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Jerome Brunet <jbrunet@baylibre.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 065/321] igc: Fix infinite initialization loop with early XDP redirect
+Subject: [PATCH 6.1 037/259] ASoC: meson: spdifin: start hw on dai probe
 Date:   Wed,  4 Oct 2023 19:53:30 +0200
-Message-ID: <20231004175232.193074956@linuxfoundation.org>
+Message-ID: <20231004175219.136922728@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,57 +50,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit cb47b1f679c4d83a5fa5f1852e472f844e41a3da ]
+[ Upstream commit aedf323b66b2b875137422ecb7d2525179759076 ]
 
-When an XDP redirect happens before the link is ready, that
-transmission will not finish and will timeout, causing an adapter
-reset. If the redirects do not stop, the adapter will not stop
-resetting.
+For spdif input to report the locked rate correctly, even when no capture
+is running, the HW and reference clock must be started as soon as
+the dai is probed.
 
-Wait for the driver to signal that there's a carrier before allowing
-transmissions to proceed.
-
-Previous code was relying that when __IGC_DOWN is cleared, the NIC is
-ready to transmit as all the queues are ready, what happens is that
-the carrier presence will only be signaled later, after the watchdog
-workqueue has a chance to run. And during this interval (between
-clearing __IGC_DOWN and the watchdog running) if any transmission
-happens the timeout is emitted (detected by igc_tx_timeout()) which
-causes the reset, with the potential for the infinite loop.
-
-Fixes: 4ff320361092 ("igc: Add support for XDP_REDIRECT action")
-Reported-by: Ferenc Fejes <ferenc.fejes@ericsson.com>
-Closes: https://lore.kernel.org/netdev/0caf33cf6adb3a5bf137eeaa20e89b167c9986d5.camel@ericsson.com/
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Tested-by: Ferenc Fejes <ferenc.fejes@ericsson.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 5ce5658375e6 ("ASoC: meson: add axg spdif input")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20230907090504.12700-1-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/meson/axg-spdifin.c | 49 ++++++++++++-----------------------
+ 1 file changed, 17 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 6f557e843e495..4e23b821c39ba 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6433,7 +6433,7 @@ static int igc_xdp_xmit(struct net_device *dev, int num_frames,
- 	struct igc_ring *ring;
- 	int i, drops;
+diff --git a/sound/soc/meson/axg-spdifin.c b/sound/soc/meson/axg-spdifin.c
+index e2cc4c4be7586..97e81ec4a78ce 100644
+--- a/sound/soc/meson/axg-spdifin.c
++++ b/sound/soc/meson/axg-spdifin.c
+@@ -112,34 +112,6 @@ static int axg_spdifin_prepare(struct snd_pcm_substream *substream,
+ 	return 0;
+ }
  
--	if (unlikely(test_bit(__IGC_DOWN, &adapter->state)))
-+	if (unlikely(!netif_carrier_ok(dev)))
- 		return -ENETDOWN;
+-static int axg_spdifin_startup(struct snd_pcm_substream *substream,
+-			       struct snd_soc_dai *dai)
+-{
+-	struct axg_spdifin *priv = snd_soc_dai_get_drvdata(dai);
+-	int ret;
+-
+-	ret = clk_prepare_enable(priv->refclk);
+-	if (ret) {
+-		dev_err(dai->dev,
+-			"failed to enable spdifin reference clock\n");
+-		return ret;
+-	}
+-
+-	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN,
+-			   SPDIFIN_CTRL0_EN);
+-
+-	return 0;
+-}
+-
+-static void axg_spdifin_shutdown(struct snd_pcm_substream *substream,
+-				 struct snd_soc_dai *dai)
+-{
+-	struct axg_spdifin *priv = snd_soc_dai_get_drvdata(dai);
+-
+-	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN, 0);
+-	clk_disable_unprepare(priv->refclk);
+-}
+-
+ static void axg_spdifin_write_mode_param(struct regmap *map, int mode,
+ 					 unsigned int val,
+ 					 unsigned int num_per_reg,
+@@ -251,25 +223,38 @@ static int axg_spdifin_dai_probe(struct snd_soc_dai *dai)
+ 	ret = axg_spdifin_sample_mode_config(dai, priv);
+ 	if (ret) {
+ 		dev_err(dai->dev, "mode configuration failed\n");
+-		clk_disable_unprepare(priv->pclk);
+-		return ret;
++		goto pclk_err;
+ 	}
  
- 	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
++	ret = clk_prepare_enable(priv->refclk);
++	if (ret) {
++		dev_err(dai->dev,
++			"failed to enable spdifin reference clock\n");
++		goto pclk_err;
++	}
++
++	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN,
++			   SPDIFIN_CTRL0_EN);
++
+ 	return 0;
++
++pclk_err:
++	clk_disable_unprepare(priv->pclk);
++	return ret;
+ }
+ 
+ static int axg_spdifin_dai_remove(struct snd_soc_dai *dai)
+ {
+ 	struct axg_spdifin *priv = snd_soc_dai_get_drvdata(dai);
+ 
++	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN, 0);
++	clk_disable_unprepare(priv->refclk);
+ 	clk_disable_unprepare(priv->pclk);
+ 	return 0;
+ }
+ 
+ static const struct snd_soc_dai_ops axg_spdifin_ops = {
+ 	.prepare	= axg_spdifin_prepare,
+-	.startup	= axg_spdifin_startup,
+-	.shutdown	= axg_spdifin_shutdown,
+ };
+ 
+ static int axg_spdifin_iec958_info(struct snd_kcontrol *kcontrol,
 -- 
 2.40.1
 
