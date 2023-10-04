@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E21F67B8A40
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7D1A7B87CB
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:09:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244317AbjJDSdg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:33:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39852 "EHLO
+        id S243869AbjJDSJ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244224AbjJDSdf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:35 -0400
+        with ESMTP id S243874AbjJDSJZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46E4AA6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D83AC433CA;
-        Wed,  4 Oct 2023 18:33:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80BD4A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC065C433C7;
+        Wed,  4 Oct 2023 18:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444410;
-        bh=YpY7hhJlIPbx+IJ2qRFGZUD0x2RoCZs1/CC9duaVZc8=;
+        s=korg; t=1696442961;
+        bh=pFMhO7DTS2A3Cm/0/l5hAh6womCS9Lt8jjCkj5nbqxw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nOyiodeHotSHS/iM5fOsNTU0PjZsMMHvmpN8eTx7mf1d15o4/ygkJ/+KF+LKLmCHJ
-         Rx+wGcVIPoWiWSyKgiEA2y40jy+H+nkUDZvog2ZKurs/BxMlVmM0yUxcwYAhwqQHoy
-         P6juqcFHuuRRNrVE56q2BsNd/Axwe0JZjebFoQgk=
+        b=szqX+Mj1Ux2JZlAwiGAabjhmFHen0ublKj5PNib41tqFEv1nieO0uZM2zpQWb4+OE
+         +9zr9rlAfAqCVqxfSQeM5fg//12KG1p+V2VySVWriuXyuCZqyffypWKYvjrNFfCkAc
+         8s8hovsysyTage5M+zJiMw2laTAxVmnMfhYO3d24=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nicolin Chen <nicolinc@nvidia.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 239/321] iommu/arm-smmu-v3: Fix soft lockup triggered by arm_smmu_mm_invalidate_range
+        patches@lists.linux.dev, Irvin Cote <irvin.cote@insa-lyon.fr>,
+        Keith Busch <kbusch@kernel.org>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 153/183] nvme-pci: always return an ERR_PTR from nvme_pci_alloc_dev
 Date:   Wed,  4 Oct 2023 19:56:24 +0200
-Message-ID: <20231004175240.316613346@linuxfoundation.org>
+Message-ID: <20231004175210.427857493@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,127 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Irvin Cote <irvin.cote@insa-lyon.fr>
 
-commit d5afb4b47e13161b3f33904d45110f9e6463bad6 upstream.
+[ Upstream commit dc785d69d753a3894c93afc23b91404652382ead ]
 
-When running an SVA case, the following soft lockup is triggered:
---------------------------------------------------------------------
-watchdog: BUG: soft lockup - CPU#244 stuck for 26s!
-pstate: 83400009 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : arm_smmu_cmdq_issue_cmdlist+0x178/0xa50
-lr : arm_smmu_cmdq_issue_cmdlist+0x150/0xa50
-sp : ffff8000d83ef290
-x29: ffff8000d83ef290 x28: 000000003b9aca00 x27: 0000000000000000
-x26: ffff8000d83ef3c0 x25: da86c0812194a0e8 x24: 0000000000000000
-x23: 0000000000000040 x22: ffff8000d83ef340 x21: ffff0000c63980c0
-x20: 0000000000000001 x19: ffff0000c6398080 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000000000000000 x15: ffff3000b4a3bbb0
-x14: ffff3000b4a30888 x13: ffff3000b4a3cf60 x12: 0000000000000000
-x11: 0000000000000000 x10: 0000000000000000 x9 : ffffc08120e4d6bc
-x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000048cfa
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : 000000000000000a
-x2 : 0000000080000000 x1 : 0000000000000000 x0 : 0000000000000001
-Call trace:
- arm_smmu_cmdq_issue_cmdlist+0x178/0xa50
- __arm_smmu_tlb_inv_range+0x118/0x254
- arm_smmu_tlb_inv_range_asid+0x6c/0x130
- arm_smmu_mm_invalidate_range+0xa0/0xa4
- __mmu_notifier_invalidate_range_end+0x88/0x120
- unmap_vmas+0x194/0x1e0
- unmap_region+0xb4/0x144
- do_mas_align_munmap+0x290/0x490
- do_mas_munmap+0xbc/0x124
- __vm_munmap+0xa8/0x19c
- __arm64_sys_munmap+0x28/0x50
- invoke_syscall+0x78/0x11c
- el0_svc_common.constprop.0+0x58/0x1c0
- do_el0_svc+0x34/0x60
- el0_svc+0x2c/0xd4
- el0t_64_sync_handler+0x114/0x140
- el0t_64_sync+0x1a4/0x1a8
---------------------------------------------------------------------
+Don't mix NULL and ERR_PTR returns.
 
-The commit 06ff87bae8d3 ("arm64: mm: remove unused functions and variable
-protoypes") fixed a similar lockup on the CPU MMU side. Yet, it can occur
-to SMMU too since arm_smmu_mm_invalidate_range() is typically called next
-to MMU tlb flush function, e.g.
-	tlb_flush_mmu_tlbonly {
-		tlb_flush {
-			__flush_tlb_range {
-				// check MAX_TLBI_OPS
-			}
-		}
-		mmu_notifier_invalidate_range {
-			arm_smmu_mm_invalidate_range {
-				// does not check MAX_TLBI_OPS
-			}
-		}
-	}
-
-Clone a CMDQ_MAX_TLBI_OPS from the MAX_TLBI_OPS in tlbflush.h, since in an
-SVA case SMMU uses the CPU page table, so it makes sense to align with the
-tlbflush code. Then, replace per-page TLBI commands with a single per-asid
-TLBI command, if the request size hits this threshold.
-
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/r/20230920052257.8615-1-nicolinc@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 2e87570be9d2 ("nvme-pci: factor out a nvme_pci_alloc_dev helper")
+Signed-off-by: Irvin Cote <irvin.cote@insa-lyon.fr>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c   | 27 ++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ drivers/nvme/host/pci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-index a5a63b1c947eb..98d3ba7f94873 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-@@ -186,6 +186,15 @@ static void arm_smmu_free_shared_cd(struct arm_smmu_ctx_desc *cd)
- 	}
- }
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index e5980df2094ad..65172a654a198 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2977,7 +2977,7 @@ static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
  
-+/*
-+ * Cloned from the MAX_TLBI_OPS in arch/arm64/include/asm/tlbflush.h, this
-+ * is used as a threshold to replace per-page TLBI commands to issue in the
-+ * command queue with an address-space TLBI command, when SMMU w/o a range
-+ * invalidation feature handles too many per-page TLBI commands, which will
-+ * otherwise result in a soft lockup.
-+ */
-+#define CMDQ_MAX_TLBI_OPS		(1 << (PAGE_SHIFT - 3))
-+
- static void arm_smmu_mm_invalidate_range(struct mmu_notifier *mn,
- 					 struct mm_struct *mm,
- 					 unsigned long start, unsigned long end)
-@@ -200,10 +209,22 @@ static void arm_smmu_mm_invalidate_range(struct mmu_notifier *mn,
- 	 * range. So do a simple translation here by calculating size correctly.
- 	 */
- 	size = end - start;
-+	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_RANGE_INV)) {
-+		if (size >= CMDQ_MAX_TLBI_OPS * PAGE_SIZE)
-+			size = 0;
-+	}
-+
-+	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM)) {
-+		if (!size)
-+			arm_smmu_tlb_inv_asid(smmu_domain->smmu,
-+					      smmu_mn->cd->asid);
-+		else
-+			arm_smmu_tlb_inv_range_asid(start, size,
-+						    smmu_mn->cd->asid,
-+						    PAGE_SIZE, false,
-+						    smmu_domain);
-+	}
+ 	dev = kzalloc_node(sizeof(*dev), GFP_KERNEL, node);
+ 	if (!dev)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 	INIT_WORK(&dev->ctrl.reset_work, nvme_reset_work);
+ 	INIT_WORK(&dev->remove_work, nvme_remove_dead_ctrl_work);
+ 	mutex_init(&dev->shutdown_lock);
+@@ -3022,8 +3022,8 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	int result = -ENOMEM;
  
--	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM))
--		arm_smmu_tlb_inv_range_asid(start, size, smmu_mn->cd->asid,
--					    PAGE_SIZE, false, smmu_domain);
- 	arm_smmu_atc_inv_domain(smmu_domain, mm->pasid, start, size);
- }
+ 	dev = nvme_pci_alloc_dev(pdev, id);
+-	if (!dev)
+-		return -ENOMEM;
++	if (IS_ERR(dev))
++		return PTR_ERR(dev);
  
+ 	result = nvme_dev_map(dev);
+ 	if (result)
 -- 
 2.40.1
 
