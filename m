@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C3ED7B89E1
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A86E67B8770
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:05:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244299AbjJDSaP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:30:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57868 "EHLO
+        id S243788AbjJDSFU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:05:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244297AbjJDSaP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:15 -0400
+        with ESMTP id S243777AbjJDSFT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:05:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C3D5A6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8283AC433C8;
-        Wed,  4 Oct 2023 18:30:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584DAAD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3610C433C9;
+        Wed,  4 Oct 2023 18:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444210;
-        bh=x1get3cokCt1FnkEf27Wbc5ot7WeNJJlOl9awTEl5wo=;
+        s=korg; t=1696442716;
+        bh=HQmp+zOFs0s8wjnbNfe5f2r2B/PfuPZHaJoa3Cje10I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2X35KA1QW3jCgZQKLBnl4d3h468EsiR5Ji0Uuwj+Z4VVv03LawSEsttuOfSuizlfy
-         eT6HyCbwlmpW2tC9YuKuePmAI7SgfxTDRWykDbbC8MCCBR6Zj5nv6E6suzuf4JWPT8
-         IQptPR0Lf0/69ZlfpAo9KxOfTPbPu3N6T/dJK1TY=
+        b=ketICBeOr+6Ji2mOQpzxN7tjMv4mZWTvAoxxKKXf8PAxUEmgUmROcgNOFoGXhbkJw
+         0MVT5hxTtuCDJuhJ4bazq2vh8J2synUPsvxWXUH5LdSPW3AQz3Fe3xylZQWwf9UzeB
+         TVnEe9C7j3+7cxXwoqcwNwCBv65Q94xupkbdgVY8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        patches@lists.linux.dev, Xiao Liang <shaw.leon@gmail.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 169/321] parisc: iosapic.c: Fix sparse warnings
+Subject: [PATCH 5.15 083/183] netfilter: nft_exthdr: Fix non-linear header modification
 Date:   Wed,  4 Oct 2023 19:55:14 +0200
-Message-ID: <20231004175237.087334376@linuxfoundation.org>
+Message-ID: <20231004175207.337269578@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,52 +50,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Xiao Liang <shaw.leon@gmail.com>
 
-[ Upstream commit 927c6c8aa27c284a799b8c18784e37d3373af908 ]
+[ Upstream commit 28427f368f0e08d504ed06e74bc7cc79d6d06511 ]
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fix skb_ensure_writable() size. Don't use nft_tcp_header_pointer() to
+make it explicit that pointers point to the packet (not local buffer).
+
+Fixes: 99d1712bc41c ("netfilter: exthdr: tcp option set support")
+Fixes: 7890cbea66e7 ("netfilter: exthdr: add support for tcp option removal")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xiao Liang <shaw.leon@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parisc/iosapic.c         | 4 ++--
- drivers/parisc/iosapic_private.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nft_exthdr.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/parisc/iosapic.c b/drivers/parisc/iosapic.c
-index bcc1dae007803..890c3c0f3d140 100644
---- a/drivers/parisc/iosapic.c
-+++ b/drivers/parisc/iosapic.c
-@@ -202,9 +202,9 @@ static inline void iosapic_write(void __iomem *iosapic, unsigned int reg, u32 va
+diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
+index 58f205531b961..daee46cf62abb 100644
+--- a/net/netfilter/nft_exthdr.c
++++ b/net/netfilter/nft_exthdr.c
+@@ -245,7 +245,12 @@ static void nft_exthdr_tcp_set_eval(const struct nft_expr *expr,
+ 	if (!tcph)
+ 		goto err;
  
- static DEFINE_SPINLOCK(iosapic_lock);
++	if (skb_ensure_writable(pkt->skb, nft_thoff(pkt) + tcphdr_len))
++		goto err;
++
++	tcph = (struct tcphdr *)(pkt->skb->data + nft_thoff(pkt));
+ 	opt = (u8 *)tcph;
++
+ 	for (i = sizeof(*tcph); i < tcphdr_len - 1; i += optl) {
+ 		union {
+ 			__be16 v16;
+@@ -260,15 +265,6 @@ static void nft_exthdr_tcp_set_eval(const struct nft_expr *expr,
+ 		if (i + optl > tcphdr_len || priv->len + priv->offset > optl)
+ 			goto err;
  
--static inline void iosapic_eoi(void __iomem *addr, unsigned int data)
-+static inline void iosapic_eoi(__le32 __iomem *addr, __le32 data)
- {
--	__raw_writel(data, addr);
-+	__raw_writel((__force u32)data, addr);
- }
+-		if (skb_ensure_writable(pkt->skb,
+-					nft_thoff(pkt) + i + priv->len))
+-			goto err;
+-
+-		tcph = nft_tcp_header_pointer(pkt, sizeof(buff), buff,
+-					      &tcphdr_len);
+-		if (!tcph)
+-			goto err;
+-
+ 		offset = i + priv->offset;
  
- /*
-diff --git a/drivers/parisc/iosapic_private.h b/drivers/parisc/iosapic_private.h
-index 73ecc657ad954..bd8ff40162b4b 100644
---- a/drivers/parisc/iosapic_private.h
-+++ b/drivers/parisc/iosapic_private.h
-@@ -118,8 +118,8 @@ struct iosapic_irt {
- struct vector_info {
- 	struct iosapic_info *iosapic;	/* I/O SAPIC this vector is on */
- 	struct irt_entry *irte;		/* IRT entry */
--	u32 __iomem *eoi_addr;		/* precalculate EOI reg address */
--	u32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
-+	__le32 __iomem *eoi_addr;	/* precalculate EOI reg address */
-+	__le32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
- 	int	txn_irq;		/* virtual IRQ number for processor */
- 	ulong	txn_addr;		/* IA64: id_eid  PA: partial HPA */
- 	u32	txn_data;		/* CPU interrupt bit */
+ 		switch (priv->len) {
+@@ -332,9 +328,9 @@ static void nft_exthdr_tcp_strip_eval(const struct nft_expr *expr,
+ 	if (skb_ensure_writable(pkt->skb, nft_thoff(pkt) + tcphdr_len))
+ 		goto drop;
+ 
+-	opt = (u8 *)nft_tcp_header_pointer(pkt, sizeof(buff), buff, &tcphdr_len);
+-	if (!opt)
+-		goto err;
++	tcph = (struct tcphdr *)(pkt->skb->data + nft_thoff(pkt));
++	opt = (u8 *)tcph;
++
+ 	for (i = sizeof(*tcph); i < tcphdr_len - 1; i += optl) {
+ 		unsigned int j;
+ 
 -- 
 2.40.1
 
