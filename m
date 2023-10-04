@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C5917B8A68
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC2297B88E3
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244420AbjJDSfG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:35:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59660 "EHLO
+        id S243954AbjJDSUg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244421AbjJDSfF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:35:05 -0400
+        with ESMTP id S243988AbjJDSUf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA77CAB
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:35:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26616C433C8;
-        Wed,  4 Oct 2023 18:35:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42ECBBF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8609FC433C8;
+        Wed,  4 Oct 2023 18:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444501;
-        bh=k/wg75wZZfFHSQioghpWOOmiHqkSrk1HjQfJhRL7F00=;
+        s=korg; t=1696443630;
+        bh=+g+/Y8bUhwqWUOAsq4aLIISw9veiwxng81GuE1vYuBM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UmdasimLnhj1A/AWjAyvegeE6wwylZWVf3av+2XTO1c19ahe/K+oSUyeOUMiGPnqz
-         nQm6iXKeVYWKecCRhWb6WeV994aMQ8CUybBvbqI6fBQtct2ghWmndjI1CxClbYqJGq
-         gfx5JBb28S75awdAhQI3OR7FPM2YliD6LP/q1Nb4=
+        b=kR4L9ciBRIGobMhKfDiDO7i2RIk3cUryE9mCSNF2g/lbEXKzuZC7y3FnNFJqHZ6uq
+         1rdR9mkfm/g/ivTOULcYQNXZSYO0ynX9lt7n2ooG1RZXtDUzszNMIwj9VDHfJgNa0p
+         7TIEVfyCWCvrTn2OhBNod58Vqbr9pWsFtgF6AVMo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Lendacky <thomas.lendacky@amd.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.5 244/321] KVM: SVM: Fix TSC_AUX virtualization setup
-Date:   Wed,  4 Oct 2023 19:56:29 +0200
-Message-ID: <20231004175240.557047366@linuxfoundation.org>
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Daniel Starke <daniel.starke@siemens.com>
+Subject: [PATCH 6.1 217/259] Revert "tty: n_gsm: fix UAF in gsm_cleanup_mux"
+Date:   Wed,  4 Oct 2023 19:56:30 +0200
+Message-ID: <20231004175227.286633566@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,128 +49,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Daniel Starke <daniel.starke@siemens.com>
 
-commit e0096d01c4fcb8c96c05643cfc2c20ab78eae4da upstream.
+commit 29346e217b8ab8a52889b88f00b268278d6b7668 upstream.
 
-The checks for virtualizing TSC_AUX occur during the vCPU reset processing
-path. However, at the time of initial vCPU reset processing, when the vCPU
-is first created, not all of the guest CPUID information has been set. In
-this case the RDTSCP and RDPID feature support for the guest is not in
-place and so TSC_AUX virtualization is not established.
+This reverts commit 9b9c8195f3f0d74a826077fc1c01b9ee74907239.
 
-This continues for each vCPU created for the guest. On the first boot of
-an AP, vCPU reset processing is executed as a result of an APIC INIT
-event, this time with all of the guest CPUID information set, resulting
-in TSC_AUX virtualization being enabled, but only for the APs. The BSP
-always sees a TSC_AUX value of 0 which probably went unnoticed because,
-at least for Linux, the BSP TSC_AUX value is 0.
+The commit above is reverted as it did not solve the original issue.
 
-Move the TSC_AUX virtualization enablement out of the init_vmcb() path and
-into the vcpu_after_set_cpuid() path to allow for proper initialization of
-the support after the guest CPUID information has been set.
+gsm_cleanup_mux() tries to free up the virtual ttys by calling
+gsm_dlci_release() for each available DLCI. There, dlci_put() is called to
+decrease the reference counter for the DLCI via tty_port_put() which
+finally calls gsm_dlci_free(). This already clears the pointer which is
+being checked in gsm_cleanup_mux() before calling gsm_dlci_release().
+Therefore, it is not necessary to clear this pointer in gsm_cleanup_mux()
+as done in the reverted commit. The commit introduces a null pointer
+dereference:
+ <TASK>
+ ? __die+0x1f/0x70
+ ? page_fault_oops+0x156/0x420
+ ? search_exception_tables+0x37/0x50
+ ? fixup_exception+0x21/0x310
+ ? exc_page_fault+0x69/0x150
+ ? asm_exc_page_fault+0x26/0x30
+ ? tty_port_put+0x19/0xa0
+ gsmtty_cleanup+0x29/0x80 [n_gsm]
+ release_one_tty+0x37/0xe0
+ process_one_work+0x1e6/0x3e0
+ worker_thread+0x4c/0x3d0
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe1/0x110
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2f/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
 
-With the TSC_AUX virtualization support now in the vcpu_set_after_cpuid()
-path, the intercepts must be either cleared or set based on the guest
-CPUID input.
+The actual issue is that nothing guards dlci_put() from being called
+multiple times while the tty driver was triggered but did not yet finished
+calling gsm_dlci_free().
 
-Fixes: 296d5a17e793 ("KVM: SEV-ES: Use V_TSC_AUX if available instead of RDTSC/MSR_TSC_AUX intercepts")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Message-Id: <4137fbcb9008951ab5f0befa74a0399d2cce809a.1694811272.git.thomas.lendacky@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: 9b9c8195f3f0 ("tty: n_gsm: fix UAF in gsm_cleanup_mux")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
+Link: https://lore.kernel.org/r/20230914051507.3240-1-daniel.starke@siemens.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |   31 ++++++++++++++++++++++++++-----
- arch/x86/kvm/svm/svm.c |    9 ++-------
- arch/x86/kvm/svm/svm.h |    1 +
- 3 files changed, 29 insertions(+), 12 deletions(-)
+ drivers/tty/n_gsm.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2945,6 +2945,32 @@ int sev_es_string_io(struct vcpu_svm *sv
- 				    count, in);
- }
- 
-+static void sev_es_vcpu_after_set_cpuid(struct vcpu_svm *svm)
-+{
-+	struct kvm_vcpu *vcpu = &svm->vcpu;
-+
-+	if (boot_cpu_has(X86_FEATURE_V_TSC_AUX)) {
-+		bool v_tsc_aux = guest_cpuid_has(vcpu, X86_FEATURE_RDTSCP) ||
-+				 guest_cpuid_has(vcpu, X86_FEATURE_RDPID);
-+
-+		set_msr_interception(vcpu, svm->msrpm, MSR_TSC_AUX, v_tsc_aux, v_tsc_aux);
-+	}
-+}
-+
-+void sev_vcpu_after_set_cpuid(struct vcpu_svm *svm)
-+{
-+	struct kvm_vcpu *vcpu = &svm->vcpu;
-+	struct kvm_cpuid_entry2 *best;
-+
-+	/* For sev guests, the memory encryption bit is not reserved in CR3.  */
-+	best = kvm_find_cpuid_entry(vcpu, 0x8000001F);
-+	if (best)
-+		vcpu->arch.reserved_gpa_bits &= ~(1UL << (best->ebx & 0x3f));
-+
-+	if (sev_es_guest(svm->vcpu.kvm))
-+		sev_es_vcpu_after_set_cpuid(svm);
-+}
-+
- static void sev_es_init_vmcb(struct vcpu_svm *svm)
- {
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
-@@ -2991,11 +3017,6 @@ static void sev_es_init_vmcb(struct vcpu
- 	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP, 1, 1);
- 	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTFROMIP, 1, 1);
- 	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTINTTOIP, 1, 1);
--
--	if (boot_cpu_has(X86_FEATURE_V_TSC_AUX) &&
--	    (guest_cpuid_has(&svm->vcpu, X86_FEATURE_RDTSCP) ||
--	     guest_cpuid_has(&svm->vcpu, X86_FEATURE_RDPID)))
--		set_msr_interception(vcpu, svm->msrpm, MSR_TSC_AUX, 1, 1);
- }
- 
- void sev_init_vmcb(struct vcpu_svm *svm)
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4217,7 +4217,6 @@ static bool svm_has_emulated_msr(struct
- static void svm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_svm *svm = to_svm(vcpu);
--	struct kvm_cpuid_entry2 *best;
- 
- 	vcpu->arch.xsaves_enabled = guest_cpuid_has(vcpu, X86_FEATURE_XSAVE) &&
- 				    boot_cpu_has(X86_FEATURE_XSAVE) &&
-@@ -4252,12 +4251,8 @@ static void svm_vcpu_after_set_cpuid(str
- 		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_FLUSH_CMD, 0,
- 				     !!guest_cpuid_has(vcpu, X86_FEATURE_FLUSH_L1D));
- 
--	/* For sev guests, the memory encryption bit is not reserved in CR3.  */
--	if (sev_guest(vcpu->kvm)) {
--		best = kvm_find_cpuid_entry(vcpu, 0x8000001F);
--		if (best)
--			vcpu->arch.reserved_gpa_bits &= ~(1UL << (best->ebx & 0x3f));
--	}
-+	if (sev_guest(vcpu->kvm))
-+		sev_vcpu_after_set_cpuid(svm);
- 
- 	init_vmcb_after_set_cpuid(vcpu);
- }
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -733,6 +733,7 @@ void __init sev_hardware_setup(void);
- void sev_hardware_unsetup(void);
- int sev_cpu_init(struct svm_cpu_data *sd);
- void sev_init_vmcb(struct vcpu_svm *svm);
-+void sev_vcpu_after_set_cpuid(struct vcpu_svm *svm);
- void sev_free_vcpu(struct kvm_vcpu *vcpu);
- int sev_handle_vmgexit(struct kvm_vcpu *vcpu);
- int sev_es_string_io(struct vcpu_svm *svm, int size, unsigned int port, int in);
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -2509,10 +2509,8 @@ static void gsm_cleanup_mux(struct gsm_m
+ 		gsm->has_devices = false;
+ 	}
+ 	for (i = NUM_DLCI - 1; i >= 0; i--)
+-		if (gsm->dlci[i]) {
++		if (gsm->dlci[i])
+ 			gsm_dlci_release(gsm->dlci[i]);
+-			gsm->dlci[i] = NULL;
+-		}
+ 	mutex_unlock(&gsm->mutex);
+ 	/* Now wipe the queues */
+ 	tty_ldisc_flush(gsm->tty);
 
 
