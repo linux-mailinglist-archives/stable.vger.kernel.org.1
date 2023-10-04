@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21A417B8266
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:33:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 343B37B8267
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233430AbjJDOdD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 10:33:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33802 "EHLO
+        id S233092AbjJDOdI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 10:33:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233466AbjJDOdD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:33:03 -0400
+        with ESMTP id S233508AbjJDOdH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:33:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A0FD8
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:32:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE5DC433C7;
-        Wed,  4 Oct 2023 14:32:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71039D8
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:33:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9282C433C7;
+        Wed,  4 Oct 2023 14:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696429979;
-        bh=eZFXvTynQ+T53aBBvYE2ZBv/UIwxjmgX+kAIEXgphKk=;
+        s=korg; t=1696429982;
+        bh=7fUK2huy17pHyvk1zHQkD1wNHMiD90uHFDEayWEkd2U=;
         h=Subject:To:Cc:From:Date:From;
-        b=B/1DEtJm1CmO2gZhHIz3xc8g4ftwJYjwo2KQDYP7RolI3PTgJmC6tciEfmi9dOENw
-         xDYLg4eYy16NyErRbJRq7tLxth1gu/Gj+087UJE0HheQ2tm+8sOqfoXTzlh6l4FNxG
-         ul+CbOme6BOj7e2DfSB17tC9fwg8NNgwu13n2L+8=
-Subject: FAILED: patch "[PATCH] scsi: Do not attempt to rescan suspended devices" failed to apply to 6.5-stable tree
+        b=s+qf5ruMxnp3vFp67OInEQrtdUQ0U7YVFWelizAoh5wg+FvhXqnE5Mg/wSl3VU+KK
+         ZlhEdxpvzyeVYzBxH9tpCQ4PNyRLC1aYD629anFyr8kFh6N3gsNuu+DilqMshpxkQc
+         86bFDWSnlBGFQAO2DIiLf0qlrNnoKdiDQ2mdEbmM=
+Subject: FAILED: patch "[PATCH] scsi: Do not attempt to rescan suspended devices" failed to apply to 6.1-stable tree
 To:     dlemoal@kernel.org, bvanassche@acm.org, geert+renesas@glider.be,
         hare@suse.de, martin.petersen@oracle.com, niklas.cassel@wdc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 16:32:54 +0200
-Message-ID: <2023100454-hamper-falsify-595d@gregkh>
+Date:   Wed, 04 Oct 2023 16:32:56 +0200
+Message-ID: <2023100455-impulse-shucking-f603@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x ff48b37802e5c134e2dfc4d091f10b2eb5065a72
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100454-hamper-falsify-595d@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100455-impulse-shucking-f603@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
