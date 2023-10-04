@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 982977B894C
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:24:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3FA57B87EE
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:11:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244132AbjJDSYf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:24:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42378 "EHLO
+        id S243915AbjJDSLB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244155AbjJDSYd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:24:33 -0400
+        with ESMTP id S243911AbjJDSLA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:11:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC62A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:24:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D09DC433C8;
-        Wed,  4 Oct 2023 18:24:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B23ABF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:10:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B7FC433CB;
+        Wed,  4 Oct 2023 18:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443868;
-        bh=eIj9k+0ASQUzJpYjFG1JqE2VRea8CeUj3aHPysVpR7g=;
+        s=korg; t=1696443056;
+        bh=UpfNmkrrz+LZO0dXkXd+LokIA//pAnbbNSBCnZ0WPpI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Pk49Txd6GJTF9nQXYMxtPCMQ4JRYGrwGLD5VdolTzEEBVBd0m8oRZEiLt37UoQZds
-         mR9igNPjNI8E7lT7EyIZruL8zPj4l6OWwH/1rZJev9HxjxTfZ3083IKjxdlsUK5gc/
-         R5N9in717YPJ4OYkyZeSiHuoFC2xiGLLkd9JiGeM=
+        b=XYKbm0hNxvqhi+XVR7KEVeqS7QkqKSCWIHTsrxeXqN1G94HOeljn9Y8f30s2ksmZe
+         gq0OxJoETLdDaTjfaDmkmpl9kAVGOoMSfq/BQtul4VjDC7cZg8ltXLeG9JKfEj3zBf
+         OUaVcox83cBmpWewBs6CAHtGhonmxs5Suvh5K1Y8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 048/321] net: microchip: sparx5: Fix memory leak for vcap_api_rule_add_actionvalue_test()
+Subject: [PATCH 6.1 020/259] netfilter: nf_tables: dont skip expired elements during walk
 Date:   Wed,  4 Oct 2023 19:53:13 +0200
-Message-ID: <20231004175231.396160010@linuxfoundation.org>
+Message-ID: <20231004175218.355052454@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,165 +50,142 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 39d0ccc185315408e7cecfcaf06d167927b51052 ]
+commit 24138933b97b055d486e8064b4a1721702442a9b upstream.
 
-Inject fault while probing kunit-example-test.ko, the field which
-is allocated by kzalloc in vcap_rule_add_action() of
-vcap_rule_add_action_bit/u32() is not freed, and it cause
-the memory leaks below.
+There is an asymmetry between commit/abort and preparation phase if the
+following conditions are met:
 
-unreferenced object 0xffff0276c496b300 (size 64):
-  comm "kunit_try_catch", pid 286, jiffies 4294894224 (age 920.072s)
-  hex dump (first 32 bytes):
-    68 3c 62 82 00 80 ff ff 68 3c 62 82 00 80 ff ff  h<b.....h<b.....
-    3c 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  <...............
-  backtrace:
-    [<0000000028f08898>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000514b9b37>] __kmem_cache_alloc_node+0x174/0x290
-    [<000000004620684a>] kmalloc_trace+0x40/0x164
-    [<000000008b41c84d>] vcap_rule_add_action+0x104/0x178
-    [<00000000ae66c16c>] vcap_api_rule_add_actionvalue_test+0xa4/0x990
-    [<00000000fcc5326c>] kunit_try_run_case+0x50/0xac
-    [<00000000f5f45b20>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000026284079>] kthread+0x124/0x130
-    [<0000000024d4a996>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff0276c496b2c0 (size 64):
-  comm "kunit_try_catch", pid 286, jiffies 4294894224 (age 920.072s)
-  hex dump (first 32 bytes):
-    68 3c 62 82 00 80 ff ff 68 3c 62 82 00 80 ff ff  h<b.....h<b.....
-    3c 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00  <...............
-  backtrace:
-    [<0000000028f08898>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000514b9b37>] __kmem_cache_alloc_node+0x174/0x290
-    [<000000004620684a>] kmalloc_trace+0x40/0x164
-    [<000000008b41c84d>] vcap_rule_add_action+0x104/0x178
-    [<00000000607782aa>] vcap_api_rule_add_actionvalue_test+0x100/0x990
-    [<00000000fcc5326c>] kunit_try_run_case+0x50/0xac
-    [<00000000f5f45b20>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000026284079>] kthread+0x124/0x130
-    [<0000000024d4a996>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff0276c496b280 (size 64):
-  comm "kunit_try_catch", pid 286, jiffies 4294894224 (age 920.072s)
-  hex dump (first 32 bytes):
-    68 3c 62 82 00 80 ff ff 68 3c 62 82 00 80 ff ff  h<b.....h<b.....
-    3c 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  <...............
-  backtrace:
-    [<0000000028f08898>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000514b9b37>] __kmem_cache_alloc_node+0x174/0x290
-    [<000000004620684a>] kmalloc_trace+0x40/0x164
-    [<000000008b41c84d>] vcap_rule_add_action+0x104/0x178
-    [<000000004e640602>] vcap_api_rule_add_actionvalue_test+0x15c/0x990
-    [<00000000fcc5326c>] kunit_try_run_case+0x50/0xac
-    [<00000000f5f45b20>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000026284079>] kthread+0x124/0x130
-    [<0000000024d4a996>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff0276c496b240 (size 64):
-  comm "kunit_try_catch", pid 286, jiffies 4294894224 (age 920.092s)
-  hex dump (first 32 bytes):
-    68 3c 62 82 00 80 ff ff 68 3c 62 82 00 80 ff ff  h<b.....h<b.....
-    5a 00 00 00 01 00 00 00 32 54 76 98 00 00 00 00  Z.......2Tv.....
-  backtrace:
-    [<0000000028f08898>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000514b9b37>] __kmem_cache_alloc_node+0x174/0x290
-    [<000000004620684a>] kmalloc_trace+0x40/0x164
-    [<000000008b41c84d>] vcap_rule_add_action+0x104/0x178
-    [<0000000011141bf8>] vcap_api_rule_add_actionvalue_test+0x1bc/0x990
-    [<00000000fcc5326c>] kunit_try_run_case+0x50/0xac
-    [<00000000f5f45b20>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000026284079>] kthread+0x124/0x130
-    [<0000000024d4a996>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff0276c496b200 (size 64):
-  comm "kunit_try_catch", pid 286, jiffies 4294894224 (age 920.092s)
-  hex dump (first 32 bytes):
-    68 3c 62 82 00 80 ff ff 68 3c 62 82 00 80 ff ff  h<b.....h<b.....
-    28 00 00 00 01 00 00 00 dd cc bb aa 00 00 00 00  (...............
-  backtrace:
-    [<0000000028f08898>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000514b9b37>] __kmem_cache_alloc_node+0x174/0x290
-    [<000000004620684a>] kmalloc_trace+0x40/0x164
-    [<000000008b41c84d>] vcap_rule_add_action+0x104/0x178
-    [<00000000d5ed3088>] vcap_api_rule_add_actionvalue_test+0x22c/0x990
-    [<00000000fcc5326c>] kunit_try_run_case+0x50/0xac
-    [<00000000f5f45b20>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000026284079>] kthread+0x124/0x130
-    [<0000000024d4a996>] ret_from_fork+0x10/0x20
+1. set is a verdict map ("1.2.3.4 : jump foo")
+2. timeouts are enabled
 
-Fixes: c956b9b318d9 ("net: microchip: sparx5: Adding KUNIT tests of key/action values in VCAP API")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+In this case, following sequence is problematic:
+
+1. element E in set S refers to chain C
+2. userspace requests removal of set S
+3. kernel does a set walk to decrement chain->use count for all elements
+   from preparation phase
+4. kernel does another set walk to remove elements from the commit phase
+   (or another walk to do a chain->use increment for all elements from
+    abort phase)
+
+If E has already expired in 1), it will be ignored during list walk, so its use count
+won't have been changed.
+
+Then, when set is culled, ->destroy callback will zap the element via
+nf_tables_set_elem_destroy(), but this function is only safe for
+elements that have been deactivated earlier from the preparation phase:
+lack of earlier deactivate removes the element but leaks the chain use
+count, which results in a WARN splat when the chain gets removed later,
+plus a leak of the nft_chain structure.
+
+Update pipapo_get() not to skip expired elements, otherwise flush
+command reports bogus ENOENT errors.
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Fixes: 8d8540c4f5e0 ("netfilter: nft_set_rbtree: add timeout support")
+Fixes: 9d0982927e79 ("netfilter: nft_hash: add support for timeouts")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/microchip/vcap/vcap_api_kunit.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/netfilter/nf_tables_api.c  |  4 ++++
+ net/netfilter/nft_set_hash.c   |  2 --
+ net/netfilter/nft_set_pipapo.c | 18 ++++++++++++------
+ net/netfilter/nft_set_rbtree.c |  2 --
+ 4 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
-index 2fb0b8cf2b0cd..f268383a75707 100644
---- a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
-+++ b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
-@@ -1095,6 +1095,17 @@ static void vcap_api_rule_add_keyvalue_test(struct kunit *test)
- 	vcap_free_ckf(rule);
- }
- 
-+static void vcap_free_caf(struct vcap_rule *rule)
-+{
-+	struct vcap_client_actionfield *caf, *next_caf;
-+
-+	list_for_each_entry_safe(caf, next_caf,
-+				 &rule->actionfields, ctrl.list) {
-+		list_del(&caf->ctrl.list);
-+		kfree(caf);
-+	}
-+}
-+
- static void vcap_api_rule_add_actionvalue_test(struct kunit *test)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 3c5cac9bd9b70..475c556f49912 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5386,8 +5386,12 @@ static int nf_tables_dump_setelem(const struct nft_ctx *ctx,
+ 				  const struct nft_set_iter *iter,
+ 				  struct nft_set_elem *elem)
  {
- 	struct vcap_admin admin = {
-@@ -1120,6 +1131,7 @@ static void vcap_api_rule_add_actionvalue_test(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, VCAP_AF_POLICE_ENA, af->ctrl.action);
- 	KUNIT_EXPECT_EQ(test, VCAP_FIELD_BIT, af->ctrl.type);
- 	KUNIT_EXPECT_EQ(test, 0x0, af->data.u1.value);
-+	vcap_free_caf(rule);
++	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	struct nft_set_dump_args *args;
  
- 	INIT_LIST_HEAD(&rule->actionfields);
- 	ret = vcap_rule_add_action_bit(rule, VCAP_AF_POLICE_ENA, VCAP_BIT_1);
-@@ -1131,6 +1143,7 @@ static void vcap_api_rule_add_actionvalue_test(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, VCAP_AF_POLICE_ENA, af->ctrl.action);
- 	KUNIT_EXPECT_EQ(test, VCAP_FIELD_BIT, af->ctrl.type);
- 	KUNIT_EXPECT_EQ(test, 0x1, af->data.u1.value);
-+	vcap_free_caf(rule);
++	if (nft_set_elem_expired(ext))
++		return 0;
++
+ 	args = container_of(iter, struct nft_set_dump_args, iter);
+ 	return nf_tables_fill_setelem(args->skb, set, elem);
+ }
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 0b73cb0e752f7..24caa31fa2310 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -278,8 +278,6 @@ static void nft_rhash_walk(const struct nft_ctx *ctx, struct nft_set *set,
  
- 	INIT_LIST_HEAD(&rule->actionfields);
- 	ret = vcap_rule_add_action_bit(rule, VCAP_AF_POLICE_ENA, VCAP_BIT_ANY);
-@@ -1142,6 +1155,7 @@ static void vcap_api_rule_add_actionvalue_test(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, VCAP_AF_POLICE_ENA, af->ctrl.action);
- 	KUNIT_EXPECT_EQ(test, VCAP_FIELD_BIT, af->ctrl.type);
- 	KUNIT_EXPECT_EQ(test, 0x0, af->data.u1.value);
-+	vcap_free_caf(rule);
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (nft_set_elem_expired(&he->ext))
+-			goto cont;
+ 		if (!nft_set_elem_active(&he->ext, iter->genmask))
+ 			goto cont;
  
- 	INIT_LIST_HEAD(&rule->actionfields);
- 	ret = vcap_rule_add_action_u32(rule, VCAP_AF_TYPE, 0x98765432);
-@@ -1153,6 +1167,7 @@ static void vcap_api_rule_add_actionvalue_test(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, VCAP_AF_TYPE, af->ctrl.action);
- 	KUNIT_EXPECT_EQ(test, VCAP_FIELD_U32, af->ctrl.type);
- 	KUNIT_EXPECT_EQ(test, 0x98765432, af->data.u32.value);
-+	vcap_free_caf(rule);
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 8c16681884b7e..b6a994ba72f31 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -566,8 +566,7 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ 			goto out;
  
- 	INIT_LIST_HEAD(&rule->actionfields);
- 	ret = vcap_rule_add_action_u32(rule, VCAP_AF_MASK_MODE, 0xaabbccdd);
-@@ -1164,6 +1179,7 @@ static void vcap_api_rule_add_actionvalue_test(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, VCAP_AF_MASK_MODE, af->ctrl.action);
- 	KUNIT_EXPECT_EQ(test, VCAP_FIELD_U32, af->ctrl.type);
- 	KUNIT_EXPECT_EQ(test, 0xaabbccdd, af->data.u32.value);
-+	vcap_free_caf(rule);
+ 		if (last) {
+-			if (nft_set_elem_expired(&f->mt[b].e->ext) ||
+-			    (genmask &&
++			if ((genmask &&
+ 			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
+ 				goto next_match;
+ 
+@@ -601,8 +600,17 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ static void *nft_pipapo_get(const struct net *net, const struct nft_set *set,
+ 			    const struct nft_set_elem *elem, unsigned int flags)
+ {
+-	return pipapo_get(net, set, (const u8 *)elem->key.val.data,
+-			  nft_genmask_cur(net));
++	struct nft_pipapo_elem *ret;
++
++	ret = pipapo_get(net, set, (const u8 *)elem->key.val.data,
++			 nft_genmask_cur(net));
++	if (IS_ERR(ret))
++		return ret;
++
++	if (nft_set_elem_expired(&ret->ext))
++		return ERR_PTR(-ENOENT);
++
++	return ret;
  }
  
- static void vcap_api_rule_find_keyset_basic_test(struct kunit *test)
+ /**
+@@ -2024,8 +2032,6 @@ static void nft_pipapo_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 			goto cont;
+ 
+ 		e = f->mt[r].e;
+-		if (nft_set_elem_expired(&e->ext))
+-			goto cont;
+ 
+ 		elem.priv = e;
+ 
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 8d73fffd2d09d..39956e5341c9e 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -552,8 +552,6 @@ static void nft_rbtree_walk(const struct nft_ctx *ctx,
+ 
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (nft_set_elem_expired(&rbe->ext))
+-			goto cont;
+ 		if (!nft_set_elem_active(&rbe->ext, iter->genmask))
+ 			goto cont;
+ 
 -- 
 2.40.1
 
