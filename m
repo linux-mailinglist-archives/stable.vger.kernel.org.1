@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E007B8863
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BA817B89C6
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244038AbjJDSPg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:15:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38784 "EHLO
+        id S244277AbjJDS3N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:29:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244046AbjJDSPf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:35 -0400
+        with ESMTP id S244279AbjJDS3M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94D52A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC522C433C7;
-        Wed,  4 Oct 2023 18:15:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A005A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714D3C433C7;
+        Wed,  4 Oct 2023 18:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443331;
-        bh=VvCweD+yBp2yi2kf7Ly94pQT93SArufa7py8bcY/Gq0=;
+        s=korg; t=1696444148;
+        bh=NC6pol2o82ph7Q470HTYvitiyyj9G0750UQjKqcbogo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eFDp9H0+mq7wxSqfMEuT5ttaitzWZhg5uGovBJk386J3/hsv2C1E4mnvA7VK+aw5k
-         G40m1AtJB1H9Q1QUmK1g7Pk5nb46X0GwssqPwq/plkC1o3aAW1XUp8UiAeheUXc6H/
-         kF2HqCe+zrKxv+VTWVunXxPzySRKH9lFb8vr/FHw=
+        b=AorJGrG54dH2vdyPoVyuQ+FtdcF6et4FlOVJvwFTihXM89Lli5rWFQmJpopWutPU+
+         k5/CapvlDdLyC5hTzU/lXTY9DWl0zHJZ5oGEt5kzTTsif8jrNXwoKMWilJzK4+tjUG
+         A6UqmOAd2K6oTQr8fgx3FG2mh/DqF022rgk/CctM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Timo Alho <talho@nvidia.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/259] clk: tegra: fix error return case for recalc_rate
+Subject: [PATCH 6.5 146/321] arm64: dts: imx8mp: Fix SDMA2/3 clocks
 Date:   Wed,  4 Oct 2023 19:54:51 +0200
-Message-ID: <20231004175222.772658579@linuxfoundation.org>
+Message-ID: <20231004175236.008367507@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +52,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timo Alho <talho@nvidia.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit a47b44fbb13f5e7a981b4515dcddc93a321ae89c ]
+[ Upstream commit b739681b3f8b2a7a684a71ddd048b9b6b5400011 ]
 
-tegra-bpmp clocks driver makes implicit conversion of signed error
-code to unsigned value in recalc_rate operation. The behavior for
-recalc_rate, according to it's specification, should be that "If the
-driver cannot figure out a rate for this clock, it must return 0."
+Commit 16c984524862 ("arm64: dts: imx8mp: don't initialize audio clocks
+from CCM node") removed the Audio clocks from the main clock node, because
+the intent is to force people to setup the audio PLL clocks per board
+instead of having a common set of rates, since not all boards may use
+the various audio PLL clocks in the same way.
 
-Fixes: ca6f2796eef7 ("clk: tegra: Add BPMP clock driver")
-Signed-off-by: Timo Alho <talho@nvidia.com>
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Link: https://lore.kernel.org/r/20230912112951.2330497-1-cyndis@kapsi.fi
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Unfortunately, with this parenting removed, the SDMA2 and SDMA3
+clocks were slowed to 24MHz because the SDMA2/3 clocks are controlled
+via the audio_blk_ctrl which is clocked from IMX8MP_CLK_AUDIO_ROOT,
+and that clock is enabled by pgc_audio.
+
+Per the TRM, "The SDMA2/3 target frequency is 400MHz IPG and 400MHz
+AHB, always 1:1 mode, to make sure there is enough throughput for all
+the audio use cases."
+
+Instead of cluttering the clock node, place the clock rate and parent
+information into the pgc_audio node.
+
+With the parenting and clock rates restored for  IMX8MP_CLK_AUDIO_AHB,
+and IMX8MP_CLK_AUDIO_AXI_SRC, it appears the SDMA2 and SDMA3 run at
+400MHz again.
+
+Fixes: 16c984524862 ("arm64: dts: imx8mp: don't initialize audio clocks from CCM node")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-bpmp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/clk/tegra/clk-bpmp.c b/drivers/clk/tegra/clk-bpmp.c
-index d82a71f10c2c1..39241662a412a 100644
---- a/drivers/clk/tegra/clk-bpmp.c
-+++ b/drivers/clk/tegra/clk-bpmp.c
-@@ -159,7 +159,7 @@ static unsigned long tegra_bpmp_clk_recalc_rate(struct clk_hw *hw,
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index cc406bb338feb..587265395a9b4 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -794,6 +794,12 @@
+ 						reg = <IMX8MP_POWER_DOMAIN_AUDIOMIX>;
+ 						clocks = <&clk IMX8MP_CLK_AUDIO_ROOT>,
+ 							 <&clk IMX8MP_CLK_AUDIO_AXI>;
++						assigned-clocks = <&clk IMX8MP_CLK_AUDIO_AHB>,
++								  <&clk IMX8MP_CLK_AUDIO_AXI_SRC>;
++						assigned-clock-parents =  <&clk IMX8MP_SYS_PLL1_800M>,
++									  <&clk IMX8MP_SYS_PLL1_800M>;
++						assigned-clock-rates = <400000000>,
++								       <600000000>;
+ 					};
  
- 	err = tegra_bpmp_clk_transfer(clk->bpmp, &msg);
- 	if (err < 0)
--		return err;
-+		return 0;
- 
- 	return response.rate;
- }
+ 					pgc_gpu2d: power-domain@6 {
 -- 
 2.40.1
 
