@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFBEC7B8442
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AB657B8443
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:54:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243181AbjJDPys (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 11:54:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33848 "EHLO
+        id S243163AbjJDPyu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 11:54:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243086AbjJDPyr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:54:47 -0400
+        with ESMTP id S242929AbjJDPyt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:54:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D55FBA6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:54:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00145C433C9;
-        Wed,  4 Oct 2023 15:54:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B57598
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:54:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3A5C433C8;
+        Wed,  4 Oct 2023 15:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696434883;
-        bh=j3qwbWDVaETPP3a8McCWkJyqfAVv6v4SH/frrUuspgo=;
+        s=korg; t=1696434886;
+        bh=AWbm2nf1Qmf2PEgiWx6N6m/zVWr6XOPLI2y8aCqk4Q8=;
         h=Subject:To:Cc:From:Date:From;
-        b=hm838BFTnl2TI2JnmB4zXmaFUnlDdWa7YfaeQxM8vqiUPxhZ0KymLtIswCv09KdLf
-         jUp3TnJnFw9TaMYz8hl72CrP/ZbOZWdSw/SfYmcKQhgOAw+YNj11O7pa/G10cmkrBV
-         rlvWDZykdgrajjoP+XP0mWYlN/J9Rk7x+/W2ra4U=
-Subject: FAILED: patch "[PATCH] ring-buffer: Fix bytes info in per_cpu buffer stats" failed to apply to 5.10-stable tree
+        b=UFVBG3hi9C6bQbQGJj2sI+PnTcJgRRnOtBFbrmcie8DLttdaH1Zwj6fBzKPKGqbSO
+         f3Bwd2nLMAFm2o4Y+zLXugmSogbHRh0dFVtCUaFTA4vzxmIvnRONU1AHzS68oOZME6
+         zSU8aUlRX+rdcpb3MHsyKv/Sm2wZYE02Dm/2cFOg=
+Subject: FAILED: patch "[PATCH] ring-buffer: Fix bytes info in per_cpu buffer stats" failed to apply to 5.4-stable tree
 To:     zhengyejian1@huawei.com, rostedt@goodmis.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 17:54:36 +0200
-Message-ID: <2023100436-ergonomic-enviably-bf14@gregkh>
+Date:   Wed, 04 Oct 2023 17:54:37 +0200
+Message-ID: <2023100437-backyard-cartwheel-4b2f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 45d99ea451d0c30bfd4864f0fe485d7dac014902
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100436-ergonomic-enviably-bf14@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100437-backyard-cartwheel-4b2f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
