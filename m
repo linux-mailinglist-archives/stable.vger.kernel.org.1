@@ -2,38 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFFCD7B89A1
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7E797B8837
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244238AbjJDS1c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:27:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34010 "EHLO
+        id S243985AbjJDSNw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:13:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244226AbjJDS1Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:24 -0400
+        with ESMTP id S243981AbjJDSNv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B300CA6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09192C433C9;
-        Wed,  4 Oct 2023 18:27:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D8BA6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F5AC433C9;
+        Wed,  4 Oct 2023 18:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444041;
-        bh=V4i5k4q4ZmPWg7UC8ZouJhlCIufXfVzB8WN1VkpUmbk=;
+        s=korg; t=1696443227;
+        bh=aZbVQytCSxzxgnIcq9XyAjkbNXBA9R/DXdQ0kkTIfAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L7lytPM6oLI9v4tw6ycXQyhY99OpgUBUmz/KY2MuGJzu8zQh4F4g0f1Y7ZMqEKqbb
-         Z+DkmZWCZfT11SaFZEEnShkBPcY8SKrM84LsqdAFUoeepPomgN4kMAPHP3X5e0ysKL
-         zlw+WXZlx2mroCfG+sktBskW9AWGIVu91jLG651k=
+        b=Ba9rprN9Dym82i9g00oA5juY+syKtcBnuJFicgWwFIPjeSVmC9hbNiIadJJ9YPDWO
+         n+xjPGuRNDrg9feD7qZ1IJVY1I7JXJRFjnHBK2dKhzkl8D8EwPiGeb2q5jgSyjj9FZ
+         /zpnwKK15uw4WXXnIP02nkqeXmjHE39ZhseX1yXc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang He <windhl@126.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 109/321] i2c: mux: gpio: Add missing fwnode_handle_put()
+        patches@lists.linux.dev, Arthur Kiyanovski <akiyano@amazon.com>,
+        David Arinzon <darinzon@amazon.com>,
+        Noam Dagan <ndagan@amazon.com>,
+        Saeed Bishara <saeedb@amazon.com>,
+        Shay Agroskin <shayagr@amazon.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 081/259] net: ena: Flush XDP packets on error.
 Date:   Wed,  4 Oct 2023 19:54:14 +0200
-Message-ID: <20231004175234.292242991@linuxfoundation.org>
+Message-ID: <20231004175221.084982177@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,42 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liang He <windhl@126.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit db6aee6083a56ac4a6cd1b08fff7938072bcd0a3 ]
+[ Upstream commit 6f411fb5ca9419090bee6a0a46425e0a5060b734 ]
 
-In i2c_mux_gpio_probe_fw(), we should add fwnode_handle_put()
-when break out of the iteration device_for_each_child_node()
-as it will automatically increase and decrease the refcounter.
+xdp_do_flush() should be invoked before leaving the NAPI poll function
+after a XDP-redirect. This is not the case if the driver leaves via
+the error path (after having a redirect in one of its previous
+iterations).
 
-Fixes: 98b2b712bc85 ("i2c: i2c-mux-gpio: Enable this driver in ACPI land")
-Signed-off-by: Liang He <windhl@126.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Invoke xdp_do_flush() also in the error path.
+
+Cc: Arthur Kiyanovski <akiyano@amazon.com>
+Cc: David Arinzon <darinzon@amazon.com>
+Cc: Noam Dagan <ndagan@amazon.com>
+Cc: Saeed Bishara <saeedb@amazon.com>
+Cc: Shay Agroskin <shayagr@amazon.com>
+Fixes: a318c70ad152b ("net: ena: introduce XDP redirect implementation")
+Acked-by: Arthur Kiyanovski <akiyano@amazon.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/muxes/i2c-mux-gpio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/amazon/ena/ena_netdev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/i2c/muxes/i2c-mux-gpio.c b/drivers/i2c/muxes/i2c-mux-gpio.c
-index 5d5cbe0130cdf..5ca03bd34c8d1 100644
---- a/drivers/i2c/muxes/i2c-mux-gpio.c
-+++ b/drivers/i2c/muxes/i2c-mux-gpio.c
-@@ -105,8 +105,10 @@ static int i2c_mux_gpio_probe_fw(struct gpiomux *mux,
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index 5ce01ac72637e..42a66b74c1e5b 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -1778,6 +1778,9 @@ static int ena_clean_rx_irq(struct ena_ring *rx_ring, struct napi_struct *napi,
+ 	return work_done;
  
- 		} else if (is_acpi_node(child)) {
- 			rc = acpi_get_local_address(ACPI_HANDLE_FWNODE(child), values + i);
--			if (rc)
-+			if (rc) {
-+				fwnode_handle_put(child);
- 				return dev_err_probe(dev, rc, "Cannot get address\n");
-+			}
- 		}
+ error:
++	if (xdp_flags & ENA_XDP_REDIRECT)
++		xdp_do_flush();
++
+ 	adapter = netdev_priv(rx_ring->netdev);
  
- 		i++;
+ 	if (rc == -ENOSPC) {
 -- 
 2.40.1
 
