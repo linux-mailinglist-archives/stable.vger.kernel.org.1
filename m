@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D9127B88EE
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19DA17B87DC
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:10:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244003AbjJDSVG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:21:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47964 "EHLO
+        id S243905AbjJDSKN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:10:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244017AbjJDSVG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:06 -0400
+        with ESMTP id S243907AbjJDSKM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:10:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 450E19E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:21:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85288C433C8;
-        Wed,  4 Oct 2023 18:21:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F469E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:10:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4063C433C8;
+        Wed,  4 Oct 2023 18:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443661;
-        bh=DGfsvxRTN74dnqX81BjiS8TBez3Hf/5l3SpAW8gDtGA=;
+        s=korg; t=1696443009;
+        bh=r+slVaWufFnxsSDL/u8ruvVFOiJPnB5iBaayfhK74Io=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zT3h/H/I6AC31ZLsDBDA0LNRtKshI/+fMeHEketrFI+ZjlnT1FV4Ci9EvAiorQkkA
-         BK0HFtjGsSX13CjT0N0v6IN9hOVejzXJjvBJcL7lAHP8rctQVyb/7hYTCr6XiO/BnE
-         +eKLEyKP/ho+PPifbjcQCIZcyH1uuXkI+9AWniqI=
+        b=IVc+GJBc97GjBNAbgZzN2/JRuhlrhE+Wx1poaTcvxzHRxygD1gX9bfYcIOEoRkT8G
+         P11KlrJLe6DeiWxuFnyM63DmQFXRGpkwCiA7yFdt5IzyHkn0YqdA7cI3aJtLoMmxoM
+         G9d8CIwQWCXHfvpYadHEddv6qNJG0v68AiPHzMII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable <stable@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 6.1 218/259] serial: 8250_port: Check IRQ data before use
+        Daniel Starke <daniel.starke@siemens.com>
+Subject: [PATCH 5.15 160/183] Revert "tty: n_gsm: fix UAF in gsm_cleanup_mux"
 Date:   Wed,  4 Oct 2023 19:56:31 +0200
-Message-ID: <20231004175227.329124087@linuxfoundation.org>
+Message-ID: <20231004175210.723955147@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,53 +49,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Daniel Starke <daniel.starke@siemens.com>
 
-commit cce7fc8b29961b64fadb1ce398dc5ff32a79643b upstream.
+commit 29346e217b8ab8a52889b88f00b268278d6b7668 upstream.
 
-In case the leaf driver wants to use IRQ polling (irq = 0) and
-IIR register shows that an interrupt happened in the 8250 hardware
-the IRQ data can be NULL. In such a case we need to skip the wake
-event as we came to this path from the timer interrupt and quite
-likely system is already awake.
+This reverts commit 9b9c8195f3f0d74a826077fc1c01b9ee74907239.
 
-Without this fix we have got an Oops:
+The commit above is reverted as it did not solve the original issue.
 
-    serial8250: ttyS0 at I/O 0x3f8 (irq = 0, base_baud = 115200) is a 16550A
-    ...
-    BUG: kernel NULL pointer dereference, address: 0000000000000010
-    RIP: 0010:serial8250_handle_irq+0x7c/0x240
-    Call Trace:
-     ? serial8250_handle_irq+0x7c/0x240
-     ? __pfx_serial8250_timeout+0x10/0x10
+gsm_cleanup_mux() tries to free up the virtual ttys by calling
+gsm_dlci_release() for each available DLCI. There, dlci_put() is called to
+decrease the reference counter for the DLCI via tty_port_put() which
+finally calls gsm_dlci_free(). This already clears the pointer which is
+being checked in gsm_cleanup_mux() before calling gsm_dlci_release().
+Therefore, it is not necessary to clear this pointer in gsm_cleanup_mux()
+as done in the reverted commit. The commit introduces a null pointer
+dereference:
+ <TASK>
+ ? __die+0x1f/0x70
+ ? page_fault_oops+0x156/0x420
+ ? search_exception_tables+0x37/0x50
+ ? fixup_exception+0x21/0x310
+ ? exc_page_fault+0x69/0x150
+ ? asm_exc_page_fault+0x26/0x30
+ ? tty_port_put+0x19/0xa0
+ gsmtty_cleanup+0x29/0x80 [n_gsm]
+ release_one_tty+0x37/0xe0
+ process_one_work+0x1e6/0x3e0
+ worker_thread+0x4c/0x3d0
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe1/0x110
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2f/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
 
-Fixes: 0ba9e3a13c6a ("serial: 8250: Add missing wakeup event reporting")
+The actual issue is that nothing guards dlci_put() from being called
+multiple times while the tty driver was triggered but did not yet finished
+calling gsm_dlci_free().
+
+Fixes: 9b9c8195f3f0 ("tty: n_gsm: fix UAF in gsm_cleanup_mux")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20230831222555.614426-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
+Link: https://lore.kernel.org/r/20230914051507.3240-1-daniel.starke@siemens.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_port.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/tty/n_gsm.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1953,7 +1953,10 @@ int serial8250_handle_irq(struct uart_po
- 		skip_rx = true;
- 
- 	if (status & (UART_LSR_DR | UART_LSR_BI) && !skip_rx) {
--		if (irqd_is_wakeup_set(irq_get_irq_data(port->irq)))
-+		struct irq_data *d;
-+
-+		d = irq_get_irq_data(port->irq);
-+		if (d && irqd_is_wakeup_set(d))
- 			pm_wakeup_event(tport->tty->dev, 0);
- 		if (!up->dma || handle_rx_dma(up, iir))
- 			status = serial8250_rx_chars(up, status);
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -2412,10 +2412,8 @@ static void gsm_cleanup_mux(struct gsm_m
+ 		gsm->has_devices = false;
+ 	}
+ 	for (i = NUM_DLCI - 1; i >= 0; i--)
+-		if (gsm->dlci[i]) {
++		if (gsm->dlci[i])
+ 			gsm_dlci_release(gsm->dlci[i]);
+-			gsm->dlci[i] = NULL;
+-		}
+ 	mutex_unlock(&gsm->mutex);
+ 	/* Now wipe the queues */
+ 	tty_ldisc_flush(gsm->tty);
 
 
