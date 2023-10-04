@@ -2,49 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC7CC7B88ED
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C374D7B87D2
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:09:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243992AbjJDSVD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:21:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47896 "EHLO
+        id S243897AbjJDSJo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:09:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244003AbjJDSVD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:03 -0400
+        with ESMTP id S243872AbjJDSJo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84CCFA7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933AAC433C8;
-        Wed,  4 Oct 2023 18:20:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09C9CAD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC5FC433C8;
+        Wed,  4 Oct 2023 18:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443659;
-        bh=sq+0UgHVg0s+Yru6lJ8YjQj4gTAJrxB5lYT7yw1StN4=;
+        s=korg; t=1696442980;
+        bh=+KJw2UGpOlq8kRfmY2FLkahzWjmTIkzcEa+oAjKT3ew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=thqbL7Tgzw5ZXzXtN5OlX8IYO2AkqzWem21+GaUEUNKwDlmBLYGRKkIv6+qO425MA
-         dzMFOHPogdGQ8DU15PKjiV7ZxQYwCWoSLdQavg8Sg/nGfQJsL9WzZ/mCSTGyznLz+w
-         iZA/EXWLf/CTlVu+WZknfQLrS0AIZpqfX4m3S/mo=
+        b=Yxqk6q0Hpzxy2U5SiP0QvqPa66l0XPT7P18feoKMvgr2rC8QlwH0xaSVt4PLJWPH2
+         XSyVbrByvEytxkoQ9aPkhkP/Gu/DkO2TW3cbgiSH3bqo2o65EDgc6V2akA0aOzHL73
+         cYTFxQKQBpGzn8RBPXaMuo5GVDsoOfMVNJxOzK2o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Tomer Maimon <tmaimon77@gmail.com>,
-        Bruce Ashfield <bruce.ashfield@gmail.com>,
-        Jon Mason <jon.mason@arm.com>, Jon Mason <jdmason@kudzu.us>,
-        Ross Burton <ross@burtonini.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Mikko Rapeli <mikko.rapeli@linaro.org>
-Subject: [PATCH 6.1 235/259] arm64: defconfig: remove CONFIG_COMMON_CLK_NPCM8XX=y
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Bart Van Assche <bvanassche@acm.org>
+Subject: [PATCH 5.15 177/183] ata: libata-core: Fix ata_port_request_pm() locking
 Date:   Wed,  4 Oct 2023 19:56:48 +0200
-Message-ID: <20231004175228.162526155@linuxfoundation.org>
+Message-ID: <20231004175211.496855196@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +54,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 7d3e4e9d3bde9c8bd8914d47ddaa90e0d0ffbcab upstream.
+commit 3b8e0af4a7a331d1510e963b8fd77e2fca0a77f1 upstream.
 
-There is no code for this config option and enabling it in defconfig
-causes warnings from tools which are detecting unused and obsolete
-kernel config flags since the flag will be completely missing from
-effective build config after "make olddefconfig".
+The function ata_port_request_pm() checks the port flag
+ATA_PFLAG_PM_PENDING and calls ata_port_wait_eh() if this flag is set to
+ensure that power management operations for a port are not scheduled
+simultaneously. However, this flag check is done without holding the
+port lock.
 
-Fixes yocto kernel recipe build time warning:
+Fix this by taking the port lock on entry to the function and checking
+the flag under this lock. The lock is released and re-taken if
+ata_port_wait_eh() needs to be called. The two WARN_ON() macros checking
+that the ATA_PFLAG_PM_PENDING flag was cleared are removed as the first
+call is racy and the second one done without holding the port lock.
 
-WARNING: [kernel config]: This BSP contains fragments with warnings:
-...
-[INFO]: the following symbols were not found in the active
-configuration:
-     - CONFIG_COMMON_CLK_NPCM8XX
-
-The flag was added with commit 45472f1e5348c7b755b4912f2f529ec81cea044b
-v5.19-rc4-15-g45472f1e5348 so 6.1 and 6.4 stable kernel trees are
-affected.
-
-Fixes: 45472f1e5348c7b755b4912f2f529ec81cea044b ("arm64: defconfig: Add Nuvoton NPCM family support")
-Cc: stable@kernel.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Bjorn Andersson <quic_bjorande@quicinc.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Tomer Maimon <tmaimon77@gmail.com>
-Cc: Bruce Ashfield <bruce.ashfield@gmail.com>
-Cc: Jon Mason <jon.mason@arm.com>
-Cc: Jon Mason <jdmason@kudzu.us>
-Cc: Ross Burton <ross@burtonini.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 5ef41082912b ("ata: add ata port system PM callbacks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/configs/defconfig |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/ata/libata-core.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -1050,7 +1050,6 @@ CONFIG_COMMON_CLK_FSL_SAI=y
- CONFIG_COMMON_CLK_S2MPS11=y
- CONFIG_COMMON_CLK_PWM=y
- CONFIG_COMMON_CLK_VC5=y
--CONFIG_COMMON_CLK_NPCM8XX=y
- CONFIG_COMMON_CLK_BD718XX=m
- CONFIG_CLK_RASPBERRYPI=m
- CONFIG_CLK_IMX8MM=y
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -4999,17 +4999,19 @@ static void ata_port_request_pm(struct a
+ 	struct ata_link *link;
+ 	unsigned long flags;
+ 
+-	/* Previous resume operation might still be in
+-	 * progress.  Wait for PM_PENDING to clear.
++	spin_lock_irqsave(ap->lock, flags);
++
++	/*
++	 * A previous PM operation might still be in progress. Wait for
++	 * ATA_PFLAG_PM_PENDING to clear.
+ 	 */
+ 	if (ap->pflags & ATA_PFLAG_PM_PENDING) {
++		spin_unlock_irqrestore(ap->lock, flags);
+ 		ata_port_wait_eh(ap);
+-		WARN_ON(ap->pflags & ATA_PFLAG_PM_PENDING);
++		spin_lock_irqsave(ap->lock, flags);
+ 	}
+ 
+-	/* request PM ops to EH */
+-	spin_lock_irqsave(ap->lock, flags);
+-
++	/* Request PM operation to EH */
+ 	ap->pm_mesg = mesg;
+ 	ap->pflags |= ATA_PFLAG_PM_PENDING;
+ 	ata_for_each_link(link, ap, HOST_FIRST) {
+@@ -5021,10 +5023,8 @@ static void ata_port_request_pm(struct a
+ 
+ 	spin_unlock_irqrestore(ap->lock, flags);
+ 
+-	if (!async) {
++	if (!async)
+ 		ata_port_wait_eh(ap);
+-		WARN_ON(ap->pflags & ATA_PFLAG_PM_PENDING);
+-	}
+ }
+ 
+ /*
 
 
