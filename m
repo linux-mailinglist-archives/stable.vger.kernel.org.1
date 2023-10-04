@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 900207B88F0
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE1617B8A5C
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244039AbjJDSVM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48038 "EHLO
+        id S244407AbjJDSeq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:34:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244015AbjJDSVL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:11 -0400
+        with ESMTP id S244410AbjJDSep (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E6098
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:21:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F692C433C8;
-        Wed,  4 Oct 2023 18:21:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0360DAD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285A1C433C7;
+        Wed,  4 Oct 2023 18:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443667;
-        bh=YaAm3MmlE6cjj4OvhDvVI41xF5vM/i6JPWwOHcmilp8=;
+        s=korg; t=1696444481;
+        bh=riv2YbLMGeIOcCSeFAC4PKy94Ag2L2hNJLgoE3g8VCQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G5LbNNf7oR1F8NKD4sQut9jp4fvBWCUFN5n5def6uCn0z8OGTnYfUASnUBHw4MgNV
-         kbU0TtGPvsJUkR4hm/ENt3k1+PNiL73i1BFsaQUVWw2c4yM6z6WrZyAuM00r8r/qD4
-         4y5nbqlPyDr4N0J9Ea2D+jFdd+n3rXTbjN0sYdEU=
+        b=o7khuuQNosxEWAlsNiZG3CVsMQD0rtKhpUVgDpTpxdYGonhvgEOPmQ8tXXo1ewnD7
+         LWKW5lkOB12UXzhbA3ka+BMM48WYFip5RMdCTjmgz11yZ/g9meE/LAp2S/P+WfxuB4
+         +66EKcl16HHu8qquPetM0tIzBtCkAgP3EwGa1OnU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rafael Aquini <aquini@redhat.com>,
-        Waiman Long <longman@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.1 237/259] mm/slab_common: fix slab_caches list corruption after kmem_cache_destroy()
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.5 265/321] scsi: sd: Differentiate system and runtime start/stop management
 Date:   Wed,  4 Oct 2023 19:56:50 +0200
-Message-ID: <20231004175228.248443969@linuxfoundation.org>
+Message-ID: <20231004175241.544316088@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,91 +51,293 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Aquini <aquini@redhat.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 46a9ea6681907a3be6b6b0d43776dccc62cad6cf upstream.
+commit 3cc2ffe5c16dc65dfac354bc5b5bc98d3b397567 upstream.
 
-After the commit in Fixes:, if a module that created a slab cache does not
-release all of its allocated objects before destroying the cache (at rmmod
-time), we might end up releasing the kmem_cache object without removing it
-from the slab_caches list thus corrupting the list as kmem_cache_destroy()
-ignores the return value from shutdown_cache(), which in turn never removes
-the kmem_cache object from slabs_list in case __kmem_cache_shutdown() fails
-to release all of the cache's slabs.
+The underlying device and driver of a SCSI disk may have different
+system and runtime power mode control requirements. This is because
+runtime power management affects only the SCSI disk, while system level
+power management affects all devices, including the controller for the
+SCSI disk.
 
-This is easily observable on a kernel built with CONFIG_DEBUG_LIST=y
-as after that ill release the system will immediately trip on list_add,
-or list_del, assertions similar to the one shown below as soon as another
-kmem_cache gets created, or destroyed:
+For instance, issuing a START STOP UNIT command when a SCSI disk is
+runtime suspended and resumed is fine: the command is translated to a
+STANDBY IMMEDIATE command to spin down the ATA disk and to a VERIFY
+command to wake it up. The SCSI disk runtime operations have no effect
+on the ata port device used to connect the ATA disk. However, for
+system suspend/resume operations, the ATA port used to connect the
+device will also be suspended and resumed, with the resume operation
+requiring re-validating the device link and the device itself. In this
+case, issuing a VERIFY command to spinup the disk must be done before
+starting to revalidate the device, when the ata port is being resumed.
+In such case, we must not allow the SCSI disk driver to issue START STOP
+UNIT commands.
 
-  [ 1041.213632] list_del corruption. next->prev should be ffff89f596fb5768, but was 52f1e5016aeee75d. (next=ffff89f595a1b268)
-  [ 1041.219165] ------------[ cut here ]------------
-  [ 1041.221517] kernel BUG at lib/list_debug.c:62!
-  [ 1041.223452] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-  [ 1041.225408] CPU: 2 PID: 1852 Comm: rmmod Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
-  [ 1041.228244] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
-  [ 1041.231212] RIP: 0010:__list_del_entry_valid+0xae/0xb0
+Allow a low level driver to refine the SCSI disk start/stop management
+by differentiating system and runtime cases with two new SCSI device
+flags: manage_system_start_stop and manage_runtime_start_stop. These new
+flags replace the current manage_start_stop flag. Drivers setting the
+manage_start_stop are modifed to set both new flags, thus preserving the
+existing start/stop management behavior. For backward compatibility, the
+old manage_start_stop sysfs device attribute is kept as a read-only
+attribute showing a value of 1 for devices enabling both new flags and 0
+otherwise.
 
-Another quick way to trigger this issue, in a kernel with CONFIG_SLUB=y,
-is to set slub_debug to poison the released objects and then just run
-cat /proc/slabinfo after removing the module that leaks slab objects,
-in which case the kernel will panic:
-
-  [   50.954843] general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 [#1] PREEMPT SMP PTI
-  [   50.961545] CPU: 2 PID: 1495 Comm: cat Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
-  [   50.966808] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
-  [   50.972663] RIP: 0010:get_slabinfo+0x42/0xf0
-
-This patch fixes this issue by properly checking shutdown_cache()'s
-return value before taking the kmem_cache_release() branch.
-
-Fixes: 0495e337b703 ("mm/slab_common: Deleting kobject in kmem_cache_destroy() without holding slab_mutex/cpu_hotplug_lock")
-Signed-off-by: Rafael Aquini <aquini@redhat.com>
+Fixes: 0a8589055936 ("ata,scsi: do not issue START STOP UNIT on resume")
 Cc: stable@vger.kernel.org
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slab_common.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/ata/libata-scsi.c  |    3 +
+ drivers/firewire/sbp2.c    |    9 +++-
+ drivers/scsi/sd.c          |   90 ++++++++++++++++++++++++++++++++++++---------
+ include/scsi/scsi_device.h |    5 ++
+ 4 files changed, 84 insertions(+), 23 deletions(-)
 
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -474,7 +474,7 @@ void slab_kmem_cache_release(struct kmem
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1106,7 +1106,8 @@ int ata_scsi_dev_config(struct scsi_devi
+ 		 * will be woken up by ata_port_pm_resume() with a port reset
+ 		 * and device revalidation.
+ 		 */
+-		sdev->manage_start_stop = 1;
++		sdev->manage_system_start_stop = true;
++		sdev->manage_runtime_start_stop = true;
+ 		sdev->no_start_on_resume = 1;
+ 	}
  
- void kmem_cache_destroy(struct kmem_cache *s)
- {
--	int refcnt;
-+	int err = -EBUSY;
- 	bool rcu_set;
+--- a/drivers/firewire/sbp2.c
++++ b/drivers/firewire/sbp2.c
+@@ -81,7 +81,8 @@ MODULE_PARM_DESC(exclusive_login, "Exclu
+  *
+  * - power condition
+  *   Set the power condition field in the START STOP UNIT commands sent by
+- *   sd_mod on suspend, resume, and shutdown (if manage_start_stop is on).
++ *   sd_mod on suspend, resume, and shutdown (if manage_system_start_stop or
++ *   manage_runtime_start_stop is on).
+  *   Some disks need this to spin down or to resume properly.
+  *
+  * - override internal blacklist
+@@ -1517,8 +1518,10 @@ static int sbp2_scsi_slave_configure(str
  
- 	if (unlikely(!s) || !kasan_check_byte(s))
-@@ -485,17 +485,17 @@ void kmem_cache_destroy(struct kmem_cach
+ 	sdev->use_10_for_rw = 1;
  
- 	rcu_set = s->flags & SLAB_TYPESAFE_BY_RCU;
+-	if (sbp2_param_exclusive_login)
+-		sdev->manage_start_stop = 1;
++	if (sbp2_param_exclusive_login) {
++		sdev->manage_system_start_stop = true;
++		sdev->manage_runtime_start_stop = true;
++	}
  
--	refcnt = --s->refcount;
--	if (refcnt)
-+	s->refcount--;
-+	if (s->refcount)
- 		goto out_unlock;
- 
--	WARN(shutdown_cache(s),
--	     "%s %s: Slab cache still has objects when called from %pS",
-+	err = shutdown_cache(s);
-+	WARN(err, "%s %s: Slab cache still has objects when called from %pS",
- 	     __func__, s->name, (void *)_RET_IP_);
- out_unlock:
- 	mutex_unlock(&slab_mutex);
- 	cpus_read_unlock();
--	if (!refcnt && !rcu_set)
-+	if (!err && !rcu_set)
- 		kmem_cache_release(s);
+ 	if (sdev->type == TYPE_ROM)
+ 		sdev->use_10_for_ms = 1;
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -213,18 +213,32 @@ cache_type_store(struct device *dev, str
  }
- EXPORT_SYMBOL(kmem_cache_destroy);
+ 
+ static ssize_t
+-manage_start_stop_show(struct device *dev, struct device_attribute *attr,
+-		       char *buf)
++manage_start_stop_show(struct device *dev,
++		       struct device_attribute *attr, char *buf)
+ {
+ 	struct scsi_disk *sdkp = to_scsi_disk(dev);
+ 	struct scsi_device *sdp = sdkp->device;
+ 
+-	return sprintf(buf, "%u\n", sdp->manage_start_stop);
++	return sysfs_emit(buf, "%u\n",
++			  sdp->manage_system_start_stop &&
++			  sdp->manage_runtime_start_stop);
+ }
++static DEVICE_ATTR_RO(manage_start_stop);
+ 
+ static ssize_t
+-manage_start_stop_store(struct device *dev, struct device_attribute *attr,
+-			const char *buf, size_t count)
++manage_system_start_stop_show(struct device *dev,
++			      struct device_attribute *attr, char *buf)
++{
++	struct scsi_disk *sdkp = to_scsi_disk(dev);
++	struct scsi_device *sdp = sdkp->device;
++
++	return sysfs_emit(buf, "%u\n", sdp->manage_system_start_stop);
++}
++
++static ssize_t
++manage_system_start_stop_store(struct device *dev,
++			       struct device_attribute *attr,
++			       const char *buf, size_t count)
+ {
+ 	struct scsi_disk *sdkp = to_scsi_disk(dev);
+ 	struct scsi_device *sdp = sdkp->device;
+@@ -236,11 +250,42 @@ manage_start_stop_store(struct device *d
+ 	if (kstrtobool(buf, &v))
+ 		return -EINVAL;
+ 
+-	sdp->manage_start_stop = v;
++	sdp->manage_system_start_stop = v;
+ 
+ 	return count;
+ }
+-static DEVICE_ATTR_RW(manage_start_stop);
++static DEVICE_ATTR_RW(manage_system_start_stop);
++
++static ssize_t
++manage_runtime_start_stop_show(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	struct scsi_disk *sdkp = to_scsi_disk(dev);
++	struct scsi_device *sdp = sdkp->device;
++
++	return sysfs_emit(buf, "%u\n", sdp->manage_runtime_start_stop);
++}
++
++static ssize_t
++manage_runtime_start_stop_store(struct device *dev,
++				struct device_attribute *attr,
++				const char *buf, size_t count)
++{
++	struct scsi_disk *sdkp = to_scsi_disk(dev);
++	struct scsi_device *sdp = sdkp->device;
++	bool v;
++
++	if (!capable(CAP_SYS_ADMIN))
++		return -EACCES;
++
++	if (kstrtobool(buf, &v))
++		return -EINVAL;
++
++	sdp->manage_runtime_start_stop = v;
++
++	return count;
++}
++static DEVICE_ATTR_RW(manage_runtime_start_stop);
+ 
+ static ssize_t
+ allow_restart_show(struct device *dev, struct device_attribute *attr, char *buf)
+@@ -572,6 +617,8 @@ static struct attribute *sd_disk_attrs[]
+ 	&dev_attr_FUA.attr,
+ 	&dev_attr_allow_restart.attr,
+ 	&dev_attr_manage_start_stop.attr,
++	&dev_attr_manage_system_start_stop.attr,
++	&dev_attr_manage_runtime_start_stop.attr,
+ 	&dev_attr_protection_type.attr,
+ 	&dev_attr_protection_mode.attr,
+ 	&dev_attr_app_tag_own.attr,
+@@ -3810,13 +3857,20 @@ static void sd_shutdown(struct device *d
+ 		sd_sync_cache(sdkp, NULL);
+ 	}
+ 
+-	if (system_state != SYSTEM_RESTART && sdkp->device->manage_start_stop) {
++	if (system_state != SYSTEM_RESTART &&
++	    sdkp->device->manage_system_start_stop) {
+ 		sd_printk(KERN_NOTICE, sdkp, "Stopping disk\n");
+ 		sd_start_stop_device(sdkp, 0);
+ 	}
+ }
+ 
+-static int sd_suspend_common(struct device *dev, bool ignore_stop_errors)
++static inline bool sd_do_start_stop(struct scsi_device *sdev, bool runtime)
++{
++	return (sdev->manage_system_start_stop && !runtime) ||
++		(sdev->manage_runtime_start_stop && runtime);
++}
++
++static int sd_suspend_common(struct device *dev, bool runtime)
+ {
+ 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+ 	struct scsi_sense_hdr sshdr;
+@@ -3848,12 +3902,12 @@ static int sd_suspend_common(struct devi
+ 		}
+ 	}
+ 
+-	if (sdkp->device->manage_start_stop) {
++	if (sd_do_start_stop(sdkp->device, runtime)) {
+ 		if (!sdkp->device->silence_suspend)
+ 			sd_printk(KERN_NOTICE, sdkp, "Stopping disk\n");
+ 		/* an error is not worth aborting a system sleep */
+ 		ret = sd_start_stop_device(sdkp, 0);
+-		if (ignore_stop_errors)
++		if (!runtime)
+ 			ret = 0;
+ 	}
+ 
+@@ -3865,23 +3919,23 @@ static int sd_suspend_system(struct devi
+ 	if (pm_runtime_suspended(dev))
+ 		return 0;
+ 
+-	return sd_suspend_common(dev, true);
++	return sd_suspend_common(dev, false);
+ }
+ 
+ static int sd_suspend_runtime(struct device *dev)
+ {
+-	return sd_suspend_common(dev, false);
++	return sd_suspend_common(dev, true);
+ }
+ 
+-static int sd_resume(struct device *dev)
++static int sd_resume(struct device *dev, bool runtime)
+ {
+ 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+-	int ret = 0;
++	int ret;
+ 
+ 	if (!sdkp)	/* E.g.: runtime resume at the start of sd_probe() */
+ 		return 0;
+ 
+-	if (!sdkp->device->manage_start_stop)
++	if (!sd_do_start_stop(sdkp->device, runtime))
+ 		return 0;
+ 
+ 	if (!sdkp->device->no_start_on_resume) {
+@@ -3899,7 +3953,7 @@ static int sd_resume_system(struct devic
+ 	if (pm_runtime_suspended(dev))
+ 		return 0;
+ 
+-	return sd_resume(dev);
++	return sd_resume(dev, false);
+ }
+ 
+ static int sd_resume_runtime(struct device *dev)
+@@ -3926,7 +3980,7 @@ static int sd_resume_runtime(struct devi
+ 				  "Failed to clear sense data\n");
+ 	}
+ 
+-	return sd_resume(dev);
++	return sd_resume(dev, true);
+ }
+ 
+ /**
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -161,6 +161,10 @@ struct scsi_device {
+ 				 * pass settings from slave_alloc to scsi
+ 				 * core. */
+ 	unsigned int eh_timeout; /* Error handling timeout */
++
++	bool manage_system_start_stop; /* Let HLD (sd) manage system start/stop */
++	bool manage_runtime_start_stop; /* Let HLD (sd) manage runtime start/stop */
++
+ 	unsigned removable:1;
+ 	unsigned changed:1;	/* Data invalid due to media change */
+ 	unsigned busy:1;	/* Used to prevent races */
+@@ -193,7 +197,6 @@ struct scsi_device {
+ 	unsigned use_192_bytes_for_3f:1; /* ask for 192 bytes from page 0x3f */
+ 	unsigned no_start_on_add:1;	/* do not issue start on add */
+ 	unsigned allow_restart:1; /* issue START_UNIT in error handler */
+-	unsigned manage_start_stop:1;	/* Let HLD (sd) manage start/stop */
+ 	unsigned no_start_on_resume:1; /* Do not issue START_STOP_UNIT on resume */
+ 	unsigned start_stop_pwr_cond:1;	/* Set power cond. in START_STOP_UNIT */
+ 	unsigned no_uld_attach:1; /* disable connecting to upper level drivers */
 
 
