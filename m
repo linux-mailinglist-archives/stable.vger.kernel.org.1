@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D47DD7B8A0D
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E767B88A4
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244343AbjJDSbt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:31:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48716 "EHLO
+        id S244111AbjJDSSL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:18:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244523AbjJDSbp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:31:45 -0400
+        with ESMTP id S244112AbjJDSSL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92841C0
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:31:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D877CC433C7;
-        Wed,  4 Oct 2023 18:31:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C54BA6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CC0C433C8;
+        Wed,  4 Oct 2023 18:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444301;
-        bh=jf1aUvFedx4uNvtHV7ig5Vj6miW3QyhEQ70eS6yhMyw=;
+        s=korg; t=1696443483;
+        bh=GJ4vk/q3eUJwxVljs6kv4r0oeR5m1+T5XqaJGjFxcK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=slar3g4FF48WRiP0jqpK2Lki9uIsUyNci0NhinaJJw22sJIJ9zJon8aa11Da7EgZ/
-         aewbYTlTfBt98op/6t+ocGW7vASUQR0Lq95cEo1gaPLnysIkgv5GtUuPpkAu+BpPeN
-         p0XUPip1wuzQFiV6Wg0K2kXimS468GjKbJzCZ8pw=
+        b=w6G+CtiDR0f08YgmitldgA/N9n1WdbWaaXPqmEcebaisPv+Gj2ZjSQZp9enqiq6DQ
+         oDvsyyYI292c/cZg/kkMLQTkjuI654N7BS4FZ+raArriX4ZB8P8swCcGMZtxlOisnU
+         0/+W7JTZyzvqupYWDAcxB7N0EXRas0q0aYHXrCHc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
         Damien Le Moal <dlemoal@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 201/321] ata: libata-eh: do not clear ATA_PFLAG_EH_PENDING in ata_eh_reset()
+Subject: [PATCH 6.1 173/259] ata: libata-eh: do not clear ATA_PFLAG_EH_PENDING in ata_eh_reset()
 Date:   Wed,  4 Oct 2023 19:55:46 +0200
-Message-ID: <20231004175238.550630905@linuxfoundation.org>
+Message-ID: <20231004175225.223687125@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,7 +50,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -144,10 +144,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 35e03679b0bfe..d7914c7d1a0d1 100644
+index a3ae5fc2a42fc..6d4c80b6daaef 100644
 --- a/drivers/ata/libata-eh.c
 +++ b/drivers/ata/libata-eh.c
-@@ -2822,18 +2822,11 @@ int ata_eh_reset(struct ata_link *link, int classify,
+@@ -2704,18 +2704,11 @@ int ata_eh_reset(struct ata_link *link, int classify,
  		}
  	}
  
@@ -168,7 +168,7 @@ index 35e03679b0bfe..d7914c7d1a0d1 100644
 +		slave->eh_info.serror = 0;
  	spin_unlock_irqrestore(link->ap->lock, flags);
  
- 	if (ata_port_is_frozen(ap))
+ 	if (ap->pflags & ATA_PFLAG_FROZEN)
 -- 
 2.40.1
 
