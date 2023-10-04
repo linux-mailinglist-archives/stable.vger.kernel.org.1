@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D874C7B88BA
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B41C67B8A1D
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233773AbjJDSSt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:18:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52362 "EHLO
+        id S244360AbjJDSc0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:32:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233675AbjJDSSt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:49 -0400
+        with ESMTP id S244222AbjJDScZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CDA9C4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CE9C433C7;
-        Wed,  4 Oct 2023 18:18:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 247C2CE
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65928C433C7;
+        Wed,  4 Oct 2023 18:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443526;
-        bh=4OJrUy1V6CYpUK6LXnNcSyohvEhXLDH2jI2uherje10=;
+        s=korg; t=1696444340;
+        bh=LJYHAMppZzhhHLbVTcxQaPjF5kpUF47oaxD2UzUOFgo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GFvU0ehUrDmwxtbeolCa6llor/HaMBI0wSxoXpoJssqC/kENoTVoIKFDbfeJD+7Tm
-         WmDnX5t/F1em3MixJruuQYt2/MbEVhMsyazU29Qbau5FwiCGDBDDd4irPWpY0Ykju3
-         8x9mRGLK3cPlJBLZsOu35gbxCye0wom6yrz6ORmw=
+        b=zKbXxK4T2BMCTriIlf/xWxbWYoE6r30wjXxv/ujt5kag37ec7dDXTtUDKaU/3svCd
+         BMo1hoTYgwQz947/aB27IekpPAsmMjtWAqt9V/Ew4YkXwR5p3wBfLhHpYMikH30UNe
+         mDjgoG0H0T92Lxw37wvcxaFznHaUOhaJ6DnmUgq0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, Mukul Joshi <mukul.joshi@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/259] ring-buffer: Do not attempt to read past "commit"
+Subject: [PATCH 6.5 187/321] drm/amdkfd: Update cache info reporting for GFX v9.4.3
 Date:   Wed,  4 Oct 2023 19:55:32 +0200
-Message-ID: <20231004175224.587024854@linuxfoundation.org>
+Message-ID: <20231004175237.906042472@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,59 +51,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Mukul Joshi <mukul.joshi@amd.com>
 
-[ Upstream commit 95a404bd60af6c4d9d8db01ad14fe8957ece31ca ]
+[ Upstream commit 0752e66e91fa86fa5481b04b22053363833ffb85 ]
 
-When iterating over the ring buffer while the ring buffer is active, the
-writer can corrupt the reader. There's barriers to help detect this and
-handle it, but that code missed the case where the last event was at the
-very end of the page and has only 4 bytes left.
+Update cache info reporting in sysfs to report the correct
+number of CUs and associated cache information based on
+different spatial partitioning modes.
 
-The checks to detect the corruption by the writer to reads needs to see the
-length of the event. If the length in the first 4 bytes is zero then the
-length is stored in the second 4 bytes. But if the writer is in the process
-of updating that code, there's a small window where the length in the first
-4 bytes could be zero even though the length is only 4 bytes. That will
-cause rb_event_length() to read the next 4 bytes which could happen to be off the
-allocated page.
-
-To protect against this, fail immediately if the next event pointer is
-less than 8 bytes from the end of the commit (last byte of data), as all
-events must be a minimum of 8 bytes anyway.
-
-Link: https://lore.kernel.org/all/20230905141245.26470-1-Tze-nan.Wu@mediatek.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20230907122820.0899019c@gandalf.local.home
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Reported-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.h     |  4 ++
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 82 +++++++++++++----------
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.h |  2 +-
+ 3 files changed, 51 insertions(+), 37 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 42ad59a002365..c0b708b55c3b9 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2388,6 +2388,11 @@ rb_iter_head_event(struct ring_buffer_iter *iter)
- 	 */
- 	commit = rb_page_commit(iter_head_page);
- 	smp_rmb();
-+
-+	/* An event needs to be at least 8 bytes in size */
-+	if (iter->head > commit - 8)
-+		goto reset;
-+
- 	event = __rb_page_index(iter_head_page, iter->head);
- 	length = rb_event_length(event);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+index fc719389b5d65..4684711aa695a 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+@@ -79,6 +79,10 @@ struct crat_header {
+ #define CRAT_SUBTYPE_IOLINK_AFFINITY		5
+ #define CRAT_SUBTYPE_MAX			6
  
++/*
++ * Do not change the value of CRAT_SIBLINGMAP_SIZE from 32
++ * as it breaks the ABI.
++ */
+ #define CRAT_SIBLINGMAP_SIZE	32
+ 
+ /*
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index ea67a353beb00..5582191022106 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -1650,14 +1650,17 @@ static int fill_in_l1_pcache(struct kfd_cache_properties **props_ext,
+ static int fill_in_l2_l3_pcache(struct kfd_cache_properties **props_ext,
+ 				struct kfd_gpu_cache_info *pcache_info,
+ 				struct kfd_cu_info *cu_info,
+-				int cache_type, unsigned int cu_processor_id)
++				int cache_type, unsigned int cu_processor_id,
++				struct kfd_node *knode)
+ {
+ 	unsigned int cu_sibling_map_mask;
+ 	int first_active_cu;
+-	int i, j, k;
++	int i, j, k, xcc, start, end;
+ 	struct kfd_cache_properties *pcache = NULL;
+ 
+-	cu_sibling_map_mask = cu_info->cu_bitmap[0][0][0];
++	start = ffs(knode->xcc_mask) - 1;
++	end = start + NUM_XCC(knode->xcc_mask);
++	cu_sibling_map_mask = cu_info->cu_bitmap[start][0][0];
+ 	cu_sibling_map_mask &=
+ 		((1 << pcache_info[cache_type].num_cu_shared) - 1);
+ 	first_active_cu = ffs(cu_sibling_map_mask);
+@@ -1692,16 +1695,18 @@ static int fill_in_l2_l3_pcache(struct kfd_cache_properties **props_ext,
+ 		cu_sibling_map_mask = cu_sibling_map_mask >> (first_active_cu - 1);
+ 		k = 0;
+ 
+-		for (i = 0; i < cu_info->num_shader_engines; i++) {
+-			for (j = 0; j < cu_info->num_shader_arrays_per_engine; j++) {
+-				pcache->sibling_map[k] = (uint8_t)(cu_sibling_map_mask & 0xFF);
+-				pcache->sibling_map[k+1] = (uint8_t)((cu_sibling_map_mask >> 8) & 0xFF);
+-				pcache->sibling_map[k+2] = (uint8_t)((cu_sibling_map_mask >> 16) & 0xFF);
+-				pcache->sibling_map[k+3] = (uint8_t)((cu_sibling_map_mask >> 24) & 0xFF);
+-				k += 4;
+-
+-				cu_sibling_map_mask = cu_info->cu_bitmap[0][i % 4][j + i / 4];
+-				cu_sibling_map_mask &= ((1 << pcache_info[cache_type].num_cu_shared) - 1);
++		for (xcc = start; xcc < end; xcc++) {
++			for (i = 0; i < cu_info->num_shader_engines; i++) {
++				for (j = 0; j < cu_info->num_shader_arrays_per_engine; j++) {
++					pcache->sibling_map[k] = (uint8_t)(cu_sibling_map_mask & 0xFF);
++					pcache->sibling_map[k+1] = (uint8_t)((cu_sibling_map_mask >> 8) & 0xFF);
++					pcache->sibling_map[k+2] = (uint8_t)((cu_sibling_map_mask >> 16) & 0xFF);
++					pcache->sibling_map[k+3] = (uint8_t)((cu_sibling_map_mask >> 24) & 0xFF);
++					k += 4;
++
++					cu_sibling_map_mask = cu_info->cu_bitmap[xcc][i % 4][j + i / 4];
++					cu_sibling_map_mask &= ((1 << pcache_info[cache_type].num_cu_shared) - 1);
++				}
+ 			}
+ 		}
+ 		pcache->sibling_map_size = k;
+@@ -1719,7 +1724,7 @@ static int fill_in_l2_l3_pcache(struct kfd_cache_properties **props_ext,
+ static void kfd_fill_cache_non_crat_info(struct kfd_topology_device *dev, struct kfd_node *kdev)
+ {
+ 	struct kfd_gpu_cache_info *pcache_info = NULL;
+-	int i, j, k;
++	int i, j, k, xcc, start, end;
+ 	int ct = 0;
+ 	unsigned int cu_processor_id;
+ 	int ret;
+@@ -1753,37 +1758,42 @@ static void kfd_fill_cache_non_crat_info(struct kfd_topology_device *dev, struct
+ 	 *			then it will consider only one CU from
+ 	 *			the shared unit
+ 	 */
++	start = ffs(kdev->xcc_mask) - 1;
++	end = start + NUM_XCC(kdev->xcc_mask);
++
+ 	for (ct = 0; ct < num_of_cache_types; ct++) {
+ 		cu_processor_id = gpu_processor_id;
+ 		if (pcache_info[ct].cache_level == 1) {
+-			for (i = 0; i < pcu_info->num_shader_engines; i++) {
+-				for (j = 0; j < pcu_info->num_shader_arrays_per_engine; j++) {
+-					for (k = 0; k < pcu_info->num_cu_per_sh; k += pcache_info[ct].num_cu_shared) {
+-
+-						ret = fill_in_l1_pcache(&props_ext, pcache_info, pcu_info,
+-									pcu_info->cu_bitmap[0][i % 4][j + i / 4], ct,
+-									cu_processor_id, k);
+-
+-						if (ret < 0)
+-							break;
+-
+-						if (!ret) {
+-							num_of_entries++;
+-							list_add_tail(&props_ext->list, &dev->cache_props);
++			for (xcc = start; xcc < end; xcc++) {
++				for (i = 0; i < pcu_info->num_shader_engines; i++) {
++					for (j = 0; j < pcu_info->num_shader_arrays_per_engine; j++) {
++						for (k = 0; k < pcu_info->num_cu_per_sh; k += pcache_info[ct].num_cu_shared) {
++
++							ret = fill_in_l1_pcache(&props_ext, pcache_info, pcu_info,
++										pcu_info->cu_bitmap[xcc][i % 4][j + i / 4], ct,
++										cu_processor_id, k);
++
++							if (ret < 0)
++								break;
++
++							if (!ret) {
++								num_of_entries++;
++								list_add_tail(&props_ext->list, &dev->cache_props);
++							}
++
++							/* Move to next CU block */
++							num_cu_shared = ((k + pcache_info[ct].num_cu_shared) <=
++								pcu_info->num_cu_per_sh) ?
++								pcache_info[ct].num_cu_shared :
++								(pcu_info->num_cu_per_sh - k);
++							cu_processor_id += num_cu_shared;
+ 						}
+-
+-						/* Move to next CU block */
+-						num_cu_shared = ((k + pcache_info[ct].num_cu_shared) <=
+-							pcu_info->num_cu_per_sh) ?
+-							pcache_info[ct].num_cu_shared :
+-							(pcu_info->num_cu_per_sh - k);
+-						cu_processor_id += num_cu_shared;
+ 					}
+ 				}
+ 			}
+ 		} else {
+ 			ret = fill_in_l2_l3_pcache(&props_ext, pcache_info,
+-								pcu_info, ct, cu_processor_id);
++					pcu_info, ct, cu_processor_id, kdev);
+ 
+ 			if (ret < 0)
+ 				break;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+index cba2cd5ed9d19..46927263e014d 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+@@ -86,7 +86,7 @@ struct kfd_mem_properties {
+ 	struct attribute	attr;
+ };
+ 
+-#define CACHE_SIBLINGMAP_SIZE 64
++#define CACHE_SIBLINGMAP_SIZE 128
+ 
+ struct kfd_cache_properties {
+ 	struct list_head	list;
 -- 
 2.40.1
 
