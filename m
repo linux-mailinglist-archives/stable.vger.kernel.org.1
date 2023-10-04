@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13C137B8A4F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C7277B88AB
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244399AbjJDSeQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:34:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39414 "EHLO
+        id S232954AbjJDSSZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:18:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244383AbjJDSeP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:15 -0400
+        with ESMTP id S243892AbjJDSJU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30707DD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE6EC433CA;
-        Wed,  4 Oct 2023 18:34:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E26E9C9
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFE9C433C8;
+        Wed,  4 Oct 2023 18:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444450;
-        bh=yG8UkNoYGrOBm3sCAH2yCSqfMO5sMoP9tkvXiWJIvpw=;
+        s=korg; t=1696442955;
+        bh=IRofGcQLhywcNGP1TyhfFty64M6KwyUFRifPZjmLgOs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aOllZANEpxjFKDBXm7sBG+ESMHEYa6OiTYAumLSG0/rdTAfiaMA+yUt+tSFuMvsNP
-         ktxOnVUFYnFn8sqoJR+lpinTbhAdytR0WnIyMFS+WMDHydifGE1GBjeuZGDdMnWglK
-         JIUUyXWAtY+Vf/yFAwQo8IIBtVQ59E7LBYt2UDCM=
+        b=m4Ur+VuNwZtddrkaPAY09fuaHM1vJGCv7dKACbQQFdm7fhd+1nfjgycXl7KbpoNNX
+         mUe4fmnSN8tZONtxkuwMRoeNM4YvS6cMfEF7H6Bm8nHq039x/7ypj28YfxK8S9bnZO
+         gbMPv3t6RokxE1fqMksxI4qaJMHbF/GJD2s0URfU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pan Bian <bianpan2016@163.com>,
-        Ferry Meng <mengferry@linux.alibaba.com>,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 255/321] nilfs2: fix potential use after free in nilfs_gccache_submit_read_data()
+        patches@lists.linux.dev, Thomas Leonard <talex5@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 169/183] io_uring/fs: remove sqe->rw_flags checking from LINKAT
 Date:   Wed,  4 Oct 2023 19:56:40 +0200
-Message-ID: <20231004175241.082564220@linuxfoundation.org>
+Message-ID: <20231004175211.118225963@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,65 +49,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pan Bian <bianpan2016@163.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 7ee29facd8a9c5a26079148e36bcf07141b3a6bc upstream.
+commit a52d4f657568d6458e873f74a9602e022afe666f upstream.
 
-In nilfs_gccache_submit_read_data(), brelse(bh) is called to drop the
-reference count of bh when the call to nilfs_dat_translate() fails.  If
-the reference count hits 0 and its owner page gets unlocked, bh may be
-freed.  However, bh->b_page is dereferenced to put the page after that,
-which may result in a use-after-free bug.  This patch moves the release
-operation after unlocking and putting the page.
+This is unionized with the actual link flags, so they can of course be
+set and they will be evaluated further down. If not we fail any LINKAT
+that has to set option flags.
 
-NOTE: The function in question is only called in GC, and in combination
-with current userland tools, address translation using DAT does not occur
-in that function, so the code path that causes this issue will not be
-executed.  However, it is possible to run that code path by intentionally
-modifying the userland GC library or by calling the GC ioctl directly.
-
-[konishi.ryusuke@gmail.com: NOTE added to the commit log]
-Link: https://lkml.kernel.org/r/1543201709-53191-1-git-send-email-bianpan2016@163.com
-Link: https://lkml.kernel.org/r/20230921141731.10073-1-konishi.ryusuke@gmail.com
-Fixes: a3d93f709e89 ("nilfs2: block cache for garbage collection")
-Signed-off-by: Pan Bian <bianpan2016@163.com>
-Reported-by: Ferry Meng <mengferry@linux.alibaba.com>
-Closes: https://lkml.kernel.org/r/20230818092022.111054-1-mengferry@linux.alibaba.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: cf30da90bc3a ("io_uring: add support for IORING_OP_LINKAT")
+Cc: stable@vger.kernel.org
+Reported-by: Thomas Leonard <talex5@gmail.com>
+Link: https://github.com/axboe/liburing/issues/955
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/gcinode.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ io_uring/io_uring.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/gcinode.c
-+++ b/fs/nilfs2/gcinode.c
-@@ -73,10 +73,8 @@ int nilfs_gccache_submit_read_data(struc
- 		struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -4038,7 +4038,7 @@ static int io_linkat_prep(struct io_kioc
  
- 		err = nilfs_dat_translate(nilfs->ns_dat, vbn, &pbn);
--		if (unlikely(err)) { /* -EIO, -ENOMEM, -ENOENT */
--			brelse(bh);
-+		if (unlikely(err)) /* -EIO, -ENOMEM, -ENOENT */
- 			goto failed;
--		}
- 	}
- 
- 	lock_buffer(bh);
-@@ -102,6 +100,8 @@ int nilfs_gccache_submit_read_data(struc
-  failed:
- 	unlock_page(bh->b_page);
- 	put_page(bh->b_page);
-+	if (unlikely(err))
-+		brelse(bh);
- 	return err;
- }
- 
+ 	if (unlikely(req->ctx->flags & IORING_SETUP_IOPOLL))
+ 		return -EINVAL;
+-	if (sqe->ioprio || sqe->rw_flags || sqe->buf_index || sqe->splice_fd_in)
++	if (sqe->ioprio || sqe->buf_index || sqe->splice_fd_in)
+ 		return -EINVAL;
+ 	if (unlikely(req->flags & REQ_F_FIXED_FILE))
+ 		return -EBADF;
 
 
