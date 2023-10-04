@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB9F7B894F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 271E37B8952
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244160AbjJDSYm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:24:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60926 "EHLO
+        id S244164AbjJDSYs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:24:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243728AbjJDSYl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:24:41 -0400
+        with ESMTP id S243728AbjJDSYq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:24:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A897FA6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:24:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95E6C433C8;
-        Wed,  4 Oct 2023 18:24:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 422B49E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:24:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F95AC433C9;
+        Wed,  4 Oct 2023 18:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443877;
-        bh=qJMefuaV4J3Dv2BJ1ns09N/pb/5z5CgccdFmLDCJrlo=;
+        s=korg; t=1696443882;
+        bh=KD0Q+xv6n38kIh/3n5w05WkHGBYGP7u6I4koN/i9N7E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fecDCqPBg/wdfQiGleuYpm4ddL8HC/SfGSQU44nuBBXoag9KEphfEdKl7qBlGMrqc
-         v8K7IY1TPUTWJMiQeMulsvR9N4FbmOq++ToxJRP3OnaMiERNSoUkwcDa5KqwmzwfXh
-         xm+Fc76UerY9VVAvk3IwFzbURq3fTSvkN//EI44o=
+        b=CbESpDGOdZs1dOiEk+mlRV/Fg/TyY1ONZkz8ejblWVnAItBTwiTq0FTDG/pETFras
+         HcWEmD1RWMY1NxKNfzX8CnAvS1V1ElwGvrxUjqwvrxZwYKL+SMZvkdDumNXwAzQ6Qf
+         IHlQMTie89FRtCk2BW4jwTkUyq98UG7LKN3QzlbI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 051/321] net: microchip: sparx5: Fix possible memory leaks in vcap_api_kunit
-Date:   Wed,  4 Oct 2023 19:53:16 +0200
-Message-ID: <20231004175231.525169131@linuxfoundation.org>
+Subject: [PATCH 6.5 052/321] selftests: tls: swap the TX and RX sockets in some tests
+Date:   Wed,  4 Oct 2023 19:53:17 +0200
+Message-ID: <20231004175231.577070306@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
 References: <20231004175229.211487444@linuxfoundation.org>
@@ -54,232 +54,53 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 2a2dffd911d4139258b828b9c5056cb64b826758 ]
+[ Upstream commit c326ca98446e0ae4fee43a40acf79412b74cfedb ]
 
-Inject fault while probing kunit-example-test.ko, the duprule which
-is allocated by kzalloc in vcap_dup_rule() of
-test_vcap_xn_rule_creator() is not freed, and it cause the memory leaks
-below. Use vcap_del_rule() to free them as other functions do it.
+tls.sendmsg_large and tls.sendmsg_multiple are trying to send through
+the self->cfd socket (only configured with TLS_RX) and to receive through
+the self->fd socket (only configured with TLS_TX), so they're not using
+kTLS at all. Swap the sockets.
 
-unreferenced object 0xffff6eb4846f6180 (size 192):
-  comm "kunit_try_catch", pid 405, jiffies 4294895522 (age 880.004s)
-  hex dump (first 32 bytes):
-    10 27 00 00 04 00 00 00 0a 00 00 00 f4 01 00 00  .'..............
-    00 00 00 00 00 00 00 00 98 61 6f 84 b4 6e ff ff  .........ao..n..
-  backtrace:
-    [<00000000f1b5b86e>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000c56cdd9a>] __kmem_cache_alloc_node+0x174/0x290
-    [<0000000046ef1b64>] kmalloc_trace+0x40/0x164
-    [<000000008565145b>] vcap_dup_rule+0x38/0x210
-    [<00000000bd9e1f12>] vcap_add_rule+0x29c/0x32c
-    [<0000000070a539b1>] test_vcap_xn_rule_creator.constprop.43+0x120/0x330
-    [<00000000d2ac4ccb>] vcap_api_rule_insert_in_order_test+0xa4/0x114
-    [<000000000f88f9cb>] kunit_try_run_case+0x50/0xac
-    [<00000000e848de5a>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000058a88b6b>] kthread+0x124/0x130
-    [<00000000891cf28a>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff6eb4846f6240 (size 192):
-  comm "kunit_try_catch", pid 405, jiffies 4294895524 (age 879.996s)
-  hex dump (first 32 bytes):
-    10 27 00 00 04 00 00 00 14 00 00 00 90 01 00 00  .'..............
-    00 00 00 00 00 00 00 00 58 62 6f 84 b4 6e ff ff  ........Xbo..n..
-  backtrace:
-    [<00000000f1b5b86e>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000c56cdd9a>] __kmem_cache_alloc_node+0x174/0x290
-    [<0000000046ef1b64>] kmalloc_trace+0x40/0x164
-    [<000000008565145b>] vcap_dup_rule+0x38/0x210
-    [<00000000bd9e1f12>] vcap_add_rule+0x29c/0x32c
-    [<0000000070a539b1>] test_vcap_xn_rule_creator.constprop.43+0x120/0x330
-    [<0000000052e6ad35>] vcap_api_rule_insert_in_order_test+0xbc/0x114
-    [<000000000f88f9cb>] kunit_try_run_case+0x50/0xac
-    [<00000000e848de5a>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000058a88b6b>] kthread+0x124/0x130
-    [<00000000891cf28a>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff6eb4846f6300 (size 192):
-  comm "kunit_try_catch", pid 405, jiffies 4294895524 (age 879.996s)
-  hex dump (first 32 bytes):
-    10 27 00 00 04 00 00 00 1e 00 00 00 2c 01 00 00  .'..........,...
-    00 00 00 00 00 00 00 00 18 63 6f 84 b4 6e ff ff  .........co..n..
-  backtrace:
-    [<00000000f1b5b86e>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000c56cdd9a>] __kmem_cache_alloc_node+0x174/0x290
-    [<0000000046ef1b64>] kmalloc_trace+0x40/0x164
-    [<000000008565145b>] vcap_dup_rule+0x38/0x210
-    [<00000000bd9e1f12>] vcap_add_rule+0x29c/0x32c
-    [<0000000070a539b1>] test_vcap_xn_rule_creator.constprop.43+0x120/0x330
-    [<000000001b0895d4>] vcap_api_rule_insert_in_order_test+0xd4/0x114
-    [<000000000f88f9cb>] kunit_try_run_case+0x50/0xac
-    [<00000000e848de5a>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000058a88b6b>] kthread+0x124/0x130
-    [<00000000891cf28a>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff6eb4846f63c0 (size 192):
-  comm "kunit_try_catch", pid 405, jiffies 4294895524 (age 880.012s)
-  hex dump (first 32 bytes):
-    10 27 00 00 04 00 00 00 28 00 00 00 c8 00 00 00  .'......(.......
-    00 00 00 00 00 00 00 00 d8 63 6f 84 b4 6e ff ff  .........co..n..
-  backtrace:
-    [<00000000f1b5b86e>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000c56cdd9a>] __kmem_cache_alloc_node+0x174/0x290
-    [<0000000046ef1b64>] kmalloc_trace+0x40/0x164
-    [<000000008565145b>] vcap_dup_rule+0x38/0x210
-    [<00000000bd9e1f12>] vcap_add_rule+0x29c/0x32c
-    [<0000000070a539b1>] test_vcap_xn_rule_creator.constprop.43+0x120/0x330
-    [<00000000134c151f>] vcap_api_rule_insert_in_order_test+0xec/0x114
-    [<000000000f88f9cb>] kunit_try_run_case+0x50/0xac
-    [<00000000e848de5a>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000058a88b6b>] kthread+0x124/0x130
-    [<00000000891cf28a>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff6eb4845fc180 (size 192):
-  comm "kunit_try_catch", pid 407, jiffies 4294895527 (age 880.000s)
-  hex dump (first 32 bytes):
-    10 27 00 00 04 00 00 00 14 00 00 00 c8 00 00 00  .'..............
-    00 00 00 00 00 00 00 00 98 c1 5f 84 b4 6e ff ff  .........._..n..
-  backtrace:
-    [<00000000f1b5b86e>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000c56cdd9a>] __kmem_cache_alloc_node+0x174/0x290
-    [<0000000046ef1b64>] kmalloc_trace+0x40/0x164
-    [<000000008565145b>] vcap_dup_rule+0x38/0x210
-    [<00000000bd9e1f12>] vcap_add_rule+0x29c/0x32c
-    [<0000000070a539b1>] test_vcap_xn_rule_creator.constprop.43+0x120/0x330
-    [<00000000fa5f64d3>] vcap_api_rule_insert_reverse_order_test+0xc8/0x600
-    [<000000000f88f9cb>] kunit_try_run_case+0x50/0xac
-    [<00000000e848de5a>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000058a88b6b>] kthread+0x124/0x130
-    [<00000000891cf28a>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff6eb4845fc240 (size 192):
-  comm "kunit_try_catch", pid 407, jiffies 4294895527 (age 880.000s)
-  hex dump (first 32 bytes):
-    10 27 00 00 04 00 00 00 1e 00 00 00 2c 01 00 00  .'..........,...
-    00 00 00 00 00 00 00 00 58 c2 5f 84 b4 6e ff ff  ........X._..n..
-  backtrace:
-    [<00000000f1b5b86e>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000c56cdd9a>] __kmem_cache_alloc_node+0x174/0x290
-    [<0000000046ef1b64>] kmalloc_trace+0x40/0x164
-    [<000000008565145b>] vcap_dup_rule+0x38/0x210
-    [<00000000453dcd80>] vcap_add_rule+0x134/0x32c
-    [<0000000070a539b1>] test_vcap_xn_rule_creator.constprop.43+0x120/0x330
-    [<00000000a7db42de>] vcap_api_rule_insert_reverse_order_test+0x108/0x600
-    [<000000000f88f9cb>] kunit_try_run_case+0x50/0xac
-    [<00000000e848de5a>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000058a88b6b>] kthread+0x124/0x130
-    [<00000000891cf28a>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff6eb4845fc300 (size 192):
-  comm "kunit_try_catch", pid 407, jiffies 4294895527 (age 880.000s)
-  hex dump (first 32 bytes):
-    10 27 00 00 04 00 00 00 28 00 00 00 90 01 00 00  .'......(.......
-    00 00 00 00 00 00 00 00 18 c3 5f 84 b4 6e ff ff  .........._..n..
-  backtrace:
-    [<00000000f1b5b86e>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000c56cdd9a>] __kmem_cache_alloc_node+0x174/0x290
-    [<0000000046ef1b64>] kmalloc_trace+0x40/0x164
-    [<000000008565145b>] vcap_dup_rule+0x38/0x210
-    [<00000000453dcd80>] vcap_add_rule+0x134/0x32c
-    [<0000000070a539b1>] test_vcap_xn_rule_creator.constprop.43+0x120/0x330
-    [<00000000ea416c94>] vcap_api_rule_insert_reverse_order_test+0x150/0x600
-    [<000000000f88f9cb>] kunit_try_run_case+0x50/0xac
-    [<00000000e848de5a>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000058a88b6b>] kthread+0x124/0x130
-    [<00000000891cf28a>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff6eb4845fc3c0 (size 192):
-  comm "kunit_try_catch", pid 407, jiffies 4294895527 (age 880.020s)
-  hex dump (first 32 bytes):
-    10 27 00 00 04 00 00 00 32 00 00 00 f4 01 00 00  .'......2.......
-    00 00 00 00 00 00 00 00 d8 c3 5f 84 b4 6e ff ff  .........._..n..
-  backtrace:
-    [<00000000f1b5b86e>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000c56cdd9a>] __kmem_cache_alloc_node+0x174/0x290
-    [<0000000046ef1b64>] kmalloc_trace+0x40/0x164
-    [<000000008565145b>] vcap_dup_rule+0x38/0x210
-    [<00000000453dcd80>] vcap_add_rule+0x134/0x32c
-    [<0000000070a539b1>] test_vcap_xn_rule_creator.constprop.43+0x120/0x330
-    [<00000000764a39b4>] vcap_api_rule_insert_reverse_order_test+0x198/0x600
-    [<000000000f88f9cb>] kunit_try_run_case+0x50/0xac
-    [<00000000e848de5a>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000058a88b6b>] kthread+0x124/0x130
-    [<00000000891cf28a>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff6eb484cd4240 (size 192):
-  comm "kunit_try_catch", pid 413, jiffies 4294895543 (age 879.956s)
-  hex dump (first 32 bytes):
-    10 27 00 00 04 00 00 00 1e 00 00 00 2c 01 00 00  .'..........,...
-    00 00 00 00 00 00 00 00 58 42 cd 84 b4 6e ff ff  ........XB...n..
-  backtrace:
-    [<00000000f1b5b86e>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000c56cdd9a>] __kmem_cache_alloc_node+0x174/0x290
-    [<0000000046ef1b64>] kmalloc_trace+0x40/0x164
-    [<000000008565145b>] vcap_dup_rule+0x38/0x210
-    [<00000000bd9e1f12>] vcap_add_rule+0x29c/0x32c
-    [<0000000070a539b1>] test_vcap_xn_rule_creator.constprop.43+0x120/0x330
-    [<0000000023976dd4>] vcap_api_rule_remove_in_front_test+0x158/0x658
-    [<000000000f88f9cb>] kunit_try_run_case+0x50/0xac
-    [<00000000e848de5a>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000058a88b6b>] kthread+0x124/0x130
-    [<00000000891cf28a>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff6eb484cd4300 (size 192):
-  comm "kunit_try_catch", pid 413, jiffies 4294895543 (age 879.956s)
-  hex dump (first 32 bytes):
-    10 27 00 00 04 00 00 00 28 00 00 00 c8 00 00 00  .'......(.......
-    00 00 00 00 00 00 00 00 18 43 cd 84 b4 6e ff ff  .........C...n..
-  backtrace:
-    [<00000000f1b5b86e>] slab_post_alloc_hook+0xb8/0x368
-    [<00000000c56cdd9a>] __kmem_cache_alloc_node+0x174/0x290
-    [<0000000046ef1b64>] kmalloc_trace+0x40/0x164
-    [<000000008565145b>] vcap_dup_rule+0x38/0x210
-    [<00000000bd9e1f12>] vcap_add_rule+0x29c/0x32c
-    [<0000000070a539b1>] test_vcap_xn_rule_creator.constprop.43+0x120/0x330
-    [<000000000b4760ff>] vcap_api_rule_remove_in_front_test+0x170/0x658
-    [<000000000f88f9cb>] kunit_try_run_case+0x50/0xac
-    [<00000000e848de5a>] kunit_generic_run_threadfn_adapter+0x20/0x2c
-    [<0000000058a88b6b>] kthread+0x124/0x130
-    [<00000000891cf28a>] ret_from_fork+0x10/0x20
-
-Fixes: dccc30cc4906 ("net: microchip: sparx5: Add KUNIT test of counters and sorted rules")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Fixes: 7f657d5bf507 ("selftests: tls: add selftests for TLS sockets")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/microchip/vcap/vcap_api_kunit.c    | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tools/testing/selftests/net/tls.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
-index 99f04a53a442b..fe4e166de8a04 100644
---- a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
-+++ b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
-@@ -1597,6 +1597,11 @@ static void vcap_api_rule_insert_in_order_test(struct kunit *test)
- 	test_vcap_xn_rule_creator(test, 10000, VCAP_USER_QOS, 20, 400, 6, 774);
- 	test_vcap_xn_rule_creator(test, 10000, VCAP_USER_QOS, 30, 300, 3, 771);
- 	test_vcap_xn_rule_creator(test, 10000, VCAP_USER_QOS, 40, 200, 2, 768);
-+
-+	vcap_del_rule(&test_vctrl, &test_netdev, 200);
-+	vcap_del_rule(&test_vctrl, &test_netdev, 300);
-+	vcap_del_rule(&test_vctrl, &test_netdev, 400);
-+	vcap_del_rule(&test_vctrl, &test_netdev, 500);
- }
+diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
+index a3c57004344c6..6ec8b8335bdbf 100644
+--- a/tools/testing/selftests/net/tls.c
++++ b/tools/testing/selftests/net/tls.c
+@@ -552,11 +552,11 @@ TEST_F(tls, sendmsg_large)
  
- static void vcap_api_rule_insert_reverse_order_test(struct kunit *test)
-@@ -1655,6 +1660,11 @@ static void vcap_api_rule_insert_reverse_order_test(struct kunit *test)
- 		++idx;
+ 		msg.msg_iov = &vec;
+ 		msg.msg_iovlen = 1;
+-		EXPECT_EQ(sendmsg(self->cfd, &msg, 0), send_len);
++		EXPECT_EQ(sendmsg(self->fd, &msg, 0), send_len);
  	}
- 	KUNIT_EXPECT_EQ(test, 768, admin.last_used_addr);
-+
-+	vcap_del_rule(&test_vctrl, &test_netdev, 500);
-+	vcap_del_rule(&test_vctrl, &test_netdev, 400);
-+	vcap_del_rule(&test_vctrl, &test_netdev, 300);
-+	vcap_del_rule(&test_vctrl, &test_netdev, 200);
- }
  
- static void vcap_api_rule_remove_at_end_test(struct kunit *test)
-@@ -1855,6 +1865,9 @@ static void vcap_api_rule_remove_in_front_test(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, 786, test_init_start);
- 	KUNIT_EXPECT_EQ(test, 8, test_init_count);
- 	KUNIT_EXPECT_EQ(test, 794, admin.last_used_addr);
-+
-+	vcap_del_rule(&test_vctrl, &test_netdev, 200);
-+	vcap_del_rule(&test_vctrl, &test_netdev, 300);
- }
+ 	while (recvs++ < sends) {
+-		EXPECT_NE(recv(self->fd, mem, send_len, 0), -1);
++		EXPECT_NE(recv(self->cfd, mem, send_len, 0), -1);
+ 	}
  
- static struct kunit_case vcap_api_rule_remove_test_cases[] = {
+ 	free(mem);
+@@ -585,9 +585,9 @@ TEST_F(tls, sendmsg_multiple)
+ 	msg.msg_iov = vec;
+ 	msg.msg_iovlen = iov_len;
+ 
+-	EXPECT_EQ(sendmsg(self->cfd, &msg, 0), total_len);
++	EXPECT_EQ(sendmsg(self->fd, &msg, 0), total_len);
+ 	buf = malloc(total_len);
+-	EXPECT_NE(recv(self->fd, buf, total_len, 0), -1);
++	EXPECT_NE(recv(self->cfd, buf, total_len, 0), -1);
+ 	for (i = 0; i < iov_len; i++) {
+ 		EXPECT_EQ(memcmp(test_strs[i], buf + len_cmp,
+ 				 strlen(test_strs[i])),
 -- 
 2.40.1
 
