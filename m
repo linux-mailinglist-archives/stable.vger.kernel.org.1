@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B17667B88EA
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B49937B87D0
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:09:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233591AbjJDSUy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:20:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45526 "EHLO
+        id S243638AbjJDSJj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:09:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244015AbjJDSUx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:53 -0400
+        with ESMTP id S243880AbjJDSJj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA064AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31326C433C8;
-        Wed,  4 Oct 2023 18:20:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E775AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD985C433C8;
+        Wed,  4 Oct 2023 18:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443650;
-        bh=Aov6PEk+zngv7WOH1GyuFn3/GrMKndA1nS+0iqWm/ns=;
+        s=korg; t=1696442975;
+        bh=1x6fN8pmWzOn+je0D2z9K5VgOpdsczf/Q/Fet/fuWZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W6llhECkVPsD2IurzKhrrEe8F9Mzetcukn8l9Nvty/bqz6q223xqDN7hCex8NaoNL
-         r4hELgVZou3Rvp1ZRaV2ekFtaYLJggbID6kN2RcV1rWej0FddPI3b50ZEQPCkcCI9+
-         d+rTolNEhDsIlnDrDc1m5Y6mHrxH8LErpg0w97vs=
+        b=X2XhlYZVTzWI5Hv3WRQzKGM1HebtUGmUwzA3CxawNO+kF6nSh+z05odulwrZU0JHc
+         lx4fSdVr0hnBsNIjRwZDoGz58AI6Pm4IGUqhCdA0aSkcYR0nI0ZMXCf22TZRQMvPDZ
+         cKdLeDu149OIbbI8xuQifChrUFCmNzb3nFh7/SQY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>
-Subject: [PATCH 6.1 232/259] Revert "SUNRPC dont update timeout value on connection reset"
-Date:   Wed,  4 Oct 2023 19:56:45 +0200
-Message-ID: <20231004175228.005357407@linuxfoundation.org>
+        Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>,
+        Marcus Seyfarth <m.seyfarth@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>
+Subject: [PATCH 5.15 175/183] bpf: Fix BTF_ID symbol generation collision in tools/
+Date:   Wed,  4 Oct 2023 19:56:46 +0200
+Message-ID: <20231004175211.405023981@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
 
-commit a275ab62606bcd894ddff09460f7d253828313dc upstream.
+commit c0bb9fb0e52a64601d38b3739b729d9138d4c8a1 upstream.
 
-This reverts commit 88428cc4ae7abcc879295fbb19373dd76aad2bdd.
+Marcus and Satya reported an issue where BTF_ID macro generates same
+symbol in separate objects and that breaks final vmlinux link.
 
-The problem this commit is intended to fix was comprehensively fixed
-in commit 7de62bc09fe6 ("SUNRPC dont update timeout value on connection
-reset").
-Since then, this commit has been preventing the correct timeout of soft
-mounted requests.
+  ld.lld: error: ld-temp.o <inline asm>:14577:1: symbol
+  '__BTF_ID__struct__cgroup__624' is already defined
 
-Cc: stable@vger.kernel.org # 5.9.x: 09252177d5f9: SUNRPC: Handle major timeout in xprt_adjust_timeout()
-Cc: stable@vger.kernel.org # 5.9.x: 7de62bc09fe6: SUNRPC dont update timeout value on connection reset
-Cc: stable@vger.kernel.org # 5.9.x
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+This can be triggered under specific configs when __COUNTER__ happens to
+be the same for the same symbol in two different translation units,
+which is already quite unlikely to happen.
+
+Add __LINE__ number suffix to make BTF_ID symbol more unique, which is
+not a complete fix, but it would help for now and meanwhile we can work
+on better solution as suggested by Andrii.
+
+Cc: stable@vger.kernel.org
+Reported-by: Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>
+Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1913
+Debugged-by: Nathan Chancellor <nathan@kernel.org>
+Co-developed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/CAEf4Bzb5KQ2_LmhN769ifMeSJaWfebccUasQOfQKaOd0nQ51tw@mail.gmail.com/
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Link: https://lore.kernel.org/r/20230915-bpf_collision-v3-2-263fc519c21f@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/clnt.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/include/linux/btf_ids.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -2462,8 +2462,7 @@ call_status(struct rpc_task *task)
- 		goto out_exit;
- 	}
- 	task->tk_action = call_encode;
--	if (status != -ECONNRESET && status != -ECONNABORTED)
--		rpc_check_timeout(task);
-+	rpc_check_timeout(task);
- 	return;
- out_exit:
- 	rpc_call_rpcerror(task, status);
+--- a/tools/include/linux/btf_ids.h
++++ b/tools/include/linux/btf_ids.h
+@@ -38,7 +38,7 @@ asm(							\
+ 	____BTF_ID(symbol)
+ 
+ #define __ID(prefix) \
+-	__PASTE(prefix, __COUNTER__)
++	__PASTE(__PASTE(prefix, __COUNTER__), __LINE__)
+ 
+ /*
+  * The BTF_ID defines unique symbol for each ID pointing
 
 
