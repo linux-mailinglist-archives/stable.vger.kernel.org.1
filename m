@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93A127B88AD
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BACC37B8768
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:04:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233363AbjJDSS0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:18:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46370 "EHLO
+        id S243773AbjJDSE6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:04:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244063AbjJDSQP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:16:15 -0400
+        with ESMTP id S243791AbjJDSE5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:04:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0646C4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:16:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DA1C433C7;
-        Wed,  4 Oct 2023 18:16:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADEE0E9
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:04:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8172C433C8;
+        Wed,  4 Oct 2023 18:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443370;
-        bh=BOlXeeQUPbbpE8AA4LAzi83cYGui+cbvR/SKjpGHclM=;
+        s=korg; t=1696442693;
+        bh=XXNHbmjh2NXf+mNDpSYVuBCl85e+MLhdHlMh4eieQ5w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G5eHLMhniTyHaLthyyoFuNfHuYGY7rtCVHQobS6Xp8mrpZ4vsRNhz0K1Gdb09sn13
-         CsmfePQBynewD9tyZbPUnvqXoY6EsGlZOUsxvVNynKgI+5kxXhjEt1w9ieTUIyEU3B
-         XJtvkRbn5YhHyBkFcw6LYKG9Pji5GnWpbHhXwOTM=
+        b=gl4foDF8tvDks9z3PD9uhHPfEygBySMmLZ78q95pdKhbC+5Jhb/35wpgH6yCeutPa
+         RiOZmh+1W+bvONhP6lPoZ4mLVjuxC0MC6CMhnnVDfARMkGtiMwQxPvqPzZUkZlhw+t
+         r4dKgpxUIMQKc5tTxaxs7IpOkSAO8eFUgFdS+edg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Gray <bgray@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, "Darrick J. Wong" <djwong@kernel.org>,
+        Dave Chinner <dchinner@redhat.com>,
+        Dave Chinner <david@fromorbit.com>,
+        Leah Rumancik <leah.rumancik@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/259] selftests/powerpc: Use CLEAN macro to fix make warning
-Date:   Wed,  4 Oct 2023 19:55:06 +0200
-Message-ID: <20231004175223.469082323@linuxfoundation.org>
+Subject: [PATCH 5.15 076/183] xfs: disable reaping in fscounters scrub
+Date:   Wed,  4 Oct 2023 19:55:07 +0200
+Message-ID: <20231004175207.054978919@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,57 +52,143 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Gray <bgray@linux.ibm.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 69608683a65be5322ef44091eaeb9890472b2eea ]
+[ Upstream commit 2d5f38a31980d7090f5bf91021488dc61a0ba8ee ]
 
-The CLEAN macro was added in 337f1e36 to prevent the
+The fscounters scrub code doesn't work properly because it cannot
+quiesce updates to the percpu counters in the filesystem, hence it
+returns false corruption reports.  This has been fixed properly in
+one of the online repair patchsets that are under review by replacing
+the xchk_disable_reaping calls with an exclusive filesystem freeze.
+Disabling background gc isn't sufficient to fix the problem.
 
-    Makefile:50: warning: overriding recipe for target 'clean'
-    ../../lib.mk:124: warning: ignoring old recipe for target 'clean'
+In other words, scrub doesn't need to call xfs_inodegc_stop, which is
+just as well since it wasn't correct to allow scrub to call
+xfs_inodegc_start when something else could be calling xfs_inodegc_stop
+(e.g. trying to freeze the filesystem).
 
-style warnings. Expand it's use to fix another case of redefining a
-target directly.
+Neuter the scrubber for now, and remove the xchk_*_reaping functions.
 
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230228000709.124727-2-bgray@linux.ibm.com
-Stable-dep-of: 58b33e78a317 ("selftests/powerpc: Fix emit_tests to work with run_kselftest.sh")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Dave Chinner <david@fromorbit.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/pmu/Makefile | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/xfs/scrub/common.c     | 25 -------------------------
+ fs/xfs/scrub/common.h     |  2 --
+ fs/xfs/scrub/fscounters.c | 13 ++++++-------
+ fs/xfs/scrub/scrub.c      |  2 --
+ fs/xfs/scrub/scrub.h      |  1 -
+ 5 files changed, 6 insertions(+), 37 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/pmu/Makefile b/tools/testing/selftests/powerpc/pmu/Makefile
-index 30803353bd7cc..d2c1accc2e69c 100644
---- a/tools/testing/selftests/powerpc/pmu/Makefile
-+++ b/tools/testing/selftests/powerpc/pmu/Makefile
-@@ -46,11 +46,14 @@ override define INSTALL_RULE
- 	TARGET=event_code_tests; BUILD_TARGET=$$OUTPUT/$$TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET install
- endef
+diff --git a/fs/xfs/scrub/common.c b/fs/xfs/scrub/common.c
+index bf1f3607d0b60..08df23edea720 100644
+--- a/fs/xfs/scrub/common.c
++++ b/fs/xfs/scrub/common.c
+@@ -864,28 +864,3 @@ xchk_ilock_inverted(
+ 	return -EDEADLOCK;
+ }
  
--clean:
-+DEFAULT_CLEAN := $(CLEAN)
-+override define CLEAN
-+	$(DEFAULT_CLEAN)
- 	$(RM) $(TEST_GEN_PROGS) $(OUTPUT)/loop.o
- 	TARGET=ebb; BUILD_TARGET=$$OUTPUT/$$TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET clean
- 	TARGET=sampling_tests; BUILD_TARGET=$$OUTPUT/$$TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET clean
- 	TARGET=event_code_tests; BUILD_TARGET=$$OUTPUT/$$TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET clean
-+endef
+-/* Pause background reaping of resources. */
+-void
+-xchk_stop_reaping(
+-	struct xfs_scrub	*sc)
+-{
+-	sc->flags |= XCHK_REAPING_DISABLED;
+-	xfs_blockgc_stop(sc->mp);
+-	xfs_inodegc_stop(sc->mp);
+-}
+-
+-/* Restart background reaping of resources. */
+-void
+-xchk_start_reaping(
+-	struct xfs_scrub	*sc)
+-{
+-	/*
+-	 * Readonly filesystems do not perform inactivation or speculative
+-	 * preallocation, so there's no need to restart the workers.
+-	 */
+-	if (!xfs_is_readonly(sc->mp)) {
+-		xfs_inodegc_start(sc->mp);
+-		xfs_blockgc_start(sc->mp);
+-	}
+-	sc->flags &= ~XCHK_REAPING_DISABLED;
+-}
+diff --git a/fs/xfs/scrub/common.h b/fs/xfs/scrub/common.h
+index 454145db10e71..2ca80102e704a 100644
+--- a/fs/xfs/scrub/common.h
++++ b/fs/xfs/scrub/common.h
+@@ -148,7 +148,5 @@ static inline bool xchk_skip_xref(struct xfs_scrub_metadata *sm)
  
- ebb:
- 	TARGET=$@; BUILD_TARGET=$$OUTPUT/$$TARGET; mkdir -p $$BUILD_TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -k -C $$TARGET all
-@@ -61,4 +64,4 @@ sampling_tests:
- event_code_tests:
- 	TARGET=$@; BUILD_TARGET=$$OUTPUT/$$TARGET; mkdir -p $$BUILD_TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -k -C $$TARGET all
+ int xchk_metadata_inode_forks(struct xfs_scrub *sc);
+ int xchk_ilock_inverted(struct xfs_inode *ip, uint lock_mode);
+-void xchk_stop_reaping(struct xfs_scrub *sc);
+-void xchk_start_reaping(struct xfs_scrub *sc);
  
--.PHONY: all run_tests clean ebb sampling_tests event_code_tests
-+.PHONY: all run_tests ebb sampling_tests event_code_tests
+ #endif	/* __XFS_SCRUB_COMMON_H__ */
+diff --git a/fs/xfs/scrub/fscounters.c b/fs/xfs/scrub/fscounters.c
+index 48a6cbdf95d08..037541339d80a 100644
+--- a/fs/xfs/scrub/fscounters.c
++++ b/fs/xfs/scrub/fscounters.c
+@@ -128,13 +128,6 @@ xchk_setup_fscounters(
+ 	if (error)
+ 		return error;
+ 
+-	/*
+-	 * Pause background reclaim while we're scrubbing to reduce the
+-	 * likelihood of background perturbations to the counters throwing off
+-	 * our calculations.
+-	 */
+-	xchk_stop_reaping(sc);
+-
+ 	return xchk_trans_alloc(sc, 0);
+ }
+ 
+@@ -353,6 +346,12 @@ xchk_fscounters(
+ 	if (fdblocks > mp->m_sb.sb_dblocks)
+ 		xchk_set_corrupt(sc);
+ 
++	/*
++	 * XXX: We can't quiesce percpu counter updates, so exit early.
++	 * This can be re-enabled when we gain exclusive freeze functionality.
++	 */
++	return 0;
++
+ 	/*
+ 	 * If ifree exceeds icount by more than the minimum variance then
+ 	 * something's probably wrong with the counters.
+diff --git a/fs/xfs/scrub/scrub.c b/fs/xfs/scrub/scrub.c
+index 51e4c61916d20..e4d2a41983f73 100644
+--- a/fs/xfs/scrub/scrub.c
++++ b/fs/xfs/scrub/scrub.c
+@@ -171,8 +171,6 @@ xchk_teardown(
+ 	}
+ 	if (sc->sm->sm_flags & XFS_SCRUB_IFLAG_REPAIR)
+ 		mnt_drop_write_file(sc->file);
+-	if (sc->flags & XCHK_REAPING_DISABLED)
+-		xchk_start_reaping(sc);
+ 	if (sc->flags & XCHK_HAS_QUOTAOFFLOCK) {
+ 		mutex_unlock(&sc->mp->m_quotainfo->qi_quotaofflock);
+ 		sc->flags &= ~XCHK_HAS_QUOTAOFFLOCK;
+diff --git a/fs/xfs/scrub/scrub.h b/fs/xfs/scrub/scrub.h
+index 80e5026bba44a..e8d9fe9de26ed 100644
+--- a/fs/xfs/scrub/scrub.h
++++ b/fs/xfs/scrub/scrub.h
+@@ -89,7 +89,6 @@ struct xfs_scrub {
+ /* XCHK state flags grow up from zero, XREP state flags grown down from 2^31 */
+ #define XCHK_TRY_HARDER		(1 << 0)  /* can't get resources, try again */
+ #define XCHK_HAS_QUOTAOFFLOCK	(1 << 1)  /* we hold the quotaoff lock */
+-#define XCHK_REAPING_DISABLED	(1 << 2)  /* background block reaping paused */
+ #define XREP_ALREADY_FIXED	(1 << 31) /* checking our repair work */
+ 
+ /* Metadata scrubbers */
 -- 
 2.40.1
 
