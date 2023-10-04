@@ -2,35 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE5DE7B8461
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 754067B8465
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242929AbjJDQAt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 12:00:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59998 "EHLO
+        id S233664AbjJDQBg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 12:01:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233661AbjJDQAt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:00:49 -0400
+        with ESMTP id S233576AbjJDQBg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:01:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728FABF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:00:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8BEC433C7;
-        Wed,  4 Oct 2023 16:00:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F26F9C0
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:01:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E23C433C7;
+        Wed,  4 Oct 2023 16:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696435245;
-        bh=DREpYYG2hH0Q9B5Ld8aFnsBM/SCpEf34sarl0YtvQI0=;
+        s=korg; t=1696435289;
+        bh=18Mk+yZpbGBczHOmJOt3p8Jg8m7Naf3ZyfnyeG8uHO4=;
         h=Subject:To:Cc:From:Date:From;
-        b=S87CPl7vdNijleWq7ftuEl5ksK9Iki6r95Xh8mCd0NH5t6SQFiw9v3GjgASCqg6cf
-         x/lVxrAFt5pvKl/VTBu7G95ifhfGaSlfMheBl0CTHJV9dpNWCCBmbfD29jktEjnwwf
-         Lvoo1X0U/1AH+FsgGRb93q1t5NdncgSzZpvgl4ro=
-Subject: FAILED: patch "[PATCH] ata: libata-core: Do not register PM operations for SAS ports" failed to apply to 4.14-stable tree
-To:     dlemoal@kernel.org, acelan.kao@canonical.com,
-        geert+renesas@glider.be, hare@suse.de, john.g.garry@oracle.com,
-        martin.petersen@oracle.com
+        b=dpp3H7Fp8Sog6jmPiJk34sM35RRdDLcd/mZYn5CXiiBNC/7H+5LBRcJWefVGRHKpK
+         G3hvAP201SxJ/9qAXCOC89fNHgU8bgijTeJnYozx/g6zsDh/Q+jBBJb3kbEFCcdXD2
+         4zpbo1QjxE+DMKn5RlhPHfTfiTmg9hGlHW6PNilA=
+Subject: FAILED: patch "[PATCH] drm/i915/gt: Fix reservation address in ggtt_reserve_guc_top" failed to apply to 5.15-stable tree
+To:     devel@otheo.eu, John.C.Harrison@Intel.com,
+        chris@chris-wilson.co.uk, daniele.ceraolospurio@intel.com,
+        fernando.pacheco@intel.com, jani.nikula@linux.intel.com,
+        joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com,
+        tvrtko.ursulin@linux.intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 18:00:41 +0200
-Message-ID: <2023100441-finalist-fox-8bb6@gregkh>
+Date:   Wed, 04 Oct 2023 18:01:26 +0200
+Message-ID: <2023100426-vocally-babbling-a2bc@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +47,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 75e2bd5f1ede42a2bc88aa34b431e1ace8e0bea0
+git cherry-pick -x b7599d241778d0b10cdf7a5c755aa7db9b83250c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100441-finalist-fox-8bb6@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100426-vocally-babbling-a2bc@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -69,82 +71,84 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 75e2bd5f1ede42a2bc88aa34b431e1ace8e0bea0 Mon Sep 17 00:00:00 2001
-From: Damien Le Moal <dlemoal@kernel.org>
-Date: Fri, 8 Sep 2023 20:04:52 +0900
-Subject: [PATCH] ata: libata-core: Do not register PM operations for SAS ports
+From b7599d241778d0b10cdf7a5c755aa7db9b83250c Mon Sep 17 00:00:00 2001
+From: Javier Pello <devel@otheo.eu>
+Date: Sat, 2 Sep 2023 17:10:39 +0200
+Subject: [PATCH] drm/i915/gt: Fix reservation address in ggtt_reserve_guc_top
 
-libsas does its own domain based power management of ports. For such
-ports, libata should not use a device type defining power management
-operations as executing these operations for suspend/resume in addition
-to libsas calls to ata_sas_port_suspend() and ata_sas_port_resume() is
-not necessary (and likely dangerous to do, even though problems are not
-seen currently).
+There is an assertion in ggtt_reserve_guc_top that the global GTT
+is of size at least GUC_GGTT_TOP, which is not the case on a 32-bit
+platform; see commit 562d55d991b39ce376c492df2f7890fd6a541ffc
+("drm/i915/bdw: Only use 2g GGTT for 32b platforms"). If GEM_BUG_ON
+is enabled, this triggers a BUG(); if GEM_BUG_ON is disabled, the
+subsequent reservation fails and the driver fails to initialise
+the device:
 
-Introduce the new ata_port_sas_type device_type for ports managed by
-libsas. This new device type is used in ata_tport_add() and is defined
-without power management operations.
+i915 0000:00:02.0: [drm:i915_init_ggtt [i915]] Failed to reserve top of GGTT for GuC
+i915 0000:00:02.0: Device initialization failed (-28)
+i915 0000:00:02.0: Please file a bug on drm/i915; see https://gitlab.freedesktop.org/drm/intel/-/wikis/How-to-file-i915-bugs for details.
+i915: probe of 0000:00:02.0 failed with error -28
 
-Fixes: 2fcbdcb4c802 ("[SCSI] libata: export ata_port suspend/resume infrastructure for sas")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Make the reservation at the top of the available space, whatever
+that is, instead of assuming that the top will be GUC_GGTT_TOP.
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 092372334e92..261445c1851b 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5335,7 +5335,7 @@ EXPORT_SYMBOL_GPL(ata_host_resume);
- #endif
- 
- const struct device_type ata_port_type = {
--	.name = "ata_port",
-+	.name = ATA_PORT_TYPE_NAME,
- #ifdef CONFIG_PM
- 	.pm = &ata_port_pm_ops,
- #endif
-diff --git a/drivers/ata/libata-transport.c b/drivers/ata/libata-transport.c
-index e4fb9d1b9b39..3e49a877500e 100644
---- a/drivers/ata/libata-transport.c
-+++ b/drivers/ata/libata-transport.c
-@@ -266,6 +266,10 @@ void ata_tport_delete(struct ata_port *ap)
- 	put_device(dev);
+Fixes: 911800765ef6 ("drm/i915/uc: Reserve upper range of GGTT")
+Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9080
+Signed-off-by: Javier Pello <devel@otheo.eu>
+Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Fernando Pacheco <fernando.pacheco@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org # v5.3+
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230902171039.2229126186d697dbcf62d6d8@otheo.eu
+(cherry picked from commit 0f3fa942d91165c2702577e9274d2ee1c7212afc)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+
+diff --git a/drivers/gpu/drm/i915/gt/intel_ggtt.c b/drivers/gpu/drm/i915/gt/intel_ggtt.c
+index dd0ed941441a..da21f2786b5d 100644
+--- a/drivers/gpu/drm/i915/gt/intel_ggtt.c
++++ b/drivers/gpu/drm/i915/gt/intel_ggtt.c
+@@ -511,20 +511,31 @@ void intel_ggtt_unbind_vma(struct i915_address_space *vm,
+ 	vm->clear_range(vm, vma_res->start, vma_res->vma_size);
  }
  
-+static const struct device_type ata_port_sas_type = {
-+	.name = ATA_PORT_TYPE_NAME,
-+};
++/*
++ * Reserve the top of the GuC address space for firmware images. Addresses
++ * beyond GUC_GGTT_TOP in the GuC address space are inaccessible by GuC,
++ * which makes for a suitable range to hold GuC/HuC firmware images if the
++ * size of the GGTT is 4G. However, on a 32-bit platform the size of the GGTT
++ * is limited to 2G, which is less than GUC_GGTT_TOP, but we reserve a chunk
++ * of the same size anyway, which is far more than needed, to keep the logic
++ * in uc_fw_ggtt_offset() simple.
++ */
++#define GUC_TOP_RESERVE_SIZE (SZ_4G - GUC_GGTT_TOP)
 +
- /** ata_tport_add - initialize a transport ATA port structure
-  *
-  * @parent:	parent device
-@@ -283,7 +287,10 @@ int ata_tport_add(struct device *parent,
- 	struct device *dev = &ap->tdev;
+ static int ggtt_reserve_guc_top(struct i915_ggtt *ggtt)
+ {
+-	u64 size;
++	u64 offset;
+ 	int ret;
  
- 	device_initialize(dev);
--	dev->type = &ata_port_type;
-+	if (ap->flags & ATA_FLAG_SAS_HOST)
-+		dev->type = &ata_port_sas_type;
-+	else
-+		dev->type = &ata_port_type;
+ 	if (!intel_uc_uses_guc(&ggtt->vm.gt->uc))
+ 		return 0;
  
- 	dev->parent = parent;
- 	ata_host_get(ap->host);
-diff --git a/drivers/ata/libata.h b/drivers/ata/libata.h
-index 820299bd9d06..05ac80da8ebc 100644
---- a/drivers/ata/libata.h
-+++ b/drivers/ata/libata.h
-@@ -30,6 +30,8 @@ enum {
- 	ATA_DNXFER_QUIET	= (1 << 31),
- };
+-	GEM_BUG_ON(ggtt->vm.total <= GUC_GGTT_TOP);
+-	size = ggtt->vm.total - GUC_GGTT_TOP;
++	GEM_BUG_ON(ggtt->vm.total <= GUC_TOP_RESERVE_SIZE);
++	offset = ggtt->vm.total - GUC_TOP_RESERVE_SIZE;
  
-+#define ATA_PORT_TYPE_NAME	"ata_port"
-+
- extern atomic_t ata_print_id;
- extern int atapi_passthru16;
- extern int libata_fua;
+-	ret = i915_gem_gtt_reserve(&ggtt->vm, NULL, &ggtt->uc_fw, size,
+-				   GUC_GGTT_TOP, I915_COLOR_UNEVICTABLE,
+-				   PIN_NOEVICT);
++	ret = i915_gem_gtt_reserve(&ggtt->vm, NULL, &ggtt->uc_fw,
++				   GUC_TOP_RESERVE_SIZE, offset,
++				   I915_COLOR_UNEVICTABLE, PIN_NOEVICT);
+ 	if (ret)
+ 		drm_dbg(&ggtt->vm.i915->drm,
+ 			"Failed to reserve top of GGTT for GuC\n");
 
