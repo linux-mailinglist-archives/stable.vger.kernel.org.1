@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB2F7B88FE
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20D957B87C1
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244060AbjJDSVt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:21:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40374 "EHLO
+        id S243865AbjJDSI5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:08:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244181AbjJDSVg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:36 -0400
+        with ESMTP id S243869AbjJDSI4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52747AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:21:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C5BC433C7;
-        Wed,  4 Oct 2023 18:21:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997AE9E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08BEC433C8;
+        Wed,  4 Oct 2023 18:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443693;
-        bh=rfnUYRuvf81rl6XEDEwc4+7TZ3vTkyNffQ39DEDj37s=;
+        s=korg; t=1696442933;
+        bh=JxGGROTa7RUNnjENM6zM9ruagc7cbO362YyZhKdr/Vk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EbgXtyb7/ClbZB6nnOqqWMfnk10F3Ui+Qc7zpMktQnIYACl7/vclNHG8BL4WWxDBM
-         80KaUXmtv/xTB284DJKtofZ+Q8F671OfK8eEy6gQ2tTcGvTmiP+4OZ9LL2/6HNiSxF
-         KxqO1GLukDPrDfF+tZE+MdKfp9EZoG0k2IrENYGY=
+        b=RPX9+ia1QleQmKc6iDjj3iepPieHeYicKweUK7h9R4N86/gesexjYAKJ22pT5RIyA
+         bRC/BfzqTfJpZQa+22xceZ913D7CHJdVf8lvK1U8j2tP+1w9qbdNSiBOazsSMmCYx/
+         UJxAmBeActmTgcOyzy0ZqpUTomi87pFTbYpueS48=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pan Bian <bianpan2016@163.com>,
-        Ferry Meng <mengferry@linux.alibaba.com>,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 219/259] nilfs2: fix potential use after free in nilfs_gccache_submit_read_data()
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 5.15 161/183] serial: 8250_port: Check IRQ data before use
 Date:   Wed,  4 Oct 2023 19:56:32 +0200
-Message-ID: <20231004175227.370128916@linuxfoundation.org>
+Message-ID: <20231004175210.769788265@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,65 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pan Bian <bianpan2016@163.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 7ee29facd8a9c5a26079148e36bcf07141b3a6bc upstream.
+commit cce7fc8b29961b64fadb1ce398dc5ff32a79643b upstream.
 
-In nilfs_gccache_submit_read_data(), brelse(bh) is called to drop the
-reference count of bh when the call to nilfs_dat_translate() fails.  If
-the reference count hits 0 and its owner page gets unlocked, bh may be
-freed.  However, bh->b_page is dereferenced to put the page after that,
-which may result in a use-after-free bug.  This patch moves the release
-operation after unlocking and putting the page.
+In case the leaf driver wants to use IRQ polling (irq = 0) and
+IIR register shows that an interrupt happened in the 8250 hardware
+the IRQ data can be NULL. In such a case we need to skip the wake
+event as we came to this path from the timer interrupt and quite
+likely system is already awake.
 
-NOTE: The function in question is only called in GC, and in combination
-with current userland tools, address translation using DAT does not occur
-in that function, so the code path that causes this issue will not be
-executed.  However, it is possible to run that code path by intentionally
-modifying the userland GC library or by calling the GC ioctl directly.
+Without this fix we have got an Oops:
 
-[konishi.ryusuke@gmail.com: NOTE added to the commit log]
-Link: https://lkml.kernel.org/r/1543201709-53191-1-git-send-email-bianpan2016@163.com
-Link: https://lkml.kernel.org/r/20230921141731.10073-1-konishi.ryusuke@gmail.com
-Fixes: a3d93f709e89 ("nilfs2: block cache for garbage collection")
-Signed-off-by: Pan Bian <bianpan2016@163.com>
-Reported-by: Ferry Meng <mengferry@linux.alibaba.com>
-Closes: https://lkml.kernel.org/r/20230818092022.111054-1-mengferry@linux.alibaba.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    serial8250: ttyS0 at I/O 0x3f8 (irq = 0, base_baud = 115200) is a 16550A
+    ...
+    BUG: kernel NULL pointer dereference, address: 0000000000000010
+    RIP: 0010:serial8250_handle_irq+0x7c/0x240
+    Call Trace:
+     ? serial8250_handle_irq+0x7c/0x240
+     ? __pfx_serial8250_timeout+0x10/0x10
+
+Fixes: 0ba9e3a13c6a ("serial: 8250: Add missing wakeup event reporting")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20230831222555.614426-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/gcinode.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/8250/8250_port.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/nilfs2/gcinode.c
-+++ b/fs/nilfs2/gcinode.c
-@@ -73,10 +73,8 @@ int nilfs_gccache_submit_read_data(struc
- 		struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -1930,7 +1930,10 @@ int serial8250_handle_irq(struct uart_po
+ 		skip_rx = true;
  
- 		err = nilfs_dat_translate(nilfs->ns_dat, vbn, &pbn);
--		if (unlikely(err)) { /* -EIO, -ENOMEM, -ENOENT */
--			brelse(bh);
-+		if (unlikely(err)) /* -EIO, -ENOMEM, -ENOENT */
- 			goto failed;
--		}
- 	}
- 
- 	lock_buffer(bh);
-@@ -102,6 +100,8 @@ int nilfs_gccache_submit_read_data(struc
-  failed:
- 	unlock_page(bh->b_page);
- 	put_page(bh->b_page);
-+	if (unlikely(err))
-+		brelse(bh);
- 	return err;
- }
- 
+ 	if (status & (UART_LSR_DR | UART_LSR_BI) && !skip_rx) {
+-		if (irqd_is_wakeup_set(irq_get_irq_data(port->irq)))
++		struct irq_data *d;
++
++		d = irq_get_irq_data(port->irq);
++		if (d && irqd_is_wakeup_set(d))
+ 			pm_wakeup_event(tport->tty->dev, 0);
+ 		if (!up->dma || handle_rx_dma(up, iir))
+ 			status = serial8250_rx_chars(up, status);
 
 
