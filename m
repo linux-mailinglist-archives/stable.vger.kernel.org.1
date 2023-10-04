@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E22347B8A76
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:35:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 290D07B890A
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:22:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244419AbjJDSfp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:35:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49576 "EHLO
+        id S244063AbjJDSWK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:22:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244428AbjJDSfo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:35:44 -0400
+        with ESMTP id S243717AbjJDSWK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:22:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07647A6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:35:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A29C433C7;
-        Wed,  4 Oct 2023 18:35:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3938EA6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:22:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C39EC433C9;
+        Wed,  4 Oct 2023 18:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444540;
-        bh=pXrIHvEMJ8ovsyyoMwAzTAfHfJVw/FP4egT1nmcqZdA=;
+        s=korg; t=1696443726;
+        bh=bur4L3VdTlXtyb9APi0MojiP/bgPqN+RQqK2yWdFr5M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Nw8hcZFz0uaNCqQhd69e3OLAokH5z8U4LQLsEkVM0b63zrd7SNiEVKtvtJOMb9zJf
-         vXwwz678uwpUWQIqeRWilDAAF3YZEIh7qMj1p6O8Ah+DtwtJOzoYs64DhcVDXssVte
-         l/U0XZlOrWoPTn81ZTl+PcNQ9aOG5YHztYZD/IKk=
+        b=gd4UFbZkUeUJGRqJkRBbu2e92OfN5ZkLDR9XUH2lLlxj+Ep8L2C5XJlsO55XXTwNo
+         F4CNMNhjTuCviyi2kMbtxC6fhAHzfGHmBqYgTkXVwzrDBZsUZ+6sM5fYaM3Gao9uWu
+         wTMasfiyc6JxDOsZE7pmWCcZz8Q5ZA0TPeUTBxv4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-        Robert Richter <rrichter@amd.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.5 287/321] cxl/pci: Fix appropriate checking for _OSC while handling CXL RAS registers
+        patches@lists.linux.dev, wildjim@kiwinet.org,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 259/259] ASoC: amd: yc: Fix a non-functional mic on Lenovo 82TL
 Date:   Wed,  4 Oct 2023 19:57:12 +0200
-Message-ID: <20231004175242.566252356@linuxfoundation.org>
+Message-ID: <20231004175229.296545075@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 0339dc39a521ead3dbcf101acd8c028c61db57dc upstream.
+commit cfff2a7794d23b03a3ddedd318bf1df1876c598f upstream.
 
-cxl_pci fails to unmask CXL protocol errors when CXL memory error reporting
-is not granted native control. Given that CXL memory error reporting uses
-the event interface and protocol errors use AER, unmask protocol errors
-based only on the native AER setting. Without this change end user
-deployments will fail to report protocol errors in the case where native
-memory error handling is not granted to Linux.
+Lenovo 82TL has DMIC connected like 82V2 does.  Also match
+82TL.
 
-Also, return zero instead of an error code to not block the communication
-with the cxl device when in native memory error reporting mode.
-
-Fixes: 248529edc86f ("cxl: add RAS status unmasking for CXL")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>
-Reviewed-by: Robert Richter <rrichter@amd.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20230823234305.27333-2-Smita.KoralahalliChannabasappa@amd.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Reported-by: wildjim@kiwinet.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217063
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20230906182257.45736-1-mario.limonciello@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/pci.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
-index 1cb1494c28fe..2323169b6e5f 100644
---- a/drivers/cxl/pci.c
-+++ b/drivers/cxl/pci.c
-@@ -541,9 +541,9 @@ static int cxl_pci_ras_unmask(struct pci_dev *pdev)
- 		return 0;
- 	}
- 
--	/* BIOS has CXL error control */
--	if (!host_bridge->native_cxl_error)
--		return -ENXIO;
-+	/* BIOS has PCIe AER error control */
-+	if (!host_bridge->native_aer)
-+		return 0;
- 
- 	rc = pcie_capability_read_word(pdev, PCI_EXP_DEVCTL, &cap);
- 	if (rc)
--- 
-2.42.0
-
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -217,6 +217,13 @@ static const struct dmi_system_id yc_acp
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82TL"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
+ 		}
+ 	},
 
 
