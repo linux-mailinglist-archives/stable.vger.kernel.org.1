@@ -2,105 +2,233 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A00F7B98C0
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 01:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EEDC7B98BF
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 01:39:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233044AbjJDXkE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 19:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49578 "EHLO
+        id S231684AbjJDXj6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 19:39:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230381AbjJDXkD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 19:40:03 -0400
-Received: from mail-ot1-x34a.google.com (mail-ot1-x34a.google.com [IPv6:2607:f8b0:4864:20::34a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA15AC9
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 16:39:59 -0700 (PDT)
-Received: by mail-ot1-x34a.google.com with SMTP id 46e09a7af769-6c65c78d7bbso515427a34.3
-        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 16:39:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696462799; x=1697067599; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AmDqm4rQtpNyDmMaNDTRTb/F7GEAJTZGgDpU+ccwZEQ=;
-        b=RHg4HTjO5w4Gl/H8wwDwzUXwAmpkSvYnjPMKBIDTvgMxmbGjXUGVnd65DWevq5KzTf
-         ivV9ym1u1d+vWeBmnO+xj0S2ydp37OosUU++7NLR3fld/YKec/mAd/scf0rKGLv9sWCw
-         St4MfIO0nff1uSSoZL/i7jKFH60d7QHnKFVt4h8tdaCys/INOR1TJmZ1GxZ9moXVegFT
-         KYKE49MVUyDcYAtnNXtgS4v9RHtOMLaLOF4VFNkijPcGYhDjFODuHBwpKmjSEYgBqvns
-         N6cCwvQ8zqEjFahEI8KbqRsWG1VTfXDlWNh1LvbN4BKQHH2yRX4vtdOsrhrSY2VyGlAL
-         MKwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696462799; x=1697067599;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AmDqm4rQtpNyDmMaNDTRTb/F7GEAJTZGgDpU+ccwZEQ=;
-        b=Y3YdGlIpjOG/SiKx34X0YDDQHrhExGqApli4qq9/AbSniJ9T/Ejo52H5Vr8BAIvxnA
-         lS0ooEnKsCK6YgD/K+2tXO2Obbcv5cgKaQvU95ZYksjW+GxUqwyNXHrS31ZmX5xPQ6Gq
-         vA602+xhrKkHW+QfOKXQ7fSQmX8afHE8/EczizoPvMzsR17xNHJ8SM8IEVwrsK4DYLnE
-         Th24o5UgpF25+yxVgb4FuQi6JK474UtJtBxfeD3RTpUgjQSpmouZyDgR16DyLMTN2dpv
-         XMSSwZInd26JxQRGRMDy7S7iwMRQvq74WbVLlOaEqxNeUgWSgRKOgDEw8J5OTfK7Q3gF
-         titw==
-X-Gm-Message-State: AOJu0Yy5XM+4QKlVFmI0q3y4nk1/ECFKN8p8wrmYULTx3LPCA0FjIVGr
-        xA7hSIJpCKlwXrciQc+IbIsVMIbPWQ==
-X-Google-Smtp-Source: AGHT+IH2IvELyaJYyWZbLcyvTFHh6ueK+8/Jiphpfq9ynf5I9ByGcCwPPVxbitIMTbduVDPsRXRRHt/GUQ==
-X-Received: from jrife.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:9f])
- (user=jrife job=sendgmr) by 2002:a9d:7ace:0:b0:6c6:42ca:ed46 with SMTP id
- m14-20020a9d7ace000000b006c642caed46mr983846otn.0.1696462799212; Wed, 04 Oct
- 2023 16:39:59 -0700 (PDT)
-Date:   Wed,  4 Oct 2023 18:38:27 -0500
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.582.g8ccd20d70d-goog
-Message-ID: <20231004233827.1274148-1-jrife@google.com>
-Subject: [PATCH] ceph: use kernel_connect()
-From:   Jordan Rife <jrife@google.com>
-To:     ceph-devel@vger.kernel.org
-Cc:     idryomov@gmail.com, xiubli@redhat.com, jlayton@kernel.org,
-        Jordan Rife <jrife@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230381AbjJDXj5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 19:39:57 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 118FECE
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 16:39:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64C8C433C8;
+        Wed,  4 Oct 2023 23:39:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696462793;
+        bh=1b+bxsn19Q8T7L/gabU7LPcV9N7rRqKMVisEvYO41K0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=TKXJqo7SPjHTnpAmGIHd4S0rZC95Dup7Vr+g0Ca71Vr/rJTG6nueO15+bHQL3VuZS
+         MZUl/9VeGGJZlPsgb9/ejFLYdBIm2nPqi3xljwiAsSzXRyChs1Hzdymepew/s3lDlB
+         XfCOow34rX7KOh5MLNUjQCAjReilIJlS5aHwDptFjQW1F1YKg8TJ45mvpuNpSI3h5u
+         Tvry22KTsUd6D5BY3/s52oxzg0ZQbT2WAUYVVjlWgc9xOtufPwpmODOFF0kIh9cKBq
+         GbH3U1VOsDV2be3JiG3GP+H5jMPcLZ2OXLJKaOwkWHH6aZdtIMRSxz2IyTeb2yvqyP
+         Wjfs79EhtVaUg==
+Message-ID: <e3e9eb6f-cfc1-9685-1205-f755cb14c3f3@kernel.org>
+Date:   Thu, 5 Oct 2023 08:39:52 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: FAILED: patch "[PATCH] ata: libata-scsi: Fix delayed
+ scsi_rescan_device() execution" failed to apply to 6.5-stable tree
+Content-Language: en-US
+To:     gregkh@linuxfoundation.org, geert+renesas@glider.be, hare@suse.de,
+        martin.petersen@oracle.com, niklas.cassel@wdc.com
+Cc:     stable@vger.kernel.org
+References: <2023100443-freewill-shanty-0f05@gregkh>
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <2023100443-freewill-shanty-0f05@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Direct calls to ops->connect() can overwrite the address parameter when
-used in conjunction with BPF SOCK_ADDR hooks. Recent changes to
-kernel_connect() ensure that callers are insulated from such side
-effects. This patch wraps the direct call to ops->connect() with
-kernel_connect() to prevent unexpected changes to the address passed to
-ceph_tcp_connect().
+On 10/4/23 23:32, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.5-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 8b4d9469d0b0e553208ee6f62f2807111fde18b9
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100443-freewill-shanty-0f05@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+> 
+> Possible dependencies:
 
-This change was originally part of a larger patch targeting the net tree
-addressing all instances of unprotected calls to ops->connect()
-throughout the kernel, but this change was split up into several patches
-targeting various trees.
+commit ff48b37802e5c134e2dfc4d091f10b2eb5065a72
 
-Link: https://lore.kernel.org/netdev/20230821100007.559638-1-jrife@google.com/
-Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
-Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jordan Rife <jrife@google.com>
----
- net/ceph/messenger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+    scsi: Do not attempt to rescan suspended devices
 
-diff --git a/net/ceph/messenger.c b/net/ceph/messenger.c
-index 10a41cd9c5235..3c8b78d9c4d1c 100644
---- a/net/ceph/messenger.c
-+++ b/net/ceph/messenger.c
-@@ -459,8 +459,8 @@ int ceph_tcp_connect(struct ceph_connection *con)
- 	set_sock_callbacks(sock, con);
- 
- 	con_sock_state_connecting(con);
--	ret = sock->ops->connect(sock, (struct sockaddr *)&ss, sizeof(ss),
--				 O_NONBLOCK);
-+	ret = kernel_connect(sock, (struct sockaddr *)&ss, sizeof(ss),
-+			     O_NONBLOCK);
- 	if (ret == -EINPROGRESS) {
- 		dout("connect %s EINPROGRESS sk_state = %u\n",
- 		     ceph_pr_addr(&con->peer_addr),
+is needed to backport this one.
+
+> 
+> 
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> ------------------ original commit in Linus's tree ------------------
+> 
+> From 8b4d9469d0b0e553208ee6f62f2807111fde18b9 Mon Sep 17 00:00:00 2001
+> From: Damien Le Moal <dlemoal@kernel.org>
+> Date: Tue, 5 Sep 2023 09:06:23 +0900
+> Subject: [PATCH] ata: libata-scsi: Fix delayed scsi_rescan_device() execution
+> 
+> Commit 6aa0365a3c85 ("ata: libata-scsi: Avoid deadlock on rescan after
+> device resume") modified ata_scsi_dev_rescan() to check the scsi device
+> "is_suspended" power field to ensure that the scsi device associated
+> with an ATA device is fully resumed when scsi_rescan_device() is
+> executed. However, this fix is problematic as:
+> 1) It relies on a PM internal field that should not be used without PM
+>    device locking protection.
+> 2) The check for is_suspended and the call to scsi_rescan_device() are
+>    not atomic and a suspend PM event may be triggered between them,
+>    casuing scsi_rescan_device() to be called on a suspended device and
+>    in that function blocking while holding the scsi device lock. This
+>    would deadlock a following resume operation.
+> These problems can trigger PM deadlocks on resume, especially with
+> resume operations triggered quickly after or during suspend operations.
+> E.g., a simple bash script like:
+> 
+> for (( i=0; i<10; i++ )); do
+> 	echo "+2 > /sys/class/rtc/rtc0/wakealarm
+> 	echo mem > /sys/power/state
+> done
+> 
+> that triggers a resume 2 seconds after starting suspending a system can
+> quickly lead to a PM deadlock preventing the system from correctly
+> resuming.
+> 
+> Fix this by replacing the check on is_suspended with a check on the
+> return value given by scsi_rescan_device() as that function will fail if
+> called against a suspended device. Also make sure rescan tasks already
+> scheduled are first cancelled before suspending an ata port.
+> 
+> Fixes: 6aa0365a3c85 ("ata: libata-scsi: Avoid deadlock on rescan after device resume")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+> Reviewed-by: Hannes Reinecke <hare@suse.de>
+> Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+> 
+> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+> index a0bc01606b30..092372334e92 100644
+> --- a/drivers/ata/libata-core.c
+> +++ b/drivers/ata/libata-core.c
+> @@ -5168,11 +5168,27 @@ static const unsigned int ata_port_suspend_ehi = ATA_EHI_QUIET
+>  
+>  static void ata_port_suspend(struct ata_port *ap, pm_message_t mesg)
+>  {
+> +	/*
+> +	 * We are about to suspend the port, so we do not care about
+> +	 * scsi_rescan_device() calls scheduled by previous resume operations.
+> +	 * The next resume will schedule the rescan again. So cancel any rescan
+> +	 * that is not done yet.
+> +	 */
+> +	cancel_delayed_work_sync(&ap->scsi_rescan_task);
+> +
+>  	ata_port_request_pm(ap, mesg, 0, ata_port_suspend_ehi, false);
+>  }
+>  
+>  static void ata_port_suspend_async(struct ata_port *ap, pm_message_t mesg)
+>  {
+> +	/*
+> +	 * We are about to suspend the port, so we do not care about
+> +	 * scsi_rescan_device() calls scheduled by previous resume operations.
+> +	 * The next resume will schedule the rescan again. So cancel any rescan
+> +	 * that is not done yet.
+> +	 */
+> +	cancel_delayed_work_sync(&ap->scsi_rescan_task);
+> +
+>  	ata_port_request_pm(ap, mesg, 0, ata_port_suspend_ehi, true);
+>  }
+>  
+> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+> index a0e58d22d222..6850cac803c1 100644
+> --- a/drivers/ata/libata-scsi.c
+> +++ b/drivers/ata/libata-scsi.c
+> @@ -4756,7 +4756,7 @@ void ata_scsi_dev_rescan(struct work_struct *work)
+>  	struct ata_link *link;
+>  	struct ata_device *dev;
+>  	unsigned long flags;
+> -	bool delay_rescan = false;
+> +	int ret = 0;
+>  
+>  	mutex_lock(&ap->scsi_scan_mutex);
+>  	spin_lock_irqsave(ap->lock, flags);
+> @@ -4765,37 +4765,34 @@ void ata_scsi_dev_rescan(struct work_struct *work)
+>  		ata_for_each_dev(dev, link, ENABLED) {
+>  			struct scsi_device *sdev = dev->sdev;
+>  
+> +			/*
+> +			 * If the port was suspended before this was scheduled,
+> +			 * bail out.
+> +			 */
+> +			if (ap->pflags & ATA_PFLAG_SUSPENDED)
+> +				goto unlock;
+> +
+>  			if (!sdev)
+>  				continue;
+>  			if (scsi_device_get(sdev))
+>  				continue;
+>  
+> -			/*
+> -			 * If the rescan work was scheduled because of a resume
+> -			 * event, the port is already fully resumed, but the
+> -			 * SCSI device may not yet be fully resumed. In such
+> -			 * case, executing scsi_rescan_device() may cause a
+> -			 * deadlock with the PM code on device_lock(). Prevent
+> -			 * this by giving up and retrying rescan after a short
+> -			 * delay.
+> -			 */
+> -			delay_rescan = sdev->sdev_gendev.power.is_suspended;
+> -			if (delay_rescan) {
+> -				scsi_device_put(sdev);
+> -				break;
+> -			}
+> -
+>  			spin_unlock_irqrestore(ap->lock, flags);
+> -			scsi_rescan_device(sdev);
+> +			ret = scsi_rescan_device(sdev);
+>  			scsi_device_put(sdev);
+>  			spin_lock_irqsave(ap->lock, flags);
+> +
+> +			if (ret)
+> +				goto unlock;
+>  		}
+>  	}
+>  
+> +unlock:
+>  	spin_unlock_irqrestore(ap->lock, flags);
+>  	mutex_unlock(&ap->scsi_scan_mutex);
+>  
+> -	if (delay_rescan)
+> +	/* Reschedule with a delay if scsi_rescan_device() returned an error */
+> +	if (ret)
+>  		schedule_delayed_work(&ap->scsi_rescan_task,
+>  				      msecs_to_jiffies(5));
+>  }
+> 
+
 -- 
-2.42.0.582.g8ccd20d70d-goog
+Damien Le Moal
+Western Digital Research
 
