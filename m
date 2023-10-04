@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A29397B87AE
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BCF67B8A2F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233618AbjJDSIK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:08:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60752 "EHLO
+        id S244376AbjJDSdE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:33:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243846AbjJDSIJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:09 -0400
+        with ESMTP id S244374AbjJDSdD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23BECA7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6567CC433C7;
-        Wed,  4 Oct 2023 18:08:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD06EC0
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCDDC433C7;
+        Wed,  4 Oct 2023 18:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442885;
-        bh=qLGAxQEpGIevENzEjZ/6um66IvzRzcgey47ENnRbTEU=;
+        s=korg; t=1696444380;
+        bh=RydWl+MBrAkIHYud5k063iS4d3chz8FvZWeFlxczgvE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zCtMG1RVAvcDRtLVPxYb6Kc5iiFQjZyhPZrHJyOLQr0tBcnuXMk9n++L3dZu5CjD3
-         ysUBnLe9/I+ql1l9dP/Z6J0Op02HpARUmZaqvfPK/65mw1XiQ35CQ5mi+BGtBx4O1C
-         FkgZIFSJd8qOjAuRz0MpEy1qGSokmnK8AFDWX+Ow=
+        b=ZrHDA7Wy+1PdAH3G04H72+7HuQeJT6EMPtKnnQGW9iRlxqZeWjDWevjBjauZ0rRez
+         ZW4nU5AhF9qQKUAOP0558aPpo8LDdZN5RsBcG0IpsycWhwHwwEJXKex0fYcWvDPCKn
+         IklLx31+ai971ZwLDAlgntPNEtM5Ai56g+ywc82w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Chengming Zhou <zhouchengming@bytedance.com>,
-        Ovidiu Panait <ovidiu.panait@windriver.com>,
+        Gerhard Engleder <gerhard@engleder-embedded.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/183] sched/cpuacct: Optimize away RCU read lock
+Subject: [PATCH 6.5 229/321] tsnep: Fix NAPI scheduling
 Date:   Wed,  4 Oct 2023 19:56:14 +0200
-Message-ID: <20231004175209.987491840@linuxfoundation.org>
+Message-ID: <20231004175239.829136942@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,67 +51,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
 
-commit dc6e0818bc9a0336d9accf3ea35d146d72aa7a18 upstream.
+[ Upstream commit ea852c17f5382a0a52041cfbd9a4451ae0fa1a38 ]
 
-Since cpuacct_charge() is called from the scheduler update_curr(),
-we must already have rq lock held, then the RCU read lock can
-be optimized away.
+According to the NAPI documentation networking/napi.rst, drivers which
+have to mask interrupts explicitly should use the napi_schedule_prep()
+and __napi_schedule() calls.
 
-And do the same thing in it's wrapper cgroup_account_cputime(),
-but we can't use lockdep_assert_rq_held() there, which defined
-in kernel/sched/sched.h.
+No problem seen so far with current implementation. Nevertheless, let's
+align the implementation with documentation.
 
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220220051426.5274-2-zhouchengming@bytedance.com
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cgroup.h | 2 --
- kernel/sched/cpuacct.c | 4 +---
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/ethernet/engleder/tsnep_main.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
-index 45cdb12243e3f..f425389ce4bb2 100644
---- a/include/linux/cgroup.h
-+++ b/include/linux/cgroup.h
-@@ -792,11 +792,9 @@ static inline void cgroup_account_cputime(struct task_struct *task,
+diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
+index 84751bb303a68..a83f8bceadd16 100644
+--- a/drivers/net/ethernet/engleder/tsnep_main.c
++++ b/drivers/net/ethernet/engleder/tsnep_main.c
+@@ -86,8 +86,11 @@ static irqreturn_t tsnep_irq(int irq, void *arg)
  
- 	cpuacct_charge(task, delta_exec);
+ 	/* handle TX/RX queue 0 interrupt */
+ 	if ((active & adapter->queue[0].irq_mask) != 0) {
+-		tsnep_disable_irq(adapter, adapter->queue[0].irq_mask);
+-		napi_schedule(&adapter->queue[0].napi);
++		if (napi_schedule_prep(&adapter->queue[0].napi)) {
++			tsnep_disable_irq(adapter, adapter->queue[0].irq_mask);
++			/* schedule after masking to avoid races */
++			__napi_schedule(&adapter->queue[0].napi);
++		}
+ 	}
  
--	rcu_read_lock();
- 	cgrp = task_dfl_cgroup(task);
- 	if (cgroup_parent(cgrp))
- 		__cgroup_account_cputime(cgrp, delta_exec);
--	rcu_read_unlock();
+ 	return IRQ_HANDLED;
+@@ -98,8 +101,11 @@ static irqreturn_t tsnep_irq_txrx(int irq, void *arg)
+ 	struct tsnep_queue *queue = arg;
+ 
+ 	/* handle TX/RX queue interrupt */
+-	tsnep_disable_irq(queue->adapter, queue->irq_mask);
+-	napi_schedule(&queue->napi);
++	if (napi_schedule_prep(&queue->napi)) {
++		tsnep_disable_irq(queue->adapter, queue->irq_mask);
++		/* schedule after masking to avoid races */
++		__napi_schedule(&queue->napi);
++	}
+ 
+ 	return IRQ_HANDLED;
  }
- 
- static inline void cgroup_account_cputime_field(struct task_struct *task,
-diff --git a/kernel/sched/cpuacct.c b/kernel/sched/cpuacct.c
-index cacc2076ad214..f0af0fecde9d9 100644
---- a/kernel/sched/cpuacct.c
-+++ b/kernel/sched/cpuacct.c
-@@ -331,12 +331,10 @@ void cpuacct_charge(struct task_struct *tsk, u64 cputime)
- 	unsigned int cpu = task_cpu(tsk);
- 	struct cpuacct *ca;
- 
--	rcu_read_lock();
-+	lockdep_assert_rq_held(cpu_rq(cpu));
- 
- 	for (ca = task_ca(tsk); ca; ca = parent_ca(ca))
- 		*per_cpu_ptr(ca->cpuusage, cpu) += cputime;
--
--	rcu_read_unlock();
- }
- 
- /*
 -- 
 2.40.1
 
