@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 909817B8A14
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78DA37B879F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244348AbjJDScD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:32:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52950 "EHLO
+        id S243832AbjJDSH2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:07:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244353AbjJDScD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:03 -0400
+        with ESMTP id S243835AbjJDSH1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FBE7C4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:31:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FAFC433C7;
-        Wed,  4 Oct 2023 18:31:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A26A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65669C433C8;
+        Wed,  4 Oct 2023 18:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444318;
-        bh=2ikV3NqGAJKxG5Y2XDYjPaD4fvRwSBWGgrAF76XcE8w=;
+        s=korg; t=1696442843;
+        bh=1UfanMqkIeHoii9Faw4SfAK36oo6ju//IRctog4if10=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QDn+NwmI+6Ao3ZBon/6/ZAr8cNHEcn5f/CfdJCIZCVuEjM/qwY6UMkt0yOgYQEbxz
-         8bMsEKSSKYyzfFaaHXeZQJ7quIFyqcDRC+8XjWNx6lAs8x6pIjqcbFGwYfQ+IZeLkI
-         V0lhzT5qwk2w4DalfcwWBo0HETCYR+Z0g7GkR61c=
+        b=CUhBMglOKiABSYjVxXDT7uMkcRnH+8HE1YIZYFF9xuYaahxGFkZSfgGIuAf8Xmlcw
+         TBjqSFCwM4wcMq12MnZNwB5nHsJHuWXGjDwmrLOOFEkooe3ZP5BmBtWZ0k5CSz/VCh
+         34zNo/WRaI1/Cc66qDXmJ6/D2hqXwVroZCSbTQFI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 207/321] spi: intel-pci: Add support for Granite Rapids SPI serial flash
+Subject: [PATCH 5.15 121/183] btrfs: improve error message after failure to add delayed dir index item
 Date:   Wed,  4 Oct 2023 19:55:52 +0200
-Message-ID: <20231004175238.833033668@linuxfoundation.org>
+Message-ID: <20231004175209.023263043@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,38 +51,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 9855d60cfc720ff32355484c119acafd3c4dc806 ]
+[ Upstream commit 91bfe3104b8db0310f76f2dcb6aacef24c889366 ]
 
-Intel Granite Rapids has a flash controller that is compatible with the
-other Cannon Lake derivatives. Add Granite Rapids PCI ID to the driver
-list of supported devices.
+If we fail to add a delayed dir index item because there's already another
+item with the same index number, we print an error message (and then BUG).
+However that message isn't very helpful to debug anything because we don't
+know what's the index number and what are the values of index counters in
+the inode and its delayed inode (index_cnt fields of struct btrfs_inode
+and struct btrfs_delayed_node).
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://lore.kernel.org/r/20230911074616.3473347-1-mika.westerberg@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+So update the error message to include the index number and counters.
+
+We actually had a recent case where this issue was hit by a syzbot report
+(see the link below).
+
+Link: https://lore.kernel.org/linux-btrfs/00000000000036e1290603e097e0@google.com/
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-intel-pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/delayed-inode.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
-index a7381e774b953..57d767a68e7b2 100644
---- a/drivers/spi/spi-intel-pci.c
-+++ b/drivers/spi/spi-intel-pci.c
-@@ -72,6 +72,7 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0x4da4), (unsigned long)&bxt_info },
- 	{ PCI_VDEVICE(INTEL, 0x51a4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x54a4), (unsigned long)&cnl_info },
-+	{ PCI_VDEVICE(INTEL, 0x5794), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7a24), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7aa4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0x7e23), (unsigned long)&cnl_info },
+diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
+index e6872d65c0e25..fd951aeaeac5a 100644
+--- a/fs/btrfs/delayed-inode.c
++++ b/fs/btrfs/delayed-inode.c
+@@ -1401,9 +1401,10 @@ int btrfs_insert_delayed_dir_index(struct btrfs_trans_handle *trans,
+ 	ret = __btrfs_add_delayed_insertion_item(delayed_node, delayed_item);
+ 	if (unlikely(ret)) {
+ 		btrfs_err(trans->fs_info,
+-			  "err add delayed dir index item(name: %.*s) into the insertion tree of the delayed node(root id: %llu, inode id: %llu, errno: %d)",
+-			  name_len, name, delayed_node->root->root_key.objectid,
+-			  delayed_node->inode_id, ret);
++"error adding delayed dir index item, name: %.*s, index: %llu, root: %llu, dir: %llu, dir->index_cnt: %llu, delayed_node->index_cnt: %llu, error: %d",
++			  name_len, name, index, btrfs_root_id(delayed_node->root),
++			  delayed_node->inode_id, dir->index_cnt,
++			  delayed_node->index_cnt, ret);
+ 		BUG();
+ 	}
+ 	mutex_unlock(&delayed_node->mutex);
 -- 
 2.40.1
 
