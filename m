@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 200577B8821
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1292D7B89A2
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243947AbjJDSM5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:12:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35430 "EHLO
+        id S243788AbjJDS1q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:27:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243972AbjJDSMz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:12:55 -0400
+        with ESMTP id S244231AbjJDS1q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22615A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:12:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D08C433C7;
-        Wed,  4 Oct 2023 18:12:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB38C4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A3EC433C8;
+        Wed,  4 Oct 2023 18:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443171;
-        bh=PKdkHiWYUZ/46XN0OrvmU7OgSCwTPCehRKM3JHASOow=;
+        s=korg; t=1696444061;
+        bh=KligurT8WogW2t9CjFM7s5GobScJQNmdiU7V792dZwM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OGXuJqMTaD4acFrGXofFmrrqPzEOSVDQ1LpEbGvDUxolG3cuzZD9eVkTaSccUpF5m
-         zpcTZCzw9Us+WN4aVkNkAXE9V2WHbKalxI++Pw0jF9mJohASXeg71r20rXxsYig39b
-         QWV+UeoDCyqI1FlEx/TpZkp/YF7efgENciLgMTkQ=
+        b=zCj5hINhE+WsPEbw8C9AUojrwR+awEkw5RghT3yfJ9qdJmaesD9Z3N3zCQYMSESgh
+         xNnW6pnreAEQ2ixhgqu6y8HtR+xtJ45n7iBdrf8E+bjUJOktsYR4e7YUjxWavaVjCG
+         KAw/D8mDWI5s63qaaFYnURMTKwLGWntsxyevxtC0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        patches@lists.linux.dev, Hangbin Liu <liuhangbin@gmail.com>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Jiri Pirko <jiri@nvidia.com>,
         Eric Dumazet <edumazet@google.com>,
-        Jann Horn <jannh@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/259] dccp: fix dccp_v4_err()/dccp_v6_err() again
+Subject: [PATCH 6.5 088/321] team: fix null-ptr-deref when team device type is changed
 Date:   Wed,  4 Oct 2023 19:53:53 +0200
-Message-ID: <20231004175220.173706886@linuxfoundation.org>
+Message-ID: <20231004175233.290028985@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,134 +53,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-[ Upstream commit 6af289746a636f71f4c0535a9801774118486c7a ]
+[ Upstream commit 492032760127251e5540a5716a70996bacf2a3fd ]
 
-dh->dccph_x is the 9th byte (offset 8) in "struct dccp_hdr",
-not in the "byte 7" as Jann claimed.
+Get a null-ptr-deref bug as follows with reproducer [1].
 
-We need to make sure the ICMP messages are big enough,
-using more standard ways (no more assumptions).
+BUG: kernel NULL pointer dereference, address: 0000000000000228
+...
+RIP: 0010:vlan_dev_hard_header+0x35/0x140 [8021q]
+...
+Call Trace:
+ <TASK>
+ ? __die+0x24/0x70
+ ? page_fault_oops+0x82/0x150
+ ? exc_page_fault+0x69/0x150
+ ? asm_exc_page_fault+0x26/0x30
+ ? vlan_dev_hard_header+0x35/0x140 [8021q]
+ ? vlan_dev_hard_header+0x8e/0x140 [8021q]
+ neigh_connected_output+0xb2/0x100
+ ip6_finish_output2+0x1cb/0x520
+ ? nf_hook_slow+0x43/0xc0
+ ? ip6_mtu+0x46/0x80
+ ip6_finish_output+0x2a/0xb0
+ mld_sendpack+0x18f/0x250
+ mld_ifc_work+0x39/0x160
+ process_one_work+0x1e6/0x3f0
+ worker_thread+0x4d/0x2f0
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe5/0x120
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x34/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
 
-syzbot reported:
-BUG: KMSAN: uninit-value in pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
-BUG: KMSAN: uninit-value in pskb_may_pull include/linux/skbuff.h:2681 [inline]
-BUG: KMSAN: uninit-value in dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
-pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
-pskb_may_pull include/linux/skbuff.h:2681 [inline]
-dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
-icmpv6_notify+0x4c7/0x880 net/ipv6/icmp.c:867
-icmpv6_rcv+0x19d5/0x30d0
-ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
-ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
-NF_HOOK include/linux/netfilter.h:304 [inline]
-ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
-ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
-dst_input include/net/dst.h:468 [inline]
-ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
-NF_HOOK include/linux/netfilter.h:304 [inline]
-ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
-__netif_receive_skb_one_core net/core/dev.c:5523 [inline]
-__netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5637
-netif_receive_skb_internal net/core/dev.c:5723 [inline]
-netif_receive_skb+0x58/0x660 net/core/dev.c:5782
-tun_rx_batched+0x83b/0x920
-tun_get_user+0x564c/0x6940 drivers/net/tun.c:2002
-tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-call_write_iter include/linux/fs.h:1985 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x8ef/0x15c0 fs/read_write.c:584
-ksys_write+0x20f/0x4c0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x93/0xd0 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[1]
+$ teamd -t team0 -d -c '{"runner": {"name": "loadbalance"}}'
+$ ip link add name t-dummy type dummy
+$ ip link add link t-dummy name t-dummy.100 type vlan id 100
+$ ip link add name t-nlmon type nlmon
+$ ip link set t-nlmon master team0
+$ ip link set t-nlmon nomaster
+$ ip link set t-dummy up
+$ ip link set team0 up
+$ ip link set t-dummy.100 down
+$ ip link set t-dummy.100 master team0
 
-Uninit was created at:
-slab_post_alloc_hook+0x12f/0xb70 mm/slab.h:767
-slab_alloc_node mm/slub.c:3478 [inline]
-kmem_cache_alloc_node+0x577/0xa80 mm/slub.c:3523
-kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:559
-__alloc_skb+0x318/0x740 net/core/skbuff.c:650
-alloc_skb include/linux/skbuff.h:1286 [inline]
-alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6313
-sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2795
-tun_alloc_skb drivers/net/tun.c:1531 [inline]
-tun_get_user+0x23cf/0x6940 drivers/net/tun.c:1846
-tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-call_write_iter include/linux/fs.h:1985 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x8ef/0x15c0 fs/read_write.c:584
-ksys_write+0x20f/0x4c0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x93/0xd0 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+When enslave a vlan device to team device and team device type is changed
+from non-ether to ether, header_ops of team device is changed to
+vlan_header_ops. That is incorrect and will trigger null-ptr-deref
+for vlan->real_dev in vlan_dev_hard_header() because team device is not
+a vlan device.
 
-CPU: 0 PID: 4995 Comm: syz-executor153 Not tainted 6.6.0-rc1-syzkaller-00014-ga747acc0b752 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
+Cache eth_header_ops in team_setup(), then assign cached header_ops to
+header_ops of team net device when its type is changed from non-ether
+to ether to fix the bug.
 
-Fixes: 977ad86c2a1b ("dccp: Fix out of bounds access in DCCP error handler")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jann Horn <jannh@google.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1d76efe1577b ("team: add support for non-ethernet devices")
+Suggested-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230918123011.1884401-1-william.xuanziyang@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dccp/ipv4.c | 9 ++-------
- net/dccp/ipv6.c | 9 ++-------
- 2 files changed, 4 insertions(+), 14 deletions(-)
+ drivers/net/team/team.c | 10 +++++++++-
+ include/linux/if_team.h |  2 ++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
-index 8f5d3c0881118..247179d4c8865 100644
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -255,13 +255,8 @@ static int dccp_v4_err(struct sk_buff *skb, u32 info)
- 	int err;
- 	struct net *net = dev_net(skb->dev);
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index 382756c3fb837..1b0fc84b4d0cd 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -2127,7 +2127,12 @@ static const struct ethtool_ops team_ethtool_ops = {
+ static void team_setup_by_port(struct net_device *dev,
+ 			       struct net_device *port_dev)
+ {
+-	dev->header_ops	= port_dev->header_ops;
++	struct team *team = netdev_priv(dev);
++
++	if (port_dev->type == ARPHRD_ETHER)
++		dev->header_ops	= team->header_ops_cache;
++	else
++		dev->header_ops	= port_dev->header_ops;
+ 	dev->type = port_dev->type;
+ 	dev->hard_header_len = port_dev->hard_header_len;
+ 	dev->needed_headroom = port_dev->needed_headroom;
+@@ -2174,8 +2179,11 @@ static int team_dev_type_check_change(struct net_device *dev,
  
--	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
--	 * which is in byte 7 of the dccp header.
--	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
--	 *
--	 * Later on, we want to access the sequence number fields, which are
--	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
--	 */
-+	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
-+		return -EINVAL;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
- 		return -EINVAL;
-diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
-index 2b09e2644b13f..6fb34eaf1237a 100644
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -83,13 +83,8 @@ static int dccp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 	__u64 seq;
- 	struct net *net = dev_net(skb->dev);
+ static void team_setup(struct net_device *dev)
+ {
++	struct team *team = netdev_priv(dev);
++
+ 	ether_setup(dev);
+ 	dev->max_mtu = ETH_MAX_MTU;
++	team->header_ops_cache = dev->header_ops;
  
--	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
--	 * which is in byte 7 of the dccp header.
--	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
--	 *
--	 * Later on, we want to access the sequence number fields, which are
--	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
--	 */
-+	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
-+		return -EINVAL;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
- 		return -EINVAL;
+ 	dev->netdev_ops = &team_netdev_ops;
+ 	dev->ethtool_ops = &team_ethtool_ops;
+diff --git a/include/linux/if_team.h b/include/linux/if_team.h
+index 8de6b6e678295..34bcba5a70677 100644
+--- a/include/linux/if_team.h
++++ b/include/linux/if_team.h
+@@ -189,6 +189,8 @@ struct team {
+ 	struct net_device *dev; /* associated netdevice */
+ 	struct team_pcpu_stats __percpu *pcpu_stats;
+ 
++	const struct header_ops *header_ops_cache;
++
+ 	struct mutex lock; /* used for overall locking, e.g. port lists write */
+ 
+ 	/*
 -- 
 2.40.1
 
