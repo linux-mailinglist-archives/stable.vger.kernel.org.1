@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E56D7B88DE
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E39B87B87A4
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243933AbjJDSUU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45016 "EHLO
+        id S243835AbjJDSHm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:07:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243893AbjJDSUU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:20 -0400
+        with ESMTP id S243839AbjJDSHl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C8009E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA37C433CC;
-        Wed,  4 Oct 2023 18:20:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F4FA7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869FEC433C7;
+        Wed,  4 Oct 2023 18:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443617;
-        bh=o0t5SuGg5qVGgCH/NGD63pbBrJZlEYMhTjnOduVzYs0=;
+        s=korg; t=1696442854;
+        bh=DejkkhDYMMxASA/M30VMM2b+Wb01VCntYvYK1TKecxE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uz9uT8oglgiTcYAzMKzjPOf5GjhvowYBkbJZ1Xg82HmB6VZ1dexImVxWY3yBNN3nM
-         AeOZpmuq00euUxy0ofOKIdEzG8/0ds/qzIGNUXGi7hQdE1Y+6el3osxfMsYSFGmAG8
-         4948MpWDCNwCJ8d9yIMJGYODg6nG4wLuE2ooPQdA=
+        b=m7VN+mr7MnTE466RXBSJ9sD6Y3MnSLz5K2iYZ+kG0oDZdh9oZ3uH3l2w1R5upLCY+
+         OSHVyS+ifOjo50SNn1DvgEjejg4Cw8zWedGf9eHnzVF75RGVZFZuMHxXIGW1cfF5HW
+         RNuok1Q/pZjXXSdXwcHUv7H8R1kmp10m0tUups0k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Gray <bgray@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Shengjiu Wang <shengjiu.wang@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 191/259] powerpc/watchpoint: Disable pagefaults when getting user instruction
+Subject: [PATCH 5.15 133/183] ASoC: fsl: imx-pcm-rpmsg: Add SNDRV_PCM_INFO_BATCH flag
 Date:   Wed,  4 Oct 2023 19:56:04 +0200
-Message-ID: <20231004175226.055785504@linuxfoundation.org>
+Message-ID: <20231004175209.502156603@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Gray <bgray@linux.ibm.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 3241f260eb830d27d09cc604690ec24533fdb433 ]
+[ Upstream commit 2f9426905a63be7ccf8cd10109caf1848aa0993a ]
 
-This is called in an atomic context, so is not allowed to sleep if a
-user page needs to be faulted in and has nowhere it can be deferred to.
-The pagefault_disabled() function is documented as preventing user
-access methods from sleeping.
+The rpmsg pcm device is a device which should support
+double buffering.
 
-In practice the page will be mapped in nearly always because we are
-reading the instruction that just triggered the watchpoint trap.
+Found this issue with pipewire. When there is no
+SNDRV_PCM_INFO_BATCH flag in driver, the pipewire will
+set headroom to be zero, and because rpmsg pcm device
+don't support residue report, when the latency setting
+is small, the "delay" always larger than "target" in
+alsa-pcm.c, that reading next period data is not
+scheduled on time.
 
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230829063457.54157-3-bgray@linux.ibm.com
+With SNDRV_PCM_INFO_BATCH flag in driver, the pipewire
+will select a smaller period size for device, then
+the task of reading next period data will be scheduled
+on time.
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://lore.kernel.org/r/1694414287-13291-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/hw_breakpoint_constraints.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/fsl/imx-pcm-rpmsg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/kernel/hw_breakpoint_constraints.c b/arch/powerpc/kernel/hw_breakpoint_constraints.c
-index a74623025f3ab..9e51801c49152 100644
---- a/arch/powerpc/kernel/hw_breakpoint_constraints.c
-+++ b/arch/powerpc/kernel/hw_breakpoint_constraints.c
-@@ -131,8 +131,13 @@ void wp_get_instr_detail(struct pt_regs *regs, ppc_inst_t *instr,
- 			 int *type, int *size, unsigned long *ea)
- {
- 	struct instruction_op op;
-+	int err;
- 
--	if (__get_user_instr(*instr, (void __user *)regs->nip))
-+	pagefault_disable();
-+	err = __get_user_instr(*instr, (void __user *)regs->nip);
-+	pagefault_enable();
-+
-+	if (err)
- 		return;
- 
- 	analyse_instr(&op, regs, *instr);
+diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
+index 35049043e5322..933bac7ea1864 100644
+--- a/sound/soc/fsl/imx-pcm-rpmsg.c
++++ b/sound/soc/fsl/imx-pcm-rpmsg.c
+@@ -19,6 +19,7 @@
+ static struct snd_pcm_hardware imx_rpmsg_pcm_hardware = {
+ 	.info = SNDRV_PCM_INFO_INTERLEAVED |
+ 		SNDRV_PCM_INFO_BLOCK_TRANSFER |
++		SNDRV_PCM_INFO_BATCH |
+ 		SNDRV_PCM_INFO_MMAP |
+ 		SNDRV_PCM_INFO_MMAP_VALID |
+ 		SNDRV_PCM_INFO_NO_PERIOD_WAKEUP |
 -- 
 2.40.1
 
