@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A54297B890E
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30A437B8A92
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:36:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244066AbjJDSWU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:22:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49836 "EHLO
+        id S244459AbjJDSgz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:36:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244069AbjJDSWT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:22:19 -0400
+        with ESMTP id S244601AbjJDSgn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:36:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C7FDC6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:22:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9F9C433C8;
-        Wed,  4 Oct 2023 18:22:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8169A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:36:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAE9C433C8;
+        Wed,  4 Oct 2023 18:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443735;
-        bh=NPsQPQPR21b20IDKoRJleKF9vdJywS4fJq8fCdUS1og=;
+        s=korg; t=1696444599;
+        bh=d9w+4Bf5hUq1xJerrZiUBWKFxJpO+ZulvELIAYfxqrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QJLuSZHnNk+BXkLHpaP/NzwGc+JSEv+94yNBCZwYSunM2kBtq+klfJd9+Z4vYjtNC
-         GPwjDiIE8yxtcXDtyczDIV2pSEI9NW8rryU3DALueG6OyOcCUMRh7VvFMG9KD4FagI
-         NIEmAMEXUDjcSWubONctJeEZHW536jcTZdZm1fpQ=
+        b=pu4KLe2Ml5x9CNMBJvzMLtn72mzEi02AzdET/U/cSRpY/fQ/uc+QXO7Z4LM6lnGX2
+         G9zWOiQiOl3W+xB9mABYlMd6ntlP3czt7Y1yshLOobfMVGD4B8HW9xdNnN+WPxSqaq
+         d7FKQvbcYB3rM3mBKglDgaP5EIsZk9oMzd6GFh/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Javier Pello <devel@otheo.eu>,
-        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-        Fernando Pacheco <fernando.pacheco@intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        intel-gfx@lists.freedesktop.org,
-        John Harrison <John.C.Harrison@Intel.com>
-Subject: [PATCH 6.1 251/259] drm/i915/gt: Fix reservation address in ggtt_reserve_guc_top
+        patches@lists.linux.dev, stable@kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Bruce Ashfield <bruce.ashfield@gmail.com>,
+        Jon Mason <jon.mason@arm.com>, Jon Mason <jdmason@kudzu.us>,
+        Ross Burton <ross@burtonini.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Mikko Rapeli <mikko.rapeli@linaro.org>
+Subject: [PATCH 6.5 279/321] arm64: defconfig: remove CONFIG_COMMON_CLK_NPCM8XX=y
 Date:   Wed,  4 Oct 2023 19:57:04 +0200
-Message-ID: <20231004175228.923291189@linuxfoundation.org>
+Message-ID: <20231004175242.209170353@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,90 +60,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Pello <devel@otheo.eu>
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-commit b7599d241778d0b10cdf7a5c755aa7db9b83250c upstream.
+commit 7d3e4e9d3bde9c8bd8914d47ddaa90e0d0ffbcab upstream.
 
-There is an assertion in ggtt_reserve_guc_top that the global GTT
-is of size at least GUC_GGTT_TOP, which is not the case on a 32-bit
-platform; see commit 562d55d991b39ce376c492df2f7890fd6a541ffc
-("drm/i915/bdw: Only use 2g GGTT for 32b platforms"). If GEM_BUG_ON
-is enabled, this triggers a BUG(); if GEM_BUG_ON is disabled, the
-subsequent reservation fails and the driver fails to initialise
-the device:
+There is no code for this config option and enabling it in defconfig
+causes warnings from tools which are detecting unused and obsolete
+kernel config flags since the flag will be completely missing from
+effective build config after "make olddefconfig".
 
-i915 0000:00:02.0: [drm:i915_init_ggtt [i915]] Failed to reserve top of GGTT for GuC
-i915 0000:00:02.0: Device initialization failed (-28)
-i915 0000:00:02.0: Please file a bug on drm/i915; see https://gitlab.freedesktop.org/drm/intel/-/wikis/How-to-file-i915-bugs for details.
-i915: probe of 0000:00:02.0 failed with error -28
+Fixes yocto kernel recipe build time warning:
 
-Make the reservation at the top of the available space, whatever
-that is, instead of assuming that the top will be GUC_GGTT_TOP.
+WARNING: [kernel config]: This BSP contains fragments with warnings:
+...
+[INFO]: the following symbols were not found in the active
+configuration:
+     - CONFIG_COMMON_CLK_NPCM8XX
 
-Fixes: 911800765ef6 ("drm/i915/uc: Reserve upper range of GGTT")
-Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9080
-Signed-off-by: Javier Pello <devel@otheo.eu>
-Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Fernando Pacheco <fernando.pacheco@intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org # v5.3+
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230902171039.2229126186d697dbcf62d6d8@otheo.eu
-(cherry picked from commit 0f3fa942d91165c2702577e9274d2ee1c7212afc)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+The flag was added with commit 45472f1e5348c7b755b4912f2f529ec81cea044b
+v5.19-rc4-15-g45472f1e5348 so 6.1 and 6.4 stable kernel trees are
+affected.
+
+Fixes: 45472f1e5348c7b755b4912f2f529ec81cea044b ("arm64: defconfig: Add Nuvoton NPCM family support")
+Cc: stable@kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Bjorn Andersson <quic_bjorande@quicinc.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Tomer Maimon <tmaimon77@gmail.com>
+Cc: Bruce Ashfield <bruce.ashfield@gmail.com>
+Cc: Jon Mason <jon.mason@arm.com>
+Cc: Jon Mason <jdmason@kudzu.us>
+Cc: Ross Burton <ross@burtonini.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_ggtt.c |   23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ arch/arm64/configs/defconfig |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_ggtt.c
-+++ b/drivers/gpu/drm/i915/gt/intel_ggtt.c
-@@ -500,20 +500,31 @@ void intel_ggtt_unbind_vma(struct i915_a
- 	vm->clear_range(vm, vma_res->start, vma_res->vma_size);
- }
- 
-+/*
-+ * Reserve the top of the GuC address space for firmware images. Addresses
-+ * beyond GUC_GGTT_TOP in the GuC address space are inaccessible by GuC,
-+ * which makes for a suitable range to hold GuC/HuC firmware images if the
-+ * size of the GGTT is 4G. However, on a 32-bit platform the size of the GGTT
-+ * is limited to 2G, which is less than GUC_GGTT_TOP, but we reserve a chunk
-+ * of the same size anyway, which is far more than needed, to keep the logic
-+ * in uc_fw_ggtt_offset() simple.
-+ */
-+#define GUC_TOP_RESERVE_SIZE (SZ_4G - GUC_GGTT_TOP)
-+
- static int ggtt_reserve_guc_top(struct i915_ggtt *ggtt)
- {
--	u64 size;
-+	u64 offset;
- 	int ret;
- 
- 	if (!intel_uc_uses_guc(&ggtt->vm.gt->uc))
- 		return 0;
- 
--	GEM_BUG_ON(ggtt->vm.total <= GUC_GGTT_TOP);
--	size = ggtt->vm.total - GUC_GGTT_TOP;
-+	GEM_BUG_ON(ggtt->vm.total <= GUC_TOP_RESERVE_SIZE);
-+	offset = ggtt->vm.total - GUC_TOP_RESERVE_SIZE;
- 
--	ret = i915_gem_gtt_reserve(&ggtt->vm, NULL, &ggtt->uc_fw, size,
--				   GUC_GGTT_TOP, I915_COLOR_UNEVICTABLE,
--				   PIN_NOEVICT);
-+	ret = i915_gem_gtt_reserve(&ggtt->vm, NULL, &ggtt->uc_fw,
-+				   GUC_TOP_RESERVE_SIZE, offset,
-+				   I915_COLOR_UNEVICTABLE, PIN_NOEVICT);
- 	if (ret)
- 		drm_dbg(&ggtt->vm.i915->drm,
- 			"Failed to reserve top of GGTT for GuC\n");
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1145,7 +1145,6 @@ CONFIG_COMMON_CLK_S2MPS11=y
+ CONFIG_COMMON_CLK_PWM=y
+ CONFIG_COMMON_CLK_RS9_PCIE=y
+ CONFIG_COMMON_CLK_VC5=y
+-CONFIG_COMMON_CLK_NPCM8XX=y
+ CONFIG_COMMON_CLK_BD718XX=m
+ CONFIG_CLK_RASPBERRYPI=m
+ CONFIG_CLK_IMX8MM=y
 
 
