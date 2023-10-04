@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E4007B88A9
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 950D77B8905
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233727AbjJDSSY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:18:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40526 "EHLO
+        id S244067AbjJDSV6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:21:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233840AbjJDSJN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:13 -0400
+        with ESMTP id S244066AbjJDSV4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F44EA7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D90C433C9;
-        Wed,  4 Oct 2023 18:09:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0722C1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:21:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3573DC433CA;
+        Wed,  4 Oct 2023 18:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442950;
-        bh=Tcwq+xGKcpVCWOPbN8uBW2q2ldL/23NronKrL9DoNek=;
+        s=korg; t=1696443712;
+        bh=R5NQXlCm2WiuMSG+SGK6bMDcAQp+sHz+6Bw2icBzyzs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c2UM0Gn4nUjEP3bFDtt2oWOT+IzWvnN46vbpUSTgHQtqgn//5f+2MPONu8Cr6gFot
-         im9Z6xGdi/rM5JbRi8sJZog5lu+Urlumsw2QDvvoUiZcBxY330rrooKfEirftZriVl
-         WXMMZDar06MeGMW/9pas4N9rKx4Uk1MnLxWb7wTk=
+        b=qFfyMaDAr1ypVWf4XsVw7OXx/nN/QWvpiqIYHToWdxTFrk1aad/xnCQbFLXH06s1G
+         gqfKb6OHRk+ZafQnERUHXISSEkypodPQA4BpoR3DaWzS5g2fUvPrrrw8mI3xyrqIBm
+         sEWoKOXEgOUu0VwScpYXZaahXcXUnreqizlXsQtg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.15 167/183] kernel/sched: Modify initial boot task idle setup
+        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.1 225/259] ata: libata-scsi: ignore reserved bits for REPORT SUPPORTED OPERATION CODES
 Date:   Wed,  4 Oct 2023 19:56:38 +0200
-Message-ID: <20231004175211.028740732@linuxfoundation.org>
+Message-ID: <20231004175227.660311208@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,62 +49,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-commit cff9b2332ab762b7e0586c793c431a8f2ea4db04 upstream.
+commit 3ef600923521616ebe192c893468ad0424de2afb upstream.
 
-Initial booting is setting the task flag to idle (PF_IDLE) by the call
-path sched_init() -> init_idle().  Having the task idle and calling
-call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
-set.  Subsequent calls to any cond_resched() will enable IRQs,
-potentially earlier than the IRQ setup has completed.  Recent changes
-have caused just this scenario and IRQs have been enabled early.
+For REPORT SUPPORTED OPERATION CODES command, the service action field is
+defined as bits 0-4 in the second byte in the CDB. Bits 5-7 in the second
+byte are reserved.
 
-This causes a warning later in start_kernel() as interrupts are enabled
-before they are fully set up.
+Only look at the service action field in the second byte when determining
+if the MAINTENANCE IN opcode is a REPORT SUPPORTED OPERATION CODES command.
 
-Fix this issue by setting the PF_IDLE flag later in the boot sequence.
+This matches how we only look at the service action field in the second
+byte when determining if the SERVICE ACTION IN(16) opcode is a READ
+CAPACITY(16) command (reserved bits 5-7 in the second byte are ignored).
 
-Although the boot task was marked as idle since (at least) d80e4fda576d,
-I am not sure that it is wrong to do so.  The forced context-switch on
-idle task was introduced in the tiny_rcu update, so I'm going to claim
-this fixes 5f6130fa52ee.
-
-Fixes: 5f6130fa52ee ("tiny_rcu: Directly force QS when call_rcu_[bh|sched]() on idle_task")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: 7b2030942859 ("libata: Add support for SCT Write Same")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-mm/CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com/
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |    2 +-
- kernel/sched/idle.c |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/ata/libata-scsi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -8725,7 +8725,7 @@ void __init init_idle(struct task_struct
- 	 * PF_KTHREAD should already be set at this point; regardless, make it
- 	 * look like a proper per-CPU kthread.
- 	 */
--	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
-+	idle->flags |= PF_KTHREAD | PF_NO_SETAFFINITY;
- 	kthread_set_per_cpu(idle, cpu);
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4227,7 +4227,7 @@ void ata_scsi_simulate(struct ata_device
+ 		break;
  
- #ifdef CONFIG_SMP
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -397,6 +397,7 @@ EXPORT_SYMBOL_GPL(play_idle_precise);
- 
- void cpu_startup_entry(enum cpuhp_state state)
- {
-+	current->flags |= PF_IDLE;
- 	arch_cpu_idle_prepare();
- 	cpuhp_online_idle(state);
- 	while (1)
+ 	case MAINTENANCE_IN:
+-		if (scsicmd[1] == MI_REPORT_SUPPORTED_OPERATION_CODES)
++		if ((scsicmd[1] & 0x1f) == MI_REPORT_SUPPORTED_OPERATION_CODES)
+ 			ata_scsi_rbuf_fill(&args, ata_scsiop_maint_in);
+ 		else
+ 			ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
 
 
