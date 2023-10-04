@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17C937B88C0
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:19:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AFF37B8A3E
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233831AbjJDSTI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56292 "EHLO
+        id S244356AbjJDSdo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:33:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233785AbjJDSTH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:19:07 -0400
+        with ESMTP id S244224AbjJDSdo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 251A4A6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:19:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6F9C433C7;
-        Wed,  4 Oct 2023 18:19:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34485AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50210C433C7;
+        Wed,  4 Oct 2023 18:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443542;
-        bh=0QxYENzu4fX5bKSNoJqCfMXQnL1TJg5QfxEMmI52GXk=;
+        s=korg; t=1696444419;
+        bh=Qtba2p8muxq/HhrkWgHVoqmNyqCKsbyObPNclUj8Sjw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d9Xb3/eB6Xp6Q+P5g23uHII8BKmdbd7TWRg1rsfnEKjHVZ2X3EW6+rE0EpZaqYecL
-         doRhWKUSXpbvrWzAdFZTG8GYDKzfeQ5hrOBL76bLRrQpwknZ/f3j7OXij2TWk2+XaZ
-         yXJbCHjd+6CjatSWMpXqxYhe/p0DTBPKKQHwQ+xs=
+        b=10b1UBtPRAMaah1JUOy6QptI9WqrKRlWyTpUfwzToDhyujvuXAnVM3ZYKdV190LL8
+         k3lcD6yO6J2q+Dzx1nkgviYKf7NrFLHzw6u3ficoojP6Hj6Hhbitp8Iq0LrCSLj+z0
+         JR6IjFViY0DI1n+Kbbpkau2Fenl8jcN183jyEXwg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chancel Liu <chancel.liu@nxp.com>,
-        Shengjiu Wang <shengjiu.wang@gmail.com>,
+        patches@lists.linux.dev,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/259] ASoC: imx-rpmsg: Set ignore_pmdown_time for dai_link
-Date:   Wed,  4 Oct 2023 19:55:59 +0200
-Message-ID: <20231004175225.837539012@linuxfoundation.org>
+Subject: [PATCH 6.5 215/321] firmware: cirrus: cs_dsp: Only log list of algorithms in debug build
+Date:   Wed,  4 Oct 2023 19:56:00 +0200
+Message-ID: <20231004175239.209786608@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +51,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chancel Liu <chancel.liu@nxp.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit fac58baf8fcfcd7481e8f6d60206ce2a47c1476c ]
+[ Upstream commit 69343ce91435f222052015c5af86b550391bac85 ]
 
-i.MX rpmsg sound cards work on codec slave mode. MCLK will be disabled
-by CPU DAI driver in hw_free(). Some codec requires MCLK present at
-power up/down sequence. So need to set ignore_pmdown_time to power down
-codec immediately before MCLK is turned off.
+Change the logging of each algorithm from info level to debug level.
 
-Take WM8962 as an example, if MCLK is disabled before DAPM power down
-playback stream, FIFO error will arise in WM8962 which will have bad
-impact on playback next.
+On the original devices supported by this code there were typically only
+one or two algorithms in a firmware and one or two DSPs so this logging
+only used a small number of log lines.
 
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Link: https://lore.kernel.org/r/20230913102656.2966757-1-chancel.liu@nxp.com
+However, for the latest devices there could be 30-40 algorithms in a
+firmware and 8 DSPs being loaded in parallel, so using 300+ lines of log
+for information that isn't particularly important to have logged.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20230913160523.3701189-1-rf@opensource.cirrus.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-rpmsg.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/firmware/cirrus/cs_dsp.c | 34 ++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
-index 4d99f4858a14f..76c6febf24990 100644
---- a/sound/soc/fsl/imx-rpmsg.c
-+++ b/sound/soc/fsl/imx-rpmsg.c
-@@ -88,6 +88,14 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
- 			    SND_SOC_DAIFMT_NB_NF |
- 			    SND_SOC_DAIFMT_CBC_CFC;
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index 49b70c70dc696..79d4254d1f9bc 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -1863,15 +1863,15 @@ static int cs_dsp_adsp2_setup_algs(struct cs_dsp *dsp)
+ 		return PTR_ERR(adsp2_alg);
  
-+	/*
-+	 * i.MX rpmsg sound cards work on codec slave mode. MCLK will be
-+	 * disabled by CPU DAI driver in hw_free(). Some codec requires MCLK
-+	 * present at power up/down sequence. So need to set ignore_pmdown_time
-+	 * to power down codec immediately before MCLK is turned off.
-+	 */
-+	data->dai.ignore_pmdown_time = 1;
-+
- 	/* Optional codec node */
- 	ret = of_parse_phandle_with_fixed_args(np, "audio-codec", 0, 0, &args);
- 	if (ret) {
+ 	for (i = 0; i < n_algs; i++) {
+-		cs_dsp_info(dsp,
+-			    "%d: ID %x v%d.%d.%d XM@%x YM@%x ZM@%x\n",
+-			    i, be32_to_cpu(adsp2_alg[i].alg.id),
+-			    (be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff0000) >> 16,
+-			    (be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff00) >> 8,
+-			    be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff,
+-			    be32_to_cpu(adsp2_alg[i].xm),
+-			    be32_to_cpu(adsp2_alg[i].ym),
+-			    be32_to_cpu(adsp2_alg[i].zm));
++		cs_dsp_dbg(dsp,
++			   "%d: ID %x v%d.%d.%d XM@%x YM@%x ZM@%x\n",
++			   i, be32_to_cpu(adsp2_alg[i].alg.id),
++			   (be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff0000) >> 16,
++			   (be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff00) >> 8,
++			   be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff,
++			   be32_to_cpu(adsp2_alg[i].xm),
++			   be32_to_cpu(adsp2_alg[i].ym),
++			   be32_to_cpu(adsp2_alg[i].zm));
+ 
+ 		alg_region = cs_dsp_create_region(dsp, WMFW_ADSP2_XM,
+ 						  adsp2_alg[i].alg.id,
+@@ -1996,14 +1996,14 @@ static int cs_dsp_halo_setup_algs(struct cs_dsp *dsp)
+ 		return PTR_ERR(halo_alg);
+ 
+ 	for (i = 0; i < n_algs; i++) {
+-		cs_dsp_info(dsp,
+-			    "%d: ID %x v%d.%d.%d XM@%x YM@%x\n",
+-			    i, be32_to_cpu(halo_alg[i].alg.id),
+-			    (be32_to_cpu(halo_alg[i].alg.ver) & 0xff0000) >> 16,
+-			    (be32_to_cpu(halo_alg[i].alg.ver) & 0xff00) >> 8,
+-			    be32_to_cpu(halo_alg[i].alg.ver) & 0xff,
+-			    be32_to_cpu(halo_alg[i].xm_base),
+-			    be32_to_cpu(halo_alg[i].ym_base));
++		cs_dsp_dbg(dsp,
++			   "%d: ID %x v%d.%d.%d XM@%x YM@%x\n",
++			   i, be32_to_cpu(halo_alg[i].alg.id),
++			   (be32_to_cpu(halo_alg[i].alg.ver) & 0xff0000) >> 16,
++			   (be32_to_cpu(halo_alg[i].alg.ver) & 0xff00) >> 8,
++			   be32_to_cpu(halo_alg[i].alg.ver) & 0xff,
++			   be32_to_cpu(halo_alg[i].xm_base),
++			   be32_to_cpu(halo_alg[i].ym_base));
+ 
+ 		ret = cs_dsp_halo_create_regions(dsp, halo_alg[i].alg.id,
+ 						 halo_alg[i].alg.ver,
 -- 
 2.40.1
 
