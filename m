@@ -2,71 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E9177B835F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:16:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5794C7B83BA
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:37:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233648AbjJDPQl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 11:16:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55970 "EHLO
+        id S233443AbjJDPhE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 11:37:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243116AbjJDPQk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:16:40 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C8D93;
-        Wed,  4 Oct 2023 08:16:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696432597; x=1727968597;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vH2FpBp/Jh+emhQL+yQf5eMDW7Ker5BK1A4xOIPfb8c=;
-  b=e7RNUZ42PYiIA633DOjjbHCO0xrlys0Dp0wv0AOiis/Lm4mCVou1H7Hh
-   6h9pEQ2HoGAYrXlxFAtOEy5ixN3LQJxdzSIs0gvjEX3PCfFmk8Q2oNawl
-   JdJQOzuqpo7OkGLpsMIs6sRZtaNKYXR0Srx7+iUrq5qXKyw+2cHoRwLqR
-   lYo3hcjB5lUPMW+OGfVqIW/YuCrZhl8P25APNHfz1dCAZHovIj2HIikZP
-   gdiIgpq1326hm2TuyZbp6teJdDf8SxSshGicChpZOyRUCMLsoXFfz0M9f
-   px7/KoIJVLHSup85kQD/dKSg0rKQkEnoAKXot7ZwSrW5djTFV6JGGmE+M
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="383101087"
-X-IronPort-AV: E=Sophos;i="6.03,200,1694761200"; 
-   d="scan'208";a="383101087"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 08:16:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="751336493"
-X-IronPort-AV: E=Sophos;i="6.03,200,1694761200"; 
-   d="scan'208";a="751336493"
-Received: from mfmousa-mobl1.amr.corp.intel.com (HELO [10.212.98.56]) ([10.212.98.56])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 08:16:11 -0700
-Message-ID: <04c5911a-a894-44b3-9f0e-fe9e6de203f2@linux.intel.com>
-Date:   Wed, 4 Oct 2023 11:16:09 -0400
+        with ESMTP id S233256AbjJDPhE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:37:04 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1246BBD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:36:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E7DC433C7;
+        Wed,  4 Oct 2023 15:36:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696433818;
+        bh=bmk/nWms+BQIVsUJl+thHYdan0ai9RQ9nTWW+C3dpx4=;
+        h=Subject:To:Cc:From:Date:From;
+        b=w16z0v+0iyv+1NLM+rvnhYt0a9m/6Z11t4oCeDCpFKl38qi8tjvj+oAdrmNzs53ft
+         T8+1IExGQ1A7FXEEzu7LVDfiyXxyyfRQux2BTo6sxjg4LuwCM6LddXQVtVHTsstn/+
+         EYBdWXabTmA+ZUFdkZfmJ0o6akmrByftVSCborSo=
+Subject: FAILED: patch "[PATCH] ASoC: tegra: Fix redundant PLLA and PLLA_OUT0 updates" failed to apply to 6.5-stable tree
+To:     spujar@nvidia.com, broonie@kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 04 Oct 2023 17:36:50 +0200
+Message-ID: <2023100450-shone-catchy-89d1@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soundwire: fix initializing sysfs for same devices on
- different buses
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Takashi Iwai <tiwai@suse.de>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-References: <20231004130243.493617-1-krzysztof.kozlowski@linaro.org>
- <6628a5f6-ed22-4039-b5c2-2301c05c7e3e@linux.intel.com>
- <2023100453-perfected-palm-3503@gregkh>
- <624b044a-1f0f-4961-8b57-cb5346e7b0d3@linux.intel.com>
- <2023100452-craziness-unpopular-7d97@gregkh>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <2023100452-craziness-unpopular-7d97@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -74,47 +43,107 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
->>>>> If same devices with same device IDs are present on different soundwire
->>>>> buses, the probe fails due to conflicting device names and sysfs
->>>>> entries:
->>>>>
->>>>>   sysfs: cannot create duplicate filename '/bus/soundwire/devices/sdw:0:0217:0204:00:0'
->>>>>
->>>>> The link ID is 0 for both devices, so they should be differentiated by
->>>>> bus ID.  Add the bus ID so, the device names and sysfs entries look
->>>>> like:
->>>>
->>>> I am pretty sure this will break Intel platforms by changing the device
->>>> names.
->>>>
->>>> sof_sdw.c:      else if (is_unique_device(adr_link, sdw_version, mfg_id,
->>>> part_id,
->>>> sof_sdw.c:
->>>> "sdw:%01x:%04x:%04x:%02x", link_id,
->>>> sof_sdw.c:
->>>> "sdw:%01x:%04x:%04x:%02x:%01x", link_id,
->>>
->>> device id name changes shouldn't break things, what is requring them to
->>> look a specific way?
->>
->> it's the ASoC dailink creation that relies on strings, we have similar
->> cases for I2C.
->>
->> There's no requirement that the name follows any specific convention,
->> just that when you want to rely on a specific device for an ASoC card
->> you need to use the string that matches its device name.
-> 
-> matching the name is fine (if you are matching it against an existing
-> name) but expecting the name to be anything specific is not going to
-> work as the name is dynamic and can/will change each boot.
+The patch below does not apply to the 6.5-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Not following, sorry.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-In the SoundWire context, the device name directly follows the ACPI or
-Device Tree information, I don't really see how its name could change on
-each boot (assuming no DSDT override or overlays of course). The
-platform descriptors are pretty much fixed, aren't they?
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git checkout FETCH_HEAD
+git cherry-pick -x e765886249c533e1bb5cbc3cd741bad677417312
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100450-shone-catchy-89d1@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
-Intel and AMD make such assumptions on names for pretty much all machine
-drivers, it's not really something new - probably 15+ years? Adding Mark
-Brown in CC: to make sure he's aware of this thread.
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e765886249c533e1bb5cbc3cd741bad677417312 Mon Sep 17 00:00:00 2001
+From: Sameer Pujar <spujar@nvidia.com>
+Date: Thu, 7 Sep 2023 20:32:25 +0530
+Subject: [PATCH] ASoC: tegra: Fix redundant PLLA and PLLA_OUT0 updates
+
+Tegra audio graph card has many DAI links which connects internal
+AHUB modules and external audio codecs. Since these are DPCM links,
+hw_params() call in the machine driver happens for each connected
+BE link and PLLA is updated every time. This is not really needed
+for all links as only I/O link DAIs derive respective clocks from
+PLLA_OUT0 and thus from PLLA. Hence add checks to limit the clock
+updates to DAIs over I/O links.
+
+This found to be fixing a DMIC clock discrepancy which is suspected
+to happen because of back to back quick PLLA and PLLA_OUT0 rate
+updates. This was observed on Jetson TX2 platform where DMIC clock
+ended up with unexpected value.
+
+Fixes: 202e2f774543 ("ASoC: tegra: Add audio graph based card driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://lore.kernel.org/r/1694098945-32760-3-git-send-email-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+
+diff --git a/sound/soc/tegra/tegra_audio_graph_card.c b/sound/soc/tegra/tegra_audio_graph_card.c
+index 1f2c5018bf5a..4737e776d383 100644
+--- a/sound/soc/tegra/tegra_audio_graph_card.c
++++ b/sound/soc/tegra/tegra_audio_graph_card.c
+@@ -10,6 +10,7 @@
+ #include <linux/platform_device.h>
+ #include <sound/graph_card.h>
+ #include <sound/pcm_params.h>
++#include <sound/soc-dai.h>
+ 
+ #define MAX_PLLA_OUT0_DIV 128
+ 
+@@ -44,6 +45,21 @@ struct tegra_audio_cdata {
+ 	unsigned int plla_out0_rates[NUM_RATE_TYPE];
+ };
+ 
++static bool need_clk_update(struct snd_soc_dai *dai)
++{
++	if (snd_soc_dai_is_dummy(dai) ||
++	    !dai->driver->ops ||
++	    !dai->driver->name)
++		return false;
++
++	if (strstr(dai->driver->name, "I2S") ||
++	    strstr(dai->driver->name, "DMIC") ||
++	    strstr(dai->driver->name, "DSPK"))
++		return true;
++
++	return false;
++}
++
+ /* Setup PLL clock as per the given sample rate */
+ static int tegra_audio_graph_update_pll(struct snd_pcm_substream *substream,
+ 					struct snd_pcm_hw_params *params)
+@@ -140,19 +156,7 @@ static int tegra_audio_graph_hw_params(struct snd_pcm_substream *substream,
+ 	struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
+ 	int err;
+ 
+-	/*
+-	 * This gets called for each DAI link (FE or BE) when DPCM is used.
+-	 * We may not want to update PLLA rate for each call. So PLLA update
+-	 * must be restricted to external I/O links (I2S, DMIC or DSPK) since
+-	 * they actually depend on it. I/O modules update their clocks in
+-	 * hw_param() of their respective component driver and PLLA rate
+-	 * update here helps them to derive appropriate rates.
+-	 *
+-	 * TODO: When more HW accelerators get added (like sample rate
+-	 * converter, volume gain controller etc., which don't really
+-	 * depend on PLLA) we need a better way to filter here.
+-	 */
+-	if (cpu_dai->driver->ops && rtd->dai_link->no_pcm) {
++	if (need_clk_update(cpu_dai)) {
+ 		err = tegra_audio_graph_update_pll(substream, params);
+ 		if (err)
+ 			return err;
+
