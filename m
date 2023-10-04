@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07B687B8A37
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ECC67B87B6
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244379AbjJDSdY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:33:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40598 "EHLO
+        id S243853AbjJDSIc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:08:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244378AbjJDSdY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:24 -0400
+        with ESMTP id S243851AbjJDSIb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C6BDA7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F1FC433C7;
-        Wed,  4 Oct 2023 18:33:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 655B6C4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD44AC433CA;
+        Wed,  4 Oct 2023 18:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444399;
-        bh=MtNyoSoK5L94h1YRWR9G8cUe5dU4u04sH8+taILMXe4=;
+        s=korg; t=1696442908;
+        bh=+hU7AlGbUbfx8jTSrsK7mJmu0ptIKpPVhX1EbQF1Nn8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DXSGhuckyt43E6m3hKSzOvIUOnkPldsLTfjg15/efFAlK16kKduqYpULiP++OETPO
-         lIfRMi/jzhN3SSE70ATy+FMuWmQOCIVrySzqt9cUgH7okMQBW1zlzP/AlzmudFIuCz
-         PHUv/A46nSOrWa3DF3yGRmReuNnTCsZA3uMU/5jA=
+        b=evQeyfW0/Jh/p1v/rHt0/YfAWmXm6a/xvo3tGcB/W2Fl8oAymPWQlsJBPek2jzDT+
+         9ut7NbrHrS3pSzeC0GRWsuGFmR+Bbp9uX15j7jWqYJWG6zT/0XxtESCBq0h1eDgpY0
+         ad0twa54R+5prbwdsekJ92jCUxJ0p+Vto4U9HO6A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        patches@lists.linux.dev, Andrii Staikov <andrii.staikov@intel.com>,
+        Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 236/321] fbdev/sh7760fb: Depend on FB=y
+Subject: [PATCH 5.15 150/183] i40e: fix potential NULL pointer dereferencing of pf->vf i40e_sync_vsi_filters()
 Date:   Wed,  4 Oct 2023 19:56:21 +0200
-Message-ID: <20231004175240.167042516@linuxfoundation.org>
+Message-ID: <20231004175210.294776178@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +53,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Andrii Staikov <andrii.staikov@intel.com>
 
-[ Upstream commit f75f71b2c418a27a7c05139bb27a0c83adf88d19 ]
+[ Upstream commit 9525a3c38accd2e186f52443e35e633e296cc7f5 ]
 
-Fix linker error if FB=m about missing fb_io_read and fb_io_write. The
-linker's error message suggests that this config setting has already
-been broken for other symbols.
+Add check for pf->vf not being NULL before dereferencing
+pf->vf[vsi->vf_id] in updating VSI filter sync.
+Add a similar check before dereferencing !pf->vf[vsi->vf_id].trusted
+in the condition for clearing promisc mode bit.
 
-  All errors (new ones prefixed by >>):
-
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_probe':
-     sh7760fb.c:(.text+0x374): undefined reference to `framebuffer_alloc'
-     sh4-linux-ld: sh7760fb.c:(.text+0x394): undefined reference to `fb_videomode_to_var'
-     sh4-linux-ld: sh7760fb.c:(.text+0x39c): undefined reference to `fb_alloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x3a4): undefined reference to `register_framebuffer'
-     sh4-linux-ld: sh7760fb.c:(.text+0x3ac): undefined reference to `fb_dealloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x434): undefined reference to `framebuffer_release'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_remove':
-     sh7760fb.c:(.text+0x800): undefined reference to `unregister_framebuffer'
-     sh4-linux-ld: sh7760fb.c:(.text+0x804): undefined reference to `fb_dealloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x814): undefined reference to `framebuffer_release'
-  >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0xc): undefined reference to `fb_io_read'
-  >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x10): undefined reference to `fb_io_write'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x2c): undefined reference to `cfb_fillrect'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x30): undefined reference to `cfb_copyarea'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x34): undefined reference to `cfb_imageblit'
-
-Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309130632.LS04CPWu-lkp@intel.com/
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230918090400.13264-1-tzimmermann@suse.de
+Fixes: c87c938f62d8 ("i40e: Add VF VLAN pruning")
+Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 6df9bd09454a2..80c999a67779f 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -2003,7 +2003,7 @@ config FB_COBALT
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 76bb1d0de8d1c..539bb69548f23 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -2595,7 +2595,7 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
+ 			retval = i40e_correct_mac_vlan_filters
+ 				(vsi, &tmp_add_list, &tmp_del_list,
+ 				 vlan_filters);
+-		else
++		else if (pf->vf)
+ 			retval = i40e_correct_vf_mac_vlan_filters
+ 				(vsi, &tmp_add_list, &tmp_del_list,
+ 				 vlan_filters, pf->vf[vsi->vf_id].trusted);
+@@ -2768,7 +2768,8 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
+ 	}
  
- config FB_SH7760
- 	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
--	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
-+	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
- 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
+ 	/* if the VF is not trusted do not do promisc */
+-	if ((vsi->type == I40E_VSI_SRIOV) && !pf->vf[vsi->vf_id].trusted) {
++	if (vsi->type == I40E_VSI_SRIOV && pf->vf &&
++	    !pf->vf[vsi->vf_id].trusted) {
+ 		clear_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
+ 		goto out;
+ 	}
 -- 
 2.40.1
 
