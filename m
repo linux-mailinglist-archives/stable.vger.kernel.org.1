@@ -2,145 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 852177B78B0
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 09:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 627CC7B78C8
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 09:33:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232793AbjJDH04 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 03:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53602 "EHLO
+        id S241546AbjJDHdJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 03:33:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232754AbjJDH0z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 03:26:55 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35C2598;
-        Wed,  4 Oct 2023 00:26:52 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-99de884ad25so318325866b.3;
-        Wed, 04 Oct 2023 00:26:52 -0700 (PDT)
+        with ESMTP id S241532AbjJDHdG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 03:33:06 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E83AB0
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 00:33:00 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-5033918c09eso2034835e87.2
+        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 00:33:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696404410; x=1697009210; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ampmjb5nn6WsDhiRi4sd5xEjXsA9NxoOOxrN/nCo4sk=;
-        b=WpceyEMNR+xjdVzqOpNYMoQkfJudTbdhgF1ygspyMhP/doH0CnLUfc3PN79CxsbVwH
-         WUK756ZlNpNKwtxeINrVyxsjkY3ABfSdS1oQGJpSju4Wuj9QCB1PIkdsuVQgY4QfHg3E
-         Vpc7r57M2LcO3ycqeEWv7/b8ddcOOS7yVV3UcYfnaDPeIssfXPcubHdDJZkQTRFNdIZ0
-         UFjY2dtH/JdphGDV3R7BQkvIYyIZmSy89//L00wJsu1FQiyuaa/s1+0gflESbBhcSlZc
-         JGRQl2H7+8crv90PB5fMVbQMI2NLunnecq6PcuXEh8Tgcy8G3/c2kvm/hhZsXp1SgNFe
-         ISBw==
+        d=chromium.org; s=google; t=1696404779; x=1697009579; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yzbt6X7Q7d0mjTqmZT49evnXk1E+0LrXDBffntKrV+U=;
+        b=bX7IRveGVY3S7IGm0QAUpiHP3Iy8bUCjGwnNtWLg2L0YBiLRkAB72VBNQOaip6z041
+         yUF/jPtLQ6z4o8Wdp/qYk5D2gPqogUqBsePhk9GWYSwUVsF8V7Ht9pwnvAQaYnqYZXWq
+         MwSUYByRWJBtM0LrUpB2IY6/Rgkf57iuM/rxI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696404410; x=1697009210;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1696404779; x=1697009579;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ampmjb5nn6WsDhiRi4sd5xEjXsA9NxoOOxrN/nCo4sk=;
-        b=qyjuokW8eNatZYFYWXy/bPPWkq9UK7zQy64WJB9SenapCDevhP7w4BceEdNV6Tdy92
-         xnj8jKg6dSVHx1wGCycPgkbmp1uD3NCX8Vv1dLzHS3rwdZ3wwBWkpGUxirpGEnxN6s/L
-         tshz4nOnWGW4ZgMmXwYzdCEEtL5PaDKaz1Kx2aXRQ6Gg/1fk9gWon/23vA++1e3clMNO
-         Uk9XUgw26iYsHFSkhP5WHZcTY6qiM+pzzcK0Rihfsq7/g7qrTzPYcgHgkgrOnnq3hBo0
-         z/4O9EXkp7V/Ar9XTJX2c9mBy7VM5576fp7pmy+6plXtMehpGYMU03aMCRXhkBKCM52k
-         srDw==
-X-Gm-Message-State: AOJu0Yx0+AiGhsijjRqE7DqK1H57/XTWOkdonNLcjz9jfMe/jE98dcmL
-        iSY+/4WMCM6Kmhqqf1V7ZwIz+Z9defQ=
-X-Google-Smtp-Source: AGHT+IHhM8GYxYqCvvWUMJ1UlRFlRa9ZWycKMdjOnVw3AuuLqBB6baMgb10S45O9mpMn312cfDlGxQ==
-X-Received: by 2002:a17:906:30db:b0:9ae:41db:c27f with SMTP id b27-20020a17090630db00b009ae41dbc27fmr1568311ejb.10.1696404410443;
-        Wed, 04 Oct 2023 00:26:50 -0700 (PDT)
-Received: from gmail.com (1F2EF530.nat.pool.telekom.hu. [31.46.245.48])
-        by smtp.gmail.com with ESMTPSA id l7-20020a1709061c4700b00997d7aa59fasm2320059ejg.14.2023.10.04.00.26.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 00:26:48 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Wed, 4 Oct 2023 09:26:46 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     Namhyung Kim <namhyung@kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] perf/core: Introduce cpuctx->cgrp_ctx_list
-Message-ID: <ZR0TtjhGT+Em+/ti@gmail.com>
-References: <20231004040844.797044-1-namhyung@kernel.org>
+        bh=yzbt6X7Q7d0mjTqmZT49evnXk1E+0LrXDBffntKrV+U=;
+        b=UfKCQV3MgiUIIG6gp1MGcPSKtbzXs3I827KsddDy3ElGQfqJjjZG5jgoHC1OTK12U8
+         70RuAm/WTeZe34vaC+gmykwZJD/Hh39y7mirLVRi06QT8KCbJ1li0+9vzLFJcPu+UChv
+         tJLzEQWZHeZEfaOyuTEmSCpUcUF/iiiZWGxKw0KUHI3dHlOuPFKCZzRN+e+KxxX7wA+T
+         4up3g/3seGERp3YZk0GxW5h0QPsKMi+OSbY4effIcOXXXT66GzuipLPxD8xWeEu5t4Cr
+         PFjOJ+jqU4BFPzCcMQbtEenV6LwtaEp+/jdHniGKjQ/JoIzFdzUUM/6ivGamtxchQ/Ox
+         GORw==
+X-Gm-Message-State: AOJu0YwiYFW+ce1eUC3qjPgdWvR/BWVJ9J9z0JSspsgRZObXSWN+BDkn
+        v/sADghK7wMQTHdqopJBvuJGmtbawWLxdg/ZXq64gsdzZLqKIMNt
+X-Google-Smtp-Source: AGHT+IGssoE7hQqBg/N5JbkjtBec11yjXOZDIx9mR4vfXI1H5ndkIzs/dQErwY530PlhjT1G82jsZ/AwIGzfKfKkfKA=
+X-Received: by 2002:a05:6512:3b28:b0:500:7de4:300e with SMTP id
+ f40-20020a0565123b2800b005007de4300emr1597917lfv.58.1696404778196; Wed, 04
+ Oct 2023 00:32:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231004040844.797044-1-namhyung@kernel.org>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+References: <20231002092051.555479-1-wenst@chromium.org> <CAC=S1ng3_z0H48awhum7unXTTk0yfn61pTWqSmPJ9fWdoURL=A@mail.gmail.com>
+In-Reply-To: <CAC=S1ng3_z0H48awhum7unXTTk0yfn61pTWqSmPJ9fWdoURL=A@mail.gmail.com>
+From:   Chen-Yu Tsai <wenst@chromium.org>
+Date:   Wed, 4 Oct 2023 15:32:47 +0800
+Message-ID: <CAGXv+5Ex9ZN+MPZx0CyNaHf0h+DC2VLNH6Obs7Wt-nokU70MNg@mail.gmail.com>
+Subject: Re: [PATCH] drm/mediatek: Correctly free sg_table in gem prime vmap
+To:     Fei Shao <fshao@chromium.org>
+Cc:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, Oct 3, 2023 at 11:14=E2=80=AFPM Fei Shao <fshao@chromium.org> wrote=
+:
+>
+> Hi,
+>
+> On Mon, Oct 2, 2023 at 5:21=E2=80=AFPM Chen-Yu Tsai <wenst@chromium.org> =
+wrote:
+> >
+> > The MediaTek DRM driver implements GEM PRIME vmap by fetching the
+> > sg_table for the object, iterating through the pages, and then
+> > vmapping them. In essence, unlike the GEM DMA helpers which vmap
+> > when the object is first created or imported, the MediaTek version
+> > does it on request.
+> >
+> > Unfortunately, the code never correctly frees the sg_table contents.
+> > This results in a kernel memory leak. On a Hayato device with a text
+> > console on the internal display, this results in the system running
+> > out of memory in a few days from all the console screen cursor updates.
+> >
+> > Add sg_free_table() to correctly free the contents of the sg_table. Thi=
+s
+> > was missing despite explicitly required by mtk_gem_prime_get_sg_table()=
+.
+> >
+> > Fixes: 3df64d7b0a4f ("drm/mediatek: Implement gem prime vmap/vunmap fun=
+ction")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+> > ---
+> > Please merge for v6.6 fixes.
+> >
+> > Also, I was wondering why the MediaTek DRM driver implements a lot of
+> > the GEM functionality itself, instead of using the GEM DMA helpers.
+> > From what I could tell, the code closely follows the DMA helpers, excep=
+t
+> > that it vmaps the buffers only upon request.
+> >
+> >
+> >  drivers/gpu/drm/mediatek/mtk_drm_gem.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/m=
+ediatek/mtk_drm_gem.c
+> > index 9f364df52478..297ee090e02e 100644
+> > --- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+> > +++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+> > @@ -239,6 +239,7 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *o=
+bj, struct iosys_map *map)
+> >         npages =3D obj->size >> PAGE_SHIFT;
+> >         mtk_gem->pages =3D kcalloc(npages, sizeof(*mtk_gem->pages), GFP=
+_KERNEL);
+> >         if (!mtk_gem->pages) {
+> > +               sg_free_table(sgt);
+> >                 kfree(sgt);
+> >                 return -ENOMEM;
+> >         }
+> > @@ -248,11 +249,13 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object =
+*obj, struct iosys_map *map)
+> >         mtk_gem->kvaddr =3D vmap(mtk_gem->pages, npages, VM_MAP,
+> >                                pgprot_writecombine(PAGE_KERNEL));
+> >         if (!mtk_gem->kvaddr) {
+> > +               sg_free_table(sgt);
+> >                 kfree(sgt);
+> >                 kfree(mtk_gem->pages);
+> >                 return -ENOMEM;
+> >         }
+> >  out:
+> > +       sg_free_table(sgt);
+>
+> I think this will cause invalid access from the "goto out" path -
+> sg_free_table() accesses the provided sg table pointer, but it doesn't
+> handle NULL pointers like kfree() does.
 
-* Namhyung Kim <namhyung@kernel.org> wrote:
-
-> AFAIK we don't have a tool to measure the context switch overhead
-> directly.  (I think I should add one to perf ftrace latency).  But I can
-> see it with a simple perf bench command like this.
-> 
->   $ perf bench sched pipe -l 100000
->   # Running 'sched/pipe' benchmark:
->   # Executed 100000 pipe operations between two processes
-> 
->        Total time: 0.650 [sec]
-> 
->          6.505740 usecs/op
->            153710 ops/sec
-> 
-> It runs two tasks communicate each other using a pipe so it should
-> stress the context switch code.  This is the normal numbers on my
-> system.  But after I run these two perf stat commands in background,
-> the numbers vary a lot.
-> 
->   $ sudo perf stat -a -e cycles -G user.slice -- sleep 100000 &
->   $ sudo perf stat -a -e uncore_imc/cas_count_read/ -- sleep 10000 &
-> 
-> I will show the last two lines of perf bench sched pipe output for
-> three runs.
-> 
->         58.597060 usecs/op    # run 1
->             17065 ops/sec
-> 
->         11.329240 usecs/op    # run 2
->             88267 ops/sec
-> 
->         88.481920 usecs/op    # run 3
->             11301 ops/sec
-> 
-> I think the deviation comes from the fact that uncore events are managed
-> a certain number of cpus only.  If the target process runs on a cpu that
-> manages uncore pmu, it'd take longer.  Otherwise it won't affect the
-> performance much.
-
-The numbers of pipe-message context switching will vary a lot depending on 
-CPU migration patterns as well.
-
-The best way to measure context-switch overhead is to pin that task
-to a single CPU with something like:
-
-   $ taskset 1 perf stat --null --repeat 10 perf bench sched pipe -l 10000 >/dev/null
-
-   Performance counter stats for 'perf bench sched pipe -l 10000' (10 runs):
-
-            0.049798 +- 0.000102 seconds time elapsed  ( +-  0.21% )
-
-as you can see the 0.21% stddev is pretty low.
-
-If we allow 2 CPUs, both runtime and stddev is much higher:
-
-   $ taskset 3 perf stat --null --repeat 10 perf bench sched pipe -l 10000 >/dev/null
-
-   Performance counter stats for 'perf bench sched pipe -l 10000' (10 runs):
-
-              1.4835 +- 0.0383 seconds time elapsed  ( +-  2.58% )
-
-Thanks,
-
-	Ingo
+You're right. I'll send a new version fixing this.
