@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 196827B8887
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A0157B89F2
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:30:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244055AbjJDSRG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55718 "EHLO
+        id S244329AbjJDSao (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:30:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244100AbjJDSRD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:03 -0400
+        with ESMTP id S244317AbjJDSak (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBF42FA
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:16:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E04C433C9;
-        Wed,  4 Oct 2023 18:16:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 719A198
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFEAC433C9;
+        Wed,  4 Oct 2023 18:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443418;
-        bh=TD73CbL7QgDm7Zmykph+i3GMtonlKapjxQpBiIImsqw=;
+        s=korg; t=1696444236;
+        bh=Fv3DodC9OEDU9AdXPJaSOnhRLShBb1oBzc3Y4u1VrBY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OewhqLz4sDdheS4+sY3Gaxfn+PbLVhXYiRT328Wam+wBsEyChAKytdC+5V9YbT0Ot
-         q5AR7wQSP0ZlJpAoifRTD+8j/OGaqpRSAWPzxDXFCobdRcE/fYuDMCxD3gmhBoWzqr
-         P0no3LQxEwAZGL9VxZeI19H8C/MJOAZcxgz24wtg=
+        b=Yw1vDTeu/0kjER+xtzYpO+PiBjPw7E3VqaYgBOL9RsE9GHfW1K3bmhZxB62iHUm6s
+         AvmPBocXcACkhgODGY4LVL3+FccqEcWoOWJS+PNZAg3ek2f9oS2+S7c9P9Ca/Pa5rG
+         b0axdKqoZ01F2/i0TZpMm7JuOxhZQ6ynAcAuLvx0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/259] parisc: iosapic.c: Fix sparse warnings
+Subject: [PATCH 6.5 177/321] btrfs: assert delayed node locked when removing delayed item
 Date:   Wed,  4 Oct 2023 19:55:22 +0200
-Message-ID: <20231004175224.136723194@linuxfoundation.org>
+Message-ID: <20231004175237.445745432@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,52 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 927c6c8aa27c284a799b8c18784e37d3373af908 ]
+[ Upstream commit a57c2d4e46f519b24558ae0752c17eec416ac72a ]
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+When removing a delayed item, or releasing which will remove it as well,
+we will modify one of the delayed node's rbtrees and item counter if the
+delayed item is in one of the rbtrees. This require having the delayed
+node's mutex locked, otherwise we will race with other tasks modifying
+the rbtrees and the counter.
+
+This is motivated by a previous version of another patch actually calling
+btrfs_release_delayed_item() after unlocking the delayed node's mutex and
+against a delayed item that is in a rbtree.
+
+So assert at __btrfs_remove_delayed_item() that the delayed node's mutex
+is locked.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parisc/iosapic.c         | 4 ++--
- drivers/parisc/iosapic_private.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ fs/btrfs/delayed-inode.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/parisc/iosapic.c b/drivers/parisc/iosapic.c
-index bcc1dae007803..890c3c0f3d140 100644
---- a/drivers/parisc/iosapic.c
-+++ b/drivers/parisc/iosapic.c
-@@ -202,9 +202,9 @@ static inline void iosapic_write(void __iomem *iosapic, unsigned int reg, u32 va
+diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
+index b5f684cb4e749..142e0a0f6a9fe 100644
+--- a/fs/btrfs/delayed-inode.c
++++ b/fs/btrfs/delayed-inode.c
+@@ -412,6 +412,7 @@ static void finish_one_item(struct btrfs_delayed_root *delayed_root)
  
- static DEFINE_SPINLOCK(iosapic_lock);
- 
--static inline void iosapic_eoi(void __iomem *addr, unsigned int data)
-+static inline void iosapic_eoi(__le32 __iomem *addr, __le32 data)
+ static void __btrfs_remove_delayed_item(struct btrfs_delayed_item *delayed_item)
  {
--	__raw_writel(data, addr);
-+	__raw_writel((__force u32)data, addr);
- }
++	struct btrfs_delayed_node *delayed_node = delayed_item->delayed_node;
+ 	struct rb_root_cached *root;
+ 	struct btrfs_delayed_root *delayed_root;
  
- /*
-diff --git a/drivers/parisc/iosapic_private.h b/drivers/parisc/iosapic_private.h
-index 73ecc657ad954..bd8ff40162b4b 100644
---- a/drivers/parisc/iosapic_private.h
-+++ b/drivers/parisc/iosapic_private.h
-@@ -118,8 +118,8 @@ struct iosapic_irt {
- struct vector_info {
- 	struct iosapic_info *iosapic;	/* I/O SAPIC this vector is on */
- 	struct irt_entry *irte;		/* IRT entry */
--	u32 __iomem *eoi_addr;		/* precalculate EOI reg address */
--	u32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
-+	__le32 __iomem *eoi_addr;	/* precalculate EOI reg address */
-+	__le32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
- 	int	txn_irq;		/* virtual IRQ number for processor */
- 	ulong	txn_addr;		/* IA64: id_eid  PA: partial HPA */
- 	u32	txn_data;		/* CPU interrupt bit */
+@@ -419,18 +420,21 @@ static void __btrfs_remove_delayed_item(struct btrfs_delayed_item *delayed_item)
+ 	if (RB_EMPTY_NODE(&delayed_item->rb_node))
+ 		return;
+ 
+-	delayed_root = delayed_item->delayed_node->root->fs_info->delayed_root;
++	/* If it's in a rbtree, then we need to have delayed node locked. */
++	lockdep_assert_held(&delayed_node->mutex);
++
++	delayed_root = delayed_node->root->fs_info->delayed_root;
+ 
+ 	BUG_ON(!delayed_root);
+ 
+ 	if (delayed_item->type == BTRFS_DELAYED_INSERTION_ITEM)
+-		root = &delayed_item->delayed_node->ins_root;
++		root = &delayed_node->ins_root;
+ 	else
+-		root = &delayed_item->delayed_node->del_root;
++		root = &delayed_node->del_root;
+ 
+ 	rb_erase_cached(&delayed_item->rb_node, root);
+ 	RB_CLEAR_NODE(&delayed_item->rb_node);
+-	delayed_item->delayed_node->count--;
++	delayed_node->count--;
+ 
+ 	finish_one_item(delayed_root);
+ }
 -- 
 2.40.1
 
