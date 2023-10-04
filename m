@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 520AA7B89BA
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D3C77B8854
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244266AbjJDS2i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:28:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43350 "EHLO
+        id S244013AbjJDSPC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:15:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244264AbjJDS2i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:28:38 -0400
+        with ESMTP id S244021AbjJDSPB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E63599E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:28:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C39C433C7;
-        Wed,  4 Oct 2023 18:28:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22C70A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:14:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5FAC433CB;
+        Wed,  4 Oct 2023 18:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444114;
-        bh=a2TpzGfLYFmvR+HMEEr5rT1PYRjsRUL8HEIfad1e1Xc=;
+        s=korg; t=1696443297;
+        bh=FyZj0n81H9coh+j1Qj0ouB53EfsHbZPEXfnbo0eTrug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d2ljgfny704XJheX2EILgZbyWuwCh0opWkKEIXEQ+DB3B2f4L+nCtR7Xac5KxnsyL
-         WLMvkwcypsRQYirRRBKM9+3ppPJtcva1y5kzLkHOUoUdDm+H31Q7Dhdq4CRNo9nenT
-         QynZwuum08ji30wuhVM795/QPsLaeRmuHPopdNtM=
+        b=Dpgd8rxuFXeaEqRuqzxW1r4vjZTUfLwy8LaBmBpGRAqJG+oG12IBClYzdIkBfYR1P
+         BrwjRk9/hsC9iIB7rhhCkT2Kn2SouQiKdf4BtJHlFphMmV+15i27Vbmh5EOBFSRUr8
+         +eYC1hsb3kRsX/9gjy/T1o/zdIOaYO10bNPXa1SE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        ChiYuan Huang <cy_huang@richtek.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 135/321] power: supply: rt9467: Fix rt9467_run_aicl()
+Subject: [PATCH 6.1 107/259] btrfs: reset destination buffer when read_extent_buffer() gets invalid range
 Date:   Wed,  4 Oct 2023 19:54:40 +0200
-Message-ID: <20231004175235.492518904@linuxfoundation.org>
+Message-ID: <20231004175222.254848557@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,44 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit cba320408d631422fef0ad8407954fb9d6f8f650 ]
+[ Upstream commit 74ee79142c0a344d4eae2eb7012ebc4e82254109 ]
 
-It is spurious to bail-out on a wait_for_completion_timeout() call that
-does NOT timeout.
+Commit f98b6215d7d1 ("btrfs: extent_io: do extra check for extent buffer
+read write functions") changed how we handle invalid extent buffer range
+for read_extent_buffer().
 
-Reverse the logic to return -ETIMEDOUT instead, in case of tiemout.
+Previously if the range is invalid we just set the destination to zero,
+but after the patch we do nothing and error out.
 
-Fixes: 6f7f70e3a8dd ("power: supply: rt9467: Add Richtek RT9467 charger driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: ChiYuan Huang <cy_huang@richtek.com>
-Link: https://lore.kernel.org/r/2ed01020fa8a135c36dbaa871095ded47d926507.1676464968.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+This can lead to smatch static checker errors like:
+
+  fs/btrfs/print-tree.c:186 print_uuid_item() error: uninitialized symbol 'subvol_id'.
+  fs/btrfs/tests/extent-io-tests.c:338 check_eb_bitmap() error: uninitialized symbol 'has'.
+  fs/btrfs/tests/extent-io-tests.c:353 check_eb_bitmap() error: uninitialized symbol 'has'.
+  fs/btrfs/uuid-tree.c:203 btrfs_uuid_tree_remove() error: uninitialized symbol 'read_subid'.
+  fs/btrfs/uuid-tree.c:353 btrfs_uuid_tree_iterate() error: uninitialized symbol 'subid_le'.
+  fs/btrfs/uuid-tree.c:72 btrfs_uuid_tree_lookup() error: uninitialized symbol 'data'.
+  fs/btrfs/volumes.c:7415 btrfs_dev_stats_value() error: uninitialized symbol 'val'.
+
+Fix those warnings by reverting back to the old memset() behavior.
+By this we keep the static checker happy and would still make a lot of
+noise when such invalid ranges are passed in.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: f98b6215d7d1 ("btrfs: extent_io: do extra check for extent buffer read write functions")
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/rt9467-charger.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/extent_io.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/rt9467-charger.c b/drivers/power/supply/rt9467-charger.c
-index 683adb18253dd..fdfdc83ab0458 100644
---- a/drivers/power/supply/rt9467-charger.c
-+++ b/drivers/power/supply/rt9467-charger.c
-@@ -598,8 +598,8 @@ static int rt9467_run_aicl(struct rt9467_chg_data *data)
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 0ad69041954ff..afcc96a1f4276 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -5184,8 +5184,14 @@ void read_extent_buffer(const struct extent_buffer *eb, void *dstv,
+ 	char *dst = (char *)dstv;
+ 	unsigned long i = get_eb_page_index(start);
  
- 	reinit_completion(&data->aicl_done);
- 	ret = wait_for_completion_timeout(&data->aicl_done, msecs_to_jiffies(3500));
--	if (ret)
--		return ret;
-+	if (ret == 0)
-+		return -ETIMEDOUT;
+-	if (check_eb_range(eb, start, len))
++	if (check_eb_range(eb, start, len)) {
++		/*
++		 * Invalid range hit, reset the memory, so callers won't get
++		 * some random garbage for their uninitialzed memory.
++		 */
++		memset(dstv, 0, len);
+ 		return;
++	}
  
- 	ret = rt9467_get_value_from_ranges(data, F_IAICR, RT9467_RANGE_IAICR, &aicr_get);
- 	if (ret) {
+ 	offset = get_eb_offset_in_page(eb, start);
+ 
 -- 
 2.40.1
 
