@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19E5A7B877A
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:05:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3DBE7B89F3
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:30:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243799AbjJDSFt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:05:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44014 "EHLO
+        id S244328AbjJDSar (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243800AbjJDSFt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:05:49 -0400
+        with ESMTP id S244330AbjJDSap (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BBBAA6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5503FC433C8;
-        Wed,  4 Oct 2023 18:05:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 478DEE4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A13C433C7;
+        Wed,  4 Oct 2023 18:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442744;
-        bh=1353e5wBrFiCtZQzqQoqS5XC6HURudgldN+GGyx/3h4=;
+        s=korg; t=1696444241;
+        bh=Hf/b0rlHO/SI2/19bQPtCZ4B22zCCQuSVdfnnxF0Ilw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kYaR5VW4CHoUPdsRN6gFpWs2M5pHvKUivOwrBvFVbgNoUZ22cYwy6BSCtKxtPmHIl
-         TpQ6EfS9PVy7gy59VRDgG3cwDhTGDpDoV+4Jenv5GhskH1Wyl5XiQUk80nHBMNGSdU
-         cdc0PGAEk9laW9rnvQM0UiuhYIIBkz5OkXlR07AE=
+        b=HJDLozYZxrSd661rQWgDqu9xf4JS3HP4OUBOCjPUiQyrvSiJGr3KGP2Yj3GmVZxI0
+         4V75seuV62JiqEGHUn1iQx35jrVEFFKMd6JVwIw4D/vtJkVBG3SxweA5AUR4ZtTKiU
+         JXFAs5OGpjKt81uFPP7GTLmX8kNpQDoFRoe2aVS8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Simon Horman <horms@kernel.org>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 066/183] igc: Expose tx-usecs coalesce setting to user
+Subject: [PATCH 6.5 152/321] i915/guc: Get runtime pm in busyness worker only if already active
 Date:   Wed,  4 Oct 2023 19:54:57 +0200
-Message-ID: <20231004175206.627008691@linuxfoundation.org>
+Message-ID: <20231004175236.305884247@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,132 +52,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-[ Upstream commit 1703b2e0de653b459ca6230be32ce7f2ea0ae7ee ]
+[ Upstream commit 907ef0398c938be8232b77c61cfcf50fbfd95554 ]
 
-When users attempt to obtain the coalesce setting using the
-ethtool command, current code always returns 0 for tx-usecs.
-This is because I225/6 always uses a queue pair setting, hence
-tx_coalesce_usecs does not return a value during the
-igc_ethtool_get_coalesce() callback process. The pair queue
-condition checking in igc_ethtool_get_coalesce() is removed by
-this patch so that the user gets information of the value of tx-usecs.
+Ideally the busyness worker should take a gt pm wakeref because the
+worker only needs to be active while gt is awake. However, the gt_park
+path cancels the worker synchronously and this complicates the flow if
+the worker is also running at the same time. The cancel waits for the
+worker and when the worker releases the wakeref, that would call gt_park
+and would lead to a deadlock.
 
-Even if i225/6 is using queue pair setting, there is no harm in
-notifying the user of the tx-usecs. The implementation of the current
-code may have previously been a copy of the legacy code i210.
-Since I225 has the queue pair setting enabled, tx-usecs will always adhere
-to the user-set rx-usecs value. An error message will appear when the user
-attempts to set the tx-usecs value for the input parameters because,
-by default, they should only set the rx-usecs value.
+The resolution is to take the global pm wakeref if runtime pm is already
+active. If not, we don't need to update the busyness stats as the stats
+would already be updated when the gt was parked.
 
-This patch also adds the helper function to get the
-previous rx coalesce value similar to tx coalesce.
+Note:
+- We do not requeue the worker if we cannot take a reference to runtime
+  pm since intel_guc_busyness_unpark would requeue the worker in the
+  resume path.
 
-How to test:
-User can get the coalesce value using ethtool command.
+- If the gt was parked longer than time taken for GT timestamp to roll
+  over, we ignore those rollovers since we don't care about tracking the
+  exact GT time. We only care about roll overs when the gt is active and
+  running workloads.
 
-Example command:
-Get: ethtool -c <interface>
+- There is a window of time between gt_park and runtime suspend, where
+  the worker may run. This is acceptable since the worker will not find
+  any new data to update busyness.
 
-Previous output:
+v2: (Daniele)
+- Edit commit message and code comment
+- Use runtime pm in the worker
+- Put runtime pm after enabling the worker
+- Use Link tag and add Fixes tag
 
-rx-usecs: 3
-rx-frames: n/a
-rx-usecs-irq: n/a
-rx-frames-irq: n/a
+v3: (Daniele)
+- Reword commit and comments and add details
 
-tx-usecs: 0
-tx-frames: n/a
-tx-usecs-irq: n/a
-tx-frames-irq: n/a
-
-New output:
-
-rx-usecs: 3
-rx-frames: n/a
-rx-usecs-irq: n/a
-rx-frames-irq: n/a
-
-tx-usecs: 3
-tx-frames: n/a
-tx-usecs-irq: n/a
-tx-frames-irq: n/a
-
-Fixes: 8c5ad0dae93c ("igc: Add ethtool support")
-Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20230919170331.1581031-1-anthony.l.nguyen@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://gitlab.freedesktop.org/drm/intel/-/issues/7077
+Fixes: 77cdd054dd2c ("drm/i915/pmu: Connect engine busyness stats from GuC to pmu")
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230925192117.2497058-1-umesh.nerlige.ramappa@intel.com
+(cherry picked from commit e2f99b79d4c594cdf7ab449e338d4947f5ea8903)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ethtool.c | 31 ++++++++++++--------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ .../gpu/drm/i915/gt/uc/intel_guc_submission.c | 38 +++++++++++++++++--
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-index 859ddc07fbbfe..17cb4c13d0020 100644
---- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-@@ -861,6 +861,18 @@ static void igc_ethtool_get_stats(struct net_device *netdev,
- 	spin_unlock(&adapter->stats64_lock);
+diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+index b5b7f2fe8c78e..dc7b40e06e38a 100644
+--- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
++++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+@@ -1432,6 +1432,36 @@ static void guc_timestamp_ping(struct work_struct *wrk)
+ 	unsigned long index;
+ 	int srcu, ret;
+ 
++	/*
++	 * Ideally the busyness worker should take a gt pm wakeref because the
++	 * worker only needs to be active while gt is awake. However, the
++	 * gt_park path cancels the worker synchronously and this complicates
++	 * the flow if the worker is also running at the same time. The cancel
++	 * waits for the worker and when the worker releases the wakeref, that
++	 * would call gt_park and would lead to a deadlock.
++	 *
++	 * The resolution is to take the global pm wakeref if runtime pm is
++	 * already active. If not, we don't need to update the busyness stats as
++	 * the stats would already be updated when the gt was parked.
++	 *
++	 * Note:
++	 * - We do not requeue the worker if we cannot take a reference to runtime
++	 *   pm since intel_guc_busyness_unpark would requeue the worker in the
++	 *   resume path.
++	 *
++	 * - If the gt was parked longer than time taken for GT timestamp to roll
++	 *   over, we ignore those rollovers since we don't care about tracking
++	 *   the exact GT time. We only care about roll overs when the gt is
++	 *   active and running workloads.
++	 *
++	 * - There is a window of time between gt_park and runtime suspend,
++	 *   where the worker may run. This is acceptable since the worker will
++	 *   not find any new data to update busyness.
++	 */
++	wakeref = intel_runtime_pm_get_if_active(&gt->i915->runtime_pm);
++	if (!wakeref)
++		return;
++
+ 	/*
+ 	 * Synchronize with gt reset to make sure the worker does not
+ 	 * corrupt the engine/guc stats. NB: can't actually block waiting
+@@ -1440,10 +1470,9 @@ static void guc_timestamp_ping(struct work_struct *wrk)
+ 	 */
+ 	ret = intel_gt_reset_trylock(gt, &srcu);
+ 	if (ret)
+-		return;
++		goto err_trylock;
+ 
+-	with_intel_runtime_pm(&gt->i915->runtime_pm, wakeref)
+-		__update_guc_busyness_stats(guc);
++	__update_guc_busyness_stats(guc);
+ 
+ 	/* adjust context stats for overflow */
+ 	xa_for_each(&guc->context_lookup, index, ce)
+@@ -1452,6 +1481,9 @@ static void guc_timestamp_ping(struct work_struct *wrk)
+ 	intel_gt_reset_unlock(gt, srcu);
+ 
+ 	guc_enable_busyness_worker(guc);
++
++err_trylock:
++	intel_runtime_pm_put(&gt->i915->runtime_pm, wakeref);
  }
  
-+static int igc_ethtool_get_previous_rx_coalesce(struct igc_adapter *adapter)
-+{
-+	return (adapter->rx_itr_setting <= 3) ?
-+		adapter->rx_itr_setting : adapter->rx_itr_setting >> 2;
-+}
-+
-+static int igc_ethtool_get_previous_tx_coalesce(struct igc_adapter *adapter)
-+{
-+	return (adapter->tx_itr_setting <= 3) ?
-+		adapter->tx_itr_setting : adapter->tx_itr_setting >> 2;
-+}
-+
- static int igc_ethtool_get_coalesce(struct net_device *netdev,
- 				    struct ethtool_coalesce *ec,
- 				    struct kernel_ethtool_coalesce *kernel_coal,
-@@ -868,17 +880,8 @@ static int igc_ethtool_get_coalesce(struct net_device *netdev,
- {
- 	struct igc_adapter *adapter = netdev_priv(netdev);
- 
--	if (adapter->rx_itr_setting <= 3)
--		ec->rx_coalesce_usecs = adapter->rx_itr_setting;
--	else
--		ec->rx_coalesce_usecs = adapter->rx_itr_setting >> 2;
--
--	if (!(adapter->flags & IGC_FLAG_QUEUE_PAIRS)) {
--		if (adapter->tx_itr_setting <= 3)
--			ec->tx_coalesce_usecs = adapter->tx_itr_setting;
--		else
--			ec->tx_coalesce_usecs = adapter->tx_itr_setting >> 2;
--	}
-+	ec->rx_coalesce_usecs = igc_ethtool_get_previous_rx_coalesce(adapter);
-+	ec->tx_coalesce_usecs = igc_ethtool_get_previous_tx_coalesce(adapter);
- 
- 	return 0;
- }
-@@ -903,8 +906,12 @@ static int igc_ethtool_set_coalesce(struct net_device *netdev,
- 	    ec->tx_coalesce_usecs == 2)
- 		return -EINVAL;
- 
--	if ((adapter->flags & IGC_FLAG_QUEUE_PAIRS) && ec->tx_coalesce_usecs)
-+	if ((adapter->flags & IGC_FLAG_QUEUE_PAIRS) &&
-+	    ec->tx_coalesce_usecs != igc_ethtool_get_previous_tx_coalesce(adapter)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Queue Pair mode enabled, both Rx and Tx coalescing controlled by rx-usecs");
- 		return -EINVAL;
-+	}
- 
- 	/* If ITR is disabled, disable DMAC */
- 	if (ec->rx_coalesce_usecs == 0) {
+ static int guc_action_enable_usage_stats(struct intel_guc *guc)
 -- 
 2.40.1
 
