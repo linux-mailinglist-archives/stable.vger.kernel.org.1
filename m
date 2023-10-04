@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB5567B8277
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A36E7B827B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:35:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242886AbjJDOfP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 10:35:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40014 "EHLO
+        id S242919AbjJDOfV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 10:35:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242932AbjJDOfL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:35:11 -0400
+        with ESMTP id S242927AbjJDOfN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:35:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEFCA10A
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:35:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD096C433C9;
-        Wed,  4 Oct 2023 14:35:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A7B139
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:35:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06E5C433C7;
+        Wed,  4 Oct 2023 14:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696430102;
-        bh=D60E0d92O7jHKrcvlNM+ewLdJwI585Cdp2Cb7VclGDw=;
+        s=korg; t=1696430105;
+        bh=JktxtwRBi4oip/l+zgdyKBMiVb5hVpzhkKQ9I2t17og=;
         h=Subject:To:Cc:From:Date:From;
-        b=usxrBd/73kOmHQK4PR/oV6Pv183SySroGhVpis/v3RfNMYN5B2cz9BJTTFYnUu8IX
-         dZGy88uYmekYZ/PsuoiTR6N94DX7AEhqBMKv/ID1Zjf/dwOJedydXJLRzsfgb3ousd
-         pCIK2Sl/sCjxfXzkd8kfRoB3ma6iOTuVIN8Ok+Yo=
-Subject: FAILED: patch "[PATCH] kernel/sched: Modify initial boot task idle setup" failed to apply to 4.19-stable tree
+        b=EaxOufOwD4yB7fWFJ1y1JQg2v8109dP/1u0CZTsc1mcBcBPVeMZExWW0GEHPBcnU6
+         4aKpbvr1zCGopGccPiUERyYEMuvqfHmofTtXRmw9pOoQ6SZY3b7iabzLESIaqq6K/u
+         ua55WYjlnqzE1VKaAUQF7BwX9fi61w+viVLCX1VY=
+Subject: FAILED: patch "[PATCH] kernel/sched: Modify initial boot task idle setup" failed to apply to 4.14-stable tree
 To:     Liam.Howlett@oracle.com, peterz@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 16:34:54 +0200
-Message-ID: <2023100454-crawlers-crinkle-fea4@gregkh>
+Date:   Wed, 04 Oct 2023 16:34:56 +0200
+Message-ID: <2023100455-astrology-overcrowd-10e9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x cff9b2332ab762b7e0586c793c431a8f2ea4db04
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100454-crawlers-crinkle-fea4@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100455-astrology-overcrowd-10e9@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
