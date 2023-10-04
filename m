@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BA817B89C6
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC9837B876B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:05:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244277AbjJDS3N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40454 "EHLO
+        id S243790AbjJDSFG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:05:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244279AbjJDS3M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:12 -0400
+        with ESMTP id S243777AbjJDSFF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:05:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A005A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714D3C433C7;
-        Wed,  4 Oct 2023 18:29:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47131AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C451C433C9;
+        Wed,  4 Oct 2023 18:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444148;
-        bh=NC6pol2o82ph7Q470HTYvitiyyj9G0750UQjKqcbogo=;
+        s=korg; t=1696442701;
+        bh=z+dc6jfqZMBNzCItdnMPkGlvlb8oHP0B1o/OSZknElA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AorJGrG54dH2vdyPoVyuQ+FtdcF6et4FlOVJvwFTihXM89Lli5rWFQmJpopWutPU+
-         k5/CapvlDdLyC5hTzU/lXTY9DWl0zHJZ5oGEt5kzTTsif8jrNXwoKMWilJzK4+tjUG
-         A6UqmOAd2K6oTQr8fgx3FG2mh/DqF022rgk/CctM=
+        b=NcjeRfS3d0RCpzzn0W0/zfv+odQJpTzZZmqGidJnXLk+ZexEXxWs+GHddpIMSCojA
+         kYj80iYN9t7b1aU2H2ltCkD/1x/KNvr3V+WoBR6KkjWga7lrnyd03HNqm9uRpa8xWP
+         RZYGNJUyfICXouZvkpbSXIsPV9SaoUwk0AjhL0Yg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
-        Lucas Stach <l.stach@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev,
+        "Lee, Cherie-Anne" <cherie.lee@starlabs.sg>,
+        Bing-Jhong Billy Jheng <billy@starlabs.sg>, info@starlabs.sg,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 146/321] arm64: dts: imx8mp: Fix SDMA2/3 clocks
-Date:   Wed,  4 Oct 2023 19:54:51 +0200
-Message-ID: <20231004175236.008367507@linuxfoundation.org>
+Subject: [PATCH 5.15 061/183] netfilter: nf_tables: disable toggling dormant table state more than once
+Date:   Wed,  4 Oct 2023 19:54:52 +0200
+Message-ID: <20231004175206.447092155@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,63 +52,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit b739681b3f8b2a7a684a71ddd048b9b6b5400011 ]
+[ Upstream commit c9bd26513b3a11b3adb3c2ed8a31a01a87173ff1 ]
 
-Commit 16c984524862 ("arm64: dts: imx8mp: don't initialize audio clocks
-from CCM node") removed the Audio clocks from the main clock node, because
-the intent is to force people to setup the audio PLL clocks per board
-instead of having a common set of rates, since not all boards may use
-the various audio PLL clocks in the same way.
+nft -f -<<EOF
+add table ip t
+add table ip t { flags dormant; }
+add chain ip t c { type filter hook input priority 0; }
+add table ip t
+EOF
 
-Unfortunately, with this parenting removed, the SDMA2 and SDMA3
-clocks were slowed to 24MHz because the SDMA2/3 clocks are controlled
-via the audio_blk_ctrl which is clocked from IMX8MP_CLK_AUDIO_ROOT,
-and that clock is enabled by pgc_audio.
+Triggers a splat from nf core on next table delete because we lose
+track of right hook register state:
 
-Per the TRM, "The SDMA2/3 target frequency is 400MHz IPG and 400MHz
-AHB, always 1:1 mode, to make sure there is enough throughput for all
-the audio use cases."
+WARNING: CPU: 2 PID: 1597 at net/netfilter/core.c:501 __nf_unregister_net_hook
+RIP: 0010:__nf_unregister_net_hook+0x41b/0x570
+ nf_unregister_net_hook+0xb4/0xf0
+ __nf_tables_unregister_hook+0x160/0x1d0
+[..]
 
-Instead of cluttering the clock node, place the clock rate and parent
-information into the pgc_audio node.
+The above should have table in *active* state, but in fact no
+hooks were registered.
 
-With the parenting and clock rates restored for  IMX8MP_CLK_AUDIO_AHB,
-and IMX8MP_CLK_AUDIO_AXI_SRC, it appears the SDMA2 and SDMA3 run at
-400MHz again.
+Reject on/off/on games rather than attempting to fix this.
 
-Fixes: 16c984524862 ("arm64: dts: imx8mp: don't initialize audio clocks from CCM node")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Reported-by: "Lee, Cherie-Anne" <cherie.lee@starlabs.sg>
+Cc: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Cc: info@starlabs.sg
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/netfilter/nf_tables_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-index cc406bb338feb..587265395a9b4 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
-@@ -794,6 +794,12 @@
- 						reg = <IMX8MP_POWER_DOMAIN_AUDIOMIX>;
- 						clocks = <&clk IMX8MP_CLK_AUDIO_ROOT>,
- 							 <&clk IMX8MP_CLK_AUDIO_AXI>;
-+						assigned-clocks = <&clk IMX8MP_CLK_AUDIO_AHB>,
-+								  <&clk IMX8MP_CLK_AUDIO_AXI_SRC>;
-+						assigned-clock-parents =  <&clk IMX8MP_SYS_PLL1_800M>,
-+									  <&clk IMX8MP_SYS_PLL1_800M>;
-+						assigned-clock-rates = <400000000>,
-+								       <600000000>;
- 					};
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 56098859d5b44..2f7d8e0e47de8 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1159,6 +1159,10 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
+ 	     flags & NFT_TABLE_F_OWNER))
+ 		return -EOPNOTSUPP;
  
- 					pgc_gpu2d: power-domain@6 {
++	/* No dormant off/on/off/on games in single transaction */
++	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
++		return -EINVAL;
++
+ 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWTABLE,
+ 				sizeof(struct nft_trans_table));
+ 	if (trans == NULL)
 -- 
 2.40.1
 
