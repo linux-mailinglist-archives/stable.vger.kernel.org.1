@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 227507B879D
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4F97B88A3
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243828AbjJDSHW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:07:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60270 "EHLO
+        id S243766AbjJDSSL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:18:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243829AbjJDSHV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:21 -0400
+        with ESMTP id S244111AbjJDSSK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 662C0A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9B3C433C8;
-        Wed,  4 Oct 2023 18:07:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 212EBD7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD42C433C9;
+        Wed,  4 Oct 2023 18:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442838;
-        bh=qCNm2q5eHQE4ezJ5e8cxh1FH5nKysZXujVBMaGYB5U4=;
+        s=korg; t=1696443486;
+        bh=LwXYaH6Dl3RYVeNFt0GxB8bvcNUYto/bmh+bOi5lo1w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zrT/sXa7iT+I+m+cQVAT8LxEmlajP5T0Is/vWHU+eJsK0ceKVznVoLeVxZNO3AilZ
-         TARLztoXNxg2rT2Digj3qdt/DUlYi55YFrBau6wStAi5vy3PM790rPljCx6KXUfcSg
-         GazNp58DcOYVL0M3MLXQ3NPgXYK0NW1QaYcMkpeU=
+        b=f1bkQkGkmIKJvkGf9qNDy6C8quxGTR9FJZbIxBsVVqZmo3kdPhuTx4VSKkeweR7R0
+         xdFw+3xyzx6t154HkW11h5LoYPAnH34Msslu39/Yfufoy5hRTOMI1OP323G6dhS9ly
+         DXHlvl/bAEMRvC9TS+ACaqzjDGJNvqLsiRM1lP6Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, mhiramat@kernel.org,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/183] ARM: dts: ti: omap: Fix bandgap thermal cells addressing for omap3/4
+Subject: [PATCH 6.1 156/259] ring-buffer: Avoid softlockup in ring_buffer_resize()
 Date:   Wed,  4 Oct 2023 19:55:29 +0200
-Message-ID: <20231004175207.986791298@linuxfoundation.org>
+Message-ID: <20231004175224.465701082@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,91 +51,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 6469b2feade8fd82d224dd3734e146536f3e9f0e ]
+[ Upstream commit f6bd2c92488c30ef53b5bd80c52f0a7eee9d545a ]
 
-Fix "thermal_sys: cpu_thermal: Failed to read thermal-sensors cells: -2"
-error on boot for omap3/4. This is caused by wrong addressing in the dts
-for bandgap sensor for single sensor instances.
+When user resize all trace ring buffer through file 'buffer_size_kb',
+then in ring_buffer_resize(), kernel allocates buffer pages for each
+cpu in a loop.
 
-Note that omap4-cpu-thermal.dtsi is shared across omap4/5 and dra7, so
-we can't just change the addressing in omap4-cpu-thermal.dtsi.
+If the kernel preemption model is PREEMPT_NONE and there are many cpus
+and there are many buffer pages to be allocated, it may not give up cpu
+for a long time and finally cause a softlockup.
 
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Carl Philipp Klemm <philipp@uvos.xyz>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Fixes: a761d517bbb1 ("ARM: dts: omap3: Add cpu_thermal zone")
-Fixes: 0bbf6c54d100 ("arm: dts: add omap4 CPU thermal data")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+To avoid it, call cond_resched() after each cpu buffer allocation.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230906081930.3939106-1-zhengyejian1@huawei.com
+
+Cc: <mhiramat@kernel.org>
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/omap3-cpu-thermal.dtsi | 3 +--
- arch/arm/boot/dts/omap4-cpu-thermal.dtsi | 5 ++++-
- arch/arm/boot/dts/omap443x.dtsi          | 1 +
- arch/arm/boot/dts/omap4460.dtsi          | 1 +
- 4 files changed, 7 insertions(+), 3 deletions(-)
+ kernel/trace/ring_buffer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-index 1ba79932a79fc..4d2684e4ae06e 100644
---- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-+++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-@@ -12,8 +12,7 @@ cpu_thermal: cpu_thermal {
- 	polling-delay = <1000>; /* milliseconds */
- 	coefficients = <0 20000>;
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index de55107aef5d5..42ad59a002365 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -2212,6 +2212,8 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
+ 				err = -ENOMEM;
+ 				goto out_err;
+ 			}
++
++			cond_resched();
+ 		}
  
--			/* sensor       ID */
--	thermal-sensors = <&bandgap     0>;
-+	thermal-sensors = <&bandgap>;
- 
- 	cpu_trips: trips {
- 		cpu_alert0: cpu_alert {
-diff --git a/arch/arm/boot/dts/omap4-cpu-thermal.dtsi b/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
-index 801b4f10350c1..d484ec1e4fd86 100644
---- a/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
-+++ b/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
-@@ -12,7 +12,10 @@ cpu_thermal: cpu_thermal {
- 	polling-delay-passive = <250>; /* milliseconds */
- 	polling-delay = <1000>; /* milliseconds */
- 
--			/* sensor       ID */
-+	/*
-+	 * See 44xx files for single sensor addressing, omap5 and dra7 need
-+	 * also sensor ID for addressing.
-+	 */
- 	thermal-sensors = <&bandgap     0>;
- 
- 	cpu_trips: trips {
-diff --git a/arch/arm/boot/dts/omap443x.dtsi b/arch/arm/boot/dts/omap443x.dtsi
-index 238aceb799f89..2104170fe2cd7 100644
---- a/arch/arm/boot/dts/omap443x.dtsi
-+++ b/arch/arm/boot/dts/omap443x.dtsi
-@@ -69,6 +69,7 @@
- };
- 
- &cpu_thermal {
-+	thermal-sensors = <&bandgap>;
- 	coefficients = <0 20000>;
- };
- 
-diff --git a/arch/arm/boot/dts/omap4460.dtsi b/arch/arm/boot/dts/omap4460.dtsi
-index 1b27a862ae810..a6764750d4476 100644
---- a/arch/arm/boot/dts/omap4460.dtsi
-+++ b/arch/arm/boot/dts/omap4460.dtsi
-@@ -79,6 +79,7 @@
- };
- 
- &cpu_thermal {
-+	thermal-sensors = <&bandgap>;
- 	coefficients = <348 (-9301)>;
- };
- 
+ 		cpus_read_lock();
 -- 
 2.40.1
 
