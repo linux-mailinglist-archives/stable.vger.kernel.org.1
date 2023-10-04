@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0303A7B88EC
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E06E17B8A59
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244002AbjJDSU7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:20:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47842 "EHLO
+        id S243805AbjJDSei (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244003AbjJDSU7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:59 -0400
+        with ESMTP id S244409AbjJDSeh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EC7D98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F5DC433C8;
-        Wed,  4 Oct 2023 18:20:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79673A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9765C433C7;
+        Wed,  4 Oct 2023 18:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443656;
-        bh=hMCRyYnux5tRpLIiu4cDzdnfDopQyeSlantIUFJ9Az8=;
+        s=korg; t=1696444473;
+        bh=URyQkwBwU41rF1H3uSHW5liIDHrWLjpZoRG7ISYsCAo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N3nEftNkQG9Hb7AGlT7wFpOiCB5ZTEpaFbxhj+MjChyo8C3OHNRFYhyvH1HKbGpbX
-         Y0xai8/XrYXMWyG9xp5Qsc4SJ2T11VTP1ffFr+b8ifulSpcNFM1m0J/UsTNn2Xov/s
-         o0fctJ5gc7cMR7jkKHd46lvlGBXnSWiXw0AZGHoc=
+        b=OCC+7kGiZIxSYw+UMGoHNdpLeUdoRfKPcsjIEzWq3NxHR1Axvs5A0zNjE27z38mG/
+         YtIghZGuontW2DWDDxRQCks2+jNo0wp1SCyIrnoeKi7efg0Z6ZUmBEJ6o4QFzNe80I
+         GjwQ0VDZ0bokamwTZoxBNDTZW0OydXw4o0SE5L9M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
-        Arthur Grillo <arthurgrillo@riseup.net>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Daniel Latypov <dlatypov@google.com>
-Subject: [PATCH 6.1 234/259] drm/tests: Fix incorrect argument in drm_test_mm_insert_range
+        patches@lists.linux.dev, Youling Tang <tangyouling@loongson.cn>,
+        Tiezhu Yang <yangtiezhu@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.5 262/321] LoongArch: Add support for 32_PCREL relocation type
 Date:   Wed,  4 Oct 2023 19:56:47 +0200
-Message-ID: <20231004175228.109836365@linuxfoundation.org>
+Message-ID: <20231004175241.397428142@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,50 +50,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 2ba157983974ae1b6aaef7d4953812020d6f1eb5 upstream.
+commit c1c2ce2d3bf903c50f3da7346d394127ffcc93ac upstream.
 
-While drm_mm test was converted form igt selftest to kunit, unexpected
-value of "end" argument equal "start" was introduced to one of calls to a
-function that executes the drm_test_mm_insert_range for specific start/end
-pair of arguments.  As a consequence, DRM_MM_BUG_ON(end <= start) is
-triggered.  Fix it by restoring the original value.
+When build and update kernel with the latest upstream binutils and
+loongson3_defconfig, module loader fails with:
 
-Fixes: fc8d29e298cf ("drm: selftest: convert drm_mm selftest to KUnit")
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: "Maíra Canal" <mairacanal@riseup.net>
-Cc: Arthur Grillo <arthurgrillo@riseup.net>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Daniel Latypov <dlatypov@google.com>
-Cc: stable@vger.kernel.org # v6.1+
-Reviewed-by: Maíra Canal <mairacanal@riseup.net>
-Signed-off-by: Maíra Canal <mairacanal@riseup.net>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230911130323.7037-2-janusz.krzysztofik@linux.intel.com
+  kmod: zsmalloc: Unsupport relocation type 99, please add its support.
+  kmod: fuse: Unsupport relocation type 99, please add its support.
+  kmod: ipmi_msghandler: Unsupport relocation type 99, please add its support.
+  kmod: ipmi_msghandler: Unsupport relocation type 99, please add its support.
+  kmod: pstore: Unsupport relocation type 99, please add its support.
+  kmod: drm_display_helper: Unsupport relocation type 99, please add its support.
+  kmod: drm_display_helper: Unsupport relocation type 99, please add its support.
+  kmod: drm_display_helper: Unsupport relocation type 99, please add its support.
+  kmod: fuse: Unsupport relocation type 99, please add its support.
+  kmod: fat: Unsupport relocation type 99, please add its support.
+
+This is because the latest upstream binutils replaces a pair of ADD32
+and SUB32 with 32_PCREL, so add support for 32_PCREL relocation type.
+
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=ecb802d02eeb
+Cc: <stable@vger.kernel.org>
+Co-developed-by: Youling Tang <tangyouling@loongson.cn>
+Signed-off-by: Youling Tang <tangyouling@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tests/drm_mm_test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kernel/module.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/tests/drm_mm_test.c b/drivers/gpu/drm/tests/drm_mm_test.c
-index 186b28dc7038..05d5e7af6d25 100644
---- a/drivers/gpu/drm/tests/drm_mm_test.c
-+++ b/drivers/gpu/drm/tests/drm_mm_test.c
-@@ -939,7 +939,7 @@ static void drm_test_mm_insert_range(struct kunit *test)
- 		KUNIT_ASSERT_FALSE(test, __drm_test_mm_insert_range(test, count, size, 0, max - 1));
- 		KUNIT_ASSERT_FALSE(test, __drm_test_mm_insert_range(test, count, size, 0, max / 2));
- 		KUNIT_ASSERT_FALSE(test, __drm_test_mm_insert_range(test, count, size,
--								    max / 2, max / 2));
-+								    max / 2, max));
- 		KUNIT_ASSERT_FALSE(test, __drm_test_mm_insert_range(test, count, size,
- 								    max / 4 + 1, 3 * max / 4 - 1));
+--- a/arch/loongarch/kernel/module.c
++++ b/arch/loongarch/kernel/module.c
+@@ -367,6 +367,15 @@ static int apply_r_larch_got_pc(struct m
+ 	return apply_r_larch_pcala(mod, location, got, rela_stack, rela_stack_top, type);
+ }
  
--- 
-2.42.0
-
++static int apply_r_larch_32_pcrel(struct module *mod, u32 *location, Elf_Addr v,
++				  s64 *rela_stack, size_t *rela_stack_top, unsigned int type)
++{
++	ptrdiff_t offset = (void *)v - (void *)location;
++
++	*(u32 *)location = offset;
++	return 0;
++}
++
+ /*
+  * reloc_handlers_rela() - Apply a particular relocation to a module
+  * @mod: the module to apply the reloc to
+@@ -396,6 +405,7 @@ static reloc_rela_handler reloc_rela_han
+ 	[R_LARCH_SOP_POP_32_S_10_5 ... R_LARCH_SOP_POP_32_U] = apply_r_larch_sop_imm_field,
+ 	[R_LARCH_ADD32 ... R_LARCH_SUB64]		     = apply_r_larch_add_sub,
+ 	[R_LARCH_PCALA_HI20...R_LARCH_PCALA64_HI12]	     = apply_r_larch_pcala,
++	[R_LARCH_32_PCREL]				     = apply_r_larch_32_pcrel,
+ };
+ 
+ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
 
 
