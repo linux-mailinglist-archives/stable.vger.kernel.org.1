@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FD4D7B8979
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1C1C7B8829
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244192AbjJDS0U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:26:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39506 "EHLO
+        id S243978AbjJDSNP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:13:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244188AbjJDS0T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:26:19 -0400
+        with ESMTP id S243980AbjJDSNO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7062DBF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:26:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55A1C433C8;
-        Wed,  4 Oct 2023 18:26:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3B1BC1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2B8C433C7;
+        Wed,  4 Oct 2023 18:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443976;
-        bh=7dLdA8FsOIGwG1qdlfsfC5VjAsKlNapptSaGFAC/2jA=;
+        s=korg; t=1696443191;
+        bh=lBV9RxDuqFaHx1HMd8Eow6KsG0fFBXTNANswxJ0eqiQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oCu4LfFlnWqmcpuPUfPi3w2NjaJvNzwYtTvK4rDLsJrLA5ozhTGo7RknGA9iMQep2
-         8Fs4WWyiJJue+5HB4jN99HOnn7m3rh8/X8LzYOpIWsagbADHz0xY+vAci4/FT39+cN
-         laPriuWI1dmv1UwUIAkTNa1bVUfSLV745RCocRMs=
+        b=vH25V0kRMNgtduqA7WYep5tD+9nSExiU30uhGGDd1yz9s7/fEQ8x7iGS1eCU+0V5L
+         nI6N7BojJBoaGPQcc7M0Sw0Fz0B+YAH6ikTk3fE9h/TzAaKsOgSe5Wyem5rlaCDP5i
+         wrUvL8CB7CFG9HjevyaOIIREHbof0lJNP/Ajay2I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Radoslaw Tyl <radoslawx.tyl@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 058/321] iavf: do not process adminq tasks when __IAVF_IN_REMOVE_TASK is set
+Subject: [PATCH 6.1 030/259] netfilter: nf_tables: defer gc run if previous batch is still pending
 Date:   Wed,  4 Oct 2023 19:53:23 +0200
-Message-ID: <20231004175231.860735902@linuxfoundation.org>
+Message-ID: <20231004175218.828945356@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,85 +49,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radoslaw Tyl <radoslawx.tyl@intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit c8de44b577eb540e8bfea55afe1d0904bb571b7a ]
+commit 8e51830e29e12670b4c10df070a4ea4c9593e961 upstream.
 
-Prevent schedule operations for adminq during device remove and when
-__IAVF_IN_REMOVE_TASK flag is set. Currently, the iavf_down function
-adds operations for adminq that shouldn't be processed when the device
-is in the __IAVF_REMOVE state.
+Don't queue more gc work, else we may queue the same elements multiple
+times.
 
-Reproduction:
+If an element is flagged as dead, this can mean that either the previous
+gc request was invalidated/discarded by a transaction or that the previous
+request is still pending in the system work queue.
 
-echo 4 > /sys/bus/pci/devices/0000:17:00.0/sriov_numvfs
-ip link set dev ens1f0 vf 0 trust on
-ip link set dev ens1f0 vf 1 trust on
-ip link set dev ens1f0 vf 2 trust on
-ip link set dev ens1f0 vf 3 trust on
+The latter will happen if the gc interval is set to a very low value,
+e.g. 1ms, and system work queue is backlogged.
 
-ip link set dev ens1f0 vf 0 mac 00:22:33:44:55:66
-ip link set dev ens1f0 vf 1 mac 00:22:33:44:55:67
-ip link set dev ens1f0 vf 2 mac 00:22:33:44:55:68
-ip link set dev ens1f0 vf 3 mac 00:22:33:44:55:69
+The sets refcount is 1 if no previous gc requeusts are queued, so add
+a helper for this and skip gc run if old requests are pending.
 
-echo 0000:17:02.0 > /sys/bus/pci/devices/0000\:17\:02.0/driver/unbind
-echo 0000:17:02.1 > /sys/bus/pci/devices/0000\:17\:02.1/driver/unbind
-echo 0000:17:02.2 > /sys/bus/pci/devices/0000\:17\:02.2/driver/unbind
-echo 0000:17:02.3 > /sys/bus/pci/devices/0000\:17\:02.3/driver/unbind
-sleep 10
-echo 0000:17:02.0 > /sys/bus/pci/drivers/iavf/bind
-echo 0000:17:02.1 > /sys/bus/pci/drivers/iavf/bind
-echo 0000:17:02.2 > /sys/bus/pci/drivers/iavf/bind
-echo 0000:17:02.3 > /sys/bus/pci/drivers/iavf/bind
+Add a helper for this and skip the gc run in this case.
 
-modprobe vfio-pci
-echo 8086 154c > /sys/bus/pci/drivers/vfio-pci/new_id
-
-qemu-system-x86_64 -accel kvm -m 4096 -cpu host \
--drive file=centos9.qcow2,if=none,id=virtio-disk0 \
--device virtio-blk-pci,drive=virtio-disk0,bootindex=0 -smp 4 \
--device vfio-pci,host=17:02.0 -net none \
--device vfio-pci,host=17:02.1 -net none \
--device vfio-pci,host=17:02.2 -net none \
--device vfio-pci,host=17:02.3 -net none \
--daemonize -vnc :5
-
-Current result:
-There is a probability that the mac of VF in guest is inconsistent with
-it in host
-
-Expected result:
-When passthrough NIC VF to guest, the VF in guest should always get
-the same mac as it in host.
-
-Fixes: 14756b2ae265 ("iavf: Fix __IAVF_RESETTING state usage")
-Signed-off-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/netfilter/nf_tables.h | 5 +++++
+ net/netfilter/nft_set_hash.c      | 3 +++
+ net/netfilter/nft_set_rbtree.c    | 3 +++
+ 3 files changed, 11 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 9610ca770349e..1d24a71905d06 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1421,7 +1421,8 @@ void iavf_down(struct iavf_adapter *adapter)
- 	iavf_clear_fdir_filters(adapter);
- 	iavf_clear_adv_rss_conf(adapter);
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 2d501dd901521..12777a5b60cd0 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -581,6 +581,11 @@ static inline void *nft_set_priv(const struct nft_set *set)
+ 	return (void *)set->data;
+ }
  
--	if (!(adapter->flags & IAVF_FLAG_PF_COMMS_FAILED)) {
-+	if (!(adapter->flags & IAVF_FLAG_PF_COMMS_FAILED) &&
-+	    !(test_bit(__IAVF_IN_REMOVE_TASK, &adapter->crit_section))) {
- 		/* cancel any current operation */
- 		adapter->current_op = VIRTCHNL_OP_UNKNOWN;
- 		/* Schedule operations to close down the HW. Don't wait
++static inline bool nft_set_gc_is_pending(const struct nft_set *s)
++{
++	return refcount_read(&s->refs) != 1;
++}
++
+ static inline struct nft_set *nft_set_container_of(const void *priv)
+ {
+ 	return (void *)priv - offsetof(struct nft_set, data);
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index cef5df8460009..524763659f251 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -326,6 +326,9 @@ static void nft_rhash_gc(struct work_struct *work)
+ 	nft_net = nft_pernet(net);
+ 	gc_seq = READ_ONCE(nft_net->gc_seq);
+ 
++	if (nft_set_gc_is_pending(set))
++		goto done;
++
+ 	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
+ 	if (!gc)
+ 		goto done;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index f9d4c8fcbbf82..c6435e7092319 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -611,6 +611,9 @@ static void nft_rbtree_gc(struct work_struct *work)
+ 	nft_net = nft_pernet(net);
+ 	gc_seq  = READ_ONCE(nft_net->gc_seq);
+ 
++	if (nft_set_gc_is_pending(set))
++		goto done;
++
+ 	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
+ 	if (!gc)
+ 		goto done;
 -- 
 2.40.1
 
