@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C2297B895C
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C8FF7B8824
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243743AbjJDSZP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:25:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39290 "EHLO
+        id S243949AbjJDSNE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:13:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244169AbjJDSZP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:15 -0400
+        with ESMTP id S243974AbjJDSND (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23D08BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:25:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A5FC433C8;
-        Wed,  4 Oct 2023 18:25:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91A419E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0504C433C7;
+        Wed,  4 Oct 2023 18:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443910;
-        bh=V6phDsTMkiZ6GSNfOl4lSbPzN38ZcU7mhvQYEvFI6xY=;
+        s=korg; t=1696443180;
+        bh=RHnxYEnNF8s8UbBEqVJKABtZsgZweXGfUKlnEVBYRwY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ioVmor1JNEMfs1TXGjJ3U825VuGyT7fgJHb4IAzLBcHeU4L/mc0XmX4V9NF/5y5eE
-         xNL0pBFQrP89MuaxV5Jlujw7R0ADXDtotSi7Rcr2Njb/vSc93uwwmBWh2hfCbqvtZC
-         IhZ6dZUS0fBIHhmfz2GjdZUKKKuu1eQ4hr5Hu360=
+        b=D4RbO1xHS8WE72m+Jo9NNSC3mXn3PlvY9UP+DVuvkurZojbyFpPANnnl9JFXYTSdr
+         /qjhfNOAFTDaZ9eWfWBnD+kZypRtQvV810KIZQ8if9C50x6hvgkx9fqVQO6G5svXDG
+         OvW31LbxphNdxS0OsryX9c65nvUrUbCkVpGrMvhg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        David Christensen <drc@linux.vnet.ibm.com>,
-        Shannon Nelson <shannon.nelson@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 064/321] ionic: fix 16bit math issue when PAGE_SIZE >= 64KB
+Subject: [PATCH 6.1 036/259] netfilter: nf_tables: fix memleak when more than 255 elements expired
 Date:   Wed,  4 Oct 2023 19:53:29 +0200
-Message-ID: <20231004175232.142436522@linuxfoundation.org>
+Message-ID: <20231004175219.093422744@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,85 +50,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Christensen <drc@linux.vnet.ibm.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 8f6b846b0a86c3cbae8a25b772651cfc2270ad0a ]
+commit cf5000a7787cbc10341091d37245a42c119d26c5 upstream.
 
-The ionic device supports a maximum buffer length of 16 bits (see
-ionic_rxq_desc or ionic_rxq_sg_elem).  When adding new buffers to
-the receive rings, the function ionic_rx_fill() uses 16bit math when
-calculating the number of pages to allocate for an RX descriptor,
-given the interface's MTU setting. If the system PAGE_SIZE >= 64KB,
-and the buf_info->page_offset is 0, the remain_len value will never
-decrement from the original MTU value and the frag_len value will
-always be 0, causing additional pages to be allocated as scatter-
-gather elements unnecessarily.
+When more than 255 elements expired we're supposed to switch to a new gc
+container structure.
 
-A similar math issue exists in ionic_rx_frags(), but no failures
-have been observed here since a 64KB page should not normally
-require any scatter-gather elements at any legal Ethernet MTU size.
+This never happens: u8 type will wrap before reaching the boundary
+and nft_trans_gc_space() always returns true.
 
-Fixes: 4b0a7539a372 ("ionic: implement Rx page reuse")
-Signed-off-by: David Christensen <drc@linux.vnet.ibm.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This means we recycle the initial gc container structure and
+lose track of the elements that came before.
+
+While at it, don't deref 'gc' after we've passed it to call_rcu.
+
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_dev.h  |  1 +
- drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 10 +++++++---
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ include/net/netfilter/nf_tables.h |  2 +-
+ net/netfilter/nf_tables_api.c     | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.h b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-index 0bea208bfba2f..43ce0aac6a94c 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-@@ -187,6 +187,7 @@ typedef void (*ionic_desc_cb)(struct ionic_queue *q,
- 			      struct ionic_desc_info *desc_info,
- 			      struct ionic_cq_info *cq_info, void *cb_arg);
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index eb2103a9a7dd9..05d7a60a0e1f3 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1657,7 +1657,7 @@ struct nft_trans_gc {
+ 	struct net		*net;
+ 	struct nft_set		*set;
+ 	u32			seq;
+-	u8			count;
++	u16			count;
+ 	void			*priv[NFT_TRANS_GC_BATCHCOUNT];
+ 	struct rcu_head		rcu;
+ };
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 6e67fb999a256..b22f2d9ee4afc 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9190,12 +9190,15 @@ static int nft_trans_gc_space(struct nft_trans_gc *trans)
+ struct nft_trans_gc *nft_trans_gc_queue_async(struct nft_trans_gc *gc,
+ 					      unsigned int gc_seq, gfp_t gfp)
+ {
++	struct nft_set *set;
++
+ 	if (nft_trans_gc_space(gc))
+ 		return gc;
  
-+#define IONIC_MAX_BUF_LEN			((u16)-1)
- #define IONIC_PAGE_SIZE				PAGE_SIZE
- #define IONIC_PAGE_SPLIT_SZ			(PAGE_SIZE / 2)
- #define IONIC_PAGE_GFP_MASK			(GFP_ATOMIC | __GFP_NOWARN |\
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-index 26798fc635dbd..44466e8c5d77b 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-@@ -207,7 +207,8 @@ static struct sk_buff *ionic_rx_frags(struct ionic_queue *q,
- 			return NULL;
- 		}
++	set = gc->set;
+ 	nft_trans_gc_queue_work(gc);
  
--		frag_len = min_t(u16, len, IONIC_PAGE_SIZE - buf_info->page_offset);
-+		frag_len = min_t(u16, len, min_t(u32, IONIC_MAX_BUF_LEN,
-+						 IONIC_PAGE_SIZE - buf_info->page_offset));
- 		len -= frag_len;
+-	return nft_trans_gc_alloc(gc->set, gc_seq, gfp);
++	return nft_trans_gc_alloc(set, gc_seq, gfp);
+ }
  
- 		dma_sync_single_for_cpu(dev,
-@@ -452,7 +453,8 @@ void ionic_rx_fill(struct ionic_queue *q)
+ void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
+@@ -9210,15 +9213,18 @@ void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
  
- 		/* fill main descriptor - buf[0] */
- 		desc->addr = cpu_to_le64(buf_info->dma_addr + buf_info->page_offset);
--		frag_len = min_t(u16, len, IONIC_PAGE_SIZE - buf_info->page_offset);
-+		frag_len = min_t(u16, len, min_t(u32, IONIC_MAX_BUF_LEN,
-+						 IONIC_PAGE_SIZE - buf_info->page_offset));
- 		desc->len = cpu_to_le16(frag_len);
- 		remain_len -= frag_len;
- 		buf_info++;
-@@ -471,7 +473,9 @@ void ionic_rx_fill(struct ionic_queue *q)
- 			}
+ struct nft_trans_gc *nft_trans_gc_queue_sync(struct nft_trans_gc *gc, gfp_t gfp)
+ {
++	struct nft_set *set;
++
+ 	if (WARN_ON_ONCE(!lockdep_commit_lock_is_held(gc->net)))
+ 		return NULL;
  
- 			sg_elem->addr = cpu_to_le64(buf_info->dma_addr + buf_info->page_offset);
--			frag_len = min_t(u16, remain_len, IONIC_PAGE_SIZE - buf_info->page_offset);
-+			frag_len = min_t(u16, remain_len, min_t(u32, IONIC_MAX_BUF_LEN,
-+								IONIC_PAGE_SIZE -
-+								buf_info->page_offset));
- 			sg_elem->len = cpu_to_le16(frag_len);
- 			remain_len -= frag_len;
- 			buf_info++;
+ 	if (nft_trans_gc_space(gc))
+ 		return gc;
+ 
++	set = gc->set;
+ 	call_rcu(&gc->rcu, nft_trans_gc_trans_free);
+ 
+-	return nft_trans_gc_alloc(gc->set, 0, gfp);
++	return nft_trans_gc_alloc(set, 0, gfp);
+ }
+ 
+ void nft_trans_gc_queue_sync_done(struct nft_trans_gc *trans)
 -- 
 2.40.1
 
