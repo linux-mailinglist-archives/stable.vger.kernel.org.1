@@ -2,39 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 694BB7B8A19
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 227507B879D
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244351AbjJDScR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:32:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33410 "EHLO
+        id S243828AbjJDSHW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:07:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244354AbjJDScQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:16 -0400
+        with ESMTP id S243829AbjJDSHV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28EFC1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA4DC433C8;
-        Wed,  4 Oct 2023 18:32:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 662C0A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9B3C433C8;
+        Wed,  4 Oct 2023 18:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444332;
-        bh=qN6XiO3+2agiGLul5tHzqASWPjXrVITTd0uiLc7KH2c=;
+        s=korg; t=1696442838;
+        bh=qCNm2q5eHQE4ezJ5e8cxh1FH5nKysZXujVBMaGYB5U4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZecIiZfS79OJxJkRGwNx8X0sC0J03M3URtdCOVFQx+EetfbqPYCCuOmA1FqSWiEFv
-         RTm/RaXVIHDZpnx1nbTYujfk4qSZ+UW/VqKiFu/GGpGZvP7WX7S+/qI00mz6W4HkBz
-         zaRt3WVrQvIg725DdhHKOlC3hMSmu7sE6QFoMVGU=
+        b=zrT/sXa7iT+I+m+cQVAT8LxEmlajP5T0Is/vWHU+eJsK0ceKVznVoLeVxZNO3AilZ
+         TARLztoXNxg2rT2Digj3qdt/DUlYi55YFrBau6wStAi5vy3PM790rPljCx6KXUfcSg
+         GazNp58DcOYVL0M3MLXQ3NPgXYK0NW1QaYcMkpeU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Luke D. Jones" <luke@ljones.dev>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 184/321] platform/x86: asus-wmi: Support 2023 ROG X16 tablet mode
+Subject: [PATCH 5.15 098/183] ARM: dts: ti: omap: Fix bandgap thermal cells addressing for omap3/4
 Date:   Wed,  4 Oct 2023 19:55:29 +0200
-Message-ID: <20231004175237.766099867@linuxfoundation.org>
+Message-ID: <20231004175207.986791298@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +55,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 4106a70ddad57ee6d8f98b81d6f036740c72762b ]
+[ Upstream commit 6469b2feade8fd82d224dd3734e146536f3e9f0e ]
 
-Add quirk for ASUS ROG X16 (GV601V, 2023 versions) Flow 2-in-1
-to enable tablet mode with lid flip (all screen rotations).
+Fix "thermal_sys: cpu_thermal: Failed to read thermal-sensors cells: -2"
+error on boot for omap3/4. This is caused by wrong addressing in the dts
+for bandgap sensor for single sensor instances.
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20230905082813.13470-1-luke@ljones.dev
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Note that omap4-cpu-thermal.dtsi is shared across omap4/5 and dra7, so
+we can't just change the addressing in omap4-cpu-thermal.dtsi.
+
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Carl Philipp Klemm <philipp@uvos.xyz>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: a761d517bbb1 ("ARM: dts: omap3: Add cpu_thermal zone")
+Fixes: 0bbf6c54d100 ("arm: dts: add omap4 CPU thermal data")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-nb-wmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm/boot/dts/omap3-cpu-thermal.dtsi | 3 +--
+ arch/arm/boot/dts/omap4-cpu-thermal.dtsi | 5 ++++-
+ arch/arm/boot/dts/omap443x.dtsi          | 1 +
+ arch/arm/boot/dts/omap4460.dtsi          | 1 +
+ 4 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index fdf7da06af306..d85d895fee894 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -478,6 +478,15 @@ static const struct dmi_system_id asus_quirks[] = {
- 		},
- 		.driver_data = &quirk_asus_tablet_mode,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "ASUS ROG FLOW X16",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "GV601V"),
-+		},
-+		.driver_data = &quirk_asus_tablet_mode,
-+	},
- 	{
- 		.callback = dmi_matched,
- 		.ident = "ASUS VivoBook E410MA",
+diff --git a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+index 1ba79932a79fc..4d2684e4ae06e 100644
+--- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
++++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+@@ -12,8 +12,7 @@ cpu_thermal: cpu_thermal {
+ 	polling-delay = <1000>; /* milliseconds */
+ 	coefficients = <0 20000>;
+ 
+-			/* sensor       ID */
+-	thermal-sensors = <&bandgap     0>;
++	thermal-sensors = <&bandgap>;
+ 
+ 	cpu_trips: trips {
+ 		cpu_alert0: cpu_alert {
+diff --git a/arch/arm/boot/dts/omap4-cpu-thermal.dtsi b/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
+index 801b4f10350c1..d484ec1e4fd86 100644
+--- a/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
++++ b/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
+@@ -12,7 +12,10 @@ cpu_thermal: cpu_thermal {
+ 	polling-delay-passive = <250>; /* milliseconds */
+ 	polling-delay = <1000>; /* milliseconds */
+ 
+-			/* sensor       ID */
++	/*
++	 * See 44xx files for single sensor addressing, omap5 and dra7 need
++	 * also sensor ID for addressing.
++	 */
+ 	thermal-sensors = <&bandgap     0>;
+ 
+ 	cpu_trips: trips {
+diff --git a/arch/arm/boot/dts/omap443x.dtsi b/arch/arm/boot/dts/omap443x.dtsi
+index 238aceb799f89..2104170fe2cd7 100644
+--- a/arch/arm/boot/dts/omap443x.dtsi
++++ b/arch/arm/boot/dts/omap443x.dtsi
+@@ -69,6 +69,7 @@
+ };
+ 
+ &cpu_thermal {
++	thermal-sensors = <&bandgap>;
+ 	coefficients = <0 20000>;
+ };
+ 
+diff --git a/arch/arm/boot/dts/omap4460.dtsi b/arch/arm/boot/dts/omap4460.dtsi
+index 1b27a862ae810..a6764750d4476 100644
+--- a/arch/arm/boot/dts/omap4460.dtsi
++++ b/arch/arm/boot/dts/omap4460.dtsi
+@@ -79,6 +79,7 @@
+ };
+ 
+ &cpu_thermal {
++	thermal-sensors = <&bandgap>;
+ 	coefficients = <348 (-9301)>;
+ };
+ 
 -- 
 2.40.1
 
