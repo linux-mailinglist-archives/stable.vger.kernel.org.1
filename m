@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 527D77B82A5
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDECA7B82A8
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:49:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232838AbjJDOs7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 10:48:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44806 "EHLO
+        id S233062AbjJDOtG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 10:49:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232630AbjJDOs7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:48:59 -0400
+        with ESMTP id S242649AbjJDOtE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:49:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0488CBF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:48:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E07C433C7;
-        Wed,  4 Oct 2023 14:48:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D74BF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:49:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9109C433C7;
+        Wed,  4 Oct 2023 14:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696430935;
-        bh=DoJJFEDye9+Jw37m1SaUZGmQBBKQwPSktdC3M/ix37U=;
+        s=korg; t=1696430940;
+        bh=qoFvIvKLGMHDCIH7hHJlW++UstEw3F3vFAp2qo4uWLw=;
         h=Subject:To:Cc:From:Date:From;
-        b=ObubeVke7MTWRsin8Uut9BH5YEmf9Ihogb/xZj+fQg3zFj4CVF57azROFOJIo7MMx
-         8pXmuXaTROEEcPpTW9mZi9ephD3webfiN02AdICwhpUBOxhxEjhZ3ov9E0uWIPINp9
-         AJsvmr9DAFVRv+UwOC0sLvSzQs4JBPHfWZ/kl7o8=
-Subject: FAILED: patch "[PATCH] ALSA: hda/realtek - ALC287 Realtek I2S speaker platform" failed to apply to 6.5-stable tree
+        b=ZgaZ1BfmPy/0IXzc7lBM2Y/dC68PqDd1M11E7l6R7by2tjEKXW0aNkoKbu+Fhti+P
+         BnuGWhYVdtQgjYRSyiEiwlDrJvRkjNkfuW05fzA9KBx5Gkj6qNaiZaauD7APBN3GYi
+         1j7D4IkuOfqRoOTpGZDgQdk6p7X6Cph+MfeCDGcY=
+Subject: FAILED: patch "[PATCH] ALSA: hda/realtek - ALC287 Realtek I2S speaker platform" failed to apply to 6.1-stable tree
 To:     kailang@realtek.com, stable@vger.kernel.org, tiwai@suse.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 16:48:52 +0200
-Message-ID: <2023100451-alarm-grasp-7872@gregkh>
+Date:   Wed, 04 Oct 2023 16:48:57 +0200
+Message-ID: <2023100456-acclaim-object-ca91@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 41b07476da38ac2878a14e5b8fe0312c41ea36e3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100451-alarm-grasp-7872@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100456-acclaim-object-ca91@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
