@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1464A7B8785
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E5477B8786
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243808AbjJDSGU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:06:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42292 "EHLO
+        id S243802AbjJDSGW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:06:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243812AbjJDSGT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:19 -0400
+        with ESMTP id S243811AbjJDSGW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17D63BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A91C433C7;
-        Wed,  4 Oct 2023 18:06:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08EC7A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50702C433C9;
+        Wed,  4 Oct 2023 18:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442775;
-        bh=yLw+O/qkAs3XZ/ccoI/cO/ZBA3JZ4q+5WrQa5HoPens=;
+        s=korg; t=1696442778;
+        bh=Vj12gS9AdPZMpKG7evveiNOKblEwt6HRSZ9yYzJZLFI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xxhm++H2kNPiuWKuvz3OUGvgCUaJzeynbjVKX5Ge3LZvgrRi1ywEBz9Zg3hYJsGSu
-         Ig4k0Xp9czqQGLMT9TPf06SBCjt8+TlSsFJmX7gPBReA0jRgp1s85FKCdBFTf1fBbC
-         +BozpuS3usLwkzVC9k5eroAoulonXIjmREMs/e4w=
+        b=TBAvkytNlgW+Yha1XFHHz4tmJ5Me565NyVNkLw6EGvnsIvJ86WWTlf4Q5Faxq/jR9
+         XXRFk5/OcwQc+ksqiSqw04sLGLJZJx8vBAUD5CP52H+9889lhWw/hZC/idWIgcVNGR
+         lrJmJ5Wnu+o52JKaAFrobgoaiZQelvPKIMEADD+8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
         Max Filippov <jcmvbkbc@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/183] xtensa: boot: dont add include-dirs
-Date:   Wed,  4 Oct 2023 19:55:36 +0200
-Message-ID: <20231004175208.282400266@linuxfoundation.org>
+Subject: [PATCH 5.15 106/183] xtensa: boot/lib: fix function prototypes
+Date:   Wed,  4 Oct 2023 19:55:37 +0200
+Message-ID: <20231004175208.329578945@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
 References: <20231004175203.943277832@linuxfoundation.org>
@@ -55,41 +54,50 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit 54d3d7d363823782c3444ddc41bb8cf1edc80514 ]
+[ Upstream commit f54d02c8f2cc4b46ba2a3bd8252a6750453b6f2b ]
 
-Drop the -I<include-dir> options to prevent build warnings since there
-is not boot/include directory:
+Add function prototype for gunzip() to the boot library code and make
+exit() and zalloc() static.
 
-cc1: warning: arch/xtensa/boot/include: No such file or directory [-Wmissing-include-dirs]
+arch/xtensa/boot/lib/zmem.c:8:6: warning: no previous prototype for 'exit' [-Wmissing-prototypes]
+    8 | void exit (void)
+arch/xtensa/boot/lib/zmem.c:13:7: warning: no previous prototype for 'zalloc' [-Wmissing-prototypes]
+   13 | void *zalloc(unsigned size)
+arch/xtensa/boot/lib/zmem.c:35:6: warning: no previous prototype for 'gunzip' [-Wmissing-prototypes]
+   35 | void gunzip (void *dst, int dstlen, unsigned char *src, int *lenp)
 
-Fixes: 437374e9a950 ("restore arch/{ppc/xtensa}/boot cflags")
 Fixes: 4bedea945451 ("xtensa: Architecture support for Tensilica Xtensa Part 2")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Message-Id: <20230920052139.10570-15-rdunlap@infradead.org>
+Fixes: e7d163f76665 ("xtensa: Removed local copy of zlib and fixed O= support")
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/xtensa/boot/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/xtensa/boot/lib/zmem.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/xtensa/boot/Makefile b/arch/xtensa/boot/Makefile
-index a65b7a9ebff28..d8b0fadf429a9 100644
---- a/arch/xtensa/boot/Makefile
-+++ b/arch/xtensa/boot/Makefile
-@@ -9,8 +9,7 @@
+diff --git a/arch/xtensa/boot/lib/zmem.c b/arch/xtensa/boot/lib/zmem.c
+index e3ecd743c5153..b89189355122a 100644
+--- a/arch/xtensa/boot/lib/zmem.c
++++ b/arch/xtensa/boot/lib/zmem.c
+@@ -4,13 +4,14 @@
+ /* bits taken from ppc */
  
+ extern void *avail_ram, *end_avail;
++void gunzip(void *dst, int dstlen, unsigned char *src, int *lenp);
  
- # KBUILD_CFLAGS used when building rest of boot (takes effect recursively)
--KBUILD_CFLAGS	+= -fno-builtin -Iarch/$(ARCH)/boot/include
--HOSTFLAGS	+= -Iarch/$(ARCH)/boot/include
-+KBUILD_CFLAGS	+= -fno-builtin
+-void exit (void)
++static void exit(void)
+ {
+   for (;;);
+ }
  
- subdir-y	:= lib
- targets		+= vmlinux.bin vmlinux.bin.gz
+-void *zalloc(unsigned size)
++static void *zalloc(unsigned int size)
+ {
+         void *p = avail_ram;
+ 
 -- 
 2.40.1
 
