@@ -2,569 +2,172 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9032E7B87DB
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A428C7B8A67
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:35:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243906AbjJDSKL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:10:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49096 "EHLO
+        id S244414AbjJDSfM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:35:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243905AbjJDSKK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:10:10 -0400
+        with ESMTP id S244431AbjJDSfL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:35:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 996E79E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:10:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80B2C433C7;
-        Wed,  4 Oct 2023 18:10:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7125BC9
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:35:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F74C433C8;
+        Wed,  4 Oct 2023 18:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443006;
-        bh=vNQvvq6XT0rB1gSlgmCbg5UwO81nUKyf1dqHL41wdTQ=;
+        s=korg; t=1696444507;
+        bh=kZ8Kf+MG/OpMw3kPU4hWOc6lwcVjDxk5BpNVngPrUkM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2QjrMC94px2y1bOWtnWchwM7KuN3iEKo+abT3CMP5U4g5nHJnmu0+M3/9jEHzqRyO
-         H2qJ4Eu/OzeHpIrBRFyI+W7wmRZhBZ17tNzLXHvwcZla6MxBoEzGWSMvz5FPxWpXrJ
-         BNy/1KdUbtLKw8gNjyrJr3cvc7nzB6kw8HbBur/s=
+        b=S+xO/PaGQCeVW6zDzQvJDn2ZWSVuCaYdJJQok4JLqc2v/P++ZCr18o5X5wYC5uDj4
+         n/3Wip/kPH6niwaJcC53F56ao7xT74E2cLT7Zc4/VA/rz7I2EIoF8Kwx3NXYBXYBuh
+         WEeNhNsjZO1OlXg3Mk5hufAlh2eJe2yAHFafjbF8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Paul Grandperrin <paul.grandperrin@gmail.com>,
-        Ricky Wu <ricky_wu@realtek.com>, Jade Lovelace <lists@jade.fyi>
-Subject: [PATCH 5.15 159/183] misc: rtsx: Fix some platforms can not boot and move the l1ss judgment to probe
-Date:   Wed,  4 Oct 2023 19:56:30 +0200
-Message-ID: <20231004175210.679674119@linuxfoundation.org>
+        patches@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.5 246/321] KVM: x86/mmu: Do not filter address spaces in for_each_tdp_mmu_root_yield_safe()
+Date:   Wed,  4 Oct 2023 19:56:31 +0200
+Message-ID: <20231004175240.657125383@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PDS_BTC_ID,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricky WU <ricky_wu@realtek.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit 0e4cac557531a4c93de108d9ff11329fcad482ff upstream.
+commit 441a5dfcd96854cbcb625709e2694a9c60adfaab upstream.
 
-commit 101bd907b424 ("misc: rtsx: judge ASPM Mode to set PETXCFG Reg")
-some readers no longer force #CLKREQ to low
-when the system need to enter ASPM.
-But some platform maybe not implement complete ASPM?
-it causes some platforms can not boot
+All callers except the MMU notifier want to process all address spaces.
+Remove the address space ID argument of for_each_tdp_mmu_root_yield_safe()
+and switch the MMU notifier to use __for_each_tdp_mmu_root_yield_safe().
 
-Like in the past only the platform support L1ss we release the #CLKREQ.
-Move the judgment (L1ss) to probe,
-we think read config space one time when the driver start is enough
+Extracted out of a patch by Sean Christopherson <seanjc@google.com>
 
-Fixes: 101bd907b424 ("misc: rtsx: judge ASPM Mode to set PETXCFG Reg")
-Cc: stable <stable@kernel.org>
-Reported-by: Paul Grandperrin <paul.grandperrin@gmail.com>
-Signed-off-by: Ricky Wu <ricky_wu@realtek.com>
-Tested-By: Jade Lovelace <lists@jade.fyi>
-Link: https://lore.kernel.org/r/37b1afb997f14946a8784c73d1f9a4f5@realtek.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/cardreader/rts5227.c  |   55 +++--------------------------------
- drivers/misc/cardreader/rts5228.c  |   57 +++++++++++--------------------------
- drivers/misc/cardreader/rts5249.c  |   56 ++++--------------------------------
- drivers/misc/cardreader/rts5260.c  |   43 ++++++++-------------------
- drivers/misc/cardreader/rts5261.c  |   52 ++++++++-------------------------
- drivers/misc/cardreader/rtsx_pcr.c |   51 +++++++++++++++++++++++++++++----
- 6 files changed, 102 insertions(+), 212 deletions(-)
+ arch/x86/kvm/mmu/mmu.c     |    8 ++------
+ arch/x86/kvm/mmu/tdp_mmu.c |   22 +++++++++++-----------
+ arch/x86/kvm/mmu/tdp_mmu.h |    3 +--
+ 3 files changed, 14 insertions(+), 19 deletions(-)
 
---- a/drivers/misc/cardreader/rts5227.c
-+++ b/drivers/misc/cardreader/rts5227.c
-@@ -81,63 +81,20 @@ static void rts5227_fetch_vendor_setting
- 
- static void rts5227_init_from_cfg(struct rtsx_pcr *pcr)
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -6294,7 +6294,6 @@ static bool kvm_rmap_zap_gfn_range(struc
+ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end)
  {
--	struct pci_dev *pdev = pcr->pci;
--	int l1ss;
--	u32 lval;
- 	struct rtsx_cr_option *option = &pcr->option;
+ 	bool flush;
+-	int i;
  
--	l1ss = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_L1SS);
--	if (!l1ss)
--		return;
--
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
--
- 	if (CHK_PCI_PID(pcr, 0x522A)) {
--		if (0 == (lval & 0x0F))
--			rtsx_pci_enable_oobs_polling(pcr);
--		else
-+		if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
-+				| PM_L1_1_EN | PM_L1_2_EN))
- 			rtsx_pci_disable_oobs_polling(pcr);
-+		else
-+			rtsx_pci_enable_oobs_polling(pcr);
- 	}
+ 	if (WARN_ON_ONCE(gfn_end <= gfn_start))
+ 		return;
+@@ -6305,11 +6304,8 @@ void kvm_zap_gfn_range(struct kvm *kvm,
  
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
--		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
--		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_2_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
--		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
--	else
--		rtsx_clear_dev_flag(pcr, PM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
--		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, PM_L1_2_EN);
--
- 	if (option->ltr_en) {
--		u16 val;
--
--		pcie_capability_read_word(pcr->pci, PCI_EXP_DEVCTL2, &val);
--		if (val & PCI_EXP_DEVCTL2_LTR_EN) {
--			option->ltr_enabled = true;
--			option->ltr_active = true;
-+		if (option->ltr_enabled)
- 			rtsx_set_ltr_latency(pcr, option->ltr_active_latency);
--		} else {
--			option->ltr_enabled = false;
--		}
- 	}
--
--	if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
--				| PM_L1_1_EN | PM_L1_2_EN))
--		option->force_clkreq_0 = false;
--	else
--		option->force_clkreq_0 = true;
--
- }
+ 	flush = kvm_rmap_zap_gfn_range(kvm, gfn_start, gfn_end);
  
- static int rts5227_extra_init_hw(struct rtsx_pcr *pcr)
-@@ -171,7 +128,7 @@ static int rts5227_extra_init_hw(struct
- 	else
- 		rtsx_pci_add_cmd(pcr, WRITE_REG_CMD, PETXCFG, 0x30, 0x00);
- 
--	if (option->force_clkreq_0 && pcr->aspm_mode == ASPM_MODE_CFG)
-+	if (option->force_clkreq_0)
- 		rtsx_pci_add_cmd(pcr, WRITE_REG_CMD, PETXCFG,
- 				FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_LOW);
- 	else
---- a/drivers/misc/cardreader/rts5228.c
-+++ b/drivers/misc/cardreader/rts5228.c
-@@ -378,59 +378,25 @@ static void rts5228_process_ocp(struct r
- 
- static void rts5228_init_from_cfg(struct rtsx_pcr *pcr)
- {
--	struct pci_dev *pdev = pcr->pci;
--	int l1ss;
--	u32 lval;
- 	struct rtsx_cr_option *option = &pcr->option;
- 
--	l1ss = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_L1SS);
--	if (!l1ss)
--		return;
--
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
--
--	if (0 == (lval & 0x0F))
--		rtsx_pci_enable_oobs_polling(pcr);
--	else
-+	if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
-+				| PM_L1_1_EN | PM_L1_2_EN))
- 		rtsx_pci_disable_oobs_polling(pcr);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
--		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
--		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_2_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
--		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
- 	else
--		rtsx_clear_dev_flag(pcr, PM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
--		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, PM_L1_2_EN);
-+		rtsx_pci_enable_oobs_polling(pcr);
- 
- 	rtsx_pci_write_register(pcr, ASPM_FORCE_CTL, 0xFF, 0);
--	if (option->ltr_en) {
--		u16 val;
- 
--		pcie_capability_read_word(pcr->pci, PCI_EXP_DEVCTL2, &val);
--		if (val & PCI_EXP_DEVCTL2_LTR_EN) {
--			option->ltr_enabled = true;
--			option->ltr_active = true;
-+	if (option->ltr_en) {
-+		if (option->ltr_enabled)
- 			rtsx_set_ltr_latency(pcr, option->ltr_active_latency);
--		} else {
--			option->ltr_enabled = false;
--		}
- 	}
- }
- 
- static int rts5228_extra_init_hw(struct rtsx_pcr *pcr)
- {
-+	struct rtsx_cr_option *option = &pcr->option;
- 
- 	rtsx_pci_write_register(pcr, RTS5228_AUTOLOAD_CFG1,
- 			CD_RESUME_EN_MASK, CD_RESUME_EN_MASK);
-@@ -461,6 +427,17 @@ static int rts5228_extra_init_hw(struct
- 	else
- 		rtsx_pci_write_register(pcr, PETXCFG, 0x30, 0x00);
- 
-+	/*
-+	 * If u_force_clkreq_0 is enabled, CLKREQ# PIN will be forced
-+	 * to drive low, and we forcibly request clock.
-+	 */
-+	if (option->force_clkreq_0)
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_LOW);
-+	else
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_HIGH);
-+
- 	rtsx_pci_write_register(pcr, PWD_SUSPEND_EN, 0xFF, 0xFB);
- 	rtsx_pci_write_register(pcr, pcr->reg_pm_ctrl3, 0x10, 0x00);
- 	rtsx_pci_write_register(pcr, RTS5228_REG_PME_FORCE_CTL,
---- a/drivers/misc/cardreader/rts5249.c
-+++ b/drivers/misc/cardreader/rts5249.c
-@@ -85,64 +85,22 @@ static void rtsx_base_fetch_vendor_setti
- 
- static void rts5249_init_from_cfg(struct rtsx_pcr *pcr)
- {
--	struct pci_dev *pdev = pcr->pci;
--	int l1ss;
- 	struct rtsx_cr_option *option = &(pcr->option);
--	u32 lval;
--
--	l1ss = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_L1SS);
--	if (!l1ss)
--		return;
--
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
- 
- 	if (CHK_PCI_PID(pcr, PID_524A) || CHK_PCI_PID(pcr, PID_525A)) {
--		if (0 == (lval & 0x0F))
--			rtsx_pci_enable_oobs_polling(pcr);
--		else
-+		if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
-+				| PM_L1_1_EN | PM_L1_2_EN))
- 			rtsx_pci_disable_oobs_polling(pcr);
-+		else
-+			rtsx_pci_enable_oobs_polling(pcr);
- 	}
- 
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
--		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
--		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
--		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
--		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
--
- 	if (option->ltr_en) {
--		u16 val;
--
--		pcie_capability_read_word(pdev, PCI_EXP_DEVCTL2, &val);
--		if (val & PCI_EXP_DEVCTL2_LTR_EN) {
--			option->ltr_enabled = true;
--			option->ltr_active = true;
-+		if (option->ltr_enabled)
- 			rtsx_set_ltr_latency(pcr, option->ltr_active_latency);
--		} else {
--			option->ltr_enabled = false;
--		}
- 	}
- }
- 
--static int rts5249_init_from_hw(struct rtsx_pcr *pcr)
--{
--	struct rtsx_cr_option *option = &(pcr->option);
--
--	if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
--				| PM_L1_1_EN | PM_L1_2_EN))
--		option->force_clkreq_0 = false;
--	else
--		option->force_clkreq_0 = true;
--
--	return 0;
--}
--
- static void rts52xa_save_content_from_efuse(struct rtsx_pcr *pcr)
- {
- 	u8 cnt, sv;
-@@ -254,7 +212,6 @@ static int rts5249_extra_init_hw(struct
- 	struct rtsx_cr_option *option = &(pcr->option);
- 
- 	rts5249_init_from_cfg(pcr);
--	rts5249_init_from_hw(pcr);
- 
- 	rtsx_pci_init_cmd(pcr);
- 
-@@ -302,11 +259,12 @@ static int rts5249_extra_init_hw(struct
- 		}
- 	}
- 
-+
- 	/*
- 	 * If u_force_clkreq_0 is enabled, CLKREQ# PIN will be forced
- 	 * to drive low, and we forcibly request clock.
- 	 */
--	if (option->force_clkreq_0 && pcr->aspm_mode == ASPM_MODE_CFG)
-+	if (option->force_clkreq_0)
- 		rtsx_pci_write_register(pcr, PETXCFG,
- 			FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_LOW);
- 	else
---- a/drivers/misc/cardreader/rts5260.c
-+++ b/drivers/misc/cardreader/rts5260.c
-@@ -480,47 +480,19 @@ static void rts5260_pwr_saving_setting(s
- 
- static void rts5260_init_from_cfg(struct rtsx_pcr *pcr)
- {
--	struct pci_dev *pdev = pcr->pci;
--	int l1ss;
- 	struct rtsx_cr_option *option = &pcr->option;
--	u32 lval;
--
--	l1ss = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_L1SS);
--	if (!l1ss)
--		return;
--
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
--		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
--		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
--		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
--		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
- 
- 	rts5260_pwr_saving_setting(pcr);
- 
- 	if (option->ltr_en) {
--		u16 val;
--
--		pcie_capability_read_word(pdev, PCI_EXP_DEVCTL2, &val);
--		if (val & PCI_EXP_DEVCTL2_LTR_EN) {
--			option->ltr_enabled = true;
--			option->ltr_active = true;
-+		if (option->ltr_enabled)
- 			rtsx_set_ltr_latency(pcr, option->ltr_active_latency);
--		} else {
--			option->ltr_enabled = false;
--		}
- 	}
- }
- 
- static int rts5260_extra_init_hw(struct rtsx_pcr *pcr)
- {
-+	struct rtsx_cr_option *option = &pcr->option;
- 
- 	/* Set mcu_cnt to 7 to ensure data can be sampled properly */
- 	rtsx_pci_write_register(pcr, 0xFC03, 0x7F, 0x07);
-@@ -539,6 +511,17 @@ static int rts5260_extra_init_hw(struct
- 
- 	rts5260_init_hw(pcr);
- 
-+	/*
-+	 * If u_force_clkreq_0 is enabled, CLKREQ# PIN will be forced
-+	 * to drive low, and we forcibly request clock.
-+	 */
-+	if (option->force_clkreq_0)
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_LOW);
-+	else
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_HIGH);
-+
- 	rtsx_pci_write_register(pcr, pcr->reg_pm_ctrl3, 0x10, 0x00);
- 
- 	return 0;
---- a/drivers/misc/cardreader/rts5261.c
-+++ b/drivers/misc/cardreader/rts5261.c
-@@ -424,54 +424,17 @@ static int rts5261_init_from_hw(struct r
- 
- static void rts5261_init_from_cfg(struct rtsx_pcr *pcr)
- {
--	struct pci_dev *pdev = pcr->pci;
--	int l1ss;
--	u32 lval;
- 	struct rtsx_cr_option *option = &pcr->option;
- 
--	l1ss = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_L1SS);
--	if (!l1ss)
--		return;
--
--	pci_read_config_dword(pdev, l1ss + PCI_L1SS_CTL1, &lval);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
--		rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
--		rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, ASPM_L1_2_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
--		rtsx_set_dev_flag(pcr, PM_L1_1_EN);
--	else
--		rtsx_clear_dev_flag(pcr, PM_L1_1_EN);
--
--	if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
--		rtsx_set_dev_flag(pcr, PM_L1_2_EN);
--	else
--		rtsx_clear_dev_flag(pcr, PM_L1_2_EN);
--
--	rtsx_pci_write_register(pcr, ASPM_FORCE_CTL, 0xFF, 0);
- 	if (option->ltr_en) {
--		u16 val;
--
--		pcie_capability_read_word(pdev, PCI_EXP_DEVCTL2, &val);
--		if (val & PCI_EXP_DEVCTL2_LTR_EN) {
--			option->ltr_enabled = true;
--			option->ltr_active = true;
-+		if (option->ltr_enabled)
- 			rtsx_set_ltr_latency(pcr, option->ltr_active_latency);
--		} else {
--			option->ltr_enabled = false;
--		}
- 	}
- }
- 
- static int rts5261_extra_init_hw(struct rtsx_pcr *pcr)
- {
-+	struct rtsx_cr_option *option = &pcr->option;
- 	u32 val;
- 
- 	rtsx_pci_write_register(pcr, RTS5261_AUTOLOAD_CFG1,
-@@ -517,6 +480,17 @@ static int rts5261_extra_init_hw(struct
- 	else
- 		rtsx_pci_write_register(pcr, PETXCFG, 0x30, 0x00);
- 
-+	/*
-+	 * If u_force_clkreq_0 is enabled, CLKREQ# PIN will be forced
-+	 * to drive low, and we forcibly request clock.
-+	 */
-+	if (option->force_clkreq_0)
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_LOW);
-+	else
-+		rtsx_pci_write_register(pcr, PETXCFG,
-+				 FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_HIGH);
-+
- 	rtsx_pci_write_register(pcr, PWD_SUSPEND_EN, 0xFF, 0xFB);
- 	rtsx_pci_write_register(pcr, pcr->reg_pm_ctrl3, 0x10, 0x00);
- 	rtsx_pci_write_register(pcr, RTS5261_REG_PME_FORCE_CTL,
---- a/drivers/misc/cardreader/rtsx_pcr.c
-+++ b/drivers/misc/cardreader/rtsx_pcr.c
-@@ -1400,11 +1400,8 @@ static int rtsx_pci_init_hw(struct rtsx_
- 			return err;
- 	}
- 
--	if (pcr->aspm_mode == ASPM_MODE_REG) {
-+	if (pcr->aspm_mode == ASPM_MODE_REG)
- 		rtsx_pci_write_register(pcr, ASPM_FORCE_CTL, 0x30, 0x30);
--		rtsx_pci_write_register(pcr, PETXCFG,
--				FORCE_CLKREQ_DELINK_MASK, FORCE_CLKREQ_HIGH);
+-	if (tdp_mmu_enabled) {
+-		for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++)
+-			flush = kvm_tdp_mmu_zap_leafs(kvm, i, gfn_start,
+-						      gfn_end, flush);
 -	}
++	if (tdp_mmu_enabled)
++		flush = kvm_tdp_mmu_zap_leafs(kvm, gfn_start, gfn_end, flush);
  
- 	/* No CD interrupt if probing driver with card inserted.
- 	 * So we need to initialize pcr->card_exist here.
-@@ -1419,7 +1416,9 @@ static int rtsx_pci_init_hw(struct rtsx_
+ 	if (flush)
+ 		kvm_flush_remote_tlbs_range(kvm, gfn_start, gfn_end - gfn_start);
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -211,8 +211,12 @@ static struct kvm_mmu_page *tdp_mmu_next
+ #define for_each_valid_tdp_mmu_root_yield_safe(_kvm, _root, _as_id, _shared)	\
+ 	__for_each_tdp_mmu_root_yield_safe(_kvm, _root, _as_id, _shared, true)
  
- static int rtsx_pci_init_chip(struct rtsx_pcr *pcr)
+-#define for_each_tdp_mmu_root_yield_safe(_kvm, _root, _as_id)			\
+-	__for_each_tdp_mmu_root_yield_safe(_kvm, _root, _as_id, false, false)
++#define for_each_tdp_mmu_root_yield_safe(_kvm, _root)			\
++	for (_root = tdp_mmu_next_root(_kvm, NULL, false, false);		\
++	     _root;								\
++	     _root = tdp_mmu_next_root(_kvm, _root, false, false))		\
++		if (!kvm_lockdep_assert_mmu_lock_held(_kvm, false)) {		\
++		} else
+ 
+ /*
+  * Iterate over all TDP MMU roots.  Requires that mmu_lock be held for write,
+@@ -877,12 +881,11 @@ static bool tdp_mmu_zap_leafs(struct kvm
+  * true if a TLB flush is needed before releasing the MMU lock, i.e. if one or
+  * more SPTEs were zapped since the MMU lock was last acquired.
+  */
+-bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, int as_id, gfn_t start, gfn_t end,
+-			   bool flush)
++bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, gfn_t start, gfn_t end, bool flush)
  {
--	int err;
-+	struct rtsx_cr_option *option = &(pcr->option);
-+	int err, l1ss;
-+	u32 lval;
- 	u16 cfg_val;
- 	u8 val;
+ 	struct kvm_mmu_page *root;
  
-@@ -1504,6 +1503,48 @@ static int rtsx_pci_init_chip(struct rts
- 			pcr->aspm_enabled = true;
- 	}
+-	for_each_tdp_mmu_root_yield_safe(kvm, root, as_id)
++	for_each_tdp_mmu_root_yield_safe(kvm, root)
+ 		flush = tdp_mmu_zap_leafs(kvm, root, start, end, true, flush);
  
-+	l1ss = pci_find_ext_capability(pcr->pci, PCI_EXT_CAP_ID_L1SS);
-+	if (l1ss) {
-+		pci_read_config_dword(pcr->pci, l1ss + PCI_L1SS_CTL1, &lval);
-+
-+		if (lval & PCI_L1SS_CTL1_ASPM_L1_1)
-+			rtsx_set_dev_flag(pcr, ASPM_L1_1_EN);
-+		else
-+			rtsx_clear_dev_flag(pcr, ASPM_L1_1_EN);
-+
-+		if (lval & PCI_L1SS_CTL1_ASPM_L1_2)
-+			rtsx_set_dev_flag(pcr, ASPM_L1_2_EN);
-+		else
-+			rtsx_clear_dev_flag(pcr, ASPM_L1_2_EN);
-+
-+		if (lval & PCI_L1SS_CTL1_PCIPM_L1_1)
-+			rtsx_set_dev_flag(pcr, PM_L1_1_EN);
-+		else
-+			rtsx_clear_dev_flag(pcr, PM_L1_1_EN);
-+
-+		if (lval & PCI_L1SS_CTL1_PCIPM_L1_2)
-+			rtsx_set_dev_flag(pcr, PM_L1_2_EN);
-+		else
-+			rtsx_clear_dev_flag(pcr, PM_L1_2_EN);
-+
-+		pcie_capability_read_word(pcr->pci, PCI_EXP_DEVCTL2, &cfg_val);
-+		if (cfg_val & PCI_EXP_DEVCTL2_LTR_EN) {
-+			option->ltr_enabled = true;
-+			option->ltr_active = true;
-+		} else {
-+			option->ltr_enabled = false;
-+		}
-+
-+		if (rtsx_check_dev_flag(pcr, ASPM_L1_1_EN | ASPM_L1_2_EN
-+				| PM_L1_1_EN | PM_L1_2_EN))
-+			option->force_clkreq_0 = false;
-+		else
-+			option->force_clkreq_0 = true;
-+	} else {
-+		option->ltr_enabled = false;
-+		option->force_clkreq_0 = true;
-+	}
-+
- 	if (pcr->ops->fetch_vendor_settings)
- 		pcr->ops->fetch_vendor_settings(pcr);
+ 	return flush;
+@@ -891,7 +894,6 @@ bool kvm_tdp_mmu_zap_leafs(struct kvm *k
+ void kvm_tdp_mmu_zap_all(struct kvm *kvm)
+ {
+ 	struct kvm_mmu_page *root;
+-	int i;
  
+ 	/*
+ 	 * Zap all roots, including invalid roots, as all SPTEs must be dropped
+@@ -905,10 +907,8 @@ void kvm_tdp_mmu_zap_all(struct kvm *kvm
+ 	 * is being destroyed or the userspace VMM has exited.  In both cases,
+ 	 * KVM_RUN is unreachable, i.e. no vCPUs will ever service the request.
+ 	 */
+-	for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++) {
+-		for_each_tdp_mmu_root_yield_safe(kvm, root, i)
+-			tdp_mmu_zap_root(kvm, root, false);
+-	}
++	for_each_tdp_mmu_root_yield_safe(kvm, root)
++		tdp_mmu_zap_root(kvm, root, false);
+ }
+ 
+ /*
+@@ -1148,7 +1148,7 @@ bool kvm_tdp_mmu_unmap_gfn_range(struct
+ {
+ 	struct kvm_mmu_page *root;
+ 
+-	for_each_tdp_mmu_root_yield_safe(kvm, root, range->slot->as_id)
++	__for_each_tdp_mmu_root_yield_safe(kvm, root, range->slot->as_id, false, false)
+ 		flush = tdp_mmu_zap_leafs(kvm, root, range->start, range->end,
+ 					  range->may_block, flush);
+ 
+--- a/arch/x86/kvm/mmu/tdp_mmu.h
++++ b/arch/x86/kvm/mmu/tdp_mmu.h
+@@ -20,8 +20,7 @@ __must_check static inline bool kvm_tdp_
+ void kvm_tdp_mmu_put_root(struct kvm *kvm, struct kvm_mmu_page *root,
+ 			  bool shared);
+ 
+-bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, int as_id, gfn_t start, gfn_t end,
+-			   bool flush);
++bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, gfn_t start, gfn_t end, bool flush);
+ bool kvm_tdp_mmu_zap_sp(struct kvm *kvm, struct kvm_mmu_page *sp);
+ void kvm_tdp_mmu_zap_all(struct kvm *kvm);
+ void kvm_tdp_mmu_invalidate_all_roots(struct kvm *kvm);
 
 
