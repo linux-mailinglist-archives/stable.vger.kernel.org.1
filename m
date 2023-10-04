@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15B3F7B878A
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 424DC7B889C
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232583AbjJDSGe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:06:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51756 "EHLO
+        id S244106AbjJDSRw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:17:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243810AbjJDSGd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:33 -0400
+        with ESMTP id S244101AbjJDSRw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40B8C9E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F6EC433C7;
-        Wed,  4 Oct 2023 18:06:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5799E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 546A2C433C7;
+        Wed,  4 Oct 2023 18:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442789;
-        bh=JLKDp/fgfQ7p6GsKA6KtC09J1vNXlac6id2dEvO475s=;
+        s=korg; t=1696443466;
+        bh=Cg69uMwxYz9CRI/S+B8pXtQARvk87MJpd+6sxoV65Nw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Oszz9pAv6NSfOvme8VT5DShURQPb5HvxfkUZJ58mUDyggHlNcqy0cYSwLIveVCmta
-         W9PHBTSlTVHZhJlxQIuoIphKkXLvN6kOEuBMMgjGs+YZ8IzeQUQJIOzCkfWpYUzIRE
-         vurupbXqMBrK2H5S7wmT/vdAWy8ZJtwGf96cA8Qs=
+        b=yTBKq41QsHtbut7dG5ZYwtkWIBw+7PfizlScnhKmcWJ43FrBW6VNCU3kAlVR3cw/G
+         7eNtUuYknZtWa/XDnc4WnLTuJcVoeDIQlIuKXA7ZYmMtRzV8AB/yeylyj0a0lgRavt
+         DKMBVncGTwwXt/41MH56sZfc4R4vVigpPSd4VvV4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "William A. Kennington III" <william@wkennington.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 109/183] i2c: npcm7xx: Fix callback completion ordering
+        patches@lists.linux.dev, Timmy Tsai <timmtsai@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 167/259] drm/amdgpu/nbio4.3: set proper rmmio_remap.reg_offset for SR-IOV
 Date:   Wed,  4 Oct 2023 19:55:40 +0200
-Message-ID: <20231004175208.465129652@linuxfoundation.org>
+Message-ID: <20231004175224.936209095@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +50,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William A. Kennington III <william@wkennington.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 92e73d807b68b2214fcafca4e130b5300a9d4b3c ]
+[ Upstream commit ab43213e7afd08ac68d4282060bacf309e70fd14 ]
 
-Sometimes, our completions race with new master transfers and override
-the bus->operation and bus->master_or_slave variables. This causes
-transactions to timeout and kernel crashes less frequently.
+Needed for HDP flush to work correctly.
 
-To remedy this, we re-order all completions to the very end of the
-function.
-
-Fixes: 56a1485b102e ("i2c: npcm7xx: Add Nuvoton NPCM I2C controller driver")
-Signed-off-by: William A. Kennington III <william@wkennington.com>
-Reviewed-by: Tali Perry <tali.perry1@gmail.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Reviewed-by: Timmy Tsai <timmtsai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-npcm7xx.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v4_3.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
-index c1b6797372409..73c808ef1bfe5 100644
---- a/drivers/i2c/busses/i2c-npcm7xx.c
-+++ b/drivers/i2c/busses/i2c-npcm7xx.c
-@@ -675,6 +675,7 @@ static void npcm_i2c_callback(struct npcm_i2c *bus,
- {
- 	struct i2c_msg *msgs;
- 	int msgs_num;
-+	bool do_complete = false;
- 
- 	msgs = bus->msgs;
- 	msgs_num = bus->msgs_num;
-@@ -701,23 +702,17 @@ static void npcm_i2c_callback(struct npcm_i2c *bus,
- 				 msgs[1].flags & I2C_M_RD)
- 				msgs[1].len = info;
- 		}
--		if (completion_done(&bus->cmd_complete) == false)
--			complete(&bus->cmd_complete);
--	break;
--
-+		do_complete = true;
-+		break;
- 	case I2C_NACK_IND:
- 		/* MASTER transmit got a NACK before tx all bytes */
- 		bus->cmd_err = -ENXIO;
--		if (bus->master_or_slave == I2C_MASTER)
--			complete(&bus->cmd_complete);
--
-+		do_complete = true;
- 		break;
- 	case I2C_BUS_ERR_IND:
- 		/* Bus error */
- 		bus->cmd_err = -EAGAIN;
--		if (bus->master_or_slave == I2C_MASTER)
--			complete(&bus->cmd_complete);
--
-+		do_complete = true;
- 		break;
- 	case I2C_WAKE_UP_IND:
- 		/* I2C wake up */
-@@ -731,6 +726,8 @@ static void npcm_i2c_callback(struct npcm_i2c *bus,
- 	if (bus->slave)
- 		bus->master_or_slave = I2C_SLAVE;
- #endif
-+	if (do_complete)
-+		complete(&bus->cmd_complete);
+diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v4_3.c b/drivers/gpu/drm/amd/amdgpu/nbio_v4_3.c
+index 09fdcd20cb919..c52a378396af1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v4_3.c
+@@ -344,6 +344,9 @@ static void nbio_v4_3_init_registers(struct amdgpu_device *adev)
+ 		data &= ~RCC_DEV0_EPF2_STRAP2__STRAP_NO_SOFT_RESET_DEV0_F2_MASK;
+ 		WREG32_SOC15(NBIO, 0, regRCC_DEV0_EPF2_STRAP2, data);
+ 	}
++	if (amdgpu_sriov_vf(adev))
++		adev->rmmio_remap.reg_offset = SOC15_REG_OFFSET(NBIO, 0,
++			regBIF_BX_DEV0_EPF0_VF0_HDP_MEM_COHERENCY_FLUSH_CNTL) << 2;
  }
  
- static u8 npcm_i2c_fifo_usage(struct npcm_i2c *bus)
+ static u32 nbio_v4_3_get_rom_offset(struct amdgpu_device *adev)
 -- 
 2.40.1
 
