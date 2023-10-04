@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40B187B8986
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A29F7B882D
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244204AbjJDS1A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:27:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43970 "EHLO
+        id S243993AbjJDSN1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:13:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244196AbjJDS1A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:00 -0400
+        with ESMTP id S243972AbjJDSN0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6318E98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:26:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B630C433C8;
-        Wed,  4 Oct 2023 18:26:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60184E9
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4665BC433C8;
+        Wed,  4 Oct 2023 18:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444016;
-        bh=y40RgDm2GMoUWyzASxqFPvqF12UNhsB761VR1V+U/1U=;
+        s=korg; t=1696443202;
+        bh=shpQbl1YoydR0P9n7e20pOeyjHjvaJlS4E3zRVjLPM4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XC7p6EUtZ0tzQaKK79oTlmHPb27jZvRBzCG1JidCRsXQTZ52qWiuWc7vYC2+qma8h
-         TREZO1/i420/Ks5B63pWQZPFxqlbhPXy6fJVkR1ukhcsttfN9lGBM9DPtCd89TvuUE
-         fTzULD9QyDRG2KfKxAI7pxwcmv1ovvCy0sjAU2u0=
+        b=GJV5tDnZlmAB1otBIfT25MIaECB1UfQBQAnnFJD2p973+hGORHqq9O/6pxk6C+La7
+         cRSlLMGLEGoaALaEPZOPC+QetGHO6p+DOS6Flqbzrd0z1+cLFeEp0mqVGTEFmBAqBL
+         kBeEyqqGdHZJYU8Bz6rpmMbSHVk6bQm+PsUdzItY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        hariprasad <hkelam@marvell.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 101/321] octeontx2-pf: Do xdp_do_flush() after redirects.
+Subject: [PATCH 6.1 073/259] net: hns3: add 5ms delay before clear firmware reset irq source
 Date:   Wed,  4 Oct 2023 19:54:06 +0200
-Message-ID: <20231004175233.913267086@linuxfoundation.org>
+Message-ID: <20231004175220.744255809@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,112 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit 70b2b6892645e58ed6f051dad7f8d1083f0ad553 ]
+[ Upstream commit 0770063096d5da4a8e467b6e73c1646a75589628 ]
 
-xdp_do_flush() should be invoked before leaving the NAPI poll function
-if XDP-redirect has been performed.
+Currently the reset process in hns3 and firmware watchdog init process is
+asynchronous. we think firmware watchdog initialization is completed
+before hns3 clear the firmware interrupt source. However, firmware
+initialization may not complete early.
 
-Invoke xdp_do_flush() before leaving NAPI.
+so we add delay before hns3 clear firmware interrupt source and 5 ms delay
+is enough to avoid second firmware reset interrupt.
 
-Cc: Geetha sowjanya <gakula@marvell.com>
-Cc: Subbaraya Sundeep <sbhatta@marvell.com>
-Cc: Sunil Goutham <sgoutham@marvell.com>
-Cc: hariprasad <hkelam@marvell.com>
-Fixes: 06059a1a9a4a5 ("octeontx2-pf: Add XDP support to netdev PF")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Acked-by: Geethasowjanya Akula <gakula@marvell.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
+Fixes: c1a81619d73a ("net: hns3: Add mailbox interrupt handling to PF driver")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../marvell/octeontx2/nic/otx2_txrx.c         | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index e77d438489557..53b2a4ef52985 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -29,7 +29,8 @@
- static bool otx2_xdp_rcv_pkt_handler(struct otx2_nic *pfvf,
- 				     struct bpf_prog *prog,
- 				     struct nix_cqe_rx_s *cqe,
--				     struct otx2_cq_queue *cq);
-+				     struct otx2_cq_queue *cq,
-+				     bool *need_xdp_flush);
- 
- static int otx2_nix_cq_op_status(struct otx2_nic *pfvf,
- 				 struct otx2_cq_queue *cq)
-@@ -337,7 +338,7 @@ static bool otx2_check_rcv_errors(struct otx2_nic *pfvf,
- static void otx2_rcv_pkt_handler(struct otx2_nic *pfvf,
- 				 struct napi_struct *napi,
- 				 struct otx2_cq_queue *cq,
--				 struct nix_cqe_rx_s *cqe)
-+				 struct nix_cqe_rx_s *cqe, bool *need_xdp_flush)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index e44c5076262ba..3e1d202d60ce1 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -3662,9 +3662,14 @@ static u32 hclge_check_event_cause(struct hclge_dev *hdev, u32 *clearval)
+ static void hclge_clear_event_cause(struct hclge_dev *hdev, u32 event_type,
+ 				    u32 regclr)
  {
- 	struct nix_rx_parse_s *parse = &cqe->parse;
- 	struct nix_rx_sg_s *sg = &cqe->sg;
-@@ -353,7 +354,7 @@ static void otx2_rcv_pkt_handler(struct otx2_nic *pfvf,
- 	}
- 
- 	if (pfvf->xdp_prog)
--		if (otx2_xdp_rcv_pkt_handler(pfvf, pfvf->xdp_prog, cqe, cq))
-+		if (otx2_xdp_rcv_pkt_handler(pfvf, pfvf->xdp_prog, cqe, cq, need_xdp_flush))
- 			return;
- 
- 	skb = napi_get_frags(napi);
-@@ -388,6 +389,7 @@ static int otx2_rx_napi_handler(struct otx2_nic *pfvf,
- 				struct napi_struct *napi,
- 				struct otx2_cq_queue *cq, int budget)
- {
-+	bool need_xdp_flush = false;
- 	struct nix_cqe_rx_s *cqe;
- 	int processed_cqe = 0;
- 
-@@ -409,13 +411,15 @@ static int otx2_rx_napi_handler(struct otx2_nic *pfvf,
- 		cq->cq_head++;
- 		cq->cq_head &= (cq->cqe_cnt - 1);
- 
--		otx2_rcv_pkt_handler(pfvf, napi, cq, cqe);
-+		otx2_rcv_pkt_handler(pfvf, napi, cq, cqe, &need_xdp_flush);
- 
- 		cqe->hdr.cqe_type = NIX_XQE_TYPE_INVALID;
- 		cqe->sg.seg_addr = 0x00;
- 		processed_cqe++;
- 		cq->pend_cqe--;
- 	}
-+	if (need_xdp_flush)
-+		xdp_do_flush();
- 
- 	/* Free CQEs to HW */
- 	otx2_write64(pfvf, NIX_LF_CQ_OP_DOOR,
-@@ -1354,7 +1358,8 @@ bool otx2_xdp_sq_append_pkt(struct otx2_nic *pfvf, u64 iova, int len, u16 qidx)
- static bool otx2_xdp_rcv_pkt_handler(struct otx2_nic *pfvf,
- 				     struct bpf_prog *prog,
- 				     struct nix_cqe_rx_s *cqe,
--				     struct otx2_cq_queue *cq)
-+				     struct otx2_cq_queue *cq,
-+				     bool *need_xdp_flush)
- {
- 	unsigned char *hard_start, *data;
- 	int qidx = cq->cq_idx;
-@@ -1391,8 +1396,10 @@ static bool otx2_xdp_rcv_pkt_handler(struct otx2_nic *pfvf,
- 
- 		otx2_dma_unmap_page(pfvf, iova, pfvf->rbsize,
- 				    DMA_FROM_DEVICE);
--		if (!err)
-+		if (!err) {
-+			*need_xdp_flush = true;
- 			return true;
-+		}
- 		put_page(page);
++#define HCLGE_IMP_RESET_DELAY		5
++
+ 	switch (event_type) {
+ 	case HCLGE_VECTOR0_EVENT_PTP:
+ 	case HCLGE_VECTOR0_EVENT_RST:
++		if (regclr == BIT(HCLGE_VECTOR0_IMPRESET_INT_B))
++			mdelay(HCLGE_IMP_RESET_DELAY);
++
+ 		hclge_write_dev(&hdev->hw, HCLGE_MISC_RESET_STS_REG, regclr);
  		break;
- 	default:
+ 	case HCLGE_VECTOR0_EVENT_MBX:
 -- 
 2.40.1
 
