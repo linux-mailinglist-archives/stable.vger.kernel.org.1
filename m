@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18B6F7B8760
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0420E7B89FB
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243770AbjJDSEh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:04:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36084 "EHLO
+        id S244330AbjJDSa7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:30:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243737AbjJDSEg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:04:36 -0400
+        with ESMTP id S244336AbjJDSa5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63FB8A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:04:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A763FC433C7;
-        Wed,  4 Oct 2023 18:04:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C873C9
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4014C433C8;
+        Wed,  4 Oct 2023 18:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442673;
-        bh=/y/nkGBgC//7znDKmkO63f5FnhOqisglUKTqGTMzsA0=;
+        s=korg; t=1696444253;
+        bh=ZXJM0ydznAKgZEbvewQcFVVKElR1AF+dJNjY5UnnX8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YthYrm6ITmaZPs/w9YESVhnhx9Vpxy3K+Zzp1OkVqKey0Vog9lDLiL1N2/gnbkSje
-         6XdZlliYkNlUoKBSapDJdFUHGFFiHgVU3RtdTurKtQ2IOJEzHFMpsQsS0qke+WxSsS
-         zvP/5jLsgV7bVdPb16oVGBsoX7m3d3FdPUHGlzK4=
+        b=s1kryrkgEkcGOv1bGRw1GCRJqZzOpGohGvQ+V+Y++uqnJU+YymK73dstP3MA8D09J
+         MzI95TJY7Xcgd8q0AQZdzNRcTvWxZxWsxM3hEeqdwD5vyJYIMkZNwPuJttXb8qP9yu
+         EZsXVDbz1X4vjcq53W53awRmy10WEYDGHN8y9Mww=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiaoke Wang <xkernel.wang@foxmail.com>,
+        patches@lists.linux.dev,
+        "William A. Kennington III" <william@wkennington.com>,
+        Tali Perry <tali.perry1@gmail.com>,
         Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/183] i2c: mux: demux-pinctrl: check the return value of devm_kstrdup()
-Date:   Wed,  4 Oct 2023 19:55:00 +0200
-Message-ID: <20231004175206.764340467@linuxfoundation.org>
+Subject: [PATCH 6.5 156/321] i2c: npcm7xx: Fix callback completion ordering
+Date:   Wed,  4 Oct 2023 19:55:01 +0200
+Message-ID: <20231004175236.473967190@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,40 +51,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaoke Wang <xkernel.wang@foxmail.com>
+From: William A. Kennington III <william@wkennington.com>
 
-[ Upstream commit 7c0195fa9a9e263df204963f88a22b21688ffb66 ]
+[ Upstream commit 92e73d807b68b2214fcafca4e130b5300a9d4b3c ]
 
-devm_kstrdup() returns pointer to allocated string on success,
-NULL on failure. So it is better to check the return value of it.
+Sometimes, our completions race with new master transfers and override
+the bus->operation and bus->master_or_slave variables. This causes
+transactions to timeout and kernel crashes less frequently.
 
-Fixes: e35478eac030 ("i2c: mux: demux-pinctrl: run properly with multiple instances")
-Signed-off-by: Xiaoke Wang <xkernel.wang@foxmail.com>
+To remedy this, we re-order all completions to the very end of the
+function.
+
+Fixes: 56a1485b102e ("i2c: npcm7xx: Add Nuvoton NPCM I2C controller driver")
+Signed-off-by: William A. Kennington III <william@wkennington.com>
+Reviewed-by: Tali Perry <tali.perry1@gmail.com>
 Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/muxes/i2c-demux-pinctrl.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/busses/i2c-npcm7xx.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/i2c/muxes/i2c-demux-pinctrl.c b/drivers/i2c/muxes/i2c-demux-pinctrl.c
-index f7a7405d4350a..8e8688e8de0fb 100644
---- a/drivers/i2c/muxes/i2c-demux-pinctrl.c
-+++ b/drivers/i2c/muxes/i2c-demux-pinctrl.c
-@@ -243,6 +243,10 @@ static int i2c_demux_pinctrl_probe(struct platform_device *pdev)
+diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
+index 53b65ffb6a647..bf9dbab52d228 100644
+--- a/drivers/i2c/busses/i2c-npcm7xx.c
++++ b/drivers/i2c/busses/i2c-npcm7xx.c
+@@ -695,6 +695,7 @@ static void npcm_i2c_callback(struct npcm_i2c *bus,
+ {
+ 	struct i2c_msg *msgs;
+ 	int msgs_num;
++	bool do_complete = false;
  
- 		props[i].name = devm_kstrdup(&pdev->dev, "status", GFP_KERNEL);
- 		props[i].value = devm_kstrdup(&pdev->dev, "ok", GFP_KERNEL);
-+		if (!props[i].name || !props[i].value) {
-+			err = -ENOMEM;
-+			goto err_rollback;
-+		}
- 		props[i].length = 3;
+ 	msgs = bus->msgs;
+ 	msgs_num = bus->msgs_num;
+@@ -723,23 +724,17 @@ static void npcm_i2c_callback(struct npcm_i2c *bus,
+ 				 msgs[1].flags & I2C_M_RD)
+ 				msgs[1].len = info;
+ 		}
+-		if (completion_done(&bus->cmd_complete) == false)
+-			complete(&bus->cmd_complete);
+-	break;
+-
++		do_complete = true;
++		break;
+ 	case I2C_NACK_IND:
+ 		/* MASTER transmit got a NACK before tx all bytes */
+ 		bus->cmd_err = -ENXIO;
+-		if (bus->master_or_slave == I2C_MASTER)
+-			complete(&bus->cmd_complete);
+-
++		do_complete = true;
+ 		break;
+ 	case I2C_BUS_ERR_IND:
+ 		/* Bus error */
+ 		bus->cmd_err = -EAGAIN;
+-		if (bus->master_or_slave == I2C_MASTER)
+-			complete(&bus->cmd_complete);
+-
++		do_complete = true;
+ 		break;
+ 	case I2C_WAKE_UP_IND:
+ 		/* I2C wake up */
+@@ -753,6 +748,8 @@ static void npcm_i2c_callback(struct npcm_i2c *bus,
+ 	if (bus->slave)
+ 		bus->master_or_slave = I2C_SLAVE;
+ #endif
++	if (do_complete)
++		complete(&bus->cmd_complete);
+ }
  
- 		of_changeset_init(&priv->chan[i].chgset);
+ static u8 npcm_i2c_fifo_usage(struct npcm_i2c *bus)
 -- 
 2.40.1
 
