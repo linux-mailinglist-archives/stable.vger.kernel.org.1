@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 187147B8842
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:14:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 872C57B89C7
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243753AbjJDSOY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:14:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50684 "EHLO
+        id S244279AbjJDS3Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:29:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243986AbjJDSOY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:14:24 -0400
+        with ESMTP id S244280AbjJDS3P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30469A6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:14:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F052C433C8;
-        Wed,  4 Oct 2023 18:14:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8769E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275C2C433C8;
+        Wed,  4 Oct 2023 18:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443258;
-        bh=D128Sz8R+qCz9h3RDET6CDj8yts09kMSMciXmBfMQHE=;
+        s=korg; t=1696444151;
+        bh=jyjnMfeb+L9MsdZoD6/YGI/mTQplUxCKJEMSNEc+wjo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lT87kqo2juACdK+vbX07Y5Nu92Jb0Z83S8qfzxXLSIytJVbQAcd1ZvREqWWFKKKgh
-         WN/HLvcwrRwYw3sjYNRHr+vf6DhanVMaTvoS/2t11s9i8wPkiQ127NjmQOXzCHMmQe
-         DsOB97IIUE2w+K6YH6iJfaipvROFQ95zfVt7IoBM=
+        b=zXf1V6t3W3QSnAO+n+D5pWmTKc1JcpT8Z6pU0PZqWueK4REV/84BwRuSkFlwOfoGm
+         Pt+G5x0SPqHqGDR3mSXlHV5Jui3jRS362v+XMKKCarzwjurX0loeSAMnC2vuLgdYX3
+         stzljKF6V5cYpBKVzV5FOjRfxZrHC7R5L3z4zBjw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Michal Simek <michal.simek@amd.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/259] i2c: xiic: Correct return value check for xiic_reinit()
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 119/321] MIPS: Alchemy: only build mmc support helpers if au1xmmc is enabled
 Date:   Wed,  4 Oct 2023 19:54:24 +0200
-Message-ID: <20231004175221.531603834@linuxfoundation.org>
+Message-ID: <20231004175234.748484199@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +52,136 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Scally <dan.scally@ideasonboard.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 59851fb05d759f13662be143eff0aae605815b0e ]
+[ Upstream commit ef8f8f04a0b25e8f294b24350e8463a8d6a9ba0b ]
 
-The error paths for xiic_reinit() return negative values on failure
-and 0 on success - this error message therefore is triggered on
-_success_ rather than failure. Correct the condition so it's only
-shown on failure as intended.
+While commit d4a5c59a955b ("mmc: au1xmmc: force non-modular build and
+remove symbol_get usage") to be built in, it can still build a kernel
+without MMC support and thuse no mmc_detect_change symbol at all.
 
-Fixes: 8fa9c9388053 ("i2c: xiic: return value of xiic_reinit")
-Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Add ifdefs to build the mmc support code in the alchemy arch code
+conditional on mmc support.
+
+Fixes: d4a5c59a955b ("mmc: au1xmmc: force non-modular build and remove symbol_get usage")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-xiic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/alchemy/devboards/db1000.c | 4 ++++
+ arch/mips/alchemy/devboards/db1200.c | 6 ++++++
+ arch/mips/alchemy/devboards/db1300.c | 4 ++++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
-index b41a6709e47f2..b27bfc7765993 100644
---- a/drivers/i2c/busses/i2c-xiic.c
-+++ b/drivers/i2c/busses/i2c-xiic.c
-@@ -420,7 +420,7 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
- 		 * reset the IP instead of just flush fifos
- 		 */
- 		ret = xiic_reinit(i2c);
--		if (!ret)
-+		if (ret < 0)
- 			dev_dbg(i2c->adap.dev.parent, "reinit failed\n");
+diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
+index 012da042d0a4f..7b9f91db227f2 100644
+--- a/arch/mips/alchemy/devboards/db1000.c
++++ b/arch/mips/alchemy/devboards/db1000.c
+@@ -164,6 +164,7 @@ static struct platform_device db1x00_audio_dev = {
  
- 		if (i2c->rx_msg) {
+ /******************************************************************************/
+ 
++#ifdef CONFIG_MMC_AU1X
+ static irqreturn_t db1100_mmc_cd(int irq, void *ptr)
+ {
+ 	mmc_detect_change(ptr, msecs_to_jiffies(500));
+@@ -369,6 +370,7 @@ static struct platform_device db1100_mmc1_dev = {
+ 	.num_resources	= ARRAY_SIZE(au1100_mmc1_res),
+ 	.resource	= au1100_mmc1_res,
+ };
++#endif /* CONFIG_MMC_AU1X */
+ 
+ /******************************************************************************/
+ 
+@@ -440,8 +442,10 @@ static struct platform_device *db1x00_devs[] = {
+ 
+ static struct platform_device *db1100_devs[] = {
+ 	&au1100_lcd_device,
++#ifdef CONFIG_MMC_AU1X
+ 	&db1100_mmc0_dev,
+ 	&db1100_mmc1_dev,
++#endif
+ };
+ 
+ int __init db1000_dev_setup(void)
+diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
+index 76080c71a2a7b..f521874ebb07b 100644
+--- a/arch/mips/alchemy/devboards/db1200.c
++++ b/arch/mips/alchemy/devboards/db1200.c
+@@ -326,6 +326,7 @@ static struct platform_device db1200_ide_dev = {
+ 
+ /**********************************************************************/
+ 
++#ifdef CONFIG_MMC_AU1X
+ /* SD carddetects:  they're supposed to be edge-triggered, but ack
+  * doesn't seem to work (CPLD Rev 2).  Instead, the screaming one
+  * is disabled and its counterpart enabled.  The 200ms timeout is
+@@ -584,6 +585,7 @@ static struct platform_device pb1200_mmc1_dev = {
+ 	.num_resources	= ARRAY_SIZE(au1200_mmc1_res),
+ 	.resource	= au1200_mmc1_res,
+ };
++#endif /* CONFIG_MMC_AU1X */
+ 
+ /**********************************************************************/
+ 
+@@ -751,7 +753,9 @@ static struct platform_device db1200_audiodma_dev = {
+ static struct platform_device *db1200_devs[] __initdata = {
+ 	NULL,		/* PSC0, selected by S6.8 */
+ 	&db1200_ide_dev,
++#ifdef CONFIG_MMC_AU1X
+ 	&db1200_mmc0_dev,
++#endif
+ 	&au1200_lcd_dev,
+ 	&db1200_eth_dev,
+ 	&db1200_nand_dev,
+@@ -762,7 +766,9 @@ static struct platform_device *db1200_devs[] __initdata = {
+ };
+ 
+ static struct platform_device *pb1200_devs[] __initdata = {
++#ifdef CONFIG_MMC_AU1X
+ 	&pb1200_mmc1_dev,
++#endif
+ };
+ 
+ /* Some peripheral base addresses differ on the PB1200 */
+diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
+index ff61901329c62..d377e043b49f8 100644
+--- a/arch/mips/alchemy/devboards/db1300.c
++++ b/arch/mips/alchemy/devboards/db1300.c
+@@ -450,6 +450,7 @@ static struct platform_device db1300_ide_dev = {
+ 
+ /**********************************************************************/
+ 
++#ifdef CONFIG_MMC_AU1X
+ static irqreturn_t db1300_mmc_cd(int irq, void *ptr)
+ {
+ 	disable_irq_nosync(irq);
+@@ -632,6 +633,7 @@ static struct platform_device db1300_sd0_dev = {
+ 	.resource	= au1300_sd0_res,
+ 	.num_resources	= ARRAY_SIZE(au1300_sd0_res),
+ };
++#endif /* CONFIG_MMC_AU1X */
+ 
+ /**********************************************************************/
+ 
+@@ -767,8 +769,10 @@ static struct platform_device *db1300_dev[] __initdata = {
+ 	&db1300_5waysw_dev,
+ 	&db1300_nand_dev,
+ 	&db1300_ide_dev,
++#ifdef CONFIG_MMC_AU1X
+ 	&db1300_sd0_dev,
+ 	&db1300_sd1_dev,
++#endif
+ 	&db1300_lcd_dev,
+ 	&db1300_ac97_dev,
+ 	&db1300_i2s_dev,
 -- 
 2.40.1
 
