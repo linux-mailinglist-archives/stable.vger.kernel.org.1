@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82C3E7B89B8
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:28:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4033E7B8840
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244260AbjJDS2g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:28:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43294 "EHLO
+        id S243955AbjJDSOR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:14:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244257AbjJDS2f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:28:35 -0400
+        with ESMTP id S243998AbjJDSOR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:14:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BFBEC6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:28:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBF9C433CA;
-        Wed,  4 Oct 2023 18:28:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8943FAD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:14:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82E2C433C7;
+        Wed,  4 Oct 2023 18:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444111;
-        bh=MK77uqAXdvbo/lJkNBEnl0tZKxUSrnVHygvE89gO7Vw=;
+        s=korg; t=1696443253;
+        bh=JQN0ZMM7fJEBDs8zFvKhxOogVV9OW9IxjgV75q4nQNk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qP3Et5o2HazkH+tTozrFbmhEppr6nU2HqEsFMQp3n153yU8EkQ9cOm0L/QdR4TYn1
-         nAo7sYaOsSQooeaCjwJ0stZq05948NURYVaBD8svks6bfKodYAHZl4PtNMConCtyJ9
-         6DOFcLE1rlKrd5fd/d7h0CWl/kq+bpAXA+Wux/so=
+        b=ENACl3opfnxo2L2ggT/AGXa3qFNLPedQ0Pjw4f1vaGnG3vA3G76Ge/tB3pTaAZo/H
+         qpJpL7Kejl0QYM6uyO5zrmmgWZBVMGbdrOjq57K6MYVGWHhYHr79tt/JNHsT5HXIId
+         h7H1ws2fxz4kHFdl4cE0lYRQZhzOgnioZBYvk17o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 117/321] btrfs: reset destination buffer when read_extent_buffer() gets invalid range
-Date:   Wed,  4 Oct 2023 19:54:22 +0200
-Message-ID: <20231004175234.655345484@linuxfoundation.org>
+        patches@lists.linux.dev, Liang He <windhl@126.com>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 090/259] i2c: mux: gpio: Add missing fwnode_handle_put()
+Date:   Wed,  4 Oct 2023 19:54:23 +0200
+Message-ID: <20231004175221.488627758@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +49,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Liang He <windhl@126.com>
 
-[ Upstream commit 74ee79142c0a344d4eae2eb7012ebc4e82254109 ]
+[ Upstream commit db6aee6083a56ac4a6cd1b08fff7938072bcd0a3 ]
 
-Commit f98b6215d7d1 ("btrfs: extent_io: do extra check for extent buffer
-read write functions") changed how we handle invalid extent buffer range
-for read_extent_buffer().
+In i2c_mux_gpio_probe_fw(), we should add fwnode_handle_put()
+when break out of the iteration device_for_each_child_node()
+as it will automatically increase and decrease the refcounter.
 
-Previously if the range is invalid we just set the destination to zero,
-but after the patch we do nothing and error out.
-
-This can lead to smatch static checker errors like:
-
-  fs/btrfs/print-tree.c:186 print_uuid_item() error: uninitialized symbol 'subvol_id'.
-  fs/btrfs/tests/extent-io-tests.c:338 check_eb_bitmap() error: uninitialized symbol 'has'.
-  fs/btrfs/tests/extent-io-tests.c:353 check_eb_bitmap() error: uninitialized symbol 'has'.
-  fs/btrfs/uuid-tree.c:203 btrfs_uuid_tree_remove() error: uninitialized symbol 'read_subid'.
-  fs/btrfs/uuid-tree.c:353 btrfs_uuid_tree_iterate() error: uninitialized symbol 'subid_le'.
-  fs/btrfs/uuid-tree.c:72 btrfs_uuid_tree_lookup() error: uninitialized symbol 'data'.
-  fs/btrfs/volumes.c:7415 btrfs_dev_stats_value() error: uninitialized symbol 'val'.
-
-Fix those warnings by reverting back to the old memset() behavior.
-By this we keep the static checker happy and would still make a lot of
-noise when such invalid ranges are passed in.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: f98b6215d7d1 ("btrfs: extent_io: do extra check for extent buffer read write functions")
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 98b2b712bc85 ("i2c: i2c-mux-gpio: Enable this driver in ACPI land")
+Signed-off-by: Liang He <windhl@126.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/i2c/muxes/i2c-mux-gpio.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 2ebc982e8eccb..7cc0ed7532793 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -4083,8 +4083,14 @@ void read_extent_buffer(const struct extent_buffer *eb, void *dstv,
- 	char *dst = (char *)dstv;
- 	unsigned long i = get_eb_page_index(start);
+diff --git a/drivers/i2c/muxes/i2c-mux-gpio.c b/drivers/i2c/muxes/i2c-mux-gpio.c
+index 73a23e117ebec..0930a51c8c7c0 100644
+--- a/drivers/i2c/muxes/i2c-mux-gpio.c
++++ b/drivers/i2c/muxes/i2c-mux-gpio.c
+@@ -105,8 +105,10 @@ static int i2c_mux_gpio_probe_fw(struct gpiomux *mux,
  
--	if (check_eb_range(eb, start, len))
-+	if (check_eb_range(eb, start, len)) {
-+		/*
-+		 * Invalid range hit, reset the memory, so callers won't get
-+		 * some random garbage for their uninitialzed memory.
-+		 */
-+		memset(dstv, 0, len);
- 		return;
-+	}
+ 		} else if (is_acpi_node(child)) {
+ 			rc = acpi_get_local_address(ACPI_HANDLE_FWNODE(child), values + i);
+-			if (rc)
++			if (rc) {
++				fwnode_handle_put(child);
+ 				return dev_err_probe(dev, rc, "Cannot get address\n");
++			}
+ 		}
  
- 	offset = get_eb_offset_in_page(eb, start);
- 
+ 		i++;
 -- 
 2.40.1
 
