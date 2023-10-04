@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A4977B8A51
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69A307B88E6
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244383AbjJDSeS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:34:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39526 "EHLO
+        id S243935AbjJDSUp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244391AbjJDSeR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:17 -0400
+        with ESMTP id S243988AbjJDSUo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08306C4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B142C433CA;
-        Wed,  4 Oct 2023 18:34:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8A8BA7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E3BC433C8;
+        Wed,  4 Oct 2023 18:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444453;
-        bh=ZGkzdKJ65adkR+pcci+EKjRxW7o0SS9LPgaMeBSvru4=;
+        s=korg; t=1696443639;
+        bh=5NKMqEzKlQCXDjnbCPkSc8lp/ibNm4KWljLHkB2yLfs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ays9UR7A9Y3YTnHQ4P58Gi7Lny0HnwJtE16y16bYeN+rEFlsZ+Xiokv06R1amfJBe
-         kzOgszQ77A23GxQ9OW08mj5FPDzqQPi53/xz5JMBZCnhNUUFscDvyu17mXZV8du44N
-         cnTW7X5Btu/JZi6h/RCFZbUY6BZBXCV0WrWo/IFE=
+        b=rnkQwBDxqkkMbtn4wI6NL7MWUdu2ZchPMs3hVzq+cKwqLV5KoJH5YmP2iqRxQLUME
+         vhxVcfbugNvC0DxWMuIXUAZTAfCMa2Mp0NhnBbuYgLYsn6I4H2m7+ALJk3f0FbabJe
+         RYP9by37mOL8ubYHrCkBW+OFwtpLszFEIlGinvGs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.5 256/321] crypto: sm2 - Fix crash caused by uninitialized context
+        patches@lists.linux.dev, August Wikerfors <git@augustwikerfors.se>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 228/259] ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG
 Date:   Wed,  4 Oct 2023 19:56:41 +0200
-Message-ID: <20231004175241.126277021@linuxfoundation.org>
+Message-ID: <20231004175227.816576134@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +49,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+From: August Wikerfors <git@augustwikerfors.se>
 
-commit 21155620fbf2edbb071144894ff9d67ba9a1faa0 upstream.
+commit 1263cc0f414d212129c0f1289b49b7df77f92084 upstream.
 
-In sm2_compute_z_digest() function, the newly allocated structure
-mpi_ec_ctx is used, but forget to initialize it, which will cause
-a crash when performing subsequent operations.
+Like the Lenovo 82TL and 82V2, the Lenovo 82QF (Yoga 7 14ARB7) and 82UG
+(Legion S7 16ARHA7) both need a quirk entry for the internal microphone to
+function. Commit c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on
+Lenovo 82SJ") restricted the quirk that previously matched "82" to "82V2",
+breaking microphone functionality on these devices. Fix this by adding
+specific quirks for these models, as was done for the Lenovo 82TL.
 
-Fixes: e5221fa6a355 ("KEYS: asymmetric: Move sm2 code into x509_public_key")
-Cc: stable@vger.kernel.org # v6.5
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on Lenovo 82SJ")
+Closes: https://github.com/tomsom/yoga-linux/issues/51
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=208555#c780
+Cc: stable@vger.kernel.org
+Signed-off-by: August Wikerfors <git@augustwikerfors.se>
+Link: https://lore.kernel.org/r/20230911213409.6106-1-git@augustwikerfors.se
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/sm2.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/amd/yc/acp6x-mach.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/crypto/sm2.c b/crypto/sm2.c
-index 285b3cb7c0bc..5ab120d74c59 100644
---- a/crypto/sm2.c
-+++ b/crypto/sm2.c
-@@ -278,10 +278,14 @@ int sm2_compute_z_digest(struct shash_desc *desc,
- 	if (!ec)
- 		return -ENOMEM;
- 
--	err = __sm2_set_pub_key(ec, key, keylen);
-+	err = sm2_ec_ctx_init(ec);
- 	if (err)
- 		goto out_free_ec;
- 
-+	err = __sm2_set_pub_key(ec, key, keylen);
-+	if (err)
-+		goto out_deinit_ec;
-+
- 	bits_len = SM2_DEFAULT_USERID_LEN * 8;
- 	entl[0] = bits_len >> 8;
- 	entl[1] = bits_len & 0xff;
--- 
-2.42.0
-
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -217,10 +217,24 @@ static const struct dmi_system_id yc_acp
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82V2"),
+ 		}
+ 	},
+ 	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82UG"),
++		}
++	},
++	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
