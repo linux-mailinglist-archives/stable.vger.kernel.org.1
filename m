@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ECC67B87B6
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 161A87B88D1
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243853AbjJDSIc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:08:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37266 "EHLO
+        id S243767AbjJDSTv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:19:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243851AbjJDSIb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:31 -0400
+        with ESMTP id S233912AbjJDSTv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:19:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 655B6C4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD44AC433CA;
-        Wed,  4 Oct 2023 18:08:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00B23102
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:19:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C02FC433C9;
+        Wed,  4 Oct 2023 18:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442908;
-        bh=+hU7AlGbUbfx8jTSrsK7mJmu0ptIKpPVhX1EbQF1Nn8=;
+        s=korg; t=1696443585;
+        bh=I0tfk7TZ4biX25Jj1lvzp7tqOlzU4YcA7PhR3VQqpBg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=evQeyfW0/Jh/p1v/rHt0/YfAWmXm6a/xvo3tGcB/W2Fl8oAymPWQlsJBPek2jzDT+
-         9ut7NbrHrS3pSzeC0GRWsuGFmR+Bbp9uX15j7jWqYJWG6zT/0XxtESCBq0h1eDgpY0
-         ad0twa54R+5prbwdsekJ92jCUxJ0p+Vto4U9HO6A=
+        b=yYaYgyPTg3+RS/K9FDyMaKbIvd7U3bSPfh4vaoLxRgAz1cixeS0BP9At4CyfWoQ8S
+         +8rw36H7DZDq56Caf1nu/8+8vNqgCkd+V9jUPxNiePtUoUZxh+o/OYYNHs+flcL63X
+         J17IvJ5+ypMaLl1hPpFC0LqSH+YvLDb2Dj9xVg8U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrii Staikov <andrii.staikov@intel.com>,
-        Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/183] i40e: fix potential NULL pointer dereferencing of pf->vf i40e_sync_vsi_filters()
+        patches@lists.linux.dev, Nicolin Chen <nicolinc@nvidia.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 208/259] iommu/arm-smmu-v3: Fix soft lockup triggered by arm_smmu_mm_invalidate_range
 Date:   Wed,  4 Oct 2023 19:56:21 +0200
-Message-ID: <20231004175210.294776178@linuxfoundation.org>
+Message-ID: <20231004175226.835819189@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +49,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Staikov <andrii.staikov@intel.com>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-[ Upstream commit 9525a3c38accd2e186f52443e35e633e296cc7f5 ]
+commit d5afb4b47e13161b3f33904d45110f9e6463bad6 upstream.
 
-Add check for pf->vf not being NULL before dereferencing
-pf->vf[vsi->vf_id] in updating VSI filter sync.
-Add a similar check before dereferencing !pf->vf[vsi->vf_id].trusted
-in the condition for clearing promisc mode bit.
+When running an SVA case, the following soft lockup is triggered:
+--------------------------------------------------------------------
+watchdog: BUG: soft lockup - CPU#244 stuck for 26s!
+pstate: 83400009 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+pc : arm_smmu_cmdq_issue_cmdlist+0x178/0xa50
+lr : arm_smmu_cmdq_issue_cmdlist+0x150/0xa50
+sp : ffff8000d83ef290
+x29: ffff8000d83ef290 x28: 000000003b9aca00 x27: 0000000000000000
+x26: ffff8000d83ef3c0 x25: da86c0812194a0e8 x24: 0000000000000000
+x23: 0000000000000040 x22: ffff8000d83ef340 x21: ffff0000c63980c0
+x20: 0000000000000001 x19: ffff0000c6398080 x18: 0000000000000000
+x17: 0000000000000000 x16: 0000000000000000 x15: ffff3000b4a3bbb0
+x14: ffff3000b4a30888 x13: ffff3000b4a3cf60 x12: 0000000000000000
+x11: 0000000000000000 x10: 0000000000000000 x9 : ffffc08120e4d6bc
+x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000048cfa
+x5 : 0000000000000000 x4 : 0000000000000001 x3 : 000000000000000a
+x2 : 0000000080000000 x1 : 0000000000000000 x0 : 0000000000000001
+Call trace:
+ arm_smmu_cmdq_issue_cmdlist+0x178/0xa50
+ __arm_smmu_tlb_inv_range+0x118/0x254
+ arm_smmu_tlb_inv_range_asid+0x6c/0x130
+ arm_smmu_mm_invalidate_range+0xa0/0xa4
+ __mmu_notifier_invalidate_range_end+0x88/0x120
+ unmap_vmas+0x194/0x1e0
+ unmap_region+0xb4/0x144
+ do_mas_align_munmap+0x290/0x490
+ do_mas_munmap+0xbc/0x124
+ __vm_munmap+0xa8/0x19c
+ __arm64_sys_munmap+0x28/0x50
+ invoke_syscall+0x78/0x11c
+ el0_svc_common.constprop.0+0x58/0x1c0
+ do_el0_svc+0x34/0x60
+ el0_svc+0x2c/0xd4
+ el0t_64_sync_handler+0x114/0x140
+ el0t_64_sync+0x1a4/0x1a8
+--------------------------------------------------------------------
 
-Fixes: c87c938f62d8 ("i40e: Add VF VLAN pruning")
-Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The commit 06ff87bae8d3 ("arm64: mm: remove unused functions and variable
+protoypes") fixed a similar lockup on the CPU MMU side. Yet, it can occur
+to SMMU too since arm_smmu_mm_invalidate_range() is typically called next
+to MMU tlb flush function, e.g.
+	tlb_flush_mmu_tlbonly {
+		tlb_flush {
+			__flush_tlb_range {
+				// check MAX_TLBI_OPS
+			}
+		}
+		mmu_notifier_invalidate_range {
+			arm_smmu_mm_invalidate_range {
+				// does not check MAX_TLBI_OPS
+			}
+		}
+	}
+
+Clone a CMDQ_MAX_TLBI_OPS from the MAX_TLBI_OPS in tlbflush.h, since in an
+SVA case SMMU uses the CPU page table, so it makes sense to align with the
+tlbflush code. Then, replace per-page TLBI commands with a single per-asid
+TLBI command, if the request size hits this threshold.
+
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Link: https://lore.kernel.org/r/20230920052257.8615-1-nicolinc@nvidia.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c   | 27 ++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 76bb1d0de8d1c..539bb69548f23 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -2595,7 +2595,7 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
- 			retval = i40e_correct_mac_vlan_filters
- 				(vsi, &tmp_add_list, &tmp_del_list,
- 				 vlan_filters);
--		else
-+		else if (pf->vf)
- 			retval = i40e_correct_vf_mac_vlan_filters
- 				(vsi, &tmp_add_list, &tmp_del_list,
- 				 vlan_filters, pf->vf[vsi->vf_id].trusted);
-@@ -2768,7 +2768,8 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+index 5968a568aae2a..ffba8ce93ff88 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
+@@ -186,6 +186,15 @@ static void arm_smmu_free_shared_cd(struct arm_smmu_ctx_desc *cd)
  	}
+ }
  
- 	/* if the VF is not trusted do not do promisc */
--	if ((vsi->type == I40E_VSI_SRIOV) && !pf->vf[vsi->vf_id].trusted) {
-+	if (vsi->type == I40E_VSI_SRIOV && pf->vf &&
-+	    !pf->vf[vsi->vf_id].trusted) {
- 		clear_bit(__I40E_VSI_OVERFLOW_PROMISC, vsi->state);
- 		goto out;
- 	}
++/*
++ * Cloned from the MAX_TLBI_OPS in arch/arm64/include/asm/tlbflush.h, this
++ * is used as a threshold to replace per-page TLBI commands to issue in the
++ * command queue with an address-space TLBI command, when SMMU w/o a range
++ * invalidation feature handles too many per-page TLBI commands, which will
++ * otherwise result in a soft lockup.
++ */
++#define CMDQ_MAX_TLBI_OPS		(1 << (PAGE_SHIFT - 3))
++
+ static void arm_smmu_mm_invalidate_range(struct mmu_notifier *mn,
+ 					 struct mm_struct *mm,
+ 					 unsigned long start, unsigned long end)
+@@ -200,10 +209,22 @@ static void arm_smmu_mm_invalidate_range(struct mmu_notifier *mn,
+ 	 * range. So do a simple translation here by calculating size correctly.
+ 	 */
+ 	size = end - start;
++	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_RANGE_INV)) {
++		if (size >= CMDQ_MAX_TLBI_OPS * PAGE_SIZE)
++			size = 0;
++	}
++
++	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM)) {
++		if (!size)
++			arm_smmu_tlb_inv_asid(smmu_domain->smmu,
++					      smmu_mn->cd->asid);
++		else
++			arm_smmu_tlb_inv_range_asid(start, size,
++						    smmu_mn->cd->asid,
++						    PAGE_SIZE, false,
++						    smmu_domain);
++	}
+ 
+-	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM))
+-		arm_smmu_tlb_inv_range_asid(start, size, smmu_mn->cd->asid,
+-					    PAGE_SIZE, false, smmu_domain);
+ 	arm_smmu_atc_inv_domain(smmu_domain, mm->pasid, start, size);
+ }
+ 
 -- 
 2.40.1
 
