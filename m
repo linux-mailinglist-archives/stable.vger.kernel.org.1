@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCC097B8A02
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8DFC7B8787
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244265AbjJDSbR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:31:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58864 "EHLO
+        id S243842AbjJDSGb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:06:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244336AbjJDSbR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:31:17 -0400
+        with ESMTP id S243816AbjJDSGZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F121AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:31:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C64C433C7;
-        Wed,  4 Oct 2023 18:31:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8FD1AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD69C433C7;
+        Wed,  4 Oct 2023 18:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444273;
-        bh=ZfZcfhXkw8Xd9lpa3h5BgYMpOjVFVTZIqoZikRt3EAI=;
+        s=korg; t=1696442781;
+        bh=SmGB1ffLIyz4J5PzOgQ3QPpMC+81jSd1NQcs7FHHmuY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nbiaQ04oasEve1XBHTc9C7Og86Di2cN1+NfAA5YnZS5ftScmC9fD+4S3h2r3q/Xjk
-         XHfhCei9d6UfIQ8ECVykGBaluuJpyBSTpLnYBkEA0mHpsWBmdAVomJrbSWROqMJ+4j
-         J0TriQiTBlH6pLFkET4peYAnE+EwzE5ugICqMeV8=
+        b=Ts90ENR1hqGCCu6/+wSCDVI+jXJRn8253OpoE1ytVy3xhzlZW6MPq5aESzbvIAbnV
+         JXs4dXPfQ2Vz0UkG40xwwkPxExQcmvYtoODMYVyrwp0mKOx/+qmktYfabxGfb8R+ZF
+         gzJogL1StEShJC+plksTtCe2cq5J5QKDieBkKH3E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hawking Zhang <Hawking.Zhang@amd.com>,
-        Yang Wang <kevinyang.wang@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Nathan Rossi <nathan.rossi@digi.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 192/321] drm/amdgpu: fallback to old RAS error message for aqua_vanjaram
-Date:   Wed,  4 Oct 2023 19:55:37 +0200
-Message-ID: <20231004175238.118527553@linuxfoundation.org>
+Subject: [PATCH 5.15 107/183] soc: imx8m: Enable OCOTP clock for imx8mm before reading registers
+Date:   Wed,  4 Oct 2023 19:55:38 +0200
+Message-ID: <20231004175208.380610877@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +51,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hawking Zhang <Hawking.Zhang@amd.com>
+From: Nathan Rossi <nathan.rossi@digi.com>
 
-[ Upstream commit ffd6bde302061aeee405ab364403af30210f0b99 ]
+[ Upstream commit 9d1e8275a28f51599d754ce661c91e0a689c0234 ]
 
-So driver doesn't generate incorrect message until
-the new format is settled down for aqua_vanjaram
+Commit 836fb30949d9 ("soc: imx8m: Enable OCOTP clock before reading the
+register") added configuration to enable the OCOTP clock before
+attempting to read from the associated registers.
 
-Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This same kexec issue is present with the imx8m SoCs that use the
+imx8mm_soc_uid function (e.g. imx8mp). This requires the imx8mm_soc_uid
+function to configure the OCOTP clock before accessing the associated
+registers. This change implements the same clock enable functionality
+that is present in the imx8mq_soc_revision function for the
+imx8mm_soc_uid function.
+
+Signed-off-by: Nathan Rossi <nathan.rossi@digi.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Fixes: 836fb30949d9 ("soc: imx8m: Enable OCOTP clock before reading the register")
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/soc/imx/soc-imx8m.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index 8aaa427f8c0f6..7d5019a884024 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -1061,7 +1061,8 @@ int amdgpu_ras_query_error_status(struct amdgpu_device *adev,
- 	info->ce_count = obj->err_data.ce_count;
+diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
+index 32ed9dc88e455..08197b03955dd 100644
+--- a/drivers/soc/imx/soc-imx8m.c
++++ b/drivers/soc/imx/soc-imx8m.c
+@@ -100,6 +100,7 @@ static void __init imx8mm_soc_uid(void)
+ {
+ 	void __iomem *ocotp_base;
+ 	struct device_node *np;
++	struct clk *clk;
+ 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
+ 		     IMX8MP_OCOTP_UID_OFFSET : 0;
  
- 	if (err_data.ce_count) {
--		if (adev->smuio.funcs &&
-+		if (!adev->aid_mask &&
-+		    adev->smuio.funcs &&
- 		    adev->smuio.funcs->get_socket_id &&
- 		    adev->smuio.funcs->get_die_id) {
- 			dev_info(adev->dev, "socket: %d, die: %d "
-@@ -1081,7 +1082,8 @@ int amdgpu_ras_query_error_status(struct amdgpu_device *adev,
- 		}
- 	}
- 	if (err_data.ue_count) {
--		if (adev->smuio.funcs &&
-+		if (!adev->aid_mask &&
-+		    adev->smuio.funcs &&
- 		    adev->smuio.funcs->get_socket_id &&
- 		    adev->smuio.funcs->get_die_id) {
- 			dev_info(adev->dev, "socket: %d, die: %d "
+@@ -109,11 +110,20 @@ static void __init imx8mm_soc_uid(void)
+ 
+ 	ocotp_base = of_iomap(np, 0);
+ 	WARN_ON(!ocotp_base);
++	clk = of_clk_get_by_name(np, NULL);
++	if (IS_ERR(clk)) {
++		WARN_ON(IS_ERR(clk));
++		return;
++	}
++
++	clk_prepare_enable(clk);
+ 
+ 	soc_uid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH + offset);
+ 	soc_uid <<= 32;
+ 	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW + offset);
+ 
++	clk_disable_unprepare(clk);
++	clk_put(clk);
+ 	iounmap(ocotp_base);
+ 	of_node_put(np);
+ }
 -- 
 2.40.1
 
