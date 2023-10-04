@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E177B8967
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A604A7B8807
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:12:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244175AbjJDSZf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:25:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57322 "EHLO
+        id S243938AbjJDSMJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244177AbjJDSZe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:34 -0400
+        with ESMTP id S243932AbjJDSMH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:12:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A35BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:25:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34095C433C8;
-        Wed,  4 Oct 2023 18:25:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1A86FF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:11:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3F3C433C7;
+        Wed,  4 Oct 2023 18:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443930;
-        bh=AwvV22U3Z3aWMKb/qq5jNTioHF6Xqws2wkVflEMRNeE=;
+        s=korg; t=1696443118;
+        bh=+EbdwY0676tyVMWyFSwMWq0hLBGrjHtVenbTJSlz/+k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QAs4yLoehRiVEaHje/ydlaT0NTuvoruHgvFsLERuy1HE3uEcO5pA1Kj/jk1Y+DFTu
-         qOZVz/bEDqzSnUcCv5no+gRqIu8SQHNDIMMH6ysJTAFoyuc1/Un+Jhto4INa4+F7si
-         EpX730O1X9K4qimCk3Mn6HMgS2OkCeflxWHlO7Z4=
+        b=eVDfuqrh9ouNGF7rlZyuXsFx22O4muMOV2+1vdadZxVMbYjPAj01RWCyru+VXAKTx
+         LnYYCpo4QaSk6gb/LiLzqudKKJQkcQQAwQCxad7gs8Q/lYJZHjcG6Qehhe2eYJfn/a
+         4m5kZszTZQHCu6eGAAvtg/RAXSDMUCSnURT3C8b8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mike Rappoport <rppt@kernel.org>,
-        Rik van Riel <riel@surriel.com>,
-        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 071/321] x86/mm, kexec, ima: Use memblock_free_late() from ima_free_kexec_buffer()
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 043/259] netfilter: conntrack: fix extension size table
 Date:   Wed,  4 Oct 2023 19:53:36 +0200
-Message-ID: <20231004175232.497291581@linuxfoundation.org>
+Message-ID: <20231004175219.414222139@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 34cf99c250d5cd2530b93a57b0de31d3aaf8685b ]
+[ Upstream commit 4908d5af16676b9d2901830551c2af911e452524 ]
 
-The code calling ima_free_kexec_buffer() runs long after the memblock
-allocator has already been torn down, potentially resulting in a use
-after free in memblock_isolate_range().
+The size table is incorrect due to copypaste error,
+this reserves more size than needed.
 
-With KASAN or KFENCE, this use after free will result in a BUG
-from the idle task, and a subsequent kernel panic.
+TSTAMP reserved 32 instead of 16 bytes.
+TIMEOUT reserved 16 instead of 8 bytes.
 
-Switch ima_free_kexec_buffer() over to memblock_free_late() to avoid
-that bug.
-
-Fixes: fee3ff99bc67 ("powerpc: Move arch independent ima kexec functions to drivers/of/kexec.c")
-Suggested-by: Mike Rappoport <rppt@kernel.org>
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230817135558.67274c83@imladris.surriel.com
+Fixes: 5f31edc0676b ("netfilter: conntrack: move extension sizes into core")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/setup.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ net/netfilter/nf_conntrack_extend.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index fd975a4a52006..aa0df37c1fe72 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -359,15 +359,11 @@ static void __init add_early_ima_buffer(u64 phys_addr)
- #if defined(CONFIG_HAVE_IMA_KEXEC) && !defined(CONFIG_OF_FLATTREE)
- int __init ima_free_kexec_buffer(void)
- {
--	int rc;
--
- 	if (!ima_kexec_buffer_size)
- 		return -ENOENT;
- 
--	rc = memblock_phys_free(ima_kexec_buffer_phys,
--				ima_kexec_buffer_size);
--	if (rc)
--		return rc;
-+	memblock_free_late(ima_kexec_buffer_phys,
-+			   ima_kexec_buffer_size);
- 
- 	ima_kexec_buffer_phys = 0;
- 	ima_kexec_buffer_size = 0;
+diff --git a/net/netfilter/nf_conntrack_extend.c b/net/netfilter/nf_conntrack_extend.c
+index 0b513f7bf9f39..dd62cc12e7750 100644
+--- a/net/netfilter/nf_conntrack_extend.c
++++ b/net/netfilter/nf_conntrack_extend.c
+@@ -40,10 +40,10 @@ static const u8 nf_ct_ext_type_len[NF_CT_EXT_NUM] = {
+ 	[NF_CT_EXT_ECACHE] = sizeof(struct nf_conntrack_ecache),
+ #endif
+ #ifdef CONFIG_NF_CONNTRACK_TIMESTAMP
+-	[NF_CT_EXT_TSTAMP] = sizeof(struct nf_conn_acct),
++	[NF_CT_EXT_TSTAMP] = sizeof(struct nf_conn_tstamp),
+ #endif
+ #ifdef CONFIG_NF_CONNTRACK_TIMEOUT
+-	[NF_CT_EXT_TIMEOUT] = sizeof(struct nf_conn_tstamp),
++	[NF_CT_EXT_TIMEOUT] = sizeof(struct nf_conn_timeout),
+ #endif
+ #ifdef CONFIG_NF_CONNTRACK_LABELS
+ 	[NF_CT_EXT_LABELS] = sizeof(struct nf_conn_labels),
 -- 
 2.40.1
 
