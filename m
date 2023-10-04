@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A74177B881A
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:12:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D418D7B897E
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243968AbjJDSMp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:12:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52936 "EHLO
+        id S244169AbjJDS0y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243976AbjJDSMp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:12:45 -0400
+        with ESMTP id S244294AbjJDS0g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:26:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE72D7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:12:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B07C433C7;
-        Wed,  4 Oct 2023 18:12:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E347A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:26:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C20C433C8;
+        Wed,  4 Oct 2023 18:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443157;
-        bh=V7SgJVrSbHftHBAVVLoNYsuREyha7F9vJ4z0589bTus=;
+        s=korg; t=1696443993;
+        bh=U0fL5oWlLlJVw8xqfmTx8wzqt2U4d2ZQyBg9z8fKsF4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BdngCdHWqp5Hqs0NrpSWVChMx0eV4Vp6eA85yELMy9pzLenwgSFM5DCzPi5Se4jBh
-         iBLcjb9I9tR5iLKR+ZQrVjvq+gJ+TW2lBJWIII0ZfzdzG+/V+8h77lx4eAiATneTni
-         cm3JCa4kKyPEI4CeFFyJqo+K+JvYYVUzec7/dVVc=
+        b=I8GQysnLMSW87q+Vb2P0mjfQIqLRBGsS7jG8coG8t/a8y3kCQHn1qyl4PkWIw/4rU
+         c2PKwXxyRRhuI6vnBbrdj02wVPEqRXjZfQS+KOd7fj2vxBmL4PQ8GfxLZiYl/paVcS
+         Syl98qTnMWWX/iGZrRf0U/SuHbHxLFTT506aImfE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ferenc Fejes <ferenc.fejes@ericsson.com>,
-        Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/259] igc: Fix infinite initialization loop with early XDP redirect
-Date:   Wed,  4 Oct 2023 19:53:49 +0200
-Message-ID: <20231004175219.990582963@linuxfoundation.org>
+Subject: [PATCH 6.5 085/321] net: hns3: fix fail to delete tc flower rules during reset issue
+Date:   Wed,  4 Oct 2023 19:53:50 +0200
+Message-ID: <20231004175233.150888655@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,57 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit cb47b1f679c4d83a5fa5f1852e472f844e41a3da ]
+[ Upstream commit 1a7be66e4685b8541546222c305cce9710718a88 ]
 
-When an XDP redirect happens before the link is ready, that
-transmission will not finish and will timeout, causing an adapter
-reset. If the redirects do not stop, the adapter will not stop
-resetting.
+Firmware does not respond driver commands during reset
+Therefore, rule will fail to delete while the firmware is resetting
 
-Wait for the driver to signal that there's a carrier before allowing
-transmissions to proceed.
+So, if failed to delete rule, set rule state to TO_DEL,
+and the rule will be deleted when periodic task being scheduled.
 
-Previous code was relying that when __IGC_DOWN is cleared, the NIC is
-ready to transmit as all the queues are ready, what happens is that
-the carrier presence will only be signaled later, after the watchdog
-workqueue has a chance to run. And during this interval (between
-clearing __IGC_DOWN and the watchdog running) if any transmission
-happens the timeout is emitted (detected by igc_tx_timeout()) which
-causes the reset, with the potential for the infinite loop.
-
-Fixes: 4ff320361092 ("igc: Add support for XDP_REDIRECT action")
-Reported-by: Ferenc Fejes <ferenc.fejes@ericsson.com>
-Closes: https://lore.kernel.org/netdev/0caf33cf6adb3a5bf137eeaa20e89b167c9986d5.camel@ericsson.com/
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Tested-by: Ferenc Fejes <ferenc.fejes@ericsson.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 0205ec041ec6 ("net: hns3: add support for hw tc offload of tc flower")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 2f3947cf513bd..1ac836a55cd31 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6322,7 +6322,7 @@ static int igc_xdp_xmit(struct net_device *dev, int num_frames,
- 	struct igc_ring *ring;
- 	int i, drops;
- 
--	if (unlikely(test_bit(__IGC_DOWN, &adapter->state)))
-+	if (unlikely(!netif_carrier_ok(dev)))
- 		return -ENETDOWN;
- 
- 	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 26e9fa9cc2cd3..a4500abfa286f 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -7348,6 +7348,12 @@ static int hclge_del_cls_flower(struct hnae3_handle *handle,
+ 	ret = hclge_fd_tcam_config(hdev, HCLGE_FD_STAGE_1, true, rule->location,
+ 				   NULL, false);
+ 	if (ret) {
++		/* if tcam config fail, set rule state to TO_DEL,
++		 * so the rule will be deleted when periodic
++		 * task being scheduled.
++		 */
++		hclge_update_fd_list(hdev, HCLGE_FD_TO_DEL, rule->location, NULL);
++		set_bit(HCLGE_STATE_FD_TBL_CHANGED, &hdev->state);
+ 		spin_unlock_bh(&hdev->fd_rule_lock);
+ 		return ret;
+ 	}
 -- 
 2.40.1
 
