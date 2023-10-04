@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A32947B88B4
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F4517B87B8
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233410AbjJDSSn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:18:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56094 "EHLO
+        id S243851AbjJDSIh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:08:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233764AbjJDSSi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:38 -0400
+        with ESMTP id S243818AbjJDSIh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BBBAAD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA86C433C8;
-        Wed,  4 Oct 2023 18:18:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA489E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628A4C433C8;
+        Wed,  4 Oct 2023 18:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443514;
-        bh=haZobhCMmNPNuvABAblaq3zKyMuvCOyi8YyCbjuP1r4=;
+        s=korg; t=1696442913;
+        bh=ZTV4FECLUCfGhjE5VEoBvEYCiBDe+3UXjfZssO6JBj8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XmF79D4VPznNh2bzp3Q3uRL6UrPSzqg1mfZVaFELGV7Ic3jjKP2EqEiUxOlOSBqo2
-         8gA1pZFrcC5n14ZW95bMDKwYjoW3ITjZQ5axNVjByXBQoD2QiKax9PGz4rPJm/JMaW
-         8DqO40MnwfctqIwpHn5S/xv7N2v9lMNDaq0JDS40=
+        b=Z9Apf7scp0wHRMOHQ0aJz1SBW80+ImQEyli3/RVT704jBIbMTyrIBlSPKcpLHVKyp
+         c4vQOTfqjbr0QSpsQgyNlqC+bh1gN6OnxGHJY4x8POjX9xkOuTOCYoI2QyauKVXwEr
+         uFBwYM0p2Ko3GZRVhOi1sxYXssgLbb3k6k80ZZ3E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Wenjing Liu <wenjing.liu@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Swapnil Patel <swapnil.patel@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/259] firmware: cirrus: cs_dsp: Only log list of algorithms in debug build
+Subject: [PATCH 5.15 125/183] drm/amd/display: Dont check registers, if using AUX BL control
 Date:   Wed,  4 Oct 2023 19:55:56 +0200
-Message-ID: <20231004175225.699381574@linuxfoundation.org>
+Message-ID: <20231004175209.197582747@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,84 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Swapnil Patel <swapnil.patel@amd.com>
 
-[ Upstream commit 69343ce91435f222052015c5af86b550391bac85 ]
+[ Upstream commit f5b2c10b57615828b531bb0ae56bd6325a41167e ]
 
-Change the logging of each algorithm from info level to debug level.
+[Why]
+Currently the driver looks DCN registers to access if BL is on or not.
+This check is not valid if we are using AUX based brightness control.
+This causes driver to not send out "backlight off" command during power off
+sequence as it already thinks it is off.
 
-On the original devices supported by this code there were typically only
-one or two algorithms in a firmware and one or two DSPs so this logging
-only used a small number of log lines.
+[How]
+Only check DCN registers if we aren't using AUX based brightness control.
 
-However, for the latest devices there could be 30-40 algorithms in a
-firmware and 8 DSPs being loaded in parallel, so using 300+ lines of log
-for information that isn't particularly important to have logged.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20230913160523.3701189-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Acked-by: Stylon Wang <stylon.wang@amd.com>
+Signed-off-by: Swapnil Patel <swapnil.patel@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 34 ++++++++++++++++----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index 81c5f94b1be11..64ed9d3f5d5d8 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -1821,15 +1821,15 @@ static int cs_dsp_adsp2_setup_algs(struct cs_dsp *dsp)
- 		return PTR_ERR(adsp2_alg);
+diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
+index 52142d272c868..87825818d43ec 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
+@@ -980,7 +980,9 @@ void dce110_edp_backlight_control(
+ 		return;
+ 	}
  
- 	for (i = 0; i < n_algs; i++) {
--		cs_dsp_info(dsp,
--			    "%d: ID %x v%d.%d.%d XM@%x YM@%x ZM@%x\n",
--			    i, be32_to_cpu(adsp2_alg[i].alg.id),
--			    (be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff0000) >> 16,
--			    (be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff00) >> 8,
--			    be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff,
--			    be32_to_cpu(adsp2_alg[i].xm),
--			    be32_to_cpu(adsp2_alg[i].ym),
--			    be32_to_cpu(adsp2_alg[i].zm));
-+		cs_dsp_dbg(dsp,
-+			   "%d: ID %x v%d.%d.%d XM@%x YM@%x ZM@%x\n",
-+			   i, be32_to_cpu(adsp2_alg[i].alg.id),
-+			   (be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff0000) >> 16,
-+			   (be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff00) >> 8,
-+			   be32_to_cpu(adsp2_alg[i].alg.ver) & 0xff,
-+			   be32_to_cpu(adsp2_alg[i].xm),
-+			   be32_to_cpu(adsp2_alg[i].ym),
-+			   be32_to_cpu(adsp2_alg[i].zm));
+-	if (link->panel_cntl) {
++	if (link->panel_cntl && !(link->dpcd_sink_ext_caps.bits.oled ||
++		link->dpcd_sink_ext_caps.bits.hdr_aux_backlight_control == 1 ||
++		link->dpcd_sink_ext_caps.bits.sdr_aux_backlight_control == 1)) {
+ 		bool is_backlight_on = link->panel_cntl->funcs->is_panel_backlight_on(link->panel_cntl);
  
- 		alg_region = cs_dsp_create_region(dsp, WMFW_ADSP2_XM,
- 						  adsp2_alg[i].alg.id,
-@@ -1954,14 +1954,14 @@ static int cs_dsp_halo_setup_algs(struct cs_dsp *dsp)
- 		return PTR_ERR(halo_alg);
- 
- 	for (i = 0; i < n_algs; i++) {
--		cs_dsp_info(dsp,
--			    "%d: ID %x v%d.%d.%d XM@%x YM@%x\n",
--			    i, be32_to_cpu(halo_alg[i].alg.id),
--			    (be32_to_cpu(halo_alg[i].alg.ver) & 0xff0000) >> 16,
--			    (be32_to_cpu(halo_alg[i].alg.ver) & 0xff00) >> 8,
--			    be32_to_cpu(halo_alg[i].alg.ver) & 0xff,
--			    be32_to_cpu(halo_alg[i].xm_base),
--			    be32_to_cpu(halo_alg[i].ym_base));
-+		cs_dsp_dbg(dsp,
-+			   "%d: ID %x v%d.%d.%d XM@%x YM@%x\n",
-+			   i, be32_to_cpu(halo_alg[i].alg.id),
-+			   (be32_to_cpu(halo_alg[i].alg.ver) & 0xff0000) >> 16,
-+			   (be32_to_cpu(halo_alg[i].alg.ver) & 0xff00) >> 8,
-+			   be32_to_cpu(halo_alg[i].alg.ver) & 0xff,
-+			   be32_to_cpu(halo_alg[i].xm_base),
-+			   be32_to_cpu(halo_alg[i].ym_base));
- 
- 		ret = cs_dsp_halo_create_regions(dsp, halo_alg[i].alg.id,
- 						 halo_alg[i].alg.ver,
+ 		if ((enable && is_backlight_on) || (!enable && !is_backlight_on)) {
 -- 
 2.40.1
 
