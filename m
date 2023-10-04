@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD48D7B89C5
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 187147B8842
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:14:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244272AbjJDS3H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:29:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55180 "EHLO
+        id S243753AbjJDSOY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:14:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244270AbjJDS3H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:07 -0400
+        with ESMTP id S243986AbjJDSOY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:14:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A488A6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1A2C433C8;
-        Wed,  4 Oct 2023 18:29:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30469A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:14:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F052C433C8;
+        Wed,  4 Oct 2023 18:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444143;
-        bh=WR9HdWHoa4M6CIy3N44I1P8JM0jarvsv3knYd1zCKkI=;
+        s=korg; t=1696443258;
+        bh=D128Sz8R+qCz9h3RDET6CDj8yts09kMSMciXmBfMQHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uaTMIKmC10Gee6ueXj2xMVZ3HA1qXA76TeX/xJIWOgN8rCL5GLYkCajhxM570N4ir
-         RyLESEVfBiWcvgqLcE6g34r+7tzjQMPhIZDlVvcOPCkAdsUKvF4oPgJarAKA73bDsY
-         r02XIn6gmAadeFhExUH6iblvkT+0rk5e6fdQDHYU=
+        b=lT87kqo2juACdK+vbX07Y5Nu92Jb0Z83S8qfzxXLSIytJVbQAcd1ZvREqWWFKKKgh
+         WN/HLvcwrRwYw3sjYNRHr+vf6DhanVMaTvoS/2t11s9i8wPkiQ127NjmQOXzCHMmQe
+         DsOB97IIUE2w+K6YH6iJfaipvROFQ95zfVt7IoBM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        Eric Farman <farman@linux.ibm.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 118/321] vfio/mdev: Fix a null-ptr-deref bug for mdev_unregister_parent()
-Date:   Wed,  4 Oct 2023 19:54:23 +0200
-Message-ID: <20231004175234.700202919@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Michal Simek <michal.simek@amd.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 091/259] i2c: xiic: Correct return value check for xiic_reinit()
+Date:   Wed,  4 Oct 2023 19:54:24 +0200
+Message-ID: <20231004175221.531603834@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,118 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Daniel Scally <dan.scally@ideasonboard.com>
 
-[ Upstream commit c777b11d34e0f47dbbc4b018ef65ad030f2b283a ]
+[ Upstream commit 59851fb05d759f13662be143eff0aae605815b0e ]
 
-Inject fault while probing mdpy.ko, if kstrdup() of create_dir() fails in
-kobject_add_internal() in kobject_init_and_add() in mdev_type_add()
-in parent_create_sysfs_files(), it will return 0 and probe successfully.
-And when rmmod mdpy.ko, the mdpy_dev_exit() will call
-mdev_unregister_parent(), the mdev_type_remove() may traverse uninitialized
-parent->types[i] in parent_remove_sysfs_files(), and it will cause
-below null-ptr-deref.
+The error paths for xiic_reinit() return negative values on failure
+and 0 on success - this error message therefore is triggered on
+_success_ rather than failure. Correct the condition so it's only
+shown on failure as intended.
 
-If mdev_type_add() fails, return the error code and kset_unregister()
-to fix the issue.
-
- general protection fault, probably for non-canonical address 0xdffffc0000000002: 0000 [#1] PREEMPT SMP KASAN
- KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
- CPU: 2 PID: 10215 Comm: rmmod Tainted: G        W        N 6.6.0-rc2+ #20
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
- RIP: 0010:__kobject_del+0x62/0x1c0
- Code: 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 51 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 8b 6b 28 48 8d 7d 10 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 24 01 00 00 48 8b 75 10 48 89 df 48 8d 6b 3c e8
- RSP: 0018:ffff88810695fd30 EFLAGS: 00010202
- RAX: dffffc0000000000 RBX: ffffffffa0270268 RCX: 0000000000000000
- RDX: 0000000000000002 RSI: 0000000000000004 RDI: 0000000000000010
- RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed10233a4ef1
- R10: ffff888119d2778b R11: 0000000063666572 R12: 0000000000000000
- R13: fffffbfff404e2d4 R14: dffffc0000000000 R15: ffffffffa0271660
- FS:  00007fbc81981540(0000) GS:ffff888119d00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fc14a142dc0 CR3: 0000000110a62003 CR4: 0000000000770ee0
- DR0: ffffffff8fb0bce8 DR1: ffffffff8fb0bce9 DR2: ffffffff8fb0bcea
- DR3: ffffffff8fb0bceb DR6: 00000000fffe0ff0 DR7: 0000000000000600
- PKRU: 55555554
- Call Trace:
-  <TASK>
-  ? die_addr+0x3d/0xa0
-  ? exc_general_protection+0x144/0x220
-  ? asm_exc_general_protection+0x22/0x30
-  ? __kobject_del+0x62/0x1c0
-  kobject_del+0x32/0x50
-  parent_remove_sysfs_files+0xd6/0x170 [mdev]
-  mdev_unregister_parent+0xfb/0x190 [mdev]
-  ? mdev_register_parent+0x270/0x270 [mdev]
-  ? find_module_all+0x9d/0xe0
-  mdpy_dev_exit+0x17/0x63 [mdpy]
-  __do_sys_delete_module.constprop.0+0x2fa/0x4b0
-  ? module_flags+0x300/0x300
-  ? __fput+0x4e7/0xa00
-  do_syscall_64+0x35/0x80
-  entry_SYSCALL_64_after_hwframe+0x46/0xb0
- RIP: 0033:0x7fbc813221b7
- Code: 73 01 c3 48 8b 0d d1 8c 2c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d a1 8c 2c 00 f7 d8 64 89 01 48
- RSP: 002b:00007ffe780e0648 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
- RAX: ffffffffffffffda RBX: 00007ffe780e06a8 RCX: 00007fbc813221b7
- RDX: 000000000000000a RSI: 0000000000000800 RDI: 000055e214df9b58
- RBP: 000055e214df9af0 R08: 00007ffe780df5c1 R09: 0000000000000000
- R10: 00007fbc8139ecc0 R11: 0000000000000206 R12: 00007ffe780e0870
- R13: 00007ffe780e0ed0 R14: 000055e214df9260 R15: 000055e214df9af0
-  </TASK>
- Modules linked in: mdpy(-) mdev vfio_iommu_type1 vfio [last unloaded: mdpy]
- Dumping ftrace buffer:
-    (ftrace buffer empty)
- ---[ end trace 0000000000000000 ]---
- RIP: 0010:__kobject_del+0x62/0x1c0
- Code: 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 51 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 8b 6b 28 48 8d 7d 10 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 24 01 00 00 48 8b 75 10 48 89 df 48 8d 6b 3c e8
- RSP: 0018:ffff88810695fd30 EFLAGS: 00010202
- RAX: dffffc0000000000 RBX: ffffffffa0270268 RCX: 0000000000000000
- RDX: 0000000000000002 RSI: 0000000000000004 RDI: 0000000000000010
- RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed10233a4ef1
- R10: ffff888119d2778b R11: 0000000063666572 R12: 0000000000000000
- R13: fffffbfff404e2d4 R14: dffffc0000000000 R15: ffffffffa0271660
- FS:  00007fbc81981540(0000) GS:ffff888119d00000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fc14a142dc0 CR3: 0000000110a62003 CR4: 0000000000770ee0
- DR0: ffffffff8fb0bce8 DR1: ffffffff8fb0bce9 DR2: ffffffff8fb0bcea
- DR3: ffffffff8fb0bceb DR6: 00000000fffe0ff0 DR7: 0000000000000600
- PKRU: 55555554
- Kernel panic - not syncing: Fatal exception
- Dumping ftrace buffer:
-    (ftrace buffer empty)
- Kernel Offset: disabled
- Rebooting in 1 seconds..
-
-Fixes: da44c340c4fe ("vfio/mdev: simplify mdev_type handling")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20230918115551.1423193-1-ruanjinjie@huawei.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 8fa9c9388053 ("i2c: xiic: return value of xiic_reinit")
+Signed-off-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/mdev/mdev_sysfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-xiic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/mdev/mdev_sysfs.c b/drivers/vfio/mdev/mdev_sysfs.c
-index e4490639d3833..9d2738e10c0b9 100644
---- a/drivers/vfio/mdev/mdev_sysfs.c
-+++ b/drivers/vfio/mdev/mdev_sysfs.c
-@@ -233,7 +233,8 @@ int parent_create_sysfs_files(struct mdev_parent *parent)
- out_err:
- 	while (--i >= 0)
- 		mdev_type_remove(parent->types[i]);
--	return 0;
-+	kset_unregister(parent->mdev_types_kset);
-+	return ret;
- }
+diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
+index b41a6709e47f2..b27bfc7765993 100644
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -420,7 +420,7 @@ static irqreturn_t xiic_process(int irq, void *dev_id)
+ 		 * reset the IP instead of just flush fifos
+ 		 */
+ 		ret = xiic_reinit(i2c);
+-		if (!ret)
++		if (ret < 0)
+ 			dev_dbg(i2c->adap.dev.parent, "reinit failed\n");
  
- static ssize_t remove_store(struct device *dev, struct device_attribute *attr,
+ 		if (i2c->rx_msg) {
 -- 
 2.40.1
 
