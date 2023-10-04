@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71FD97B8A29
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0714C7B88C5
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:19:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244362AbjJDSc5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:32:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60958 "EHLO
+        id S233785AbjJDSTU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:19:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244370AbjJDSc4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:56 -0400
+        with ESMTP id S233840AbjJDSTU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:19:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 508F5E4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8375FC433C9;
-        Wed,  4 Oct 2023 18:32:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 394E8A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:19:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8033EC433C8;
+        Wed,  4 Oct 2023 18:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444371;
-        bh=VWWsOP8IBuf2196vs1WcLZew4VLo2m7GxUsBfNO6H4M=;
+        s=korg; t=1696443556;
+        bh=JvFD0fPaBDwfNT7g/sasY1qAZ6RU2DR1QOqJx8aC8fQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XCcQZLSUOkqFfTL5drhCSV5/+8dmtvUrR9fMubhmgW2DHldgtyfiV0sr3lNkLI529
-         GzYBjnsWaG6KYHS4SzsU5l+OBGwE+fqRAiWbeLZQZKxqSDP1TXJJLXZAlONAhXDyx9
-         HMVCz9v+tO/UmvLOBhSG/UtA7bL4y8hj84AhZK9w=
+        b=quEsaNJvPyLzIZak+cg9yYeUtnkD0kz6EE5EjN8oJXd4vUJd+DY7JCfNU6xrNehey
+         Ztq2HrhMSTmGS3cfXyKJbY863jYJeA+WoeILnAB6wFNkXx+ayHOuQ3v+c8VcJ7Tvp1
+         /yYfoH781rBFHdt6ESkF44ikYP8RyTgSQ93/Bwvs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johnathan Mantey <johnathanx.mantey@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 227/321] ncsi: Propagate carrier gain/loss events to the NCSI controller
+Subject: [PATCH 6.1 199/259] perf build: Define YYNOMEM as YYNOABORT for bison < 3.81
 Date:   Wed,  4 Oct 2023 19:56:12 +0200
-Message-ID: <20231004175239.735005014@linuxfoundation.org>
+Message-ID: <20231004175226.409512985@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +52,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johnathan Mantey <johnathanx.mantey@intel.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 3780bb29311eccb7a1c9641032a112eed237f7e3 ]
+[ Upstream commit 88cc47e24597971b05b6e94c28a2fc81d2a8d61a ]
 
-Report the carrier/no-carrier state for the network interface
-shared between the BMC and the passthrough channel. Without this
-functionality the BMC is unable to reconfigure the NIC in the event
-of a re-cabling to a different subnet.
+YYNOMEM was introduced in bison 3.81, so define it as YYABORT for older
+versions, which should provide the previous perf behaviour.
 
-Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/ncsi-aen.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/perf/util/Build | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/ncsi/ncsi-aen.c b/net/ncsi/ncsi-aen.c
-index 62fb1031763d1..f8854bff286cb 100644
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -89,6 +89,11 @@ static int ncsi_aen_handler_lsc(struct ncsi_dev_priv *ndp,
- 	if ((had_link == has_link) || chained)
- 		return 0;
- 
-+	if (had_link)
-+		netif_carrier_off(ndp->ndev.dev);
-+	else
-+		netif_carrier_on(ndp->ndev.dev);
+diff --git a/tools/perf/util/Build b/tools/perf/util/Build
+index e315ecaec3233..2c364a9087a22 100644
+--- a/tools/perf/util/Build
++++ b/tools/perf/util/Build
+@@ -276,6 +276,12 @@ ifeq ($(BISON_GE_35),1)
+ else
+   bison_flags += -w
+ endif
 +
- 	if (!ndp->multi_package && !nc->package->multi_channel) {
- 		if (had_link) {
- 			ndp->flags |= NCSI_DEV_RESHUFFLE;
++BISON_LT_381 := $(shell expr $(shell $(BISON) --version | grep bison | sed -e 's/.\+ \([0-9]\+\).\([0-9]\+\).\([0-9]\+\)/\1\2\3/g') \< 381)
++ifeq ($(BISON_LT_381),1)
++  bison_flags += -DYYNOMEM=YYABORT
++endif
++
+ CFLAGS_parse-events-bison.o += $(bison_flags)
+ CFLAGS_pmu-bison.o          += -DYYLTYPE_IS_TRIVIAL=0 $(bison_flags)
+ CFLAGS_expr-bison.o         += -DYYLTYPE_IS_TRIVIAL=0 $(bison_flags)
 -- 
 2.40.1
 
