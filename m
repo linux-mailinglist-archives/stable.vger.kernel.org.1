@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E8EB7B87D9
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:10:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 350AB7B88DA
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243902AbjJDSKF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:10:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56778 "EHLO
+        id S243896AbjJDSUN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243903AbjJDSKF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:10:05 -0400
+        with ESMTP id S243892AbjJDSUM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED2D5A6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:10:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417A7C433C7;
-        Wed,  4 Oct 2023 18:10:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DCB19E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BA1C433C8;
+        Wed,  4 Oct 2023 18:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443000;
-        bh=96A74McbiureFkrk46AHVKzP6dY3Ogu8Ajfch3J3llA=;
+        s=korg; t=1696443608;
+        bh=dLqSnKyXXc4x0M6ayJ4x1qhVW/mVr81Hfgb2yi6Rg48=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=04KwwKLR5eaj+1ivW7Yvce1aDw4EUS+ay8OOcq1++ZqSL4dvFggTp3KBH/4c49Amt
-         kLoIHKLmrEXP9uIcVlyv1UUWVSnOrWa7G3jZYr4CHTLVjebky65pcEZgd/cI2NFtHM
-         mL/NT8vy6PXXIZdxzWiEaPcfu+Su/JePu4p9QMes=
+        b=FGUjjpnBUrXyKtgt4/OtkkKs/WxbpeNJBytAC5Yt/cxv1EVmlcw3Bu+jFhiAAi4HL
+         r1Ic7R6yXDKnZ7pgLkn9k3AmCuoENcmBwwo7XzrOiTFecGAZYkbMWmvEMTnVw3s7EA
+         dFww5uPFBGfhucgkbvIaFgV1EOnIHZcxunEap/mU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nicolin Chen <nicolinc@nvidia.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 157/183] iommu/arm-smmu-v3: Fix soft lockup triggered by arm_smmu_mm_invalidate_range
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Mat Martineau <martineau@kernel.org>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 215/259] mptcp: fix bogus receive window shrinkage with multiple subflows
 Date:   Wed,  4 Oct 2023 19:56:28 +0200
-Message-ID: <20231004175210.599892542@linuxfoundation.org>
+Message-ID: <20231004175227.189337069@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,129 +51,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit d5afb4b47e13161b3f33904d45110f9e6463bad6 upstream.
+commit 6bec041147a2a64a490d1f813e8a004443061b38 upstream.
 
-When running an SVA case, the following soft lockup is triggered:
---------------------------------------------------------------------
-watchdog: BUG: soft lockup - CPU#244 stuck for 26s!
-pstate: 83400009 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-pc : arm_smmu_cmdq_issue_cmdlist+0x178/0xa50
-lr : arm_smmu_cmdq_issue_cmdlist+0x150/0xa50
-sp : ffff8000d83ef290
-x29: ffff8000d83ef290 x28: 000000003b9aca00 x27: 0000000000000000
-x26: ffff8000d83ef3c0 x25: da86c0812194a0e8 x24: 0000000000000000
-x23: 0000000000000040 x22: ffff8000d83ef340 x21: ffff0000c63980c0
-x20: 0000000000000001 x19: ffff0000c6398080 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000000000000000 x15: ffff3000b4a3bbb0
-x14: ffff3000b4a30888 x13: ffff3000b4a3cf60 x12: 0000000000000000
-x11: 0000000000000000 x10: 0000000000000000 x9 : ffffc08120e4d6bc
-x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000048cfa
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : 000000000000000a
-x2 : 0000000080000000 x1 : 0000000000000000 x0 : 0000000000000001
-Call trace:
- arm_smmu_cmdq_issue_cmdlist+0x178/0xa50
- __arm_smmu_tlb_inv_range+0x118/0x254
- arm_smmu_tlb_inv_range_asid+0x6c/0x130
- arm_smmu_mm_invalidate_range+0xa0/0xa4
- __mmu_notifier_invalidate_range_end+0x88/0x120
- unmap_vmas+0x194/0x1e0
- unmap_region+0xb4/0x144
- do_mas_align_munmap+0x290/0x490
- do_mas_munmap+0xbc/0x124
- __vm_munmap+0xa8/0x19c
- __arm64_sys_munmap+0x28/0x50
- invoke_syscall+0x78/0x11c
- el0_svc_common.constprop.0+0x58/0x1c0
- do_el0_svc+0x34/0x60
- el0_svc+0x2c/0xd4
- el0t_64_sync_handler+0x114/0x140
- el0t_64_sync+0x1a4/0x1a8
---------------------------------------------------------------------
+In case multiple subflows race to update the mptcp-level receive
+window, the subflow losing the race should use the window value
+provided by the "winning" subflow to update it's own tcp-level
+rcv_wnd.
 
-The commit 06ff87bae8d3 ("arm64: mm: remove unused functions and variable
-protoypes") fixed a similar lockup on the CPU MMU side. Yet, it can occur
-to SMMU too since arm_smmu_mm_invalidate_range() is typically called next
-to MMU tlb flush function, e.g.
-	tlb_flush_mmu_tlbonly {
-		tlb_flush {
-			__flush_tlb_range {
-				// check MAX_TLBI_OPS
-			}
-		}
-		mmu_notifier_invalidate_range {
-			arm_smmu_mm_invalidate_range {
-				// does not check MAX_TLBI_OPS
-			}
-		}
-	}
+To such goal, the current code bogusly uses the mptcp-level rcv_wnd
+value as observed before the update attempt. On unlucky circumstances
+that may lead to TCP-level window shrinkage, and stall the other end.
 
-Clone a CMDQ_MAX_TLBI_OPS from the MAX_TLBI_OPS in tlbflush.h, since in an
-SVA case SMMU uses the CPU page table, so it makes sense to align with the
-tlbflush code. Then, replace per-page TLBI commands with a single per-asid
-TLBI command, if the request size hits this threshold.
+Address the issue feeding to the rcv wnd update the correct value.
 
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/r/20230920052257.8615-1-nicolinc@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f3589be0c420 ("mptcp: never shrink offered window")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/427
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c   | 27 ++++++++++++++++---
- 1 file changed, 24 insertions(+), 3 deletions(-)
+ net/mptcp/options.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-index e2e80eb2840ca..01748742c6842 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-@@ -186,6 +186,15 @@ static void arm_smmu_free_shared_cd(struct arm_smmu_ctx_desc *cd)
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -1248,12 +1248,13 @@ static void mptcp_set_rwin(struct tcp_so
+ 
+ 			if (rcv_wnd == rcv_wnd_old)
+ 				break;
+-			if (before64(rcv_wnd_new, rcv_wnd)) {
++
++			rcv_wnd_old = rcv_wnd;
++			if (before64(rcv_wnd_new, rcv_wnd_old)) {
+ 				MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_RCVWNDCONFLICTUPDATE);
+ 				goto raise_win;
+ 			}
+ 			MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_RCVWNDCONFLICT);
+-			rcv_wnd_old = rcv_wnd;
+ 		}
+ 		return;
  	}
- }
- 
-+/*
-+ * Cloned from the MAX_TLBI_OPS in arch/arm64/include/asm/tlbflush.h, this
-+ * is used as a threshold to replace per-page TLBI commands to issue in the
-+ * command queue with an address-space TLBI command, when SMMU w/o a range
-+ * invalidation feature handles too many per-page TLBI commands, which will
-+ * otherwise result in a soft lockup.
-+ */
-+#define CMDQ_MAX_TLBI_OPS		(1 << (PAGE_SHIFT - 3))
-+
- static void arm_smmu_mm_invalidate_range(struct mmu_notifier *mn,
- 					 struct mm_struct *mm,
- 					 unsigned long start, unsigned long end)
-@@ -200,10 +209,22 @@ static void arm_smmu_mm_invalidate_range(struct mmu_notifier *mn,
- 	 * range. So do a simple translation here by calculating size correctly.
- 	 */
- 	size = end - start;
-+	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_RANGE_INV)) {
-+		if (size >= CMDQ_MAX_TLBI_OPS * PAGE_SIZE)
-+			size = 0;
-+	}
-+
-+	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM)) {
-+		if (!size)
-+			arm_smmu_tlb_inv_asid(smmu_domain->smmu,
-+					      smmu_mn->cd->asid);
-+		else
-+			arm_smmu_tlb_inv_range_asid(start, size,
-+						    smmu_mn->cd->asid,
-+						    PAGE_SIZE, false,
-+						    smmu_domain);
-+	}
- 
--	if (!(smmu_domain->smmu->features & ARM_SMMU_FEAT_BTM))
--		arm_smmu_tlb_inv_range_asid(start, size, smmu_mn->cd->asid,
--					    PAGE_SIZE, false, smmu_domain);
- 	arm_smmu_atc_inv_domain(smmu_domain, mm->pasid, start, size);
- }
- 
--- 
-2.40.1
-
 
 
