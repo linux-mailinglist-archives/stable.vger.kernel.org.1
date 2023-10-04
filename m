@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D57E87B876F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C987B89DF
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243778AbjJDSFR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:05:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52174 "EHLO
+        id S244263AbjJDSaN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243777AbjJDSFQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:05:16 -0400
+        with ESMTP id S244303AbjJDSaL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 938859E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0524C433C8;
-        Wed,  4 Oct 2023 18:05:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 729A49E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96F6C433C8;
+        Wed,  4 Oct 2023 18:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442713;
-        bh=WBY/crvimllwAjbY3wh3mjIAyjLwwoPjkSz9Ar4mlOg=;
+        s=korg; t=1696444208;
+        bh=HmZft+h2vyo78N5b3gkszDY+CSGJ5eOIWVNovvxxRj0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ecuj+8pT1g5znn7nX77iXCinQXbqu992XxAyYSVuNqfyUokMVkoegylrnFRUXqv2M
-         omGOLpd+wSZPmbhKM5zCSFH8Hb9W8ENo0zAYo0pZpM/nzjjHjWv6pLyAcb2Q5eGHoP
-         e5AOTR9cd4QHFsDIN+3n5T6q5lep1Ccfusju5MeE=
+        b=NDv4nXyVJ+sl+zMtZWHbwAaAX7iJqG/jU0ssRh60yGsY5HcQlb4IGpNfrWBPvThJO
+         DptdWYva+JdjVBO8G/a5Ms5CJVSS/y159X65PFp6fIn3sxeL2h63nV1o2PBB5UvQDq
+         ain2zGmmH75ELPKdnW1DSUz1K0+5dpVvRqdyzhJM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/183] netfilter: exthdr: add support for tcp option removal
+Subject: [PATCH 6.5 168/321] parisc: ccio-dma: Fix sparse warnings
 Date:   Wed,  4 Oct 2023 19:55:13 +0200
-Message-ID: <20231004175207.290102989@linuxfoundation.org>
+Message-ID: <20231004175237.040787965@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,173 +49,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 7890cbea66e78a3a6037b2a12827118d7243270b ]
+[ Upstream commit 9a47a710cf517801a8b4fff9949c4cecb5fd019a ]
 
-This allows to replace a tcp option with nop padding to selectively disable
-a particular tcp option.
-
-Optstrip mode is chosen when userspace passes the exthdr expression with
-neither a source nor a destination register attribute.
-
-This is identical to xtables TCPOPTSTRIP extension.
-The only difference is that TCPOPTSTRIP allows to pass in a bitmap
-of options to remove rather than a single number.
-
-Unlike TCPOPTSTRIP this expression can be used multiple times
-in the same rule to get the same effect.
-
-We could add a new nested attribute later on in case there is a
-use case for single-expression-multi-remove.
-
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 28427f368f0e ("netfilter: nft_exthdr: Fix non-linear header modification")
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_exthdr.c | 96 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 1 deletion(-)
+ drivers/parisc/ccio-dma.c      | 18 +++++++++---------
+ drivers/parisc/iommu-helpers.h |  4 ++--
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index 3609680831a14..58f205531b961 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -315,6 +315,63 @@ static void nft_exthdr_tcp_set_eval(const struct nft_expr *expr,
- 	regs->verdict.code = NFT_BREAK;
- }
+diff --git a/drivers/parisc/ccio-dma.c b/drivers/parisc/ccio-dma.c
+index 10e846286f4ef..623707fc6ff1c 100644
+--- a/drivers/parisc/ccio-dma.c
++++ b/drivers/parisc/ccio-dma.c
+@@ -222,7 +222,7 @@ struct ioa_registers {
+ struct ioc {
+ 	struct ioa_registers __iomem *ioc_regs;  /* I/O MMU base address */
+ 	u8  *res_map;	                /* resource map, bit == pdir entry */
+-	u64 *pdir_base;	                /* physical base address */
++	__le64 *pdir_base;		/* physical base address */
+ 	u32 pdir_size;			/* bytes, function of IOV Space size */
+ 	u32 res_hint;			/* next available IOVP -
+ 					   circular search */
+@@ -347,7 +347,7 @@ ccio_alloc_range(struct ioc *ioc, struct device *dev, size_t size)
+ 	BUG_ON(pages_needed == 0);
+ 	BUG_ON((pages_needed * IOVP_SIZE) > DMA_CHUNK_SIZE);
  
-+static void nft_exthdr_tcp_strip_eval(const struct nft_expr *expr,
-+				      struct nft_regs *regs,
-+				      const struct nft_pktinfo *pkt)
-+{
-+	u8 buff[sizeof(struct tcphdr) + MAX_TCP_OPTION_SPACE];
-+	struct nft_exthdr *priv = nft_expr_priv(expr);
-+	unsigned int i, tcphdr_len, optl;
-+	struct tcphdr *tcph;
-+	u8 *opt;
-+
-+	tcph = nft_tcp_header_pointer(pkt, sizeof(buff), buff, &tcphdr_len);
-+	if (!tcph)
-+		goto err;
-+
-+	if (skb_ensure_writable(pkt->skb, nft_thoff(pkt) + tcphdr_len))
-+		goto drop;
-+
-+	opt = (u8 *)nft_tcp_header_pointer(pkt, sizeof(buff), buff, &tcphdr_len);
-+	if (!opt)
-+		goto err;
-+	for (i = sizeof(*tcph); i < tcphdr_len - 1; i += optl) {
-+		unsigned int j;
-+
-+		optl = optlen(opt, i);
-+		if (priv->type != opt[i])
-+			continue;
-+
-+		if (i + optl > tcphdr_len)
-+			goto drop;
-+
-+		for (j = 0; j < optl; ++j) {
-+			u16 n = TCPOPT_NOP;
-+			u16 o = opt[i+j];
-+
-+			if ((i + j) % 2 == 0) {
-+				o <<= 8;
-+				n <<= 8;
-+			}
-+			inet_proto_csum_replace2(&tcph->check, pkt->skb, htons(o),
-+						 htons(n), false);
-+		}
-+		memset(opt + i, TCPOPT_NOP, optl);
-+		return;
-+	}
-+
-+	/* option not found, continue. This allows to do multiple
-+	 * option removals per rule.
-+	 */
-+	return;
-+err:
-+	regs->verdict.code = NFT_BREAK;
-+	return;
-+drop:
-+	/* can't remove, no choice but to drop */
-+	regs->verdict.code = NF_DROP;
-+}
-+
- static void nft_exthdr_sctp_eval(const struct nft_expr *expr,
- 				 struct nft_regs *regs,
- 				 const struct nft_pktinfo *pkt)
-@@ -463,6 +520,28 @@ static int nft_exthdr_tcp_set_init(const struct nft_ctx *ctx,
- 				       priv->len);
- }
+-	DBG_RES("%s() size: %d pages_needed %d\n",
++	DBG_RES("%s() size: %zu pages_needed %d\n",
+ 			__func__, size, pages_needed);
  
-+static int nft_exthdr_tcp_strip_init(const struct nft_ctx *ctx,
-+				     const struct nft_expr *expr,
-+				     const struct nlattr * const tb[])
-+{
-+	struct nft_exthdr *priv = nft_expr_priv(expr);
-+
-+	if (tb[NFTA_EXTHDR_SREG] ||
-+	    tb[NFTA_EXTHDR_DREG] ||
-+	    tb[NFTA_EXTHDR_FLAGS] ||
-+	    tb[NFTA_EXTHDR_OFFSET] ||
-+	    tb[NFTA_EXTHDR_LEN])
-+		return -EINVAL;
-+
-+	if (!tb[NFTA_EXTHDR_TYPE])
-+		return -EINVAL;
-+
-+	priv->type = nla_get_u8(tb[NFTA_EXTHDR_TYPE]);
-+	priv->op = NFT_EXTHDR_OP_TCPOPT;
-+
-+	return 0;
-+}
-+
- static int nft_exthdr_ipv4_init(const struct nft_ctx *ctx,
- 				const struct nft_expr *expr,
- 				const struct nlattr * const tb[])
-@@ -523,6 +602,13 @@ static int nft_exthdr_dump_set(struct sk_buff *skb, const struct nft_expr *expr)
- 	return nft_exthdr_dump_common(skb, priv);
- }
+ 	/*
+@@ -435,7 +435,7 @@ ccio_free_range(struct ioc *ioc, dma_addr_t iova, unsigned long pages_mapped)
+ 	BUG_ON((pages_mapped * IOVP_SIZE) > DMA_CHUNK_SIZE);
+ 	BUG_ON(pages_mapped > BITS_PER_LONG);
  
-+static int nft_exthdr_dump_strip(struct sk_buff *skb, const struct nft_expr *expr)
-+{
-+	const struct nft_exthdr *priv = nft_expr_priv(expr);
-+
-+	return nft_exthdr_dump_common(skb, priv);
-+}
-+
- static const struct nft_expr_ops nft_exthdr_ipv6_ops = {
- 	.type		= &nft_exthdr_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_exthdr)),
-@@ -555,6 +641,14 @@ static const struct nft_expr_ops nft_exthdr_tcp_set_ops = {
- 	.dump		= nft_exthdr_dump_set,
- };
+-	DBG_RES("%s():  res_idx: %d pages_mapped %d\n", 
++	DBG_RES("%s():  res_idx: %d pages_mapped %lu\n",
+ 		__func__, res_idx, pages_mapped);
  
-+static const struct nft_expr_ops nft_exthdr_tcp_strip_ops = {
-+	.type		= &nft_exthdr_type,
-+	.size		= NFT_EXPR_SIZE(sizeof(struct nft_exthdr)),
-+	.eval		= nft_exthdr_tcp_strip_eval,
-+	.init		= nft_exthdr_tcp_strip_init,
-+	.dump		= nft_exthdr_dump_strip,
-+};
-+
- static const struct nft_expr_ops nft_exthdr_sctp_ops = {
- 	.type		= &nft_exthdr_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_exthdr)),
-@@ -582,7 +676,7 @@ nft_exthdr_select_ops(const struct nft_ctx *ctx,
- 			return &nft_exthdr_tcp_set_ops;
- 		if (tb[NFTA_EXTHDR_DREG])
- 			return &nft_exthdr_tcp_ops;
--		break;
-+		return &nft_exthdr_tcp_strip_ops;
- 	case NFT_EXTHDR_OP_IPV6:
- 		if (tb[NFTA_EXTHDR_DREG])
- 			return &nft_exthdr_ipv6_ops;
+ #ifdef CCIO_COLLECT_STATS
+@@ -551,7 +551,7 @@ static u32 hint_lookup[] = {
+  * index are bits 12:19 of the value returned by LCI.
+  */ 
+ static void
+-ccio_io_pdir_entry(u64 *pdir_ptr, space_t sid, unsigned long vba,
++ccio_io_pdir_entry(__le64 *pdir_ptr, space_t sid, unsigned long vba,
+ 		   unsigned long hints)
+ {
+ 	register unsigned long pa;
+@@ -727,7 +727,7 @@ ccio_map_single(struct device *dev, void *addr, size_t size,
+ 	unsigned long flags;
+ 	dma_addr_t iovp;
+ 	dma_addr_t offset;
+-	u64 *pdir_start;
++	__le64 *pdir_start;
+ 	unsigned long hint = hint_lookup[(int)direction];
+ 
+ 	BUG_ON(!dev);
+@@ -754,8 +754,8 @@ ccio_map_single(struct device *dev, void *addr, size_t size,
+ 
+ 	pdir_start = &(ioc->pdir_base[idx]);
+ 
+-	DBG_RUN("%s() 0x%p -> 0x%lx size: %0x%x\n",
+-		__func__, addr, (long)iovp | offset, size);
++	DBG_RUN("%s() %px -> %#lx size: %zu\n",
++		__func__, addr, (long)(iovp | offset), size);
+ 
+ 	/* If not cacheline aligned, force SAFE_DMA on the whole mess */
+ 	if((size % L1_CACHE_BYTES) || ((unsigned long)addr % L1_CACHE_BYTES))
+@@ -813,7 +813,7 @@ ccio_unmap_page(struct device *dev, dma_addr_t iova, size_t size,
+ 		return;
+ 	}
+ 
+-	DBG_RUN("%s() iovp 0x%lx/%x\n",
++	DBG_RUN("%s() iovp %#lx/%zx\n",
+ 		__func__, (long)iova, size);
+ 
+ 	iova ^= offset;        /* clear offset bits */
+@@ -1291,7 +1291,7 @@ ccio_ioc_init(struct ioc *ioc)
+ 			iova_space_size>>20,
+ 			iov_order + PAGE_SHIFT);
+ 
+-	ioc->pdir_base = (u64 *)__get_free_pages(GFP_KERNEL, 
++	ioc->pdir_base = (__le64 *)__get_free_pages(GFP_KERNEL,
+ 						 get_order(ioc->pdir_size));
+ 	if(NULL == ioc->pdir_base) {
+ 		panic("%s() could not allocate I/O Page Table\n", __func__);
+diff --git a/drivers/parisc/iommu-helpers.h b/drivers/parisc/iommu-helpers.h
+index a00c38b6224ab..c43f1a212a5c8 100644
+--- a/drivers/parisc/iommu-helpers.h
++++ b/drivers/parisc/iommu-helpers.h
+@@ -31,8 +31,8 @@ iommu_fill_pdir(struct ioc *ioc, struct scatterlist *startsg, int nents,
+ 		unsigned long vaddr;
+ 		long size;
+ 
+-		DBG_RUN_SG(" %d : %08lx/%05x %p/%05x\n", nents,
+-			   (unsigned long)sg_dma_address(startsg), cnt,
++		DBG_RUN_SG(" %d : %08lx %p/%05x\n", nents,
++			   (unsigned long)sg_dma_address(startsg),
+ 			   sg_virt(startsg), startsg->length
+ 		);
+ 
 -- 
 2.40.1
 
