@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E9827B8888
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28B407B877B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:05:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244077AbjJDSRA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:17:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44260 "EHLO
+        id S243801AbjJDSFv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:05:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244189AbjJDSQm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:16:42 -0400
+        with ESMTP id S243438AbjJDSFv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:05:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABC629E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:16:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AD1C433C8;
-        Wed,  4 Oct 2023 18:16:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E76F9C4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A66FC433C7;
+        Wed,  4 Oct 2023 18:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443398;
-        bh=WdAkV3U2UUtblSRX0mCVxFEu482nLqvJx1D3hqRZ2SU=;
+        s=korg; t=1696442747;
+        bh=Wxa5SbyvzM4aqoIrT+W4jk1eoX8DEEtGSlO6Q+ZkzI8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mdv0oAgLVk+xkCPmUW1VMoFd4Fq4iPsYGiYnr5EB1Ui17FSBQLd5cb51CWvd5pZ+i
-         WUQOn3+QI7PLMDkpft1dHIAfULbW/hTv7U2CJuV/TUbsub/jEusENasi2k5U2ALsAy
-         srAIvIAvXYOgp/qC8sTG25DQV1KakCuf2xG6r67k=
+        b=oM3R8YGICpvURm0IOWGQlmPWkNLw1NFSVSLudN+VCWNb/I/vir4PapJSExTi4tPWt
+         VdaUw+Bhk0ZPOzGfrjUzZRcAO9ArgERkzix9mrPTP4HY6bHAamYPHiHgRGbwZULIvH
+         e2rN1pz7fBhNyRwqv366S6oBgdJRAHz+/qeHJcv0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/259] power: supply: ucs1002: fix error code in ucs1002_get_property()
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 067/183] Fix up backport of 136191703038 ("interconnect: Teach lockdep about icc_bw_lock order")
 Date:   Wed,  4 Oct 2023 19:54:58 +0200
-Message-ID: <20231004175223.095789196@linuxfoundation.org>
+Message-ID: <20231004175206.667866923@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +48,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+Add a missing include to fix the following build error:
 
-[ Upstream commit e35059949daa83f8dadf710d0f829ab3c3a72fe2 ]
+drivers/interconnect/core.c: In function 'icc_init':
+drivers/interconnect/core.c:1148:9: error: implicit declaration of function 'fs_reclaim_acquire' [-Werror=implicit-function-declaration]
+ 1148 |         fs_reclaim_acquire(GFP_KERNEL);
+      |         ^~~~~~~~~~~~~~~~~~
+drivers/interconnect/core.c:1150:9: error: implicit declaration of function 'fs_reclaim_release' [-Werror=implicit-function-declaration]
+ 1150 |         fs_reclaim_release(GFP_KERNEL);
+      |         ^~~~~~~~~~~~~~~~~~
 
-This function is supposed to return 0 for success instead of returning
-the val->intval.  This makes it the same as the other case statements
-in this function.
-
-Fixes: 81196e2e57fc ("power: supply: ucs1002: fix some health status issues")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/687f64a4-4c6e-4536-8204-98ad1df934e5@moroto.mountain
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/ucs1002_power.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/interconnect/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/supply/ucs1002_power.c b/drivers/power/supply/ucs1002_power.c
-index ef673ec3db568..332cb50d9fb4f 100644
---- a/drivers/power/supply/ucs1002_power.c
-+++ b/drivers/power/supply/ucs1002_power.c
-@@ -384,7 +384,8 @@ static int ucs1002_get_property(struct power_supply *psy,
- 	case POWER_SUPPLY_PROP_USB_TYPE:
- 		return ucs1002_get_usb_type(info, val);
- 	case POWER_SUPPLY_PROP_HEALTH:
--		return val->intval = info->health;
-+		val->intval = info->health;
-+		return 0;
- 	case POWER_SUPPLY_PROP_PRESENT:
- 		val->intval = info->present;
- 		return 0;
+diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
+index ab654b33f5d24..b7c41bd7409cd 100644
+--- a/drivers/interconnect/core.c
++++ b/drivers/interconnect/core.c
+@@ -13,6 +13,7 @@
+ #include <linux/interconnect.h>
+ #include <linux/interconnect-provider.h>
+ #include <linux/list.h>
++#include <linux/sched/mm.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/slab.h>
 -- 
 2.40.1
 
