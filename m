@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 059AD7B877F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 836307B8A1B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243809AbjJDSGE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:06:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37334 "EHLO
+        id S244354AbjJDScU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:32:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243806AbjJDSGD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:03 -0400
+        with ESMTP id S244352AbjJDScU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72FE6C6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D32C433C9;
-        Wed,  4 Oct 2023 18:05:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90B28AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F30C433C8;
+        Wed,  4 Oct 2023 18:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442759;
-        bh=F9MeQ5wPI6YaUGhfdMkqT8ed0MhcZa4LnPKss0EFKIU=;
+        s=korg; t=1696444335;
+        bh=qwSHBLVHGysUxDFLdkdtnFAjEqOOitIJ9SqcAcnW7Zc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X+sBwctqyPuR5qcwpSObRhjTdBSm93pn80mLgzG+WL5BfBXQSHvcPnQyVcpsy8+eM
-         UzyXaG9pFhGk2slN5mLwP7Y9fGzewz6oCplhjWFU0G+VfCWaP9ukm8MQtLOOh7turX
-         UdQ4Utkvcj6WKBaU1V4d2+wWXTUfWl5MMgNohmPc=
+        b=YUeXtg66jQ9icJgEp9jicF5u402+rrN1Bu+OjCWWqJdYiQlIAqtQ8t8Kz/lMCWQMN
+         Iuxpeo5TVa5lKnifX7X+RnT/uYgeZHpYeR4u5kcrJl7uZPGBFWEgC85figs6A6YmwM
+         YR2XyV36JzWHHAs4fnWCUtQkyRTzKV6gmTKrumIM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Julia Lawall <Julia.Lawall@inria.fr>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 099/183] ARM: dts: ti: omap: motorola-mapphone: Fix abe_clkctrl warning on boot
+Subject: [PATCH 6.5 185/321] thermal/of: add missing of_node_put()
 Date:   Wed,  4 Oct 2023 19:55:30 +0200
-Message-ID: <20231004175208.028225546@linuxfoundation.org>
+Message-ID: <20231004175237.816635201@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,57 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Julia Lawall <Julia.Lawall@inria.fr>
 
-[ Upstream commit ac08bda1569b06b7a62c7b4dd00d4c3b28ceaaec ]
+[ Upstream commit 8a81cf96f5510aaf9a65d103f7405079a7b0fcc5 ]
 
-Commit 0840242e8875 ("ARM: dts: Configure clock parent for pwm vibra")
-attempted to fix the PWM settings but ended up causin an additional clock
-reparenting error:
+for_each_child_of_node performs an of_node_get on each
+iteration, so a break out of the loop requires an
+of_node_put.
 
-clk: failed to reparent abe-clkctrl:0060:24 to sys_clkin_ck: -22
+This was done using the Coccinelle semantic patch
+iterators/for_each_child.cocci
 
-Only timer9 is in the PER domain and can use the sys_clkin_ck clock source.
-For timer8, the there is no sys_clkin_ck available as it's in the ABE
-domain, instead it should use syc_clk_div_ck. However, for power
-management, we want to use the always on sys_32k_ck instead.
-
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Carl Philipp Klemm <philipp@uvos.xyz>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Fixes: 0840242e8875 ("ARM: dts: Configure clock parent for pwm vibra")
-Depends-on: 61978617e905 ("ARM: dts: Add minimal support for Droid Bionic xt875")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/motorola-mapphone-common.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/thermal/thermal_of.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-index a4423ff0df392..67c68c61ae029 100644
---- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-+++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-@@ -614,12 +614,12 @@
- /* Configure pwm clock source for timers 8 & 9 */
- &timer8 {
- 	assigned-clocks = <&abe_clkctrl OMAP4_TIMER8_CLKCTRL 24>;
--	assigned-clock-parents = <&sys_clkin_ck>;
-+	assigned-clock-parents = <&sys_32k_ck>;
- };
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 22272f9c5934a..e615f735f4c03 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -38,8 +38,10 @@ static int of_find_trip_id(struct device_node *np, struct device_node *trip)
+ 	 */
+ 	for_each_child_of_node(trips, t) {
  
- &timer9 {
- 	assigned-clocks = <&l4_per_clkctrl OMAP4_TIMER9_CLKCTRL 24>;
--	assigned-clock-parents = <&sys_clkin_ck>;
-+	assigned-clock-parents = <&sys_32k_ck>;
- };
+-		if (t == trip)
++		if (t == trip) {
++			of_node_put(t);
+ 			goto out;
++		}
+ 		i++;
+ 	}
  
- /*
+@@ -402,8 +404,10 @@ static int thermal_of_for_each_cooling_maps(struct thermal_zone_device *tz,
+ 
+ 	for_each_child_of_node(cm_np, child) {
+ 		ret = thermal_of_for_each_cooling_device(tz_np, child, tz, cdev, action);
+-		if (ret)
++		if (ret) {
++			of_node_put(child);
+ 			break;
++		}
+ 	}
+ 
+ 	of_node_put(cm_np);
 -- 
 2.40.1
 
