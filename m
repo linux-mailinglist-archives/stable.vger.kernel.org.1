@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84B1F7B87AC
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D53D17B88C6
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243844AbjJDSIF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:08:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38974 "EHLO
+        id S233840AbjJDSTY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:19:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243846AbjJDSIE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:04 -0400
+        with ESMTP id S233867AbjJDSTX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:19:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E915AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5791C433C9;
-        Wed,  4 Oct 2023 18:07:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D41BD7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:19:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512AAC433CD;
+        Wed,  4 Oct 2023 18:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442880;
-        bh=ahFKAMbBnWnhjcWlMjGMPYxt6W0q863tdKG8LZhSI1Q=;
+        s=korg; t=1696443559;
+        bh=ZDTKGticWc3y6XrZC3qNqITGVf8DAOzA3IC5e+pMQnI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jB0aQ8g47OOnVeyZZHNSc7IYS0OwjBP9NKYtQi63oglOjr4t+21JvhKUa7FEHKDqK
-         Hdz3aDvLU+VERjDG5DohS2MtHwPwL8wBIrMoe32E9YFE/JVNhfQzkvaIseSycLoMY+
-         KUpHRpWFd4aaHgDWBnd8T2SRKHdwv2nseRx8TYrw=
+        b=zL97vv2M+QD0Q3CpppAJqsx6HUZI0+6IDIrhl2NMFGjQ+SX9h/6XdHqC80yiF1Zfv
+         XqRFQSwNc9C7LIOAnkUdq56ZVijBBQePmmuSYVV6VXZEtBNBbMvyWlR4iYTBdGD8fn
+         +8RZmur9HZms/BBxlGSGUl94vIb1J6ejTIQvLieY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/183] fbdev/sh7760fb: Depend on FB=y
-Date:   Wed,  4 Oct 2023 19:56:12 +0200
-Message-ID: <20231004175209.890861978@linuxfoundation.org>
+Subject: [PATCH 6.1 200/259] nvme-pci: factor the iod mempool creation into a helper
+Date:   Wed,  4 Oct 2023 19:56:13 +0200
+Message-ID: <20231004175226.458499850@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +52,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit f75f71b2c418a27a7c05139bb27a0c83adf88d19 ]
+[ Upstream commit 081a7d958ce4b65f9aab6e70e65b0b2e0b92297c ]
 
-Fix linker error if FB=m about missing fb_io_read and fb_io_write. The
-linker's error message suggests that this config setting has already
-been broken for other symbols.
+Add a helper to create the iod mempool.
 
-  All errors (new ones prefixed by >>):
-
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_probe':
-     sh7760fb.c:(.text+0x374): undefined reference to `framebuffer_alloc'
-     sh4-linux-ld: sh7760fb.c:(.text+0x394): undefined reference to `fb_videomode_to_var'
-     sh4-linux-ld: sh7760fb.c:(.text+0x39c): undefined reference to `fb_alloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x3a4): undefined reference to `register_framebuffer'
-     sh4-linux-ld: sh7760fb.c:(.text+0x3ac): undefined reference to `fb_dealloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x434): undefined reference to `framebuffer_release'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_remove':
-     sh7760fb.c:(.text+0x800): undefined reference to `unregister_framebuffer'
-     sh4-linux-ld: sh7760fb.c:(.text+0x804): undefined reference to `fb_dealloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x814): undefined reference to `framebuffer_release'
-  >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0xc): undefined reference to `fb_io_read'
-  >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x10): undefined reference to `fb_io_write'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x2c): undefined reference to `cfb_fillrect'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x30): undefined reference to `cfb_copyarea'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x34): undefined reference to `cfb_imageblit'
-
-Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309130632.LS04CPWu-lkp@intel.com/
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230918090400.13264-1-tzimmermann@suse.de
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Tested-by Gerd Bayer <gbayer@linxu.ibm.com>
+Stable-dep-of: dad651b2a44e ("nvme-pci: do not set the NUMA node of device if it has none")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 41 ++++++++++++++++++-----------------------
+ 1 file changed, 18 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 26531aa194282..662524574cc33 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -2017,7 +2017,7 @@ config FB_COBALT
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index b30269f5e68fb..6ab532ca77223 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -392,14 +392,6 @@ static int nvme_pci_npages_sgl(void)
+ 			NVME_CTRL_PAGE_SIZE);
+ }
  
- config FB_SH7760
- 	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
--	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
-+	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
- 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
+-static size_t nvme_pci_iod_alloc_size(void)
+-{
+-	size_t npages = max(nvme_pci_npages_prp(), nvme_pci_npages_sgl());
+-
+-	return sizeof(__le64 *) * npages +
+-		sizeof(struct scatterlist) * NVME_MAX_SEGS;
+-}
+-
+ static int nvme_admin_init_hctx(struct blk_mq_hw_ctx *hctx, void *data,
+ 				unsigned int hctx_idx)
+ {
+@@ -2775,6 +2767,22 @@ static void nvme_release_prp_pools(struct nvme_dev *dev)
+ 	dma_pool_destroy(dev->prp_small_pool);
+ }
+ 
++static int nvme_pci_alloc_iod_mempool(struct nvme_dev *dev)
++{
++	size_t npages = max(nvme_pci_npages_prp(), nvme_pci_npages_sgl());
++	size_t alloc_size = sizeof(__le64 *) * npages +
++			    sizeof(struct scatterlist) * NVME_MAX_SEGS;
++
++	WARN_ON_ONCE(alloc_size > PAGE_SIZE);
++	dev->iod_mempool = mempool_create_node(1,
++			mempool_kmalloc, mempool_kfree,
++			(void *)alloc_size, GFP_KERNEL,
++			dev_to_node(dev->dev));
++	if (!dev->iod_mempool)
++		return -ENOMEM;
++	return 0;
++}
++
+ static void nvme_free_tagset(struct nvme_dev *dev)
+ {
+ 	if (dev->tagset.tags)
+@@ -3103,7 +3111,6 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	int node, result = -ENOMEM;
+ 	struct nvme_dev *dev;
+ 	unsigned long quirks = id->driver_data;
+-	size_t alloc_size;
+ 
+ 	node = dev_to_node(&pdev->dev);
+ 	if (node == NUMA_NO_NODE)
+@@ -3148,21 +3155,9 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		quirks |= NVME_QUIRK_SIMPLE_SUSPEND;
+ 	}
+ 
+-	/*
+-	 * Double check that our mempool alloc size will cover the biggest
+-	 * command we support.
+-	 */
+-	alloc_size = nvme_pci_iod_alloc_size();
+-	WARN_ON_ONCE(alloc_size > PAGE_SIZE);
+-
+-	dev->iod_mempool = mempool_create_node(1, mempool_kmalloc,
+-						mempool_kfree,
+-						(void *) alloc_size,
+-						GFP_KERNEL, node);
+-	if (!dev->iod_mempool) {
+-		result = -ENOMEM;
++	result = nvme_pci_alloc_iod_mempool(dev);
++	if (result)
+ 		goto release_pools;
+-	}
+ 
+ 	result = nvme_init_ctrl(&dev->ctrl, &pdev->dev, &nvme_pci_ctrl_ops,
+ 			quirks);
 -- 
 2.40.1
 
