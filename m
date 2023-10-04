@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40C6A7B8A5B
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2907B87D3
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:09:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244412AbjJDSeo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:34:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35406 "EHLO
+        id S243696AbjJDSJs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:09:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244410AbjJDSen (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:43 -0400
+        with ESMTP id S243712AbjJDSJr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2746AAD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B59C433C8;
-        Wed,  4 Oct 2023 18:34:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04C109E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263D8C433C8;
+        Wed,  4 Oct 2023 18:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444478;
-        bh=0hpJRq37mFizU9hvXjY+c7manlIZOFv/DcxLgBkexP8=;
+        s=korg; t=1696442983;
+        bh=2dc9BfQxysgXaVkb5hF2ssBpSxx26rz+lTS8xtmB72o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HYO1rQcBFYga58v+EAuQe/hjqU33T1vd8erAixvhTOQWSwdNj41IyEYT01HkZfG6x
-         pKkWZmmJ+0yLP5WyMFT0VM8eHSSfPVp0NbCI01fsypK84OEGyMYRBIXhShiUxPILEK
-         MNiCFLXk6AaBqC90lb3q67zjP5xnml8t5tA/HQ0k=
+        b=XbCvLk74YxMXldrY3YfCZWpgz+p4ZrvWEZm8MlzzBFnuPFZiMWHCXY/rhbiy3rKHY
+         40j+6+dcUcM+JrMzYKOAswWESfDvUysMzGOubcMTGmL5MVPzrIol/3LOO/6DxyRRVF
+         PyDBFGmFTB4eHYUhKDA+VG7iO220pjLMHrp/36rY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
         Hannes Reinecke <hare@suse.de>,
         Niklas Cassel <niklas.cassel@wdc.com>,
+        "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        John Garry <john.g.garry@oracle.com>
-Subject: [PATCH 6.5 264/321] ata: libata-scsi: link ata port and scsi device
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 178/183] ata: libata-core: Fix port and device removal
 Date:   Wed,  4 Oct 2023 19:56:49 +0200
-Message-ID: <20231004175241.495357643@linuxfoundation.org>
+Message-ID: <20231004175211.543009390@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,133 +53,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Damien Le Moal <dlemoal@kernel.org>
 
-commit fb99ef17865035a6657786d4b2af11a27ba23f9b upstream.
+commit 84d76529c650f887f1e18caee72d6f0589e1baf9 upstream.
 
-There is no direct device ancestry defined between an ata_device and
-its scsi device which prevents the power management code from correctly
-ordering suspend and resume operations. Create such ancestry with the
-ata device as the parent to ensure that the scsi device (child) is
-suspended before the ata device and that resume handles the ata device
-before the scsi device.
+Whenever an ATA adapter driver is removed (e.g. rmmod),
+ata_port_detach() is called repeatedly for all the adapter ports to
+remove (unload) the devices attached to the port and delete the port
+device itself. Removing of devices is done using libata EH with the
+ATA_PFLAG_UNLOADING port flag set. This causes libata EH to execute
+ata_eh_unload() which disables all devices attached to the port.
 
-The parent-child (supplier-consumer) relationship is established between
-the ata_port (parent) and the scsi device (child) with the function
-device_add_link(). The parent used is not the ata_device as the PM
-operations are defined per port and the status of all devices connected
-through that port is controlled from the port operations.
+ata_port_detach() finishes by calling scsi_remove_host() to remove the
+scsi host associated with the port. This function will trigger the
+removal of all scsi devices attached to the host and in the case of
+disks, calls to sd_shutdown() which will flush the device write cache
+and stop the device. However, given that the devices were already
+disabled by ata_eh_unload(), the synchronize write cache command and
+start stop unit commands fail. E.g. running "rmmod ahci" with first
+removing sd_mod results in error messages like:
 
-The device link is established with the new function
-ata_scsi_slave_alloc(), and this function is used to define the
-->slave_alloc callback of the scsi host template of all ata drivers.
+ata13.00: disable device
+sd 0:0:0:0: [sda] Synchronizing SCSI cache
+sd 0:0:0:0: [sda] Synchronize Cache(10) failed: Result: hostbyte=DID_BAD_TARGET driverbyte=DRIVER_OK
+sd 0:0:0:0: [sda] Stopping disk
+sd 0:0:0:0: [sda] Start/Stop Unit failed: Result: hostbyte=DID_BAD_TARGET driverbyte=DRIVER_OK
 
-Fixes: a19a93e4c6a9 ("scsi: core: pm: Rely on the device driver core for async power management")
+Fix this by removing all scsi devices of the ata devices connected to
+the port before scheduling libata EH to disable the ATA devices.
+
+Fixes: 720ba12620ee ("[PATCH] libata-hp: update unload-unplug")
 Cc: stable@vger.kernel.org
 Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |   45 ++++++++++++++++++++++++++++++++++++++++-----
- include/linux/libata.h    |    2 ++
- 2 files changed, 42 insertions(+), 5 deletions(-)
+ drivers/ata/libata-core.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1140,6 +1140,42 @@ int ata_scsi_dev_config(struct scsi_devi
- }
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5940,11 +5940,30 @@ static void ata_port_detach(struct ata_p
+ 	if (!ap->ops->error_handler)
+ 		goto skip_eh;
  
- /**
-+ *	ata_scsi_slave_alloc - Early setup of SCSI device
-+ *	@sdev: SCSI device to examine
-+ *
-+ *	This is called from scsi_alloc_sdev() when the scsi device
-+ *	associated with an ATA device is scanned on a port.
-+ *
-+ *	LOCKING:
-+ *	Defined by SCSI layer.  We don't really care.
-+ */
+-	/* tell EH we're leaving & flush EH */
++	/* Wait for any ongoing EH */
++	ata_port_wait_eh(ap);
 +
-+int ata_scsi_slave_alloc(struct scsi_device *sdev)
-+{
-+	struct ata_port *ap = ata_shost_to_port(sdev->host);
-+	struct device_link *link;
++	mutex_lock(&ap->scsi_scan_mutex);
+ 	spin_lock_irqsave(ap->lock, flags);
 +
-+	ata_scsi_sdev_config(sdev);
-+
-+	/*
-+	 * Create a link from the ata_port device to the scsi device to ensure
-+	 * that PM does suspend/resume in the correct order: the scsi device is
-+	 * consumer (child) and the ata port the supplier (parent).
-+	 */
-+	link = device_link_add(&sdev->sdev_gendev, &ap->tdev,
-+			       DL_FLAG_STATELESS |
-+			       DL_FLAG_PM_RUNTIME | DL_FLAG_RPM_ACTIVE);
-+	if (!link) {
-+		ata_port_err(ap, "Failed to create link to scsi device %s\n",
-+			     dev_name(&sdev->sdev_gendev));
-+		return -ENODEV;
++	/* Remove scsi devices */
++	ata_for_each_link(link, ap, HOST_FIRST) {
++		ata_for_each_dev(dev, link, ALL) {
++			if (dev->sdev) {
++				spin_unlock_irqrestore(ap->lock, flags);
++				scsi_remove_device(dev->sdev);
++				spin_lock_irqsave(ap->lock, flags);
++				dev->sdev = NULL;
++			}
++		}
 +	}
 +
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(ata_scsi_slave_alloc);
++	/* Tell EH to disable all devices */
+ 	ap->pflags |= ATA_PFLAG_UNLOADING;
+ 	ata_port_schedule_eh(ap);
 +
-+/**
-  *	ata_scsi_slave_config - Set SCSI device attributes
-  *	@sdev: SCSI device to examine
-  *
-@@ -1155,14 +1191,11 @@ int ata_scsi_slave_config(struct scsi_de
- {
- 	struct ata_port *ap = ata_shost_to_port(sdev->host);
- 	struct ata_device *dev = __ata_scsi_find_dev(ap, sdev);
--	int rc = 0;
--
--	ata_scsi_sdev_config(sdev);
+ 	spin_unlock_irqrestore(ap->lock, flags);
++	mutex_unlock(&ap->scsi_scan_mutex);
  
- 	if (dev)
--		rc = ata_scsi_dev_config(sdev, dev);
-+		return ata_scsi_dev_config(sdev, dev);
- 
--	return rc;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(ata_scsi_slave_config);
- 
-@@ -1189,6 +1222,8 @@ void ata_scsi_slave_destroy(struct scsi_
- 	if (!ap->ops->error_handler)
- 		return;
- 
-+	device_link_remove(&sdev->sdev_gendev, &ap->tdev);
-+
- 	spin_lock_irqsave(ap->lock, flags);
- 	dev = __ata_scsi_find_dev(ap, sdev);
- 	if (dev && dev->sdev) {
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1155,6 +1155,7 @@ extern int ata_std_bios_param(struct scs
- 			      struct block_device *bdev,
- 			      sector_t capacity, int geom[]);
- extern void ata_scsi_unlock_native_capacity(struct scsi_device *sdev);
-+extern int ata_scsi_slave_alloc(struct scsi_device *sdev);
- extern int ata_scsi_slave_config(struct scsi_device *sdev);
- extern void ata_scsi_slave_destroy(struct scsi_device *sdev);
- extern int ata_scsi_change_queue_depth(struct scsi_device *sdev,
-@@ -1408,6 +1409,7 @@ extern const struct attribute_group *ata
- 	.this_id		= ATA_SHT_THIS_ID,		\
- 	.emulated		= ATA_SHT_EMULATED,		\
- 	.proc_name		= drv_name,			\
-+	.slave_alloc		= ata_scsi_slave_alloc,		\
- 	.slave_destroy		= ata_scsi_slave_destroy,	\
- 	.bios_param		= ata_std_bios_param,		\
- 	.unlock_native_capacity	= ata_scsi_unlock_native_capacity,\
+ 	/* wait till EH commits suicide */
+ 	ata_port_wait_eh(ap);
 
 
