@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 814CB7B87D7
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F2F67B88D8
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243712AbjJDSJ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:09:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56658 "EHLO
+        id S233933AbjJDSUH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243903AbjJDSJ6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:58 -0400
+        with ESMTP id S243886AbjJDSUG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D279AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B400CC433C7;
-        Wed,  4 Oct 2023 18:09:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E9779E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6602FC433C7;
+        Wed,  4 Oct 2023 18:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442995;
-        bh=zedJOkiiA7flxCobHuo5BJ+4uwRVRNtdU9vY/DtzoZY=;
+        s=korg; t=1696443602;
+        bh=4S32jdxQm18dphcujgKTN6UYbeEiQl+5Uf4ChwgpaSs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tYtR+2QE7FKbjP+Sv3StRjGzvsO4OzNFgpDwvqa8EQfO+uGceF4y3uJyUTo+rbQ3a
-         PS6c5VkbegBHhGycK8XKD5KfTz3jmqYTdmwL5KvFpUmWgwfXL3LZnWo9tvpupaWjis
-         gPKQX1VGe2OVRtUbhwIpUJNfeOlCOmtJlTXn7pVI=
+        b=oZ8Hal//pUYns+M6rwIFD39l13FSSQLirb1tyWnA8Lcu9Li5hpasfCcGW+cEIxy/h
+         VTywwBna1jcyrzbsvCWxKShSWEJTw/GI5PSghHEpFxJbDnOU0UmVtBrraV8urEzoRG
+         UYRepSUxTpk8bs+3A8AOub8IxgL5cENyhsherrFo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 155/183] smack: Retrieve transmuting information in smack_inode_getsecurity()
-Date:   Wed,  4 Oct 2023 19:56:26 +0200
-Message-ID: <20231004175210.517599742@linuxfoundation.org>
+        patches@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.1 214/259] KVM: x86/mmu: Do not filter address spaces in for_each_tdp_mmu_root_yield_safe()
+Date:   Wed,  4 Oct 2023 19:56:27 +0200
+Message-ID: <20231004175227.135993273@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,76 +48,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-[ Upstream commit 3a3d8fce31a49363cc31880dce5e3b0617c9c38b ]
+commit 441a5dfcd96854cbcb625709e2694a9c60adfaab upstream.
 
-Enhance smack_inode_getsecurity() to retrieve the value for
-SMACK64TRANSMUTE from the inode security blob, similarly to SMACK64.
+All callers except the MMU notifier want to process all address spaces.
+Remove the address space ID argument of for_each_tdp_mmu_root_yield_safe()
+and switch the MMU notifier to use __for_each_tdp_mmu_root_yield_safe().
 
-This helps to display accurate values in the situation where the security
-labels come from mount options and not from xattrs.
+Extracted out of a patch by Sean Christopherson <seanjc@google.com>
 
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/smack/smack_lsm.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ arch/x86/kvm/mmu/mmu.c     |    8 ++------
+ arch/x86/kvm/mmu/tdp_mmu.c |   22 +++++++++++-----------
+ arch/x86/kvm/mmu/tdp_mmu.h |    3 +--
+ 3 files changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 84df97d0d3c58..f8c40c49d860c 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -1429,10 +1429,19 @@ static int smack_inode_getsecurity(struct user_namespace *mnt_userns,
- 	struct super_block *sbp;
- 	struct inode *ip = (struct inode *)inode;
- 	struct smack_known *isp;
-+	struct inode_smack *ispp;
-+	size_t label_len;
-+	char *label = NULL;
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -6079,7 +6079,6 @@ static bool kvm_rmap_zap_gfn_range(struc
+ void kvm_zap_gfn_range(struct kvm *kvm, gfn_t gfn_start, gfn_t gfn_end)
+ {
+ 	bool flush;
+-	int i;
  
--	if (strcmp(name, XATTR_SMACK_SUFFIX) == 0)
-+	if (strcmp(name, XATTR_SMACK_SUFFIX) == 0) {
- 		isp = smk_of_inode(inode);
--	else {
-+	} else if (strcmp(name, XATTR_SMACK_TRANSMUTE) == 0) {
-+		ispp = smack_inode(inode);
-+		if (ispp->smk_flags & SMK_INODE_TRANSMUTE)
-+			label = TRANS_TRUE;
-+		else
-+			label = "";
-+	} else {
- 		/*
- 		 * The rest of the Smack xattrs are only on sockets.
- 		 */
-@@ -1454,13 +1463,18 @@ static int smack_inode_getsecurity(struct user_namespace *mnt_userns,
- 			return -EOPNOTSUPP;
- 	}
+ 	if (WARN_ON_ONCE(gfn_end <= gfn_start))
+ 		return;
+@@ -6090,11 +6089,8 @@ void kvm_zap_gfn_range(struct kvm *kvm,
  
-+	if (!label)
-+		label = isp->smk_known;
-+
-+	label_len = strlen(label);
-+
- 	if (alloc) {
--		*buffer = kstrdup(isp->smk_known, GFP_KERNEL);
-+		*buffer = kstrdup(label, GFP_KERNEL);
- 		if (*buffer == NULL)
- 			return -ENOMEM;
- 	}
+ 	flush = kvm_rmap_zap_gfn_range(kvm, gfn_start, gfn_end);
  
--	return strlen(isp->smk_known);
-+	return label_len;
+-	if (is_tdp_mmu_enabled(kvm)) {
+-		for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++)
+-			flush = kvm_tdp_mmu_zap_leafs(kvm, i, gfn_start,
+-						      gfn_end, flush);
+-	}
++	if (is_tdp_mmu_enabled(kvm))
++		flush = kvm_tdp_mmu_zap_leafs(kvm, gfn_start, gfn_end, flush);
+ 
+ 	if (flush)
+ 		kvm_flush_remote_tlbs_with_address(kvm, gfn_start,
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -222,8 +222,12 @@ static struct kvm_mmu_page *tdp_mmu_next
+ #define for_each_valid_tdp_mmu_root_yield_safe(_kvm, _root, _as_id, _shared)	\
+ 	__for_each_tdp_mmu_root_yield_safe(_kvm, _root, _as_id, _shared, true)
+ 
+-#define for_each_tdp_mmu_root_yield_safe(_kvm, _root, _as_id)			\
+-	__for_each_tdp_mmu_root_yield_safe(_kvm, _root, _as_id, false, false)
++#define for_each_tdp_mmu_root_yield_safe(_kvm, _root)			\
++	for (_root = tdp_mmu_next_root(_kvm, NULL, false, false);		\
++	     _root;								\
++	     _root = tdp_mmu_next_root(_kvm, _root, false, false))		\
++		if (!kvm_lockdep_assert_mmu_lock_held(_kvm, false)) {		\
++		} else
+ 
+ /*
+  * Iterate over all TDP MMU roots.  Requires that mmu_lock be held for write,
+@@ -955,12 +959,11 @@ static bool tdp_mmu_zap_leafs(struct kvm
+  * true if a TLB flush is needed before releasing the MMU lock, i.e. if one or
+  * more SPTEs were zapped since the MMU lock was last acquired.
+  */
+-bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, int as_id, gfn_t start, gfn_t end,
+-			   bool flush)
++bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, gfn_t start, gfn_t end, bool flush)
+ {
+ 	struct kvm_mmu_page *root;
+ 
+-	for_each_tdp_mmu_root_yield_safe(kvm, root, as_id)
++	for_each_tdp_mmu_root_yield_safe(kvm, root)
+ 		flush = tdp_mmu_zap_leafs(kvm, root, start, end, true, flush);
+ 
+ 	return flush;
+@@ -969,7 +972,6 @@ bool kvm_tdp_mmu_zap_leafs(struct kvm *k
+ void kvm_tdp_mmu_zap_all(struct kvm *kvm)
+ {
+ 	struct kvm_mmu_page *root;
+-	int i;
+ 
+ 	/*
+ 	 * Zap all roots, including invalid roots, as all SPTEs must be dropped
+@@ -983,10 +985,8 @@ void kvm_tdp_mmu_zap_all(struct kvm *kvm
+ 	 * is being destroyed or the userspace VMM has exited.  In both cases,
+ 	 * KVM_RUN is unreachable, i.e. no vCPUs will ever service the request.
+ 	 */
+-	for (i = 0; i < KVM_ADDRESS_SPACE_NUM; i++) {
+-		for_each_tdp_mmu_root_yield_safe(kvm, root, i)
+-			tdp_mmu_zap_root(kvm, root, false);
+-	}
++	for_each_tdp_mmu_root_yield_safe(kvm, root)
++		tdp_mmu_zap_root(kvm, root, false);
  }
  
+ /*
+@@ -1223,7 +1223,7 @@ bool kvm_tdp_mmu_unmap_gfn_range(struct
+ {
+ 	struct kvm_mmu_page *root;
  
--- 
-2.40.1
-
+-	for_each_tdp_mmu_root_yield_safe(kvm, root, range->slot->as_id)
++	__for_each_tdp_mmu_root_yield_safe(kvm, root, range->slot->as_id, false, false)
+ 		flush = tdp_mmu_zap_leafs(kvm, root, range->start, range->end,
+ 					  range->may_block, flush);
+ 
+--- a/arch/x86/kvm/mmu/tdp_mmu.h
++++ b/arch/x86/kvm/mmu/tdp_mmu.h
+@@ -15,8 +15,7 @@ __must_check static inline bool kvm_tdp_
+ void kvm_tdp_mmu_put_root(struct kvm *kvm, struct kvm_mmu_page *root,
+ 			  bool shared);
+ 
+-bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, int as_id, gfn_t start, gfn_t end,
+-			   bool flush);
++bool kvm_tdp_mmu_zap_leafs(struct kvm *kvm, gfn_t start, gfn_t end, bool flush);
+ bool kvm_tdp_mmu_zap_sp(struct kvm *kvm, struct kvm_mmu_page *sp);
+ void kvm_tdp_mmu_zap_all(struct kvm *kvm);
+ void kvm_tdp_mmu_invalidate_all_roots(struct kvm *kvm);
 
 
