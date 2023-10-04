@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DAC47B875C
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A14D97B885A
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243768AbjJDSE1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:04:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54620 "EHLO
+        id S244025AbjJDSPQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:15:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243774AbjJDSE1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:04:27 -0400
+        with ESMTP id S244024AbjJDSPP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCA20A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:04:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1049AC433C7;
-        Wed,  4 Oct 2023 18:04:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C3B0A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83370C433C8;
+        Wed,  4 Oct 2023 18:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442661;
-        bh=J7VIHOsunbwY00r2324pZt9jom+COaMKOQY7D1kiHuE=;
+        s=korg; t=1696443311;
+        bh=OFqpLlgQUQK0vxLrPghQbJpQtwDQ+NX7zP/cTc+v6eA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kLfR0USlFRMermd85V7mCf4kBoSZXeeRBw5eFtBLGpaOQmC561uAtmI+JX8TbJsYF
-         xz2KQXLXuXgjYBXxe7louT79kEKke0YhakzR0eOSfHnQyvSzNF4GbZuhFF4LvYsgXF
-         1KZD/s9kDgi/ca8axRFJaVnphjK8nmnCXhYUC+YY=
+        b=U/q31yZzUekYgFsOkAoQLbiHKggP12G3oylVokynN06LX6KRM67KY1aqyGa+iFocs
+         jfhWL4cpdFvHu87KC397vFXwHBRxXyOGvMf35IzL+Wj2++mx472ITnMnY0+u1zT1Me
+         K5BEdjclYp6Gf+FqPu2sx7K6Vsoct707ke+q10sE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 036/183] bpf: Avoid deadlock when using queue and stack maps from NMI
+Subject: [PATCH 6.1 094/259] ARM: dts: qcom: msm8974pro-castor: correct inverted X of touchscreen
 Date:   Wed,  4 Oct 2023 19:54:27 +0200
-Message-ID: <20231004175205.455250575@linuxfoundation.org>
+Message-ID: <20231004175221.654446728@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,78 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit a34a9f1a19afe9c60ca0ea61dfeee63a1c2baac8 ]
+[ Upstream commit 43db69268149049540b1d2bbe8a69e59d5cb43b6 ]
 
-Sysbot discovered that the queue and stack maps can deadlock if they are
-being used from a BPF program that can be called from NMI context (such as
-one that is attached to a perf HW counter event). To fix this, add an
-in_nmi() check and use raw_spin_trylock() in NMI context, erroring out if
-grabbing the lock fails.
+There is no syna,f11-flip-x property, so assume intention was to use
+touchscreen-inverted-x.
 
-Fixes: f1a2e44a3aec ("bpf: add queue and stack maps")
-Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Tested-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Co-developed-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://lore.kernel.org/r/20230911132815.717240-1-toke@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: ab80661883de ("ARM: dts: qcom: msm8974: Add Sony Xperia Z2 Tablet")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230720115335.137354-4-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/queue_stack_maps.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ .../arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/queue_stack_maps.c b/kernel/bpf/queue_stack_maps.c
-index f9c734aaa9902..ef95b796a0fa3 100644
---- a/kernel/bpf/queue_stack_maps.c
-+++ b/kernel/bpf/queue_stack_maps.c
-@@ -103,7 +103,12 @@ static int __queue_map_get(struct bpf_map *map, void *value, bool delete)
- 	int err = 0;
- 	void *ptr;
+diff --git a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+index 3f45f5c5d37b5..4abc85c181690 100644
+--- a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
++++ b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+@@ -131,8 +131,8 @@
  
--	raw_spin_lock_irqsave(&qs->lock, flags);
-+	if (in_nmi()) {
-+		if (!raw_spin_trylock_irqsave(&qs->lock, flags))
-+			return -EBUSY;
-+	} else {
-+		raw_spin_lock_irqsave(&qs->lock, flags);
-+	}
- 
- 	if (queue_stack_map_is_empty(qs)) {
- 		memset(value, 0, qs->map.value_size);
-@@ -133,7 +138,12 @@ static int __stack_map_get(struct bpf_map *map, void *value, bool delete)
- 	void *ptr;
- 	u32 index;
- 
--	raw_spin_lock_irqsave(&qs->lock, flags);
-+	if (in_nmi()) {
-+		if (!raw_spin_trylock_irqsave(&qs->lock, flags))
-+			return -EBUSY;
-+	} else {
-+		raw_spin_lock_irqsave(&qs->lock, flags);
-+	}
- 
- 	if (queue_stack_map_is_empty(qs)) {
- 		memset(value, 0, qs->map.value_size);
-@@ -198,7 +208,12 @@ static int queue_stack_map_push_elem(struct bpf_map *map, void *value,
- 	if (flags & BPF_NOEXIST || flags > BPF_EXIST)
- 		return -EINVAL;
- 
--	raw_spin_lock_irqsave(&qs->lock, irq_flags);
-+	if (in_nmi()) {
-+		if (!raw_spin_trylock_irqsave(&qs->lock, irq_flags))
-+			return -EBUSY;
-+	} else {
-+		raw_spin_lock_irqsave(&qs->lock, irq_flags);
-+	}
- 
- 	if (queue_stack_map_is_full(qs)) {
- 		if (!replace) {
+ 		rmi-f11@11 {
+ 			reg = <0x11>;
+-			syna,f11-flip-x = <1>;
+ 			syna,sensor-type = <1>;
++			touchscreen-inverted-x;
+ 		};
+ 	};
+ };
 -- 
 2.40.1
 
