@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 628D67B8774
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 703997B89E8
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:30:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243794AbjJDSFb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:05:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45078 "EHLO
+        id S244306AbjJDSa3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:30:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243787AbjJDSFa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:05:30 -0400
+        with ESMTP id S244301AbjJDSa2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C70ACA6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DBACC433C9;
-        Wed,  4 Oct 2023 18:05:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BCE398
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92408C433C8;
+        Wed,  4 Oct 2023 18:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442727;
-        bh=i5+xEtzpFP+K8S8j/Atx7Ubn5DxMXgNfxyDvjBGiGvo=;
+        s=korg; t=1696444224;
+        bh=nSFdjdJiZEeIVS6T7nkPKUMoaElqLPN/+ODy1MwlXP8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rg4so1Y9dMDWGX++KClmGmVtZtY1bvAnR3Myoj337swcT2s7/L8HZSyR5T0B6B5Eu
-         Ifk/Po849oRWI8Vj5NfTX88zScgguFIXjMnfaVGUiKOy/zGZtasrG6rBEtmzPaNdrh
-         cQ7NWYNWjHj7pAaRC91FJOK+hMN50K1OxmhaE0Tc=
+        b=fDHDQHKJtt/SQhVWXctZ/VUBs6z1YR8qEGHDc/zq613fd3SfxWCLC6vavGOufAvaV
+         qXhSQOZGISHg8jOZClvTXIh+x6FiC7IpqCQQPX9b8zRWhjU0rALDycKro9U8RWbqZO
+         DN9mGM1aldFbN4nSPrSnIHzutbqOJVjydv5x4gpc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Fischer <devlists@wefi.net>,
-        Damien Le Moal <dlemoal@kernel.org>,
+        patches@lists.linux.dev, Kiwoong Kim <kwmad.kim@samsung.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Chanwoo Lee <cw9316.lee@samsung.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/183] ata: ahci: Add Elkhart Lake AHCI controller
-Date:   Wed,  4 Oct 2023 19:55:18 +0200
-Message-ID: <20231004175207.505590292@linuxfoundation.org>
+Subject: [PATCH 6.5 174/321] scsi: ufs: core: Poll HCS.UCRDY before issuing a UIC command
+Date:   Wed,  4 Oct 2023 19:55:19 +0200
+Message-ID: <20231004175237.308551378@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,65 +52,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Fischer <devlists@wefi.net>
+From: Kiwoong Kim <kwmad.kim@samsung.com>
 
-[ Upstream commit 2a2df98ec592667927b5c1351afa6493ea125c9f ]
+[ Upstream commit d32533d30e2119b0c0aa17596734f1f842f750df ]
 
-Elkhart Lake is the successor of Apollo Lake and Gemini Lake. These
-CPUs and their PCHs are used in mobile and embedded environments.
+With auto hibern8 enabled, UIC could be busy processing a hibern8 operation
+and the HCI would reports UIC not ready for a short while through
+HCS.UCRDY. The UFS driver doesn't currently handle this situation. The
+UFSHCI spec specifies UCRDY like this: whether the host controller is ready
+to process UIC COMMAND
 
-With this patch I suggest that Elkhart Lake SATA controllers [1] should
-use the default LPM policy for mobile chipsets.
-The disadvantage of missing hot-plug support with this setting should
-not be an issue, as those CPUs are used in embedded environments and
-not in servers with hot-plug backplanes.
+The 'ready' could be seen as many different meanings. If the meaning
+includes not processing any request from HCI, processing a hibern8
+operation can be 'not ready'. In this situation, the driver needs to wait
+until the operations is completed.
 
-We discovered that the Elkhart Lake SATA controllers have been missing
-in ahci.c after a customer reported the throttling of his SATA SSD
-after a short period of higher I/O. We determined the high temperature
-of the SSD controller in idle mode as the root cause for that.
-
-Depending on the used SSD, we have seen up to 1.8 Watt lower system
-idle power usage and up to 30°C lower SSD controller temperatures in
-our tests, when we set med_power_with_dipm manually. I have provided a
-table showing seven different SATA SSDs from ATP, Intel/Solidigm and
-Samsung [2].
-
-Intel lists a total of 3 SATA controller IDs (4B60, 4B62, 4B63) in [1]
-for those mobile PCHs.
-This commit just adds 0x4b63 as I do not have test systems with 0x4b60
-and 0x4b62 SATA controllers.
-I have tested this patch with a system which uses 0x4b63 as SATA
-controller.
-
-[1] https://sata-io.org/product/8803
-[2] https://www.thomas-krenn.com/en/wiki/SATA_Link_Power_Management#Example_LES_v4
-
-Signed-off-by: Werner Fischer <devlists@wefi.net>
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Kiwoong Kim <kwmad.kim@samsung.com>
+Link: https://lore.kernel.org/r/550484ffb66300bdcec63d3e304dfd55cb432f1f.1693790060.git.kwmad.kim@samsung.com
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Chanwoo Lee <cw9316.lee@samsung.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ufs/core/ufshcd.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 3679433108eca..3147b2e6cd8c9 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -425,6 +425,8 @@ static const struct pci_device_id ahci_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, 0x34d3), board_ahci_low_power }, /* Ice Lake LP AHCI */
- 	{ PCI_VDEVICE(INTEL, 0x02d3), board_ahci_low_power }, /* Comet Lake PCH-U AHCI */
- 	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_low_power }, /* Comet Lake PCH RAID */
-+	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
-+	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_low_power }, /* Elkhart Lake AHCI */
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 75c6628af2c0e..80c48eb6bf85c 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -22,6 +22,7 @@
+ #include <linux/module.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/sched/clock.h>
++#include <linux/iopoll.h>
+ #include <scsi/scsi_cmnd.h>
+ #include <scsi/scsi_dbg.h>
+ #include <scsi/scsi_driver.h>
+@@ -2324,7 +2325,11 @@ static inline int ufshcd_hba_capabilities(struct ufs_hba *hba)
+  */
+ static inline bool ufshcd_ready_for_uic_cmd(struct ufs_hba *hba)
+ {
+-	return ufshcd_readl(hba, REG_CONTROLLER_STATUS) & UIC_COMMAND_READY;
++	u32 val;
++	int ret = read_poll_timeout(ufshcd_readl, val, val & UIC_COMMAND_READY,
++				    500, UIC_CMD_TIMEOUT * 1000, false, hba,
++				    REG_CONTROLLER_STATUS);
++	return ret == 0 ? true : false;
+ }
  
- 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
- 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+ /**
 -- 
 2.40.1
 
