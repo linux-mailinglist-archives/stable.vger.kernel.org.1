@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F18F27B8502
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0649A7B8501
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:25:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243350AbjJDQZX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 12:25:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42214 "EHLO
+        id S243364AbjJDQZU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 12:25:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243371AbjJDQZX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:25:23 -0400
+        with ESMTP id S243350AbjJDQZT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:25:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2EBFD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:25:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85608C433C8;
-        Wed,  4 Oct 2023 16:25:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F4B9BF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:25:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24ACC433C7;
+        Wed,  4 Oct 2023 16:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696436718;
-        bh=idnrQxdFdWxrs1QTMxxdxc8ktanXeKCcFuu573FEBlA=;
+        s=korg; t=1696436716;
+        bh=Qfn26RJKUZalpkS5Prg5znRRQ5IdtqXlD7lOBOsqkOU=;
         h=Subject:To:Cc:From:Date:From;
-        b=nXWEaajKjClVEwLmCXaPNQXuoS2OAavUPLgxlJfrjIg4KCcTrFnqTna7DWqq/dLQA
-         /pE1fv5ZtP/4xRd2otT1QyETmPAfHR3i8B+cdI/nifIKMOLPYSbgLBwCxjR2I9E6QU
-         naEfd9XXJjN/VZRslgXDXC+ZCq0CQxwN/fxRrsDo=
-Subject: FAILED: patch "[PATCH] rbd: move rbd_dev_refresh() definition" failed to apply to 5.10-stable tree
+        b=uPBzBQMIVD/UO820UamLl4d1UCwYRLo8XoQqqM0bn3dPZFCNNijpQbaaIEtBnfmxc
+         ZbLmQbZO8TfHeghnA4i8fHy5A7mKcK/A/pmo9ELkCCDQgl+Mcd4R926Esr/dz2p77l
+         PTyxS+Q3crCL1mt7S+JkStN7CF4kzSGTlrBD4e/k=
+Subject: FAILED: patch "[PATCH] rbd: move rbd_dev_refresh() definition" failed to apply to 5.4-stable tree
 To:     idryomov@gmail.com, dongsheng.yang@easystack.cn
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Wed, 04 Oct 2023 18:25:03 +0200
-Message-ID: <2023100402-cobbler-happy-ee24@gregkh>
+Message-ID: <2023100403-vastly-take-591f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0b035401c570
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100402-cobbler-happy-ee24@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100403-vastly-take-591f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
