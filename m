@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E99AB7B876C
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54F6F7B89D9
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243776AbjJDSFK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:05:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52004 "EHLO
+        id S244295AbjJDSaA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:30:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243777AbjJDSFI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:05:08 -0400
+        with ESMTP id S244296AbjJDSaA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CBCB9E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6723FC433C7;
-        Wed,  4 Oct 2023 18:05:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F401EC4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4635CC433C8;
+        Wed,  4 Oct 2023 18:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442704;
-        bh=sQppTmUnaTmOtyEvGMZ6dq4OGjR2tbCePM4r/44VbCk=;
+        s=korg; t=1696444196;
+        bh=2tVB5bb2xHO8NuKsUp4dllrxep8N+PB6EhAgKODma34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AS7aXK+oJNbpGeNU21i8ZM/44kbOMA4EMGE0zlTNcedx/OYQQypkL+Ml/zBm69nXS
-         DHPGJtTI7m4e4QlntInEGtbUGwq4wjZjv9jQgQkuoKd1AN98PmCmGYeNgZVsMT9L9M
-         oQSbPqq3pgqirB9OTqGATqrPRrmVRgBzA6bJtHKM=
+        b=A1uG21UDZjE2PK1UfDW8I9F4WhOjEKGyRiFidOuXDa71So0Osjm8k35uwy7bxIQh2
+         j/gAYRWNCkzkMK2GHZ1TSbZYCTbaW+3m1X0SQepCXvEskE6r1iG9yC5h5+T4CjsUlC
+         TFW7N8HqkvZ/x/CFxikzlBm1Tu/q8+v8n4V04SyA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        patches@lists.linux.dev, Nigel Kirkland <nkirkland2304@gmail.com>,
+        James Smart <jsmart2021@gmail.com>,
+        Keith Busch <kbusch@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/183] Input: i8042 - add quirk for TUXEDO Gemini 17 Gen1/Clevo PD70PN
+Subject: [PATCH 6.5 165/321] nvme-fc: Prevent null pointer dereference in nvme_fc_io_getuuid()
 Date:   Wed,  4 Oct 2023 19:55:10 +0200
-Message-ID: <20231004175207.181351439@linuxfoundation.org>
+Message-ID: <20231004175236.909051472@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Nigel Kirkland <nkirkland2304@gmail.com>
 
-[ Upstream commit eb09074bdb05ffd6bfe77f8b4a41b76ef78c997b ]
+[ Upstream commit 8ae5b3a685dc59a8cf7ccfe0e850999ba9727a3c ]
 
-The touchpad of this device is both connected via PS/2 and i2c. This causes
-strange behavior when both driver fight for control. The easy fix is to
-prevent the PS/2 driver from accessing the mouse port as the full feature
-set of the touchpad is only supported in the i2c interface anyway.
+The nvme_fc_fcp_op structure describing an AEN operation is initialized with a
+null request structure pointer. An FC LLDD may make a call to
+nvme_fc_io_getuuid passing a pointer to an nvmefc_fcp_req for an AEN operation.
 
-The strange behavior in this case is, that when an external screen is
-connected and the notebook is closed, the pointer on the external screen is
-moving to the lower right corner. When the notebook is opened again, this
-movement stops, but the touchpad clicks are unresponsive afterwards until
-reboot.
+Add validation of the request structure pointer before dereference.
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230607173331.851192-1-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Nigel Kirkland <nkirkland2304@gmail.com>
+Reviewed-by: James Smart <jsmart2021@gmail.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/nvme/host/fc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index ce8ec35e8e06d..a0d8528685fe3 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1244,6 +1244,13 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	/* See comment on TUXEDO InfinityBook S17 Gen6 / Clevo NS70MU above */
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "PD5x_7xPNP_PNR_PNN_PNT"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index 1cd2bf82319a9..a15b37750d6e9 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -1924,7 +1924,7 @@ char *nvme_fc_io_getuuid(struct nvmefc_fcp_req *req)
+ 	struct nvme_fc_fcp_op *op = fcp_req_to_fcp_op(req);
+ 	struct request *rq = op->rq;
+ 
+-	if (!IS_ENABLED(CONFIG_BLK_CGROUP_FC_APPID) || !rq->bio)
++	if (!IS_ENABLED(CONFIG_BLK_CGROUP_FC_APPID) || !rq || !rq->bio)
+ 		return NULL;
+ 	return blkcg_get_fc_appid(rq->bio);
+ }
 -- 
 2.40.1
 
