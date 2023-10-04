@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09F957B89C4
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DB007B8862
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244276AbjJDS3F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:29:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55086 "EHLO
+        id S244028AbjJDSPa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:15:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244272AbjJDS3F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:05 -0400
+        with ESMTP id S243755AbjJDSP3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D40AABF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8D9C433C7;
-        Wed,  4 Oct 2023 18:28:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EB2BCE
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D58CC433C8;
+        Wed,  4 Oct 2023 18:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444140;
-        bh=XOklIZq5LB8LR5vhTggytVTp4xqkz63gvVjB/nEubLE=;
+        s=korg; t=1696443325;
+        bh=ooJaIlpRT/Mi7Iv9nJzRr7wU/ESq1DqQvocqnJ1SVew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SFvAFcmV5Z++LgvprDFyHYAs+e6gSndDzwxJJSINrVLt+jym2QMR0/qq7L1nPzOje
-         RlJUnpmLF0Mldv8ye8Zx3i/lUTeGiX7dowKpyYSHXW0I8aeUqyFr+JoODdK0ZraMX5
-         57sPUuay5hHNMpFHirl/QodNCXTAeqkbhIhtq+GU=
+        b=a95R34fUYVpVvGwKyZzuQma3Np7mUIf7mUVEc6a7as+z4PLl+yhXK0pwMg/mmmXo6
+         CkfurgAmOOkokAbF92UIWkCkcWnzSvxm8TlojuerZN75rrbP5mAY0a/P7BoU/FL50W
+         cqPfujmxv8RpCCzt2UXsQvW/rfttajtusZ3Ez+y4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joe Lawrence <joe.lawrence@redhat.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        ChiaEn Wu <chiaen_wu@richtek.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 144/321] powerpc/stacktrace: Fix arch_stack_walk_reliable()
+Subject: [PATCH 6.1 116/259] power: supply: mt6370: Fix missing error code in mt6370_chg_toggle_cfo()
 Date:   Wed,  4 Oct 2023 19:54:49 +0200
-Message-ID: <20231004175235.919628542@linuxfoundation.org>
+Message-ID: <20231004175222.647410681@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,77 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit c5cc3ca707bc916a3f326364751a41f25040aef3 ]
+[ Upstream commit 779873ec81306d2c40c459fa7c91a5d40655510d ]
 
-The changes to copy_thread() made in commit eed7c420aac7 ("powerpc:
-copy_thread differentiate kthreads and user mode threads") inadvertently
-broke arch_stack_walk_reliable() because it has knowledge of the stack
-layout.
+When mt6370_chg_field_get() suceeds, ret is set to zero and returning
+zero when flash led is still in strobe mode looks incorrect.
 
-Fix it by changing the condition to match the new logic in
-copy_thread(). The changes make the comments about the stack layout
-incorrect, rather than rephrasing them just refer the reader to
-copy_thread().
-
-Also the comment about the stack backchain is no longer true, since
-commit edbd0387f324 ("powerpc: copy_thread add a back chain to the
-switch stack frame"), so remove that as well.
-
-Fixes: eed7c420aac7 ("powerpc: copy_thread differentiate kthreads and user mode threads")
-Reported-by: Joe Lawrence <joe.lawrence@redhat.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230921232441.1181843-1-mpe@ellerman.id.au
+Fixes: 233cb8a47d65 ("power: supply: mt6370: Add MediaTek MT6370 charger driver")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: ChiaEn Wu <chiaen_wu@richtek.com>
+Link: https://lore.kernel.org/r/20230906084815.2827930-1-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/stacktrace.c | 27 +++++----------------------
- 1 file changed, 5 insertions(+), 22 deletions(-)
+ drivers/power/supply/mt6370-charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/stacktrace.c b/arch/powerpc/kernel/stacktrace.c
-index b15f15dcacb5c..e6a958a5da276 100644
---- a/arch/powerpc/kernel/stacktrace.c
-+++ b/arch/powerpc/kernel/stacktrace.c
-@@ -73,29 +73,12 @@ int __no_sanitize_address arch_stack_walk_reliable(stack_trace_consume_fn consum
- 	bool firstframe;
+diff --git a/drivers/power/supply/mt6370-charger.c b/drivers/power/supply/mt6370-charger.c
+index f27dae5043f5b..a9641bd3d8cf8 100644
+--- a/drivers/power/supply/mt6370-charger.c
++++ b/drivers/power/supply/mt6370-charger.c
+@@ -324,7 +324,7 @@ static int mt6370_chg_toggle_cfo(struct mt6370_priv *priv)
  
- 	stack_end = stack_page + THREAD_SIZE;
--	if (!is_idle_task(task)) {
--		/*
--		 * For user tasks, this is the SP value loaded on
--		 * kernel entry, see "PACAKSAVE(r13)" in _switch() and
--		 * system_call_common().
--		 *
--		 * Likewise for non-swapper kernel threads,
--		 * this also happens to be the top of the stack
--		 * as setup by copy_thread().
--		 *
--		 * Note that stack backlinks are not properly setup by
--		 * copy_thread() and thus, a forked task() will have
--		 * an unreliable stack trace until it's been
--		 * _switch()'ed to for the first time.
--		 */
--		stack_end -= STACK_USER_INT_FRAME_SIZE;
--	} else {
--		/*
--		 * idle tasks have a custom stack layout,
--		 * c.f. cpu_idle_thread_init().
--		 */
-+
-+	// See copy_thread() for details.
-+	if (task->flags & PF_KTHREAD)
- 		stack_end -= STACK_FRAME_MIN_SIZE;
--	}
-+	else
-+		stack_end -= STACK_USER_INT_FRAME_SIZE;
+ 	if (fl_strobe) {
+ 		dev_err(priv->dev, "Flash led is still in strobe mode\n");
+-		return ret;
++		return -EINVAL;
+ 	}
  
- 	if (task == current)
- 		sp = current_stack_frame();
+ 	/* cfo off */
 -- 
 2.40.1
 
