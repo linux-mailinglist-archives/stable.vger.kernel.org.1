@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A20C47B893B
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F24E7B87FE
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244140AbjJDSX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:23:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39168 "EHLO
+        id S243858AbjJDSLt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:11:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244157AbjJDSX5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:23:57 -0400
+        with ESMTP id S244069AbjJDSLm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:11:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47CA1F4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:23:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E37C433B7;
-        Wed,  4 Oct 2023 18:23:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20A4ABF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:11:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C79C433C9;
+        Wed,  4 Oct 2023 18:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443831;
-        bh=I2Jk7xwY8UsbvWFFJZfGCRnfYASrip+eFzfaeHBfIVE=;
+        s=korg; t=1696443098;
+        bh=NlH5/DxWnb2ukTtgZ+lEG4L2/p2yvKLQGlF1o8/BIzw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F/imHinpqQy7b988Bt4L5a9q8JB8P7jk3D+gmPXR1TgesMiUC/Cykt8vRcPydm0VM
-         I06rewPyYZtEi0m3PCbH+hSV8UWce8BFpPu/D9yvt91hBweLZD9GK+8OTJ5hTyLhwL
-         AF2tlC/W1+SirJebUDClQvduOfzXTvRvPWY+4gWM=
+        b=H1lLHHNB5P6LFas8rzKm4L12M5T9Nypx+Z4ru1DPL4ToswfaLy2UlUIEFTMVzyE6J
+         wPY/fBcnLBXAGM1D1ImsqDQ6YeeKkYGyrWlYDVXGXc7noP3UsNzgQk4Jho/g4als3x
+         F8RgOsGPSXSzezAK8coM6vUh/+X011VCA6hYwYfo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oder Chiou <oder_chiou@realtek.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Olga Kornievskaia <kolga@netapp.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 036/321] ASoC: rt5640: Fix IRQ not being free-ed for HDA jack detect mode
+Subject: [PATCH 6.1 008/259] NFSv4.1: use EXCHGID4_FLAG_USE_PNFS_DS for DS server
 Date:   Wed,  4 Oct 2023 19:53:01 +0200
-Message-ID: <20231004175230.833010680@linuxfoundation.org>
+Message-ID: <20231004175217.823543874@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +50,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit 8c8bf3df6b7c0ed1c4dd373b23eb0ce13a63f452 ]
+[ Upstream commit 51d674a5e4889f1c8e223ac131cf218e1631e423 ]
 
-Set "rt5640->irq_requested = true" after a successful request_irq()
-in rt5640_enable_hda_jack_detect(), so that rt5640_disable_jack_detect()
-properly frees the IRQ.
+After receiving the location(s) of the DS server(s) in the
+GETDEVINCEINFO, create the request for the clientid to such
+server and indicate that the client is connecting to a DS.
 
-This fixes the IRQ not being freed on rmmod / driver unbind.
-
-Fixes: 2b9c8d2b3c89 ("ASoC: rt5640: Add the HDA header support")
-Cc: Oder Chiou <oder_chiou@realtek.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230912113245.320159-6-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Stable-dep-of: 806a3bc421a1 ("NFSv4.1: fix pnfs MDS=DS session trunking")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5640.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/nfs4client.c | 3 +++
+ fs/nfs/nfs4proc.c   | 4 ++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index 7522a9803d098..a39d556ad1a10 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -2626,6 +2626,7 @@ static void rt5640_enable_hda_jack_detect(
- 		rt5640->jack = NULL;
- 		return;
- 	}
-+	rt5640->irq_requested = true;
+diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
+index d3051b051a564..d3e2b0867dc11 100644
+--- a/fs/nfs/nfs4client.c
++++ b/fs/nfs/nfs4client.c
+@@ -231,6 +231,8 @@ struct nfs_client *nfs4_alloc_client(const struct nfs_client_initdata *cl_init)
+ 	__set_bit(NFS_CS_DISCRTRY, &clp->cl_flags);
+ 	__set_bit(NFS_CS_NO_RETRANS_TIMEOUT, &clp->cl_flags);
  
- 	/* sync initial jack state */
- 	queue_delayed_work(system_long_wq, &rt5640->jack_work, 0);
++	if (test_bit(NFS_CS_DS, &cl_init->init_flags))
++		__set_bit(NFS_CS_DS, &clp->cl_flags);
+ 	/*
+ 	 * Set up the connection to the server before we add add to the
+ 	 * global list.
+@@ -993,6 +995,7 @@ struct nfs_client *nfs4_set_ds_client(struct nfs_server *mds_srv,
+ 	if (mds_srv->flags & NFS_MOUNT_NORESVPORT)
+ 		__set_bit(NFS_CS_NORESVPORT, &cl_init.init_flags);
+ 
++	__set_bit(NFS_CS_DS, &cl_init.init_flags);
+ 	/*
+ 	 * Set an authflavor equual to the MDS value. Use the MDS nfs_client
+ 	 * cl_ipaddr so as to use the same EXCHANGE_ID co_ownerid as the MDS
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 2dec0fed1ba16..acb1346da13e9 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -8794,6 +8794,8 @@ nfs4_run_exchange_id(struct nfs_client *clp, const struct cred *cred,
+ #ifdef CONFIG_NFS_V4_1_MIGRATION
+ 	calldata->args.flags |= EXCHGID4_FLAG_SUPP_MOVED_MIGR;
+ #endif
++	if (test_bit(NFS_CS_DS, &clp->cl_flags))
++		calldata->args.flags |= EXCHGID4_FLAG_USE_PNFS_DS;
+ 	msg.rpc_argp = &calldata->args;
+ 	msg.rpc_resp = &calldata->res;
+ 	task_setup_data.callback_data = calldata;
+@@ -8871,6 +8873,8 @@ static int _nfs4_proc_exchange_id(struct nfs_client *clp, const struct cred *cre
+ 	/* Save the EXCHANGE_ID verifier session trunk tests */
+ 	memcpy(clp->cl_confirm.data, argp->verifier.data,
+ 	       sizeof(clp->cl_confirm.data));
++	if (resp->flags & EXCHGID4_FLAG_USE_PNFS_DS)
++		set_bit(NFS_CS_DS, &clp->cl_flags);
+ out:
+ 	trace_nfs4_exchange_id(clp, status);
+ 	rpc_put_task(task);
 -- 
 2.40.1
 
