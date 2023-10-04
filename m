@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A3A87B8958
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D2337B87F8
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:11:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244137AbjJDSZD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:25:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37626 "EHLO
+        id S243919AbjJDSLq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244162AbjJDSZD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:03 -0400
+        with ESMTP id S243951AbjJDSL2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:11:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2EC5A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:24:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37366C433CA;
-        Wed,  4 Oct 2023 18:24:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E6B6A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:11:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7538DC433C8;
+        Wed,  4 Oct 2023 18:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443899;
-        bh=YgPdYLd3FY2rhclfg+XsFvwkTWMPOAFynDa4/PKkrUw=;
+        s=korg; t=1696443084;
+        bh=5brjBM0dbnfSZuDDngDEWH6tTO/FlzNRh4cNtcvKRlk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CwBQCY/epe1FKzS3IoCNruvuGK5d/ydBm7Gc7YpEye2kv2MINO2v3iw1IFInYx/6m
-         FK4XlhGBi+fimyMxNrbaNX99uDSZunWSNdvceKED+Ngq84zCad0yYM8zV1aTmYjXzY
-         oXddHKGwJ4+uASs1aO77cgIsJTib0N0opLUUcrVI=
+        b=0Z0NeNuJaByIExQ7yNDwbGU3MB90uFlu9fDqoXuyL8q2yx/UtmUIR+Ifu5uQYT+ej
+         lNuBU2yFbbwnRxqwv23XocfmkKOaSFjmYXOrYnuh3S/uPNU2CbMpWFdXZNhF8qrcrc
+         3c2GW4ZANW7aCQiFeEPR1vcF0jedeZGVz/+FaqL8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sameer Pujar <spujar@nvidia.com>,
-        Oder Chiou <oder_chiou@realtek.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 031/321] ASoC: rt5640: Revert "Fix sleep in atomic context"
+Subject: [PATCH 6.1 003/259] NFS: More O_DIRECT accounting fixes for error paths
 Date:   Wed,  4 Oct 2023 19:52:56 +0200
-Message-ID: <20231004175230.601206439@linuxfoundation.org>
+Message-ID: <20231004175217.579646535@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,79 +51,142 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit fa6a0c0c1dd53b3949ca56bf7213648dfd6a62ee ]
+[ Upstream commit 8982f7aff39fb526aba4441fff2525fcedd5e1a3 ]
 
-Commit 70a6404ff610 ("ASoC: rt5640: Fix sleep in atomic context")
-not only switched from request_irq() to request_threaded_irq(),
-to fix the sleep in atomic context issue, but it also added
-devm management of the IRQ by actually switching to
-devm_request_threaded_irq() (without any explanation in the commit
-message for this change).
+If we hit a fatal error when retransmitting, we do need to record the
+removal of the request from the count of written bytes.
 
-This is wrong since the IRQ was already explicitly managed by
-the driver. On unbind the ASoC core will call rt5640_set_jack(NULL)
-which in turn will call rt5640_disable_jack_detect() which
-frees the IRQ already. So now we have a double free.
-
-Besides the unexplained switch to devm being wrong, the actual fix
-for the sleep in atomic context issue also is not the best solution.
-
-The only thing which rt5640_irq() does is cancel + (re-)queue
-the jack_work delayed_work. This can be done in a single non sleeping
-call by replacing queue_delayed_work() with mod_delayed_work(),
-which does not sleep. Using mod_delayed_work() is a much better fix
-then adding a thread which does nothing other then queuing a work-item.
-
-This patch is a straight revert of the troublesome changes, the switch
-to mod_delayed_work() is done in a separate follow-up patch.
-
-Fixes: 70a6404ff610 ("ASoC: rt5640: Fix sleep in atomic context")
-Cc: Sameer Pujar <spujar@nvidia.com>
-Cc: Oder Chiou <oder_chiou@realtek.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230912113245.320159-2-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 031d73ed768a ("NFS: Fix O_DIRECT accounting of number of bytes read/written")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5640.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ fs/nfs/direct.c | 47 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 16 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index eceed82097877..7ec930fb9aab5 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -2566,10 +2566,9 @@ static void rt5640_enable_jack_detect(struct snd_soc_component *component,
- 	if (jack_data && jack_data->use_platform_clock)
- 		rt5640->use_platform_clock = jack_data->use_platform_clock;
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index 449d248fc1ec7..d879c3229efdb 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -93,12 +93,10 @@ nfs_direct_handle_truncated(struct nfs_direct_req *dreq,
+ 		dreq->max_count = dreq_len;
+ 		if (dreq->count > dreq_len)
+ 			dreq->count = dreq_len;
+-
+-		if (test_bit(NFS_IOHDR_ERROR, &hdr->flags))
+-			dreq->error = hdr->error;
+-		else /* Clear outstanding error if this is EOF */
+-			dreq->error = 0;
+ 	}
++
++	if (test_bit(NFS_IOHDR_ERROR, &hdr->flags) && !dreq->error)
++		dreq->error = hdr->error;
+ }
  
--	ret = devm_request_threaded_irq(component->dev, rt5640->irq,
--					NULL, rt5640_irq,
--					IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
--					"rt5640", rt5640);
-+	ret = request_irq(rt5640->irq, rt5640_irq,
-+			  IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
-+			  "rt5640", rt5640);
- 	if (ret) {
- 		dev_warn(component->dev, "Failed to reguest IRQ %d: %d\n", rt5640->irq, ret);
- 		rt5640_disable_jack_detect(component);
-@@ -2622,9 +2621,8 @@ static void rt5640_enable_hda_jack_detect(
+ static void
+@@ -120,6 +118,18 @@ nfs_direct_count_bytes(struct nfs_direct_req *dreq,
+ 		dreq->count = dreq_len;
+ }
  
- 	rt5640->jack = jack;
++static void nfs_direct_truncate_request(struct nfs_direct_req *dreq,
++					struct nfs_page *req)
++{
++	loff_t offs = req_offset(req);
++	size_t req_start = (size_t)(offs - dreq->io_start);
++
++	if (req_start < dreq->max_count)
++		dreq->max_count = req_start;
++	if (req_start < dreq->count)
++		dreq->count = req_start;
++}
++
+ /**
+  * nfs_swap_rw - NFS address space operation for swap I/O
+  * @iocb: target I/O control block
+@@ -539,10 +549,6 @@ static void nfs_direct_write_reschedule(struct nfs_direct_req *dreq)
  
--	ret = devm_request_threaded_irq(component->dev, rt5640->irq,
--					NULL, rt5640_irq, IRQF_TRIGGER_RISING | IRQF_ONESHOT,
--					"rt5640", rt5640);
-+	ret = request_irq(rt5640->irq, rt5640_irq,
-+			  IRQF_TRIGGER_RISING | IRQF_ONESHOT, "rt5640", rt5640);
- 	if (ret) {
- 		dev_warn(component->dev, "Failed to reguest IRQ %d: %d\n", rt5640->irq, ret);
- 		rt5640->irq = -ENXIO;
+ 	nfs_direct_join_group(&reqs, dreq->inode);
+ 
+-	dreq->count = 0;
+-	dreq->max_count = 0;
+-	list_for_each_entry(req, &reqs, wb_list)
+-		dreq->max_count += req->wb_bytes;
+ 	nfs_clear_pnfs_ds_commit_verifiers(&dreq->ds_cinfo);
+ 	get_dreq(dreq);
+ 
+@@ -576,10 +582,14 @@ static void nfs_direct_write_reschedule(struct nfs_direct_req *dreq)
+ 		req = nfs_list_entry(reqs.next);
+ 		nfs_list_remove_request(req);
+ 		nfs_unlock_and_release_request(req);
+-		if (desc.pg_error == -EAGAIN)
++		if (desc.pg_error == -EAGAIN) {
+ 			nfs_mark_request_commit(req, NULL, &cinfo, 0);
+-		else
++		} else {
++			spin_lock(&dreq->lock);
++			nfs_direct_truncate_request(dreq, req);
++			spin_unlock(&dreq->lock);
+ 			nfs_release_request(req);
++		}
+ 	}
+ 
+ 	if (put_dreq(dreq))
+@@ -599,8 +609,6 @@ static void nfs_direct_commit_complete(struct nfs_commit_data *data)
+ 	if (status < 0) {
+ 		/* Errors in commit are fatal */
+ 		dreq->error = status;
+-		dreq->max_count = 0;
+-		dreq->count = 0;
+ 		dreq->flags = NFS_ODIRECT_DONE;
+ 	} else {
+ 		status = dreq->error;
+@@ -611,7 +619,12 @@ static void nfs_direct_commit_complete(struct nfs_commit_data *data)
+ 	while (!list_empty(&data->pages)) {
+ 		req = nfs_list_entry(data->pages.next);
+ 		nfs_list_remove_request(req);
+-		if (status >= 0 && !nfs_write_match_verf(verf, req)) {
++		if (status < 0) {
++			spin_lock(&dreq->lock);
++			nfs_direct_truncate_request(dreq, req);
++			spin_unlock(&dreq->lock);
++			nfs_release_request(req);
++		} else if (!nfs_write_match_verf(verf, req)) {
+ 			dreq->flags = NFS_ODIRECT_RESCHED_WRITES;
+ 			/*
+ 			 * Despite the reboot, the write was successful,
+@@ -619,7 +632,7 @@ static void nfs_direct_commit_complete(struct nfs_commit_data *data)
+ 			 */
+ 			req->wb_nio = 0;
+ 			nfs_mark_request_commit(req, NULL, &cinfo, 0);
+-		} else /* Error or match */
++		} else
+ 			nfs_release_request(req);
+ 		nfs_unlock_and_release_request(req);
+ 	}
+@@ -672,6 +685,7 @@ static void nfs_direct_write_clear_reqs(struct nfs_direct_req *dreq)
+ 	while (!list_empty(&reqs)) {
+ 		req = nfs_list_entry(reqs.next);
+ 		nfs_list_remove_request(req);
++		nfs_direct_truncate_request(dreq, req);
+ 		nfs_release_request(req);
+ 		nfs_unlock_and_release_request(req);
+ 	}
+@@ -721,7 +735,8 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
+ 	}
+ 
+ 	nfs_direct_count_bytes(dreq, hdr);
+-	if (test_bit(NFS_IOHDR_UNSTABLE_WRITES, &hdr->flags)) {
++	if (test_bit(NFS_IOHDR_UNSTABLE_WRITES, &hdr->flags) &&
++	    !test_bit(NFS_IOHDR_ERROR, &hdr->flags)) {
+ 		if (!dreq->flags)
+ 			dreq->flags = NFS_ODIRECT_DO_COMMIT;
+ 		flags = dreq->flags;
 -- 
 2.40.1
 
