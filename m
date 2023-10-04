@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D4307B893E
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3387B87E3
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:10:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244129AbjJDSYA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:24:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39220 "EHLO
+        id S233886AbjJDSKa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:10:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244148AbjJDSX6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:23:58 -0400
+        with ESMTP id S243856AbjJDSK3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:10:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 119D2AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:23:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558D9C433C7;
-        Wed,  4 Oct 2023 18:23:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44BE9A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:10:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A306C433C8;
+        Wed,  4 Oct 2023 18:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443834;
-        bh=7DDFO70f2tHKJtwbjHe8zezFmT/hWY8HpwpeUQlr5do=;
+        s=korg; t=1696443025;
+        bh=QJCVhdjgAKA11+KYpiRrIrSHLSZuwELk1JAWxKjjrbU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B1Y4b0U+zvUr0yCwrzWcsAc3pODLyftx8iNzGjzE2GW4pXGjEX+jWxJum4vy3Pl1e
-         BhjZmRrOI6Mwkz3+sMpBX+6S7r+keIc0vJOH8TYUIncyaa70aBQZuWw9H/zbRAYhz6
-         wV2hVMjixyWciCPwObl5u6PAnFhkXEPeR1YKCxig=
+        b=Vqsr6Y5bRELkU7K+9nTnYTkS2C8SoxHvLR3+CXmNr2lBhqcXnLU4NnKDCH6OTkybC
+         aQU40WecDXgx27X0M4Q7fAb1YStC4CLTi2j5gON1ay/eZoInP+H6izmvF1dyXlS+QJ
+         MBK3AEd+LdW993MCc8rlwAf48U++UZjaOVxRuPnk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 037/321] bpf: Fix a erroneous check after snprintf()
-Date:   Wed,  4 Oct 2023 19:53:02 +0200
-Message-ID: <20231004175230.880663614@linuxfoundation.org>
+Subject: [PATCH 6.1 010/259] media: v4l: Use correct dependency for camera sensor drivers
+Date:   Wed,  4 Oct 2023 19:53:03 +0200
+Message-ID: <20231004175217.911280396@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +51,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit a8f12572860ad8ba659d96eee9cf09e181f6ebcc ]
+[ Upstream commit 86e16b87afac20779da1228d690a95c54d7e2ad0 ]
 
-snprintf() does not return negative error code on error, it returns the
-number of characters which *would* be generated for the given input.
+The Kconfig option that enables compiling camera sensor drivers is
+VIDEO_CAMERA_SENSOR rather than MEDIA_CAMERA_SUPPORT as it was previously.
+Fix this.
 
-Fix the error handling check.
+Also select VIDEO_OV7670 for marvell platform drivers only if
+MEDIA_SUBDRV_AUTOSELECT and VIDEO_CAMERA_SENSOR are enabled.
 
-Fixes: 57539b1c0ac2 ("bpf: Enable annotating trusted nested pointers")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/393bdebc87b22563c08ace094defa7160eb7a6c0.1694190795.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Fixes: 7d3c7d2a2914 ("media: i2c: Add a camera sensor top level menu")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/btf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/marvell/Kconfig | 4 ++--
+ drivers/media/usb/em28xx/Kconfig       | 4 ++--
+ drivers/media/usb/go7007/Kconfig       | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 4b38c97990872..197d8252ffc65 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -8498,7 +8498,7 @@ bool btf_nested_type_is_trusted(struct bpf_verifier_log *log,
- 	tname = btf_name_by_offset(btf, walk_type->name_off);
+diff --git a/drivers/media/platform/marvell/Kconfig b/drivers/media/platform/marvell/Kconfig
+index ec1a16734a280..d6499ffe30e8b 100644
+--- a/drivers/media/platform/marvell/Kconfig
++++ b/drivers/media/platform/marvell/Kconfig
+@@ -7,7 +7,7 @@ config VIDEO_CAFE_CCIC
+ 	depends on V4L_PLATFORM_DRIVERS
+ 	depends on PCI && I2C && VIDEO_DEV
+ 	depends on COMMON_CLK
+-	select VIDEO_OV7670
++	select VIDEO_OV7670 if MEDIA_SUBDRV_AUTOSELECT && VIDEO_CAMERA_SENSOR
+ 	select VIDEOBUF2_VMALLOC
+ 	select VIDEOBUF2_DMA_CONTIG
+ 	select VIDEOBUF2_DMA_SG
+@@ -22,7 +22,7 @@ config VIDEO_MMP_CAMERA
+ 	depends on I2C && VIDEO_DEV
+ 	depends on ARCH_MMP || COMPILE_TEST
+ 	depends on COMMON_CLK
+-	select VIDEO_OV7670
++	select VIDEO_OV7670 if MEDIA_SUBDRV_AUTOSELECT && VIDEO_CAMERA_SENSOR
+ 	select I2C_GPIO
+ 	select VIDEOBUF2_VMALLOC
+ 	select VIDEOBUF2_DMA_CONTIG
+diff --git a/drivers/media/usb/em28xx/Kconfig b/drivers/media/usb/em28xx/Kconfig
+index b3c472b8c5a96..cb61fd6cc6c61 100644
+--- a/drivers/media/usb/em28xx/Kconfig
++++ b/drivers/media/usb/em28xx/Kconfig
+@@ -12,8 +12,8 @@ config VIDEO_EM28XX_V4L2
+ 	select VIDEO_SAA711X if MEDIA_SUBDRV_AUTOSELECT
+ 	select VIDEO_TVP5150 if MEDIA_SUBDRV_AUTOSELECT
+ 	select VIDEO_MSP3400 if MEDIA_SUBDRV_AUTOSELECT
+-	select VIDEO_MT9V011 if MEDIA_SUBDRV_AUTOSELECT && MEDIA_CAMERA_SUPPORT
+-	select VIDEO_OV2640 if MEDIA_SUBDRV_AUTOSELECT && MEDIA_CAMERA_SUPPORT
++	select VIDEO_MT9V011 if MEDIA_SUBDRV_AUTOSELECT && VIDEO_CAMERA_SENSOR
++	select VIDEO_OV2640 if MEDIA_SUBDRV_AUTOSELECT && VIDEO_CAMERA_SENSOR
+ 	help
+ 	  This is a video4linux driver for Empia 28xx based TV cards.
  
- 	ret = snprintf(safe_tname, sizeof(safe_tname), "%s%s", tname, suffix);
--	if (ret < 0)
-+	if (ret >= sizeof(safe_tname))
- 		return false;
- 
- 	safe_id = btf_find_by_name_kind(btf, safe_tname, BTF_INFO_KIND(walk_type->info));
+diff --git a/drivers/media/usb/go7007/Kconfig b/drivers/media/usb/go7007/Kconfig
+index 4ff79940ad8d4..b2a15d9fb1f33 100644
+--- a/drivers/media/usb/go7007/Kconfig
++++ b/drivers/media/usb/go7007/Kconfig
+@@ -12,8 +12,8 @@ config VIDEO_GO7007
+ 	select VIDEO_TW2804 if MEDIA_SUBDRV_AUTOSELECT
+ 	select VIDEO_TW9903 if MEDIA_SUBDRV_AUTOSELECT
+ 	select VIDEO_TW9906 if MEDIA_SUBDRV_AUTOSELECT
+-	select VIDEO_OV7640 if MEDIA_SUBDRV_AUTOSELECT && MEDIA_CAMERA_SUPPORT
+ 	select VIDEO_UDA1342 if MEDIA_SUBDRV_AUTOSELECT
++	select VIDEO_OV7640 if MEDIA_SUBDRV_AUTOSELECT && VIDEO_CAMERA_SENSOR
+ 	help
+ 	  This is a video4linux driver for the WIS GO7007 MPEG
+ 	  encoder chip.
 -- 
 2.40.1
 
