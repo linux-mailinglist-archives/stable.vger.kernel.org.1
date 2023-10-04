@@ -2,45 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 112D37B896B
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC86C7B8812
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:12:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244183AbjJDSZo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:25:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60830 "EHLO
+        id S243944AbjJDSMM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:12:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244177AbjJDSZn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:43 -0400
+        with ESMTP id S243957AbjJDSML (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:12:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A120CA7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:25:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68A8C433C8;
-        Wed,  4 Oct 2023 18:25:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69308D8
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:12:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC4DC433CA;
+        Wed,  4 Oct 2023 18:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443939;
-        bh=VslK/ReeD18FksHxqDQEa52E9po0WOL++qzA5nDEd1w=;
+        s=korg; t=1696443127;
+        bh=WKIG0RgnjzfpU+uSw7Ob/TuBHkHC7+D7G79s+Y0yqoM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FgUdlyF1aSr/Y7Izpb0InAG6GPwwCee+2komVP/DhPCTf+NYJ+3Ja3UyggkLdt5Ev
-         1bn/S5uSF6Ot+rOBC8BbkzJlnNLws5Fgo/pabYqh10mtNT5l3oQsakeCdd8jxa2ag7
-         vJi8b77x2sjn6/GzPj9qfIA41H58ZNII7ZM3TO4U=
+        b=qZuyYdgQB+jKNbPZfY2nitof9VZvbPeaOrGecu6tBwlvyO67extf6N0nYYyqLZ74g
+         goM0VbWeYLXivju0wezayPv3a+aZJutuxGmN4plFBaASJaMillGxihrD4wRxvEO3c8
+         O1B5ffeNcA8Nh+c1mYfkQEO6aHpvxJIHFnWnQKDs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Prashant Malani <pmalani@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Chen Ni <nichen@iscas.ac.cn>,
+        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 073/321] platform/x86: intel_scu_ipc: Check status after timeout in busy_loop()
-Date:   Wed,  4 Oct 2023 19:53:38 +0200
-Message-ID: <20231004175232.591995135@linuxfoundation.org>
+Subject: [PATCH 6.1 046/259] ASoC: hdaudio.c: Add missing check for devm_kstrdup
+Date:   Wed,  4 Oct 2023 19:53:39 +0200
+Message-ID: <20231004175219.563677061@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,92 +53,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit e0b4ab3bb92bda8d12f55842614362989d5b2cb3 ]
+[ Upstream commit c04efbfd76d23157e64e6d6147518c187ab4233a ]
 
-It's possible for the polling loop in busy_loop() to get scheduled away
-for a long time.
+Because of the potential failure of the devm_kstrdup(), the
+dl[i].codecs->name could be NULL.
+Therefore, we need to check it and return -ENOMEM in order to transfer
+the error.
 
-  status = ipc_read_status(scu); // status = IPC_STATUS_BUSY
-  <long time scheduled away>
-  if (!(status & IPC_STATUS_BUSY))
-
-If this happens, then the status bit could change while the task is
-scheduled away and this function would never read the status again after
-timing out. Instead, the function will return -ETIMEDOUT when it's
-possible that scheduling didn't work out and the status bit was cleared.
-Bit polling code should always check the bit being polled one more time
-after the timeout in case this happens.
-
-Fix this by reading the status once more after the while loop breaks.
-The readl_poll_timeout() macro implements all of this, and it is
-shorter, so use that macro here to consolidate code and fix this.
-
-There were some concerns with using readl_poll_timeout() because it uses
-timekeeping, and timekeeping isn't running early on or during the late
-stages of system suspend or early stages of system resume, but an audit
-of the code concluded that this code isn't called during those times so
-it is safe to use the macro.
-
-Cc: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Fixes: e7b7ab3847c9 ("platform/x86: intel_scu_ipc: Sleeping is fine when polling")
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20230913212723.3055315-2-swboyd@chromium.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 97030a43371e ("ASoC: Intel: avs: Add HDAudio machine board")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20230915021344.3078-1-nichen@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel_scu_ipc.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ sound/soc/intel/avs/boards/hdaudio.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/platform/x86/intel_scu_ipc.c b/drivers/platform/x86/intel_scu_ipc.c
-index 6851d10d65825..4c774ee8bb1bb 100644
---- a/drivers/platform/x86/intel_scu_ipc.c
-+++ b/drivers/platform/x86/intel_scu_ipc.c
-@@ -19,6 +19,7 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/module.h>
- #include <linux/slab.h>
+diff --git a/sound/soc/intel/avs/boards/hdaudio.c b/sound/soc/intel/avs/boards/hdaudio.c
+index 073663ba140d0..a65939f30ac47 100644
+--- a/sound/soc/intel/avs/boards/hdaudio.c
++++ b/sound/soc/intel/avs/boards/hdaudio.c
+@@ -54,6 +54,9 @@ static int avs_create_dai_links(struct device *dev, struct hda_codec *codec, int
+ 			return -ENOMEM;
  
-@@ -231,19 +232,15 @@ static inline u32 ipc_data_readl(struct intel_scu_ipc_dev *scu, u32 offset)
- /* Wait till scu status is busy */
- static inline int busy_loop(struct intel_scu_ipc_dev *scu)
- {
--	unsigned long end = jiffies + IPC_TIMEOUT;
--
--	do {
--		u32 status;
--
--		status = ipc_read_status(scu);
--		if (!(status & IPC_STATUS_BUSY))
--			return (status & IPC_STATUS_ERR) ? -EIO : 0;
-+	u8 status;
-+	int err;
- 
--		usleep_range(50, 100);
--	} while (time_before(jiffies, end));
-+	err = readx_poll_timeout(ipc_read_status, scu, status, !(status & IPC_STATUS_BUSY),
-+				 100, jiffies_to_usecs(IPC_TIMEOUT));
-+	if (err)
-+		return err;
- 
--	return -ETIMEDOUT;
-+	return (status & IPC_STATUS_ERR) ? -EIO : 0;
- }
- 
- /* Wait till ipc ioc interrupt is received or timeout in 10 HZ */
+ 		dl[i].codecs->name = devm_kstrdup(dev, cname, GFP_KERNEL);
++		if (!dl[i].codecs->name)
++			return -ENOMEM;
++
+ 		dl[i].codecs->dai_name = pcm->name;
+ 		dl[i].num_codecs = 1;
+ 		dl[i].num_cpus = 1;
 -- 
 2.40.1
 
