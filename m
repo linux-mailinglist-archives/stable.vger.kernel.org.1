@@ -2,60 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B6557B83D3
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 870E67B83E9
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:43:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242936AbjJDPkd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 11:40:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36276 "EHLO
+        id S243053AbjJDPm7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 11:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242945AbjJDPkb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:40:31 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AD85E5;
-        Wed,  4 Oct 2023 08:40:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F8BC433C8;
-        Wed,  4 Oct 2023 15:40:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696434023;
-        bh=df8KZVSxg7fpWft4bfdcKowE+/YFVMdWA60GDzXP/SA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qyB2BHOgxF8GQS+OT5aMzixIcMGOMkIlJUdzNz/zkYVW/2KT5hD86elSvXvBR1aOF
-         HfuB84Exme7eqzvCmMfGVZX/2zLHvshcJ3nrn1AX1ps9db0ZvOorxznPT4zjrpP4dg
-         iVpclSSmQ7mAGXzlLhf3loHYTM74I5o80TwUBnDH6jGuGU8HpdB4uM1Fee2b/+J6SC
-         MXXLWRCYRQCRQOXCdti2Od2bORajK0Zaq8Ry1lCkjZTrY8p3xi3lDLM3OgmYsRKs+Y
-         jt4qYeZ6qP4QJGnktKPIyWSzR3ALNypsNV9PDwoI+YPlHEJcGT6f59/3SjDIqDR+pl
-         sfJYoEVjcffTA==
-Date:   Wed, 4 Oct 2023 16:40:16 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Takashi Iwai <tiwai@suse.de>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] soundwire: fix initializing sysfs for same devices on
- different buses
-Message-ID: <d648c3d1-53ac-4021-ac7f-6a81f1a72dd3@sirena.org.uk>
-References: <20231004130243.493617-1-krzysztof.kozlowski@linaro.org>
- <6628a5f6-ed22-4039-b5c2-2301c05c7e3e@linux.intel.com>
- <2023100453-perfected-palm-3503@gregkh>
- <624b044a-1f0f-4961-8b57-cb5346e7b0d3@linux.intel.com>
- <2023100452-craziness-unpopular-7d97@gregkh>
- <04c5911a-a894-44b3-9f0e-fe9e6de203f2@linux.intel.com>
+        with ESMTP id S243042AbjJDPm5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:42:57 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B00FCC1;
+        Wed,  4 Oct 2023 08:42:53 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-538575a38ffso3907094a12.1;
+        Wed, 04 Oct 2023 08:42:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696434172; x=1697038972; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/TZ0cLLVJr73B5tC0V7kuMDaUss3xsEKn1sTfrrLPDo=;
+        b=apH7J2DY9hhG+W69C2WZA3J3bKdaaa3eofRF3R6zMNnhkC48b/K02fEUkUPkHtRFoR
+         TP5QW56HblG0byG3ZZSzzWS5kUlwlH4cERz0jnhMROdrKmClZK1l7it3MQCo9ntBO/KI
+         4/KCbsLn/FouSMc3AEDLnCNb05X+e9fi1zGQBUsRoGAW7p2GiVqGTKgk85pGvJlKVJN6
+         h96wAaV8VrgCM9HERX+VBNpf01fSp3D6DvCSACYvlEzf5HETlahw9DhsTCHKVL1mWqtG
+         RvPe531ccVoLJfRSas3goJzut3yE+71q4yNaingIRwovjAnhW5HnOmkv3kgk78M09C7E
+         oO5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696434172; x=1697038972;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/TZ0cLLVJr73B5tC0V7kuMDaUss3xsEKn1sTfrrLPDo=;
+        b=dR5IhdgudszR+HZ1toxyP1XkVwhgdiT9WX42PSV2WeVZ2kB/70egVXUTX6I8emrnrq
+         vYxYLOE4/8Rzow/nlNOhNv7jqxsuukIgDh7Lq9A0Z0JuNIbkH0st1opmWrYSvpJJ64Ad
+         Uz6aOdWeM4IFnX7Fcn5+8vO0WLkCZYwnfQPiUhvTv1xWdoyohFx70o+H6hB0FmV2JOGv
+         82CzYhvFEAnZlYPSL+BiPuEyk4Nu+GIROKYniZff+czo7aAqelrsHSJ9Qa7MkMYLvCDn
+         Fhzcl8OdXvo3Hsn4IJzYUy3nerimMaNkyhs4kX1ib+5tf8PgTrTIwnlNJi9Jd8nI8LUm
+         J8bw==
+X-Gm-Message-State: AOJu0YzbKKRDBljYYXrVr42fCXGuWKmhuIxsXXDJqLq4tiPNtYqSmuhj
+        F/8DsvqSRa2WPh1vhAj5UBw=
+X-Google-Smtp-Source: AGHT+IF/GlvH2fDgX6S4Y/ycALdmg9uA2Z1lYYAC0apmWMwpZz5d1uaOJZ4OeUfS4TopmxPDKmLyQw==
+X-Received: by 2002:a17:906:2215:b0:9ae:4536:728e with SMTP id s21-20020a170906221500b009ae4536728emr2636706ejs.72.1696434171812;
+        Wed, 04 Oct 2023 08:42:51 -0700 (PDT)
+Received: from gmail.com (1F2EF530.nat.pool.telekom.hu. [31.46.245.48])
+        by smtp.gmail.com with ESMTPSA id dv8-20020a170906b80800b009ada9f7217asm2968686ejb.88.2023.10.04.08.42.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Oct 2023 08:42:51 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Wed, 4 Oct 2023 17:42:49 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     Namhyung Kim <namhyung@kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Ravi Bangoria <ravi.bangoria@amd.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] perf/core: Introduce cpuctx->cgrp_ctx_list
+Message-ID: <ZR2H+WtRexpOffTw@gmail.com>
+References: <20231004040844.797044-1-namhyung@kernel.org>
+ <ZR0TtjhGT+Em+/ti@gmail.com>
+ <CAM9d7cjvs_CYZH6rGdujSQ8d+MBa616t95dr9oAFs-Nzr_XUOQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="dDaSu7Aom8sfapyH"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <04c5911a-a894-44b3-9f0e-fe9e6de203f2@linux.intel.com>
-X-Cookie: This space intentionally left blank.
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAM9d7cjvs_CYZH6rGdujSQ8d+MBa616t95dr9oAFs-Nzr_XUOQ@mail.gmail.com>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -63,44 +81,13 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---dDaSu7Aom8sfapyH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+* Namhyung Kim <namhyung@kernel.org> wrote:
 
-On Wed, Oct 04, 2023 at 11:16:09AM -0400, Pierre-Louis Bossart wrote:
+> Maybe I can add an option to perf bench sched to place
+> senders and receivers in different cgroups.
 
-> > matching the name is fine (if you are matching it against an existing
-> > name) but expecting the name to be anything specific is not going to
-> > work as the name is dynamic and can/will change each boot.
+That would certainly be useful to measure cgroups overhead.
 
-> Not following, sorry.
+Thanks,
 
-> In the SoundWire context, the device name directly follows the ACPI or
-> Device Tree information, I don't really see how its name could change on
-> each boot (assuming no DSDT override or overlays of course). The
-> platform descriptors are pretty much fixed, aren't they?
-
-> Intel and AMD make such assumptions on names for pretty much all machine
-> drivers, it's not really something new - probably 15+ years? Adding Mark
-> Brown in CC: to make sure he's aware of this thread.
-
-FWIW DT is much less affected here since all the inter-device references
-are explicit in the DT (modulo needing to work around breakage) so we're
-not hard coding in the way ACPI so unfortunately requires.
-
---dDaSu7Aom8sfapyH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUdh2AACgkQJNaLcl1U
-h9Dg2Qf/TTjAvH7rrj88JqMZ5e52pLzKRkYsKDlpQCGarm9GRbl3b1sbc4orAwYD
-nhn2kx1bqWrZANB5fm83hWKNBRtiWvVbau+lR+CbxXAAi/D26zd7btSx7k2yfXNW
-g5jolY8IR1AR1CNOwIFWPvO9uvZGlfFU96iiPTyaOHMyytLu91ygLkbFY7ImfOWe
-bnlr48wrjy4idRhEH1L8ST+CHS/ENx+lj3uXXYy0zfeiyZNgWFAQ5C0m95lfecF+
-ZZmVnKbRikSlIL+ZHAtukR1ywmRkWdOTy8Y2y4yfYzquIQ2QoMa3GDr3wAq8L8/q
-VSutkzU+PAYOrHHfngft5JSKCGv5QQ==
-=AlEx
------END PGP SIGNATURE-----
-
---dDaSu7Aom8sfapyH--
+	Ingo
