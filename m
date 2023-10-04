@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D577B8935
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 691A97B8943
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243741AbjJDSXn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:23:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34374 "EHLO
+        id S244147AbjJDSYN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:24:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244132AbjJDSXn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:23:43 -0400
+        with ESMTP id S244136AbjJDSYM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:24:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149D3AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:23:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60305C433C8;
-        Wed,  4 Oct 2023 18:23:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D7A2AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:24:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B93C433C8;
+        Wed,  4 Oct 2023 18:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443817;
-        bh=EG0Ce1qXW715R6gtHkt3PAg9NGJCnk9MilGOjQcL074=;
+        s=korg; t=1696443849;
+        bh=LXo/pn2aA1d9APUtcM3+dyn+TQ3zZIli4Zd1g8+3lPE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G+NlEGCA467OpvFzeFU7v8aBtQiLMi4whuFDZPEQCSmVv+sCGaxoJXnIS1GKAH2SP
-         ljV6lNl/JQSTyqMnC6X5JbUEBmwWVwL5/XsNfQaIWfc0D/W40ZLBp0Rssnq3IqzCJb
-         UBqP+G0jH71cBm+ajxxLTEqwTeHjx6QMlq46/Pbo=
+        b=KWhGdoYr0SQyXWlEYVMO+OJml4R/nqCsXdkaHjyn0NXrxTFHvpXQxdx4UKVkp3qFZ
+         cbxyZcsTP1l1iUmecwEyZ3X6K95o5mRj1pYM/pnvjESr1AYUnDFZGww5TflX7umTPl
+         GNcA/xOyxOY8k8KUAbNeho0whLN7ojYYf2xzoGGU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Kevin Rich <kevinrich1337@gmail.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 023/321] netfilter: nf_tables: fix memleak when more than 255 elements expired
-Date:   Wed,  4 Oct 2023 19:52:48 +0200
-Message-ID: <20231004175230.252231379@linuxfoundation.org>
+Subject: [PATCH 6.5 024/321] netfilter: nf_tables: disallow rule removal from chain binding
+Date:   Wed,  4 Oct 2023 19:52:49 +0200
+Message-ID: <20231004175230.286705894@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
 References: <20231004175229.211487444@linuxfoundation.org>
@@ -54,85 +54,100 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit cf5000a7787cbc10341091d37245a42c119d26c5 upstream.
+[ Upstream commit f15f29fd4779be8a418b66e9d52979bb6d6c2325 ]
 
-When more than 255 elements expired we're supposed to switch to a new gc
-container structure.
+Chain binding only requires the rule addition/insertion command within
+the same transaction. Removal of rules from chain bindings within the
+same transaction makes no sense, userspace does not utilize this
+feature. Replace nft_chain_is_bound() check to nft_chain_binding() in
+rule deletion commands. Replace command implies a rule deletion, reject
+this command too.
 
-This never happens: u8 type will wrap before reaching the boundary
-and nft_trans_gc_space() always returns true.
+Rule flush command can also safely rely on this nft_chain_binding()
+check because unbound chains are not allowed since 62e1e94b246e
+("netfilter: nf_tables: reject unbound chain set before commit phase").
 
-This means we recycle the initial gc container structure and
-lose track of the elements that came before.
-
-While at it, don't deref 'gc' after we've passed it to call_rcu.
-
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: d0e2c7de92c7 ("netfilter: nf_tables: add NFT_CHAIN_BINDING")
+Reported-by: Kevin Rich <kevinrich1337@gmail.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |  2 +-
- net/netfilter/nf_tables_api.c     | 10 ++++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index a4455f4995abf..7c816359d5a98 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1682,7 +1682,7 @@ struct nft_trans_gc {
- 	struct net		*net;
- 	struct nft_set		*set;
- 	u32			seq;
--	u8			count;
-+	u16			count;
- 	void			*priv[NFT_TRANS_GC_BATCHCOUNT];
- 	struct rcu_head		rcu;
- };
 diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index bba8042f721a5..1c2fb32bfa5f6 100644
+index 1c2fb32bfa5f6..db0a56b2da705 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -9559,12 +9559,15 @@ static int nft_trans_gc_space(struct nft_trans_gc *trans)
- struct nft_trans_gc *nft_trans_gc_queue_async(struct nft_trans_gc *gc,
- 					      unsigned int gc_seq, gfp_t gfp)
- {
-+	struct nft_set *set;
+@@ -1432,7 +1432,7 @@ static int nft_flush_table(struct nft_ctx *ctx)
+ 		if (!nft_is_active_next(ctx->net, chain))
+ 			continue;
+ 
+-		if (nft_chain_is_bound(chain))
++		if (nft_chain_binding(chain))
+ 			continue;
+ 
+ 		ctx->chain = chain;
+@@ -1477,7 +1477,7 @@ static int nft_flush_table(struct nft_ctx *ctx)
+ 		if (!nft_is_active_next(ctx->net, chain))
+ 			continue;
+ 
+-		if (nft_chain_is_bound(chain))
++		if (nft_chain_binding(chain))
+ 			continue;
+ 
+ 		ctx->chain = chain;
+@@ -2910,6 +2910,9 @@ static int nf_tables_delchain(struct sk_buff *skb, const struct nfnl_info *info,
+ 		return PTR_ERR(chain);
+ 	}
+ 
++	if (nft_chain_binding(chain))
++		return -EOPNOTSUPP;
 +
- 	if (nft_trans_gc_space(gc))
- 		return gc;
+ 	nft_ctx_init(&ctx, net, skb, info->nlh, family, table, chain, nla);
  
-+	set = gc->set;
- 	nft_trans_gc_queue_work(gc);
+ 	if (nla[NFTA_CHAIN_HOOK]) {
+@@ -3968,6 +3971,11 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 	}
  
--	return nft_trans_gc_alloc(gc->set, gc_seq, gfp);
-+	return nft_trans_gc_alloc(set, gc_seq, gfp);
- }
- 
- void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
-@@ -9579,15 +9582,18 @@ void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
- 
- struct nft_trans_gc *nft_trans_gc_queue_sync(struct nft_trans_gc *gc, gfp_t gfp)
- {
-+	struct nft_set *set;
+ 	if (info->nlh->nlmsg_flags & NLM_F_REPLACE) {
++		if (nft_chain_binding(chain)) {
++			err = -EOPNOTSUPP;
++			goto err_destroy_flow_rule;
++		}
 +
- 	if (WARN_ON_ONCE(!lockdep_commit_lock_is_held(gc->net)))
- 		return NULL;
+ 		err = nft_delrule(&ctx, old_rule);
+ 		if (err < 0)
+ 			goto err_destroy_flow_rule;
+@@ -4075,7 +4083,7 @@ static int nf_tables_delrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 			NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_CHAIN]);
+ 			return PTR_ERR(chain);
+ 		}
+-		if (nft_chain_is_bound(chain))
++		if (nft_chain_binding(chain))
+ 			return -EOPNOTSUPP;
+ 	}
  
- 	if (nft_trans_gc_space(gc))
- 		return gc;
+@@ -4109,7 +4117,7 @@ static int nf_tables_delrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 		list_for_each_entry(chain, &table->chains, list) {
+ 			if (!nft_is_active_next(net, chain))
+ 				continue;
+-			if (nft_chain_is_bound(chain))
++			if (nft_chain_binding(chain))
+ 				continue;
  
-+	set = gc->set;
- 	call_rcu(&gc->rcu, nft_trans_gc_trans_free);
+ 			ctx.chain = chain;
+@@ -11070,7 +11078,7 @@ static void __nft_release_table(struct net *net, struct nft_table *table)
+ 	ctx.family = table->family;
+ 	ctx.table = table;
+ 	list_for_each_entry(chain, &table->chains, list) {
+-		if (nft_chain_is_bound(chain))
++		if (nft_chain_binding(chain))
+ 			continue;
  
--	return nft_trans_gc_alloc(gc->set, 0, gfp);
-+	return nft_trans_gc_alloc(set, 0, gfp);
- }
- 
- void nft_trans_gc_queue_sync_done(struct nft_trans_gc *trans)
+ 		ctx.chain = chain;
 -- 
 2.40.1
 
