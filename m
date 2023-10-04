@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B49937B87D0
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B9197B88EB
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243638AbjJDSJj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:09:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34538 "EHLO
+        id S243988AbjJDSU5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243880AbjJDSJj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:39 -0400
+        with ESMTP id S244002AbjJDSU5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E775AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD985C433C8;
-        Wed,  4 Oct 2023 18:09:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC74EA6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06774C433CA;
+        Wed,  4 Oct 2023 18:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442975;
-        bh=1x6fN8pmWzOn+je0D2z9K5VgOpdsczf/Q/Fet/fuWZM=;
+        s=korg; t=1696443653;
+        bh=2c0vTsofcm/wKTxRTJxpx7RHfabH/v2d/sb+tGgwrkI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X2XhlYZVTzWI5Hv3WRQzKGM1HebtUGmUwzA3CxawNO+kF6nSh+z05odulwrZU0JHc
-         lx4fSdVr0hnBsNIjRwZDoGz58AI6Pm4IGUqhCdA0aSkcYR0nI0ZMXCf22TZRQMvPDZ
-         cKdLeDu149OIbbI8xuQifChrUFCmNzb3nFh7/SQY=
+        b=DZrbjuHOZs+nc2YsReuPAdZ9JI7oNGt+hiVlQJegHxF3H2LenK8GZhIt0ZuwRyLQA
+         2LVH5o7YGpeAZ+5r2kXSrbrDHaqJaA7r1/29CZ4FVmnfpq4L/wh/9qn7ZGK8kCmSh2
+         KY1yI/+0AG6jvd9nG7MJoUUJdt5WpQOJxu0RDme8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>,
-        Marcus Seyfarth <m.seyfarth@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>
-Subject: [PATCH 5.15 175/183] bpf: Fix BTF_ID symbol generation collision in tools/
+        patches@lists.linux.dev, Frederic Weisbecker <frederic@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Subject: [PATCH 6.1 233/259] timers: Tag (hr)timer softirq as hotplug safe
 Date:   Wed,  4 Oct 2023 19:56:46 +0200
-Message-ID: <20231004175211.405023981@linuxfoundation.org>
+Message-ID: <20231004175228.060555400@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-commit c0bb9fb0e52a64601d38b3739b729d9138d4c8a1 upstream.
+commit 1a6a464774947920dcedcf7409be62495c7cedd0 upstream.
 
-Marcus and Satya reported an issue where BTF_ID macro generates same
-symbol in separate objects and that breaks final vmlinux link.
+Specific stress involving frequent CPU-hotplug operations, such as
+running rcutorture for example, may trigger the following message:
 
-  ld.lld: error: ld-temp.o <inline asm>:14577:1: symbol
-  '__BTF_ID__struct__cgroup__624' is already defined
+  NOHZ tick-stop error: local softirq work is pending, handler #02!!!"
 
-This can be triggered under specific configs when __COUNTER__ happens to
-be the same for the same symbol in two different translation units,
-which is already quite unlikely to happen.
+This happens in the CPU-down hotplug process, after
+CPUHP_AP_SMPBOOT_THREADS whose teardown callback parks ksoftirqd, and
+before the target CPU shuts down through CPUHP_AP_IDLE_DEAD. In this
+fragile intermediate state, softirqs waiting for threaded handling may be
+forever ignored and eventually reported by the idle task as in the above
+example.
 
-Add __LINE__ number suffix to make BTF_ID symbol more unique, which is
-not a complete fix, but it would help for now and meanwhile we can work
-on better solution as suggested by Andrii.
+However some vectors are known to be safe as long as the corresponding
+subsystems have teardown callbacks handling the migration of their
+events. The above error message reports pending timers softirq although
+this vector can be considered as hotplug safe because the
+CPUHP_TIMERS_PREPARE teardown callback performs the necessary migration
+of timers after the death of the CPU. Hrtimers also have a similar
+hotplug handling.
 
+Therefore this error message, as far as (hr-)timers are concerned, can
+be considered spurious and the relevant softirq vectors can be marked as
+hotplug safe.
+
+Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Cc: stable@vger.kernel.org
-Reported-by: Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>
-Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1913
-Debugged-by: Nathan Chancellor <nathan@kernel.org>
-Co-developed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/CAEf4Bzb5KQ2_LmhN769ifMeSJaWfebccUasQOfQKaOd0nQ51tw@mail.gmail.com/
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lore.kernel.org/r/20230915-bpf_collision-v3-2-263fc519c21f@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/r/20230912104406.312185-6-frederic@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/include/linux/btf_ids.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/interrupt.h |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/tools/include/linux/btf_ids.h
-+++ b/tools/include/linux/btf_ids.h
-@@ -38,7 +38,7 @@ asm(							\
- 	____BTF_ID(symbol)
+--- a/include/linux/interrupt.h
++++ b/include/linux/interrupt.h
+@@ -569,8 +569,12 @@ enum
+  * 	2) rcu_report_dead() reports the final quiescent states.
+  *
+  * _ IRQ_POLL: irq_poll_cpu_dead() migrates the queue
++ *
++ * _ (HR)TIMER_SOFTIRQ: (hr)timers_dead_cpu() migrates the queue
+  */
+-#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(RCU_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ))
++#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(TIMER_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ) |\
++				   BIT(HRTIMER_SOFTIRQ) | BIT(RCU_SOFTIRQ))
++
  
- #define __ID(prefix) \
--	__PASTE(prefix, __COUNTER__)
-+	__PASTE(__PASTE(prefix, __COUNTER__), __LINE__)
- 
- /*
-  * The BTF_ID defines unique symbol for each ID pointing
+ /* map softirq index to softirq name. update 'softirq_to_name' in
+  * kernel/softirq.c when adding a new softirq.
 
 
