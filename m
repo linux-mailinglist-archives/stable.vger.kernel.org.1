@@ -2,288 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A24D7B770E
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 06:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 472B47B776E
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 07:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235579AbjJDESz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 00:18:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
+        id S232570AbjJDFU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 01:20:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232426AbjJDESx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 00:18:53 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D908BAC;
-        Tue,  3 Oct 2023 21:18:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B66C433C8;
-        Wed,  4 Oct 2023 04:18:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696393129;
-        bh=HU/DLIrOBlN27rLsRxFRl07rsSCNHWyvNMs4M/m/hc4=;
-        h=Date:To:From:Subject:From;
-        b=wqi3eqoauhCYmc+XJl7yUO1n4WiHLRHvs0rPwX03FWYgmigKH/4DS3TfZO1PImQxb
-         FYHcxsKPiF4SuPnu0jZKiJWuCrmxp24FA/i64S0CkJrZyuStsHN6Xg1rFKaJj764+a
-         6MFzaN3SmibCVgzBxyAuZT3zXbqOAMRdtbHeXCJY=
-Date:   Tue, 03 Oct 2023 21:18:48 -0700
-To:     mm-commits@vger.kernel.org, willy@infradead.org,
-        stable@vger.kernel.org, muchun.song@linux.dev,
-        mike.kravetz@oracle.com, riel@surriel.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + hugetlbfs-close-race-between-madv_dontneed-and-page-fault.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231004041849.70B66C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232178AbjJDFU0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 01:20:26 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6589EA7;
+        Tue,  3 Oct 2023 22:20:22 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qnuIy-0004Si-FW; Wed, 04 Oct 2023 07:20:16 +0200
+Message-ID: <3e86e69c-64bc-4776-9ee8-75b98be1bf3e@leemhuis.info>
+Date:   Wed, 4 Oct 2023 07:20:15 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: bluetooth issues since kernel 6.4 - not discovering other bt
+ devices - /linux/drivers/bluetooth/btusb.c
+Content-Language: en-US, de-DE
+To:     =?UTF-8?Q?Erik_Dob=C3=A1k?= <erik.dobak@gmail.com>,
+        =?UTF-8?Q?Tomasz_Mo=C5=84?= <tomasz.mon@nordicsemi.no>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Bluetooth <linux-bluetooth@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Mediatek <linux-mediatek@lists.infradead.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+References: <CAH7-e5sb+kT_LRb1_y-c5JaFN0=KrrRT97otUPKzTCgzGsVdrQ@mail.gmail.com>
+ <ZRtWcgiH5JhD5NU2@debian.me>
+ <CAH7-e5uspavg_VBJxKLOKJfU3nAq-OrPqzihF2opffY-ReiC-w@mail.gmail.com>
+ <834062302e6a98e773dc4b03d7ed568a0f1c44fc.camel@nordicsemi.no>
+ <CAH7-e5uZzmnFJAJrG664G6_JbK--DfbKC50aeVN5gMMxDJ51UA@mail.gmail.com>
+ <ba7aaaed859ea2c4f5aac597deb382cceab33d65.camel@nordicsemi.no>
+ <CAH7-e5unq6ggNjVkSsriUAmpvk4s7-NCYJrZnLK_3BjFO_Dceg@mail.gmail.com>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <CAH7-e5unq6ggNjVkSsriUAmpvk4s7-NCYJrZnLK_3BjFO_Dceg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1696396822;a9ff83e7;
+X-HE-SMSGID: 1qnuIy-0004Si-FW
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 03.10.23 18:10, Erik Dobák wrote:
+> Sorry Tomasz,
+> 
+> that must have been a reality glitch with your commit (cant find the
+> page refering to your commit now). But yes it is probably a kernel bug
+> as it manifests kernels 6.4 and not in the 6.1 LTS version.
 
-The patch titled
-     Subject: hugetlbfs: close race between MADV_DONTNEED and page fault
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     hugetlbfs-close-race-between-madv_dontneed-and-page-fault.patch
+Could you then please try a bisection to get us closer to the problem?
+You might want to try mainline (e.g. 6.6-rc4) first, with a bit of luck
+the problem is fixed there already; FWIW, a few BT fixes that might or
+might not be relevant for your case are heading that way and will most
+likely be in 6.6-rc5.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/hugetlbfs-close-race-between-madv_dontneed-and-page-fault.patch
+Ciao, Thorsten
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Rik van Riel <riel@surriel.com>
-Subject: hugetlbfs: close race between MADV_DONTNEED and page fault
-Date: Tue, 3 Oct 2023 23:25:04 -0400
-
-Malloc libraries, like jemalloc and tcalloc, take decisions on when to
-call madvise independently from the code in the main application.
-
-This sometimes results in the application page faulting on an address,
-right after the malloc library has shot down the backing memory with
-MADV_DONTNEED.
-
-Usually this is harmless, because we always have some 4kB pages sitting
-around to satisfy a page fault.  However, with hugetlbfs systems often
-allocate only the exact number of huge pages that the application wants.
-
-Due to TLB batching, hugetlbfs MADV_DONTNEED will free pages outside of
-any lock taken on the page fault path, which can open up the following
-race condition:
-
-       CPU 1                            CPU 2
-
-       MADV_DONTNEED
-       unmap page
-       shoot down TLB entry
-                                       page fault
-                                       fail to allocate a huge page
-                                       killed with SIGBUS
-       free page
-
-Fix that race by pulling the locking from __unmap_hugepage_final_range
-into helper functions called from zap_page_range_single.  This ensures
-page faults stay locked out of the MADV_DONTNEED VMA until the huge pages
-have actually been freed.
-
-Link: https://lkml.kernel.org/r/20231004032814.3108383-3-riel@surriel.com
-Fixes: 04ada095dcfc ("hugetlb: don't delete vma_lock in hugetlb MADV_DONTNEED processing")
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/hugetlb.h |   35 +++++++++++++++++++++++++++++++++--
- mm/hugetlb.c            |   28 ++++++++++++++++------------
- mm/memory.c             |   13 ++++++++-----
- 3 files changed, 57 insertions(+), 19 deletions(-)
-
---- a/include/linux/hugetlb.h~hugetlbfs-close-race-between-madv_dontneed-and-page-fault
-+++ a/include/linux/hugetlb.h
-@@ -139,7 +139,7 @@ struct page *hugetlb_follow_page_mask(st
- void unmap_hugepage_range(struct vm_area_struct *,
- 			  unsigned long, unsigned long, struct page *,
- 			  zap_flags_t);
--void __unmap_hugepage_range_final(struct mmu_gather *tlb,
-+void __unmap_hugepage_range(struct mmu_gather *tlb,
- 			  struct vm_area_struct *vma,
- 			  unsigned long start, unsigned long end,
- 			  struct page *ref_page, zap_flags_t zap_flags);
-@@ -246,6 +246,25 @@ int huge_pmd_unshare(struct mm_struct *m
- void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
- 				unsigned long *start, unsigned long *end);
- 
-+extern void __hugetlb_zap_begin(struct vm_area_struct *vma,
-+				unsigned long *begin, unsigned long *end);
-+extern void __hugetlb_zap_end(struct vm_area_struct *vma,
-+			      struct zap_details *details);
-+
-+static inline void hugetlb_zap_begin(struct vm_area_struct *vma,
-+				     unsigned long *start, unsigned long *end)
-+{
-+	if (is_vm_hugetlb_page(vma))
-+		__hugetlb_zap_begin(vma, start, end);
-+}
-+
-+static inline void hugetlb_zap_end(struct vm_area_struct *vma,
-+				   struct zap_details *details)
-+{
-+	if (is_vm_hugetlb_page(vma))
-+		__hugetlb_zap_end(vma, details);
-+}
-+
- void hugetlb_vma_lock_read(struct vm_area_struct *vma);
- void hugetlb_vma_unlock_read(struct vm_area_struct *vma);
- void hugetlb_vma_lock_write(struct vm_area_struct *vma);
-@@ -298,6 +317,18 @@ static inline void adjust_range_if_pmd_s
- {
- }
- 
-+static inline void hugetlb_zap_begin(
-+				struct vm_area_struct *vma,
-+				unsigned long *start, unsigned long *end)
-+{
-+}
-+
-+static inline void hugetlb_zap_end(
-+				struct vm_area_struct *vma,
-+				struct zap_details *details)
-+{
-+}
-+
- static inline struct page *hugetlb_follow_page_mask(
-     struct vm_area_struct *vma, unsigned long address, unsigned int flags,
-     unsigned int *page_mask)
-@@ -443,7 +474,7 @@ static inline long hugetlb_change_protec
- 	return 0;
- }
- 
--static inline void __unmap_hugepage_range_final(struct mmu_gather *tlb,
-+static inline void __unmap_hugepage_range(struct mmu_gather *tlb,
- 			struct vm_area_struct *vma, unsigned long start,
- 			unsigned long end, struct page *ref_page,
- 			zap_flags_t zap_flags)
---- a/mm/hugetlb.c~hugetlbfs-close-race-between-madv_dontneed-and-page-fault
-+++ a/mm/hugetlb.c
-@@ -5348,9 +5348,9 @@ int move_hugetlb_page_tables(struct vm_a
- 	return len + old_addr - old_end;
- }
- 
--static void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
--				   unsigned long start, unsigned long end,
--				   struct page *ref_page, zap_flags_t zap_flags)
-+void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+			    unsigned long start, unsigned long end,
-+			    struct page *ref_page, zap_flags_t zap_flags)
- {
- 	struct mm_struct *mm = vma->vm_mm;
- 	unsigned long address;
-@@ -5479,16 +5479,19 @@ static void __unmap_hugepage_range(struc
- 		tlb_flush_mmu_tlbonly(tlb);
- }
- 
--void __unmap_hugepage_range_final(struct mmu_gather *tlb,
--			  struct vm_area_struct *vma, unsigned long start,
--			  unsigned long end, struct page *ref_page,
--			  zap_flags_t zap_flags)
-+void __hugetlb_zap_begin(struct vm_area_struct *vma,
-+			 unsigned long *start, unsigned long *end)
- {
-+	adjust_range_if_pmd_sharing_possible(vma, start, end);
- 	hugetlb_vma_lock_write(vma);
--	i_mmap_lock_write(vma->vm_file->f_mapping);
-+	if (vma->vm_file)
-+		i_mmap_lock_write(vma->vm_file->f_mapping);
-+}
- 
--	/* mmu notification performed in caller */
--	__unmap_hugepage_range(tlb, vma, start, end, ref_page, zap_flags);
-+void __hugetlb_zap_end(struct vm_area_struct *vma,
-+		       struct zap_details *details)
-+{
-+	zap_flags_t zap_flags = details ? details->zap_flags : 0;
- 
- 	if (zap_flags & ZAP_FLAG_UNMAP) {	/* final unmap */
- 		/*
-@@ -5501,11 +5504,12 @@ void __unmap_hugepage_range_final(struct
- 		 * someone else.
- 		 */
- 		__hugetlb_vma_unlock_write_free(vma);
--		i_mmap_unlock_write(vma->vm_file->f_mapping);
- 	} else {
--		i_mmap_unlock_write(vma->vm_file->f_mapping);
- 		hugetlb_vma_unlock_write(vma);
- 	}
-+
-+	if (vma->vm_file)
-+		i_mmap_unlock_write(vma->vm_file->f_mapping);
- }
- 
- void unmap_hugepage_range(struct vm_area_struct *vma, unsigned long start,
---- a/mm/memory.c~hugetlbfs-close-race-between-madv_dontneed-and-page-fault
-+++ a/mm/memory.c
-@@ -1692,7 +1692,7 @@ static void unmap_single_vma(struct mmu_
- 			if (vma->vm_file) {
- 				zap_flags_t zap_flags = details ?
- 				    details->zap_flags : 0;
--				__unmap_hugepage_range_final(tlb, vma, start, end,
-+				__unmap_hugepage_range(tlb, vma, start, end,
- 							     NULL, zap_flags);
- 			}
- 		} else
-@@ -1737,8 +1737,12 @@ void unmap_vmas(struct mmu_gather *tlb,
- 				start_addr, end_addr);
- 	mmu_notifier_invalidate_range_start(&range);
- 	do {
--		unmap_single_vma(tlb, vma, start_addr, end_addr, &details,
-+		unsigned long start = start_addr;
-+		unsigned long end = end_addr;
-+		hugetlb_zap_begin(vma, &start, &end);
-+		unmap_single_vma(tlb, vma, start, end, &details,
- 				 mm_wr_locked);
-+		hugetlb_zap_end(vma, &details);
- 	} while ((vma = mas_find(mas, tree_end - 1)) != NULL);
- 	mmu_notifier_invalidate_range_end(&range);
- }
-@@ -1762,9 +1766,7 @@ void zap_page_range_single(struct vm_are
- 	lru_add_drain();
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
- 				address, end);
--	if (is_vm_hugetlb_page(vma))
--		adjust_range_if_pmd_sharing_possible(vma, &range.start,
--						     &range.end);
-+	hugetlb_zap_begin(vma, &range.start, &range.end);
- 	tlb_gather_mmu(&tlb, vma->vm_mm);
- 	update_hiwater_rss(vma->vm_mm);
- 	mmu_notifier_invalidate_range_start(&range);
-@@ -1775,6 +1777,7 @@ void zap_page_range_single(struct vm_are
- 	unmap_single_vma(&tlb, vma, address, end, details, false);
- 	mmu_notifier_invalidate_range_end(&range);
- 	tlb_finish_mmu(&tlb);
-+	hugetlb_zap_end(vma, details);
- }
- 
- /**
-_
-
-Patches currently in -mm which might be from riel@surriel.com are
-
-hugetlbfs-extend-hugetlb_vma_lock-to-private-vmas.patch
-hugetlbfs-close-race-between-madv_dontneed-and-page-fault.patch
-
+> On Tue, 3 Oct 2023 at 15:08, Tomasz Moń <tomasz.mon@nordicsemi.no> wrote:
+>>
+>> On Tue, 2023-10-03 at 14:42 +0200, Erik Dobák wrote:
+>>> Sure here you go:
+>>>
+>>> # lsusb -d 04c5:1670 -v
+>>>
+>>> Bus 001 Device 004: ID 04c5:1670 Fujitsu, Ltd Bluetooth Radio
+>>> Device Descriptor:
+>>>   bLength                18
+>>>   bDescriptorType         1
+>>>   bcdUSB               1.00
+>>>   bDeviceClass          224 Wireless
+>>>   bDeviceSubClass         1 Radio Frequency
+>>>   bDeviceProtocol         1 Bluetooth
+>>>   bMaxPacketSize0        64
+>>>   idVendor           0x04c5 Fujitsu, Ltd
+>>>   idProduct          0x1670
+>>>   bcdDevice            0.00
+>>>   iManufacturer           1 Realtek
+>>>   iProduct                2 Bluetooth Radio
+>>>   iSerial                 3 00e04c000001
+>>>   bNumConfigurations      1
+>>>   Configuration Descriptor:
+>>>     bLength                 9
+>>>     bDescriptorType         2
+>>>     wTotalLength       0x00b1
+>>>     bNumInterfaces          2
+>>>     bConfigurationValue     1
+>>>     iConfiguration          0
+>>>     bmAttributes         0xe0
+>>>       Self Powered
+>>>       Remote Wakeup
+>>>     MaxPower              500mA
+>>>     Interface Descriptor:
+>>>       bLength                 9
+>>>       bDescriptorType         4
+>>>       bInterfaceNumber        0
+>>>       bAlternateSetting       0
+>>>       bNumEndpoints           3
+>>>       bInterfaceClass       224 Wireless
+>>>       bInterfaceSubClass      1 Radio Frequency
+>>>       bInterfaceProtocol      1 Bluetooth
+>>>       iInterface              4 Bluetooth Radio
+>>
+>> I have no idea why you referred to my commits, i.e. c13380a55522
+>> ("Bluetooth: btusb: Do not require hardcoded interface numbers") later
+>> fixed by eaac6e223a0d ("Bluetooth: btusb: Fix bluetooth on Intel
+>> Macbook 2014") in the first place.
+>>
+>> BTUSB_IFNUM_2 is not even getting set for this device and therefore the
+>> patches have no impact on your issue. If you were affected, like the
+>> Intel Macbook 2014 was, then bear in mind that the issue would manifest
+>> as btusb driver not even binding to the device. From your emails
+>> however it appears that the issue is something different.
+>>
+>> I honestly don't think it has anything to do with my patches. If you
+>> know a Linux version where your bluetooth device works, then the next
+>> step would be to bisect to find the first bad commit.
+>>
+>> Best Regards,
+>> Tomasz Moń
+> 
+> 
