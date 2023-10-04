@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 216E67B8B34
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D25AE7B890B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:22:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233841AbjJDSsZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:48:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41788 "EHLO
+        id S243717AbjJDSWN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:22:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244549AbjJDSgh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:36:37 -0400
+        with ESMTP id S244066AbjJDSWN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:22:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40C75AB
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:36:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B30C433C7;
-        Wed,  4 Oct 2023 18:36:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01864A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:22:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D63C433C7;
+        Wed,  4 Oct 2023 18:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444593;
-        bh=JdjwXNBkcdCiQtdVQQkYGGo0E3Raznud+lkRhtTYZOQ=;
+        s=korg; t=1696443729;
+        bh=eM9xJXctzCsbynJceorpSao3IppHCXJpgWXM0Tdl7ao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JFl+RNTzzK2YfJsgirzZ8Xps8YXI8cIK4d+M2ouz+6MQnxMCZ3eRz/rxDEhdYc83Y
-         vvL7DzMXiE1h66RqjDE4Fxl3jtUvXzPPzwwZkVZ97PRaC+BCg3vFUEkGzUxYRj5zqv
-         edDTMCVXoxwTGY/PN+Hww04g4OwTlJ9Er/hA9DnY=
+        b=hNj3q1mWIH+tlvTJgkr5Dp6TWTFlNWepqfMcegY5Q+4cBUDDj5o0MaakiCcugYx6X
+         c6DNKVM9nt0yXHFiBB/j+RlXBPaL/5z2TSTE/mewkThpTC0UlmZWTTK6qy3sn41pgn
+         DBZn/8RNcQKxjMeNfkMyUXxygEQWNJEpolnqeec0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-        =?UTF-8?q?Ma=C3=ADra=20Canal?= <mairacanal@riseup.net>,
-        Arthur Grillo <arthurgrillo@riseup.net>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Daniel Latypov <dlatypov@google.com>
-Subject: [PATCH 6.5 277/321] drm/tests: Fix incorrect argument in drm_test_mm_insert_range
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        John Garry <john.g.garry@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 249/259] ata: libata-core: Do not register PM operations for SAS ports
 Date:   Wed,  4 Oct 2023 19:57:02 +0200
-Message-ID: <20231004175242.109605201@linuxfoundation.org>
+Message-ID: <20231004175228.814705360@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,45 +53,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 2ba157983974ae1b6aaef7d4953812020d6f1eb5 upstream.
+commit 75e2bd5f1ede42a2bc88aa34b431e1ace8e0bea0 upstream.
 
-While drm_mm test was converted form igt selftest to kunit, unexpected
-value of "end" argument equal "start" was introduced to one of calls to a
-function that executes the drm_test_mm_insert_range for specific start/end
-pair of arguments.  As a consequence, DRM_MM_BUG_ON(end <= start) is
-triggered.  Fix it by restoring the original value.
+libsas does its own domain based power management of ports. For such
+ports, libata should not use a device type defining power management
+operations as executing these operations for suspend/resume in addition
+to libsas calls to ata_sas_port_suspend() and ata_sas_port_resume() is
+not necessary (and likely dangerous to do, even though problems are not
+seen currently).
 
-Fixes: fc8d29e298cf ("drm: selftest: convert drm_mm selftest to KUnit")
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: "Maíra Canal" <mairacanal@riseup.net>
-Cc: Arthur Grillo <arthurgrillo@riseup.net>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Daniel Latypov <dlatypov@google.com>
-Cc: stable@vger.kernel.org # v6.1+
-Reviewed-by: Maíra Canal <mairacanal@riseup.net>
-Signed-off-by: Maíra Canal <mairacanal@riseup.net>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230911130323.7037-2-janusz.krzysztofik@linux.intel.com
+Introduce the new ata_port_sas_type device_type for ports managed by
+libsas. This new device type is used in ata_tport_add() and is defined
+without power management operations.
+
+Fixes: 2fcbdcb4c802 ("[SCSI] libata: export ata_port suspend/resume infrastructure for sas")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tests/drm_mm_test.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-core.c      |    2 +-
+ drivers/ata/libata-transport.c |    9 ++++++++-
+ drivers/ata/libata.h           |    2 ++
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/tests/drm_mm_test.c
-+++ b/drivers/gpu/drm/tests/drm_mm_test.c
-@@ -939,7 +939,7 @@ static void drm_test_mm_insert_range(str
- 		KUNIT_ASSERT_FALSE(test, __drm_test_mm_insert_range(test, count, size, 0, max - 1));
- 		KUNIT_ASSERT_FALSE(test, __drm_test_mm_insert_range(test, count, size, 0, max / 2));
- 		KUNIT_ASSERT_FALSE(test, __drm_test_mm_insert_range(test, count, size,
--								    max / 2, max / 2));
-+								    max / 2, max));
- 		KUNIT_ASSERT_FALSE(test, __drm_test_mm_insert_range(test, count, size,
- 								    max / 4 + 1, 3 * max / 4 - 1));
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5173,7 +5173,7 @@ EXPORT_SYMBOL_GPL(ata_host_resume);
+ #endif
  
+ const struct device_type ata_port_type = {
+-	.name = "ata_port",
++	.name = ATA_PORT_TYPE_NAME,
+ #ifdef CONFIG_PM
+ 	.pm = &ata_port_pm_ops,
+ #endif
+--- a/drivers/ata/libata-transport.c
++++ b/drivers/ata/libata-transport.c
+@@ -266,6 +266,10 @@ void ata_tport_delete(struct ata_port *a
+ 	put_device(dev);
+ }
+ 
++static const struct device_type ata_port_sas_type = {
++	.name = ATA_PORT_TYPE_NAME,
++};
++
+ /** ata_tport_add - initialize a transport ATA port structure
+  *
+  * @parent:	parent device
+@@ -283,7 +287,10 @@ int ata_tport_add(struct device *parent,
+ 	struct device *dev = &ap->tdev;
+ 
+ 	device_initialize(dev);
+-	dev->type = &ata_port_type;
++	if (ap->flags & ATA_FLAG_SAS_HOST)
++		dev->type = &ata_port_sas_type;
++	else
++		dev->type = &ata_port_type;
+ 
+ 	dev->parent = parent;
+ 	ata_host_get(ap->host);
+--- a/drivers/ata/libata.h
++++ b/drivers/ata/libata.h
+@@ -30,6 +30,8 @@ enum {
+ 	ATA_DNXFER_QUIET	= (1 << 31),
+ };
+ 
++#define ATA_PORT_TYPE_NAME	"ata_port"
++
+ extern atomic_t ata_print_id;
+ extern int atapi_passthru16;
+ extern int libata_fua;
 
 
