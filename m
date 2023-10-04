@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DF047B89D3
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 183687B8891
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244282AbjJDS3q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:29:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40894 "EHLO
+        id S244087AbjJDSRe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:17:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233805AbjJDS3q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:46 -0400
+        with ESMTP id S244085AbjJDSRd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B90A39E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F847C433C7;
-        Wed,  4 Oct 2023 18:29:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4FCCAD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282A6C433C7;
+        Wed,  4 Oct 2023 18:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444182;
-        bh=WXTTi2LKzfKLfg7/iknwAiDPkUbIQGLgE59/K1JX+5Q=;
+        s=korg; t=1696443449;
+        bh=/tkbAhIUsUricz7Vj9qZqF6sGQOOr5LhHcY4azyu6Yk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RVgJ/adrsz9KVFjw4q77H8mpt+OKzsOEtEfsJuzCR3R1TuEMuxKf3vrlh1TBUjpuL
-         TY/Ui0flNv8q99p3YnuamCxnsJZHpooRqior9ArrWZmNzv47vrqNueQj8qRrTUS9rR
-         UXOyFiWjiZu5D3PMINGJeiguEAgCcKx/Eq7cpYNU=
+        b=TRbm7O67XALbNdMikhcwRoZ5RAgTt4YN4UsqJn7HoR/fFMYy8bCO2CzK7XPaXIml4
+         xDSWFhqr+Qjql1cdBW4cCpYB4OY/huQWq7nNO5j6F1yiFv578IiWmUzD8JSsvxBvqO
+         5mTTQTvVO192C7HqDK25dxRJX+HFjfal+qSNtsjg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 160/321] dma-debug: dont call __dma_entry_alloc_check_leak() under free_entries_lock
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@oracle.com>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 132/259] power: supply: rk817: Fix node refcount leak
 Date:   Wed,  4 Oct 2023 19:55:05 +0200
-Message-ID: <20231004175236.665874512@linuxfoundation.org>
+Message-ID: <20231004175223.428180761@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,212 +51,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit fb5a4315591dae307a65fc246ca80b5159d296e1 ]
+[ Upstream commit 488ef44c068e79752dba8eda0b75f524f111a695 ]
 
-__dma_entry_alloc_check_leak() calls into printk -> serial console
-output (qcom geni) and grabs port->lock under free_entries_lock
-spin lock, which is a reverse locking dependency chain as qcom_geni
-IRQ handler can call into dma-debug code and grab free_entries_lock
-under port->lock.
+Dan Carpenter reports that the Smatch static checker warning has found
+that there is another refcount leak in the probe function. While
+of_node_put() was added in one of the return paths, it should in
+fact be added for ALL return paths that return an error and at driver
+removal time.
 
-Move __dma_entry_alloc_check_leak() call out of free_entries_lock
-scope so that we don't acquire serial console's port->lock under it.
-
-Trimmed-down lockdep splat:
-
- The existing dependency chain (in reverse order) is:
-
-               -> #2 (free_entries_lock){-.-.}-{2:2}:
-        _raw_spin_lock_irqsave+0x60/0x80
-        dma_entry_alloc+0x38/0x110
-        debug_dma_map_page+0x60/0xf8
-        dma_map_page_attrs+0x1e0/0x230
-        dma_map_single_attrs.constprop.0+0x6c/0xc8
-        geni_se_rx_dma_prep+0x40/0xcc
-        qcom_geni_serial_isr+0x310/0x510
-        __handle_irq_event_percpu+0x110/0x244
-        handle_irq_event_percpu+0x20/0x54
-        handle_irq_event+0x50/0x88
-        handle_fasteoi_irq+0xa4/0xcc
-        handle_irq_desc+0x28/0x40
-        generic_handle_domain_irq+0x24/0x30
-        gic_handle_irq+0xc4/0x148
-        do_interrupt_handler+0xa4/0xb0
-        el1_interrupt+0x34/0x64
-        el1h_64_irq_handler+0x18/0x24
-        el1h_64_irq+0x64/0x68
-        arch_local_irq_enable+0x4/0x8
-        ____do_softirq+0x18/0x24
-        ...
-
-               -> #1 (&port_lock_key){-.-.}-{2:2}:
-        _raw_spin_lock_irqsave+0x60/0x80
-        qcom_geni_serial_console_write+0x184/0x1dc
-        console_flush_all+0x344/0x454
-        console_unlock+0x94/0xf0
-        vprintk_emit+0x238/0x24c
-        vprintk_default+0x3c/0x48
-        vprintk+0xb4/0xbc
-        _printk+0x68/0x90
-        register_console+0x230/0x38c
-        uart_add_one_port+0x338/0x494
-        qcom_geni_serial_probe+0x390/0x424
-        platform_probe+0x70/0xc0
-        really_probe+0x148/0x280
-        __driver_probe_device+0xfc/0x114
-        driver_probe_device+0x44/0x100
-        __device_attach_driver+0x64/0xdc
-        bus_for_each_drv+0xb0/0xd8
-        __device_attach+0xe4/0x140
-        device_initial_probe+0x1c/0x28
-        bus_probe_device+0x44/0xb0
-        device_add+0x538/0x668
-        of_device_add+0x44/0x50
-        of_platform_device_create_pdata+0x94/0xc8
-        of_platform_bus_create+0x270/0x304
-        of_platform_populate+0xac/0xc4
-        devm_of_platform_populate+0x60/0xac
-        geni_se_probe+0x154/0x160
-        platform_probe+0x70/0xc0
-        ...
-
-               -> #0 (console_owner){-...}-{0:0}:
-        __lock_acquire+0xdf8/0x109c
-        lock_acquire+0x234/0x284
-        console_flush_all+0x330/0x454
-        console_unlock+0x94/0xf0
-        vprintk_emit+0x238/0x24c
-        vprintk_default+0x3c/0x48
-        vprintk+0xb4/0xbc
-        _printk+0x68/0x90
-        dma_entry_alloc+0xb4/0x110
-        debug_dma_map_sg+0xdc/0x2f8
-        __dma_map_sg_attrs+0xac/0xe4
-        dma_map_sgtable+0x30/0x4c
-        get_pages+0x1d4/0x1e4 [msm]
-        msm_gem_pin_pages_locked+0x38/0xac [msm]
-        msm_gem_pin_vma_locked+0x58/0x88 [msm]
-        msm_ioctl_gem_submit+0xde4/0x13ac [msm]
-        drm_ioctl_kernel+0xe0/0x15c
-        drm_ioctl+0x2e8/0x3f4
-        vfs_ioctl+0x30/0x50
-        ...
-
- Chain exists of:
-   console_owner --> &port_lock_key --> free_entries_lock
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(free_entries_lock);
-                                lock(&port_lock_key);
-                                lock(free_entries_lock);
-   lock(console_owner);
-
-                *** DEADLOCK ***
-
- Call trace:
-  dump_backtrace+0xb4/0xf0
-  show_stack+0x20/0x30
-  dump_stack_lvl+0x60/0x84
-  dump_stack+0x18/0x24
-  print_circular_bug+0x1cc/0x234
-  check_noncircular+0x78/0xac
-  __lock_acquire+0xdf8/0x109c
-  lock_acquire+0x234/0x284
-  console_flush_all+0x330/0x454
-  console_unlock+0x94/0xf0
-  vprintk_emit+0x238/0x24c
-  vprintk_default+0x3c/0x48
-  vprintk+0xb4/0xbc
-  _printk+0x68/0x90
-  dma_entry_alloc+0xb4/0x110
-  debug_dma_map_sg+0xdc/0x2f8
-  __dma_map_sg_attrs+0xac/0xe4
-  dma_map_sgtable+0x30/0x4c
-  get_pages+0x1d4/0x1e4 [msm]
-  msm_gem_pin_pages_locked+0x38/0xac [msm]
-  msm_gem_pin_vma_locked+0x58/0x88 [msm]
-  msm_ioctl_gem_submit+0xde4/0x13ac [msm]
-  drm_ioctl_kernel+0xe0/0x15c
-  drm_ioctl+0x2e8/0x3f4
-  vfs_ioctl+0x30/0x50
-  ...
-
-Reported-by: Rob Clark <robdclark@chromium.org>
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 54c03bfd094f ("power: supply: Fix refcount leak in rk817_charger_probe")
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Closes: https://lore.kernel.org/linux-pm/dc0bb0f8-212d-4be7-be69-becd2a3f9a80@kili.mountain/
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Link: https://lore.kernel.org/r/20230920145644.57964-1-macroalpha82@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/debug.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/power/supply/rk817_charger.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index f190651bcaddc..06366acd27b08 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -637,15 +637,19 @@ static struct dma_debug_entry *__dma_entry_alloc(void)
- 	return entry;
+diff --git a/drivers/power/supply/rk817_charger.c b/drivers/power/supply/rk817_charger.c
+index f1b431aa0e4f2..e30ef601d91da 100644
+--- a/drivers/power/supply/rk817_charger.c
++++ b/drivers/power/supply/rk817_charger.c
+@@ -1058,6 +1058,13 @@ static void rk817_charging_monitor(struct work_struct *work)
+ 	queue_delayed_work(system_wq, &charger->work, msecs_to_jiffies(8000));
  }
  
--static void __dma_entry_alloc_check_leak(void)
-+/*
-+ * This should be called outside of free_entries_lock scope to avoid potential
-+ * deadlocks with serial consoles that use DMA.
-+ */
-+static void __dma_entry_alloc_check_leak(u32 nr_entries)
- {
--	u32 tmp = nr_total_entries % nr_prealloc_entries;
-+	u32 tmp = nr_entries % nr_prealloc_entries;
- 
- 	/* Shout each time we tick over some multiple of the initial pool */
- 	if (tmp < DMA_DEBUG_DYNAMIC_ENTRIES) {
- 		pr_info("dma_debug_entry pool grown to %u (%u00%%)\n",
--			nr_total_entries,
--			(nr_total_entries / nr_prealloc_entries));
-+			nr_entries,
-+			(nr_entries / nr_prealloc_entries));
- 	}
- }
- 
-@@ -656,8 +660,10 @@ static void __dma_entry_alloc_check_leak(void)
-  */
- static struct dma_debug_entry *dma_entry_alloc(void)
- {
-+	bool alloc_check_leak = false;
- 	struct dma_debug_entry *entry;
- 	unsigned long flags;
-+	u32 nr_entries;
- 
- 	spin_lock_irqsave(&free_entries_lock, flags);
- 	if (num_free_entries == 0) {
-@@ -667,13 +673,17 @@ static struct dma_debug_entry *dma_entry_alloc(void)
- 			pr_err("debugging out of memory - disabling\n");
- 			return NULL;
- 		}
--		__dma_entry_alloc_check_leak();
-+		alloc_check_leak = true;
-+		nr_entries = nr_total_entries;
- 	}
- 
- 	entry = __dma_entry_alloc();
- 
- 	spin_unlock_irqrestore(&free_entries_lock, flags);
- 
-+	if (alloc_check_leak)
-+		__dma_entry_alloc_check_leak(nr_entries);
++static void rk817_cleanup_node(void *data)
++{
++	struct device_node *node = data;
 +
- #ifdef CONFIG_STACKTRACE
- 	entry->stack_len = stack_trace_save(entry->stack_entries,
- 					    ARRAY_SIZE(entry->stack_entries),
++	of_node_put(node);
++}
++
+ static int rk817_charger_probe(struct platform_device *pdev)
+ {
+ 	struct rk808 *rk808 = dev_get_drvdata(pdev->dev.parent);
+@@ -1074,11 +1081,13 @@ static int rk817_charger_probe(struct platform_device *pdev)
+ 	if (!node)
+ 		return -ENODEV;
+ 
++	ret = devm_add_action_or_reset(&pdev->dev, rk817_cleanup_node, node);
++	if (ret)
++		return ret;
++
+ 	charger = devm_kzalloc(&pdev->dev, sizeof(*charger), GFP_KERNEL);
+-	if (!charger) {
+-		of_node_put(node);
++	if (!charger)
+ 		return -ENOMEM;
+-	}
+ 
+ 	charger->rk808 = rk808;
+ 
 -- 
 2.40.1
 
