@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCA807B8A15
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AB397B879A
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244350AbjJDScG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:32:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52960 "EHLO
+        id S243529AbjJDSHN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:07:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244331AbjJDScF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:05 -0400
+        with ESMTP id S243829AbjJDSHM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4005C98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC0AC433C7;
-        Wed,  4 Oct 2023 18:32:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF7AC1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D203DC433C9;
+        Wed,  4 Oct 2023 18:07:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444320;
-        bh=kaPTba2NDkc1pzgOVXQpVUKm2nw7JkFZfQ/ZcEV6R80=;
+        s=korg; t=1696442829;
+        bh=QniTWhp3myWiEsWYMmtQT+IlKnfweV57QaFOc0VOAvs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pT8yLGLdSZjcgXDmqjVvvZYktCRhvt30m5D1txV85W0EDpR3nhopzrBKR+r1zQE2m
-         wTTU1Nz+bihkh7M1pxWFUBXYZ6QB9VauOOZl5J42Tz7MuCNJsGtWDHcns5duIx1I1U
-         U+Y+vw2GwOLtcB7j/hSXp/vSml9rOoOMMksw6Hvg=
+        b=Wff3xpO9NroZjIjUxOJCqSGKFDtSKz5tsj3/V5Ujg7zuhYW/iPONN35Raj+MfCkh2
+         Br1qyE+qx+xYaqhzTcN+WvMbzgA119k8+GDabPrqA6ci91It7l4aXvZ6zZOl+RL6Oa
+         2/qSp0qX4AxcCaJ0FJvXJzKb/jVSlI/44Wsqr5zY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Damien Le Moal <dlemoal@kernel.org>,
+        patches@lists.linux.dev, Timo Alho <talho@nvidia.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 181/321] ata: sata_mv: Fix incorrect string length computation in mv_dump_mem()
+Subject: [PATCH 5.15 095/183] clk: tegra: fix error return case for recalc_rate
 Date:   Wed,  4 Oct 2023 19:55:26 +0200
-Message-ID: <20231004175237.614471991@linuxfoundation.org>
+Message-ID: <20231004175207.883282222@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,45 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Timo Alho <talho@nvidia.com>
 
-[ Upstream commit e97eb65dd464e7f118a16a26337322d07eb653e2 ]
+[ Upstream commit a47b44fbb13f5e7a981b4515dcddc93a321ae89c ]
 
-snprintf() returns the "number of characters which *would* be generated for
-the given input", not the size *really* generated.
+tegra-bpmp clocks driver makes implicit conversion of signed error
+code to unsigned value in recalc_rate operation. The behavior for
+recalc_rate, according to it's specification, should be that "If the
+driver cannot figure out a rate for this clock, it must return 0."
 
-In order to avoid too large values for 'o' (and potential negative values
-for "sizeof(linebuf) o") use scnprintf() instead of snprintf().
-
-Note that given the "w < 4" in the for loop, the buffer can NOT
-overflow, but using the *right* function is always better.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Fixes: ca6f2796eef7 ("clk: tegra: Add BPMP clock driver")
+Signed-off-by: Timo Alho <talho@nvidia.com>
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Link: https://lore.kernel.org/r/20230912112951.2330497-1-cyndis@kapsi.fi
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/sata_mv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/tegra/clk-bpmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-index d404e631d1527..68e660e4cc410 100644
---- a/drivers/ata/sata_mv.c
-+++ b/drivers/ata/sata_mv.c
-@@ -1255,8 +1255,8 @@ static void mv_dump_mem(struct device *dev, void __iomem *start, unsigned bytes)
+diff --git a/drivers/clk/tegra/clk-bpmp.c b/drivers/clk/tegra/clk-bpmp.c
+index 6ecf18f71c329..f6721f1d40885 100644
+--- a/drivers/clk/tegra/clk-bpmp.c
++++ b/drivers/clk/tegra/clk-bpmp.c
+@@ -159,7 +159,7 @@ static unsigned long tegra_bpmp_clk_recalc_rate(struct clk_hw *hw,
  
- 	for (b = 0; b < bytes; ) {
- 		for (w = 0, o = 0; b < bytes && w < 4; w++) {
--			o += snprintf(linebuf + o, sizeof(linebuf) - o,
--				      "%08x ", readl(start + b));
-+			o += scnprintf(linebuf + o, sizeof(linebuf) - o,
-+				       "%08x ", readl(start + b));
- 			b += sizeof(u32);
- 		}
- 		dev_dbg(dev, "%s: %p: %s\n",
+ 	err = tegra_bpmp_clk_transfer(clk->bpmp, &msg);
+ 	if (err < 0)
+-		return err;
++		return 0;
+ 
+ 	return response.rate;
+ }
 -- 
 2.40.1
 
