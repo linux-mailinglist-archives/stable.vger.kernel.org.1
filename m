@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF4F97B88A3
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 059AD7B877F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243766AbjJDSSL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:18:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58098 "EHLO
+        id S243809AbjJDSGE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:06:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244111AbjJDSSK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:10 -0400
+        with ESMTP id S243806AbjJDSGD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 212EBD7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD42C433C9;
-        Wed,  4 Oct 2023 18:18:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72FE6C6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D32C433C9;
+        Wed,  4 Oct 2023 18:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443486;
-        bh=LwXYaH6Dl3RYVeNFt0GxB8bvcNUYto/bmh+bOi5lo1w=;
+        s=korg; t=1696442759;
+        bh=F9MeQ5wPI6YaUGhfdMkqT8ed0MhcZa4LnPKss0EFKIU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f1bkQkGkmIKJvkGf9qNDy6C8quxGTR9FJZbIxBsVVqZmo3kdPhuTx4VSKkeweR7R0
-         xdFw+3xyzx6t154HkW11h5LoYPAnH34Msslu39/Yfufoy5hRTOMI1OP323G6dhS9ly
-         DXHlvl/bAEMRvC9TS+ACaqzjDGJNvqLsiRM1lP6Y=
+        b=X+sBwctqyPuR5qcwpSObRhjTdBSm93pn80mLgzG+WL5BfBXQSHvcPnQyVcpsy8+eM
+         UzyXaG9pFhGk2slN5mLwP7Y9fGzewz6oCplhjWFU0G+VfCWaP9ukm8MQtLOOh7turX
+         UdQ4Utkvcj6WKBaU1V4d2+wWXTUfWl5MMgNohmPc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/259] ring-buffer: Avoid softlockup in ring_buffer_resize()
-Date:   Wed,  4 Oct 2023 19:55:29 +0200
-Message-ID: <20231004175224.465701082@linuxfoundation.org>
+Subject: [PATCH 5.15 099/183] ARM: dts: ti: omap: motorola-mapphone: Fix abe_clkctrl warning on boot
+Date:   Wed,  4 Oct 2023 19:55:30 +0200
+Message-ID: <20231004175208.028225546@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,47 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit f6bd2c92488c30ef53b5bd80c52f0a7eee9d545a ]
+[ Upstream commit ac08bda1569b06b7a62c7b4dd00d4c3b28ceaaec ]
 
-When user resize all trace ring buffer through file 'buffer_size_kb',
-then in ring_buffer_resize(), kernel allocates buffer pages for each
-cpu in a loop.
+Commit 0840242e8875 ("ARM: dts: Configure clock parent for pwm vibra")
+attempted to fix the PWM settings but ended up causin an additional clock
+reparenting error:
 
-If the kernel preemption model is PREEMPT_NONE and there are many cpus
-and there are many buffer pages to be allocated, it may not give up cpu
-for a long time and finally cause a softlockup.
+clk: failed to reparent abe-clkctrl:0060:24 to sys_clkin_ck: -22
 
-To avoid it, call cond_resched() after each cpu buffer allocation.
+Only timer9 is in the PER domain and can use the sys_clkin_ck clock source.
+For timer8, the there is no sys_clkin_ck available as it's in the ABE
+domain, instead it should use syc_clk_div_ck. However, for power
+management, we want to use the always on sys_32k_ck instead.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20230906081930.3939106-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Carl Philipp Klemm <philipp@uvos.xyz>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 0840242e8875 ("ARM: dts: Configure clock parent for pwm vibra")
+Depends-on: 61978617e905 ("ARM: dts: Add minimal support for Droid Bionic xt875")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/motorola-mapphone-common.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index de55107aef5d5..42ad59a002365 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2212,6 +2212,8 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 				err = -ENOMEM;
- 				goto out_err;
- 			}
-+
-+			cond_resched();
- 		}
+diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+index a4423ff0df392..67c68c61ae029 100644
+--- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
++++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+@@ -614,12 +614,12 @@
+ /* Configure pwm clock source for timers 8 & 9 */
+ &timer8 {
+ 	assigned-clocks = <&abe_clkctrl OMAP4_TIMER8_CLKCTRL 24>;
+-	assigned-clock-parents = <&sys_clkin_ck>;
++	assigned-clock-parents = <&sys_32k_ck>;
+ };
  
- 		cpus_read_lock();
+ &timer9 {
+ 	assigned-clocks = <&l4_per_clkctrl OMAP4_TIMER9_CLKCTRL 24>;
+-	assigned-clock-parents = <&sys_clkin_ck>;
++	assigned-clock-parents = <&sys_32k_ck>;
+ };
+ 
+ /*
 -- 
 2.40.1
 
