@@ -2,143 +2,167 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 472B47B776E
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 07:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 665BB7B77CB
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 08:27:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232570AbjJDFU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 01:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56842 "EHLO
+        id S232934AbjJDG1N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 02:27:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232178AbjJDFU0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 01:20:26 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6589EA7;
-        Tue,  3 Oct 2023 22:20:22 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qnuIy-0004Si-FW; Wed, 04 Oct 2023 07:20:16 +0200
-Message-ID: <3e86e69c-64bc-4776-9ee8-75b98be1bf3e@leemhuis.info>
-Date:   Wed, 4 Oct 2023 07:20:15 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: bluetooth issues since kernel 6.4 - not discovering other bt
- devices - /linux/drivers/bluetooth/btusb.c
-Content-Language: en-US, de-DE
-To:     =?UTF-8?Q?Erik_Dob=C3=A1k?= <erik.dobak@gmail.com>,
-        =?UTF-8?Q?Tomasz_Mo=C5=84?= <tomasz.mon@nordicsemi.no>
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux Bluetooth <linux-bluetooth@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Mediatek <linux-mediatek@lists.infradead.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-References: <CAH7-e5sb+kT_LRb1_y-c5JaFN0=KrrRT97otUPKzTCgzGsVdrQ@mail.gmail.com>
- <ZRtWcgiH5JhD5NU2@debian.me>
- <CAH7-e5uspavg_VBJxKLOKJfU3nAq-OrPqzihF2opffY-ReiC-w@mail.gmail.com>
- <834062302e6a98e773dc4b03d7ed568a0f1c44fc.camel@nordicsemi.no>
- <CAH7-e5uZzmnFJAJrG664G6_JbK--DfbKC50aeVN5gMMxDJ51UA@mail.gmail.com>
- <ba7aaaed859ea2c4f5aac597deb382cceab33d65.camel@nordicsemi.no>
- <CAH7-e5unq6ggNjVkSsriUAmpvk4s7-NCYJrZnLK_3BjFO_Dceg@mail.gmail.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CAH7-e5unq6ggNjVkSsriUAmpvk4s7-NCYJrZnLK_3BjFO_Dceg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1696396822;a9ff83e7;
-X-HE-SMSGID: 1qnuIy-0004Si-FW
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S241391AbjJDG1M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 02:27:12 -0400
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F328D7
+        for <stable@vger.kernel.org>; Tue,  3 Oct 2023 23:27:05 -0700 (PDT)
+Received: from epcas1p4.samsung.com (unknown [182.195.41.48])
+        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20231004062702epoutp0273fa7a35855242d7105285468276650b~K049XAulH0881008810epoutp02A
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 06:27:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20231004062702epoutp0273fa7a35855242d7105285468276650b~K049XAulH0881008810epoutp02A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1696400822;
+        bh=s7oyeX/NDBMYZhgmHGE2LLyxIRmlD9XMyJ+CymvFogw=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=TAV88mGyszkJj26RspJDPxkBJdELXmoGct9gYTsl+/I4D6VdxrT4+plxdaTgKbnwG
+         tKdVKBeEo2HgOf7ES5U8dC5hSphX2t99M3fn+7Bs1C/cn6WJl0sILp0+QQTJ+ootD/
+         6hGr/mMVGRvBwfxW5esjV2w6xHnA6bsd99uoWOq4=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
+        20231004062701epcas1p3342dd9e2b6f6d79ee2bb74d7876a1085~K048sGCeR2668626686epcas1p3j;
+        Wed,  4 Oct 2023 06:27:01 +0000 (GMT)
+Received: from epsmgec1p1.samsung.com (unknown [182.195.38.242]) by
+        epsnrtp1.localdomain (Postfix) with ESMTP id 4S0l8j0h4bz4x9Q0; Wed,  4 Oct
+        2023 06:27:01 +0000 (GMT)
+Received: from epcas1p2.samsung.com ( [182.195.41.46]) by
+        epsmgec1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+        7A.0E.08657.4B50D156; Wed,  4 Oct 2023 15:27:01 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20231004062700epcas1p16fe36bf6b6a6e5d9d4adeaef32937480~K047_nG-B3078430784epcas1p15;
+        Wed,  4 Oct 2023 06:27:00 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20231004062700epsmtrp29aeecab0f185e12b41c3bed880e86a75~K047986IA2550625506epsmtrp2u;
+        Wed,  4 Oct 2023 06:27:00 +0000 (GMT)
+X-AuditID: b6c32a33-d6281a80000021d1-64-651d05b40d80
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        12.BD.08788.4B50D156; Wed,  4 Oct 2023 15:27:00 +0900 (KST)
+Received: from U18PB1-1707.tn.corp.samsungelectronics.net (unknown
+        [10.253.239.63]) by epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20231004062700epsmtip1ba02c13ffb7b5373c5fa5f49766b8985~K0471D2nb3150231502epsmtip1b;
+        Wed,  4 Oct 2023 06:27:00 +0000 (GMT)
+From:   Woo-kwang Lee <wookwang.lee@samsung.com>
+To:     gregkh@linuxfoundation.org
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, wookwang.lee@samsung.com,
+        sj1557.seo@samsung.com
+Subject: [PATCH] usb: core: add bos NULL pointer checking condition
+Date:   Wed,  4 Oct 2023 15:26:42 +0900
+Message-Id: <20231004062642.16431-1-wookwang.lee@samsung.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCJsWRmVeSWpSXmKPExsWy7bCmnu5WVtlUg12nmCyaF69ns7i8aw6b
+        xaJlrcwWW/4dYbVYsPERo8XvXWtYHNg89s9dw+7Rt2UVo8fnTXIBzFENjDaJRckZmWWpCql5
+        yfkpmXnptkqhIW66FkoKGfnFJbZK0YaGRnqGBuZ6RkZGeqZGsVZGpkoKeYm5qbZKFbpQvUoK
+        RckFQLW5lcVAA3JS9aDiesWpeSkOWfmlIMfqFSfmFpfmpesl5+cqKZQl5pQCjVDST/jGmDH/
+        9Gfmgll8FXveTmRuYPzE3cXIySEhYCJxq2k/cxcjF4eQwA5GidXH5kE5nxglJrztZgepEhL4
+        xiix/aY8TMf/e4tYIYr2Mkp8bzgN1dHBJNF9cwojSBWbgJ5E57ENYN0iAnIST27/AStiFmhn
+        lNjdd4gNJCEs4Cyx4Np1JhCbRUBVYsO8yWBxXgFbib61/9kh1slLrN5wAKxZQmA6u0TDvQNs
+        EAkXiZfLXrNC2MISr45vgWqQkvj8bi8bREMzo8TLm59YIJweRonjDzcxQVQZS3z6/BnoVg6g
+        mzQl1u/ShwgrSuz8PRfsBWYBPol3X3ugFghKnL7WzQxSLiHAK9HRJgQRVpNYfXYR1D0yEp8e
+        X4KyPSSWHbgLDbtYieM9m9gmMMrNQli2gJFxFaNYakFxbnpqsmGBIXK0bWIEJzgt4x2Ml+f/
+        0zvEyMTBeIhRgoNZSYQ3vUEmVYg3JbGyKrUoP76oNCe1+BBjMjD0JjJLiSbnA1NsXkm8oZmZ
+        pYWlkYmhsZmhIWFhE0sDEzMjEwtjS2MzJXFexQmzU4QE0hNLUrNTUwtSi2C2MHFwSjUwBcyd
+        t34Xc2plx/7I2T7CvJLHjwRf2PemfNLFwA6/5J4nHTHXmvMW8ip/Ohr2Kqno+eONAltn7lPq
+        eHxz9j/n3fyTzdbLM4aUyXmcVFLekCjxctsrl/cLDI16Lx+43sAq07zhQuKBJ15vpvz42d29
+        ftXU+fInRVR/2SUEsOzf6bxtf93qtty4HqkZ8r0b9a/EFQf8uOa2f3rL+ukW3ImmQQZGmS6P
+        /ZyWnTf1fM8d+2pzoXulmVjTq92HMn8kON5Sko3TXiLA0qX4qLn/tsr/G/aPJ3da8Zgmur3Y
+        EDHn0Zar9zSO7WYsPrrz97+v3ncWFDJoOltZzhUy/+s99cuS1ZJTrgR82+U0z77nteCi20os
+        xRmJhlrMRcWJALPjACQnBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrAJMWRmVeSWpSXmKPExsWy7bCSnO4WVtlUg5uPtSyaF69ns7i8aw6b
+        xaJlrcwWW/4dYbVYsPERo8XvXWtYHNg89s9dw+7Rt2UVo8fnTXIBzFFcNimpOZllqUX6dglc
+        GfNPf2YumMVXseftROYGxk/cXYycHBICJhL/7y1i7WLk4hAS2M0o8XdTAztEQkZi9/I/bF2M
+        HEC2sMThw8UQNW1MEtN3bWUEqWET0JPoPLYBrF5EQE7iye0/zCBFzAK9jBJTmneygSSEBZwl
+        Fly7zgRiswioSmyYNxkszitgK9G39j/UMnmJ1RsOME9g5FnAyLCKUTK1oDg3PbfYsMAoL7Vc
+        rzgxt7g0L10vOT93EyM4ULS0djDuWfVB7xAjEwfjIUYJDmYlEd70BplUId6UxMqq1KL8+KLS
+        nNTiQ4zSHCxK4rzfXvemCAmkJ5akZqemFqQWwWSZODilGpiyZJwKPk9W4VX2fqq6ZpuJkaA4
+        n23OftFP310OPmW6Ml3+ZO0mvitdXpLusl6yhyNeWXGczzzTrqS7Ma82nsP9yq0txtKhzXa8
+        pzj3vFs+iz/SoJPvVHyL9koXi0cuL+Z63lht5qTfuGrfBfVEzaPM152uKn9dopzSqh/Cvjqg
+        WbjzmprgZrsfom9WbOfW/hu9xfHdecWYLeXcIS6a/XIWt4Nvxyz2b3l0QPvKO8Peh/MWZmYt
+        OHDeMf7k1JzmJ/dfVEhbip6ZwmRhp/jn0hPmTW6FrCva+C6e+pzI4Cqz+L/e1tNrUq9zOSwJ
+        PWu8qi5oblNgu/2jiZP/N09XtmnfxGmu12lR4Gn3mvnUTSWW4oxEQy3mouJEAP+mIN2DAgAA
+X-CMS-MailID: 20231004062700epcas1p16fe36bf6b6a6e5d9d4adeaef32937480
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+X-ArchiveUser: EV
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20231004062700epcas1p16fe36bf6b6a6e5d9d4adeaef32937480
+References: <CGME20231004062700epcas1p16fe36bf6b6a6e5d9d4adeaef32937480@epcas1p1.samsung.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 03.10.23 18:10, Erik Dobák wrote:
-> Sorry Tomasz,
-> 
-> that must have been a reality glitch with your commit (cant find the
-> page refering to your commit now). But yes it is probably a kernel bug
-> as it manifests kernels 6.4 and not in the 6.1 LTS version.
+This issue occurs when connecting Galaxy S22 and abnormal SEC Dex Adapter.
+When the abnormal adapter is connected, kernel panic always occurs after a
+few seconds.
+This occurs due to unable to get BOS descriptor, usb_release_bos_descriptor
+set dev->bos = NULL.
 
-Could you then please try a bisection to get us closer to the problem?
-You might want to try mainline (e.g. 6.6-rc4) first, with a bit of luck
-the problem is fixed there already; FWIW, a few BT fixes that might or
-might not be relevant for your case are heading that way and will most
-likely be in 6.6-rc5.
+- usb_reset_and_verify_device
+  - hub_port_init
+  - usb_release_bos_descriptor
+    - dev->bos = NULL;
 
-Ciao, Thorsten
+hub_port_connect_change() calls portspeed(), and portspeed() calls hub_is_s
+uperspeedplus().
+Finally, hub_is_superspeedplus() calls hdev->bos->ssp_cap.
+It needs to check hdev->bos is NULL to prevent a kernel panic.
 
-> On Tue, 3 Oct 2023 at 15:08, Tomasz Moń <tomasz.mon@nordicsemi.no> wrote:
->>
->> On Tue, 2023-10-03 at 14:42 +0200, Erik Dobák wrote:
->>> Sure here you go:
->>>
->>> # lsusb -d 04c5:1670 -v
->>>
->>> Bus 001 Device 004: ID 04c5:1670 Fujitsu, Ltd Bluetooth Radio
->>> Device Descriptor:
->>>   bLength                18
->>>   bDescriptorType         1
->>>   bcdUSB               1.00
->>>   bDeviceClass          224 Wireless
->>>   bDeviceSubClass         1 Radio Frequency
->>>   bDeviceProtocol         1 Bluetooth
->>>   bMaxPacketSize0        64
->>>   idVendor           0x04c5 Fujitsu, Ltd
->>>   idProduct          0x1670
->>>   bcdDevice            0.00
->>>   iManufacturer           1 Realtek
->>>   iProduct                2 Bluetooth Radio
->>>   iSerial                 3 00e04c000001
->>>   bNumConfigurations      1
->>>   Configuration Descriptor:
->>>     bLength                 9
->>>     bDescriptorType         2
->>>     wTotalLength       0x00b1
->>>     bNumInterfaces          2
->>>     bConfigurationValue     1
->>>     iConfiguration          0
->>>     bmAttributes         0xe0
->>>       Self Powered
->>>       Remote Wakeup
->>>     MaxPower              500mA
->>>     Interface Descriptor:
->>>       bLength                 9
->>>       bDescriptorType         4
->>>       bInterfaceNumber        0
->>>       bAlternateSetting       0
->>>       bNumEndpoints           3
->>>       bInterfaceClass       224 Wireless
->>>       bInterfaceSubClass      1 Radio Frequency
->>>       bInterfaceProtocol      1 Bluetooth
->>>       iInterface              4 Bluetooth Radio
->>
->> I have no idea why you referred to my commits, i.e. c13380a55522
->> ("Bluetooth: btusb: Do not require hardcoded interface numbers") later
->> fixed by eaac6e223a0d ("Bluetooth: btusb: Fix bluetooth on Intel
->> Macbook 2014") in the first place.
->>
->> BTUSB_IFNUM_2 is not even getting set for this device and therefore the
->> patches have no impact on your issue. If you were affected, like the
->> Intel Macbook 2014 was, then bear in mind that the issue would manifest
->> as btusb driver not even binding to the device. From your emails
->> however it appears that the issue is something different.
->>
->> I honestly don't think it has anything to do with my patches. If you
->> know a Linux version where your bluetooth device works, then the next
->> step would be to bisect to find the first bad commit.
->>
->> Best Regards,
->> Tomasz Moń
-> 
-> 
+usb 3-1: new SuperSpeed Gen 1 USB device number 16 using xhci-hcd-exynos
+usb 3-1: unable to get BOS descriptor set
+usb 3-1: Product: USB3.0 Hub
+Unable to handle kernel NULL pointer dereference at virtual address 0000018
+
+Call trace:
+ hub_port_connect_change+0x8c/0x538
+ port_event+0x244/0x764
+ hub_event+0x158/0x474
+ process_one_work+0x204/0x550
+ worker_thread+0x28c/0x580
+ kthread+0x13c/0x178
+ ret_from_fork+0x10/0x30
+
+- hub_port_connect_change
+  - portspeed
+    - hub_is_superspeedplus
+
+Fixes: 0cdd49a1d1a4 ("usb: Support USB 3.1 extended port status request")
+Signed-off-by: Woo-kwang Lee <wookwang.lee@samsung.com>
+---
+ drivers/usb/core/hub.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/usb/core/hub.h b/drivers/usb/core/hub.h
+index 73f4482d833a..cc0c994e19e5 100644
+--- a/drivers/usb/core/hub.h
++++ b/drivers/usb/core/hub.h
+@@ -139,6 +139,8 @@ static inline int hub_is_superspeed(struct usb_device *hdev)
+ 
+ static inline int hub_is_superspeedplus(struct usb_device *hdev)
+ {
++	if (!hdev->bos)
++		return 0;
+ 	return (hdev->descriptor.bDeviceProtocol == USB_HUB_PR_SS &&
+ 		le16_to_cpu(hdev->descriptor.bcdUSB) >= 0x0310 &&
+ 		hdev->bos->ssp_cap);
+-- 
+2.17.1
+
