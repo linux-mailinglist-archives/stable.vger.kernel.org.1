@@ -2,50 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 792537B8836
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7999D7B89A7
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243960AbjJDSNv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:13:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44428 "EHLO
+        id S244236AbjJDS1y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:27:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243980AbjJDSNv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:51 -0400
+        with ESMTP id S244235AbjJDS1x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6220FBF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1D5C433C8;
-        Wed,  4 Oct 2023 18:13:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E13DCC9
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CF5C433C8;
+        Wed,  4 Oct 2023 18:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443225;
-        bh=tntzU62UfUfFtl74txsYSdO0dodZJ/ZNSyzwtEHDPg0=;
+        s=korg; t=1696444069;
+        bh=pQbqH82IjrttBA3sShwG3Xe3kto8wf/YX5WFiuV2Wmk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NTDv6/5LDVihnKXGRr8c2teMaYRBIoa/IZYikphVHREPz10XscuNuzGW4pc5Svw0U
-         TZGvRavFpwPhpcr4wYOw8/ibHo9Sv37hKXhYwG96KuhV4j/cAPJYe57Twmuf9ZOdzr
-         +RfwntCyegt3bJzY01Uo2uvHSZQC1OD4NZRr71Sg=
+        b=teObhdmwfcqOW4SB/55sZwRvbDmACHn508GjmPXJCuX1B3S005dlZVcVPcCgGNEPJ
+         iImVYfuUEnQwzad+YVyyjicKLLQghZNFBPcaYVzeoOhFop3yN+oKx6zZC1d+w0cwt2
+         nOCsk6HiOGoxMhklDCfE4J9C068L1mTFEPpwV/Jc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Prashant Malani <pmalani@chromium.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Benjamin Poirier <bpoirier@nvidia.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Ido Schimmel <idosch@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/259] platform/x86: intel_scu_ipc: Check status after timeout in busy_loop()
+Subject: [PATCH 6.5 091/321] vxlan: Add missing entries to vxlan_get_size()
 Date:   Wed,  4 Oct 2023 19:53:56 +0200
-Message-ID: <20231004175220.312525930@linuxfoundation.org>
+Message-ID: <20231004175233.427111651@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -57,92 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-[ Upstream commit e0b4ab3bb92bda8d12f55842614362989d5b2cb3 ]
+[ Upstream commit 4e4b1798cc90e376b8b61d0098b4093898a32227 ]
 
-It's possible for the polling loop in busy_loop() to get scheduled away
-for a long time.
+There are some attributes added by vxlan_fill_info() which are not
+accounted for in vxlan_get_size(). Add them.
 
-  status = ipc_read_status(scu); // status = IPC_STATUS_BUSY
-  <long time scheduled away>
-  if (!(status & IPC_STATUS_BUSY))
+I didn't find a way to trigger an actual problem from this miscalculation
+since there is usually extra space in netlink size calculations like
+if_nlmsg_size(); but maybe I just didn't search long enough.
 
-If this happens, then the status bit could change while the task is
-scheduled away and this function would never read the status again after
-timing out. Instead, the function will return -ETIMEDOUT when it's
-possible that scheduling didn't work out and the status bit was cleared.
-Bit polling code should always check the bit being polled one more time
-after the timeout in case this happens.
-
-Fix this by reading the status once more after the while loop breaks.
-The readl_poll_timeout() macro implements all of this, and it is
-shorter, so use that macro here to consolidate code and fix this.
-
-There were some concerns with using readl_poll_timeout() because it uses
-timekeeping, and timekeeping isn't running early on or during the late
-stages of system suspend or early stages of system resume, but an audit
-of the code concluded that this code isn't called during those times so
-it is safe to use the macro.
-
-Cc: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Fixes: e7b7ab3847c9 ("platform/x86: intel_scu_ipc: Sleeping is fine when polling")
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20230913212723.3055315-2-swboyd@chromium.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 3511494ce2f3 ("vxlan: Group Policy extension")
+Fixes: e1e5314de08b ("vxlan: implement GPE")
+Fixes: 0ace2ca89cbd ("vxlan: Use checksum partial with remote checksum offload")
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel_scu_ipc.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/platform/x86/intel_scu_ipc.c b/drivers/platform/x86/intel_scu_ipc.c
-index e7a3e34028178..96675bea88b10 100644
---- a/drivers/platform/x86/intel_scu_ipc.c
-+++ b/drivers/platform/x86/intel_scu_ipc.c
-@@ -19,6 +19,7 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/module.h>
- #include <linux/slab.h>
- 
-@@ -232,19 +233,15 @@ static inline u32 ipc_data_readl(struct intel_scu_ipc_dev *scu, u32 offset)
- /* Wait till scu status is busy */
- static inline int busy_loop(struct intel_scu_ipc_dev *scu)
- {
--	unsigned long end = jiffies + IPC_TIMEOUT;
--
--	do {
--		u32 status;
--
--		status = ipc_read_status(scu);
--		if (!(status & IPC_STATUS_BUSY))
--			return (status & IPC_STATUS_ERR) ? -EIO : 0;
-+	u8 status;
-+	int err;
- 
--		usleep_range(50, 100);
--	} while (time_before(jiffies, end));
-+	err = readx_poll_timeout(ipc_read_status, scu, status, !(status & IPC_STATUS_BUSY),
-+				 100, jiffies_to_usecs(IPC_TIMEOUT));
-+	if (err)
-+		return err;
- 
--	return -ETIMEDOUT;
-+	return (status & IPC_STATUS_ERR) ? -EIO : 0;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index c9a9373733c01..4b2db14472e6c 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -4296,6 +4296,10 @@ static size_t vxlan_get_size(const struct net_device *dev)
+ 		nla_total_size(sizeof(__u8)) + /* IFLA_VXLAN_REMCSUM_TX */
+ 		nla_total_size(sizeof(__u8)) + /* IFLA_VXLAN_REMCSUM_RX */
+ 		nla_total_size(sizeof(__u8)) + /* IFLA_VXLAN_LOCALBYPASS */
++		nla_total_size(0) + /* IFLA_VXLAN_GBP */
++		nla_total_size(0) + /* IFLA_VXLAN_GPE */
++		nla_total_size(0) + /* IFLA_VXLAN_REMCSUM_NOPARTIAL */
++		nla_total_size(sizeof(__u8)) + /* IFLA_VXLAN_VNIFILTER */
+ 		0;
  }
  
- /* Wait till ipc ioc interrupt is received or timeout in 10 HZ */
 -- 
 2.40.1
 
