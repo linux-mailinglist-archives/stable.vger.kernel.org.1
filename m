@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C8FF7B8824
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 846067B8964
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243949AbjJDSNE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:13:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52550 "EHLO
+        id S244190AbjJDSZY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:25:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243974AbjJDSND (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:03 -0400
+        with ESMTP id S244168AbjJDSZS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91A419E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0504C433C7;
-        Wed,  4 Oct 2023 18:12:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35BB4AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:25:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B5CC433C7;
+        Wed,  4 Oct 2023 18:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443180;
-        bh=RHnxYEnNF8s8UbBEqVJKABtZsgZweXGfUKlnEVBYRwY=;
+        s=korg; t=1696443913;
+        bh=v4BrXiLFFKS9ZhU1e7Mc29U11oaavRZNm6bgGDca54s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D4RbO1xHS8WE72m+Jo9NNSC3mXn3PlvY9UP+DVuvkurZojbyFpPANnnl9JFXYTSdr
-         /qjhfNOAFTDaZ9eWfWBnD+kZypRtQvV810KIZQ8if9C50x6hvgkx9fqVQO6G5svXDG
-         OvW31LbxphNdxS0OsryX9c65nvUrUbCkVpGrMvhg=
+        b=IZIuZYVYgAoLfRoziJUKfHrAMSMh/7otLpw8rm8Shd+BX6n7t1Xf9kxjC25H4aF1z
+         3R0ATLznwfJhnoHX/1tLaIs1quXPWQSwZmLSutsRbraURpoKv4/e8qlBMB1BjPPVjK
+         cEUcwMdiRltHQo5S32KePwvr2Xh/JoKBBlIdpPD4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Ferenc Fejes <ferenc.fejes@ericsson.com>,
+        Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/259] netfilter: nf_tables: fix memleak when more than 255 elements expired
-Date:   Wed,  4 Oct 2023 19:53:29 +0200
-Message-ID: <20231004175219.093422744@linuxfoundation.org>
+Subject: [PATCH 6.5 065/321] igc: Fix infinite initialization loop with early XDP redirect
+Date:   Wed,  4 Oct 2023 19:53:30 +0200
+Message-ID: <20231004175232.193074956@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,89 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-commit cf5000a7787cbc10341091d37245a42c119d26c5 upstream.
+[ Upstream commit cb47b1f679c4d83a5fa5f1852e472f844e41a3da ]
 
-When more than 255 elements expired we're supposed to switch to a new gc
-container structure.
+When an XDP redirect happens before the link is ready, that
+transmission will not finish and will timeout, causing an adapter
+reset. If the redirects do not stop, the adapter will not stop
+resetting.
 
-This never happens: u8 type will wrap before reaching the boundary
-and nft_trans_gc_space() always returns true.
+Wait for the driver to signal that there's a carrier before allowing
+transmissions to proceed.
 
-This means we recycle the initial gc container structure and
-lose track of the elements that came before.
+Previous code was relying that when __IGC_DOWN is cleared, the NIC is
+ready to transmit as all the queues are ready, what happens is that
+the carrier presence will only be signaled later, after the watchdog
+workqueue has a chance to run. And during this interval (between
+clearing __IGC_DOWN and the watchdog running) if any transmission
+happens the timeout is emitted (detected by igc_tx_timeout()) which
+causes the reset, with the potential for the infinite loop.
 
-While at it, don't deref 'gc' after we've passed it to call_rcu.
-
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 4ff320361092 ("igc: Add support for XDP_REDIRECT action")
+Reported-by: Ferenc Fejes <ferenc.fejes@ericsson.com>
+Closes: https://lore.kernel.org/netdev/0caf33cf6adb3a5bf137eeaa20e89b167c9986d5.camel@ericsson.com/
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Tested-by: Ferenc Fejes <ferenc.fejes@ericsson.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |  2 +-
- net/netfilter/nf_tables_api.c     | 10 ++++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index eb2103a9a7dd9..05d7a60a0e1f3 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1657,7 +1657,7 @@ struct nft_trans_gc {
- 	struct net		*net;
- 	struct nft_set		*set;
- 	u32			seq;
--	u8			count;
-+	u16			count;
- 	void			*priv[NFT_TRANS_GC_BATCHCOUNT];
- 	struct rcu_head		rcu;
- };
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 6e67fb999a256..b22f2d9ee4afc 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9190,12 +9190,15 @@ static int nft_trans_gc_space(struct nft_trans_gc *trans)
- struct nft_trans_gc *nft_trans_gc_queue_async(struct nft_trans_gc *gc,
- 					      unsigned int gc_seq, gfp_t gfp)
- {
-+	struct nft_set *set;
-+
- 	if (nft_trans_gc_space(gc))
- 		return gc;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 6f557e843e495..4e23b821c39ba 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6433,7 +6433,7 @@ static int igc_xdp_xmit(struct net_device *dev, int num_frames,
+ 	struct igc_ring *ring;
+ 	int i, drops;
  
-+	set = gc->set;
- 	nft_trans_gc_queue_work(gc);
+-	if (unlikely(test_bit(__IGC_DOWN, &adapter->state)))
++	if (unlikely(!netif_carrier_ok(dev)))
+ 		return -ENETDOWN;
  
--	return nft_trans_gc_alloc(gc->set, gc_seq, gfp);
-+	return nft_trans_gc_alloc(set, gc_seq, gfp);
- }
- 
- void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
-@@ -9210,15 +9213,18 @@ void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
- 
- struct nft_trans_gc *nft_trans_gc_queue_sync(struct nft_trans_gc *gc, gfp_t gfp)
- {
-+	struct nft_set *set;
-+
- 	if (WARN_ON_ONCE(!lockdep_commit_lock_is_held(gc->net)))
- 		return NULL;
- 
- 	if (nft_trans_gc_space(gc))
- 		return gc;
- 
-+	set = gc->set;
- 	call_rcu(&gc->rcu, nft_trans_gc_trans_free);
- 
--	return nft_trans_gc_alloc(gc->set, 0, gfp);
-+	return nft_trans_gc_alloc(set, 0, gfp);
- }
- 
- void nft_trans_gc_queue_sync_done(struct nft_trans_gc *trans)
+ 	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
 -- 
 2.40.1
 
