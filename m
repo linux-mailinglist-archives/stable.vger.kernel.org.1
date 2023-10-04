@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0ADD7B888A
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9A0D7B8A09
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243765AbjJDSRN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44802 "EHLO
+        id S244093AbjJDSbs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:31:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243756AbjJDSRM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:12 -0400
+        with ESMTP id S244419AbjJDSbd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:31:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CD3A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59D4C433C7;
-        Wed,  4 Oct 2023 18:17:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D426BF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:31:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4ACC433C8;
+        Wed,  4 Oct 2023 18:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443427;
-        bh=IMcEmVfD2IB6bYbj+3cI54YRTsAaVUj+LJhUTyM4GzY=;
+        s=korg; t=1696444290;
+        bh=usAGUsLsxfsN3jIj+F3SXhU0YYNVq13JX1dONzMfRW0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VcXG/yVZsHPD6SXE6Ch7wERn8TNmMKM40KxauVUukpFu14Il4bWHDLshuiaUxGB6U
-         CxAerjtXWsS4rzIl6GI4dpG0TgYs+q0m8hcqG2HrfHfFPJXLMVE0qi3wJGpuG3V+tK
-         LFFn+QF3GT3SlsmHtY1F8iMR2n9BRLXfS9HtA1wg=
+        b=w/D/aLdqXDVblG7+15n4xovhrklpfFWlE7U+arnvUttoWGHK3mXaFfU854Y81j4te
+         +khiMlH9KnlqnsrYHvYUJcqQiaEGF3bDGiaqQLWYWYDj2bJJzktIQmbQ7M28wiGh4z
+         xkKcgnwBNC9TJZIcbaVdOm4ex3tN890VEI5YhFn4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Javed Hasan <jhasan@marvell.com>,
-        Saurav Kashyap <skashyap@marvell.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 152/259] scsi: qedf: Add synchronization between I/O completions and abort
+Subject: [PATCH 6.5 180/321] net/smc: bugfix for smcr v2 server connect success statistic
 Date:   Wed,  4 Oct 2023 19:55:25 +0200
-Message-ID: <20231004175224.279666649@linuxfoundation.org>
+Message-ID: <20231004175237.578859333@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,101 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javed Hasan <jhasan@marvell.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit 7df0b2605489bef3f4223ad66f1f9bb8d50d4cd2 ]
+[ Upstream commit 6912e724832c47bb381eb1bd1e483ec8df0d0f0f ]
 
-Avoid race condition between I/O completion and abort processing by
-protecting the cmd_type with the rport lock.
+In the macro SMC_STAT_SERV_SUCC_INC, the smcd_version is used
+to determin whether to increase the v1 statistic or the v2
+statistic. It is correct for SMCD. But for SMCR, smcr_version
+should be used.
 
-Signed-off-by: Javed Hasan <jhasan@marvell.com>
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Link: https://lore.kernel.org/r/20230901060646.27885-1-skashyap@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_io.c   | 10 ++++++++--
- drivers/scsi/qedf/qedf_main.c |  7 ++++++-
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ net/smc/smc_stats.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_io.c b/drivers/scsi/qedf/qedf_io.c
-index 4750ec5789a80..10fe3383855c0 100644
---- a/drivers/scsi/qedf/qedf_io.c
-+++ b/drivers/scsi/qedf/qedf_io.c
-@@ -1904,6 +1904,7 @@ int qedf_initiate_abts(struct qedf_ioreq *io_req, bool return_scsi_cmd_on_abts)
- 		goto drop_rdata_kref;
- 	}
- 
-+	spin_lock_irqsave(&fcport->rport_lock, flags);
- 	if (!test_bit(QEDF_CMD_OUTSTANDING, &io_req->flags) ||
- 	    test_bit(QEDF_CMD_IN_CLEANUP, &io_req->flags) ||
- 	    test_bit(QEDF_CMD_IN_ABORT, &io_req->flags)) {
-@@ -1911,17 +1912,20 @@ int qedf_initiate_abts(struct qedf_ioreq *io_req, bool return_scsi_cmd_on_abts)
- 			 "io_req xid=0x%x sc_cmd=%p already in cleanup or abort processing or already completed.\n",
- 			 io_req->xid, io_req->sc_cmd);
- 		rc = 1;
-+		spin_unlock_irqrestore(&fcport->rport_lock, flags);
- 		goto drop_rdata_kref;
- 	}
- 
-+	/* Set the command type to abort */
-+	io_req->cmd_type = QEDF_ABTS;
-+	spin_unlock_irqrestore(&fcport->rport_lock, flags);
-+
- 	kref_get(&io_req->refcount);
- 
- 	xid = io_req->xid;
- 	qedf->control_requests++;
- 	qedf->packet_aborts++;
- 
--	/* Set the command type to abort */
--	io_req->cmd_type = QEDF_ABTS;
- 	io_req->return_scsi_cmd_on_abts = return_scsi_cmd_on_abts;
- 
- 	set_bit(QEDF_CMD_IN_ABORT, &io_req->flags);
-@@ -2210,7 +2214,9 @@ int qedf_initiate_cleanup(struct qedf_ioreq *io_req,
- 		  refcount, fcport, fcport->rdata->ids.port_id);
- 
- 	/* Cleanup cmds re-use the same TID as the original I/O */
-+	spin_lock_irqsave(&fcport->rport_lock, flags);
- 	io_req->cmd_type = QEDF_CLEANUP;
-+	spin_unlock_irqrestore(&fcport->rport_lock, flags);
- 	io_req->return_scsi_cmd_on_abts = return_scsi_cmd_on_abts;
- 
- 	init_completion(&io_req->cleanup_done);
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index c4f293d39f228..d969b0dc97326 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -2807,6 +2807,8 @@ void qedf_process_cqe(struct qedf_ctx *qedf, struct fcoe_cqe *cqe)
- 	struct qedf_ioreq *io_req;
- 	struct qedf_rport *fcport;
- 	u32 comp_type;
-+	u8 io_comp_type;
-+	unsigned long flags;
- 
- 	comp_type = (cqe->cqe_data >> FCOE_CQE_CQE_TYPE_SHIFT) &
- 	    FCOE_CQE_CQE_TYPE_MASK;
-@@ -2840,11 +2842,14 @@ void qedf_process_cqe(struct qedf_ctx *qedf, struct fcoe_cqe *cqe)
- 		return;
- 	}
- 
-+	spin_lock_irqsave(&fcport->rport_lock, flags);
-+	io_comp_type = io_req->cmd_type;
-+	spin_unlock_irqrestore(&fcport->rport_lock, flags);
- 
- 	switch (comp_type) {
- 	case FCOE_GOOD_COMPLETION_CQE_TYPE:
- 		atomic_inc(&fcport->free_sqes);
--		switch (io_req->cmd_type) {
-+		switch (io_comp_type) {
- 		case QEDF_SCSI_CMD:
- 			qedf_scsi_completion(qedf, cqe, io_req);
- 			break;
+diff --git a/net/smc/smc_stats.h b/net/smc/smc_stats.h
+index b60fe1eb37ab6..aa8928975cc63 100644
+--- a/net/smc/smc_stats.h
++++ b/net/smc/smc_stats.h
+@@ -243,8 +243,9 @@ while (0)
+ #define SMC_STAT_SERV_SUCC_INC(net, _ini) \
+ do { \
+ 	typeof(_ini) i = (_ini); \
+-	bool is_v2 = (i->smcd_version & SMC_V2); \
+ 	bool is_smcd = (i->is_smcd); \
++	u8 version = is_smcd ? i->smcd_version : i->smcr_version; \
++	bool is_v2 = (version & SMC_V2); \
+ 	typeof(net->smc.smc_stats) smc_stats = (net)->smc.smc_stats; \
+ 	if (is_v2 && is_smcd) \
+ 		this_cpu_inc(smc_stats->smc[SMC_TYPE_D].srv_v2_succ_cnt); \
 -- 
 2.40.1
 
