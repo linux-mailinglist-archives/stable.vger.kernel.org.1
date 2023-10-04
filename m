@@ -2,40 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30C2C7B8A8F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:36:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A54297B890E
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244477AbjJDSgy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:36:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57050 "EHLO
+        id S244066AbjJDSWU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244581AbjJDSgk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:36:40 -0400
+        with ESMTP id S244069AbjJDSWT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:22:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EB8F98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:36:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E14C433C7;
-        Wed,  4 Oct 2023 18:36:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C7FDC6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:22:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9F9C433C8;
+        Wed,  4 Oct 2023 18:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444596;
-        bh=RusuIJ3BUI8e5tu7Ynkc5jug1KrilTlDYwRY4dDK8vY=;
+        s=korg; t=1696443735;
+        bh=NPsQPQPR21b20IDKoRJleKF9vdJywS4fJq8fCdUS1og=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AmNdBaIde67M7XQzoBR9KWi4TZzz+hT0GnAW4JVA5pRlIB9wO2VQ67D0H98PpdPGe
-         Mhrg2idJ7/nuPaxbVP0xK32nu0ArPbJJuRQAV7uSlTYT6iQUNl7Br1G6NJTOogYjQA
-         nCpG/x1sNt5b4VVb8LZ7AGb59KefSCJEKUOGA+pg=
+        b=QJLuSZHnNk+BXkLHpaP/NzwGc+JSEv+94yNBCZwYSunM2kBtq+klfJd9+Z4vYjtNC
+         GPwjDiIE8yxtcXDtyczDIV2pSEI9NW8rryU3DALueG6OyOcCUMRh7VvFMG9KD4FagI
+         NIEmAMEXUDjcSWubONctJeEZHW536jcTZdZm1fpQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ira Weiny <ira.weiny@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.5 278/321] cxl/mbox: Fix CEL logic for poison and security commands
-Date:   Wed,  4 Oct 2023 19:57:03 +0200
-Message-ID: <20231004175242.158905375@linuxfoundation.org>
+        patches@lists.linux.dev, Javier Pello <devel@otheo.eu>,
+        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+        Fernando Pacheco <fernando.pacheco@intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        intel-gfx@lists.freedesktop.org,
+        John Harrison <John.C.Harrison@Intel.com>
+Subject: [PATCH 6.1 251/259] drm/i915/gt: Fix reservation address in ggtt_reserve_guc_top
+Date:   Wed,  4 Oct 2023 19:57:04 +0200
+Message-ID: <20231004175228.923291189@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,80 +57,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ira Weiny <ira.weiny@intel.com>
+From: Javier Pello <devel@otheo.eu>
 
-commit d2f706058826b803f5b9dc3f6d4c213ae0c54eb9 upstream.
+commit b7599d241778d0b10cdf7a5c755aa7db9b83250c upstream.
 
-The following debug output was observed while testing CXL
+There is an assertion in ggtt_reserve_guc_top that the global GTT
+is of size at least GUC_GGTT_TOP, which is not the case on a 32-bit
+platform; see commit 562d55d991b39ce376c492df2f7890fd6a541ffc
+("drm/i915/bdw: Only use 2g GGTT for 32b platforms"). If GEM_BUG_ON
+is enabled, this triggers a BUG(); if GEM_BUG_ON is disabled, the
+subsequent reservation fails and the driver fails to initialise
+the device:
 
-cxl_core:cxl_walk_cel:721: cxl_mock_mem cxl_mem.0: Opcode 0x4300 unsupported by driver
+i915 0000:00:02.0: [drm:i915_init_ggtt [i915]] Failed to reserve top of GGTT for GuC
+i915 0000:00:02.0: Device initialization failed (-28)
+i915 0000:00:02.0: Please file a bug on drm/i915; see https://gitlab.freedesktop.org/drm/intel/-/wikis/How-to-file-i915-bugs for details.
+i915: probe of 0000:00:02.0 failed with error -28
 
-opcode 0x4300 (Get Poison) is supported by the driver and the mock
-device supports it.  The logic should be checking that the opcode is
-both not poison and not security.
+Make the reservation at the top of the available space, whatever
+that is, instead of assuming that the top will be GUC_GGTT_TOP.
 
-Fix the logic to allow poison and security commands.
-
-Fixes: ad64f5952ce3 ("cxl/memdev: Only show sanitize sysfs files when supported")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20230903-cxl-cel-fix-v1-1-e260c9467be3@intel.com
-[cleanup cxl_walk_cel() to centralized "enabled" checks]
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: 911800765ef6 ("drm/i915/uc: Reserve upper range of GGTT")
+Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9080
+Signed-off-by: Javier Pello <devel@otheo.eu>
+Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Fernando Pacheco <fernando.pacheco@intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org # v5.3+
+Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230902171039.2229126186d697dbcf62d6d8@otheo.eu
+(cherry picked from commit 0f3fa942d91165c2702577e9274d2ee1c7212afc)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/mbox.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_ggtt.c |   23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-index ca60bb8114f2..4df4f614f490 100644
---- a/drivers/cxl/core/mbox.c
-+++ b/drivers/cxl/core/mbox.c
-@@ -715,24 +715,25 @@ static void cxl_walk_cel(struct cxl_memdev_state *mds, size_t size, u8 *cel)
- 	for (i = 0; i < cel_entries; i++) {
- 		u16 opcode = le16_to_cpu(cel_entry[i].opcode);
- 		struct cxl_mem_command *cmd = cxl_mem_find_command(opcode);
-+		int enabled = 0;
- 
--		if (!cmd && (!cxl_is_poison_command(opcode) ||
--			     !cxl_is_security_command(opcode))) {
--			dev_dbg(dev,
--				"Opcode 0x%04x unsupported by driver\n", opcode);
--			continue;
-+		if (cmd) {
-+			set_bit(cmd->info.id, mds->enabled_cmds);
-+			enabled++;
- 		}
- 
--		if (cmd)
--			set_bit(cmd->info.id, mds->enabled_cmds);
--
--		if (cxl_is_poison_command(opcode))
-+		if (cxl_is_poison_command(opcode)) {
- 			cxl_set_poison_cmd_enabled(&mds->poison, opcode);
-+			enabled++;
-+		}
- 
--		if (cxl_is_security_command(opcode))
-+		if (cxl_is_security_command(opcode)) {
- 			cxl_set_security_cmd_enabled(&mds->security, opcode);
-+			enabled++;
-+		}
- 
--		dev_dbg(dev, "Opcode 0x%04x enabled\n", opcode);
-+		dev_dbg(dev, "Opcode 0x%04x %s\n", opcode,
-+			enabled ? "enabled" : "unsupported by driver");
- 	}
+--- a/drivers/gpu/drm/i915/gt/intel_ggtt.c
++++ b/drivers/gpu/drm/i915/gt/intel_ggtt.c
+@@ -500,20 +500,31 @@ void intel_ggtt_unbind_vma(struct i915_a
+ 	vm->clear_range(vm, vma_res->start, vma_res->vma_size);
  }
  
--- 
-2.42.0
-
++/*
++ * Reserve the top of the GuC address space for firmware images. Addresses
++ * beyond GUC_GGTT_TOP in the GuC address space are inaccessible by GuC,
++ * which makes for a suitable range to hold GuC/HuC firmware images if the
++ * size of the GGTT is 4G. However, on a 32-bit platform the size of the GGTT
++ * is limited to 2G, which is less than GUC_GGTT_TOP, but we reserve a chunk
++ * of the same size anyway, which is far more than needed, to keep the logic
++ * in uc_fw_ggtt_offset() simple.
++ */
++#define GUC_TOP_RESERVE_SIZE (SZ_4G - GUC_GGTT_TOP)
++
+ static int ggtt_reserve_guc_top(struct i915_ggtt *ggtt)
+ {
+-	u64 size;
++	u64 offset;
+ 	int ret;
+ 
+ 	if (!intel_uc_uses_guc(&ggtt->vm.gt->uc))
+ 		return 0;
+ 
+-	GEM_BUG_ON(ggtt->vm.total <= GUC_GGTT_TOP);
+-	size = ggtt->vm.total - GUC_GGTT_TOP;
++	GEM_BUG_ON(ggtt->vm.total <= GUC_TOP_RESERVE_SIZE);
++	offset = ggtt->vm.total - GUC_TOP_RESERVE_SIZE;
+ 
+-	ret = i915_gem_gtt_reserve(&ggtt->vm, NULL, &ggtt->uc_fw, size,
+-				   GUC_GGTT_TOP, I915_COLOR_UNEVICTABLE,
+-				   PIN_NOEVICT);
++	ret = i915_gem_gtt_reserve(&ggtt->vm, NULL, &ggtt->uc_fw,
++				   GUC_TOP_RESERVE_SIZE, offset,
++				   I915_COLOR_UNEVICTABLE, PIN_NOEVICT);
+ 	if (ret)
+ 		drm_dbg(&ggtt->vm.i915->drm,
+ 			"Failed to reserve top of GGTT for GuC\n");
 
 
