@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF7AD7B89CB
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB6437B875B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:04:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233818AbjJDS32 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:29:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46880 "EHLO
+        id S233591AbjJDSEW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:04:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244275AbjJDS3V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:21 -0400
+        with ESMTP id S243768AbjJDSEV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:04:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A16609E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E904BC433CC;
-        Wed,  4 Oct 2023 18:29:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24CF9E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:04:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EE7C433C9;
+        Wed,  4 Oct 2023 18:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444157;
-        bh=W93KSp9Qi+uhss7x2bs9FmNp7DHJYMbMNbVs7JM93+s=;
+        s=korg; t=1696442658;
+        bh=zfBzFYcuHhgKKGVkeWWvbg2VcjP5sF+1OI5E33rykk8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZQhe4By8qus8gdUIl8SxqxvJn2gn1eWcL7gQ2VPMkowLhKyxj9DGBIoobt4INyU07
-         a/b1DwAmzAjuK1LzJoZa2bPhT1xpDZHmjVZ3oRQdIiBGjKlbkastcHqwmuXpYfEvqp
-         hnEyYbsNdiedIfjnj5BBlnJEedwZRB4iNHUb80rk=
+        b=bO3wEEHmofIvqoOvIpZs5o09HYM/mLTDR7BRVgeoWtmCUgEW1yDbbLwOrLRrdeXhz
+         o1pAP5NjK0FZCMzQVK/5CvEbFa8rYdU7XK/lmc8bVnC45EKm+Ie3DXWzyACCczsk5M
+         tN27CHB70PRXGuyVixMMtoV7RouxIvE7CLxhqw8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Julien Panis <jpanis@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 121/321] bus: ti-sysc: Use fsleep() instead of usleep_range() in sysc_reset()
+Subject: [PATCH 5.15 035/183] netfilter: nf_tables: disallow element removal on anonymous sets
 Date:   Wed,  4 Oct 2023 19:54:26 +0200
-Message-ID: <20231004175234.837508652@linuxfoundation.org>
+Message-ID: <20231004175205.423860959@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +49,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Panis <jpanis@baylibre.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit d929b2b7464f95ec01e47f560b1e687482ba8929 ]
+[ Upstream commit 23a3bfd4ba7acd36abf52b78605f61b21bdac216 ]
 
-The am335x-evm started producing boot errors because of subtle timing
-changes:
+Anonymous sets need to be populated once at creation and then they are
+bound to rule since 938154b93be8 ("netfilter: nf_tables: reject unbound
+anonymous set before commit phase"), otherwise transaction reports
+EINVAL.
 
-Unhandled fault: external abort on non-linefetch (0x1008) at 0xf03c1010
-...
-sysc_reset from sysc_probe+0xf60/0x1514
-sysc_probe from platform_probe+0x5c/0xbc
-...
+Userspace does not need to delete elements of anonymous sets that are
+not yet bound, reject this with EOPNOTSUPP.
 
-The fix consists in using the appropriate sleep function in sysc reset.
-For flexible sleeping, fsleep is recommended. Here, sysc delay parameter
-can take any value in [0 - 255] us range. As a result, fsleep() should
-be used, calling udelay() for a sysc delay lower than 10 us.
+>From flush command path, skip anonymous sets, they are expected to be
+bound already. Otherwise, EINVAL is hit at the end of this transaction
+for unbound sets.
 
-Signed-off-by: Julien Panis <jpanis@baylibre.com>
-Fixes: e709ed70d122 ("bus: ti-sysc: Fix missing reset delay handling")
-Message-ID: <20230821-fix-ti-sysc-reset-v1-1-5a0a5d8fae55@baylibre.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fixes: 96518518cc41 ("netfilter: add nftables")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 9766dbf607f97..76116a9f6f87e 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2149,8 +2149,7 @@ static int sysc_reset(struct sysc *ddata)
- 	}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 4dadb0eebf614..56098859d5b44 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1358,8 +1358,7 @@ static int nft_flush_table(struct nft_ctx *ctx)
+ 		if (!nft_is_active_next(ctx->net, set))
+ 			continue;
  
- 	if (ddata->cfg.srst_udelay)
--		usleep_range(ddata->cfg.srst_udelay,
--			     ddata->cfg.srst_udelay * 2);
-+		fsleep(ddata->cfg.srst_udelay);
+-		if (nft_set_is_anonymous(set) &&
+-		    !list_empty(&set->bindings))
++		if (nft_set_is_anonymous(set))
+ 			continue;
  
- 	if (ddata->post_reset_quirk)
- 		ddata->post_reset_quirk(ddata);
+ 		err = nft_delset(ctx, set);
+@@ -6752,8 +6751,10 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
+ 	if (IS_ERR(set))
+ 		return PTR_ERR(set);
+ 
+-	if (!list_empty(&set->bindings) &&
+-	    (set->flags & (NFT_SET_CONSTANT | NFT_SET_ANONYMOUS)))
++	if (nft_set_is_anonymous(set))
++		return -EOPNOTSUPP;
++
++	if (!list_empty(&set->bindings) && (set->flags & NFT_SET_CONSTANT))
+ 		return -EBUSY;
+ 
+ 	nft_ctx_init(&ctx, net, skb, info->nlh, family, table, NULL, nla);
 -- 
 2.40.1
 
