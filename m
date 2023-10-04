@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CD487B88E9
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71F127B87CC
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244018AbjJDSUw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:20:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45466 "EHLO
+        id S243877AbjJDSJd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:09:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243992AbjJDSUv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:51 -0400
+        with ESMTP id S243875AbjJDSJd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1269CC4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D53C433C8;
-        Wed,  4 Oct 2023 18:20:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6366DC
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8CBC433C8;
+        Wed,  4 Oct 2023 18:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443647;
-        bh=8ll9amaR68Q4L69JOIP7eJroORqxon+dSSHdKux+H6U=;
+        s=korg; t=1696442969;
+        bh=duX1qTAW9AJ7R81WV8NUGIb69QCbwjFb7soXdRrNgTI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IuxTZLSTou/IdOEV8tx26Ll4T33gKcwSt6e6vkakNlTE89i5WSaxYCLOJhXV+TG8Q
-         vWjzMiXtG1cChUL8WZZVdIeqnAVggxh8RvEBl3D8IUvItFDjhLIbkbwdu5NJJG2zUd
-         HYM4rk3hegeuUDxkhc+OqYYCigmj9qZAzcF4FBxs=
+        b=dZ1DyUVNLa6PKzq4QM4HhSXXPQVsaRpmliNEPfzC5C5Koc/zEIflfIKs1uCZHpsR8
+         YhRPXFqqt5YLFKNdmve97ztU29tPiqJBTgaARzmB4HMlRkU9AfuJQUx0ZYaY0pXm/u
+         h5iN7CekqXy5CwbgQimhdfbDPkQIqrFoPWHfyq4o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.1 231/259] netfilter: nf_tables: fix kdoc warnings after gc rework
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 173/183] btrfs: properly report 0 avail for very full file systems
 Date:   Wed,  4 Oct 2023 19:56:44 +0200
-Message-ID: <20231004175227.952503046@linuxfoundation.org>
+Message-ID: <20231004175211.303656370@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,51 +49,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 08713cb006b6f07434f276c5ee214fb20c7fd965 upstream.
+commit 58bfe2ccec5f9f137b41dd38f335290dcc13cd5c upstream.
 
-Jakub Kicinski says:
-  We've got some new kdoc warnings here:
-  net/netfilter/nft_set_pipapo.c:1557: warning: Function parameter or member '_set' not described in 'pipapo_gc'
-  net/netfilter/nft_set_pipapo.c:1557: warning: Excess function parameter 'set' description in 'pipapo_gc'
-  include/net/netfilter/nf_tables.h:577: warning: Function parameter or member 'dead' not described in 'nft_set'
+A user reported some issues with smaller file systems that get very
+full.  While investigating this issue I noticed that df wasn't showing
+100% full, despite having 0 chunk space and having < 1MiB of available
+metadata space.
 
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/netdev/20230810104638.746e46f1@kernel.org/
-Signed-off-by: Florian Westphal <fw@strlen.de>
+This turns out to be an overflow issue, we're doing:
+
+  total_available_metadata_space - SZ_4M < global_block_rsv_size
+
+to determine if there's not enough space to make metadata allocations,
+which overflows if total_available_metadata_space is < 4M.  Fix this by
+checking to see if our available space is greater than the 4M threshold.
+This makes df properly report 100% usage on the file system.
+
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |    1 +
- net/netfilter/nft_set_pipapo.c    |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -529,6 +529,7 @@ struct nft_set_elem_expr {
-  *	@expr: stateful expression
-  * 	@ops: set ops
-  * 	@flags: set flags
-+ *	@dead: set will be freed, never cleared
-  *	@genmask: generation mask
-  * 	@klen: key length
-  * 	@dlen: data length
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1550,7 +1550,7 @@ static void nft_pipapo_gc_deactivate(str
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -2364,7 +2364,7 @@ static int btrfs_statfs(struct dentry *d
+ 	 * calculated f_bavail.
+ 	 */
+ 	if (!mixed && block_rsv->space_info->full &&
+-	    total_free_meta - thresh < block_rsv->size)
++	    (total_free_meta < thresh || total_free_meta - thresh < block_rsv->size))
+ 		buf->f_bavail = 0;
  
- /**
-  * pipapo_gc() - Drop expired entries from set, destroy start and end elements
-- * @set:	nftables API set representation
-+ * @_set:	nftables API set representation
-  * @m:		Matching data
-  */
- static void pipapo_gc(const struct nft_set *_set, struct nft_pipapo_match *m)
+ 	buf->f_type = BTRFS_SUPER_MAGIC;
 
 
