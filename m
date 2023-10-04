@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 731177B893F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C0627B87E4
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:10:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244146AbjJDSYD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:24:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
+        id S243875AbjJDSKf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:10:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244142AbjJDSYB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:24:01 -0400
+        with ESMTP id S243854AbjJDSKe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:10:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC47A6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:23:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBF8C433CC;
-        Wed,  4 Oct 2023 18:23:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 218E09E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:10:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECFDC433C9;
+        Wed,  4 Oct 2023 18:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443837;
-        bh=CxO1MQH/F0AL/ksyccRvd4u6OjccmWJtxgJMyplXb4o=;
+        s=korg; t=1696443028;
+        bh=medUUxetFAkAQF905tki+I/V2xOy49RHBbUqpS2AJ24=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CXylN54xUL1bdwVhR1a8NaN2NBg19s3A73xtTdJEFniJaFkgcmFQUo1DxrHs7X3Lr
-         stJtiTj3oy+HAVZo02+IUbtW7jAX4XR1uO8gzv0RdW7KZBxQJOE1LVlMa8y3DRB5Pr
-         g7KrX1z/Oosav4kjD5x5aAK2h6dXdOmUJ6mHu5yk=
+        b=eYRVT39WCIu910ZujitpNKEoB5kCLKVJ3exk7eZnVj/UwUm7FRdsyTc9Txk4scYVo
+         7Def86n3ntemzdNBGO4Gq8UCqxIH72rTFYwFFE1EZOhNxOVdWUQydbCViszkzViPaM
+         y/kThB26kJ6xT3nAFcRTnN77CF4nKV9+HRbDD+u4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Artem Savkov <asavkov@redhat.com>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 038/321] selftests/bpf: fix unpriv_disabled check in test_verifier
-Date:   Wed,  4 Oct 2023 19:53:03 +0200
-Message-ID: <20231004175230.926948469@linuxfoundation.org>
+Subject: [PATCH 6.1 011/259] media: via: Use correct dependency for camera sensor drivers
+Date:   Wed,  4 Oct 2023 19:53:04 +0200
+Message-ID: <20231004175217.958653244@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Savkov <asavkov@redhat.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit d128860dbb29cafc3c65ca2d22082745a32829dd ]
+[ Upstream commit 41425941dfcf47cc6df8e500af6ff16a7be6539f ]
 
-Commit 1d56ade032a49 changed the function get_unpriv_disabled() to
-return its results as a bool instead of updating a global variable, but
-test_verifier was not updated to keep in line with these changes. Thus
-unpriv_disabled is always false in test_verifier and unprivileged tests
-are not properly skipped on systems with unprivileged bpf disabled.
+The via camera controller driver selected ov7670 driver, however now that
+driver has dependencies and may no longer be selected unconditionally.
 
-Fixes: 1d56ade032a49 ("selftests/bpf: Unprivileged tests for test_loader.c")
-Signed-off-by: Artem Savkov <asavkov@redhat.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20230912120631.213139-1-asavkov@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Fixes: 7d3c7d2a2914 ("media: i2c: Add a camera sensor top level menu")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_verifier.c | 2 +-
+ drivers/media/platform/via/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_verifier.c b/tools/testing/selftests/bpf/test_verifier.c
-index 31f1c935cd07d..98107e0452d33 100644
---- a/tools/testing/selftests/bpf/test_verifier.c
-+++ b/tools/testing/selftests/bpf/test_verifier.c
-@@ -1880,7 +1880,7 @@ int main(int argc, char **argv)
- 		}
- 	}
- 
--	get_unpriv_disabled();
-+	unpriv_disabled = get_unpriv_disabled();
- 	if (unpriv && unpriv_disabled) {
- 		printf("Cannot run as unprivileged user with sysctl %s.\n",
- 		       UNPRIV_SYSCTL);
+diff --git a/drivers/media/platform/via/Kconfig b/drivers/media/platform/via/Kconfig
+index 8926eb0803b27..6e603c0382487 100644
+--- a/drivers/media/platform/via/Kconfig
++++ b/drivers/media/platform/via/Kconfig
+@@ -7,7 +7,7 @@ config VIDEO_VIA_CAMERA
+ 	depends on V4L_PLATFORM_DRIVERS
+ 	depends on FB_VIA && VIDEO_DEV
+ 	select VIDEOBUF2_DMA_SG
+-	select VIDEO_OV7670
++	select VIDEO_OV7670 if VIDEO_CAMERA_SENSOR
+ 	help
+ 	   Driver support for the integrated camera controller in VIA
+ 	   Chrome9 chipsets.  Currently only tested on OLPC xo-1.5 systems
 -- 
 2.40.1
 
