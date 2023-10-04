@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06F797B8940
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DAB87B87E5
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:10:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244156AbjJDSYI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48496 "EHLO
+        id S243854AbjJDSKh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:10:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244148AbjJDSYG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:24:06 -0400
+        with ESMTP id S243864AbjJDSKf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:10:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30B2EB
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:24:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E843BC433C9;
-        Wed,  4 Oct 2023 18:23:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC66CBF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:10:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EAD7C433C7;
+        Wed,  4 Oct 2023 18:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443840;
-        bh=QXBRdqeUzNslpdTWBTmM9+QGrwJK7rkcrQsNE3vIMw4=;
+        s=korg; t=1696443031;
+        bh=NVjvh6VvZPysf0WA+oUd5qksFBLGg0McsKmElP91bAA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lpulZMCrSMsHOSrbP7QFsEf+g/BA4QNt+mgaZJ4seI3UdMbHXS2zFlZv71CsKcz5T
-         +eLuRnJJfNqqbBTgZDWRhnbYxtMnnUXWTzH2hBSsrvN8d1nSB0LWz9V9uvmFWDaoNn
-         zOQYBpSnTIPFgMU0kalb4qQiM+T+MrsfnNNZA+0A=
+        b=NrfCVq53GL/ngZPYgPCot+THdIsi7RRIScHE4Vms+qMhjWVEiyS1we9nQhLLFBRpt
+         EgGBQ/ZcGI/K23uoCw0N4aDzkSgVtvOvl5Y1nuKccAvMwlvyoCaH+U7OVhsTXvmXBF
+         YHlqZjAdsq5apv5Kiv84/dn99SQqaeHw0y85jZrI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Knyazev Arseniy <poseaydone@ya.ru>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 039/321] ALSA: hda/realtek: Splitting the UX3402 into two separate models
-Date:   Wed,  4 Oct 2023 19:53:04 +0200
-Message-ID: <20231004175230.975450068@linuxfoundation.org>
+        patches@lists.linux.dev, Dave Wysochanski <dwysocha@redhat.com>,
+        Jeff Layton <jlayton@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 012/259] netfs: Only call folio_start_fscache() one time for each folio
+Date:   Wed,  4 Oct 2023 19:53:05 +0200
+Message-ID: <20231004175217.992708642@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,40 +52,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Knyazev Arseniy <poseaydone@ya.ru>
+From: Dave Wysochanski <dwysocha@redhat.com>
 
-[ Upstream commit 07058dceb038a4b0dd49af07118b6b2a685bb4a6 ]
+[ Upstream commit df1c357f25d808e30b216188330e708e09e1a412 ]
 
-UX3402VA and UX3402ZA models require different hex values, so comibining
-them into one model is incorrect.
+If a network filesystem using netfs implements a clamp_length()
+function, it can set subrequest lengths smaller than a page size.
 
-Fixes: 491a4ccd8a02 ("ALSA: hda/realtek: Add quirk for ASUS Zenbook using CS35L41")
-Signed-off-by: Knyazev Arseniy <poseaydone@ya.ru>
-Link: https://lore.kernel.org/r/20230913053343.119798-1-poseaydone@ya.ru
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+When we loop through the folios in netfs_rreq_unlock_folios() to
+set any folios to be written back, we need to make sure we only
+call folio_start_fscache() once for each folio.
+
+Otherwise, this simple testcase:
+
+  mount -o fsc,rsize=1024,wsize=1024 127.0.0.1:/export /mnt/nfs
+  dd if=/dev/zero of=/mnt/nfs/file.bin bs=4096 count=1
+  1+0 records in
+  1+0 records out
+  4096 bytes (4.1 kB, 4.0 KiB) copied, 0.0126359 s, 324 kB/s
+  echo 3 > /proc/sys/vm/drop_caches
+  cat /mnt/nfs/file.bin > /dev/null
+
+will trigger an oops similar to the following:
+
+  page dumped because: VM_BUG_ON_FOLIO(folio_test_private_2(folio))
+  ------------[ cut here ]------------
+  kernel BUG at include/linux/netfs.h:44!
+  ...
+  CPU: 5 PID: 134 Comm: kworker/u16:5 Kdump: loaded Not tainted 6.4.0-rc5
+  ...
+  RIP: 0010:netfs_rreq_unlock_folios+0x68e/0x730 [netfs]
+  ...
+  Call Trace:
+    netfs_rreq_assess+0x497/0x660 [netfs]
+    netfs_subreq_terminated+0x32b/0x610 [netfs]
+    nfs_netfs_read_completion+0x14e/0x1a0 [nfs]
+    nfs_read_completion+0x2f9/0x330 [nfs]
+    rpc_free_task+0x72/0xa0 [sunrpc]
+    rpc_async_release+0x46/0x70 [sunrpc]
+    process_one_work+0x3bd/0x710
+    worker_thread+0x89/0x610
+    kthread+0x181/0x1c0
+    ret_from_fork+0x29/0x50
+
+Fixes: 3d3c95046742 ("netfs: Provide readahead and readpage netfs helpers"
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2210612
+Signed-off-by: Dave Wysochanski <dwysocha@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20230608214137.856006-1-dwysocha@redhat.com/ # v1
+Link: https://lore.kernel.org/r/20230915185704.1082982-1-dwysocha@redhat.com/ # v2
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/netfs/buffered_read.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index dc7b7a407638a..4a13747b2b0f3 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9680,7 +9680,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1d1f, "ASUS ROG Strix G17 2023 (G713PV)", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
--	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x16a3, "ASUS UX3402VA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
- 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
+diff --git a/fs/netfs/buffered_read.c b/fs/netfs/buffered_read.c
+index 7679a68e81930..caa0a053e8a9d 100644
+--- a/fs/netfs/buffered_read.c
++++ b/fs/netfs/buffered_read.c
+@@ -47,12 +47,14 @@ void netfs_rreq_unlock_folios(struct netfs_io_request *rreq)
+ 	xas_for_each(&xas, folio, last_page) {
+ 		loff_t pg_end;
+ 		bool pg_failed = false;
++		bool folio_started;
+ 
+ 		if (xas_retry(&xas, folio))
+ 			continue;
+ 
+ 		pg_end = folio_pos(folio) + folio_size(folio) - 1;
+ 
++		folio_started = false;
+ 		for (;;) {
+ 			loff_t sreq_end;
+ 
+@@ -60,8 +62,10 @@ void netfs_rreq_unlock_folios(struct netfs_io_request *rreq)
+ 				pg_failed = true;
+ 				break;
+ 			}
+-			if (test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags))
++			if (!folio_started && test_bit(NETFS_SREQ_COPY_TO_CACHE, &subreq->flags)) {
+ 				folio_start_fscache(folio);
++				folio_started = true;
++			}
+ 			pg_failed |= subreq_failed;
+ 			sreq_end = subreq->start + subreq->len - 1;
+ 			if (pg_end < sreq_end)
 -- 
 2.40.1
 
