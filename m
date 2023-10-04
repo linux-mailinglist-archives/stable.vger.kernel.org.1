@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F3097B899D
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB6677B883B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:14:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243544AbjJDS1i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39894 "EHLO
+        id S243995AbjJDSOD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:14:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244230AbjJDS1i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:38 -0400
+        with ESMTP id S243981AbjJDSOD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:14:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09BB0AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CA7C433C8;
-        Wed,  4 Oct 2023 18:27:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 810A5A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6F4C433CB;
+        Wed,  4 Oct 2023 18:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444052;
-        bh=m31jh0cq+nbz9IARiKi/Qg0ABVGqXBgI/JO3nZn0d5M=;
+        s=korg; t=1696443239;
+        bh=XGYerxCja5vRRscmvujkaznUXZjL67D6/vtsmm/rFVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1570CP0Dm+uPb4fA9oAwSFoYV65/mzrsIAVnITMfn5g0+hB0PXCjs7EhYwHKYfkKF
-         Vz61RXIf67Rxb772NF+/MI0Du7PTI+2lDcidLmImes+noN0oZOA18yyRoq3UsLxNah
-         1VbfKOMFag9z8UBcNAvK9YEdz578l1Pd+5MQ/b94=
+        b=O8cdLKMi3JzgtJrDIHjy4U4h6vk3KTr6BZFQmA6t071T8IMdaf79dMHld2P12DuJc
+         pTlTrb8dBYN56Cnseq6SLE029ibekhCW3AUw4p1UTrpQdcEdLhYqknvCsCIzt6nh9e
+         ei5v43yCqgWAevq4l64GsNecXSULVfMoZJEsgSDo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chris Park <chris.park@amd.com>,
-        Alex Hung <alex.hung@amd.com>,
-        Wenjing Liu <wenjing.liu@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Giulio Benetti <giulio.benetti@benettiengineering.com>,
+        Greg Ungerer <gerg@uclinux.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 113/321] drm/amd/display: Update DPG test pattern programming
+Subject: [PATCH 6.1 085/259] proc: nommu: /proc/<pid>/maps: release mmap read lock
 Date:   Wed,  4 Oct 2023 19:54:18 +0200
-Message-ID: <20231004175234.470233927@linuxfoundation.org>
+Message-ID: <20231004175221.265987714@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,283 +54,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjing Liu <wenjing.liu@amd.com>
+From: Ben Wolsieffer <Ben.Wolsieffer@hefring.com>
 
-[ Upstream commit ad4455c614b27e6b24a4e6bd70114545c1660ff9 ]
+[ Upstream commit 578d7699e5c2add8c2e9549d9d75dfb56c460cb3 ]
 
-[Why]
-Last ODM slice could be slightly larger than other slice because it can be
-including the residual.
+The no-MMU implementation of /proc/<pid>/map doesn't normally release
+the mmap read lock, because it uses !IS_ERR_OR_NULL(_vml) to determine
+whether to release the lock.  Since _vml is NULL when the end of the
+mappings is reached, the lock is not released.
 
-[How]
-Update DPG pattern programming sequence to use a different width for
-last odm slice.
+Reading /proc/1/maps twice doesn't cause a hang because it only
+takes the read lock, which can be taken multiple times and therefore
+doesn't show any problem if the lock isn't released. Instead, you need
+to perform some operation that attempts to take the write lock after
+reading /proc/<pid>/maps. To actually reproduce the bug, compile the
+following code as 'proc_maps_bug':
 
-Reviewed-by: Chris Park <chris.park@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: f77d1a49902b ("drm/amd/display: fix a regression in blank pixel data caused by coding mistake")
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/mman.h>
+
+int main(int argc, char *argv[]) {
+        void *buf;
+        sleep(1);
+        buf = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        puts("mmap returned");
+        return 0;
+}
+
+Then, run:
+
+  ./proc_maps_bug &; cat /proc/$!/maps; fg
+
+Without this patch, mmap() will hang and the command will never
+complete.
+
+This code was incorrectly adapted from the MMU implementation, which at
+the time released the lock in m_next() before returning the last entry.
+
+The MMU implementation has diverged further from the no-MMU version since
+then, so this patch brings their locking and error handling into sync,
+fixing the bug and hopefully avoiding similar issues in the future.
+
+Link: https://lkml.kernel.org/r/20230914163019.4050530-2-ben.wolsieffer@hefring.com
+Fixes: 47fecca15c09 ("fs/proc/task_nommu.c: don't use priv->task->mm")
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
+Cc: Greg Ungerer <gerg@uclinux.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: fe4419801617 ("proc: nommu: fix empty /proc/<pid>/maps")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/dcn20/dcn20_hwseq.c    |  45 ++++----
- .../display/dc/link/accessories/link_dp_cts.c | 107 +++++++++---------
- 2 files changed, 78 insertions(+), 74 deletions(-)
+ fs/proc/task_nommu.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-index 7c344132a0072..704d02d89fb34 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -1054,9 +1054,9 @@ void dcn20_blank_pixel_data(
- 	enum controller_dp_color_space test_pattern_color_space = CONTROLLER_DP_COLOR_SPACE_UDEFINED;
- 	struct pipe_ctx *odm_pipe;
- 	int odm_cnt = 1;
--
--	int width = stream->timing.h_addressable + stream->timing.h_border_left + stream->timing.h_border_right;
--	int height = stream->timing.v_addressable + stream->timing.v_border_bottom + stream->timing.v_border_top;
-+	int h_active = stream->timing.h_addressable + stream->timing.h_border_left + stream->timing.h_border_right;
-+	int v_active = stream->timing.v_addressable + stream->timing.v_border_bottom + stream->timing.v_border_top;
-+	int odm_slice_width, last_odm_slice_width, offset = 0;
+diff --git a/fs/proc/task_nommu.c b/fs/proc/task_nommu.c
+index 2fd06f52b6a44..bfcf17f75ed50 100644
+--- a/fs/proc/task_nommu.c
++++ b/fs/proc/task_nommu.c
+@@ -205,11 +205,16 @@ static void *m_start(struct seq_file *m, loff_t *pos)
+ 		return ERR_PTR(-ESRCH);
  
- 	if (stream->link->test_pattern_enabled)
- 		return;
-@@ -1066,8 +1066,8 @@ void dcn20_blank_pixel_data(
+ 	mm = priv->mm;
+-	if (!mm || !mmget_not_zero(mm))
++	if (!mm || !mmget_not_zero(mm)) {
++		put_task_struct(priv->task);
++		priv->task = NULL;
+ 		return NULL;
++	}
  
- 	for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe)
- 		odm_cnt++;
--
--	width = width / odm_cnt;
-+	odm_slice_width = h_active / odm_cnt;
-+	last_odm_slice_width = h_active - odm_slice_width * (odm_cnt - 1);
- 
- 	if (blank) {
- 		dc->hwss.set_abm_immediate_disable(pipe_ctx);
-@@ -1080,29 +1080,32 @@ void dcn20_blank_pixel_data(
- 		test_pattern = CONTROLLER_DP_TEST_PATTERN_VIDEOMODE;
+ 	if (mmap_read_lock_killable(mm)) {
+ 		mmput(mm);
++		put_task_struct(priv->task);
++		priv->task = NULL;
+ 		return ERR_PTR(-EINTR);
  	}
  
--	dc->hwss.set_disp_pattern_generator(dc,
--			pipe_ctx,
--			test_pattern,
--			test_pattern_color_space,
--			stream->timing.display_color_depth,
--			&black_color,
--			width,
--			height,
--			0);
-+	odm_pipe = pipe_ctx;
+@@ -218,23 +223,21 @@ static void *m_start(struct seq_file *m, loff_t *pos)
+ 	if (vma)
+ 		return vma;
  
--	for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe) {
-+	while (odm_pipe->next_odm_pipe) {
- 		dc->hwss.set_disp_pattern_generator(dc,
--				odm_pipe,
--				dc->debug.visual_confirm != VISUAL_CONFIRM_DISABLE && blank ?
--						CONTROLLER_DP_TEST_PATTERN_COLORRAMP : test_pattern,
-+				pipe_ctx,
-+				test_pattern,
- 				test_pattern_color_space,
- 				stream->timing.display_color_depth,
- 				&black_color,
--				width,
--				height,
--				0);
-+				odm_slice_width,
-+				v_active,
-+				offset);
-+		offset += odm_slice_width;
-+		odm_pipe = odm_pipe->next_odm_pipe;
- 	}
+-	mmap_read_unlock(mm);
+-	mmput(mm);
+ 	return NULL;
+ }
  
-+	dc->hwss.set_disp_pattern_generator(dc,
-+			odm_pipe,
-+			test_pattern,
-+			test_pattern_color_space,
-+			stream->timing.display_color_depth,
-+			&black_color,
-+			last_odm_slice_width,
-+			v_active,
-+			offset);
+-static void m_stop(struct seq_file *m, void *_vml)
++static void m_stop(struct seq_file *m, void *v)
+ {
+ 	struct proc_maps_private *priv = m->private;
++	struct mm_struct *mm = priv->mm;
+ 
+-	if (!IS_ERR_OR_NULL(_vml)) {
+-		mmap_read_unlock(priv->mm);
+-		mmput(priv->mm);
+-	}
+-	if (priv->task) {
+-		put_task_struct(priv->task);
+-		priv->task = NULL;
+-	}
++	if (!priv->task)
++		return;
 +
- 	if (!blank && dc->debug.enable_single_display_2to1_odm_policy) {
- 		/* when exiting dynamic ODM need to reinit DPG state for unused pipes */
- 		struct pipe_ctx *old_odm_pipe = dc->current_state->res_ctx.pipe_ctx[pipe_ctx->pipe_idx].next_odm_pipe;
-diff --git a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-index db9f1baa27e5e..bce0428ad6123 100644
---- a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
-@@ -428,15 +428,24 @@ static void set_crtc_test_pattern(struct dc_link *link,
- 		stream->timing.display_color_depth;
- 	struct bit_depth_reduction_params params;
- 	struct output_pixel_processor *opp = pipe_ctx->stream_res.opp;
--	int width = pipe_ctx->stream->timing.h_addressable +
-+	struct pipe_ctx *odm_pipe;
-+	int odm_cnt = 1;
-+	int h_active = pipe_ctx->stream->timing.h_addressable +
- 		pipe_ctx->stream->timing.h_border_left +
- 		pipe_ctx->stream->timing.h_border_right;
--	int height = pipe_ctx->stream->timing.v_addressable +
-+	int v_active = pipe_ctx->stream->timing.v_addressable +
- 		pipe_ctx->stream->timing.v_border_bottom +
- 		pipe_ctx->stream->timing.v_border_top;
-+	int odm_slice_width, last_odm_slice_width, offset = 0;
++	mmap_read_unlock(mm);
++	mmput(mm);
++	put_task_struct(priv->task);
++	priv->task = NULL;
+ }
  
- 	memset(&params, 0, sizeof(params));
- 
-+	for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe)
-+		odm_cnt++;
-+
-+	odm_slice_width = h_active / odm_cnt;
-+	last_odm_slice_width = h_active - odm_slice_width * (odm_cnt - 1);
-+
- 	switch (test_pattern) {
- 	case DP_TEST_PATTERN_COLOR_SQUARES:
- 		controller_test_pattern =
-@@ -473,16 +482,13 @@ static void set_crtc_test_pattern(struct dc_link *link,
- 	{
- 		/* disable bit depth reduction */
- 		pipe_ctx->stream->bit_depth_params = params;
--		opp->funcs->opp_program_bit_depth_reduction(opp, &params);
--		if (pipe_ctx->stream_res.tg->funcs->set_test_pattern)
-+		if (pipe_ctx->stream_res.tg->funcs->set_test_pattern) {
-+			opp->funcs->opp_program_bit_depth_reduction(opp, &params);
- 			pipe_ctx->stream_res.tg->funcs->set_test_pattern(pipe_ctx->stream_res.tg,
- 				controller_test_pattern, color_depth);
--		else if (link->dc->hwss.set_disp_pattern_generator) {
--			struct pipe_ctx *odm_pipe;
-+		} else if (link->dc->hwss.set_disp_pattern_generator) {
- 			enum controller_dp_color_space controller_color_space;
--			int opp_cnt = 1;
--			int offset = 0;
--			int dpg_width = width;
-+			struct output_pixel_processor *odm_opp;
- 
- 			switch (test_pattern_color_space) {
- 			case DP_TEST_PATTERN_COLOR_SPACE_RGB:
-@@ -502,36 +508,33 @@ static void set_crtc_test_pattern(struct dc_link *link,
- 				break;
- 			}
- 
--			for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe)
--				opp_cnt++;
--			dpg_width = width / opp_cnt;
--			offset = dpg_width;
--
--			link->dc->hwss.set_disp_pattern_generator(link->dc,
--					pipe_ctx,
--					controller_test_pattern,
--					controller_color_space,
--					color_depth,
--					NULL,
--					dpg_width,
--					height,
--					0);
--
--			for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe) {
--				struct output_pixel_processor *odm_opp = odm_pipe->stream_res.opp;
--
-+			odm_pipe = pipe_ctx;
-+			while (odm_pipe->next_odm_pipe) {
-+				odm_opp = odm_pipe->stream_res.opp;
- 				odm_opp->funcs->opp_program_bit_depth_reduction(odm_opp, &params);
- 				link->dc->hwss.set_disp_pattern_generator(link->dc,
--						odm_pipe,
-+						pipe_ctx,
- 						controller_test_pattern,
- 						controller_color_space,
- 						color_depth,
- 						NULL,
--						dpg_width,
--						height,
-+						odm_slice_width,
-+						v_active,
- 						offset);
--				offset += offset;
-+				offset += odm_slice_width;
-+				odm_pipe = odm_pipe->next_odm_pipe;
- 			}
-+			odm_opp = odm_pipe->stream_res.opp;
-+			odm_opp->funcs->opp_program_bit_depth_reduction(odm_opp, &params);
-+			link->dc->hwss.set_disp_pattern_generator(link->dc,
-+					odm_pipe,
-+					controller_test_pattern,
-+					controller_color_space,
-+					color_depth,
-+					NULL,
-+					last_odm_slice_width,
-+					v_active,
-+					offset);
- 		}
- 	}
- 	break;
-@@ -540,23 +543,17 @@ static void set_crtc_test_pattern(struct dc_link *link,
- 		/* restore bitdepth reduction */
- 		resource_build_bit_depth_reduction_params(pipe_ctx->stream, &params);
- 		pipe_ctx->stream->bit_depth_params = params;
--		opp->funcs->opp_program_bit_depth_reduction(opp, &params);
--		if (pipe_ctx->stream_res.tg->funcs->set_test_pattern)
-+		if (pipe_ctx->stream_res.tg->funcs->set_test_pattern) {
-+			opp->funcs->opp_program_bit_depth_reduction(opp, &params);
- 			pipe_ctx->stream_res.tg->funcs->set_test_pattern(pipe_ctx->stream_res.tg,
--				CONTROLLER_DP_TEST_PATTERN_VIDEOMODE,
--				color_depth);
--		else if (link->dc->hwss.set_disp_pattern_generator) {
--			struct pipe_ctx *odm_pipe;
--			int opp_cnt = 1;
--			int dpg_width;
--
--			for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe)
--				opp_cnt++;
--
--			dpg_width = width / opp_cnt;
--			for (odm_pipe = pipe_ctx->next_odm_pipe; odm_pipe; odm_pipe = odm_pipe->next_odm_pipe) {
--				struct output_pixel_processor *odm_opp = odm_pipe->stream_res.opp;
-+					CONTROLLER_DP_TEST_PATTERN_VIDEOMODE,
-+					color_depth);
-+		} else if (link->dc->hwss.set_disp_pattern_generator) {
-+			struct output_pixel_processor *odm_opp;
- 
-+			odm_pipe = pipe_ctx;
-+			while (odm_pipe->next_odm_pipe) {
-+				odm_opp = odm_pipe->stream_res.opp;
- 				odm_opp->funcs->opp_program_bit_depth_reduction(odm_opp, &params);
- 				link->dc->hwss.set_disp_pattern_generator(link->dc,
- 						odm_pipe,
-@@ -564,19 +561,23 @@ static void set_crtc_test_pattern(struct dc_link *link,
- 						CONTROLLER_DP_COLOR_SPACE_UDEFINED,
- 						color_depth,
- 						NULL,
--						dpg_width,
--						height,
--						0);
-+						odm_slice_width,
-+						v_active,
-+						offset);
-+				offset += odm_slice_width;
-+				odm_pipe = odm_pipe->next_odm_pipe;
- 			}
-+			odm_opp = odm_pipe->stream_res.opp;
-+			odm_opp->funcs->opp_program_bit_depth_reduction(odm_opp, &params);
- 			link->dc->hwss.set_disp_pattern_generator(link->dc,
--					pipe_ctx,
-+					odm_pipe,
- 					CONTROLLER_DP_TEST_PATTERN_VIDEOMODE,
- 					CONTROLLER_DP_COLOR_SPACE_UDEFINED,
- 					color_depth,
- 					NULL,
--					dpg_width,
--					height,
--					0);
-+					last_odm_slice_width,
-+					v_active,
-+					offset);
- 		}
- 	}
- 	break;
+ static void *m_next(struct seq_file *m, void *_p, loff_t *pos)
 -- 
 2.40.1
 
