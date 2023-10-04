@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C845B7B89A8
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 305947B897F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:26:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244239AbjJDS2A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:28:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39144 "EHLO
+        id S244194AbjJDS0y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244237AbjJDS17 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:59 -0400
+        with ESMTP id S244332AbjJDS0k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:26:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DFE2CE
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65CAC433CB;
-        Wed,  4 Oct 2023 18:27:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34556AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:26:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA70C433C8;
+        Wed,  4 Oct 2023 18:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444075;
-        bh=R0106IOBrom4y9jVn0luk06r5b0Q5lLsZkZZsdARZjg=;
+        s=korg; t=1696443995;
+        bh=bhmraMFqXX9tESr8MfhVI4elhszbcmciMWEEVAylW7g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jz2CaWGA1zffckLSvxQBGWMBL7CHOYtIteMZUDEF7M82r+UOQ+6gh6wCCiLW+WSK8
-         EkpyAcWyCUYcQQltm28dSXVe3zJbLWPSWL0eXyVW9mBjgwPjDsa7hRqIwkt1Dq9tIT
-         0HPfND95jf/ondSSNJWqd69zscsxef0stt4Fti5Y=
+        b=B/ahZFA7QmuTx0DqjwY1UL6pwMfvAHySR/LyNkQm3YxNqUROl4SgJYindrxlJFXKt
+         7lbhiA+JS0X87feLvJXcm3nM/I6hVEYivivokoT1L5kNHhKlJsiwF5u45Oy7sb6pVZ
+         WuZzzXwuvU/B98KfE8cW7Sj8ZnF8mxfBv9jT9qnY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kyle Zeng <zengyhkyle@gmail.com>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
+        Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 093/321] netfilter: ipset: Fix race between IPSET_CMD_CREATE and IPSET_CMD_SWAP
-Date:   Wed,  4 Oct 2023 19:53:58 +0200
-Message-ID: <20231004175233.530747503@linuxfoundation.org>
+Subject: [PATCH 6.5 094/321] net: hinic: Fix warning-hinic_set_vlan_fliter() warn: variable dereferenced before check hwdev
+Date:   Wed,  4 Oct 2023 19:53:59 +0200
+Message-ID: <20231004175233.571341547@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
 References: <20231004175229.211487444@linuxfoundation.org>
@@ -55,61 +56,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Cai Huoqing <cai.huoqing@linux.dev>
 
-[ Upstream commit 7433b6d2afd512d04398c73aa984d1e285be125b ]
+[ Upstream commit 22b6e7f3d6d51ff2716480f3d8f3098d90d69165 ]
 
-Kyle Zeng reported that there is a race between IPSET_CMD_ADD and IPSET_CMD_SWAP
-in netfilter/ip_set, which can lead to the invocation of `__ip_set_put` on a
-wrong `set`, triggering the `BUG_ON(set->ref == 0);` check in it.
+'hwdev' is checked too late and hwdev will not be NULL, so remove the check
 
-The race is caused by using the wrong reference counter, i.e. the ref counter instead
-of ref_netlink.
-
-Fixes: 24e227896bbf ("netfilter: ipset: Add schedule point in call_ad().")
-Reported-by: Kyle Zeng <zengyhkyle@gmail.com>
-Closes: https://lore.kernel.org/netfilter-devel/ZPZqetxOmH+w%2Fmyc@westworld/#r
-Tested-by: Kyle Zeng <zengyhkyle@gmail.com>
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 2acf960e3be6 ("net: hinic: Add support for configuration of rx-vlan-filter by ethtool")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202309112354.pikZCmyk-lkp@intel.com/
+Signed-off-by: Cai Huoqing <cai.huoqing@linux.dev>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_core.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/huawei/hinic/hinic_port.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 0b68e2e2824e1..58608460cf6df 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -682,6 +682,14 @@ __ip_set_put(struct ip_set *set)
- /* set->ref can be swapped out by ip_set_swap, netlink events (like dump) need
-  * a separate reference counter
-  */
-+static void
-+__ip_set_get_netlink(struct ip_set *set)
-+{
-+	write_lock_bh(&ip_set_ref_lock);
-+	set->ref_netlink++;
-+	write_unlock_bh(&ip_set_ref_lock);
-+}
-+
- static void
- __ip_set_put_netlink(struct ip_set *set)
- {
-@@ -1693,11 +1701,11 @@ call_ad(struct net *net, struct sock *ctnl, struct sk_buff *skb,
+diff --git a/drivers/net/ethernet/huawei/hinic/hinic_port.c b/drivers/net/ethernet/huawei/hinic/hinic_port.c
+index 9406237c461e0..f81a43d2cdfcd 100644
+--- a/drivers/net/ethernet/huawei/hinic/hinic_port.c
++++ b/drivers/net/ethernet/huawei/hinic/hinic_port.c
+@@ -456,9 +456,6 @@ int hinic_set_vlan_fliter(struct hinic_dev *nic_dev, u32 en)
+ 	u16 out_size = sizeof(vlan_filter);
+ 	int err;
  
- 	do {
- 		if (retried) {
--			__ip_set_get(set);
-+			__ip_set_get_netlink(set);
- 			nfnl_unlock(NFNL_SUBSYS_IPSET);
- 			cond_resched();
- 			nfnl_lock(NFNL_SUBSYS_IPSET);
--			__ip_set_put(set);
-+			__ip_set_put_netlink(set);
- 		}
+-	if (!hwdev)
+-		return -EINVAL;
+-
+ 	vlan_filter.func_idx = HINIC_HWIF_FUNC_IDX(hwif);
+ 	vlan_filter.enable = en;
  
- 		ip_set_lock(set);
 -- 
 2.40.1
 
