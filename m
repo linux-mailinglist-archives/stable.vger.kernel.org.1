@@ -2,136 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A0DE7B8557
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD8537B8575
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:39:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243337AbjJDQcm convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 4 Oct 2023 12:32:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37364 "EHLO
+        id S233485AbjJDQjW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 12:39:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243290AbjJDQcl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:32:41 -0400
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86919B;
-        Wed,  4 Oct 2023 09:32:37 -0700 (PDT)
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-690ba63891dso1860468b3a.2;
-        Wed, 04 Oct 2023 09:32:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696437157; x=1697041957;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bpOILGaPzFme8eJnGnR7nEZgZ9N3yDhRVdNPBjXB47c=;
-        b=b+YejCkoEdwopGfDPgAGjaHWPvDM7ZsfMdewoH0wvRXcHLwmEYmxGZjCs4/B6uTG+n
-         7q5xNNGxTaaM0fcpI3dpuVMlza53HXHvmj8T6L5SfDngig1vF26ezuREEEpnhTAmY588
-         5DcJHripshVPKqMH9sPip8SvIS7vZW7/rTaAhk+ewlUBDyaNgL9n4bg9fpRPuU9NPS65
-         2zXcts/gycDWv3+W0BDTvXmUR1C76WVFTRqDZ3a5+IVmOOMVGrW6DOUrlO2hEDuLy4Ih
-         aGe/Sc3m4tmxISMVTpFQSBe8orm8mcAn9cw+KC9Z7VnyIv0TxCnduA5Hstc4rdYatBk/
-         wJpA==
-X-Gm-Message-State: AOJu0YzeHq1VCiiP9/oqS8dPVoOp+bM7pX38Suop24+pWgG3VeyUjIUL
-        NfKkQivw20gqJCOoZ8oOrUDbgyEKARFUda/Lms0=
-X-Google-Smtp-Source: AGHT+IHW186xVTeJmlnOiSCmnojvR2aQu3JeoB9Ud4SaLe0VHaFIYFXp2RClDsx5Ggek5JoNCr7YFlnR0Qxq+UZGStM=
-X-Received: by 2002:a17:90b:1047:b0:277:6985:a3ff with SMTP id
- gq7-20020a17090b104700b002776985a3ffmr2429510pjb.3.1696437156981; Wed, 04 Oct
- 2023 09:32:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231004040844.797044-1-namhyung@kernel.org> <20231004160224.GB6307@noisy.programming.kicks-ass.net>
-In-Reply-To: <20231004160224.GB6307@noisy.programming.kicks-ass.net>
-From:   Namhyung Kim <namhyung@kernel.org>
-Date:   Wed, 4 Oct 2023 09:32:24 -0700
-Message-ID: <CAM9d7cizC0J85ByuF5fBmc_Bqi=wpNJpiVsw+3F1Avusn2aQog@mail.gmail.com>
-Subject: Re: [PATCH] perf/core: Introduce cpuctx->cgrp_ctx_list
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S233726AbjJDQjV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:39:21 -0400
+X-Greylist: delayed 302 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 04 Oct 2023 09:39:16 PDT
+Received: from abi149hd125.arn1.oracleemaildelivery.com (abi149hd125.arn1.oracleemaildelivery.com [129.149.84.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9FAAD7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:39:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
+ d=augustwikerfors.se;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=8T0PGx2dNJlnTyxCzlVq4bOxn0w4Q9z3eZpQdiPzdRU=;
+ b=G60Gta9gOZ/E3LGGrRm3EShbs4AV8X9tq3dH6Z+O5z2vbG5lIYIEZSoQE1RkFxmXWH0LdrILaUnK
+   46u89YI1+bQ57txxV4T0bynE8rY4GNrlwC6IU9QjpWknLsvMjzhRoLJUne0OEYn84H0jOPqekKZj
+   IB/TcWFDvljcNOgDpiRFciFzOdYMliaiDnI9tl8W787A6G0cYXWywO/ku+vCUBymGjBg7c93m7ig
+   1QCKQOLlZ4/+9zsWzOy2EEq7+z6ILmE032yruVwTHUv5ONdmQjaBK2IEemtc/0WRNKbfw3vYVsj3
+   IXFphRVOwl/y+C8nF8YGQRQYoryypFsUZIwJvg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
+ d=arn1.rp.oracleemaildelivery.com;
+ h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
+ bh=8T0PGx2dNJlnTyxCzlVq4bOxn0w4Q9z3eZpQdiPzdRU=;
+ b=N30DlDb52o7ps8zoqhHRYRQgz1K9YK3GEIAIb0DOJDifUhUN1dd9uRpFRsxDYonthnV/OhRlY8PQ
+   Pgfre6sfotICob5A1gtyLkRUiPhbaG2v7Yd4+J6W/S7mCrTYGRd1PINx1Nw5QxR+xosEfv13opWX
+   +qgarbJAtwINpxFXBf+2TIJg9ztn75cZ3MJtcSvkXPuSJ8N2Bakf8Gnft6HvvySXPQXEG5mA4x0P
+   +TWQrQbe7peIbarusaT7ojsGJYBPV9uOG6BIvX0jHogK9Y5XbQrVM1mBQW/l4za3VljAyHxCrTjR
+   RF2vBkf+zqwhlsqxyOoJZ6mE6/YbJPE68Xc30A==
+Received: by omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
+ (Oracle Communications Messaging Server 8.1.0.1.20230808 64bit (built Aug  8
+ 2023))
+ with ESMTPS id <0S20002VBJCYDZ30@omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
+ for stable@vger.kernel.org; Wed, 04 Oct 2023 16:34:10 +0000 (GMT)
+Content-type: text/plain; charset=utf-8
+Content-transfer-encoding: quoted-printable
+From:   August Wikerfors <git@augustwikerfors.se>
+MIME-version: 1.0
+Subject: Re: Patch
+ "ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG" has been added
+ to the 6.1-stable tree
+Message-id: <B48DED01-5B50-4EF7-B0AC-2DC742D07890@augustwikerfors.se>
+Date:   Wed, 4 Oct 2023 18:33:55 +0200
+Cc:     broonie@kernel.org, stable-commits@vger.kernel.org,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        regressions@lists.linux.dev
+To:     gregkh@linuxfoundation.org, stable@vger.kernel.org
+Reporting-Meta: AAEHWQsg/CM5M6X2tVhNU4NXmxPo0N7v07ec6PufRpyTJI3MyRZ78LZwL2o/Wwp9
+ FHmUjMf8uxnMCWG7lXdTqo7w80jiK9yzPzjGfivUx2LMb8jxKABeqpqNv/MZor2M
+ 1vfV018llLGbqwQNDM2y9Bqe0O6AGc+VPJ7opf2glA0FkmxPtJ4yofMrUX/Hj1dK
+ t+GHwhllcqIMMkcFciFVsSVLDuFFm2x2HLH0kzN+kapjFaqGv7DUrAsjf3579Gn7
+ Uj0rNW50QalW3kz1MFcIWU/v2UxBTX14sSeCq7g5Jk0AI1Eu2GqbHKEFIBWU8GPc
+ /qpktqjUiLEp134i1zPqzlPc3MxKG4aJezh+4cfqnP5DKuDaBAsBUTk5CzONxnfX
+ vioaq3MunEfKzTn18Pu8ahnv58o9RZG2ABNSEcfLL5EN65kmHoQkCEPHlHWiGbsI 1w==
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Peter,
+Hi Greg,
 
-On Wed, Oct 4, 2023 at 9:02 AM Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Tue, Oct 03, 2023 at 09:08:44PM -0700, Namhyung Kim wrote:
->
-> > But after the change, it ended up iterating all pmus/events in the cpu
-> > context if there's a cgroup event somewhere on the cpu context.
-> > Unfortunately it includes uncore pmus which have much longer latency to
-> > control.
->
-> Can you describe the problem in more detail please?
+> On 4 Oct 2023, at 16:58, gregkh@linuxfoundation.org wrote:
+>=20
+> =EF=BB=BF
+> This is a note to let you know that I've just added the patch titled
+>=20
+>  ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG
+>=20
+> to the 6.1-stable tree which can be found at:
+>  http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.git;a=
+=3Dsummary
+>=20
+> The filename of the patch is:
+>   asoc-amd-yc-fix-non-functional-mic-on-lenovo-82qf-and-82ug.patch
+> and it can be found in the queue-6.1 subdirectory.
+>=20
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>=20
+>=20
+> =46rom 1263cc0f414d212129c0f1289b49b7df77f92084 Mon Sep 17 00:00:00 2001
+> From: August Wikerfors <git@augustwikerfors.se>
+> Date: Mon, 11 Sep 2023 23:34:09 +0200
+> Subject: ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG
+>=20
+> From: August Wikerfors <git@augustwikerfors.se>
+>=20
+> commit 1263cc0f414d212129c0f1289b49b7df77f92084 upstream.
+>=20
+> Like the Lenovo 82TL and 82V2, the Lenovo 82QF (Yoga 7 14ARB7) and 82UG
+> (Legion S7 16ARHA7) both need a quirk entry for the internal microphone to=
 
-Sure.
+> function. Commit c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on=
 
->
-> We have cgrp as part of the tree key: {cpu, pmu, cgroup, idx},
-> so it should be possible to find a specific cgroup for a cpu and or skip
-> to the next cgroup on that cpu in O(log n) time.
+> Lenovo 82SJ") restricted the quirk that previously matched "82" to "82V2",=
 
-This is about a single (core) pmu when it has a lot of events.
-But this problem is different, it's about accessing more pmus
-unnecessarily.
+> breaking microphone functionality on these devices. Fix this by adding
+> specific quirks for these models, as was done for the Lenovo 82TL.
+>=20
+> Fixes: c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on Lenovo 82=
+SJ")
+> Closes: https://github.com/tomsom/yoga-linux/issues/51
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D208555#c780
+> Cc: stable@vger.kernel.org
+> Signed-off-by: August Wikerfors <git@augustwikerfors.se>
+> Link: https://lore.kernel.org/r/20230911213409.6106-1-git@augustwikerfors.=
+se
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Say we have the following events for CPU 0.
+Please also add commit cfff2a7794d2 ("ASoC: amd: yc: Fix a non-functional mi=
+c on Lenovo 82TL") to 6.1+ as it fixed the same regression for another model=
+ (but wasn=E2=80=99t tagged for stable).
 
-  sw: context-switches
-  core: cycles, cycles-for-cgroup-A
-  uncore: whatever
-
-The cpu context has a cgroup event so it needs to call
-perf_cgroup_switch() at every context switch.  But actually
-it only needs to resched the 'core' pmu since it only has a
-cgroup event.  Other pmu events (like context-switches or
-any uncore event) should not be bothered by that.
-
-But perf_cgroup_switch() calls the general functions which
-iterate all pmus in the (cpu) context.
-
-  cpuctx.ctx.pmu_ctx_list:
-    +-> sw -> core -> uncore  (pmu_ctx_entry)
-
-Then it disables pmus, sched-out current events, switch
-cgroup pointer, sched-in new events and enable pmus.
-This gives a lot more overhead when it has uncore pmus
-since accessing MSRs for uncore pmus has longer latency.
-But uncore pmus cannot have cgroup events in the first
-place.
-
-So we need a separate list to keep pmus that have
-active cgroup events.
-
-  cpuctx.cgrp_ctx_list:
-    +-> core  (cgrp_ctx_entry)
-
-And we also need a logic to do the same work only
-for this list.
-
-Hope this helps.
-
->
-> > To fix the issue, I restored a linked list equivalent to cgrp_cpuctx_list
-> > in the perf_cpu_context and link perf_cpu_pmu_contexts that have cgroup
-> > events only.  Also add new helpers to enable/disable and does ctx sched
-> > in/out for cgroups.
->
-> Adding a list and duplicating the whole scheduling infrastructure seems
-> 'unfortunate' at best.
-
-Yeah, I know.. but I couldn't come up with a better solution.
-
-Thanks,
-Namhyung
+Regards,
+August Wikerfors=
