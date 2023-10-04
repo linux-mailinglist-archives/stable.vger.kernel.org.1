@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B534E7B8883
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A924C7B8771
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:05:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244076AbjJDSQ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:16:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44242 "EHLO
+        id S243793AbjJDSFX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:05:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244170AbjJDSQk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:16:40 -0400
+        with ESMTP id S243777AbjJDSFW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:05:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2F32C1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:16:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2296CC433C8;
-        Wed,  4 Oct 2023 18:16:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35A9AA6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C138C433C7;
+        Wed,  4 Oct 2023 18:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443395;
-        bh=eq1nUNqIoKIQ1/e++8xWJazkqZR0vwYfkatf/myDyns=;
+        s=korg; t=1696442718;
+        bh=jI35XbPERICaY4jWwm+569zLLIT3ngPsray/Z0Gq39w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W18Bt+YeM0D/0fxs3Sn6BlD9sez7uFRZkOklluY4+DiCzaDvp0y1oT9zqQ8BLoTtl
-         pY1tBZoYzZwcYmweiB9xEqC6AB81ktQKNl5yIec1BbLWbiN6VF1MerVGv49oHwpjzA
-         MMbq+Iz6RiumE4LqWJQCGCcYKzr9Q8W0V/MQqD44=
+        b=wls0+OxGr7Qp18NOTjFPWpzlmOPJzyeH837CbjRXvqedgqLk1Jw217V1QOF1cNIYm
+         Br+1BnDP4lxZ/FuRicfIjY09AK1XrGkIykxjwZf7Knz+6QuJ5BxScbfH5SPcCZEh9k
+         nJpG7uFXH2sWQCUSXFYVCQIvf5aj9I/7jRqJ/D+w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
-        Milind Changire <mchangir@redhat.com>,
-        Ilya Dryomov <idryomov@gmail.com>,
-        Sasha Levin <sashal@kernel.org>,
-        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>
-Subject: [PATCH 6.1 142/259] ceph: drop messages from MDS when unmounting
+        patches@lists.linux.dev, Paul Menzel <pmenzel@molgen.mpg.de>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 084/183] ata: libata: Rename link flag ATA_LFLAG_NO_DB_DELAY
 Date:   Wed,  4 Oct 2023 19:55:15 +0200
-Message-ID: <20231004175223.820100931@linuxfoundation.org>
+Message-ID: <20231004175207.378252779@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,379 +50,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-[ Upstream commit e3dfcab2080dc1f9a4b09cc1327361bc2845bfcd ]
+[ Upstream commit b9ba367c513dbc165dd6c01266a59db4be2a3564 ]
 
-When unmounting all the dirty buffers will be flushed and after
-the last osd request is finished the last reference of the i_count
-will be released. Then it will flush the dirty cap/snap to MDSs,
-and the unmounting won't wait the possible acks, which will ihold
-the inodes when updating the metadata locally but makes no sense
-any more, of this. This will make the evict_inodes() to skip these
-inodes.
+Rename the link flag ATA_LFLAG_NO_DB_DELAY to
+ATA_LFLAG_NO_DEBOUNCE_DELAY. The new name is longer, but clearer.
 
-If encrypt is enabled the kernel generate a warning when removing
-the encrypt keys when the skipped inodes still hold the keyring:
-
-WARNING: CPU: 4 PID: 168846 at fs/crypto/keyring.c:242 fscrypt_destroy_keyring+0x7e/0xd0
-CPU: 4 PID: 168846 Comm: umount Tainted: G S  6.1.0-rc5-ceph-g72ead199864c #1
-Hardware name: Supermicro SYS-5018R-WR/X10SRW-F, BIOS 2.0 12/17/2015
-RIP: 0010:fscrypt_destroy_keyring+0x7e/0xd0
-RSP: 0018:ffffc9000b277e28 EFLAGS: 00010202
-RAX: 0000000000000002 RBX: ffff88810d52ac00 RCX: ffff88810b56aa00
-RDX: 0000000080000000 RSI: ffffffff822f3a09 RDI: ffff888108f59000
-RBP: ffff8881d394fb88 R08: 0000000000000028 R09: 0000000000000000
-R10: 0000000000000001 R11: 11ff4fe6834fcd91 R12: ffff8881d394fc40
-R13: ffff888108f59000 R14: ffff8881d394f800 R15: 0000000000000000
-FS:  00007fd83f6f1080(0000) GS:ffff88885fd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f918d417000 CR3: 000000017f89a005 CR4: 00000000003706e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-generic_shutdown_super+0x47/0x120
-kill_anon_super+0x14/0x30
-ceph_kill_sb+0x36/0x90 [ceph]
-deactivate_locked_super+0x29/0x60
-cleanup_mnt+0xb8/0x140
-task_work_run+0x67/0xb0
-exit_to_user_mode_prepare+0x23d/0x240
-syscall_exit_to_user_mode+0x25/0x60
-do_syscall_64+0x40/0x80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7fd83dc39e9b
-
-Later the kernel will crash when iput() the inodes and dereferencing
-the "sb->s_master_keys", which has been released by the
-generic_shutdown_super().
-
-Link: https://tracker.ceph.com/issues/59162
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-and-tested-by: Luís Henriques <lhenriques@suse.de>
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Stable-dep-of: 2a2df98ec592 ("ata: ahci: Add Elkhart Lake AHCI controller")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/caps.c       |  6 +++-
- fs/ceph/mds_client.c | 12 +++++--
- fs/ceph/mds_client.h | 11 +++++--
- fs/ceph/quota.c      | 14 ++++-----
- fs/ceph/snap.c       | 10 +++---
- fs/ceph/super.c      | 75 +++++++++++++++++++++++++++++++++++++++++---
- fs/ceph/super.h      |  3 ++
- 7 files changed, 109 insertions(+), 22 deletions(-)
+ drivers/ata/ahci_brcm.c   | 2 +-
+ drivers/ata/libata-sata.c | 2 +-
+ include/linux/libata.h    | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-index 4a9ad5ff726d4..36052a3626830 100644
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -4100,6 +4100,9 @@ void ceph_handle_caps(struct ceph_mds_session *session,
+diff --git a/drivers/ata/ahci_brcm.c b/drivers/ata/ahci_brcm.c
+index 6e9c5ade4c2ea..649815c196ed0 100644
+--- a/drivers/ata/ahci_brcm.c
++++ b/drivers/ata/ahci_brcm.c
+@@ -333,7 +333,7 @@ static struct ata_port_operations ahci_brcm_platform_ops = {
  
- 	dout("handle_caps from mds%d\n", session->s_mds);
+ static const struct ata_port_info ahci_brcm_port_info = {
+ 	.flags		= AHCI_FLAG_COMMON | ATA_FLAG_NO_DIPM,
+-	.link_flags	= ATA_LFLAG_NO_DB_DELAY,
++	.link_flags	= ATA_LFLAG_NO_DEBOUNCE_DELAY,
+ 	.pio_mask	= ATA_PIO4,
+ 	.udma_mask	= ATA_UDMA6,
+ 	.port_ops	= &ahci_brcm_platform_ops,
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index cb9395a3ad8e8..04bdd53abf20b 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -317,7 +317,7 @@ int sata_link_resume(struct ata_link *link, const unsigned long *params,
+ 		 * immediately after resuming.  Delay 200ms before
+ 		 * debouncing.
+ 		 */
+-		if (!(link->flags & ATA_LFLAG_NO_DB_DELAY))
++		if (!(link->flags & ATA_LFLAG_NO_DEBOUNCE_DELAY))
+ 			ata_msleep(link->ap, 200);
  
-+	if (!ceph_inc_mds_stopping_blocker(mdsc, session))
-+		return;
-+
- 	/* decode */
- 	end = msg->front.iov_base + msg->front.iov_len;
- 	if (msg->front.iov_len < sizeof(*h))
-@@ -4196,7 +4199,6 @@ void ceph_handle_caps(struct ceph_mds_session *session,
- 	     vino.snap, inode);
+ 		/* is SControl restored correctly? */
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index fa568d35bcbfa..7508c68756e95 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -191,7 +191,7 @@ enum {
+ 	ATA_LFLAG_NO_LPM	= (1 << 8), /* disable LPM on this link */
+ 	ATA_LFLAG_RST_ONCE	= (1 << 9), /* limit recovery to one reset */
+ 	ATA_LFLAG_CHANGED	= (1 << 10), /* LPM state changed on this link */
+-	ATA_LFLAG_NO_DB_DELAY	= (1 << 11), /* no debounce delay on link resume */
++	ATA_LFLAG_NO_DEBOUNCE_DELAY = (1 << 11), /* no debounce delay on link resume */
  
- 	mutex_lock(&session->s_mutex);
--	inc_session_sequence(session);
- 	dout(" mds%d seq %lld cap seq %u\n", session->s_mds, session->s_seq,
- 	     (unsigned)seq);
- 
-@@ -4299,6 +4301,8 @@ void ceph_handle_caps(struct ceph_mds_session *session,
- done_unlocked:
- 	iput(inode);
- out:
-+	ceph_dec_mds_stopping_blocker(mdsc);
-+
- 	ceph_put_string(extra_info.pool_ns);
- 
- 	/* Defer closing the sessions after s_mutex lock being released */
-diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-index 5399a9ea5b4f1..f6a7fd47efd7a 100644
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -4546,6 +4546,9 @@ static void handle_lease(struct ceph_mds_client *mdsc,
- 
- 	dout("handle_lease from mds%d\n", mds);
- 
-+	if (!ceph_inc_mds_stopping_blocker(mdsc, session))
-+		return;
-+
- 	/* decode */
- 	if (msg->front.iov_len < sizeof(*h) + sizeof(u32))
- 		goto bad;
-@@ -4564,8 +4567,6 @@ static void handle_lease(struct ceph_mds_client *mdsc,
- 	     dname.len, dname.name);
- 
- 	mutex_lock(&session->s_mutex);
--	inc_session_sequence(session);
--
- 	if (!inode) {
- 		dout("handle_lease no inode %llx\n", vino.ino);
- 		goto release;
-@@ -4627,9 +4628,13 @@ static void handle_lease(struct ceph_mds_client *mdsc,
- out:
- 	mutex_unlock(&session->s_mutex);
- 	iput(inode);
-+
-+	ceph_dec_mds_stopping_blocker(mdsc);
- 	return;
- 
- bad:
-+	ceph_dec_mds_stopping_blocker(mdsc);
-+
- 	pr_err("corrupt lease message\n");
- 	ceph_msg_dump(msg);
- }
-@@ -4825,6 +4830,9 @@ int ceph_mdsc_init(struct ceph_fs_client *fsc)
- 	}
- 
- 	init_completion(&mdsc->safe_umount_waiters);
-+	spin_lock_init(&mdsc->stopping_lock);
-+	atomic_set(&mdsc->stopping_blockers, 0);
-+	init_completion(&mdsc->stopping_waiter);
- 	init_waitqueue_head(&mdsc->session_close_wq);
- 	INIT_LIST_HEAD(&mdsc->waiting_for_map);
- 	mdsc->quotarealms_inodes = RB_ROOT;
-diff --git a/fs/ceph/mds_client.h b/fs/ceph/mds_client.h
-index 9a80658f41679..0913959ccfa64 100644
---- a/fs/ceph/mds_client.h
-+++ b/fs/ceph/mds_client.h
-@@ -381,8 +381,9 @@ struct cap_wait {
- };
- 
- enum {
--       CEPH_MDSC_STOPPING_BEGIN = 1,
--       CEPH_MDSC_STOPPING_FLUSHED = 2,
-+	CEPH_MDSC_STOPPING_BEGIN = 1,
-+	CEPH_MDSC_STOPPING_FLUSHING = 2,
-+	CEPH_MDSC_STOPPING_FLUSHED = 3,
- };
- 
- /*
-@@ -401,7 +402,11 @@ struct ceph_mds_client {
- 	struct ceph_mds_session **sessions;    /* NULL for mds if no session */
- 	atomic_t		num_sessions;
- 	int                     max_sessions;  /* len of sessions array */
--	int                     stopping;      /* true if shutting down */
-+
-+	spinlock_t              stopping_lock;  /* protect snap_empty */
-+	int                     stopping;      /* the stage of shutting down */
-+	atomic_t                stopping_blockers;
-+	struct completion	stopping_waiter;
- 
- 	atomic64_t		quotarealms_count; /* # realms with quota */
- 	/*
-diff --git a/fs/ceph/quota.c b/fs/ceph/quota.c
-index 64592adfe48fb..f7fcf7f08ec64 100644
---- a/fs/ceph/quota.c
-+++ b/fs/ceph/quota.c
-@@ -47,25 +47,23 @@ void ceph_handle_quota(struct ceph_mds_client *mdsc,
- 	struct inode *inode;
- 	struct ceph_inode_info *ci;
- 
-+	if (!ceph_inc_mds_stopping_blocker(mdsc, session))
-+		return;
-+
- 	if (msg->front.iov_len < sizeof(*h)) {
- 		pr_err("%s corrupt message mds%d len %d\n", __func__,
- 		       session->s_mds, (int)msg->front.iov_len);
- 		ceph_msg_dump(msg);
--		return;
-+		goto out;
- 	}
- 
--	/* increment msg sequence number */
--	mutex_lock(&session->s_mutex);
--	inc_session_sequence(session);
--	mutex_unlock(&session->s_mutex);
--
- 	/* lookup inode */
- 	vino.ino = le64_to_cpu(h->ino);
- 	vino.snap = CEPH_NOSNAP;
- 	inode = ceph_find_inode(sb, vino);
- 	if (!inode) {
- 		pr_warn("Failed to find inode %llu\n", vino.ino);
--		return;
-+		goto out;
- 	}
- 	ci = ceph_inode(inode);
- 
-@@ -78,6 +76,8 @@ void ceph_handle_quota(struct ceph_mds_client *mdsc,
- 	spin_unlock(&ci->i_ceph_lock);
- 
- 	iput(inode);
-+out:
-+	ceph_dec_mds_stopping_blocker(mdsc);
- }
- 
- static struct ceph_quotarealm_inode *
-diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
-index 2e73ba62bd7aa..82f7592e1747b 100644
---- a/fs/ceph/snap.c
-+++ b/fs/ceph/snap.c
-@@ -1012,6 +1012,9 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
- 	int locked_rwsem = 0;
- 	bool close_sessions = false;
- 
-+	if (!ceph_inc_mds_stopping_blocker(mdsc, session))
-+		return;
-+
- 	/* decode */
- 	if (msg->front.iov_len < sizeof(*h))
- 		goto bad;
-@@ -1027,10 +1030,6 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
- 	dout("%s from mds%d op %s split %llx tracelen %d\n", __func__,
- 	     mds, ceph_snap_op_name(op), split, trace_len);
- 
--	mutex_lock(&session->s_mutex);
--	inc_session_sequence(session);
--	mutex_unlock(&session->s_mutex);
--
- 	down_write(&mdsc->snap_rwsem);
- 	locked_rwsem = 1;
- 
-@@ -1148,6 +1147,7 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
- 	up_write(&mdsc->snap_rwsem);
- 
- 	flush_snaps(mdsc);
-+	ceph_dec_mds_stopping_blocker(mdsc);
- 	return;
- 
- bad:
-@@ -1157,6 +1157,8 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
- 	if (locked_rwsem)
- 		up_write(&mdsc->snap_rwsem);
- 
-+	ceph_dec_mds_stopping_blocker(mdsc);
-+
- 	if (close_sessions)
- 		ceph_mdsc_close_sessions(mdsc);
- 	return;
-diff --git a/fs/ceph/super.c b/fs/ceph/super.c
-index a5f52013314d6..281b493fdac8e 100644
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -1365,25 +1365,90 @@ static int ceph_init_fs_context(struct fs_context *fc)
- 	return -ENOMEM;
- }
- 
-+/*
-+ * Return true if it successfully increases the blocker counter,
-+ * or false if the mdsc is in stopping and flushed state.
-+ */
-+static bool __inc_stopping_blocker(struct ceph_mds_client *mdsc)
-+{
-+	spin_lock(&mdsc->stopping_lock);
-+	if (mdsc->stopping >= CEPH_MDSC_STOPPING_FLUSHING) {
-+		spin_unlock(&mdsc->stopping_lock);
-+		return false;
-+	}
-+	atomic_inc(&mdsc->stopping_blockers);
-+	spin_unlock(&mdsc->stopping_lock);
-+	return true;
-+}
-+
-+static void __dec_stopping_blocker(struct ceph_mds_client *mdsc)
-+{
-+	spin_lock(&mdsc->stopping_lock);
-+	if (!atomic_dec_return(&mdsc->stopping_blockers) &&
-+	    mdsc->stopping >= CEPH_MDSC_STOPPING_FLUSHING)
-+		complete_all(&mdsc->stopping_waiter);
-+	spin_unlock(&mdsc->stopping_lock);
-+}
-+
-+/* For metadata IO requests */
-+bool ceph_inc_mds_stopping_blocker(struct ceph_mds_client *mdsc,
-+				   struct ceph_mds_session *session)
-+{
-+	mutex_lock(&session->s_mutex);
-+	inc_session_sequence(session);
-+	mutex_unlock(&session->s_mutex);
-+
-+	return __inc_stopping_blocker(mdsc);
-+}
-+
-+void ceph_dec_mds_stopping_blocker(struct ceph_mds_client *mdsc)
-+{
-+	__dec_stopping_blocker(mdsc);
-+}
-+
- static void ceph_kill_sb(struct super_block *s)
- {
- 	struct ceph_fs_client *fsc = ceph_sb_to_client(s);
-+	struct ceph_mds_client *mdsc = fsc->mdsc;
-+	bool wait;
- 
- 	dout("kill_sb %p\n", s);
- 
--	ceph_mdsc_pre_umount(fsc->mdsc);
-+	ceph_mdsc_pre_umount(mdsc);
- 	flush_fs_workqueues(fsc);
- 
- 	/*
- 	 * Though the kill_anon_super() will finally trigger the
--	 * sync_filesystem() anyway, we still need to do it here
--	 * and then bump the stage of shutdown to stop the work
--	 * queue as earlier as possible.
-+	 * sync_filesystem() anyway, we still need to do it here and
-+	 * then bump the stage of shutdown. This will allow us to
-+	 * drop any further message, which will increase the inodes'
-+	 * i_count reference counters but makes no sense any more,
-+	 * from MDSs.
-+	 *
-+	 * Without this when evicting the inodes it may fail in the
-+	 * kill_anon_super(), which will trigger a warning when
-+	 * destroying the fscrypt keyring and then possibly trigger
-+	 * a further crash in ceph module when the iput() tries to
-+	 * evict the inodes later.
- 	 */
- 	sync_filesystem(s);
- 
--	fsc->mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHED;
-+	spin_lock(&mdsc->stopping_lock);
-+	mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHING;
-+	wait = !!atomic_read(&mdsc->stopping_blockers);
-+	spin_unlock(&mdsc->stopping_lock);
-+
-+	if (wait && atomic_read(&mdsc->stopping_blockers)) {
-+		long timeleft = wait_for_completion_killable_timeout(
-+					&mdsc->stopping_waiter,
-+					fsc->client->options->mount_timeout);
-+		if (!timeleft) /* timed out */
-+			pr_warn("umount timed out, %ld\n", timeleft);
-+		else if (timeleft < 0) /* killed */
-+			pr_warn("umount was killed, %ld\n", timeleft);
-+	}
- 
-+	mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHED;
- 	kill_anon_super(s);
- 
- 	fsc->client->extra_mon_dispatch = NULL;
-diff --git a/fs/ceph/super.h b/fs/ceph/super.h
-index 562f42f4a77d7..7ca74f5f70be5 100644
---- a/fs/ceph/super.h
-+++ b/fs/ceph/super.h
-@@ -1374,4 +1374,7 @@ extern bool ceph_quota_update_statfs(struct ceph_fs_client *fsc,
- 				     struct kstatfs *buf);
- extern void ceph_cleanup_quotarealms_inodes(struct ceph_mds_client *mdsc);
- 
-+bool ceph_inc_mds_stopping_blocker(struct ceph_mds_client *mdsc,
-+			       struct ceph_mds_session *session);
-+void ceph_dec_mds_stopping_blocker(struct ceph_mds_client *mdsc);
- #endif /* _FS_CEPH_SUPER_H */
+ 	/* struct ata_port flags */
+ 	ATA_FLAG_SLAVE_POSS	= (1 << 0), /* host supports slave dev */
 -- 
 2.40.1
 
