@@ -2,178 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E1C37B841F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C011E7B8425
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:50:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233750AbjJDPtq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 11:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53006 "EHLO
+        id S242962AbjJDPuv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 11:50:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233661AbjJDPtp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:49:45 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6131A9E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:49:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E05CC433C7;
-        Wed,  4 Oct 2023 15:49:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696434582;
-        bh=mWS/3essoHzCF9omkTprVDW0j4EXGandgtDzDTqT1s8=;
-        h=Subject:To:Cc:From:Date:From;
-        b=MtpXFphH9fthgkqso+2c9r/TKW49SBP6XvUVFO/REyyKrA7u9cnJEAF+2RYxKu8OA
-         wN6/AHKlaGMb8R7lC0V0BT0JFdLUAOSNFYQkhUnQg8YMJ1e6nOS1sLTcb2jjlvyLnz
-         SbHt7dVu6K0Sgp4XO65OI2hwiA3W6cUlaXcgG1IA=
-Subject: FAILED: patch "[PATCH] NFSv4: Fix a state manager thread deadlock regression" failed to apply to 5.10-stable tree
-To:     trond.myklebust@hammerspace.com, Anna.Schumaker@Netapp.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 17:49:29 +0200
-Message-ID: <2023100429-stonework-conceal-099d@gregkh>
+        with ESMTP id S233661AbjJDPut (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:50:49 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46167A6;
+        Wed,  4 Oct 2023 08:50:43 -0700 (PDT)
+Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 394ABEsL026844;
+        Wed, 4 Oct 2023 17:50:29 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding:content-type; s=selector1; bh=lRZ6+TZ
+        OKkUcJ4/oh5Hwp1GtRYeC8Duvo8t9N5cheIQ=; b=P4uF5FhLgV/f1VC0L/NGThz
+        HeGNmrO6bY1DEm6xbv3+EuofO6XLYTFWeXGhD1KtCarTYV45eRRZhuVqmrxj4G+1
+        BeYuKQDO/hLspRUHPEq/x0gFioKPX0aSQPFRFbMYXnUvAsicTEw5mj61ItxyfUlv
+        9BXFyMKwRx3yrVTTimUO6xD6JPqw0i0A5q8Y5qIFSD+RhyimQKi+lgoFSGx01BEu
+        U4AyJiQiVYWIXpajvfdoheCNl04XmEf+SE2tdFNETTjPZw7FZvkOJnQCMBf8dwHE
+        jBNlB/V6KB3wmGKhohe6CBIqy8NhzaUp6hE48SPthMtj84ngC8HjagYN0fDtPig=
+        =
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3tew80qfcd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 04 Oct 2023 17:50:29 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id DF481100053;
+        Wed,  4 Oct 2023 17:50:28 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D7CFC26028D;
+        Wed,  4 Oct 2023 17:50:28 +0200 (CEST)
+Received: from localhost (10.252.26.61) by SHFDAG1NODE3.st.com (10.75.129.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 4 Oct
+ 2023 17:50:28 +0200
+From:   Amelie Delaunay <amelie.delaunay@foss.st.com>
+To:     Vinod Koul <vkoul@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>
+CC:     <stable@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 1/2] dmaengine: stm32-dma: fix stm32_dma_prep_slave_sg in case of MDMA chaining
+Date:   Wed, 4 Oct 2023 17:50:23 +0200
+Message-ID: <20231004155024.2609531-1-amelie.delaunay@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.252.26.61]
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE3.st.com
+ (10.75.129.71)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-04_07,2023-10-02_01,2023-05-22_02
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Current Target (CT) have to be reset when starting an MDMA chaining use
+case, as Double Buffer mode is activated. It ensures the DMA will start
+processing the first memory target (pointed with SxM0AR).
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 956fd46f97d238032cb5fa4771cdaccc6e760f9a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100429-stonework-conceal-099d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 956fd46f97d238032cb5fa4771cdaccc6e760f9a Mon Sep 17 00:00:00 2001
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
-Date: Sun, 24 Sep 2023 13:14:15 -0400
-Subject: [PATCH] NFSv4: Fix a state manager thread deadlock regression
-
-Commit 4dc73c679114 reintroduces the deadlock that was fixed by commit
-aeabb3c96186 ("NFSv4: Fix a NFSv4 state manager deadlock") because it
-prevents the setup of new threads to handle reboot recovery, while the
-older recovery thread is stuck returning delegations.
-
-Fixes: 4dc73c679114 ("NFSv4: keep state manager thread active if swap is enabled")
+Fixes: 723795173ce1 ("dmaengine: stm32-dma: add support to trigger STM32 MDMA")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+---
+ drivers/dma/stm32-dma.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 3508d8238826..7016eaadf555 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -10622,7 +10622,9 @@ static void nfs4_disable_swap(struct inode *inode)
- 	 */
- 	struct nfs_client *clp = NFS_SERVER(inode)->nfs_client;
+diff --git a/drivers/dma/stm32-dma.c b/drivers/dma/stm32-dma.c
+index 5c36811aa134..7427acc82259 100644
+--- a/drivers/dma/stm32-dma.c
++++ b/drivers/dma/stm32-dma.c
+@@ -1113,8 +1113,10 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_slave_sg(
+ 		chan->chan_reg.dma_scr &= ~STM32_DMA_SCR_PFCTRL;
  
--	nfs4_schedule_state_manager(clp);
-+	set_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state);
-+	clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
-+	wake_up_var(&clp->cl_state);
- }
+ 	/* Activate Double Buffer Mode if DMA triggers STM32 MDMA and more than 1 sg */
+-	if (chan->trig_mdma && sg_len > 1)
++	if (chan->trig_mdma && sg_len > 1) {
+ 		chan->chan_reg.dma_scr |= STM32_DMA_SCR_DBM;
++		chan->chan_reg.dma_scr &= ~STM32_DMA_SCR_CT;
++	}
  
- static const struct inode_operations nfs4_dir_inode_operations = {
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index 0bc160fbabec..9a5d911a7edc 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -1209,16 +1209,26 @@ void nfs4_schedule_state_manager(struct nfs_client *clp)
- {
- 	struct task_struct *task;
- 	char buf[INET6_ADDRSTRLEN + sizeof("-manager") + 1];
-+	struct rpc_clnt *clnt = clp->cl_rpcclient;
-+	bool swapon = false;
- 
--	if (clp->cl_rpcclient->cl_shutdown)
-+	if (clnt->cl_shutdown)
- 		return;
- 
- 	set_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state);
--	if (test_and_set_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state) != 0) {
--		wake_up_var(&clp->cl_state);
--		return;
-+
-+	if (atomic_read(&clnt->cl_swapper)) {
-+		swapon = !test_and_set_bit(NFS4CLNT_MANAGER_AVAILABLE,
-+					   &clp->cl_state);
-+		if (!swapon) {
-+			wake_up_var(&clp->cl_state);
-+			return;
-+		}
- 	}
--	set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state);
-+
-+	if (test_and_set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state) != 0)
-+		return;
-+
- 	__module_get(THIS_MODULE);
- 	refcount_inc(&clp->cl_count);
- 
-@@ -1235,8 +1245,9 @@ void nfs4_schedule_state_manager(struct nfs_client *clp)
- 			__func__, PTR_ERR(task));
- 		if (!nfs_client_init_is_complete(clp))
- 			nfs_mark_client_ready(clp, PTR_ERR(task));
-+		if (swapon)
-+			clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
- 		nfs4_clear_state_manager_bit(clp);
--		clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
- 		nfs_put_client(clp);
- 		module_put(THIS_MODULE);
- 	}
-@@ -2748,22 +2759,25 @@ static int nfs4_run_state_manager(void *ptr)
- 
- 	allow_signal(SIGKILL);
- again:
--	set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state);
- 	nfs4_state_manager(clp);
--	if (atomic_read(&cl->cl_swapper)) {
-+
-+	if (test_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state) &&
-+	    !test_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state)) {
- 		wait_var_event_interruptible(&clp->cl_state,
- 					     test_bit(NFS4CLNT_RUN_MANAGER,
- 						      &clp->cl_state));
--		if (atomic_read(&cl->cl_swapper) &&
--		    test_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state))
-+		if (!atomic_read(&cl->cl_swapper))
-+			clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
-+		if (refcount_read(&clp->cl_count) > 1 && !signalled() &&
-+		    !test_and_set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state))
- 			goto again;
- 		/* Either no longer a swapper, or were signalled */
-+		clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
- 	}
--	clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
- 
- 	if (refcount_read(&clp->cl_count) > 1 && !signalled() &&
- 	    test_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state) &&
--	    !test_and_set_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state))
-+	    !test_and_set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state))
- 		goto again;
- 
- 	nfs_put_client(clp);
+ 	for_each_sg(sgl, sg, sg_len, i) {
+ 		ret = stm32_dma_set_xfer_param(chan, direction, &buswidth,
+-- 
+2.25.1
 
