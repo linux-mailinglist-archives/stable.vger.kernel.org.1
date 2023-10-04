@@ -2,39 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA06F7B8A71
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73BD07B8913
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:22:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243842AbjJDSfd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:35:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41674 "EHLO
+        id S244042AbjJDSWd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:22:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244428AbjJDSfc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:35:32 -0400
+        with ESMTP id S243775AbjJDSWc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:22:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C596AA6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:35:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1917BC433C8;
-        Wed,  4 Oct 2023 18:35:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91A4DA6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:22:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72A0C433C8;
+        Wed,  4 Oct 2023 18:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444529;
-        bh=SUN/8AuC+61EsOVe1SUTgyEKj12/nvDCGIZuNjfMpKY=;
+        s=korg; t=1696443749;
+        bh=Wf/ufhpGaHrezQV2LoiBocU0Ydi40DMYm2oMi951d2o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1lixKfgPOp3mw4yRTrtVH1CJ4IilcJNcVMiZcD6+7oT6naRwFpB55jyKDFQDBQozp
-         VCgAkMJPBz8lFro2TcTWm2bNBAcpBidi5PXhL6lXp7HRPo2kLD9AMzHUGzj/ZeLNnd
-         QC0kGmbaf3W7NZc/KLdafdKlcGMQpoF2D7LcxknM=
+        b=KB5V4ExZOOw7joaNN8A0fNd991yUq9kQswZxXZJqxlG6bzrLgJ7yFDnF7DTl0TlkD
+         /xjVc8FshSfXv9FlJnv6arudT3dI8U3fV4WibkPO7F+dSZ2wiaDP9jl6nTODa3tsHp
+         E206g0GK5MFf25cStMYLiZGhqyTOe5DY5JUmM++0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rafael Aquini <aquini@redhat.com>,
-        Waiman Long <longman@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.5 283/321] mm/slab_common: fix slab_caches list corruption after kmem_cache_destroy()
-Date:   Wed,  4 Oct 2023 19:57:08 +0200
-Message-ID: <20231004175242.382701667@linuxfoundation.org>
+        patches@lists.linux.dev, Neil Armstrong <narmstrong@baylibre.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.1 256/259] drm/meson: fix memory leak on ->hpd_notify callback
+Date:   Wed,  4 Oct 2023 19:57:09 +0200
+Message-ID: <20231004175229.171558646@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,91 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Aquini <aquini@redhat.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 46a9ea6681907a3be6b6b0d43776dccc62cad6cf upstream.
+commit 099f0af9d98231bb74956ce92508e87cbcb896be upstream.
 
-After the commit in Fixes:, if a module that created a slab cache does not
-release all of its allocated objects before destroying the cache (at rmmod
-time), we might end up releasing the kmem_cache object without removing it
-from the slab_caches list thus corrupting the list as kmem_cache_destroy()
-ignores the return value from shutdown_cache(), which in turn never removes
-the kmem_cache object from slabs_list in case __kmem_cache_shutdown() fails
-to release all of the cache's slabs.
+The EDID returned by drm_bridge_get_edid() needs to be freed.
 
-This is easily observable on a kernel built with CONFIG_DEBUG_LIST=y
-as after that ill release the system will immediately trip on list_add,
-or list_del, assertions similar to the one shown below as soon as another
-kmem_cache gets created, or destroyed:
-
-  [ 1041.213632] list_del corruption. next->prev should be ffff89f596fb5768, but was 52f1e5016aeee75d. (next=ffff89f595a1b268)
-  [ 1041.219165] ------------[ cut here ]------------
-  [ 1041.221517] kernel BUG at lib/list_debug.c:62!
-  [ 1041.223452] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-  [ 1041.225408] CPU: 2 PID: 1852 Comm: rmmod Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
-  [ 1041.228244] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
-  [ 1041.231212] RIP: 0010:__list_del_entry_valid+0xae/0xb0
-
-Another quick way to trigger this issue, in a kernel with CONFIG_SLUB=y,
-is to set slub_debug to poison the released objects and then just run
-cat /proc/slabinfo after removing the module that leaks slab objects,
-in which case the kernel will panic:
-
-  [   50.954843] general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 [#1] PREEMPT SMP PTI
-  [   50.961545] CPU: 2 PID: 1495 Comm: cat Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
-  [   50.966808] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
-  [   50.972663] RIP: 0010:get_slabinfo+0x42/0xf0
-
-This patch fixes this issue by properly checking shutdown_cache()'s
-return value before taking the kmem_cache_release() branch.
-
-Fixes: 0495e337b703 ("mm/slab_common: Deleting kobject in kmem_cache_destroy() without holding slab_mutex/cpu_hotplug_lock")
-Signed-off-by: Rafael Aquini <aquini@redhat.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Fixes: 0af5e0b41110 ("drm/meson: encoder_hdmi: switch to bridge DRM_BRIDGE_ATTACH_NO_CONNECTOR")
+Cc: Neil Armstrong <narmstrong@baylibre.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Kevin Hilman <khilman@baylibre.com>
+Cc: Jerome Brunet <jbrunet@baylibre.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-amlogic@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: stable@vger.kernel.org # v5.17+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230914131015.2472029-1-jani.nikula@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slab_common.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -479,7 +479,7 @@ void slab_kmem_cache_release(struct kmem
+--- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
++++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+@@ -332,6 +332,8 @@ static void meson_encoder_hdmi_hpd_notif
+ 			return;
  
- void kmem_cache_destroy(struct kmem_cache *s)
- {
--	int refcnt;
-+	int err = -EBUSY;
- 	bool rcu_set;
- 
- 	if (unlikely(!s) || !kasan_check_byte(s))
-@@ -490,17 +490,17 @@ void kmem_cache_destroy(struct kmem_cach
- 
- 	rcu_set = s->flags & SLAB_TYPESAFE_BY_RCU;
- 
--	refcnt = --s->refcount;
--	if (refcnt)
-+	s->refcount--;
-+	if (s->refcount)
- 		goto out_unlock;
- 
--	WARN(shutdown_cache(s),
--	     "%s %s: Slab cache still has objects when called from %pS",
-+	err = shutdown_cache(s);
-+	WARN(err, "%s %s: Slab cache still has objects when called from %pS",
- 	     __func__, s->name, (void *)_RET_IP_);
- out_unlock:
- 	mutex_unlock(&slab_mutex);
- 	cpus_read_unlock();
--	if (!refcnt && !rcu_set)
-+	if (!err && !rcu_set)
- 		kmem_cache_release(s);
+ 		cec_notifier_set_phys_addr_from_edid(encoder_hdmi->cec_notifier, edid);
++
++		kfree(edid);
+ 	} else
+ 		cec_notifier_phys_addr_invalidate(encoder_hdmi->cec_notifier);
  }
- EXPORT_SYMBOL(kmem_cache_destroy);
 
 
