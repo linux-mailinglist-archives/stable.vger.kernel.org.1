@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E7D87B88A6
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C42637B8792
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244112AbjJDSSR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:18:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58220 "EHLO
+        id S243780AbjJDSG5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:06:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244114AbjJDSSQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:16 -0400
+        with ESMTP id S243701AbjJDSG5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5B799E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D64C433C7;
-        Wed,  4 Oct 2023 18:18:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B43B2BF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088C7C433C9;
+        Wed,  4 Oct 2023 18:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443492;
-        bh=CSQG5WkVvtvQ9zUKm+2uLj5/gwe5gB1Rna/8/ra8N3o=;
+        s=korg; t=1696442812;
+        bh=NqL8AR5ifuwHif5NVtt/V2sfMcRX1/DL5yMMjBwqDL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XFmhG+PlWUENiagnIR8J0Md87Bmyl88Kp9zByOQLUj4GcRr2vwvXuQpJoOX4EGSgN
-         UN4DNe8XnMPC/3uCBZZ8W7aN8Gjp+APg6ZGd9/+CZHH8CStwkTOeNcorRb2MVo4ksO
-         0qfwMYMkFNKYockLuCt2cLPZV+uwOL5CpPTiYS7Y=
+        b=s3sgVkmQgwlf/S53rau2Ps0GafOHqm9TwYEC4VLZgW1JePgJfHVDtl7aPdKznMMmI
+         RnEJUoVloiuOh9ABIgAMqrXQc78UznvcyJhR0nPxXa5xeeMjL7KSWU3+WrniVRPtQM
+         L7oUaKZFDkXjNbXlNmmsWfa8DYcSd1JC35mu0HxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Valentin Caron <valentin.caron@foss.st.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Javed Hasan <jhasan@marvell.com>,
+        Saurav Kashyap <skashyap@marvell.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/259] spi: stm32: add a delay before SPI disable
+Subject: [PATCH 5.15 117/183] scsi: qedf: Add synchronization between I/O completions and abort
 Date:   Wed,  4 Oct 2023 19:55:48 +0200
-Message-ID: <20231004175225.317113630@linuxfoundation.org>
+Message-ID: <20231004175208.825320721@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +51,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Valentin Caron <valentin.caron@foss.st.com>
+From: Javed Hasan <jhasan@marvell.com>
 
-[ Upstream commit 6de8a70c84ee0586fdde4e671626b9caca6aed74 ]
+[ Upstream commit 7df0b2605489bef3f4223ad66f1f9bb8d50d4cd2 ]
 
-As explained in errata sheet, in section "2.14.5 Truncation of SPI output
-signals after EOT event":
-On STM32MP1x, EOT interrupt can be thrown before the true end of
-communication.
+Avoid race condition between I/O completion and abort processing by
+protecting the cmd_type with the rport lock.
 
-So we add a delay of a half period to wait the real end of the
-transmission.
-
-Link: https://www.st.com/resource/en/errata_sheet/es0539-stm32mp131x3x5x-device-errata-stmicroelectronics.pdf
-Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
-Link: https://lore.kernel.org/r/20230906132735.748174-1-valentin.caron@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Javed Hasan <jhasan@marvell.com>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Link: https://lore.kernel.org/r/20230901060646.27885-1-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/scsi/qedf/qedf_io.c   | 10 ++++++++--
+ drivers/scsi/qedf/qedf_main.c |  7 ++++++-
+ 2 files changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index def09cf0dc147..12241815510d4 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -268,6 +268,7 @@ struct stm32_spi_cfg {
-  * @fifo_size: size of the embedded fifo in bytes
-  * @cur_midi: master inter-data idleness in ns
-  * @cur_speed: speed configured in Hz
-+ * @cur_half_period: time of a half bit in us
-  * @cur_bpw: number of bits in a single SPI data frame
-  * @cur_fthlv: fifo threshold level (data frames in a single data packet)
-  * @cur_comm: SPI communication mode
-@@ -294,6 +295,7 @@ struct stm32_spi {
+diff --git a/drivers/scsi/qedf/qedf_io.c b/drivers/scsi/qedf/qedf_io.c
+index bb5761ed3f511..a1a1f4e466609 100644
+--- a/drivers/scsi/qedf/qedf_io.c
++++ b/drivers/scsi/qedf/qedf_io.c
+@@ -1913,6 +1913,7 @@ int qedf_initiate_abts(struct qedf_ioreq *io_req, bool return_scsi_cmd_on_abts)
+ 		goto drop_rdata_kref;
+ 	}
  
- 	unsigned int cur_midi;
- 	unsigned int cur_speed;
-+	unsigned int cur_half_period;
- 	unsigned int cur_bpw;
- 	unsigned int cur_fthlv;
- 	unsigned int cur_comm;
-@@ -454,6 +456,8 @@ static int stm32_spi_prepare_mbr(struct stm32_spi *spi, u32 speed_hz,
++	spin_lock_irqsave(&fcport->rport_lock, flags);
+ 	if (!test_bit(QEDF_CMD_OUTSTANDING, &io_req->flags) ||
+ 	    test_bit(QEDF_CMD_IN_CLEANUP, &io_req->flags) ||
+ 	    test_bit(QEDF_CMD_IN_ABORT, &io_req->flags)) {
+@@ -1920,17 +1921,20 @@ int qedf_initiate_abts(struct qedf_ioreq *io_req, bool return_scsi_cmd_on_abts)
+ 			 "io_req xid=0x%x sc_cmd=%p already in cleanup or abort processing or already completed.\n",
+ 			 io_req->xid, io_req->sc_cmd);
+ 		rc = 1;
++		spin_unlock_irqrestore(&fcport->rport_lock, flags);
+ 		goto drop_rdata_kref;
+ 	}
  
- 	spi->cur_speed = spi->clk_rate / (1 << mbrdiv);
- 
-+	spi->cur_half_period = DIV_ROUND_CLOSEST(USEC_PER_SEC, 2 * spi->cur_speed);
++	/* Set the command type to abort */
++	io_req->cmd_type = QEDF_ABTS;
++	spin_unlock_irqrestore(&fcport->rport_lock, flags);
 +
- 	return mbrdiv - 1;
- }
+ 	kref_get(&io_req->refcount);
  
-@@ -695,6 +699,10 @@ static void stm32h7_spi_disable(struct stm32_spi *spi)
+ 	xid = io_req->xid;
+ 	qedf->control_requests++;
+ 	qedf->packet_aborts++;
+ 
+-	/* Set the command type to abort */
+-	io_req->cmd_type = QEDF_ABTS;
+ 	io_req->return_scsi_cmd_on_abts = return_scsi_cmd_on_abts;
+ 
+ 	set_bit(QEDF_CMD_IN_ABORT, &io_req->flags);
+@@ -2219,7 +2223,9 @@ int qedf_initiate_cleanup(struct qedf_ioreq *io_req,
+ 		  refcount, fcport, fcport->rdata->ids.port_id);
+ 
+ 	/* Cleanup cmds re-use the same TID as the original I/O */
++	spin_lock_irqsave(&fcport->rport_lock, flags);
+ 	io_req->cmd_type = QEDF_CLEANUP;
++	spin_unlock_irqrestore(&fcport->rport_lock, flags);
+ 	io_req->return_scsi_cmd_on_abts = return_scsi_cmd_on_abts;
+ 
+ 	init_completion(&io_req->cleanup_done);
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index 61959dd2237fc..18380a932ab61 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -2807,6 +2807,8 @@ void qedf_process_cqe(struct qedf_ctx *qedf, struct fcoe_cqe *cqe)
+ 	struct qedf_ioreq *io_req;
+ 	struct qedf_rport *fcport;
+ 	u32 comp_type;
++	u8 io_comp_type;
++	unsigned long flags;
+ 
+ 	comp_type = (cqe->cqe_data >> FCOE_CQE_CQE_TYPE_SHIFT) &
+ 	    FCOE_CQE_CQE_TYPE_MASK;
+@@ -2840,11 +2842,14 @@ void qedf_process_cqe(struct qedf_ctx *qedf, struct fcoe_cqe *cqe)
  		return;
  	}
  
-+	/* Add a delay to make sure that transmission is ended. */
-+	if (spi->cur_half_period)
-+		udelay(spi->cur_half_period);
-+
- 	if (spi->cur_usedma && spi->dma_tx)
- 		dmaengine_terminate_all(spi->dma_tx);
- 	if (spi->cur_usedma && spi->dma_rx)
++	spin_lock_irqsave(&fcport->rport_lock, flags);
++	io_comp_type = io_req->cmd_type;
++	spin_unlock_irqrestore(&fcport->rport_lock, flags);
+ 
+ 	switch (comp_type) {
+ 	case FCOE_GOOD_COMPLETION_CQE_TYPE:
+ 		atomic_inc(&fcport->free_sqes);
+-		switch (io_req->cmd_type) {
++		switch (io_comp_type) {
+ 		case QEDF_SCSI_CMD:
+ 			qedf_scsi_completion(qedf, cqe, io_req);
+ 			break;
 -- 
 2.40.1
 
