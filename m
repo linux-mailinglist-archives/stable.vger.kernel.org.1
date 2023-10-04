@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA8017B8446
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B97287B8447
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:56:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233750AbjJDP4H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 11:56:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44386 "EHLO
+        id S242947AbjJDP4S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 11:56:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233661AbjJDP4H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:56:07 -0400
+        with ESMTP id S233661AbjJDP4R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:56:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DB9998
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:56:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE67C433C8;
-        Wed,  4 Oct 2023 15:56:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E08D698
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:56:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04392C433C7;
+        Wed,  4 Oct 2023 15:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696434963;
-        bh=6sOMB9aF39+Abo1p5V6RiaYSyfqTyybfUbt9jVv9yhE=;
+        s=korg; t=1696434973;
+        bh=9mHi72Iix4tzOvU4k3tx9hoiAfjIYbQeej7JNoJNMzU=;
         h=Subject:To:Cc:From:Date:From;
-        b=IqDrulDvUiF+0fP5FTU+7Es/zG521IGtaZR+MkJTH/l7mElIgVoAc/yINu3OHsZD0
-         g3JDPhhAMp53AnQmwlRFmwUmcstM+K7b3UpUzKKc5DOjI6ZAELigsDH6yyGQXKDDzG
-         D7p0W9DLqELfXPqx+fEX+39wJCCQBUZ69b835aEE=
-Subject: FAILED: patch "[PATCH] btrfs: don't clear uptodate on write errors" failed to apply to 6.5-stable tree
+        b=jmgRVkZwY6aLxRLh/81iVBtG/YcduJOowTydewtgnI/quLITWxVB90yRX6h26EuH5
+         qIH0rb6XyKCZgsJokhQGCeZSzuKDp/eKR+eRfpUB2L/poGmD8zfl9XepxIgja8sG3H
+         T7WqnnX5bEXdfC3KCHtG1M90YcuGHDM+4x8nL30A=
+Subject: FAILED: patch "[PATCH] btrfs: don't clear uptodate on write errors" failed to apply to 6.1-stable tree
 To:     josef@toxicpanda.com, dsterba@suse.com, wqu@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 17:56:00 +0200
-Message-ID: <2023100400-garbage-caboose-c859@gregkh>
+Date:   Wed, 04 Oct 2023 17:56:02 +0200
+Message-ID: <2023100402-reprint-snugness-793f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x b595d25996329427b2c09d4b90395a165fb3ef8e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100400-garbage-caboose-c859@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100402-reprint-snugness-793f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
