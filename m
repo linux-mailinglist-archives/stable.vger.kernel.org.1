@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDECA7B82A8
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C72D7B82AA
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:50:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233062AbjJDOtG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 10:49:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44872 "EHLO
+        id S233155AbjJDOu2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 10:50:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242649AbjJDOtE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:49:04 -0400
+        with ESMTP id S233062AbjJDOu2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:50:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D74BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:49:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9109C433C7;
-        Wed,  4 Oct 2023 14:48:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 810BDB8
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:50:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A5AC433C8;
+        Wed,  4 Oct 2023 14:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696430940;
-        bh=qoFvIvKLGMHDCIH7hHJlW++UstEw3F3vFAp2qo4uWLw=;
+        s=korg; t=1696431023;
+        bh=68Z3tyWUQ8j9bU8UJN1Uau6d/WJy1WeAiJILUbTwXWQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=ZgaZ1BfmPy/0IXzc7lBM2Y/dC68PqDd1M11E7l6R7by2tjEKXW0aNkoKbu+Fhti+P
-         BnuGWhYVdtQgjYRSyiEiwlDrJvRkjNkfuW05fzA9KBx5Gkj6qNaiZaauD7APBN3GYi
-         1j7D4IkuOfqRoOTpGZDgQdk6p7X6Cph+MfeCDGcY=
-Subject: FAILED: patch "[PATCH] ALSA: hda/realtek - ALC287 Realtek I2S speaker platform" failed to apply to 6.1-stable tree
-To:     kailang@realtek.com, stable@vger.kernel.org, tiwai@suse.de
+        b=VtczLWRgtM6zARGbKu0/DTlGOzn9rnWfXPuu131fEC1mtWQF1lv3D1N75J8/qIZxb
+         GkyviYMme05XWEue9GkbE7TvBAU3Yz+h2+4QgER05pABxpcYL30lUa2124PdErenyI
+         Pis5SpnC4Xnr5zQHqt2Se8d7KXmrtmjC2TkwiMJ0=
+Subject: FAILED: patch "[PATCH] ASoC: tegra: Fix redundant PLLA and PLLA_OUT0 updates" failed to apply to 5.15-stable tree
+To:     spujar@nvidia.com, broonie@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 16:48:57 +0200
-Message-ID: <2023100456-acclaim-object-ca91@gregkh>
+Date:   Wed, 04 Oct 2023 16:50:20 +0200
+Message-ID: <2023100420-corned-elm-de4b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 41b07476da38ac2878a14e5b8fe0312c41ea36e3
+git cherry-pick -x e765886249c533e1bb5cbc3cd741bad677417312
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100456-acclaim-object-ca91@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100420-corned-elm-de4b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,37 +67,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 41b07476da38ac2878a14e5b8fe0312c41ea36e3 Mon Sep 17 00:00:00 2001
-From: Kailang Yang <kailang@realtek.com>
-Date: Tue, 19 Sep 2023 16:27:16 +0800
-Subject: [PATCH] ALSA: hda/realtek - ALC287 Realtek I2S speaker platform
- support
+From e765886249c533e1bb5cbc3cd741bad677417312 Mon Sep 17 00:00:00 2001
+From: Sameer Pujar <spujar@nvidia.com>
+Date: Thu, 7 Sep 2023 20:32:25 +0530
+Subject: [PATCH] ASoC: tegra: Fix redundant PLLA and PLLA_OUT0 updates
 
-New platform SSID:0x231f.
+Tegra audio graph card has many DAI links which connects internal
+AHUB modules and external audio codecs. Since these are DPCM links,
+hw_params() call in the machine driver happens for each connected
+BE link and PLLA is updated every time. This is not really needed
+for all links as only I/O link DAIs derive respective clocks from
+PLLA_OUT0 and thus from PLLA. Hence add checks to limit the clock
+updates to DAIs over I/O links.
 
-0x17 was only speaker pin, DAC assigned will be 0x03. Headphone
-assigned to 0x02.
-Playback via headphone will get EQ filter processing.
-So, it needs to swap DAC.
+This found to be fixing a DMIC clock discrepancy which is suspected
+to happen because of back to back quick PLLA and PLLA_OUT0 rate
+updates. This was observed on Jetson TX2 platform where DMIC clock
+ended up with unexpected value.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/8d63c6e360124e3ea2523753050e6f05@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 202e2f774543 ("ASoC: tegra: Add audio graph based card driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://lore.kernel.org/r/1694098945-32760-3-git-send-email-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 883a7e865bc5..751783f3a15c 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10577,6 +10577,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
- 		{0x17, 0x90170110},
- 		{0x19, 0x03a11030},
- 		{0x21, 0x03211020}),
-+	SND_HDA_PIN_QUIRK(0x10ec0287, 0x17aa, "Lenovo", ALC287_FIXUP_THINKPAD_I2S_SPK,
-+		{0x17, 0x90170110}, /* 0x231f with RTK I2S AMP */
-+		{0x19, 0x04a11040},
-+		{0x21, 0x04211020}),
- 	SND_HDA_PIN_QUIRK(0x10ec0286, 0x1025, "Acer", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE,
- 		{0x12, 0x90a60130},
- 		{0x17, 0x90170110},
+diff --git a/sound/soc/tegra/tegra_audio_graph_card.c b/sound/soc/tegra/tegra_audio_graph_card.c
+index 1f2c5018bf5a..4737e776d383 100644
+--- a/sound/soc/tegra/tegra_audio_graph_card.c
++++ b/sound/soc/tegra/tegra_audio_graph_card.c
+@@ -10,6 +10,7 @@
+ #include <linux/platform_device.h>
+ #include <sound/graph_card.h>
+ #include <sound/pcm_params.h>
++#include <sound/soc-dai.h>
+ 
+ #define MAX_PLLA_OUT0_DIV 128
+ 
+@@ -44,6 +45,21 @@ struct tegra_audio_cdata {
+ 	unsigned int plla_out0_rates[NUM_RATE_TYPE];
+ };
+ 
++static bool need_clk_update(struct snd_soc_dai *dai)
++{
++	if (snd_soc_dai_is_dummy(dai) ||
++	    !dai->driver->ops ||
++	    !dai->driver->name)
++		return false;
++
++	if (strstr(dai->driver->name, "I2S") ||
++	    strstr(dai->driver->name, "DMIC") ||
++	    strstr(dai->driver->name, "DSPK"))
++		return true;
++
++	return false;
++}
++
+ /* Setup PLL clock as per the given sample rate */
+ static int tegra_audio_graph_update_pll(struct snd_pcm_substream *substream,
+ 					struct snd_pcm_hw_params *params)
+@@ -140,19 +156,7 @@ static int tegra_audio_graph_hw_params(struct snd_pcm_substream *substream,
+ 	struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
+ 	int err;
+ 
+-	/*
+-	 * This gets called for each DAI link (FE or BE) when DPCM is used.
+-	 * We may not want to update PLLA rate for each call. So PLLA update
+-	 * must be restricted to external I/O links (I2S, DMIC or DSPK) since
+-	 * they actually depend on it. I/O modules update their clocks in
+-	 * hw_param() of their respective component driver and PLLA rate
+-	 * update here helps them to derive appropriate rates.
+-	 *
+-	 * TODO: When more HW accelerators get added (like sample rate
+-	 * converter, volume gain controller etc., which don't really
+-	 * depend on PLLA) we need a better way to filter here.
+-	 */
+-	if (cpu_dai->driver->ops && rtd->dai_link->no_pcm) {
++	if (need_clk_update(cpu_dai)) {
+ 		err = tegra_audio_graph_update_pll(substream, params);
+ 		if (err)
+ 			return err;
 
