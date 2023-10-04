@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78DA37B879F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F55C7B88B1
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243832AbjJDSH2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:07:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60398 "EHLO
+        id S233416AbjJDSS2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:18:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243835AbjJDSH1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:27 -0400
+        with ESMTP id S233410AbjJDSS1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A26A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65669C433C8;
-        Wed,  4 Oct 2023 18:07:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48730A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49955C433C7;
+        Wed,  4 Oct 2023 18:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442843;
-        bh=1UfanMqkIeHoii9Faw4SfAK36oo6ju//IRctog4if10=;
+        s=korg; t=1696443503;
+        bh=NVxQyQ6voKiDlChAdKIzYNRzmn78HB3Ot2/9aeHPiFw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CUhBMglOKiABSYjVxXDT7uMkcRnH+8HE1YIZYFF9xuYaahxGFkZSfgGIuAf8Xmlcw
-         TBjqSFCwM4wcMq12MnZNwB5nHsJHuWXGjDwmrLOOFEkooe3ZP5BmBtWZ0k5CSz/VCh
-         34zNo/WRaI1/Cc66qDXmJ6/D2hqXwVroZCSbTQFI=
+        b=m7ZY+qD4571gMMv5m5X9dKhfUYhw5RM/JLRSilTBcqLarJ7cC0NqKaSbY1kAEURNm
+         IoAaU0VDvN08/c7pLpykoMenkaBwjXJ9PZmfmhfjOyaJTVmXzZ2UdXHLjU6lpM0rGi
+         qHnAmkd+4hf/rY7Tm/jkmT4oYPZRJ/YQnkirMDJs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, Daniel Borkmann <daniel@iogearbox.net>,
+        Stanislav Fomichev <sdf@google.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 121/183] btrfs: improve error message after failure to add delayed dir index item
+Subject: [PATCH 6.1 179/259] bpf: Clarify error expectations from bpf_clone_redirect
 Date:   Wed,  4 Oct 2023 19:55:52 +0200
-Message-ID: <20231004175209.023263043@linuxfoundation.org>
+Message-ID: <20231004175225.506825606@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +50,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Stanislav Fomichev <sdf@google.com>
 
-[ Upstream commit 91bfe3104b8db0310f76f2dcb6aacef24c889366 ]
+[ Upstream commit 7cb779a6867fea00b4209bcf6de2f178a743247d ]
 
-If we fail to add a delayed dir index item because there's already another
-item with the same index number, we print an error message (and then BUG).
-However that message isn't very helpful to debug anything because we don't
-know what's the index number and what are the values of index counters in
-the inode and its delayed inode (index_cnt fields of struct btrfs_inode
-and struct btrfs_delayed_node).
+Commit 151e887d8ff9 ("veth: Fixing transmit return status for dropped
+packets") exposed the fact that bpf_clone_redirect is capable of
+returning raw NET_XMIT_XXX return codes.
 
-So update the error message to include the index number and counters.
+This is in the conflict with its UAPI doc which says the following:
+"0 on success, or a negative error in case of failure."
 
-We actually had a recent case where this issue was hit by a syzbot report
-(see the link below).
+Update the UAPI to reflect the fact that bpf_clone_redirect can
+return positive error numbers, but don't explicitly define
+their meaning.
 
-Link: https://lore.kernel.org/linux-btrfs/00000000000036e1290603e097e0@google.com/
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230911194731.286342-1-sdf@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/delayed-inode.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/uapi/linux/bpf.h       | 4 +++-
+ tools/include/uapi/linux/bpf.h | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index e6872d65c0e25..fd951aeaeac5a 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -1401,9 +1401,10 @@ int btrfs_insert_delayed_dir_index(struct btrfs_trans_handle *trans,
- 	ret = __btrfs_add_delayed_insertion_item(delayed_node, delayed_item);
- 	if (unlikely(ret)) {
- 		btrfs_err(trans->fs_info,
--			  "err add delayed dir index item(name: %.*s) into the insertion tree of the delayed node(root id: %llu, inode id: %llu, errno: %d)",
--			  name_len, name, delayed_node->root->root_key.objectid,
--			  delayed_node->inode_id, ret);
-+"error adding delayed dir index item, name: %.*s, index: %llu, root: %llu, dir: %llu, dir->index_cnt: %llu, delayed_node->index_cnt: %llu, error: %d",
-+			  name_len, name, index, btrfs_root_id(delayed_node->root),
-+			  delayed_node->inode_id, dir->index_cnt,
-+			  delayed_node->index_cnt, ret);
- 		BUG();
- 	}
- 	mutex_unlock(&delayed_node->mutex);
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 51b9aa640ad2a..53bc487947197 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -1837,7 +1837,9 @@ union bpf_attr {
+  * 		performed again, if the helper is used in combination with
+  * 		direct packet access.
+  * 	Return
+- * 		0 on success, or a negative error in case of failure.
++ * 		0 on success, or a negative error in case of failure. Positive
++ * 		error indicates a potential drop or congestion in the target
++ * 		device. The particular positive error codes are not defined.
+  *
+  * u64 bpf_get_current_pid_tgid(void)
+  * 	Description
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 51b9aa640ad2a..53bc487947197 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -1837,7 +1837,9 @@ union bpf_attr {
+  * 		performed again, if the helper is used in combination with
+  * 		direct packet access.
+  * 	Return
+- * 		0 on success, or a negative error in case of failure.
++ * 		0 on success, or a negative error in case of failure. Positive
++ * 		error indicates a potential drop or congestion in the target
++ * 		device. The particular positive error codes are not defined.
+  *
+  * u64 bpf_get_current_pid_tgid(void)
+  * 	Description
 -- 
 2.40.1
 
