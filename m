@@ -2,115 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 783E37B8DEA
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 22:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E67D97B8DF5
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 22:22:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244626AbjJDUU1 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 4 Oct 2023 16:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55136 "EHLO
+        id S244851AbjJDUWy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 16:22:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244546AbjJDUTw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 16:19:52 -0400
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1AC1CE;
-        Wed,  4 Oct 2023 13:19:48 -0700 (PDT)
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6934202b8bdso179551b3a.1;
-        Wed, 04 Oct 2023 13:19:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696450788; x=1697055588;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7v3t9u9xgvHxweeBD/U81J25d0Zdsy2WU/FAEhA0NzQ=;
-        b=iG9ridj3cBRo69E2JYZ8ThfXLoNpcwXYUJ+no9Dp7ZqM1b0IE7Rac0VPeShZifD2U6
-         3VGc8WvnehFMCpxNqTmGcHkpOTEZ3aQPaK0DJH6ehbYOvBmY0EIoY43IT/Z68/4w1740
-         y4Qi5UAcRIT69LJ8CtvKkPt+n+PiZvDJeTNXSfAmhwFZBiC1ItUJmNrRY1mbzGH9vQGd
-         k5RjEjAsA2+MXIzur5wM29WNnTaxgX1+b/WItdgG32vffQDgTdOiE9yQb/Bu8SAmo2w9
-         6urR2QWdRU7e565wlRd1PKmyNgNNrbYswEw3wgYJ3ifo9ZOEWT9XHswwA+TjuKLYbafn
-         X9NQ==
-X-Gm-Message-State: AOJu0YzXEjGHqJFO145JoLeM66aBraDKgiF/4cMJmJBAQ4zdEVsnwbmq
-        0nrHHCFtXbj6gSTKOaLZrfUzMahbGgBeX15y3n0=
-X-Google-Smtp-Source: AGHT+IGPv8onFbtjmjOREUljXHQuutqUtArE0vQV6pGiJVksloGH7rtiiM1slP9BD4ouPRf6YY58b/SxfW9v+Hu4h5E=
-X-Received: by 2002:a17:90b:4a91:b0:274:729c:e4f with SMTP id
- lp17-20020a17090b4a9100b00274729c0e4fmr3233005pjb.15.1696450788288; Wed, 04
- Oct 2023 13:19:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231004175217.404851126@linuxfoundation.org> <f0115175-975e-4fde-aa69-666568ce5c6a@gmail.com>
-In-Reply-To: <f0115175-975e-4fde-aa69-666568ce5c6a@gmail.com>
-From:   Namhyung Kim <namhyung@kernel.org>
-Date:   Wed, 4 Oct 2023 13:19:36 -0700
-Message-ID: <CAM9d7chUnxjPdOwZZ0imYs+i8+dd9GL=O3gqJXzaRd1VGZJxBg@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/259] 6.1.56-rc1 review
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Ian Rogers <irogers@google.com>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S244945AbjJDUW3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 16:22:29 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 629C4173D;
+        Wed,  4 Oct 2023 13:21:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F7BC433C7;
+        Wed,  4 Oct 2023 20:21:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1696450908;
+        bh=fvQtjPhX6OkcJmWjQOkL1i0p3ykC37QCHrR+wDjQN5w=;
+        h=Date:To:From:Subject:From;
+        b=e5OAJte3RzgwVY53SCRC+uBLIlof+OtTpQOudhw9czikjXCstc77LWlgyhwO/AK0T
+         qOD4Ox5+/P8STR8D30lK8qSWOff9ZZ3EuVbcWKPj709sXE6/hLWN8pQQ6JsnIqMRZw
+         inOC+xrDxDpvHJPzwbkmIvZ0mI7lJ4Z2k3TrS2TA=
+Date:   Wed, 04 Oct 2023 13:21:46 -0700
+To:     mm-commits@vger.kernel.org, willy@infradead.org,
+        tsbogend@alpha.franken.de, stable@vger.kernel.org,
+        songmuchun@bytedance.com, rppt@kernel.org, mike.kravetz@oracle.com,
+        david@redhat.com, ziy@nvidia.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] mm-hugetlb-use-nth_page-in-place-of-direct-struct-page-manipulation.patch removed from -mm tree
+Message-Id: <20231004202147.A1F7BC433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
 
-On Wed, Oct 4, 2023 at 12:33 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
->
-> +Namhyung, Ian,
->
-> On 10/4/23 10:52, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.1.56 release.
-> > There are 259 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.56-rc1.gz
-> > or in the git tree and branch at:
-> >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
->
-> perf fails to build with:
->
-> fixdep: error opening depfile:
-> /local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/pmu-events/.pmu-events.o.d:
-> No such file or directory
-> make[5]: *** [pmu-events/Build:33:
-> /local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/pmu-events/pmu-events.o]
-> Error 2
-> make[4]: *** [Makefile.perf:672:
-> /local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/pmu-events/pmu-events-in.o]
-> Error 2
-> make[3]: *** [Makefile.perf:240: sub-make] Error 2
-> make[2]: *** [Makefile:70: all] Error 2
-> make[1]: *** [package/pkg-generic.mk:294:
-> /local/users/fainelli/buildroot/output/arm/build/linux-tools/.stamp_built]
-> Error 2
-> make: *** [Makefile:27: _all] Error 2
->
-> due a80fd00cb1a7793ead4d7c3fa7d3f1e898231c27 ("perf build: Update build
-> rule for generated files"). Reverting that commit fixes the build for me
-> and then all is good in terms of testing.
+The quilt patch titled
+     Subject: mm/hugetlb: use nth_page() in place of direct struct page manipulation
+has been removed from the -mm tree.  Its filename was
+     mm-hugetlb-use-nth_page-in-place-of-direct-struct-page-manipulation.patch
 
-I think it's ok to drop the patches if it's not applied
-cleanly.
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Thanks,
-Namhyung
+------------------------------------------------------
+From: Zi Yan <ziy@nvidia.com>
+Subject: mm/hugetlb: use nth_page() in place of direct struct page manipulation
+Date: Wed, 13 Sep 2023 16:12:45 -0400
+
+When dealing with hugetlb pages, manipulating struct page pointers
+directly can get to wrong struct page, since struct page is not guaranteed
+to be contiguous on SPARSEMEM without VMEMMAP.  Use nth_page() to handle
+it properly.
+
+A wrong or non-existing page might be tried to be grabbed, either
+leading to a non freeable page or kernel memory access errors.  No bug
+is reported.  It comes from code inspection.
+
+Link: https://lkml.kernel.org/r/20230913201248.452081-3-zi.yan@sent.com
+Fixes: 57a196a58421 ("hugetlb: simplify hugetlb handling in follow_page_mask")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Muchun Song <songmuchun@bytedance.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/hugetlb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/hugetlb.c~mm-hugetlb-use-nth_page-in-place-of-direct-struct-page-manipulation
++++ a/mm/hugetlb.c
+@@ -6493,7 +6493,7 @@ struct page *hugetlb_follow_page_mask(st
+ 			}
+ 		}
+ 
+-		page += ((address & ~huge_page_mask(h)) >> PAGE_SHIFT);
++		page = nth_page(page, ((address & ~huge_page_mask(h)) >> PAGE_SHIFT));
+ 
+ 		/*
+ 		 * Note that page may be a sub-page, and with vmemmap
+_
+
+Patches currently in -mm which might be from ziy@nvidia.com are
+
+
