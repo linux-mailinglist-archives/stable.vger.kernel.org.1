@@ -2,271 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 002CA7B8C90
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 21:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 265D17B8CBC
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 21:20:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245340AbjJDTBC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 15:01:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37834 "EHLO
+        id S245392AbjJDTGX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 15:06:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245226AbjJDS7S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:59:18 -0400
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFF181FF5
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:55:26 -0700 (PDT)
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-27736c2a731so71984a91.3
-        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 11:55:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1696445725; x=1697050525; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=uT80cZHChQg6eUoezd3eMPtpJcCtgWlKsvQHRpvQv2g=;
-        b=NK2OI5i+E3Hd3jGbMX3kD4lWXEwtkTKIt4RaQqLmVVmCCoTI5CjqIQtcppBB7eoRgW
-         arBFQX2a1g48Tc3wGSs0LV9RxvK5YUyY38uN8UjL2n/i/EZrlRVZY4BqgFnqLpUYShKV
-         F9Vn3iB+HfXy+DzFCMj7oRCawoRdlN7sPBRBwXMG4xOnS9IejzsIEmtCLXChYsF0JFil
-         TeK4RJTvVH44YxJInbYAuppYPombjUigBBDNcd5Lal5WYB4ktqYH5YUQgVjIt6gGMn2A
-         HxASsumKp3fGRc6XxS36UNkDvFD0rMYbuSc6YULPQBmDjoz8VhmuJxddjJ2RGUvPF7Wx
-         zAlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696445725; x=1697050525;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uT80cZHChQg6eUoezd3eMPtpJcCtgWlKsvQHRpvQv2g=;
-        b=Sf2SzV7iQIS4ib3aqR+L/5H1nDmgt81mUnah+OzQXbHW7fFVkTM898pYnz1/ZEdQSD
-         7ivgQwkkzOwbo2ypydZKRJr7VMWCDYZtKaiqDUtk+IJucx9Qe1v6Ma/5JIPlmG+ANwlP
-         7TozCQD4r5aA5+Lw4C32+rBirlpcKRbkxT7MReKcfmv0TYdv5JQ9lMqzxGhgZgM+Sy8P
-         eng9g0Htpc0eLjDS7HlgO3SmKA5NPZyK9SYv3uov1Acwo+vvmzN0RJugA135SaXvKxOL
-         r6lzwAnDq4XTpuYSXlF7hdrDIfvaxlycAb3BX1zwNOoIrB6krKO6BXsl6VrSdSfXF9vN
-         lgTQ==
-X-Gm-Message-State: AOJu0YzQOnN5JlBk/rhkQzF5tjRxux52pHXC92+G2sA6xBlMty3dva1H
-        aGBosrWUc69f5d6QyakL/VDIqTDuQQWnGV74yW+jAg==
-X-Google-Smtp-Source: AGHT+IHTYqbqrrqifxirqvvJ7oeCPUNT8SyBnTo4WBxPTxd3IevAAq77a0/1e3vSYGiDtdxa0Atmjw==
-X-Received: by 2002:a17:90a:9bc2:b0:276:a75b:6f96 with SMTP id b2-20020a17090a9bc200b00276a75b6f96mr2948399pjw.19.1696445725529;
-        Wed, 04 Oct 2023 11:55:25 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id x23-20020a17090abc9700b00274c541ac9esm1895278pjr.48.2023.10.04.11.55.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 11:55:24 -0700 (PDT)
-Message-ID: <651db51c.170a0220.47b5c.579a@mx.google.com>
-Date:   Wed, 04 Oct 2023 11:55:24 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S245001AbjJDTGO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 15:06:14 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F66BA26B;
+        Wed,  4 Oct 2023 12:00:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696446044; x=1727982044;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=+7Kuxlc0687hSqhXVR358o6+jlXhpr+b6WxOI4qYX08=;
+  b=Pbzo5QaBpQQU2HWem31b1l7Kr+1k1Riepx0VrrZ6c8J9a9nkcCN97Rdi
+   jI2tJZfVMbDh5kpDW77jIStXGP1rdl1vkx6ypcfsmqu9oFAqZNZKf0Tla
+   JuMmlgo5/S0R6IGLaGiI8HPGr9VwzSkNT6G55eqfdsAhFBbtiWFmzBc1R
+   UG+90I11wTu7v5zUTWrCXrvTB0m0cE0dCi3nGYT7IXznYrpuORGX7uSIG
+   Htecpx+VXcg7SRSYeslaE3CpiqIM+MhK0zKzXK5/ISXifadbrUQShcVd0
+   mIYU2y9OYlZenW0OYdY6ZSUlPIcy9jN04NpMiJY0mOkMcs3ZHK+Hpt4uK
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="383175704"
+X-IronPort-AV: E=Sophos;i="6.03,201,1694761200"; 
+   d="scan'208";a="383175704"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 12:00:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="751445426"
+X-IronPort-AV: E=Sophos;i="6.03,201,1694761200"; 
+   d="scan'208";a="751445426"
+Received: from mfmousa-mobl1.amr.corp.intel.com (HELO [10.212.98.56]) ([10.212.98.56])
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2023 12:00:41 -0700
+Message-ID: <bf4ee895-293f-4bc3-ac4b-30df6361e973@linux.intel.com>
+Date:   Wed, 4 Oct 2023 15:00:40 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.14.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v4.14.326-31-g40fbbd42a05b3
-X-Kernelci-Report-Type: build
-Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.326-31-g40fbbd42a05b3)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soundwire: fix initializing sysfs for same devices on
+ different buses
+Content-Language: en-US
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Takashi Iwai <tiwai@suse.de>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20231004130243.493617-1-krzysztof.kozlowski@linaro.org>
+ <6628a5f6-ed22-4039-b5c2-2301c05c7e3e@linux.intel.com>
+ <2023100453-perfected-palm-3503@gregkh>
+ <624b044a-1f0f-4961-8b57-cb5346e7b0d3@linux.intel.com>
+ <2023100452-craziness-unpopular-7d97@gregkh>
+ <04c5911a-a894-44b3-9f0e-fe9e6de203f2@linux.intel.com>
+ <d648c3d1-53ac-4021-ac7f-6a81f1a72dd3@sirena.org.uk>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <d648c3d1-53ac-4021-ac7f-6a81f1a72dd3@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
-v4.14.326-31-g40fbbd42a05b3)
-
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
-y/kernel/v4.14.326-31-g40fbbd42a05b3/
-
-Tree: stable-rc
-Branch: linux-4.14.y
-Git Describe: v4.14.326-31-g40fbbd42a05b3
-Git Commit: 40fbbd42a05b36a584e286f39f085baee6c28249
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
 
 
-Warnings summary:
+On 10/4/23 11:40, Mark Brown wrote:
+> On Wed, Oct 04, 2023 at 11:16:09AM -0400, Pierre-Louis Bossart wrote:
+> 
+>>> matching the name is fine (if you are matching it against an existing
+>>> name) but expecting the name to be anything specific is not going to
+>>> work as the name is dynamic and can/will change each boot.
+> 
+>> Not following, sorry.
+> 
+>> In the SoundWire context, the device name directly follows the ACPI or
+>> Device Tree information, I don't really see how its name could change on
+>> each boot (assuming no DSDT override or overlays of course). The
+>> platform descriptors are pretty much fixed, aren't they?
+> 
+>> Intel and AMD make such assumptions on names for pretty much all machine
+>> drivers, it's not really something new - probably 15+ years? Adding Mark
+>> Brown in CC: to make sure he's aware of this thread.
+> 
+> FWIW DT is much less affected here since all the inter-device references
+> are explicit in the DT (modulo needing to work around breakage) so we're
+> not hard coding in the way ACPI so unfortunately requires.
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
+Isn't there a contradiction between making "all inter-device references
+explicit in the DT" and having a device name use an IDA, which cannot
+possibly known ahead of time?
 
-Section mismatches summary:
+I think we keep circling on the differences between "Controller" and
+"link" (aka bus). A Controller can have one or more links. A system can
+have one or more controllers.
 
-    3    WARNING: modpost: Found 1 section mismatch(es).
+Intel platforms have one controller and 4 or more links.
+QCOM platforms have one or more controllers with one link each.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+I am not sure how this IDA-generated bus_id helps deal with these two
+cases, since we can't really make any assumptions on how
+controllers/links will be started and probed.
 
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-3 warnings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+What we are missing is a hierarchical controller/link definition, IOW a
+controller_id should be given to the master by a higher level instead of
+using an IDA.
