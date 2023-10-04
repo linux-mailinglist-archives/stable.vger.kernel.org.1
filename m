@@ -2,146 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 309187B8A35
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42F687B87B4
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244326AbjJDSdV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:33:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40556 "EHLO
+        id S243846AbjJDSI0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:08:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244377AbjJDSdV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:21 -0400
+        with ESMTP id S243818AbjJDSI0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BDEFC0
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A098BC433C9;
-        Wed,  4 Oct 2023 18:33:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD761A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22757C433C7;
+        Wed,  4 Oct 2023 18:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444397;
-        bh=oQ7zSYmrDeEQP7gU5lJVqWLAlgRHmjc+WqxQ0BFGLqo=;
+        s=korg; t=1696442902;
+        bh=K+IhzgOK8EzhXP3FEfsBlBB24zO2fOcIDGj4rohlmBY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MN+MxKGTPKW//V9gi2tDyROVVY2NHGBoWbp3O9+KloR1WqOlcQk0xmrY2gZBYOWxO
-         1FkvwdXiJKqpeC3Yoj1md+4DUYLYQZggUtiotffXIH0KLYBBsuOFacgl7K3S9CzO8M
-         E/GTDgsee/EyBN8YBxd6kp57eBdksX5neUOOelKw=
+        b=tOv04MEAyfsEVny/H3fHzcrgV1WX3rQRLQ9/r3fqjPr+4yDuYddVowab7apebxl+p
+         8sfyJohfkMtP8vNU+azY2B2W/9vBxuKuWvyM2oxsZF4ykU0XUrQWrOQpCpRNz3RVGZ
+         OPg2iJYQT6zwz5ge1IExcu8O9FTHai6awxczpxuI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, WANG Xuerui <git@xen0n.name>,
-        Huacai Chen <chenhuacai@loongson.cn>,
+        patches@lists.linux.dev,
+        "=?UTF-8?q?Daniel=20P . =20Berrang=C3=A9?=" <berrange@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 235/321] LoongArch: Set all reserved memblocks on Node#0 at initialization
+Subject: [PATCH 5.15 149/183] watchdog: iTCO_wdt: Set NO_REBOOT if the watchdog is not already running
 Date:   Wed,  4 Oct 2023 19:56:20 +0200
-Message-ID: <20231004175240.117656643@linuxfoundation.org>
+Message-ID: <20231004175210.247158132@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit b795fb9f5861ee256070d59e33130980a01fadd7 ]
+commit ef9b7bf52c2f47f0a9bf988543c577b92c92d15e upstream.
 
-After commit 61167ad5fecdea ("mm: pass nid to reserve_bootmem_region()")
-we get a panic if DEFERRED_STRUCT_PAGE_INIT is enabled:
+Daniel reported that the commit 1ae3e78c0820 ("watchdog: iTCO_wdt: No
+need to stop the timer in probe") makes QEMU implementation of the iTCO
+watchdog not to trigger reboot anymore when NO_REBOOT flag is initially
+cleared using this option (in QEMU command line):
 
-[    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 0000000000002b82, era == 90000000040e3f28, ra == 90000000040e3f18
-[    0.000000] Oops[#1]:
-[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 6.5.0+ #733
-[    0.000000] pc 90000000040e3f28 ra 90000000040e3f18 tp 90000000046f4000 sp 90000000046f7c90
-[    0.000000] a0 0000000000000001 a1 0000000000200000 a2 0000000000000040 a3 90000000046f7ca0
-[    0.000000] a4 90000000046f7ca4 a5 0000000000000000 a6 90000000046f7c38 a7 0000000000000000
-[    0.000000] t0 0000000000000002 t1 9000000004b00ac8 t2 90000000040e3f18 t3 90000000040f0800
-[    0.000000] t4 00000000000f0000 t5 80000000ffffe07e t6 0000000000000003 t7 900000047fff5e20
-[    0.000000] t8 aaaaaaaaaaaaaaab u0 0000000000000018 s9 0000000000000000 s0 fffffefffe000000
-[    0.000000] s1 0000000000000000 s2 0000000000000080 s3 0000000000000040 s4 0000000000000000
-[    0.000000] s5 0000000000000000 s6 fffffefffe000000 s7 900000000470b740 s8 9000000004ad4000
-[    0.000000]    ra: 90000000040e3f18 reserve_bootmem_region+0xec/0x21c
-[    0.000000]   ERA: 90000000040e3f28 reserve_bootmem_region+0xfc/0x21c
-[    0.000000]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-[    0.000000]  PRMD: 00000000 (PPLV0 -PIE -PWE)
-[    0.000000]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-[    0.000000]  ECFG: 00070800 (LIE=11 VS=7)
-[    0.000000] ESTAT: 00010800 [PIL] (IS=11 ECode=1 EsubCode=0)
-[    0.000000]  BADV: 0000000000002b82
-[    0.000000]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000)
-[    0.000000] Modules linked in:
-[    0.000000] Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____))
-[    0.000000] Stack : 0000000000000000 9000000002eb5430 0000003a00000020 90000000045ccd00
-[    0.000000]         900000000470e000 90000000002c1918 0000000000000000 9000000004110780
-[    0.000000]         00000000fe6c0000 0000000480000000 9000000004b4e368 9000000004110748
-[    0.000000]         0000000000000000 900000000421ca84 9000000004620000 9000000004564970
-[    0.000000]         90000000046f7d78 9000000002cc9f70 90000000002c1918 900000000470e000
-[    0.000000]         9000000004564970 90000000040bc0e0 90000000046f7d78 0000000000000000
-[    0.000000]         0000000000004000 90000000045ccd00 0000000000000000 90000000002c1918
-[    0.000000]         90000000002c1900 900000000470b700 9000000004b4df78 9000000004620000
-[    0.000000]         90000000046200a8 90000000046200a8 0000000000000000 9000000004218b2c
-[    0.000000]         9000000004270008 0000000000000001 0000000000000000 90000000045ccd00
-[    0.000000]         ...
-[    0.000000] Call Trace:
-[    0.000000] [<90000000040e3f28>] reserve_bootmem_region+0xfc/0x21c
-[    0.000000] [<900000000421ca84>] memblock_free_all+0x114/0x350
-[    0.000000] [<9000000004218b2c>] mm_core_init+0x138/0x3cc
-[    0.000000] [<9000000004200e38>] start_kernel+0x488/0x7a4
-[    0.000000] [<90000000040df0d8>] kernel_entry+0xd8/0xdc
-[    0.000000]
-[    0.000000] Code: 02eb21ad  00410f4c  380c31ac <262b818d> 6800b70d  02c1c196  0015001c  57fe4bb1  260002cd
+  -global ICH9-LPC.noreboot=false
 
-The reason is early memblock_reserve() in memblock_init() set node id to
-MAX_NUMNODES, making NODE_DATA(nid) a NULL dereference in the call chain
-reserve_bootmem_region() -> init_reserved_page(). After memblock_init(),
-those late calls of memblock_reserve() operate on subregions of memblock
-.memory regions. As a result, these reserved regions will be set to the
-correct node at the first iteration of memmap_init_reserved_pages().
+The problem with the commit is that it left the unconditional setting of
+NO_REBOOT that is not cleared anymore when the kernel keeps pinging the
+watchdog (as opposed to the previous code that called iTCO_wdt_stop()
+that cleared it).
 
-So set all reserved memblocks on Node#0 at initialization can avoid this
-panic.
+Fix this so that we only set NO_REBOOT if the watchdog was not initially
+running.
 
-Reported-by: WANG Xuerui <git@xen0n.name>
-Tested-by: WANG Xuerui <git@xen0n.name>
-Reviewed-by: WANG Xuerui <git@xen0n.name>  # with nits addressed
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 1ae3e78c0820 ("watchdog: iTCO_wdt: No need to stop the timer in probe")
+Reported-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Tested-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20221028062750.45451-1-mika.westerberg@linux.intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/mem.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/watchdog/iTCO_wdt.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/arch/loongarch/kernel/mem.c b/arch/loongarch/kernel/mem.c
-index 4a4107a6a9651..aed901c57fb43 100644
---- a/arch/loongarch/kernel/mem.c
-+++ b/arch/loongarch/kernel/mem.c
-@@ -50,7 +50,6 @@ void __init memblock_init(void)
+diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
+index 96ff06d7d735d..a8052a3faaabb 100644
+--- a/drivers/watchdog/iTCO_wdt.c
++++ b/drivers/watchdog/iTCO_wdt.c
+@@ -424,14 +424,18 @@ static unsigned int iTCO_wdt_get_timeleft(struct watchdog_device *wd_dev)
+ 	return time_left;
+ }
+ 
+-static void iTCO_wdt_set_running(struct iTCO_wdt_private *p)
++/* Returns true if the watchdog was running */
++static bool iTCO_wdt_set_running(struct iTCO_wdt_private *p)
+ {
+ 	u16 val;
+ 
+-	/* Bit 11: TCO Timer Halt -> 0 = The TCO timer is * enabled */
++	/* Bit 11: TCO Timer Halt -> 0 = The TCO timer is enabled */
+ 	val = inw(TCO1_CNT(p));
+-	if (!(val & BIT(11)))
++	if (!(val & BIT(11))) {
+ 		set_bit(WDOG_HW_RUNNING, &p->wddev.status);
++		return true;
++	}
++	return false;
+ }
+ 
+ /*
+@@ -522,9 +526,6 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
+ 		return -ENODEV;	/* Cannot reset NO_REBOOT bit */
  	}
  
- 	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
--	memblock_set_node(0, PHYS_ADDR_MAX, &memblock.memory, 0);
+-	/* Set the NO_REBOOT bit to prevent later reboots, just for sure */
+-	p->update_no_reboot_bit(p->no_reboot_priv, true);
+-
+ 	if (turn_SMI_watchdog_clear_off >= p->iTCO_version) {
+ 		/*
+ 		 * Bit 13: TCO_EN -> 0
+@@ -576,7 +577,13 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
+ 	watchdog_set_drvdata(&p->wddev, p);
+ 	platform_set_drvdata(pdev, p);
  
- 	/* Reserve the first 2MB */
- 	memblock_reserve(PHYS_OFFSET, 0x200000);
-@@ -58,4 +57,7 @@ void __init memblock_init(void)
- 	/* Reserve the kernel text/data/bss */
- 	memblock_reserve(__pa_symbol(&_text),
- 			 __pa_symbol(&_end) - __pa_symbol(&_text));
-+
-+	memblock_set_node(0, PHYS_ADDR_MAX, &memblock.memory, 0);
-+	memblock_set_node(0, PHYS_ADDR_MAX, &memblock.reserved, 0);
- }
+-	iTCO_wdt_set_running(p);
++	if (!iTCO_wdt_set_running(p)) {
++		/*
++		 * If the watchdog was not running set NO_REBOOT now to
++		 * prevent later reboots.
++		 */
++		p->update_no_reboot_bit(p->no_reboot_priv, true);
++	}
+ 
+ 	/* Check that the heartbeat value is within it's range;
+ 	   if not reset to the default */
 -- 
 2.40.1
 
