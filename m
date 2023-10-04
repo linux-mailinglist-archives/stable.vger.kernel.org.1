@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9A0D7B8A09
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51D737B8797
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244093AbjJDSbs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:31:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60604 "EHLO
+        id S243827AbjJDSHL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:07:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244419AbjJDSbd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:31:33 -0400
+        with ESMTP id S243821AbjJDSHK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D426BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:31:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4ACC433C8;
-        Wed,  4 Oct 2023 18:31:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C3FC6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0904BC433C7;
+        Wed,  4 Oct 2023 18:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444290;
-        bh=usAGUsLsxfsN3jIj+F3SXhU0YYNVq13JX1dONzMfRW0=;
+        s=korg; t=1696442826;
+        bh=zu+B3qOO/LcrDdEq2lTXPj1j4NonLacT8657WwHHxOo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w/D/aLdqXDVblG7+15n4xovhrklpfFWlE7U+arnvUttoWGHK3mXaFfU854Y81j4te
-         +khiMlH9KnlqnsrYHvYUJcqQiaEGF3bDGiaqQLWYWYDj2bJJzktIQmbQ7M28wiGh4z
-         xkKcgnwBNC9TJZIcbaVdOm4ex3tN890VEI5YhFn4=
+        b=Cjqd2v2FgjQfefQV3Gv2rtmRH1FpUKeShyG1JjNx3fZVmkR9UvmDmMUsSEyf65hRs
+         KdsC/HDj1F9DDVK1AdGPuDOHLWFiCZvIMoHXC/OaLSWGPuGPqaFC3SPjn4ccUMm7gu
+         QdCbcGowRx745tSZlPYp753zF/Z+7XKOWUGFwlR0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Guangguan Wang <guangguan.wang@linux.alibaba.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 180/321] net/smc: bugfix for smcr v2 server connect success statistic
+Subject: [PATCH 5.15 094/183] bus: ti-sysc: Fix missing AM35xx SoC matching
 Date:   Wed,  4 Oct 2023 19:55:25 +0200
-Message-ID: <20231004175237.578859333@linuxfoundation.org>
+Message-ID: <20231004175207.844881073@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +50,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 6912e724832c47bb381eb1bd1e483ec8df0d0f0f ]
+[ Upstream commit 11729caa520950e17cd81bc43ffc477c46cf791e ]
 
-In the macro SMC_STAT_SERV_SUCC_INC, the smcd_version is used
-to determin whether to increase the v1 statistic or the v2
-statistic. It is correct for SMCD. But for SMCR, smcr_version
-should be used.
+Commit feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
+created a list of SoC types searching for strings based on names
+and wildcards which associates the SoC to different families.
 
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The OMAP34xx and OMAP35xx are treated as SOC_3430 while
+OMAP36xx and OMAP37xx are treated as SOC_3630, but the AM35xx
+isn't listed.
+
+The AM35xx is mostly an OMAP3430, and a later commit a12315d6d270
+("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC specific") looks
+for the SOC type and behaves in a certain way if it's SOC_3430.
+
+This caused a regression on the AM3517 causing it to return two
+errors:
+
+ ti-sysc: probe of 48318000.target-module failed with error -16
+ ti-sysc: probe of 49032000.target-module failed with error -16
+
+Fix this by treating the creating SOC_AM35 and inserting it between
+the SOC_3430 and SOC_3630.  If it is treaed the same way as the
+SOC_3430 when checking the status of sysc_check_active_timer,
+the error conditions will disappear.
+
+Fixes: a12315d6d270 ("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC specific")
+Fixes: feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Message-ID: <20230906233442.270835-1-aford173@gmail.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_stats.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bus/ti-sysc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/smc/smc_stats.h b/net/smc/smc_stats.h
-index b60fe1eb37ab6..aa8928975cc63 100644
---- a/net/smc/smc_stats.h
-+++ b/net/smc/smc_stats.h
-@@ -243,8 +243,9 @@ while (0)
- #define SMC_STAT_SERV_SUCC_INC(net, _ini) \
- do { \
- 	typeof(_ini) i = (_ini); \
--	bool is_v2 = (i->smcd_version & SMC_V2); \
- 	bool is_smcd = (i->is_smcd); \
-+	u8 version = is_smcd ? i->smcd_version : i->smcr_version; \
-+	bool is_v2 = (version & SMC_V2); \
- 	typeof(net->smc.smc_stats) smc_stats = (net)->smc.smc_stats; \
- 	if (is_v2 && is_smcd) \
- 		this_cpu_inc(smc_stats->smc[SMC_TYPE_D].srv_v2_succ_cnt); \
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index dacda1eb140cf..8b0fe4b7b9c19 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -38,6 +38,7 @@ enum sysc_soc {
+ 	SOC_2420,
+ 	SOC_2430,
+ 	SOC_3430,
++	SOC_AM35,
+ 	SOC_3630,
+ 	SOC_4430,
+ 	SOC_4460,
+@@ -1829,7 +1830,7 @@ static void sysc_pre_reset_quirk_dss(struct sysc *ddata)
+ 		dev_warn(ddata->dev, "%s: timed out %08x !+ %08x\n",
+ 			 __func__, val, irq_mask);
+ 
+-	if (sysc_soc->soc == SOC_3430) {
++	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35) {
+ 		/* Clear DSS_SDI_CONTROL */
+ 		sysc_write(ddata, 0x44, 0);
+ 
+@@ -2972,6 +2973,7 @@ static void ti_sysc_idle(struct work_struct *work)
+ static const struct soc_device_attribute sysc_soc_match[] = {
+ 	SOC_FLAG("OMAP242*", SOC_2420),
+ 	SOC_FLAG("OMAP243*", SOC_2430),
++	SOC_FLAG("AM35*", SOC_AM35),
+ 	SOC_FLAG("OMAP3[45]*", SOC_3430),
+ 	SOC_FLAG("OMAP3[67]*", SOC_3630),
+ 	SOC_FLAG("OMAP443*", SOC_4430),
+@@ -3178,7 +3180,7 @@ static int sysc_check_active_timer(struct sysc *ddata)
+ 	 * can be dropped if we stop supporting old beagleboard revisions
+ 	 * A to B4 at some point.
+ 	 */
+-	if (sysc_soc->soc == SOC_3430)
++	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35)
+ 		error = -ENXIO;
+ 	else
+ 		error = -EBUSY;
 -- 
 2.40.1
 
