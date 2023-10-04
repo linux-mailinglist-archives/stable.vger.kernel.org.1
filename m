@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D2337B87F8
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 952387B8938
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243919AbjJDSLq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:11:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53740 "EHLO
+        id S244138AbjJDSXp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:23:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243951AbjJDSL2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:11:28 -0400
+        with ESMTP id S244136AbjJDSXo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:23:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E6B6A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:11:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7538DC433C8;
-        Wed,  4 Oct 2023 18:11:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC2C0A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:23:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD5EC433CA;
+        Wed,  4 Oct 2023 18:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443084;
-        bh=5brjBM0dbnfSZuDDngDEWH6tTO/FlzNRh4cNtcvKRlk=;
+        s=korg; t=1696443820;
+        bh=M5k51TsGe5OcyO3CZ8ssH+vwVxFKVhGsgSznGlIdQlc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Z0NeNuJaByIExQ7yNDwbGU3MB90uFlu9fDqoXuyL8q2yx/UtmUIR+Ifu5uQYT+ej
-         lNuBU2yFbbwnRxqwv23XocfmkKOaSFjmYXOrYnuh3S/uPNU2CbMpWFdXZNhF8qrcrc
-         3c2GW4ZANW7aCQiFeEPR1vcF0jedeZGVz/+FaqL8=
+        b=G+nIzeF0cRVl1vhNwyTmAHoyAgjTlxnVQhCoRqxKVi8DeifepD/qiEaAD/N/DVcZp
+         ayisBrxpJvLnE5PlsFytsEETJv+AXj2sKYANcUyYLRnsa6+j4T7rQlc/7J0FcY2uLe
+         8e3p6UWCk5PLJX98fUKU8i1v6lvH14ZsQRR73CeQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        patches@lists.linux.dev, Sameer Pujar <spujar@nvidia.com>,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/259] NFS: More O_DIRECT accounting fixes for error paths
-Date:   Wed,  4 Oct 2023 19:52:56 +0200
-Message-ID: <20231004175217.579646535@linuxfoundation.org>
+Subject: [PATCH 6.5 032/321] ASoC: rt5640: Fix sleep in atomic context
+Date:   Wed,  4 Oct 2023 19:52:57 +0200
+Message-ID: <20231004175230.650636363@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,142 +52,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 8982f7aff39fb526aba4441fff2525fcedd5e1a3 ]
+[ Upstream commit df7d595f6bd9dc96cc275cc4b0f313fcfa423c58 ]
 
-If we hit a fatal error when retransmitting, we do need to record the
-removal of the request from the count of written bytes.
+Following prints are observed while testing audio on Jetson AGX Orin which
+has onboard RT5640 audio codec:
 
-Fixes: 031d73ed768a ("NFS: Fix O_DIRECT accounting of number of bytes read/written")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+  BUG: sleeping function called from invalid context at kernel/workqueue.c:3027
+  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 0, name: swapper/0
+  preempt_count: 10001, expected: 0
+  RCU nest depth: 0, expected: 0
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 0 at kernel/irq/handle.c:159 __handle_irq_event_percpu+0x1e0/0x270
+  ---[ end trace ad1c64905aac14a6 ]-
+
+The IRQ handler rt5640_irq() runs in interrupt context and can sleep
+during cancel_delayed_work_sync().
+
+The only thing which rt5640_irq() does is cancel + (re-)queue
+the jack_work delayed_work. This can be done in a single non sleeping
+call by replacing queue_delayed_work() with mod_delayed_work(),
+avoiding the sleep in atomic context.
+
+Fixes: 051dade34695 ("ASoC: rt5640: Fix the wrong state of JD1 and JD2")
+Reported-by: Sameer Pujar <spujar@nvidia.com>
+Closes: https://lore.kernel.org/r/1688015537-31682-4-git-send-email-spujar@nvidia.com
+Cc: Oder Chiou <oder_chiou@realtek.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230912113245.320159-3-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/direct.c | 47 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 31 insertions(+), 16 deletions(-)
+ sound/soc/codecs/rt5640.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index 449d248fc1ec7..d879c3229efdb 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -93,12 +93,10 @@ nfs_direct_handle_truncated(struct nfs_direct_req *dreq,
- 		dreq->max_count = dreq_len;
- 		if (dreq->count > dreq_len)
- 			dreq->count = dreq_len;
--
--		if (test_bit(NFS_IOHDR_ERROR, &hdr->flags))
--			dreq->error = hdr->error;
--		else /* Clear outstanding error if this is EOF */
--			dreq->error = 0;
- 	}
-+
-+	if (test_bit(NFS_IOHDR_ERROR, &hdr->flags) && !dreq->error)
-+		dreq->error = hdr->error;
+diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
+index 7ec930fb9aab5..24c1ed1c40589 100644
+--- a/sound/soc/codecs/rt5640.c
++++ b/sound/soc/codecs/rt5640.c
+@@ -2404,13 +2404,11 @@ static irqreturn_t rt5640_irq(int irq, void *data)
+ 	struct rt5640_priv *rt5640 = data;
+ 	int delay = 0;
+ 
+-	if (rt5640->jd_src == RT5640_JD_SRC_HDA_HEADER) {
+-		cancel_delayed_work_sync(&rt5640->jack_work);
++	if (rt5640->jd_src == RT5640_JD_SRC_HDA_HEADER)
+ 		delay = 100;
+-	}
+ 
+ 	if (rt5640->jack)
+-		queue_delayed_work(system_long_wq, &rt5640->jack_work, delay);
++		mod_delayed_work(system_long_wq, &rt5640->jack_work, delay);
+ 
+ 	return IRQ_HANDLED;
  }
- 
- static void
-@@ -120,6 +118,18 @@ nfs_direct_count_bytes(struct nfs_direct_req *dreq,
- 		dreq->count = dreq_len;
- }
- 
-+static void nfs_direct_truncate_request(struct nfs_direct_req *dreq,
-+					struct nfs_page *req)
-+{
-+	loff_t offs = req_offset(req);
-+	size_t req_start = (size_t)(offs - dreq->io_start);
-+
-+	if (req_start < dreq->max_count)
-+		dreq->max_count = req_start;
-+	if (req_start < dreq->count)
-+		dreq->count = req_start;
-+}
-+
- /**
-  * nfs_swap_rw - NFS address space operation for swap I/O
-  * @iocb: target I/O control block
-@@ -539,10 +549,6 @@ static void nfs_direct_write_reschedule(struct nfs_direct_req *dreq)
- 
- 	nfs_direct_join_group(&reqs, dreq->inode);
- 
--	dreq->count = 0;
--	dreq->max_count = 0;
--	list_for_each_entry(req, &reqs, wb_list)
--		dreq->max_count += req->wb_bytes;
- 	nfs_clear_pnfs_ds_commit_verifiers(&dreq->ds_cinfo);
- 	get_dreq(dreq);
- 
-@@ -576,10 +582,14 @@ static void nfs_direct_write_reschedule(struct nfs_direct_req *dreq)
- 		req = nfs_list_entry(reqs.next);
- 		nfs_list_remove_request(req);
- 		nfs_unlock_and_release_request(req);
--		if (desc.pg_error == -EAGAIN)
-+		if (desc.pg_error == -EAGAIN) {
- 			nfs_mark_request_commit(req, NULL, &cinfo, 0);
--		else
-+		} else {
-+			spin_lock(&dreq->lock);
-+			nfs_direct_truncate_request(dreq, req);
-+			spin_unlock(&dreq->lock);
- 			nfs_release_request(req);
-+		}
- 	}
- 
- 	if (put_dreq(dreq))
-@@ -599,8 +609,6 @@ static void nfs_direct_commit_complete(struct nfs_commit_data *data)
- 	if (status < 0) {
- 		/* Errors in commit are fatal */
- 		dreq->error = status;
--		dreq->max_count = 0;
--		dreq->count = 0;
- 		dreq->flags = NFS_ODIRECT_DONE;
- 	} else {
- 		status = dreq->error;
-@@ -611,7 +619,12 @@ static void nfs_direct_commit_complete(struct nfs_commit_data *data)
- 	while (!list_empty(&data->pages)) {
- 		req = nfs_list_entry(data->pages.next);
- 		nfs_list_remove_request(req);
--		if (status >= 0 && !nfs_write_match_verf(verf, req)) {
-+		if (status < 0) {
-+			spin_lock(&dreq->lock);
-+			nfs_direct_truncate_request(dreq, req);
-+			spin_unlock(&dreq->lock);
-+			nfs_release_request(req);
-+		} else if (!nfs_write_match_verf(verf, req)) {
- 			dreq->flags = NFS_ODIRECT_RESCHED_WRITES;
- 			/*
- 			 * Despite the reboot, the write was successful,
-@@ -619,7 +632,7 @@ static void nfs_direct_commit_complete(struct nfs_commit_data *data)
- 			 */
- 			req->wb_nio = 0;
- 			nfs_mark_request_commit(req, NULL, &cinfo, 0);
--		} else /* Error or match */
-+		} else
- 			nfs_release_request(req);
- 		nfs_unlock_and_release_request(req);
- 	}
-@@ -672,6 +685,7 @@ static void nfs_direct_write_clear_reqs(struct nfs_direct_req *dreq)
- 	while (!list_empty(&reqs)) {
- 		req = nfs_list_entry(reqs.next);
- 		nfs_list_remove_request(req);
-+		nfs_direct_truncate_request(dreq, req);
- 		nfs_release_request(req);
- 		nfs_unlock_and_release_request(req);
- 	}
-@@ -721,7 +735,8 @@ static void nfs_direct_write_completion(struct nfs_pgio_header *hdr)
- 	}
- 
- 	nfs_direct_count_bytes(dreq, hdr);
--	if (test_bit(NFS_IOHDR_UNSTABLE_WRITES, &hdr->flags)) {
-+	if (test_bit(NFS_IOHDR_UNSTABLE_WRITES, &hdr->flags) &&
-+	    !test_bit(NFS_IOHDR_ERROR, &hdr->flags)) {
- 		if (!dreq->flags)
- 			dreq->flags = NFS_ODIRECT_DO_COMMIT;
- 		flags = dreq->flags;
 -- 
 2.40.1
 
