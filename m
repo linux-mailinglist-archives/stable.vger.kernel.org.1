@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8DFC7B8787
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 469627B8A03
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243842AbjJDSGb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:06:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42410 "EHLO
+        id S244337AbjJDSbV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:31:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243816AbjJDSGZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:25 -0400
+        with ESMTP id S244336AbjJDSbV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:31:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8FD1AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD69C433C7;
-        Wed,  4 Oct 2023 18:06:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C2D0A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:31:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90788C433CA;
+        Wed,  4 Oct 2023 18:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442781;
-        bh=SmGB1ffLIyz4J5PzOgQ3QPpMC+81jSd1NQcs7FHHmuY=;
+        s=korg; t=1696444276;
+        bh=Q/5SIXjF/lPNO84Jgo1zRrP7jbynEwOLXHFU115wxGI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ts90ENR1hqGCCu6/+wSCDVI+jXJRn8253OpoE1ytVy3xhzlZW6MPq5aESzbvIAbnV
-         JXs4dXPfQ2Vz0UkG40xwwkPxExQcmvYtoODMYVyrwp0mKOx/+qmktYfabxGfb8R+ZF
-         gzJogL1StEShJC+plksTtCe2cq5J5QKDieBkKH3E=
+        b=Lnnc2cO1lmihSMFxMW0mSpyEBE9+lCnwxjHTtjAa/2qFotWe0bnSzWaaN34dBtdPc
+         z0/hKQs3mEDVA9ldEQW0hvZ4u/nO5JFhvK2epTk10hiUf9FZpE33RJuebkNEHubbN8
+         EtMW4pxUr513sUTHIH6/CPXaHrbr+yR7Enzs2axs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Rossi <nathan.rossi@digi.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Felix Kuehling <felix.kuehling@amd.com>,
+        Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        David Francis <David.Francis@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 107/183] soc: imx8m: Enable OCOTP clock for imx8mm before reading registers
+Subject: [PATCH 6.5 193/321] drm/amdkfd: Checkpoint and restore queues on GFX11
 Date:   Wed,  4 Oct 2023 19:55:38 +0200
-Message-ID: <20231004175208.380610877@linuxfoundation.org>
+Message-ID: <20231004175238.169981371@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +52,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Rossi <nathan.rossi@digi.com>
+From: David Francis <David.Francis@amd.com>
 
-[ Upstream commit 9d1e8275a28f51599d754ce661c91e0a689c0234 ]
+[ Upstream commit 9296da8c40900b4dae3d973aa22be306e2a77671 ]
 
-Commit 836fb30949d9 ("soc: imx8m: Enable OCOTP clock before reading the
-register") added configuration to enable the OCOTP clock before
-attempting to read from the associated registers.
+The code in kfd_mqd_manager_v11.c to support criu dump and
+restore of queue state was missing.
 
-This same kexec issue is present with the imx8m SoCs that use the
-imx8mm_soc_uid function (e.g. imx8mp). This requires the imx8mm_soc_uid
-function to configure the OCOTP clock before accessing the associated
-registers. This change implements the same clock enable functionality
-that is present in the imx8mq_soc_revision function for the
-imx8mm_soc_uid function.
+Added it; should be equivalent to kfd_mqd_manager_v10.c.
 
-Signed-off-by: Nathan Rossi <nathan.rossi@digi.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Fixes: 836fb30949d9 ("soc: imx8m: Enable OCOTP clock before reading the register")
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+CC: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: David Francis <David.Francis@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/imx/soc-imx8m.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c  | 41 +++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-index 32ed9dc88e455..08197b03955dd 100644
---- a/drivers/soc/imx/soc-imx8m.c
-+++ b/drivers/soc/imx/soc-imx8m.c
-@@ -100,6 +100,7 @@ static void __init imx8mm_soc_uid(void)
- {
- 	void __iomem *ocotp_base;
- 	struct device_node *np;
-+	struct clk *clk;
- 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
- 		     IMX8MP_OCOTP_UID_OFFSET : 0;
- 
-@@ -109,11 +110,20 @@ static void __init imx8mm_soc_uid(void)
- 
- 	ocotp_base = of_iomap(np, 0);
- 	WARN_ON(!ocotp_base);
-+	clk = of_clk_get_by_name(np, NULL);
-+	if (IS_ERR(clk)) {
-+		WARN_ON(IS_ERR(clk));
-+		return;
-+	}
-+
-+	clk_prepare_enable(clk);
- 
- 	soc_uid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH + offset);
- 	soc_uid <<= 32;
- 	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW + offset);
- 
-+	clk_disable_unprepare(clk);
-+	clk_put(clk);
- 	iounmap(ocotp_base);
- 	of_node_put(np);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+index 97f754949ca92..352757f2d3202 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+@@ -321,6 +321,43 @@ static int get_wave_state(struct mqd_manager *mm, void *mqd,
+ 	return 0;
  }
+ 
++static void checkpoint_mqd(struct mqd_manager *mm, void *mqd, void *mqd_dst, void *ctl_stack_dst)
++{
++	struct v11_compute_mqd *m;
++
++	m = get_mqd(mqd);
++
++	memcpy(mqd_dst, m, sizeof(struct v11_compute_mqd));
++}
++
++static void restore_mqd(struct mqd_manager *mm, void **mqd,
++			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
++			struct queue_properties *qp,
++			const void *mqd_src,
++			const void *ctl_stack_src, const u32 ctl_stack_size)
++{
++	uint64_t addr;
++	struct v11_compute_mqd *m;
++
++	m = (struct v11_compute_mqd *) mqd_mem_obj->cpu_ptr;
++	addr = mqd_mem_obj->gpu_addr;
++
++	memcpy(m, mqd_src, sizeof(*m));
++
++	*mqd = m;
++	if (gart_addr)
++		*gart_addr = addr;
++
++	m->cp_hqd_pq_doorbell_control =
++		qp->doorbell_off <<
++			CP_HQD_PQ_DOORBELL_CONTROL__DOORBELL_OFFSET__SHIFT;
++	pr_debug("cp_hqd_pq_doorbell_control 0x%x\n",
++			m->cp_hqd_pq_doorbell_control);
++
++	qp->is_active = 0;
++}
++
++
+ static void init_mqd_hiq(struct mqd_manager *mm, void **mqd,
+ 			struct kfd_mem_obj *mqd_mem_obj, uint64_t *gart_addr,
+ 			struct queue_properties *q)
+@@ -438,6 +475,8 @@ struct mqd_manager *mqd_manager_init_v11(enum KFD_MQD_TYPE type,
+ 		mqd->mqd_size = sizeof(struct v11_compute_mqd);
+ 		mqd->get_wave_state = get_wave_state;
+ 		mqd->mqd_stride = kfd_mqd_stride;
++		mqd->checkpoint_mqd = checkpoint_mqd;
++		mqd->restore_mqd = restore_mqd;
+ #if defined(CONFIG_DEBUG_FS)
+ 		mqd->debugfs_show_mqd = debugfs_show_mqd;
+ #endif
+@@ -482,6 +521,8 @@ struct mqd_manager *mqd_manager_init_v11(enum KFD_MQD_TYPE type,
+ 		mqd->update_mqd = update_mqd_sdma;
+ 		mqd->destroy_mqd = kfd_destroy_mqd_sdma;
+ 		mqd->is_occupied = kfd_is_occupied_sdma;
++		mqd->checkpoint_mqd = checkpoint_mqd;
++		mqd->restore_mqd = restore_mqd;
+ 		mqd->mqd_size = sizeof(struct v11_sdma_mqd);
+ 		mqd->mqd_stride = kfd_mqd_stride;
+ #if defined(CONFIG_DEBUG_FS)
 -- 
 2.40.1
 
