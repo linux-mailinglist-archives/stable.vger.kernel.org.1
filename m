@@ -2,101 +2,290 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC4EA7B8D42
+	by mail.lfdr.de (Postfix) with ESMTP id 560C37B8D41
 	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 21:21:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245368AbjJDTT0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 15:19:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54568 "EHLO
+        id S243681AbjJDTTF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 15:19:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244879AbjJDTTY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 15:19:24 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10259270B;
-        Wed,  4 Oct 2023 12:08:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E01DC433BF;
-        Wed,  4 Oct 2023 19:08:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696446514;
-        bh=z8q9WQnLCGbK8w2/hCp6xPfP35wCO0KBvWTQAtx1ACc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BsdvoO2+tSeEpeT+wbyLwgBePSJh50QAg5hT651xp9vHI96MWfVTSIvJA8H7HSsav
-         cANW7E0He5qhHnC5EAInOL4AsOWN+Olu4h2C9W6D5Zmu2pFRQ2or1IP+hDwJRggKIG
-         8oDHJUph/RfCfttP7mPSgjxeAPGJKHwfGo3AgEv/+7NYNw2XZsnbe2q7xBwODo58vD
-         bWR1EDu3qec6W2wQnHQcETNSktY1uKSryZi8UIBUxs9X7KfUO3h5eDGwtc0iMQcFw9
-         /WrqIhcHQBAnbaRP4SnRUhjWXF2kHFEPeb+U7z+jRM0XMKsFNjVE09jW/gaOD6Moqb
-         mHgq9LUW12oJA==
-Date:   Wed, 4 Oct 2023 20:08:24 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Takashi Iwai <tiwai@suse.de>, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] soundwire: fix initializing sysfs for same devices on
- different buses
-Message-ID: <c7e9aef7-d90d-4eb5-b4fd-72857346dcad@sirena.org.uk>
-References: <20231004130243.493617-1-krzysztof.kozlowski@linaro.org>
- <6628a5f6-ed22-4039-b5c2-2301c05c7e3e@linux.intel.com>
- <2023100453-perfected-palm-3503@gregkh>
- <624b044a-1f0f-4961-8b57-cb5346e7b0d3@linux.intel.com>
- <2023100452-craziness-unpopular-7d97@gregkh>
- <04c5911a-a894-44b3-9f0e-fe9e6de203f2@linux.intel.com>
- <d648c3d1-53ac-4021-ac7f-6a81f1a72dd3@sirena.org.uk>
- <bf4ee895-293f-4bc3-ac4b-30df6361e973@linux.intel.com>
+        with ESMTP id S244619AbjJDTTE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 15:19:04 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5994BD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 12:18:59 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1c60cec8041so778355ad.3
+        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 12:18:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1696447138; x=1697051938; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=E1+4tRd6OSYbD2puMF7MnlO9cld1Lfep1NUv3RGO1yw=;
+        b=2LIjHIfRWKG+ccdVtrwTeCMDOUKYh19SKgzbLXtIiY8503A1Hp3YiNEILOO5pUBozY
+         zwXpTxZKQIoNVLCifk4n+3FOLK3p5kIjTcPWcern1qm2Z+rzYjMYHy1gWk+nur38ma7H
+         tHoIRzUXNkTP6NnGyT1lAywrK4NhI+7J8GIWvyaVzokTp8UM56ARI22L1BCD7P8uv+wI
+         36d0vG/iAAKdfpunn1MwJvEeLxQIven2iUlNbcspLB2j29nHgbPHBuN7RwMtG88epb47
+         6nDQEqZqDJzJ7AuxFyNdUK681/GZzSUnWRjWiHMhpoUE6LeVYH7XbkObiXfvyFGN6ffU
+         V/ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696447138; x=1697051938;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E1+4tRd6OSYbD2puMF7MnlO9cld1Lfep1NUv3RGO1yw=;
+        b=u9x9uDvcnes+gJu8W1mdxMFQZHFESuAuA7c4X3ZxscwhhnP9sy4fjLHh3cV01+5N/2
+         el6+IYKBgGh5g6Iq81PJ25mWy/+VKlJ2BM68YuXDmoimrYOmqFsgcF03OZVGeQ+OEyR4
+         txIAG0De2gqHn3Jg+LB4n/N1F3UDJPx57hdAgmMgEUIaWCDz7dPjW/JGiXBxJCF5iKBF
+         Oe/+7m+YdEwejM1VoeMB2RjAalGzPTLAwzdzcDHcYVTZqySs60YT/z32e1qAlkGabM3j
+         z6LMIKPTeufXmO2yJSrEbs/DATe7dYyXwslP52/Rev1JdjSQd/DzHDxGo3rETQVeFm74
+         fFKg==
+X-Gm-Message-State: AOJu0YxwMql9KehvVd3SRBG3fYHG7jEaMkFLo7jQHb9oGe7IQdxFNPTO
+        n1LderzaQzgNjddvIYwE10WVhmhCrb1GftIU14U6IQ==
+X-Google-Smtp-Source: AGHT+IF0LtM2zllIsYNpByoetoObsfDQwScSeahtXzgr+SPidV+ObTJjwl90/O92sNX1VBI8Wf7h9g==
+X-Received: by 2002:a17:902:c286:b0:1c3:52ed:18f9 with SMTP id i6-20020a170902c28600b001c352ed18f9mr3219366pld.62.1696447138609;
+        Wed, 04 Oct 2023 12:18:58 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id ja2-20020a170902efc200b001b896d0eb3dsm4112519plb.8.2023.10.04.12.18.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Oct 2023 12:18:57 -0700 (PDT)
+Message-ID: <651dbaa1.170a0220.c42c1.c0f7@mx.google.com>
+Date:   Wed, 04 Oct 2023 12:18:57 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jPpsDvd3ypYAmiPv"
-Content-Disposition: inline
-In-Reply-To: <bf4ee895-293f-4bc3-ac4b-30df6361e973@linux.intel.com>
-X-Cookie: This space intentionally left blank.
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-4.19.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v4.19.295-67-ga70e2840d2494
+X-Kernelci-Report-Type: build
+Subject: stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed,
+ 20 warnings (v4.19.295-67-ga70e2840d2494)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed, 20 warnings (=
+v4.19.295-67-ga70e2840d2494)
 
---jPpsDvd3ypYAmiPv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
+y/kernel/v4.19.295-67-ga70e2840d2494/
 
-On Wed, Oct 04, 2023 at 03:00:40PM -0400, Pierre-Louis Bossart wrote:
-> On 10/4/23 11:40, Mark Brown wrote:
+Tree: stable-rc
+Branch: linux-4.19.y
+Git Describe: v4.19.295-67-ga70e2840d2494
+Git Commit: a70e2840d2494de2e794b720b7164f3d26624c5c
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-> > FWIW DT is much less affected here since all the inter-device references
-> > are explicit in the DT (modulo needing to work around breakage) so we're
-> > not hard coding in the way ACPI so unfortunately requires.
+Build Failures Detected:
 
-> Isn't there a contradiction between making "all inter-device references
-> explicit in the DT" and having a device name use an IDA, which cannot
-> possibly known ahead of time?
+riscv:
+    allnoconfig: (gcc-10) FAIL
+    defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
 
-No, the thing with DT is that we don't use the device name for binding
-at all - it's printed in things but it's not part of how we do lookups
-(unless there's something I didn't notice in the Soundwire specifics I
-guess).  Lookups are done with inter-node references in the DT.
+Warnings Detected:
 
---jPpsDvd3ypYAmiPv
-Content-Type: application/pgp-signature; name="signature.asc"
+arc:
 
------BEGIN PGP SIGNATURE-----
+arm64:
+    defconfig (gcc-10): 3 warnings
+    defconfig+arm64-chromebook (gcc-10): 3 warnings
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUduCcACgkQJNaLcl1U
-h9DtVQf9E1QE9QxbJsHcy6ZNkCNbvskvokOqadTQX9lvcIS3emkiN65JK+oD5D9u
-XOjh5OjUmolwPIvKggNJbTNdh25/e3ama+JYh0xeT9jM605vR/9UdNCXxuGm2Y4k
-SLFoFvCxDZ1CZ+HEnZnlIPrOX2+afXoLezCHleEvCZbMzmMCcrFdmIGk2fOA+BTj
-6Kr00wCESeg/kJGYUqmWuHNu/15U3TryRBv6r9l4VYTQYr62xk05pBt5KS2iC9UQ
-aSACeVfLXF/B9X2KZwsD83deIBFj7FL9cwNrG4LLMneihfvJlFAswdK3qYZYyDXK
-VAhMd3hpWTPMd4uq2JEpC90gyiY1ZA==
-=60Fx
------END PGP SIGNATURE-----
+arm:
 
---jPpsDvd3ypYAmiPv--
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 2 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
+ings, 0 section mismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
+ mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+2 warnings, 0 section mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
