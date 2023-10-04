@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AB397B879A
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BE417B888B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243529AbjJDSHN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:07:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55880 "EHLO
+        id S244057AbjJDSRR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:17:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243829AbjJDSHM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:12 -0400
+        with ESMTP id S244083AbjJDSRR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EF7AC1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D203DC433C9;
-        Wed,  4 Oct 2023 18:07:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F6E0E4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B0AC433CB;
+        Wed,  4 Oct 2023 18:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442829;
-        bh=QniTWhp3myWiEsWYMmtQT+IlKnfweV57QaFOc0VOAvs=;
+        s=korg; t=1696443432;
+        bh=fwfB3hDTJ8V4hrMEGDWyzabrzZuw1HA4MLu+efjSeHg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wff3xpO9NroZjIjUxOJCqSGKFDtSKz5tsj3/V5Ujg7zuhYW/iPONN35Raj+MfCkh2
-         Br1qyE+qx+xYaqhzTcN+WvMbzgA119k8+GDabPrqA6ci91It7l4aXvZ6zZOl+RL6Oa
-         2/qSp0qX4AxcCaJ0FJvXJzKb/jVSlI/44Wsqr5zY=
+        b=hf+PfCdRy7SGbvH1s6oJmqdCcgaBZBbNHQEFpCzSbtXLN5h5jv/QUmJ7CWHnHyGAg
+         jXoeKzX6ekpLRrMElQCqUhc1N9Ob5u60eWyux144j6Q2Asniq3sq8dzAsi/11vvFh0
+         KdpHC2u7YcuDSYSCZXul4rPq9bRybRg0HlFXpRfM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Timo Alho <talho@nvidia.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Kiwoong Kim <kwmad.kim@samsung.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Chanwoo Lee <cw9316.lee@samsung.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 095/183] clk: tegra: fix error return case for recalc_rate
+Subject: [PATCH 6.1 153/259] scsi: ufs: core: Move __ufshcd_send_uic_cmd() outside host_lock
 Date:   Wed,  4 Oct 2023 19:55:26 +0200
-Message-ID: <20231004175207.883282222@linuxfoundation.org>
+Message-ID: <20231004175224.315051288@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +52,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timo Alho <talho@nvidia.com>
+From: Kiwoong Kim <kwmad.kim@samsung.com>
 
-[ Upstream commit a47b44fbb13f5e7a981b4515dcddc93a321ae89c ]
+[ Upstream commit 2d3f59cf868b4a2dd678a96cd49bdd91411bd59f ]
 
-tegra-bpmp clocks driver makes implicit conversion of signed error
-code to unsigned value in recalc_rate operation. The behavior for
-recalc_rate, according to it's specification, should be that "If the
-driver cannot figure out a rate for this clock, it must return 0."
+__ufshcd_send_uic_cmd() is wrapped by uic_cmd_mutex and its related
+contexts are accessed within the section wrapped by uic_cmd_mutex. Thus,
+wrapping with host_lock is redundant.
 
-Fixes: ca6f2796eef7 ("clk: tegra: Add BPMP clock driver")
-Signed-off-by: Timo Alho <talho@nvidia.com>
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Link: https://lore.kernel.org/r/20230912112951.2330497-1-cyndis@kapsi.fi
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Kiwoong Kim <kwmad.kim@samsung.com>
+Link: https://lore.kernel.org/r/782ba5f26f0a96e58d85dff50751787d2d2a6b2b.1693790060.git.kwmad.kim@samsung.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Chanwoo Lee <cw9316.lee@samsung.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-bpmp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/clk/tegra/clk-bpmp.c b/drivers/clk/tegra/clk-bpmp.c
-index 6ecf18f71c329..f6721f1d40885 100644
---- a/drivers/clk/tegra/clk-bpmp.c
-+++ b/drivers/clk/tegra/clk-bpmp.c
-@@ -159,7 +159,7 @@ static unsigned long tegra_bpmp_clk_recalc_rate(struct clk_hw *hw,
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 36437d39b93c8..135be6dd02523 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -2346,7 +2346,6 @@ __ufshcd_send_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd,
+ 		      bool completion)
+ {
+ 	lockdep_assert_held(&hba->uic_cmd_mutex);
+-	lockdep_assert_held(hba->host->host_lock);
  
- 	err = tegra_bpmp_clk_transfer(clk->bpmp, &msg);
- 	if (err < 0)
--		return err;
-+		return 0;
+ 	if (!ufshcd_ready_for_uic_cmd(hba)) {
+ 		dev_err(hba->dev,
+@@ -2373,7 +2372,6 @@ __ufshcd_send_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd,
+ int ufshcd_send_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd)
+ {
+ 	int ret;
+-	unsigned long flags;
  
- 	return response.rate;
- }
+ 	if (hba->quirks & UFSHCD_QUIRK_BROKEN_UIC_CMD)
+ 		return 0;
+@@ -2382,9 +2380,7 @@ int ufshcd_send_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd)
+ 	mutex_lock(&hba->uic_cmd_mutex);
+ 	ufshcd_add_delay_before_dme_cmd(hba);
+ 
+-	spin_lock_irqsave(hba->host->host_lock, flags);
+ 	ret = __ufshcd_send_uic_cmd(hba, uic_cmd, true);
+-	spin_unlock_irqrestore(hba->host->host_lock, flags);
+ 	if (!ret)
+ 		ret = ufshcd_wait_for_uic_cmd(hba, uic_cmd);
+ 
+@@ -4076,8 +4072,8 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
+ 		wmb();
+ 		reenable_intr = true;
+ 	}
+-	ret = __ufshcd_send_uic_cmd(hba, cmd, false);
+ 	spin_unlock_irqrestore(hba->host->host_lock, flags);
++	ret = __ufshcd_send_uic_cmd(hba, cmd, false);
+ 	if (ret) {
+ 		dev_err(hba->dev,
+ 			"pwr ctrl cmd 0x%x with mode 0x%x uic error %d\n",
 -- 
 2.40.1
 
