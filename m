@@ -2,38 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAFB37B880F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:12:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D07827B897B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:26:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243932AbjJDSMW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:12:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47684 "EHLO
+        id S244188AbjJDS0x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:26:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243970AbjJDSMV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:12:21 -0400
+        with ESMTP id S244212AbjJDS0Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:26:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94980C1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:12:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C773AC433C7;
-        Wed,  4 Oct 2023 18:12:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49ABAC1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:26:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BD8C433C8;
+        Wed,  4 Oct 2023 18:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443138;
-        bh=+LMlbiPIT/Y1JBLR6yfXbbW0oIx78S6kIIzrK27IqXo=;
+        s=korg; t=1696443981;
+        bh=ZFYXuRzb7sMXHVTAnxixAi4j/Sssa7zhxOAoYQ+6FME=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IMEpY6Xd68PJiCkK1oYaZ8bUMLQebF9kGHESlrVThZy+UOY+j2d+ied26X1GAMDQb
-         cmGgMXzO7FkmnOPGfJGLjEyzWKhnFLftYX+qhLQh2ZUG+kB2igr6lDFUEDgIZABKCD
-         /06mvp7pjVdmjXK8tIDYVDFxs9Zg2IJCvrHhq6HM=
+        b=IUBrQMCT2aebYqGG5H4PGJzmIGlyBt5AEcdODPDlgN9dGPd4HMQW7JtUeIPmYIHn7
+         HvjhIZBEUueY9kpcZtbhzwIGFJIXetsM72xPJhedZ/rsY6msNF7JkgAMgsIUYCgCpm
+         YucyEBP3t0LQ5NXeyziw8os2gJNtCoyCei/GGQyI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Petr Oros <poros@redhat.com>,
+        Michal Schmidt <mschmidt@redhat.com>,
+        Ivan Vecera <ivecera@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/259] netfilter: nft_set_rbtree: use read spinlock to avoid datapath contention
+Subject: [PATCH 6.5 060/321] iavf: add iavf_schedule_aq_request() helper
 Date:   Wed,  4 Oct 2023 19:53:25 +0200
-Message-ID: <20231004175218.908102117@linuxfoundation.org>
+Message-ID: <20231004175231.953536489@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,49 +54,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Petr Oros <poros@redhat.com>
 
-commit 96b33300fba880ec0eafcf3d82486f3463b4b6da upstream.
+[ Upstream commit ed4cad33df9e272feaa6698b33359b29c2929564 ]
 
-rbtree GC does not modify the datastructure, instead it collects expired
-elements and it enqueues a GC transaction. Use a read spinlock instead
-to avoid data contention while GC worker is running.
+Add helper for set iavf aq request AVF_FLAG_AQ_* and immediately
+schedule watchdog_task. Helper will be used in cases where it is
+necessary to run aq requests asap
 
-Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Petr Oros <poros@redhat.com>
+Co-developed-by: Michal Schmidt <mschmidt@redhat.com>
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Co-developed-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 5f3d319a2486 ("iavf: schedule a request immediately after add/delete vlan")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf.h         |  2 +-
+ drivers/net/ethernet/intel/iavf/iavf_ethtool.c |  2 +-
+ drivers/net/ethernet/intel/iavf/iavf_main.c    | 10 ++++------
+ 3 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index f250b5399344a..70491ba98decb 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -622,8 +622,7 @@ static void nft_rbtree_gc(struct work_struct *work)
- 	if (!gc)
- 		goto done;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 8cbdebc5b6989..4d4508e04b1d2 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -521,7 +521,7 @@ void iavf_down(struct iavf_adapter *adapter);
+ int iavf_process_config(struct iavf_adapter *adapter);
+ int iavf_parse_vf_resource_msg(struct iavf_adapter *adapter);
+ void iavf_schedule_reset(struct iavf_adapter *adapter, u64 flags);
+-void iavf_schedule_request_stats(struct iavf_adapter *adapter);
++void iavf_schedule_aq_request(struct iavf_adapter *adapter, u64 flags);
+ void iavf_schedule_finish_config(struct iavf_adapter *adapter);
+ void iavf_reset(struct iavf_adapter *adapter);
+ void iavf_set_ethtool_ops(struct net_device *netdev);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
+index a34303ad057d0..90397293525f7 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
+@@ -362,7 +362,7 @@ static void iavf_get_ethtool_stats(struct net_device *netdev,
+ 	unsigned int i;
  
--	write_lock_bh(&priv->lock);
--	write_seqcount_begin(&priv->count);
-+	read_lock_bh(&priv->lock);
- 	for (node = rb_first(&priv->root); node != NULL; node = rb_next(node)) {
+ 	/* Explicitly request stats refresh */
+-	iavf_schedule_request_stats(adapter);
++	iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_REQUEST_STATS);
  
- 		/* Ruleset has been updated, try later. */
-@@ -673,8 +672,7 @@ static void nft_rbtree_gc(struct work_struct *work)
- 	gc = nft_trans_gc_catchall(gc, gc_seq);
+ 	iavf_add_ethtool_stats(&data, adapter, iavf_gstrings_stats);
  
- try_later:
--	write_seqcount_end(&priv->count);
--	write_unlock_bh(&priv->lock);
-+	read_unlock_bh(&priv->lock);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 1d24a71905d06..d76465474049c 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -314,15 +314,13 @@ void iavf_schedule_reset(struct iavf_adapter *adapter, u64 flags)
+ }
  
- 	if (gc)
- 		nft_trans_gc_queue_async_done(gc);
+ /**
+- * iavf_schedule_request_stats - Set the flags and schedule statistics request
++ * iavf_schedule_aq_request - Set the flags and schedule aq request
+  * @adapter: board private structure
+- *
+- * Sets IAVF_FLAG_AQ_REQUEST_STATS flag so iavf_watchdog_task() will explicitly
+- * request and refresh ethtool stats
++ * @flags: requested aq flags
+  **/
+-void iavf_schedule_request_stats(struct iavf_adapter *adapter)
++void iavf_schedule_aq_request(struct iavf_adapter *adapter, u64 flags)
+ {
+-	adapter->aq_required |= IAVF_FLAG_AQ_REQUEST_STATS;
++	adapter->aq_required |= flags;
+ 	mod_delayed_work(adapter->wq, &adapter->watchdog_task, 0);
+ }
+ 
 -- 
 2.40.1
 
