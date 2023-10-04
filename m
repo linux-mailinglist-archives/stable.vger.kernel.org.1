@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F2157B8877
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:16:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DCFF7B89DE
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244054AbjJDSQ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:16:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44664 "EHLO
+        id S244296AbjJDSaM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:30:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244111AbjJDSQc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:16:32 -0400
+        with ESMTP id S244297AbjJDSaJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 663ACBF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:16:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D78C433C7;
-        Wed,  4 Oct 2023 18:16:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F6DCC6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB70C433C8;
+        Wed,  4 Oct 2023 18:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443387;
-        bh=Nh5LvujZEFBJG7eO0d0Kc+BB2FAsDelbOSkQvDGyVkI=;
+        s=korg; t=1696444205;
+        bh=IgEx5HamdR60w5BstmZ6AGr/LgHCJ0N9E6JMcy2JMOI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2C0kji8eFNocHx+JAAvmQ+9VG+wcg6SrWmoCbqMN9C69paQYNQ4VSvw+wLPLut+xr
-         cRGM0fCvsNr60QP5V0eI0ZANFAAGJh4afej2oZWYkMh9SerYgLkOJIPVsult1onqxD
-         6ZMX1taMkUOog23ecCXeNNU9DmN3Q5qyK7ko+EqQ=
+        b=DtVwUIFhHu5RlDq96YviJszKiwCJRxz5GWIHE8/pdte4G5hO98/eFVK1r0Qn0mxr5
+         iRHSfYVqd6tfIFXdGjVpM5YppLNyR1+lQ5TXx/N6bRhE2v3GrubTgRsXZlgo7J9iJV
+         MHAjG4mYT+ZjyeVrvzZJF9xX+2I5Xt/gdurE8vHM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wenhua Lin <Wenhua.Lin@unisoc.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/259] gpio: pmic-eic-sprd: Add can_sleep flag for PMIC EIC chip
+Subject: [PATCH 6.5 167/321] parisc: sba-iommu: Fix sparse warnigs
 Date:   Wed,  4 Oct 2023 19:55:12 +0200
-Message-ID: <20231004175223.698950197@linuxfoundation.org>
+Message-ID: <20231004175237.001743290@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +49,163 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenhua Lin <Wenhua.Lin@unisoc.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 26d9e5640d2130ee16df7b1fb6a908f460ab004c ]
+[ Upstream commit c1ebb94071cb4455177bafa619423acb3494d15d ]
 
-The drivers uses a mutex and I2C bus access in its PMIC EIC chip
-get implementation. This means these functions can sleep and the PMIC EIC
-chip should set the can_sleep property to true.
+Fix sparse warnings, as pdir is __le64 *.
 
-This will ensure that a warning is printed when trying to get the
-value from a context that potentially can't sleep.
-
-Fixes: 348f3cde84ab ("gpio: Add Spreadtrum PMIC EIC driver support")
-Signed-off-by: Wenhua Lin <Wenhua.Lin@unisoc.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-pmic-eic-sprd.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/parisc/include/asm/ropes.h |  4 ++--
+ drivers/parisc/iommu-helpers.h  |  4 ++--
+ drivers/parisc/sba_iommu.c      | 28 ++++++++++++++--------------
+ 3 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpio/gpio-pmic-eic-sprd.c b/drivers/gpio/gpio-pmic-eic-sprd.c
-index e518490c4b681..ebbbcb54270d1 100644
---- a/drivers/gpio/gpio-pmic-eic-sprd.c
-+++ b/drivers/gpio/gpio-pmic-eic-sprd.c
-@@ -337,6 +337,7 @@ static int sprd_pmic_eic_probe(struct platform_device *pdev)
- 	pmic_eic->chip.set_config = sprd_pmic_eic_set_config;
- 	pmic_eic->chip.set = sprd_pmic_eic_set;
- 	pmic_eic->chip.get = sprd_pmic_eic_get;
-+	pmic_eic->chip.can_sleep = true;
+diff --git a/arch/parisc/include/asm/ropes.h b/arch/parisc/include/asm/ropes.h
+index 62399c7ea94a1..c46ad399a74f2 100644
+--- a/arch/parisc/include/asm/ropes.h
++++ b/arch/parisc/include/asm/ropes.h
+@@ -29,7 +29,7 @@
+ struct ioc {
+ 	void __iomem	*ioc_hpa;	/* I/O MMU base address */
+ 	char		*res_map;	/* resource map, bit == pdir entry */
+-	u64		*pdir_base;	/* physical base address */
++	__le64		*pdir_base;	/* physical base address */
+ 	unsigned long	ibase;		/* pdir IOV Space base - shared w/lba_pci */
+ 	unsigned long	imask;		/* pdir IOV Space mask - shared w/lba_pci */
+ #ifdef ZX1_SUPPORT
+@@ -113,7 +113,7 @@ static inline int IS_PLUTO(struct parisc_device *d) {
  
- 	pmic_eic->intc.name = dev_name(&pdev->dev);
- 	pmic_eic->intc.irq_mask = sprd_pmic_eic_irq_mask;
+ #define SBA_PDIR_VALID_BIT	0x8000000000000000ULL
+ 
+-#define SBA_AGPGART_COOKIE	0x0000badbadc0ffeeULL
++#define SBA_AGPGART_COOKIE	(__force __le64) 0x0000badbadc0ffeeULL
+ 
+ #define SBA_FUNC_ID	0x0000	/* function id */
+ #define SBA_FCLASS	0x0008	/* function class, bist, header, rev... */
+diff --git a/drivers/parisc/iommu-helpers.h b/drivers/parisc/iommu-helpers.h
+index 0905be256de08..a00c38b6224ab 100644
+--- a/drivers/parisc/iommu-helpers.h
++++ b/drivers/parisc/iommu-helpers.h
+@@ -14,13 +14,13 @@
+ static inline unsigned int
+ iommu_fill_pdir(struct ioc *ioc, struct scatterlist *startsg, int nents, 
+ 		unsigned long hint,
+-		void (*iommu_io_pdir_entry)(u64 *, space_t, unsigned long,
++		void (*iommu_io_pdir_entry)(__le64 *, space_t, unsigned long,
+ 					    unsigned long))
+ {
+ 	struct scatterlist *dma_sg = startsg;	/* pointer to current DMA */
+ 	unsigned int n_mappings = 0;
+ 	unsigned long dma_offset = 0, dma_len = 0;
+-	u64 *pdirp = NULL;
++	__le64 *pdirp = NULL;
+ 
+ 	/* Horrible hack.  For efficiency's sake, dma_sg starts one 
+ 	 * entry below the true start (it is immediately incremented
+diff --git a/drivers/parisc/sba_iommu.c b/drivers/parisc/sba_iommu.c
+index b8e91cbb60567..780ea219cd8d4 100644
+--- a/drivers/parisc/sba_iommu.c
++++ b/drivers/parisc/sba_iommu.c
+@@ -202,7 +202,7 @@ static void
+ sba_dump_pdir_entry(struct ioc *ioc, char *msg, uint pide)
+ {
+ 	/* start printing from lowest pde in rval */
+-	u64 *ptr = &(ioc->pdir_base[pide & (~0U * BITS_PER_LONG)]);
++	__le64 *ptr = &(ioc->pdir_base[pide & (~0U * BITS_PER_LONG)]);
+ 	unsigned long *rptr = (unsigned long *) &(ioc->res_map[(pide >>3) & ~(sizeof(unsigned long) - 1)]);
+ 	uint rcnt;
+ 
+@@ -569,7 +569,7 @@ typedef unsigned long space_t;
+  */
+ 
+ static void
+-sba_io_pdir_entry(u64 *pdir_ptr, space_t sid, unsigned long vba,
++sba_io_pdir_entry(__le64 *pdir_ptr, space_t sid, unsigned long vba,
+ 		  unsigned long hint)
+ {
+ 	u64 pa; /* physical address */
+@@ -613,7 +613,7 @@ static void
+ sba_mark_invalid(struct ioc *ioc, dma_addr_t iova, size_t byte_cnt)
+ {
+ 	u32 iovp = (u32) SBA_IOVP(ioc,iova);
+-	u64 *pdir_ptr = &ioc->pdir_base[PDIR_INDEX(iovp)];
++	__le64 *pdir_ptr = &ioc->pdir_base[PDIR_INDEX(iovp)];
+ 
+ #ifdef ASSERT_PDIR_SANITY
+ 	/* Assert first pdir entry is set.
+@@ -714,7 +714,7 @@ sba_map_single(struct device *dev, void *addr, size_t size,
+ 	unsigned long flags; 
+ 	dma_addr_t iovp;
+ 	dma_addr_t offset;
+-	u64 *pdir_start;
++	__le64 *pdir_start;
+ 	int pide;
+ 
+ 	ioc = GET_IOC(dev);
+@@ -1432,7 +1432,7 @@ sba_ioc_init(struct parisc_device *sba, struct ioc *ioc, int ioc_num)
+ 
+ 	ioc->pdir_size = pdir_size = (iova_space_size/IOVP_SIZE) * sizeof(u64);
+ 
+-	DBG_INIT("%s() hpa 0x%lx mem %ldMB IOV %dMB (%d bits)\n",
++	DBG_INIT("%s() hpa %px mem %ldMB IOV %dMB (%d bits)\n",
+ 			__func__,
+ 			ioc->ioc_hpa,
+ 			(unsigned long) totalram_pages() >> (20 - PAGE_SHIFT),
+@@ -1469,7 +1469,7 @@ sba_ioc_init(struct parisc_device *sba, struct ioc *ioc, int ioc_num)
+ 	ioc->iovp_mask = ~(iova_space_mask + PAGE_SIZE - 1);
+ #endif
+ 
+-	DBG_INIT("%s() IOV base 0x%lx mask 0x%0lx\n",
++	DBG_INIT("%s() IOV base %#lx mask %#0lx\n",
+ 		__func__, ioc->ibase, ioc->imask);
+ 
+ 	/*
+@@ -1581,7 +1581,7 @@ printk("sba_hw_init(): mem_boot 0x%x 0x%x 0x%x 0x%x\n", PAGE0->mem_boot.hpa,
+ 
+ 	if (!IS_PLUTO(sba_dev->dev)) {
+ 		ioc_ctl = READ_REG(sba_dev->sba_hpa+IOC_CTRL);
+-		DBG_INIT("%s() hpa 0x%lx ioc_ctl 0x%Lx ->",
++		DBG_INIT("%s() hpa %px ioc_ctl 0x%Lx ->",
+ 			__func__, sba_dev->sba_hpa, ioc_ctl);
+ 		ioc_ctl &= ~(IOC_CTRL_RM | IOC_CTRL_NC | IOC_CTRL_CE);
+ 		ioc_ctl |= IOC_CTRL_DD | IOC_CTRL_D4 | IOC_CTRL_TC;
+@@ -1666,14 +1666,14 @@ printk("sba_hw_init(): mem_boot 0x%x 0x%x 0x%x 0x%x\n", PAGE0->mem_boot.hpa,
+ 		/* flush out the last writes */
+ 		READ_REG(sba_dev->ioc[i].ioc_hpa + ROPE7_CTL);
+ 
+-		DBG_INIT("	ioc[%d] ROPE_CFG 0x%Lx  ROPE_DBG 0x%Lx\n",
++		DBG_INIT("	ioc[%d] ROPE_CFG %#lx  ROPE_DBG %lx\n",
+ 				i,
+-				READ_REG(sba_dev->ioc[i].ioc_hpa + 0x40),
+-				READ_REG(sba_dev->ioc[i].ioc_hpa + 0x50)
++				(unsigned long) READ_REG(sba_dev->ioc[i].ioc_hpa + 0x40),
++				(unsigned long) READ_REG(sba_dev->ioc[i].ioc_hpa + 0x50)
+ 			);
+-		DBG_INIT("	STATUS_CONTROL 0x%Lx  FLUSH_CTRL 0x%Lx\n",
+-				READ_REG(sba_dev->ioc[i].ioc_hpa + 0x108),
+-				READ_REG(sba_dev->ioc[i].ioc_hpa + 0x400)
++		DBG_INIT("	STATUS_CONTROL %#lx  FLUSH_CTRL %#lx\n",
++				(unsigned long) READ_REG(sba_dev->ioc[i].ioc_hpa + 0x108),
++				(unsigned long) READ_REG(sba_dev->ioc[i].ioc_hpa + 0x400)
+ 			);
+ 
+ 		if (IS_PLUTO(sba_dev->dev)) {
+@@ -1737,7 +1737,7 @@ sba_common_init(struct sba_device *sba_dev)
+ #ifdef ASSERT_PDIR_SANITY
+ 		/* Mark first bit busy - ie no IOVA 0 */
+ 		sba_dev->ioc[i].res_map[0] = 0x80;
+-		sba_dev->ioc[i].pdir_base[0] = 0xeeffc0addbba0080ULL;
++		sba_dev->ioc[i].pdir_base[0] = (__force __le64) 0xeeffc0addbba0080ULL;
+ #endif
+ 
+ 		/* Third (and last) part of PIRANHA BUG */
 -- 
 2.40.1
 
