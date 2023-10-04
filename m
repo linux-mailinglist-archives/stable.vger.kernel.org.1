@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAFF17B8A1E
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69AC97B8885
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244357AbjJDSc2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:32:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51024 "EHLO
+        id S244084AbjJDSRJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:17:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244356AbjJDSc2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:28 -0400
+        with ESMTP id S244085AbjJDSRI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E4E8BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A674C433CA;
-        Wed,  4 Oct 2023 18:32:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E143DC
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11D2C433C7;
+        Wed,  4 Oct 2023 18:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444343;
-        bh=kgJ/NTtmMdR3Obiyh/n2fZcVDI92mETIhbA+rKnGixQ=;
+        s=korg; t=1696443424;
+        bh=x1jLBbi4eEQkZgQ1JpMKHjfRPcLNu59MtW0jxkt5NNk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fWKz3u8llhHxhGwjPfbHG6Z4OsnBP06sqKsnaLWATYpK3TLuLoN5eCIc3b6T3JgBC
-         ZRoFO85D2ULO2wsJnmIAYT690BrlhR4dgdzNSbaBAVxfxQp32PjUzXNKrgUH8+B1xl
-         0QSRPNXaj7c1cuFNibLuN+8K14pS9dlMJHmziWhg=
+        b=DP2OqlGZNFlA7nR/UZyR7KzIrONSqHwgngEjn80sw7gvWW7dQ0FIfcDmMP3QW9EUN
+         wRtRWAymttX+iXPfyIpuGsvK4a8GmCA7Eb2fob4UGLuFmCX+E2dW/Fn5pC4pXbfagR
+         wY4nuAndlt5ILEUzLvfdJ284LCbUX6GQ2OhTtOMY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Ricardo B. Marliere" <rbmarliere@gmail.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 178/321] selftests: fix dependency checker script
-Date:   Wed,  4 Oct 2023 19:55:23 +0200
-Message-ID: <20231004175237.493121238@linuxfoundation.org>
+Subject: [PATCH 6.1 151/259] parisc: irq: Make irq_stack_union static to avoid sparse warning
+Date:   Wed,  4 Oct 2023 19:55:24 +0200
+Message-ID: <20231004175224.230406785@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,181 +49,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marliere <rbmarliere@gmail.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 5f9dd2e896a91bfca90f8463eb6808c03d535d8a ]
+[ Upstream commit b1bef1388c427cdad7331a9c8eb4ebbbe5b954b0 ]
 
-This patch fixes inconsistencies in the parsing rules of the levels 1
-and 2 of the kselftest_deps.sh.  It was added the levels 4 and 5 to
-account for a few edge cases that are present in some tests, also some
-minor identation styling have been fixed (s/    /\t/g).
-
-Signed-off-by: Ricardo B. Marliere <rbmarliere@gmail.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kselftest_deps.sh | 77 +++++++++++++++++++----
- 1 file changed, 65 insertions(+), 12 deletions(-)
+ arch/parisc/kernel/irq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kselftest_deps.sh b/tools/testing/selftests/kselftest_deps.sh
-index 4bc14d9e8ff1d..de59cc8f03c3f 100755
---- a/tools/testing/selftests/kselftest_deps.sh
-+++ b/tools/testing/selftests/kselftest_deps.sh
-@@ -46,11 +46,11 @@ fi
- print_targets=0
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index b05055f3ba4b8..9ddb2e3970589 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -368,7 +368,7 @@ union irq_stack_union {
+ 	volatile unsigned int lock[1];
+ };
  
- while getopts "p" arg; do
--    case $arg in
--        p)
-+	case $arg in
-+		p)
- 		print_targets=1
- 	shift;;
--    esac
-+	esac
- done
- 
- if [ $# -eq 0 ]
-@@ -92,6 +92,10 @@ pass_cnt=0
- # Get all TARGETS from selftests Makefile
- targets=$(grep -E "^TARGETS +|^TARGETS =" Makefile | cut -d "=" -f2)
- 
-+# Initially, in LDLIBS related lines, the dep checker needs
-+# to ignore lines containing the following strings:
-+filter="\$(VAR_LDLIBS)\|pkg-config\|PKG_CONFIG\|IOURING_EXTRA_LIBS"
-+
- # Single test case
- if [ $# -eq 2 ]
- then
-@@ -100,6 +104,8 @@ then
- 	l1_test $test
- 	l2_test $test
- 	l3_test $test
-+	l4_test $test
-+	l5_test $test
- 
- 	print_results $1 $2
- 	exit $?
-@@ -113,7 +119,7 @@ fi
- # Append space at the end of the list to append more tests.
- 
- l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
--		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
-+		grep -v "$filter" | awk -F: '{print $1}' | uniq)
- 
- # Level 2: LDLIBS set dynamically.
- #
-@@ -126,7 +132,7 @@ l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
- # Append space at the end of the list to append more tests.
- 
- l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
--		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
-+		grep -v "$filter" | awk -F: '{print $1}' | uniq)
- 
- # Level 3
- # memfd and others use pkg-config to find mount and fuse libs
-@@ -138,11 +144,32 @@ l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
- #	VAR_LDLIBS := $(shell pkg-config fuse --libs 2>/dev/null)
- 
- l3_tests=$(grep -r --include=Makefile "^VAR_LDLIBS" | \
--		grep -v "pkg-config" | awk -F: '{print $1}')
-+		grep -v "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
- 
--#echo $l1_tests
--#echo $l2_1_tests
--#echo $l3_tests
-+# Level 4
-+# some tests may fall back to default using `|| echo -l<libname>`
-+# if pkg-config doesn't find the libs, instead of using VAR_LDLIBS
-+# as per level 3 checks.
-+# e.g:
-+# netfilter/Makefile
-+#	LDLIBS += $(shell $(HOSTPKG_CONFIG) --libs libmnl 2>/dev/null || echo -lmnl)
-+l4_tests=$(grep -r --include=Makefile "^LDLIBS" | \
-+		grep "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
-+
-+# Level 5
-+# some tests may use IOURING_EXTRA_LIBS to add extra libs to LDLIBS,
-+# which in turn may be defined in a sub-Makefile
-+# e.g.:
-+# mm/Makefile
-+#	$(OUTPUT)/gup_longterm: LDLIBS += $(IOURING_EXTRA_LIBS)
-+l5_tests=$(grep -r --include=Makefile "LDLIBS +=.*\$(IOURING_EXTRA_LIBS)" | \
-+	awk -F: '{print $1}' | uniq)
-+
-+#echo l1_tests $l1_tests
-+#echo l2_tests $l2_tests
-+#echo l3_tests $l3_tests
-+#echo l4_tests $l4_tests
-+#echo l5_tests $l5_tests
- 
- all_tests
- print_results $1 $2
-@@ -164,24 +191,32 @@ all_tests()
- 	for test in $l3_tests; do
- 		l3_test $test
- 	done
-+
-+	for test in $l4_tests; do
-+		l4_test $test
-+	done
-+
-+	for test in $l5_tests; do
-+		l5_test $test
-+	done
- }
- 
- # Use same parsing used for l1_tests and pick libraries this time.
- l1_test()
- {
- 	test_libs=$(grep --include=Makefile "^LDLIBS" $test | \
--			grep -v "VAR_LDLIBS" | \
-+			grep -v "$filter" | \
- 			sed -e 's/\:/ /' | \
- 			sed -e 's/+/ /' | cut -d "=" -f 2)
- 
- 	check_libs $test $test_libs
- }
- 
--# Use same parsing used for l2__tests and pick libraries this time.
-+# Use same parsing used for l2_tests and pick libraries this time.
- l2_test()
- {
- 	test_libs=$(grep --include=Makefile ": LDLIBS" $test | \
--			grep -v "VAR_LDLIBS" | \
-+			grep -v "$filter" | \
- 			sed -e 's/\:/ /' | sed -e 's/+/ /' | \
- 			cut -d "=" -f 2)
- 
-@@ -197,6 +232,24 @@ l3_test()
- 	check_libs $test $test_libs
- }
- 
-+l4_test()
-+{
-+	test_libs=$(grep --include=Makefile "^VAR_LDLIBS\|^LDLIBS" $test | \
-+			grep "\(pkg-config\|PKG_CONFIG\).*|| echo " | \
-+			sed -e 's/.*|| echo //' | sed -e 's/)$//')
-+
-+	check_libs $test $test_libs
-+}
-+
-+l5_test()
-+{
-+	tests=$(find $(dirname "$test") -type f -name "*.mk")
-+	test_libs=$(grep "^IOURING_EXTRA_LIBS +\?=" $tests | \
-+			cut -d "=" -f 2)
-+
-+	check_libs $test $test_libs
-+}
-+
- check_libs()
- {
- 
+-DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
++static DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
+ 		.slock = { 1,1,1,1 },
+ 	};
+ #endif
 -- 
 2.40.1
 
