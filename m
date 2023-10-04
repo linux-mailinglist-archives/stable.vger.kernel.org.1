@@ -2,122 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A36E7B827B
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75B737B8297
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242919AbjJDOfV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 10:35:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40974 "EHLO
+        id S242887AbjJDOoa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 10:44:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242927AbjJDOfN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:35:13 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A7B139
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:35:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06E5C433C7;
-        Wed,  4 Oct 2023 14:35:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696430105;
-        bh=JktxtwRBi4oip/l+zgdyKBMiVb5hVpzhkKQ9I2t17og=;
-        h=Subject:To:Cc:From:Date:From;
-        b=EaxOufOwD4yB7fWFJ1y1JQg2v8109dP/1u0CZTsc1mcBcBPVeMZExWW0GEHPBcnU6
-         4aKpbvr1zCGopGccPiUERyYEMuvqfHmofTtXRmw9pOoQ6SZY3b7iabzLESIaqq6K/u
-         ua55WYjlnqzE1VKaAUQF7BwX9fi61w+viVLCX1VY=
-Subject: FAILED: patch "[PATCH] kernel/sched: Modify initial boot task idle setup" failed to apply to 4.14-stable tree
-To:     Liam.Howlett@oracle.com, peterz@infradead.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 16:34:56 +0200
-Message-ID: <2023100455-astrology-overcrowd-10e9@gregkh>
+        with ESMTP id S233625AbjJDOo3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:44:29 -0400
+Received: from mail-il1-x133.google.com (mail-il1-x133.google.com [IPv6:2607:f8b0:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F25C0
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:44:25 -0700 (PDT)
+Received: by mail-il1-x133.google.com with SMTP id e9e14a558f8ab-351265d0d67so2311365ab.0
+        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 07:44:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1696430665; x=1697035465; darn=vger.kernel.org;
+        h=in-reply-to:from:references:cc:to:content-language:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BzQGhdNEK5Ha0W7GXJjIhIyUnIirquP3TFLkoonx4Kk=;
+        b=2bX3j9RCfjbeM6Z4blRj8K2dWD6S2q3SAhjWsSiAHP2wxVhzQeq8h1rlR2Ihq3LFRW
+         nqdLp1/dWjoEWQOh1EYEqo5eYfo2bx+Hbw+3M8bli+TYuYWesVcSa7Vll9P4Op2CTjc2
+         9LK1SByZ0BdUe6Y1ovVtunAdnu2Qi1YbShHd2VbNYCQuPTo8SX66Cig9mNeeyv/mEvRW
+         Qh0N/AlcIzqUbATO8tfw3/6dL70dJHZKEnJtPi9pg45siVpmh/pyoJHtir0ix96zGN3t
+         vrAlL7euGlcg5BiDnk0Vbt0Tq8j0fg17qp6v3fKazCwCQllyPAHSufjp+c/My58+8CH/
+         C1sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696430665; x=1697035465;
+        h=in-reply-to:from:references:cc:to:content-language:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=BzQGhdNEK5Ha0W7GXJjIhIyUnIirquP3TFLkoonx4Kk=;
+        b=wAk/aNO324MPQJeWgQFsDCDI+kLGDDvDTr948Sg/LhZypX/IWvJQXtdSToovVptiUe
+         4fzKBxAuxmsIzHsAvrsplkZlNqqZN07sHMq+U991ZMZinE/p8O0w/lGZCp93UV+EDa2s
+         5BGTm7HI7ZUy1LG8zMdMs6uJ2Vm5tONkEKLr7asmiCVyNxYk1vT7h7tPdNRVg30iiAnh
+         AFHnIRTXLV96xkg0RRgHBNei5j8v9ibX+iz8g4er09WshNfZvRyEg2YPEyvR1Ii5sCU9
+         znw3BjTFrJJ+Ph72oXkkLOihO9lzWQgeBo3jJdbREtrZfirBFtfMxwgqZqTvtKZ19FCy
+         UWKA==
+X-Gm-Message-State: AOJu0Yy47XTcI9S3fGJK2kw6atrtlDgfmY79DehECXv24dHQ5UksfdjG
+        vIrofsbem0/I+EUmpEqk0aT/qg==
+X-Google-Smtp-Source: AGHT+IFh0vVEXhyLxa1BhE3LMsd8KsaljwcdmgKPOEcQGLC2UDKiAbydyYeJrS/YhD50efjBPXmoYA==
+X-Received: by 2002:a6b:5d01:0:b0:794:cbb8:725e with SMTP id r1-20020a6b5d01000000b00794cbb8725emr2201954iob.2.1696430665129;
+        Wed, 04 Oct 2023 07:44:25 -0700 (PDT)
+Received: from [192.168.1.94] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id fq22-20020a056638651600b0041e328a2084sm983479jab.79.2023.10.04.07.44.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Oct 2023 07:44:24 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------ICbHr0aRKOEKZ0drSUEY3ulR"
+Message-ID: <2c6fec36-ec1c-418b-a40a-262ed3ce980d@kernel.dk>
+Date:   Wed, 4 Oct 2023 08:44:23 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] io_uring/fs: remove sqe->rw_flags checking
+ from LINKAT" failed to apply to 5.15-stable tree
+Content-Language: en-US
+To:     gregkh@linuxfoundation.org, talex5@gmail.com
+Cc:     stable@vger.kernel.org
+References: <2023100446-broiler-liquid-20a4@gregkh>
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2023100446-broiler-liquid-20a4@gregkh>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+This is a multi-part message in MIME format.
+--------------ICbHr0aRKOEKZ0drSUEY3ulR
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 10/4/23 8:33 AM, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x a52d4f657568d6458e873f74a9602e022afe666f
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100446-broiler-liquid-20a4@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Here's one that applies (and works) against 5.15-stable, thanks.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x cff9b2332ab762b7e0586c793c431a8f2ea4db04
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100455-astrology-overcrowd-10e9@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
-
-Possible dependencies:
+-- 
+Jens Axboe
 
 
+--------------ICbHr0aRKOEKZ0drSUEY3ulR
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-io_uring-fs-remove-sqe-rw_flags-checking-from-LINKAT.patch"
+Content-Disposition: attachment;
+ filename*0="0001-io_uring-fs-remove-sqe-rw_flags-checking-from-LINKAT.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
 
-thanks,
+RnJvbSA2ZjNkOTVmOGQ2OTFmMTQzNmM4YmEzYzE0MDYwY2RjZTI2N2JlYzM4IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IFdlZCwgNCBPY3QgMjAyMyAwODo0MzoxMyAtMDYwMApTdWJqZWN0OiBbUEFUQ0hdIGlv
+X3VyaW5nL2ZzOiByZW1vdmUgc3FlLT5yd19mbGFncyBjaGVja2luZyBmcm9tIExJTktBVAoK
+Y29tbWl0IGE1MmQ0ZjY1NzU2OGQ2NDU4ZTg3M2Y3NGE5NjAyZTAyMmFmZTY2NmYgdXBzdHJl
+YW0uCgpUaGlzIGlzIHVuaW9uaXplZCB3aXRoIHRoZSBhY3R1YWwgbGluayBmbGFncywgc28g
+dGhleSBjYW4gb2YgY291cnNlIGJlCnNldCBhbmQgdGhleSB3aWxsIGJlIGV2YWx1YXRlZCBm
+dXJ0aGVyIGRvd24uIElmIG5vdCB3ZSBmYWlsIGFueSBMSU5LQVQKdGhhdCBoYXMgdG8gc2V0
+IG9wdGlvbiBmbGFncy4KCkZpeGVzOiBjZjMwZGE5MGJjM2EgKCJpb191cmluZzogYWRkIHN1
+cHBvcnQgZm9yIElPUklOR19PUF9MSU5LQVQiKQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9y
+ZwpSZXBvcnRlZC1ieTogVGhvbWFzIExlb25hcmQgPHRhbGV4NUBnbWFpbC5jb20+Ckxpbms6
+IGh0dHBzOi8vZ2l0aHViLmNvbS9heGJvZS9saWJ1cmluZy9pc3N1ZXMvOTU1ClNpZ25lZC1v
+ZmYtYnk6IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5kaz4KLS0tCiBpb191cmluZy9pb191
+cmluZy5jIHwgMiArLQogMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0
+aW9uKC0pCgpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvaW9fdXJpbmcuYyBiL2lvX3VyaW5nL2lv
+X3VyaW5nLmMKaW5kZXggMTUxOTEyNWI5ODE0Li5kMDBiZWRmZGFkYmIgMTAwNjQ0Ci0tLSBh
+L2lvX3VyaW5nL2lvX3VyaW5nLmMKKysrIGIvaW9fdXJpbmcvaW9fdXJpbmcuYwpAQCAtNDAz
+OCw3ICs0MDM4LDcgQEAgc3RhdGljIGludCBpb19saW5rYXRfcHJlcChzdHJ1Y3QgaW9fa2lv
+Y2IgKnJlcSwKIAogCWlmICh1bmxpa2VseShyZXEtPmN0eC0+ZmxhZ3MgJiBJT1JJTkdfU0VU
+VVBfSU9QT0xMKSkKIAkJcmV0dXJuIC1FSU5WQUw7Ci0JaWYgKHNxZS0+aW9wcmlvIHx8IHNx
+ZS0+cndfZmxhZ3MgfHwgc3FlLT5idWZfaW5kZXggfHwgc3FlLT5zcGxpY2VfZmRfaW4pCisJ
+aWYgKHNxZS0+aW9wcmlvIHx8IHNxZS0+YnVmX2luZGV4IHx8IHNxZS0+c3BsaWNlX2ZkX2lu
+KQogCQlyZXR1cm4gLUVJTlZBTDsKIAlpZiAodW5saWtlbHkocmVxLT5mbGFncyAmIFJFUV9G
+X0ZJWEVEX0ZJTEUpKQogCQlyZXR1cm4gLUVCQURGOwotLSAKMi40MC4xCgo=
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From cff9b2332ab762b7e0586c793c431a8f2ea4db04 Mon Sep 17 00:00:00 2001
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Date: Fri, 15 Sep 2023 13:44:44 -0400
-Subject: [PATCH] kernel/sched: Modify initial boot task idle setup
-
-Initial booting is setting the task flag to idle (PF_IDLE) by the call
-path sched_init() -> init_idle().  Having the task idle and calling
-call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
-set.  Subsequent calls to any cond_resched() will enable IRQs,
-potentially earlier than the IRQ setup has completed.  Recent changes
-have caused just this scenario and IRQs have been enabled early.
-
-This causes a warning later in start_kernel() as interrupts are enabled
-before they are fully set up.
-
-Fix this issue by setting the PF_IDLE flag later in the boot sequence.
-
-Although the boot task was marked as idle since (at least) d80e4fda576d,
-I am not sure that it is wrong to do so.  The forced context-switch on
-idle task was introduced in the tiny_rcu update, so I'm going to claim
-this fixes 5f6130fa52ee.
-
-Fixes: 5f6130fa52ee ("tiny_rcu: Directly force QS when call_rcu_[bh|sched]() on idle_task")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-mm/CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com/
-
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 2299a5cfbfb9..802551e0009b 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9269,7 +9269,7 @@ void __init init_idle(struct task_struct *idle, int cpu)
- 	 * PF_KTHREAD should already be set at this point; regardless, make it
- 	 * look like a proper per-CPU kthread.
- 	 */
--	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
-+	idle->flags |= PF_KTHREAD | PF_NO_SETAFFINITY;
- 	kthread_set_per_cpu(idle, cpu);
- 
- #ifdef CONFIG_SMP
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index 342f58a329f5..5007b25c5bc6 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -373,6 +373,7 @@ EXPORT_SYMBOL_GPL(play_idle_precise);
- 
- void cpu_startup_entry(enum cpuhp_state state)
- {
-+	current->flags |= PF_IDLE;
- 	arch_cpu_idle_prepare();
- 	cpuhp_online_idle(state);
- 	while (1)
-
+--------------ICbHr0aRKOEKZ0drSUEY3ulR--
