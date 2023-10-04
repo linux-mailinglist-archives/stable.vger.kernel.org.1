@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E03F7B88D0
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 309187B8A35
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243882AbjJDSTu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:19:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37350 "EHLO
+        id S244326AbjJDSdV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:33:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243896AbjJDSTs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:19:48 -0400
+        with ESMTP id S244377AbjJDSdV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293F5E8
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:19:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62555C433C8;
-        Wed,  4 Oct 2023 18:19:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BDEFC0
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A098BC433C9;
+        Wed,  4 Oct 2023 18:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443582;
-        bh=d6DBFN7PTpWMTjxi2GnoovjR0fBIsj4QldnkIBps+Vw=;
+        s=korg; t=1696444397;
+        bh=oQ7zSYmrDeEQP7gU5lJVqWLAlgRHmjc+WqxQ0BFGLqo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a/os0lQpN8g0crwZJDhum9mYI3HkoljgKCbabR9h0x87631IT1CBPtOGON2sH5xS+
-         6DSMQbXymMbsAEtvlhC4LCk9EOKn6lwErj21oQh/Wt8M+9jE3a1GIJgXKUKSlt4ub7
-         GizyQlA6KjUdP+zeNqw2lwjtYqeCCWiAcfVFPzGs=
+        b=MN+MxKGTPKW//V9gi2tDyROVVY2NHGBoWbp3O9+KloR1WqOlcQk0xmrY2gZBYOWxO
+         1FkvwdXiJKqpeC3Yoj1md+4DUYLYQZggUtiotffXIH0KLYBBsuOFacgl7K3S9CzO8M
+         E/GTDgsee/EyBN8YBxd6kp57eBdksX5neUOOelKw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
+        patches@lists.linux.dev, WANG Xuerui <git@xen0n.name>,
+        Huacai Chen <chenhuacai@loongson.cn>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 207/259] smack: Retrieve transmuting information in smack_inode_getsecurity()
+Subject: [PATCH 6.5 235/321] LoongArch: Set all reserved memblocks on Node#0 at initialization
 Date:   Wed,  4 Oct 2023 19:56:20 +0200
-Message-ID: <20231004175226.793816775@linuxfoundation.org>
+Message-ID: <20231004175240.117656643@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,74 +50,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 3a3d8fce31a49363cc31880dce5e3b0617c9c38b ]
+[ Upstream commit b795fb9f5861ee256070d59e33130980a01fadd7 ]
 
-Enhance smack_inode_getsecurity() to retrieve the value for
-SMACK64TRANSMUTE from the inode security blob, similarly to SMACK64.
+After commit 61167ad5fecdea ("mm: pass nid to reserve_bootmem_region()")
+we get a panic if DEFERRED_STRUCT_PAGE_INIT is enabled:
 
-This helps to display accurate values in the situation where the security
-labels come from mount options and not from xattrs.
+[    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 0000000000002b82, era == 90000000040e3f28, ra == 90000000040e3f18
+[    0.000000] Oops[#1]:
+[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 6.5.0+ #733
+[    0.000000] pc 90000000040e3f28 ra 90000000040e3f18 tp 90000000046f4000 sp 90000000046f7c90
+[    0.000000] a0 0000000000000001 a1 0000000000200000 a2 0000000000000040 a3 90000000046f7ca0
+[    0.000000] a4 90000000046f7ca4 a5 0000000000000000 a6 90000000046f7c38 a7 0000000000000000
+[    0.000000] t0 0000000000000002 t1 9000000004b00ac8 t2 90000000040e3f18 t3 90000000040f0800
+[    0.000000] t4 00000000000f0000 t5 80000000ffffe07e t6 0000000000000003 t7 900000047fff5e20
+[    0.000000] t8 aaaaaaaaaaaaaaab u0 0000000000000018 s9 0000000000000000 s0 fffffefffe000000
+[    0.000000] s1 0000000000000000 s2 0000000000000080 s3 0000000000000040 s4 0000000000000000
+[    0.000000] s5 0000000000000000 s6 fffffefffe000000 s7 900000000470b740 s8 9000000004ad4000
+[    0.000000]    ra: 90000000040e3f18 reserve_bootmem_region+0xec/0x21c
+[    0.000000]   ERA: 90000000040e3f28 reserve_bootmem_region+0xfc/0x21c
+[    0.000000]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+[    0.000000]  PRMD: 00000000 (PPLV0 -PIE -PWE)
+[    0.000000]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+[    0.000000]  ECFG: 00070800 (LIE=11 VS=7)
+[    0.000000] ESTAT: 00010800 [PIL] (IS=11 ECode=1 EsubCode=0)
+[    0.000000]  BADV: 0000000000002b82
+[    0.000000]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000)
+[    0.000000] Modules linked in:
+[    0.000000] Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____))
+[    0.000000] Stack : 0000000000000000 9000000002eb5430 0000003a00000020 90000000045ccd00
+[    0.000000]         900000000470e000 90000000002c1918 0000000000000000 9000000004110780
+[    0.000000]         00000000fe6c0000 0000000480000000 9000000004b4e368 9000000004110748
+[    0.000000]         0000000000000000 900000000421ca84 9000000004620000 9000000004564970
+[    0.000000]         90000000046f7d78 9000000002cc9f70 90000000002c1918 900000000470e000
+[    0.000000]         9000000004564970 90000000040bc0e0 90000000046f7d78 0000000000000000
+[    0.000000]         0000000000004000 90000000045ccd00 0000000000000000 90000000002c1918
+[    0.000000]         90000000002c1900 900000000470b700 9000000004b4df78 9000000004620000
+[    0.000000]         90000000046200a8 90000000046200a8 0000000000000000 9000000004218b2c
+[    0.000000]         9000000004270008 0000000000000001 0000000000000000 90000000045ccd00
+[    0.000000]         ...
+[    0.000000] Call Trace:
+[    0.000000] [<90000000040e3f28>] reserve_bootmem_region+0xfc/0x21c
+[    0.000000] [<900000000421ca84>] memblock_free_all+0x114/0x350
+[    0.000000] [<9000000004218b2c>] mm_core_init+0x138/0x3cc
+[    0.000000] [<9000000004200e38>] start_kernel+0x488/0x7a4
+[    0.000000] [<90000000040df0d8>] kernel_entry+0xd8/0xdc
+[    0.000000]
+[    0.000000] Code: 02eb21ad  00410f4c  380c31ac <262b818d> 6800b70d  02c1c196  0015001c  57fe4bb1  260002cd
 
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+The reason is early memblock_reserve() in memblock_init() set node id to
+MAX_NUMNODES, making NODE_DATA(nid) a NULL dereference in the call chain
+reserve_bootmem_region() -> init_reserved_page(). After memblock_init(),
+those late calls of memblock_reserve() operate on subregions of memblock
+.memory regions. As a result, these reserved regions will be set to the
+correct node at the first iteration of memmap_init_reserved_pages().
+
+So set all reserved memblocks on Node#0 at initialization can avoid this
+panic.
+
+Reported-by: WANG Xuerui <git@xen0n.name>
+Tested-by: WANG Xuerui <git@xen0n.name>
+Reviewed-by: WANG Xuerui <git@xen0n.name>  # with nits addressed
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ arch/loongarch/kernel/mem.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 1232c1d71d9f8..cd6a03e945eb7 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -1476,10 +1476,19 @@ static int smack_inode_getsecurity(struct user_namespace *mnt_userns,
- 	struct super_block *sbp;
- 	struct inode *ip = (struct inode *)inode;
- 	struct smack_known *isp;
-+	struct inode_smack *ispp;
-+	size_t label_len;
-+	char *label = NULL;
- 
--	if (strcmp(name, XATTR_SMACK_SUFFIX) == 0)
-+	if (strcmp(name, XATTR_SMACK_SUFFIX) == 0) {
- 		isp = smk_of_inode(inode);
--	else {
-+	} else if (strcmp(name, XATTR_SMACK_TRANSMUTE) == 0) {
-+		ispp = smack_inode(inode);
-+		if (ispp->smk_flags & SMK_INODE_TRANSMUTE)
-+			label = TRANS_TRUE;
-+		else
-+			label = "";
-+	} else {
- 		/*
- 		 * The rest of the Smack xattrs are only on sockets.
- 		 */
-@@ -1501,13 +1510,18 @@ static int smack_inode_getsecurity(struct user_namespace *mnt_userns,
- 			return -EOPNOTSUPP;
+diff --git a/arch/loongarch/kernel/mem.c b/arch/loongarch/kernel/mem.c
+index 4a4107a6a9651..aed901c57fb43 100644
+--- a/arch/loongarch/kernel/mem.c
++++ b/arch/loongarch/kernel/mem.c
+@@ -50,7 +50,6 @@ void __init memblock_init(void)
  	}
  
-+	if (!label)
-+		label = isp->smk_known;
-+
-+	label_len = strlen(label);
-+
- 	if (alloc) {
--		*buffer = kstrdup(isp->smk_known, GFP_KERNEL);
-+		*buffer = kstrdup(label, GFP_KERNEL);
- 		if (*buffer == NULL)
- 			return -ENOMEM;
- 	}
+ 	memblock_set_current_limit(PFN_PHYS(max_low_pfn));
+-	memblock_set_node(0, PHYS_ADDR_MAX, &memblock.memory, 0);
  
--	return strlen(isp->smk_known);
-+	return label_len;
+ 	/* Reserve the first 2MB */
+ 	memblock_reserve(PHYS_OFFSET, 0x200000);
+@@ -58,4 +57,7 @@ void __init memblock_init(void)
+ 	/* Reserve the kernel text/data/bss */
+ 	memblock_reserve(__pa_symbol(&_text),
+ 			 __pa_symbol(&_end) - __pa_symbol(&_text));
++
++	memblock_set_node(0, PHYS_ADDR_MAX, &memblock.memory, 0);
++	memblock_set_node(0, PHYS_ADDR_MAX, &memblock.reserved, 0);
  }
- 
- 
 -- 
 2.40.1
 
