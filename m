@@ -2,43 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0D7C7B88DF
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FF777B8A44
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233968AbjJDSUR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:20:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54554 "EHLO
+        id S244224AbjJDSdx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:33:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243886AbjJDSUO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:14 -0400
+        with ESMTP id S244386AbjJDSdw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 669F098
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD142C433C8;
-        Wed,  4 Oct 2023 18:20:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99AA0C1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1116C433C8;
+        Wed,  4 Oct 2023 18:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443611;
-        bh=8PINg+jmf6dHIqNCulj9cA3AUYgVCy/+yDIwjzv8sqo=;
+        s=korg; t=1696444428;
+        bh=+STsLGGtghiXNmNc2EpcgkYOLwCU9zFI0koNLTB7zKI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z75zkmVzBF8ySLSEdnLpgB+PNzuSs9fw8UgbSPYDLkQVbRIwpxPnMIGMfP9qkfJ8/
-         eKiuMg0/XzJBPCGvWUb20LCiAcUqJ9hjlfLkcbYQXJoqIpkAhs26kLhuTgH6gWlyPI
-         6W+b/tnjlkkZUYSZj9Ptwu+FA8xFO1ANE4hb3Z9c=
+        b=mKdlZg169wkilnlK0aFSZrT5T2JnDbidT7yXg1yzYcxjTDDisFSYnH4jVcSYH3/zg
+         hrQiR2ZmshTeGv01V4hS8ZXPG2rFyMMowSuQC8/vY+fpX/z6mq32y2RtVTne9D2sxg
+         Cgl7WI5iITpx9tG/VJg7bHKB0UQqEnxmerB8X4NU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, "Mike Rapoport (IBM)" <rppt@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 189/259] ASoC: SOF: Intel: MTL: Reduce the DSP init timeout
-Date:   Wed,  4 Oct 2023 19:56:02 +0200
-Message-ID: <20231004175225.964467467@linuxfoundation.org>
+Subject: =?UTF-8?q?=5BPATCH=206=2E5=20218/321=5D=20=3D=3FUTF-8=3Fq=3Fmemblock=3D20tests=3A=3D20fix=3D20warning=3D20=3DE2=3D80=3D98struct=3D20s=3F=3D=20=3D=3FUTF-8=3Fq=3Feq=3D5Ffile=3DE2=3D80=3D99=3D20declared=3D20inside=3D20parameter=3D20list=3F=3D?=
+Date:   Wed,  4 Oct 2023 19:56:03 +0200
+Message-ID: <20231004175239.336289834@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,58 +50,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+From: Mike Rapoport (IBM) <rppt@kernel.org>
 
-[ Upstream commit e0f96246c4402514acda040be19ee24c1619e01a ]
+[ Upstream commit 55122e0130e51eb71f5ec62d10525db0468f28e8 ]
 
-20s seems unnecessarily large for the DSP init timeout. This coupled with
-multiple FW boot attempts causes an excessive delay in the error path when
-booting in recovery mode. Reduce it to 0.5s and use the existing
-HDA_DSP_INIT_TIMEOUT_US.
+Building memblock tests produces the following warning:
 
-Link: https://github.com/thesofproject/linux/issues/4565
-Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://lore.kernel.org/r/20230915134153.9688-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+cc -I. -I../../include -Wall -O2 -fsanitize=address -fsanitize=undefined -D CONFIG_PHYS_ADDR_T_64BIT   -c -o main.o main.c
+In file included from tests/common.h:9,
+                 from tests/basic_api.h:5,
+                 from main.c:2:
+./linux/memblock.h:601:50: warning: ‘struct seq_file’ declared inside parameter list will not be visible outside of this definition or declaration
+  601 | static inline void memtest_report_meminfo(struct seq_file *m) { }
+      |                                                  ^~~~~~~~
+
+Add declaration of 'struct seq_file' to tools/include/linux/seq_file.h
+to fix it.
+
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/mtl.c | 2 +-
- sound/soc/sof/intel/mtl.h | 1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ tools/include/linux/seq_file.h           | 2 ++
+ tools/testing/memblock/tests/basic_api.c | 2 +-
+ tools/testing/memblock/tests/common.h    | 1 +
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/intel/mtl.c b/sound/soc/sof/intel/mtl.c
-index 10298532816fe..d7048f1d6a048 100644
---- a/sound/soc/sof/intel/mtl.c
-+++ b/sound/soc/sof/intel/mtl.c
-@@ -453,7 +453,7 @@ static int mtl_dsp_cl_init(struct snd_sof_dev *sdev, int stream_tag, bool imr_bo
- 	/* step 3: wait for IPC DONE bit from ROM */
- 	ret = snd_sof_dsp_read_poll_timeout(sdev, HDA_DSP_BAR, chip->ipc_ack, status,
- 					    ((status & chip->ipc_ack_mask) == chip->ipc_ack_mask),
--					    HDA_DSP_REG_POLL_INTERVAL_US, MTL_DSP_PURGE_TIMEOUT_US);
-+					    HDA_DSP_REG_POLL_INTERVAL_US, HDA_DSP_INIT_TIMEOUT_US);
- 	if (ret < 0) {
- 		if (hda->boot_iteration == HDA_FW_BOOT_ATTEMPTS)
- 			dev_err(sdev->dev, "timeout waiting for purge IPC done\n");
-diff --git a/sound/soc/sof/intel/mtl.h b/sound/soc/sof/intel/mtl.h
-index 788bf0e3ea879..00e3526889d3d 100644
---- a/sound/soc/sof/intel/mtl.h
-+++ b/sound/soc/sof/intel/mtl.h
-@@ -54,7 +54,6 @@
- #define MTL_DSP_IRQSTS_IPC		BIT(0)
- #define MTL_DSP_IRQSTS_SDW		BIT(6)
+diff --git a/tools/include/linux/seq_file.h b/tools/include/linux/seq_file.h
+index 102fd9217f1f9..f6bc226af0c1d 100644
+--- a/tools/include/linux/seq_file.h
++++ b/tools/include/linux/seq_file.h
+@@ -1,4 +1,6 @@
+ #ifndef _TOOLS_INCLUDE_LINUX_SEQ_FILE_H
+ #define _TOOLS_INCLUDE_LINUX_SEQ_FILE_H
  
--#define MTL_DSP_PURGE_TIMEOUT_US	20000000 /* 20s */
- #define MTL_DSP_REG_POLL_INTERVAL_US	10	/* 10 us */
++struct seq_file;
++
+ #endif /* _TOOLS_INCLUDE_LINUX_SEQ_FILE_H */
+diff --git a/tools/testing/memblock/tests/basic_api.c b/tools/testing/memblock/tests/basic_api.c
+index 411647094cc37..57bf2688edfd6 100644
+--- a/tools/testing/memblock/tests/basic_api.c
++++ b/tools/testing/memblock/tests/basic_api.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
++#include "basic_api.h"
+ #include <string.h>
+ #include <linux/memblock.h>
+-#include "basic_api.h"
  
- /* Memory windows */
+ #define EXPECTED_MEMBLOCK_REGIONS			128
+ #define FUNC_ADD					"memblock_add"
+diff --git a/tools/testing/memblock/tests/common.h b/tools/testing/memblock/tests/common.h
+index 4f23302ee6779..b5ec59aa62d72 100644
+--- a/tools/testing/memblock/tests/common.h
++++ b/tools/testing/memblock/tests/common.h
+@@ -5,6 +5,7 @@
+ #include <stdlib.h>
+ #include <assert.h>
+ #include <linux/types.h>
++#include <linux/seq_file.h>
+ #include <linux/memblock.h>
+ #include <linux/sizes.h>
+ #include <linux/printk.h>
 -- 
 2.40.1
 
