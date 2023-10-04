@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 162C07B87A9
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C0D87B8A2C
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243840AbjJDSHz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:07:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60356 "EHLO
+        id S244249AbjJDScv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:32:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243841AbjJDSHz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:55 -0400
+        with ESMTP id S244371AbjJDScu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED83CC6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AE7C433CB;
-        Wed,  4 Oct 2023 18:07:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D98A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6043C433C7;
+        Wed,  4 Oct 2023 18:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442871;
-        bh=y/V7FAUyNbBO2CbXBqZ7opQpLkl6mpE6D/RWAW1ePNg=;
+        s=korg; t=1696444366;
+        bh=IzeR6xEnfV20MMbkkEWSY1HoAAtWV37XzW3qHOc5LG4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FbRlszXjiynNK1Oll6hxEgB1uUK3Lk/2q8HlW5CnyzNqR02ttHOx5fMiEHT1ZBD7C
-         xR7Wcf5uheEU+Z5YJzQXbFTi72gB1BJazZgcUc8GCAt8tnlK83jW3uO/8BF1GL4jvs
-         /sUweGyyGPjq2RDwW6Dq+fQAmpuVRue+lhd/ag/E=
+        b=kwJBxosmE0uwpYqY5TwWWLbvxiGWEV8TFO0aps61cjiN89jd0i8R5KLLet4cbiuks
+         kbnwAr5LoOQ6Drolwsx9GVpPB3fECPTmc7MAbG1lygVy0mQIWPCyh5+h9fBpD34GoU
+         uYXwnrrfGkca+2iO/IxRYLslvIPGM22CDpNDSTY4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Benjamin Gray <bgray@linux.ibm.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/183] powerpc/watchpoints: Annotate atomic context in more places
+Subject: [PATCH 6.5 225/321] powerpc/watchpoint: Disable pagefaults when getting user instruction
 Date:   Wed,  4 Oct 2023 19:56:10 +0200
-Message-ID: <20231004175209.800618222@linuxfoundation.org>
+Message-ID: <20231004175239.645172718@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,60 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Benjamin Gray <bgray@linux.ibm.com>
 
-[ Upstream commit 27646b2e02b096a6936b3e3b6ba334ae20763eab ]
+[ Upstream commit 3241f260eb830d27d09cc604690ec24533fdb433 ]
 
-It can be easy to miss that the notifier mechanism invokes the callbacks
-in an atomic context, so add some comments to that effect on the two
-handlers we register here.
+This is called in an atomic context, so is not allowed to sleep if a
+user page needs to be faulted in and has nowhere it can be deferred to.
+The pagefault_disabled() function is documented as preventing user
+access methods from sleeping.
+
+In practice the page will be mapped in nearly always because we are
+reading the instruction that just triggered the watchpoint trap.
 
 Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230829063457.54157-4-bgray@linux.ibm.com
+Link: https://msgid.link/20230829063457.54157-3-bgray@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/hw_breakpoint.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/powerpc/kernel/hw_breakpoint_constraints.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index 63fec0602af22..affb03f56a7e1 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -610,6 +610,11 @@ static void handle_p10dd1_spurious_exception(struct arch_hw_breakpoint **info,
- 	}
- }
- 
-+/*
-+ * Handle a DABR or DAWR exception.
-+ *
-+ * Called in atomic context.
-+ */
- int hw_breakpoint_handler(struct die_args *args)
+diff --git a/arch/powerpc/kernel/hw_breakpoint_constraints.c b/arch/powerpc/kernel/hw_breakpoint_constraints.c
+index a74623025f3ab..9e51801c49152 100644
+--- a/arch/powerpc/kernel/hw_breakpoint_constraints.c
++++ b/arch/powerpc/kernel/hw_breakpoint_constraints.c
+@@ -131,8 +131,13 @@ void wp_get_instr_detail(struct pt_regs *regs, ppc_inst_t *instr,
+ 			 int *type, int *size, unsigned long *ea)
  {
- 	bool err = false;
-@@ -736,6 +741,8 @@ NOKPROBE_SYMBOL(hw_breakpoint_handler);
+ 	struct instruction_op op;
++	int err;
  
- /*
-  * Handle single-step exceptions following a DABR hit.
-+ *
-+ * Called in atomic context.
-  */
- static int single_step_dabr_instruction(struct die_args *args)
- {
-@@ -793,6 +800,8 @@ NOKPROBE_SYMBOL(single_step_dabr_instruction);
+-	if (__get_user_instr(*instr, (void __user *)regs->nip))
++	pagefault_disable();
++	err = __get_user_instr(*instr, (void __user *)regs->nip);
++	pagefault_enable();
++
++	if (err)
+ 		return;
  
- /*
-  * Handle debug exception notifications.
-+ *
-+ * Called in atomic context.
-  */
- int hw_breakpoint_exceptions_notify(
- 		struct notifier_block *unused, unsigned long val, void *data)
+ 	analyse_instr(&op, regs, *instr);
 -- 
 2.40.1
 
