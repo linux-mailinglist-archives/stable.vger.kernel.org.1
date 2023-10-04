@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8BD57B89CF
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B89467B8865
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233777AbjJDS3f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:29:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40676 "EHLO
+        id S244043AbjJDSPl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:15:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233788AbjJDS3e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:34 -0400
+        with ESMTP id S244044AbjJDSPk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73E8C98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB66DC433C8;
-        Wed,  4 Oct 2023 18:29:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23056AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661A4C433C9;
+        Wed,  4 Oct 2023 18:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444171;
-        bh=V3y9wo0qmFT5yKw8xJksPaTrtgpOa3FR+AP0oMd8oYA=;
+        s=korg; t=1696443336;
+        bh=kyw+c6gamFEP6Z7rY3XRTMXFFKX912F3Qy4Jk1aR0yI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ryt6L/aMaSlzR8mO5ttzi78QxtnPFls/fAgDpVG6Wd8NGYoLF6ykYZEcQNiG+dx03
-         I6rn5vIqnlOZ5R2Jmoj2n9o1y+RZHX9t0zSuyYH9awrmQ1qP1BkrqhJnXabKe5KmOi
-         8HkrnwlOI7pOe5zssdp/wdSBL6oss7kLPXuTGbHg=
+        b=hYJK4u8hpu1w/KMJFTPdaydZBzxxhrtngI+cOzV0uaqvQEjvervk6w3vyXicu36zk
+         0nqML7p/bCsZLF3bY8srmoiOM8nKwcO6KirhrRFaEYWY6YhpuYrDMqqXtQuFNJY27C
+         PgV9TfUfHsvSKcVvntXxEex962Jvt/vuQhdj4RP0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Rossi <nathan.rossi@digi.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 148/321] soc: imx8m: Enable OCOTP clock for imx8mm before reading registers
+Subject: [PATCH 6.1 120/259] ARM: dts: ti: omap: Fix bandgap thermal cells addressing for omap3/4
 Date:   Wed,  4 Oct 2023 19:54:53 +0200
-Message-ID: <20231004175236.109686605@linuxfoundation.org>
+Message-ID: <20231004175222.864822491@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +55,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Rossi <nathan.rossi@digi.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 9d1e8275a28f51599d754ce661c91e0a689c0234 ]
+[ Upstream commit 6469b2feade8fd82d224dd3734e146536f3e9f0e ]
 
-Commit 836fb30949d9 ("soc: imx8m: Enable OCOTP clock before reading the
-register") added configuration to enable the OCOTP clock before
-attempting to read from the associated registers.
+Fix "thermal_sys: cpu_thermal: Failed to read thermal-sensors cells: -2"
+error on boot for omap3/4. This is caused by wrong addressing in the dts
+for bandgap sensor for single sensor instances.
 
-This same kexec issue is present with the imx8m SoCs that use the
-imx8mm_soc_uid function (e.g. imx8mp). This requires the imx8mm_soc_uid
-function to configure the OCOTP clock before accessing the associated
-registers. This change implements the same clock enable functionality
-that is present in the imx8mq_soc_revision function for the
-imx8mm_soc_uid function.
+Note that omap4-cpu-thermal.dtsi is shared across omap4/5 and dra7, so
+we can't just change the addressing in omap4-cpu-thermal.dtsi.
 
-Signed-off-by: Nathan Rossi <nathan.rossi@digi.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Fixes: 836fb30949d9 ("soc: imx8m: Enable OCOTP clock before reading the register")
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Carl Philipp Klemm <philipp@uvos.xyz>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: a761d517bbb1 ("ARM: dts: omap3: Add cpu_thermal zone")
+Fixes: 0bbf6c54d100 ("arm: dts: add omap4 CPU thermal data")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/imx/soc-imx8m.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm/boot/dts/omap3-cpu-thermal.dtsi | 3 +--
+ arch/arm/boot/dts/omap4-cpu-thermal.dtsi | 5 ++++-
+ arch/arm/boot/dts/omap443x.dtsi          | 1 +
+ arch/arm/boot/dts/omap4460.dtsi          | 1 +
+ 4 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/soc/imx/soc-imx8m.c b/drivers/soc/imx/soc-imx8m.c
-index 1dcd243df5677..ec87d9d878f30 100644
---- a/drivers/soc/imx/soc-imx8m.c
-+++ b/drivers/soc/imx/soc-imx8m.c
-@@ -100,6 +100,7 @@ static void __init imx8mm_soc_uid(void)
- {
- 	void __iomem *ocotp_base;
- 	struct device_node *np;
-+	struct clk *clk;
- 	u32 offset = of_machine_is_compatible("fsl,imx8mp") ?
- 		     IMX8MP_OCOTP_UID_OFFSET : 0;
+diff --git a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+index 0da759f8e2c2d..7dd2340bc5e45 100644
+--- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
++++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+@@ -12,8 +12,7 @@ cpu_thermal: cpu-thermal {
+ 	polling-delay = <1000>; /* milliseconds */
+ 	coefficients = <0 20000>;
  
-@@ -109,11 +110,20 @@ static void __init imx8mm_soc_uid(void)
+-			/* sensor       ID */
+-	thermal-sensors = <&bandgap     0>;
++	thermal-sensors = <&bandgap>;
  
- 	ocotp_base = of_iomap(np, 0);
- 	WARN_ON(!ocotp_base);
-+	clk = of_clk_get_by_name(np, NULL);
-+	if (IS_ERR(clk)) {
-+		WARN_ON(IS_ERR(clk));
-+		return;
-+	}
-+
-+	clk_prepare_enable(clk);
+ 	cpu_trips: trips {
+ 		cpu_alert0: cpu_alert {
+diff --git a/arch/arm/boot/dts/omap4-cpu-thermal.dtsi b/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
+index 801b4f10350c1..d484ec1e4fd86 100644
+--- a/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
++++ b/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
+@@ -12,7 +12,10 @@ cpu_thermal: cpu_thermal {
+ 	polling-delay-passive = <250>; /* milliseconds */
+ 	polling-delay = <1000>; /* milliseconds */
  
- 	soc_uid = readl_relaxed(ocotp_base + OCOTP_UID_HIGH + offset);
- 	soc_uid <<= 32;
- 	soc_uid |= readl_relaxed(ocotp_base + OCOTP_UID_LOW + offset);
+-			/* sensor       ID */
++	/*
++	 * See 44xx files for single sensor addressing, omap5 and dra7 need
++	 * also sensor ID for addressing.
++	 */
+ 	thermal-sensors = <&bandgap     0>;
  
-+	clk_disable_unprepare(clk);
-+	clk_put(clk);
- 	iounmap(ocotp_base);
- 	of_node_put(np);
- }
+ 	cpu_trips: trips {
+diff --git a/arch/arm/boot/dts/omap443x.dtsi b/arch/arm/boot/dts/omap443x.dtsi
+index 238aceb799f89..2104170fe2cd7 100644
+--- a/arch/arm/boot/dts/omap443x.dtsi
++++ b/arch/arm/boot/dts/omap443x.dtsi
+@@ -69,6 +69,7 @@
+ };
+ 
+ &cpu_thermal {
++	thermal-sensors = <&bandgap>;
+ 	coefficients = <0 20000>;
+ };
+ 
+diff --git a/arch/arm/boot/dts/omap4460.dtsi b/arch/arm/boot/dts/omap4460.dtsi
+index 1b27a862ae810..a6764750d4476 100644
+--- a/arch/arm/boot/dts/omap4460.dtsi
++++ b/arch/arm/boot/dts/omap4460.dtsi
+@@ -79,6 +79,7 @@
+ };
+ 
+ &cpu_thermal {
++	thermal-sensors = <&bandgap>;
+ 	coefficients = <348 (-9301)>;
+ };
+ 
 -- 
 2.40.1
 
