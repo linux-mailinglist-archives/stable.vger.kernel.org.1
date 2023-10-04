@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FBD57B8828
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39B417B8963
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242584AbjJDSNN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41000 "EHLO
+        id S244174AbjJDSZZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:25:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243972AbjJDSNM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:12 -0400
+        with ESMTP id S244188AbjJDSZY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D951BAD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBE2C433C7;
-        Wed,  4 Oct 2023 18:13:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 928D4E4;
+        Wed,  4 Oct 2023 11:25:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBE1C433C7;
+        Wed,  4 Oct 2023 18:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443188;
-        bh=18UjO8LbYMW0+VTYOUVXoBZuAr2OYTRXrB/JfMP1+DA=;
+        s=korg; t=1696443919;
+        bh=ypzltvnii92eYOu5/ITUMYET7remSkAAxBzLEqHitFc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dm0TQkfyZzqecbOwgcOx8LrblCKZFN+cXqTbRoG9RhHIygd5dXHudj8zy08cmeoIj
-         /ncUnDRSC2nWhUOs4zJpWdgYJUb0UzefFyoYVpRRc/E8k82SZwYbAlRN786GH/uu+X
-         bmTz6PvWEvTwLCzd8sMYYcPfQLqKdQGlfN+MgHlk=
+        b=PzHdzHVlZqiWDfJRk6uma7NDqd4C1mMitY0CrFYf8cZvXhjZDP4MsmJeVXKUXgdY+
+         /EYbaxxZoiqT2ip2/mQ1hIBVW7FEetBi4uVE94gFflweurU5nrVbVDb9IMwqZZcPR0
+         7uvDbThEUjxtWWiIPgkVnfpgHfepyUZ3BnxwNCeM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Lee Duncan <lduncan@suse.com>, Chris Leech <cleech@redhat.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        open-iscsi@googlegroups.com, linux-scsi@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/259] bpf: Avoid deadlock when using queue and stack maps from NMI
+Subject: [PATCH 6.5 067/321] scsi: iscsi_tcp: restrict to TCP sockets
 Date:   Wed,  4 Oct 2023 19:53:32 +0200
-Message-ID: <20231004175219.237470493@linuxfoundation.org>
+Message-ID: <20231004175232.295425568@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,78 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a34a9f1a19afe9c60ca0ea61dfeee63a1c2baac8 ]
+[ Upstream commit f4f82c52a0ead5ab363d207d06f81b967d09ffb8 ]
 
-Sysbot discovered that the queue and stack maps can deadlock if they are
-being used from a BPF program that can be called from NMI context (such as
-one that is attached to a perf HW counter event). To fix this, add an
-in_nmi() check and use raw_spin_trylock() in NMI context, erroring out if
-grabbing the lock fails.
+Nothing prevents iscsi_sw_tcp_conn_bind() to receive file descriptor
+pointing to non TCP socket (af_unix for example).
 
-Fixes: f1a2e44a3aec ("bpf: add queue and stack maps")
-Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Tested-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Co-developed-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://lore.kernel.org/r/20230911132815.717240-1-toke@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Return -EINVAL if this is attempted, instead of crashing the kernel.
+
+Fixes: 7ba247138907 ("[SCSI] open-iscsi/linux-iscsi-5 Initiator: Initiator code")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Lee Duncan <lduncan@suse.com>
+Cc: Chris Leech <cleech@redhat.com>
+Cc: Mike Christie <michael.christie@oracle.com>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: open-iscsi@googlegroups.com
+Cc: linux-scsi@vger.kernel.org
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/queue_stack_maps.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/scsi/iscsi_tcp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/bpf/queue_stack_maps.c b/kernel/bpf/queue_stack_maps.c
-index 8a5e060de63bc..a8fe640318c6c 100644
---- a/kernel/bpf/queue_stack_maps.c
-+++ b/kernel/bpf/queue_stack_maps.c
-@@ -102,7 +102,12 @@ static int __queue_map_get(struct bpf_map *map, void *value, bool delete)
- 	int err = 0;
- 	void *ptr;
+diff --git a/drivers/scsi/iscsi_tcp.c b/drivers/scsi/iscsi_tcp.c
+index 9ab8555180a3a..8e14cea15f980 100644
+--- a/drivers/scsi/iscsi_tcp.c
++++ b/drivers/scsi/iscsi_tcp.c
+@@ -724,6 +724,10 @@ iscsi_sw_tcp_conn_bind(struct iscsi_cls_session *cls_session,
+ 		return -EEXIST;
+ 	}
  
--	raw_spin_lock_irqsave(&qs->lock, flags);
-+	if (in_nmi()) {
-+		if (!raw_spin_trylock_irqsave(&qs->lock, flags))
-+			return -EBUSY;
-+	} else {
-+		raw_spin_lock_irqsave(&qs->lock, flags);
-+	}
- 
- 	if (queue_stack_map_is_empty(qs)) {
- 		memset(value, 0, qs->map.value_size);
-@@ -132,7 +137,12 @@ static int __stack_map_get(struct bpf_map *map, void *value, bool delete)
- 	void *ptr;
- 	u32 index;
- 
--	raw_spin_lock_irqsave(&qs->lock, flags);
-+	if (in_nmi()) {
-+		if (!raw_spin_trylock_irqsave(&qs->lock, flags))
-+			return -EBUSY;
-+	} else {
-+		raw_spin_lock_irqsave(&qs->lock, flags);
-+	}
- 
- 	if (queue_stack_map_is_empty(qs)) {
- 		memset(value, 0, qs->map.value_size);
-@@ -197,7 +207,12 @@ static int queue_stack_map_push_elem(struct bpf_map *map, void *value,
- 	if (flags & BPF_NOEXIST || flags > BPF_EXIST)
- 		return -EINVAL;
- 
--	raw_spin_lock_irqsave(&qs->lock, irq_flags);
-+	if (in_nmi()) {
-+		if (!raw_spin_trylock_irqsave(&qs->lock, irq_flags))
-+			return -EBUSY;
-+	} else {
-+		raw_spin_lock_irqsave(&qs->lock, irq_flags);
-+	}
- 
- 	if (queue_stack_map_is_full(qs)) {
- 		if (!replace) {
++	err = -EINVAL;
++	if (!sk_is_tcp(sock->sk))
++		goto free_socket;
++
+ 	err = iscsi_conn_bind(cls_session, cls_conn, is_leading);
+ 	if (err)
+ 		goto free_socket;
 -- 
 2.40.1
 
