@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A00F7B883A
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:14:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40D487B899F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243962AbjJDSOB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:14:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52718 "EHLO
+        id S244234AbjJDS1e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:27:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243955AbjJDSOB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:14:01 -0400
+        with ESMTP id S244239AbjJDS1d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB323A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064D3C433C8;
-        Wed,  4 Oct 2023 18:13:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CE13EA
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B34C433C7;
+        Wed,  4 Oct 2023 18:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443236;
-        bh=j9j4Ygh11fpUMYrJ1BJO3fH6P27yvByK5s7nRPfPoGM=;
+        s=korg; t=1696444049;
+        bh=o81k4fFC9dDukNJ8dDss4ApzzeTQfxtBnaZB83RGPvc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NQ0wrsGY7M4dZG/qJeAV+LCQGgFz3tkRVfG1A8J/AsRlXxtmcquak6/AUODFNBCYf
-         WU0pIuHrHw/mCsngdhg/UobMQPzMOuWlm/54mmpxa6e3BW64ENLnkIUUHN3fmBEeip
-         oSQrTilDm9VYWqwnUKZJNH8V04MCUYh6CckdcMbA=
+        b=IkGgKclBFDmTSkqymTZil86Mvxoy/SiYp9LU22OV2OVyVmGJbrlNCbulFc+nbaAwI
+         AgqUxBJsIbwtSe6EBc7dkfmRxG0hnbSNzPeHOU8EMAQ8sH4o2iJYTmsTVwq7eAOl+5
+         oalVMdDU/lq4EcwB2VDBdOCkkAQeMwSlg41VTKXM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Simon Horman <horms@kernel.org>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/259] igc: Expose tx-usecs coalesce setting to user
+Subject: [PATCH 6.5 112/321] ASoC: cs35l56: Disable low-power hibernation mode
 Date:   Wed,  4 Oct 2023 19:54:17 +0200
-Message-ID: <20231004175221.218283399@linuxfoundation.org>
+Message-ID: <20231004175234.416910321@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,132 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 1703b2e0de653b459ca6230be32ce7f2ea0ae7ee ]
+commit 18789be8e0d9fbb78b2290dcf93f500726ed19f0 upstream.
 
-When users attempt to obtain the coalesce setting using the
-ethtool command, current code always returns 0 for tx-usecs.
-This is because I225/6 always uses a queue pair setting, hence
-tx_coalesce_usecs does not return a value during the
-igc_ethtool_get_coalesce() callback process. The pair queue
-condition checking in igc_ethtool_get_coalesce() is removed by
-this patch so that the user gets information of the value of tx-usecs.
+Do not allow the CS35L56 to be put into its lowest power
+"hibernation" mode. This only affects I2C because "hibernation"
+is already disabled on SPI and SoundWire.
 
-Even if i225/6 is using queue pair setting, there is no harm in
-notifying the user of the tx-usecs. The implementation of the current
-code may have previously been a copy of the legacy code i210.
-Since I225 has the queue pair setting enabled, tx-usecs will always adhere
-to the user-set rx-usecs value. An error message will appear when the user
-attempts to set the tx-usecs value for the input parameters because,
-by default, they should only set the rx-usecs value.
+Recent firmwares need a different wake-up sequence. Until
+that sequence has been specified, the chip "hibernation" mode
+must be disabled otherwise it can intermittently fail to wake.
 
-This patch also adds the helper function to get the
-previous rx coalesce value similar to tx coalesce.
+Backport note: This is the same change as upstream commit, to delete
+one line, but the upstream commit would not apply cleanly on older
+branches because of minor differences to the surrounding code.
 
-How to test:
-User can get the coalesce value using ethtool command.
-
-Example command:
-Get: ethtool -c <interface>
-
-Previous output:
-
-rx-usecs: 3
-rx-frames: n/a
-rx-usecs-irq: n/a
-rx-frames-irq: n/a
-
-tx-usecs: 0
-tx-frames: n/a
-tx-usecs-irq: n/a
-tx-frames-irq: n/a
-
-New output:
-
-rx-usecs: 3
-rx-frames: n/a
-rx-usecs-irq: n/a
-rx-frames-irq: n/a
-
-tx-usecs: 3
-tx-frames: n/a
-tx-usecs-irq: n/a
-tx-frames-irq: n/a
-
-Fixes: 8c5ad0dae93c ("igc: Add ethtool support")
-Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20230919170331.1581031-1-anthony.l.nguyen@intel.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20230912133841.3480466-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ethtool.c | 31 ++++++++++++--------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+ sound/soc/codecs/cs35l56-i2c.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-index 511fc3f412087..9166fde40c772 100644
---- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-@@ -867,6 +867,18 @@ static void igc_ethtool_get_stats(struct net_device *netdev,
- 	spin_unlock(&adapter->stats64_lock);
- }
+diff --git a/sound/soc/codecs/cs35l56-i2c.c b/sound/soc/codecs/cs35l56-i2c.c
+index 40666e6698ba9..b69441ec8d99f 100644
+--- a/sound/soc/codecs/cs35l56-i2c.c
++++ b/sound/soc/codecs/cs35l56-i2c.c
+@@ -27,7 +27,6 @@ static int cs35l56_i2c_probe(struct i2c_client *client)
+ 		return -ENOMEM;
  
-+static int igc_ethtool_get_previous_rx_coalesce(struct igc_adapter *adapter)
-+{
-+	return (adapter->rx_itr_setting <= 3) ?
-+		adapter->rx_itr_setting : adapter->rx_itr_setting >> 2;
-+}
-+
-+static int igc_ethtool_get_previous_tx_coalesce(struct igc_adapter *adapter)
-+{
-+	return (adapter->tx_itr_setting <= 3) ?
-+		adapter->tx_itr_setting : adapter->tx_itr_setting >> 2;
-+}
-+
- static int igc_ethtool_get_coalesce(struct net_device *netdev,
- 				    struct ethtool_coalesce *ec,
- 				    struct kernel_ethtool_coalesce *kernel_coal,
-@@ -874,17 +886,8 @@ static int igc_ethtool_get_coalesce(struct net_device *netdev,
- {
- 	struct igc_adapter *adapter = netdev_priv(netdev);
+ 	cs35l56->dev = dev;
+-	cs35l56->can_hibernate = true;
  
--	if (adapter->rx_itr_setting <= 3)
--		ec->rx_coalesce_usecs = adapter->rx_itr_setting;
--	else
--		ec->rx_coalesce_usecs = adapter->rx_itr_setting >> 2;
--
--	if (!(adapter->flags & IGC_FLAG_QUEUE_PAIRS)) {
--		if (adapter->tx_itr_setting <= 3)
--			ec->tx_coalesce_usecs = adapter->tx_itr_setting;
--		else
--			ec->tx_coalesce_usecs = adapter->tx_itr_setting >> 2;
--	}
-+	ec->rx_coalesce_usecs = igc_ethtool_get_previous_rx_coalesce(adapter);
-+	ec->tx_coalesce_usecs = igc_ethtool_get_previous_tx_coalesce(adapter);
- 
- 	return 0;
- }
-@@ -909,8 +912,12 @@ static int igc_ethtool_set_coalesce(struct net_device *netdev,
- 	    ec->tx_coalesce_usecs == 2)
- 		return -EINVAL;
- 
--	if ((adapter->flags & IGC_FLAG_QUEUE_PAIRS) && ec->tx_coalesce_usecs)
-+	if ((adapter->flags & IGC_FLAG_QUEUE_PAIRS) &&
-+	    ec->tx_coalesce_usecs != igc_ethtool_get_previous_tx_coalesce(adapter)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Queue Pair mode enabled, both Rx and Tx coalescing controlled by rx-usecs");
- 		return -EINVAL;
-+	}
- 
- 	/* If ITR is disabled, disable DMAC */
- 	if (ec->rx_coalesce_usecs == 0) {
+ 	i2c_set_clientdata(client, cs35l56);
+ 	cs35l56->regmap = devm_regmap_init_i2c(client, regmap_config);
 -- 
 2.40.1
 
