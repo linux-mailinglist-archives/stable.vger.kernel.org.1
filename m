@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D418D7B897E
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 074407B881B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:12:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244169AbjJDS0y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:26:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
+        id S243969AbjJDSMs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:12:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244294AbjJDS0g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:26:36 -0400
+        with ESMTP id S243972AbjJDSMr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:12:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E347A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:26:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C20C433C8;
-        Wed,  4 Oct 2023 18:26:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F285AF1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:12:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64378C433C8;
+        Wed,  4 Oct 2023 18:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443993;
-        bh=U0fL5oWlLlJVw8xqfmTx8wzqt2U4d2ZQyBg9z8fKsF4=;
+        s=korg; t=1696443160;
+        bh=tfrWCuir3/z0phqv9J7R1l9cj+8OJAyHuHgvlq5xJUI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I8GQysnLMSW87q+Vb2P0mjfQIqLRBGsS7jG8coG8t/a8y3kCQHn1qyl4PkWIw/4rU
-         c2PKwXxyRRhuI6vnBbrdj02wVPEqRXjZfQS+KOd7fj2vxBmL4PQ8GfxLZiYl/paVcS
-         Syl98qTnMWWX/iGZrRf0U/SuHbHxLFTT506aImfE=
+        b=SIJ2v9EbigjsUfSb3CKaVlQuxhKnW/XEf36WoHV3PTeZmwx9gWYWpiAC7S/drEDQQ
+         i7uWbloEfoovyurq91isWftZrdMoBVTmNHn+dRkVD9JLqnNwijxm732C99myTV782s
+         c4V3Advla6I+dwnocFw7Wj3O66UsRarutz2EN1mY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, David Ahern <dsahern@kernel.org>,
+        Kyle Zeng <zengyhkyle@gmail.com>,
+        Stephen Suryaputra <ssuryaextr@gmail.com>,
+        Vadim Fedorenko <vfedorenko@novek.ru>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 085/321] net: hns3: fix fail to delete tc flower rules during reset issue
+Subject: [PATCH 6.1 057/259] ipv4: fix null-deref in ipv4_link_failure
 Date:   Wed,  4 Oct 2023 19:53:50 +0200
-Message-ID: <20231004175233.150888655@linuxfoundation.org>
+Message-ID: <20231004175220.041566946@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +53,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Kyle Zeng <zengyhkyle@gmail.com>
 
-[ Upstream commit 1a7be66e4685b8541546222c305cce9710718a88 ]
+[ Upstream commit 0113d9c9d1ccc07f5a3710dac4aa24b6d711278c ]
 
-Firmware does not respond driver commands during reset
-Therefore, rule will fail to delete while the firmware is resetting
+Currently, we assume the skb is associated with a device before calling
+__ip_options_compile, which is not always the case if it is re-routed by
+ipvs.
+When skb->dev is NULL, dev_net(skb->dev) will become null-dereference.
+This patch adds a check for the edge case and switch to use the net_device
+from the rtable when skb->dev is NULL.
 
-So, if failed to delete rule, set rule state to TO_DEL,
-and the rule will be deleted when periodic task being scheduled.
-
-Fixes: 0205ec041ec6 ("net: hns3: add support for hw tc offload of tc flower")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: ed0de45a1008 ("ipv4: recompile ip options in ipv4_link_failure")
+Suggested-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
+Cc: Stephen Suryaputra <ssuryaextr@gmail.com>
+Cc: Vadim Fedorenko <vfedorenko@novek.ru>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/ipv4/route.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 26e9fa9cc2cd3..a4500abfa286f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -7348,6 +7348,12 @@ static int hclge_del_cls_flower(struct hnae3_handle *handle,
- 	ret = hclge_fd_tcam_config(hdev, HCLGE_FD_STAGE_1, true, rule->location,
- 				   NULL, false);
- 	if (ret) {
-+		/* if tcam config fail, set rule state to TO_DEL,
-+		 * so the rule will be deleted when periodic
-+		 * task being scheduled.
-+		 */
-+		hclge_update_fd_list(hdev, HCLGE_FD_TO_DEL, rule->location, NULL);
-+		set_bit(HCLGE_STATE_FD_TBL_CHANGED, &hdev->state);
- 		spin_unlock_bh(&hdev->fd_rule_lock);
- 		return ret;
- 	}
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index a04ffc128e22b..84a0a71a6f4e7 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1213,6 +1213,7 @@ EXPORT_INDIRECT_CALLABLE(ipv4_dst_check);
+ 
+ static void ipv4_send_dest_unreach(struct sk_buff *skb)
+ {
++	struct net_device *dev;
+ 	struct ip_options opt;
+ 	int res;
+ 
+@@ -1230,7 +1231,8 @@ static void ipv4_send_dest_unreach(struct sk_buff *skb)
+ 		opt.optlen = ip_hdr(skb)->ihl * 4 - sizeof(struct iphdr);
+ 
+ 		rcu_read_lock();
+-		res = __ip_options_compile(dev_net(skb->dev), &opt, skb, NULL);
++		dev = skb->dev ? skb->dev : skb_rtable(skb)->dst.dev;
++		res = __ip_options_compile(dev_net(dev), &opt, skb, NULL);
+ 		rcu_read_unlock();
+ 
+ 		if (res)
 -- 
 2.40.1
 
