@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 635977B8794
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAFF17B8A1E
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243816AbjJDSHC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47518 "EHLO
+        id S244357AbjJDSc2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:32:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243815AbjJDSHB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:01 -0400
+        with ESMTP id S244356AbjJDSc2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75D20C1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CDCC433C7;
-        Wed,  4 Oct 2023 18:06:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E4E8BF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A674C433CA;
+        Wed,  4 Oct 2023 18:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442818;
-        bh=pxlr8ktdXJtspFf9McbGWW+J+CNtJxRSoXPsdUuGfnw=;
+        s=korg; t=1696444343;
+        bh=kgJ/NTtmMdR3Obiyh/n2fZcVDI92mETIhbA+rKnGixQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vErLcjQ3epI6iA8mY5rRlH19dRLjtkfgdya4A9cLZJzNkpz0UHDO4nuybgjOz31LS
-         rWPpjb4QJ+ZL3tgP6mKDw1hBIr4v2aWhCq9JfMhtlfM/KGhqid9/bIB2SBXjXMd+XM
-         +Qmj61b/iOBAoVvoNtqSI9uKZx6BYmnkrfTLMxQU=
+        b=fWKz3u8llhHxhGwjPfbHG6Z4OsnBP06sqKsnaLWATYpK3TLuLoN5eCIc3b6T3JgBC
+         ZRoFO85D2ULO2wsJnmIAYT690BrlhR4dgdzNSbaBAVxfxQp32PjUzXNKrgUH8+B1xl
+         0QSRPNXaj7c1cuFNibLuN+8K14pS9dlMJHmziWhg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/183] drm/bridge: ti-sn65dsi83: Do not generate HFP/HBP/HSA and EOT packet
+        patches@lists.linux.dev,
+        "Ricardo B. Marliere" <rbmarliere@gmail.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 178/321] selftests: fix dependency checker script
 Date:   Wed,  4 Oct 2023 19:55:23 +0200
-Message-ID: <20231004175207.755906289@linuxfoundation.org>
+Message-ID: <20231004175237.493121238@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +51,181 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Ricardo B. Marliere <rbmarliere@gmail.com>
 
-[ Upstream commit f4d324fb5628773907dd90342d18f978bd9a6d09 ]
+[ Upstream commit 5f9dd2e896a91bfca90f8463eb6808c03d535d8a ]
 
-[ Upstream commit ca161b259cc84fe1f4a2ce4c73c3832cf6f713f1 ]
+This patch fixes inconsistencies in the parsing rules of the levels 1
+and 2 of the kselftest_deps.sh.  It was added the levels 4 and 5 to
+account for a few edge cases that are present in some tests, also some
+minor identation styling have been fixed (s/    /\t/g).
 
-Do not generate the HS front and back porch gaps, the HSA gap and
-EOT packet, as per "SN65DSI83 datasheet SLLSEC1I - SEPTEMBER 2012
-- REVISED OCTOBER 2020", page 22, these packets are not required.
-This makes the TI SN65DSI83 bridge work with Samsung DSIM on i.MX8MN.
-
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230403190242.224490-1-marex@denx.de
+Signed-off-by: Ricardo B. Marliere <rbmarliere@gmail.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi83.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/kselftest_deps.sh | 77 +++++++++++++++++++----
+ 1 file changed, 65 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-index b3cb910b30852..f96c0a89854b8 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -272,7 +272,9 @@ static int sn65dsi83_attach(struct drm_bridge *bridge,
+diff --git a/tools/testing/selftests/kselftest_deps.sh b/tools/testing/selftests/kselftest_deps.sh
+index 4bc14d9e8ff1d..de59cc8f03c3f 100755
+--- a/tools/testing/selftests/kselftest_deps.sh
++++ b/tools/testing/selftests/kselftest_deps.sh
+@@ -46,11 +46,11 @@ fi
+ print_targets=0
  
- 	dsi->lanes = ctx->dsi_lanes;
- 	dsi->format = MIPI_DSI_FMT_RGB888;
--	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST;
-+	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
-+			  MIPI_DSI_MODE_VIDEO_NO_HFP | MIPI_DSI_MODE_VIDEO_NO_HBP |
-+			  MIPI_DSI_MODE_VIDEO_NO_HSA | MIPI_DSI_MODE_NO_EOT_PACKET;
+ while getopts "p" arg; do
+-    case $arg in
+-        p)
++	case $arg in
++		p)
+ 		print_targets=1
+ 	shift;;
+-    esac
++	esac
+ done
  
- 	ret = mipi_dsi_attach(dsi);
- 	if (ret < 0) {
+ if [ $# -eq 0 ]
+@@ -92,6 +92,10 @@ pass_cnt=0
+ # Get all TARGETS from selftests Makefile
+ targets=$(grep -E "^TARGETS +|^TARGETS =" Makefile | cut -d "=" -f2)
+ 
++# Initially, in LDLIBS related lines, the dep checker needs
++# to ignore lines containing the following strings:
++filter="\$(VAR_LDLIBS)\|pkg-config\|PKG_CONFIG\|IOURING_EXTRA_LIBS"
++
+ # Single test case
+ if [ $# -eq 2 ]
+ then
+@@ -100,6 +104,8 @@ then
+ 	l1_test $test
+ 	l2_test $test
+ 	l3_test $test
++	l4_test $test
++	l5_test $test
+ 
+ 	print_results $1 $2
+ 	exit $?
+@@ -113,7 +119,7 @@ fi
+ # Append space at the end of the list to append more tests.
+ 
+ l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
+-		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
++		grep -v "$filter" | awk -F: '{print $1}' | uniq)
+ 
+ # Level 2: LDLIBS set dynamically.
+ #
+@@ -126,7 +132,7 @@ l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
+ # Append space at the end of the list to append more tests.
+ 
+ l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
+-		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
++		grep -v "$filter" | awk -F: '{print $1}' | uniq)
+ 
+ # Level 3
+ # memfd and others use pkg-config to find mount and fuse libs
+@@ -138,11 +144,32 @@ l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
+ #	VAR_LDLIBS := $(shell pkg-config fuse --libs 2>/dev/null)
+ 
+ l3_tests=$(grep -r --include=Makefile "^VAR_LDLIBS" | \
+-		grep -v "pkg-config" | awk -F: '{print $1}')
++		grep -v "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
+ 
+-#echo $l1_tests
+-#echo $l2_1_tests
+-#echo $l3_tests
++# Level 4
++# some tests may fall back to default using `|| echo -l<libname>`
++# if pkg-config doesn't find the libs, instead of using VAR_LDLIBS
++# as per level 3 checks.
++# e.g:
++# netfilter/Makefile
++#	LDLIBS += $(shell $(HOSTPKG_CONFIG) --libs libmnl 2>/dev/null || echo -lmnl)
++l4_tests=$(grep -r --include=Makefile "^LDLIBS" | \
++		grep "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
++
++# Level 5
++# some tests may use IOURING_EXTRA_LIBS to add extra libs to LDLIBS,
++# which in turn may be defined in a sub-Makefile
++# e.g.:
++# mm/Makefile
++#	$(OUTPUT)/gup_longterm: LDLIBS += $(IOURING_EXTRA_LIBS)
++l5_tests=$(grep -r --include=Makefile "LDLIBS +=.*\$(IOURING_EXTRA_LIBS)" | \
++	awk -F: '{print $1}' | uniq)
++
++#echo l1_tests $l1_tests
++#echo l2_tests $l2_tests
++#echo l3_tests $l3_tests
++#echo l4_tests $l4_tests
++#echo l5_tests $l5_tests
+ 
+ all_tests
+ print_results $1 $2
+@@ -164,24 +191,32 @@ all_tests()
+ 	for test in $l3_tests; do
+ 		l3_test $test
+ 	done
++
++	for test in $l4_tests; do
++		l4_test $test
++	done
++
++	for test in $l5_tests; do
++		l5_test $test
++	done
+ }
+ 
+ # Use same parsing used for l1_tests and pick libraries this time.
+ l1_test()
+ {
+ 	test_libs=$(grep --include=Makefile "^LDLIBS" $test | \
+-			grep -v "VAR_LDLIBS" | \
++			grep -v "$filter" | \
+ 			sed -e 's/\:/ /' | \
+ 			sed -e 's/+/ /' | cut -d "=" -f 2)
+ 
+ 	check_libs $test $test_libs
+ }
+ 
+-# Use same parsing used for l2__tests and pick libraries this time.
++# Use same parsing used for l2_tests and pick libraries this time.
+ l2_test()
+ {
+ 	test_libs=$(grep --include=Makefile ": LDLIBS" $test | \
+-			grep -v "VAR_LDLIBS" | \
++			grep -v "$filter" | \
+ 			sed -e 's/\:/ /' | sed -e 's/+/ /' | \
+ 			cut -d "=" -f 2)
+ 
+@@ -197,6 +232,24 @@ l3_test()
+ 	check_libs $test $test_libs
+ }
+ 
++l4_test()
++{
++	test_libs=$(grep --include=Makefile "^VAR_LDLIBS\|^LDLIBS" $test | \
++			grep "\(pkg-config\|PKG_CONFIG\).*|| echo " | \
++			sed -e 's/.*|| echo //' | sed -e 's/)$//')
++
++	check_libs $test $test_libs
++}
++
++l5_test()
++{
++	tests=$(find $(dirname "$test") -type f -name "*.mk")
++	test_libs=$(grep "^IOURING_EXTRA_LIBS +\?=" $tests | \
++			cut -d "=" -f 2)
++
++	check_libs $test $test_libs
++}
++
+ check_libs()
+ {
+ 
 -- 
 2.40.1
 
