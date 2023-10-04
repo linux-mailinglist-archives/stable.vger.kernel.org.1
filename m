@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C14D97B87BE
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1234A7B88CD
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:19:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243862AbjJDSIs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:08:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45992 "EHLO
+        id S243764AbjJDSTh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:19:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243856AbjJDSIs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:48 -0400
+        with ESMTP id S243881AbjJDSTh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:19:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A1A2BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40ACC433C9;
-        Wed,  4 Oct 2023 18:08:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419AE98
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:19:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81221C433C7;
+        Wed,  4 Oct 2023 18:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442925;
-        bh=N6+GVCsLStHrFn95fGIQQMzcS5vRQetzK40XtumKSg0=;
+        s=korg; t=1696443573;
+        bh=NuzMWFZtWS4oLMBDYh2qP6SBbjdHG+vG1mtIwzPsIbM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r8oN0xSnrNZNp6rkSOomjMg5wCUm8Adr+dLMErjAxsRtomRlAbnwYLTTLgaVO5Uj6
-         Km6aXW7HSgz5mQiHtA5QSN6dh6OpeQxVaSi/mIhC6XckIYrTQltFvub7NGSam90q1k
-         ZM2S3qOqi5i7kFr7UR6xqr9EN2jeOjSaiR12tqE4=
+        b=zr08fuO4E5B5b2W3l7Q0RkusebF6CTHZ+YZIEBWo3tx/U+WydFKdmYCz9IVB+28f5
+         Qlz3e3BprMGax4fctQPle6a6yscyH1I1zE6D1htsQAd5IuUnM5/WIsu6IjYN7DveO9
+         6DAIHT5oPfsSyRr4S1QPQzTrqDjZZJvC4syv3I1U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        David Hildenbrand <david@redhat.com>,
+        Yikebaer Aizezi <yikebaer61@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 129/183] smb3: correct places where ENOTSUPP is used instead of preferred EOPNOTSUPP
+Subject: [PATCH 6.1 187/259] media: vb2: frame_vector.c: replace WARN_ONCE with a comment
 Date:   Wed,  4 Oct 2023 19:56:00 +0200
-Message-ID: <20231004175209.350152528@linuxfoundation.org>
+Message-ID: <20231004175225.875791462@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,69 +51,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit ebc3d4e44a7e05457825e03d0560153687265523 ]
+[ Upstream commit 735de5caf79e06cc9fb96b1b4f4974674ae3e917 ]
 
-checkpatch flagged a few places with:
-     WARNING: ENOTSUPP is not a SUSV4 error code, prefer EOPNOTSUPP
-Also fixed minor typo
+The WARN_ONCE was issued also in cases that had nothing to do with VM_IO
+(e.g. if the start address was just a random value and uaccess fails with
+-EFAULT).
 
-Signed-off-by: Steve French <stfrench@microsoft.com>
+There are no reports of WARN_ONCE being issued for actual VM_IO cases, so
+just drop it and instead add a note to the comment before the function.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/inode.c   | 2 +-
- fs/cifs/smb2ops.c | 6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/common/videobuf2/frame_vector.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/cifs/inode.c b/fs/cifs/inode.c
-index 82848412ad852..30a9a89c141bb 100644
---- a/fs/cifs/inode.c
-+++ b/fs/cifs/inode.c
-@@ -2531,7 +2531,7 @@ int cifs_fiemap(struct inode *inode, struct fiemap_extent_info *fei, u64 start,
- 	}
+diff --git a/drivers/media/common/videobuf2/frame_vector.c b/drivers/media/common/videobuf2/frame_vector.c
+index 144027035892a..07ebe4424df3a 100644
+--- a/drivers/media/common/videobuf2/frame_vector.c
++++ b/drivers/media/common/videobuf2/frame_vector.c
+@@ -30,6 +30,10 @@
+  * different type underlying the specified range of virtual addresses.
+  * When the function isn't able to map a single page, it returns error.
+  *
++ * Note that get_vaddr_frames() cannot follow VM_IO mappings. It used
++ * to be able to do that, but that could (racily) return non-refcounted
++ * pfns.
++ *
+  * This function takes care of grabbing mmap_lock as necessary.
+  */
+ int get_vaddr_frames(unsigned long start, unsigned int nr_frames,
+@@ -55,8 +59,6 @@ int get_vaddr_frames(unsigned long start, unsigned int nr_frames,
+ 	if (likely(ret > 0))
+ 		return ret;
  
- 	cifsFileInfo_put(cfile);
--	return -ENOTSUPP;
-+	return -EOPNOTSUPP;
+-	/* This used to (racily) return non-refcounted pfns. Let people know */
+-	WARN_ONCE(1, "get_vaddr_frames() cannot follow VM_IO mapping");
+ 	vec->nr_frames = 0;
+ 	return ret ? ret : -EFAULT;
  }
- 
- int cifs_truncate_page(struct address_space *mapping, loff_t from)
-diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-index 560c4ababfe1a..d8ce079ba9091 100644
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -266,7 +266,7 @@ smb2_adjust_credits(struct TCP_Server_Info *server,
- 		cifs_server_dbg(VFS, "request has less credits (%d) than required (%d)",
- 				credits->value, new_val);
- 
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	spin_lock(&server->req_lock);
-@@ -1308,7 +1308,7 @@ smb2_set_ea(const unsigned int xid, struct cifs_tcon *tcon,
- 			/* Use a fudge factor of 256 bytes in case we collide
- 			 * with a different set_EAs command.
- 			 */
--			if(CIFSMaxBufSize - MAX_SMB2_CREATE_RESPONSE_SIZE -
-+			if (CIFSMaxBufSize - MAX_SMB2_CREATE_RESPONSE_SIZE -
- 			   MAX_SMB2_CLOSE_RESPONSE_SIZE - 256 <
- 			   used_len + ea_name_len + ea_value_len + 1) {
- 				rc = -ENOSPC;
-@@ -4822,7 +4822,7 @@ handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid,
- 
- 	if (shdr->Command != SMB2_READ) {
- 		cifs_server_dbg(VFS, "only big read responses are supported\n");
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	if (server->ops->is_session_expired &&
 -- 
 2.40.1
 
