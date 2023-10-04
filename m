@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE81D7B846F
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:03:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D81867B8471
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:03:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233576AbjJDQDb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 12:03:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41474 "EHLO
+        id S242960AbjJDQDj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 12:03:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233704AbjJDQDa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:03:30 -0400
+        with ESMTP id S233825AbjJDQDj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:03:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0EB0C4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:03:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BB0C433C7;
-        Wed,  4 Oct 2023 16:03:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997BCCE
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:03:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2682C433C7;
+        Wed,  4 Oct 2023 16:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696435406;
-        bh=ucQ0H/UbdUiDKcE/OTey5qM5JdpKbK6Z8mJQv+ORVhA=;
+        s=korg; t=1696435415;
+        bh=qheLRzii5x6b0KLtbb1saFedabUXMVNbMomBlc2c67k=;
         h=Subject:To:Cc:From:Date:From;
-        b=ppVf1gEZuZoGYUUZRtZpZGZiTu+KgKOJQynYv3Vjq8Al4cqqyPEK6GNyRaqzA4nzD
-         0U8rGOjsDJKT2TIglGpeHYLXuoh0MdWWFwK9A5lYAA6h79JkOxbRThk/XVZJxol0ve
-         rW0IuC4Epc4xepXzBKy6s8R9bQQXJCEbujhFpzcE=
-Subject: FAILED: patch "[PATCH] arm64: cpufeature: Fix CLRBHB and BC detection" failed to apply to 6.5-stable tree
+        b=HjWoVguvdUYANTAzWFiC/0T27maPSDKbLqEXWh0/3UDocKmMMdBxBVhQC22zMptpq
+         v0Pzw2ZVZuWyJM1LvfTcbm24T8bj1/flhjtJ73/thWgDigVk+Iy4PXZ3fNcgPkAiE8
+         4gDrKHm5ytzmskwfgkW4s6JU5KYy88ufA/hKzAV4=
+Subject: FAILED: patch "[PATCH] arm64: cpufeature: Fix CLRBHB and BC detection" failed to apply to 6.1-stable tree
 To:     kristina.martsenko@arm.com, broonie@kernel.org, will@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 18:03:23 +0200
-Message-ID: <2023100423-autistic-impaired-361f@gregkh>
+Date:   Wed, 04 Oct 2023 18:03:24 +0200
+Message-ID: <2023100424-cheer-freeness-471f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 479965a2b7ec481737df0cadf553331063b9c343
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100423-autistic-impaired-361f@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100424-cheer-freeness-471f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
