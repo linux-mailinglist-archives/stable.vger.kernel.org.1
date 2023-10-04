@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 394B87B8780
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56D9C7B88B9
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243803AbjJDSGH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:06:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37420 "EHLO
+        id S233594AbjJDSSr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:18:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243802AbjJDSGG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:06 -0400
+        with ESMTP id S233764AbjJDSSr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31DA7BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C11CC433C8;
-        Wed,  4 Oct 2023 18:06:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CEB8C1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C432BC433CC;
+        Wed,  4 Oct 2023 18:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442761;
-        bh=EtkA+TyCyvzyNRW2ot18WIyNQa4PM8brWLOqZm0Q9NY=;
+        s=korg; t=1696443523;
+        bh=gSaMxYKh+tPZ6cYRomrP6K5YgqcmjerpdNVsVDsjJ80=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZM2z4Wj/CaSVfcYeTuItuksfOqgZJSgDfVGxnNhohU80c04KSKlsL+AU3eWwGngWz
-         ngXINjF+fWIWi3Qi32WFbacxysHjwuucce5bvsExBypGNv18Yzd7IR23mLpmCr3nrh
-         6Qe6yTVTIuVFLmaZyBmoC8QxRepQiCgJxUDyLd0U=
+        b=sPGx5M+lwPGwjpcqy7oBGBOz6HxHl7IM/vk1KmtWZ86ApDMMrQlrFfxvT6GqRZ1HR
+         tRZ7QFbQT814DSlgh4MtkzgBKK2LHHtuI9QMfgTQ1Kj8BAPpcT2FWgJExx0KSoRAbP
+         9Zq2BljHan8iSTljK5vfeaw56dizQMJhAG/HyXCA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dhruva Gole <d-gole@ti.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev,
+        "Ricardo B. Marliere" <rbmarliere@gmail.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 100/183] bus: ti-sysc: Fix SYSC_QUIRK_SWSUP_SIDLE_ACT handling for uart wake-up
+Subject: [PATCH 6.1 158/259] selftests: fix dependency checker script
 Date:   Wed,  4 Oct 2023 19:55:31 +0200
-Message-ID: <20231004175208.072319446@linuxfoundation.org>
+Message-ID: <20231004175224.539971196@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,86 +51,181 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Ricardo B. Marliere <rbmarliere@gmail.com>
 
-[ Upstream commit e5deb8f76e64d94ccef715e75ebafffd0c312d80 ]
+[ Upstream commit 5f9dd2e896a91bfca90f8463eb6808c03d535d8a ]
 
-The uarts should be tagged with SYSC_QUIRK_SWSUP_SIDLE instead of
-SYSC_QUIRK_SWSUP_SIDLE_ACT. The difference is that SYSC_QUIRK_SWSUP_SIDLE
-is used to force idle target modules rather than block idle during usage.
+This patch fixes inconsistencies in the parsing rules of the levels 1
+and 2 of the kselftest_deps.sh.  It was added the levels 4 and 5 to
+account for a few edge cases that are present in some tests, also some
+minor identation styling have been fixed (s/    /\t/g).
 
-The SYSC_QUIRK_SWSUP_SIDLE_ACT should disable autoidle and wake-up when
-a target module is active, and configure autoidle and wake-up when a
-target module is inactive. We are missing configuring the target module
-on sysc_disable_module(), and missing toggling of the wake-up bit.
-
-Let's fix the issue to allow uart wake-up to work.
-
-Fixes: fb685f1c190e ("bus: ti-sysc: Handle swsup idle mode quirks")
-Tested-by: Dhruva Gole <d-gole@ti.com>
-Tested-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Ricardo B. Marliere <rbmarliere@gmail.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ tools/testing/selftests/kselftest_deps.sh | 77 +++++++++++++++++++----
+ 1 file changed, 65 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 8b0fe4b7b9c19..0a159989c899a 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1118,6 +1118,11 @@ static int sysc_enable_module(struct device *dev)
- 	if (ddata->cfg.quirks & (SYSC_QUIRK_SWSUP_SIDLE |
- 				 SYSC_QUIRK_SWSUP_SIDLE_ACT)) {
- 		best_mode = SYSC_IDLE_NO;
-+
-+		/* Clear WAKEUP */
-+		if (regbits->enwkup_shift >= 0 &&
-+		    ddata->cfg.sysc_val & BIT(regbits->enwkup_shift))
-+			reg &= ~BIT(regbits->enwkup_shift);
- 	} else {
- 		best_mode = fls(ddata->cfg.sidlemodes) - 1;
- 		if (best_mode > SYSC_IDLE_MASK) {
-@@ -1238,6 +1243,13 @@ static int sysc_disable_module(struct device *dev)
- 		}
- 	}
+diff --git a/tools/testing/selftests/kselftest_deps.sh b/tools/testing/selftests/kselftest_deps.sh
+index 708cb54296336..47a1281a3b702 100755
+--- a/tools/testing/selftests/kselftest_deps.sh
++++ b/tools/testing/selftests/kselftest_deps.sh
+@@ -46,11 +46,11 @@ fi
+ print_targets=0
  
-+	if (ddata->cfg.quirks & SYSC_QUIRK_SWSUP_SIDLE_ACT) {
-+		/* Set WAKEUP */
-+		if (regbits->enwkup_shift >= 0 &&
-+		    ddata->cfg.sysc_val & BIT(regbits->enwkup_shift))
-+			reg |= BIT(regbits->enwkup_shift);
-+	}
-+
- 	reg &= ~(SYSC_IDLE_MASK << regbits->sidle_shift);
- 	reg |= best_mode << regbits->sidle_shift;
- 	if (regbits->autoidle_shift >= 0 &&
-@@ -1497,16 +1509,16 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 	SYSC_QUIRK("sham", 0, 0x100, 0x110, 0x114, 0x40000c03, 0xffffffff,
- 		   SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x00000046, 0xffffffff,
--		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x00000052, 0xffffffff,
--		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
- 	/* Uarts on omap4 and later */
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x50411e03, 0xffff00ff,
--		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x47422e03, 0xffffffff,
--		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x47424e03, 0xffffffff,
--		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
+ while getopts "p" arg; do
+-    case $arg in
+-        p)
++	case $arg in
++		p)
+ 		print_targets=1
+ 	shift;;
+-    esac
++	esac
+ done
  
- 	/* Quirks that need to be set based on the module address */
- 	SYSC_QUIRK("mcpdm", 0x40132000, 0, 0x10, -ENODEV, 0x50000800, 0xffffffff,
+ if [ $# -eq 0 ]
+@@ -92,6 +92,10 @@ pass_cnt=0
+ # Get all TARGETS from selftests Makefile
+ targets=$(egrep "^TARGETS +|^TARGETS =" Makefile | cut -d "=" -f2)
+ 
++# Initially, in LDLIBS related lines, the dep checker needs
++# to ignore lines containing the following strings:
++filter="\$(VAR_LDLIBS)\|pkg-config\|PKG_CONFIG\|IOURING_EXTRA_LIBS"
++
+ # Single test case
+ if [ $# -eq 2 ]
+ then
+@@ -100,6 +104,8 @@ then
+ 	l1_test $test
+ 	l2_test $test
+ 	l3_test $test
++	l4_test $test
++	l5_test $test
+ 
+ 	print_results $1 $2
+ 	exit $?
+@@ -113,7 +119,7 @@ fi
+ # Append space at the end of the list to append more tests.
+ 
+ l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
+-		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
++		grep -v "$filter" | awk -F: '{print $1}' | uniq)
+ 
+ # Level 2: LDLIBS set dynamically.
+ #
+@@ -126,7 +132,7 @@ l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
+ # Append space at the end of the list to append more tests.
+ 
+ l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
+-		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
++		grep -v "$filter" | awk -F: '{print $1}' | uniq)
+ 
+ # Level 3
+ # memfd and others use pkg-config to find mount and fuse libs
+@@ -138,11 +144,32 @@ l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
+ #	VAR_LDLIBS := $(shell pkg-config fuse --libs 2>/dev/null)
+ 
+ l3_tests=$(grep -r --include=Makefile "^VAR_LDLIBS" | \
+-		grep -v "pkg-config" | awk -F: '{print $1}')
++		grep -v "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
+ 
+-#echo $l1_tests
+-#echo $l2_1_tests
+-#echo $l3_tests
++# Level 4
++# some tests may fall back to default using `|| echo -l<libname>`
++# if pkg-config doesn't find the libs, instead of using VAR_LDLIBS
++# as per level 3 checks.
++# e.g:
++# netfilter/Makefile
++#	LDLIBS += $(shell $(HOSTPKG_CONFIG) --libs libmnl 2>/dev/null || echo -lmnl)
++l4_tests=$(grep -r --include=Makefile "^LDLIBS" | \
++		grep "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
++
++# Level 5
++# some tests may use IOURING_EXTRA_LIBS to add extra libs to LDLIBS,
++# which in turn may be defined in a sub-Makefile
++# e.g.:
++# mm/Makefile
++#	$(OUTPUT)/gup_longterm: LDLIBS += $(IOURING_EXTRA_LIBS)
++l5_tests=$(grep -r --include=Makefile "LDLIBS +=.*\$(IOURING_EXTRA_LIBS)" | \
++	awk -F: '{print $1}' | uniq)
++
++#echo l1_tests $l1_tests
++#echo l2_tests $l2_tests
++#echo l3_tests $l3_tests
++#echo l4_tests $l4_tests
++#echo l5_tests $l5_tests
+ 
+ all_tests
+ print_results $1 $2
+@@ -164,24 +191,32 @@ all_tests()
+ 	for test in $l3_tests; do
+ 		l3_test $test
+ 	done
++
++	for test in $l4_tests; do
++		l4_test $test
++	done
++
++	for test in $l5_tests; do
++		l5_test $test
++	done
+ }
+ 
+ # Use same parsing used for l1_tests and pick libraries this time.
+ l1_test()
+ {
+ 	test_libs=$(grep --include=Makefile "^LDLIBS" $test | \
+-			grep -v "VAR_LDLIBS" | \
++			grep -v "$filter" | \
+ 			sed -e 's/\:/ /' | \
+ 			sed -e 's/+/ /' | cut -d "=" -f 2)
+ 
+ 	check_libs $test $test_libs
+ }
+ 
+-# Use same parsing used for l2__tests and pick libraries this time.
++# Use same parsing used for l2_tests and pick libraries this time.
+ l2_test()
+ {
+ 	test_libs=$(grep --include=Makefile ": LDLIBS" $test | \
+-			grep -v "VAR_LDLIBS" | \
++			grep -v "$filter" | \
+ 			sed -e 's/\:/ /' | sed -e 's/+/ /' | \
+ 			cut -d "=" -f 2)
+ 
+@@ -197,6 +232,24 @@ l3_test()
+ 	check_libs $test $test_libs
+ }
+ 
++l4_test()
++{
++	test_libs=$(grep --include=Makefile "^VAR_LDLIBS\|^LDLIBS" $test | \
++			grep "\(pkg-config\|PKG_CONFIG\).*|| echo " | \
++			sed -e 's/.*|| echo //' | sed -e 's/)$//')
++
++	check_libs $test $test_libs
++}
++
++l5_test()
++{
++	tests=$(find $(dirname "$test") -type f -name "*.mk")
++	test_libs=$(grep "^IOURING_EXTRA_LIBS +\?=" $tests | \
++			cut -d "=" -f 2)
++
++	check_libs $test $test_libs
++}
++
+ check_libs()
+ {
+ 
 -- 
 2.40.1
 
