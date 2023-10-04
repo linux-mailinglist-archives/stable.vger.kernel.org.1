@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69A307B88E6
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5356A7B88AC
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243935AbjJDSUp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:20:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43818 "EHLO
+        id S233286AbjJDSSZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:18:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243988AbjJDSUo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:44 -0400
+        with ESMTP id S233673AbjJDSJV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8A8BA7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E3BC433C8;
-        Wed,  4 Oct 2023 18:20:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC12A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01408C433C9;
+        Wed,  4 Oct 2023 18:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443639;
-        bh=5NKMqEzKlQCXDjnbCPkSc8lp/ibNm4KWljLHkB2yLfs=;
+        s=korg; t=1696442958;
+        bh=bQO3Vm81eSP7aCCrA25Qo0cDe/DpHaSzjbz67KVPtRA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rnkQwBDxqkkMbtn4wI6NL7MWUdu2ZchPMs3hVzq+cKwqLV5KoJH5YmP2iqRxQLUME
-         vhxVcfbugNvC0DxWMuIXUAZTAfCMa2Mp0NhnBbuYgLYsn6I4H2m7+ALJk3f0FbabJe
-         RYP9by37mOL8ubYHrCkBW+OFwtpLszFEIlGinvGs=
+        b=eJ0kMRD1pIY4q2KGMaq3gJ7uusiLpakgGZbmQLLxVO1NmuHGrNbwf1Ah/Es7Y27SJ
+         dh+shgxRPEafMcUg5j1ypojeGDUa4V0Cx819y22d+VRGjLAjRxtgJs2ju3Sg4veF0B
+         0qBzQfRsiD5BvcbY3DQlJyYndlJzpYKvw9MHBjoQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, August Wikerfors <git@augustwikerfors.se>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 228/259] ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 5.15 170/183] Revert "SUNRPC dont update timeout value on connection reset"
 Date:   Wed,  4 Oct 2023 19:56:41 +0200
-Message-ID: <20231004175227.816576134@linuxfoundation.org>
+Message-ID: <20231004175211.168570961@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,59 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: August Wikerfors <git@augustwikerfors.se>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 1263cc0f414d212129c0f1289b49b7df77f92084 upstream.
+commit a275ab62606bcd894ddff09460f7d253828313dc upstream.
 
-Like the Lenovo 82TL and 82V2, the Lenovo 82QF (Yoga 7 14ARB7) and 82UG
-(Legion S7 16ARHA7) both need a quirk entry for the internal microphone to
-function. Commit c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on
-Lenovo 82SJ") restricted the quirk that previously matched "82" to "82V2",
-breaking microphone functionality on these devices. Fix this by adding
-specific quirks for these models, as was done for the Lenovo 82TL.
+This reverts commit 88428cc4ae7abcc879295fbb19373dd76aad2bdd.
 
-Fixes: c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on Lenovo 82SJ")
-Closes: https://github.com/tomsom/yoga-linux/issues/51
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=208555#c780
-Cc: stable@vger.kernel.org
-Signed-off-by: August Wikerfors <git@augustwikerfors.se>
-Link: https://lore.kernel.org/r/20230911213409.6106-1-git@augustwikerfors.se
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The problem this commit is intended to fix was comprehensively fixed
+in commit 7de62bc09fe6 ("SUNRPC dont update timeout value on connection
+reset").
+Since then, this commit has been preventing the correct timeout of soft
+mounted requests.
+
+Cc: stable@vger.kernel.org # 5.9.x: 09252177d5f9: SUNRPC: Handle major timeout in xprt_adjust_timeout()
+Cc: stable@vger.kernel.org # 5.9.x: 7de62bc09fe6: SUNRPC dont update timeout value on connection reset
+Cc: stable@vger.kernel.org # 5.9.x
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ net/sunrpc/clnt.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -217,10 +217,24 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82V2"),
- 		}
- 	},
- 	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82UG"),
-+		}
-+	},
-+	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2392,8 +2392,7 @@ call_status(struct rpc_task *task)
+ 		goto out_exit;
+ 	}
+ 	task->tk_action = call_encode;
+-	if (status != -ECONNRESET && status != -ECONNABORTED)
+-		rpc_check_timeout(task);
++	rpc_check_timeout(task);
+ 	return;
+ out_exit:
+ 	rpc_call_rpcerror(task, status);
 
 
