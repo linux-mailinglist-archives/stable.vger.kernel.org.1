@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F136F7B87AB
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F20DF7B8A2B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243841AbjJDSIB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:08:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38880 "EHLO
+        id S244371AbjJDScx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:32:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243845AbjJDSIB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:01 -0400
+        with ESMTP id S244362AbjJDScx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F78AA7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D140BC433C7;
-        Wed,  4 Oct 2023 18:07:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79172A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6197C433CA;
+        Wed,  4 Oct 2023 18:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442877;
-        bh=rmCea8LePp2aflmpsGKWa8jlWYDgfXdrpf9x9PaICUQ=;
+        s=korg; t=1696444369;
+        bh=XVlXr042bCm+fLgQrPavx9OeUZWPP09VeaHbOcxqQBE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ln27Rs0L+pRQdzXyckkdPxPo1DjBu47IIuKOCJTZ+BsZ2SjNkFTM7v6OSLly/9AHG
-         TsbCmb6BhMMyscaTJc8CYDM7+krotCrPwqjVHbCkNUbMpwr/xQNiqNOf9xG9TenjaC
-         Hw9dUaJjDQotbTb5Wya0qUWI2avdLnrW4rcqzYAw=
+        b=aGjS3UyOs2LF80i40+ckRa52ug2UY0GjD8CwFyWrGXuXsqQnTcxZwf77MJg98jit0
+         HwLNS/Za+7jichpQGC1M+wY+fJKq6J7jNV05Aa6sw4988udYEY8+z0dz8CJ5wmTXAL
+         bbdb3PHHEzlrSeoDSJcsLA+xTMcVIYrG1t/UmJrY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Johnathan Mantey <johnathanx.mantey@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Benjamin Gray <bgray@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 140/183] ncsi: Propagate carrier gain/loss events to the NCSI controller
+Subject: [PATCH 6.5 226/321] powerpc/watchpoints: Annotate atomic context in more places
 Date:   Wed,  4 Oct 2023 19:56:11 +0200
-Message-ID: <20231004175209.842896994@linuxfoundation.org>
+Message-ID: <20231004175239.695704432@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +50,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johnathan Mantey <johnathanx.mantey@intel.com>
+From: Benjamin Gray <bgray@linux.ibm.com>
 
-[ Upstream commit 3780bb29311eccb7a1c9641032a112eed237f7e3 ]
+[ Upstream commit 27646b2e02b096a6936b3e3b6ba334ae20763eab ]
 
-Report the carrier/no-carrier state for the network interface
-shared between the BMC and the passthrough channel. Without this
-functionality the BMC is unable to reconfigure the NIC in the event
-of a re-cabling to a different subnet.
+It can be easy to miss that the notifier mechanism invokes the callbacks
+in an atomic context, so add some comments to that effect on the two
+handlers we register here.
 
-Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230829063457.54157-4-bgray@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/ncsi-aen.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/kernel/hw_breakpoint.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/ncsi/ncsi-aen.c b/net/ncsi/ncsi-aen.c
-index 62fb1031763d1..f8854bff286cb 100644
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -89,6 +89,11 @@ static int ncsi_aen_handler_lsc(struct ncsi_dev_priv *ndp,
- 	if ((had_link == has_link) || chained)
- 		return 0;
+diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+index 0a1e17b334284..f432db3faa5b0 100644
+--- a/arch/powerpc/kernel/hw_breakpoint.c
++++ b/arch/powerpc/kernel/hw_breakpoint.c
+@@ -637,6 +637,11 @@ static void handle_p10dd1_spurious_exception(struct arch_hw_breakpoint **info,
+ 	}
+ }
  
-+	if (had_link)
-+		netif_carrier_off(ndp->ndev.dev);
-+	else
-+		netif_carrier_on(ndp->ndev.dev);
-+
- 	if (!ndp->multi_package && !nc->package->multi_channel) {
- 		if (had_link) {
- 			ndp->flags |= NCSI_DEV_RESHUFFLE;
++/*
++ * Handle a DABR or DAWR exception.
++ *
++ * Called in atomic context.
++ */
+ int hw_breakpoint_handler(struct die_args *args)
+ {
+ 	bool err = false;
+@@ -763,6 +768,8 @@ NOKPROBE_SYMBOL(hw_breakpoint_handler);
+ 
+ /*
+  * Handle single-step exceptions following a DABR hit.
++ *
++ * Called in atomic context.
+  */
+ static int single_step_dabr_instruction(struct die_args *args)
+ {
+@@ -820,6 +827,8 @@ NOKPROBE_SYMBOL(single_step_dabr_instruction);
+ 
+ /*
+  * Handle debug exception notifications.
++ *
++ * Called in atomic context.
+  */
+ int hw_breakpoint_exceptions_notify(
+ 		struct notifier_block *unused, unsigned long val, void *data)
 -- 
 2.40.1
 
