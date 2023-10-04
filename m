@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B93057B88CC
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FDBE7B87B1
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233899AbjJDSTf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:19:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41086 "EHLO
+        id S243706AbjJDSIS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:08:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243881AbjJDSTe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:19:34 -0400
+        with ESMTP id S243817AbjJDSIR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 628A0AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:19:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF99C433C9;
-        Wed,  4 Oct 2023 18:19:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50F5DD7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E94CC433C7;
+        Wed,  4 Oct 2023 18:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443571;
-        bh=oGQfJZF6BOaEaHSKwbte1gWDP9+Px8R9yR+YcliWUKA=;
+        s=korg; t=1696442894;
+        bh=qbIhRsevzbigciBPtm1lwAhskhsQFpbC9YJlHFepXVI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TfOd1elCKP1FXMJh6C/kAQYlLd6BZ1fogq0TS5vAj8KD4X/iXQLEuvXJYi8oUOtAy
-         RnuvLazm45DlywNYvgk3+6R7fR9lrmDGe5xO5OKYgMt3UZ8+ezsVhNBWH8BLc0IRUp
-         QN7DqSkLZi9YaErm4OiRbeVoj3JHn6XYd4EDpHME=
+        b=VHvMwky1yFmCY71LqMbYuGjOYH1TFMLcoSYMNqDwZUhqkrK6k9Hgbr/briXGoehiZ
+         0rupFrpWvLEB2X4E2c8ZS8roUuTTjW+hvgqYPCxu+jgHbKTEKwB8Fxy6s8+jPQfD3o
+         2ZxXm6YX1pWe7Mj6teMXfPRaDkf4L6yQB9cQ4yq8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gleb Chesnokov <gleb.chesnokov@scst.dev>,
-        Himanshu Madhani <himanshu.madhani@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/259] scsi: qla2xxx: Fix NULL pointer dereference in target mode
+Subject: [PATCH 5.15 146/183] nvme-pci: factor out a nvme_pci_alloc_dev helper
 Date:   Wed,  4 Oct 2023 19:56:17 +0200
-Message-ID: <20231004175226.633032261@linuxfoundation.org>
+Message-ID: <20231004175210.140828926@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,96 +52,172 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gleb Chesnokov <gleb.chesnokov@scst.dev>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit d54820b22e404b06b2b65877ff802cc7b31688bc ]
+[ Upstream commit 2e87570be9d2746e7c4e7ab1cc18fd3ca7de2768 ]
 
-When target mode is enabled, the pci_irq_get_affinity() function may return
-a NULL value in qla_mapq_init_qp_cpu_map() due to the qla24xx_enable_msix()
-code that handles IRQ settings for target mode. This leads to a crash due
-to a NULL pointer dereference.
+Add a helper that allocates the nvme_dev structure up to the point where
+we can call nvme_init_ctrl.  This pairs with the free_ctrl method and can
+thus be used to cleanup the teardown path and make it more symmetric.
 
-This patch fixes the issue by adding a check for the NULL value returned by
-pci_irq_get_affinity() and introducing a 'cpu_mapped' boolean flag to the
-qla_qpair structure, ensuring that the qpair's CPU affinity is updated when
-it has not been mapped to a CPU.
+Note that this now calls nvme_init_ctrl a lot earlier during probing,
+which also means the per-controller character device shows up earlier.
+Due to the controller state no commnds can be send on it, but it might
+make sense to delay the cdev registration until nvme_init_ctrl_finish.
 
-Fixes: 1d201c81d4cc ("scsi: qla2xxx: Select qpair depending on which CPU post_cmd() gets called")
-Signed-off-by: Gleb Chesnokov <gleb.chesnokov@scst.dev>
-Link: https://lore.kernel.org/r/56b416f2-4e0f-b6cf-d6d5-b7c372e3c6a2@scst.dev
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Tested-by Gerd Bayer <gbayer@linxu.ibm.com>
+Stable-dep-of: dad651b2a44e ("nvme-pci: do not set the NUMA node of device if it has none")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h    | 1 +
- drivers/scsi/qla2xxx/qla_init.c   | 3 +++
- drivers/scsi/qla2xxx/qla_inline.h | 3 +++
- drivers/scsi/qla2xxx/qla_isr.c    | 3 +++
- 4 files changed, 10 insertions(+)
+ drivers/nvme/host/pci.c | 81 +++++++++++++++++++++++------------------
+ 1 file changed, 46 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
-index 817efdd32ad63..1713588f671f3 100644
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -3805,6 +3805,7 @@ struct qla_qpair {
- 	uint64_t retry_term_jiff;
- 	struct qla_tgt_counters tgt_counters;
- 	uint16_t cpuid;
-+	bool cpu_mapped;
- 	struct qla_fw_resources fwres ____cacheline_aligned;
- 	u32	cmd_cnt;
- 	u32	cmd_completion_cnt;
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index 79de31e7e8b2a..884ed77259f85 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -9759,6 +9759,9 @@ struct qla_qpair *qla2xxx_create_qpair(struct scsi_qla_host *vha, int qos,
- 		qpair->rsp->req = qpair->req;
- 		qpair->rsp->qpair = qpair;
- 
-+		if (!qpair->cpu_mapped)
-+			qla_cpu_update(qpair, raw_smp_processor_id());
-+
- 		if (IS_T10_PI_CAPABLE(ha) && ql2xenabledif) {
- 			if (ha->fw_attributes & BIT_4)
- 				qpair->difdix_supported = 1;
-diff --git a/drivers/scsi/qla2xxx/qla_inline.h b/drivers/scsi/qla2xxx/qla_inline.h
-index e66441355f7ae..a4a56ab0ba747 100644
---- a/drivers/scsi/qla2xxx/qla_inline.h
-+++ b/drivers/scsi/qla2xxx/qla_inline.h
-@@ -597,11 +597,14 @@ qla_mapq_init_qp_cpu_map(struct qla_hw_data *ha,
- 	if (!ha->qp_cpu_map)
- 		return;
- 	mask = pci_irq_get_affinity(ha->pdev, msix->vector_base0);
-+	if (!mask)
-+		return;
- 	qpair->cpuid = cpumask_first(mask);
- 	for_each_cpu(cpu, mask) {
- 		ha->qp_cpu_map[cpu] = qpair;
- 	}
- 	msix->cpuid = qpair->cpuid;
-+	qpair->cpu_mapped = true;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 161cc4cd41fa9..0779bf2378264 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2677,6 +2677,7 @@ static void nvme_free_tagset(struct nvme_dev *dev)
+ 	dev->ctrl.tagset = NULL;
  }
  
- static inline void
-diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
-index cf1025c917267..db65dbab3a9fa 100644
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -3819,6 +3819,9 @@ void qla24xx_process_response_queue(struct scsi_qla_host *vha,
++/* pairs with nvme_pci_alloc_dev */
+ static void nvme_pci_free_ctrl(struct nvme_ctrl *ctrl)
+ {
+ 	struct nvme_dev *dev = to_nvme_dev(ctrl);
+@@ -2966,19 +2967,23 @@ static void nvme_async_probe(void *data, async_cookie_t cookie)
+ 	nvme_put_ctrl(&dev->ctrl);
+ }
  
- 	if (rsp->qpair->cpuid != raw_smp_processor_id() || !rsp->qpair->rcv_intr) {
- 		rsp->qpair->rcv_intr = 1;
-+
-+		if (!rsp->qpair->cpu_mapped)
-+			qla_cpu_update(rsp->qpair, raw_smp_processor_id());
+-static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
++		const struct pci_device_id *id)
+ {
+-	int node, result = -ENOMEM;
+-	struct nvme_dev *dev;
+ 	unsigned long quirks = id->driver_data;
++	int node = dev_to_node(&pdev->dev);
++	struct nvme_dev *dev;
++	int ret = -ENOMEM;
+ 
+-	node = dev_to_node(&pdev->dev);
+ 	if (node == NUMA_NO_NODE)
+ 		set_dev_node(&pdev->dev, first_memory_node);
+ 
+ 	dev = kzalloc_node(sizeof(*dev), GFP_KERNEL, node);
+ 	if (!dev)
+-		return -ENOMEM;
++		return NULL;
++	INIT_WORK(&dev->ctrl.reset_work, nvme_reset_work);
++	INIT_WORK(&dev->remove_work, nvme_remove_dead_ctrl_work);
++	mutex_init(&dev->shutdown_lock);
+ 
+ 	dev->nr_write_queues = write_queues;
+ 	dev->nr_poll_queues = poll_queues;
+@@ -2986,25 +2991,11 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	dev->queues = kcalloc_node(dev->nr_allocated_queues,
+ 			sizeof(struct nvme_queue), GFP_KERNEL, node);
+ 	if (!dev->queues)
+-		goto free;
++		goto out_free_dev;
+ 
+ 	dev->dev = get_device(&pdev->dev);
+-	pci_set_drvdata(pdev, dev);
+-
+-	result = nvme_dev_map(dev);
+-	if (result)
+-		goto put_pci;
+-
+-	INIT_WORK(&dev->ctrl.reset_work, nvme_reset_work);
+-	INIT_WORK(&dev->remove_work, nvme_remove_dead_ctrl_work);
+-	mutex_init(&dev->shutdown_lock);
+-
+-	result = nvme_setup_prp_pools(dev);
+-	if (result)
+-		goto unmap;
+ 
+ 	quirks |= check_vendor_combination_bug(pdev);
+-
+ 	if (!noacpi && acpi_storage_d3(&pdev->dev)) {
+ 		/*
+ 		 * Some systems use a bios work around to ask for D3 on
+@@ -3014,34 +3005,54 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 			 "platform quirk: setting simple suspend\n");
+ 		quirks |= NVME_QUIRK_SIMPLE_SUSPEND;
  	}
++	ret = nvme_init_ctrl(&dev->ctrl, &pdev->dev, &nvme_pci_ctrl_ops,
++			     quirks);
++	if (ret)
++		goto out_put_device;
++	return dev;
  
- #define __update_rsp_in(_is_shadow_hba, _rsp, _rsp_in)			\
+-	result = nvme_pci_alloc_iod_mempool(dev);
++out_put_device:
++	put_device(dev->dev);
++	kfree(dev->queues);
++out_free_dev:
++	kfree(dev);
++	return ERR_PTR(ret);
++}
++
++static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct nvme_dev *dev;
++	int result = -ENOMEM;
++
++	dev = nvme_pci_alloc_dev(pdev, id);
++	if (!dev)
++		return -ENOMEM;
++
++	result = nvme_dev_map(dev);
+ 	if (result)
+-		goto release_pools;
++		goto out_uninit_ctrl;
+ 
+-	result = nvme_init_ctrl(&dev->ctrl, &pdev->dev, &nvme_pci_ctrl_ops,
+-			quirks);
++	result = nvme_setup_prp_pools(dev);
++	if (result)
++		goto out_dev_unmap;
++
++	result = nvme_pci_alloc_iod_mempool(dev);
+ 	if (result)
+-		goto release_mempool;
++		goto out_release_prp_pools;
+ 
+ 	dev_info(dev->ctrl.device, "pci function %s\n", dev_name(&pdev->dev));
++	pci_set_drvdata(pdev, dev);
+ 
+ 	nvme_reset_ctrl(&dev->ctrl);
+ 	async_schedule(nvme_async_probe, dev);
+-
+ 	return 0;
+ 
+- release_mempool:
+-	mempool_destroy(dev->iod_mempool);
+- release_pools:
++out_release_prp_pools:
+ 	nvme_release_prp_pools(dev);
+- unmap:
++out_dev_unmap:
+ 	nvme_dev_unmap(dev);
+- put_pci:
+-	put_device(dev->dev);
+- free:
+-	kfree(dev->queues);
+-	kfree(dev);
++out_uninit_ctrl:
++	nvme_uninit_ctrl(&dev->ctrl);
+ 	return result;
+ }
+ 
 -- 
 2.40.1
 
