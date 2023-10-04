@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B36C7B88EF
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40C6A7B8A5B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244017AbjJDSVK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:21:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48024 "EHLO
+        id S244412AbjJDSeo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:34:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244015AbjJDSVJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:09 -0400
+        with ESMTP id S244410AbjJDSen (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F254998
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:21:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49304C433CA;
-        Wed,  4 Oct 2023 18:21:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2746AAD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B59C433C8;
+        Wed,  4 Oct 2023 18:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443664;
-        bh=oGNO3npaFikIZAPFMiSLTQwe3CBCdKXhXJ7k9HskuEE=;
+        s=korg; t=1696444478;
+        bh=0hpJRq37mFizU9hvXjY+c7manlIZOFv/DcxLgBkexP8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cOFyXWwY1/37elFZICypixs43akL5oMOKGGJ8nq0LfXPEF9hb+hg5Sc/j0Wkj9eIP
-         7rFKEL7W4hjnPZNsViaAivAOhH0fkg6w5no51mV7e4ofmFXogH/gf4R4bGUIgyJ35j
-         2NFOx1mQ+W3YdC9NtkQyDnRGTxDGfqDTrWi38rkc=
+        b=HYO1rQcBFYga58v+EAuQe/hjqU33T1vd8erAixvhTOQWSwdNj41IyEYT01HkZfG6x
+         pKkWZmmJ+0yLP5WyMFT0VM8eHSSfPVp0NbCI01fsypK84OEGyMYRBIXhShiUxPILEK
+         MNiCFLXk6AaBqC90lb3q67zjP5xnml8t5tA/HQ0k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        SeongJae Park <sj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 236/259] mm/damon/vaddr-test: fix memory leak in damon_do_test_apply_three_regions()
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        John Garry <john.g.garry@oracle.com>
+Subject: [PATCH 6.5 264/321] ata: libata-scsi: link ata port and scsi device
 Date:   Wed,  4 Oct 2023 19:56:49 +0200
-Message-ID: <20231004175228.208352872@linuxfoundation.org>
+Message-ID: <20231004175241.495357643@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,172 +53,133 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 45120b15743fa7c0aa53d5db6dfb4c8f87be4abd upstream.
+commit fb99ef17865035a6657786d4b2af11a27ba23f9b upstream.
 
-When CONFIG_DAMON_VADDR_KUNIT_TEST=y and making CONFIG_DEBUG_KMEMLEAK=y
-and CONFIG_DEBUG_KMEMLEAK_AUTO_SCAN=y, the below memory leak is detected.
+There is no direct device ancestry defined between an ata_device and
+its scsi device which prevents the power management code from correctly
+ordering suspend and resume operations. Create such ancestry with the
+ata device as the parent to ensure that the scsi device (child) is
+suspended before the ata device and that resume handles the ata device
+before the scsi device.
 
-Since commit 9f86d624292c ("mm/damon/vaddr-test: remove unnecessary
-variables"), the damon_destroy_ctx() is removed, but still call
-damon_new_target() and damon_new_region(), the damon_region which is
-allocated by kmem_cache_alloc() in damon_new_region() and the damon_target
-which is allocated by kmalloc in damon_new_target() are not freed.  And
-the damon_region which is allocated in damon_new_region() in
-damon_set_regions() is also not freed.
+The parent-child (supplier-consumer) relationship is established between
+the ata_port (parent) and the scsi device (child) with the function
+device_add_link(). The parent used is not the ata_device as the PM
+operations are defined per port and the status of all devices connected
+through that port is controlled from the port operations.
 
-So use damon_destroy_target to free all the damon_regions and damon_target.
+The device link is established with the new function
+ata_scsi_slave_alloc(), and this function is used to define the
+->slave_alloc callback of the scsi host template of all ata drivers.
 
-    unreferenced object 0xffff888107c9a940 (size 64):
-      comm "kunit_try_catch", pid 1069, jiffies 4294670592 (age 732.761s)
-      hex dump (first 32 bytes):
-        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
-        60 c7 9c 07 81 88 ff ff f8 cb 9c 07 81 88 ff ff  `...............
-      backtrace:
-        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
-        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
-        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
-        [<ffffffff819c82be>] damon_test_apply_three_regions1+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff8881079cc740 (size 56):
-      comm "kunit_try_catch", pid 1069, jiffies 4294670592 (age 732.761s)
-      hex dump (first 32 bytes):
-        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
-        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
-      backtrace:
-        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
-        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
-        [<ffffffff819c82be>] damon_test_apply_three_regions1+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff888107c9ac40 (size 64):
-      comm "kunit_try_catch", pid 1071, jiffies 4294670595 (age 732.843s)
-      hex dump (first 32 bytes):
-        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
-        a0 cc 9c 07 81 88 ff ff 78 a1 76 07 81 88 ff ff  ........x.v.....
-      backtrace:
-        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
-        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
-        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
-        [<ffffffff819c851e>] damon_test_apply_three_regions2+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff8881079ccc80 (size 56):
-      comm "kunit_try_catch", pid 1071, jiffies 4294670595 (age 732.843s)
-      hex dump (first 32 bytes):
-        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
-        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
-      backtrace:
-        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
-        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
-        [<ffffffff819c851e>] damon_test_apply_three_regions2+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff888107c9af40 (size 64):
-      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.011s)
-      hex dump (first 32 bytes):
-        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
-        20 a2 76 07 81 88 ff ff b8 a6 76 07 81 88 ff ff   .v.......v.....
-      backtrace:
-        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
-        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
-        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
-        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff88810776a200 (size 56):
-      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.011s)
-      hex dump (first 32 bytes):
-        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
-        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
-      backtrace:
-        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
-        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
-        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff88810776a740 (size 56):
-      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.025s)
-      hex dump (first 32 bytes):
-        3d 00 00 00 00 00 00 00 3f 00 00 00 00 00 00 00  =.......?.......
-        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
-      backtrace:
-        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
-        [<ffffffff819bfcc2>] damon_set_regions+0x4c2/0x8e0
-        [<ffffffff819c7dbb>] damon_do_test_apply_three_regions.constprop.0+0xfb/0x3e0
-        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff888108038240 (size 64):
-      comm "kunit_try_catch", pid 1075, jiffies 4294670600 (age 733.022s)
-      hex dump (first 32 bytes):
-        00 00 00 00 00 00 00 00 03 00 00 00 6b 6b 6b 6b  ............kkkk
-        48 ad 76 07 81 88 ff ff 98 ae 76 07 81 88 ff ff  H.v.......v.....
-      backtrace:
-        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
-        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
-        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
-        [<ffffffff819c898d>] damon_test_apply_three_regions4+0x1cd/0x210
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff88810776ad28 (size 56):
-      comm "kunit_try_catch", pid 1075, jiffies 4294670600 (age 733.022s)
-      hex dump (first 32 bytes):
-        05 00 00 00 00 00 00 00 07 00 00 00 00 00 00 00  ................
-        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
-      backtrace:
-        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
-        [<ffffffff819bfcc2>] damon_set_regions+0x4c2/0x8e0
-        [<ffffffff819c7dbb>] damon_do_test_apply_three_regions.constprop.0+0xfb/0x3e0
-        [<ffffffff819c898d>] damon_test_apply_three_regions4+0x1cd/0x210
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-
-Link: https://lkml.kernel.org/r/20230925072100.3725620-1-ruanjinjie@huawei.com
-Fixes: 9f86d624292c ("mm/damon/vaddr-test: remove unnecessary variables")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a19a93e4c6a9 ("scsi: core: pm: Rely on the device driver core for async power management")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/vaddr-test.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/libata-scsi.c |   45 ++++++++++++++++++++++++++++++++++++++++-----
+ include/linux/libata.h    |    2 ++
+ 2 files changed, 42 insertions(+), 5 deletions(-)
 
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -140,6 +140,8 @@ static void damon_do_test_apply_three_re
- 		KUNIT_EXPECT_EQ(test, r->ar.start, expected[i * 2]);
- 		KUNIT_EXPECT_EQ(test, r->ar.end, expected[i * 2 + 1]);
- 	}
-+
-+	damon_destroy_target(t);
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1140,6 +1140,42 @@ int ata_scsi_dev_config(struct scsi_devi
  }
  
- /*
+ /**
++ *	ata_scsi_slave_alloc - Early setup of SCSI device
++ *	@sdev: SCSI device to examine
++ *
++ *	This is called from scsi_alloc_sdev() when the scsi device
++ *	associated with an ATA device is scanned on a port.
++ *
++ *	LOCKING:
++ *	Defined by SCSI layer.  We don't really care.
++ */
++
++int ata_scsi_slave_alloc(struct scsi_device *sdev)
++{
++	struct ata_port *ap = ata_shost_to_port(sdev->host);
++	struct device_link *link;
++
++	ata_scsi_sdev_config(sdev);
++
++	/*
++	 * Create a link from the ata_port device to the scsi device to ensure
++	 * that PM does suspend/resume in the correct order: the scsi device is
++	 * consumer (child) and the ata port the supplier (parent).
++	 */
++	link = device_link_add(&sdev->sdev_gendev, &ap->tdev,
++			       DL_FLAG_STATELESS |
++			       DL_FLAG_PM_RUNTIME | DL_FLAG_RPM_ACTIVE);
++	if (!link) {
++		ata_port_err(ap, "Failed to create link to scsi device %s\n",
++			     dev_name(&sdev->sdev_gendev));
++		return -ENODEV;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(ata_scsi_slave_alloc);
++
++/**
+  *	ata_scsi_slave_config - Set SCSI device attributes
+  *	@sdev: SCSI device to examine
+  *
+@@ -1155,14 +1191,11 @@ int ata_scsi_slave_config(struct scsi_de
+ {
+ 	struct ata_port *ap = ata_shost_to_port(sdev->host);
+ 	struct ata_device *dev = __ata_scsi_find_dev(ap, sdev);
+-	int rc = 0;
+-
+-	ata_scsi_sdev_config(sdev);
+ 
+ 	if (dev)
+-		rc = ata_scsi_dev_config(sdev, dev);
++		return ata_scsi_dev_config(sdev, dev);
+ 
+-	return rc;
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(ata_scsi_slave_config);
+ 
+@@ -1189,6 +1222,8 @@ void ata_scsi_slave_destroy(struct scsi_
+ 	if (!ap->ops->error_handler)
+ 		return;
+ 
++	device_link_remove(&sdev->sdev_gendev, &ap->tdev);
++
+ 	spin_lock_irqsave(ap->lock, flags);
+ 	dev = __ata_scsi_find_dev(ap, sdev);
+ 	if (dev && dev->sdev) {
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -1155,6 +1155,7 @@ extern int ata_std_bios_param(struct scs
+ 			      struct block_device *bdev,
+ 			      sector_t capacity, int geom[]);
+ extern void ata_scsi_unlock_native_capacity(struct scsi_device *sdev);
++extern int ata_scsi_slave_alloc(struct scsi_device *sdev);
+ extern int ata_scsi_slave_config(struct scsi_device *sdev);
+ extern void ata_scsi_slave_destroy(struct scsi_device *sdev);
+ extern int ata_scsi_change_queue_depth(struct scsi_device *sdev,
+@@ -1408,6 +1409,7 @@ extern const struct attribute_group *ata
+ 	.this_id		= ATA_SHT_THIS_ID,		\
+ 	.emulated		= ATA_SHT_EMULATED,		\
+ 	.proc_name		= drv_name,			\
++	.slave_alloc		= ata_scsi_slave_alloc,		\
+ 	.slave_destroy		= ata_scsi_slave_destroy,	\
+ 	.bios_param		= ata_std_bios_param,		\
+ 	.unlock_native_capacity	= ata_scsi_unlock_native_capacity,\
 
 
