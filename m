@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 438627B8960
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E8E77B8827
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244176AbjJDSZZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:25:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52516 "EHLO
+        id S243979AbjJDSNJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:13:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244182AbjJDSZX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:23 -0400
+        with ESMTP id S243930AbjJDSNJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C33779E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:25:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60ADC433C9;
-        Wed,  4 Oct 2023 18:25:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20DDBA7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7E9C433C8;
+        Wed,  4 Oct 2023 18:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443916;
-        bh=xIiC2bA8sgQrcvIAYZ5M6CSu00+eZwnVonsGeStigxY=;
+        s=korg; t=1696443185;
+        bh=foXtuOOYHpxBlcLRB4ykrIGKJg5ZUgGrKqDsRn+grNo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=brmAqDWv/QEyDADbAuJFHtgtWqMY7i0Ppx7/KHlUvNr+dhoQ3hUQNU6kHCLuKMLWQ
-         9GpZZ8cWOfFILwk5gZw6UEmPsQK9kRUu8B7kR27B0nwKu2QHb5tmBY0JQkv6jfqGVO
-         ru/9n11olhJcwafoM25/ddVd4FsAVCujz2iMMsGk=
+        b=VwraBC+wjgcBka7+Q6eEYFcvYp4p7h3Wgkvkn1n3pe2PQdm+m+VQlW7J/pomSp3sh
+         jxgXBeh8+puU5oUN4NNh+OcpFNW0mxmXffyWT1UqSoDH9q8MsQd1/gPHGoYMSSvlgX
+         E9PvwJxbl0PiifsZEPgz/CCtVB6ryftu/e8ojwBE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Ahern <dsahern@kernel.org>,
-        Kyle Zeng <zengyhkyle@gmail.com>,
-        Stephen Suryaputra <ssuryaextr@gmail.com>,
-        Vadim Fedorenko <vfedorenko@novek.ru>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 066/321] ipv4: fix null-deref in ipv4_link_failure
+Subject: [PATCH 6.1 038/259] netfilter: nf_tables: disallow element removal on anonymous sets
 Date:   Wed,  4 Oct 2023 19:53:31 +0200
-Message-ID: <20231004175232.243502862@linuxfoundation.org>
+Message-ID: <20231004175219.187304574@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +49,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <zengyhkyle@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 0113d9c9d1ccc07f5a3710dac4aa24b6d711278c ]
+[ Upstream commit 23a3bfd4ba7acd36abf52b78605f61b21bdac216 ]
 
-Currently, we assume the skb is associated with a device before calling
-__ip_options_compile, which is not always the case if it is re-routed by
-ipvs.
-When skb->dev is NULL, dev_net(skb->dev) will become null-dereference.
-This patch adds a check for the edge case and switch to use the net_device
-from the rtable when skb->dev is NULL.
+Anonymous sets need to be populated once at creation and then they are
+bound to rule since 938154b93be8 ("netfilter: nf_tables: reject unbound
+anonymous set before commit phase"), otherwise transaction reports
+EINVAL.
 
-Fixes: ed0de45a1008 ("ipv4: recompile ip options in ipv4_link_failure")
-Suggested-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
-Cc: Stephen Suryaputra <ssuryaextr@gmail.com>
-Cc: Vadim Fedorenko <vfedorenko@novek.ru>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Userspace does not need to delete elements of anonymous sets that are
+not yet bound, reject this with EOPNOTSUPP.
+
+>From flush command path, skip anonymous sets, they are expected to be
+bound already. Otherwise, EINVAL is hit at the end of this transaction
+for unbound sets.
+
+Fixes: 96518518cc41 ("netfilter: add nftables")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 33626619aee79..0a53ca6ebb0d5 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1213,6 +1213,7 @@ EXPORT_INDIRECT_CALLABLE(ipv4_dst_check);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index b22f2d9ee4afc..521f8c3cb6987 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1437,8 +1437,7 @@ static int nft_flush_table(struct nft_ctx *ctx)
+ 		if (!nft_is_active_next(ctx->net, set))
+ 			continue;
  
- static void ipv4_send_dest_unreach(struct sk_buff *skb)
- {
-+	struct net_device *dev;
- 	struct ip_options opt;
- 	int res;
+-		if (nft_set_is_anonymous(set) &&
+-		    !list_empty(&set->bindings))
++		if (nft_set_is_anonymous(set))
+ 			continue;
  
-@@ -1230,7 +1231,8 @@ static void ipv4_send_dest_unreach(struct sk_buff *skb)
- 		opt.optlen = ip_hdr(skb)->ihl * 4 - sizeof(struct iphdr);
+ 		err = nft_delset(ctx, set);
+@@ -6907,8 +6906,10 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
+ 	if (IS_ERR(set))
+ 		return PTR_ERR(set);
  
- 		rcu_read_lock();
--		res = __ip_options_compile(dev_net(skb->dev), &opt, skb, NULL);
-+		dev = skb->dev ? skb->dev : skb_rtable(skb)->dst.dev;
-+		res = __ip_options_compile(dev_net(dev), &opt, skb, NULL);
- 		rcu_read_unlock();
+-	if (!list_empty(&set->bindings) &&
+-	    (set->flags & (NFT_SET_CONSTANT | NFT_SET_ANONYMOUS)))
++	if (nft_set_is_anonymous(set))
++		return -EOPNOTSUPP;
++
++	if (!list_empty(&set->bindings) && (set->flags & NFT_SET_CONSTANT))
+ 		return -EBUSY;
  
- 		if (res)
+ 	nft_ctx_init(&ctx, net, skb, info->nlh, family, table, NULL, nla);
 -- 
 2.40.1
 
