@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2B9E7B89D1
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07C127B8766
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:04:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233788AbjJDS3l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:29:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40758 "EHLO
+        id S243784AbjJDSEs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:04:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233874AbjJDS3k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:40 -0400
+        with ESMTP id S243781AbjJDSEr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:04:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A2E98
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775CAC433C8;
-        Wed,  4 Oct 2023 18:29:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8035CC4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:04:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5109C433C8;
+        Wed,  4 Oct 2023 18:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444176;
-        bh=axQ5ipgjjcNmiLKTynLoRhWGb9T7WYNCyjGt9bdTP80=;
+        s=korg; t=1696442682;
+        bh=sR2M8TJ2Cgme0hMOGsTCtZdwDH8UxIMmUG8L2IiItEk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UTGaj9WWqJ7hQZNlSAjxYlfeR3QTVnIF/aXgV+YASTkOJm1DPQn8TiVu8SAIo/len
-         1KVf30p7kTg8umTcp04agg7sV8tjCz4vExduWKuGJlYnrFNeLwKec2Fni6VzMwxd2Y
-         eVkDjzw9orPFrcwePwi3wkJ7XMJK63VeEKTtLvpk=
+        b=rHe8QYKxX+Nl1Kuraq5f6Hg4oM3RrH5kAR+Ymcjj0kEAaz8vi4Pl0a/CP85UOOIw8
+         ijMrBe7jExEfuqxruSACrD2Pgw1h9b742sCxLLLdzFdBmd6YCRXzEjN+ulY8qVKjeV
+         /SVmQAiVeU65mneUfSY1lBAOh9/ICFxBnsfP2BuI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Cooper <Andrew.Cooper3@citrix.com>,
-        Sean Christopherson <seanjc@google.com>,
+        patches@lists.linux.dev, Dave Chinner <dchinner@redhat.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Leah Rumancik <leah.rumancik@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 158/321] x86/reboot: VMCLEAR active VMCSes before emergency reboot
+Subject: [PATCH 5.15 072/183] xfs: bound maximum wait time for inodegc work
 Date:   Wed,  4 Oct 2023 19:55:03 +0200
-Message-ID: <20231004175236.563003673@linuxfoundation.org>
+Message-ID: <20231004175206.883249577@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,210 +51,163 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit b23c83ad2c638420ec0608a9de354507c41bec29 ]
+[ Upstream commit 7cf2b0f9611b9971d663e1fc3206eeda3b902922 ]
 
-VMCLEAR active VMCSes before any emergency reboot, not just if the kernel
-may kexec into a new kernel after a crash.  Per Intel's SDM, the VMX
-architecture doesn't require the CPU to flush the VMCS cache on INIT.  If
-an emergency reboot doesn't RESET CPUs, cached VMCSes could theoretically
-be kept and only be written back to memory after the new kernel is booted,
-i.e. could effectively corrupt memory after reboot.
+Currently inodegc work can sit queued on the per-cpu queue until
+the workqueue is either flushed of the queue reaches a depth that
+triggers work queuing (and later throttling). This means that we
+could queue work that waits for a long time for some other event to
+trigger flushing.
 
-Opportunistically remove the setting of the global pointer to NULL to make
-checkpatch happy.
+Hence instead of just queueing work at a specific depth, use a
+delayed work that queues the work at a bound time. We can still
+schedule the work immediately at a given depth, but we no long need
+to worry about leaving a number of items on the list that won't get
+processed until external events prevail.
 
-Cc: Andrew Cooper <Andrew.Cooper3@citrix.com>
-Link: https://lore.kernel.org/r/20230721201859.2307736-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kexec.h  |  2 --
- arch/x86/include/asm/reboot.h |  2 ++
- arch/x86/kernel/crash.c       | 31 -------------------------------
- arch/x86/kernel/reboot.c      | 22 ++++++++++++++++++++++
- arch/x86/kvm/vmx/vmx.c        | 10 +++-------
- 5 files changed, 27 insertions(+), 40 deletions(-)
+ fs/xfs/xfs_icache.c | 36 ++++++++++++++++++++++--------------
+ fs/xfs/xfs_mount.h  |  2 +-
+ fs/xfs/xfs_super.c  |  2 +-
+ 3 files changed, 24 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/include/asm/kexec.h b/arch/x86/include/asm/kexec.h
-index 5b77bbc28f969..819046974b997 100644
---- a/arch/x86/include/asm/kexec.h
-+++ b/arch/x86/include/asm/kexec.h
-@@ -205,8 +205,6 @@ int arch_kimage_file_post_load_cleanup(struct kimage *image);
- #endif
- #endif
- 
--typedef void crash_vmclear_fn(void);
--extern crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss;
- extern void kdump_nmi_shootdown_cpus(void);
- 
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/x86/include/asm/reboot.h b/arch/x86/include/asm/reboot.h
-index 9177b4354c3f5..dc201724a6433 100644
---- a/arch/x86/include/asm/reboot.h
-+++ b/arch/x86/include/asm/reboot.h
-@@ -25,6 +25,8 @@ void __noreturn machine_real_restart(unsigned int type);
- #define MRR_BIOS	0
- #define MRR_APM		1
- 
-+typedef void crash_vmclear_fn(void);
-+extern crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss;
- void cpu_emergency_disable_virtualization(void);
- 
- typedef void (*nmi_shootdown_cb)(int, struct pt_regs*);
-diff --git a/arch/x86/kernel/crash.c b/arch/x86/kernel/crash.c
-index cdd92ab43cda4..54cd959cb3160 100644
---- a/arch/x86/kernel/crash.c
-+++ b/arch/x86/kernel/crash.c
-@@ -48,38 +48,12 @@ struct crash_memmap_data {
- 	unsigned int type;
- };
- 
--/*
-- * This is used to VMCLEAR all VMCSs loaded on the
-- * processor. And when loading kvm_intel module, the
-- * callback function pointer will be assigned.
-- *
-- * protected by rcu.
-- */
--crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss = NULL;
--EXPORT_SYMBOL_GPL(crash_vmclear_loaded_vmcss);
--
--static inline void cpu_crash_vmclear_loaded_vmcss(void)
--{
--	crash_vmclear_fn *do_vmclear_operation = NULL;
--
--	rcu_read_lock();
--	do_vmclear_operation = rcu_dereference(crash_vmclear_loaded_vmcss);
--	if (do_vmclear_operation)
--		do_vmclear_operation();
--	rcu_read_unlock();
--}
--
- #if defined(CONFIG_SMP) && defined(CONFIG_X86_LOCAL_APIC)
- 
- static void kdump_nmi_callback(int cpu, struct pt_regs *regs)
- {
- 	crash_save_cpu(regs, cpu);
- 
--	/*
--	 * VMCLEAR VMCSs loaded on all cpus if needed.
--	 */
--	cpu_crash_vmclear_loaded_vmcss();
--
- 	/*
- 	 * Disable Intel PT to stop its logging
- 	 */
-@@ -133,11 +107,6 @@ void native_machine_crash_shutdown(struct pt_regs *regs)
- 
- 	crash_smp_send_stop();
- 
--	/*
--	 * VMCLEAR VMCSs loaded on this cpu if needed.
--	 */
--	cpu_crash_vmclear_loaded_vmcss();
--
- 	cpu_emergency_disable_virtualization();
- 
- 	/*
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index 3adbe97015c13..3fa4c6717a1db 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -787,6 +787,26 @@ void machine_crash_shutdown(struct pt_regs *regs)
- }
- #endif
- 
-+/*
-+ * This is used to VMCLEAR all VMCSs loaded on the
-+ * processor. And when loading kvm_intel module, the
-+ * callback function pointer will be assigned.
-+ *
-+ * protected by rcu.
-+ */
-+crash_vmclear_fn __rcu *crash_vmclear_loaded_vmcss;
-+EXPORT_SYMBOL_GPL(crash_vmclear_loaded_vmcss);
-+
-+static inline void cpu_crash_vmclear_loaded_vmcss(void)
-+{
-+	crash_vmclear_fn *do_vmclear_operation = NULL;
-+
-+	rcu_read_lock();
-+	do_vmclear_operation = rcu_dereference(crash_vmclear_loaded_vmcss);
-+	if (do_vmclear_operation)
-+		do_vmclear_operation();
-+	rcu_read_unlock();
-+}
- 
- /* This is the CPU performing the emergency shutdown work. */
- int crashing_cpu = -1;
-@@ -798,6 +818,8 @@ int crashing_cpu = -1;
-  */
- void cpu_emergency_disable_virtualization(void)
- {
-+	cpu_crash_vmclear_loaded_vmcss();
-+
- 	cpu_emergency_vmxoff();
- 	cpu_emergency_svm_disable();
- }
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index f2fb67a9dc050..bc6f0fea48b43 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -41,7 +41,7 @@
- #include <asm/idtentry.h>
- #include <asm/io.h>
- #include <asm/irq_remapping.h>
--#include <asm/kexec.h>
-+#include <asm/reboot.h>
- #include <asm/perf_event.h>
- #include <asm/mmu_context.h>
- #include <asm/mshyperv.h>
-@@ -754,7 +754,6 @@ static int vmx_set_guest_uret_msr(struct vcpu_vmx *vmx,
- 	return ret;
+diff --git a/fs/xfs/xfs_icache.c b/fs/xfs/xfs_icache.c
+index 5e44d7bbd8fca..2c3ef553f5ef0 100644
+--- a/fs/xfs/xfs_icache.c
++++ b/fs/xfs/xfs_icache.c
+@@ -458,7 +458,7 @@ xfs_inodegc_queue_all(
+ 	for_each_online_cpu(cpu) {
+ 		gc = per_cpu_ptr(mp->m_inodegc, cpu);
+ 		if (!llist_empty(&gc->list))
+-			queue_work_on(cpu, mp->m_inodegc_wq, &gc->work);
++			mod_delayed_work_on(cpu, mp->m_inodegc_wq, &gc->work, 0);
+ 	}
  }
  
--#ifdef CONFIG_KEXEC_CORE
- static void crash_vmclear_local_loaded_vmcss(void)
+@@ -1851,8 +1851,8 @@ void
+ xfs_inodegc_worker(
+ 	struct work_struct	*work)
  {
- 	int cpu = raw_smp_processor_id();
-@@ -764,7 +763,6 @@ static void crash_vmclear_local_loaded_vmcss(void)
- 			    loaded_vmcss_on_cpu_link)
- 		vmcs_clear(v->vmcs);
- }
--#endif /* CONFIG_KEXEC_CORE */
+-	struct xfs_inodegc	*gc = container_of(work, struct xfs_inodegc,
+-							work);
++	struct xfs_inodegc	*gc = container_of(to_delayed_work(work),
++						struct xfs_inodegc, work);
+ 	struct llist_node	*node = llist_del_all(&gc->list);
+ 	struct xfs_inode	*ip, *n;
  
- static void __loaded_vmcs_clear(void *arg)
- {
-@@ -8623,10 +8621,9 @@ static void __vmx_exit(void)
- {
- 	allow_smaller_maxphyaddr = false;
+@@ -2021,6 +2021,7 @@ xfs_inodegc_queue(
+ 	struct xfs_inodegc	*gc;
+ 	int			items;
+ 	unsigned int		shrinker_hits;
++	unsigned long		queue_delay = 1;
  
--#ifdef CONFIG_KEXEC_CORE
- 	RCU_INIT_POINTER(crash_vmclear_loaded_vmcss, NULL);
- 	synchronize_rcu();
--#endif
-+
- 	vmx_cleanup_l1d_flush();
- }
+ 	trace_xfs_inode_set_need_inactive(ip);
+ 	spin_lock(&ip->i_flags_lock);
+@@ -2032,19 +2033,26 @@ xfs_inodegc_queue(
+ 	items = READ_ONCE(gc->items);
+ 	WRITE_ONCE(gc->items, items + 1);
+ 	shrinker_hits = READ_ONCE(gc->shrinker_hits);
+-	put_cpu_ptr(gc);
  
-@@ -8675,10 +8672,9 @@ static int __init vmx_init(void)
- 		pi_init_cpu(cpu);
+-	if (!xfs_is_inodegc_enabled(mp))
++	/*
++	 * We queue the work while holding the current CPU so that the work
++	 * is scheduled to run on this CPU.
++	 */
++	if (!xfs_is_inodegc_enabled(mp)) {
++		put_cpu_ptr(gc);
+ 		return;
+-
+-	if (xfs_inodegc_want_queue_work(ip, items)) {
+-		trace_xfs_inodegc_queue(mp, __return_address);
+-		queue_work(mp->m_inodegc_wq, &gc->work);
  	}
  
--#ifdef CONFIG_KEXEC_CORE
- 	rcu_assign_pointer(crash_vmclear_loaded_vmcss,
- 			   crash_vmclear_local_loaded_vmcss);
--#endif
++	if (xfs_inodegc_want_queue_work(ip, items))
++		queue_delay = 0;
 +
- 	vmx_check_vmcs12_offsets();
++	trace_xfs_inodegc_queue(mp, __return_address);
++	mod_delayed_work(mp->m_inodegc_wq, &gc->work, queue_delay);
++	put_cpu_ptr(gc);
++
+ 	if (xfs_inodegc_want_flush_work(ip, items, shrinker_hits)) {
+ 		trace_xfs_inodegc_throttle(mp, __return_address);
+-		flush_work(&gc->work);
++		flush_delayed_work(&gc->work);
+ 	}
+ }
  
- 	/*
+@@ -2061,7 +2069,7 @@ xfs_inodegc_cpu_dead(
+ 	unsigned int		count = 0;
+ 
+ 	dead_gc = per_cpu_ptr(mp->m_inodegc, dead_cpu);
+-	cancel_work_sync(&dead_gc->work);
++	cancel_delayed_work_sync(&dead_gc->work);
+ 
+ 	if (llist_empty(&dead_gc->list))
+ 		return;
+@@ -2080,12 +2088,12 @@ xfs_inodegc_cpu_dead(
+ 	llist_add_batch(first, last, &gc->list);
+ 	count += READ_ONCE(gc->items);
+ 	WRITE_ONCE(gc->items, count);
+-	put_cpu_ptr(gc);
+ 
+ 	if (xfs_is_inodegc_enabled(mp)) {
+ 		trace_xfs_inodegc_queue(mp, __return_address);
+-		queue_work(mp->m_inodegc_wq, &gc->work);
++		mod_delayed_work(mp->m_inodegc_wq, &gc->work, 0);
+ 	}
++	put_cpu_ptr(gc);
+ }
+ 
+ /*
+@@ -2180,7 +2188,7 @@ xfs_inodegc_shrinker_scan(
+ 			unsigned int	h = READ_ONCE(gc->shrinker_hits);
+ 
+ 			WRITE_ONCE(gc->shrinker_hits, h + 1);
+-			queue_work_on(cpu, mp->m_inodegc_wq, &gc->work);
++			mod_delayed_work_on(cpu, mp->m_inodegc_wq, &gc->work, 0);
+ 			no_items = false;
+ 		}
+ 	}
+diff --git a/fs/xfs/xfs_mount.h b/fs/xfs/xfs_mount.h
+index 86564295fce6d..3d58938a6f75b 100644
+--- a/fs/xfs/xfs_mount.h
++++ b/fs/xfs/xfs_mount.h
+@@ -61,7 +61,7 @@ struct xfs_error_cfg {
+  */
+ struct xfs_inodegc {
+ 	struct llist_head	list;
+-	struct work_struct	work;
++	struct delayed_work	work;
+ 
+ 	/* approximate count of inodes in the list */
+ 	unsigned int		items;
+diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+index df1d6be61bfa3..8fe6ca9208de6 100644
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1061,7 +1061,7 @@ xfs_inodegc_init_percpu(
+ 		gc = per_cpu_ptr(mp->m_inodegc, cpu);
+ 		init_llist_head(&gc->list);
+ 		gc->items = 0;
+-		INIT_WORK(&gc->work, xfs_inodegc_worker);
++		INIT_DELAYED_WORK(&gc->work, xfs_inodegc_worker);
+ 	}
+ 	return 0;
+ }
 -- 
 2.40.1
 
