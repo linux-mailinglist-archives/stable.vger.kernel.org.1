@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26D0E7B8813
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:12:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1116B7B8965
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243942AbjJDSMO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:12:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36320 "EHLO
+        id S244136AbjJDSZc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:25:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243937AbjJDSMG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:12:06 -0400
+        with ESMTP id S244181AbjJDSZa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57773D7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:11:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2AAC433C8;
-        Wed,  4 Oct 2023 18:11:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91E47C6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:25:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60712C433CB;
+        Wed,  4 Oct 2023 18:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443113;
-        bh=WTLYbaxWFfCrpXJnDsGPeHjBxdpdrnxtBB5naFqI9yc=;
+        s=korg; t=1696443924;
+        bh=GQIb728sshTnZThF3+dNlrtOtH9sA3+oQLWFLfqn4j8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CxVscakCQTc1Zo6XIU8vhzT7pdZLflN3KZdcqmHSodlfI+HNTufj0P+aYJgudErCA
-         vRMP5eSHTWIwJy6L5WzfbrfhmbCvg5nqv04pHbPdbeCuGcnQWhdAq5la3iiMNl9hyL
-         Ym7SZeQjtw0imVtrLS7cZi/Wnw0651oKBBOQtKRE=
+        b=Dh8xAUMTKtMW8KzUDxY3LHNuyMTsW/hF18WCYKy6D5QyTrzvvRJM7JfROKJGVWVKR
+         D5RYg/zRNF8JNE1jMxkHL7zlIc9Okh/74dzTDhWUf2t+4O8vQSlfw1ke9QI7pc5Nf6
+         YSt7Cb/VK31Y+Hp8Kh1P2maYsaavIu9897Xq+AnI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oder Chiou <oder_chiou@realtek.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Benjamin Gray <bgray@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/259] ASoC: rt5640: Fix IRQ not being free-ed for HDA jack detect mode
+Subject: [PATCH 6.5 069/321] powerpc/dexcr: Move HASHCHK trap handler
 Date:   Wed,  4 Oct 2023 19:53:34 +0200
-Message-ID: <20231004175219.330655448@linuxfoundation.org>
+Message-ID: <20231004175232.399032571@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +50,134 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Benjamin Gray <bgray@linux.ibm.com>
 
-[ Upstream commit 8c8bf3df6b7c0ed1c4dd373b23eb0ce13a63f452 ]
+[ Upstream commit c3f4309693758b13fbb34b3741c2e2801ad28769 ]
 
-Set "rt5640->irq_requested = true" after a successful request_irq()
-in rt5640_enable_hda_jack_detect(), so that rt5640_disable_jack_detect()
-properly frees the IRQ.
+Syzkaller reported a sleep in atomic context bug relating to the HASHCHK
+handler logic:
 
-This fixes the IRQ not being freed on rmmod / driver unbind.
+  BUG: sleeping function called from invalid context at arch/powerpc/kernel/traps.c:1518
+  in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 25040, name: syz-executor
+  preempt_count: 0, expected: 0
+  RCU nest depth: 0, expected: 0
+  no locks held by syz-executor/25040.
+  irq event stamp: 34
+  hardirqs last  enabled at (33): [<c000000000048b38>] prep_irq_for_enabled_exit arch/powerpc/kernel/interrupt.c:56 [inline]
+  hardirqs last  enabled at (33): [<c000000000048b38>] interrupt_exit_user_prepare_main+0x148/0x600 arch/powerpc/kernel/interrupt.c:230
+  hardirqs last disabled at (34): [<c00000000003e6a4>] interrupt_enter_prepare+0x144/0x4f0 arch/powerpc/include/asm/interrupt.h:176
+  softirqs last  enabled at (0): [<c000000000281954>] copy_process+0x16e4/0x4750 kernel/fork.c:2436
+  softirqs last disabled at (0): [<0000000000000000>] 0x0
+  CPU: 15 PID: 25040 Comm: syz-executor Not tainted 6.5.0-rc5-00001-g3ccdff6bb06d #3
+  Hardware name: IBM,9105-22A POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1040.00 (NL1040_021) hv:phyp pSeries
+  Call Trace:
+  [c0000000a8247ce0] [c00000000032b0e4] __might_resched+0x3b4/0x400 kernel/sched/core.c:10189
+  [c0000000a8247d80] [c0000000008c7dc8] __might_fault+0xa8/0x170 mm/memory.c:5853
+  [c0000000a8247dc0] [c00000000004160c] do_program_check+0x32c/0xb20 arch/powerpc/kernel/traps.c:1518
+  [c0000000a8247e50] [c000000000009b2c] program_check_common_virt+0x3bc/0x3c0
 
-Fixes: 2b9c8d2b3c89 ("ASoC: rt5640: Add the HDA header support")
-Cc: Oder Chiou <oder_chiou@realtek.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230912113245.320159-6-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To determine if a trap was caused by a HASHCHK instruction, we inspect
+the user instruction that triggered the trap. However this may sleep
+if the page needs to be faulted in (get_user_instr() reaches
+__get_user(), which calls might_fault() and triggers the bug message).
+
+Move the HASHCHK handler logic to after we allow IRQs, which is fine
+because we are only interested in HASHCHK if it's a user space trap.
+
+Fixes: 5bcba4e6c13f ("powerpc/dexcr: Handle hashchk exception")
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230915034604.45393-1-bgray@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5640.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kernel/traps.c | 56 ++++++++++++++++++++++++-------------
+ 1 file changed, 36 insertions(+), 20 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index 0f8e6dd214b0d..37ea4d854cb58 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -2624,6 +2624,7 @@ static void rt5640_enable_hda_jack_detect(
- 		rt5640->irq = -ENXIO;
- 		return;
- 	}
-+	rt5640->irq_requested = true;
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 7ef147e2a20d7..109b93874df92 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1512,23 +1512,11 @@ static void do_program_check(struct pt_regs *regs)
+ 			return;
+ 		}
  
- 	/* sync initial jack state */
- 	queue_delayed_work(system_long_wq, &rt5640->jack_work, 0);
+-		if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE) && user_mode(regs)) {
+-			ppc_inst_t insn;
+-
+-			if (get_user_instr(insn, (void __user *)regs->nip)) {
+-				_exception(SIGSEGV, regs, SEGV_MAPERR, regs->nip);
+-				return;
+-			}
+-
+-			if (ppc_inst_primary_opcode(insn) == 31 &&
+-			    get_xop(ppc_inst_val(insn)) == OP_31_XOP_HASHCHK) {
+-				_exception(SIGILL, regs, ILL_ILLOPN, regs->nip);
+-				return;
+-			}
++		/* User mode considers other cases after enabling IRQs */
++		if (!user_mode(regs)) {
++			_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
++			return;
+ 		}
+-
+-		_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
+-		return;
+ 	}
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	if (reason & REASON_TM) {
+@@ -1561,16 +1549,44 @@ static void do_program_check(struct pt_regs *regs)
+ 
+ 	/*
+ 	 * If we took the program check in the kernel skip down to sending a
+-	 * SIGILL. The subsequent cases all relate to emulating instructions
+-	 * which we should only do for userspace. We also do not want to enable
+-	 * interrupts for kernel faults because that might lead to further
+-	 * faults, and loose the context of the original exception.
++	 * SIGILL. The subsequent cases all relate to user space, such as
++	 * emulating instructions which we should only do for user space. We
++	 * also do not want to enable interrupts for kernel faults because that
++	 * might lead to further faults, and loose the context of the original
++	 * exception.
+ 	 */
+ 	if (!user_mode(regs))
+ 		goto sigill;
+ 
+ 	interrupt_cond_local_irq_enable(regs);
+ 
++	/*
++	 * (reason & REASON_TRAP) is mostly handled before enabling IRQs,
++	 * except get_user_instr() can sleep so we cannot reliably inspect the
++	 * current instruction in that context. Now that we know we are
++	 * handling a user space trap and can sleep, we can check if the trap
++	 * was a hashchk failure.
++	 */
++	if (reason & REASON_TRAP) {
++		if (cpu_has_feature(CPU_FTR_DEXCR_NPHIE)) {
++			ppc_inst_t insn;
++
++			if (get_user_instr(insn, (void __user *)regs->nip)) {
++				_exception(SIGSEGV, regs, SEGV_MAPERR, regs->nip);
++				return;
++			}
++
++			if (ppc_inst_primary_opcode(insn) == 31 &&
++			    get_xop(ppc_inst_val(insn)) == OP_31_XOP_HASHCHK) {
++				_exception(SIGILL, regs, ILL_ILLOPN, regs->nip);
++				return;
++			}
++		}
++
++		_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
++		return;
++	}
++
+ 	/* (reason & REASON_ILLEGAL) would be the obvious thing here,
+ 	 * but there seems to be a hardware bug on the 405GP (RevD)
+ 	 * that means ESR is sometimes set incorrectly - either to
 -- 
 2.40.1
 
