@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC6B97B89DB
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C6557B8777
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244284AbjJDSaH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:30:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45680 "EHLO
+        id S243797AbjJDSFm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:05:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244263AbjJDSaG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:06 -0400
+        with ESMTP id S243799AbjJDSFl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:05:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE5749E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5AC8C433C7;
-        Wed,  4 Oct 2023 18:30:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A89E9E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39BCC433C8;
+        Wed,  4 Oct 2023 18:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444202;
-        bh=FQW1PYKxlrC2Re4u2EromdWphWUAWTiP4UmCpBPBeJw=;
+        s=korg; t=1696442736;
+        bh=skqfc3VETUbPS8f8EGvZRFuEDpouwRimtcyOX+dBsRM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sIXUlKfLeBTA8JsRSEP3Qvhigm2XGmzp+IjEtEryXTRSlZyLeBudhTuors+m/eTte
-         VVqEWgVBrWaJ5flmcoI6TBqZ0NK9mImfRTHDzmyMbErVRaHQ63c4g7gDvt5IQJmaeQ
-         /KCCgZFNVcrAYME3XzECKwJ1vqX6AYBZq1bLAtOU=
+        b=XbsdzuzR6Y1I+HsjAO8y9gR17nJgi1vnx+4qS8NXZTnOlCTCPVGwGRz80lyipTn6a
+         7zweiflW9YsNxZHfuCUoI1dv/O0vJU2T3dKcnGzfMxKCf4pu40gYMSg9bB6N1Z0zy7
+         jD0jAoBXVdFN83UYAIbacauBBEkp1hixePRqDIEk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liu Ying <victor.liu@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 149/321] arm64: dts: imx8mm-evk: Fix hdmi@3d node
+        patches@lists.linux.dev,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 063/183] locking/seqlock: Do the lockdep annotation before locking in do_write_seqcount_begin_nested()
 Date:   Wed,  4 Oct 2023 19:54:54 +0200
-Message-ID: <20231004175236.157854357@linuxfoundation.org>
+Message-ID: <20231004175206.520620226@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,114 +51,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Ying <victor.liu@nxp.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit efa97aed071e0607b15ee08ddb1b7d775b664352 ]
+[ Upstream commit 41b43b6c6e30a832c790b010a06772e793bca193 ]
 
-The hdmi@3d node's compatible string is "adi,adv7535" instead of
-"adi,adv7533" or "adi,adv751*".
+It was brought up by Tetsuo that the following sequence:
 
-Fix the hdmi@3d node by means of:
-* Use default register addresses for "cec", "edid" and "packet", because
-  there is no need to use a non-default address map.
-* Add missing interrupt related properties.
-* Drop "adi,input-*" properties which are only valid for adv751*.
-* Add VDDEXT_3V3 fixed regulator
-* Add "*-supply" properties, since most are required.
-* Fix label names - s/adv7533/adv7535/.
+   write_seqlock_irqsave()
+   printk_deferred_enter()
 
-Fixes: a27335b3f1e0 ("arm64: dts: imx8mm-evk: Add HDMI support")
-Signed-off-by: Liu Ying <victor.liu@nxp.com>
-Tested-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+could lead to a deadlock if the lockdep annotation within
+write_seqlock_irqsave() triggers.
+
+The problem is that the sequence counter is incremented before the lockdep
+annotation is performed. The lockdep splat would then attempt to invoke
+printk() but the reader side, of the same seqcount, could have a
+tty_port::lock acquired waiting for the sequence number to become even again.
+
+The other lockdep annotations come before the actual locking because "we
+want to see the locking error before it happens". There is no reason why
+seqcount should be different here.
+
+Do the lockdep annotation first then perform the locking operation (the
+sequence increment).
+
+Fixes: 1ca7d67cf5d5a ("seqcount: Add lockdep functionality to seqcount/seqlock structures")
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230920104627._DTHgPyA@linutronix.de
+
+Closes: https://lore.kernel.org/20230621130641.-5iueY1I@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi | 32 ++++++++++++-------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ include/linux/seqlock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
-index df8e808ac4739..6752c30274369 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-evk.dtsi
-@@ -26,7 +26,7 @@
+diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
+index 37ded6b8fee61..2c5d0102315d2 100644
+--- a/include/linux/seqlock.h
++++ b/include/linux/seqlock.h
+@@ -516,8 +516,8 @@ do {									\
  
- 		port {
- 			hdmi_connector_in: endpoint {
--				remote-endpoint = <&adv7533_out>;
-+				remote-endpoint = <&adv7535_out>;
- 			};
- 		};
- 	};
-@@ -72,6 +72,13 @@
- 		enable-active-high;
- 	};
+ static inline void do_write_seqcount_begin_nested(seqcount_t *s, int subclass)
+ {
+-	do_raw_write_seqcount_begin(s);
+ 	seqcount_acquire(&s->dep_map, subclass, 0, _RET_IP_);
++	do_raw_write_seqcount_begin(s);
+ }
  
-+	reg_vddext_3v3: regulator-vddext-3v3 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VDDEXT_3V3";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+	};
-+
- 	backlight: backlight {
- 		compatible = "pwm-backlight";
- 		pwms = <&pwm1 0 5000000 0>;
-@@ -317,15 +324,16 @@
- 
- 	hdmi@3d {
- 		compatible = "adi,adv7535";
--		reg = <0x3d>, <0x3c>, <0x3e>, <0x3f>;
--		reg-names = "main", "cec", "edid", "packet";
-+		reg = <0x3d>;
-+		interrupt-parent = <&gpio1>;
-+		interrupts = <9 IRQ_TYPE_EDGE_FALLING>;
- 		adi,dsi-lanes = <4>;
--
--		adi,input-depth = <8>;
--		adi,input-colorspace = "rgb";
--		adi,input-clock = "1x";
--		adi,input-style = <1>;
--		adi,input-justification = "evenly";
-+		avdd-supply = <&buck5_reg>;
-+		dvdd-supply = <&buck5_reg>;
-+		pvdd-supply = <&buck5_reg>;
-+		a2vdd-supply = <&buck5_reg>;
-+		v3p3-supply = <&reg_vddext_3v3>;
-+		v1p2-supply = <&buck5_reg>;
- 
- 		ports {
- 			#address-cells = <1>;
-@@ -334,7 +342,7 @@
- 			port@0 {
- 				reg = <0>;
- 
--				adv7533_in: endpoint {
-+				adv7535_in: endpoint {
- 					remote-endpoint = <&dsi_out>;
- 				};
- 			};
-@@ -342,7 +350,7 @@
- 			port@1 {
- 				reg = <1>;
- 
--				adv7533_out: endpoint {
-+				adv7535_out: endpoint {
- 					remote-endpoint = <&hdmi_connector_in>;
- 				};
- 			};
-@@ -408,7 +416,7 @@
- 			reg = <1>;
- 
- 			dsi_out: endpoint {
--				remote-endpoint = <&adv7533_in>;
-+				remote-endpoint = <&adv7535_in>;
- 				data-lanes = <1 2 3 4>;
- 			};
- 		};
+ /**
 -- 
 2.40.1
 
