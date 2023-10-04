@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0298B7B817B
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 15:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6A057B817C
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 15:57:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242725AbjJDN5O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 09:57:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50932 "EHLO
+        id S242645AbjJDN5X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 09:57:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242645AbjJDN5N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 09:57:13 -0400
+        with ESMTP id S242728AbjJDN5W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 09:57:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC0D1AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 06:57:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421A0C433C8;
-        Wed,  4 Oct 2023 13:57:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEC89BF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 06:57:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2DEC433C8;
+        Wed,  4 Oct 2023 13:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696427830;
-        bh=DizdEhWw2ZVD8aMIMonUagw3RIeijMVIBXFJEPV9BQQ=;
+        s=korg; t=1696427838;
+        bh=ksMfvhx0Uyh31ibVylGxUYxxIV5vdmRWtfxZuMAOofE=;
         h=Subject:To:Cc:From:Date:From;
-        b=C+qEKWnxV3PI/DdCZqGODGWpljl22iDrMRXFmBlAZYNwzR3Lgzphp6TL1dWhOjGnn
-         XvOtQC+SZKQmQe2VTEN6nRnYOnnkqOyc2oZ28S0fxQcOVZvTtptHjUIUGktWhuiG3o
-         cgbn8xN2N3uATj+yr80rV0aH+Aok5umgwmleoW5w=
-Subject: FAILED: patch "[PATCH] spi: zynqmp-gqspi: fix clock imbalance on probe failure" failed to apply to 5.10-stable tree
+        b=tcst5oX3iuhlY9Q/7H/qw962uD1U7a4TLW+qsPqiJJc89CPZ4eXfUez7UsTyuawIL
+         y4nzl+6DqgSBoCC7Dm5aX+SbupKk1Dji5n+ANYWKpcGt0tQSvtD5ZT4fOXoM57QdvN
+         GrPgVRqtZMpB46YfQqgWtPBk2dbnQSciZh3dTlto=
+Subject: FAILED: patch "[PATCH] spi: zynqmp-gqspi: fix clock imbalance on probe failure" failed to apply to 5.4-stable tree
 To:     johan+linaro@kernel.org, broonie@kernel.org,
         naga.sureshkumar.relli@xilinx.com, shubhrajyoti.datta@xilinx.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 15:57:07 +0200
-Message-ID: <2023100405-anaconda-unclog-d247@gregkh>
+Date:   Wed, 04 Oct 2023 15:57:15 +0200
+Message-ID: <2023100413-clothing-muscular-2532@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,25 +44,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1527b076ae2cb6a9c590a02725ed39399fcad1cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100405-anaconda-unclog-d247@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100413-clothing-muscular-2532@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 1527b076ae2c ("spi: zynqmp-gqspi: fix clock imbalance on probe failure")
 3ffefa1d9c9e ("spi: zynqmp-gqspi: Convert to platform remove callback returning void")
 58eaa7b2d07d ("spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in zynqmp_qspi_probe")
+1c26372e5aa9 ("spi: spi-zynqmp-gqspi: Update driver to use spi-mem framework")
+91af6eb04a6b ("spi: spi-zynqmp-gqspi: Fix kernel-doc warnings")
+4b42b0b49812 ("spi: spi-zynqmp-gqspi: Correct a couple of misspellings in kerneldoc")
+4db8180ffe7c ("firmware: xilinx: Remove eemi ops for fpga related APIs")
+bc86f9c54616 ("firmware: xilinx: Remove eemi ops for aes engine")
+cbbbda71fe37 ("firmware: xilinx: Remove eemi ops for set_requirement")
+07fb1a4619fc ("firmware: xilinx: Remove eemi ops for release_node")
+bf8b27ed2324 ("firmware: xilinx: Remove eemi ops for request_node")
+951d0a97e41c ("firmware: xilinx: Remove eemi ops for set_suspend_mode")
+9474da950d1e ("firmware: xilinx: Remove eemi ops for init_finalize")
+1b413581fe26 ("firmware: xilinx: Remove eemi ops for reset_get_status")
+cf23ec353146 ("firmware: xilinx: Remove eemi ops for reset_assert")
+426c8d85df7a ("firmware: xilinx: Use APIs instead of IOCTLs")
+70c0d36462ca ("firmware: xilinx: Remove eemi ops for clock set/get parent")
+7a1e10621a21 ("firmware: xilinx: Remove eemi ops for clock set/get rate")
+0667a8d144bc ("firmware: xilinx: Remove eemi ops for clock_getdivider")
+fc9fb8fb985c ("firmware: xilinx: Remove eemi ops for clock_setdivider")
 
 thanks,
 
