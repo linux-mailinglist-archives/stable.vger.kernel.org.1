@@ -2,67 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 977AD7B885B
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81DF77B8AF4
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:43:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244031AbjJDSPT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:15:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53996 "EHLO
+        id S243292AbjJDSnx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:43:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244026AbjJDSPR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:17 -0400
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B368DC1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:12 -0700 (PDT)
-Received: by mail-qk1-x735.google.com with SMTP id af79cd13be357-77428e40f71so6792385a.1
-        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 11:15:12 -0700 (PDT)
+        with ESMTP id S243679AbjJDSnx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:43:53 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C313BAD;
+        Wed,  4 Oct 2023 11:43:49 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6910ea9cca1so99685b3a.1;
+        Wed, 04 Oct 2023 11:43:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1696443312; x=1697048112; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CSSGJ/XZYqdo1AkHmB2Bvh1QTbI1LUhTfLllMmN0zGE=;
-        b=pjpCNkS1kQUvf+FsQ0Lk0i2/zeU5OFNIS90lfcuqeSrTsVHOl/r09IPyfPC1w32Ak3
-         8mFuq2JdGRF/s5vJJybeqM5QIA/SN7ALmgAzJ2AWy2Rv1xzoDX/An8X+u8+N7Pp9+F3O
-         s2l2fYe9AKeBBBgmWe1Owy+WjOh2tkOcrUeIYyU1dP1WqD5Uw9zmP/13K7tymQf0x2Uq
-         KT87tC9bvvEwN1+/RlJNIftTGi9+NUBoosf28EgQf9eOhPPYbYCIqPrJpIonvHejYy1Y
-         vdSsSIS8IKrdi0rY7eG2XtoajJR6PZv8GotLewPi29ESdVCxdv4cabQvijGCRsIo6PRC
-         b8KQ==
+        d=gmail.com; s=20230601; t=1696445029; x=1697049829; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ooOYlMNzU/nXOVXoJ797h2bTTI8LLLqoLCs+5/x9Ip4=;
+        b=RghYVaNNrpPi/xunouXUuHJB6SOPCkZbbdQDL7qZFfbqJkILN3UT00qnmlHQCO4isi
+         PDkjfwLZIkLBUmFoQrfdsEx376dMP7/VGh7HnlnEdLC3/andxuDM18fS3OdY3zGgpyID
+         u9ZLgxhVVlJTEmm+EOkKtIWOd6MDnzhLaRFIK4Iq3YdYP55x2vMtq+afL2ChbHPJs7n1
+         yCLsunClgrhnWi5i1U7QcGs5dQDucNECQpSw/wI0lOPDLRbgjYg2ycfQr0++bFs0knJ1
+         +eiM23s2CBNJj1Wradg65QIj3aVz6mQceSMcKrkOWmn0cwbO1Im27gtUqDp+KvBIN6Kv
+         LEMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696443312; x=1697048112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CSSGJ/XZYqdo1AkHmB2Bvh1QTbI1LUhTfLllMmN0zGE=;
-        b=piBPSeS27jSGrLoN5uWdS9PO7cD8m28iiF7XFjOtJYGLbjNOoYnerhwv2OGioNE7rM
-         V6dlQCjLm7fC/PJ2OqtHdhMkI0XHMKsx3nxImEbmdThzqj0skJVqFaG/0W2x1V6b8gzY
-         oALIplmx9mUtbkLttHu5x3fORvJ6Qutclh+FI+z7q/pqbqobhOYOm+Co87KS4Qg33WFv
-         /MTEYwj35AzT2qsF7ErG9sYzcT+O1lcb54AeYlIHhpCvqJYU8qFv6pxeTe3xUMUSfgXh
-         +olgpd9ZRCO5haE+VcYI0CZ/yi7f6xRuK7cWYcheOY82fSsDQigiR4TTiTcEahV7LcyU
-         rixQ==
-X-Gm-Message-State: AOJu0Yy2qeYU82cc9A5xgKF8CQvU3xqnVZH0rEOp4NgyUjTw38AbGTGU
-        I91dLTG/xvkTEtsoy2owWFMdWJqYd3f/HwcJ91A=
-X-Google-Smtp-Source: AGHT+IHjO2xATKuA1V5aEnZ2MqXTzLQApdk87Sap8vPA03NVqBU/T/XiVdT2XrhPR1WIcXbIZD/P6A==
-X-Received: by 2002:a05:620a:f82:b0:76e:ec77:10a4 with SMTP id b2-20020a05620a0f8200b0076eec7710a4mr2544623qkn.77.1696443311781;
-        Wed, 04 Oct 2023 11:15:11 -0700 (PDT)
-Received: from localhost ([2620:10d:c091:400::5:753d])
-        by smtp.gmail.com with ESMTPSA id q16-20020a05620a039000b00770f2a690a8sm1431577qkm.53.2023.10.04.11.15.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 11:15:11 -0700 (PDT)
-Date:   Wed, 4 Oct 2023 14:15:10 -0400
-From:   Johannes Weiner <hannes@cmpxchg.org>
-To:     gregkh@linuxfoundation.org
-Cc:     akpm@linux-foundation.org, joe.liu@mediatek.com,
-        stable@vger.kernel.org, vbabka@suse.cz
-Subject: [PATCH 6.1.y] mm: page_alloc: fix CMA and HIGHATOMIC landing on the
- wrong buddy list
-Message-ID: <20231004181510.GA39112@cmpxchg.org>
-References: <2023100429-postnasal-hassle-02be@gregkh>
+        d=1e100.net; s=20230601; t=1696445029; x=1697049829;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ooOYlMNzU/nXOVXoJ797h2bTTI8LLLqoLCs+5/x9Ip4=;
+        b=aUMoM/Vovwx779qV79nD+PwrLphNQbDwP+xCoHXPrHegO/fdYqWINL2FS4q9OBjoyw
+         64C/A2ZTYq+7YotgbsZJz69oY4Z2s2o8wsQ2laxN50Gfg4RnkpFWmhRqTKTJtEV6qNrm
+         eoOuD98+xAI8COWK1vPmH1G9YDyDHC5fXwnkyTQzPAKpVyvg3aLqRH4N0yJwUPSTfJBm
+         c/1ustY6XJ6G4wrIhMnZLFgjUP4sRJzg1Z3CS0h/cJuzDGuNNfPKnJZy9MfeuVnXIcCB
+         UvzBIhibkSP0aRg0WsY26bDojY9oKQ8WkmcyCtFjzcE0q3zerHhda8WygAlT0VejNRo9
+         yHwA==
+X-Gm-Message-State: AOJu0YxOTJEWkkJPTIr9/R9LmvImp9sVhO6Ouk5vLNiK4inswTcikPsV
+        A42QBwFMtnXDgfbx61PsE+Y=
+X-Google-Smtp-Source: AGHT+IHiU5FJ7NyeBXXTb5/Pd5QfBu0+HGaAapZFd0bSBcl87BGZKPtg+wwrmtSgFOwUq9LSC+Xk2g==
+X-Received: by 2002:a05:6a00:2482:b0:690:4362:7012 with SMTP id c2-20020a056a00248200b0069043627012mr3712536pfv.28.1696445029127;
+        Wed, 04 Oct 2023 11:43:49 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id x7-20020aa79187000000b0064f76992905sm3536129pfa.202.2023.10.04.11.43.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Oct 2023 11:43:48 -0700 (PDT)
+Message-ID: <ec06c2fb-6737-489f-8439-307e0d84687b@gmail.com>
+Date:   Wed, 4 Oct 2023 11:43:46 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023100429-postnasal-hassle-02be@gregkh>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/183] 5.15.134-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20231004175203.943277832@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,99 +78,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
-bypasses the pcplist on lock contention and returns the page directly to
-the buddy list of the page's migratetype.
+On 10/4/23 10:53, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.134 release.
+> There are 183 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.134-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-For pages that don't have their own pcplist, such as CMA and HIGHATOMIC,
-the migratetype is temporarily updated such that the page can hitch a ride
-on the MOVABLE pcplist.  Their true type is later reassessed when flushing
-in free_pcppages_bulk().  However, when lock contention is detected after
-the type was already overridden, the bypass will then put the page on the
-wrong buddy list.
+perf fails to build with:
 
-Once on the MOVABLE buddy list, the page becomes eligible for fallbacks
-and even stealing.  In the case of HIGHATOMIC, otherwise ineligible
-allocations can dip into the highatomic reserves.  In the case of CMA, the
-page can be lost from the CMA region permanently.
+   CC 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/util/metricgroup.o
+util/metricgroup.c: In function 'metricgroup__parse_groups':
+util/metricgroup.c:1261:7: error: 'table' undeclared (first use in this 
+function)
+   if (!table)
+        ^~~~~
+util/metricgroup.c:1261:7: note: each undeclared identifier is reported 
+only once for each function it appears in
+make[6]: *** 
+[/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/build/Makefile.build:97: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/util/metricgroup.o] 
+Error 1
 
-Use a separate pcpmigratetype variable for the pcplist override.  Use the
-original migratetype when going directly to the buddy.  This fixes the bug
-and should make the intentions more obvious in the code.
+caused by c1ef510a0f2a879bf29ddebae766ec9f0790eb8f ("perf metric: Return 
+early if no CPU PMU table exists"). Dropping this commit allows the 
+build to continue.
 
-Originally sent here to address the HIGHATOMIC case:
-https://lore.kernel.org/lkml/20230821183733.106619-4-hannes@cmpxchg.org/
+I had reported in the previous cycle that 00facc760903be66 ("perf 
+jevents: Switch build to use jevents.py") was causing build failures:
 
-Changelog updated in response to the CMA-specific bug report.
+https://lore.kernel.org/all/6a577578-8adb-aa70-1bf8-b1a4573152cf@gmail.com/
 
-[mgorman@techsingularity.net: updated changelog]
-Link: https://lkml.kernel.org/r/20230911181108.GA104295@cmpxchg.org
-Fixes: 4b23a68f9536 ("mm/page_alloc: protect PCP lists with a spinlock")
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Reported-by: Joe Liu <joe.liu@mediatek.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 7b086755fb8cdbb6b3e45a1bbddc00e7f9b1dc03)
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
----
- mm/page_alloc.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-The conflict was due to an in-between patch (574907741599) changing
-the surrounding locking:
-
-++<<<<<<< HEAD
- +              free_unref_page_commit(zone, pcp, page, migratetype, order);
- +              pcp_spin_unlock_irqrestore(pcp, flags);
-++=======
-++              free_unref_page_commit(zone, pcp, page, pcpmigratetype, order);
-++              pcp_spin_unlock(pcp);
-++>>>>>>> 7b086755fb8c (mm: page_alloc: fix CMA and HIGHATOMIC landing on the wrong buddy list)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 69668817fed3..04b172d73f7b 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3479,7 +3479,7 @@ void free_unref_page(struct page *page, unsigned int order)
- 	struct per_cpu_pages *pcp;
- 	struct zone *zone;
- 	unsigned long pfn = page_to_pfn(page);
--	int migratetype;
-+	int migratetype, pcpmigratetype;
- 
- 	if (!free_unref_page_prepare(page, pfn, order))
- 		return;
-@@ -3487,24 +3487,24 @@ void free_unref_page(struct page *page, unsigned int order)
- 	/*
- 	 * We only track unmovable, reclaimable and movable on pcp lists.
- 	 * Place ISOLATE pages on the isolated list because they are being
--	 * offlined but treat HIGHATOMIC as movable pages so we can get those
--	 * areas back if necessary. Otherwise, we may have to free
-+	 * offlined but treat HIGHATOMIC and CMA as movable pages so we can
-+	 * get those areas back if necessary. Otherwise, we may have to free
- 	 * excessively into the page allocator
- 	 */
--	migratetype = get_pcppage_migratetype(page);
-+	migratetype = pcpmigratetype = get_pcppage_migratetype(page);
- 	if (unlikely(migratetype >= MIGRATE_PCPTYPES)) {
- 		if (unlikely(is_migrate_isolate(migratetype))) {
- 			free_one_page(page_zone(page), page, pfn, order, migratetype, FPI_NONE);
- 			return;
- 		}
--		migratetype = MIGRATE_MOVABLE;
-+		pcpmigratetype = MIGRATE_MOVABLE;
- 	}
- 
- 	zone = page_zone(page);
- 	pcp_trylock_prepare(UP_flags);
- 	pcp = pcp_spin_trylock_irqsave(zone->per_cpu_pageset, flags);
- 	if (pcp) {
--		free_unref_page_commit(zone, pcp, page, migratetype, order);
-+		free_unref_page_commit(zone, pcp, page, pcpmigratetype, order);
- 		pcp_spin_unlock_irqrestore(pcp, flags);
- 	} else {
- 		free_one_page(zone, page, pfn, order, migratetype, FPI_NONE);
+do we still want these commits to be included?
 -- 
-2.42.0
+Florian
 
