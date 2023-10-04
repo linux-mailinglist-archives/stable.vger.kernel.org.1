@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07C127B8766
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3D317B89D2
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243784AbjJDSEs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:04:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49276 "EHLO
+        id S233874AbjJDS3o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:29:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243781AbjJDSEr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:04:47 -0400
+        with ESMTP id S233805AbjJDS3o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8035CC4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:04:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5109C433C8;
-        Wed,  4 Oct 2023 18:04:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 042289E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B11EC433C7;
+        Wed,  4 Oct 2023 18:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442682;
-        bh=sR2M8TJ2Cgme0hMOGsTCtZdwDH8UxIMmUG8L2IiItEk=;
+        s=korg; t=1696444179;
+        bh=2Np1/rAH5bzJkDNBe5PtC6y0ZlN1QnH9E/Gz1iDpKyc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rHe8QYKxX+Nl1Kuraq5f6Hg4oM3RrH5kAR+Ymcjj0kEAaz8vi4Pl0a/CP85UOOIw8
-         ijMrBe7jExEfuqxruSACrD2Pgw1h9b742sCxLLLdzFdBmd6YCRXzEjN+ulY8qVKjeV
-         /SVmQAiVeU65mneUfSY1lBAOh9/ICFxBnsfP2BuI=
+        b=pUO1Ks57D15AmFsznFn1I7vY9RszaDxaqlx56d1pDtVbOSiz/PqJ6GdaCKXK+0+Kw
+         +xClGKmULeLe9V3kW8EFjq6LW84qLMYs2hu8iKn64ST1BTBD+O10JF/At6KlN3qK+Z
+         W0GNrEv9W1x3jLKI1QHV3MIICA/HO6vdI/cJdRHw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Chinner <dchinner@redhat.com>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Leah Rumancik <leah.rumancik@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 072/183] xfs: bound maximum wait time for inodegc work
-Date:   Wed,  4 Oct 2023 19:55:03 +0200
-Message-ID: <20231004175206.883249577@linuxfoundation.org>
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>,
+        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>
+Subject: [PATCH 6.5 159/321] ceph: drop messages from MDS when unmounting
+Date:   Wed,  4 Oct 2023 19:55:04 +0200
+Message-ID: <20231004175236.614049505@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,163 +53,379 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 7cf2b0f9611b9971d663e1fc3206eeda3b902922 ]
+[ Upstream commit e3dfcab2080dc1f9a4b09cc1327361bc2845bfcd ]
 
-Currently inodegc work can sit queued on the per-cpu queue until
-the workqueue is either flushed of the queue reaches a depth that
-triggers work queuing (and later throttling). This means that we
-could queue work that waits for a long time for some other event to
-trigger flushing.
+When unmounting all the dirty buffers will be flushed and after
+the last osd request is finished the last reference of the i_count
+will be released. Then it will flush the dirty cap/snap to MDSs,
+and the unmounting won't wait the possible acks, which will ihold
+the inodes when updating the metadata locally but makes no sense
+any more, of this. This will make the evict_inodes() to skip these
+inodes.
 
-Hence instead of just queueing work at a specific depth, use a
-delayed work that queues the work at a bound time. We can still
-schedule the work immediately at a given depth, but we no long need
-to worry about leaving a number of items on the list that won't get
-processed until external events prevail.
+If encrypt is enabled the kernel generate a warning when removing
+the encrypt keys when the skipped inodes still hold the keyring:
 
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+WARNING: CPU: 4 PID: 168846 at fs/crypto/keyring.c:242 fscrypt_destroy_keyring+0x7e/0xd0
+CPU: 4 PID: 168846 Comm: umount Tainted: G S  6.1.0-rc5-ceph-g72ead199864c #1
+Hardware name: Supermicro SYS-5018R-WR/X10SRW-F, BIOS 2.0 12/17/2015
+RIP: 0010:fscrypt_destroy_keyring+0x7e/0xd0
+RSP: 0018:ffffc9000b277e28 EFLAGS: 00010202
+RAX: 0000000000000002 RBX: ffff88810d52ac00 RCX: ffff88810b56aa00
+RDX: 0000000080000000 RSI: ffffffff822f3a09 RDI: ffff888108f59000
+RBP: ffff8881d394fb88 R08: 0000000000000028 R09: 0000000000000000
+R10: 0000000000000001 R11: 11ff4fe6834fcd91 R12: ffff8881d394fc40
+R13: ffff888108f59000 R14: ffff8881d394f800 R15: 0000000000000000
+FS:  00007fd83f6f1080(0000) GS:ffff88885fd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f918d417000 CR3: 000000017f89a005 CR4: 00000000003706e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+generic_shutdown_super+0x47/0x120
+kill_anon_super+0x14/0x30
+ceph_kill_sb+0x36/0x90 [ceph]
+deactivate_locked_super+0x29/0x60
+cleanup_mnt+0xb8/0x140
+task_work_run+0x67/0xb0
+exit_to_user_mode_prepare+0x23d/0x240
+syscall_exit_to_user_mode+0x25/0x60
+do_syscall_64+0x40/0x80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fd83dc39e9b
+
+Later the kernel will crash when iput() the inodes and dereferencing
+the "sb->s_master_keys", which has been released by the
+generic_shutdown_super().
+
+Link: https://tracker.ceph.com/issues/59162
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-and-tested-by: Luís Henriques <lhenriques@suse.de>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_icache.c | 36 ++++++++++++++++++++++--------------
- fs/xfs/xfs_mount.h  |  2 +-
- fs/xfs/xfs_super.c  |  2 +-
- 3 files changed, 24 insertions(+), 16 deletions(-)
+ fs/ceph/caps.c       |  6 +++-
+ fs/ceph/mds_client.c | 12 +++++--
+ fs/ceph/mds_client.h | 11 +++++--
+ fs/ceph/quota.c      | 14 ++++-----
+ fs/ceph/snap.c       | 10 +++---
+ fs/ceph/super.c      | 75 +++++++++++++++++++++++++++++++++++++++++---
+ fs/ceph/super.h      |  3 ++
+ 7 files changed, 109 insertions(+), 22 deletions(-)
 
-diff --git a/fs/xfs/xfs_icache.c b/fs/xfs/xfs_icache.c
-index 5e44d7bbd8fca..2c3ef553f5ef0 100644
---- a/fs/xfs/xfs_icache.c
-+++ b/fs/xfs/xfs_icache.c
-@@ -458,7 +458,7 @@ xfs_inodegc_queue_all(
- 	for_each_online_cpu(cpu) {
- 		gc = per_cpu_ptr(mp->m_inodegc, cpu);
- 		if (!llist_empty(&gc->list))
--			queue_work_on(cpu, mp->m_inodegc_wq, &gc->work);
-+			mod_delayed_work_on(cpu, mp->m_inodegc_wq, &gc->work, 0);
- 	}
- }
+diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+index e2bb0d0072da5..c268bd07e7ddd 100644
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -4105,6 +4105,9 @@ void ceph_handle_caps(struct ceph_mds_session *session,
  
-@@ -1851,8 +1851,8 @@ void
- xfs_inodegc_worker(
- 	struct work_struct	*work)
- {
--	struct xfs_inodegc	*gc = container_of(work, struct xfs_inodegc,
--							work);
-+	struct xfs_inodegc	*gc = container_of(to_delayed_work(work),
-+						struct xfs_inodegc, work);
- 	struct llist_node	*node = llist_del_all(&gc->list);
- 	struct xfs_inode	*ip, *n;
+ 	dout("handle_caps from mds%d\n", session->s_mds);
  
-@@ -2021,6 +2021,7 @@ xfs_inodegc_queue(
- 	struct xfs_inodegc	*gc;
- 	int			items;
- 	unsigned int		shrinker_hits;
-+	unsigned long		queue_delay = 1;
++	if (!ceph_inc_mds_stopping_blocker(mdsc, session))
++		return;
++
+ 	/* decode */
+ 	end = msg->front.iov_base + msg->front.iov_len;
+ 	if (msg->front.iov_len < sizeof(*h))
+@@ -4201,7 +4204,6 @@ void ceph_handle_caps(struct ceph_mds_session *session,
+ 	     vino.snap, inode);
  
- 	trace_xfs_inode_set_need_inactive(ip);
- 	spin_lock(&ip->i_flags_lock);
-@@ -2032,19 +2033,26 @@ xfs_inodegc_queue(
- 	items = READ_ONCE(gc->items);
- 	WRITE_ONCE(gc->items, items + 1);
- 	shrinker_hits = READ_ONCE(gc->shrinker_hits);
--	put_cpu_ptr(gc);
+ 	mutex_lock(&session->s_mutex);
+-	inc_session_sequence(session);
+ 	dout(" mds%d seq %lld cap seq %u\n", session->s_mds, session->s_seq,
+ 	     (unsigned)seq);
  
--	if (!xfs_is_inodegc_enabled(mp))
-+	/*
-+	 * We queue the work while holding the current CPU so that the work
-+	 * is scheduled to run on this CPU.
-+	 */
-+	if (!xfs_is_inodegc_enabled(mp)) {
-+		put_cpu_ptr(gc);
- 		return;
+@@ -4309,6 +4311,8 @@ void ceph_handle_caps(struct ceph_mds_session *session,
+ done_unlocked:
+ 	iput(inode);
+ out:
++	ceph_dec_mds_stopping_blocker(mdsc);
++
+ 	ceph_put_string(extra_info.pool_ns);
+ 
+ 	/* Defer closing the sessions after s_mutex lock being released */
+diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
+index 5fb367b1d4b06..4b0ba067e9c93 100644
+--- a/fs/ceph/mds_client.c
++++ b/fs/ceph/mds_client.c
+@@ -4550,6 +4550,9 @@ static void handle_lease(struct ceph_mds_client *mdsc,
+ 
+ 	dout("handle_lease from mds%d\n", mds);
+ 
++	if (!ceph_inc_mds_stopping_blocker(mdsc, session))
++		return;
++
+ 	/* decode */
+ 	if (msg->front.iov_len < sizeof(*h) + sizeof(u32))
+ 		goto bad;
+@@ -4568,8 +4571,6 @@ static void handle_lease(struct ceph_mds_client *mdsc,
+ 	     dname.len, dname.name);
+ 
+ 	mutex_lock(&session->s_mutex);
+-	inc_session_sequence(session);
 -
--	if (xfs_inodegc_want_queue_work(ip, items)) {
--		trace_xfs_inodegc_queue(mp, __return_address);
--		queue_work(mp->m_inodegc_wq, &gc->work);
- 	}
- 
-+	if (xfs_inodegc_want_queue_work(ip, items))
-+		queue_delay = 0;
+ 	if (!inode) {
+ 		dout("handle_lease no inode %llx\n", vino.ino);
+ 		goto release;
+@@ -4631,9 +4632,13 @@ static void handle_lease(struct ceph_mds_client *mdsc,
+ out:
+ 	mutex_unlock(&session->s_mutex);
+ 	iput(inode);
 +
-+	trace_xfs_inodegc_queue(mp, __return_address);
-+	mod_delayed_work(mp->m_inodegc_wq, &gc->work, queue_delay);
-+	put_cpu_ptr(gc);
++	ceph_dec_mds_stopping_blocker(mdsc);
+ 	return;
+ 
+ bad:
++	ceph_dec_mds_stopping_blocker(mdsc);
 +
- 	if (xfs_inodegc_want_flush_work(ip, items, shrinker_hits)) {
- 		trace_xfs_inodegc_throttle(mp, __return_address);
--		flush_work(&gc->work);
-+		flush_delayed_work(&gc->work);
- 	}
+ 	pr_err("corrupt lease message\n");
+ 	ceph_msg_dump(msg);
  }
- 
-@@ -2061,7 +2069,7 @@ xfs_inodegc_cpu_dead(
- 	unsigned int		count = 0;
- 
- 	dead_gc = per_cpu_ptr(mp->m_inodegc, dead_cpu);
--	cancel_work_sync(&dead_gc->work);
-+	cancel_delayed_work_sync(&dead_gc->work);
- 
- 	if (llist_empty(&dead_gc->list))
- 		return;
-@@ -2080,12 +2088,12 @@ xfs_inodegc_cpu_dead(
- 	llist_add_batch(first, last, &gc->list);
- 	count += READ_ONCE(gc->items);
- 	WRITE_ONCE(gc->items, count);
--	put_cpu_ptr(gc);
- 
- 	if (xfs_is_inodegc_enabled(mp)) {
- 		trace_xfs_inodegc_queue(mp, __return_address);
--		queue_work(mp->m_inodegc_wq, &gc->work);
-+		mod_delayed_work(mp->m_inodegc_wq, &gc->work, 0);
+@@ -4829,6 +4834,9 @@ int ceph_mdsc_init(struct ceph_fs_client *fsc)
  	}
-+	put_cpu_ptr(gc);
- }
+ 
+ 	init_completion(&mdsc->safe_umount_waiters);
++	spin_lock_init(&mdsc->stopping_lock);
++	atomic_set(&mdsc->stopping_blockers, 0);
++	init_completion(&mdsc->stopping_waiter);
+ 	init_waitqueue_head(&mdsc->session_close_wq);
+ 	INIT_LIST_HEAD(&mdsc->waiting_for_map);
+ 	mdsc->quotarealms_inodes = RB_ROOT;
+diff --git a/fs/ceph/mds_client.h b/fs/ceph/mds_client.h
+index 86d2965e68a1f..cff7392809032 100644
+--- a/fs/ceph/mds_client.h
++++ b/fs/ceph/mds_client.h
+@@ -381,8 +381,9 @@ struct cap_wait {
+ };
+ 
+ enum {
+-       CEPH_MDSC_STOPPING_BEGIN = 1,
+-       CEPH_MDSC_STOPPING_FLUSHED = 2,
++	CEPH_MDSC_STOPPING_BEGIN = 1,
++	CEPH_MDSC_STOPPING_FLUSHING = 2,
++	CEPH_MDSC_STOPPING_FLUSHED = 3,
+ };
  
  /*
-@@ -2180,7 +2188,7 @@ xfs_inodegc_shrinker_scan(
- 			unsigned int	h = READ_ONCE(gc->shrinker_hits);
+@@ -401,7 +402,11 @@ struct ceph_mds_client {
+ 	struct ceph_mds_session **sessions;    /* NULL for mds if no session */
+ 	atomic_t		num_sessions;
+ 	int                     max_sessions;  /* len of sessions array */
+-	int                     stopping;      /* true if shutting down */
++
++	spinlock_t              stopping_lock;  /* protect snap_empty */
++	int                     stopping;      /* the stage of shutting down */
++	atomic_t                stopping_blockers;
++	struct completion	stopping_waiter;
  
- 			WRITE_ONCE(gc->shrinker_hits, h + 1);
--			queue_work_on(cpu, mp->m_inodegc_wq, &gc->work);
-+			mod_delayed_work_on(cpu, mp->m_inodegc_wq, &gc->work, 0);
- 			no_items = false;
- 		}
- 	}
-diff --git a/fs/xfs/xfs_mount.h b/fs/xfs/xfs_mount.h
-index 86564295fce6d..3d58938a6f75b 100644
---- a/fs/xfs/xfs_mount.h
-+++ b/fs/xfs/xfs_mount.h
-@@ -61,7 +61,7 @@ struct xfs_error_cfg {
-  */
- struct xfs_inodegc {
- 	struct llist_head	list;
--	struct work_struct	work;
-+	struct delayed_work	work;
+ 	atomic64_t		quotarealms_count; /* # realms with quota */
+ 	/*
+diff --git a/fs/ceph/quota.c b/fs/ceph/quota.c
+index 64592adfe48fb..f7fcf7f08ec64 100644
+--- a/fs/ceph/quota.c
++++ b/fs/ceph/quota.c
+@@ -47,25 +47,23 @@ void ceph_handle_quota(struct ceph_mds_client *mdsc,
+ 	struct inode *inode;
+ 	struct ceph_inode_info *ci;
  
- 	/* approximate count of inodes in the list */
- 	unsigned int		items;
-diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-index df1d6be61bfa3..8fe6ca9208de6 100644
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -1061,7 +1061,7 @@ xfs_inodegc_init_percpu(
- 		gc = per_cpu_ptr(mp->m_inodegc, cpu);
- 		init_llist_head(&gc->list);
- 		gc->items = 0;
--		INIT_WORK(&gc->work, xfs_inodegc_worker);
-+		INIT_DELAYED_WORK(&gc->work, xfs_inodegc_worker);
++	if (!ceph_inc_mds_stopping_blocker(mdsc, session))
++		return;
++
+ 	if (msg->front.iov_len < sizeof(*h)) {
+ 		pr_err("%s corrupt message mds%d len %d\n", __func__,
+ 		       session->s_mds, (int)msg->front.iov_len);
+ 		ceph_msg_dump(msg);
+-		return;
++		goto out;
  	}
- 	return 0;
+ 
+-	/* increment msg sequence number */
+-	mutex_lock(&session->s_mutex);
+-	inc_session_sequence(session);
+-	mutex_unlock(&session->s_mutex);
+-
+ 	/* lookup inode */
+ 	vino.ino = le64_to_cpu(h->ino);
+ 	vino.snap = CEPH_NOSNAP;
+ 	inode = ceph_find_inode(sb, vino);
+ 	if (!inode) {
+ 		pr_warn("Failed to find inode %llu\n", vino.ino);
+-		return;
++		goto out;
+ 	}
+ 	ci = ceph_inode(inode);
+ 
+@@ -78,6 +76,8 @@ void ceph_handle_quota(struct ceph_mds_client *mdsc,
+ 	spin_unlock(&ci->i_ceph_lock);
+ 
+ 	iput(inode);
++out:
++	ceph_dec_mds_stopping_blocker(mdsc);
  }
+ 
+ static struct ceph_quotarealm_inode *
+diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
+index 343d738448dcd..7ddc6bad77ef3 100644
+--- a/fs/ceph/snap.c
++++ b/fs/ceph/snap.c
+@@ -1015,6 +1015,9 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
+ 	int locked_rwsem = 0;
+ 	bool close_sessions = false;
+ 
++	if (!ceph_inc_mds_stopping_blocker(mdsc, session))
++		return;
++
+ 	/* decode */
+ 	if (msg->front.iov_len < sizeof(*h))
+ 		goto bad;
+@@ -1030,10 +1033,6 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
+ 	dout("%s from mds%d op %s split %llx tracelen %d\n", __func__,
+ 	     mds, ceph_snap_op_name(op), split, trace_len);
+ 
+-	mutex_lock(&session->s_mutex);
+-	inc_session_sequence(session);
+-	mutex_unlock(&session->s_mutex);
+-
+ 	down_write(&mdsc->snap_rwsem);
+ 	locked_rwsem = 1;
+ 
+@@ -1151,6 +1150,7 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
+ 	up_write(&mdsc->snap_rwsem);
+ 
+ 	flush_snaps(mdsc);
++	ceph_dec_mds_stopping_blocker(mdsc);
+ 	return;
+ 
+ bad:
+@@ -1160,6 +1160,8 @@ void ceph_handle_snap(struct ceph_mds_client *mdsc,
+ 	if (locked_rwsem)
+ 		up_write(&mdsc->snap_rwsem);
+ 
++	ceph_dec_mds_stopping_blocker(mdsc);
++
+ 	if (close_sessions)
+ 		ceph_mdsc_close_sessions(mdsc);
+ 	return;
+diff --git a/fs/ceph/super.c b/fs/ceph/super.c
+index a5f52013314d6..281b493fdac8e 100644
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -1365,25 +1365,90 @@ static int ceph_init_fs_context(struct fs_context *fc)
+ 	return -ENOMEM;
+ }
+ 
++/*
++ * Return true if it successfully increases the blocker counter,
++ * or false if the mdsc is in stopping and flushed state.
++ */
++static bool __inc_stopping_blocker(struct ceph_mds_client *mdsc)
++{
++	spin_lock(&mdsc->stopping_lock);
++	if (mdsc->stopping >= CEPH_MDSC_STOPPING_FLUSHING) {
++		spin_unlock(&mdsc->stopping_lock);
++		return false;
++	}
++	atomic_inc(&mdsc->stopping_blockers);
++	spin_unlock(&mdsc->stopping_lock);
++	return true;
++}
++
++static void __dec_stopping_blocker(struct ceph_mds_client *mdsc)
++{
++	spin_lock(&mdsc->stopping_lock);
++	if (!atomic_dec_return(&mdsc->stopping_blockers) &&
++	    mdsc->stopping >= CEPH_MDSC_STOPPING_FLUSHING)
++		complete_all(&mdsc->stopping_waiter);
++	spin_unlock(&mdsc->stopping_lock);
++}
++
++/* For metadata IO requests */
++bool ceph_inc_mds_stopping_blocker(struct ceph_mds_client *mdsc,
++				   struct ceph_mds_session *session)
++{
++	mutex_lock(&session->s_mutex);
++	inc_session_sequence(session);
++	mutex_unlock(&session->s_mutex);
++
++	return __inc_stopping_blocker(mdsc);
++}
++
++void ceph_dec_mds_stopping_blocker(struct ceph_mds_client *mdsc)
++{
++	__dec_stopping_blocker(mdsc);
++}
++
+ static void ceph_kill_sb(struct super_block *s)
+ {
+ 	struct ceph_fs_client *fsc = ceph_sb_to_client(s);
++	struct ceph_mds_client *mdsc = fsc->mdsc;
++	bool wait;
+ 
+ 	dout("kill_sb %p\n", s);
+ 
+-	ceph_mdsc_pre_umount(fsc->mdsc);
++	ceph_mdsc_pre_umount(mdsc);
+ 	flush_fs_workqueues(fsc);
+ 
+ 	/*
+ 	 * Though the kill_anon_super() will finally trigger the
+-	 * sync_filesystem() anyway, we still need to do it here
+-	 * and then bump the stage of shutdown to stop the work
+-	 * queue as earlier as possible.
++	 * sync_filesystem() anyway, we still need to do it here and
++	 * then bump the stage of shutdown. This will allow us to
++	 * drop any further message, which will increase the inodes'
++	 * i_count reference counters but makes no sense any more,
++	 * from MDSs.
++	 *
++	 * Without this when evicting the inodes it may fail in the
++	 * kill_anon_super(), which will trigger a warning when
++	 * destroying the fscrypt keyring and then possibly trigger
++	 * a further crash in ceph module when the iput() tries to
++	 * evict the inodes later.
+ 	 */
+ 	sync_filesystem(s);
+ 
+-	fsc->mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHED;
++	spin_lock(&mdsc->stopping_lock);
++	mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHING;
++	wait = !!atomic_read(&mdsc->stopping_blockers);
++	spin_unlock(&mdsc->stopping_lock);
++
++	if (wait && atomic_read(&mdsc->stopping_blockers)) {
++		long timeleft = wait_for_completion_killable_timeout(
++					&mdsc->stopping_waiter,
++					fsc->client->options->mount_timeout);
++		if (!timeleft) /* timed out */
++			pr_warn("umount timed out, %ld\n", timeleft);
++		else if (timeleft < 0) /* killed */
++			pr_warn("umount was killed, %ld\n", timeleft);
++	}
+ 
++	mdsc->stopping = CEPH_MDSC_STOPPING_FLUSHED;
+ 	kill_anon_super(s);
+ 
+ 	fsc->client->extra_mon_dispatch = NULL;
+diff --git a/fs/ceph/super.h b/fs/ceph/super.h
+index 3bfddf34d488b..e6c1edf9e12b0 100644
+--- a/fs/ceph/super.h
++++ b/fs/ceph/super.h
+@@ -1375,4 +1375,7 @@ extern bool ceph_quota_update_statfs(struct ceph_fs_client *fsc,
+ 				     struct kstatfs *buf);
+ extern void ceph_cleanup_quotarealms_inodes(struct ceph_mds_client *mdsc);
+ 
++bool ceph_inc_mds_stopping_blocker(struct ceph_mds_client *mdsc,
++			       struct ceph_mds_session *session);
++void ceph_dec_mds_stopping_blocker(struct ceph_mds_client *mdsc);
+ #endif /* _FS_CEPH_SUPER_H */
 -- 
 2.40.1
 
