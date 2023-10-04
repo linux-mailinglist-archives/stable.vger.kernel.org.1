@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51D737B8797
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCA807B8A15
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:32:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243827AbjJDSHL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:07:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55798 "EHLO
+        id S244350AbjJDScG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:32:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243821AbjJDSHK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:10 -0400
+        with ESMTP id S244331AbjJDScF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:32:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0C3FC6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0904BC433C7;
-        Wed,  4 Oct 2023 18:07:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4005C98
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:32:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC0AC433C7;
+        Wed,  4 Oct 2023 18:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442826;
-        bh=zu+B3qOO/LcrDdEq2lTXPj1j4NonLacT8657WwHHxOo=;
+        s=korg; t=1696444320;
+        bh=kaPTba2NDkc1pzgOVXQpVUKm2nw7JkFZfQ/ZcEV6R80=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cjqd2v2FgjQfefQV3Gv2rtmRH1FpUKeShyG1JjNx3fZVmkR9UvmDmMUsSEyf65hRs
-         KdsC/HDj1F9DDVK1AdGPuDOHLWFiCZvIMoHXC/OaLSWGPuGPqaFC3SPjn4ccUMm7gu
-         QdCbcGowRx745tSZlPYp753zF/Z+7XKOWUGFwlR0=
+        b=pT8yLGLdSZjcgXDmqjVvvZYktCRhvt30m5D1txV85W0EDpR3nhopzrBKR+r1zQE2m
+         wTTU1Nz+bihkh7M1pxWFUBXYZ6QB9VauOOZl5J42Tz7MuCNJsGtWDHcns5duIx1I1U
+         U+Y+vw2GwOLtcB7j/hSXp/vSml9rOoOMMksw6Hvg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Damien Le Moal <dlemoal@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/183] bus: ti-sysc: Fix missing AM35xx SoC matching
-Date:   Wed,  4 Oct 2023 19:55:25 +0200
-Message-ID: <20231004175207.844881073@linuxfoundation.org>
+Subject: [PATCH 6.5 181/321] ata: sata_mv: Fix incorrect string length computation in mv_dump_mem()
+Date:   Wed,  4 Oct 2023 19:55:26 +0200
+Message-ID: <20231004175237.614471991@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,85 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 11729caa520950e17cd81bc43ffc477c46cf791e ]
+[ Upstream commit e97eb65dd464e7f118a16a26337322d07eb653e2 ]
 
-Commit feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
-created a list of SoC types searching for strings based on names
-and wildcards which associates the SoC to different families.
+snprintf() returns the "number of characters which *would* be generated for
+the given input", not the size *really* generated.
 
-The OMAP34xx and OMAP35xx are treated as SOC_3430 while
-OMAP36xx and OMAP37xx are treated as SOC_3630, but the AM35xx
-isn't listed.
+In order to avoid too large values for 'o' (and potential negative values
+for "sizeof(linebuf) o") use scnprintf() instead of snprintf().
 
-The AM35xx is mostly an OMAP3430, and a later commit a12315d6d270
-("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC specific") looks
-for the SOC type and behaves in a certain way if it's SOC_3430.
+Note that given the "w < 4" in the for loop, the buffer can NOT
+overflow, but using the *right* function is always better.
 
-This caused a regression on the AM3517 causing it to return two
-errors:
-
- ti-sysc: probe of 48318000.target-module failed with error -16
- ti-sysc: probe of 49032000.target-module failed with error -16
-
-Fix this by treating the creating SOC_AM35 and inserting it between
-the SOC_3430 and SOC_3630.  If it is treaed the same way as the
-SOC_3430 when checking the status of sysc_check_active_timer,
-the error conditions will disappear.
-
-Fixes: a12315d6d270 ("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC specific")
-Fixes: feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Message-ID: <20230906233442.270835-1-aford173@gmail.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/ata/sata_mv.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index dacda1eb140cf..8b0fe4b7b9c19 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -38,6 +38,7 @@ enum sysc_soc {
- 	SOC_2420,
- 	SOC_2430,
- 	SOC_3430,
-+	SOC_AM35,
- 	SOC_3630,
- 	SOC_4430,
- 	SOC_4460,
-@@ -1829,7 +1830,7 @@ static void sysc_pre_reset_quirk_dss(struct sysc *ddata)
- 		dev_warn(ddata->dev, "%s: timed out %08x !+ %08x\n",
- 			 __func__, val, irq_mask);
+diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
+index d404e631d1527..68e660e4cc410 100644
+--- a/drivers/ata/sata_mv.c
++++ b/drivers/ata/sata_mv.c
+@@ -1255,8 +1255,8 @@ static void mv_dump_mem(struct device *dev, void __iomem *start, unsigned bytes)
  
--	if (sysc_soc->soc == SOC_3430) {
-+	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35) {
- 		/* Clear DSS_SDI_CONTROL */
- 		sysc_write(ddata, 0x44, 0);
- 
-@@ -2972,6 +2973,7 @@ static void ti_sysc_idle(struct work_struct *work)
- static const struct soc_device_attribute sysc_soc_match[] = {
- 	SOC_FLAG("OMAP242*", SOC_2420),
- 	SOC_FLAG("OMAP243*", SOC_2430),
-+	SOC_FLAG("AM35*", SOC_AM35),
- 	SOC_FLAG("OMAP3[45]*", SOC_3430),
- 	SOC_FLAG("OMAP3[67]*", SOC_3630),
- 	SOC_FLAG("OMAP443*", SOC_4430),
-@@ -3178,7 +3180,7 @@ static int sysc_check_active_timer(struct sysc *ddata)
- 	 * can be dropped if we stop supporting old beagleboard revisions
- 	 * A to B4 at some point.
- 	 */
--	if (sysc_soc->soc == SOC_3430)
-+	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35)
- 		error = -ENXIO;
- 	else
- 		error = -EBUSY;
+ 	for (b = 0; b < bytes; ) {
+ 		for (w = 0, o = 0; b < bytes && w < 4; w++) {
+-			o += snprintf(linebuf + o, sizeof(linebuf) - o,
+-				      "%08x ", readl(start + b));
++			o += scnprintf(linebuf + o, sizeof(linebuf) - o,
++				       "%08x ", readl(start + b));
+ 			b += sizeof(u32);
+ 		}
+ 		dev_dbg(dev, "%s: %p: %s\n",
 -- 
 2.40.1
 
