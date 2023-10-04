@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5325A7B89B3
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65A7E7B884E
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:14:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243792AbjJDS2V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:28:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53618 "EHLO
+        id S243754AbjJDSOs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:14:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244253AbjJDS2V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:28:21 -0400
+        with ESMTP id S244011AbjJDSOr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:14:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6CA8C4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:28:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE2CC433C8;
-        Wed,  4 Oct 2023 18:28:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 420BCBF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:14:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D77C433CA;
+        Wed,  4 Oct 2023 18:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444097;
-        bh=MQtxekdWrBzrP1XCgmlMOLjoLLwTC9Lq/ELylKRkAcs=;
+        s=korg; t=1696443283;
+        bh=F0ibeR8ECU0J0WFVN7V0331aJS63tTJeff99TEjkskA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uqfq8ONAS/NnARRJaadAc452ESod3OsptrtS0++WX7O7uWRk83AEinv9Z0HKzeH9f
-         wZ5ldp8NloSJmP+4s+ZlN1nItJsRjcnMuiIekrFC60LOeAW5htcfxenD6jzo5dxmwz
-         8NePta9nrC1EkryAu7vbUqyxxPEv7aa1kypvxnek=
+        b=fvLqNZn7tqU9TdIEdgyRz6VdBqVWR8oNq0omJN8RVbBRGbdYZj0/pmssAvGSM3BqW
+         ErEV1fkHh7Dhtsa/HTZfO9OLJHQoRSXAP034F021wiO8202Y8g6MD3DN/F0ZhJGS3e
+         wQvFSYZIfeuLM10KVoE+vhpG/JzwAdATOL0N14PA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Sven Eckelmann <sven@narfation.org>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 130/321] ARM: dts: ti: omap: Fix bandgap thermal cells addressing for omap3/4
+Subject: [PATCH 6.1 102/259] wifi: ath11k: Cleanup mac80211 references on failure during tx_complete
 Date:   Wed,  4 Oct 2023 19:54:35 +0200
-Message-ID: <20231004175235.268701622@linuxfoundation.org>
+Message-ID: <20231004175222.028578328@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,90 +50,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 6469b2feade8fd82d224dd3734e146536f3e9f0e ]
+[ Upstream commit 29d15589f084d71a4ea8c544039c5839db0236e2 ]
 
-Fix "thermal_sys: cpu_thermal: Failed to read thermal-sensors cells: -2"
-error on boot for omap3/4. This is caused by wrong addressing in the dts
-for bandgap sensor for single sensor instances.
+When a function is using functions from mac80211 to free an skb then it
+should do it consistently and not switch to the generic dev_kfree_skb_any
+(or similar functions). Otherwise (like in the error handlers), mac80211
+will will not be aware of the freed skb and thus not clean up related
+information in its internal data structures.
 
-Note that omap4-cpu-thermal.dtsi is shared across omap4/5 and dra7, so
-we can't just change the addressing in omap4-cpu-thermal.dtsi.
+Not doing so lead in the past to filled up structure which then prevented
+new clients to connect.
 
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Carl Philipp Klemm <philipp@uvos.xyz>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Fixes: a761d517bbb1 ("ARM: dts: omap3: Add cpu_thermal zone")
-Fixes: 0bbf6c54d100 ("arm: dts: add omap4 CPU thermal data")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Fixes: 6257c702264c ("wifi: ath11k: fix tx status reporting in encap offload mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230802-ath11k-ack_status_leak-v2-2-c0af729d6229@narfation.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/ti/omap/omap3-cpu-thermal.dtsi | 3 +--
- arch/arm/boot/dts/ti/omap/omap4-cpu-thermal.dtsi | 5 ++++-
- arch/arm/boot/dts/ti/omap/omap443x.dtsi          | 1 +
- arch/arm/boot/dts/ti/omap/omap4460.dtsi          | 1 +
- 4 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_tx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3-cpu-thermal.dtsi b/arch/arm/boot/dts/ti/omap/omap3-cpu-thermal.dtsi
-index 0da759f8e2c2d..7dd2340bc5e45 100644
---- a/arch/arm/boot/dts/ti/omap/omap3-cpu-thermal.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap3-cpu-thermal.dtsi
-@@ -12,8 +12,7 @@ cpu_thermal: cpu-thermal {
- 	polling-delay = <1000>; /* milliseconds */
- 	coefficients = <0 20000>;
+diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
+index 08a28464eb7a9..64c8ccac22d27 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
+@@ -344,7 +344,7 @@ ath11k_dp_tx_htt_tx_complete_buf(struct ath11k_base *ab,
+ 	dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
  
--			/* sensor       ID */
--	thermal-sensors = <&bandgap     0>;
-+	thermal-sensors = <&bandgap>;
+ 	if (!skb_cb->vif) {
+-		dev_kfree_skb_any(msdu);
++		ieee80211_free_txskb(ar->hw, msdu);
+ 		return;
+ 	}
  
- 	cpu_trips: trips {
- 		cpu_alert0: cpu_alert {
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-cpu-thermal.dtsi b/arch/arm/boot/dts/ti/omap/omap4-cpu-thermal.dtsi
-index 801b4f10350c1..d484ec1e4fd86 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-cpu-thermal.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap4-cpu-thermal.dtsi
-@@ -12,7 +12,10 @@ cpu_thermal: cpu_thermal {
- 	polling-delay-passive = <250>; /* milliseconds */
- 	polling-delay = <1000>; /* milliseconds */
+@@ -566,12 +566,12 @@ static void ath11k_dp_tx_complete_msdu(struct ath11k *ar,
+ 	dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
  
--			/* sensor       ID */
-+	/*
-+	 * See 44xx files for single sensor addressing, omap5 and dra7 need
-+	 * also sensor ID for addressing.
-+	 */
- 	thermal-sensors = <&bandgap     0>;
+ 	if (unlikely(!rcu_access_pointer(ab->pdevs_active[ar->pdev_idx]))) {
+-		dev_kfree_skb_any(msdu);
++		ieee80211_free_txskb(ar->hw, msdu);
+ 		return;
+ 	}
  
- 	cpu_trips: trips {
-diff --git a/arch/arm/boot/dts/ti/omap/omap443x.dtsi b/arch/arm/boot/dts/ti/omap/omap443x.dtsi
-index 238aceb799f89..2104170fe2cd7 100644
---- a/arch/arm/boot/dts/ti/omap/omap443x.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap443x.dtsi
-@@ -69,6 +69,7 @@
- };
- 
- &cpu_thermal {
-+	thermal-sensors = <&bandgap>;
- 	coefficients = <0 20000>;
- };
- 
-diff --git a/arch/arm/boot/dts/ti/omap/omap4460.dtsi b/arch/arm/boot/dts/ti/omap/omap4460.dtsi
-index 1b27a862ae810..a6764750d4476 100644
---- a/arch/arm/boot/dts/ti/omap/omap4460.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap4460.dtsi
-@@ -79,6 +79,7 @@
- };
- 
- &cpu_thermal {
-+	thermal-sensors = <&bandgap>;
- 	coefficients = <348 (-9301)>;
- };
+ 	if (unlikely(!skb_cb->vif)) {
+-		dev_kfree_skb_any(msdu);
++		ieee80211_free_txskb(ar->hw, msdu);
+ 		return;
+ 	}
  
 -- 
 2.40.1
