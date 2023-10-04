@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB2967B89C8
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52AF77B875F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:04:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244217AbjJDS3L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:29:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40352 "EHLO
+        id S243775AbjJDSEf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:04:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244285AbjJDS3K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:10 -0400
+        with ESMTP id S243770AbjJDSEe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:04:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0FFE4
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDBCC433C9;
-        Wed,  4 Oct 2023 18:29:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 929459E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:04:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADC2C433C7;
+        Wed,  4 Oct 2023 18:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444146;
-        bh=SxY+RZ/gAqeaYC3xVDJGBjg+aJpqf3pQIPGmzsrFXFY=;
+        s=korg; t=1696442670;
+        bh=FABeDLnSMJrQzz4od+8oRc+HbfJ1Ix4bih0ryybpJxQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gAy/3UEZyOuxe9N50oDiQaKMns0BDAatHS7D+28QRfKS3C4OBu4t9zxcQmfl7yJek
-         mT+JosMPYHDM78MKzlu7OESb+WEAuy0stAYH/aU7Ne5quw+mqb+yxmuNjGjVQQm9Y6
-         KbCBpjY49sAWELWUXVWHBbEnC+ESDzLcGMmuzXYE=
+        b=lmmsAJ1gcBY50Lks+Kykkwt8Df4GRfPO4Pb/lPkyCUsjsMnnn1JdykhejiZ4N3DnI
+         FSRBoS9LKCANP9AZBH7ZwBJ+oNrkU6gc8N03oy7ygC+b2y1zLdWuL5T1xqjiKSxSEa
+         Vl184YFWZe9N2pYqcQQ9KHsYQXcjsxXerTI3Q1xw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev,
+        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 145/321] selftests/powerpc: Fix emit_tests to work with run_kselftest.sh
-Date:   Wed,  4 Oct 2023 19:54:50 +0200
-Message-ID: <20231004175235.967961962@linuxfoundation.org>
+Subject: [PATCH 5.15 060/183] net: rds: Fix possible NULL-pointer dereference
+Date:   Wed,  4 Oct 2023 19:54:51 +0200
+Message-ID: <20231004175206.402452169@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,99 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit 58b33e78a31782ffe25d404d5eba9a45fe636e27 ]
+[ Upstream commit f1d95df0f31048f1c59092648997686e3f7d9478 ]
 
-In order to use run_kselftest.sh the list of tests must be emitted to
-populate kselftest-list.txt.
+In rds_rdma_cm_event_handler_cmn() check, if conn pointer exists
+before dereferencing it as rdma_set_service_type() argument
 
-The powerpc Makefile is written to use EMIT_TESTS. But support for
-EMIT_TESTS was dropped in commit d4e59a536f50 ("selftests: Use runner.sh
-for emit targets"). Although prior to that commit a548de0fe8e1
-("selftests: lib.mk: add test execute bit check to EMIT_TESTS") had
-already broken run_kselftest.sh for powerpc due to the executable check
-using the wrong path.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-It can be fixed by replacing the EMIT_TESTS definitions with actual
-emit_tests rules in the powerpc Makefiles. This makes run_kselftest.sh
-able to run powerpc tests:
-
-  $ cd linux
-  $ export ARCH=powerpc
-  $ export CROSS_COMPILE=powerpc64le-linux-gnu-
-  $ make headers
-  $ make -j -C tools/testing/selftests install
-  $ grep -c "^powerpc" tools/testing/selftests/kselftest_install/kselftest-list.txt
-  182
-
-Fixes: d4e59a536f50 ("selftests: Use runner.sh for emit targets")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230921072623.828772-1-mpe@ellerman.id.au
+Fixes: fd261ce6a30e ("rds: rdma: update rdma transport for tos")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/Makefile     |  7 +++----
- tools/testing/selftests/powerpc/pmu/Makefile | 11 ++++++-----
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ net/rds/rdma_transport.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/Makefile b/tools/testing/selftests/powerpc/Makefile
-index 49f2ad1793fd9..7ea42fa02eabd 100644
---- a/tools/testing/selftests/powerpc/Makefile
-+++ b/tools/testing/selftests/powerpc/Makefile
-@@ -59,12 +59,11 @@ override define INSTALL_RULE
- 	done;
- endef
+diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
+index a9e4ff948a7d6..f71f073fd27ac 100644
+--- a/net/rds/rdma_transport.c
++++ b/net/rds/rdma_transport.c
+@@ -86,11 +86,13 @@ static int rds_rdma_cm_event_handler_cmn(struct rdma_cm_id *cm_id,
+ 		break;
  
--override define EMIT_TESTS
-+emit_tests:
- 	+@for TARGET in $(SUB_DIRS); do \
- 		BUILD_TARGET=$(OUTPUT)/$$TARGET;	\
--		$(MAKE) OUTPUT=$$BUILD_TARGET -s -C $$TARGET emit_tests;\
-+		$(MAKE) OUTPUT=$$BUILD_TARGET -s -C $$TARGET $@;\
- 	done;
--endef
+ 	case RDMA_CM_EVENT_ADDR_RESOLVED:
+-		rdma_set_service_type(cm_id, conn->c_tos);
+-		rdma_set_min_rnr_timer(cm_id, IB_RNR_TIMER_000_32);
+-		/* XXX do we need to clean up if this fails? */
+-		ret = rdma_resolve_route(cm_id,
+-					 RDS_RDMA_RESOLVE_TIMEOUT_MS);
++		if (conn) {
++			rdma_set_service_type(cm_id, conn->c_tos);
++			rdma_set_min_rnr_timer(cm_id, IB_RNR_TIMER_000_32);
++			/* XXX do we need to clean up if this fails? */
++			ret = rdma_resolve_route(cm_id,
++						 RDS_RDMA_RESOLVE_TIMEOUT_MS);
++		}
+ 		break;
  
- override define CLEAN
- 	+@for TARGET in $(SUB_DIRS); do \
-@@ -77,4 +76,4 @@ endef
- tags:
- 	find . -name '*.c' -o -name '*.h' | xargs ctags
- 
--.PHONY: tags $(SUB_DIRS)
-+.PHONY: tags $(SUB_DIRS) emit_tests
-diff --git a/tools/testing/selftests/powerpc/pmu/Makefile b/tools/testing/selftests/powerpc/pmu/Makefile
-index 2b95e44d20ff9..a284fa874a9f1 100644
---- a/tools/testing/selftests/powerpc/pmu/Makefile
-+++ b/tools/testing/selftests/powerpc/pmu/Makefile
-@@ -30,13 +30,14 @@ override define RUN_TESTS
- 	+TARGET=event_code_tests; BUILD_TARGET=$$OUTPUT/$$TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -C $$TARGET run_tests
- endef
- 
--DEFAULT_EMIT_TESTS := $(EMIT_TESTS)
--override define EMIT_TESTS
--	$(DEFAULT_EMIT_TESTS)
-+emit_tests:
-+	for TEST in $(TEST_GEN_PROGS); do \
-+		BASENAME_TEST=`basename $$TEST`;	\
-+		echo "$(COLLECTION):$$BASENAME_TEST";	\
-+	done
- 	+TARGET=ebb; BUILD_TARGET=$$OUTPUT/$$TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -s -C $$TARGET emit_tests
- 	+TARGET=sampling_tests; BUILD_TARGET=$$OUTPUT/$$TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -s -C $$TARGET emit_tests
- 	+TARGET=event_code_tests; BUILD_TARGET=$$OUTPUT/$$TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -s -C $$TARGET emit_tests
--endef
- 
- DEFAULT_INSTALL_RULE := $(INSTALL_RULE)
- override define INSTALL_RULE
-@@ -64,4 +65,4 @@ sampling_tests:
- event_code_tests:
- 	TARGET=$@; BUILD_TARGET=$$OUTPUT/$$TARGET; mkdir -p $$BUILD_TARGET; $(MAKE) OUTPUT=$$BUILD_TARGET -k -C $$TARGET all
- 
--.PHONY: all run_tests ebb sampling_tests event_code_tests
-+.PHONY: all run_tests ebb sampling_tests event_code_tests emit_tests
+ 	case RDMA_CM_EVENT_ROUTE_RESOLVED:
 -- 
 2.40.1
 
