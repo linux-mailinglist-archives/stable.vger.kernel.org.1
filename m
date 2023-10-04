@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C0627B87E4
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06F797B8940
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:24:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243875AbjJDSKf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:10:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58000 "EHLO
+        id S244156AbjJDSYI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243854AbjJDSKe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:10:34 -0400
+        with ESMTP id S244148AbjJDSYG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:24:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 218E09E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:10:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECFDC433C9;
-        Wed,  4 Oct 2023 18:10:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30B2EB
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:24:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E843BC433C9;
+        Wed,  4 Oct 2023 18:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443028;
-        bh=medUUxetFAkAQF905tki+I/V2xOy49RHBbUqpS2AJ24=;
+        s=korg; t=1696443840;
+        bh=QXBRdqeUzNslpdTWBTmM9+QGrwJK7rkcrQsNE3vIMw4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eYRVT39WCIu910ZujitpNKEoB5kCLKVJ3exk7eZnVj/UwUm7FRdsyTc9Txk4scYVo
-         7Def86n3ntemzdNBGO4Gq8UCqxIH72rTFYwFFE1EZOhNxOVdWUQydbCViszkzViPaM
-         y/kThB26kJ6xT3nAFcRTnN77CF4nKV9+HRbDD+u4=
+        b=lpulZMCrSMsHOSrbP7QFsEf+g/BA4QNt+mgaZJ4seI3UdMbHXS2zFlZv71CsKcz5T
+         +eLuRnJJfNqqbBTgZDWRhnbYxtMnnUXWTzH2hBSsrvN8d1nSB0LWz9V9uvmFWDaoNn
+         zOQYBpSnTIPFgMU0kalb4qQiM+T+MrsfnNNZA+0A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/259] media: via: Use correct dependency for camera sensor drivers
+        patches@lists.linux.dev, Knyazev Arseniy <poseaydone@ya.ru>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 039/321] ALSA: hda/realtek: Splitting the UX3402 into two separate models
 Date:   Wed,  4 Oct 2023 19:53:04 +0200
-Message-ID: <20231004175217.958653244@linuxfoundation.org>
+Message-ID: <20231004175230.975450068@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +49,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Knyazev Arseniy <poseaydone@ya.ru>
 
-[ Upstream commit 41425941dfcf47cc6df8e500af6ff16a7be6539f ]
+[ Upstream commit 07058dceb038a4b0dd49af07118b6b2a685bb4a6 ]
 
-The via camera controller driver selected ov7670 driver, however now that
-driver has dependencies and may no longer be selected unconditionally.
+UX3402VA and UX3402ZA models require different hex values, so comibining
+them into one model is incorrect.
 
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Fixes: 7d3c7d2a2914 ("media: i2c: Add a camera sensor top level menu")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 491a4ccd8a02 ("ALSA: hda/realtek: Add quirk for ASUS Zenbook using CS35L41")
+Signed-off-by: Knyazev Arseniy <poseaydone@ya.ru>
+Link: https://lore.kernel.org/r/20230913053343.119798-1-poseaydone@ya.ru
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/via/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/via/Kconfig b/drivers/media/platform/via/Kconfig
-index 8926eb0803b27..6e603c0382487 100644
---- a/drivers/media/platform/via/Kconfig
-+++ b/drivers/media/platform/via/Kconfig
-@@ -7,7 +7,7 @@ config VIDEO_VIA_CAMERA
- 	depends on V4L_PLATFORM_DRIVERS
- 	depends on FB_VIA && VIDEO_DEV
- 	select VIDEOBUF2_DMA_SG
--	select VIDEO_OV7670
-+	select VIDEO_OV7670 if VIDEO_CAMERA_SENSOR
- 	help
- 	   Driver support for the integrated camera controller in VIA
- 	   Chrome9 chipsets.  Currently only tested on OLPC xo-1.5 systems
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index dc7b7a407638a..4a13747b2b0f3 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9680,7 +9680,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1d1f, "ASUS ROG Strix G17 2023 (G713PV)", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
+-	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x16a3, "ASUS UX3402VA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
+ 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
 -- 
 2.40.1
 
