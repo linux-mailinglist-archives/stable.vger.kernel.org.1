@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E29E7B89CD
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:29:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 148107B8868
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233635AbjJDS3a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:29:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40520 "EHLO
+        id S244046AbjJDSPx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:15:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233777AbjJDS33 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:29 -0400
+        with ESMTP id S244053AbjJDSPv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F27EFD7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:29:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46CD0C433C8;
-        Wed,  4 Oct 2023 18:29:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D042C9
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BBCC433C7;
+        Wed,  4 Oct 2023 18:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444165;
-        bh=dLCh2yCMAJuO2uWN+TQk2HE9DmuaQJk2Xmm470CJ1EY=;
+        s=korg; t=1696443348;
+        bh=fQlk2SYA8wYaomrXxd1PdUWeJiP7pmU0aK/Lh7nrypQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oCuP823Tx28n2qyhToT4nAHUx/2QcOy6zsy38aQVQBSPKCtZF+782uagmjjcQfCRk
-         ZRCVaRFZzlN2zyhj9y+yIsILiwFP83g+KqxYxr8yKFeZfnCFZVgtiJjUTT/3VFXRZu
-         2t5VRfan0vmoihee1BIaT+ZGAGwDPhRGvEx7bWhc=
+        b=nEnBTZcgDWMaNpHHfSfoRFkNjTput5f0Idc77tTi50SpysoziG5fAo2JudmsL0shp
+         kTx6FBCItR36vGaTmz+HTpsKVvajfIzC8tulYE/vT5bHg725FRo0Sr/ccnuqOeFY+o
+         bI0RtS565PxDlw6jih7aZU7+TOOAPt4bAKZgd0Uo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Chandra Sekhar Lingutla <quic_lingutla@quicinc.com>,
-        Sibi Sankar <quic_sibis@quicinc.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 124/321] firmware: arm_scmi: Fixup perf power-cost/microwatt support
+Subject: [PATCH 6.1 096/259] ARM: dts: qcom: msm8974pro-castor: correct touchscreen syna,nosleep-mode
 Date:   Wed,  4 Oct 2023 19:54:29 +0200
-Message-ID: <20231004175234.983273048@linuxfoundation.org>
+Message-ID: <20231004175221.751876803@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit c3638b851bc1ca0022dca9d6ca4beaa6ef03a216 ]
+[ Upstream commit 7c74379afdfee7b13f1cd8ff1ad6e0f986aec96c ]
 
-The perf power scale value would currently be reported as bogowatts if the
-platform firmware supports microwatt power scale and meets the perf major
-version requirements. Fix this by populating version information in the
-driver private data before the call to protocol attributes is made.
+There is no syna,nosleep property in Synaptics RMI4 touchscreen:
 
-CC: Chandra Sekhar Lingutla <quic_lingutla@quicinc.com>
-Fixes: 3630cd8130ce ("firmware: arm_scmi: Add SCMI v3.1 perf power-cost in microwatts")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20230811204818.30928-1-quic_sibis@quicinc.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+  qcom-msm8974pro-sony-xperia-shinano-castor.dtb: synaptics@2c: rmi4-f01@1: 'syna,nosleep' does not match any of the regexes: 'pinctrl-[0-9]+'
+
+Fixes: ab80661883de ("ARM: dts: qcom: msm8974: Add Sony Xperia Z2 Tablet")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230720115335.137354-6-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/perf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
-index 43dd242ecc49c..431bda9165c3d 100644
---- a/drivers/firmware/arm_scmi/perf.c
-+++ b/drivers/firmware/arm_scmi/perf.c
-@@ -858,6 +858,8 @@ static int scmi_perf_protocol_init(const struct scmi_protocol_handle *ph)
- 	if (!pinfo)
- 		return -ENOMEM;
+diff --git a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+index a572ac630c1b3..cc49bb777df8a 100644
+--- a/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
++++ b/arch/arm/boot/dts/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+@@ -126,7 +126,7 @@
  
-+	pinfo->version = version;
-+
- 	ret = scmi_perf_attributes_get(ph, pinfo);
- 	if (ret)
- 		return ret;
-@@ -877,8 +879,6 @@ static int scmi_perf_protocol_init(const struct scmi_protocol_handle *ph)
- 			scmi_perf_domain_init_fc(ph, domain, &dom->fc_info);
- 	}
+ 		rmi4-f01@1 {
+ 			reg = <0x1>;
+-			syna,nosleep = <1>;
++			syna,nosleep-mode = <1>;
+ 		};
  
--	pinfo->version = version;
--
- 	return ph->set_priv(ph, pinfo);
- }
- 
+ 		rmi4-f11@11 {
 -- 
 2.40.1
 
