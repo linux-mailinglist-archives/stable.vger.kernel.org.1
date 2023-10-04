@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E100A7B8808
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:12:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71E177B8967
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243946AbjJDSMK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:12:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40428 "EHLO
+        id S244175AbjJDSZf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:25:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243952AbjJDSMH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:12:07 -0400
+        with ESMTP id S244177AbjJDSZe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BFFAF0
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:11:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B05C433C8;
-        Wed,  4 Oct 2023 18:11:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A35BF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:25:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34095C433C8;
+        Wed,  4 Oct 2023 18:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443115;
-        bh=iaUPUaZsePUyIgs6QN8h2txMVQsnrD3uaYCdipkRRxY=;
+        s=korg; t=1696443930;
+        bh=AwvV22U3Z3aWMKb/qq5jNTioHF6Xqws2wkVflEMRNeE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R0aWchiInMRTv4l+9FCv5a7TepXeReab1Ifmg9eshfP2i6ryjSd9WVvD/vVU08g/j
-         +zFh9wGtQLFbJAAm2HHyaPf2MrCpgXd0lIqFhUr/xiRcR2VSiwsBUfc+TgawG+76Ep
-         rel5F5nFfA0gbzvd610CwN1pHBhiU5y6dPRH9+i8=
+        b=QAs4yLoehRiVEaHje/ydlaT0NTuvoruHgvFsLERuy1HE3uEcO5pA1Kj/jk1Y+DFTu
+         qOZVz/bEDqzSnUcCv5no+gRqIu8SQHNDIMMH6ysJTAFoyuc1/Un+Jhto4INa4+F7si
+         EpX730O1X9K4qimCk3Mn6HMgS2OkCeflxWHlO7Z4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Knyazev Arseniy <poseaydone@ya.ru>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/259] ALSA: hda/realtek: Splitting the UX3402 into two separate models
-Date:   Wed,  4 Oct 2023 19:53:35 +0200
-Message-ID: <20231004175219.376120649@linuxfoundation.org>
+        patches@lists.linux.dev, Mike Rappoport <rppt@kernel.org>,
+        Rik van Riel <riel@surriel.com>,
+        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 071/321] x86/mm, kexec, ima: Use memblock_free_late() from ima_free_kexec_buffer()
+Date:   Wed,  4 Oct 2023 19:53:36 +0200
+Message-ID: <20231004175232.497291581@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,40 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Knyazev Arseniy <poseaydone@ya.ru>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 07058dceb038a4b0dd49af07118b6b2a685bb4a6 ]
+[ Upstream commit 34cf99c250d5cd2530b93a57b0de31d3aaf8685b ]
 
-UX3402VA and UX3402ZA models require different hex values, so comibining
-them into one model is incorrect.
+The code calling ima_free_kexec_buffer() runs long after the memblock
+allocator has already been torn down, potentially resulting in a use
+after free in memblock_isolate_range().
 
-Fixes: 491a4ccd8a02 ("ALSA: hda/realtek: Add quirk for ASUS Zenbook using CS35L41")
-Signed-off-by: Knyazev Arseniy <poseaydone@ya.ru>
-Link: https://lore.kernel.org/r/20230913053343.119798-1-poseaydone@ya.ru
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+With KASAN or KFENCE, this use after free will result in a BUG
+from the idle task, and a subsequent kernel panic.
+
+Switch ima_free_kexec_buffer() over to memblock_free_late() to avoid
+that bug.
+
+Fixes: fee3ff99bc67 ("powerpc: Move arch independent ima kexec functions to drivers/of/kexec.c")
+Suggested-by: Mike Rappoport <rppt@kernel.org>
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230817135558.67274c83@imladris.surriel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/setup.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index f70e0ad81607e..57e07aa4e136c 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9657,7 +9657,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1d1f, "ASUS ROG Strix G17 2023 (G713PV)", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
--	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x16a3, "ASUS UX3402VA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
- 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index fd975a4a52006..aa0df37c1fe72 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -359,15 +359,11 @@ static void __init add_early_ima_buffer(u64 phys_addr)
+ #if defined(CONFIG_HAVE_IMA_KEXEC) && !defined(CONFIG_OF_FLATTREE)
+ int __init ima_free_kexec_buffer(void)
+ {
+-	int rc;
+-
+ 	if (!ima_kexec_buffer_size)
+ 		return -ENOENT;
+ 
+-	rc = memblock_phys_free(ima_kexec_buffer_phys,
+-				ima_kexec_buffer_size);
+-	if (rc)
+-		return rc;
++	memblock_free_late(ima_kexec_buffer_phys,
++			   ima_kexec_buffer_size);
+ 
+ 	ima_kexec_buffer_phys = 0;
+ 	ima_kexec_buffer_size = 0;
 -- 
 2.40.1
 
