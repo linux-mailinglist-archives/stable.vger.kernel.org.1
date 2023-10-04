@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53C967B88B6
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A705F7B87B5
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233655AbjJDSSi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:18:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56070 "EHLO
+        id S243850AbjJDSI3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:08:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233758AbjJDSSd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:33 -0400
+        with ESMTP id S243818AbjJDSI2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4F7CE
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C38C433C8;
-        Wed,  4 Oct 2023 18:18:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A3E8A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4AE4C433C8;
+        Wed,  4 Oct 2023 18:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443509;
-        bh=YQ5Llo4HaPgoVNGV8XNfKXYGYBCSVKUxhLDWUsVUgb4=;
+        s=korg; t=1696442905;
+        bh=M/V2Tt9af+8Utlv68tTUR3iwA/FIi0LpvX54zB80O30=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RzEXTMM85vRG5ielkSRRb9ORjHDAV9N4bAxmqZHSwFbzuja8779cAhEn8isswqrgq
-         lkPAvSskl4nQdex3vteJcwKMCVOfm91ry9hj2dUorV2OwB+SoOfiezgwIkNrOG7w2W
-         QBRrLmUm0kp38GMeCAQVORi3RSIEX2F8heJqjAnc=
+        b=HVC+gUkoU4ZsDlNxbiokwGFAVfZQF8eozkTieyPQSkbedjCLQSPodBQWxB356dQS7
+         mb2KJIRNedZEeQAVkSczHJk4fKHBSYUWYE/KZbLF9cAtuzOy9DN8btsrcC3GW/dDSL
+         6gremTlyjRjeRXn54/ZP0IhVA3Gpsfl9BJbbg4MU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Stefan Binding <sbinding@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Tze-nan Wu <Tze-nan.Wu@mediatek.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 181/259] ASoC: cs42l42: Ensure a reset pulse meets minimum pulse width.
+Subject: [PATCH 5.15 123/183] ring-buffer: Do not attempt to read past "commit"
 Date:   Wed,  4 Oct 2023 19:55:54 +0200
-Message-ID: <20231004175225.600855555@linuxfoundation.org>
+Message-ID: <20231004175209.107104053@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +52,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 41dac81b56c82c51a6d00fda5f3af7691ffee2d7 ]
+[ Upstream commit 95a404bd60af6c4d9d8db01ad14fe8957ece31ca ]
 
-The CS42L42 can accept very short reset pulses of a few microseconds
-but there's no reason to force a very short pulse.
-Allow a wide range for the usleep_range() so it can be relaxed about
-the choice of timing source.
+When iterating over the ring buffer while the ring buffer is active, the
+writer can corrupt the reader. There's barriers to help detect this and
+handle it, but that code missed the case where the last event was at the
+very end of the page and has only 4 bytes left.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20230913150012.604775-2-sbinding@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The checks to detect the corruption by the writer to reads needs to see the
+length of the event. If the length in the first 4 bytes is zero then the
+length is stored in the second 4 bytes. But if the writer is in the process
+of updating that code, there's a small window where the length in the first
+4 bytes could be zero even though the length is only 4 bytes. That will
+cause rb_event_length() to read the next 4 bytes which could happen to be off the
+allocated page.
+
+To protect against this, fail immediately if the next event pointer is
+less than 8 bytes from the end of the commit (last byte of data), as all
+events must be a minimum of 8 bytes anyway.
+
+Link: https://lore.kernel.org/all/20230905141245.26470-1-Tze-nan.Wu@mediatek.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20230907122820.0899019c@gandalf.local.home
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Reported-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs42l42.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/trace/ring_buffer.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/soc/codecs/cs42l42.c b/sound/soc/codecs/cs42l42.c
-index 2fefbcf7bd130..914cdd737fa3b 100644
---- a/sound/soc/codecs/cs42l42.c
-+++ b/sound/soc/codecs/cs42l42.c
-@@ -2280,6 +2280,10 @@ int cs42l42_common_probe(struct cs42l42_private *cs42l42,
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index b15d72284c7f7..69db849ae7dad 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -2352,6 +2352,11 @@ rb_iter_head_event(struct ring_buffer_iter *iter)
+ 	 */
+ 	commit = rb_page_commit(iter_head_page);
+ 	smp_rmb();
++
++	/* An event needs to be at least 8 bytes in size */
++	if (iter->head > commit - 8)
++		goto reset;
++
+ 	event = __rb_page_index(iter_head_page, iter->head);
+ 	length = rb_event_length(event);
  
- 	if (cs42l42->reset_gpio) {
- 		dev_dbg(cs42l42->dev, "Found reset GPIO\n");
-+
-+		/* Ensure minimum reset pulse width */
-+		usleep_range(10, 500);
-+
- 		gpiod_set_value_cansleep(cs42l42->reset_gpio, 1);
- 	}
- 	usleep_range(CS42L42_BOOT_TIME_US, CS42L42_BOOT_TIME_US * 2);
 -- 
 2.40.1
 
