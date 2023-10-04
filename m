@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD7947B89FA
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C5F07B888C
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244322AbjJDSay (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58922 "EHLO
+        id S244083AbjJDSRU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244332AbjJDSay (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:54 -0400
+        with ESMTP id S244085AbjJDSRT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC488BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FCEFC433C7;
-        Wed,  4 Oct 2023 18:30:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111A4D7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38096C433C8;
+        Wed,  4 Oct 2023 18:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444250;
-        bh=rhjo2rlxkFhuDwaXC9flxB2fYqx+6+q41GZwjO3MTyo=;
+        s=korg; t=1696443435;
+        bh=toCKPYZ0mVqTwfdse405AMT8R0SPkleBTkScYY9w3SI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l/zsijNCbNGOnBbQOhcaYwvdvpjLZ7FSAIdAJ23Y2n36TXNQlQ8Kyo56SpdloGfUw
-         uxOt0V+Mot5MeNRWKc+uJa/NzEhJZresuI4c1Dj7/Z+1I47LIJnRJvz1lnaS0a9R6Z
-         yfK5snSq75IcSlTuA/+wRMu/G/Ivch726B180v2g=
+        b=zd15Kdil2KgdCiNYqGJ9QphRvQb4XpW6tUZ5lnxxskOR/FDl/j6xkHsdXeud1dp7d
+         4s7a5Mre46YOKJTJQ5xb1qbwwm8PfFeQDjk4xKgBAo1iyiI99Hh7VDCO5ciiF65PdI
+         5YNt1ZHoLdRfTC7QSPJhlmFzmlkwOG19vjxDg90A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wenhua Lin <Wenhua.Lin@unisoc.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        kernel test robot <lkp@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 155/321] gpio: pmic-eic-sprd: Add can_sleep flag for PMIC EIC chip
+Subject: [PATCH 6.1 127/259] xtensa: add default definition for XCHAL_HAVE_DIV32
 Date:   Wed,  4 Oct 2023 19:55:00 +0200
-Message-ID: <20231004175236.428006795@linuxfoundation.org>
+Message-ID: <20231004175223.198266298@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +51,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenhua Lin <Wenhua.Lin@unisoc.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit 26d9e5640d2130ee16df7b1fb6a908f460ab004c ]
+[ Upstream commit 494e87ffa0159b3f879694a9231089707792a44d ]
 
-The drivers uses a mutex and I2C bus access in its PMIC EIC chip
-get implementation. This means these functions can sleep and the PMIC EIC
-chip should set the can_sleep property to true.
+When variant FSF is set, XCHAL_HAVE_DIV32 is not defined. Add default
+definition for that macro to prevent build warnings:
 
-This will ensure that a warning is printed when trying to get the
-value from a context that potentially can't sleep.
+arch/xtensa/lib/divsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
+    9 | #if XCHAL_HAVE_DIV32
+arch/xtensa/lib/modsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
+    9 | #if XCHAL_HAVE_DIV32
 
-Fixes: 348f3cde84ab ("gpio: Add Spreadtrum PMIC EIC driver support")
-Signed-off-by: Wenhua Lin <Wenhua.Lin@unisoc.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 173d6681380a ("xtensa: remove extra header files")
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: lore.kernel.org/r/202309150556.t0yCdv3g-lkp@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-pmic-eic-sprd.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/xtensa/include/asm/core.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpio/gpio-pmic-eic-sprd.c b/drivers/gpio/gpio-pmic-eic-sprd.c
-index c3e4d90f6b183..36f6cfc224c2d 100644
---- a/drivers/gpio/gpio-pmic-eic-sprd.c
-+++ b/drivers/gpio/gpio-pmic-eic-sprd.c
-@@ -352,6 +352,7 @@ static int sprd_pmic_eic_probe(struct platform_device *pdev)
- 	pmic_eic->chip.set_config = sprd_pmic_eic_set_config;
- 	pmic_eic->chip.set = sprd_pmic_eic_set;
- 	pmic_eic->chip.get = sprd_pmic_eic_get;
-+	pmic_eic->chip.can_sleep = true;
+diff --git a/arch/xtensa/include/asm/core.h b/arch/xtensa/include/asm/core.h
+index 7cef85ad9741a..25293269e1edd 100644
+--- a/arch/xtensa/include/asm/core.h
++++ b/arch/xtensa/include/asm/core.h
+@@ -6,6 +6,10 @@
  
- 	irq = &pmic_eic->chip.irq;
- 	gpio_irq_chip_set_chip(irq, &pmic_eic_irq_chip);
+ #include <variant/core.h>
+ 
++#ifndef XCHAL_HAVE_DIV32
++#define XCHAL_HAVE_DIV32 0
++#endif
++
+ #ifndef XCHAL_HAVE_EXCLUSIVE
+ #define XCHAL_HAVE_EXCLUSIVE 0
+ #endif
 -- 
 2.40.1
 
