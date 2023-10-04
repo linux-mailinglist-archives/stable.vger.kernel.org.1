@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A0157B89F2
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B66CE7B8789
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244329AbjJDSao (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:30:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59970 "EHLO
+        id S243811AbjJDSGd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:06:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244317AbjJDSak (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:40 -0400
+        with ESMTP id S243839AbjJDSGb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 719A198
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFEAC433C9;
-        Wed,  4 Oct 2023 18:30:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A21C1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EE2C433C7;
+        Wed,  4 Oct 2023 18:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444236;
-        bh=Fv3DodC9OEDU9AdXPJaSOnhRLShBb1oBzc3Y4u1VrBY=;
+        s=korg; t=1696442787;
+        bh=igaaQIJfYdEboBjF3P308XaQYv5I00MEduSxtrV3X0Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yw1vDTeu/0kjER+xtzYpO+PiBjPw7E3VqaYgBOL9RsE9GHfW1K3bmhZxB62iHUm6s
-         AvmPBocXcACkhgODGY4LVL3+FccqEcWoOWJS+PNZAg3ek2f9oS2+S7c9P9Ca/Pa5rG
-         b0axdKqoZ01F2/i0TZpMm7JuOxhZQ6ynAcAuLvx0=
+        b=jJ4b8K2tQHoyIhDsUeVDMeR1lTCsgWsQW2TGzPldWtTvljq2v5p7Cm17iWLGPvxQX
+         kIM3jxYv8VsehmyvELeHamq108DpF6rGFxxAzdFWYb06Y7BketBxCOjepTSfWSRyz2
+         ibu9DoJNN/FP2ThDb9lQsvF1/KWMRyrFIq8T1hIc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 177/321] btrfs: assert delayed node locked when removing delayed item
+Subject: [PATCH 5.15 091/183] MIPS: Alchemy: only build mmc support helpers if au1xmmc is enabled
 Date:   Wed,  4 Oct 2023 19:55:22 +0200
-Message-ID: <20231004175237.445745432@linuxfoundation.org>
+Message-ID: <20231004175207.701696797@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +52,136 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit a57c2d4e46f519b24558ae0752c17eec416ac72a ]
+[ Upstream commit ef8f8f04a0b25e8f294b24350e8463a8d6a9ba0b ]
 
-When removing a delayed item, or releasing which will remove it as well,
-we will modify one of the delayed node's rbtrees and item counter if the
-delayed item is in one of the rbtrees. This require having the delayed
-node's mutex locked, otherwise we will race with other tasks modifying
-the rbtrees and the counter.
+While commit d4a5c59a955b ("mmc: au1xmmc: force non-modular build and
+remove symbol_get usage") to be built in, it can still build a kernel
+without MMC support and thuse no mmc_detect_change symbol at all.
 
-This is motivated by a previous version of another patch actually calling
-btrfs_release_delayed_item() after unlocking the delayed node's mutex and
-against a delayed item that is in a rbtree.
+Add ifdefs to build the mmc support code in the alchemy arch code
+conditional on mmc support.
 
-So assert at __btrfs_remove_delayed_item() that the delayed node's mutex
-is locked.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: d4a5c59a955b ("mmc: au1xmmc: force non-modular build and remove symbol_get usage")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/delayed-inode.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/mips/alchemy/devboards/db1000.c | 4 ++++
+ arch/mips/alchemy/devboards/db1200.c | 6 ++++++
+ arch/mips/alchemy/devboards/db1300.c | 4 ++++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index b5f684cb4e749..142e0a0f6a9fe 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -412,6 +412,7 @@ static void finish_one_item(struct btrfs_delayed_root *delayed_root)
+diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
+index 50de86eb8784c..3183df60ad337 100644
+--- a/arch/mips/alchemy/devboards/db1000.c
++++ b/arch/mips/alchemy/devboards/db1000.c
+@@ -164,6 +164,7 @@ static struct platform_device db1x00_audio_dev = {
  
- static void __btrfs_remove_delayed_item(struct btrfs_delayed_item *delayed_item)
+ /******************************************************************************/
+ 
++#ifdef CONFIG_MMC_AU1X
+ static irqreturn_t db1100_mmc_cd(int irq, void *ptr)
  {
-+	struct btrfs_delayed_node *delayed_node = delayed_item->delayed_node;
- 	struct rb_root_cached *root;
- 	struct btrfs_delayed_root *delayed_root;
+ 	mmc_detect_change(ptr, msecs_to_jiffies(500));
+@@ -369,6 +370,7 @@ static struct platform_device db1100_mmc1_dev = {
+ 	.num_resources	= ARRAY_SIZE(au1100_mmc1_res),
+ 	.resource	= au1100_mmc1_res,
+ };
++#endif /* CONFIG_MMC_AU1X */
  
-@@ -419,18 +420,21 @@ static void __btrfs_remove_delayed_item(struct btrfs_delayed_item *delayed_item)
- 	if (RB_EMPTY_NODE(&delayed_item->rb_node))
- 		return;
+ /******************************************************************************/
  
--	delayed_root = delayed_item->delayed_node->root->fs_info->delayed_root;
-+	/* If it's in a rbtree, then we need to have delayed node locked. */
-+	lockdep_assert_held(&delayed_node->mutex);
-+
-+	delayed_root = delayed_node->root->fs_info->delayed_root;
+@@ -432,8 +434,10 @@ static struct platform_device *db1x00_devs[] = {
  
- 	BUG_ON(!delayed_root);
+ static struct platform_device *db1100_devs[] = {
+ 	&au1100_lcd_device,
++#ifdef CONFIG_MMC_AU1X
+ 	&db1100_mmc0_dev,
+ 	&db1100_mmc1_dev,
++#endif
+ };
  
- 	if (delayed_item->type == BTRFS_DELAYED_INSERTION_ITEM)
--		root = &delayed_item->delayed_node->ins_root;
-+		root = &delayed_node->ins_root;
- 	else
--		root = &delayed_item->delayed_node->del_root;
-+		root = &delayed_node->del_root;
+ int __init db1000_dev_setup(void)
+diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
+index 76080c71a2a7b..f521874ebb07b 100644
+--- a/arch/mips/alchemy/devboards/db1200.c
++++ b/arch/mips/alchemy/devboards/db1200.c
+@@ -326,6 +326,7 @@ static struct platform_device db1200_ide_dev = {
  
- 	rb_erase_cached(&delayed_item->rb_node, root);
- 	RB_CLEAR_NODE(&delayed_item->rb_node);
--	delayed_item->delayed_node->count--;
-+	delayed_node->count--;
+ /**********************************************************************/
  
- 	finish_one_item(delayed_root);
- }
++#ifdef CONFIG_MMC_AU1X
+ /* SD carddetects:  they're supposed to be edge-triggered, but ack
+  * doesn't seem to work (CPLD Rev 2).  Instead, the screaming one
+  * is disabled and its counterpart enabled.  The 200ms timeout is
+@@ -584,6 +585,7 @@ static struct platform_device pb1200_mmc1_dev = {
+ 	.num_resources	= ARRAY_SIZE(au1200_mmc1_res),
+ 	.resource	= au1200_mmc1_res,
+ };
++#endif /* CONFIG_MMC_AU1X */
+ 
+ /**********************************************************************/
+ 
+@@ -751,7 +753,9 @@ static struct platform_device db1200_audiodma_dev = {
+ static struct platform_device *db1200_devs[] __initdata = {
+ 	NULL,		/* PSC0, selected by S6.8 */
+ 	&db1200_ide_dev,
++#ifdef CONFIG_MMC_AU1X
+ 	&db1200_mmc0_dev,
++#endif
+ 	&au1200_lcd_dev,
+ 	&db1200_eth_dev,
+ 	&db1200_nand_dev,
+@@ -762,7 +766,9 @@ static struct platform_device *db1200_devs[] __initdata = {
+ };
+ 
+ static struct platform_device *pb1200_devs[] __initdata = {
++#ifdef CONFIG_MMC_AU1X
+ 	&pb1200_mmc1_dev,
++#endif
+ };
+ 
+ /* Some peripheral base addresses differ on the PB1200 */
+diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
+index ca71e5ed51abd..c965d00074818 100644
+--- a/arch/mips/alchemy/devboards/db1300.c
++++ b/arch/mips/alchemy/devboards/db1300.c
+@@ -450,6 +450,7 @@ static struct platform_device db1300_ide_dev = {
+ 
+ /**********************************************************************/
+ 
++#ifdef CONFIG_MMC_AU1X
+ static irqreturn_t db1300_mmc_cd(int irq, void *ptr)
+ {
+ 	disable_irq_nosync(irq);
+@@ -632,6 +633,7 @@ static struct platform_device db1300_sd0_dev = {
+ 	.resource	= au1300_sd0_res,
+ 	.num_resources	= ARRAY_SIZE(au1300_sd0_res),
+ };
++#endif /* CONFIG_MMC_AU1X */
+ 
+ /**********************************************************************/
+ 
+@@ -776,8 +778,10 @@ static struct platform_device *db1300_dev[] __initdata = {
+ 	&db1300_5waysw_dev,
+ 	&db1300_nand_dev,
+ 	&db1300_ide_dev,
++#ifdef CONFIG_MMC_AU1X
+ 	&db1300_sd0_dev,
+ 	&db1300_sd1_dev,
++#endif
+ 	&db1300_lcd_dev,
+ 	&db1300_ac97_dev,
+ 	&db1300_i2s_dev,
 -- 
 2.40.1
 
