@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E41E17B8858
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8926B7B89BD
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:28:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244023AbjJDSPK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:15:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53802 "EHLO
+        id S243793AbjJDS2s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:28:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243973AbjJDSPJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:09 -0400
+        with ESMTP id S244270AbjJDS2s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:28:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C742BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D316CC433C8;
-        Wed,  4 Oct 2023 18:15:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48BC1F1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:28:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E5CC433C8;
+        Wed,  4 Oct 2023 18:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443306;
-        bh=aB29Yyg9BmbcULk+av20IdxPCdG+3EoUEG4PDx3SsUA=;
+        s=korg; t=1696444123;
+        bh=eceI3JLDWdYyECQEuysDT732r1M6kpDKnrr48E3jHdo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FrPdsUe3Y2r+piFxSGc4AlOrLERuAmzXhuynn9wWtwodxFat8U+J5JneLinYNALgI
-         LtIfHYrmhsbniAzioYLyFxQxORNFSdKeW4R/G/vLA92FLtGu7lSH0KPpjZ+ufBPL5T
-         ZXKC1KsCV5jNgWuxBRDcSNRlgRVQFoznO8Te2Kvw=
+        b=Xr/krvxMqD8h/3fclCOrf0emkDR+PYXQQCDeg1lwtk6ybd582/RcRwQtMDwdUMaaQ
+         7qKO1Be0VtNuMcM+ijRKBFRKJy7zgmKL4uvBFCn32+QqUOsCGFQFEJTVTKB0pTY6BW
+         xLoSlhpFUGtyH/QnsSNUwKAuHfSSrigXRZv54xmA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Charles Kearney <charles.kearney@hpe.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        kernel test robot <lkp@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/259] spi: spi-gxp: BUG: Correct spi write return value
+Subject: [PATCH 6.5 138/321] xtensa: add default definition for XCHAL_HAVE_DIV32
 Date:   Wed,  4 Oct 2023 19:54:43 +0200
-Message-ID: <20231004175222.395255171@linuxfoundation.org>
+Message-ID: <20231004175235.642533031@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +51,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Kearney <charles.kearney@hpe.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit 1a8196a93e493c0a50b800cb09cef60b124eee15 ]
+[ Upstream commit 494e87ffa0159b3f879694a9231089707792a44d ]
 
-Bug fix to correct return value of gxp_spi_write function to zero.
-Completion of succesful operation should return zero.
+When variant FSF is set, XCHAL_HAVE_DIV32 is not defined. Add default
+definition for that macro to prevent build warnings:
 
-Fixes: 730bc8ba5e9e spi: spi-gxp: Add support for HPE GXP SoCs
+arch/xtensa/lib/divsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
+    9 | #if XCHAL_HAVE_DIV32
+arch/xtensa/lib/modsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
+    9 | #if XCHAL_HAVE_DIV32
 
-Signed-off-by: Charles Kearney <charles.kearney@hpe.com>
-Link: https://lore.kernel.org/r/20230920215339.4125856-2-charles.kearney@hpe.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 173d6681380a ("xtensa: remove extra header files")
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: lore.kernel.org/r/202309150556.t0yCdv3g-lkp@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-gxp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/xtensa/include/asm/core.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/spi/spi-gxp.c b/drivers/spi/spi-gxp.c
-index c900c2f39b578..21b07e2518513 100644
---- a/drivers/spi/spi-gxp.c
-+++ b/drivers/spi/spi-gxp.c
-@@ -195,7 +195,7 @@ static ssize_t gxp_spi_write(struct gxp_spi_chip *chip, const struct spi_mem_op
- 		return ret;
- 	}
+diff --git a/arch/xtensa/include/asm/core.h b/arch/xtensa/include/asm/core.h
+index 3f5ffae89b580..6f02f6f21890f 100644
+--- a/arch/xtensa/include/asm/core.h
++++ b/arch/xtensa/include/asm/core.h
+@@ -6,6 +6,10 @@
  
--	return write_len;
-+	return 0;
- }
+ #include <variant/core.h>
  
- static int do_gxp_exec_mem_op(struct spi_mem *mem, const struct spi_mem_op *op)
++#ifndef XCHAL_HAVE_DIV32
++#define XCHAL_HAVE_DIV32 0
++#endif
++
+ #ifndef XCHAL_HAVE_EXCLUSIVE
+ #define XCHAL_HAVE_EXCLUSIVE 0
+ #endif
 -- 
 2.40.1
 
