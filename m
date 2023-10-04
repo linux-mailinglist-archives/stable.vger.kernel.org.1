@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DD267B8A4D
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E4007B88A9
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244091AbjJDSeK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:34:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39272 "EHLO
+        id S233727AbjJDSSY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:18:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243557AbjJDSeJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:09 -0400
+        with ESMTP id S233840AbjJDSJN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 921F198
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D789FC433C7;
-        Wed,  4 Oct 2023 18:34:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F44EA7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D90C433C9;
+        Wed,  4 Oct 2023 18:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444445;
-        bh=oU9TWetjfJmo7F1IAxTabdG6fyCQGgTwWSKZtXkqU/4=;
+        s=korg; t=1696442950;
+        bh=Tcwq+xGKcpVCWOPbN8uBW2q2ldL/23NronKrL9DoNek=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b/W/34NE6WKhSBOQJPXysnlTT8nHFN/eeYEsC+ZyHALAVs6EPYqjvK6w7UC+RI5Va
-         fjzc46jM8qRtSBCWmc0NqClHVUpgz8uGX1JMwUCaBp8KiAPozyKWQr+BsMf6mxKAhu
-         M84VJ7a4zflaYqcOxuGYvD584hxtTfFB6qTDnrJc=
+        b=c2UM0Gn4nUjEP3bFDtt2oWOT+IzWvnN46vbpUSTgHQtqgn//5f+2MPONu8Cr6gFot
+         im9Z6xGdi/rM5JbRi8sJZog5lu+Urlumsw2QDvvoUiZcBxY330rrooKfEirftZriVl
+         WXMMZDar06MeGMW/9pas4N9rKx4Uk1MnLxWb7wTk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John David Anglin <dave.anglin@bell.net>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        David Gow <david@davidgow.net>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.5 253/321] scsi: core: ata: Do no try to probe for CDL on old drives
+        patches@lists.linux.dev,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.15 167/183] kernel/sched: Modify initial boot task idle setup
 Date:   Wed,  4 Oct 2023 19:56:38 +0200
-Message-ID: <20231004175240.982498492@linuxfoundation.org>
+Message-ID: <20231004175211.028740732@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,105 +50,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-commit 2132df16f53b4f01ab25f5d404f36a22244ae342 upstream.
+commit cff9b2332ab762b7e0586c793c431a8f2ea4db04 upstream.
 
-Some old drives (e.g. an Ultra320 SCSI disk as reported by John) do not
-seem to execute MAINTENANCE_IN / MI_REPORT_SUPPORTED_OPERATION_CODES
-commands correctly and hang when a non-zero service action is specified
-(one command format with service action case in scsi_report_opcode()).
+Initial booting is setting the task flag to idle (PF_IDLE) by the call
+path sched_init() -> init_idle().  Having the task idle and calling
+call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
+set.  Subsequent calls to any cond_resched() will enable IRQs,
+potentially earlier than the IRQ setup has completed.  Recent changes
+have caused just this scenario and IRQs have been enabled early.
 
-Currently, CDL probing with scsi_cdl_check_cmd() is the only caller using a
-non zero service action for scsi_report_opcode(). To avoid issues with
-these old drives, do not attempt CDL probe if the device reports support
-for an SPC version lower than 5 (CDL was introduced in SPC-5). To keep
-things working with ATA devices which probe for the CDL T2A and T2B pages
-introduced with SPC-6, modify ata_scsiop_inq_std() to claim SPC-6 version
-compatibility for ATA drives supporting CDL.
+This causes a warning later in start_kernel() as interrupts are enabled
+before they are fully set up.
 
-SPC-6 standard version number is defined as Dh (= 13) in SPC-6 r09. Fix
-scsi_probe_lun() to correctly capture this value by changing the bit mask
-for the second byte of the INQUIRY response from 0x7 to 0xf.
-include/scsi/scsi.h is modified to add the definition SCSI_SPC_6 with the
-value 14 (Dh + 1). The missing definitions for the SCSI_SPC_4 and
-SCSI_SPC_5 versions are also added.
+Fix this issue by setting the PF_IDLE flag later in the boot sequence.
 
-Reported-by: John David Anglin <dave.anglin@bell.net>
-Fixes: 624885209f31 ("scsi: core: Detect support for command duration limits")
+Although the boot task was marked as idle since (at least) d80e4fda576d,
+I am not sure that it is wrong to do so.  The forced context-switch on
+idle task was introduced in the tiny_rcu update, so I'm going to claim
+this fixes 5f6130fa52ee.
+
+Fixes: 5f6130fa52ee ("tiny_rcu: Directly force QS when call_rcu_[bh|sched]() on idle_task")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20230915022034.678121-1-dlemoal@kernel.org
-Tested-by: David Gow <david@davidgow.net>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/linux-mm/CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |    3 +++
- drivers/scsi/scsi.c       |   11 +++++++++++
- drivers/scsi/scsi_scan.c  |    2 +-
- include/scsi/scsi.h       |    3 +++
- 4 files changed, 18 insertions(+), 1 deletion(-)
+ kernel/sched/core.c |    2 +-
+ kernel/sched/idle.c |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1892,6 +1892,9 @@ static unsigned int ata_scsiop_inq_std(s
- 		hdr[2] = 0x7; /* claim SPC-5 version compatibility */
- 	}
- 
-+	if (args->dev->flags & ATA_DFLAG_CDL)
-+		hdr[2] = 0xd; /* claim SPC-6 version compatibility */
-+
- 	memcpy(rbuf, hdr, sizeof(hdr));
- 	memcpy(&rbuf[8], "ATA     ", 8);
- 	ata_id_string(args->id, &rbuf[16], ATA_ID_PROD, 16);
---- a/drivers/scsi/scsi.c
-+++ b/drivers/scsi/scsi.c
-@@ -613,6 +613,17 @@ void scsi_cdl_check(struct scsi_device *
- 	bool cdl_supported;
- 	unsigned char *buf;
- 
-+	/*
-+	 * Support for CDL was defined in SPC-5. Ignore devices reporting an
-+	 * lower SPC version. This also avoids problems with old drives choking
-+	 * on MAINTENANCE_IN / MI_REPORT_SUPPORTED_OPERATION_CODES with a
-+	 * service action specified, as done in scsi_cdl_check_cmd().
-+	 */
-+	if (sdev->scsi_level < SCSI_SPC_5) {
-+		sdev->cdl_supported = 0;
-+		return;
-+	}
-+
- 	buf = kmalloc(SCSI_CDL_CHECK_BUF_LEN, GFP_KERNEL);
- 	if (!buf) {
- 		sdev->cdl_supported = 0;
---- a/drivers/scsi/scsi_scan.c
-+++ b/drivers/scsi/scsi_scan.c
-@@ -822,7 +822,7 @@ static int scsi_probe_lun(struct scsi_de
- 	 * device is attached at LUN 0 (SCSI_SCAN_TARGET_PRESENT) so
- 	 * non-zero LUNs can be scanned.
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8725,7 +8725,7 @@ void __init init_idle(struct task_struct
+ 	 * PF_KTHREAD should already be set at this point; regardless, make it
+ 	 * look like a proper per-CPU kthread.
  	 */
--	sdev->scsi_level = inq_result[2] & 0x07;
-+	sdev->scsi_level = inq_result[2] & 0x0f;
- 	if (sdev->scsi_level >= 2 ||
- 	    (sdev->scsi_level == 1 && (inq_result[3] & 0x0f) == 1))
- 		sdev->scsi_level++;
---- a/include/scsi/scsi.h
-+++ b/include/scsi/scsi.h
-@@ -157,6 +157,9 @@ enum scsi_disposition {
- #define SCSI_3          4        /* SPC */
- #define SCSI_SPC_2      5
- #define SCSI_SPC_3      6
-+#define SCSI_SPC_4	7
-+#define SCSI_SPC_5	8
-+#define SCSI_SPC_6	14
+-	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
++	idle->flags |= PF_KTHREAD | PF_NO_SETAFFINITY;
+ 	kthread_set_per_cpu(idle, cpu);
  
- /*
-  * INQ PERIPHERAL QUALIFIERS
+ #ifdef CONFIG_SMP
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -397,6 +397,7 @@ EXPORT_SYMBOL_GPL(play_idle_precise);
+ 
+ void cpu_startup_entry(enum cpuhp_state state)
+ {
++	current->flags |= PF_IDLE;
+ 	arch_cpu_idle_prepare();
+ 	cpuhp_online_idle(state);
+ 	while (1)
 
 
