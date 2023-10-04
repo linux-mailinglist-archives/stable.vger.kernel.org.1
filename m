@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB60D7B88E7
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1831F7B8A52
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243987AbjJDSUq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:20:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43820 "EHLO
+        id S244396AbjJDSeV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:34:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243991AbjJDSUp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:45 -0400
+        with ESMTP id S244400AbjJDSeU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746E4BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B626FC433C7;
-        Wed,  4 Oct 2023 18:20:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3BBC98
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC1D4C433C8;
+        Wed,  4 Oct 2023 18:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443642;
-        bh=0CE2TUK6ttJsiOkMEpPsNjqcYSDy/x2oLsgOtSPpTJQ=;
+        s=korg; t=1696444456;
+        bh=IYwEGCDKxpKaSIthJtW1dM033FHB95zAKc4aXM1PeDs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sGdcv2Ajhk8y/YCNqpowIbyK7wDSRMXXNsM1pirrw/KUsc43DftZY/bRq0nhyD1IM
-         ScGUxLCzTeu1a2AzzdC6C/0Qc5tflv0B4tmdgxywnOoknNN25VfmBFDbIL5hB/re2o
-         1ojiKmCRdbbPZ4CAM3V3r9RIOe4nEyY+jeBirNRo=
+        b=AafG9d2I2/gqTNEq3wY0Wu/0Cj1iWtmiL5NS4f1awUceBn8LHWz8JEalPCoyPtO9B
+         NhSILyAdtoL3tG1FmzNsEBjlfEeR0BAbXdvx/C/CmlpVkOaQKsjg1oBY2Yi13BWX/a
+         cc+yvgejZQUMXz14UqBTVMWpNScRJIOL1r3pmlaU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 229/259] kernel/sched: Modify initial boot task idle setup
+        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
+        Mark Hills <mark@xwax.org>
+Subject: [PATCH 6.5 257/321] ALSA: rawmidi: Fix NULL dereference at proc read
 Date:   Wed,  4 Oct 2023 19:56:42 +0200
-Message-ID: <20231004175227.851768574@linuxfoundation.org>
+Message-ID: <20231004175241.170886237@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,62 +49,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit cff9b2332ab762b7e0586c793c431a8f2ea4db04 upstream.
+commit b2ce0027d7b2905495021c5208f92043eb493146 upstream.
 
-Initial booting is setting the task flag to idle (PF_IDLE) by the call
-path sched_init() -> init_idle().  Having the task idle and calling
-call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
-set.  Subsequent calls to any cond_resched() will enable IRQs,
-potentially earlier than the IRQ setup has completed.  Recent changes
-have caused just this scenario and IRQs have been enabled early.
+At the implementation of the optional proc fs in rawmidi, I forgot
+that rmidi->ops itself is optional and can be NULL.
+Add the proper NULL check for avoiding the Oops.
 
-This causes a warning later in start_kernel() as interrupts are enabled
-before they are fully set up.
-
-Fix this issue by setting the PF_IDLE flag later in the boot sequence.
-
-Although the boot task was marked as idle since (at least) d80e4fda576d,
-I am not sure that it is wrong to do so.  The forced context-switch on
-idle task was introduced in the tiny_rcu update, so I'm going to claim
-this fixes 5f6130fa52ee.
-
-Fixes: 5f6130fa52ee ("tiny_rcu: Directly force QS when call_rcu_[bh|sched]() on idle_task")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-mm/CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com/
+Fixes: fa030f666d24 ("ALSA: ump: Additional proc output")
+Reported-and-tested-by: Mark Hills <mark@xwax.org>
+Closes: https://lore.kernel.org/r/ef9118c3-a2eb-d0ff-1efa-cc5fb6416bde@xwax.org
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230916060725.11726-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c |    2 +-
- kernel/sched/idle.c |    1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ sound/core/rawmidi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9019,7 +9019,7 @@ void __init init_idle(struct task_struct
- 	 * PF_KTHREAD should already be set at this point; regardless, make it
- 	 * look like a proper per-CPU kthread.
- 	 */
--	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
-+	idle->flags |= PF_KTHREAD | PF_NO_SETAFFINITY;
- 	kthread_set_per_cpu(idle, cpu);
- 
- #ifdef CONFIG_SMP
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -394,6 +394,7 @@ EXPORT_SYMBOL_GPL(play_idle_precise);
- 
- void cpu_startup_entry(enum cpuhp_state state)
- {
-+	current->flags |= PF_IDLE;
- 	arch_cpu_idle_prepare();
- 	cpuhp_online_idle(state);
- 	while (1)
+diff --git a/sound/core/rawmidi.c b/sound/core/rawmidi.c
+index ba06484ac4aa..1431cb997808 100644
+--- a/sound/core/rawmidi.c
++++ b/sound/core/rawmidi.c
+@@ -1770,7 +1770,7 @@ static void snd_rawmidi_proc_info_read(struct snd_info_entry *entry,
+ 	if (IS_ENABLED(CONFIG_SND_UMP))
+ 		snd_iprintf(buffer, "Type: %s\n",
+ 			    rawmidi_is_ump(rmidi) ? "UMP" : "Legacy");
+-	if (rmidi->ops->proc_read)
++	if (rmidi->ops && rmidi->ops->proc_read)
+ 		rmidi->ops->proc_read(entry, buffer);
+ 	mutex_lock(&rmidi->open_mutex);
+ 	if (rmidi->info_flags & SNDRV_RAWMIDI_INFO_OUTPUT) {
+-- 
+2.42.0
+
 
 
