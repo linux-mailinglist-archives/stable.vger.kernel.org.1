@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C8827B8832
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD8617B898D
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243963AbjJDSNi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:13:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59166 "EHLO
+        id S244211AbjJDS1T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:27:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243956AbjJDSNh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:13:37 -0400
+        with ESMTP id S244207AbjJDS1R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 152C49E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B963C433CA;
-        Wed,  4 Oct 2023 18:13:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6DD98
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5CFC433C9;
+        Wed,  4 Oct 2023 18:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443213;
-        bh=1JcdUqcdrg+Btaxs6nnfe0UoBUWjzfs2PHtFxWml1eQ=;
+        s=korg; t=1696444033;
+        bh=mJaFtuaLJzcbg62sUw/nJV/93DiphZobS2bJOu1qOZE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HnHU6GZ2dUVeiw0sENI4AfVUfILQvBlLLoD8Sg9i0cGNEsq4uGO2cEWS6AJm3Fru7
-         mN4ev3ht/L8GPudPStrvuIGc7sA3vyMTnrlKZ0QEtjp+tDzcyME2ATOEX0UKJMHhPW
-         ADHNkf9Iox54sgNYk6Na5hkGnEdLDRhpsW9cgfTU=
+        b=NmKV3ZapbFrQDGpGyXP/dkBp5qFfQEFK38O6T0FqvlU3wYu+pZkUViZL8LAVc4lJO
+         U/1GYTpJNd1Q2doywP9wDT8L4wPc/NX8nFCjRIOMyVO30qid306siN725HJ3b6V98+
+         7IVoE8cCob1jJ74c3NSx2bbDB+lN/GVTknyprSIA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Lee, Cherie-Anne" <cherie.lee@starlabs.sg>,
-        Bing-Jhong Billy Jheng <billy@starlabs.sg>, info@starlabs.sg,
-        Florian Westphal <fw@strlen.de>,
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
+        Steve French <stfrench@microsoft.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/259] netfilter: nf_tables: disable toggling dormant table state more than once
-Date:   Wed,  4 Oct 2023 19:54:10 +0200
-Message-ID: <20231004175220.911829777@linuxfoundation.org>
+Subject: [PATCH 6.5 106/321] cifs: Fix UAF in cifs_demultiplex_thread()
+Date:   Wed,  4 Oct 2023 19:54:11 +0200
+Message-ID: <20231004175234.153675346@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,60 +52,254 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
 
-[ Upstream commit c9bd26513b3a11b3adb3c2ed8a31a01a87173ff1 ]
+[ Upstream commit d527f51331cace562393a8038d870b3e9916686f ]
 
-nft -f -<<EOF
-add table ip t
-add table ip t { flags dormant; }
-add chain ip t c { type filter hook input priority 0; }
-add table ip t
-EOF
+There is a UAF when xfstests on cifs:
 
-Triggers a splat from nf core on next table delete because we lose
-track of right hook register state:
+  BUG: KASAN: use-after-free in smb2_is_network_name_deleted+0x27/0x160
+  Read of size 4 at addr ffff88810103fc08 by task cifsd/923
 
-WARNING: CPU: 2 PID: 1597 at net/netfilter/core.c:501 __nf_unregister_net_hook
-RIP: 0010:__nf_unregister_net_hook+0x41b/0x570
- nf_unregister_net_hook+0xb4/0xf0
- __nf_tables_unregister_hook+0x160/0x1d0
-[..]
+  CPU: 1 PID: 923 Comm: cifsd Not tainted 6.1.0-rc4+ #45
+  ...
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x34/0x44
+   print_report+0x171/0x472
+   kasan_report+0xad/0x130
+   kasan_check_range+0x145/0x1a0
+   smb2_is_network_name_deleted+0x27/0x160
+   cifs_demultiplex_thread.cold+0x172/0x5a4
+   kthread+0x165/0x1a0
+   ret_from_fork+0x1f/0x30
+   </TASK>
 
-The above should have table in *active* state, but in fact no
-hooks were registered.
+  Allocated by task 923:
+   kasan_save_stack+0x1e/0x40
+   kasan_set_track+0x21/0x30
+   __kasan_slab_alloc+0x54/0x60
+   kmem_cache_alloc+0x147/0x320
+   mempool_alloc+0xe1/0x260
+   cifs_small_buf_get+0x24/0x60
+   allocate_buffers+0xa1/0x1c0
+   cifs_demultiplex_thread+0x199/0x10d0
+   kthread+0x165/0x1a0
+   ret_from_fork+0x1f/0x30
 
-Reject on/off/on games rather than attempting to fix this.
+  Freed by task 921:
+   kasan_save_stack+0x1e/0x40
+   kasan_set_track+0x21/0x30
+   kasan_save_free_info+0x2a/0x40
+   ____kasan_slab_free+0x143/0x1b0
+   kmem_cache_free+0xe3/0x4d0
+   cifs_small_buf_release+0x29/0x90
+   SMB2_negotiate+0x8b7/0x1c60
+   smb2_negotiate+0x51/0x70
+   cifs_negotiate_protocol+0xf0/0x160
+   cifs_get_smb_ses+0x5fa/0x13c0
+   mount_get_conns+0x7a/0x750
+   cifs_mount+0x103/0xd00
+   cifs_smb3_do_mount+0x1dd/0xcb0
+   smb3_get_tree+0x1d5/0x300
+   vfs_get_tree+0x41/0xf0
+   path_mount+0x9b3/0xdd0
+   __x64_sys_mount+0x190/0x1d0
+   do_syscall_64+0x35/0x80
+   entry_SYSCALL_64_after_hwframe+0x46/0xb0
 
-Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
-Reported-by: "Lee, Cherie-Anne" <cherie.lee@starlabs.sg>
-Cc: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Cc: info@starlabs.sg
-Signed-off-by: Florian Westphal <fw@strlen.de>
+The UAF is because:
+
+ mount(pid: 921)               | cifsd(pid: 923)
+-------------------------------|-------------------------------
+                               | cifs_demultiplex_thread
+SMB2_negotiate                 |
+ cifs_send_recv                |
+  compound_send_recv           |
+   smb_send_rqst               |
+    wait_for_response          |
+     wait_event_state      [1] |
+                               |  standard_receive3
+                               |   cifs_handle_standard
+                               |    handle_mid
+                               |     mid->resp_buf = buf;  [2]
+                               |     dequeue_mid           [3]
+     KILL the process      [4] |
+    resp_iov[i].iov_base = buf |
+ free_rsp_buf              [5] |
+                               |   is_network_name_deleted [6]
+                               |   callback
+
+1. After send request to server, wait the response until
+    mid->mid_state != SUBMITTED;
+2. Receive response from server, and set it to mid;
+3. Set the mid state to RECEIVED;
+4. Kill the process, the mid state already RECEIVED, get 0;
+5. Handle and release the negotiate response;
+6. UAF.
+
+It can be easily reproduce with add some delay in [3] - [6].
+
+Only sync call has the problem since async call's callback is
+executed in cifsd process.
+
+Add an extra state to mark the mid state to READY before wakeup the
+waitter, then it can get the resp safely.
+
+Fixes: ec637e3ffb6b ("[CIFS] Avoid extra large buffer allocation (and memcpy) in cifs_readpages")
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/client/cifsglob.h  |  1 +
+ fs/smb/client/transport.c | 34 +++++++++++++++++++++++-----------
+ 2 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 521f8c3cb6987..1d6a37430ff6b 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1211,6 +1211,10 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
- 	     flags & NFT_TABLE_F_OWNER))
- 		return -EOPNOTSUPP;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 051f15b9d6078..35782a6bede0b 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1776,6 +1776,7 @@ static inline bool is_retryable_error(int error)
+ #define   MID_RETRY_NEEDED      8 /* session closed while this request out */
+ #define   MID_RESPONSE_MALFORMED 0x10
+ #define   MID_SHUTDOWN		 0x20
++#define   MID_RESPONSE_READY 0x40 /* ready for other process handle the rsp */
  
-+	/* No dormant off/on/off/on games in single transaction */
-+	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
-+		return -EINVAL;
+ /* Flags */
+ #define   MID_WAIT_CANCELLED	 1 /* Cancelled while waiting for response */
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index f280502a2aee8..2b9a2ed45a652 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -35,6 +35,8 @@
+ void
+ cifs_wake_up_task(struct mid_q_entry *mid)
+ {
++	if (mid->mid_state == MID_RESPONSE_RECEIVED)
++		mid->mid_state = MID_RESPONSE_READY;
+ 	wake_up_process(mid->callback_data);
+ }
+ 
+@@ -87,7 +89,8 @@ static void __release_mid(struct kref *refcount)
+ 	struct TCP_Server_Info *server = midEntry->server;
+ 
+ 	if (midEntry->resp_buf && (midEntry->mid_flags & MID_WAIT_CANCELLED) &&
+-	    midEntry->mid_state == MID_RESPONSE_RECEIVED &&
++	    (midEntry->mid_state == MID_RESPONSE_RECEIVED ||
++	     midEntry->mid_state == MID_RESPONSE_READY) &&
+ 	    server->ops->handle_cancelled_mid)
+ 		server->ops->handle_cancelled_mid(midEntry, server);
+ 
+@@ -732,7 +735,8 @@ wait_for_response(struct TCP_Server_Info *server, struct mid_q_entry *midQ)
+ 	int error;
+ 
+ 	error = wait_event_state(server->response_q,
+-				 midQ->mid_state != MID_REQUEST_SUBMITTED,
++				 midQ->mid_state != MID_REQUEST_SUBMITTED &&
++				 midQ->mid_state != MID_RESPONSE_RECEIVED,
+ 				 (TASK_KILLABLE|TASK_FREEZABLE_UNSAFE));
+ 	if (error < 0)
+ 		return -ERESTARTSYS;
+@@ -885,7 +889,7 @@ cifs_sync_mid_result(struct mid_q_entry *mid, struct TCP_Server_Info *server)
+ 
+ 	spin_lock(&server->mid_lock);
+ 	switch (mid->mid_state) {
+-	case MID_RESPONSE_RECEIVED:
++	case MID_RESPONSE_READY:
+ 		spin_unlock(&server->mid_lock);
+ 		return rc;
+ 	case MID_RETRY_NEEDED:
+@@ -984,6 +988,9 @@ cifs_compound_callback(struct mid_q_entry *mid)
+ 	credits.instance = server->reconnect_instance;
+ 
+ 	add_credits(server, &credits, mid->optype);
 +
- 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWTABLE,
- 				sizeof(struct nft_trans_table));
- 	if (trans == NULL)
++	if (mid->mid_state == MID_RESPONSE_RECEIVED)
++		mid->mid_state = MID_RESPONSE_READY;
+ }
+ 
+ static void
+@@ -1204,7 +1211,8 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+ 			send_cancel(server, &rqst[i], midQ[i]);
+ 			spin_lock(&server->mid_lock);
+ 			midQ[i]->mid_flags |= MID_WAIT_CANCELLED;
+-			if (midQ[i]->mid_state == MID_REQUEST_SUBMITTED) {
++			if (midQ[i]->mid_state == MID_REQUEST_SUBMITTED ||
++			    midQ[i]->mid_state == MID_RESPONSE_RECEIVED) {
+ 				midQ[i]->callback = cifs_cancelled_callback;
+ 				cancelled_mid[i] = true;
+ 				credits[i].value = 0;
+@@ -1225,7 +1233,7 @@ compound_send_recv(const unsigned int xid, struct cifs_ses *ses,
+ 		}
+ 
+ 		if (!midQ[i]->resp_buf ||
+-		    midQ[i]->mid_state != MID_RESPONSE_RECEIVED) {
++		    midQ[i]->mid_state != MID_RESPONSE_READY) {
+ 			rc = -EIO;
+ 			cifs_dbg(FYI, "Bad MID state?\n");
+ 			goto out;
+@@ -1412,7 +1420,8 @@ SendReceive(const unsigned int xid, struct cifs_ses *ses,
+ 	if (rc != 0) {
+ 		send_cancel(server, &rqst, midQ);
+ 		spin_lock(&server->mid_lock);
+-		if (midQ->mid_state == MID_REQUEST_SUBMITTED) {
++		if (midQ->mid_state == MID_REQUEST_SUBMITTED ||
++		    midQ->mid_state == MID_RESPONSE_RECEIVED) {
+ 			/* no longer considered to be "in-flight" */
+ 			midQ->callback = release_mid;
+ 			spin_unlock(&server->mid_lock);
+@@ -1429,7 +1438,7 @@ SendReceive(const unsigned int xid, struct cifs_ses *ses,
+ 	}
+ 
+ 	if (!midQ->resp_buf || !out_buf ||
+-	    midQ->mid_state != MID_RESPONSE_RECEIVED) {
++	    midQ->mid_state != MID_RESPONSE_READY) {
+ 		rc = -EIO;
+ 		cifs_server_dbg(VFS, "Bad MID state?\n");
+ 		goto out;
+@@ -1553,14 +1562,16 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+ 
+ 	/* Wait for a reply - allow signals to interrupt. */
+ 	rc = wait_event_interruptible(server->response_q,
+-		(!(midQ->mid_state == MID_REQUEST_SUBMITTED)) ||
++		(!(midQ->mid_state == MID_REQUEST_SUBMITTED ||
++		   midQ->mid_state == MID_RESPONSE_RECEIVED)) ||
+ 		((server->tcpStatus != CifsGood) &&
+ 		 (server->tcpStatus != CifsNew)));
+ 
+ 	/* Were we interrupted by a signal ? */
+ 	spin_lock(&server->srv_lock);
+ 	if ((rc == -ERESTARTSYS) &&
+-		(midQ->mid_state == MID_REQUEST_SUBMITTED) &&
++		(midQ->mid_state == MID_REQUEST_SUBMITTED ||
++		 midQ->mid_state == MID_RESPONSE_RECEIVED) &&
+ 		((server->tcpStatus == CifsGood) ||
+ 		 (server->tcpStatus == CifsNew))) {
+ 		spin_unlock(&server->srv_lock);
+@@ -1591,7 +1602,8 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+ 		if (rc) {
+ 			send_cancel(server, &rqst, midQ);
+ 			spin_lock(&server->mid_lock);
+-			if (midQ->mid_state == MID_REQUEST_SUBMITTED) {
++			if (midQ->mid_state == MID_REQUEST_SUBMITTED ||
++			    midQ->mid_state == MID_RESPONSE_RECEIVED) {
+ 				/* no longer considered to be "in-flight" */
+ 				midQ->callback = release_mid;
+ 				spin_unlock(&server->mid_lock);
+@@ -1611,7 +1623,7 @@ SendReceiveBlockingLock(const unsigned int xid, struct cifs_tcon *tcon,
+ 		return rc;
+ 
+ 	/* rcvd frame is ok */
+-	if (out_buf == NULL || midQ->mid_state != MID_RESPONSE_RECEIVED) {
++	if (out_buf == NULL || midQ->mid_state != MID_RESPONSE_READY) {
+ 		rc = -EIO;
+ 		cifs_tcon_dbg(VFS, "Bad MID state?\n");
+ 		goto out;
 -- 
 2.40.1
 
