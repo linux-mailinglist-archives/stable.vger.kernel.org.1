@@ -2,49 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EEDC7B98BF
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 01:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB7D7B98CE
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 01:45:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231684AbjJDXj6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 19:39:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56084 "EHLO
+        id S229769AbjJDXp2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 19:45:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230381AbjJDXj5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 19:39:57 -0400
+        with ESMTP id S233418AbjJDXp0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 19:45:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 118FECE
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 16:39:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64C8C433C8;
-        Wed,  4 Oct 2023 23:39:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D47C0
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 16:45:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D76AC433C9
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 23:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696462793;
-        bh=1b+bxsn19Q8T7L/gabU7LPcV9N7rRqKMVisEvYO41K0=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=TKXJqo7SPjHTnpAmGIHd4S0rZC95Dup7Vr+g0Ca71Vr/rJTG6nueO15+bHQL3VuZS
-         MZUl/9VeGGJZlPsgb9/ejFLYdBIm2nPqi3xljwiAsSzXRyChs1Hzdymepew/s3lDlB
-         XfCOow34rX7KOh5MLNUjQCAjReilIJlS5aHwDptFjQW1F1YKg8TJ45mvpuNpSI3h5u
-         Tvry22KTsUd6D5BY3/s52oxzg0ZQbT2WAUYVVjlWgc9xOtufPwpmODOFF0kIh9cKBq
-         GbH3U1VOsDV2be3JiG3GP+H5jMPcLZ2OXLJKaOwkWHH6aZdtIMRSxz2IyTeb2yvqyP
-         Wjfs79EhtVaUg==
-Message-ID: <e3e9eb6f-cfc1-9685-1205-f755cb14c3f3@kernel.org>
-Date:   Thu, 5 Oct 2023 08:39:52 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: FAILED: patch "[PATCH] ata: libata-scsi: Fix delayed
- scsi_rescan_device() execution" failed to apply to 6.5-stable tree
-Content-Language: en-US
-To:     gregkh@linuxfoundation.org, geert+renesas@glider.be, hare@suse.de,
-        martin.petersen@oracle.com, niklas.cassel@wdc.com
-Cc:     stable@vger.kernel.org
-References: <2023100443-freewill-shanty-0f05@gregkh>
+        s=k20201202; t=1696463123;
+        bh=tayR7Jy7frkBTgp3JcVAmK3a/JhmWLNkTa2UbtmuRTQ=;
+        h=From:To:Subject:Date:In-Reply-To:References:From;
+        b=k9EBV/4cMyc/6MlEXONcSiKL2WrI0gIP5PnlhYQduJs25TRWB1JeHjs85DXuYkt9J
+         CXqN84r56guGA68gQbFXnWLcFnAvPssZHNrteh5yfI7PWtcPGuVPboIrU2XHMzPRjN
+         reVa/FFjuGrudUtc2q1PmhPPiU3iGQ1jYiqjy254fpzumWTeIf7MTZra55ili7RhD0
+         DgvfBTh1EYsext6LY93bTBGfd36X2hv/uOa6YRHD7sg/wcOW7Gy/MOgA6ZsPiRXVhV
+         y00MSRE+zh0zp5GQcDYD2ksODr1ykA104iy8RumX68yC/ca8qUtIUcYVMHhMW6l7wa
+         9IM/Uid2TXCWQ==
 From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <2023100443-freewill-shanty-0f05@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+To:     stable@vger.kernel.org
+Subject: [PATCH 6.5.y] scsi: Do not attempt to rescan suspended devices
+Date:   Thu,  5 Oct 2023 08:45:21 +0900
+Message-ID: <20231004234521.237241-1-dlemoal@kernel.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <2023100454-hamper-falsify-595d@gregkh>
+References: <2023100454-hamper-falsify-595d@gregkh>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,182 +46,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/4/23 23:32, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.5-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 8b4d9469d0b0e553208ee6f62f2807111fde18b9
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100443-freewill-shanty-0f05@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
-> 
-> Possible dependencies:
+Commit ff48b37802e5c134e2dfc4d091f10b2eb5065a72 upstream.
 
-commit ff48b37802e5c134e2dfc4d091f10b2eb5065a72
+scsi_rescan_device() takes a scsi device lock before executing a device
+handler and device driver rescan methods. Waiting for the completion of
+any command issued to the device by these methods will thus be done with
+the device lock held. As a result, there is a risk of deadlocking within
+the power management code if scsi_rescan_device() is called to handle a
+device resume with the associated scsi device not yet resumed.
 
-    scsi: Do not attempt to rescan suspended devices
+Avoid such situation by checking that the target scsi device is in the
+running state, that is, fully capable of executing commands, before
+proceeding with the rescan and bailout returning -EWOULDBLOCK otherwise.
+With this error return, the caller can retry rescaning the device after
+a delay.
 
-is needed to backport this one.
+The state check is done with the device lock held and is thus safe
+against incoming suspend power management operations.
 
-> 
-> 
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
-> From 8b4d9469d0b0e553208ee6f62f2807111fde18b9 Mon Sep 17 00:00:00 2001
-> From: Damien Le Moal <dlemoal@kernel.org>
-> Date: Tue, 5 Sep 2023 09:06:23 +0900
-> Subject: [PATCH] ata: libata-scsi: Fix delayed scsi_rescan_device() execution
-> 
-> Commit 6aa0365a3c85 ("ata: libata-scsi: Avoid deadlock on rescan after
-> device resume") modified ata_scsi_dev_rescan() to check the scsi device
-> "is_suspended" power field to ensure that the scsi device associated
-> with an ATA device is fully resumed when scsi_rescan_device() is
-> executed. However, this fix is problematic as:
-> 1) It relies on a PM internal field that should not be used without PM
->    device locking protection.
-> 2) The check for is_suspended and the call to scsi_rescan_device() are
->    not atomic and a suspend PM event may be triggered between them,
->    casuing scsi_rescan_device() to be called on a suspended device and
->    in that function blocking while holding the scsi device lock. This
->    would deadlock a following resume operation.
-> These problems can trigger PM deadlocks on resume, especially with
-> resume operations triggered quickly after or during suspend operations.
-> E.g., a simple bash script like:
-> 
-> for (( i=0; i<10; i++ )); do
-> 	echo "+2 > /sys/class/rtc/rtc0/wakealarm
-> 	echo mem > /sys/power/state
-> done
-> 
-> that triggers a resume 2 seconds after starting suspending a system can
-> quickly lead to a PM deadlock preventing the system from correctly
-> resuming.
-> 
-> Fix this by replacing the check on is_suspended with a check on the
-> return value given by scsi_rescan_device() as that function will fail if
-> called against a suspended device. Also make sure rescan tasks already
-> scheduled are first cancelled before suspending an ata port.
-> 
-> Fixes: 6aa0365a3c85 ("ata: libata-scsi: Avoid deadlock on rescan after device resume")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-> Reviewed-by: Hannes Reinecke <hare@suse.de>
-> Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-> 
-> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-> index a0bc01606b30..092372334e92 100644
-> --- a/drivers/ata/libata-core.c
-> +++ b/drivers/ata/libata-core.c
-> @@ -5168,11 +5168,27 @@ static const unsigned int ata_port_suspend_ehi = ATA_EHI_QUIET
->  
->  static void ata_port_suspend(struct ata_port *ap, pm_message_t mesg)
->  {
-> +	/*
-> +	 * We are about to suspend the port, so we do not care about
-> +	 * scsi_rescan_device() calls scheduled by previous resume operations.
-> +	 * The next resume will schedule the rescan again. So cancel any rescan
-> +	 * that is not done yet.
-> +	 */
-> +	cancel_delayed_work_sync(&ap->scsi_rescan_task);
-> +
->  	ata_port_request_pm(ap, mesg, 0, ata_port_suspend_ehi, false);
->  }
->  
->  static void ata_port_suspend_async(struct ata_port *ap, pm_message_t mesg)
->  {
-> +	/*
-> +	 * We are about to suspend the port, so we do not care about
-> +	 * scsi_rescan_device() calls scheduled by previous resume operations.
-> +	 * The next resume will schedule the rescan again. So cancel any rescan
-> +	 * that is not done yet.
-> +	 */
-> +	cancel_delayed_work_sync(&ap->scsi_rescan_task);
-> +
->  	ata_port_request_pm(ap, mesg, 0, ata_port_suspend_ehi, true);
->  }
->  
-> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-> index a0e58d22d222..6850cac803c1 100644
-> --- a/drivers/ata/libata-scsi.c
-> +++ b/drivers/ata/libata-scsi.c
-> @@ -4756,7 +4756,7 @@ void ata_scsi_dev_rescan(struct work_struct *work)
->  	struct ata_link *link;
->  	struct ata_device *dev;
->  	unsigned long flags;
-> -	bool delay_rescan = false;
-> +	int ret = 0;
->  
->  	mutex_lock(&ap->scsi_scan_mutex);
->  	spin_lock_irqsave(ap->lock, flags);
-> @@ -4765,37 +4765,34 @@ void ata_scsi_dev_rescan(struct work_struct *work)
->  		ata_for_each_dev(dev, link, ENABLED) {
->  			struct scsi_device *sdev = dev->sdev;
->  
-> +			/*
-> +			 * If the port was suspended before this was scheduled,
-> +			 * bail out.
-> +			 */
-> +			if (ap->pflags & ATA_PFLAG_SUSPENDED)
-> +				goto unlock;
-> +
->  			if (!sdev)
->  				continue;
->  			if (scsi_device_get(sdev))
->  				continue;
->  
-> -			/*
-> -			 * If the rescan work was scheduled because of a resume
-> -			 * event, the port is already fully resumed, but the
-> -			 * SCSI device may not yet be fully resumed. In such
-> -			 * case, executing scsi_rescan_device() may cause a
-> -			 * deadlock with the PM code on device_lock(). Prevent
-> -			 * this by giving up and retrying rescan after a short
-> -			 * delay.
-> -			 */
-> -			delay_rescan = sdev->sdev_gendev.power.is_suspended;
-> -			if (delay_rescan) {
-> -				scsi_device_put(sdev);
-> -				break;
-> -			}
-> -
->  			spin_unlock_irqrestore(ap->lock, flags);
-> -			scsi_rescan_device(sdev);
-> +			ret = scsi_rescan_device(sdev);
->  			scsi_device_put(sdev);
->  			spin_lock_irqsave(ap->lock, flags);
-> +
-> +			if (ret)
-> +				goto unlock;
->  		}
->  	}
->  
-> +unlock:
->  	spin_unlock_irqrestore(ap->lock, flags);
->  	mutex_unlock(&ap->scsi_scan_mutex);
->  
-> -	if (delay_rescan)
-> +	/* Reschedule with a delay if scsi_rescan_device() returned an error */
-> +	if (ret)
->  		schedule_delayed_work(&ap->scsi_rescan_task,
->  				      msecs_to_jiffies(5));
->  }
-> 
+Fixes: 6aa0365a3c85 ("ata: libata-scsi: Avoid deadlock on rescan after device resume")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+(cherry picked from commit ff48b37802e5c134e2dfc4d091f10b2eb5065a72)
+---
+ drivers/scsi/scsi_priv.h |  2 +-
+ drivers/scsi/scsi_scan.c | 18 +++++++++++++++++-
+ include/scsi/scsi_host.h |  2 +-
+ 3 files changed, 19 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/scsi/scsi_priv.h b/drivers/scsi/scsi_priv.h
+index f42388ecb024..30861e7e6850 100644
+--- a/drivers/scsi/scsi_priv.h
++++ b/drivers/scsi/scsi_priv.h
+@@ -138,7 +138,7 @@ extern int scsi_complete_async_scans(void);
+ extern int scsi_scan_host_selected(struct Scsi_Host *, unsigned int,
+ 				   unsigned int, u64, enum scsi_scan_mode);
+ extern void scsi_forget_host(struct Scsi_Host *);
+-extern void scsi_rescan_device(struct device *);
++extern int scsi_rescan_device(struct device *dev);
+ 
+ /* scsi_sysctl.c */
+ #ifdef CONFIG_SYSCTL
+diff --git a/drivers/scsi/scsi_scan.c b/drivers/scsi/scsi_scan.c
+index aa13feb17c62..5d4d3d48e3f0 100644
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -1619,12 +1619,24 @@ int scsi_add_device(struct Scsi_Host *host, uint channel,
+ }
+ EXPORT_SYMBOL(scsi_add_device);
+ 
+-void scsi_rescan_device(struct device *dev)
++int scsi_rescan_device(struct device *dev)
+ {
+ 	struct scsi_device *sdev = to_scsi_device(dev);
++	int ret = 0;
+ 
+ 	device_lock(dev);
+ 
++	/*
++	 * Bail out if the device is not running. Otherwise, the rescan may
++	 * block waiting for commands to be executed, with us holding the
++	 * device lock. This can result in a potential deadlock in the power
++	 * management core code when system resume is on-going.
++	 */
++	if (sdev->sdev_state != SDEV_RUNNING) {
++		ret = -EWOULDBLOCK;
++		goto unlock;
++	}
++
+ 	scsi_attach_vpd(sdev);
+ 	scsi_cdl_check(sdev);
+ 
+@@ -1638,7 +1650,11 @@ void scsi_rescan_device(struct device *dev)
+ 			drv->rescan(dev);
+ 		module_put(dev->driver->owner);
+ 	}
++
++unlock:
+ 	device_unlock(dev);
++
++	return ret;
+ }
+ EXPORT_SYMBOL(scsi_rescan_device);
+ 
+diff --git a/include/scsi/scsi_host.h b/include/scsi/scsi_host.h
+index a2b8d30c4c80..4fa55d88d492 100644
+--- a/include/scsi/scsi_host.h
++++ b/include/scsi/scsi_host.h
+@@ -764,7 +764,7 @@ scsi_template_proc_dir(const struct scsi_host_template *sht);
+ #define scsi_template_proc_dir(sht) NULL
+ #endif
+ extern void scsi_scan_host(struct Scsi_Host *);
+-extern void scsi_rescan_device(struct device *);
++extern int scsi_rescan_device(struct device *dev);
+ extern void scsi_remove_host(struct Scsi_Host *);
+ extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
+ extern int scsi_host_busy(struct Scsi_Host *shost);
 -- 
-Damien Le Moal
-Western Digital Research
+2.41.0
 
