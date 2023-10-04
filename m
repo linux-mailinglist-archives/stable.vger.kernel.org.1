@@ -2,126 +2,179 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72B3F7B8424
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7F817B8430
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242929AbjJDPuu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 11:50:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42496 "EHLO
+        id S242960AbjJDPvP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 11:51:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233774AbjJDPut (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:50:49 -0400
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C210BF;
-        Wed,  4 Oct 2023 08:50:44 -0700 (PDT)
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 394FjWgS013834;
-        Wed, 4 Oct 2023 17:50:30 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        from:to:cc:subject:date:message-id:in-reply-to:references
-        :mime-version:content-transfer-encoding:content-type; s=
-        selector1; bh=8mC8DzLCJr8pbaqd7TJBf5FL8cBOmE3cRTtig5bDfrw=; b=ys
-        Bp+eaOxHzxbvk3wLP1SZXvhYB3XX0meS+GObIPNDLpMIhOqwtE+jSwsiHc33S6W6
-        quJU0dG+lhGQR5xtCh5TAZKaxgOt5TEB3EFp0LMz08MJA7463cYFDFWvlBNG5C7K
-        AYU4jRwNdeBvIg+TK2ICg60BfW5tN1GYhb1THv3x9VULybubrRmecJLBaZ/e2wyv
-        1BL9rriiM/R+NjMzV79uljVbCjMUsBp8QWggqr7L80F+L50vjkVuWk8hiHgHyNHv
-        6RuptB7iatfDfD0xnGgY5Gk7RsoFPzazhmWoTJz4jU/fLbCRshQLZKuOl4WDHZQB
-        cF8Ss3p9KX/UrFAuDkhg==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3te93g1xju-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 04 Oct 2023 17:50:30 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id D3A74100064;
-        Wed,  4 Oct 2023 17:50:29 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id CAEE226029A;
-        Wed,  4 Oct 2023 17:50:29 +0200 (CEST)
-Received: from localhost (10.252.26.61) by SHFDAG1NODE3.st.com (10.75.129.71)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 4 Oct
- 2023 17:50:29 +0200
-From:   Amelie Delaunay <amelie.delaunay@foss.st.com>
-To:     Vinod Koul <vkoul@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>
-CC:     <stable@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/2] dmaengine: stm32-dma: fix residue in case of MDMA chaining
-Date:   Wed, 4 Oct 2023 17:50:24 +0200
-Message-ID: <20231004155024.2609531-2-amelie.delaunay@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231004155024.2609531-1-amelie.delaunay@foss.st.com>
-References: <20231004155024.2609531-1-amelie.delaunay@foss.st.com>
+        with ESMTP id S242974AbjJDPvO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:51:14 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B361E4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:51:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05181C433C8;
+        Wed,  4 Oct 2023 15:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696434669;
+        bh=gO6AaYeZYS2K7TMrpi0ghf9cTLRcqAT5ipcY9SK96s8=;
+        h=Subject:To:Cc:From:Date:From;
+        b=MPAtiyAKJuQUK9Celk2ADQoem9VluzeAAD8l7slP9sFlBfScHlmSeVDgErig12z+5
+         3f3GZcnDJSibnp6atLe+OssMsDY+BgQsX1FEOwGRrzyTN63/gUkPARe6P+SjGzzrrL
+         +f8fy1E29HK5bQda6e3VzUk0eDJDhduD4QBdWmoM=
+Subject: FAILED: patch "[PATCH] proc: nommu: /proc/<pid>/maps: release mmap read lock" failed to apply to 5.4-stable tree
+To:     Ben.Wolsieffer@hefring.com, akpm@linux-foundation.org,
+        ben.wolsieffer@hefring.com, gerg@uclinux.org,
+        giulio.benetti@benettiengineering.com, oleg@redhat.com,
+        stable@vger.kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 04 Oct 2023 17:51:06 +0200
+Message-ID: <2023100406-component-isolating-b700@gregkh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.252.26.61]
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE3.st.com
- (10.75.129.71)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-04_07,2023-10-02_01,2023-05-22_02
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In case of MDMA chaining, DMA is configured in Double-Buffer Mode (DBM)
-with two periods, but if transfer has been prepared with _prep_slave_sg(),
-the transfer is not marked cyclic (=!chan->desc->cyclic). However, as DBM
-is activated for MDMA chaining, residue computation must take into account
-cyclic constraints.
 
-With only two periods in MDMA chaining, and no update due to Transfer
-Complete interrupt masked, n_sg is always 0. If DMA current memory address
-(depending on SxCR.CT and SxM0AR/SxM1AR) does not correspond, it means n_sg
-should be increased.
-Then, the residue of the current period is the one read from SxNDTR and
-should not be overwritten with the full period length.
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: 723795173ce1 ("dmaengine: stm32-dma: add support to trigger STM32 MDMA")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Cc: stable@vger.kernel.org
----
- drivers/dma/stm32-dma.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+To reproduce the conflict and resubmit, you may use the following commands:
 
-diff --git a/drivers/dma/stm32-dma.c b/drivers/dma/stm32-dma.c
-index 7427acc82259..0b30151fb45c 100644
---- a/drivers/dma/stm32-dma.c
-+++ b/drivers/dma/stm32-dma.c
-@@ -1389,11 +1389,12 @@ static size_t stm32_dma_desc_residue(struct stm32_dma_chan *chan,
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 578d7699e5c2add8c2e9549d9d75dfb56c460cb3
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100406-component-isolating-b700@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 578d7699e5c2add8c2e9549d9d75dfb56c460cb3 Mon Sep 17 00:00:00 2001
+From: Ben Wolsieffer <Ben.Wolsieffer@hefring.com>
+Date: Thu, 14 Sep 2023 12:30:20 -0400
+Subject: [PATCH] proc: nommu: /proc/<pid>/maps: release mmap read lock
+
+The no-MMU implementation of /proc/<pid>/map doesn't normally release
+the mmap read lock, because it uses !IS_ERR_OR_NULL(_vml) to determine
+whether to release the lock.  Since _vml is NULL when the end of the
+mappings is reached, the lock is not released.
+
+Reading /proc/1/maps twice doesn't cause a hang because it only
+takes the read lock, which can be taken multiple times and therefore
+doesn't show any problem if the lock isn't released. Instead, you need
+to perform some operation that attempts to take the write lock after
+reading /proc/<pid>/maps. To actually reproduce the bug, compile the
+following code as 'proc_maps_bug':
+
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/mman.h>
+
+int main(int argc, char *argv[]) {
+        void *buf;
+        sleep(1);
+        buf = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        puts("mmap returned");
+        return 0;
+}
+
+Then, run:
+
+  ./proc_maps_bug &; cat /proc/$!/maps; fg
+
+Without this patch, mmap() will hang and the command will never
+complete.
+
+This code was incorrectly adapted from the MMU implementation, which at
+the time released the lock in m_next() before returning the last entry.
+
+The MMU implementation has diverged further from the no-MMU version since
+then, so this patch brings their locking and error handling into sync,
+fixing the bug and hopefully avoiding similar issues in the future.
+
+Link: https://lkml.kernel.org/r/20230914163019.4050530-2-ben.wolsieffer@hefring.com
+Fixes: 47fecca15c09 ("fs/proc/task_nommu.c: don't use priv->task->mm")
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
+Cc: Greg Ungerer <gerg@uclinux.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/fs/proc/task_nommu.c b/fs/proc/task_nommu.c
+index a8ac0dd8041e..bc2e843f4810 100644
+--- a/fs/proc/task_nommu.c
++++ b/fs/proc/task_nommu.c
+@@ -192,11 +192,16 @@ static void *m_start(struct seq_file *m, loff_t *pos)
+ 		return ERR_PTR(-ESRCH);
  
- 	residue = stm32_dma_get_remaining_bytes(chan);
+ 	mm = priv->mm;
+-	if (!mm || !mmget_not_zero(mm))
++	if (!mm || !mmget_not_zero(mm)) {
++		put_task_struct(priv->task);
++		priv->task = NULL;
+ 		return NULL;
++	}
  
--	if (chan->desc->cyclic && !stm32_dma_is_current_sg(chan)) {
-+	if ((chan->desc->cyclic || chan->trig_mdma) && !stm32_dma_is_current_sg(chan)) {
- 		n_sg++;
- 		if (n_sg == chan->desc->num_sgs)
- 			n_sg = 0;
--		residue = sg_req->len;
-+		if (!chan->trig_mdma)
-+			residue = sg_req->len;
+ 	if (mmap_read_lock_killable(mm)) {
+ 		mmput(mm);
++		put_task_struct(priv->task);
++		priv->task = NULL;
+ 		return ERR_PTR(-EINTR);
  	}
  
- 	/*
-@@ -1403,7 +1404,7 @@ static size_t stm32_dma_desc_residue(struct stm32_dma_chan *chan,
- 	 * residue = remaining bytes from NDTR + remaining
- 	 * periods/sg to be transferred
- 	 */
--	if (!chan->desc->cyclic || n_sg != 0)
-+	if ((!chan->desc->cyclic && !chan->trig_mdma) || n_sg != 0)
- 		for (i = n_sg; i < desc->num_sgs; i++)
- 			residue += desc->sg_req[i].len;
+@@ -205,23 +210,21 @@ static void *m_start(struct seq_file *m, loff_t *pos)
+ 	if (vma)
+ 		return vma;
  
--- 
-2.25.1
+-	mmap_read_unlock(mm);
+-	mmput(mm);
+ 	return NULL;
+ }
+ 
+-static void m_stop(struct seq_file *m, void *_vml)
++static void m_stop(struct seq_file *m, void *v)
+ {
+ 	struct proc_maps_private *priv = m->private;
++	struct mm_struct *mm = priv->mm;
+ 
+-	if (!IS_ERR_OR_NULL(_vml)) {
+-		mmap_read_unlock(priv->mm);
+-		mmput(priv->mm);
+-	}
+-	if (priv->task) {
+-		put_task_struct(priv->task);
+-		priv->task = NULL;
+-	}
++	if (!priv->task)
++		return;
++
++	mmap_read_unlock(mm);
++	mmput(mm);
++	put_task_struct(priv->task);
++	priv->task = NULL;
+ }
+ 
+ static void *m_next(struct seq_file *m, void *_p, loff_t *pos)
 
