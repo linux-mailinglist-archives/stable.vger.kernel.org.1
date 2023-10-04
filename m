@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7A0C7B8A45
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53C967B88B6
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244368AbjJDSdz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:33:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53628 "EHLO
+        id S233655AbjJDSSi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:18:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244395AbjJDSdz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:55 -0400
+        with ESMTP id S233758AbjJDSSd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB6439E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86BCC433C7;
-        Wed,  4 Oct 2023 18:33:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F4F7CE
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C38C433C8;
+        Wed,  4 Oct 2023 18:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444431;
-        bh=7vXW6hslhSHyc3LIOVuD7pGSV0Ecpa54WAom6sDuX4U=;
+        s=korg; t=1696443509;
+        bh=YQ5Llo4HaPgoVNGV8XNfKXYGYBCSVKUxhLDWUsVUgb4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dBEi7gK67XMQDubjYJBDg7HnjpsOoGKdoa2JsZaSzmxqjaoeoLihJTRlxf0JPC7Dx
-         y5hoBWrzBxZ/d05HSKlPSpaGzb1Kh5yA31VHHITIMCJKVJKNADqifwvOAPJknJ2dPq
-         QPmD6T9VXSTi3cRC5sMtdRw3wQzkob2L+hpzpzTU=
+        b=RzEXTMM85vRG5ielkSRRb9ORjHDAV9N4bAxmqZHSwFbzuja8779cAhEn8isswqrgq
+         lkPAvSskl4nQdex3vteJcwKMCVOfm91ry9hj2dUorV2OwB+SoOfiezgwIkNrOG7w2W
+         QBRrLmUm0kp38GMeCAQVORi3RSIEX2F8heJqjAnc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Borkmann <daniel@iogearbox.net>,
-        Stanislav Fomichev <sdf@google.com>,
+        patches@lists.linux.dev,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Stefan Binding <sbinding@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 209/321] bpf: Clarify error expectations from bpf_clone_redirect
+Subject: [PATCH 6.1 181/259] ASoC: cs42l42: Ensure a reset pulse meets minimum pulse width.
 Date:   Wed,  4 Oct 2023 19:55:54 +0200
-Message-ID: <20231004175238.931554756@linuxfoundation.org>
+Message-ID: <20231004175225.600855555@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,65 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@google.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 7cb779a6867fea00b4209bcf6de2f178a743247d ]
+[ Upstream commit 41dac81b56c82c51a6d00fda5f3af7691ffee2d7 ]
 
-Commit 151e887d8ff9 ("veth: Fixing transmit return status for dropped
-packets") exposed the fact that bpf_clone_redirect is capable of
-returning raw NET_XMIT_XXX return codes.
+The CS42L42 can accept very short reset pulses of a few microseconds
+but there's no reason to force a very short pulse.
+Allow a wide range for the usleep_range() so it can be relaxed about
+the choice of timing source.
 
-This is in the conflict with its UAPI doc which says the following:
-"0 on success, or a negative error in case of failure."
-
-Update the UAPI to reflect the fact that bpf_clone_redirect can
-return positive error numbers, but don't explicitly define
-their meaning.
-
-Reported-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230911194731.286342-1-sdf@google.com
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20230913150012.604775-2-sbinding@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       | 4 +++-
- tools/include/uapi/linux/bpf.h | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs42l42.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 60a9d59beeabb..25f668165b567 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -1897,7 +1897,9 @@ union bpf_attr {
-  * 		performed again, if the helper is used in combination with
-  * 		direct packet access.
-  * 	Return
-- * 		0 on success, or a negative error in case of failure.
-+ * 		0 on success, or a negative error in case of failure. Positive
-+ * 		error indicates a potential drop or congestion in the target
-+ * 		device. The particular positive error codes are not defined.
-  *
-  * u64 bpf_get_current_pid_tgid(void)
-  * 	Description
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 60a9d59beeabb..25f668165b567 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -1897,7 +1897,9 @@ union bpf_attr {
-  * 		performed again, if the helper is used in combination with
-  * 		direct packet access.
-  * 	Return
-- * 		0 on success, or a negative error in case of failure.
-+ * 		0 on success, or a negative error in case of failure. Positive
-+ * 		error indicates a potential drop or congestion in the target
-+ * 		device. The particular positive error codes are not defined.
-  *
-  * u64 bpf_get_current_pid_tgid(void)
-  * 	Description
+diff --git a/sound/soc/codecs/cs42l42.c b/sound/soc/codecs/cs42l42.c
+index 2fefbcf7bd130..914cdd737fa3b 100644
+--- a/sound/soc/codecs/cs42l42.c
++++ b/sound/soc/codecs/cs42l42.c
+@@ -2280,6 +2280,10 @@ int cs42l42_common_probe(struct cs42l42_private *cs42l42,
+ 
+ 	if (cs42l42->reset_gpio) {
+ 		dev_dbg(cs42l42->dev, "Found reset GPIO\n");
++
++		/* Ensure minimum reset pulse width */
++		usleep_range(10, 500);
++
+ 		gpiod_set_value_cansleep(cs42l42->reset_gpio, 1);
+ 	}
+ 	usleep_range(CS42L42_BOOT_TIME_US, CS42L42_BOOT_TIME_US * 2);
 -- 
 2.40.1
 
