@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B89467B8865
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA23F7B8776
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244043AbjJDSPl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:15:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52036 "EHLO
+        id S243798AbjJDSFh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:05:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244044AbjJDSPk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:40 -0400
+        with ESMTP id S243796AbjJDSFh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:05:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23056AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661A4C433C9;
-        Wed,  4 Oct 2023 18:15:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87E0D9E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:05:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE61FC433C9;
+        Wed,  4 Oct 2023 18:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443336;
-        bh=kyw+c6gamFEP6Z7rY3XRTMXFFKX912F3Qy4Jk1aR0yI=;
+        s=korg; t=1696442733;
+        bh=N361/G+EMtOvXDGykvx2+2hxgOVOqJ45gFh2wIVnoC4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hYJK4u8hpu1w/KMJFTPdaydZBzxxhrtngI+cOzV0uaqvQEjvervk6w3vyXicu36zk
-         0nqML7p/bCsZLF3bY8srmoiOM8nKwcO6KirhrRFaEYWY6YhpuYrDMqqXtQuFNJY27C
-         PgV9TfUfHsvSKcVvntXxEex962Jvt/vuQhdj4RP0=
+        b=2P3QAKSAmZVS+PLswUuJ7UxjtEK6rhPN1xx/0SLnY2RmKH8Hxx2OqqV8Sl08cNF2K
+         27QoaMFotcHv26hX6UrmVcodn+9sH9F4sLoWlhILF2+g78gTqcrZQy50Wf43gh1cVB
+         Z8D+U0p3DEYQlHPktarkytVgACMINA+p+fosAhAw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Kyle Zeng <zengyhkyle@gmail.com>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/259] ARM: dts: ti: omap: Fix bandgap thermal cells addressing for omap3/4
+Subject: [PATCH 5.15 062/183] netfilter: ipset: Fix race between IPSET_CMD_CREATE and IPSET_CMD_SWAP
 Date:   Wed,  4 Oct 2023 19:54:53 +0200
-Message-ID: <20231004175222.864822491@linuxfoundation.org>
+Message-ID: <20231004175206.481062025@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,91 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
 
-[ Upstream commit 6469b2feade8fd82d224dd3734e146536f3e9f0e ]
+[ Upstream commit 7433b6d2afd512d04398c73aa984d1e285be125b ]
 
-Fix "thermal_sys: cpu_thermal: Failed to read thermal-sensors cells: -2"
-error on boot for omap3/4. This is caused by wrong addressing in the dts
-for bandgap sensor for single sensor instances.
+Kyle Zeng reported that there is a race between IPSET_CMD_ADD and IPSET_CMD_SWAP
+in netfilter/ip_set, which can lead to the invocation of `__ip_set_put` on a
+wrong `set`, triggering the `BUG_ON(set->ref == 0);` check in it.
 
-Note that omap4-cpu-thermal.dtsi is shared across omap4/5 and dra7, so
-we can't just change the addressing in omap4-cpu-thermal.dtsi.
+The race is caused by using the wrong reference counter, i.e. the ref counter instead
+of ref_netlink.
 
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Carl Philipp Klemm <philipp@uvos.xyz>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Fixes: a761d517bbb1 ("ARM: dts: omap3: Add cpu_thermal zone")
-Fixes: 0bbf6c54d100 ("arm: dts: add omap4 CPU thermal data")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fixes: 24e227896bbf ("netfilter: ipset: Add schedule point in call_ad().")
+Reported-by: Kyle Zeng <zengyhkyle@gmail.com>
+Closes: https://lore.kernel.org/netfilter-devel/ZPZqetxOmH+w%2Fmyc@westworld/#r
+Tested-by: Kyle Zeng <zengyhkyle@gmail.com>
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/omap3-cpu-thermal.dtsi | 3 +--
- arch/arm/boot/dts/omap4-cpu-thermal.dtsi | 5 ++++-
- arch/arm/boot/dts/omap443x.dtsi          | 1 +
- arch/arm/boot/dts/omap4460.dtsi          | 1 +
- 4 files changed, 7 insertions(+), 3 deletions(-)
+ net/netfilter/ipset/ip_set_core.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-index 0da759f8e2c2d..7dd2340bc5e45 100644
---- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-+++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
-@@ -12,8 +12,7 @@ cpu_thermal: cpu-thermal {
- 	polling-delay = <1000>; /* milliseconds */
- 	coefficients = <0 20000>;
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index c911fc09f363c..33869db42bb6b 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -682,6 +682,14 @@ __ip_set_put(struct ip_set *set)
+ /* set->ref can be swapped out by ip_set_swap, netlink events (like dump) need
+  * a separate reference counter
+  */
++static void
++__ip_set_get_netlink(struct ip_set *set)
++{
++	write_lock_bh(&ip_set_ref_lock);
++	set->ref_netlink++;
++	write_unlock_bh(&ip_set_ref_lock);
++}
++
+ static void
+ __ip_set_put_netlink(struct ip_set *set)
+ {
+@@ -1695,11 +1703,11 @@ call_ad(struct net *net, struct sock *ctnl, struct sk_buff *skb,
  
--			/* sensor       ID */
--	thermal-sensors = <&bandgap     0>;
-+	thermal-sensors = <&bandgap>;
+ 	do {
+ 		if (retried) {
+-			__ip_set_get(set);
++			__ip_set_get_netlink(set);
+ 			nfnl_unlock(NFNL_SUBSYS_IPSET);
+ 			cond_resched();
+ 			nfnl_lock(NFNL_SUBSYS_IPSET);
+-			__ip_set_put(set);
++			__ip_set_put_netlink(set);
+ 		}
  
- 	cpu_trips: trips {
- 		cpu_alert0: cpu_alert {
-diff --git a/arch/arm/boot/dts/omap4-cpu-thermal.dtsi b/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
-index 801b4f10350c1..d484ec1e4fd86 100644
---- a/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
-+++ b/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
-@@ -12,7 +12,10 @@ cpu_thermal: cpu_thermal {
- 	polling-delay-passive = <250>; /* milliseconds */
- 	polling-delay = <1000>; /* milliseconds */
- 
--			/* sensor       ID */
-+	/*
-+	 * See 44xx files for single sensor addressing, omap5 and dra7 need
-+	 * also sensor ID for addressing.
-+	 */
- 	thermal-sensors = <&bandgap     0>;
- 
- 	cpu_trips: trips {
-diff --git a/arch/arm/boot/dts/omap443x.dtsi b/arch/arm/boot/dts/omap443x.dtsi
-index 238aceb799f89..2104170fe2cd7 100644
---- a/arch/arm/boot/dts/omap443x.dtsi
-+++ b/arch/arm/boot/dts/omap443x.dtsi
-@@ -69,6 +69,7 @@
- };
- 
- &cpu_thermal {
-+	thermal-sensors = <&bandgap>;
- 	coefficients = <0 20000>;
- };
- 
-diff --git a/arch/arm/boot/dts/omap4460.dtsi b/arch/arm/boot/dts/omap4460.dtsi
-index 1b27a862ae810..a6764750d4476 100644
---- a/arch/arm/boot/dts/omap4460.dtsi
-+++ b/arch/arm/boot/dts/omap4460.dtsi
-@@ -79,6 +79,7 @@
- };
- 
- &cpu_thermal {
-+	thermal-sensors = <&bandgap>;
- 	coefficients = <348 (-9301)>;
- };
- 
+ 		ip_set_lock(set);
 -- 
 2.40.1
 
