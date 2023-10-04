@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E72A67B88F3
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7881A7B87E0
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244016AbjJDSVS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:21:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48108 "EHLO
+        id S233736AbjJDSKY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:10:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244053AbjJDSVR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:17 -0400
+        with ESMTP id S243911AbjJDSKX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:10:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9AD9E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:21:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C073EC433C8;
-        Wed,  4 Oct 2023 18:21:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A85E7A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:10:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1374C433C8;
+        Wed,  4 Oct 2023 18:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443673;
-        bh=OgzqQIcpA56pNrQzwxCRljrYDNfPEcPf9YrvRiPNg/Y=;
+        s=korg; t=1696443020;
+        bh=vmWdun5qxEZhfr40WZZs1a1qY2zkZHT1M4ZTUpcx8r8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ac6iBYWrasYJA3WoQpHorm9ysEaOLGS+kaUohJS4Oz4WxZ3NL62qSrSMXARtx8bBb
-         tmFbtlMruSAmN8eYB1yhrB1BWS0qLDSG22agYwkDOxkZT4+LL6m2QhQ9vMh0GV7Ccx
-         qcik0toTj8JvLie0+yHSvDaYDtXKKf88OiFXPIgA=
+        b=TBmBFyWVcLR6jW0HtxQJZuPkvKJjVSQKDJitA5KbUb1+iEYEiXWOmV2f5IGnFr6oE
+         VKRTYCWcg+/R53kE6iblPLjpAvDOTx1p1Bbrp9kh/5DCbbYnAl8yPsJWUo+DCkiVCd
+         9aDCNnwyz9Boio6PojkvHmcVjxvP4c7hfiZ02ifQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 239/259] ring-buffer: Update "shortest_full" in polling
+        patches@lists.linux.dev, Greg Ungerer <gerg@kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Kees Cook <keescook@chromium.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 181/183] fs: binfmt_elf_efpic: fix personality for ELF-FDPIC
 Date:   Wed,  4 Oct 2023 19:56:52 +0200
-Message-ID: <20231004175228.348622006@linuxfoundation.org>
+Message-ID: <20231004175211.663999977@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,70 +53,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Greg Ungerer <gerg@kernel.org>
 
-commit 1e0cb399c7653462d9dadf8ab9425337c355d358 upstream.
+commit 7c3151585730b7095287be8162b846d31e6eee61 upstream.
 
-It was discovered that the ring buffer polling was incorrectly stating
-that read would not block, but that's because polling did not take into
-account that reads will block if the "buffer-percent" was set. Instead,
-the ring buffer polling would say reads would not block if there was any
-data in the ring buffer. This was incorrect behavior from a user space
-point of view. This was fixed by commit 42fb0a1e84ff by having the polling
-code check if the ring buffer had more data than what the user specified
-"buffer percent" had.
+The elf-fdpic loader hard sets the process personality to either
+PER_LINUX_FDPIC for true elf-fdpic binaries or to PER_LINUX for normal ELF
+binaries (in this case they would be constant displacement compiled with
+-pie for example).  The problem with that is that it will lose any other
+bits that may be in the ELF header personality (such as the "bug
+emulation" bits).
 
-The problem now is that the polling code did not register itself to the
-writer that it wanted to wait for a specific "full" value of the ring
-buffer. The result was that the writer would wake the polling waiter
-whenever there was a new event. The polling waiter would then wake up, see
-that there's not enough data in the ring buffer to notify user space and
-then go back to sleep. The next event would wake it up again.
+On the ARM architecture the ADDR_LIMIT_32BIT flag is used to signify a
+normal 32bit binary - as opposed to a legacy 26bit address binary.  This
+matters since start_thread() will set the ARM CPSR register as required
+based on this flag.  If the elf-fdpic loader loses this bit the process
+will be mis-configured and crash out pretty quickly.
 
-Before the polling fix was added, the code would wake up around 100 times
-for a hackbench 30 benchmark. After the "fix", due to the constant waking
-of the writer, it would wake up over 11,0000 times! It would never leave
-the kernel, so the user space behavior was still "correct", but this
-definitely is not the desired effect.
+Modify elf-fdpic loader personality setting so that it preserves the upper
+three bytes by using the SET_PERSONALITY macro to set it.  This macro in
+the generic case sets PER_LINUX and preserves the upper bytes.
+Architectures can override this for their specific use case, and ARM does
+exactly this.
 
-To fix this, have the polling code add what it's waiting for to the
-"shortest_full" variable, to tell the writer not to wake it up if the
-buffer is not as full as it expects to be.
+The problem shows up quite easily running under qemu using the ARM
+architecture, but not necessarily on all types of real ARM hardware.  If
+the underlying ARM processor does not support the legacy 26-bit addressing
+mode then everything will work as expected.
 
-Note, after this fix, it appears that the waiter is now woken up around 2x
-the times it was before (~200). This is a tremendous improvement from the
-11,000 times, but I will need to spend some time to see why polling is
-more aggressive in its wakeups than the read blocking code.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230929180113.01c2cae3@rorschach.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: 42fb0a1e84ff ("tracing/ring-buffer: Have polling block on watermark")
-Reported-by: Julia Lawall <julia.lawall@inria.fr>
-Tested-by: Julia Lawall <julia.lawall@inria.fr>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://lkml.kernel.org/r/20230907011808.2985083-1-gerg@kernel.org
+Fixes: 1bde925d23547 ("fs/binfmt_elf_fdpic.c: provide NOMMU loader for regular ELF binaries")
+Signed-off-by: Greg Ungerer <gerg@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: Greg Ungerer <gerg@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/binfmt_elf_fdpic.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1142,6 +1142,9 @@ __poll_t ring_buffer_poll_wait(struct tr
- 	if (full) {
- 		poll_wait(filp, &work->full_waiters, poll_table);
- 		work->full_waiters_pending = true;
-+		if (!cpu_buffer->shortest_full ||
-+		    cpu_buffer->shortest_full > full)
-+			cpu_buffer->shortest_full = full;
- 	} else {
- 		poll_wait(filp, &work->waiters, poll_table);
- 		work->waiters_pending = true;
+--- a/fs/binfmt_elf_fdpic.c
++++ b/fs/binfmt_elf_fdpic.c
+@@ -345,10 +345,9 @@ static int load_elf_fdpic_binary(struct
+ 	/* there's now no turning back... the old userspace image is dead,
+ 	 * defunct, deceased, etc.
+ 	 */
++	SET_PERSONALITY(exec_params.hdr);
+ 	if (elf_check_fdpic(&exec_params.hdr))
+-		set_personality(PER_LINUX_FDPIC);
+-	else
+-		set_personality(PER_LINUX);
++		current->personality |= PER_LINUX_FDPIC;
+ 	if (elf_read_implies_exec(&exec_params.hdr, executable_stack))
+ 		current->personality |= READ_IMPLIES_EXEC;
+ 
 
 
