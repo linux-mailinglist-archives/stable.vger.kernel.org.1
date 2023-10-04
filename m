@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F43D7B893D
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCC847B87FC
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:11:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244145AbjJDSX6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:23:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39172 "EHLO
+        id S243929AbjJDSLs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:11:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244144AbjJDSX4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:23:56 -0400
+        with ESMTP id S244022AbjJDSLh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:11:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92CBCC6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:23:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F4EC433C8;
-        Wed,  4 Oct 2023 18:23:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92E3BC9
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:11:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75F6C433C8;
+        Wed,  4 Oct 2023 18:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443826;
-        bh=E5g6+hG5f83qAXTTk7H5geSBwdqJyv+9fSN8mAt+yfM=;
+        s=korg; t=1696443093;
+        bh=KypSy4v5XEKCyLQ2f7m+ozVNyAR5ABvALptGwt9B2do=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XN95U6IG9/KwjJkXQmBs4dJQnYghFsgnnS2CoXq/WpepaAYDe0WmJwc7hZVYuqYer
-         RvJVn8cYwAcq6nSitlAHYco4q1XIFKXCjH+EyRRUB8TAVRnorKFbfQNQvWrMmZvqVJ
-         UlD3tRpjl1QddB0rO0AYcERueuolIaMyDGSF49Xs=
+        b=ryxJhE08khawFjanm+1QbRjOyZ1W6oRyawwI0RNVtCmCf0lGn1VplgfX8Y8XoF11a
+         9aNHn3/Nqv/vResXqivvwR6vSFMivXLacl6lHVb11uSHZmtUwq6kKuzLSp0GDIX86K
+         nwoO+CKcZ5sfGgUGxCtr6K2W86Vz5X2y7482Q2sM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oder Chiou <oder_chiou@realtek.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 034/321] ASoC: rt5640: Do not disable/enable IRQ twice on suspend/resume
+Subject: [PATCH 6.1 006/259] NFS/pNFS: Report EINVAL errors from connect() to the server
 Date:   Wed,  4 Oct 2023 19:52:59 +0200
-Message-ID: <20231004175230.739792055@linuxfoundation.org>
+Message-ID: <20231004175217.723669415@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,81 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 786120ebb649b166021f0212250e8627e53d068a ]
+[ Upstream commit dd7d7ee3ba2a70d12d02defb478790cf57d5b87b ]
 
-When jack-detect was originally added disabling the IRQ during suspend
-was done by the sound/soc/intel/boards/bytcr_rt5640.c driver
-calling snd_soc_component_set_jack(NULL) on suspend, which calls
-rt5640_disable_jack_detect(), which calls free_irq() which also
-disables it.
+With IPv6, connect() can occasionally return EINVAL if a route is
+unavailable. If this happens during I/O to a data server, we want to
+report it using LAYOUTERROR as an inability to connect.
 
-Commit 5fabcc90e79b ("ASoC: rt5640: Fix Jack work after system suspend")
-added disable_irq() / enable_irq() calls on suspend/resume for machine
-drivers which do not call snd_soc_component_set_jack(NULL) on suspend.
-
-The new disable_irq() / enable_irq() are made conditional by
-"if (rt5640->irq)" statements, but this is true for the machine drivers
-which do call snd_soc_component_set_jack(NULL) on suspend too, causing
-a disable_irq() call there on the already free-ed IRQ.
-
-Change the "if (rt5640->irq)" condition to "if (rt5640->jack)" to fix this,
-rt5640->jack is only set if the jack-detect IRQ handler is still active
-when rt5640_suspend() runs.
-
-And adjust rt5640_enable_hda_jack_detect()'s request_irq() error handling
-to set rt5640->jack to NULL to match (note that the old setting of irq to
--ENOXIO still resulted in disable_irq(-ENOXIO) calls on suspend).
-
-Fixes: 5fabcc90e79b ("ASoC: rt5640: Fix Jack work after system suspend")
-Cc: Oder Chiou <oder_chiou@realtek.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230912113245.320159-4-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: dd52128afdde ("NFSv4.1/pnfs Ensure flexfiles reports all connection related errors")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5640.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/rt5640.c b/sound/soc/codecs/rt5640.c
-index 10086755ae82c..c2c82da36c625 100644
---- a/sound/soc/codecs/rt5640.c
-+++ b/sound/soc/codecs/rt5640.c
-@@ -2623,7 +2623,7 @@ static void rt5640_enable_hda_jack_detect(
- 			  IRQF_TRIGGER_RISING | IRQF_ONESHOT, "rt5640", rt5640);
- 	if (ret) {
- 		dev_warn(component->dev, "Failed to request IRQ %d: %d\n", rt5640->irq, ret);
--		rt5640->irq = -ENXIO;
-+		rt5640->jack = NULL;
- 		return;
- 	}
- 
-@@ -2798,7 +2798,7 @@ static int rt5640_suspend(struct snd_soc_component *component)
- {
- 	struct rt5640_priv *rt5640 = snd_soc_component_get_drvdata(component);
- 
--	if (rt5640->irq) {
-+	if (rt5640->jack) {
- 		/* disable jack interrupts during system suspend */
- 		disable_irq(rt5640->irq);
- 	}
-@@ -2826,10 +2826,9 @@ static int rt5640_resume(struct snd_soc_component *component)
- 	regcache_cache_only(rt5640->regmap, false);
- 	regcache_sync(rt5640->regmap);
- 
--	if (rt5640->irq)
-+	if (rt5640->jack) {
- 		enable_irq(rt5640->irq);
- 
--	if (rt5640->jack) {
- 		if (rt5640->jd_src == RT5640_JD_SRC_HDA_HEADER) {
- 			snd_soc_component_update_bits(component,
- 				RT5640_DUMMY2, 0x1100, 0x1100);
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index 1ec79ccf89ad2..5c69a6e9ab3e1 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -1235,6 +1235,7 @@ static void ff_layout_io_track_ds_error(struct pnfs_layout_segment *lseg,
+ 		case -EPFNOSUPPORT:
+ 		case -EPROTONOSUPPORT:
+ 		case -EOPNOTSUPP:
++		case -EINVAL:
+ 		case -ECONNREFUSED:
+ 		case -ECONNRESET:
+ 		case -EHOSTDOWN:
 -- 
 2.40.1
 
