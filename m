@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16BF97B8970
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:25:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F43A7B8814
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244179AbjJDSZz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:25:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42062 "EHLO
+        id S243966AbjJDSMV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:12:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244184AbjJDSZy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:25:54 -0400
+        with ESMTP id S243967AbjJDSMU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:12:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9246D7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:25:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4B1C433C9;
-        Wed,  4 Oct 2023 18:25:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1691E4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:12:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0422AC433C8;
+        Wed,  4 Oct 2023 18:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443950;
-        bh=kd/4xk/eF8mGJnprY6WuuiQxqi3SfkfqWOgr8vb/GUA=;
+        s=korg; t=1696443135;
+        bh=8P3ORhQJwTxclQC49SC2WPr9cqHURnn3tulNauFoayk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X3yKb4a+6k4sDOvijaleEXbaqJfSeowcati5hCN36zWjOAkPU546txTkrC0ZS+7wv
-         op2nAPfb7RaZxOpngItxwM6pLKZI0JCStlHbjC2TayfQ7oes3kUY0UBLgYAsmd+suG
-         hvnAyapl9MN/7aD1j2N8aW4/fVmYsHKFasOYp5Pc=
+        b=HOMa27GB6f0qMM2n6sX0ILjdpXUTZfleWBuTBHBDu6d+BIhQd6xNaZcFocz0gGcNg
+         EJr2GRlCIwRqUHScy8kdTqFcBGGO8qwMMidhSadoMmTSWOivcJFPx2vkJO7rxTnd6u
+         hTJiW9DkKBgQCT845OL0gr7DgN9BUE9EA/y3lFnQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        patches@lists.linux.dev, Radoslaw Tyl <radoslawx.tyl@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 077/321] x86/asm: Fix build of UML with KASAN
+Subject: [PATCH 6.1 049/259] iavf: do not process adminq tasks when __IAVF_IN_REMOVE_TASK is set
 Date:   Wed,  4 Oct 2023 19:53:42 +0200
-Message-ID: <20231004175232.781183136@linuxfoundation.org>
+Message-ID: <20231004175219.696287467@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,100 +51,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Whitchurch <vincent.whitchurch@axis.com>
+From: Radoslaw Tyl <radoslawx.tyl@intel.com>
 
-[ Upstream commit 10f4c9b9a33b7df000f74fa0d896351fb1a61e6a ]
+[ Upstream commit c8de44b577eb540e8bfea55afe1d0904bb571b7a ]
 
-Building UML with KASAN fails since commit 69d4c0d32186 ("entry, kasan,
-x86: Disallow overriding mem*() functions") with the following errors:
+Prevent schedule operations for adminq during device remove and when
+__IAVF_IN_REMOVE_TASK flag is set. Currently, the iavf_down function
+adds operations for adminq that shouldn't be processed when the device
+is in the __IAVF_REMOVE state.
 
- $ tools/testing/kunit/kunit.py run --kconfig_add CONFIG_KASAN=y
- ...
- ld: mm/kasan/shadow.o: in function `memset':
- shadow.c:(.text+0x40): multiple definition of `memset';
- arch/x86/lib/memset_64.o:(.noinstr.text+0x0): first defined here
- ld: mm/kasan/shadow.o: in function `memmove':
- shadow.c:(.text+0x90): multiple definition of `memmove';
- arch/x86/lib/memmove_64.o:(.noinstr.text+0x0): first defined here
- ld: mm/kasan/shadow.o: in function `memcpy':
- shadow.c:(.text+0x110): multiple definition of `memcpy';
- arch/x86/lib/memcpy_64.o:(.noinstr.text+0x0): first defined here
+Reproduction:
 
-UML does not use GENERIC_ENTRY and is still supposed to be allowed to
-override the mem*() functions, so use weak aliases in that case.
+echo 4 > /sys/bus/pci/devices/0000:17:00.0/sriov_numvfs
+ip link set dev ens1f0 vf 0 trust on
+ip link set dev ens1f0 vf 1 trust on
+ip link set dev ens1f0 vf 2 trust on
+ip link set dev ens1f0 vf 3 trust on
 
-Fixes: 69d4c0d32186 ("entry, kasan, x86: Disallow overriding mem*() functions")
-Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20230918-uml-kasan-v3-1-7ad6db477df6@axis.com
+ip link set dev ens1f0 vf 0 mac 00:22:33:44:55:66
+ip link set dev ens1f0 vf 1 mac 00:22:33:44:55:67
+ip link set dev ens1f0 vf 2 mac 00:22:33:44:55:68
+ip link set dev ens1f0 vf 3 mac 00:22:33:44:55:69
+
+echo 0000:17:02.0 > /sys/bus/pci/devices/0000\:17\:02.0/driver/unbind
+echo 0000:17:02.1 > /sys/bus/pci/devices/0000\:17\:02.1/driver/unbind
+echo 0000:17:02.2 > /sys/bus/pci/devices/0000\:17\:02.2/driver/unbind
+echo 0000:17:02.3 > /sys/bus/pci/devices/0000\:17\:02.3/driver/unbind
+sleep 10
+echo 0000:17:02.0 > /sys/bus/pci/drivers/iavf/bind
+echo 0000:17:02.1 > /sys/bus/pci/drivers/iavf/bind
+echo 0000:17:02.2 > /sys/bus/pci/drivers/iavf/bind
+echo 0000:17:02.3 > /sys/bus/pci/drivers/iavf/bind
+
+modprobe vfio-pci
+echo 8086 154c > /sys/bus/pci/drivers/vfio-pci/new_id
+
+qemu-system-x86_64 -accel kvm -m 4096 -cpu host \
+-drive file=centos9.qcow2,if=none,id=virtio-disk0 \
+-device virtio-blk-pci,drive=virtio-disk0,bootindex=0 -smp 4 \
+-device vfio-pci,host=17:02.0 -net none \
+-device vfio-pci,host=17:02.1 -net none \
+-device vfio-pci,host=17:02.2 -net none \
+-device vfio-pci,host=17:02.3 -net none \
+-daemonize -vnc :5
+
+Current result:
+There is a probability that the mac of VF in guest is inconsistent with
+it in host
+
+Expected result:
+When passthrough NIC VF to guest, the VF in guest should always get
+the same mac as it in host.
+
+Fixes: 14756b2ae265 ("iavf: Fix __IAVF_RESETTING state usage")
+Signed-off-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/linkage.h | 7 +++++++
- arch/x86/lib/memcpy_64.S       | 2 +-
- arch/x86/lib/memmove_64.S      | 2 +-
- arch/x86/lib/memset_64.S       | 2 +-
- 4 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/linkage.h b/arch/x86/include/asm/linkage.h
-index 5ff49fd67732e..571fe4d2d2328 100644
---- a/arch/x86/include/asm/linkage.h
-+++ b/arch/x86/include/asm/linkage.h
-@@ -105,6 +105,13 @@
- 	CFI_POST_PADDING					\
- 	SYM_FUNC_END(__cfi_##name)
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 22bc57ee24228..a02e8d6a4d1d6 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1433,7 +1433,8 @@ void iavf_down(struct iavf_adapter *adapter)
+ 	iavf_clear_fdir_filters(adapter);
+ 	iavf_clear_adv_rss_conf(adapter);
  
-+/* UML needs to be able to override memcpy() and friends for KASAN. */
-+#ifdef CONFIG_UML
-+# define SYM_FUNC_ALIAS_MEMFUNC	SYM_FUNC_ALIAS_WEAK
-+#else
-+# define SYM_FUNC_ALIAS_MEMFUNC	SYM_FUNC_ALIAS
-+#endif
-+
- /* SYM_TYPED_FUNC_START -- use for indirectly called globals, w/ CFI type */
- #define SYM_TYPED_FUNC_START(name)				\
- 	SYM_TYPED_START(name, SYM_L_GLOBAL, SYM_F_ALIGN)	\
-diff --git a/arch/x86/lib/memcpy_64.S b/arch/x86/lib/memcpy_64.S
-index 8f95fb267caa7..76697df8dfd5b 100644
---- a/arch/x86/lib/memcpy_64.S
-+++ b/arch/x86/lib/memcpy_64.S
-@@ -40,7 +40,7 @@ SYM_TYPED_FUNC_START(__memcpy)
- SYM_FUNC_END(__memcpy)
- EXPORT_SYMBOL(__memcpy)
- 
--SYM_FUNC_ALIAS(memcpy, __memcpy)
-+SYM_FUNC_ALIAS_MEMFUNC(memcpy, __memcpy)
- EXPORT_SYMBOL(memcpy)
- 
- SYM_FUNC_START_LOCAL(memcpy_orig)
-diff --git a/arch/x86/lib/memmove_64.S b/arch/x86/lib/memmove_64.S
-index 0559b206fb110..ccdf3a597045e 100644
---- a/arch/x86/lib/memmove_64.S
-+++ b/arch/x86/lib/memmove_64.S
-@@ -212,5 +212,5 @@ SYM_FUNC_START(__memmove)
- SYM_FUNC_END(__memmove)
- EXPORT_SYMBOL(__memmove)
- 
--SYM_FUNC_ALIAS(memmove, __memmove)
-+SYM_FUNC_ALIAS_MEMFUNC(memmove, __memmove)
- EXPORT_SYMBOL(memmove)
-diff --git a/arch/x86/lib/memset_64.S b/arch/x86/lib/memset_64.S
-index 7c59a704c4584..3d818b849ec64 100644
---- a/arch/x86/lib/memset_64.S
-+++ b/arch/x86/lib/memset_64.S
-@@ -40,7 +40,7 @@ SYM_FUNC_START(__memset)
- SYM_FUNC_END(__memset)
- EXPORT_SYMBOL(__memset)
- 
--SYM_FUNC_ALIAS(memset, __memset)
-+SYM_FUNC_ALIAS_MEMFUNC(memset, __memset)
- EXPORT_SYMBOL(memset)
- 
- SYM_FUNC_START_LOCAL(memset_orig)
+-	if (!(adapter->flags & IAVF_FLAG_PF_COMMS_FAILED)) {
++	if (!(adapter->flags & IAVF_FLAG_PF_COMMS_FAILED) &&
++	    !(test_bit(__IAVF_IN_REMOVE_TASK, &adapter->crit_section))) {
+ 		/* cancel any current operation */
+ 		adapter->current_op = VIRTCHNL_OP_UNKNOWN;
+ 		/* Schedule operations to close down the HW. Don't wait
 -- 
 2.40.1
 
