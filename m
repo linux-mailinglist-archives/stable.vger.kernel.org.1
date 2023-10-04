@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 417B07B7A13
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 10:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 832A87B7A1F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 10:34:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241532AbjJDIcg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 04:32:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39898 "EHLO
+        id S241697AbjJDIeK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 04:34:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232596AbjJDIcf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 04:32:35 -0400
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4953883
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 01:32:32 -0700 (PDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1c60f1a2652so5527485ad.0
-        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 01:32:32 -0700 (PDT)
+        with ESMTP id S241684AbjJDIeJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 04:34:09 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C68C4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 01:34:04 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-502e7d66c1eso2150321e87.1
+        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 01:34:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1696408351; x=1697013151; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZldOxV+c4bwKc6J0kQAYnC3fAIMV5HICSvouxRGQ9mg=;
-        b=PLt/tn5rhBlKITEM1j71HDrlwhZdco8miFPRc+gWxsMLPhsAE2E6Mv9xsYgaQ9K8Q7
-         n4DlFi0MFWDKspxYmego5FIgIzPNeDHFAFFOTYwnHhSCZjg/3p7NoenjPPGgc7g7v76s
-         ylyISSR0nfx9GWDkvFZQAM5nS2208ftJUjsQw=
+        d=chromium.org; s=google; t=1696408443; x=1697013243; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wfmW3coigpVfgSMijltIl7QADja7SAFkOQQrbcYexQk=;
+        b=bOT0lP9lDC2xqTqru/LCIAZnVwJIJWhZVa3WKIV+MlonLzZRsspeMiktA08pHAiIZe
+         VVe0uki+9l2/J8f9+nh3ZAq6l5lv3v5cyc2QroPyU789pcrj7gJryZiLuZrKeDsDmVAm
+         FPtmjbqMwSF0oWZe9tMW4uS59OVTWEXszvx+A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696408351; x=1697013151;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZldOxV+c4bwKc6J0kQAYnC3fAIMV5HICSvouxRGQ9mg=;
-        b=U9hbtHrpY4VE5t95fnVOCWN4hGXUBqW9RtCyImuoYCCT0RLnFTaiIToPrWnajuTJTL
-         onNnf06i3nd9+HIPoza0jLnYdYcJcoRg7WDmSP/zhCJjd5F1SO4VWjbV1GfLykWAtBGD
-         haMWQClQzsCT3TqF/Eac66msMEEg0xB+5KRsrFQDH9N7i6l7EC41zCpz6kxHQsyN2mPO
-         wD3S61pscOMAVlYdE9nVoXFN5LcBubgI6JN6jVs7uqFz+nxvI4CzvkgoojMgvMYYliGX
-         RkFV9MLvzIb1Y1zhW4mz359K6+oeiFQi0ldKyNyb0INA7QOZugv4tnR1FXA4WYIKP9jr
-         Dctw==
-X-Gm-Message-State: AOJu0Yz12GCnWrz/TRJdJ8ITOuiwiYF+MQLt5HbrXWiVVFiJls5alm2I
-        +U8+HRw3i/Jf1mMjs1aWfv9QIQ==
-X-Google-Smtp-Source: AGHT+IHPFtFRpDAbBWYZ0AkQ+t6cKaHbihDnGlYJ+Lg4L83KqHlHsnttPEhpVTVbh8QLQYPAN7bkZA==
-X-Received: by 2002:a17:902:db11:b0:1b8:8682:62fb with SMTP id m17-20020a170902db1100b001b8868262fbmr8840475plx.4.1696408351467;
-        Wed, 04 Oct 2023 01:32:31 -0700 (PDT)
-Received: from wenstp920.tpe.corp.google.com ([2401:fa00:1:10:eff2:d66d:cbf7:f41b])
-        by smtp.gmail.com with ESMTPSA id u11-20020a170902b28b00b001b890009634sm3015940plr.139.2023.10.04.01.32.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 01:32:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696408443; x=1697013243;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wfmW3coigpVfgSMijltIl7QADja7SAFkOQQrbcYexQk=;
+        b=MqOc/J9eFvTLfT56SEtWHCusrrvcXysFXmnVmihKiBS/sOB5iwq63rsPsAYEmQfJuz
+         mxqUkZb/XPwKR4kWqhMWB2gu9PnNEa9PAe6ZFPDCIQmWZaDxu9BUFEimUTuMXdmj/Wrp
+         Km7gfV6YOVVq7JvVgL7aHQSV4Pwoi2Nbwt+sVjxNnT6PtqtDjFz3+XzZAtjbmvDRPcYH
+         Um4jLzUPOzngdRnG/kUE2lMIRAPER57VGpJF2R3g5QiWlYSXNqkoRov5qUtmWZbon6iJ
+         BqYBIUwjlVOzkb4pjXVTF5rSkR3+nRfvNBJF5l7UEkZdfJz/DmJorP5oHReyX41GmEMq
+         zrFA==
+X-Gm-Message-State: AOJu0YxqGsownRCJtvfA35uD0awy25oo+m7M2JuPZN+1y3cS3W+3bII+
+        cNenyTFOkayzPQ72e04a5Yal5uAd1JtbWPht9B6uJQ==
+X-Google-Smtp-Source: AGHT+IF9sR2Cj+7e97L/FPexpqaBojFR/xX2jui4Z8uoOZLn5ebZKHpYgKEeRaYNH0lTMRLG8ectez6G8uh/TNsdVuw=
+X-Received: by 2002:a19:e015:0:b0:500:94c3:8e3b with SMTP id
+ x21-20020a19e015000000b0050094c38e3bmr1344729lfg.57.1696408442607; Wed, 04
+ Oct 2023 01:34:02 -0700 (PDT)
+MIME-Version: 1.0
+References: <20231004083226.1940055-1-wenst@chromium.org>
+In-Reply-To: <20231004083226.1940055-1-wenst@chromium.org>
 From:   Chen-Yu Tsai <wenst@chromium.org>
+Date:   Wed, 4 Oct 2023 16:33:51 +0800
+Message-ID: <CAGXv+5GiN22ObkB8P_w7ftVsWkRfOvoq3dAT4OtoUw3TTpUtaw@mail.gmail.com>
+Subject: Re: [PATCH v2] drm/mediatek: Correctly free sg_table in gem prime vmap
 To:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Philipp Zabel <p.zabel@pengutronix.de>,
         David Airlie <airlied@gmail.com>,
@@ -53,15 +57,11 @@ To:     Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>
-Cc:     Chen-Yu Tsai <wenst@chromium.org>, dri-devel@lists.freedesktop.org,
+Cc:     dri-devel@lists.freedesktop.org,
         linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: [PATCH v2] drm/mediatek: Correctly free sg_table in gem prime vmap
-Date:   Wed,  4 Oct 2023 16:32:24 +0800
-Message-ID: <20231004083226.1940055-1-wenst@chromium.org>
-X-Mailer: git-send-email 2.42.0.582.g8ccd20d70d-goog
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
@@ -72,69 +72,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The MediaTek DRM driver implements GEM PRIME vmap by fetching the
-sg_table for the object, iterating through the pages, and then
-vmapping them. In essence, unlike the GEM DMA helpers which vmap
-when the object is first created or imported, the MediaTek version
-does it on request.
+On Wed, Oct 4, 2023 at 4:32=E2=80=AFPM Chen-Yu Tsai <wenst@chromium.org> wr=
+ote:
+>
+> The MediaTek DRM driver implements GEM PRIME vmap by fetching the
+> sg_table for the object, iterating through the pages, and then
+> vmapping them. In essence, unlike the GEM DMA helpers which vmap
+> when the object is first created or imported, the MediaTek version
+> does it on request.
+>
+> Unfortunately, the code never correctly frees the sg_table contents.
+> This results in a kernel memory leak. On a Hayato device with a text
+> console on the internal display, this results in the system running
+> out of memory in a few days from all the console screen cursor updates.
+>
+> Add sg_free_table() to correctly free the contents of the sg_table. This
+> was missing despite explicitly required by mtk_gem_prime_get_sg_table().
+>
+> Also move the "out" shortcut label to after the kfree() call for the
+> sg_table. Having sg_free_table() together with kfree() makes more sense.
+> The shortcut is only used when the object already has a kernel address,
+> in which case the pointer is NULL and kfree() does nothing. Hence this
+> change causes no functional change.
+>
+> Fixes: 3df64d7b0a4f ("drm/mediatek: Implement gem prime vmap/vunmap funct=
+ion")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+> ---
 
-Unfortunately, the code never correctly frees the sg_table contents.
-This results in a kernel memory leak. On a Hayato device with a text
-console on the internal display, this results in the system running
-out of memory in a few days from all the console screen cursor updates.
+Changes since v1:
+- Move "out" shortcut label to after sg_free_table() and kfree()
 
-Add sg_free_table() to correctly free the contents of the sg_table. This
-was missing despite explicitly required by mtk_gem_prime_get_sg_table().
-
-Also move the "out" shortcut label to after the kfree() call for the
-sg_table. Having sg_free_table() together with kfree() makes more sense.
-The shortcut is only used when the object already has a kernel address,
-in which case the pointer is NULL and kfree() does nothing. Hence this
-change causes no functional change.
-
-Fixes: 3df64d7b0a4f ("drm/mediatek: Implement gem prime vmap/vunmap function")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
----
-Please merge for v6.6 fixes.
-
-Also, I was wondering why the MediaTek DRM driver implements a lot of
-the GEM functionality itself, instead of using the GEM DMA helpers.
-From what I could tell, the code closely follows the DMA helpers, except
-that it vmaps the buffers only upon request.
-
- drivers/gpu/drm/mediatek/mtk_drm_gem.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-index 9f364df52478..0e0a41b2f57f 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
-@@ -239,6 +239,7 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *obj, struct iosys_map *map)
- 	npages = obj->size >> PAGE_SHIFT;
- 	mtk_gem->pages = kcalloc(npages, sizeof(*mtk_gem->pages), GFP_KERNEL);
- 	if (!mtk_gem->pages) {
-+		sg_free_table(sgt);
- 		kfree(sgt);
- 		return -ENOMEM;
- 	}
-@@ -248,12 +249,15 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *obj, struct iosys_map *map)
- 	mtk_gem->kvaddr = vmap(mtk_gem->pages, npages, VM_MAP,
- 			       pgprot_writecombine(PAGE_KERNEL));
- 	if (!mtk_gem->kvaddr) {
-+		sg_free_table(sgt);
- 		kfree(sgt);
- 		kfree(mtk_gem->pages);
- 		return -ENOMEM;
- 	}
--out:
-+	sg_free_table(sgt);
- 	kfree(sgt);
-+
-+out:
- 	iosys_map_set_vaddr(map, mtk_gem->kvaddr);
- 
- 	return 0;
--- 
-2.42.0.582.g8ccd20d70d-goog
-
+> Please merge for v6.6 fixes.
+>
+> Also, I was wondering why the MediaTek DRM driver implements a lot of
+> the GEM functionality itself, instead of using the GEM DMA helpers.
+> From what I could tell, the code closely follows the DMA helpers, except
+> that it vmaps the buffers only upon request.
+>
+>  drivers/gpu/drm/mediatek/mtk_drm_gem.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/mediatek/mtk_drm_gem.c b/drivers/gpu/drm/med=
+iatek/mtk_drm_gem.c
+> index 9f364df52478..0e0a41b2f57f 100644
+> --- a/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+> +++ b/drivers/gpu/drm/mediatek/mtk_drm_gem.c
+> @@ -239,6 +239,7 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *obj=
+, struct iosys_map *map)
+>         npages =3D obj->size >> PAGE_SHIFT;
+>         mtk_gem->pages =3D kcalloc(npages, sizeof(*mtk_gem->pages), GFP_K=
+ERNEL);
+>         if (!mtk_gem->pages) {
+> +               sg_free_table(sgt);
+>                 kfree(sgt);
+>                 return -ENOMEM;
+>         }
+> @@ -248,12 +249,15 @@ int mtk_drm_gem_prime_vmap(struct drm_gem_object *o=
+bj, struct iosys_map *map)
+>         mtk_gem->kvaddr =3D vmap(mtk_gem->pages, npages, VM_MAP,
+>                                pgprot_writecombine(PAGE_KERNEL));
+>         if (!mtk_gem->kvaddr) {
+> +               sg_free_table(sgt);
+>                 kfree(sgt);
+>                 kfree(mtk_gem->pages);
+>                 return -ENOMEM;
+>         }
+> -out:
+> +       sg_free_table(sgt);
+>         kfree(sgt);
+> +
+> +out:
+>         iosys_map_set_vaddr(map, mtk_gem->kvaddr);
+>
+>         return 0;
+> --
+> 2.42.0.582.g8ccd20d70d-goog
+>
