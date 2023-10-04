@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B9197B88EB
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 025097B8A58
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243988AbjJDSU5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:20:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45660 "EHLO
+        id S244406AbjJDSee (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:34:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244002AbjJDSU5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:57 -0400
+        with ESMTP id S243805AbjJDSed (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC74EA6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06774C433CA;
-        Wed,  4 Oct 2023 18:20:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C548C0
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9F4C433C7;
+        Wed,  4 Oct 2023 18:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443653;
-        bh=2c0vTsofcm/wKTxRTJxpx7RHfabH/v2d/sb+tGgwrkI=;
+        s=korg; t=1696444470;
+        bh=Y3YZpOqClP48uKhu7HzHVi1Q/19yLoRxUDopOUGnCmY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DZrbjuHOZs+nc2YsReuPAdZ9JI7oNGt+hiVlQJegHxF3H2LenK8GZhIt0ZuwRyLQA
-         2LVH5o7YGpeAZ+5r2kXSrbrDHaqJaA7r1/29CZ4FVmnfpq4L/wh/9qn7ZGK8kCmSh2
-         KY1yI/+0AG6jvd9nG7MJoUUJdt5WpQOJxu0RDme8=
+        b=E+FEnwYfk7PjhdWdWw0K1/v0HPr7xxnCyM/BqCceGrsFRYwiW0UO7m4/0B6lxW8M6
+         ddTXT5JCPtH8GgYmSzeEKODUYlb57uHm/OmrOkUiKrJgYD2SMsfM60WBScdK2cdVbU
+         gJQ9vpPtusgtDQiSFoFfsVtOXhpVqRrBEW+/h+JA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Frederic Weisbecker <frederic@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Subject: [PATCH 6.1 233/259] timers: Tag (hr)timer softirq as hotplug safe
+        patches@lists.linux.dev, Chong Qiao <qiaochong@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.5 261/321] LoongArch: numa: Fix high_memory calculation
 Date:   Wed,  4 Oct 2023 19:56:46 +0200
-Message-ID: <20231004175228.060555400@linuxfoundation.org>
+Message-ID: <20231004175241.347006666@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +49,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 1a6a464774947920dcedcf7409be62495c7cedd0 upstream.
+commit 1943feecf80e73ecc03ce40271f29c6cea142bac upstream.
 
-Specific stress involving frequent CPU-hotplug operations, such as
-running rcutorture for example, may trigger the following message:
+For 64bit kernel without HIGHMEM, high_memory is the virtual address of
+the highest physical address in the system. But __va(get_num_physpages()
+<< PAGE_SHIFT) is not what we want for high_memory because there may be
+holes in the physical address space. On the other hand, max_low_pfn is
+calculated from memblock_end_of_DRAM(), which is exactly corresponding
+to the highest physical address, so use it for high_memory calculation.
 
-  NOHZ tick-stop error: local softirq work is pending, handler #02!!!"
-
-This happens in the CPU-down hotplug process, after
-CPUHP_AP_SMPBOOT_THREADS whose teardown callback parks ksoftirqd, and
-before the target CPU shuts down through CPUHP_AP_IDLE_DEAD. In this
-fragile intermediate state, softirqs waiting for threaded handling may be
-forever ignored and eventually reported by the idle task as in the above
-example.
-
-However some vectors are known to be safe as long as the corresponding
-subsystems have teardown callbacks handling the migration of their
-events. The above error message reports pending timers softirq although
-this vector can be considered as hotplug safe because the
-CPUHP_TIMERS_PREPARE teardown callback performs the necessary migration
-of timers after the death of the CPU. Hrtimers also have a similar
-hotplug handling.
-
-Therefore this error message, as far as (hr-)timers are concerned, can
-be considered spurious and the relevant softirq vectors can be marked as
-hotplug safe.
-
-Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230912104406.312185-6-frederic@kernel.org
+Cc: <stable@vger.kernel.org>
+Fixes: d4b6f1562a3c3284adce ("LoongArch: Add Non-Uniform Memory Access (NUMA) support")
+Signed-off-by: Chong Qiao <qiaochong@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/interrupt.h |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/numa.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -569,8 +569,12 @@ enum
-  * 	2) rcu_report_dead() reports the final quiescent states.
-  *
-  * _ IRQ_POLL: irq_poll_cpu_dead() migrates the queue
-+ *
-+ * _ (HR)TIMER_SOFTIRQ: (hr)timers_dead_cpu() migrates the queue
-  */
--#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(RCU_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ))
-+#define SOFTIRQ_HOTPLUG_SAFE_MASK (BIT(TIMER_SOFTIRQ) | BIT(IRQ_POLL_SOFTIRQ) |\
-+				   BIT(HRTIMER_SOFTIRQ) | BIT(RCU_SOFTIRQ))
-+
+--- a/arch/loongarch/kernel/numa.c
++++ b/arch/loongarch/kernel/numa.c
+@@ -468,7 +468,7 @@ void __init paging_init(void)
  
- /* map softirq index to softirq name. update 'softirq_to_name' in
-  * kernel/softirq.c when adding a new softirq.
+ void __init mem_init(void)
+ {
+-	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
++	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+ 	memblock_free_all();
+ 	setup_zero_pages();	/* This comes from node 0 */
+ }
 
 
