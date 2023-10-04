@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACFFC7B81B8
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19ECF7B81B9
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242772AbjJDOFJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 10:05:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38132 "EHLO
+        id S242758AbjJDOFR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 10:05:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242778AbjJDOFI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:05:08 -0400
+        with ESMTP id S242773AbjJDOFQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:05:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FC39AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:05:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2995BC433C9;
-        Wed,  4 Oct 2023 14:05:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4F54C1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:05:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034FFC433C8;
+        Wed,  4 Oct 2023 14:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696428303;
-        bh=XMe6eZnaU0goZO4hQ9/Se8HBVRvNPoPH0xS6i3aWPmQ=;
+        s=korg; t=1696428312;
+        bh=TV4EmfoqkxMn9wZvAOQMt03hc7ZnunUET7QGz5MAMfg=;
         h=Subject:To:Cc:From:Date:From;
-        b=JemCH3DPG5tGma6J2255V+wJFIwLnVFCqA/rAhnja/jo8j+LqT0U2kdY1kAoZNMJO
-         D/C4vE4e7CE6JQxhWzkGP8ULloMn3Oqds+qM686LoOTx0fnMBkdyQhPJcCcl+zPcG4
-         3ncv36vhU6MC8y9aE+WnD6h6J+uVzdq3flq34hmQ=
-Subject: FAILED: patch "[PATCH] mptcp: rename timer related helper to less confusing names" failed to apply to 6.5-stable tree
+        b=fIGxiRdCYmtYX27vgTTVVm4//E5O64qY1117yzsiiP2J+1x1eC76E51FCoDyTXVQS
+         QuhkcCK1urJsP79NBvhpJ08O0E0fWA5oDG7rfguP2f3YzP6nT/5HVJhHv6bh3Rq+Dk
+         9BnbCQSudALMxo4SvkjcnC8pMr+qEFlCFqqTVCuo=
+Subject: FAILED: patch "[PATCH] mptcp: rename timer related helper to less confusing names" failed to apply to 6.1-stable tree
 To:     pabeni@redhat.com, davem@davemloft.net, martineau@kernel.org,
         matthieu.baerts@tessares.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 16:05:00 +0200
-Message-ID: <2023100400-example-ashen-2013@gregkh>
+Date:   Wed, 04 Oct 2023 16:05:01 +0200
+Message-ID: <2023100401-cultural-radiator-bc5e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x f6909dc1c1f4452879278128012da6c76bc186a5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100400-example-ashen-2013@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100401-cultural-radiator-bc5e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
