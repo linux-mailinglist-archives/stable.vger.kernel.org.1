@@ -2,126 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD8537B8575
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD967B8569
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:36:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233485AbjJDQjW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 12:39:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
+        id S233054AbjJDQgR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 12:36:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233726AbjJDQjV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:39:21 -0400
-X-Greylist: delayed 302 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 04 Oct 2023 09:39:16 PDT
-Received: from abi149hd125.arn1.oracleemaildelivery.com (abi149hd125.arn1.oracleemaildelivery.com [129.149.84.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9FAAD7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:39:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=oci-arn1-20220924;
- d=augustwikerfors.se;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
- bh=8T0PGx2dNJlnTyxCzlVq4bOxn0w4Q9z3eZpQdiPzdRU=;
- b=G60Gta9gOZ/E3LGGrRm3EShbs4AV8X9tq3dH6Z+O5z2vbG5lIYIEZSoQE1RkFxmXWH0LdrILaUnK
-   46u89YI1+bQ57txxV4T0bynE8rY4GNrlwC6IU9QjpWknLsvMjzhRoLJUne0OEYn84H0jOPqekKZj
-   IB/TcWFDvljcNOgDpiRFciFzOdYMliaiDnI9tl8W787A6G0cYXWywO/ku+vCUBymGjBg7c93m7ig
-   1QCKQOLlZ4/+9zsWzOy2EEq7+z6ILmE032yruVwTHUv5ONdmQjaBK2IEemtc/0WRNKbfw3vYVsj3
-   IXFphRVOwl/y+C8nF8YGQRQYoryypFsUZIwJvg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=prod-arn-20211201;
- d=arn1.rp.oracleemaildelivery.com;
- h=Date:To:From:Subject:Message-Id:MIME-Version:Sender;
- bh=8T0PGx2dNJlnTyxCzlVq4bOxn0w4Q9z3eZpQdiPzdRU=;
- b=N30DlDb52o7ps8zoqhHRYRQgz1K9YK3GEIAIb0DOJDifUhUN1dd9uRpFRsxDYonthnV/OhRlY8PQ
-   Pgfre6sfotICob5A1gtyLkRUiPhbaG2v7Yd4+J6W/S7mCrTYGRd1PINx1Nw5QxR+xosEfv13opWX
-   +qgarbJAtwINpxFXBf+2TIJg9ztn75cZ3MJtcSvkXPuSJ8N2Bakf8Gnft6HvvySXPQXEG5mA4x0P
-   +TWQrQbe7peIbarusaT7ojsGJYBPV9uOG6BIvX0jHogK9Y5XbQrVM1mBQW/l4za3VljAyHxCrTjR
-   RF2vBkf+zqwhlsqxyOoJZ6mE6/YbJPE68Xc30A==
-Received: by omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com
- (Oracle Communications Messaging Server 8.1.0.1.20230808 64bit (built Aug  8
- 2023))
- with ESMTPS id <0S20002VBJCYDZ30@omta-ad1-fd1-401-eu-stockholm-1.omtaad1.vcndparn.oraclevcn.com>
- for stable@vger.kernel.org; Wed, 04 Oct 2023 16:34:10 +0000 (GMT)
-Content-type: text/plain; charset=utf-8
-Content-transfer-encoding: quoted-printable
-From:   August Wikerfors <git@augustwikerfors.se>
-MIME-version: 1.0
-Subject: Re: Patch
- "ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG" has been added
- to the 6.1-stable tree
-Message-id: <B48DED01-5B50-4EF7-B0AC-2DC742D07890@augustwikerfors.se>
-Date:   Wed, 4 Oct 2023 18:33:55 +0200
-Cc:     broonie@kernel.org, stable-commits@vger.kernel.org,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        regressions@lists.linux.dev
-To:     gregkh@linuxfoundation.org, stable@vger.kernel.org
-Reporting-Meta: AAEHWQsg/CM5M6X2tVhNU4NXmxPo0N7v07ec6PufRpyTJI3MyRZ78LZwL2o/Wwp9
- FHmUjMf8uxnMCWG7lXdTqo7w80jiK9yzPzjGfivUx2LMb8jxKABeqpqNv/MZor2M
- 1vfV018llLGbqwQNDM2y9Bqe0O6AGc+VPJ7opf2glA0FkmxPtJ4yofMrUX/Hj1dK
- t+GHwhllcqIMMkcFciFVsSVLDuFFm2x2HLH0kzN+kapjFaqGv7DUrAsjf3579Gn7
- Uj0rNW50QalW3kz1MFcIWU/v2UxBTX14sSeCq7g5Jk0AI1Eu2GqbHKEFIBWU8GPc
- /qpktqjUiLEp134i1zPqzlPc3MxKG4aJezh+4cfqnP5DKuDaBAsBUTk5CzONxnfX
- vioaq3MunEfKzTn18Pu8ahnv58o9RZG2ABNSEcfLL5EN65kmHoQkCEPHlHWiGbsI 1w==
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S233799AbjJDQgQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:36:16 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898EB95;
+        Wed,  4 Oct 2023 09:36:10 -0700 (PDT)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 394AavuA022614;
+        Wed, 4 Oct 2023 18:35:55 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding:content-type; s=selector1; bh=dyiz+tj
+        fiV2jpQFO28ugDVDITHWqIXX0qTTS/2IIaYg=; b=CDOyv5d4QUbM1WjCWwIJXBD
+        DSi4ZgqWpzaHg8dky77xXIM/V1dxFE6Jwa6DFlsf8LcOOIwfAVhCHwPOsNlx9I7L
+        TuaYZSCKn67PUjxIlwGj7tZL29EJHgOp6U9ua4zuw7xE/YJe27Mjbi1OHnzAVG/r
+        LBHaRISHLXr0XugucynvryAD+zF6kGZIFAiW8Ga01/x0OcN77OC9dg8PrPF3VOE7
+        hjNeZ28jaAwLYAbkBU7AFsBiCkD3k2H0PaLldo99UoDJJXkofkfFr9Qh8OgYuxH/
+        4qgROhfdwVmzxVGzEaH5Ftegw3sUULVosX+eMrBB68dAZAtidXa58c/Oln4JAkA=
+        =
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3tggx36fju-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 04 Oct 2023 18:35:55 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0D065100053;
+        Wed,  4 Oct 2023 18:35:55 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 0528A281EB6;
+        Wed,  4 Oct 2023 18:35:55 +0200 (CEST)
+Received: from localhost (10.252.26.61) by SHFDAG1NODE3.st.com (10.75.129.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 4 Oct
+ 2023 18:35:54 +0200
+From:   Amelie Delaunay <amelie.delaunay@foss.st.com>
+To:     Vinod Koul <vkoul@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        M'boumba Cedric Madianga <cedric.madianga@gmail.com>,
+        Pierre-Yves MORDRET <pierre-yves.mordret@st.com>
+CC:     Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        <stable@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 1/3] dmaengine: stm32-mdma: abort resume if no ongoing transfer
+Date:   Wed, 4 Oct 2023 18:35:28 +0200
+Message-ID: <20231004163531.2864160-1-amelie.delaunay@foss.st.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.252.26.61]
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE3.st.com
+ (10.75.129.71)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-04_08,2023-10-02_01,2023-05-22_02
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+chan->desc can be null, if transfer is terminated when resume is called,
+leading to a NULL pointer when retrieving the hwdesc.
+To avoid this case, check that chan->desc is not null and channel is
+disabled (transfer previously paused or terminated).
 
-> On 4 Oct 2023, at 16:58, gregkh@linuxfoundation.org wrote:
->=20
-> =EF=BB=BF
-> This is a note to let you know that I've just added the patch titled
->=20
->  ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG
->=20
-> to the 6.1-stable tree which can be found at:
->  http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.git;a=
-=3Dsummary
->=20
-> The filename of the patch is:
->   asoc-amd-yc-fix-non-functional-mic-on-lenovo-82qf-and-82ug.patch
-> and it can be found in the queue-6.1 subdirectory.
->=20
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
->=20
->=20
-> =46rom 1263cc0f414d212129c0f1289b49b7df77f92084 Mon Sep 17 00:00:00 2001
-> From: August Wikerfors <git@augustwikerfors.se>
-> Date: Mon, 11 Sep 2023 23:34:09 +0200
-> Subject: ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG
->=20
-> From: August Wikerfors <git@augustwikerfors.se>
->=20
-> commit 1263cc0f414d212129c0f1289b49b7df77f92084 upstream.
->=20
-> Like the Lenovo 82TL and 82V2, the Lenovo 82QF (Yoga 7 14ARB7) and 82UG
-> (Legion S7 16ARHA7) both need a quirk entry for the internal microphone to=
+Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/dma/stm32-mdma.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-> function. Commit c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on=
+diff --git a/drivers/dma/stm32-mdma.c b/drivers/dma/stm32-mdma.c
+index 0de234022c6d..cc6f4b00091f 100644
+--- a/drivers/dma/stm32-mdma.c
++++ b/drivers/dma/stm32-mdma.c
+@@ -1236,6 +1236,10 @@ static int stm32_mdma_resume(struct dma_chan *c)
+ 	unsigned long flags;
+ 	u32 status, reg;
+ 
++	/* Transfer can be terminated */
++	if (!chan->desc || (stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & STM32_MDMA_CCR_EN))
++		return -EPERM;
++
+ 	hwdesc = chan->desc->node[chan->curr_hwdesc].hwdesc;
+ 
+ 	spin_lock_irqsave(&chan->vchan.lock, flags);
+-- 
+2.25.1
 
-> Lenovo 82SJ") restricted the quirk that previously matched "82" to "82V2",=
-
-> breaking microphone functionality on these devices. Fix this by adding
-> specific quirks for these models, as was done for the Lenovo 82TL.
->=20
-> Fixes: c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on Lenovo 82=
-SJ")
-> Closes: https://github.com/tomsom/yoga-linux/issues/51
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D208555#c780
-> Cc: stable@vger.kernel.org
-> Signed-off-by: August Wikerfors <git@augustwikerfors.se>
-> Link: https://lore.kernel.org/r/20230911213409.6106-1-git@augustwikerfors.=
-se
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-Please also add commit cfff2a7794d2 ("ASoC: amd: yc: Fix a non-functional mi=
-c on Lenovo 82TL") to 6.1+ as it fixed the same regression for another model=
- (but wasn=E2=80=99t tagged for stable).
-
-Regards,
-August Wikerfors=
