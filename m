@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F04F7B8A93
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A063F7B8910
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:22:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244484AbjJDSgz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:36:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57070 "EHLO
+        id S244065AbjJDSWZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:22:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244620AbjJDSgq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:36:46 -0400
+        with ESMTP id S243775AbjJDSWY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:22:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D7FCA7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:36:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4997C433C8;
-        Wed,  4 Oct 2023 18:36:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13387A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:22:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59963C433CA;
+        Wed,  4 Oct 2023 18:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444602;
-        bh=17yKl22E0CiXI4CvvIDsD4Dary9ixQbykQSqHiN54KU=;
+        s=korg; t=1696443740;
+        bh=lsN6gvsy2grec2LFeu1p+iSfVchja3KdeszUfRrb9h8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hkvUcwdDXt2BlWTyEfb1V1zT6kCX0lv6aLJKyY5TwvhgYiGCp99dXyM9z08tiRusM
-         w2f1+tgFC/DayiPDavQr3zav5iGhu+ucBxGNuEyzwWZd6/wcad3fkF2Ei8iB3nBaaY
-         KdDvRaN69TWQNYPEo9Lp5leCLVR1+jaJOomJLC7U=
+        b=hfVu7p8Lw+V3miJkjbDga3cJ9gU1aEkZEb+e2LwiSRok7wuT9LD60QLl91umIPsPu
+         innmmEQ6Ojw3+t/8nzYztATEP1c1zut2rstjAoAtTbk0P/bqKKtzR+vDCvLmlhUhxR
+         nBQKoxQ1XWv326dnhPTT+FVc+1dtbHoIuJzo2eAE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        SeongJae Park <sj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 280/321] mm/damon/vaddr-test: fix memory leak in damon_do_test_apply_three_regions()
-Date:   Wed,  4 Oct 2023 19:57:05 +0200
-Message-ID: <20231004175242.258420846@linuxfoundation.org>
+        patches@lists.linux.dev, Stefan Hansson <newbyte@disroot.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 253/259] power: supply: ab8500: Set typing and props
+Date:   Wed,  4 Oct 2023 19:57:06 +0200
+Message-ID: <20231004175229.020650555@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,172 +50,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 45120b15743fa7c0aa53d5db6dfb4c8f87be4abd upstream.
+commit dc77721ea4aa1e8937e2436f230b5a69065cc508 upstream.
 
-When CONFIG_DAMON_VADDR_KUNIT_TEST=y and making CONFIG_DEBUG_KMEMLEAK=y
-and CONFIG_DEBUG_KMEMLEAK_AUTO_SCAN=y, the below memory leak is detected.
+I had the following weird phenomena on a mobile phone: while
+the capacity in /sys/class/power_supply/ab8500_fg/capacity
+would reflect the actual charge and capacity of the battery,
+only 1/3 of the value was shown on the battery status
+indicator and warnings for low battery appeared.
 
-Since commit 9f86d624292c ("mm/damon/vaddr-test: remove unnecessary
-variables"), the damon_destroy_ctx() is removed, but still call
-damon_new_target() and damon_new_region(), the damon_region which is
-allocated by kmem_cache_alloc() in damon_new_region() and the damon_target
-which is allocated by kmalloc in damon_new_target() are not freed.  And
-the damon_region which is allocated in damon_new_region() in
-damon_set_regions() is also not freed.
+It turns out that UPower, the Freedesktop power daemon,
+will average all the power supplies of type "battery" in
+/sys/class/power_supply/* if there is more than one battery.
 
-So use damon_destroy_target to free all the damon_regions and damon_target.
+For the AB8500, there was "battery" ab8500_fg, ab8500_btemp
+and ab8500_chargalg. The latter two don't know anything
+about the battery, and should not be considered. They were
+however averaged and with the capacity of 0.
 
-    unreferenced object 0xffff888107c9a940 (size 64):
-      comm "kunit_try_catch", pid 1069, jiffies 4294670592 (age 732.761s)
-      hex dump (first 32 bytes):
-        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
-        60 c7 9c 07 81 88 ff ff f8 cb 9c 07 81 88 ff ff  `...............
-      backtrace:
-        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
-        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
-        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
-        [<ffffffff819c82be>] damon_test_apply_three_regions1+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff8881079cc740 (size 56):
-      comm "kunit_try_catch", pid 1069, jiffies 4294670592 (age 732.761s)
-      hex dump (first 32 bytes):
-        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
-        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
-      backtrace:
-        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
-        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
-        [<ffffffff819c82be>] damon_test_apply_three_regions1+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff888107c9ac40 (size 64):
-      comm "kunit_try_catch", pid 1071, jiffies 4294670595 (age 732.843s)
-      hex dump (first 32 bytes):
-        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
-        a0 cc 9c 07 81 88 ff ff 78 a1 76 07 81 88 ff ff  ........x.v.....
-      backtrace:
-        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
-        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
-        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
-        [<ffffffff819c851e>] damon_test_apply_three_regions2+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff8881079ccc80 (size 56):
-      comm "kunit_try_catch", pid 1071, jiffies 4294670595 (age 732.843s)
-      hex dump (first 32 bytes):
-        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
-        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
-      backtrace:
-        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
-        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
-        [<ffffffff819c851e>] damon_test_apply_three_regions2+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff888107c9af40 (size 64):
-      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.011s)
-      hex dump (first 32 bytes):
-        00 00 00 00 00 00 00 00 06 00 00 00 6b 6b 6b 6b  ............kkkk
-        20 a2 76 07 81 88 ff ff b8 a6 76 07 81 88 ff ff   .v.......v.....
-      backtrace:
-        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
-        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
-        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
-        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff88810776a200 (size 56):
-      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.011s)
-      hex dump (first 32 bytes):
-        05 00 00 00 00 00 00 00 14 00 00 00 00 00 00 00  ................
-        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
-      backtrace:
-        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
-        [<ffffffff819c7d91>] damon_do_test_apply_three_regions.constprop.0+0xd1/0x3e0
-        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff88810776a740 (size 56):
-      comm "kunit_try_catch", pid 1073, jiffies 4294670597 (age 733.025s)
-      hex dump (first 32 bytes):
-        3d 00 00 00 00 00 00 00 3f 00 00 00 00 00 00 00  =.......?.......
-        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
-      backtrace:
-        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
-        [<ffffffff819bfcc2>] damon_set_regions+0x4c2/0x8e0
-        [<ffffffff819c7dbb>] damon_do_test_apply_three_regions.constprop.0+0xfb/0x3e0
-        [<ffffffff819c877e>] damon_test_apply_three_regions3+0x21e/0x260
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff888108038240 (size 64):
-      comm "kunit_try_catch", pid 1075, jiffies 4294670600 (age 733.022s)
-      hex dump (first 32 bytes):
-        00 00 00 00 00 00 00 00 03 00 00 00 6b 6b 6b 6b  ............kkkk
-        48 ad 76 07 81 88 ff ff 98 ae 76 07 81 88 ff ff  H.v.......v.....
-      backtrace:
-        [<ffffffff817e0167>] kmalloc_trace+0x27/0xa0
-        [<ffffffff819c11cf>] damon_new_target+0x3f/0x1b0
-        [<ffffffff819c7d55>] damon_do_test_apply_three_regions.constprop.0+0x95/0x3e0
-        [<ffffffff819c898d>] damon_test_apply_three_regions4+0x1cd/0x210
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
-    unreferenced object 0xffff88810776ad28 (size 56):
-      comm "kunit_try_catch", pid 1075, jiffies 4294670600 (age 733.022s)
-      hex dump (first 32 bytes):
-        05 00 00 00 00 00 00 00 07 00 00 00 00 00 00 00  ................
-        6b 6b 6b 6b 6b 6b 6b 6b 00 00 00 00 6b 6b 6b 6b  kkkkkkkk....kkkk
-      backtrace:
-        [<ffffffff819bc492>] damon_new_region+0x22/0x1c0
-        [<ffffffff819bfcc2>] damon_set_regions+0x4c2/0x8e0
-        [<ffffffff819c7dbb>] damon_do_test_apply_three_regions.constprop.0+0xfb/0x3e0
-        [<ffffffff819c898d>] damon_test_apply_three_regions4+0x1cd/0x210
-        [<ffffffff829fce6a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
-        [<ffffffff81237cf6>] kthread+0x2b6/0x380
-        [<ffffffff81097add>] ret_from_fork+0x2d/0x70
-        [<ffffffff81003791>] ret_from_fork_asm+0x11/0x20
+Flag ab8500_btemp and ab8500_chargalg with type "unknown"
+so they are not averaged as batteries.
 
-Link: https://lkml.kernel.org/r/20230925072100.3725620-1-ruanjinjie@huawei.com
-Fixes: 9f86d624292c ("mm/damon/vaddr-test: remove unnecessary variables")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Remove the technology prop from ab8500_btemp as well, all
+it does is snoop in on knowledge from another supply.
+
+After this the battery indicator shows the right value.
+
+Cc: Stefan Hansson <newbyte@disroot.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/vaddr-test.h |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/ab8500_btemp.c    |    9 +--------
+ drivers/power/supply/ab8500_chargalg.c |    2 +-
+ 2 files changed, 2 insertions(+), 9 deletions(-)
 
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -148,6 +148,8 @@ static void damon_do_test_apply_three_re
- 		KUNIT_EXPECT_EQ(test, r->ar.start, expected[i * 2]);
- 		KUNIT_EXPECT_EQ(test, r->ar.end, expected[i * 2 + 1]);
- 	}
-+
-+	damon_destroy_target(t);
- }
+--- a/drivers/power/supply/ab8500_btemp.c
++++ b/drivers/power/supply/ab8500_btemp.c
+@@ -115,7 +115,6 @@ struct ab8500_btemp {
+ static enum power_supply_property ab8500_btemp_props[] = {
+ 	POWER_SUPPLY_PROP_PRESENT,
+ 	POWER_SUPPLY_PROP_ONLINE,
+-	POWER_SUPPLY_PROP_TECHNOLOGY,
+ 	POWER_SUPPLY_PROP_TEMP,
+ };
  
- /*
+@@ -532,12 +531,6 @@ static int ab8500_btemp_get_property(str
+ 		else
+ 			val->intval = 1;
+ 		break;
+-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+-		if (di->bm->bi)
+-			val->intval = di->bm->bi->technology;
+-		else
+-			val->intval = POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
+-		break;
+ 	case POWER_SUPPLY_PROP_TEMP:
+ 		val->intval = ab8500_btemp_get_temp(di);
+ 		break;
+@@ -662,7 +655,7 @@ static char *supply_interface[] = {
+ 
+ static const struct power_supply_desc ab8500_btemp_desc = {
+ 	.name			= "ab8500_btemp",
+-	.type			= POWER_SUPPLY_TYPE_BATTERY,
++	.type			= POWER_SUPPLY_TYPE_UNKNOWN,
+ 	.properties		= ab8500_btemp_props,
+ 	.num_properties		= ARRAY_SIZE(ab8500_btemp_props),
+ 	.get_property		= ab8500_btemp_get_property,
+--- a/drivers/power/supply/ab8500_chargalg.c
++++ b/drivers/power/supply/ab8500_chargalg.c
+@@ -1720,7 +1720,7 @@ static char *supply_interface[] = {
+ 
+ static const struct power_supply_desc ab8500_chargalg_desc = {
+ 	.name			= "ab8500_chargalg",
+-	.type			= POWER_SUPPLY_TYPE_BATTERY,
++	.type			= POWER_SUPPLY_TYPE_UNKNOWN,
+ 	.properties		= ab8500_chargalg_props,
+ 	.num_properties		= ARRAY_SIZE(ab8500_chargalg_props),
+ 	.get_property		= ab8500_chargalg_get_property,
 
 
