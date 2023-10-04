@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48DEF7B8444
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F1587B8445
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 17:54:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242929AbjJDPyy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 11:54:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38522 "EHLO
+        id S243196AbjJDPy5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 11:54:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243191AbjJDPyx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:54:53 -0400
+        with ESMTP id S243191AbjJDPy4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 11:54:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 357A89E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:54:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B713C433C7;
-        Wed,  4 Oct 2023 15:54:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49DFA9E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 08:54:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885F8C433C9;
+        Wed,  4 Oct 2023 15:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696434889;
-        bh=4WnWhJ3YbiiyssajDrRjbDByK4q1hAlg9coWLiw7h9k=;
+        s=korg; t=1696434892;
+        bh=NYEd4/7KUzsJhfYI2hra3QcTTWi8zkgwXRQz0jh5BX0=;
         h=Subject:To:Cc:From:Date:From;
-        b=R5A8RrUM/Cra70YTLk4GfNa59WPNiVbbQSRXJHdwJwBhH2X8mEXw9ORk7Uvn6wIxt
-         00GE9VEBNJ/66yROUNxKeEt5xauo7k2tRmbb3Z25X1QGhe1Oq0BLUVeA3vW7bl942v
-         xYIJedU+/JEog8AO83MyYoEpBFxx5sj2huHLXIWU=
-Subject: FAILED: patch "[PATCH] ring-buffer: Fix bytes info in per_cpu buffer stats" failed to apply to 4.19-stable tree
+        b=2RHxT/J7cTObkG0/vEqFlkd1RtP26BsFGx7eaeS0RH+RM7FKe/SIlApJh6k8lEOWT
+         05HAvIQ+vkVtcGq4irnEDKZM8Eq6CkHJ1Glk4cun1R1RcJBD83UPN2JeHct9C3HKBB
+         MjW7oEQVb97jOFvmXf7LQkG/h6NgiYIEbvRy64sI=
+Subject: FAILED: patch "[PATCH] ring-buffer: Fix bytes info in per_cpu buffer stats" failed to apply to 4.14-stable tree
 To:     zhengyejian1@huawei.com, rostedt@goodmis.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 17:54:39 +0200
-Message-ID: <2023100438-palpable-marina-68c8@gregkh>
+Date:   Wed, 04 Oct 2023 17:54:40 +0200
+Message-ID: <2023100440-armory-unbalance-bd33@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 45d99ea451d0c30bfd4864f0fe485d7dac014902
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100438-palpable-marina-68c8@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100440-armory-unbalance-bd33@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
