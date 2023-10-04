@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B5BF7B881D
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB2C37B898A
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243970AbjJDSMt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:12:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35296 "EHLO
+        id S244208AbjJDS1K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:27:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243762AbjJDSMt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:12:49 -0400
+        with ESMTP id S244173AbjJDS1J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F5FF9;
-        Wed,  4 Oct 2023 11:12:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CD5C433C7;
-        Wed,  4 Oct 2023 18:12:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9B59A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3A8C433C8;
+        Wed,  4 Oct 2023 18:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443163;
-        bh=aHB26Dn9xFMRPa1pgn+27Z4IjU2PMvONyU6bWXS03Pg=;
+        s=korg; t=1696444024;
+        bh=s3FEAAuuPcgi4FHHNXG9/1o4iKwyoKJhDDA59BWNXpY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lBxF066fmZEBZhjq4RpXH41RgpwJFYooSIHh7T9thDRurrFzdhIqcBP/wtFhUiDiv
-         U63C+Y5OEfCwPyoBw8HIewKyDxNAUdd6yts7n3kRfP5RcSFgXIMiZUu0F6jzPAoSY3
-         X4rHFMOyZ5HRuiIftgn2o2OOMs5a6N7/3WWKR6/4=
+        b=owDFb4CfLP2+naqJbeXXvPZlplhhquJcCvYayGFHQjv/YrP+gr0UBYWM/+U5Lqr9k
+         mTNWFK3oxnAknZfEPARh7wie3P2f1nau4QyWh9CdV27H3tU6xQLP+3EeDuJ+PFJOX3
+         SjmwkVLoTPVf98y0enkzVOznV0Xttb50po30DZ0g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Lee Duncan <lduncan@suse.com>, Chris Leech <cleech@redhat.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        open-iscsi@googlegroups.com, linux-scsi@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/259] scsi: iscsi_tcp: restrict to TCP sockets
+Subject: [PATCH 6.5 086/321] net: hns3: add 5ms delay before clear firmware reset irq source
 Date:   Wed,  4 Oct 2023 19:53:51 +0200
-Message-ID: <20231004175220.090852970@linuxfoundation.org>
+Message-ID: <20231004175233.190360886@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,50 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit f4f82c52a0ead5ab363d207d06f81b967d09ffb8 ]
+[ Upstream commit 0770063096d5da4a8e467b6e73c1646a75589628 ]
 
-Nothing prevents iscsi_sw_tcp_conn_bind() to receive file descriptor
-pointing to non TCP socket (af_unix for example).
+Currently the reset process in hns3 and firmware watchdog init process is
+asynchronous. we think firmware watchdog initialization is completed
+before hns3 clear the firmware interrupt source. However, firmware
+initialization may not complete early.
 
-Return -EINVAL if this is attempted, instead of crashing the kernel.
+so we add delay before hns3 clear firmware interrupt source and 5 ms delay
+is enough to avoid second firmware reset interrupt.
 
-Fixes: 7ba247138907 ("[SCSI] open-iscsi/linux-iscsi-5 Initiator: Initiator code")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Lee Duncan <lduncan@suse.com>
-Cc: Chris Leech <cleech@redhat.com>
-Cc: Mike Christie <michael.christie@oracle.com>
-Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: open-iscsi@googlegroups.com
-Cc: linux-scsi@vger.kernel.org
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: c1a81619d73a ("net: hns3: Add mailbox interrupt handling to PF driver")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/iscsi_tcp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/scsi/iscsi_tcp.c b/drivers/scsi/iscsi_tcp.c
-index 8009eab3b7bee..56ade46309707 100644
---- a/drivers/scsi/iscsi_tcp.c
-+++ b/drivers/scsi/iscsi_tcp.c
-@@ -724,6 +724,10 @@ iscsi_sw_tcp_conn_bind(struct iscsi_cls_session *cls_session,
- 		return -EEXIST;
- 	}
- 
-+	err = -EINVAL;
-+	if (!sk_is_tcp(sock->sk))
-+		goto free_socket;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index a4500abfa286f..ed6cf59853bf6 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -3564,9 +3564,14 @@ static u32 hclge_check_event_cause(struct hclge_dev *hdev, u32 *clearval)
+ static void hclge_clear_event_cause(struct hclge_dev *hdev, u32 event_type,
+ 				    u32 regclr)
+ {
++#define HCLGE_IMP_RESET_DELAY		5
 +
- 	err = iscsi_conn_bind(cls_session, cls_conn, is_leading);
- 	if (err)
- 		goto free_socket;
+ 	switch (event_type) {
+ 	case HCLGE_VECTOR0_EVENT_PTP:
+ 	case HCLGE_VECTOR0_EVENT_RST:
++		if (regclr == BIT(HCLGE_VECTOR0_IMPRESET_INT_B))
++			mdelay(HCLGE_IMP_RESET_DELAY);
++
+ 		hclge_write_dev(&hdev->hw, HCLGE_MISC_RESET_STS_REG, regclr);
+ 		break;
+ 	case HCLGE_VECTOR0_EVENT_MBX:
 -- 
 2.40.1
 
