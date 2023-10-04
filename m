@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 793547B879E
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 220487B89E9
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:30:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243829AbjJDSH0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:07:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60314 "EHLO
+        id S244307AbjJDSac (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:30:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243834AbjJDSHZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:25 -0400
+        with ESMTP id S244301AbjJDSab (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4801BC1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FC6C433C9;
-        Wed,  4 Oct 2023 18:07:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EDDCA6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674B1C433C8;
+        Wed,  4 Oct 2023 18:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442840;
-        bh=shyatZMMWHa8Qyaka0hoKMYIsBnlNewuSz0ph5ai7vc=;
+        s=korg; t=1696444227;
+        bh=ntLT8B/4JIxTmmRNJJ/Ke6Z5kJLEVcqCZGr7Yk7VYkM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uuSUat2Cob7HVOIsmauZte+3twxa5XFL8b2Il+psOmHjq1ZJISZHopWwBJyjUxrX9
-         BC/SfdiDc5xEXInq4Euo0yAiqpx6sk7ts5db9/k/g4zKGABaTidFlvT1bg5Zi0xhWe
-         5R2kJhksPyvlN4Bejqiq0eT3oQ8g0UrXkVHS9Am0=
+        b=Rc7q63GrvqbDuvCltZoq6ibktOhg/twVQy2/YqZox0yuc65K9AjzfFQLFFlEd9A3w
+         fg3IbEZcvwNIS8VTQB+qrwSfS4pAp3JcxJwkfpTAEzbHa6nEmj+/HzMJEZ/ufj6rEu
+         Z2PSm5IqE7kxE3O3WG4Vy/eBEin7HxtDhYVEcxQg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Garry <john.g.garry@oracle.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/183] scsi: qla2xxx: Use raw_smp_processor_id() instead of smp_processor_id()
+Subject: [PATCH 6.5 175/321] selftests/ftrace: Correctly enable event in instance-event.tc
 Date:   Wed,  4 Oct 2023 19:55:20 +0200
-Message-ID: <20231004175207.607792777@linuxfoundation.org>
+Message-ID: <20231004175237.348497115@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,126 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilesh Javali <njavali@marvell.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 59f10a05b5c7b675256a66e3161741239889ff80 ]
+[ Upstream commit f4e4ada586995b17f828c6d147d1800eb1471450 ]
 
-The following call trace was observed:
+Function instance_set() expects to enable event 'sched_switch', so we
+should set 1 to its 'enable' file.
 
-localhost kernel: nvme nvme0: NVME-FC{0}: controller connect complete
-localhost kernel: BUG: using smp_processor_id() in preemptible [00000000] code: kworker/u129:4/75092
-localhost kernel: nvme nvme0: NVME-FC{0}: new ctrl: NQN "nqn.1992-08.com.netapp:sn.b42d198afb4d11ecad6d00a098d6abfa:subsystem.PR_Channel2022_RH84_subsystem_291"
-localhost kernel: caller is qla_nvme_post_cmd+0x216/0x1380 [qla2xxx]
-localhost kernel: CPU: 6 PID: 75092 Comm: kworker/u129:4 Kdump: loaded Tainted: G    B   W  OE    --------- ---  5.14.0-70.22.1.el9_0.x86_64+debug #1
-localhost kernel: Hardware name: HPE ProLiant XL420 Gen10/ProLiant XL420 Gen10, BIOS U39 01/13/2022
-localhost kernel: Workqueue: nvme-wq nvme_async_event_work [nvme_core]
-localhost kernel: Call Trace:
-localhost kernel: dump_stack_lvl+0x57/0x7d
-localhost kernel: check_preemption_disabled+0xc8/0xd0
-localhost kernel: qla_nvme_post_cmd+0x216/0x1380 [qla2xxx]
+Testcase passed after this patch:
+  # ./ftracetest test.d/instances/instance-event.tc
+  === Ftrace unit tests ===
+  [1] Test creation and deletion of trace instances while setting an event
+  [PASS]
 
-Use raw_smp_processor_id() instead of smp_processor_id().
+  # of passed:  1
+  # of failed:  0
+  # of unresolved:  0
+  # of untested:  0
+  # of unsupported:  0
+  # of xfailed:  0
+  # of undefined(test bug):  0
 
-Also use queue_work() across the driver instead of queue_work_on() thus
-avoiding usage of smp_processor_id() when CONFIG_DEBUG_PREEMPT is enabled.
-
-Cc: stable@vger.kernel.org
-Suggested-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20230831112146.32595-2-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_inline.h  | 2 +-
- drivers/scsi/qla2xxx/qla_isr.c     | 6 +++---
- drivers/scsi/qla2xxx/qla_target.c  | 3 +--
- drivers/scsi/qla2xxx/tcm_qla2xxx.c | 4 ++--
- 4 files changed, 7 insertions(+), 8 deletions(-)
+ .../testing/selftests/ftrace/test.d/instances/instance-event.tc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_inline.h b/drivers/scsi/qla2xxx/qla_inline.h
-index d5cf9db2a8ea3..e66441355f7ae 100644
---- a/drivers/scsi/qla2xxx/qla_inline.h
-+++ b/drivers/scsi/qla2xxx/qla_inline.h
-@@ -577,7 +577,7 @@ fcport_is_bigger(fc_port_t *fcport)
- static inline struct qla_qpair *
- qla_mapq_nvme_select_qpair(struct qla_hw_data *ha, struct qla_qpair *qpair)
- {
--	int cpuid = smp_processor_id();
-+	int cpuid = raw_smp_processor_id();
+diff --git a/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc b/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc
+index 0eb47fbb3f44d..42422e4251078 100644
+--- a/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc
++++ b/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc
+@@ -39,7 +39,7 @@ instance_read() {
  
- 	if (qpair->cpuid != cpuid &&
- 	    ha->qp_cpu_map[cpuid]) {
-diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
-index a13732921b5c0..4f6aab2599350 100644
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -3780,7 +3780,7 @@ void qla24xx_process_response_queue(struct scsi_qla_host *vha,
- 	if (!ha->flags.fw_started)
- 		return;
- 
--	if (rsp->qpair->cpuid != smp_processor_id() || !rsp->qpair->rcv_intr) {
-+	if (rsp->qpair->cpuid != raw_smp_processor_id() || !rsp->qpair->rcv_intr) {
- 		rsp->qpair->rcv_intr = 1;
- 	}
- 
-@@ -4276,7 +4276,7 @@ qla2xxx_msix_rsp_q(int irq, void *dev_id)
- 	}
- 	ha = qpair->hw;
- 
--	queue_work_on(smp_processor_id(), ha->wq, &qpair->q_work);
-+	queue_work(ha->wq, &qpair->q_work);
- 
- 	return IRQ_HANDLED;
- }
-@@ -4302,7 +4302,7 @@ qla2xxx_msix_rsp_q_hs(int irq, void *dev_id)
- 	wrt_reg_dword(&reg->hccr, HCCRX_CLR_RISC_INT);
- 	spin_unlock_irqrestore(&ha->hardware_lock, flags);
- 
--	queue_work_on(smp_processor_id(), ha->wq, &qpair->q_work);
-+	queue_work(ha->wq, &qpair->q_work);
- 
- 	return IRQ_HANDLED;
- }
-diff --git a/drivers/scsi/qla2xxx/qla_target.c b/drivers/scsi/qla2xxx/qla_target.c
-index 2ce041fdec755..ef46dce73978a 100644
---- a/drivers/scsi/qla2xxx/qla_target.c
-+++ b/drivers/scsi/qla2xxx/qla_target.c
-@@ -4459,8 +4459,7 @@ static int qlt_handle_cmd_for_atio(struct scsi_qla_host *vha,
- 		queue_work_on(cmd->se_cmd.cpuid, qla_tgt_wq, &cmd->work);
- 	} else if (ha->msix_count) {
- 		if (cmd->atio.u.isp24.fcp_cmnd.rddata)
--			queue_work_on(smp_processor_id(), qla_tgt_wq,
--			    &cmd->work);
-+			queue_work(qla_tgt_wq, &cmd->work);
- 		else
- 			queue_work_on(cmd->se_cmd.cpuid, qla_tgt_wq,
- 			    &cmd->work);
-diff --git a/drivers/scsi/qla2xxx/tcm_qla2xxx.c b/drivers/scsi/qla2xxx/tcm_qla2xxx.c
-index 03de1bcf1461d..b3852be971e46 100644
---- a/drivers/scsi/qla2xxx/tcm_qla2xxx.c
-+++ b/drivers/scsi/qla2xxx/tcm_qla2xxx.c
-@@ -310,7 +310,7 @@ static void tcm_qla2xxx_free_cmd(struct qla_tgt_cmd *cmd)
- 	cmd->trc_flags |= TRC_CMD_DONE;
- 
- 	INIT_WORK(&cmd->work, tcm_qla2xxx_complete_free);
--	queue_work_on(smp_processor_id(), tcm_qla2xxx_free_wq, &cmd->work);
-+	queue_work(tcm_qla2xxx_free_wq, &cmd->work);
+ instance_set() {
+         while :; do
+-                echo 1 > foo/events/sched/sched_switch
++                echo 1 > foo/events/sched/sched_switch/enable
+         done 2> /dev/null
  }
  
- /*
-@@ -557,7 +557,7 @@ static void tcm_qla2xxx_handle_data(struct qla_tgt_cmd *cmd)
- 	cmd->trc_flags |= TRC_DATA_IN;
- 	cmd->cmd_in_wq = 1;
- 	INIT_WORK(&cmd->work, tcm_qla2xxx_handle_data_work);
--	queue_work_on(smp_processor_id(), tcm_qla2xxx_free_wq, &cmd->work);
-+	queue_work(tcm_qla2xxx_free_wq, &cmd->work);
- }
- 
- static int tcm_qla2xxx_chk_dif_tags(uint32_t tag)
 -- 
 2.40.1
 
