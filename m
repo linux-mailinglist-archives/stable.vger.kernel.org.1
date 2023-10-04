@@ -2,203 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C15FE7B8D25
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 21:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC4EA7B8D42
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 21:21:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245609AbjJDTJd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 15:09:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39960 "EHLO
+        id S245368AbjJDTT0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 15:19:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245553AbjJDTJT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 15:09:19 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB20100;
-        Wed,  4 Oct 2023 12:07:21 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9b96c3b4be4so32254666b.1;
-        Wed, 04 Oct 2023 12:07:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696446440; x=1697051240; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Q+NB0/fXI36YUbBB/KSMfWzVc1LficR5CBF7SRFmUNc=;
-        b=DuOZg+MhjOI8CIukatGFo6nC9NvWn/nr+A9+f6mXBzMb9/q2cCxEJHoXb4MVX7aRCr
-         wIvd5OUMrX7yZ5a0XGxHhOHZTq1i+XLzhwntLDApMV9xBx0m/yVUmzBelUevilDN2VeF
-         nxdAVRKyhvU1xq6HmQEeqxeFQzxxX+6+miubIMH5X+cCpEQLvXzm8/ojsIPs5krDtkt3
-         qbUDUADdSF1iDHNQtqkBDCYVXJAGRpltnSSLKr5CQIOJe86Z6lzjJhexBsDvKpdJL1n6
-         0sUw/Gp1BOgO0EaW5KOFYyK6EqCFg/i2dCyg662EmZQ1D1dDZ1tgsZRX90fHFAqMX/10
-         03/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696446440; x=1697051240;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q+NB0/fXI36YUbBB/KSMfWzVc1LficR5CBF7SRFmUNc=;
-        b=dwUJeAOBHY3Ddgtlh6PgJRf1k36bLJA5+8bcf45Nxfow6ZXDcMxRANrl1D7nfYgmlq
-         r/QsgyKvFcqr4daw8Zv3dn2rZoA9oUVJR1q/xiTD4jyY2VHrELIJs+C+rwnhzLaMiAT9
-         YMk286Ze1EHAZ/zueWBCnqDgG0Rd9yYCy+bJOC9Xr2R+wYSt/OAKVVt0MGVzfvsfCRcr
-         ZJKYHb1xWCb6IXIKiEFXPFyAlivAsxwnjDLUy2rQz9TmjWv93YmT1os02xGEr0vjkDMm
-         SJuiG8Di7/kHqpua5RNv4MKtHbVbLvz0M4SCIq//+2pxCH5HnUwuCv6q7mDop5W7VKFN
-         ik6w==
-X-Gm-Message-State: AOJu0Yza2J3YerOKjgb7wZ0e7QJxLIkv4AlGu1zmpM0bJcKrz34Ivpjf
-        ZtEccBeeiBrybE3yc18o8dY=
-X-Google-Smtp-Source: AGHT+IGVNtEMmtiJBtuni1GTlcP/kqhQdjFnRkM4A+PYad68xhWjY0PMwLP46ZiQatuoSAHtkRQjqw==
-X-Received: by 2002:a17:906:1dd:b0:9b6:582e:be6a with SMTP id 29-20020a17090601dd00b009b6582ebe6amr2591079ejj.33.1696446439906;
-        Wed, 04 Oct 2023 12:07:19 -0700 (PDT)
-Received: from ?IPV6:2003:c5:8703:581b:3b3f:c775:ae24:aaef? (p200300c58703581b3b3fc775ae24aaef.dip0.t-ipconnect.de. [2003:c5:8703:581b:3b3f:c775:ae24:aaef])
-        by smtp.gmail.com with ESMTPSA id t26-20020a1709063e5a00b009b2f2451381sm3208512eji.182.2023.10.04.12.07.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Oct 2023 12:07:19 -0700 (PDT)
-Message-ID: <f9beb373-a6c8-ba07-f3d1-c72ecc058806@gmail.com>
-Date:   Wed, 4 Oct 2023 21:07:17 +0200
+        with ESMTP id S244879AbjJDTTY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 15:19:24 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10259270B;
+        Wed,  4 Oct 2023 12:08:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E01DC433BF;
+        Wed,  4 Oct 2023 19:08:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696446514;
+        bh=z8q9WQnLCGbK8w2/hCp6xPfP35wCO0KBvWTQAtx1ACc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BsdvoO2+tSeEpeT+wbyLwgBePSJh50QAg5hT651xp9vHI96MWfVTSIvJA8H7HSsav
+         cANW7E0He5qhHnC5EAInOL4AsOWN+Olu4h2C9W6D5Zmu2pFRQ2or1IP+hDwJRggKIG
+         8oDHJUph/RfCfttP7mPSgjxeAPGJKHwfGo3AgEv/+7NYNw2XZsnbe2q7xBwODo58vD
+         bWR1EDu3qec6W2wQnHQcETNSktY1uKSryZi8UIBUxs9X7KfUO3h5eDGwtc0iMQcFw9
+         /WrqIhcHQBAnbaRP4SnRUhjWXF2kHFEPeb+U7z+jRM0XMKsFNjVE09jW/gaOD6Moqb
+         mHgq9LUW12oJA==
+Date:   Wed, 4 Oct 2023 20:08:24 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Takashi Iwai <tiwai@suse.de>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] soundwire: fix initializing sysfs for same devices on
+ different buses
+Message-ID: <c7e9aef7-d90d-4eb5-b4fd-72857346dcad@sirena.org.uk>
+References: <20231004130243.493617-1-krzysztof.kozlowski@linaro.org>
+ <6628a5f6-ed22-4039-b5c2-2301c05c7e3e@linux.intel.com>
+ <2023100453-perfected-palm-3503@gregkh>
+ <624b044a-1f0f-4961-8b57-cb5346e7b0d3@linux.intel.com>
+ <2023100452-craziness-unpopular-7d97@gregkh>
+ <04c5911a-a894-44b3-9f0e-fe9e6de203f2@linux.intel.com>
+ <d648c3d1-53ac-4021-ac7f-6a81f1a72dd3@sirena.org.uk>
+ <bf4ee895-293f-4bc3-ac4b-30df6361e973@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron
- eMMC Q2J54A
-Content-Language: en-US
-To:     Bean Huo <beanhuo@iokpp.de>, ulf.hansson@linaro.org,
-        adrian.hunter@intel.com, beanhuo@micron.com,
-        jakub.kwapisz@toradex.com, rafael.beims@toradex.com
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20231001194943.658299-1-beanhuo@iokpp.de>
-From:   Bean Huo <huobean@gmail.com>
-In-Reply-To: <20231001194943.658299-1-beanhuo@iokpp.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="jPpsDvd3ypYAmiPv"
+Content-Disposition: inline
+In-Reply-To: <bf4ee895-293f-4bc3-ac4b-30df6361e973@linux.intel.com>
+X-Cookie: This space intentionally left blank.
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Ulf,
 
-Any comments on this version?
+--jPpsDvd3ypYAmiPv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Kind regards,
+On Wed, Oct 04, 2023 at 03:00:40PM -0400, Pierre-Louis Bossart wrote:
+> On 10/4/23 11:40, Mark Brown wrote:
 
-Beam
+> > FWIW DT is much less affected here since all the inter-device references
+> > are explicit in the DT (modulo needing to work around breakage) so we're
+> > not hard coding in the way ACPI so unfortunately requires.
 
-On 01.10.23 9:49 PM, Bean Huo wrote:
-> From: Bean Huo <beanhuo@micron.com>
->
-> Micron MTFC4GACAJCN eMMC supports cache but requires that flush cache
-> operation be allowed only after a write has occurred. Otherwise, the
-> cache flush command or subsequent commands will time out.
->
-> Signed-off-by: Bean Huo <beanhuo@micron.com>
-> Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
-> Cc: stable@vger.kernel.org
->
-> ---
-> Changelog:
->
-> v3--v4:
->      1. Add helper function for this quirk in drivers/mmc/core/card.h.
->      2. Set card->written_flag only for REQ_OP_WRITE.
-> v2--v3:
->      1. Set card->written_flag in mmc_blk_mq_issue_rq().
-> v1--v2:
->      1. Add Rafael's test-tag, and Co-developed-by.
->      2. Check host->card whether NULL or not in __mmc_start_request() before asserting host->card->->quirks
-> ---
->   drivers/mmc/core/block.c  | 5 ++++-
->   drivers/mmc/core/card.h   | 4 ++++
->   drivers/mmc/core/mmc.c    | 5 +++++
->   drivers/mmc/core/quirks.h | 7 ++++---
->   include/linux/mmc/card.h  | 2 ++
->   5 files changed, 19 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-> index 3a8f27c3e310..dfa67d9c80bb 100644
-> --- a/drivers/mmc/core/block.c
-> +++ b/drivers/mmc/core/block.c
-> @@ -2381,8 +2381,11 @@ enum mmc_issued mmc_blk_mq_issue_rq(struct mmc_queue *mq, struct request *req)
->   			}
->   			ret = mmc_blk_cqe_issue_flush(mq, req);
->   			break;
-> -		case REQ_OP_READ:
->   		case REQ_OP_WRITE:
-> +			if (mmc_card_broken_cache_flush(card) && !card->written_flag)
-> +				card->written_flag = true;
-> +			fallthrough;
-> +		case REQ_OP_READ:
->   			if (host->cqe_enabled)
->   				ret = mmc_blk_cqe_issue_rw_rq(mq, req);
->   			else
-> diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
-> index 4edf9057fa79..b7754a1b8d97 100644
-> --- a/drivers/mmc/core/card.h
-> +++ b/drivers/mmc/core/card.h
-> @@ -280,4 +280,8 @@ static inline int mmc_card_broken_sd_cache(const struct mmc_card *c)
->   	return c->quirks & MMC_QUIRK_BROKEN_SD_CACHE;
->   }
->   
-> +static inline int mmc_card_broken_cache_flush(const struct mmc_card *c)
-> +{
-> +	return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
-> +}
->   #endif
-> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-> index 89cd48fcec79..47896c32086e 100644
-> --- a/drivers/mmc/core/mmc.c
-> +++ b/drivers/mmc/core/mmc.c
-> @@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
->   	if (!oldcard)
->   		host->card = card;
->   
-> +	card->written_flag = false;
-> +
->   	return 0;
->   
->   free_card:
-> @@ -2081,6 +2083,9 @@ static int _mmc_flush_cache(struct mmc_host *host)
->   {
->   	int err = 0;
->   
-> +	if (mmc_card_broken_cache_flush(host->card) && !host->card->written_flag)
-> +		return err;
-> +
->   	if (_mmc_cache_enabled(host)) {
->   		err = mmc_switch(host->card, EXT_CSD_CMD_SET_NORMAL,
->   				 EXT_CSD_FLUSH_CACHE, 1,
-> diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-> index 32b64b564fb1..5e68c8b4cdca 100644
-> --- a/drivers/mmc/core/quirks.h
-> +++ b/drivers/mmc/core/quirks.h
-> @@ -110,11 +110,12 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
->   		  MMC_QUIRK_TRIM_BROKEN),
->   
->   	/*
-> -	 * Micron MTFC4GACAJCN-1M advertises TRIM but it does not seems to
-> -	 * support being used to offload WRITE_ZEROES.
-> +	 * Micron MTFC4GACAJCN-1M supports TRIM but does not appear to suppor
-> +	 * WRITE_ZEROES offloading. It also supports caching, but the cache can
-> +	 * only be flushed after a write has occurred.
->   	 */
->   	MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
-> -		  MMC_QUIRK_TRIM_BROKEN),
-> +		  MMC_QUIRK_TRIM_BROKEN | MMC_QUIRK_BROKEN_CACHE_FLUSH),
->   
->   	/*
->   	 * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
-> diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-> index daa2f40d9ce6..7b12eebc5586 100644
-> --- a/include/linux/mmc/card.h
-> +++ b/include/linux/mmc/card.h
-> @@ -295,7 +295,9 @@ struct mmc_card {
->   #define MMC_QUIRK_BROKEN_HPI	(1<<13)		/* Disable broken HPI support */
->   #define MMC_QUIRK_BROKEN_SD_DISCARD	(1<<14)	/* Disable broken SD discard support */
->   #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
-> +#define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
->   
-> +	bool			written_flag;	/* Indicates eMMC has been written since power on */
->   	bool			reenable_cmdq;	/* Re-enable Command Queue */
->   
->   	unsigned int		erase_size;	/* erase size in sectors */
+> Isn't there a contradiction between making "all inter-device references
+> explicit in the DT" and having a device name use an IDA, which cannot
+> possibly known ahead of time?
+
+No, the thing with DT is that we don't use the device name for binding
+at all - it's printed in things but it's not part of how we do lookups
+(unless there's something I didn't notice in the Soundwire specifics I
+guess).  Lookups are done with inter-node references in the DT.
+
+--jPpsDvd3ypYAmiPv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUduCcACgkQJNaLcl1U
+h9DtVQf9E1QE9QxbJsHcy6ZNkCNbvskvokOqadTQX9lvcIS3emkiN65JK+oD5D9u
+XOjh5OjUmolwPIvKggNJbTNdh25/e3ama+JYh0xeT9jM605vR/9UdNCXxuGm2Y4k
+SLFoFvCxDZ1CZ+HEnZnlIPrOX2+afXoLezCHleEvCZbMzmMCcrFdmIGk2fOA+BTj
+6Kr00wCESeg/kJGYUqmWuHNu/15U3TryRBv6r9l4VYTQYr62xk05pBt5KS2iC9UQ
+aSACeVfLXF/B9X2KZwsD83deIBFj7FL9cwNrG4LLMneihfvJlFAswdK3qYZYyDXK
+VAhMd3hpWTPMd4uq2JEpC90gyiY1ZA==
+=60Fx
+-----END PGP SIGNATURE-----
+
+--jPpsDvd3ypYAmiPv--
