@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F11A87B81BD
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A867B81BE
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 16:05:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242778AbjJDOF1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 10:05:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54794 "EHLO
+        id S242726AbjJDOFa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 10:05:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242780AbjJDOF0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:05:26 -0400
+        with ESMTP id S233306AbjJDOF3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 10:05:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B065BF
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:05:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2DCC433C7;
-        Wed,  4 Oct 2023 14:05:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47B88AB
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 07:05:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A604C433C8;
+        Wed,  4 Oct 2023 14:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696428322;
-        bh=wRs+aywB0u8jZFnqXR5rJcKWe1XFtvFYx18JLFSh020=;
+        s=korg; t=1696428324;
+        bh=/9BvI0qHjzVqiXpQmbiIY1xsHDexSAxvUQsP43I7FIE=;
         h=Subject:To:Cc:From:Date:From;
-        b=1q8/EX28vAW59FDenxPcE+v8myM56sjRL90FV9Svgx045vP4WaFSGHq3WWH/KQnui
-         C44vamagS1hC+1OiFAXNbUHuyvmejU3M68mPU2eo5EJJNPJXCqsLa1RlU3/uCSWKFI
-         w/Z1tRTy8Po32IyVl6H/fmGK6kU/UK/+Qf/D7N/Y=
-Subject: FAILED: patch "[PATCH] mptcp: fix dangling connection hang-up" failed to apply to 6.1-stable tree
+        b=o5wO7uOf/+PcixtFKVaxxlny/1/fcUyxIx/Yn34qP+4z/XwF7fyQunRuHqMkdYvTQ
+         1MlSjspMn5pqc48ZiAKC+PvlS6uwZhzoAnyEKifxkxpq6rL6OUSo+OoRRwBzB0LPTb
+         gh6rdfYrddBY5k/ChIC/PiygbCcuB42My5hhDD4E=
+Subject: FAILED: patch "[PATCH] mptcp: fix dangling connection hang-up" failed to apply to 5.15-stable tree
 To:     pabeni@redhat.com, davem@davemloft.net, martineau@kernel.org,
         matthieu.baerts@tessares.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 16:05:14 +0200
-Message-ID: <2023100414-reverse-yippee-3d2e@gregkh>
+Date:   Wed, 04 Oct 2023 16:05:16 +0200
+Message-ID: <2023100415-word-epidural-cdee@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 27e5ccc2d5a50ed61bb73153edb1066104b108b3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100414-reverse-yippee-3d2e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100415-word-epidural-cdee@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
