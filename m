@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E65B7B88A7
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90B307B8795
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244109AbjJDSSV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:18:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60390 "EHLO
+        id S243819AbjJDSHF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:07:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244115AbjJDSSU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:18:20 -0400
+        with ESMTP id S243817AbjJDSHE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0485A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:18:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7213C433C8;
-        Wed,  4 Oct 2023 18:18:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 330449E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C77BC433CA;
+        Wed,  4 Oct 2023 18:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443495;
-        bh=0g5xlZwZmusASmT1Rt5j2YqZeuoiOFVHb2O2ndrEBPE=;
+        s=korg; t=1696442820;
+        bh=0MdgHK/w45eZT0wKTKP2+bkfDzzkg8H1jfhBp8940yQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dx2XjkhjWTLfKG0SC3YC0ovxGqXkBB/UBmAMetICq4doEm2KWzWha45OXl5ShqPBc
-         uURS+LrPC3YglMUGHwxuXp3FyqbtdvY54hkdzGnYKRKXSSU0kIYMzYTpcZuYhuFbPj
-         KDzAW1Z+eR2NPtS4W6Rk87N1zROj+ovrvITgS+yI=
+        b=mm7qKpRNWlhojT79BSrCOGsDDa300fNhLoji9qonpDuJ8ewbB+sl8Ckk2V3YLAN+C
+         gDEVWr6QuQkgHFz2OovW6xiuVGN4PWBsbwrk5crYEYYMSvyt7/Ygg91eqGa04U948D
+         Qg86YwNgU7OSUvous3n0ggu0/X3aAnMkonfSiZxU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shengjiu Wang <shengjiu.wang@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/259] ASoC: fsl: imx-pcm-rpmsg: Add SNDRV_PCM_INFO_BATCH flag
-Date:   Wed,  4 Oct 2023 19:55:49 +0200
-Message-ID: <20231004175225.366893910@linuxfoundation.org>
+Subject: [PATCH 5.15 119/183] selftests/ftrace: Correctly enable event in instance-event.tc
+Date:   Wed,  4 Oct 2023 19:55:50 +0200
+Message-ID: <20231004175208.930105407@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 2f9426905a63be7ccf8cd10109caf1848aa0993a ]
+[ Upstream commit f4e4ada586995b17f828c6d147d1800eb1471450 ]
 
-The rpmsg pcm device is a device which should support
-double buffering.
+Function instance_set() expects to enable event 'sched_switch', so we
+should set 1 to its 'enable' file.
 
-Found this issue with pipewire. When there is no
-SNDRV_PCM_INFO_BATCH flag in driver, the pipewire will
-set headroom to be zero, and because rpmsg pcm device
-don't support residue report, when the latency setting
-is small, the "delay" always larger than "target" in
-alsa-pcm.c, that reading next period data is not
-scheduled on time.
+Testcase passed after this patch:
+  # ./ftracetest test.d/instances/instance-event.tc
+  === Ftrace unit tests ===
+  [1] Test creation and deletion of trace instances while setting an event
+  [PASS]
 
-With SNDRV_PCM_INFO_BATCH flag in driver, the pipewire
-will select a smaller period size for device, then
-the task of reading next period data will be scheduled
-on time.
+  # of passed:  1
+  # of failed:  0
+  # of unresolved:  0
+  # of untested:  0
+  # of unsupported:  0
+  # of xfailed:  0
+  # of undefined(test bug):  0
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://lore.kernel.org/r/1694414287-13291-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-pcm-rpmsg.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../testing/selftests/ftrace/test.d/instances/instance-event.tc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
-index 35049043e5322..933bac7ea1864 100644
---- a/sound/soc/fsl/imx-pcm-rpmsg.c
-+++ b/sound/soc/fsl/imx-pcm-rpmsg.c
-@@ -19,6 +19,7 @@
- static struct snd_pcm_hardware imx_rpmsg_pcm_hardware = {
- 	.info = SNDRV_PCM_INFO_INTERLEAVED |
- 		SNDRV_PCM_INFO_BLOCK_TRANSFER |
-+		SNDRV_PCM_INFO_BATCH |
- 		SNDRV_PCM_INFO_MMAP |
- 		SNDRV_PCM_INFO_MMAP_VALID |
- 		SNDRV_PCM_INFO_NO_PERIOD_WAKEUP |
+diff --git a/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc b/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc
+index 0eb47fbb3f44d..42422e4251078 100644
+--- a/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc
++++ b/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc
+@@ -39,7 +39,7 @@ instance_read() {
+ 
+ instance_set() {
+         while :; do
+-                echo 1 > foo/events/sched/sched_switch
++                echo 1 > foo/events/sched/sched_switch/enable
+         done 2> /dev/null
+ }
+ 
 -- 
 2.40.1
 
