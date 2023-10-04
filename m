@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C44857B850B
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:26:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F5C7B850C
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:26:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243328AbjJDQ0H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 12:26:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47072 "EHLO
+        id S243290AbjJDQ0K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 12:26:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243290AbjJDQ0G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:26:06 -0400
+        with ESMTP id S243366AbjJDQ0J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:26:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A76F695
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:26:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D16C433C8;
-        Wed,  4 Oct 2023 16:26:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2AEAC0
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:26:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E003AC433C8;
+        Wed,  4 Oct 2023 16:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696436762;
-        bh=goNB27yEstMuUnW3WDBtquoYtzJN72ji02so4Hk1EkM=;
+        s=korg; t=1696436765;
+        bh=cVKBZsUi5vpJrWmKWU2L87I/Wa70k7lJhUyeBBZSH38=;
         h=Subject:To:Cc:From:Date:From;
-        b=If6+X6heoDfPg7WejPUW8NzV4BFoKZR2a5m/vrhK4oTyXwZZkw2A/KjVu5CKuBhUG
-         qRB4npoaQyYL4XzuM+zujNiHCqwTIzDkQ8Za5Z4d7p85gR8UfZAnjrStNbz+zYyLMX
-         uxRtGPid9HGabolfeCeQ+dNSD93dSWfa+KvhbeA8=
-Subject: FAILED: patch "[PATCH] rbd: decouple parent info read-in from updating rbd_dev" failed to apply to 5.10-stable tree
+        b=DYhtZkMiadoWLH/IG1fm+XQuxdHcJ7hkO/Qy0wCm1rUWa04X1JnTuZ2k/H1muknr1
+         E4jbI0U9sLJTO7T5ll5Oy3h6YTUn/T6OoogPO83Luxcj0C7S9hCenOBFGdOx651BRZ
+         dJbdKeMLTLYCBiK5geJ4WmwSp36dcjeE5bmMCcX0=
+Subject: FAILED: patch "[PATCH] rbd: decouple parent info read-in from updating rbd_dev" failed to apply to 5.4-stable tree
 To:     idryomov@gmail.com, dongsheng.yang@easystack.cn
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 18:25:49 +0200
-Message-ID: <2023100449-sulk-spray-e75b@gregkh>
+Date:   Wed, 04 Oct 2023 18:25:50 +0200
+Message-ID: <2023100450-headrest-ecologist-205f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x c10311776f0a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100449-sulk-spray-e75b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100450-headrest-ecologist-205f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
