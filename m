@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8DB7B889D
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8190F7B878C
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244101AbjJDSRz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:17:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46624 "EHLO
+        id S243680AbjJDSGj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244107AbjJDSRy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:54 -0400
+        with ESMTP id S243780AbjJDSGi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E80E8
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5ECC433C8;
-        Wed,  4 Oct 2023 18:17:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF9F9AD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15690C433C7;
+        Wed,  4 Oct 2023 18:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443469;
-        bh=oDD1gJXHJ1sIKsyG+nwmMdzz2pPdYh+cvuh+B9UJaVY=;
+        s=korg; t=1696442795;
+        bh=nV1y//w6qdTzrXuYcGwsKqG0sOOfIUT0j/D4ul+cPSE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zY6NeD7MgcOEVxJXcY9R+T6qkbV9sZJVgOqGAENHYpOPVjcB2CysPX0XB7rvWB4uK
-         KQyu4RnD3c/2ps5Y420TU0GTDhiMlZyLs8Ro3A1qvko2RIxfvBiJHAe941a4OFFT4E
-         WRzS529psvjR49EWqTwRtvDTyhsUqY6rD/WQFwS4=
+        b=lFZyIVZLuaRsSOQj0pADpe1UHrI8L+C4EZunEAqbdXEzgyvyYaLtksmLhXEXYdCXb
+         KSX7SZCvwNe74n37u6SDfMRx5RA+jitB1Drf/cFpj+wyXSoFplPzUdFahiVTMowjdo
+         UN4ggLx751Ey+UeaIM1ihJjFmt6nyleLq/09ZYTM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>,
-        David Francis <David.Francis@amd.com>,
+        patches@lists.linux.dev, Tobias Schramm <t.schramm@manjaro.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 168/259] drm/amdgpu: Handle null atom context in VBIOS info ioctl
-Date:   Wed,  4 Oct 2023 19:55:41 +0200
-Message-ID: <20231004175224.986145576@linuxfoundation.org>
+Subject: [PATCH 5.15 111/183] spi: sun6i: reduce DMA RX transfer width to single byte
+Date:   Wed,  4 Oct 2023 19:55:42 +0200
+Message-ID: <20231004175208.563117515@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Francis <David.Francis@amd.com>
+From: Tobias Schramm <t.schramm@manjaro.org>
 
-[ Upstream commit 5e7e82254270c8cf8b107451c5de01cee2f135ae ]
+[ Upstream commit 171f8a49f212e87a8b04087568e1b3d132e36a18 ]
 
-On some APU systems, there is no atom context and so the
-atom_context struct is null.
+Through empirical testing it has been determined that sometimes RX SPI
+transfers with DMA enabled return corrupted data. This is down to single
+or even multiple bytes lost during DMA transfer from SPI peripheral to
+memory. It seems the RX FIFO within the SPI peripheral can become
+confused when performing bus read accesses wider than a single byte to it
+during an active SPI transfer.
 
-Add a check to the VBIOS_INFO branch of amdgpu_info_ioctl
-to handle this case, returning all zeroes.
+This patch reduces the width of individual DMA read accesses to the
+RX FIFO to a single byte to mitigate that issue.
 
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: David Francis <David.Francis@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tobias Schramm <t.schramm@manjaro.org>
+Link: https://lore.kernel.org/r/20230827152558.5368-2-t.schramm@manjaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/spi/spi-sun6i.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-index 9e3313dd956ae..24b4bd6bb2771 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -896,12 +896,17 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 			struct atom_context *atom_context;
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 23ad052528dbe..2bfe87873edb3 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -200,7 +200,7 @@ static int sun6i_spi_prepare_dma(struct sun6i_spi *sspi,
+ 		struct dma_slave_config rxconf = {
+ 			.direction = DMA_DEV_TO_MEM,
+ 			.src_addr = sspi->dma_addr_rx,
+-			.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES,
++			.src_addr_width = DMA_SLAVE_BUSWIDTH_1_BYTE,
+ 			.src_maxburst = 8,
+ 		};
  
- 			atom_context = adev->mode_info.atom_context;
--			memcpy(vbios_info.name, atom_context->name, sizeof(atom_context->name));
--			memcpy(vbios_info.vbios_pn, atom_context->vbios_pn, sizeof(atom_context->vbios_pn));
--			vbios_info.version = atom_context->version;
--			memcpy(vbios_info.vbios_ver_str, atom_context->vbios_ver_str,
--						sizeof(atom_context->vbios_ver_str));
--			memcpy(vbios_info.date, atom_context->date, sizeof(atom_context->date));
-+			if (atom_context) {
-+				memcpy(vbios_info.name, atom_context->name,
-+				       sizeof(atom_context->name));
-+				memcpy(vbios_info.vbios_pn, atom_context->vbios_pn,
-+				       sizeof(atom_context->vbios_pn));
-+				vbios_info.version = atom_context->version;
-+				memcpy(vbios_info.vbios_ver_str, atom_context->vbios_ver_str,
-+				       sizeof(atom_context->vbios_ver_str));
-+				memcpy(vbios_info.date, atom_context->date,
-+				       sizeof(atom_context->date));
-+			}
- 
- 			return copy_to_user(out, &vbios_info,
- 						min((size_t)size, sizeof(vbios_info))) ? -EFAULT : 0;
 -- 
 2.40.1
 
