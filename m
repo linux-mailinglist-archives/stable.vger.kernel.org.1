@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B737B8A0B
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 793667B878F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244339AbjJDSbs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:31:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48522 "EHLO
+        id S243812AbjJDSGr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:06:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244472AbjJDSbj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:31:39 -0400
+        with ESMTP id S243780AbjJDSGr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 029CFD7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:31:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD65C433C8;
-        Wed,  4 Oct 2023 18:31:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49EECA6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93751C433C7;
+        Wed,  4 Oct 2023 18:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444295;
-        bh=9L+TIS/5aFd4Vfqq+MWXNG7gFf75vpVvSPEWexGzEuQ=;
+        s=korg; t=1696442803;
+        bh=C8hY6kyE44OSuIn3181DmuAyhq182I2M/AIMLrJ6Cpk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GnkKYNijJfbGbPzcUUbnC/Z95m5kMIT//sc/Gn0uqf0JWbPq/+n27cDzoqstTO4Gt
-         6+O1E2lLix9/dP4nShqHc+3ClWDEpXef24QDA5/Q7WCdUHdiN+lM2n8Vhljz5yYUIP
-         RuiSWeaEBHaySP63eAFemeVQCk1Vl/zRbzG9S4Fg=
+        b=tRJwuz1DbxmMUpQOlAWyx7RClYGDHZ8Dt3BLGCGUUjWTL2ZTXQrObAPcg5dCpuuqk
+         X5VZrhpN4sfuXe0NbOhDuqaCpxffDS4KnE58Mf/SlGe47AbgG7NmR6WkQNPSSv9f/D
+         5HkwbiAN6QALR1KhXJFYr1nh2iT7I1eEZVtxPeGc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Grzedzicki <mge@meta.com>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 199/321] scsi: pm80xx: Avoid leaking tags when processing OPC_INB_SET_CONTROLLER_CONFIG command
-Date:   Wed,  4 Oct 2023 19:55:44 +0200
-Message-ID: <20231004175238.451770349@linuxfoundation.org>
+Subject: [PATCH 5.15 114/183] parisc: iosapic.c: Fix sparse warnings
+Date:   Wed,  4 Oct 2023 19:55:45 +0200
+Message-ID: <20231004175208.694295692@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
+References: <20231004175203.943277832@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +49,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Grzedzicki <mge@meta.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit c13e7331745852d0dd7c35eabbe181cbd5b01172 ]
+[ Upstream commit 927c6c8aa27c284a799b8c18784e37d3373af908 ]
 
-Tags allocated for OPC_INB_SET_CONTROLLER_CONFIG command need to be freed
-when we receive the response.
-
-Signed-off-by: Michal Grzedzicki <mge@meta.com>
-Link: https://lore.kernel.org/r/20230911170340.699533-2-mge@meta.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm80xx_hwi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/parisc/iosapic.c         | 4 ++--
+ drivers/parisc/iosapic_private.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
-index 9689fb830a5fb..e543bc36c84df 100644
---- a/drivers/scsi/pm8001/pm80xx_hwi.c
-+++ b/drivers/scsi/pm8001/pm80xx_hwi.c
-@@ -3671,10 +3671,12 @@ static int mpi_set_controller_config_resp(struct pm8001_hba_info *pm8001_ha,
- 			(struct set_ctrl_cfg_resp *)(piomb + 4);
- 	u32 status = le32_to_cpu(pPayload->status);
- 	u32 err_qlfr_pgcd = le32_to_cpu(pPayload->err_qlfr_pgcd);
-+	u32 tag = le32_to_cpu(pPayload->tag);
+diff --git a/drivers/parisc/iosapic.c b/drivers/parisc/iosapic.c
+index 93ea922618c3d..56562ae99f683 100644
+--- a/drivers/parisc/iosapic.c
++++ b/drivers/parisc/iosapic.c
+@@ -202,9 +202,9 @@ static inline void iosapic_write(void __iomem *iosapic, unsigned int reg, u32 va
  
- 	pm8001_dbg(pm8001_ha, MSG,
- 		   "SET CONTROLLER RESP: status 0x%x qlfr_pgcd 0x%x\n",
- 		   status, err_qlfr_pgcd);
-+	pm8001_tag_free(pm8001_ha, tag);
+ static DEFINE_SPINLOCK(iosapic_lock);
  
- 	return 0;
+-static inline void iosapic_eoi(void __iomem *addr, unsigned int data)
++static inline void iosapic_eoi(__le32 __iomem *addr, __le32 data)
+ {
+-	__raw_writel(data, addr);
++	__raw_writel((__force u32)data, addr);
  }
+ 
+ /*
+diff --git a/drivers/parisc/iosapic_private.h b/drivers/parisc/iosapic_private.h
+index 73ecc657ad954..bd8ff40162b4b 100644
+--- a/drivers/parisc/iosapic_private.h
++++ b/drivers/parisc/iosapic_private.h
+@@ -118,8 +118,8 @@ struct iosapic_irt {
+ struct vector_info {
+ 	struct iosapic_info *iosapic;	/* I/O SAPIC this vector is on */
+ 	struct irt_entry *irte;		/* IRT entry */
+-	u32 __iomem *eoi_addr;		/* precalculate EOI reg address */
+-	u32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
++	__le32 __iomem *eoi_addr;	/* precalculate EOI reg address */
++	__le32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
+ 	int	txn_irq;		/* virtual IRQ number for processor */
+ 	ulong	txn_addr;		/* IA64: id_eid  PA: partial HPA */
+ 	u32	txn_data;		/* CPU interrupt bit */
 -- 
 2.40.1
 
