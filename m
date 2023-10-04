@@ -2,182 +2,167 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF7537B7C56
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 11:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EF217B7C6F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 11:41:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242061AbjJDJhg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 05:37:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58096 "EHLO
+        id S242108AbjJDJlf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 05:41:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242028AbjJDJhf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 05:37:35 -0400
-Received: from eggs.gnu.org (eggs.gnu.org [IPv6:2001:470:142:3::10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C13EF9
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 02:37:28 -0700 (PDT)
-Received: from fencepost.gnu.org ([2001:470:142:3::e])
-        by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <othacehe@gnu.org>)
-        id 1qnyJp-0004ew-14; Wed, 04 Oct 2023 05:37:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gnu.org;
-        s=fencepost-gnu-org; h=MIME-Version:Date:Subject:To:From:in-reply-to:
-        references; bh=1FxGJeDk+OIVWAl9nCuHsvEDqzwu4ZDxmOQmc1dafFw=; b=GG3pZQDZ4/FKFO
-        rSeT94ms9isox0G3ikQjCspGD4a0rAdC86pRD87VUM3gIiXdHyopWzWL/xqbdZTBfpQUBJL/nxlO9
-        cck54yHnu8XicLSF/j5u9yonvXnsbslIEbZU1XvwRUeuTdJETwaswZIv1cHRYADWm+TwvBXErbcSv
-        rMp2XqqtKV9eS7Mrbu9cpy99PKiPSLzT474JvKF6f0OnDzke6Id1S4o7i1czxTcHh3UxDx6tHZnlI
-        pDZJe20RQ6UUMLVnU3ryw1Ye3BYiG4T7VotF9eTSj2CN1atMA+ZMtqxYwReowBpqKhmCzStMDdSwS
-        O9r6G16wEqU7I/1WKrtQ==;
-From:   Mathieu Othacehe <othacehe@gnu.org>
-To:     stable@vger.kernel.org
-Cc:     jack@suse.cz, Marcus Hoffmann <marcus.hoffmann@othermo.de>,
-        tytso@mit.edu, famzah@icdsoft.com, gregkh@linuxfoundation.org,
-        anton.reding@landisgyr.com
-Subject: kernel BUG at fs/ext4/inode.c:1914 - page_buffers()
-Date:   Wed, 04 Oct 2023 11:37:22 +0200
-Message-ID: <871qeau3sd.fsf@gnu.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        with ESMTP id S242068AbjJDJl2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 05:41:28 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB356B4
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 02:41:24 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qnyNS-0000aU-7O; Wed, 04 Oct 2023 11:41:10 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qnyNR-00AzuG-78; Wed, 04 Oct 2023 11:41:09 +0200
+Received: from pengutronix.de (unknown [172.20.34.65])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        (Authenticated sender: mkl-all@blackshift.org)
+        by smtp.blackshift.org (Postfix) with ESMTPSA id CB6AB22EC80;
+        Wed,  4 Oct 2023 09:41:08 +0000 (UTC)
+Date:   Wed, 4 Oct 2023 11:41:08 +0200
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     Miquel Raynal <miquel.raynal@bootlin.com>
+Cc:     Wolfgang Grandegger <wg@grandegger.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+        linux-can@vger.kernel.org,
+        =?utf-8?B?SsOpcsOpbWll?= Dautheribes 
+        <jeremie.dautheribes@bootlin.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        sylvain.girard@se.com, pascal.eberhard@se.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3] can: sja1000: Always restart the Tx queue after an
+ overrun
+Message-ID: <20231004-uneasy-backed-e01d77be9f51-mkl@pengutronix.de>
+References: <20231002160206.190953-1-miquel.raynal@bootlin.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="=-=-="
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="gjgeg42sjz3xlio6"
+Content-Disposition: inline
+In-Reply-To: <20231002160206.190953-1-miquel.raynal@bootlin.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---=-=-=
-Content-Type: text/plain
 
+--gjgeg42sjz3xlio6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On 02.10.2023 18:02:06, Miquel Raynal wrote:
+> Upstream commit 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with
+> a soft reset on Renesas SoCs") fixes an issue with Renesas own SJA1000
+> CAN controller reception: the Rx buffer is only 5 messages long, so when
+> the bus loaded (eg. a message every 50us), overrun may easily
+> happen. Upon an overrun situation, due to a possible internal crosstalk
+> situation, the controller enters a frozen state which only can be
+> unlocked with a soft reset (experimentally). The solution was to offload
+> a call to sja1000_start() in a threaded handler. This needs to happen in
+> process context as this operation requires to sleep. sja1000_start()
+> basically enters "reset mode", performs a proper software reset and
+> returns back into "normal mode".
+>=20
+> Since this fix was introduced, we no longer observe any stalls in
+> reception. However it was sporadically observed that the transmit path
+> would now freeze. Further investigation blamed the fix mentioned above,
+> and especially the reset operation. Reproducing the reset in a loop
+> helped identifying what could possibly go wrong. The sja1000 is a single
+> Tx queue device, which leverages the netdev helpers to process one Tx
+> message at a time. The logic is: the queue is stopped, the message sent
+> to the transceiver, once properly transmitted the controller sets a
+> status bit which triggers an interrupt, in the interrupt handler the
+> transmission status is checked and the queue woken up. Unfortunately, if
+> an overrun happens, we might perform the soft reset precisely between
+> the transmission of the buffer to the transceiver and the advent of the
+> transmission status bit. We would then stop the transmission operation
+> without re-enabling the queue, leading to all further transmissions to
+> be ignored.
+>=20
+> The reset interrupt can only happen while the device is "open", and
+> after a reset we anyway want to resume normal operations, no matter if a
+> packet to transmit got dropped in the process, so we shall wake up the
+> queue. Restarting the device and waking-up the queue is exactly what
+> sja1000_set_mode(CAN_MODE_START) does. In order to be consistent about
+> the queue state, we must acquire a lock both in the reset handler and in
+> the transmit path to ensure serialization of both operations. It turns
+> out, a lock is already held when entering the transmit path, so we can
+> just acquire/release it as well with the regular net helpers inside the
+> threaded interrupt handler and this way we should be safe. As the
+> reset handler might still be called after the transmission of a frame to
+> the transceiver but before it actually gets transmitted, we must ensure
+> we don't leak the skb, so we free it (the behavior is consistent, no
+> matter if there was an skb on the stack or not).
+>=20
+> Fixes: 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with a soft re=
+set on Renesas SoCs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-I have been experimenting this issue:
-https://www.spinics.net/lists/linux-ext4/msg86259.html, on a 5.15
-kernel.
+Have you compile tested this against current net/main?
 
-This issue caused by 5c48a7df9149 ("ext4: fix an use-after-free issue
-about data=journal writeback mode") is affecting ext4 users with
-data=journal on all stable kernels.
+|   CC [M]  drivers/net/can/sja1000/sja1000.o
+| drivers/net/can/sja1000/sja1000.c: In function =E2=80=98sja1000_reset_int=
+errupt=E2=80=99:
+| drivers/net/can/sja1000/sja1000.c:398:9: error: too few arguments to func=
+tion =E2=80=98can_free_echo_skb=E2=80=99
+|   398 |         can_free_echo_skb(dev, 0);
+|       |         ^~~~~~~~~~~~~~~~~
+| In file included from include/linux/can/dev.h:22,
+|                  from drivers/net/can/sja1000/sja1000.c:62:
+| include/linux/can/skb.h:28:6: note: declared here
+|    28 | void can_free_echo_skb(struct net_device *dev, unsigned int idx,
+|       |      ^~~~~~~~~~~~~~~~~
+|
 
-Jan proposed a fix here
-https://www.spinics.net/lists/linux-ext4/msg87054.html which solves the
-situation for me.
+This chance is mainline since v5.13-rc1~94^2~297^2~34. I've fixed the
+problem while applying the patch.
 
-Now this fix is not upstream because the data journaling support has
-been rewritten. As suggested by Jan, that would mean that we could
-either backport the following patches from upstream:
+regards,
+Marc
 
-bd159398a2d2 ("jdb2: Don't refuse invalidation of already invalidated buffers")
-d84c9ebdac1e ("ext4: Mark pages with journalled data dirty")
-265e72efa99f ("ext4: Keep pages with journalled data dirty")
-5e1bdea6391d ("ext4: Clear dirty bit from pages without data to write")
-1f1a55f0bf06 ("ext4: Commit transaction before writing back pages in data=journal mode")
-e360c6ed7274 ("ext4: Drop special handling of journalled data from ext4_sync_file()")
-c000dfec7e88 ("ext4: Drop special handling of journalled data from extent shifting operations")
-783ae448b7a2 ("ext4: Fix special handling of journalled data from extent zeroing")
-56c2a0e3d90d ("ext4: Drop special handling of journalled data from ext4_evict_inode()")
-7c375870fdc5 ("ext4: Drop special handling of journalled data from ext4_quota_on()")
-951cafa6b80e ("ext4: Simplify handling of journalled data in ext4_bmap()")
-ab382539adcb ("ext4: Update comment in mpage_prepare_extent_to_map()")
-d0ab8368c175 ("Revert "ext4: Fix warnings when freezing filesystem with journaled data"")
-1077b2d53ef5 ("ext4: fix fsync for non-directories")
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-Or apply the proposed, attached patch. Do you think that would be an
-option?
+--gjgeg42sjz3xlio6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Thanks,
+-----BEGIN PGP SIGNATURE-----
 
-Mathieu
+iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmUdMzAACgkQvlAcSiqK
+BOgJewf/Y2usjEyhkOtF96jCF8Hs6PViTHhYOPcoZkncutXTZ+/XJmRP0PEk8h6A
+XNA/80yzpnwHtQQ/DXfcMGyQWY+3QNhYwQJMdt10i/BVowbwxiNy0cgVEPqichv/
+kpf1wnkJZAr1W30xcn9K2hvZ0VT9KSgjNYuK5QygoJHhLGDnoyHEcZptOE7lTvMW
+NKE69lpZoHYDGr1Q2rVD9R6E1hDiDTOaLPeKsPEUjVf/j49JLG3tKQ0FfL7jneH7
+jlNxg4oUfqC7g2fJgCDDRWsCtQqPZMtxAAR+WDs6z1VL03Ljw7lTyoUTh83PbO4f
+nJHApVhpS3o88GZ4HJqKyPBAa+BEFw==
+=gLbK
+-----END PGP SIGNATURE-----
 
-
---=-=-=
-Content-Type: text/x-patch
-Content-Disposition: inline; filename=0001-fix-ext4-journalled-crash.patch
-
-From 17ec3d08a7878625c08ab37c45a8dc3c619db7fb Mon Sep 17 00:00:00 2001
-From: Jan Kara <jack@xxxxxxx>
-Date: Thu, 12 Jan 2023 14:46:12 +0100
-Subject: [PATCH] ext4: Fix crash in __ext4_journalled_writepage()
-
-When __ext4_journalled_writepage() unlocks the page, there's nothing
-that prevents another process from finding the page and reclaiming
-buffers from it (because we have cleaned the page dirty bit and buffers
-needn't have the dirty bit set). When that happens we crash in
-__ext4_journalled_writepage() when trying to get the page buffers. Fix
-the problem by redirtying the page before unlocking it (so that reclaim
-and other users know the page isn't written yet) and by checking the
-page is still dirty after reacquiring the page lock. This should also
-make sure the page still has buffers.
-
-Fixes: 5c48a7df9149 ("ext4: fix an use-after-free issue about data=journal writeback mode")
-CC: stable@xxxxxxxxxxxxxxx
-Signed-off-by: Jan Kara <jack@xxxxxxx>
----
- fs/ext4/inode.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 64a783f22105..b9f1fd05cec6 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -138,7 +138,6 @@ static inline int ext4_begin_ordered_truncate(struct inode *inode,
- 
- static void ext4_invalidatepage(struct page *page, unsigned int offset,
- 				unsigned int length);
--static int __ext4_journalled_writepage(struct page *page, unsigned int len);
- static int ext4_meta_trans_blocks(struct inode *inode, int lblocks,
- 				  int pextents);
- 
-@@ -1858,7 +1857,8 @@ int ext4_da_get_block_prep(struct inode *inode, sector_t iblock,
- 	return 0;
- }
- 
--static int __ext4_journalled_writepage(struct page *page,
-+static int __ext4_journalled_writepage(struct writeback_control *wbc,
-+				       struct page *page,
- 				       unsigned int len)
- {
- 	struct address_space *mapping = page->mapping;
-@@ -1869,8 +1869,6 @@ static int __ext4_journalled_writepage(struct page *page,
- 	struct buffer_head *inode_bh = NULL;
- 	loff_t size;
- 
--	ClearPageChecked(page);
--
- 	if (inline_data) {
- 		BUG_ON(page->index != 0);
- 		BUG_ON(len > ext4_get_max_inline_size(inode));
-@@ -1884,6 +1882,7 @@ static int __ext4_journalled_writepage(struct page *page,
- 	 * out from under us.
- 	 */
- 	get_page(page);
-+	redirty_page_for_writepage(wbc, page);
- 	unlock_page(page);
- 
- 	handle = ext4_journal_start(inode, EXT4_HT_WRITE_PAGE,
-@@ -1897,8 +1896,10 @@ static int __ext4_journalled_writepage(struct page *page,
- 
- 	lock_page(page);
- 	put_page(page);
-+	ClearPageChecked(page);
- 	size = i_size_read(inode);
--	if (page->mapping != mapping || page_offset(page) > size) {
-+	if (page->mapping != mapping || page_offset(page) >= size ||
-+	    !clear_page_dirty_for_io(page)) {
- 		/* The page got truncated from under us */
- 		ext4_journal_stop(handle);
- 		ret = 0;
-@@ -2055,7 +2056,7 @@ static int ext4_writepage(struct page *page,
- 		 * It's mmapped pagecache.  Add buffers and journal it.  There
- 		 * doesn't seem much point in redirtying the page here.
- 		 */
--		return __ext4_journalled_writepage(page, len);
-+		return __ext4_journalled_writepage(wbc, page, len);
- 
- 	ext4_io_submit_init(&io_submit, wbc);
- 	io_submit.io_end = ext4_init_io_end(inode, GFP_NOFS);
-
---=-=-=--
+--gjgeg42sjz3xlio6--
