@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB6677B883B
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D84F47B899A
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:27:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243995AbjJDSOD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:14:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52774 "EHLO
+        id S244196AbjJDS1n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:27:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243981AbjJDSOD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:14:03 -0400
+        with ESMTP id S244243AbjJDS1m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:27:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 810A5A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:13:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6F4C433CB;
-        Wed,  4 Oct 2023 18:13:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF446DD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:27:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F8BC433C9;
+        Wed,  4 Oct 2023 18:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443239;
-        bh=XGYerxCja5vRRscmvujkaznUXZjL67D6/vtsmm/rFVk=;
+        s=korg; t=1696444058;
+        bh=fpkDYqCxm+AKn3Nsq/uyTll16d/bzllkDbcDtynCrlo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O8cdLKMi3JzgtJrDIHjy4U4h6vk3KTr6BZFQmA6t071T8IMdaf79dMHld2P12DuJc
-         pTlTrb8dBYN56Cnseq6SLE029ibekhCW3AUw4p1UTrpQdcEdLhYqknvCsCIzt6nh9e
-         ei5v43yCqgWAevq4l64GsNecXSULVfMoZJEsgSDo=
+        b=hkH+VN5qVok49XY45Fa5TQGqaxUDYlwZr20NltvJ/68vmjF9nkwAg8k7dpm2bAytG
+         ywx2d6+VBaydeYtPN1JvDOXGyWccxl/OYYtsfYZPeDFbcVhQtNMjXgZ2JHw/2z39yc
+         WkXiGDYSy1DdWYtqn0oxUcVKwsTvV5RIgXAv1OnY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Giulio Benetti <giulio.benetti@benettiengineering.com>,
-        Greg Ungerer <gerg@uclinux.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Martin Leung <martin.leung@amd.com>,
+        Tom Chung <chiahsuan.chung@amd.com>,
+        Wenjing Liu <wenjing.liu@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/259] proc: nommu: /proc/<pid>/maps: release mmap read lock
-Date:   Wed,  4 Oct 2023 19:54:18 +0200
-Message-ID: <20231004175221.265987714@linuxfoundation.org>
+Subject: [PATCH 6.5 114/321] drm/amd/display: fix a regression in blank pixel data caused by coding mistake
+Date:   Wed,  4 Oct 2023 19:54:19 +0200
+Message-ID: <20231004175234.519791849@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,121 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <Ben.Wolsieffer@hefring.com>
+From: Wenjing Liu <wenjing.liu@amd.com>
 
-[ Upstream commit 578d7699e5c2add8c2e9549d9d75dfb56c460cb3 ]
+[ Upstream commit f77d1a49902bc70625e3d101a16d8a687f7e97db ]
 
-The no-MMU implementation of /proc/<pid>/map doesn't normally release
-the mmap read lock, because it uses !IS_ERR_OR_NULL(_vml) to determine
-whether to release the lock.  Since _vml is NULL when the end of the
-mappings is reached, the lock is not released.
+[why]
+There was unfortunately a coding mistake. It gets caught with an ultrawide monitor
+that requires ODM 4:1 combine. We are blanking or unblanking pixel data we
+are supposed to enumerate through all ODM pipes and program DPG for each
+of those pipes. However the coding mistake causes us to program only the
+first and last ODM pipes.
 
-Reading /proc/1/maps twice doesn't cause a hang because it only
-takes the read lock, which can be taken multiple times and therefore
-doesn't show any problem if the lock isn't released. Instead, you need
-to perform some operation that attempts to take the write lock after
-reading /proc/<pid>/maps. To actually reproduce the bug, compile the
-following code as 'proc_maps_bug':
-
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/mman.h>
-
-int main(int argc, char *argv[]) {
-        void *buf;
-        sleep(1);
-        buf = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-        puts("mmap returned");
-        return 0;
-}
-
-Then, run:
-
-  ./proc_maps_bug &; cat /proc/$!/maps; fg
-
-Without this patch, mmap() will hang and the command will never
-complete.
-
-This code was incorrectly adapted from the MMU implementation, which at
-the time released the lock in m_next() before returning the last entry.
-
-The MMU implementation has diverged further from the no-MMU version since
-then, so this patch brings their locking and error handling into sync,
-fixing the bug and hopefully avoiding similar issues in the future.
-
-Link: https://lkml.kernel.org/r/20230914163019.4050530-2-ben.wolsieffer@hefring.com
-Fixes: 47fecca15c09 ("fs/proc/task_nommu.c: don't use priv->task->mm")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
-Cc: Greg Ungerer <gerg@uclinux.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: fe4419801617 ("proc: nommu: fix empty /proc/<pid>/maps")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Martin Leung <martin.leung@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/task_nommu.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c            | 2 +-
+ drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/proc/task_nommu.c b/fs/proc/task_nommu.c
-index 2fd06f52b6a44..bfcf17f75ed50 100644
---- a/fs/proc/task_nommu.c
-+++ b/fs/proc/task_nommu.c
-@@ -205,11 +205,16 @@ static void *m_start(struct seq_file *m, loff_t *pos)
- 		return ERR_PTR(-ESRCH);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+index 704d02d89fb34..62a077adcdbfa 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
+@@ -1084,7 +1084,7 @@ void dcn20_blank_pixel_data(
  
- 	mm = priv->mm;
--	if (!mm || !mmget_not_zero(mm))
-+	if (!mm || !mmget_not_zero(mm)) {
-+		put_task_struct(priv->task);
-+		priv->task = NULL;
- 		return NULL;
-+	}
- 
- 	if (mmap_read_lock_killable(mm)) {
- 		mmput(mm);
-+		put_task_struct(priv->task);
-+		priv->task = NULL;
- 		return ERR_PTR(-EINTR);
- 	}
- 
-@@ -218,23 +223,21 @@ static void *m_start(struct seq_file *m, loff_t *pos)
- 	if (vma)
- 		return vma;
- 
--	mmap_read_unlock(mm);
--	mmput(mm);
- 	return NULL;
- }
- 
--static void m_stop(struct seq_file *m, void *_vml)
-+static void m_stop(struct seq_file *m, void *v)
- {
- 	struct proc_maps_private *priv = m->private;
-+	struct mm_struct *mm = priv->mm;
- 
--	if (!IS_ERR_OR_NULL(_vml)) {
--		mmap_read_unlock(priv->mm);
--		mmput(priv->mm);
--	}
--	if (priv->task) {
--		put_task_struct(priv->task);
--		priv->task = NULL;
--	}
-+	if (!priv->task)
-+		return;
-+
-+	mmap_read_unlock(mm);
-+	mmput(mm);
-+	put_task_struct(priv->task);
-+	priv->task = NULL;
- }
- 
- static void *m_next(struct seq_file *m, void *_p, loff_t *pos)
+ 	while (odm_pipe->next_odm_pipe) {
+ 		dc->hwss.set_disp_pattern_generator(dc,
+-				pipe_ctx,
++				odm_pipe,
+ 				test_pattern,
+ 				test_pattern_color_space,
+ 				stream->timing.display_color_depth,
+diff --git a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+index bce0428ad6123..9fd68a11fad23 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
++++ b/drivers/gpu/drm/amd/display/dc/link/accessories/link_dp_cts.c
+@@ -513,7 +513,7 @@ static void set_crtc_test_pattern(struct dc_link *link,
+ 				odm_opp = odm_pipe->stream_res.opp;
+ 				odm_opp->funcs->opp_program_bit_depth_reduction(odm_opp, &params);
+ 				link->dc->hwss.set_disp_pattern_generator(link->dc,
+-						pipe_ctx,
++						odm_pipe,
+ 						controller_test_pattern,
+ 						controller_color_space,
+ 						color_depth,
 -- 
 2.40.1
 
