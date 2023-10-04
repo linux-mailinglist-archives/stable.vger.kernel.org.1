@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0420E7B89FB
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CD4D7B888D
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244330AbjJDSa7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:30:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59062 "EHLO
+        id S244056AbjJDSRX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:17:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244336AbjJDSa5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:30:57 -0400
+        with ESMTP id S244089AbjJDSRV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C873C9
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:30:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4014C433C8;
-        Wed,  4 Oct 2023 18:30:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFC91A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3403C433C7;
+        Wed,  4 Oct 2023 18:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444253;
-        bh=ZXJM0ydznAKgZEbvewQcFVVKElR1AF+dJNjY5UnnX8Y=;
+        s=korg; t=1696443438;
+        bh=opScwkgCg9S8Q45xOI+ghHAxkRdKT8WkeIZYX23M8wM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s1kryrkgEkcGOv1bGRw1GCRJqZzOpGohGvQ+V+Y++uqnJU+YymK73dstP3MA8D09J
-         MzI95TJY7Xcgd8q0AQZdzNRcTvWxZxWsxM3hEeqdwD5vyJYIMkZNwPuJttXb8qP9yu
-         EZsXVDbz1X4vjcq53W53awRmy10WEYDGHN8y9Mww=
+        b=i0R/PuOI55yyC5fJE3jfhlren/6CWpE+oWPVAz2Ph2MxzbWcweEZSsnAU3QWgKC83
+         iFKfdfRUqaWkPZPZXs3KXfYFqzYq1eVGlof9JV2oVDOtHeWnxXYsb9OKlLrIkLnXwX
+         IyOCyLSZnF+ECy0jX/hcmhr8d5+U7xIabNWpLBxw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "William A. Kennington III" <william@wkennington.com>,
-        Tali Perry <tali.perry1@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 156/321] i2c: npcm7xx: Fix callback completion ordering
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/259] xtensa: iss/network: make functions static
 Date:   Wed,  4 Oct 2023 19:55:01 +0200
-Message-ID: <20231004175236.473967190@linuxfoundation.org>
+Message-ID: <20231004175223.253762451@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +51,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William A. Kennington III <william@wkennington.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 92e73d807b68b2214fcafca4e130b5300a9d4b3c ]
+[ Upstream commit 1b59efeb59851277266318f4e0132aa61ce3455e ]
 
-Sometimes, our completions race with new master transfers and override
-the bus->operation and bus->master_or_slave variables. This causes
-transactions to timeout and kernel crashes less frequently.
+Make 2 functions static to prevent build warnings:
 
-To remedy this, we re-order all completions to the very end of the
-function.
+arch/xtensa/platforms/iss/network.c:204:16: warning: no previous prototype for 'tuntap_protocol' [-Wmissing-prototypes]
+  204 | unsigned short tuntap_protocol(struct sk_buff *skb)
+arch/xtensa/platforms/iss/network.c:444:6: warning: no previous prototype for 'iss_net_user_timer_expire' [-Wmissing-prototypes]
+  444 | void iss_net_user_timer_expire(struct timer_list *unused)
 
-Fixes: 56a1485b102e ("i2c: npcm7xx: Add Nuvoton NPCM I2C controller driver")
-Signed-off-by: William A. Kennington III <william@wkennington.com>
-Reviewed-by: Tali Perry <tali.perry1@gmail.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: 7282bee78798 ("xtensa: Architecture support for Tensilica Xtensa Part 8")
+Fixes: d8479a21a98b ("xtensa: Convert timers to use timer_setup()")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Message-Id: <20230920052139.10570-14-rdunlap@infradead.org>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-npcm7xx.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ arch/xtensa/platforms/iss/network.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
-index 53b65ffb6a647..bf9dbab52d228 100644
---- a/drivers/i2c/busses/i2c-npcm7xx.c
-+++ b/drivers/i2c/busses/i2c-npcm7xx.c
-@@ -695,6 +695,7 @@ static void npcm_i2c_callback(struct npcm_i2c *bus,
- {
- 	struct i2c_msg *msgs;
- 	int msgs_num;
-+	bool do_complete = false;
- 
- 	msgs = bus->msgs;
- 	msgs_num = bus->msgs_num;
-@@ -723,23 +724,17 @@ static void npcm_i2c_callback(struct npcm_i2c *bus,
- 				 msgs[1].flags & I2C_M_RD)
- 				msgs[1].len = info;
- 		}
--		if (completion_done(&bus->cmd_complete) == false)
--			complete(&bus->cmd_complete);
--	break;
--
-+		do_complete = true;
-+		break;
- 	case I2C_NACK_IND:
- 		/* MASTER transmit got a NACK before tx all bytes */
- 		bus->cmd_err = -ENXIO;
--		if (bus->master_or_slave == I2C_MASTER)
--			complete(&bus->cmd_complete);
--
-+		do_complete = true;
- 		break;
- 	case I2C_BUS_ERR_IND:
- 		/* Bus error */
- 		bus->cmd_err = -EAGAIN;
--		if (bus->master_or_slave == I2C_MASTER)
--			complete(&bus->cmd_complete);
--
-+		do_complete = true;
- 		break;
- 	case I2C_WAKE_UP_IND:
- 		/* I2C wake up */
-@@ -753,6 +748,8 @@ static void npcm_i2c_callback(struct npcm_i2c *bus,
- 	if (bus->slave)
- 		bus->master_or_slave = I2C_SLAVE;
- #endif
-+	if (do_complete)
-+		complete(&bus->cmd_complete);
+diff --git a/arch/xtensa/platforms/iss/network.c b/arch/xtensa/platforms/iss/network.c
+index 119345eeb04c9..bea539f9039a2 100644
+--- a/arch/xtensa/platforms/iss/network.c
++++ b/arch/xtensa/platforms/iss/network.c
+@@ -201,7 +201,7 @@ static int tuntap_write(struct iss_net_private *lp, struct sk_buff **skb)
+ 	return simc_write(lp->tp.info.tuntap.fd, (*skb)->data, (*skb)->len);
  }
  
- static u8 npcm_i2c_fifo_usage(struct npcm_i2c *bus)
+-unsigned short tuntap_protocol(struct sk_buff *skb)
++static unsigned short tuntap_protocol(struct sk_buff *skb)
+ {
+ 	return eth_type_trans(skb, skb->dev);
+ }
+@@ -441,7 +441,7 @@ static int iss_net_change_mtu(struct net_device *dev, int new_mtu)
+ 	return -EINVAL;
+ }
+ 
+-void iss_net_user_timer_expire(struct timer_list *unused)
++static void iss_net_user_timer_expire(struct timer_list *unused)
+ {
+ }
+ 
 -- 
 2.40.1
 
