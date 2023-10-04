@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CA8A7B8A41
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D1B97B88E2
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244352AbjJDSdi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:33:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39884 "EHLO
+        id S243761AbjJDSUd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244366AbjJDSdh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:37 -0400
+        with ESMTP id S243987AbjJDSUc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22F17A6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682A7C433CA;
-        Wed,  4 Oct 2023 18:33:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A14C1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C721DC433C8;
+        Wed,  4 Oct 2023 18:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444413;
-        bh=KnghT6rmA1Bue9GdZ3gjRPSAGenzRyymNt5wWUBISc4=;
+        s=korg; t=1696443628;
+        bh=0VYi4uXk1YJ9Cn+ouYKkprl+D/3t4NUsaWj/O/yCdC4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qs3oEriQ6iky+OC5d4gfhqgZOdRdZ31Nxo2v/E3c7V25EbP49yCKraZKZMWNoBX9e
-         PXHaWolYDekhCMc5+RadjZqKXhSxtLfzrCu36of0c5k9HSEk6iS7nuJzYrm6IrN5Qv
-         3Y42Hdlp9J2O+nmMVGP3tgADUGd7xJCAi7MR8vbk=
+        b=VGJIUwgG6ZWy52WkrzQ9tcRE8gd6nt9kudJM+1WP76oQHqawbKhIvcWoCXGL0fuAK
+         48laLrA6/2MdFg5sdHw40VyAViiGTn6AHlBPSrctdvaOF3YdGqfv/haDrBF5b0UrIX
+         /+AwPkunVTi1mx1oSWevhpTGz/xP3OBPSNWDvpo0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Stefan Binding <sbinding@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, "Mike Rapoport (IBM)" <rppt@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 213/321] ASoC: cs42l42: Dont rely on GPIOD_OUT_LOW to set RESET initially low
+Subject: =?UTF-8?q?=5BPATCH=206=2E1=20185/259=5D=20=3D=3FUTF-8=3Fq=3Fmemblock=3D20tests=3A=3D20fix=3D20warning=3D20=3DE2=3D80=3D98struct=3D20s=3F=3D=20=3D=3FUTF-8=3Fq=3Feq=3D5Ffile=3DE2=3D80=3D99=3D20declared=3D20inside=3D20parameter=3D20list=3F=3D?=
 Date:   Wed,  4 Oct 2023 19:55:58 +0200
-Message-ID: <20231004175239.116746732@linuxfoundation.org>
+Message-ID: <20231004175225.790417253@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,48 +50,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Mike Rapoport (IBM) <rppt@kernel.org>
 
-[ Upstream commit a479b44ac0a0ac25cd48e5356200078924d78022 ]
+[ Upstream commit 55122e0130e51eb71f5ec62d10525db0468f28e8 ]
 
-The ACPI setting for a GPIO default state has higher priority than the
-flag passed to devm_gpiod_get_optional() so ACPI can override the
-GPIOD_OUT_LOW. Explicitly set the GPIO low when hard resetting.
+Building memblock tests produces the following warning:
 
-Although GPIOD_OUT_LOW can't be relied on this doesn't seem like a
-reason to stop passing it to devm_gpiod_get_optional(). So we still pass
-it to state our intent, but can deal with it having no effect.
+cc -I. -I../../include -Wall -O2 -fsanitize=address -fsanitize=undefined -D CONFIG_PHYS_ADDR_T_64BIT   -c -o main.o main.c
+In file included from tests/common.h:9,
+                 from tests/basic_api.h:5,
+                 from main.c:2:
+./linux/memblock.h:601:50: warning: ‘struct seq_file’ declared inside parameter list will not be visible outside of this definition or declaration
+  601 | static inline void memtest_report_meminfo(struct seq_file *m) { }
+      |                                                  ^~~~~~~~
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20230913150012.604775-3-sbinding@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add declaration of 'struct seq_file' to tools/include/linux/seq_file.h
+to fix it.
+
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs42l42.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/include/linux/seq_file.h           | 2 ++
+ tools/testing/memblock/tests/basic_api.c | 2 +-
+ tools/testing/memblock/tests/common.h    | 1 +
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs42l42.c b/sound/soc/codecs/cs42l42.c
-index 56d2857a4f01c..dc93861ddfb02 100644
---- a/sound/soc/codecs/cs42l42.c
-+++ b/sound/soc/codecs/cs42l42.c
-@@ -2321,6 +2321,12 @@ int cs42l42_common_probe(struct cs42l42_private *cs42l42,
- 	if (cs42l42->reset_gpio) {
- 		dev_dbg(cs42l42->dev, "Found reset GPIO\n");
+diff --git a/tools/include/linux/seq_file.h b/tools/include/linux/seq_file.h
+index 102fd9217f1f9..f6bc226af0c1d 100644
+--- a/tools/include/linux/seq_file.h
++++ b/tools/include/linux/seq_file.h
+@@ -1,4 +1,6 @@
+ #ifndef _TOOLS_INCLUDE_LINUX_SEQ_FILE_H
+ #define _TOOLS_INCLUDE_LINUX_SEQ_FILE_H
  
-+		/*
-+		 * ACPI can override the default GPIO state we requested
-+		 * so ensure that we start with RESET low.
-+		 */
-+		gpiod_set_value_cansleep(cs42l42->reset_gpio, 0);
++struct seq_file;
 +
- 		/* Ensure minimum reset pulse width */
- 		usleep_range(10, 500);
+ #endif /* _TOOLS_INCLUDE_LINUX_SEQ_FILE_H */
+diff --git a/tools/testing/memblock/tests/basic_api.c b/tools/testing/memblock/tests/basic_api.c
+index a13a57ba0815f..7ce628e31a431 100644
+--- a/tools/testing/memblock/tests/basic_api.c
++++ b/tools/testing/memblock/tests/basic_api.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
++#include "basic_api.h"
+ #include <string.h>
+ #include <linux/memblock.h>
+-#include "basic_api.h"
  
+ #define EXPECTED_MEMBLOCK_REGIONS			128
+ #define FUNC_ADD					"memblock_add"
+diff --git a/tools/testing/memblock/tests/common.h b/tools/testing/memblock/tests/common.h
+index d6bbbe63bfc36..4c33ce04c0645 100644
+--- a/tools/testing/memblock/tests/common.h
++++ b/tools/testing/memblock/tests/common.h
+@@ -5,6 +5,7 @@
+ #include <stdlib.h>
+ #include <assert.h>
+ #include <linux/types.h>
++#include <linux/seq_file.h>
+ #include <linux/memblock.h>
+ #include <linux/sizes.h>
+ #include <linux/printk.h>
 -- 
 2.40.1
 
