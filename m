@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D114B7B88FD
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED57D7B8A6E
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:35:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243768AbjJDSVt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:21:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40318 "EHLO
+        id S244095AbjJDSfZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:35:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244158AbjJDSVd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:33 -0400
+        with ESMTP id S244431AbjJDSfZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:35:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97C389E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:21:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1617C433C8;
-        Wed,  4 Oct 2023 18:21:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87BE4A7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:35:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79ABC433C9;
+        Wed,  4 Oct 2023 18:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443687;
-        bh=6TTYWv7Euh9DpbuyQm2ztd0c152hzNwDQi7pH0gNwb0=;
+        s=korg; t=1696444521;
+        bh=2yPcKuFpPwq5SchytPF/Wz9Go03K8XHZ2f8A2Z07TEE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=190vkGiF36qXsOwWBDGCAWAzio7+AUJTG1u/RfIZwL/RCOy8ILjAHuAGxnwOK5geM
-         oIAkx7Nwoz5WY3wM8ZmbvKGLIX1wNMk7y3ddW8kWTxqfiV7LP/hDkyXaqNIq1G71CB
-         TKu9aP3At5XQYIDLeAuCfGhrmprZ+wFcZV9mj2m8=
+        b=Qa/nCHwvqQmTBEmWmv1lRpZqXe6+K0XlK/7IW1IfEYpe3zjLP2LsP7DFVOwQ43Ey1
+         1O8Bp5aTHivk5cZs+CeM/54QuzeMMuutScYmdGwRQ6hOGen/+tuzPLANUWwdfhfFbg
+         Tl7o5P5y0tQ4InpDJYS75gWWEywuEHJTOfnpsdkU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>,
-        Marcus Seyfarth <m.seyfarth@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>
-Subject: [PATCH 6.1 244/259] bpf: Fix BTF_ID symbol generation collision in tools/
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Subject: [PATCH 6.5 272/321] sched/rt: Fix live lock between select_fallback_rq() and RT push
 Date:   Wed,  4 Oct 2023 19:56:57 +0200
-Message-ID: <20231004175228.582507822@linuxfoundation.org>
+Message-ID: <20231004175241.885389061@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +51,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+From: Joel Fernandes (Google) <joel@joelfernandes.org>
 
-commit c0bb9fb0e52a64601d38b3739b729d9138d4c8a1 upstream.
+commit fc09027786c900368de98d03d40af058bcb01ad9 upstream.
 
-Marcus and Satya reported an issue where BTF_ID macro generates same
-symbol in separate objects and that breaks final vmlinux link.
+During RCU-boost testing with the TREE03 rcutorture config, I found that
+after a few hours, the machine locks up.
 
-  ld.lld: error: ld-temp.o <inline asm>:14577:1: symbol
-  '__BTF_ID__struct__cgroup__624' is already defined
+On tracing, I found that there is a live lock happening between 2 CPUs.
+One CPU has an RT task running, while another CPU is being offlined
+which also has an RT task running.  During this offlining, all threads
+are migrated. The migration thread is repeatedly scheduled to migrate
+actively running tasks on the CPU being offlined. This results in a live
+lock because select_fallback_rq() keeps picking the CPU that an RT task
+is already running on only to get pushed back to the CPU being offlined.
 
-This can be triggered under specific configs when __COUNTER__ happens to
-be the same for the same symbol in two different translation units,
-which is already quite unlikely to happen.
+It is anyway pointless to pick CPUs for pushing tasks to if they are
+being offlined only to get migrated away to somewhere else. This could
+also add unwanted latency to this task.
 
-Add __LINE__ number suffix to make BTF_ID symbol more unique, which is
-not a complete fix, but it would help for now and meanwhile we can work
-on better solution as suggested by Andrii.
+Fix these issues by not selecting CPUs in RT if they are not 'active'
+for scheduling, using the cpu_active_mask. Other parts in core.c already
+use cpu_active_mask to prevent tasks from being put on CPUs going
+offline.
 
+With this fix I ran the tests for days and could not reproduce the
+hang. Without the patch, I hit it in a few hours.
+
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
 Cc: stable@vger.kernel.org
-Reported-by: Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>
-Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1913
-Debugged-by: Nathan Chancellor <nathan@kernel.org>
-Co-developed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/CAEf4Bzb5KQ2_LmhN769ifMeSJaWfebccUasQOfQKaOd0nQ51tw@mail.gmail.com/
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lore.kernel.org/r/20230915-bpf_collision-v3-2-263fc519c21f@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://lore.kernel.org/r/20230923011409.3522762-1-joel@joelfernandes.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/include/linux/btf_ids.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/cpupri.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/include/linux/btf_ids.h
-+++ b/tools/include/linux/btf_ids.h
-@@ -38,7 +38,7 @@ asm(							\
- 	____BTF_ID(symbol)
+--- a/kernel/sched/cpupri.c
++++ b/kernel/sched/cpupri.c
+@@ -101,6 +101,7 @@ static inline int __cpupri_find(struct c
  
- #define __ID(prefix) \
--	__PASTE(prefix, __COUNTER__)
-+	__PASTE(__PASTE(prefix, __COUNTER__), __LINE__)
+ 	if (lowest_mask) {
+ 		cpumask_and(lowest_mask, &p->cpus_mask, vec->mask);
++		cpumask_and(lowest_mask, lowest_mask, cpu_active_mask);
  
- /*
-  * The BTF_ID defines unique symbol for each ID pointing
+ 		/*
+ 		 * We have to ensure that we have at least one bit
 
 
