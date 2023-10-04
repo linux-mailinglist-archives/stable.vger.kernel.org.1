@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38A067B8861
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D3C17B89C3
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:28:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244032AbjJDSP2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:15:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52222 "EHLO
+        id S244271AbjJDS3B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:29:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244038AbjJDSP0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:26 -0400
+        with ESMTP id S244272AbjJDS3B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:29:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55AB6FB
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB1EC433C8;
-        Wed,  4 Oct 2023 18:15:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7740BF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:28:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E69CC433C7;
+        Wed,  4 Oct 2023 18:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443323;
-        bh=7Lx30zFHwnqucEvjROotQONeDcvoqopkERucfLx4dS8=;
+        s=korg; t=1696444137;
+        bh=GkfID3NuDmMQd6zrhZyl+6eUSMPfzGV8Zwipui1W4HI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B1egdIhQ1P1fFZ9aztan4K83CqFlSX/GGED2Fu4ANFvEJav/1w6AmOdYSzRx9fYsm
-         tm6W210h3B4+6G1LVuCCVGA7+gKz3PqbA1gsWnP3vHhzaAVFrsVnQkHoPvX9pZuGeI
-         RKfKfPjPrCIW0HjnNzkt1wwzv84zrcB88eRMDLas=
+        b=b2R2qwZ01IFjfqpQddRVntp38ZnZats1ASdlZzBfpqsnU4xdlT4HL1gvZVOqtMB62
+         g8N6OVAgtArm7Fal57IBUXXKmfmfMen1BQCUf4ysyWBEgV4c+LwvLx5o6IQPt1Gtk9
+         MkEiGyx14WHCzY9XH/n64JF3XMP53NptNrsaDWsQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Chandra Sekhar Lingutla <quic_lingutla@quicinc.com>,
-        Sibi Sankar <quic_sibis@quicinc.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@oracle.com>,
+        Chris Morgan <macromorgan@hotmail.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/259] firmware: arm_scmi: Fixup perf power-cost/microwatt support
+Subject: [PATCH 6.5 143/321] power: supply: rk817: Fix node refcount leak
 Date:   Wed,  4 Oct 2023 19:54:48 +0200
-Message-ID: <20231004175222.613579482@linuxfoundation.org>
+Message-ID: <20231004175235.870477367@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit c3638b851bc1ca0022dca9d6ca4beaa6ef03a216 ]
+[ Upstream commit 488ef44c068e79752dba8eda0b75f524f111a695 ]
 
-The perf power scale value would currently be reported as bogowatts if the
-platform firmware supports microwatt power scale and meets the perf major
-version requirements. Fix this by populating version information in the
-driver private data before the call to protocol attributes is made.
+Dan Carpenter reports that the Smatch static checker warning has found
+that there is another refcount leak in the probe function. While
+of_node_put() was added in one of the return paths, it should in
+fact be added for ALL return paths that return an error and at driver
+removal time.
 
-CC: Chandra Sekhar Lingutla <quic_lingutla@quicinc.com>
-Fixes: 3630cd8130ce ("firmware: arm_scmi: Add SCMI v3.1 perf power-cost in microwatts")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20230811204818.30928-1-quic_sibis@quicinc.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 54c03bfd094f ("power: supply: Fix refcount leak in rk817_charger_probe")
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Closes: https://lore.kernel.org/linux-pm/dc0bb0f8-212d-4be7-be69-becd2a3f9a80@kili.mountain/
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Link: https://lore.kernel.org/r/20230920145644.57964-1-macroalpha82@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/perf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/power/supply/rk817_charger.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
-index 43dd242ecc49c..431bda9165c3d 100644
---- a/drivers/firmware/arm_scmi/perf.c
-+++ b/drivers/firmware/arm_scmi/perf.c
-@@ -858,6 +858,8 @@ static int scmi_perf_protocol_init(const struct scmi_protocol_handle *ph)
- 	if (!pinfo)
- 		return -ENOMEM;
- 
-+	pinfo->version = version;
-+
- 	ret = scmi_perf_attributes_get(ph, pinfo);
- 	if (ret)
- 		return ret;
-@@ -877,8 +879,6 @@ static int scmi_perf_protocol_init(const struct scmi_protocol_handle *ph)
- 			scmi_perf_domain_init_fc(ph, domain, &dom->fc_info);
- 	}
- 
--	pinfo->version = version;
--
- 	return ph->set_priv(ph, pinfo);
+diff --git a/drivers/power/supply/rk817_charger.c b/drivers/power/supply/rk817_charger.c
+index 8328bcea1a299..242e158824222 100644
+--- a/drivers/power/supply/rk817_charger.c
++++ b/drivers/power/supply/rk817_charger.c
+@@ -1045,6 +1045,13 @@ static void rk817_charging_monitor(struct work_struct *work)
+ 	queue_delayed_work(system_wq, &charger->work, msecs_to_jiffies(8000));
  }
+ 
++static void rk817_cleanup_node(void *data)
++{
++	struct device_node *node = data;
++
++	of_node_put(node);
++}
++
+ static int rk817_charger_probe(struct platform_device *pdev)
+ {
+ 	struct rk808 *rk808 = dev_get_drvdata(pdev->dev.parent);
+@@ -1061,11 +1068,13 @@ static int rk817_charger_probe(struct platform_device *pdev)
+ 	if (!node)
+ 		return -ENODEV;
+ 
++	ret = devm_add_action_or_reset(&pdev->dev, rk817_cleanup_node, node);
++	if (ret)
++		return ret;
++
+ 	charger = devm_kzalloc(&pdev->dev, sizeof(*charger), GFP_KERNEL);
+-	if (!charger) {
+-		of_node_put(node);
++	if (!charger)
+ 		return -ENOMEM;
+-	}
+ 
+ 	charger->rk808 = rk808;
  
 -- 
 2.40.1
