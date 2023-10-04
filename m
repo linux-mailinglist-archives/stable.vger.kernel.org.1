@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2024E7B87CE
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB60D7B88E7
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243873AbjJDSJ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:09:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39804 "EHLO
+        id S243987AbjJDSUq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243875AbjJDSJ1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:09:27 -0400
+        with ESMTP id S243991AbjJDSUp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 510DAC1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:09:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94392C433CA;
-        Wed,  4 Oct 2023 18:09:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746E4BF
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B626FC433C7;
+        Wed,  4 Oct 2023 18:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442964;
-        bh=e4xalSkzB5hRwWHdDultd1cecidlTv+ICh2EyxfL6dM=;
+        s=korg; t=1696443642;
+        bh=0CE2TUK6ttJsiOkMEpPsNjqcYSDy/x2oLsgOtSPpTJQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C0P2GHmFUDe1/bfPhfg9wvNlMtubVl/9jYLvAB536dbMm2pRRVRI/PBvNz1t9PbNe
-         BOaPstuB3Uo3xqhSJ8lQdJ/sBCLL8tGckwocfMGVUA5pS8sAe55SUoA0Jv4Goz+CAO
-         j4biSehiWcD/LUiKopA4tMdqzWblIcWD9slL6sNU=
+        b=sGdcv2Ajhk8y/YCNqpowIbyK7wDSRMXXNsM1pirrw/KUsc43DftZY/bRq0nhyD1IM
+         ScGUxLCzTeu1a2AzzdC6C/0Qc5tflv0B4tmdgxywnOoknNN25VfmBFDbIL5hB/re2o
+         1ojiKmCRdbbPZ4CAM3V3r9RIOe4nEyY+jeBirNRo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Giulio Benetti <giulio.benetti@benettiengineering.com>,
-        Greg Ungerer <gerg@uclinux.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 171/183] proc: nommu: /proc/<pid>/maps: release mmap read lock
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.1 229/259] kernel/sched: Modify initial boot task idle setup
 Date:   Wed,  4 Oct 2023 19:56:42 +0200
-Message-ID: <20231004175211.220114250@linuxfoundation.org>
+Message-ID: <20231004175227.851768574@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,117 +50,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <Ben.Wolsieffer@hefring.com>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-commit 578d7699e5c2add8c2e9549d9d75dfb56c460cb3 upstream.
+commit cff9b2332ab762b7e0586c793c431a8f2ea4db04 upstream.
 
-The no-MMU implementation of /proc/<pid>/map doesn't normally release
-the mmap read lock, because it uses !IS_ERR_OR_NULL(_vml) to determine
-whether to release the lock.  Since _vml is NULL when the end of the
-mappings is reached, the lock is not released.
+Initial booting is setting the task flag to idle (PF_IDLE) by the call
+path sched_init() -> init_idle().  Having the task idle and calling
+call_rcu() in kernel/rcu/tiny.c means that TIF_NEED_RESCHED will be
+set.  Subsequent calls to any cond_resched() will enable IRQs,
+potentially earlier than the IRQ setup has completed.  Recent changes
+have caused just this scenario and IRQs have been enabled early.
 
-Reading /proc/1/maps twice doesn't cause a hang because it only
-takes the read lock, which can be taken multiple times and therefore
-doesn't show any problem if the lock isn't released. Instead, you need
-to perform some operation that attempts to take the write lock after
-reading /proc/<pid>/maps. To actually reproduce the bug, compile the
-following code as 'proc_maps_bug':
+This causes a warning later in start_kernel() as interrupts are enabled
+before they are fully set up.
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/mman.h>
+Fix this issue by setting the PF_IDLE flag later in the boot sequence.
 
-int main(int argc, char *argv[]) {
-        void *buf;
-        sleep(1);
-        buf = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-        puts("mmap returned");
-        return 0;
-}
+Although the boot task was marked as idle since (at least) d80e4fda576d,
+I am not sure that it is wrong to do so.  The forced context-switch on
+idle task was introduced in the tiny_rcu update, so I'm going to claim
+this fixes 5f6130fa52ee.
 
-Then, run:
-
-  ./proc_maps_bug &; cat /proc/$!/maps; fg
-
-Without this patch, mmap() will hang and the command will never
-complete.
-
-This code was incorrectly adapted from the MMU implementation, which at
-the time released the lock in m_next() before returning the last entry.
-
-The MMU implementation has diverged further from the no-MMU version since
-then, so this patch brings their locking and error handling into sync,
-fixing the bug and hopefully avoiding similar issues in the future.
-
-Link: https://lkml.kernel.org/r/20230914163019.4050530-2-ben.wolsieffer@hefring.com
-Fixes: 47fecca15c09 ("fs/proc/task_nommu.c: don't use priv->task->mm")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
-Cc: Greg Ungerer <gerg@uclinux.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 5f6130fa52ee ("tiny_rcu: Directly force QS when call_rcu_[bh|sched]() on idle_task")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/linux-mm/CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/task_nommu.c |   27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ kernel/sched/core.c |    2 +-
+ kernel/sched/idle.c |    1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/proc/task_nommu.c
-+++ b/fs/proc/task_nommu.c
-@@ -208,11 +208,16 @@ static void *m_start(struct seq_file *m,
- 		return ERR_PTR(-ESRCH);
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9019,7 +9019,7 @@ void __init init_idle(struct task_struct
+ 	 * PF_KTHREAD should already be set at this point; regardless, make it
+ 	 * look like a proper per-CPU kthread.
+ 	 */
+-	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
++	idle->flags |= PF_KTHREAD | PF_NO_SETAFFINITY;
+ 	kthread_set_per_cpu(idle, cpu);
  
- 	mm = priv->mm;
--	if (!mm || !mmget_not_zero(mm))
-+	if (!mm || !mmget_not_zero(mm)) {
-+		put_task_struct(priv->task);
-+		priv->task = NULL;
- 		return NULL;
-+	}
+ #ifdef CONFIG_SMP
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -394,6 +394,7 @@ EXPORT_SYMBOL_GPL(play_idle_precise);
  
- 	if (mmap_read_lock_killable(mm)) {
- 		mmput(mm);
-+		put_task_struct(priv->task);
-+		priv->task = NULL;
- 		return ERR_PTR(-EINTR);
- 	}
- 
-@@ -221,23 +226,21 @@ static void *m_start(struct seq_file *m,
- 		if (n-- == 0)
- 			return p;
- 
--	mmap_read_unlock(mm);
--	mmput(mm);
- 	return NULL;
- }
- 
--static void m_stop(struct seq_file *m, void *_vml)
-+static void m_stop(struct seq_file *m, void *v)
+ void cpu_startup_entry(enum cpuhp_state state)
  {
- 	struct proc_maps_private *priv = m->private;
-+	struct mm_struct *mm = priv->mm;
- 
--	if (!IS_ERR_OR_NULL(_vml)) {
--		mmap_read_unlock(priv->mm);
--		mmput(priv->mm);
--	}
--	if (priv->task) {
--		put_task_struct(priv->task);
--		priv->task = NULL;
--	}
-+	if (!priv->task)
-+		return;
-+
-+	mmap_read_unlock(mm);
-+	mmput(mm);
-+	put_task_struct(priv->task);
-+	priv->task = NULL;
- }
- 
- static void *m_next(struct seq_file *m, void *_p, loff_t *pos)
++	current->flags |= PF_IDLE;
+ 	arch_cpu_idle_prepare();
+ 	cpuhp_online_idle(state);
+ 	while (1)
 
 
