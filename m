@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED57D7B8A6E
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1981F7B8A7A
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:35:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244095AbjJDSfZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:35:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44240 "EHLO
+        id S244434AbjJDSf5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:35:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244431AbjJDSfZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:35:25 -0400
+        with ESMTP id S244436AbjJDSf4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:35:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87BE4A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:35:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79ABC433C9;
-        Wed,  4 Oct 2023 18:35:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58593C0
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:35:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A096EC433CA;
+        Wed,  4 Oct 2023 18:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444521;
-        bh=2yPcKuFpPwq5SchytPF/Wz9Go03K8XHZ2f8A2Z07TEE=;
+        s=korg; t=1696444552;
+        bh=LJwVglDeo6WfpF5eA09q7ezGqT7zegP2580iyixY46I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qa/nCHwvqQmTBEmWmv1lRpZqXe6+K0XlK/7IW1IfEYpe3zjLP2LsP7DFVOwQ43Ey1
-         1O8Bp5aTHivk5cZs+CeM/54QuzeMMuutScYmdGwRQ6hOGen/+tuzPLANUWwdfhfFbg
-         Tl7o5P5y0tQ4InpDJYS75gWWEywuEHJTOfnpsdkU=
+        b=gvIFf9q5SdjQQD1ZcR/lZrPb3vfiUmQrVawTcssIu4N9cbN4+CtzsJDS1zOM259op
+         6K/k0RB+zGMvROi77BZvy1fUENl30H2iMpDfEsbv3Uv+CLWAI6hiG6qxvctil7BFef
+         jpfUy831jJf0DRFdllJTxQ3vFNFp8eQY6hKWsxcs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>
-Subject: [PATCH 6.5 272/321] sched/rt: Fix live lock between select_fallback_rq() and RT push
-Date:   Wed,  4 Oct 2023 19:56:57 +0200
-Message-ID: <20231004175241.885389061@linuxfoundation.org>
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 6.5 273/321] Revert "SUNRPC dont update timeout value on connection reset"
+Date:   Wed,  4 Oct 2023 19:56:58 +0200
+Message-ID: <20231004175241.933028147@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
 References: <20231004175229.211487444@linuxfoundation.org>
@@ -55,52 +54,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Joel Fernandes (Google) <joel@joelfernandes.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit fc09027786c900368de98d03d40af058bcb01ad9 upstream.
+commit a275ab62606bcd894ddff09460f7d253828313dc upstream.
 
-During RCU-boost testing with the TREE03 rcutorture config, I found that
-after a few hours, the machine locks up.
+This reverts commit 88428cc4ae7abcc879295fbb19373dd76aad2bdd.
 
-On tracing, I found that there is a live lock happening between 2 CPUs.
-One CPU has an RT task running, while another CPU is being offlined
-which also has an RT task running.  During this offlining, all threads
-are migrated. The migration thread is repeatedly scheduled to migrate
-actively running tasks on the CPU being offlined. This results in a live
-lock because select_fallback_rq() keeps picking the CPU that an RT task
-is already running on only to get pushed back to the CPU being offlined.
+The problem this commit is intended to fix was comprehensively fixed
+in commit 7de62bc09fe6 ("SUNRPC dont update timeout value on connection
+reset").
+Since then, this commit has been preventing the correct timeout of soft
+mounted requests.
 
-It is anyway pointless to pick CPUs for pushing tasks to if they are
-being offlined only to get migrated away to somewhere else. This could
-also add unwanted latency to this task.
-
-Fix these issues by not selecting CPUs in RT if they are not 'active'
-for scheduling, using the cpu_active_mask. Other parts in core.c already
-use cpu_active_mask to prevent tasks from being put on CPUs going
-offline.
-
-With this fix I ran the tests for days and could not reproduce the
-hang. Without the patch, I hit it in a few hours.
-
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230923011409.3522762-1-joel@joelfernandes.org
+Cc: stable@vger.kernel.org # 5.9.x: 09252177d5f9: SUNRPC: Handle major timeout in xprt_adjust_timeout()
+Cc: stable@vger.kernel.org # 5.9.x: 7de62bc09fe6: SUNRPC dont update timeout value on connection reset
+Cc: stable@vger.kernel.org # 5.9.x
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/cpupri.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/sunrpc/clnt.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/kernel/sched/cpupri.c
-+++ b/kernel/sched/cpupri.c
-@@ -101,6 +101,7 @@ static inline int __cpupri_find(struct c
- 
- 	if (lowest_mask) {
- 		cpumask_and(lowest_mask, &p->cpus_mask, vec->mask);
-+		cpumask_and(lowest_mask, lowest_mask, cpu_active_mask);
- 
- 		/*
- 		 * We have to ensure that we have at least one bit
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2474,8 +2474,7 @@ call_status(struct rpc_task *task)
+ 		goto out_exit;
+ 	}
+ 	task->tk_action = call_encode;
+-	if (status != -ECONNRESET && status != -ECONNABORTED)
+-		rpc_check_timeout(task);
++	rpc_check_timeout(task);
+ 	return;
+ out_exit:
+ 	rpc_call_rpcerror(task, status);
 
 
