@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 320547B87A5
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A2FA7B88E0
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243822AbjJDSHp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:07:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54908 "EHLO
+        id S243894AbjJDSU0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:20:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243840AbjJDSHo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:44 -0400
+        with ESMTP id S243886AbjJDSUZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:20:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B194D9E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09001C433C7;
-        Wed,  4 Oct 2023 18:07:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E826AA7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3091FC433C7;
+        Wed,  4 Oct 2023 18:20:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442860;
-        bh=8a/inD/FLFUGjgHU1nacZEw2Tbb68Ohb8jAyHuY+/mo=;
+        s=korg; t=1696443622;
+        bh=KOrPUjZFFCNWkmMKtmqUqNRmcWd71nYff24ymxZrHYc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R0MEpHDDopMRr8s0Y0eHacxpSgwEBr1qHUAmwsWpYn9AJ6tXGKX7HZUOE8mkFgP+3
-         NFvylX0K5m5Lkf4h/l7itbcPTUoXeDitLU4VpoH+C6QZypOYf86WBY7nLD/K2Z+MvY
-         gdcbkOYUEdQTz8J+VvFj/IaG3KCvBrkiRcl/9KhY=
+        b=XsX47F5vQLcHrCEJzoC57KyjPzuTASbrH+lctZtYRDQV3wrwMXZ9BGD9bEVsC3utq
+         G7bDknX2CunUOhTCb4ZKGSge0rQCkkHQCHZOtnt6kHHm+9mXlAPWquWEHRfAfYi5hD
+         aASYLjSGJH8GHC62vzrAaGQP/J976KZzgd/irUt4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chancel Liu <chancel.liu@nxp.com>,
-        Shengjiu Wang <shengjiu.wang@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        Johnathan Mantey <johnathanx.mantey@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 135/183] ASoC: imx-rpmsg: Set ignore_pmdown_time for dai_link
+Subject: [PATCH 6.1 193/259] ncsi: Propagate carrier gain/loss events to the NCSI controller
 Date:   Wed,  4 Oct 2023 19:56:06 +0200
-Message-ID: <20231004175209.599875088@linuxfoundation.org>
+Message-ID: <20231004175226.144292242@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chancel Liu <chancel.liu@nxp.com>
+From: Johnathan Mantey <johnathanx.mantey@intel.com>
 
-[ Upstream commit fac58baf8fcfcd7481e8f6d60206ce2a47c1476c ]
+[ Upstream commit 3780bb29311eccb7a1c9641032a112eed237f7e3 ]
 
-i.MX rpmsg sound cards work on codec slave mode. MCLK will be disabled
-by CPU DAI driver in hw_free(). Some codec requires MCLK present at
-power up/down sequence. So need to set ignore_pmdown_time to power down
-codec immediately before MCLK is turned off.
+Report the carrier/no-carrier state for the network interface
+shared between the BMC and the passthrough channel. Without this
+functionality the BMC is unable to reconfigure the NIC in the event
+of a re-cabling to a different subnet.
 
-Take WM8962 as an example, if MCLK is disabled before DAPM power down
-playback stream, FIFO error will arise in WM8962 which will have bad
-impact on playback next.
-
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
-Link: https://lore.kernel.org/r/20230913102656.2966757-1-chancel.liu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-rpmsg.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/ncsi/ncsi-aen.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
-index f96fe4ff8425b..d208b05051fd5 100644
---- a/sound/soc/fsl/imx-rpmsg.c
-+++ b/sound/soc/fsl/imx-rpmsg.c
-@@ -66,6 +66,14 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
- 			    SND_SOC_DAIFMT_NB_NF |
- 			    SND_SOC_DAIFMT_CBS_CFS;
+diff --git a/net/ncsi/ncsi-aen.c b/net/ncsi/ncsi-aen.c
+index 62fb1031763d1..f8854bff286cb 100644
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -89,6 +89,11 @@ static int ncsi_aen_handler_lsc(struct ncsi_dev_priv *ndp,
+ 	if ((had_link == has_link) || chained)
+ 		return 0;
  
-+	/*
-+	 * i.MX rpmsg sound cards work on codec slave mode. MCLK will be
-+	 * disabled by CPU DAI driver in hw_free(). Some codec requires MCLK
-+	 * present at power up/down sequence. So need to set ignore_pmdown_time
-+	 * to power down codec immediately before MCLK is turned off.
-+	 */
-+	data->dai.ignore_pmdown_time = 1;
++	if (had_link)
++		netif_carrier_off(ndp->ndev.dev);
++	else
++		netif_carrier_on(ndp->ndev.dev);
 +
- 	/* Optional codec node */
- 	ret = of_parse_phandle_with_fixed_args(np, "audio-codec", 0, 0, &args);
- 	if (ret) {
+ 	if (!ndp->multi_package && !nc->package->multi_channel) {
+ 		if (had_link) {
+ 			ndp->flags |= NCSI_DEV_RESHUFFLE;
 -- 
 2.40.1
 
