@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E19D27B8783
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:06:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B06877B89FF
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243557AbjJDSGO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:06:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55778 "EHLO
+        id S244334AbjJDSbI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:31:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243802AbjJDSGN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:06:13 -0400
+        with ESMTP id S243799AbjJDSbH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:31:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DD779E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:06:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23BBC433C8;
-        Wed,  4 Oct 2023 18:06:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C91E29E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:31:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E008C433C8;
+        Wed,  4 Oct 2023 18:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442770;
-        bh=gLNww7weW5YKyZCSbfQVpVKI3XfNFu6EIq/FnYAcxHU=;
+        s=korg; t=1696444264;
+        bh=QKGktEYsmM8tR70+yQhwDUhW6p4jkLj0qmgwSd+ZE6Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tuBsGGv8a7Aca/FO1I9fXclMk2aq2iBXzj2j/ixqA/BRxLOb59lSfcJk8lJdeJgAe
-         zBLoDl1TMXhUjZI8Ck+kviylsHOdQR5NilkXdeW1iWy8yD2LsvMYb90UCBwhDSBZZl
-         AD4fUZ+odfUF/wCuGwWqWg77BFZxUqqAyzF2abww=
+        b=fBvQwQYRyXg0D7IQX9ZwaCsCe5WrkUS9+u0PhaoH7pbEC0HTByO59THbemI3HCtua
+         cLR8OkGGcNa65HQI9ZKAKpCN6mOmjvDFJspEnXi1JAbFelLYTU04ET/wTQ9xqcphZQ
+         JS6RmiDb/SDrmTID52YzCo8QMchd0cCztV76Lyh0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        kernel test robot <lkp@intel.com>,
+        patches@lists.linux.dev, Wenjing Liu <wenjing.liu@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Swapnil Patel <swapnil.patel@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 103/183] xtensa: add default definition for XCHAL_HAVE_DIV32
+Subject: [PATCH 6.5 189/321] drm/amd/display: Dont check registers, if using AUX BL control
 Date:   Wed,  4 Oct 2023 19:55:34 +0200
-Message-ID: <20231004175208.193509701@linuxfoundation.org>
+Message-ID: <20231004175237.984838924@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,47 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Swapnil Patel <swapnil.patel@amd.com>
 
-[ Upstream commit 494e87ffa0159b3f879694a9231089707792a44d ]
+[ Upstream commit f5b2c10b57615828b531bb0ae56bd6325a41167e ]
 
-When variant FSF is set, XCHAL_HAVE_DIV32 is not defined. Add default
-definition for that macro to prevent build warnings:
+[Why]
+Currently the driver looks DCN registers to access if BL is on or not.
+This check is not valid if we are using AUX based brightness control.
+This causes driver to not send out "backlight off" command during power off
+sequence as it already thinks it is off.
 
-arch/xtensa/lib/divsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
-    9 | #if XCHAL_HAVE_DIV32
-arch/xtensa/lib/modsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
-    9 | #if XCHAL_HAVE_DIV32
+[How]
+Only check DCN registers if we aren't using AUX based brightness control.
 
-Fixes: 173d6681380a ("xtensa: remove extra header files")
-Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: lore.kernel.org/r/202309150556.t0yCdv3g-lkp@intel.com
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Acked-by: Stylon Wang <stylon.wang@amd.com>
+Signed-off-by: Swapnil Patel <swapnil.patel@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/xtensa/include/asm/core.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/xtensa/include/asm/core.h b/arch/xtensa/include/asm/core.h
-index a4e40166ff4bb..0fa3649649e98 100644
---- a/arch/xtensa/include/asm/core.h
-+++ b/arch/xtensa/include/asm/core.h
-@@ -6,6 +6,10 @@
+diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
+index 6966420dfbac3..15fa19ee748cf 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
+@@ -964,7 +964,9 @@ void dce110_edp_backlight_control(
+ 		return;
+ 	}
  
- #include <variant/core.h>
+-	if (link->panel_cntl) {
++	if (link->panel_cntl && !(link->dpcd_sink_ext_caps.bits.oled ||
++		link->dpcd_sink_ext_caps.bits.hdr_aux_backlight_control == 1 ||
++		link->dpcd_sink_ext_caps.bits.sdr_aux_backlight_control == 1)) {
+ 		bool is_backlight_on = link->panel_cntl->funcs->is_panel_backlight_on(link->panel_cntl);
  
-+#ifndef XCHAL_HAVE_DIV32
-+#define XCHAL_HAVE_DIV32 0
-+#endif
-+
- #ifndef XCHAL_HAVE_EXCLUSIVE
- #define XCHAL_HAVE_EXCLUSIVE 0
- #endif
+ 		if ((enable && is_backlight_on) || (!enable && !is_backlight_on)) {
 -- 
 2.40.1
 
