@@ -2,38 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D8B67B8A5A
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:34:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC7CC7B88ED
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:21:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244391AbjJDSek (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:34:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34672 "EHLO
+        id S243992AbjJDSVD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:21:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244407AbjJDSej (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:34:39 -0400
+        with ESMTP id S244003AbjJDSVD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:21:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47AF5AB
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:34:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A887C433CA;
-        Wed,  4 Oct 2023 18:34:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84CCFA7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:20:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933AAC433C8;
+        Wed,  4 Oct 2023 18:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444475;
-        bh=UWdoLL4FDL9sgllCdc6SjV6qklYeQMMCbbFBvQjoh44=;
+        s=korg; t=1696443659;
+        bh=sq+0UgHVg0s+Yru6lJ8YjQj4gTAJrxB5lYT7yw1StN4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VEHlxq2q8KNzY61FJUQH5RGKpK7KflmegURiqNJoAX7xJ/E6fuZsLYVSlbCD3Zk2Y
-         MYJixPah0Crvs7JIOniksmjDJc/ksYaobxrLYgaInszSx7KtlaAbBH1OGDrRMcOLWh
-         Pzhi0CDdcQtCz0CI1QCp5xP1J3UAnsJFksIucZLY=
+        b=thqbL7Tgzw5ZXzXtN5OlX8IYO2AkqzWem21+GaUEUNKwDlmBLYGRKkIv6+qO425MA
+         dzMFOHPogdGQ8DU15PKjiV7ZxQYwCWoSLdQavg8Sg/nGfQJsL9WzZ/mCSTGyznLz+w
+         iZA/EXWLf/CTlVu+WZknfQLrS0AIZpqfX4m3S/mo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tiezhu Yang <yangtiezhu@loongson.cn>,
-        Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.5 263/321] LoongArch: Add support for 64_PCREL relocation type
+        patches@lists.linux.dev, stable@kernel.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Bruce Ashfield <bruce.ashfield@gmail.com>,
+        Jon Mason <jon.mason@arm.com>, Jon Mason <jdmason@kudzu.us>,
+        Ross Burton <ross@burtonini.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Mikko Rapeli <mikko.rapeli@linaro.org>
+Subject: [PATCH 6.1 235/259] arm64: defconfig: remove CONFIG_COMMON_CLK_NPCM8XX=y
 Date:   Wed,  4 Oct 2023 19:56:48 +0200
-Message-ID: <20231004175241.446306828@linuxfoundation.org>
+Message-ID: <20231004175228.162526155@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,61 +60,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-commit b1dc55a3d6a86cc2c1ae664ad7280bff4c0fc28f upstream.
+commit 7d3e4e9d3bde9c8bd8914d47ddaa90e0d0ffbcab upstream.
 
-When build and update kernel with the latest upstream binutils and
-loongson3_defconfig, module loader fails with:
+There is no code for this config option and enabling it in defconfig
+causes warnings from tools which are detecting unused and obsolete
+kernel config flags since the flag will be completely missing from
+effective build config after "make olddefconfig".
 
-  kmod: zsmalloc: Unknown relocation type 109
-  kmod: fuse: Unknown relocation type 109
-  kmod: fuse: Unknown relocation type 109
-  kmod: radeon: Unknown relocation type 109
-  kmod: nf_tables: Unknown relocation type 109
-  kmod: nf_tables: Unknown relocation type 109
+Fixes yocto kernel recipe build time warning:
 
-This is because the latest upstream binutils replaces a pair of ADD64
-and SUB64 with 64_PCREL, so add support for 64_PCREL relocation type.
+WARNING: [kernel config]: This BSP contains fragments with warnings:
+...
+[INFO]: the following symbols were not found in the active
+configuration:
+     - CONFIG_COMMON_CLK_NPCM8XX
 
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=ecb802d02eeb
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+The flag was added with commit 45472f1e5348c7b755b4912f2f529ec81cea044b
+v5.19-rc4-15-g45472f1e5348 so 6.1 and 6.4 stable kernel trees are
+affected.
+
+Fixes: 45472f1e5348c7b755b4912f2f529ec81cea044b ("arm64: defconfig: Add Nuvoton NPCM family support")
+Cc: stable@kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Bjorn Andersson <quic_bjorande@quicinc.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Tomer Maimon <tmaimon77@gmail.com>
+Cc: Bruce Ashfield <bruce.ashfield@gmail.com>
+Cc: Jon Mason <jon.mason@arm.com>
+Cc: Jon Mason <jdmason@kudzu.us>
+Cc: Ross Burton <ross@burtonini.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/module.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm64/configs/defconfig |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/loongarch/kernel/module.c
-+++ b/arch/loongarch/kernel/module.c
-@@ -376,6 +376,15 @@ static int apply_r_larch_32_pcrel(struct
- 	return 0;
- }
- 
-+static int apply_r_larch_64_pcrel(struct module *mod, u32 *location, Elf_Addr v,
-+				  s64 *rela_stack, size_t *rela_stack_top, unsigned int type)
-+{
-+	ptrdiff_t offset = (void *)v - (void *)location;
-+
-+	*(u64 *)location = offset;
-+	return 0;
-+}
-+
- /*
-  * reloc_handlers_rela() - Apply a particular relocation to a module
-  * @mod: the module to apply the reloc to
-@@ -406,6 +415,7 @@ static reloc_rela_handler reloc_rela_han
- 	[R_LARCH_ADD32 ... R_LARCH_SUB64]		     = apply_r_larch_add_sub,
- 	[R_LARCH_PCALA_HI20...R_LARCH_PCALA64_HI12]	     = apply_r_larch_pcala,
- 	[R_LARCH_32_PCREL]				     = apply_r_larch_32_pcrel,
-+	[R_LARCH_64_PCREL]				     = apply_r_larch_64_pcrel,
- };
- 
- int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1050,7 +1050,6 @@ CONFIG_COMMON_CLK_FSL_SAI=y
+ CONFIG_COMMON_CLK_S2MPS11=y
+ CONFIG_COMMON_CLK_PWM=y
+ CONFIG_COMMON_CLK_VC5=y
+-CONFIG_COMMON_CLK_NPCM8XX=y
+ CONFIG_COMMON_CLK_BD718XX=m
+ CONFIG_CLK_RASPBERRYPI=m
+ CONFIG_CLK_IMX8MM=y
 
 
