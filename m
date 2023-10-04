@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FDBE7B87B1
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56E2B7B8A33
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243706AbjJDSIS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:08:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60902 "EHLO
+        id S244372AbjJDSdN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:33:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243817AbjJDSIR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:08:17 -0400
+        with ESMTP id S244377AbjJDSdM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:33:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50F5DD7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:08:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E94CC433C7;
-        Wed,  4 Oct 2023 18:08:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2AE3C1
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:33:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E4BC433C9;
+        Wed,  4 Oct 2023 18:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442894;
-        bh=qbIhRsevzbigciBPtm1lwAhskhsQFpbC9YJlHFepXVI=;
+        s=korg; t=1696444388;
+        bh=pj2fRPnMmakSEcLxwnARoHmuEWJ6GVa54oTLcWuoc5Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VHvMwky1yFmCY71LqMbYuGjOYH1TFMLcoSYMNqDwZUhqkrK6k9Hgbr/briXGoehiZ
-         0rupFrpWvLEB2X4E2c8ZS8roUuTTjW+hvgqYPCxu+jgHbKTEKwB8Fxy6s8+jPQfD3o
-         2ZxXm6YX1pWe7Mj6teMXfPRaDkf4L6yQB9cQ4yq8=
+        b=ssorkt25Wu4nGwJq2NOYbXlnClmJVUqhni5g9mGH/KIHcMnJsHT9wjQBBoyknG8ax
+         ZMZ8tP9BDwq0uWJyWl15z22QwjzZz3rVQ61dKOmpFmn9A7+Dt4waY6r+uMnQJr1sW0
+         i4kX/ryqtoOhAZ296YT3zI+kIVAwYUi9N34EAi1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
+        patches@lists.linux.dev, Bob Peterson <rpeterso@redhat.com>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/183] nvme-pci: factor out a nvme_pci_alloc_dev helper
+Subject: [PATCH 6.5 232/321] gfs2: fix glock shrinker ref issues
 Date:   Wed,  4 Oct 2023 19:56:17 +0200
-Message-ID: <20231004175210.140828926@linuxfoundation.org>
+Message-ID: <20231004175239.980052992@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,172 +50,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Bob Peterson <rpeterso@redhat.com>
 
-[ Upstream commit 2e87570be9d2746e7c4e7ab1cc18fd3ca7de2768 ]
+[ Upstream commit 62862485a4c3a52029fc30f4bdde9af04afdafc9 ]
 
-Add a helper that allocates the nvme_dev structure up to the point where
-we can call nvme_init_ctrl.  This pairs with the free_ctrl method and can
-thus be used to cleanup the teardown path and make it more symmetric.
+Before this patch, function gfs2_scan_glock_lru would only try to free
+glocks that had a reference count of 0. But if the reference count ever
+got to 0, the glock should have already been freed.
 
-Note that this now calls nvme_init_ctrl a lot earlier during probing,
-which also means the per-controller character device shows up earlier.
-Due to the controller state no commnds can be send on it, but it might
-make sense to delay the cdev registration until nvme_init_ctrl_finish.
+Shrinker function gfs2_dispose_glock_lru checks whether glocks on the
+LRU are demote_ok, and if so, tries to demote them. But that's only
+possible if the reference count is at least 1.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Tested-by Gerd Bayer <gbayer@linxu.ibm.com>
-Stable-dep-of: dad651b2a44e ("nvme-pci: do not set the NUMA node of device if it has none")
+This patch changes gfs2_scan_glock_lru so it will try to demote and/or
+dispose of glocks that have a reference count of 1 and which are either
+demotable, or are already unlocked.
+
+Signed-off-by: Bob Peterson <rpeterso@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 81 +++++++++++++++++++++++------------------
- 1 file changed, 46 insertions(+), 35 deletions(-)
+ fs/gfs2/glock.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 161cc4cd41fa9..0779bf2378264 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2677,6 +2677,7 @@ static void nvme_free_tagset(struct nvme_dev *dev)
- 	dev->ctrl.tagset = NULL;
- }
- 
-+/* pairs with nvme_pci_alloc_dev */
- static void nvme_pci_free_ctrl(struct nvme_ctrl *ctrl)
- {
- 	struct nvme_dev *dev = to_nvme_dev(ctrl);
-@@ -2966,19 +2967,23 @@ static void nvme_async_probe(void *data, async_cookie_t cookie)
- 	nvme_put_ctrl(&dev->ctrl);
- }
- 
--static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
-+		const struct pci_device_id *id)
- {
--	int node, result = -ENOMEM;
--	struct nvme_dev *dev;
- 	unsigned long quirks = id->driver_data;
-+	int node = dev_to_node(&pdev->dev);
-+	struct nvme_dev *dev;
-+	int ret = -ENOMEM;
- 
--	node = dev_to_node(&pdev->dev);
- 	if (node == NUMA_NO_NODE)
- 		set_dev_node(&pdev->dev, first_memory_node);
- 
- 	dev = kzalloc_node(sizeof(*dev), GFP_KERNEL, node);
- 	if (!dev)
--		return -ENOMEM;
-+		return NULL;
-+	INIT_WORK(&dev->ctrl.reset_work, nvme_reset_work);
-+	INIT_WORK(&dev->remove_work, nvme_remove_dead_ctrl_work);
-+	mutex_init(&dev->shutdown_lock);
- 
- 	dev->nr_write_queues = write_queues;
- 	dev->nr_poll_queues = poll_queues;
-@@ -2986,25 +2991,11 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	dev->queues = kcalloc_node(dev->nr_allocated_queues,
- 			sizeof(struct nvme_queue), GFP_KERNEL, node);
- 	if (!dev->queues)
--		goto free;
-+		goto out_free_dev;
- 
- 	dev->dev = get_device(&pdev->dev);
--	pci_set_drvdata(pdev, dev);
--
--	result = nvme_dev_map(dev);
--	if (result)
--		goto put_pci;
--
--	INIT_WORK(&dev->ctrl.reset_work, nvme_reset_work);
--	INIT_WORK(&dev->remove_work, nvme_remove_dead_ctrl_work);
--	mutex_init(&dev->shutdown_lock);
--
--	result = nvme_setup_prp_pools(dev);
--	if (result)
--		goto unmap;
- 
- 	quirks |= check_vendor_combination_bug(pdev);
--
- 	if (!noacpi && acpi_storage_d3(&pdev->dev)) {
- 		/*
- 		 * Some systems use a bios work around to ask for D3 on
-@@ -3014,34 +3005,54 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 			 "platform quirk: setting simple suspend\n");
- 		quirks |= NVME_QUIRK_SIMPLE_SUSPEND;
- 	}
-+	ret = nvme_init_ctrl(&dev->ctrl, &pdev->dev, &nvme_pci_ctrl_ops,
-+			     quirks);
-+	if (ret)
-+		goto out_put_device;
-+	return dev;
- 
--	result = nvme_pci_alloc_iod_mempool(dev);
-+out_put_device:
-+	put_device(dev->dev);
-+	kfree(dev->queues);
-+out_free_dev:
-+	kfree(dev);
-+	return ERR_PTR(ret);
-+}
-+
-+static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+{
-+	struct nvme_dev *dev;
-+	int result = -ENOMEM;
-+
-+	dev = nvme_pci_alloc_dev(pdev, id);
-+	if (!dev)
-+		return -ENOMEM;
-+
-+	result = nvme_dev_map(dev);
- 	if (result)
--		goto release_pools;
-+		goto out_uninit_ctrl;
- 
--	result = nvme_init_ctrl(&dev->ctrl, &pdev->dev, &nvme_pci_ctrl_ops,
--			quirks);
-+	result = nvme_setup_prp_pools(dev);
-+	if (result)
-+		goto out_dev_unmap;
-+
-+	result = nvme_pci_alloc_iod_mempool(dev);
- 	if (result)
--		goto release_mempool;
-+		goto out_release_prp_pools;
- 
- 	dev_info(dev->ctrl.device, "pci function %s\n", dev_name(&pdev->dev));
-+	pci_set_drvdata(pdev, dev);
- 
- 	nvme_reset_ctrl(&dev->ctrl);
- 	async_schedule(nvme_async_probe, dev);
--
- 	return 0;
- 
-- release_mempool:
--	mempool_destroy(dev->iod_mempool);
-- release_pools:
-+out_release_prp_pools:
- 	nvme_release_prp_pools(dev);
-- unmap:
-+out_dev_unmap:
- 	nvme_dev_unmap(dev);
-- put_pci:
--	put_device(dev->dev);
-- free:
--	kfree(dev->queues);
--	kfree(dev);
-+out_uninit_ctrl:
-+	nvme_uninit_ctrl(&dev->ctrl);
- 	return result;
- }
- 
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 1438e7465e306..59c1aed0b9b90 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -2017,7 +2017,9 @@ static long gfs2_scan_glock_lru(int nr)
+ 		if (!test_bit(GLF_LOCK, &gl->gl_flags)) {
+ 			if (!spin_trylock(&gl->gl_lockref.lock))
+ 				continue;
+-			if (!gl->gl_lockref.count) {
++			if (gl->gl_lockref.count <= 1 &&
++			    (gl->gl_state == LM_ST_UNLOCKED ||
++			     demote_ok(gl))) {
+ 				list_move(&gl->gl_lru, &dispose);
+ 				atomic_dec(&lru_count);
+ 				freed++;
 -- 
 2.40.1
 
