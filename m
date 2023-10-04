@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA3FC7B87F2
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D3D87B897D
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243719AbjJDSLM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:11:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40920 "EHLO
+        id S244197AbjJDS0x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:26:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243914AbjJDSLL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:11:11 -0400
+        with ESMTP id S244283AbjJDS0e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:26:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 581A3AD
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:11:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0814C433C7;
-        Wed,  4 Oct 2023 18:11:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D7A898
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:26:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BDFC433C8;
+        Wed,  4 Oct 2023 18:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443068;
-        bh=W3d12rxD6c8kMEmCFLavjSHSa04vxB5av5mjQIW23jE=;
+        s=korg; t=1696443990;
+        bh=JKpQVbhdsuYO040b9D09K/Zsae/HXmG/W6zwhXTeSc8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vX5HsQjojYweuqXteH+OLIsZl3MmEmOsHMjKiOwKpqc8lvTblnqzVw0seCdBxLcUB
-         I9uM4v/01kCm7XFymFcrB5WtOdxj0mn0lXx45JNC/2q5iZZ3Y1Xa1YAjvEaAj+eTzs
-         ui+sFmZTNgE8N5+uT9SGbHU+T/E7VeEyWHcqHuv8=
+        b=uZ5FWw9QD5GztKgKwc6hmsalJ63VYq9L8r4BLC0ELurbFh50n+jVteWgAzXJCI1Lx
+         2wvnyZ6IxaKMBBdynjCQ4P0JvakwgrWtgGi3X0iUGZspyAMctPriLdVaVD+HVoiY3b
+         iBeyZWx/IdWxadMn0gnqAu4DdosUaqHKZMbwINGE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Sasha Neftin <sasha.neftin@intel.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/259] netfilter: nf_tables: remove busy mark and gc batch API
-Date:   Wed,  4 Oct 2023 19:53:17 +0200
-Message-ID: <20231004175218.543227232@linuxfoundation.org>
+Subject: [PATCH 6.5 053/321] net/core: Fix ETH_P_1588 flow dissector
+Date:   Wed,  4 Oct 2023 19:53:18 +0200
+Message-ID: <20231004175231.620280342@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,223 +51,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sasha Neftin <sasha.neftin@intel.com>
 
-commit a2dd0233cbc4d8a0abb5f64487487ffc9265beb5 upstream.
+[ Upstream commit 75ad80ed88a182ab2ad5513e448cf07b403af5c3 ]
 
-Ditch it, it has been replace it by the GC transaction API and it has no
-clients anymore.
+When a PTP ethernet raw frame with a size of more than 256 bytes followed
+by a 0xff pattern is sent to __skb_flow_dissect, nhoff value calculation
+is wrong. For example: hdr->message_length takes the wrong value (0xffff)
+and it does not replicate real header length. In this case, 'nhoff' value
+was overridden and the PTP header was badly dissected. This leads to a
+kernel crash.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+net/core: flow_dissector
+net/core flow dissector nhoff = 0x0000000e
+net/core flow dissector hdr->message_length = 0x0000ffff
+net/core flow dissector nhoff = 0x0001000d (u16 overflow)
+...
+skb linear:   00000000: 00 a0 c9 00 00 00 00 a0 c9 00 00 00 88
+skb frag:     00000000: f7 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+
+Using the size of the ptp_header struct will allow the corrected
+calculation of the nhoff value.
+
+net/core flow dissector nhoff = 0x0000000e
+net/core flow dissector nhoff = 0x00000030 (sizeof ptp_header)
+...
+skb linear:   00000000: 00 a0 c9 00 00 00 00 a0 c9 00 00 00 88 f7 ff ff
+skb linear:   00000010: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+skb linear:   00000020: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+skb frag:     00000000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+
+Kernel trace:
+[   74.984279] ------------[ cut here ]------------
+[   74.989471] kernel BUG at include/linux/skbuff.h:2440!
+[   74.995237] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[   75.001098] CPU: 4 PID: 0 Comm: swapper/4 Tainted: G     U            5.15.85-intel-ese-standard-lts #1
+[   75.011629] Hardware name: Intel Corporation A-Island (CPU:AlderLake)/A-Island (ID:06), BIOS SB_ADLP.01.01.00.01.03.008.D-6A9D9E73-dirty Mar 30 2023
+[   75.026507] RIP: 0010:eth_type_trans+0xd0/0x130
+[   75.031594] Code: 03 88 47 78 eb c7 8b 47 68 2b 47 6c 48 8b 97 c0 00 00 00 83 f8 01 7e 1b 48 85 d2 74 06 66 83 3a ff 74 09 b8 00 04 00 00 eb ab <0f> 0b b8 00 01 00 00 eb a2 48 85 ff 74 eb 48 8d 54 24 06 31 f6 b9
+[   75.052612] RSP: 0018:ffff9948c0228de0 EFLAGS: 00010297
+[   75.058473] RAX: 00000000000003f2 RBX: ffff8e47047dc300 RCX: 0000000000001003
+[   75.066462] RDX: ffff8e4e8c9ea040 RSI: ffff8e4704e0a000 RDI: ffff8e47047dc300
+[   75.074458] RBP: ffff8e4704e2acc0 R08: 00000000000003f3 R09: 0000000000000800
+[   75.082466] R10: 000000000000000d R11: ffff9948c0228dec R12: ffff8e4715e4e010
+[   75.090461] R13: ffff9948c0545018 R14: 0000000000000001 R15: 0000000000000800
+[   75.098464] FS:  0000000000000000(0000) GS:ffff8e4e8fb00000(0000) knlGS:0000000000000000
+[   75.107530] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   75.113982] CR2: 00007f5eb35934a0 CR3: 0000000150e0a002 CR4: 0000000000770ee0
+[   75.121980] PKRU: 55555554
+[   75.125035] Call Trace:
+[   75.127792]  <IRQ>
+[   75.130063]  ? eth_get_headlen+0xa4/0xc0
+[   75.134472]  igc_process_skb_fields+0xcd/0x150
+[   75.139461]  igc_poll+0xc80/0x17b0
+[   75.143272]  __napi_poll+0x27/0x170
+[   75.147192]  net_rx_action+0x234/0x280
+[   75.151409]  __do_softirq+0xef/0x2f4
+[   75.155424]  irq_exit_rcu+0xc7/0x110
+[   75.159432]  common_interrupt+0xb8/0xd0
+[   75.163748]  </IRQ>
+[   75.166112]  <TASK>
+[   75.168473]  asm_common_interrupt+0x22/0x40
+[   75.173175] RIP: 0010:cpuidle_enter_state+0xe2/0x350
+[   75.178749] Code: 85 c0 0f 8f 04 02 00 00 31 ff e8 39 6c 67 ff 45 84 ff 74 12 9c 58 f6 c4 02 0f 85 50 02 00 00 31 ff e8 52 b0 6d ff fb 45 85 f6 <0f> 88 b1 00 00 00 49 63 ce 4c 2b 2c 24 48 89 c8 48 6b d1 68 48 c1
+[   75.199757] RSP: 0018:ffff9948c013bea8 EFLAGS: 00000202
+[   75.205614] RAX: ffff8e4e8fb00000 RBX: ffffb948bfd23900 RCX: 000000000000001f
+[   75.213619] RDX: 0000000000000004 RSI: ffffffff94206161 RDI: ffffffff94212e20
+[   75.221620] RBP: 0000000000000004 R08: 000000117568973a R09: 0000000000000001
+[   75.229622] R10: 000000000000afc8 R11: ffff8e4e8fb29ce4 R12: ffffffff945ae980
+[   75.237628] R13: 000000117568973a R14: 0000000000000004 R15: 0000000000000000
+[   75.245635]  ? cpuidle_enter_state+0xc7/0x350
+[   75.250518]  cpuidle_enter+0x29/0x40
+[   75.254539]  do_idle+0x1d9/0x260
+[   75.258166]  cpu_startup_entry+0x19/0x20
+[   75.262582]  secondary_startup_64_no_verify+0xc2/0xcb
+[   75.268259]  </TASK>
+[   75.270721] Modules linked in: 8021q snd_sof_pci_intel_tgl snd_sof_intel_hda_common tpm_crb snd_soc_hdac_hda snd_sof_intel_hda snd_hda_ext_core snd_sof_pci snd_sof snd_sof_xtensa_dsp snd_soc_acpi_intel_match snd_soc_acpi snd_soc_core snd_compress iTCO_wdt ac97_bus intel_pmc_bxt mei_hdcp iTCO_vendor_support snd_hda_codec_hdmi pmt_telemetry intel_pmc_core pmt_class snd_hda_intel x86_pkg_temp_thermal snd_intel_dspcfg snd_hda_codec snd_hda_core kvm_intel snd_pcm snd_timer kvm snd mei_me soundcore tpm_tis irqbypass i2c_i801 mei tpm_tis_core pcspkr intel_rapl_msr tpm i2c_smbus intel_pmt thermal sch_fq_codel uio uhid i915 drm_buddy video drm_display_helper drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops ttm fuse configfs
+[   75.342736] ---[ end trace 3785f9f360400e3a ]---
+[   75.347913] RIP: 0010:eth_type_trans+0xd0/0x130
+[   75.352984] Code: 03 88 47 78 eb c7 8b 47 68 2b 47 6c 48 8b 97 c0 00 00 00 83 f8 01 7e 1b 48 85 d2 74 06 66 83 3a ff 74 09 b8 00 04 00 00 eb ab <0f> 0b b8 00 01 00 00 eb a2 48 85 ff 74 eb 48 8d 54 24 06 31 f6 b9
+[   75.373994] RSP: 0018:ffff9948c0228de0 EFLAGS: 00010297
+[   75.379860] RAX: 00000000000003f2 RBX: ffff8e47047dc300 RCX: 0000000000001003
+[   75.387856] RDX: ffff8e4e8c9ea040 RSI: ffff8e4704e0a000 RDI: ffff8e47047dc300
+[   75.395864] RBP: ffff8e4704e2acc0 R08: 00000000000003f3 R09: 0000000000000800
+[   75.403857] R10: 000000000000000d R11: ffff9948c0228dec R12: ffff8e4715e4e010
+[   75.411863] R13: ffff9948c0545018 R14: 0000000000000001 R15: 0000000000000800
+[   75.419875] FS:  0000000000000000(0000) GS:ffff8e4e8fb00000(0000) knlGS:0000000000000000
+[   75.428946] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   75.435403] CR2: 00007f5eb35934a0 CR3: 0000000150e0a002 CR4: 0000000000770ee0
+[   75.443410] PKRU: 55555554
+[   75.446477] Kernel panic - not syncing: Fatal exception in interrupt
+[   75.453738] Kernel Offset: 0x11c00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+[   75.465794] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+
+Fixes: 4f1cc51f3488 ("net: flow_dissector: Parse PTP L2 packet header")
+Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h | 98 +------------------------------
- net/netfilter/nf_tables_api.c     | 48 +--------------
- 2 files changed, 4 insertions(+), 142 deletions(-)
+ net/core/flow_dissector.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 3b76370683c82..2d501dd901521 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -594,7 +594,6 @@ struct nft_set *nft_set_lookup_global(const struct net *net,
+diff --git a/net/core/flow_dissector.c b/net/core/flow_dissector.c
+index 6bed3992df814..aac954d1f757d 100644
+--- a/net/core/flow_dissector.c
++++ b/net/core/flow_dissector.c
+@@ -1402,7 +1402,7 @@ bool __skb_flow_dissect(const struct net *net,
+ 			break;
+ 		}
  
- struct nft_set_ext *nft_set_catchall_lookup(const struct net *net,
- 					    const struct nft_set *set);
--void *nft_set_catchall_gc(const struct nft_set *set);
- 
- static inline unsigned long nft_set_gc_interval(const struct nft_set *set)
- {
-@@ -811,62 +810,6 @@ void nft_set_elem_destroy(const struct nft_set *set, void *elem,
- void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
- 				const struct nft_set *set, void *elem);
- 
--/**
-- *	struct nft_set_gc_batch_head - nf_tables set garbage collection batch
-- *
-- *	@rcu: rcu head
-- *	@set: set the elements belong to
-- *	@cnt: count of elements
-- */
--struct nft_set_gc_batch_head {
--	struct rcu_head			rcu;
--	const struct nft_set		*set;
--	unsigned int			cnt;
--};
--
--#define NFT_SET_GC_BATCH_SIZE	((PAGE_SIZE -				  \
--				  sizeof(struct nft_set_gc_batch_head)) / \
--				 sizeof(void *))
--
--/**
-- *	struct nft_set_gc_batch - nf_tables set garbage collection batch
-- *
-- * 	@head: GC batch head
-- * 	@elems: garbage collection elements
-- */
--struct nft_set_gc_batch {
--	struct nft_set_gc_batch_head	head;
--	void				*elems[NFT_SET_GC_BATCH_SIZE];
--};
--
--struct nft_set_gc_batch *nft_set_gc_batch_alloc(const struct nft_set *set,
--						gfp_t gfp);
--void nft_set_gc_batch_release(struct rcu_head *rcu);
--
--static inline void nft_set_gc_batch_complete(struct nft_set_gc_batch *gcb)
--{
--	if (gcb != NULL)
--		call_rcu(&gcb->head.rcu, nft_set_gc_batch_release);
--}
--
--static inline struct nft_set_gc_batch *
--nft_set_gc_batch_check(const struct nft_set *set, struct nft_set_gc_batch *gcb,
--		       gfp_t gfp)
--{
--	if (gcb != NULL) {
--		if (gcb->head.cnt + 1 < ARRAY_SIZE(gcb->elems))
--			return gcb;
--		nft_set_gc_batch_complete(gcb);
--	}
--	return nft_set_gc_batch_alloc(set, gfp);
--}
--
--static inline void nft_set_gc_batch_add(struct nft_set_gc_batch *gcb,
--					void *elem)
--{
--	gcb->elems[gcb->head.cnt++] = elem;
--}
--
- struct nft_expr_ops;
- /**
-  *	struct nft_expr_type - nf_tables expression type
-@@ -1545,47 +1488,12 @@ static inline void nft_set_elem_change_active(const struct net *net,
- 
- #endif /* IS_ENABLED(CONFIG_NF_TABLES) */
- 
--/*
-- * We use a free bit in the genmask field to indicate the element
-- * is busy, meaning it is currently being processed either by
-- * the netlink API or GC.
-- *
-- * Even though the genmask is only a single byte wide, this works
-- * because the extension structure if fully constant once initialized,
-- * so there are no non-atomic write accesses unless it is already
-- * marked busy.
-- */
--#define NFT_SET_ELEM_BUSY_MASK	(1 << 2)
--
--#if defined(__LITTLE_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_BUSY_BIT	2
--#elif defined(__BIG_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_BUSY_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 2)
--#else
--#error
--#endif
--
--static inline int nft_set_elem_mark_busy(struct nft_set_ext *ext)
--{
--	unsigned long *word = (unsigned long *)ext;
--
--	BUILD_BUG_ON(offsetof(struct nft_set_ext, genmask) != 0);
--	return test_and_set_bit(NFT_SET_ELEM_BUSY_BIT, word);
--}
--
--static inline void nft_set_elem_clear_busy(struct nft_set_ext *ext)
--{
--	unsigned long *word = (unsigned long *)ext;
--
--	clear_bit(NFT_SET_ELEM_BUSY_BIT, word);
--}
--
--#define NFT_SET_ELEM_DEAD_MASK	(1 << 3)
-+#define NFT_SET_ELEM_DEAD_MASK	(1 << 2)
- 
- #if defined(__LITTLE_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_DEAD_BIT	3
-+#define NFT_SET_ELEM_DEAD_BIT	2
- #elif defined(__BIG_ENDIAN_BITFIELD)
--#define NFT_SET_ELEM_DEAD_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 3)
-+#define NFT_SET_ELEM_DEAD_BIT	(BITS_PER_LONG - BITS_PER_BYTE + 2)
- #else
- #error
- #endif
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index e179d1132f2fb..a38d87256b8fb 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6069,29 +6069,6 @@ struct nft_set_ext *nft_set_catchall_lookup(const struct net *net,
- }
- EXPORT_SYMBOL_GPL(nft_set_catchall_lookup);
- 
--void *nft_set_catchall_gc(const struct nft_set *set)
--{
--	struct nft_set_elem_catchall *catchall, *next;
--	struct nft_set_ext *ext;
--	void *elem = NULL;
--
--	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
--		ext = nft_set_elem_ext(set, catchall->elem);
--
--		if (!nft_set_elem_expired(ext) ||
--		    nft_set_elem_mark_busy(ext))
--			continue;
--
--		elem = catchall->elem;
--		list_del_rcu(&catchall->list);
--		kfree_rcu(catchall, rcu);
--		break;
--	}
--
--	return elem;
--}
--EXPORT_SYMBOL_GPL(nft_set_catchall_gc);
--
- static int nft_setelem_catchall_insert(const struct net *net,
- 				       struct nft_set *set,
- 				       const struct nft_set_elem *elem,
-@@ -6562,7 +6539,7 @@ static int nft_add_set_elem(struct nft_ctx *ctx, struct nft_set *set,
- 		goto err_elem_free;
+-		nhoff += ntohs(hdr->message_length);
++		nhoff += sizeof(struct ptp_header);
+ 		fdret = FLOW_DISSECT_RET_OUT_GOOD;
+ 		break;
  	}
- 
--	ext->genmask = nft_genmask_cur(ctx->net) | NFT_SET_ELEM_BUSY_MASK;
-+	ext->genmask = nft_genmask_cur(ctx->net);
- 
- 	err = nft_setelem_insert(ctx->net, set, &elem, &ext2, flags);
- 	if (err) {
-@@ -6949,29 +6926,6 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
- 	return err;
- }
- 
--void nft_set_gc_batch_release(struct rcu_head *rcu)
--{
--	struct nft_set_gc_batch *gcb;
--	unsigned int i;
--
--	gcb = container_of(rcu, struct nft_set_gc_batch, head.rcu);
--	for (i = 0; i < gcb->head.cnt; i++)
--		nft_set_elem_destroy(gcb->head.set, gcb->elems[i], true);
--	kfree(gcb);
--}
--
--struct nft_set_gc_batch *nft_set_gc_batch_alloc(const struct nft_set *set,
--						gfp_t gfp)
--{
--	struct nft_set_gc_batch *gcb;
--
--	gcb = kzalloc(sizeof(*gcb), gfp);
--	if (gcb == NULL)
--		return gcb;
--	gcb->head.set = set;
--	return gcb;
--}
--
- /*
-  * Stateful objects
-  */
 -- 
 2.40.1
 
