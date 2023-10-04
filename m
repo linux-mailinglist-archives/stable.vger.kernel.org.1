@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC9A27B8748
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77D347B874B
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:03:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243733AbjJDSDf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:03:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39124 "EHLO
+        id S243757AbjJDSDk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:03:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243758AbjJDSDe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:03:34 -0400
+        with ESMTP id S243756AbjJDSDk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:03:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6023C6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:03:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFADAC433C9;
-        Wed,  4 Oct 2023 18:03:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35161BD
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:03:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74882C433C7;
+        Wed,  4 Oct 2023 18:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442610;
-        bh=DcqCg2ncCDi0Ou0EHs3fB4fqqG9A0n4G/wyLCbwloJk=;
+        s=korg; t=1696442615;
+        bh=skz9xfT9EN94jVUpughBOxcLZLhGhKxTtYDgWdzWLNI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qYu6LFSMe4KM9V+3AGSpWvdGGS0P6K1jiXZxRYDwwQXn9ge52uGoYMi3DmJtBHpRK
-         4AkfK6oKbw8Ly3GUgAkCMBkzpOD2drFZoR0B9FZjsr7k6KHW4R9Pc+khJB2S9n6b7H
-         bttJ/SKJaYRcwoo9c4n6Ofc6fd+u8RcdNxfFQnJc=
+        b=nXlRGZGjqKBL1V6dBc+cT1/mQN97mvdTFP17l5QcrzHMew7rwRTO3d2moWv1WeEGM
+         vzvr6wOMILwIIM/MzlhsU4rCcbn26vtcV9VP+4Vhf7vX4alEuQbVk7Jt7BSZsCqfG1
+         FmBbf7dYiHum+2RnzdwPYWaIq3FQgObEedHE+rUM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jann Horn <jannh@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Prashant Malani <pmalani@chromium.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/183] dccp: fix dccp_v4_err()/dccp_v6_err() again
-Date:   Wed,  4 Oct 2023 19:54:38 +0200
-Message-ID: <20231004175205.934425054@linuxfoundation.org>
+Subject: [PATCH 5.15 048/183] platform/x86: intel_scu_ipc: Check status after timeout in busy_loop()
+Date:   Wed,  4 Oct 2023 19:54:39 +0200
+Message-ID: <20231004175205.979922304@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
 References: <20231004175203.943277832@linuxfoundation.org>
@@ -41,6 +45,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,130 +61,88 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit 6af289746a636f71f4c0535a9801774118486c7a ]
+[ Upstream commit e0b4ab3bb92bda8d12f55842614362989d5b2cb3 ]
 
-dh->dccph_x is the 9th byte (offset 8) in "struct dccp_hdr",
-not in the "byte 7" as Jann claimed.
+It's possible for the polling loop in busy_loop() to get scheduled away
+for a long time.
 
-We need to make sure the ICMP messages are big enough,
-using more standard ways (no more assumptions).
+  status = ipc_read_status(scu); // status = IPC_STATUS_BUSY
+  <long time scheduled away>
+  if (!(status & IPC_STATUS_BUSY))
 
-syzbot reported:
-BUG: KMSAN: uninit-value in pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
-BUG: KMSAN: uninit-value in pskb_may_pull include/linux/skbuff.h:2681 [inline]
-BUG: KMSAN: uninit-value in dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
-pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
-pskb_may_pull include/linux/skbuff.h:2681 [inline]
-dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
-icmpv6_notify+0x4c7/0x880 net/ipv6/icmp.c:867
-icmpv6_rcv+0x19d5/0x30d0
-ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
-ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
-NF_HOOK include/linux/netfilter.h:304 [inline]
-ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
-ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
-dst_input include/net/dst.h:468 [inline]
-ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
-NF_HOOK include/linux/netfilter.h:304 [inline]
-ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
-__netif_receive_skb_one_core net/core/dev.c:5523 [inline]
-__netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5637
-netif_receive_skb_internal net/core/dev.c:5723 [inline]
-netif_receive_skb+0x58/0x660 net/core/dev.c:5782
-tun_rx_batched+0x83b/0x920
-tun_get_user+0x564c/0x6940 drivers/net/tun.c:2002
-tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-call_write_iter include/linux/fs.h:1985 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x8ef/0x15c0 fs/read_write.c:584
-ksys_write+0x20f/0x4c0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x93/0xd0 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+If this happens, then the status bit could change while the task is
+scheduled away and this function would never read the status again after
+timing out. Instead, the function will return -ETIMEDOUT when it's
+possible that scheduling didn't work out and the status bit was cleared.
+Bit polling code should always check the bit being polled one more time
+after the timeout in case this happens.
 
-Uninit was created at:
-slab_post_alloc_hook+0x12f/0xb70 mm/slab.h:767
-slab_alloc_node mm/slub.c:3478 [inline]
-kmem_cache_alloc_node+0x577/0xa80 mm/slub.c:3523
-kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:559
-__alloc_skb+0x318/0x740 net/core/skbuff.c:650
-alloc_skb include/linux/skbuff.h:1286 [inline]
-alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6313
-sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2795
-tun_alloc_skb drivers/net/tun.c:1531 [inline]
-tun_get_user+0x23cf/0x6940 drivers/net/tun.c:1846
-tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-call_write_iter include/linux/fs.h:1985 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x8ef/0x15c0 fs/read_write.c:584
-ksys_write+0x20f/0x4c0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x93/0xd0 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Fix this by reading the status once more after the while loop breaks.
+The readl_poll_timeout() macro implements all of this, and it is
+shorter, so use that macro here to consolidate code and fix this.
 
-CPU: 0 PID: 4995 Comm: syz-executor153 Not tainted 6.6.0-rc1-syzkaller-00014-ga747acc0b752 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
+There were some concerns with using readl_poll_timeout() because it uses
+timekeeping, and timekeeping isn't running early on or during the late
+stages of system suspend or early stages of system resume, but an audit
+of the code concluded that this code isn't called during those times so
+it is safe to use the macro.
 
-Fixes: 977ad86c2a1b ("dccp: Fix out of bounds access in DCCP error handler")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jann Horn <jannh@google.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Prashant Malani <pmalani@chromium.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Fixes: e7b7ab3847c9 ("platform/x86: intel_scu_ipc: Sleeping is fine when polling")
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20230913212723.3055315-2-swboyd@chromium.org
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dccp/ipv4.c | 9 ++-------
- net/dccp/ipv6.c | 9 ++-------
- 2 files changed, 4 insertions(+), 14 deletions(-)
+ drivers/platform/x86/intel_scu_ipc.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
-index 1490ba960365e..b44e46dc8e040 100644
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -250,13 +250,8 @@ static int dccp_v4_err(struct sk_buff *skb, u32 info)
- 	int err;
- 	struct net *net = dev_net(skb->dev);
+diff --git a/drivers/platform/x86/intel_scu_ipc.c b/drivers/platform/x86/intel_scu_ipc.c
+index e7a3e34028178..96675bea88b10 100644
+--- a/drivers/platform/x86/intel_scu_ipc.c
++++ b/drivers/platform/x86/intel_scu_ipc.c
+@@ -19,6 +19,7 @@
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
  
--	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
--	 * which is in byte 7 of the dccp header.
--	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
--	 *
--	 * Later on, we want to access the sequence number fields, which are
--	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
--	 */
-+	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
-+		return -EINVAL;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
- 		return -EINVAL;
-diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
-index c9f11f86266c0..0ddf64845a06c 100644
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -83,13 +83,8 @@ static int dccp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 	__u64 seq;
- 	struct net *net = dev_net(skb->dev);
+@@ -232,19 +233,15 @@ static inline u32 ipc_data_readl(struct intel_scu_ipc_dev *scu, u32 offset)
+ /* Wait till scu status is busy */
+ static inline int busy_loop(struct intel_scu_ipc_dev *scu)
+ {
+-	unsigned long end = jiffies + IPC_TIMEOUT;
+-
+-	do {
+-		u32 status;
+-
+-		status = ipc_read_status(scu);
+-		if (!(status & IPC_STATUS_BUSY))
+-			return (status & IPC_STATUS_ERR) ? -EIO : 0;
++	u8 status;
++	int err;
  
--	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
--	 * which is in byte 7 of the dccp header.
--	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
--	 *
--	 * Later on, we want to access the sequence number fields, which are
--	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
--	 */
-+	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
-+		return -EINVAL;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
- 		return -EINVAL;
+-		usleep_range(50, 100);
+-	} while (time_before(jiffies, end));
++	err = readx_poll_timeout(ipc_read_status, scu, status, !(status & IPC_STATUS_BUSY),
++				 100, jiffies_to_usecs(IPC_TIMEOUT));
++	if (err)
++		return err;
+ 
+-	return -ETIMEDOUT;
++	return (status & IPC_STATUS_ERR) ? -EIO : 0;
+ }
+ 
+ /* Wait till ipc ioc interrupt is received or timeout in 10 HZ */
 -- 
 2.40.1
 
