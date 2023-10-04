@@ -2,95 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0FE47B7C70
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 11:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 600797B7CA1
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 11:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232966AbjJDJlj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 05:41:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50198 "EHLO
+        id S232877AbjJDJzK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 05:55:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242025AbjJDJli (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 05:41:38 -0400
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44CADB8
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 02:41:34 -0700 (PDT)
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-405e48d8e72so4039165e9.0
-        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 02:41:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696412493; x=1697017293;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ifMada/Ec0wG4fmWRFeePI5fo54s5fxBvPZqeUNAEsQ=;
-        b=vroSNr+OW2OSmzlsVTWvDAWBB3w1GhSpB2InyVM6zr0VQC4NFhAEM90dS9tWUC2WY3
-         kQVEW/AOwUW2d/ubPkcXHnYot8dRBQyNEUCiA00Dod4GPyO+jnmHDkWBCNYaSwzmSD6f
-         hxQ+rcslAhFca/0K0V4lrz3Xg0mmYTqYB1UcFBFR6TH7G9oU2LzDWlacs8gvpSV5A3uB
-         yQp5MpKmtkIA2mGMdINmljbO9ReA1rtOS3IPb7Ox0k65zc9U/4MFpOfZn1rimCcrpqkY
-         trZ78rrb0aumKSYLKPui0FOA2jWBbjT0RHHjyztAgN2cTJOOubd4BpSOyE/O+S+39alw
-         aDHQ==
-X-Gm-Message-State: AOJu0YxKfMFUx07WhGH20MqTXqxE5i8Bcz/Cl2MtgIXFToS/KbkYdmEV
-        xS/WNozx3IBsjVslW1s8xoHt1UgPmpY=
-X-Google-Smtp-Source: AGHT+IH3qG8Om251uKRLbUeetK66chKfQ2k0y45RvwLUdJVPnRg/N2oAEEd7YFcUyATWhHpskEOdiw==
-X-Received: by 2002:a05:600c:3b9a:b0:3fe:21a6:a18 with SMTP id n26-20020a05600c3b9a00b003fe21a60a18mr1737804wms.3.1696412492367;
-        Wed, 04 Oct 2023 02:41:32 -0700 (PDT)
-Received: from [192.168.64.157] (bzq-219-42-90.isdn.bezeqint.net. [62.219.42.90])
-        by smtp.gmail.com with ESMTPSA id m7-20020a05600c280700b00405391f485fsm1043839wmb.41.2023.10.04.02.41.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Oct 2023 02:41:31 -0700 (PDT)
-Message-ID: <1ed79a61-0e74-7264-cb70-c65531cf60e2@grimberg.me>
-Date:   Wed, 4 Oct 2023 12:41:30 +0300
+        with ESMTP id S232849AbjJDJzJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 05:55:09 -0400
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7138283;
+        Wed,  4 Oct 2023 02:55:05 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D888F240018;
+        Wed,  4 Oct 2023 09:55:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1696413304;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=72iAb2IAE4FbKnYSwHehmr/svO5trIG6B6hsbHz2LRA=;
+        b=pbITdmedeBgPSsbb3Nv4CdnsuGLyjUyYddo18Pae2H2Q9hxuubSi1PAWvfw7XiW0t+785/
+        J/9LPS8C7aUJ9UkTyTmuneHNphvfrDwVv7S/v9WqA0SCSnpNjbEcapq9r+IrNeV8NZF+3p
+        xfBSmpPABBD2C1RTPCub3YtlmHZBLJdvttbgM3tSznYJDsUTdLdKbqKwj81NV630W7ex+q
+        4XazAHb08EEfTpBkOkaV8TI9qbX6WjXsQEUy2QDhLxRFpW8Ddzd9+siG26Orp2Xq5CVNIC
+        7kL8sdhGf7J+EeZ9cddC/fXPgyXUvUtoA9qdCKixMg8LRMBb1nk84kjL4YuXAg==
+Date:   Wed, 4 Oct 2023 11:55:00 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Marc Kleine-Budde <mkl@pengutronix.de>
+Cc:     Wolfgang Grandegger <wg@grandegger.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+        linux-can@vger.kernel.org,
+        =?UTF-8?B?SsOpcsOpbWll?= Dautheribes 
+        <jeremie.dautheribes@bootlin.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        sylvain.girard@se.com, pascal.eberhard@se.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3] can: sja1000: Always restart the Tx queue after an
+ overrun
+Message-ID: <20231004115500.6648d3c7@xps-13>
+In-Reply-To: <20231004-uneasy-backed-e01d77be9f51-mkl@pengutronix.de>
+References: <20231002160206.190953-1-miquel.raynal@bootlin.com>
+        <20231004-uneasy-backed-e01d77be9f51-mkl@pengutronix.de>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] nvmet-tcp: Fix a possible UAF in queue intialization
- setup
-Content-Language: en-US
-To:     sj@kernel.org
-Cc:     linux-nvme@lists.infradead.org, Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>,
-        Chaitanya Kulkarni <Chaitanya.Kulkarni@wdc.com>,
-        zahavi.alon@gmail.com, stable@vger.kernel.org
-References: <20231003164638.2526-1-sj@kernel.org>
-From:   Sagi Grimberg <sagi@grimberg.me>
-In-Reply-To: <20231003164638.2526-1-sj@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Marc,
 
-> Hello,
-> 
-> On Mon, 2 Oct 2023 13:54:28 +0300 Sagi Grimberg <sagi@grimberg.me> wrote:
-> 
->>  From Alon:
->> "Due to a logical bug in the NVMe-oF/TCP subsystem in the Linux kernel,
->> a malicious user can cause a UAF and a double free, which may lead to
->> RCE (may also lead to an LPE in case the attacker already has local
->> privileges)."
->>
->> Hence, when a queue initialization fails after the ahash requests are
->> allocated, it is guaranteed that the queue removal async work will be
->> called, hence leave the deallocation to the queue removal.
->>
->> Also, be extra careful not to continue processing the socket, so set
->> queue rcv_state to NVMET_TCP_RECV_ERR upon a socket error.
->>
->> Reported-by: Alon Zahavi <zahavi.alon@gmail.com>
->> Tested-by: Alon Zahavi <zahavi.alon@gmail.com>
->> Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-> 
-> Would it be better to add Fixes: and Cc: stable lines?
+mkl@pengutronix.de wrote on Wed, 4 Oct 2023 11:41:08 +0200:
 
-This issue existed since the introduction of the driver, I am not sure
-it applies cleanly that far back...
+> On 02.10.2023 18:02:06, Miquel Raynal wrote:
+> > Upstream commit 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with
+> > a soft reset on Renesas SoCs") fixes an issue with Renesas own SJA1000
+> > CAN controller reception: the Rx buffer is only 5 messages long, so when
+> > the bus loaded (eg. a message every 50us), overrun may easily
+> > happen. Upon an overrun situation, due to a possible internal crosstalk
+> > situation, the controller enters a frozen state which only can be
+> > unlocked with a soft reset (experimentally). The solution was to offload
+> > a call to sja1000_start() in a threaded handler. This needs to happen in
+> > process context as this operation requires to sleep. sja1000_start()
+> > basically enters "reset mode", performs a proper software reset and
+> > returns back into "normal mode".
+> >=20
+> > Since this fix was introduced, we no longer observe any stalls in
+> > reception. However it was sporadically observed that the transmit path
+> > would now freeze. Further investigation blamed the fix mentioned above,
+> > and especially the reset operation. Reproducing the reset in a loop
+> > helped identifying what could possibly go wrong. The sja1000 is a single
+> > Tx queue device, which leverages the netdev helpers to process one Tx
+> > message at a time. The logic is: the queue is stopped, the message sent
+> > to the transceiver, once properly transmitted the controller sets a
+> > status bit which triggers an interrupt, in the interrupt handler the
+> > transmission status is checked and the queue woken up. Unfortunately, if
+> > an overrun happens, we might perform the soft reset precisely between
+> > the transmission of the buffer to the transceiver and the advent of the
+> > transmission status bit. We would then stop the transmission operation
+> > without re-enabling the queue, leading to all further transmissions to
+> > be ignored.
+> >=20
+> > The reset interrupt can only happen while the device is "open", and
+> > after a reset we anyway want to resume normal operations, no matter if a
+> > packet to transmit got dropped in the process, so we shall wake up the
+> > queue. Restarting the device and waking-up the queue is exactly what
+> > sja1000_set_mode(CAN_MODE_START) does. In order to be consistent about
+> > the queue state, we must acquire a lock both in the reset handler and in
+> > the transmit path to ensure serialization of both operations. It turns
+> > out, a lock is already held when entering the transmit path, so we can
+> > just acquire/release it as well with the regular net helpers inside the
+> > threaded interrupt handler and this way we should be safe. As the
+> > reset handler might still be called after the transmission of a frame to
+> > the transceiver but before it actually gets transmitted, we must ensure
+> > we don't leak the skb, so we free it (the behavior is consistent, no
+> > matter if there was an skb on the stack or not).
+> >=20
+> > Fixes: 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with a soft =
+reset on Renesas SoCs")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com> =20
+>=20
+> Have you compile tested this against current net/main?
+>=20
+> |   CC [M]  drivers/net/can/sja1000/sja1000.o
+> | drivers/net/can/sja1000/sja1000.c: In function =E2=80=98sja1000_reset_i=
+nterrupt=E2=80=99:
+> | drivers/net/can/sja1000/sja1000.c:398:9: error: too few arguments to fu=
+nction =E2=80=98can_free_echo_skb=E2=80=99
+> |   398 |         can_free_echo_skb(dev, 0);
+> |       |         ^~~~~~~~~~~~~~~~~
+> | In file included from include/linux/can/dev.h:22,
+> |                  from drivers/net/can/sja1000/sja1000.c:62:
+> | include/linux/can/skb.h:28:6: note: declared here
+> |    28 | void can_free_echo_skb(struct net_device *dev, unsigned int idx,
+> |       |      ^~~~~~~~~~~~~~~~~
+> |
+>=20
+> This chance is mainline since v5.13-rc1~94^2~297^2~34. I've fixed the
+> problem while applying the patch.
 
-I figured that the description and Reported-by tag will trigger stable
-kernel pick up...
+I didn't, I fixed that in August and forgot I was on a 5.10 when
+submitting, as mainline does not run on the platform I used to test.
+Thanks for fixing.
+
+Miqu=C3=A8l
