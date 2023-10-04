@@ -2,168 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EE7D7B8515
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A0DE7B8557
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 18:32:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243380AbjJDQ0W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 12:26:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41462 "EHLO
+        id S243337AbjJDQcm convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Wed, 4 Oct 2023 12:32:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243366AbjJDQ0V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:26:21 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E1F9B
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 09:26:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCCAC433C7;
-        Wed,  4 Oct 2023 16:26:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696436778;
-        bh=AxFzV3Hdol+Yc/yhN6tONU4BpXHB0rhVQXHBKLCjTKw=;
-        h=Subject:To:Cc:From:Date:From;
-        b=fmd3HQXI3npVPLuh3J5nSozIuYsrfSQtJI19MPnZ0Qu1wBCyxojK21G8ZiyLHYSXq
-         i0Y9yIcEFe1HC8ygm9oMn7aWW7HdwrjpKj0EahqXIpH7PPLh7HQPWULVcnKS1akmYk
-         yH3DcX82xQHjP7V60bK11uR9cktwN1wFzYoiYT0w=
-Subject: FAILED: patch "[PATCH] rbd: take header_rwsem in rbd_dev_refresh() only when" failed to apply to 5.4-stable tree
-To:     idryomov@gmail.com, dongsheng.yang@easystack.cn
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 04 Oct 2023 18:26:08 +0200
-Message-ID: <2023100407-ruby-cancel-cdd0@gregkh>
+        with ESMTP id S243290AbjJDQcl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 12:32:41 -0400
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86919B;
+        Wed,  4 Oct 2023 09:32:37 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-690ba63891dso1860468b3a.2;
+        Wed, 04 Oct 2023 09:32:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696437157; x=1697041957;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bpOILGaPzFme8eJnGnR7nEZgZ9N3yDhRVdNPBjXB47c=;
+        b=b+YejCkoEdwopGfDPgAGjaHWPvDM7ZsfMdewoH0wvRXcHLwmEYmxGZjCs4/B6uTG+n
+         7q5xNNGxTaaM0fcpI3dpuVMlza53HXHvmj8T6L5SfDngig1vF26ezuREEEpnhTAmY588
+         5DcJHripshVPKqMH9sPip8SvIS7vZW7/rTaAhk+ewlUBDyaNgL9n4bg9fpRPuU9NPS65
+         2zXcts/gycDWv3+W0BDTvXmUR1C76WVFTRqDZ3a5+IVmOOMVGrW6DOUrlO2hEDuLy4Ih
+         aGe/Sc3m4tmxISMVTpFQSBe8orm8mcAn9cw+KC9Z7VnyIv0TxCnduA5Hstc4rdYatBk/
+         wJpA==
+X-Gm-Message-State: AOJu0YzeHq1VCiiP9/oqS8dPVoOp+bM7pX38Suop24+pWgG3VeyUjIUL
+        NfKkQivw20gqJCOoZ8oOrUDbgyEKARFUda/Lms0=
+X-Google-Smtp-Source: AGHT+IHW186xVTeJmlnOiSCmnojvR2aQu3JeoB9Ud4SaLe0VHaFIYFXp2RClDsx5Ggek5JoNCr7YFlnR0Qxq+UZGStM=
+X-Received: by 2002:a17:90b:1047:b0:277:6985:a3ff with SMTP id
+ gq7-20020a17090b104700b002776985a3ffmr2429510pjb.3.1696437156981; Wed, 04 Oct
+ 2023 09:32:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20231004040844.797044-1-namhyung@kernel.org> <20231004160224.GB6307@noisy.programming.kicks-ass.net>
+In-Reply-To: <20231004160224.GB6307@noisy.programming.kicks-ass.net>
+From:   Namhyung Kim <namhyung@kernel.org>
+Date:   Wed, 4 Oct 2023 09:32:24 -0700
+Message-ID: <CAM9d7cizC0J85ByuF5fBmc_Bqi=wpNJpiVsw+3F1Avusn2aQog@mail.gmail.com>
+Subject: Re: [PATCH] perf/core: Introduce cpuctx->cgrp_ctx_list
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Ravi Bangoria <ravi.bangoria@amd.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Peter,
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On Wed, Oct 4, 2023 at 9:02 AM Peter Zijlstra <peterz@infradead.org> wrote:
+>
+> On Tue, Oct 03, 2023 at 09:08:44PM -0700, Namhyung Kim wrote:
+>
+> > But after the change, it ended up iterating all pmus/events in the cpu
+> > context if there's a cgroup event somewhere on the cpu context.
+> > Unfortunately it includes uncore pmus which have much longer latency to
+> > control.
+>
+> Can you describe the problem in more detail please?
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Sure.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 0b207d02bd9ab8dcc31b262ca9f60dbc1822500d
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100407-ruby-cancel-cdd0@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+>
+> We have cgrp as part of the tree key: {cpu, pmu, cgroup, idx},
+> so it should be possible to find a specific cgroup for a cpu and or skip
+> to the next cgroup on that cpu in O(log n) time.
 
-Possible dependencies:
+This is about a single (core) pmu when it has a lot of events.
+But this problem is different, it's about accessing more pmus
+unnecessarily.
 
+Say we have the following events for CPU 0.
 
+  sw: context-switches
+  core: cycles, cycles-for-cgroup-A
+  uncore: whatever
 
-thanks,
+The cpu context has a cgroup event so it needs to call
+perf_cgroup_switch() at every context switch.  But actually
+it only needs to resched the 'core' pmu since it only has a
+cgroup event.  Other pmu events (like context-switches or
+any uncore event) should not be bothered by that.
 
-greg k-h
+But perf_cgroup_switch() calls the general functions which
+iterate all pmus in the (cpu) context.
 
------------------- original commit in Linus's tree ------------------
+  cpuctx.ctx.pmu_ctx_list:
+    +-> sw -> core -> uncore  (pmu_ctx_entry)
 
-From 0b207d02bd9ab8dcc31b262ca9f60dbc1822500d Mon Sep 17 00:00:00 2001
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Wed, 20 Sep 2023 19:01:03 +0200
-Subject: [PATCH] rbd: take header_rwsem in rbd_dev_refresh() only when
- updating
+Then it disables pmus, sched-out current events, switch
+cgroup pointer, sched-in new events and enable pmus.
+This gives a lot more overhead when it has uncore pmus
+since accessing MSRs for uncore pmus has longer latency.
+But uncore pmus cannot have cgroup events in the first
+place.
 
-rbd_dev_refresh() has been holding header_rwsem across header and
-parent info read-in unnecessarily for ages.  With commit 870611e4877e
-("rbd: get snapshot context after exclusive lock is ensured to be
-held"), the potential for deadlocks became much more real owning to
-a) header_rwsem now nesting inside lock_rwsem and b) rw_semaphores
-not allowing new readers after a writer is registered.
+So we need a separate list to keep pmus that have
+active cgroup events.
 
-For example, assuming that I/O request 1, I/O request 2 and header
-read-in request all target the same OSD:
+  cpuctx.cgrp_ctx_list:
+    +-> core  (cgrp_ctx_entry)
 
-1. I/O request 1 comes in and gets submitted
-2. watch error occurs
-3. rbd_watch_errcb() takes lock_rwsem for write, clears owner_cid and
-   releases lock_rwsem
-4. after reestablishing the watch, rbd_reregister_watch() calls
-   rbd_dev_refresh() which takes header_rwsem for write and submits
-   a header read-in request
-5. I/O request 2 comes in: after taking lock_rwsem for read in
-   __rbd_img_handle_request(), it blocks trying to take header_rwsem
-   for read in rbd_img_object_requests()
-6. another watch error occurs
-7. rbd_watch_errcb() blocks trying to take lock_rwsem for write
-8. I/O request 1 completion is received by the messenger but can't be
-   processed because lock_rwsem won't be granted anymore
-9. header read-in request completion can't be received, let alone
-   processed, because the messenger is stranded
+And we also need a logic to do the same work only
+for this list.
 
-Change rbd_dev_refresh() to take header_rwsem only for actually
-updating rbd_dev->header.  Header and parent info read-in don't need
-any locking.
+Hope this helps.
 
-Cc: stable@vger.kernel.org # 0b035401c570: rbd: move rbd_dev_refresh() definition
-Cc: stable@vger.kernel.org # 510a7330c82a: rbd: decouple header read-in from updating rbd_dev->header
-Cc: stable@vger.kernel.org # c10311776f0a: rbd: decouple parent info read-in from updating rbd_dev
-Cc: stable@vger.kernel.org
-Fixes: 870611e4877e ("rbd: get snapshot context after exclusive lock is ensured to be held")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+>
+> > To fix the issue, I restored a linked list equivalent to cgrp_cpuctx_list
+> > in the perf_cpu_context and link perf_cpu_pmu_contexts that have cgroup
+> > events only.  Also add new helpers to enable/disable and does ctx sched
+> > in/out for cgroups.
+>
+> Adding a list and duplicating the whole scheduling infrastructure seems
+> 'unfortunate' at best.
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index d62a0298c890..a999b698b131 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -6986,7 +6986,14 @@ static void rbd_dev_update_header(struct rbd_device *rbd_dev,
- 	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
- 	rbd_assert(rbd_dev->header.object_prefix); /* !first_time */
- 
--	rbd_dev->header.image_size = header->image_size;
-+	if (rbd_dev->header.image_size != header->image_size) {
-+		rbd_dev->header.image_size = header->image_size;
-+
-+		if (!rbd_is_snap(rbd_dev)) {
-+			rbd_dev->mapping.size = header->image_size;
-+			rbd_dev_update_size(rbd_dev);
-+		}
-+	}
- 
- 	ceph_put_snap_context(rbd_dev->header.snapc);
- 	rbd_dev->header.snapc = header->snapc;
-@@ -7044,11 +7051,9 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- {
- 	struct rbd_image_header	header = { 0 };
- 	struct parent_image_info pii = { 0 };
--	u64 mapping_size;
- 	int ret;
- 
--	down_write(&rbd_dev->header_rwsem);
--	mapping_size = rbd_dev->mapping.size;
-+	dout("%s rbd_dev %p\n", __func__, rbd_dev);
- 
- 	ret = rbd_dev_header_info(rbd_dev, &header, false);
- 	if (ret)
-@@ -7064,18 +7069,13 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 			goto out;
- 	}
- 
-+	down_write(&rbd_dev->header_rwsem);
- 	rbd_dev_update_header(rbd_dev, &header);
- 	if (rbd_dev->parent)
- 		rbd_dev_update_parent(rbd_dev, &pii);
--
--	rbd_assert(!rbd_is_snap(rbd_dev));
--	rbd_dev->mapping.size = rbd_dev->header.image_size;
-+	up_write(&rbd_dev->header_rwsem);
- 
- out:
--	up_write(&rbd_dev->header_rwsem);
--	if (!ret && mapping_size != rbd_dev->mapping.size)
--		rbd_dev_update_size(rbd_dev);
--
- 	rbd_parent_info_cleanup(&pii);
- 	rbd_image_header_cleanup(&header);
- 	return ret;
+Yeah, I know.. but I couldn't come up with a better solution.
 
+Thanks,
+Namhyung
