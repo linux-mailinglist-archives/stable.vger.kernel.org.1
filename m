@@ -2,101 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 598327B8634
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 19:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CCB07B8637
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 19:16:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243654AbjJDRPF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 13:15:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43406 "EHLO
+        id S243549AbjJDRQY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 13:16:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243653AbjJDRPF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 13:15:05 -0400
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C643D9E;
-        Wed,  4 Oct 2023 10:15:01 -0700 (PDT)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-5043a01ee20so102928e87.0;
-        Wed, 04 Oct 2023 10:15:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696439700; x=1697044500; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uN0/qBnSOCxuRcuMfH57mhCtCNdVLTpuCD2AqgTf59I=;
-        b=ngUVcIWeSiiSiYkv1twIBtNK8w2wPrRyfPgNAnFs2MUeyVtWJXR1E93plCZH2Scdsm
-         G5nwnl5Ao0fvmm7b42UPjLxIlwg+nP0Q1Logi+GX2n4aH7mtP01G8LZQsG1TnLOoCYDW
-         w3ZIXPx63+R+BUt2zUcbg1JGdHvauIC4BZFB4HHYn4G4YMj/RWpXFuli+2Tc+fD3uFv5
-         GLH+W6kvV1LMxh/ZmH6OI5bu0M2MtjQjYJ6yopM7DOX+ynPFaA9As6g+ju1k80QTx357
-         6BwwPE2/UL3le8sQP8KKX+yvuZpTMFkmmdmyu+xD4c8se7zdLetjIg4J+TqVRwHi6IO0
-         KyjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696439700; x=1697044500;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uN0/qBnSOCxuRcuMfH57mhCtCNdVLTpuCD2AqgTf59I=;
-        b=sjdmFlZ63gEa4Z6fIbv7mz8gCpxmMw+E3M2F6sgbrcUZ1qWrk3fdnfT3awz3Pt3yfB
-         bXxZPZge5CjgDJBUdF5WfM0o5JV0oTk3lpA/LLwE1rdZ3m+Ir7r8ItFS/FW6RF1LnmOV
-         ux+OQCUQK9X72YFj1McAahuSKZ70aNBIAal+xoVeOVFy1cXXGK80OQYzjg5Nxbx8HdNj
-         XyoeGlgr2YCyoWI1luxUVorc7KiCxEHkFmEt/V1gvpg1Ek2N8VDAj87acpeq6HnHn6SS
-         Y3T6rcffHloBuxhufVdbS5jE6Bow8s793ypXJEfjaD8x89CODtg1YgjRi+vVsj9UZt/j
-         EWzw==
-X-Gm-Message-State: AOJu0Yy+E266zaPe5ChcG7t1dpsKE0pFpnfLGDV2ymS48TEnK9ZvlSWC
-        nGr0TjdmcG3ni7e3gcIiE98UZdD0qBAMrSHTnxM=
-X-Google-Smtp-Source: AGHT+IFaH/fFdbF+DkwG9xKZ0qeshMs9vxr3MPhrVxX7QwoI5Tx/rsMu4nwy0PRPqeHlT1Zml0o003d7n/XjVoIND9M=
-X-Received: by 2002:a05:6512:32cd:b0:4fa:f96c:745f with SMTP id
- f13-20020a05651232cd00b004faf96c745fmr3011246lfg.38.1696439699819; Wed, 04
- Oct 2023 10:14:59 -0700 (PDT)
+        with ESMTP id S233488AbjJDRQY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 13:16:24 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2DBE9E;
+        Wed,  4 Oct 2023 10:16:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4273C433C8;
+        Wed,  4 Oct 2023 17:16:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696439780;
+        bh=4ASCGJlKUkPzZR1q9AJsbJfWmb02kFK0srB6/vt/Sk0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=coVBEOSs0x81o5p23+TO4PnI3wbfyeZNM3hyWHmPK010uaxaAV1YlKPCEhOnxgkGL
+         KlFn45fMrROksso7Gosni1pfQulcNKTZ45RrxLSE2Nx0COAH/dLaPN0l5ynpLZrWqk
+         KqUMvTYAp5X0JKRaRCddqXkLTfkBSNV1nZ3cxZEw=
+Date:   Wed, 4 Oct 2023 19:16:17 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     August Wikerfors <git@augustwikerfors.se>
+Cc:     stable@vger.kernel.org, broonie@kernel.org,
+        stable-commits@vger.kernel.org,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        regressions@lists.linux.dev
+Subject: Re: Patch "ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and
+ 82UG" has been added to the 6.1-stable tree
+Message-ID: <2023100411-unsecured-angler-f25b@gregkh>
+References: <B48DED01-5B50-4EF7-B0AC-2DC742D07890@augustwikerfors.se>
 MIME-Version: 1.0
-References: <20231004011303.979995-1-jrife@google.com> <9062eefc4114f9c9162a19f98a1b820c.pc@manguebit.com>
-In-Reply-To: <9062eefc4114f9c9162a19f98a1b820c.pc@manguebit.com>
-From:   Steve French <smfrench@gmail.com>
-Date:   Wed, 4 Oct 2023 12:14:48 -0500
-Message-ID: <CAH2r5mt4UGni0Wa2sqBA+OGuvnYjmy1ut0pzKa-1C1vUE=fEaw@mail.gmail.com>
-Subject: Re: [PATCH] smb: use kernel_connect() and kernel_bind()
-To:     Paulo Alcantara <pc@manguebit.com>
-Cc:     Jordan Rife <jrife@google.com>, sfrench@samba.org,
-        lsahlber@redhat.com, sprasad@microsoft.com, tom@talpey.com,
-        linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <B48DED01-5B50-4EF7-B0AC-2DC742D07890@augustwikerfors.se>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-tentatively merged into cifs-2.6.git for-next pending testing and
-additional review
+On Wed, Oct 04, 2023 at 06:33:55PM +0200, August Wikerfors wrote:
+> Hi Greg,
+> 
+> > On 4 Oct 2023, at 16:58, gregkh@linuxfoundation.org wrote:
+> > 
+> > ﻿
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >  ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG
+> > 
+> > to the 6.1-stable tree which can be found at:
+> >  http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >   asoc-amd-yc-fix-non-functional-mic-on-lenovo-82qf-and-82ug.patch
+> > and it can be found in the queue-6.1 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> > 
+> > 
+> > From 1263cc0f414d212129c0f1289b49b7df77f92084 Mon Sep 17 00:00:00 2001
+> > From: August Wikerfors <git@augustwikerfors.se>
+> > Date: Mon, 11 Sep 2023 23:34:09 +0200
+> > Subject: ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG
+> > 
+> > From: August Wikerfors <git@augustwikerfors.se>
+> > 
+> > commit 1263cc0f414d212129c0f1289b49b7df77f92084 upstream.
+> > 
+> > Like the Lenovo 82TL and 82V2, the Lenovo 82QF (Yoga 7 14ARB7) and 82UG
+> > (Legion S7 16ARHA7) both need a quirk entry for the internal microphone to
+> > function. Commit c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on
+> > Lenovo 82SJ") restricted the quirk that previously matched "82" to "82V2",
+> > breaking microphone functionality on these devices. Fix this by adding
+> > specific quirks for these models, as was done for the Lenovo 82TL.
+> > 
+> > Fixes: c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on Lenovo 82SJ")
+> > Closes: https://github.com/tomsom/yoga-linux/issues/51
+> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=208555#c780
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: August Wikerfors <git@augustwikerfors.se>
+> > Link: https://lore.kernel.org/r/20230911213409.6106-1-git@augustwikerfors.se
+> > Signed-off-by: Mark Brown <broonie@kernel.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> Please also add commit cfff2a7794d2 ("ASoC: amd: yc: Fix a non-functional mic on Lenovo 82TL") to 6.1+ as it fixed the same regression for another model (but wasn’t tagged for stable).
 
-On Wed, Oct 4, 2023 at 10:44=E2=80=AFAM Paulo Alcantara <pc@manguebit.com> =
-wrote:
->
-> Jordan Rife <jrife@google.com> writes:
->
-> > Recent changes to kernel_connect() and kernel_bind() ensure that
-> > callers are insulated from changes to the address parameter made by BPF
-> > SOCK_ADDR hooks. This patch wraps direct calls to ops->connect() and
-> > ops->bind() with kernel_connect() and kernel_bind() to ensure that SMB
-> > mounts do not see their mount address overwritten in such cases.
-> >
-> > Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d=
-933ba9.camel@redhat.com/
-> > Cc: <stable@vger.kernel.org> # 6.x.y
-> > Signed-off-by: Jordan Rife <jrife@google.com>
-> > ---
-> >  fs/smb/client/connect.c | 10 +++++-----
-> >  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> Acked-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Now queued up, thanks.
 
-
-
---=20
-Thanks,
-
-Steve
+greg k-h
