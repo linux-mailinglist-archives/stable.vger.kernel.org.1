@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 862217B8983
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F9E97B8848
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:14:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244202AbjJDS04 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35598 "EHLO
+        id S244006AbjJDSOk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:14:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244399AbjJDS0u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:26:50 -0400
+        with ESMTP id S244000AbjJDSOj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:14:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D012A6
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:26:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83B3C433C7;
-        Wed,  4 Oct 2023 18:26:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EADEC9E
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:14:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356E8C433C9;
+        Wed,  4 Oct 2023 18:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444007;
-        bh=Jjk+tl9skx7HmB7vpna+OYZxhC7By5fQgYRR7o2QQN0=;
+        s=korg; t=1696443275;
+        bh=X4iDKUxemuAF5AOtlk0CV26CioeIwuxSt/MD7oc18cY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uOFcGgrsEQ8uRYXCW5+ceK9639FcO1DQMBGZPIbZw+F/gfZTNWlD7cslUCzqTmsQ8
-         lc0xN43mnYPZEeT7YUCa5iRruaZyDfMIs+jyDw2tBUlgLMdAr6n9tp45mT503fclKv
-         4TI2/u+Bw/fKyu3LuE4Fm16tghoa2uvC4h751Gp0=
+        b=Ui4jsfzoUnnalxvIFhNMMSFG7PSBjk0bWBBJChWge7Lac1C7owzIyUSq5rXLtHRFf
+         NOgQNvda9MQrKeyQzBQv+ZYzi4saGgQxqDz+rKYf1y0vfKO3vA++iKrXHOR7eX0XVh
+         qRW3GyZxqwc3DGJM8PpGMUX1PHE5HYeva2+elUcY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 098/321] locking/seqlock: Do the lockdep annotation before locking in do_write_seqcount_begin_nested()
+        patches@lists.linux.dev, Jie Wang <wangjie125@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 070/259] net: hns3: fix GRE checksum offload issue
 Date:   Wed,  4 Oct 2023 19:54:03 +0200
-Message-ID: <20231004175233.769366427@linuxfoundation.org>
+Message-ID: <20231004175220.617501142@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,60 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit 41b43b6c6e30a832c790b010a06772e793bca193 ]
+[ Upstream commit f9f651261130cdcb7adc9a3e365b356bc2749ab3 ]
 
-It was brought up by Tetsuo that the following sequence:
+The device_version V3 hardware can't offload the checksum for IP in GRE
+packets, but can do it for NvGRE. So default to disable the checksum and
+GSO offload for GRE, but keep the ability to enable it when only using
+NvGRE.
 
-   write_seqlock_irqsave()
-   printk_deferred_enter()
-
-could lead to a deadlock if the lockdep annotation within
-write_seqlock_irqsave() triggers.
-
-The problem is that the sequence counter is incremented before the lockdep
-annotation is performed. The lockdep splat would then attempt to invoke
-printk() but the reader side, of the same seqcount, could have a
-tty_port::lock acquired waiting for the sequence number to become even again.
-
-The other lockdep annotations come before the actual locking because "we
-want to see the locking error before it happens". There is no reason why
-seqcount should be different here.
-
-Do the lockdep annotation first then perform the locking operation (the
-sequence increment).
-
-Fixes: 1ca7d67cf5d5a ("seqcount: Add lockdep functionality to seqcount/seqlock structures")
-Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230920104627._DTHgPyA@linutronix.de
-
-Closes: https://lore.kernel.org/20230621130641.-5iueY1I@linutronix.de
+Fixes: 76ad4f0ee747 ("net: hns3: Add support of HNS3 Ethernet Driver for hip08 SoC")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/seqlock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 987a59d977c56..e9bd2f65d7f4e 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -512,8 +512,8 @@ do {									\
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 8aae179554a81..04c9baca1b0f8 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -3352,6 +3352,15 @@ static void hns3_set_default_feature(struct net_device *netdev)
+ 		  NETIF_F_HW_TC);
  
- static inline void do_write_seqcount_begin_nested(seqcount_t *s, int subclass)
- {
--	do_raw_write_seqcount_begin(s);
- 	seqcount_acquire(&s->dep_map, subclass, 0, _RET_IP_);
-+	do_raw_write_seqcount_begin(s);
+ 	netdev->hw_enc_features |= netdev->vlan_features | NETIF_F_TSO_MANGLEID;
++
++	/* The device_version V3 hardware can't offload the checksum for IP in
++	 * GRE packets, but can do it for NvGRE. So default to disable the
++	 * checksum and GSO offload for GRE.
++	 */
++	if (ae_dev->dev_version > HNAE3_DEVICE_VERSION_V2) {
++		netdev->features &= ~NETIF_F_GSO_GRE;
++		netdev->features &= ~NETIF_F_GSO_GRE_CSUM;
++	}
  }
  
- /**
+ static int hns3_alloc_buffer(struct hns3_enet_ring *ring,
 -- 
 2.40.1
 
