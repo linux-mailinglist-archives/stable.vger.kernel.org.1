@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 119627B89BF
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 526057B8855
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:15:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244210AbjJDS2o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:28:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38512 "EHLO
+        id S244022AbjJDSPE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:15:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244276AbjJDS2n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:28:43 -0400
+        with ESMTP id S244021AbjJDSPE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:15:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D06C3CE
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:28:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F92FC433C8;
-        Wed,  4 Oct 2023 18:28:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F5AA6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:15:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FC9C433C7;
+        Wed,  4 Oct 2023 18:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696444117;
-        bh=qx6TAtZxdjPbZ6QCTfPtL2vLXFN7exg96rE0XBgZIUY=;
+        s=korg; t=1696443300;
+        bh=hVqhJGjC6oOI2jYNz3tpt2GGBvCbctVlQjCDnUP2Me0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EBX9K8tWgBWVclqBheo3SmobTX4E37c/XmaRuIQ73YloW9vanEqe3dUKwgBTGe6XQ
-         FH/Gj3bMaRgHRSbiWC9VXKo1KN+ep3KWoPIaqkkLfy/02+b9sn+gBPLz6TCWpjhhTk
-         yeWbFh6AsLSjVAjmDAeSu8u3tFWdH9tehOfnjXP8=
+        b=iubew5KBbwwiP6FW/dlNq0i+YSjMsFgZEpW1377XOXK+IwUZjtEBqcjnYKaK9lWL2
+         PWpfeINIBC3QqDkRJet5lebjgM/kuOj0c1oFTj2X/OSnVFtujRDEebzMRyWIRA9wbC
+         BaAepBbXBhSQm5j+JbJ7R9xE6nkrZup+rt4hWJFU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vincent Whitchurch <vincent.whitchurch@axis.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Eric Farman <farman@linux.ibm.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 136/321] power: supply: core: fix use after free in uevent
+Subject: [PATCH 6.1 108/259] vfio/mdev: Fix a null-ptr-deref bug for mdev_unregister_parent()
 Date:   Wed,  4 Oct 2023 19:54:41 +0200
-Message-ID: <20231004175235.544938527@linuxfoundation.org>
+Message-ID: <20231004175222.304389209@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,103 +52,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 3dc0bab23dba53f315c9a7b4a679e0a6d46f7c6e ]
+[ Upstream commit c777b11d34e0f47dbbc4b018ef65ad030f2b283a ]
 
-power_supply_uevent() which is called to emit a udev event on device
-deletion attempts to use the power_supply_battery_info structure,
-which is device-managed and has been freed before this point.
+Inject fault while probing mdpy.ko, if kstrdup() of create_dir() fails in
+kobject_add_internal() in kobject_init_and_add() in mdev_type_add()
+in parent_create_sysfs_files(), it will return 0 and probe successfully.
+And when rmmod mdpy.ko, the mdpy_dev_exit() will call
+mdev_unregister_parent(), the mdev_type_remove() may traverse uninitialized
+parent->types[i] in parent_remove_sysfs_files(), and it will cause
+below null-ptr-deref.
 
-Fix this by not generating all battery/charger properties when the
-device is about to be removed. This also avoids generating errors
-when trying to access the hardware in hot-unplug scenarios.
+If mdev_type_add() fails, return the error code and kset_unregister()
+to fix the issue.
 
-==================================================================
- BUG: KASAN: slab-use-after-free in power_supply_battery_info_has_prop (power_supply_core.c:872)
- Read of size 4 at addr 0000000062e59028 by task python3/27
-
+ general protection fault, probably for non-canonical address 0xdffffc0000000002: 0000 [#1] PREEMPT SMP KASAN
+ KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+ CPU: 2 PID: 10215 Comm: rmmod Tainted: G        W        N 6.6.0-rc2+ #20
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+ RIP: 0010:__kobject_del+0x62/0x1c0
+ Code: 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 51 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 8b 6b 28 48 8d 7d 10 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 24 01 00 00 48 8b 75 10 48 89 df 48 8d 6b 3c e8
+ RSP: 0018:ffff88810695fd30 EFLAGS: 00010202
+ RAX: dffffc0000000000 RBX: ffffffffa0270268 RCX: 0000000000000000
+ RDX: 0000000000000002 RSI: 0000000000000004 RDI: 0000000000000010
+ RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed10233a4ef1
+ R10: ffff888119d2778b R11: 0000000063666572 R12: 0000000000000000
+ R13: fffffbfff404e2d4 R14: dffffc0000000000 R15: ffffffffa0271660
+ FS:  00007fbc81981540(0000) GS:ffff888119d00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007fc14a142dc0 CR3: 0000000110a62003 CR4: 0000000000770ee0
+ DR0: ffffffff8fb0bce8 DR1: ffffffff8fb0bce9 DR2: ffffffff8fb0bcea
+ DR3: ffffffff8fb0bceb DR6: 00000000fffe0ff0 DR7: 0000000000000600
+ PKRU: 55555554
  Call Trace:
-  power_supply_battery_info_has_prop (power_supply_core.c:872)
-  power_supply_uevent (power_supply_sysfs.c:504)
-  dev_uevent (drivers/base/core.c:2590)
-  kobject_uevent_env (lib/kobject_uevent.c:558)
-  kobject_uevent (lib/kobject_uevent.c:643)
-  device_del (drivers/base/core.c:3266 drivers/base/core.c:3831)
-  device_unregister (drivers/base/core.c:3730 drivers/base/core.c:3854)
-  power_supply_unregister (power_supply_core.c:1608)
-  devm_power_supply_release (power_supply_core.c:1515)
-  release_nodes (drivers/base/devres.c:506)
-  devres_release_group (drivers/base/devres.c:669)
-  i2c_device_remove (drivers/i2c/i2c-core-base.c:629)
-  device_remove (drivers/base/dd.c:570)
-  device_release_driver_internal (drivers/base/dd.c:1274 drivers/base/dd.c:1295)
-  device_driver_detach (drivers/base/dd.c:1332)
-  unbind_store (drivers/base/bus.c:247)
-  ...
+  <TASK>
+  ? die_addr+0x3d/0xa0
+  ? exc_general_protection+0x144/0x220
+  ? asm_exc_general_protection+0x22/0x30
+  ? __kobject_del+0x62/0x1c0
+  kobject_del+0x32/0x50
+  parent_remove_sysfs_files+0xd6/0x170 [mdev]
+  mdev_unregister_parent+0xfb/0x190 [mdev]
+  ? mdev_register_parent+0x270/0x270 [mdev]
+  ? find_module_all+0x9d/0xe0
+  mdpy_dev_exit+0x17/0x63 [mdpy]
+  __do_sys_delete_module.constprop.0+0x2fa/0x4b0
+  ? module_flags+0x300/0x300
+  ? __fput+0x4e7/0xa00
+  do_syscall_64+0x35/0x80
+  entry_SYSCALL_64_after_hwframe+0x46/0xb0
+ RIP: 0033:0x7fbc813221b7
+ Code: 73 01 c3 48 8b 0d d1 8c 2c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d a1 8c 2c 00 f7 d8 64 89 01 48
+ RSP: 002b:00007ffe780e0648 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
+ RAX: ffffffffffffffda RBX: 00007ffe780e06a8 RCX: 00007fbc813221b7
+ RDX: 000000000000000a RSI: 0000000000000800 RDI: 000055e214df9b58
+ RBP: 000055e214df9af0 R08: 00007ffe780df5c1 R09: 0000000000000000
+ R10: 00007fbc8139ecc0 R11: 0000000000000206 R12: 00007ffe780e0870
+ R13: 00007ffe780e0ed0 R14: 000055e214df9260 R15: 000055e214df9af0
+  </TASK>
+ Modules linked in: mdpy(-) mdev vfio_iommu_type1 vfio [last unloaded: mdpy]
+ Dumping ftrace buffer:
+    (ftrace buffer empty)
+ ---[ end trace 0000000000000000 ]---
+ RIP: 0010:__kobject_del+0x62/0x1c0
+ Code: 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 51 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 8b 6b 28 48 8d 7d 10 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 24 01 00 00 48 8b 75 10 48 89 df 48 8d 6b 3c e8
+ RSP: 0018:ffff88810695fd30 EFLAGS: 00010202
+ RAX: dffffc0000000000 RBX: ffffffffa0270268 RCX: 0000000000000000
+ RDX: 0000000000000002 RSI: 0000000000000004 RDI: 0000000000000010
+ RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed10233a4ef1
+ R10: ffff888119d2778b R11: 0000000063666572 R12: 0000000000000000
+ R13: fffffbfff404e2d4 R14: dffffc0000000000 R15: ffffffffa0271660
+ FS:  00007fbc81981540(0000) GS:ffff888119d00000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 00007fc14a142dc0 CR3: 0000000110a62003 CR4: 0000000000770ee0
+ DR0: ffffffff8fb0bce8 DR1: ffffffff8fb0bce9 DR2: ffffffff8fb0bcea
+ DR3: ffffffff8fb0bceb DR6: 00000000fffe0ff0 DR7: 0000000000000600
+ PKRU: 55555554
+ Kernel panic - not syncing: Fatal exception
+ Dumping ftrace buffer:
+    (ftrace buffer empty)
+ Kernel Offset: disabled
+ Rebooting in 1 seconds..
 
- Allocated by task 27:
-  devm_kmalloc (drivers/base/devres.c:119 drivers/base/devres.c:829)
-  power_supply_get_battery_info (include/linux/device.h:316 power_supply_core.c:626)
-  __power_supply_register (power_supply_core.c:1408)
-  devm_power_supply_register (power_supply_core.c:1544)
-  bq256xx_probe (bq256xx_charger.c:1539 bq256xx_charger.c:1727) bq256xx_charger
-  i2c_device_probe (drivers/i2c/i2c-core-base.c:584)
-  really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658)
-  __driver_probe_device (drivers/base/dd.c:800)
-  device_driver_attach (drivers/base/dd.c:1128)
-  bind_store (drivers/base/bus.c:273)
-  ...
-
- Freed by task 27:
-  kfree (mm/slab_common.c:1073)
-  release_nodes (drivers/base/devres.c:503)
-  devres_release_all (drivers/base/devres.c:536)
-  device_del (drivers/base/core.c:3829)
-  device_unregister (drivers/base/core.c:3730 drivers/base/core.c:3854)
-  power_supply_unregister (power_supply_core.c:1608)
-  devm_power_supply_release (power_supply_core.c:1515)
-  release_nodes (drivers/base/devres.c:506)
-  devres_release_group (drivers/base/devres.c:669)
-  i2c_device_remove (drivers/i2c/i2c-core-base.c:629)
-  device_remove (drivers/base/dd.c:570)
-  device_release_driver_internal (drivers/base/dd.c:1274 drivers/base/dd.c:1295)
-  device_driver_detach (drivers/base/dd.c:1332)
-  unbind_store (drivers/base/bus.c:247)
-  ...
- ==================================================================
-
-Reported-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-Fixes: 27a2195efa8d ("power: supply: core: auto-exposure of simple-battery data")
-Tested-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: da44c340c4fe ("vfio/mdev: simplify mdev_type handling")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: Eric Farman <farman@linux.ibm.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20230918115551.1423193-1-ruanjinjie@huawei.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/power_supply_sysfs.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/vfio/mdev/mdev_sysfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/power_supply_sysfs.c b/drivers/power/supply/power_supply_sysfs.c
-index 06e5b6b0e255c..d483a81560ab0 100644
---- a/drivers/power/supply/power_supply_sysfs.c
-+++ b/drivers/power/supply/power_supply_sysfs.c
-@@ -482,6 +482,13 @@ int power_supply_uevent(const struct device *dev, struct kobj_uevent_env *env)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/vfio/mdev/mdev_sysfs.c b/drivers/vfio/mdev/mdev_sysfs.c
+index abe3359dd477f..16b007c6bbb56 100644
+--- a/drivers/vfio/mdev/mdev_sysfs.c
++++ b/drivers/vfio/mdev/mdev_sysfs.c
+@@ -233,7 +233,8 @@ int parent_create_sysfs_files(struct mdev_parent *parent)
+ out_err:
+ 	while (--i >= 0)
+ 		mdev_type_remove(parent->types[i]);
+-	return 0;
++	kset_unregister(parent->mdev_types_kset);
++	return ret;
+ }
  
-+	/*
-+	 * Kernel generates KOBJ_REMOVE uevent in device removal path, after
-+	 * resources have been freed. Exit early to avoid use-after-free.
-+	 */
-+	if (psy->removing)
-+		return 0;
-+
- 	prop_buf = (char *)get_zeroed_page(GFP_KERNEL);
- 	if (!prop_buf)
- 		return -ENOMEM;
+ static ssize_t remove_store(struct device *dev, struct device_attribute *attr,
 -- 
 2.40.1
 
