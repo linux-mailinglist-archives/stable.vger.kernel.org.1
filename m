@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBE087B889E
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50D837B8A08
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:31:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244107AbjJDSR4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:17:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46696 "EHLO
+        id S244345AbjJDSbr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:31:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244085AbjJDSR4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:17:56 -0400
+        with ESMTP id S244393AbjJDSbb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:31:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9F1C1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:17:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C35C433C7;
-        Wed,  4 Oct 2023 18:17:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9782AA7
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:31:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B8EC433C7;
+        Wed,  4 Oct 2023 18:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443472;
-        bh=noCEahlCuQdE46oCy/jwi5CS9pdId4l8S+yt3xxMGSA=;
+        s=korg; t=1696444287;
+        bh=yh5Emd1foADr9nuw1nTau1boqHBh0xXEwBXH1LSTRIM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aHNB0QV1JJtG/irmoA2gYD/CkC0KjkgziBWfkgEspBZqfiIqLBtu7Nzi76PGXw9dn
-         GgkyKL+tKsQ9EWqDP9e/susulH7MYtrPDhhjYAmpA58zBSsyaex9Wjb7UvqK2w2uQ3
-         Ijmb3XWZ+gMxrFXGq0nJB0w9NvqZNCyHQOTbOLC8=
+        b=JlU4BNQdzvRKoeDRw/v+6ghYRLyFRu0cxf/fpibEhtInjIxn1AvvmFDmmbkmBPAjm
+         TbgZAcQscDykhCnsODcjJ3C6wJiTB9KZICnVe/nsTpIwvFm913jLs0PCNmA3zcRz0a
+         SprXSV7JfOYD2PuG+kFvIZYN1rjqvUzAJEplC4p0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -32,12 +32,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Drew Fustini <dfustini@baylibre.com>,
         Palmer Dabbelt <palmer@rivosinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 169/259] riscv: errata: fix T-Head dcache.cva encoding
+Subject: [PATCH 6.5 197/321] riscv: errata: fix T-Head dcache.cva encoding
 Date:   Wed,  4 Oct 2023 19:55:42 +0200
-Message-ID: <20231004175225.035925326@linuxfoundation.org>
+Message-ID: <20231004175238.360582680@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,7 +53,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -79,7 +79,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/riscv/include/asm/errata_list.h b/arch/riscv/include/asm/errata_list.h
-index 19a771085781a..7d2675bb71611 100644
+index fb1a810f3d8ce..feab334dd8329 100644
 --- a/arch/riscv/include/asm/errata_list.h
 +++ b/arch/riscv/include/asm/errata_list.h
 @@ -100,7 +100,7 @@ asm volatile(ALTERNATIVE(						\
