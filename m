@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B3387B87E3
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:10:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 731177B893F
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:24:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233886AbjJDSKa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:10:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57984 "EHLO
+        id S244146AbjJDSYD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:24:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243856AbjJDSK3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:10:29 -0400
+        with ESMTP id S244142AbjJDSYB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:24:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44BE9A7
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:10:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A306C433C8;
-        Wed,  4 Oct 2023 18:10:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC47A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:23:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBF8C433CC;
+        Wed,  4 Oct 2023 18:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696443025;
-        bh=QJCVhdjgAKA11+KYpiRrIrSHLSZuwELk1JAWxKjjrbU=;
+        s=korg; t=1696443837;
+        bh=CxO1MQH/F0AL/ksyccRvd4u6OjccmWJtxgJMyplXb4o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vqsr6Y5bRELkU7K+9nTnYTkS2C8SoxHvLR3+CXmNr2lBhqcXnLU4NnKDCH6OTkybC
-         aQU40WecDXgx27X0M4Q7fAb1YStC4CLTi2j5gON1ay/eZoInP+H6izmvF1dyXlS+QJ
-         MBK3AEd+LdW993MCc8rlwAf48U++UZjaOVxRuPnk=
+        b=CXylN54xUL1bdwVhR1a8NaN2NBg19s3A73xtTdJEFniJaFkgcmFQUo1DxrHs7X3Lr
+         stJtiTj3oy+HAVZo02+IUbtW7jAX4XR1uO8gzv0RdW7KZBxQJOE1LVlMa8y3DRB5Pr
+         g7KrX1z/Oosav4kjD5x5aAK2h6dXdOmUJ6mHu5yk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Artem Savkov <asavkov@redhat.com>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/259] media: v4l: Use correct dependency for camera sensor drivers
+Subject: [PATCH 6.5 038/321] selftests/bpf: fix unpriv_disabled check in test_verifier
 Date:   Wed,  4 Oct 2023 19:53:03 +0200
-Message-ID: <20231004175217.911280396@linuxfoundation.org>
+Message-ID: <20231004175230.926948469@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-References: <20231004175217.404851126@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,83 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Artem Savkov <asavkov@redhat.com>
 
-[ Upstream commit 86e16b87afac20779da1228d690a95c54d7e2ad0 ]
+[ Upstream commit d128860dbb29cafc3c65ca2d22082745a32829dd ]
 
-The Kconfig option that enables compiling camera sensor drivers is
-VIDEO_CAMERA_SENSOR rather than MEDIA_CAMERA_SUPPORT as it was previously.
-Fix this.
+Commit 1d56ade032a49 changed the function get_unpriv_disabled() to
+return its results as a bool instead of updating a global variable, but
+test_verifier was not updated to keep in line with these changes. Thus
+unpriv_disabled is always false in test_verifier and unprivileged tests
+are not properly skipped on systems with unprivileged bpf disabled.
 
-Also select VIDEO_OV7670 for marvell platform drivers only if
-MEDIA_SUBDRV_AUTOSELECT and VIDEO_CAMERA_SENSOR are enabled.
-
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Fixes: 7d3c7d2a2914 ("media: i2c: Add a camera sensor top level menu")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 1d56ade032a49 ("selftests/bpf: Unprivileged tests for test_loader.c")
+Signed-off-by: Artem Savkov <asavkov@redhat.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20230912120631.213139-1-asavkov@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/marvell/Kconfig | 4 ++--
- drivers/media/usb/em28xx/Kconfig       | 4 ++--
- drivers/media/usb/go7007/Kconfig       | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ tools/testing/selftests/bpf/test_verifier.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/marvell/Kconfig b/drivers/media/platform/marvell/Kconfig
-index ec1a16734a280..d6499ffe30e8b 100644
---- a/drivers/media/platform/marvell/Kconfig
-+++ b/drivers/media/platform/marvell/Kconfig
-@@ -7,7 +7,7 @@ config VIDEO_CAFE_CCIC
- 	depends on V4L_PLATFORM_DRIVERS
- 	depends on PCI && I2C && VIDEO_DEV
- 	depends on COMMON_CLK
--	select VIDEO_OV7670
-+	select VIDEO_OV7670 if MEDIA_SUBDRV_AUTOSELECT && VIDEO_CAMERA_SENSOR
- 	select VIDEOBUF2_VMALLOC
- 	select VIDEOBUF2_DMA_CONTIG
- 	select VIDEOBUF2_DMA_SG
-@@ -22,7 +22,7 @@ config VIDEO_MMP_CAMERA
- 	depends on I2C && VIDEO_DEV
- 	depends on ARCH_MMP || COMPILE_TEST
- 	depends on COMMON_CLK
--	select VIDEO_OV7670
-+	select VIDEO_OV7670 if MEDIA_SUBDRV_AUTOSELECT && VIDEO_CAMERA_SENSOR
- 	select I2C_GPIO
- 	select VIDEOBUF2_VMALLOC
- 	select VIDEOBUF2_DMA_CONTIG
-diff --git a/drivers/media/usb/em28xx/Kconfig b/drivers/media/usb/em28xx/Kconfig
-index b3c472b8c5a96..cb61fd6cc6c61 100644
---- a/drivers/media/usb/em28xx/Kconfig
-+++ b/drivers/media/usb/em28xx/Kconfig
-@@ -12,8 +12,8 @@ config VIDEO_EM28XX_V4L2
- 	select VIDEO_SAA711X if MEDIA_SUBDRV_AUTOSELECT
- 	select VIDEO_TVP5150 if MEDIA_SUBDRV_AUTOSELECT
- 	select VIDEO_MSP3400 if MEDIA_SUBDRV_AUTOSELECT
--	select VIDEO_MT9V011 if MEDIA_SUBDRV_AUTOSELECT && MEDIA_CAMERA_SUPPORT
--	select VIDEO_OV2640 if MEDIA_SUBDRV_AUTOSELECT && MEDIA_CAMERA_SUPPORT
-+	select VIDEO_MT9V011 if MEDIA_SUBDRV_AUTOSELECT && VIDEO_CAMERA_SENSOR
-+	select VIDEO_OV2640 if MEDIA_SUBDRV_AUTOSELECT && VIDEO_CAMERA_SENSOR
- 	help
- 	  This is a video4linux driver for Empia 28xx based TV cards.
+diff --git a/tools/testing/selftests/bpf/test_verifier.c b/tools/testing/selftests/bpf/test_verifier.c
+index 31f1c935cd07d..98107e0452d33 100644
+--- a/tools/testing/selftests/bpf/test_verifier.c
++++ b/tools/testing/selftests/bpf/test_verifier.c
+@@ -1880,7 +1880,7 @@ int main(int argc, char **argv)
+ 		}
+ 	}
  
-diff --git a/drivers/media/usb/go7007/Kconfig b/drivers/media/usb/go7007/Kconfig
-index 4ff79940ad8d4..b2a15d9fb1f33 100644
---- a/drivers/media/usb/go7007/Kconfig
-+++ b/drivers/media/usb/go7007/Kconfig
-@@ -12,8 +12,8 @@ config VIDEO_GO7007
- 	select VIDEO_TW2804 if MEDIA_SUBDRV_AUTOSELECT
- 	select VIDEO_TW9903 if MEDIA_SUBDRV_AUTOSELECT
- 	select VIDEO_TW9906 if MEDIA_SUBDRV_AUTOSELECT
--	select VIDEO_OV7640 if MEDIA_SUBDRV_AUTOSELECT && MEDIA_CAMERA_SUPPORT
- 	select VIDEO_UDA1342 if MEDIA_SUBDRV_AUTOSELECT
-+	select VIDEO_OV7640 if MEDIA_SUBDRV_AUTOSELECT && VIDEO_CAMERA_SENSOR
- 	help
- 	  This is a video4linux driver for the WIS GO7007 MPEG
- 	  encoder chip.
+-	get_unpriv_disabled();
++	unpriv_disabled = get_unpriv_disabled();
+ 	if (unpriv && unpriv_disabled) {
+ 		printf("Cannot run as unprivileged user with sysctl %s.\n",
+ 		       UNPRIV_SYSCTL);
 -- 
 2.40.1
 
