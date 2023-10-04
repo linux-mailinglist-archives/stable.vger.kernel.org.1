@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29C9A7B87A7
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8728F7B88C2
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:19:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243838AbjJDSHv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:07:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60254 "EHLO
+        id S233728AbjJDSTN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:19:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243840AbjJDSHu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:07:50 -0400
+        with ESMTP id S233835AbjJDSTL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:19:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61E86C1
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:07:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A743FC433C8;
-        Wed,  4 Oct 2023 18:07:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E501D8
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:19:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFEBC433C8;
+        Wed,  4 Oct 2023 18:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442866;
-        bh=OqmGTUmvoJXI8DoyVbZJ+cgKU+Kfk2sb644XFJrT5W4=;
+        s=korg; t=1696443545;
+        bh=M2WZuPYGjG3WzZVCeDmwZ1jg7BhqjUcmOvx7V3Uxus8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WZox91ytYfMxes21VgrhqqaWDHD8lcEj9o27XsmYu4cSM33DZqSDIzQcxgC4DNTUf
-         fZJSVLtt4zFqvBk1aGdo57vhoOjJQaepfckc7k5G03yWgD4hNfkzqo5elEAMjVsc5j
-         RMmqnwyac3yxv+Z5BflOVaqisiTMSSD2VAhsOhfc=
+        b=ZujLSRxVfo+325B9Dk+Ev4PAJMYcA10f1l1D0UGfOZI9MacnnRHlp8A3sC7y9LO/1
+         fSl834VHm47Ej9WOogygeC1UG78WdLhAipYxSainJ4cA/Gt+Idk/dmfGwNQZL7FFz6
+         g645tFaKjG2MR43lEybjICWVtXRysmZ76uil8gFs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Gray <bgray@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev,
+        Gerhard Engleder <gerhard@engleder-embedded.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 137/183] powerpc/watchpoints: Disable preemption in thread_change_pc()
+Subject: [PATCH 6.1 195/259] tsnep: Fix NAPI scheduling
 Date:   Wed,  4 Oct 2023 19:56:08 +0200
-Message-ID: <20231004175209.702314952@linuxfoundation.org>
+Message-ID: <20231004175226.223958948@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,60 +51,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Gray <bgray@linux.ibm.com>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
 
-[ Upstream commit cc879ab3ce39bc39f9b1d238b283f43a5f6f957d ]
+[ Upstream commit ea852c17f5382a0a52041cfbd9a4451ae0fa1a38 ]
 
-thread_change_pc() uses CPU local data, so must be protected from
-swapping CPUs while it is reading the breakpoint struct.
+According to the NAPI documentation networking/napi.rst, drivers which
+have to mask interrupts explicitly should use the napi_schedule_prep()
+and __napi_schedule() calls.
 
-The error is more noticeable after 1e60f3564bad ("powerpc/watchpoints:
-Track perf single step directly on the breakpoint"), which added an
-unconditional __this_cpu_read() call in thread_change_pc(). However the
-existing __this_cpu_read() that runs if a breakpoint does need to be
-re-inserted has the same issue.
+No problem seen so far with current implementation. Nevertheless, let's
+align the implementation with documentation.
 
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230829063457.54157-2-bgray@linux.ibm.com
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/hw_breakpoint.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/engleder/tsnep_main.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index 91a3be14808b1..63fec0602af22 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -478,11 +478,13 @@ void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs)
- 	struct arch_hw_breakpoint *info;
- 	int i;
+diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
+index 6bf3cc11d2121..00436a6f785e8 100644
+--- a/drivers/net/ethernet/engleder/tsnep_main.c
++++ b/drivers/net/ethernet/engleder/tsnep_main.c
+@@ -65,8 +65,11 @@ static irqreturn_t tsnep_irq(int irq, void *arg)
  
-+	preempt_disable();
-+
- 	for (i = 0; i < nr_wp_slots(); i++) {
- 		if (unlikely(tsk->thread.last_hit_ubp[i]))
- 			goto reset;
+ 	/* handle TX/RX queue 0 interrupt */
+ 	if ((active & adapter->queue[0].irq_mask) != 0) {
+-		tsnep_disable_irq(adapter, adapter->queue[0].irq_mask);
+-		napi_schedule(&adapter->queue[0].napi);
++		if (napi_schedule_prep(&adapter->queue[0].napi)) {
++			tsnep_disable_irq(adapter, adapter->queue[0].irq_mask);
++			/* schedule after masking to avoid races */
++			__napi_schedule(&adapter->queue[0].napi);
++		}
  	}
--	return;
-+	goto out;
  
- reset:
- 	regs_set_return_msr(regs, regs->msr & ~MSR_SE);
-@@ -491,6 +493,9 @@ void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs)
- 		__set_breakpoint(i, info);
- 		tsk->thread.last_hit_ubp[i] = NULL;
- 	}
-+
-+out:
-+	preempt_enable();
+ 	return IRQ_HANDLED;
+@@ -77,8 +80,11 @@ static irqreturn_t tsnep_irq_txrx(int irq, void *arg)
+ 	struct tsnep_queue *queue = arg;
+ 
+ 	/* handle TX/RX queue interrupt */
+-	tsnep_disable_irq(queue->adapter, queue->irq_mask);
+-	napi_schedule(&queue->napi);
++	if (napi_schedule_prep(&queue->napi)) {
++		tsnep_disable_irq(queue->adapter, queue->irq_mask);
++		/* schedule after masking to avoid races */
++		__napi_schedule(&queue->napi);
++	}
+ 
+ 	return IRQ_HANDLED;
  }
- 
- static bool is_larx_stcx_instr(int type)
 -- 
 2.40.1
 
