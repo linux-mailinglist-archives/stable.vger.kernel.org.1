@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB6437B875B
-	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2EDB7B884A
+	for <lists+stable@lfdr.de>; Wed,  4 Oct 2023 20:14:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233591AbjJDSEW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 4 Oct 2023 14:04:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54538 "EHLO
+        id S244009AbjJDSOr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 4 Oct 2023 14:14:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243768AbjJDSEV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:04:21 -0400
+        with ESMTP id S243754AbjJDSOp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 4 Oct 2023 14:14:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B24CF9E
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:04:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EE7C433C9;
-        Wed,  4 Oct 2023 18:04:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76D75A6
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 11:14:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA1FC433C9;
+        Wed,  4 Oct 2023 18:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696442658;
-        bh=zfBzFYcuHhgKKGVkeWWvbg2VcjP5sF+1OI5E33rykk8=;
+        s=korg; t=1696443281;
+        bh=MiSeYcgXiAv0EVdWX0HvTi972lu1t1lnKWJS2kqPIH4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bO3wEEHmofIvqoOvIpZs5o09HYM/mLTDR7BRVgeoWtmCUgEW1yDbbLwOrLRrdeXhz
-         o1pAP5NjK0FZCMzQVK/5CvEbFa8rYdU7XK/lmc8bVnC45EKm+Ie3DXWzyACCczsk5M
-         tN27CHB70PRXGuyVixMMtoV7RouxIvE7CLxhqw8M=
+        b=vMCyBYIvAyUzOEnBp/wkcS5TKiOx3eZRA4SpnhilNOxCLiIQBRUyTsZDam4TVWnkp
+         ow53ME04qVePQvzgZl6Wxal5UhxZVOBJPncX9eCZi0iiOV4gYubEF/LUHVhwNCNa0+
+         0KZqNqPk0m+2/b3mq321w8Mv6WC+un43fEixVmL0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Paul Cercueil <paul@crapouillou.net>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/183] netfilter: nf_tables: disallow element removal on anonymous sets
+Subject: [PATCH 6.1 093/259] ARM: dts: samsung: exynos4210-i9100: Fix LCD screens physical size
 Date:   Wed,  4 Oct 2023 19:54:26 +0200
-Message-ID: <20231004175205.423860959@linuxfoundation.org>
+Message-ID: <20231004175221.621417693@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231004175203.943277832@linuxfoundation.org>
-References: <20231004175203.943277832@linuxfoundation.org>
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175217.404851126@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,60 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Paul Cercueil <paul@crapouillou.net>
 
-[ Upstream commit 23a3bfd4ba7acd36abf52b78605f61b21bdac216 ]
+[ Upstream commit b3f3fc32e5ff1e848555af8616318cc667457f90 ]
 
-Anonymous sets need to be populated once at creation and then they are
-bound to rule since 938154b93be8 ("netfilter: nf_tables: reject unbound
-anonymous set before commit phase"), otherwise transaction reports
-EINVAL.
+The previous values were completely bogus, and resulted in the computed
+DPI ratio being much lower than reality, causing applications and UIs to
+misbehave.
 
-Userspace does not need to delete elements of anonymous sets that are
-not yet bound, reject this with EOPNOTSUPP.
+The new values were measured by myself with a ruler.
 
->From flush command path, skip anonymous sets, they are expected to be
-bound already. Otherwise, EINVAL is hit at the end of this transaction
-for unbound sets.
-
-Fixes: 96518518cc41 ("netfilter: add nftables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
+Cc: <stable@vger.kernel.org> # v5.8+
+Link: https://lore.kernel.org/r/20230714153720.336990-1-paul@crapouillou.net
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/exynos4210-i9100.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 4dadb0eebf614..56098859d5b44 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1358,8 +1358,7 @@ static int nft_flush_table(struct nft_ctx *ctx)
- 		if (!nft_is_active_next(ctx->net, set))
- 			continue;
+diff --git a/arch/arm/boot/dts/exynos4210-i9100.dts b/arch/arm/boot/dts/exynos4210-i9100.dts
+index bba85011ecc93..53e023fc1cacf 100644
+--- a/arch/arm/boot/dts/exynos4210-i9100.dts
++++ b/arch/arm/boot/dts/exynos4210-i9100.dts
+@@ -201,8 +201,8 @@
+ 			power-on-delay = <10>;
+ 			reset-delay = <10>;
  
--		if (nft_set_is_anonymous(set) &&
--		    !list_empty(&set->bindings))
-+		if (nft_set_is_anonymous(set))
- 			continue;
+-			panel-width-mm = <90>;
+-			panel-height-mm = <154>;
++			panel-width-mm = <56>;
++			panel-height-mm = <93>;
  
- 		err = nft_delset(ctx, set);
-@@ -6752,8 +6751,10 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
- 	if (IS_ERR(set))
- 		return PTR_ERR(set);
- 
--	if (!list_empty(&set->bindings) &&
--	    (set->flags & (NFT_SET_CONSTANT | NFT_SET_ANONYMOUS)))
-+	if (nft_set_is_anonymous(set))
-+		return -EOPNOTSUPP;
-+
-+	if (!list_empty(&set->bindings) && (set->flags & NFT_SET_CONSTANT))
- 		return -EBUSY;
- 
- 	nft_ctx_init(&ctx, net, skb, info->nlh, family, table, NULL, nla);
+ 			display-timings {
+ 				timing {
 -- 
 2.40.1
 
