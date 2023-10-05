@@ -2,125 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5166D7BA28E
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 17:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0290F7BA2A2
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 17:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233952AbjJEPk5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 11:40:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43602 "EHLO
+        id S233418AbjJEPnn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 11:43:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233558AbjJEPk0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 11:40:26 -0400
-Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2460545AC
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 07:55:14 -0700 (PDT)
-Received: by mail-ua1-x92a.google.com with SMTP id a1e0cc1a2514c-7ae1a075fc5so447194241.3
-        for <stable@vger.kernel.org>; Thu, 05 Oct 2023 07:55:14 -0700 (PDT)
+        with ESMTP id S233313AbjJEPnN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 11:43:13 -0400
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CAE6702
+        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 07:59:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696517714; x=1697122514; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4sb1q74MArJrmg1EnidKYrw9CtEuXNYc17Dl5pGnnhs=;
-        b=CUU3KsJC3WrgCxD+RmPXC8p8Mf0x5KNL4WnVcHAE0ucdUCgY+6bRZ5F2gJIoYvH6pm
-         +qVoBHappagOJtszBX0y9/pvitpvnZoLbqYm3K8AOUFs9vmeUTMjBU/QCU+j80fN7Gza
-         fnEREHx/zsW5lGbHTdhK61VchqKVVOVV6fByZrFZ9/z+sLyBYtbQUvgY2B7mZOurCxd1
-         EnEOxFwETPUVd+E1+gsCLgqnLSKTsZ1IpXTlh4sfVUP2y2u22BDf5UWDlFkpHq2yyp5X
-         lPZd9QYr6jclnidY8uNxtSPiFlO3p9LvbR+UAsnDeWv4yDiiIk4RZ+29klJEnBd5wLc+
-         apIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696517714; x=1697122514;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4sb1q74MArJrmg1EnidKYrw9CtEuXNYc17Dl5pGnnhs=;
-        b=XPhdHpD8BrPMbNQWKZCuyqrOx8SftVoORifnwoYOufDwPlDFBfLNnt9QbokFiPoEuz
-         PibU/hAyzr7XFZB8OZxzTAzY96yDSarUYIikQ75My0pMh6IpF+apoGYl/7r3f17J2NSC
-         sxyoaE+x7Ddy50xnYuN1x6CeD2Z8xZb3x/fUxBg+iwLWUmmwJU8Mw3RHhnd4VVfDUgg/
-         kRyEyx8Jxb0gt4krj8tmNjm8kmNtkdOedeGvWhMfYG/VfjuCpck6ubMBZZB9dUgCfRDd
-         yhDoQemR+RYVzLhmwnWNRCOdUpFLwf8MtfFRIX4/6/+sv9CdbZgNWYy9QC1qAIqE7yKT
-         eqMQ==
-X-Gm-Message-State: AOJu0Ywqbs+BFpoc8E0J5iSxlZObfoOXMYTaFPHz848B1HjxfRVjVH/r
-        cWY5GmP7f3B6c9XfNBN0XVgSTityvJqaUxwyGF5DHA==
-X-Google-Smtp-Source: AGHT+IEO+WrPrzg8wdQMFzOvFJCD6a5uz7Ox65W+J3MpViKFb5GfWKQNzse/Kl9U7x+Y2TA3B2fv/zljaBJT0SI57W8=
-X-Received: by 2002:a1f:a9d0:0:b0:49d:92e0:9cd1 with SMTP id
- s199-20020a1fa9d0000000b0049d92e09cd1mr5188264vke.11.1696517713597; Thu, 05
- Oct 2023 07:55:13 -0700 (PDT)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1696517979; x=1728053979;
+  h=message-id:date:mime-version:to:cc:from:subject:
+   content-transfer-encoding;
+  bh=F4DXyzvks4SjCO39rTIRcQaJk8nbyPccC5eJCgdjSQs=;
+  b=p8ju+BljMo5mjb0Dnophgy8dJZkzo02Z6cbVHRRhulo3X2bkVPA/tjSz
+   16jb/xPNTgOKl/p0idI5ALfD1hdMDWXz6P07UDbKE6XAun7rLwOqVzshi
+   B1mvqiHYhdxy3yxgXkjEnvQFDZ8jGleW7UDeXyoTkogAXc7Bn/xhpkjXW
+   k=;
+X-IronPort-AV: E=Sophos;i="6.03,203,1694736000"; 
+   d="scan'208";a="243635462"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 14:59:36 +0000
+Received: from smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev (iad7-ws-svc-p70-lb3-vlan3.iad.amazon.com [10.32.235.38])
+        by email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com (Postfix) with ESMTPS id 9C63A484A9;
+        Thu,  5 Oct 2023 14:59:33 +0000 (UTC)
+Received: from EX19MTAUEB001.ant.amazon.com [10.0.29.78:19359]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.50.19:2525] with esmtp (Farcaster)
+ id ea6e9579-e480-4773-b428-3ff4a08893c4; Thu, 5 Oct 2023 14:59:33 +0000 (UTC)
+X-Farcaster-Flow-ID: ea6e9579-e480-4773-b428-3ff4a08893c4
+Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
+ EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.37; Thu, 5 Oct 2023 14:59:32 +0000
+Received: from [10.136.71.253] (10.136.71.253) by
+ EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.37; Thu, 5 Oct 2023 14:59:31 +0000
+Message-ID: <010edf5a-453d-4c98-9c07-12e75d3f983c@amazon.com>
+Date:   Thu, 5 Oct 2023 10:59:28 -0400
 MIME-Version: 1.0
-References: <20231004175229.211487444@linuxfoundation.org> <CA+G9fYuE9Pu3QCVDywA8Ss-41jVfiy2e2kpxjhpTe3CRgmZkBw@mail.gmail.com>
-In-Reply-To: <CA+G9fYuE9Pu3QCVDywA8Ss-41jVfiy2e2kpxjhpTe3CRgmZkBw@mail.gmail.com>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 5 Oct 2023 20:25:02 +0530
-Message-ID: <CA+G9fYvHPnba-0=uGS70EjcPgHht13j3s-_fmd2=srL0xyPjNg@mail.gmail.com>
-Subject: Re: [PATCH 6.5 000/321] 6.5.6-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Hou Tao <houtao1@huawei.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, bpf <bpf@vger.kernel.org>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        <krisman@suse.de>, <will@kernel.org>
+CC:     Greg KH <gregkh@linuxfoundation.org>, <anshuman.khandual@arm.com>,
+        <catalin.marinas@arm.com>
+From:   Luiz Capitulino <luizcap@amazon.com>
+Subject: [5.15,6.1] Please apply a89c6bcdac22bec1bfbe6e64060b4cf5838d4f47
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.136.71.253]
+X-ClientProxiedBy: EX19D042UWB003.ant.amazon.com (10.13.139.135) To
+ EX19D028UEC003.ant.amazon.com (10.252.137.159)
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 5 Oct 2023 at 11:05, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
->
-> On Wed, 4 Oct 2023 at 23:53, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.5.6 release.
-> > There are 321 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.6-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
->
-> The following kernel warning was noticed on qemu-armv7 while booting
-> with kselftest merge configs enabled build on stable-rc 6.5.6-rc1.
->
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->
-> > Hou Tao <houtao1@huawei.com>
-> >     bpf: Ensure unit_size is matched with slab cache object size
->
->
-> bpf: Ensure unit_size is matched with slab cache object size
-> [ Upstream commit c930472552022bd09aab3cd946ba3f243070d5c7 ]
->
-> [    2.525383] ------------[ cut here ]------------
-> [    2.525743] WARNING: CPU: 0 PID: 1 at kernel/bpf/memalloc.c:385
-> bpf_mem_alloc_init+0x3b0/0x3b4
-> [    2.527241] bpf_mem_cache[0]: unexpected object size 128, expect 96
+Hi,
 
+We found that commits 46bdb4277f98 and 0388f9c74330 (merged in v5.12)
+introduced more than 40% performance regression in UnixBench's process
+creation benchmark when comparing 5.10 with 5.15 and 6.1 on AWS'
+virtualized Graviton instances.
 
-Anders investigated this report and picked up the following patches to
-solve the reported problem.
+This has been mostly fixed by the following upstream commit:
 
-d52b59315bf5e bpf: Adjust size_index according to the value of KMALLOC_MIN_SIZE
-b1d53958b6931 bpf: Don't prefill for unused bpf_mem_cache
-c930472552022 bpf: Ensure unit_size is matched with slab cache object size
+"""
+commit a89c6bcdac22bec1bfbe6e64060b4cf5838d4f47
+Author: Gabriel Krisman Bertazi <krisman@suse.de>
+Date: Mon Jan 9 12:19:55 2023 -0300
 
-- Naresh
+  arm64: Avoid repeated AA64MMFR1_EL1 register read on pagefault path
+"""
+(This is merged in v6.3 and applies cleanly in 5.15 and 6.1).
+
+We performed functional and performance regression tests on both 5.15
+and 6.1 with this patch applied. We can also observe 10% improvement
+in system time in other benchmarks.
+
+Just to be transparent, we initially observed 5% degradation in a
+benchmark we have with fio randwrite on EBS volumes with our 6.1
+downstream kernel but this doesn't seem reproducible and we don't
+think this patch would cause it.
+
+Here's some quick UnixBench process creation measurements on
+m7gd.16xlarge instance type. All results are the average of 5
+consecutive runs with a single process:
+
+* 5.10.197: 9886.68 lps (baseline)
+* 6.1.55:   5531.24 lps (unfixed - 44% degradation)
+* 5.15.133: 5960.12 lps (unfixed - 39% degradation)
+* 5.15.133: 10306.4 lps (fixed - actually better than baseline)
+* 6.1.55:   9393.42 lps (fixed - degradation reduced to 5%)
+
+- Luiz
