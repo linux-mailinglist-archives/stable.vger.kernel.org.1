@@ -2,158 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 557927B9F78
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 16:25:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 145727BA392
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 17:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbjJEOYx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 10:24:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52590 "EHLO
+        id S237890AbjJEP56 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 11:57:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233314AbjJEOXC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 10:23:02 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E1A927B0E
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 06:35:28 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-d89491dab33so1105457276.0
-        for <stable@vger.kernel.org>; Thu, 05 Oct 2023 06:35:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google; t=1696512927; x=1697117727; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tBt77iv+i6yUV6sl6438k+nP1DNpZDLg/0Q4EcZ/2kY=;
-        b=tocAmFF79bgN1NtDUPmMPH+qjf7RMA3Fx8BYewELiJSodBUdmb+sUIKA9LNqhNAR2T
-         s7u2yBKUykrifgsbFHGwkTsmeIe53Bt4KFPVXXzAPYezB+Gbv9uN46gs14iy1w1oJ5AB
-         pEBYsBiU8rocwXF6cTbuzlE/GO4nTqX4C57PWvbfUKp0mY0k62183PFYeqPaAthZ4xqT
-         HEDJBMuDjAg/jrmOLLqC3kAa3SfY8Xws2Cs2JfCkXbSDlmP6PWuvPaRbDcMiFjl6QdRM
-         BfaqDLy8wxVz+Zp1ELBS5TzBikqZ94IcFLnOyHcWDgkU5KAu43rN0KQqDbPies6Cqvdj
-         5Raw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696512927; x=1697117727;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tBt77iv+i6yUV6sl6438k+nP1DNpZDLg/0Q4EcZ/2kY=;
-        b=GstnKQImobb2DwYmXKVR45JE7e9ZaR7T8shvAi9QST6HYNXwSX6adCBG4yU5WrFfAT
-         2c5VH4vX+EN0UkM08VUJWau1AhF1GRfxoKAlPR68LOAeNO1DpZprAmiJzVNKxOXpYSP8
-         3aiWQSz2+9TGMSlIAGg5DSwuwjzdtKMAgxheJsTaSOahTBX25X+HVL/rVC4o0N2CsZgM
-         j5vPeae51Ruk5QlPKitigczvQfxRD1k7XvZHNQHyU5Yd8QgSfgvcooWO9Ex8NI2oiOZp
-         uoPBaotESDjElu5xDP3UxlPKZihi76ZP53+0FiCBI9X2UxEtC7fomp27rvLA/q5oKmhb
-         MBvQ==
-X-Gm-Message-State: AOJu0Yzi1btUcqJs9SJ/K3KzMj1ZsizevuBpwRS8pximScpjoLfhNHFM
-        Ps8cwMbteGAaC8yIlcWY3rTsn6zJYzkLmhh3DGKtEQ==
-X-Google-Smtp-Source: AGHT+IEilDB2SWaF2YfLIJ5wnpnhZFHNJl9unsnwBv7BHZq2V2+NiDoG7LsGUJMOOgZULV9uQUbjcpAGKVo6jsKQVDU=
-X-Received: by 2002:a25:3210:0:b0:d93:97e8:97ac with SMTP id
- y16-20020a253210000000b00d9397e897acmr264008yby.38.1696512927631; Thu, 05 Oct
- 2023 06:35:27 -0700 (PDT)
+        with ESMTP id S234383AbjJEP4o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 11:56:44 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA964ED1;
+        Thu,  5 Oct 2023 06:52:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58683C4AF6C;
+        Thu,  5 Oct 2023 13:36:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696512998;
+        bh=sVHgjs6j2i0PqaWsD1fHp1pWIXfooJQLvDVkOSizDRo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=B9todMOzpojr4eNnVkY1o+43vbZ0Ou5vRXv4rFd2b8w/37BOQaJk97eggchBkCC19
+         UN+L5Gt0jHx9w8YgUI8f3q2g5RX1WMn5gjL1VAiiBmtb+Db1CqxrN9OWsixX+8txSq
+         gFs4hXcYCkba1IkaJLzxcNWyw2uWtAVsMjzOrD4AaAFBdqvL4FKmXzFadFQ+hZeOZ+
+         uugzOSLPuZOosiCIKjjYUwsCefhTmGaNOi2ZpZ9O14Lwyj4YkwxDYm5s20+SNcTguT
+         1+RpOLM2U2qshZExjYBnizARZvVb7AYTpDvPhPNVwS/hdZ5lmrf5vGLzy+0RMfxGwi
+         II3IoEvqllq8g==
+Date:   Thu, 5 Oct 2023 15:36:33 +0200
+From:   Simon Horman <horms@kernel.org>
+To:     =?utf-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>
+Cc:     Michal Kubecek <mkubecek@suse.cz>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        stable@vger.kernel.org, thomas.petazzoni@bootlin.com,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net 1/1] ethtool: Fix mod state of verbose no_mask bitset
+Message-ID: <ZR674ase11YwjvsG@kernel.org>
+References: <20231003085653.3104411-1-kory.maincent@bootlin.com>
+ <ZR1HYg2ElUjy2aud@kernel.org>
+ <20231005100349.113f3bf1@kmaincent-XPS-13-7390>
 MIME-Version: 1.0
-References: <20230921131201.157767-1-lma@semihalf.com> <20230922063410.23626-1-lma@semihalf.com>
- <CADmiTCTHn+XaNqkAZjLmaYUy+6bsb5chue97g3n0bKP7Lcf9_w@mail.gmail.com>
-In-Reply-To: <CADmiTCTHn+XaNqkAZjLmaYUy+6bsb5chue97g3n0bKP7Lcf9_w@mail.gmail.com>
-From:   Lukasz Majczak <lma@semihalf.com>
-Date:   Thu, 5 Oct 2023 15:35:16 +0200
-Message-ID: <CAFJ_xboEqNFyG6+F0EkXq32X0Y8pPEWYFw9+7JJye42SrrOkWw@mail.gmail.com>
-Subject: Re: [PATCH v3] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
-To:     David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
-Cc:     =?UTF-8?Q?Rados=C5=82aw_Biernacki?= <rad@chromium.org>,
-        Guenter Roeck <linux@roeck-us.net>, upstream@semihalf.com,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231005100349.113f3bf1@kmaincent-XPS-13-7390>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-wt., 26 wrz 2023 o 16:01 Rados=C5=82aw Biernacki <rad@chromium.org> napisa=
-=C5=82(a):
->
-> On Fri, Sep 22, 2023 at 8:34=E2=80=AFAM Lukasz Majczak <lma@semihalf.com>=
- wrote:
+On Thu, Oct 05, 2023 at 10:03:49AM +0200, Köry Maincent wrote:
+> Hello Simon,
+> 
+> Thank for your review.
+> 
+> On Wed, 4 Oct 2023 13:07:14 +0200
+> Simon Horman <horms@kernel.org> wrote:
+> 
+> > On Tue, Oct 03, 2023 at 10:56:52AM +0200, Köry Maincent wrote:
+> > > From: Kory Maincent <kory.maincent@bootlin.com>
 > >
-> > As drm_dp_get_mst_branch_device_by_guid() is called from
-> > drm_dp_get_mst_branch_device_by_guid(), mstb parameter has to be checke=
-d,
-> > otherwise NULL dereference may occur in the call to
-> > the memcpy() and cause following:
-> >
-> > [12579.365869] BUG: kernel NULL pointer dereference, address: 000000000=
-0000049
-> > [12579.365878] #PF: supervisor read access in kernel mode
-> > [12579.365880] #PF: error_code(0x0000) - not-present page
-> > [12579.365882] PGD 0 P4D 0
-> > [12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> > ...
-> > [12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
-> > [12579.365899] RIP: 0010:memcmp+0xb/0x29
-> > [12579.365921] Call Trace:
-> > [12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
-> > [12579.365930] drm_dp_mst_up_req_work+0x137/0x416
-> > [12579.365933] process_one_work+0x1d0/0x419
-> > [12579.365935] worker_thread+0x11a/0x289
-> > [12579.365938] kthread+0x13e/0x14f
-> > [12579.365941] ? process_one_work+0x419/0x419
-> > [12579.365943] ? kthread_blkcg+0x31/0x31
-> > [12579.365946] ret_from_fork+0x1f/0x30
-> >
-> > As get_mst_branch_device_by_guid_helper() is recursive, moving conditio=
-n
-> > to the first line allow to remove a similar one for step over of NULL e=
-lements
-> > inside a loop.
-> >
-> > Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to o=
-nly mst branch")
-> > Cc: <stable@vger.kernel.org> # 4.14+
-> > Signed-off-by: Lukasz Majczak <lma@semihalf.com>
-> > ---
-> >
-> > v2->v3:
-> > * Fixed patch description.
-> >
-> >  drivers/gpu/drm/display/drm_dp_mst_topology.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gp=
-u/drm/display/drm_dp_mst_topology.c
-> > index ed96cfcfa304..8c929ef72c72 100644
-> > --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> > +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> > @@ -2574,14 +2574,14 @@ static struct drm_dp_mst_branch *get_mst_branch=
-_device_by_guid_helper(
-> >         struct drm_dp_mst_branch *found_mstb;
-> >         struct drm_dp_mst_port *port;
-> >
-> > +       if (!mstb)
-> > +               return NULL;
-> > +
-> >         if (memcmp(mstb->guid, guid, 16) =3D=3D 0)
-> >                 return mstb;
-> >
-> >
-> >         list_for_each_entry(port, &mstb->ports, next) {
-> > -               if (!port->mstb)
-> > -                       continue;
-> > -
-> >                 found_mstb =3D get_mst_branch_device_by_guid_helper(por=
-t->mstb, guid);
-> >
-> >                 if (found_mstb)
-> > --
-> > 2.42.0.515.g380fc7ccd1-goog
-> >
->
-> Reviewed-by: Radoslaw Biernacki <rad@chromium.org>
+> > > @@ -448,8 +450,11 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned
+> > > int nbits, }
+> > >  
+> > >  	no_mask = tb[ETHTOOL_A_BITSET_NOMASK];
+> > > -	if (no_mask)
+> > > -		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
+> > > +	if (no_mask) {
+> > > +		tmp = kcalloc(nbits, sizeof(u32), GFP_KERNEL);
+> > > +		memcpy(tmp, bitmap, nbits);  
+> > 
+> > Hi Köry,
+> > 
+> > I'm no expert on etnhl bitmaps. But the above doesn't seem correct to me.
+> > Given that sizeof(u32) == 4:
+> > 
+> > * The allocation is for nbits * 4 bytes
+> > * The copy is for its for nbits bytes
+> > * I believe that bitmap contains space for the value followed by a mask.
+> >   So it seems to me the size of bitmap, in words, is
+> >   DIV_ROUND_UP(nbits, 32) * 2
+> >   And in bytes: DIV_ROUND_UP(nbits, 32) * 16
+> >   But perhaps only half is needed if only the value part of tmp is used.
+> > 
+> > If I'm on the right track here I'd suggest helpers might be in order.
+> 
+> You are right I should use the same alloc as ethnl_update_bitset with tmp
+> instead of bitmap32:
+> 
+>         u32 small_bitmap32[ETHNL_SMALL_BITMAP_WORDS];                      
+>         u32 *bitmap32 = small_bitmap32; 
+>         if (nbits > ETHNL_SMALL_BITMAP_BITS) {                             
+>                 unsigned int dst_words = DIV_ROUND_UP(nbits, 32);          
+>                                                                            
+>                 bitmap32 = kmalloc_array(dst_words, sizeof(u32), GFP_KERNEL);
+>                 if (!bitmap32)                                             
+>                         return -ENOMEM;                                    
+>         }   
+> 
+> But I am still wondering if it needs to be double as you said for the size of
+> the value followed by the mask. Not sure about it, as ethnl_update_bitset does
+> not do it. 
 
-Hi,
-
-Is there anything more I should do with this patch?
-
-Thanks,
-Lukasz
+If you only need the value, then I don' think you need to x2 the allocation.
+But I could be wrong.
