@@ -2,109 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F327BA6D7
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9807BA6B8
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbjJEQmr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 12:42:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33478 "EHLO
+        id S232331AbjJEQlK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 12:41:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233044AbjJEQkp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:40:45 -0400
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B7611BF2;
-        Thu,  5 Oct 2023 09:28:59 -0700 (PDT)
-Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3ae5ce4a4ceso791427b6e.1;
-        Thu, 05 Oct 2023 09:28:59 -0700 (PDT)
+        with ESMTP id S232245AbjJEQjz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:39:55 -0400
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DEF41BD6
+        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 09:36:11 -0700 (PDT)
+Received: by mail-ot1-x329.google.com with SMTP id 46e09a7af769-6c4b9e09521so765991a34.3
+        for <stable@vger.kernel.org>; Thu, 05 Oct 2023 09:36:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696523320; x=1697128120; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LCjL1Nhcx+ZRfFxrSaIUnghupuRDrTl5Dh+1IzKptGc=;
-        b=fP86GS/ZzkkWYAA1mFO2QBbW9be18fs/GwTT4cMWiJLOCIV0XDa92fASSpalFl8/md
-         py+58XbKGNNpRNMOcVmc3hSZ8+trTWaAdb8pgLqxQPsYhof3ZmfdphLBp+oOyDIpv/81
-         URfM6KGgqCeWwo2s94rRfJOlV9qBI7uD2O0k2M3Msfc1TXJoCeFfzUHvCeZWZjC9hEvS
-         l34QzM8EuI4PQ9dwb1X6JLnBWn+upFjenjWSLdDdFEsDo46SRxWFNthYjdpXI1luXQ8k
-         EOfdgyEFNZeXZW4ctG4yMGfg0rRK/mFszNP3HB4adQ5lSIPF9ERLjTwaBpdQbOaqdsvg
-         5kTQ==
+        d=linuxtx.org; s=google; t=1696523770; x=1697128570; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vYHj3JFmAZKHkL+wnxS109TagHXpAewcZFhlnZKyAfc=;
+        b=JJTVJJHW5p7Pu59TFtLDMU6/XqrU+Eq9Y6zB8uHLHqubOUDW8Xump9BxEul2aKdODk
+         JRcGJJ7pHYvxMp0q8d5Mzmzt9xx+RgE3Ut5oxsHSFAWhw4Rs4pu/WNLJK8j66MdhqpZG
+         PdGDOyPLDiOBigUjkQWWHsZ65BF7uBD4ZQvgk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696523320; x=1697128120;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LCjL1Nhcx+ZRfFxrSaIUnghupuRDrTl5Dh+1IzKptGc=;
-        b=YluYg2sHk16WNy68UietFxRB2GIbVht+stbffRqbpnmST63MrKVnt1cb6VxKcXYRVJ
-         b/UMQm/2pefFhTGvOiiM6srWLswDqoHHkgIiusUGh4X4oLYEqxCgXX0CtUZds3vP3lvP
-         z/IQkELSk1LnZxFfBBe+OuWnSdEv3GVvm/ZnrubtY34FzLZwF6yNBLnUXwGXwPQtwE/g
-         lP+OMhEH8iZEpVi04M7wYBHcKIE6AwVvmVnXvwBHPw09000fg83ri+NjEAxsqg7P99XE
-         SlwGYbT/9YgS8DHvxq/3h1vpN9DB9EOiprpJvzpOs+CM6hHIiam2Qp6sCCVRapmKiDze
-         rQZQ==
-X-Gm-Message-State: AOJu0YwDe0maUfVLTwf6bVcSeY1M3FMJgMRsQwJ/tJcB47RtR4UsBeG9
-        PAEa1VE+lNN2XEWPs+98XkA=
-X-Google-Smtp-Source: AGHT+IGxlPwo0Y0oep9fIBEaUahI/dpFBN6J/y7Ev9r8LwvBmovuSH0MCYGFHfryby1oHxSSBQbKZQ==
-X-Received: by 2002:a05:6808:1306:b0:3ae:1e08:4209 with SMTP id y6-20020a056808130600b003ae1e084209mr7930890oiv.39.1696523319965;
-        Thu, 05 Oct 2023 09:28:39 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id d26-20020a63991a000000b0057a868900a9sm1598513pge.67.2023.10.05.09.28.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Oct 2023 09:28:39 -0700 (PDT)
-Message-ID: <4628ee76-0bbe-48f4-80e0-a6d4a4dc6811@gmail.com>
-Date:   Thu, 5 Oct 2023 09:28:37 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.5 000/321] 6.5.6-rc1 review
-Content-Language: en-US
-To:     Ron Economos <re@w6rz.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        d=1e100.net; s=20230601; t=1696523770; x=1697128570;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vYHj3JFmAZKHkL+wnxS109TagHXpAewcZFhlnZKyAfc=;
+        b=RI5GXVKzODUTXF7y1aF20UpHc44kRWSdY46jHHAyCSjiyhsmDE1hxFDhZnWJ5xg7AC
+         9kgNf1MHlY0SE78GYHI0oxNYEMBdWsrU6cwXBft3j+TF11IJCjxOGTrhVeF70Pko8zk6
+         v78gqqk0WCrP3HDjcWMHwIG0/5VpRuRk7ehEwkM2Waq6bWkLLdxFEXcUeaz/k/iaWu3i
+         VV0ZJwuMNcjzspDTHUBOnsofydNBwIA9WojY2OM6vVEr09JdQcMtdH4lQd7OwC5eAX9o
+         JJiCGqeRDMyAwVcYqAjTuigqB3Ay2zW+FagAID6YJ5Idvv2oOcAks3WwOhOP0eCGtCcn
+         hMqA==
+X-Gm-Message-State: AOJu0YzLEOFXzSVnOfiYVc/UUEQHh10jXRqxuOBtSCfqrD0MeWgOqf5U
+        +hK/I2SLzopg19jJVX0KAasMJQ==
+X-Google-Smtp-Source: AGHT+IF1vZ6WboGp9C0l3uWZGG1N65oSqv2B+LlOIp2OMdFj2L2Gs4NqCVYwe07cua6EJsyW/v3WUg==
+X-Received: by 2002:a05:6830:22e6:b0:6bc:fdc8:d600 with SMTP id t6-20020a05683022e600b006bcfdc8d600mr5849783otc.25.1696523770407;
+        Thu, 05 Oct 2023 09:36:10 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id q23-20020a9d6657000000b006b9734b9fafsm304356otm.13.2023.10.05.09.36.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Oct 2023 09:36:09 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date:   Thu, 5 Oct 2023 11:36:08 -0500
+From:   Justin Forbes <jforbes@fedoraproject.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
         conor@kernel.org
+Subject: Re: [PATCH 6.5 000/321] 6.5.6-rc1 review
+Message-ID: <ZR7l+IbugqOLaQtV@fedora64.linuxtx.org>
 References: <20231004175229.211487444@linuxfoundation.org>
- <be48ca60-57dd-9bbb-d695-0d9d39e98dae@w6rz.net>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <be48ca60-57dd-9bbb-d695-0d9d39e98dae@w6rz.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/5/23 00:24, Ron Economos wrote:
-> On 10/4/23 10:52 AM, Greg Kroah-Hartman wrote:
->> This is the start of the stable review cycle for the 6.5.6 release.
->> There are 321 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
->>
->> Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
->> Anything received after that time might be too late.
->>
->> The whole patch series can be found in one patch at:
->>     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.6-rc1.gz
->> or in the git tree and branch at:
->>     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
->> and the diffstat can be found below.
->>
->> thanks,
->>
->> greg k-h
->>
-> On RISC-V RV64. Bisecting now.
+On Wed, Oct 04, 2023 at 07:52:25PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.6 release.
+> There are 321 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.6-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Naresh already reported that they have tracked down missing commits, see:
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-https://lore.kernel.org/r/CA+G9fYvHPnba-0=uGS70EjcPgHht13j3s-_fmd2=srL0xyPjNg@mail.gmail.com
--- 
-Florian
-
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
