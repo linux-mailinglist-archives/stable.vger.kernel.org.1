@@ -2,108 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BAB67BA0F8
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 16:53:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1A327BA0DA
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 16:52:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238199AbjJEOnY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 10:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51810 "EHLO
+        id S237178AbjJEOnZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 10:43:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238457AbjJEOk0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 10:40:26 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82922AD14;
-        Thu,  5 Oct 2023 07:12:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1559C3278F;
-        Thu,  5 Oct 2023 11:43:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696506241;
-        bh=9S3XPaei5Hs4cBIZ21emTSZSs610PV4eDaKI5Q00L8w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Lrd+4GNYq6JYWhNiUPWJFO2CMFBR3kkJkrV24vDshQ2pi2sCFehGj90t00bX2kgOl
-         duguPsgCc1M7yC/UFYzpoXpc8voUQi0/GqCr2Eo2MatQ84CpUH2QhKTAlQhcLdilry
-         wejIeQCmTy5zXzs90zAEKXRw6ljLr4DvsvSifKBbsdddDOIkTFM/wMmkzlWBJsh3of
-         Kx6wu6OF4FIT3i9PiFdRFHznTLCLbSq9jq4PZM3dDq2Vro2TRyKVuiVs0ijiIaQcVz
-         WOKxRT1OIKo4OJIOWEamVVhDHiHTz4DzHFhMnCUq9yzY4jVXXaBbO1VFssgci6hy7Y
-         JKEbE7J7kkIDw==
-Date:   Thu, 5 Oct 2023 13:43:56 +0200
-From:   Simon Horman <horms@kernel.org>
-To:     Remi Pommarel <repk@triplefau.lt>
-Cc:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH net v3] net: stmmac: remove unneeded
- stmmac_poll_controller
-Message-ID: <ZR6hfMSSbMvHozaM@kernel.org>
-References: <1c156a6d8c9170bd6a17825f2277115525b4d50f.1696429960.git.repk@triplefau.lt>
+        with ESMTP id S235150AbjJEOiK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 10:38:10 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A508A60;
+        Thu,  5 Oct 2023 07:03:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696514613; x=1728050613;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=Q31/LRmUHPnliZEY/I/TLopH3gR0VgvYKU2xCR9wHdI=;
+  b=lHxgyD75DyxfxW/IPUBZwq1e8wyGDpb5Nkd+TXjwWlDsFq+RqmeK2F3l
+   PqpY45fys0ZcNX9kYesXh2XgLcjqrI0dwhV4Y74fZP3YvTreKwQNwdR+c
+   60ENcGGsA0SQ6Ax/EHpEzVMrZC6qEn+DwYaG+FJWJMWXWwduaYbMYMVjK
+   yy/iC0HC4fG1rk4WZ8D2DsEh8zrx7iVLk6SdUpcEJBGI1SrCKRzfLIKTa
+   jXmE/fzjlvLmeUpwfN9su19KDjSglFbO8y6S+PPs62IrfrAKJtcgaRQaa
+   BHq9lyj5NTxe7qd/lCcX44Bhs/A7XTHPFWVTieJv5+M3oSk526yIxiVqw
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="382347791"
+X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
+   d="scan'208";a="382347791"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 05:24:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="822089057"
+X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
+   d="scan'208";a="822089057"
+Received: from akesselm-mobl.amr.corp.intel.com (HELO [10.212.122.181]) ([10.212.122.181])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 05:24:40 -0700
+Message-ID: <c7fb4ead-13af-438b-a199-c52105545047@linux.intel.com>
+Date:   Thu, 5 Oct 2023 08:24:39 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1c156a6d8c9170bd6a17825f2277115525b4d50f.1696429960.git.repk@triplefau.lt>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soundwire: fix initializing sysfs for same devices on
+ different buses
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Sanyog Kale <sanyog.r.kale@intel.com>,
+        Philippe Ombredanne <pombredanne@nexb.com>,
+        Takashi Iwai <tiwai@suse.de>, alsa-devel@alsa-project.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+        Mastan Katragadda <Mastan.Katragadda@amd.com>
+References: <20231004130243.493617-1-krzysztof.kozlowski@linaro.org>
+ <6628a5f6-ed22-4039-b5c2-2301c05c7e3e@linux.intel.com>
+ <2023100453-perfected-palm-3503@gregkh>
+ <624b044a-1f0f-4961-8b57-cb5346e7b0d3@linux.intel.com>
+ <2023100452-craziness-unpopular-7d97@gregkh>
+ <04c5911a-a894-44b3-9f0e-fe9e6de203f2@linux.intel.com>
+ <d648c3d1-53ac-4021-ac7f-6a81f1a72dd3@sirena.org.uk>
+ <bf4ee895-293f-4bc3-ac4b-30df6361e973@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <bf4ee895-293f-4bc3-ac4b-30df6361e973@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 04, 2023 at 04:33:56PM +0200, Remi Pommarel wrote:
-> Using netconsole netpoll_poll_dev could be called from interrupt
-> context, thus using disable_irq() would cause the following kernel
-> warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
-> 
->   BUG: sleeping function called from invalid context at kernel/irq/manage.c:137
->   in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksoftirqd/0
->   CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00075-g816b502b2298-dirty #117
->   Hardware name: aml (r1) (DT)
->   Call trace:
->    dump_backtrace+0x0/0x270
->    show_stack+0x14/0x20
->    dump_stack_lvl+0x8c/0xac
->    dump_stack+0x18/0x30
->    ___might_sleep+0x150/0x194
->    __might_sleep+0x64/0xbc
->    synchronize_irq+0x8c/0x150
->    disable_irq+0x2c/0x40
->    stmmac_poll_controller+0x140/0x1a0
->    netpoll_poll_dev+0x6c/0x220
->    netpoll_send_skb+0x308/0x390
->    netpoll_send_udp+0x418/0x760
->    write_msg+0x118/0x140 [netconsole]
->    console_unlock+0x404/0x500
->    vprintk_emit+0x118/0x250
->    dev_vprintk_emit+0x19c/0x1cc
->    dev_printk_emit+0x90/0xa8
->    __dev_printk+0x78/0x9c
->    _dev_warn+0xa4/0xbc
->    ath10k_warn+0xe8/0xf0 [ath10k_core]
->    ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
->    ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
->    __napi_poll+0x58/0x1f4
->    net_rx_action+0x504/0x590
->    _stext+0x1b8/0x418
->    run_ksoftirqd+0x74/0xa4
->    smpboot_thread_fn+0x210/0x3c0
->    kthread+0x1fc/0x210
->    ret_from_fork+0x10/0x20
-> 
-> Since [0] .ndo_poll_controller is only needed if driver doesn't or
-> partially use NAPI. Because stmmac does so, stmmac_poll_controller
-> can be removed fixing the above warning.
-> 
-> [0] commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional")
-> 
-> Cc: <stable@vger.kernel.org> # 5.15.x
-> Fixes: 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers")
-> Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
 
+
+> I think we keep circling on the differences between "Controller" and
+> "link" (aka bus). A Controller can have one or more links. A system can
+> have one or more controllers.
+> 
+> Intel platforms have one controller and 4 or more links.
+> QCOM platforms have one or more controllers with one link each.
+> 
+> I am not sure how this IDA-generated bus_id helps deal with these two
+> cases, since we can't really make any assumptions on how
+> controllers/links will be started and probed.
+> 
+> What we are missing is a hierarchical controller/link definition, IOW a
+> controller_id should be given to the master by a higher level instead of
+> using an IDA.
+
+Tentative patches to introduce a 'controller_id' that's not an IDA are
+here: https://github.com/thesofproject/linux/pull/4616
+
+Initial results are positive for Intel devices. it *should* work for
+other devices but I can't test. If folks at Linaro/Qualcomm and AMD can
+give it a try, that would be much appreciated.
+
+Thanks.
