@@ -2,173 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAC697BA51E
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA77E7BA583
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:18:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240780AbjJEQN6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 12:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38640 "EHLO
+        id S240464AbjJEQRc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 12:17:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240486AbjJEQNE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:13:04 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E723D1F762
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 03:00:03 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-9b98a699f45so136517666b.3
-        for <stable@vger.kernel.org>; Thu, 05 Oct 2023 03:00:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696500002; x=1697104802; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uy7oWDaMcUoXMwBopu6xJvA4n+urU7k8+Wd5iqE6CDw=;
-        b=hNwMmlDIRzo/CW29pbVRkkhKmGeo4iCK2xtmj5xrgW2b4guQUvoGHd2GUuwxCE8HPT
-         +uYZce1/G9lS8FCrFHGdvkSj1OevnQGfF1Dd5fgVVMrua6M3sQq7qSrt5PUJw6vohEST
-         OLxCeeJzyaryFDe/u6RgyG17QaFVkc9BMlfCr68ML9EsfqFLfDP63o1gn72AFAiTG5lI
-         DUc8Z4rmrKmVLmeIMrkIHHDMd9x1MGqRiQ58SSoF8ShdZ+miH3VVZjMaDgUZgLian9yS
-         IYqyrq+payG9UIM5YSi6ZkBgPkfQuE1XSVwrWsU8aNAV5NKacaJBRymLLxtJGmH7yE6t
-         l8+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696500002; x=1697104802;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uy7oWDaMcUoXMwBopu6xJvA4n+urU7k8+Wd5iqE6CDw=;
-        b=Ok1DsVoloup+hGJtq37WNScpZaTrqjSwFRUtwwh9Cnyngc2h75uoOExkaWObUew+ix
-         bm+oATZLOWGZIgKKfvCFY2PulAFHVOI3YWkcD0sOpCSqZ97yy5FuLLxyk4zKwa2LK+z2
-         oenlP7QQphwXVFvRxe+59ytVy3w0aXXheiWKbVWmk/IJfIfXhBAHqEIFvdywi/Mksf41
-         X8z7HqgS/wpRhTk/Z7u5XoBG9aE+qhV7Ew4lh3X9om9lxNA1DmR2HgOF9E1Gx60d9Xez
-         H8BAspM1NTQZXwHYg0nIwNPaCTbWsxCynJ8mGMDAtS1VeLuFj8FJB2j/JAFlBiSGbDuG
-         5Hrw==
-X-Gm-Message-State: AOJu0YxHmXAP67Zgsg3zh5tUSYTm+1zLWtcEiNwZ9DxK4AvmJ6DZfuvB
-        pRt76O7uqs3+FcukKi498M+0UAVKRJs=
-X-Google-Smtp-Source: AGHT+IEbd35Fo+5AUUBbemiHUoCPI1Jh2IUI2uLRvfRV5ZTrtz5FREKafO72C/k+wXiuKRuxm+J+gw==
-X-Received: by 2002:a17:906:1daa:b0:9aa:63d:9ede with SMTP id u10-20020a1709061daa00b009aa063d9edemr4133044ejh.9.1696500002060;
-        Thu, 05 Oct 2023 03:00:02 -0700 (PDT)
-Received: from localhost.localdomain (ip-94-112-167-15.bb.vodafone.cz. [94.112.167.15])
-        by smtp.gmail.com with ESMTPSA id a11-20020a5d4d4b000000b003231ca246b6sm1389897wru.95.2023.10.05.03.00.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Oct 2023 03:00:01 -0700 (PDT)
-From:   Ilya Dryomov <idryomov@gmail.com>
-To:     stable@vger.kernel.org
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH for 5.10-6.1 4/4] rbd: take header_rwsem in rbd_dev_refresh() only when updating
-Date:   Thu,  5 Oct 2023 11:59:35 +0200
-Message-ID: <20231005095937.317188-5-idryomov@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231005095937.317188-1-idryomov@gmail.com>
-References: <20231005095937.317188-1-idryomov@gmail.com>
+        with ESMTP id S240925AbjJEQPi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:15:38 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A309A826D5
+        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 07:52:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39832C433C9;
+        Thu,  5 Oct 2023 14:49:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696517387;
+        bh=upoE39mGRAP4qbh4GCx1iQzhb/mX5wJbHkNu1P/KlS0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=dFPF1wMPY2AXiXFp8wMDJrjthdtWj2gGHbzmy9QOfyZeKHqYn1fZtq6GcRYJ64fbL
+         bkBjgHAI0hfxZuEqVaJ7VinZyBm6wcYTX6CylzHV+5paWeINFJG/e63ZT1e/08rHWE
+         iEvJPm/Er4c7p1AfsnzmKKZ4QBaQ8ZlRIbWhuGYNbAUc9QgPTbh9Thsrv0aD9/lhhV
+         2wR4FbDHcLbyvDZ44dHfVeB4KkQlL5Wc6NYuTV2vWXOUYm+b1BaWjtx+8qAyfbQ25H
+         9plhRrLjMBNImnpXaGdggX2idnityoAZEYlT08Li7q+gFyqGfXp3ndHMNr1V22ru0D
+         rz1fDbwrBvGFg==
+Message-ID: <3bccf91b-bb04-40b8-9c94-a6ac8c66d703@kernel.org>
+Date:   Thu, 5 Oct 2023 16:49:43 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] mptcp: move __mptcp_error_report in
+ protocol.c" failed to apply to 4.14-stable tree
+Content-Language: en-GB, fr-BE
+To:     gregkh@linuxfoundation.org, pabeni@redhat.com, davem@davemloft.net,
+        martineau@kernel.org
+Cc:     stable@vger.kernel.org
+References: <2023100424-rumor-garter-af90@gregkh>
+From:   Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ Fe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: Tessares
+In-Reply-To: <2023100424-rumor-garter-af90@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 0b207d02bd9ab8dcc31b262ca9f60dbc1822500d upstream.
+Hi Greg,
 
-rbd_dev_refresh() has been holding header_rwsem across header and
-parent info read-in unnecessarily for ages.  With commit 870611e4877e
-("rbd: get snapshot context after exclusive lock is ensured to be
-held"), the potential for deadlocks became much more real owning to
-a) header_rwsem now nesting inside lock_rwsem and b) rw_semaphores
-not allowing new readers after a writer is registered.
+On 04/10/2023 16:04, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 4.14-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x d5fbeff1ab812b6c473b6924bee8748469462e2c
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100424-rumor-garter-af90@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
-For example, assuming that I/O request 1, I/O request 2 and header
-read-in request all target the same OSD:
+We can drop this patch that has been picked for 4.14, 4.19, 5.4 and 5.10
+trees.
 
-1. I/O request 1 comes in and gets submitted
-2. watch error occurs
-3. rbd_watch_errcb() takes lock_rwsem for write, clears owner_cid and
-   releases lock_rwsem
-4. after reestablishing the watch, rbd_reregister_watch() calls
-   rbd_dev_refresh() which takes header_rwsem for write and submits
-   a header read-in request
-5. I/O request 2 comes in: after taking lock_rwsem for read in
-   __rbd_img_handle_request(), it blocks trying to take header_rwsem
-   for read in rbd_img_object_requests()
-6. another watch error occurs
-7. rbd_watch_errcb() blocks trying to take lock_rwsem for write
-8. I/O request 1 completion is received by the messenger but can't be
-   processed because lock_rwsem won't be granted anymore
-9. header read-in request completion can't be received, let alone
-   processed, because the messenger is stranded
+> ------------------ original commit in Linus's tree ------------------
+> 
+> From d5fbeff1ab812b6c473b6924bee8748469462e2c Mon Sep 17 00:00:00 2001
+> From: Paolo Abeni <pabeni@redhat.com>
+> Date: Sat, 16 Sep 2023 12:52:46 +0200
+> Subject: [PATCH] mptcp: move __mptcp_error_report in protocol.c
+> 
+> This will simplify the next patch ("mptcp: process pending subflow error
+> on close").
+> 
+> No functional change intended.
+> 
+> Cc: stable@vger.kernel.org # v5.12+
 
-Change rbd_dev_refresh() to take header_rwsem only for actually
-updating rbd_dev->header.  Header and parent info read-in don't need
-any locking.
+I just re-read the documentation [1] and it looks like I should have
+used '# 5.12.x' comment instead of '# v5.12+'. I guess that's why the
+patch got selected to be backported up to 4.14 instead of 5.12. I'm
+sorry for that, I will make sure not to re-do that again!
 
-Cc: stable@vger.kernel.org # 0b035401c570: rbd: move rbd_dev_refresh() definition
-Cc: stable@vger.kernel.org # 510a7330c82a: rbd: decouple header read-in from updating rbd_dev->header
-Cc: stable@vger.kernel.org # c10311776f0a: rbd: decouple parent info read-in from updating rbd_dev
-Cc: stable@vger.kernel.org
-Fixes: 870611e4877e ("rbd: get snapshot context after exclusive lock is ensured to be held")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
----
- drivers/block/rbd.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 38c92b1b0346..afc92869cba4 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -6987,7 +6987,14 @@ static void rbd_dev_update_header(struct rbd_device *rbd_dev,
- 	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
- 	rbd_assert(rbd_dev->header.object_prefix); /* !first_time */
- 
--	rbd_dev->header.image_size = header->image_size;
-+	if (rbd_dev->header.image_size != header->image_size) {
-+		rbd_dev->header.image_size = header->image_size;
-+
-+		if (!rbd_is_snap(rbd_dev)) {
-+			rbd_dev->mapping.size = header->image_size;
-+			rbd_dev_update_size(rbd_dev);
-+		}
-+	}
- 
- 	ceph_put_snap_context(rbd_dev->header.snapc);
- 	rbd_dev->header.snapc = header->snapc;
-@@ -7045,11 +7052,9 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- {
- 	struct rbd_image_header	header = { 0 };
- 	struct parent_image_info pii = { 0 };
--	u64 mapping_size;
- 	int ret;
- 
--	down_write(&rbd_dev->header_rwsem);
--	mapping_size = rbd_dev->mapping.size;
-+	dout("%s rbd_dev %p\n", __func__, rbd_dev);
- 
- 	ret = rbd_dev_header_info(rbd_dev, &header, false);
- 	if (ret)
-@@ -7065,18 +7070,13 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 			goto out;
- 	}
- 
-+	down_write(&rbd_dev->header_rwsem);
- 	rbd_dev_update_header(rbd_dev, &header);
- 	if (rbd_dev->parent)
- 		rbd_dev_update_parent(rbd_dev, &pii);
--
--	rbd_assert(!rbd_is_snap(rbd_dev));
--	rbd_dev->mapping.size = rbd_dev->header.image_size;
--
--out:
- 	up_write(&rbd_dev->header_rwsem);
--	if (!ret && mapping_size != rbd_dev->mapping.size)
--		rbd_dev_update_size(rbd_dev);
- 
-+out:
- 	rbd_parent_info_cleanup(&pii);
- 	rbd_image_header_cleanup(&header);
- 	return ret;
--- 
-2.41.0
-
+Cheers,
+Matt
