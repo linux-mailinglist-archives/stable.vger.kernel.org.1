@@ -2,60 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DF3C7BA4F9
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E5547BA4FE
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:14:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240104AbjJEQN3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 12:13:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45822 "EHLO
+        id S240640AbjJEQNa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 12:13:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240787AbjJEQMQ (ORCPT
+        with ESMTP id S240853AbjJEQMQ (ORCPT
         <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:12:16 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87B0F93D0
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 08:30:32 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-406618d0992so10892525e9.0
-        for <stable@vger.kernel.org>; Thu, 05 Oct 2023 08:30:32 -0700 (PDT)
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 991439EFD
+        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 08:30:33 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-405497850dbso10357105e9.0
+        for <stable@vger.kernel.org>; Thu, 05 Oct 2023 08:30:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696519831; x=1697124631; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1696519832; x=1697124632; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cEggazD1DWLQ2KM6vODsZUQ7uMB8Y08GPm/jEWdfXhM=;
-        b=NDlVwkqC1qMmZ764gBt4sX3mZyGiSmqUwuEm2DRP14acp4hP3RcNBmAe6MfWVBfeuP
-         uk4V8EgXOTw5gJReTly9BJO+gNQFywqYzWESreqlm/BXfycAY+8fXKpsI7MNA9P9bhjo
-         qCQX9ylg9s/lGbL2o1v695s/+BNyCeZg9GZ1oahhEqaVPhutGZgsHGf96XYAL7sYVgcl
-         /kASsJNjGqfzbc4zQZUuDrEeAeYNzEX453I0PeokoFw2rIubtKSx7Aw+crtzuuj966A3
-         3sMuLxn1Iqsf/5IwSJYyUpBX5o7w9ZpF0iPxbc6BLM5LfoGKJvxB2DOUowOyzpC3m+yI
-         JzQg==
+        bh=E8C7g9mirJCs6FbazMAoTST7zLISIvKYlK6zvgh1lUI=;
+        b=M+y1ezQXkCn+R9dMYY8Fd5K9lCmdmmOOY3TA0GSEBAbKsB3U+hqVd7eLDzBl9VZZ11
+         wEa5EUh9M0bw7EQJ9SsOFgg4WWa0QKVeMemV+1NTezpVhbnZGOHyrGHbn6ZFXu6vtUQr
+         FAlF5AzhfNhgs7J/fCkDEyQDaVV79IhMJ4g8W3M9tT7hPOP/D0+rpyCajEQx9PjFoFqi
+         KqTpRpM7AAPb63DjtsNDODURUu3xWcZoWyWwTyb8n1ipA8hfkdEQBxJGnXrpDruYgx5a
+         WFTTlms1votkaYMzwPyz9H8l58U8Gh+woGbs795WZ2nBOu7BXOiFl22abDE4zONBV5Wv
+         KV4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696519831; x=1697124631;
+        d=1e100.net; s=20230601; t=1696519832; x=1697124632;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cEggazD1DWLQ2KM6vODsZUQ7uMB8Y08GPm/jEWdfXhM=;
-        b=jaCaYbxCZAFTrNgrJuCxHSU8FXLBLKW/Dacc+L4CIx29NgloRXUTCwnMuUjdZ3woqr
-         vmYq5jYgkPYonDUW5hoNVuK35TzjUl62/qChmJhC2xT9ZFNsbqqsA8fD5A3QGHdQ7dzx
-         vkom8qItV6ISUsFZLgTAbbh1vpD9+XRP3Rx/Eyl2+SLZ0L6LGrjkjo5DhWPxOJoNaehB
-         btDE0LgPckZDl/O1icOnli4I2iYYUy1wSrgVLepg3/FL06P0ilpKHbGMm/68gXcsnGCt
-         DHZicM4XtY/+8nVCwEkHVJ5cTgcojLjlEzhfHLF6z1JET/ZHFgWmmWbsucbrBKIgrv5K
-         tsog==
-X-Gm-Message-State: AOJu0Yw1CHQB2fIdJrO4uXSGKw6K8m7YvSO4CAMH5C134kcbs6k87gIM
-        oLVqC+5ZfhfeAIRxEaLHG7U2RjAYpbk=
-X-Google-Smtp-Source: AGHT+IGMcJKnCXJOXM9Il4mA8WS/bRCWgc7Y/IWxxIGTevfpzmdEn/ioH2XRPYokEkIhNefz1btY8w==
-X-Received: by 2002:a05:600c:2259:b0:403:bb3:28c9 with SMTP id a25-20020a05600c225900b004030bb328c9mr5344732wmm.38.1696519830624;
-        Thu, 05 Oct 2023 08:30:30 -0700 (PDT)
+        bh=E8C7g9mirJCs6FbazMAoTST7zLISIvKYlK6zvgh1lUI=;
+        b=bGWKfUfsrPdPwBmJAU5IlSVCBuLSSemKqYwCh8jNOXWzMwpTMy/EO4J61U4eyVxKv4
+         2hUyZkE1WlZs0f8JiQk33858/ngvqMd3uVeafQWZPi7m3CKYTQXpNU0pSu/houCU4RgI
+         HczFxkZvM/ishU2uHZp/2GmP208YUgyXpLo0q44WdaVr5pl50DtjMjpgurTjqtSWKAcC
+         OLPAPcqDHCMFcFdd/nyrBzWkzU8FD9RKoGTNSlqRWrOfFPDr/ufjxDftg2MgOUIjBJBK
+         JOYfwSM1cbPgm+cRn6vB5XPb/zWnjS1Nvd0ZVzFk957fyr1junOaN+INMtb6B1lebbEz
+         u7jw==
+X-Gm-Message-State: AOJu0YyPyfOyjj/Pe3HQC1GPh/SP1CKH+8mWlllK4T1h2wjwmG+LdxLe
+        56v6CUnGNelJARpom1V0TLhLEzWZXTM=
+X-Google-Smtp-Source: AGHT+IFSOpAOV7ljPU1+sxTuw0fdY5jVnqLVJxyL8xFPqLf5m0ULc2qrWnBhoMm2kxUYXULMyeJC/A==
+X-Received: by 2002:a1c:740d:0:b0:405:1ba2:4fd1 with SMTP id p13-20020a1c740d000000b004051ba24fd1mr5610035wmc.24.1696519832042;
+        Thu, 05 Oct 2023 08:30:32 -0700 (PDT)
 Received: from localhost.localdomain (ip-94-112-167-15.bb.vodafone.cz. [94.112.167.15])
-        by smtp.gmail.com with ESMTPSA id m10-20020a7bce0a000000b00405953973c3sm3989560wmc.6.2023.10.05.08.30.28
+        by smtp.gmail.com with ESMTPSA id m10-20020a7bce0a000000b00405953973c3sm3989560wmc.6.2023.10.05.08.30.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Oct 2023 08:30:29 -0700 (PDT)
+        Thu, 05 Oct 2023 08:30:31 -0700 (PDT)
 From:   Ilya Dryomov <idryomov@gmail.com>
 To:     stable@vger.kernel.org
 Cc:     Greg KH <gregkh@linuxfoundation.org>,
         Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH for 5.4 3/4] rbd: decouple parent info read-in from updating rbd_dev
-Date:   Thu,  5 Oct 2023 17:29:52 +0200
-Message-ID: <20231005153003.326735-4-idryomov@gmail.com>
+Subject: [PATCH for 5.4 4/4] rbd: take header_rwsem in rbd_dev_refresh() only when updating
+Date:   Thu,  5 Oct 2023 17:29:53 +0200
+Message-ID: <20231005153003.326735-5-idryomov@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231005153003.326735-1-idryomov@gmail.com>
 References: <20231005153003.326735-1-idryomov@gmail.com>
@@ -71,269 +71,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit c10311776f0a8ddea2276df96e255625b07045a8 upstream.
+commit 0b207d02bd9ab8dcc31b262ca9f60dbc1822500d upstream.
 
-Unlike header read-in, parent info read-in is already decoupled in
-get_parent_info(), but it's buried in rbd_dev_v2_parent_info() along
-with the processing logic.
+rbd_dev_refresh() has been holding header_rwsem across header and
+parent info read-in unnecessarily for ages.  With commit 870611e4877e
+("rbd: get snapshot context after exclusive lock is ensured to be
+held"), the potential for deadlocks became much more real owning to
+a) header_rwsem now nesting inside lock_rwsem and b) rw_semaphores
+not allowing new readers after a writer is registered.
 
-Separate the initial read-in and update read-in logic into
-rbd_dev_setup_parent() and rbd_dev_update_parent() respectively and
-have rbd_dev_v2_parent_info() just populate struct parent_image_info
-(i.e. what get_parent_info() did).  Some existing QoI issues, like
-flatten of a standalone clone being disregarded on refresh, remain.
+For example, assuming that I/O request 1, I/O request 2 and header
+read-in request all target the same OSD:
 
+1. I/O request 1 comes in and gets submitted
+2. watch error occurs
+3. rbd_watch_errcb() takes lock_rwsem for write, clears owner_cid and
+   releases lock_rwsem
+4. after reestablishing the watch, rbd_reregister_watch() calls
+   rbd_dev_refresh() which takes header_rwsem for write and submits
+   a header read-in request
+5. I/O request 2 comes in: after taking lock_rwsem for read in
+   __rbd_img_handle_request(), it blocks trying to take header_rwsem
+   for read in rbd_img_object_requests()
+6. another watch error occurs
+7. rbd_watch_errcb() blocks trying to take lock_rwsem for write
+8. I/O request 1 completion is received by the messenger but can't be
+   processed because lock_rwsem won't be granted anymore
+9. header read-in request completion can't be received, let alone
+   processed, because the messenger is stranded
+
+Change rbd_dev_refresh() to take header_rwsem only for actually
+updating rbd_dev->header.  Header and parent info read-in don't need
+any locking.
+
+Cc: stable@vger.kernel.org # 0b035401c570: rbd: move rbd_dev_refresh() definition
+Cc: stable@vger.kernel.org # 510a7330c82a: rbd: decouple header read-in from updating rbd_dev->header
+Cc: stable@vger.kernel.org # c10311776f0a: rbd: decouple parent info read-in from updating rbd_dev
+Cc: stable@vger.kernel.org
+Fixes: 870611e4877e ("rbd: get snapshot context after exclusive lock is ensured to be held")
 Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-[idryomov@gmail.com: backport to 5.4: context]
+[idryomov@gmail.com: backport to 5.4: open-code rbd_is_snap(), preserve
+ rbd_exists_validate() call]
 ---
- drivers/block/rbd.c | 142 +++++++++++++++++++++++++-------------------
- 1 file changed, 80 insertions(+), 62 deletions(-)
+ drivers/block/rbd.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 17d802effdc4..e86dca49fae7 100644
+index e86dca49fae7..7117fa490243 100644
 --- a/drivers/block/rbd.c
 +++ b/drivers/block/rbd.c
-@@ -5762,6 +5762,14 @@ struct parent_image_info {
- 	u64		overlap;
- };
+@@ -7001,7 +7001,19 @@ static void rbd_dev_update_header(struct rbd_device *rbd_dev,
+ 	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
+ 	rbd_assert(rbd_dev->header.object_prefix); /* !first_time */
  
-+static void rbd_parent_info_cleanup(struct parent_image_info *pii)
-+{
-+	kfree(pii->pool_ns);
-+	kfree(pii->image_id);
+-	rbd_dev->header.image_size = header->image_size;
++	if (rbd_dev->header.image_size != header->image_size) {
++		rbd_dev->header.image_size = header->image_size;
 +
-+	memset(pii, 0, sizeof(*pii));
-+}
-+
- /*
-  * The caller is responsible for @pii.
-  */
-@@ -5831,6 +5839,9 @@ static int __get_parent_info(struct rbd_device *rbd_dev,
- 	if (pii->has_overlap)
- 		ceph_decode_64_safe(&p, end, pii->overlap, e_inval);
- 
-+	dout("%s pool_id %llu pool_ns %s image_id %s snap_id %llu has_overlap %d overlap %llu\n",
-+	     __func__, pii->pool_id, pii->pool_ns, pii->image_id, pii->snap_id,
-+	     pii->has_overlap, pii->overlap);
- 	return 0;
- 
- e_inval:
-@@ -5869,14 +5880,17 @@ static int __get_parent_info_legacy(struct rbd_device *rbd_dev,
- 	pii->has_overlap = true;
- 	ceph_decode_64_safe(&p, end, pii->overlap, e_inval);
- 
-+	dout("%s pool_id %llu pool_ns %s image_id %s snap_id %llu has_overlap %d overlap %llu\n",
-+	     __func__, pii->pool_id, pii->pool_ns, pii->image_id, pii->snap_id,
-+	     pii->has_overlap, pii->overlap);
- 	return 0;
- 
- e_inval:
- 	return -EINVAL;
- }
- 
--static int get_parent_info(struct rbd_device *rbd_dev,
--			   struct parent_image_info *pii)
-+static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev,
-+				  struct parent_image_info *pii)
- {
- 	struct page *req_page, *reply_page;
- 	void *p;
-@@ -5904,7 +5918,7 @@ static int get_parent_info(struct rbd_device *rbd_dev,
- 	return ret;
- }
- 
--static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_setup_parent(struct rbd_device *rbd_dev)
- {
- 	struct rbd_spec *parent_spec;
- 	struct parent_image_info pii = { 0 };
-@@ -5914,37 +5928,12 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
- 	if (!parent_spec)
- 		return -ENOMEM;
- 
--	ret = get_parent_info(rbd_dev, &pii);
-+	ret = rbd_dev_v2_parent_info(rbd_dev, &pii);
- 	if (ret)
- 		goto out_err;
- 
--	dout("%s pool_id %llu pool_ns %s image_id %s snap_id %llu has_overlap %d overlap %llu\n",
--	     __func__, pii.pool_id, pii.pool_ns, pii.image_id, pii.snap_id,
--	     pii.has_overlap, pii.overlap);
--
--	if (pii.pool_id == CEPH_NOPOOL || !pii.has_overlap) {
--		/*
--		 * Either the parent never existed, or we have
--		 * record of it but the image got flattened so it no
--		 * longer has a parent.  When the parent of a
--		 * layered image disappears we immediately set the
--		 * overlap to 0.  The effect of this is that all new
--		 * requests will be treated as if the image had no
--		 * parent.
--		 *
--		 * If !pii.has_overlap, the parent image spec is not
--		 * applicable.  It's there to avoid duplication in each
--		 * snapshot record.
--		 */
--		if (rbd_dev->parent_overlap) {
--			rbd_dev->parent_overlap = 0;
--			rbd_dev_parent_put(rbd_dev);
--			pr_info("%s: clone image has been flattened\n",
--				rbd_dev->disk->disk_name);
--		}
--
-+	if (pii.pool_id == CEPH_NOPOOL || !pii.has_overlap)
- 		goto out;	/* No parent?  No problem. */
--	}
- 
- 	/* The ceph file layout needs to fit pool id in 32 bits */
- 
-@@ -5956,46 +5945,34 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
- 	}
- 
- 	/*
--	 * The parent won't change (except when the clone is
--	 * flattened, already handled that).  So we only need to
--	 * record the parent spec we have not already done so.
-+	 * The parent won't change except when the clone is flattened,
-+	 * so we only need to record the parent image spec once.
- 	 */
--	if (!rbd_dev->parent_spec) {
--		parent_spec->pool_id = pii.pool_id;
--		if (pii.pool_ns && *pii.pool_ns) {
--			parent_spec->pool_ns = pii.pool_ns;
--			pii.pool_ns = NULL;
--		}
--		parent_spec->image_id = pii.image_id;
--		pii.image_id = NULL;
--		parent_spec->snap_id = pii.snap_id;
--
--		rbd_dev->parent_spec = parent_spec;
--		parent_spec = NULL;	/* rbd_dev now owns this */
-+	parent_spec->pool_id = pii.pool_id;
-+	if (pii.pool_ns && *pii.pool_ns) {
-+		parent_spec->pool_ns = pii.pool_ns;
-+		pii.pool_ns = NULL;
- 	}
-+	parent_spec->image_id = pii.image_id;
-+	pii.image_id = NULL;
-+	parent_spec->snap_id = pii.snap_id;
-+
-+	rbd_assert(!rbd_dev->parent_spec);
-+	rbd_dev->parent_spec = parent_spec;
-+	parent_spec = NULL;	/* rbd_dev now owns this */
- 
- 	/*
--	 * We always update the parent overlap.  If it's zero we issue
--	 * a warning, as we will proceed as if there was no parent.
-+	 * Record the parent overlap.  If it's zero, issue a warning as
-+	 * we will proceed as if there is no parent.
- 	 */
--	if (!pii.overlap) {
--		if (parent_spec) {
--			/* refresh, careful to warn just once */
--			if (rbd_dev->parent_overlap)
--				rbd_warn(rbd_dev,
--				    "clone now standalone (overlap became 0)");
--		} else {
--			/* initial probe */
--			rbd_warn(rbd_dev, "clone is standalone (overlap 0)");
--		}
--	}
-+	if (!pii.overlap)
-+		rbd_warn(rbd_dev, "clone is standalone (overlap 0)");
- 	rbd_dev->parent_overlap = pii.overlap;
- 
- out:
- 	ret = 0;
- out_err:
--	kfree(pii.pool_ns);
--	kfree(pii.image_id);
-+	rbd_parent_info_cleanup(&pii);
- 	rbd_spec_put(parent_spec);
- 	return ret;
- }
-@@ -6992,7 +6969,7 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
- 	}
- 
- 	if (rbd_dev->header.features & RBD_FEATURE_LAYERING) {
--		ret = rbd_dev_v2_parent_info(rbd_dev);
-+		ret = rbd_dev_setup_parent(rbd_dev);
- 		if (ret)
- 			goto err_out_probe;
- 	}
-@@ -7041,9 +7018,47 @@ static void rbd_dev_update_header(struct rbd_device *rbd_dev,
- 	}
- }
- 
-+static void rbd_dev_update_parent(struct rbd_device *rbd_dev,
-+				  struct parent_image_info *pii)
-+{
-+	if (pii->pool_id == CEPH_NOPOOL || !pii->has_overlap) {
-+		/*
-+		 * Either the parent never existed, or we have
-+		 * record of it but the image got flattened so it no
-+		 * longer has a parent.  When the parent of a
-+		 * layered image disappears we immediately set the
-+		 * overlap to 0.  The effect of this is that all new
-+		 * requests will be treated as if the image had no
-+		 * parent.
-+		 *
-+		 * If !pii.has_overlap, the parent image spec is not
-+		 * applicable.  It's there to avoid duplication in each
-+		 * snapshot record.
-+		 */
-+		if (rbd_dev->parent_overlap) {
-+			rbd_dev->parent_overlap = 0;
-+			rbd_dev_parent_put(rbd_dev);
-+			pr_info("%s: clone has been flattened\n",
-+				rbd_dev->disk->disk_name);
++		if (rbd_dev->spec->snap_id == CEPH_NOSNAP) {
++			rbd_dev->mapping.size = header->image_size;
++			rbd_dev_update_size(rbd_dev);
 +		}
-+	} else {
-+		rbd_assert(rbd_dev->parent_spec);
-+
-+		/*
-+		 * Update the parent overlap.  If it became zero, issue
-+		 * a warning as we will proceed as if there is no parent.
-+		 */
-+		if (!pii->overlap && rbd_dev->parent_overlap)
-+			rbd_warn(rbd_dev,
-+				 "clone has become standalone (overlap 0)");
-+		rbd_dev->parent_overlap = pii->overlap;
 +	}
-+}
 +
- static int rbd_dev_refresh(struct rbd_device *rbd_dev)
++	if (rbd_dev->spec->snap_id != CEPH_NOSNAP) {
++		/* validate mapped snapshot's EXISTS flag */
++		rbd_exists_validate(rbd_dev);
++	}
+ 
+ 	ceph_put_snap_context(rbd_dev->header.snapc);
+ 	rbd_dev->header.snapc = header->snapc;
+@@ -7059,11 +7071,9 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
  {
  	struct rbd_image_header	header = { 0 };
-+	struct parent_image_info pii = { 0 };
- 	u64 mapping_size;
+ 	struct parent_image_info pii = { 0 };
+-	u64 mapping_size;
  	int ret;
  
-@@ -7059,12 +7074,14 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 	 * mapped image getting flattened.
- 	 */
- 	if (rbd_dev->parent) {
--		ret = rbd_dev_v2_parent_info(rbd_dev);
-+		ret = rbd_dev_v2_parent_info(rbd_dev, &pii);
- 		if (ret)
+-	down_write(&rbd_dev->header_rwsem);
+-	mapping_size = rbd_dev->mapping.size;
++	dout("%s rbd_dev %p\n", __func__, rbd_dev);
+ 
+ 	ret = rbd_dev_header_info(rbd_dev, &header, false);
+ 	if (ret)
+@@ -7079,22 +7089,13 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
  			goto out;
  	}
  
++	down_write(&rbd_dev->header_rwsem);
  	rbd_dev_update_header(rbd_dev, &header);
-+	if (rbd_dev->parent)
-+		rbd_dev_update_parent(rbd_dev, &pii);
+ 	if (rbd_dev->parent)
+ 		rbd_dev_update_parent(rbd_dev, &pii);
+-
+-	if (rbd_dev->spec->snap_id == CEPH_NOSNAP) {
+-		rbd_dev->mapping.size = rbd_dev->header.image_size;
+-	} else {
+-		/* validate mapped snapshot's EXISTS flag */
+-		rbd_exists_validate(rbd_dev);
+-	}
+-
+-out:
+ 	up_write(&rbd_dev->header_rwsem);
+-	if (!ret && mapping_size != rbd_dev->mapping.size)
+-		rbd_dev_update_size(rbd_dev);
  
- 	if (rbd_dev->spec->snap_id == CEPH_NOSNAP) {
- 		rbd_dev->mapping.size = rbd_dev->header.image_size;
-@@ -7078,6 +7095,7 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 	if (!ret && mapping_size != rbd_dev->mapping.size)
- 		rbd_dev_update_size(rbd_dev);
- 
-+	rbd_parent_info_cleanup(&pii);
++out:
+ 	rbd_parent_info_cleanup(&pii);
  	rbd_image_header_cleanup(&header);
  	return ret;
- }
 -- 
 2.41.0
 
