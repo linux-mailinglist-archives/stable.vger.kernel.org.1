@@ -2,112 +2,230 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AC817B9DC2
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 15:56:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 849837B9DC5
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 15:56:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229598AbjJENzx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 09:55:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34452 "EHLO
+        id S231224AbjJEN4S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 09:56:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243557AbjJENsp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 09:48:45 -0400
-Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0324C2121;
-        Wed,  4 Oct 2023 21:04:41 -0700 (PDT)
-Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-57b5ef5b947so348656eaf.0;
-        Wed, 04 Oct 2023 21:04:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696478680; x=1697083480; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RMXyEVE2i3k4dLTGe3l+U9bUqIsZ76xJBWfzrLVaQIU=;
-        b=Wm1u5H4KnZ2BcGiNq5rxay7XPL2F2qcQX4SFZO10xeBaOvnb4y7nCnf08TE7Slhd/o
-         i7pmoS6T1vqDcHaoCxVYkl0ZvFq9AC24oae+why40PoPKb8XYnIQ0IRqm64QsbWfDEqN
-         yePEkk1q+AN9yEKKC7xk1SDekNByu7igp+IW1f1J66MGjkl1INT5rknTiQ+X+jgEBkYQ
-         3QEV0frWbTo5fZdVNsu0dTvgM/WpTsMLiplpZzpJ8V6UMjp6VNoMTjsxP4ccapAWhOrE
-         8spb4zB2G7pr4XeDyuDn/THNKFVhc2OjnJ+KIvAJtdz9CetDPdDNrS7+62G1l7+ineZM
-         GL2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696478680; x=1697083480;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RMXyEVE2i3k4dLTGe3l+U9bUqIsZ76xJBWfzrLVaQIU=;
-        b=XHIh/UlxEyYC/I+vTe46B6Cafm6MiG+PuzqeS9TfDFA5LIcMRGNnUyWhx7b7r7iAGT
-         6jSEgvVm8VSeHGyRRgNkqdmqnaKvqGJzhEujN0+ogK5M8kp+COtmrDpMpxsqSjqt1rpy
-         P4XSi1Nuu8dpWRIF9FQoWfBOwirQquJyPmDvmGrf8pMDtmuhzBNmG58O46Captypk/ah
-         Q2VyHUOf6akQG/NaXlkSDlrjX2BC8Vv5D5e9E/0sOxMQEoZu7yX2JuC3BX2Wp+xpyGOe
-         MszN6/2YIygaJOQMBs3Q/eOdogBdnPu/a37bfY5TcmVUHoware3jt0FB3qL3W9VM3nBX
-         9Ajg==
-X-Gm-Message-State: AOJu0Yw7czGpdjQuG43Cd0mHh7PPI52Qy/XNSIUM2SFsOj3xZMsjJETI
-        CRqEvnzat1cF0jOIK23kUGQ=
-X-Google-Smtp-Source: AGHT+IGSkWOYk4DqwbRQRHzJ3jU+JRLaveKGsN/Rmc1OJnWzSjkTWWfAwyvTJOtRG6XzehfYWnpG7g==
-X-Received: by 2002:a05:6358:988d:b0:143:723:8f89 with SMTP id q13-20020a056358988d00b0014307238f89mr4897551rwa.4.1696478680192;
-        Wed, 04 Oct 2023 21:04:40 -0700 (PDT)
-Received: from debian.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id x6-20020a17090a9dc600b0026b12768e46sm412448pjv.42.2023.10.04.21.04.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 21:04:38 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 0786484462F3; Thu,  5 Oct 2023 11:04:33 +0700 (WIB)
-Date:   Thu, 5 Oct 2023 11:04:33 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.5 000/321] 6.5.6-rc1 review
-Message-ID: <ZR410XeUZfIVaflc@debian.me>
-References: <20231004175229.211487444@linuxfoundation.org>
+        with ESMTP id S234183AbjJENyf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 09:54:35 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BBC421D25
+        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 02:46:49 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qoKwR-0002yt-FK
+        for stable@vger.kernel.org; Thu, 05 Oct 2023 11:46:47 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1qoKwQ-00BEdx-Bh
+        for stable@vger.kernel.org; Thu, 05 Oct 2023 11:46:46 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+        by bjornoya.blackshift.org (Postfix) with SMTP id 1505122F966
+        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 09:46:46 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bjornoya.blackshift.org (Postfix) with ESMTPS id DAC2122F934;
+        Thu,  5 Oct 2023 09:46:43 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+        by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 56854bf8;
+        Thu, 5 Oct 2023 09:46:43 +0000 (UTC)
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+To:     netdev@vger.kernel.org
+Cc:     davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
+        kernel@pengutronix.de, Oleksij Rempel <o.rempel@pengutronix.de>,
+        Sili Luo <rootlab@huawei.com>, stable@vger.kernel.org,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 1/7] can: j1939: Fix UAF in j1939_sk_match_filter during setsockopt(SO_J1939_FILTER)
+Date:   Thu,  5 Oct 2023 11:46:33 +0200
+Message-Id: <20231005094639.387019-2-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20231005094639.387019-1-mkl@pengutronix.de>
+References: <20231005094639.387019-1-mkl@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="UsH318AZCdPlllMP"
-Content-Disposition: inline
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
---UsH318AZCdPlllMP
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Lock jsk->sk to prevent UAF when setsockopt(..., SO_J1939_FILTER, ...)
+modifies jsk->filters while receiving packets.
 
-On Wed, Oct 04, 2023 at 07:52:25PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.6 release.
-> There are 321 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+Following trace was seen on affected system:
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+ Read of size 4 at addr ffff888012144014 by task j1939/350
 
-Successfully compiled and installed bindeb-pkgs on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+ CPU: 0 PID: 350 Comm: j1939 Tainted: G        W  OE      6.5.0-rc5 #1
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+ Call Trace:
+  print_report+0xd3/0x620
+  ? kasan_complete_mode_report_info+0x7d/0x200
+  ? j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+  kasan_report+0xc2/0x100
+  ? j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+  __asan_load4+0x84/0xb0
+  j1939_sk_recv_match_one+0x1af/0x2d0 [can_j1939]
+  j1939_sk_recv+0x20b/0x320 [can_j1939]
+  ? __kasan_check_write+0x18/0x20
+  ? __pfx_j1939_sk_recv+0x10/0x10 [can_j1939]
+  ? j1939_simple_recv+0x69/0x280 [can_j1939]
+  ? j1939_ac_recv+0x5e/0x310 [can_j1939]
+  j1939_can_recv+0x43f/0x580 [can_j1939]
+  ? __pfx_j1939_can_recv+0x10/0x10 [can_j1939]
+  ? raw_rcv+0x42/0x3c0 [can_raw]
+  ? __pfx_j1939_can_recv+0x10/0x10 [can_j1939]
+  can_rcv_filter+0x11f/0x350 [can]
+  can_receive+0x12f/0x190 [can]
+  ? __pfx_can_rcv+0x10/0x10 [can]
+  can_rcv+0xdd/0x130 [can]
+  ? __pfx_can_rcv+0x10/0x10 [can]
+  __netif_receive_skb_one_core+0x13d/0x150
+  ? __pfx___netif_receive_skb_one_core+0x10/0x10
+  ? __kasan_check_write+0x18/0x20
+  ? _raw_spin_lock_irq+0x8c/0xe0
+  __netif_receive_skb+0x23/0xb0
+  process_backlog+0x107/0x260
+  __napi_poll+0x69/0x310
+  net_rx_action+0x2a1/0x580
+  ? __pfx_net_rx_action+0x10/0x10
+  ? __pfx__raw_spin_lock+0x10/0x10
+  ? handle_irq_event+0x7d/0xa0
+  __do_softirq+0xf3/0x3f8
+  do_softirq+0x53/0x80
+  </IRQ>
+  <TASK>
+  __local_bh_enable_ip+0x6e/0x70
+  netif_rx+0x16b/0x180
+  can_send+0x32b/0x520 [can]
+  ? __pfx_can_send+0x10/0x10 [can]
+  ? __check_object_size+0x299/0x410
+  raw_sendmsg+0x572/0x6d0 [can_raw]
+  ? __pfx_raw_sendmsg+0x10/0x10 [can_raw]
+  ? apparmor_socket_sendmsg+0x2f/0x40
+  ? __pfx_raw_sendmsg+0x10/0x10 [can_raw]
+  sock_sendmsg+0xef/0x100
+  sock_write_iter+0x162/0x220
+  ? __pfx_sock_write_iter+0x10/0x10
+  ? __rtnl_unlock+0x47/0x80
+  ? security_file_permission+0x54/0x320
+  vfs_write+0x6ba/0x750
+  ? __pfx_vfs_write+0x10/0x10
+  ? __fget_light+0x1ca/0x1f0
+  ? __rcu_read_unlock+0x5b/0x280
+  ksys_write+0x143/0x170
+  ? __pfx_ksys_write+0x10/0x10
+  ? __kasan_check_read+0x15/0x20
+  ? fpregs_assert_state_consistent+0x62/0x70
+  __x64_sys_write+0x47/0x60
+  do_syscall_64+0x60/0x90
+  ? do_syscall_64+0x6d/0x90
+  ? irqentry_exit+0x3f/0x50
+  ? exc_page_fault+0x79/0xf0
+  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+ Allocated by task 348:
+  kasan_save_stack+0x2a/0x50
+  kasan_set_track+0x29/0x40
+  kasan_save_alloc_info+0x1f/0x30
+  __kasan_kmalloc+0xb5/0xc0
+  __kmalloc_node_track_caller+0x67/0x160
+  j1939_sk_setsockopt+0x284/0x450 [can_j1939]
+  __sys_setsockopt+0x15c/0x2f0
+  __x64_sys_setsockopt+0x6b/0x80
+  do_syscall_64+0x60/0x90
+  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
---=20
-An old man doll... just what I always wanted! - Clara
+ Freed by task 349:
+  kasan_save_stack+0x2a/0x50
+  kasan_set_track+0x29/0x40
+  kasan_save_free_info+0x2f/0x50
+  __kasan_slab_free+0x12e/0x1c0
+  __kmem_cache_free+0x1b9/0x380
+  kfree+0x7a/0x120
+  j1939_sk_setsockopt+0x3b2/0x450 [can_j1939]
+  __sys_setsockopt+0x15c/0x2f0
+  __x64_sys_setsockopt+0x6b/0x80
+  do_syscall_64+0x60/0x90
+  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
---UsH318AZCdPlllMP
-Content-Type: application/pgp-signature; name="signature.asc"
+Fixes: 9d71dd0c70099 ("can: add support of SAE J1939 protocol")
+Reported-by: Sili Luo <rootlab@huawei.com>
+Suggested-by: Sili Luo <rootlab@huawei.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: stable@vger.kernel.org
+Tested-by: Sili Luo <rootlab@huawei.com>
+Link: https://lore.kernel.org/all/20230927161456.82772-1-o.rempel@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ net/can/j1939/socket.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
+index b28c976f52a0..2ce24bf78c72 100644
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -262,12 +262,17 @@ static bool j1939_sk_match_dst(struct j1939_sock *jsk,
+ static bool j1939_sk_match_filter(struct j1939_sock *jsk,
+ 				  const struct j1939_sk_buff_cb *skcb)
+ {
+-	const struct j1939_filter *f = jsk->filters;
+-	int nfilter = jsk->nfilters;
++	const struct j1939_filter *f;
++	int nfilter;
++
++	lock_sock(&jsk->sk);
++
++	f = jsk->filters;
++	nfilter = jsk->nfilters;
+ 
+ 	if (!nfilter)
+ 		/* receive all when no filters are assigned */
+-		return true;
++		goto filter_match_found;
+ 
+ 	for (; nfilter; ++f, --nfilter) {
+ 		if ((skcb->addr.pgn & f->pgn_mask) != f->pgn)
+@@ -276,9 +281,15 @@ static bool j1939_sk_match_filter(struct j1939_sock *jsk,
+ 			continue;
+ 		if ((skcb->addr.src_name & f->name_mask) != f->name)
+ 			continue;
+-		return true;
++		goto filter_match_found;
+ 	}
++
++	release_sock(&jsk->sk);
+ 	return false;
++
++filter_match_found:
++	release_sock(&jsk->sk);
++	return true;
+ }
+ 
+ static bool j1939_sk_recv_match_one(struct j1939_sock *jsk,
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZR41yQAKCRD2uYlJVVFO
-o2jLAQCcDpwnr/d3rHimS9StGzwJjBbtqH7B6sZCbbOZ+ywhIgD9FdAMSztvx21C
-hdzoPWYfxAUqkWC9EpKQ1zrL2odaEww=
-=lDbM
------END PGP SIGNATURE-----
+base-commit: d0f95894fda7d4f895b29c1097f92d7fee278cb2
+-- 
+2.40.1
 
---UsH318AZCdPlllMP--
+
