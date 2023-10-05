@@ -2,136 +2,169 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E9C37BA551
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:16:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01C2C7BA659
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:33:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240830AbjJEQPv convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Thu, 5 Oct 2023 12:15:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36402 "EHLO
+        id S231417AbjJEQdi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 12:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241223AbjJEQOM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:14:12 -0400
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 512324C03;
-        Wed,  4 Oct 2023 22:15:31 -0700 (PDT)
-Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-2774874c3daso415951a91.1;
-        Wed, 04 Oct 2023 22:15:31 -0700 (PDT)
+        with ESMTP id S232146AbjJEQck (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:32:40 -0400
+Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB11E5B8F
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 22:55:37 -0700 (PDT)
+Received: by mail-ua1-x92e.google.com with SMTP id a1e0cc1a2514c-7b07548b085so244285241.2
+        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 22:55:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696485337; x=1697090137; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8ZcZ92+aK7pFvnYG3Zmua4wSvYZMloUcgVE7tYVuTB8=;
+        b=OOdPTqgfhKSvdxtXNmfCpMtSHONe8CGrGlucUFT1/hKomeEh99dtQpuQVHhOhjNB8A
+         fzXqRwHZ+b9+41AsRw8erunFGOWk2n94JxkF7q3RbKks6mZiUdO2TG3ZGTRvde+r18E4
+         CTFgUTphDVT2lWMSA9k9WxK9V04P0hFQHpzo3GgCFp09hQ+jEVJxxuYfJjBbYxdV8K3Z
+         UeX6+OeTK6lStTLY6oiJhbUncSGuH3+YOOXPJHkcIgWIsAgAqyafN1sfiU7C9SPmsPj3
+         yygGVLrIO7ZGR+LB53RtUHpjXrp0n1UrJqy/IB9rnWmV9oGYMOS6YfMduGxVpoaGWStD
+         yQwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696482928; x=1697087728;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nWwQRb/XtfECORlbJaPIokf0S+U6RkqOPHFRazouw+M=;
-        b=gk6ehihyY7L8RWQKVeiLU5hPqOL4VdBoXG4lIe6ICycBvyxQ0HhtrVl8hlSrzLCSXQ
-         t2QxKLvicTx6c2AD8yTG4JRD/bKhAI2rQJ/52mEXHU/GI/ZOqgYa0e3tLBiSb74K9VcW
-         I1j/Ne+lMa5fxFHJzH8inlVtaW4N2QxayTBCqtv2x4+IpycI/5usIos8RFDVTgHzC3Zj
-         68qBZH78N1HI0OORdqy6hzP786SV9LRhamZe/b0+vHU6mfVQ1Gd+ft9OLYjltrFP32qn
-         OgAyjM8R4Rzwxd4+VipW8wIWWodYuI1mxIXrlE2ROtyYA6DnEtmBD4XmqesLmNG2M+GM
-         3THg==
-X-Gm-Message-State: AOJu0YyoO8Cz9iEFwXDY6U/QdP+cd6dST7DUNzNUIrxW4YrQ0FT9o01c
-        kdjh0RSaUxyDiMhbhbnZDyIS8i8g5XPQp3IHRvo=
-X-Google-Smtp-Source: AGHT+IFgLfvo1oegfrzeQvDg8A+plJfnaldXDVwHe7iwyPSK91s2WY58rzBuwDkayDOgh0mRN9ApFzOpeM5z8cMN6CE=
-X-Received: by 2002:a17:90b:3b92:b0:273:cec7:23ee with SMTP id
- pc18-20020a17090b3b9200b00273cec723eemr4213933pjb.37.1696482927938; Wed, 04
- Oct 2023 22:15:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696485337; x=1697090137;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8ZcZ92+aK7pFvnYG3Zmua4wSvYZMloUcgVE7tYVuTB8=;
+        b=d+rJWTEQN0OM5GyUUbZ95dLDh220VGs7J7jD06DhLgGswZEBz1olqo8DleJkIKuR3P
+         6gK6BQlYgQHfQsCXz/msy2NPayP/oeyoHNZ/cl46EXsF60owycCc46qbmyVX9GJjbspT
+         wAcvnqd7enNRD7n3TNJL0q2WcDeJ7AFWWXT2UP4dv2pkAeN8UuSQdVAMEuZz47u051YG
+         TGBEt/Sn8NdKku3gHybJXZY5zPsrTCxH0diFWkkaIIAZujAcYLKXSKhenMSIZSIN9Dm6
+         7RRlwpbI/ghfXrfjQeE6BeY4g+9izHa5Q/TP5PC1bvGkCXoNJd9csxNVbMKYIleB36I9
+         Q7yg==
+X-Gm-Message-State: AOJu0YwCqomIuTQ9y+xi89nGdSqksoE14Dtl5Fg+EYYDWl5qqF4GbF8k
+        H+i1XTmW1xqgAE9zRdieLsY8UnjG+FPxEO3f1Wfn7g==
+X-Google-Smtp-Source: AGHT+IEfqFq+XiDNz2eIQnSJe4kBwvfbehxMBH2culMzbddsGyBv9EAUAsoMj1f9NVtaqL/bP7MZWcqyYrY+8efqtTY=
+X-Received: by 2002:a67:b34a:0:b0:454:6faf:204d with SMTP id
+ b10-20020a67b34a000000b004546faf204dmr4357700vsm.2.1696485335477; Wed, 04 Oct
+ 2023 22:55:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231004175217.404851126@linuxfoundation.org> <f0115175-975e-4fde-aa69-666568ce5c6a@gmail.com>
- <CAM9d7chUnxjPdOwZZ0imYs+i8+dd9GL=O3gqJXzaRd1VGZJxBg@mail.gmail.com> <d2b80a6d-63c8-46ec-bf0f-83217a7c517d@gmail.com>
-In-Reply-To: <d2b80a6d-63c8-46ec-bf0f-83217a7c517d@gmail.com>
-From:   Namhyung Kim <namhyung@kernel.org>
-Date:   Wed, 4 Oct 2023 22:15:16 -0700
-Message-ID: <CAM9d7cjf8uct-xMr0Sj8=3kdcH6mavx5pCCsg+G8v53d+kxWjA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/259] 6.1.56-rc1 review
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Ian Rogers <irogers@google.com>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 5 Oct 2023 11:25:24 +0530
+Message-ID: <CA+G9fYuH90g8jQ5SZHE98k16iQV5n+d2-G64xT9W9wrVmpt_Dg@mail.gmail.com>
+Subject: Re: [PATCH 6.5 000/321] 6.5.6-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jinjie Ruan <ruanjinjie@huawei.com>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
+        conor@kernel.org, Netdev <netdev@vger.kernel.org>,
+        kunit-dev@googlegroups.com, Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 4, 2023 at 5:52 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
+On Wed, 4 Oct 2023 at 23:53, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
+> This is the start of the stable review cycle for the 6.5.6 release.
+> There are 321 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
+> Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
+> Anything received after that time might be too late.
 >
-> On 10/4/2023 1:19 PM, Namhyung Kim wrote:
-> > Hello,
-> >
-> > On Wed, Oct 4, 2023 at 12:33 PM Florian Fainelli <f.fainelli@gmail.com> wrote:
-> >>
-> >> +Namhyung, Ian,
-> >>
-> >> On 10/4/23 10:52, Greg Kroah-Hartman wrote:
-> >>> This is the start of the stable review cycle for the 6.1.56 release.
-> >>> There are 259 patches in this series, all will be posted as a response
-> >>> to this one.  If anyone has any issues with these being applied, please
-> >>> let me know.
-> >>>
-> >>> Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
-> >>> Anything received after that time might be too late.
-> >>>
-> >>> The whole patch series can be found in one patch at:
-> >>>        https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.56-rc1.gz
-> >>> or in the git tree and branch at:
-> >>>        git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> >>> and the diffstat can be found below.
-> >>>
-> >>> thanks,
-> >>>
-> >>> greg k-h
-> >>
-> >> perf fails to build with:
-> >>
-> >> fixdep: error opening depfile:
-> >> /local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/pmu-events/.pmu-events.o.d:
-> >> No such file or directory
-> >> make[5]: *** [pmu-events/Build:33:
-> >> /local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/pmu-events/pmu-events.o]
-> >> Error 2
-> >> make[4]: *** [Makefile.perf:672:
-> >> /local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/pmu-events/pmu-events-in.o]
-> >> Error 2
-> >> make[3]: *** [Makefile.perf:240: sub-make] Error 2
-> >> make[2]: *** [Makefile:70: all] Error 2
-> >> make[1]: *** [package/pkg-generic.mk:294:
-> >> /local/users/fainelli/buildroot/output/arm/build/linux-tools/.stamp_built]
-> >> Error 2
-> >> make: *** [Makefile:27: _all] Error 2
-> >>
-> >> due a80fd00cb1a7793ead4d7c3fa7d3f1e898231c27 ("perf build: Update build
-> >> rule for generated files"). Reverting that commit fixes the build for me
-> >> and then all is good in terms of testing.
-> >
-> > I think it's ok to drop the patches if it's not applied
-> > cleanly.
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.6-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
 >
-> AFAICT the patch applied cleanly. There was some bizarre interplay in
-> stable kernels prior to < 6.1 as reported here:
+> thanks,
 >
-> https://lore.kernel.org/all/dcb9997a-2e8a-5eb2-7a34-f8af418d4bf1@gmail.com/
-> https://lore.kernel.org/all/6a577578-8adb-aa70-1bf8-b1a4573152cf@gmail.com/
->
-> Does this make sense to you that on 6.1 which does have Ian's commit
-> 00facc760903be6675870c2749e2cd72140e396e ("perf jevents: Switch build to
-> use jevents.py") that we would still get this build error somehow?
+> greg k-h
 
-You can drop the pmu-events part of the change if possible.
-If not, I'm ok to drop the entire patch as it's intended to fix a
-corner case only.  Normal builds should be fine before and
-after the change.
+While running kunit testing on qemu-armv7 following test failures noticed
+on stable rc 6.5.6-rc1.
 
-Thanks,
-Namhyung
+# req_destroy works: EXPECTATION FAILED at net/handshake/handshake-test.c:477
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Test log:
+----------
+<6>[ 1351.687335]     KTAP version 1
+<6>[ 1351.688300]     # Subtest: Handshake API tests
+<6>[ 1351.688760]     1..11
+<6>[ 1351.689362]         KTAP version 1
+<6>[ 1351.689985]         # Subtest: req_alloc API fuzzing
+<6>[ 1351.694360]         ok 1 handshake_req_alloc NULL proto
+<6>[ 1351.705855]         ok 2 handshake_req_alloc CLASS_NONE
+<6>[ 1351.710878]         ok 3 handshake_req_alloc CLASS_MAX
+<6>[ 1351.715435]         ok 4 handshake_req_alloc no callbacks
+<6>[ 1351.722026]         ok 5 handshake_req_alloc no done callback
+<6>[ 1351.726579]         ok 6 handshake_req_alloc excessive privsize
+<6>[ 1351.732397]         ok 7 handshake_req_alloc all good
+<6>[ 1351.732934]     # req_alloc API fuzzing: pass:7 fail:0 skip:0 total:7
+<6>[ 1351.733586]     ok 1 req_alloc API fuzzing
+<6>[ 1351.741251]     ok 2 req_submit NULL req arg
+<6>[ 1351.745979]     ok 3 req_submit NULL sock arg
+<6>[ 1351.753307]     ok 4 req_submit NULL sock->file
+<6>[ 1351.763090]     ok 5 req_lookup works
+<6>[ 1351.770057]     ok 6 req_submit max pending
+<6>[ 1351.774878]     ok 7 req_submit multiple
+<6>[ 1351.782411]     ok 8 req_cancel before accept
+<6>[ 1351.787423]     ok 9 req_cancel after accept
+<6>[ 1351.795660]     ok 10 req_cancel after done
+<3>[ 1351.799741]     # req_destroy works: EXPECTATION FAILED at
+net/handshake/handshake-test.c:477
+<3>[ 1351.799741]     Expected handshake_req_destroy_test == req, but
+<3>[ 1351.799741]         handshake_req_destroy_test == 00000000
+<3>[ 1351.799741]         req == cae22700
+<6>[ 1351.803368]     not ok 11 req_destroy works
+<6>[ 1351.804539] # Handshake API tests: pass:10 fail:1 skip:0 total:11
+<6>[ 1351.805460] # Totals: pass:16 fail:1 skip:0 total:17
+<6>[ 1351.806276] not ok 95 Handshake API tests
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.5-322-g9327d0db36be/testrun/20257175/suite/kunit/test/req_alloc/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.5-322-g9327d0db36be/testrun/20257175/suite/kunit/test/req_alloc/details/
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2WJGlCUgDzR8asQbd2BxMssFcEc/
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2WJGlCUgDzR8asQbd2BxMssFcEc/config
+
+Steps to reproduce:
+# To install tuxrun to your home directory at ~/.local/bin:
+# pip3 install -U --user tuxrun==0.49.2
+#
+# Or install a deb/rpm depending on the running distribution
+# See https://tuxmake.org/install-deb/ or
+# https://tuxmake.org/install-rpm/
+#
+# See https://tuxrun.org/ for complete documentation.
+Link to reproducer,
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2WJGlCUgDzR8asQbd2BxMssFcEc/tuxmake_reproducer.sh
+
+or
+
+tuxrun --runtime podman --device qemu-armv7 --boot-args rw --kernel
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2WJGlCUgDzR8asQbd2BxMssFcEc/zImage
+--modules https://storage.tuxsuite.com/public/linaro/lkft/builds/2WJGlCUgDzR8asQbd2BxMssFcEc/modules.tar.xz
+--rootfs https://storage.tuxboot.com/debian/bookworm/armhf/rootfs.ext4.xz
+--parameters SKIPFILE=skipfile-lkft.yaml --image
+docker.io/linaro/tuxrun-dispatcher:v0.49.2 --tests kunit --timeouts
+boot=30
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
