@@ -2,143 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 465997B9E68
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 16:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 137727BA000
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 16:33:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230256AbjJEOFv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 10:05:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37116 "EHLO
+        id S233852AbjJEOcU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 10:32:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230261AbjJEODy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 10:03:54 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8284B21D2A
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 02:46:49 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1qoKwR-0002zP-Na
-        for stable@vger.kernel.org; Thu, 05 Oct 2023 11:46:47 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <mkl@pengutronix.de>)
-        id 1qoKwQ-00BEeC-J8
-        for stable@vger.kernel.org; Thu, 05 Oct 2023 11:46:46 +0200
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-        by bjornoya.blackshift.org (Postfix) with SMTP id 47E3B22F96B
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 09:46:46 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by bjornoya.blackshift.org (Postfix) with ESMTPS id 4C8F222F93B;
-        Thu,  5 Oct 2023 09:46:44 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-        by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 2ef889b9;
-        Thu, 5 Oct 2023 09:46:43 +0000 (UTC)
-From:   Marc Kleine-Budde <mkl@pengutronix.de>
-To:     netdev@vger.kernel.org
-Cc:     davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
-        kernel@pengutronix.de, Miquel Raynal <miquel.raynal@bootlin.com>,
-        stable@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 4/7] can: sja1000: Always restart the Tx queue after an overrun
-Date:   Thu,  5 Oct 2023 11:46:36 +0200
-Message-Id: <20231005094639.387019-5-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231005094639.387019-1-mkl@pengutronix.de>
-References: <20231005094639.387019-1-mkl@pengutronix.de>
+        with ESMTP id S234064AbjJEOao (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 10:30:44 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D72D1F75E
+        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 03:00:00 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-31c5cac3ae2so732917f8f.3
+        for <stable@vger.kernel.org>; Thu, 05 Oct 2023 03:00:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696499999; x=1697104799; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t1WI9TvkImQF/fqcaq6kEtU5fMxAStOtaMB/ec/9aZU=;
+        b=OoUik6cKKQH5wO8KVjFqy7E5L4Y7PGH6SZwccEQ8sCClg+25gStsiV2sFIWYJUW0/i
+         XgUXmO1sEkUMqbfa8HtRvne9vsOSOi/0iUtTzYBaVVaEn5yVxeRJBwnUYO2+CloNzGBo
+         Cjk8idMQN7q0CJQBxh3dhT566L5QUn8swxx1KO/sjYPLQs9nqa6zXpu0eBasCRq7tn4J
+         EYZMWOrM19TFryxat35V507YI/mP6s4nvodwHXvKTZ4Xphvw6QtPRdWUQTx0CEcABk6r
+         BGlimj/lIy6m3f6e57HquwiFe4rpc8u7ZY5A6p1V8cq+l3E3kgwPcPdDDLQEZAlGtAHI
+         gvCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696499999; x=1697104799;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t1WI9TvkImQF/fqcaq6kEtU5fMxAStOtaMB/ec/9aZU=;
+        b=RcEE5UgcSRpXADPs5NCbRI3stP+V6H0E9Lc6ctsPS19ziHUSqz0mvOM/jdu+H36cy3
+         AP3EVc18AEH3nK6PTHgnxol7hzNIAejnexhiaslSV/KPtl7yM+QpuPmuUd4QCcJsWjft
+         9cYqi6bednt2MUxTySET+67u/+L1uD58rUynlpdLe8ve2EyPBS7m6QbFIkmnD3snTgor
+         jKuowvNRuYy3aQRqFC0P5VAC7RSIlq6Ym0TCkk2x/zrfjwmsFnkpXjdAj77HjBAM+5qE
+         Z2WNeozugONZXMC4YBXszqHGXR92RJZk4I6TmI7y602vgsvpi2k/Aze9g3wr6F7VzJ4Y
+         ToMw==
+X-Gm-Message-State: AOJu0YxjUNgOCAdXI/FHWTSuemYfOSJKvpkWr7BJjQc1Mf5zwP4Og0aq
+        cvbFYMrMtTYwW7842/NYVZgMiwpS6yc=
+X-Google-Smtp-Source: AGHT+IHZ1+z9xpDZgosU7WEX0GZb/47MBnR2yKW3d0n56Q0K2FKVTCMlcTnMolDbsJOpANztgveAAA==
+X-Received: by 2002:adf:e388:0:b0:31f:b0ba:f2ce with SMTP id e8-20020adfe388000000b0031fb0baf2cemr4552790wrm.9.1696499998603;
+        Thu, 05 Oct 2023 02:59:58 -0700 (PDT)
+Received: from localhost.localdomain (ip-94-112-167-15.bb.vodafone.cz. [94.112.167.15])
+        by smtp.gmail.com with ESMTPSA id a11-20020a5d4d4b000000b003231ca246b6sm1389897wru.95.2023.10.05.02.59.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Oct 2023 02:59:57 -0700 (PDT)
+From:   Ilya Dryomov <idryomov@gmail.com>
+To:     stable@vger.kernel.org
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH for 5.10-6.1 1/4] rbd: move rbd_dev_refresh() definition
+Date:   Thu,  5 Oct 2023 11:59:32 +0200
+Message-ID: <20231005095937.317188-2-idryomov@gmail.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231005095937.317188-1-idryomov@gmail.com>
+References: <20231005095937.317188-1-idryomov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+commit 0b035401c57021fc6c300272cbb1c5a889d4fe45 upstream.
 
-Upstream commit 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with
-a soft reset on Renesas SoCs") fixes an issue with Renesas own SJA1000
-CAN controller reception: the Rx buffer is only 5 messages long, so when
-the bus loaded (eg. a message every 50us), overrun may easily
-happen. Upon an overrun situation, due to a possible internal crosstalk
-situation, the controller enters a frozen state which only can be
-unlocked with a soft reset (experimentally). The solution was to offload
-a call to sja1000_start() in a threaded handler. This needs to happen in
-process context as this operation requires to sleep. sja1000_start()
-basically enters "reset mode", performs a proper software reset and
-returns back into "normal mode".
+Move rbd_dev_refresh() definition further down to avoid having to
+move struct parent_image_info definition in the next commit.  This
+spares some forward declarations too.
 
-Since this fix was introduced, we no longer observe any stalls in
-reception. However it was sporadically observed that the transmit path
-would now freeze. Further investigation blamed the fix mentioned above,
-and especially the reset operation. Reproducing the reset in a loop
-helped identifying what could possibly go wrong. The sja1000 is a single
-Tx queue device, which leverages the netdev helpers to process one Tx
-message at a time. The logic is: the queue is stopped, the message sent
-to the transceiver, once properly transmitted the controller sets a
-status bit which triggers an interrupt, in the interrupt handler the
-transmission status is checked and the queue woken up. Unfortunately, if
-an overrun happens, we might perform the soft reset precisely between
-the transmission of the buffer to the transceiver and the advent of the
-transmission status bit. We would then stop the transmission operation
-without re-enabling the queue, leading to all further transmissions to
-be ignored.
-
-The reset interrupt can only happen while the device is "open", and
-after a reset we anyway want to resume normal operations, no matter if a
-packet to transmit got dropped in the process, so we shall wake up the
-queue. Restarting the device and waking-up the queue is exactly what
-sja1000_set_mode(CAN_MODE_START) does. In order to be consistent about
-the queue state, we must acquire a lock both in the reset handler and in
-the transmit path to ensure serialization of both operations. It turns
-out, a lock is already held when entering the transmit path, so we can
-just acquire/release it as well with the regular net helpers inside the
-threaded interrupt handler and this way we should be safe. As the
-reset handler might still be called after the transmission of a frame to
-the transceiver but before it actually gets transmitted, we must ensure
-we don't leak the skb, so we free it (the behavior is consistent, no
-matter if there was an skb on the stack or not).
-
-Fixes: 717c6ec241b5 ("can: sja1000: Prevent overrun stalls with a soft reset on Renesas SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/all/20231002160206.190953-1-miquel.raynal@bootlin.com
-[mkl: fixed call to can_free_echo_skb()]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+[idryomov@gmail.com: backport to 5.10-6.1: context]
 ---
- drivers/net/can/sja1000/sja1000.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/block/rbd.c | 68 ++++++++++++++++++++++-----------------------
+ 1 file changed, 33 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
-index 0ada0e160e93..743c2eb62b87 100644
---- a/drivers/net/can/sja1000/sja1000.c
-+++ b/drivers/net/can/sja1000/sja1000.c
-@@ -392,7 +392,13 @@ static irqreturn_t sja1000_reset_interrupt(int irq, void *dev_id)
- 	struct net_device *dev = (struct net_device *)dev_id;
+diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
+index 74ef3da54536..762795430b4d 100644
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -633,8 +633,6 @@ static void rbd_dev_remove_parent(struct rbd_device *rbd_dev);
  
- 	netdev_dbg(dev, "performing a soft reset upon overrun\n");
--	sja1000_start(dev);
-+
-+	netif_tx_lock(dev);
-+
-+	can_free_echo_skb(dev, 0, NULL);
-+	sja1000_set_mode(dev, CAN_MODE_START);
-+
-+	netif_tx_unlock(dev);
- 
- 	return IRQ_HANDLED;
+ static int rbd_dev_refresh(struct rbd_device *rbd_dev);
+ static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev);
+-static int rbd_dev_header_info(struct rbd_device *rbd_dev);
+-static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev);
+ static const char *rbd_dev_v2_snap_name(struct rbd_device *rbd_dev,
+ 					u64 snap_id);
+ static int _rbd_dev_v2_snap_size(struct rbd_device *rbd_dev, u64 snap_id,
+@@ -4932,39 +4930,6 @@ static void rbd_dev_update_size(struct rbd_device *rbd_dev)
+ 	}
  }
+ 
+-static int rbd_dev_refresh(struct rbd_device *rbd_dev)
+-{
+-	u64 mapping_size;
+-	int ret;
+-
+-	down_write(&rbd_dev->header_rwsem);
+-	mapping_size = rbd_dev->mapping.size;
+-
+-	ret = rbd_dev_header_info(rbd_dev);
+-	if (ret)
+-		goto out;
+-
+-	/*
+-	 * If there is a parent, see if it has disappeared due to the
+-	 * mapped image getting flattened.
+-	 */
+-	if (rbd_dev->parent) {
+-		ret = rbd_dev_v2_parent_info(rbd_dev);
+-		if (ret)
+-			goto out;
+-	}
+-
+-	rbd_assert(!rbd_is_snap(rbd_dev));
+-	rbd_dev->mapping.size = rbd_dev->header.image_size;
+-
+-out:
+-	up_write(&rbd_dev->header_rwsem);
+-	if (!ret && mapping_size != rbd_dev->mapping.size)
+-		rbd_dev_update_size(rbd_dev);
+-
+-	return ret;
+-}
+-
+ static const struct blk_mq_ops rbd_mq_ops = {
+ 	.queue_rq	= rbd_queue_rq,
+ };
+@@ -7044,6 +7009,39 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
+ 	return ret;
+ }
+ 
++static int rbd_dev_refresh(struct rbd_device *rbd_dev)
++{
++	u64 mapping_size;
++	int ret;
++
++	down_write(&rbd_dev->header_rwsem);
++	mapping_size = rbd_dev->mapping.size;
++
++	ret = rbd_dev_header_info(rbd_dev);
++	if (ret)
++		goto out;
++
++	/*
++	 * If there is a parent, see if it has disappeared due to the
++	 * mapped image getting flattened.
++	 */
++	if (rbd_dev->parent) {
++		ret = rbd_dev_v2_parent_info(rbd_dev);
++		if (ret)
++			goto out;
++	}
++
++	rbd_assert(!rbd_is_snap(rbd_dev));
++	rbd_dev->mapping.size = rbd_dev->header.image_size;
++
++out:
++	up_write(&rbd_dev->header_rwsem);
++	if (!ret && mapping_size != rbd_dev->mapping.size)
++		rbd_dev_update_size(rbd_dev);
++
++	return ret;
++}
++
+ static ssize_t do_rbd_add(struct bus_type *bus,
+ 			  const char *buf,
+ 			  size_t count)
 -- 
-2.40.1
-
+2.41.0
 
