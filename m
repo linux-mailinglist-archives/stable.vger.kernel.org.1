@@ -2,340 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E63187BA705
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6F4D7BA70A
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:47:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjJEQqq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 12:46:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39034 "EHLO
+        id S229659AbjJEQr0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 12:47:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232323AbjJEQp6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:45:58 -0400
-Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D262610FE
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 09:40:09 -0700 (PDT)
-Received: by mail-ua1-x92e.google.com with SMTP id a1e0cc1a2514c-7ae19da7b79so473229241.2
-        for <stable@vger.kernel.org>; Thu, 05 Oct 2023 09:40:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696524009; x=1697128809; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2thL5ZLQW73WF1UYkoIC5cbGYf0wYlLtd79y60/Ixhs=;
-        b=e4yZiz67HhuDRw1vnyA4bGdG6v4KhgCFoVasy9wATe8d1VF6kFqMX9mHMpqDOW5Z2g
-         hpV6NKOyOlSXxKwvLVdgFe2w7HSuqAouj1/5Az9f/zth18W5ImF/y6ShYFLp6BOsPNB6
-         qQgKMVFzegPKoN8maMOPQb38dfSpzVx5kcOJ7/WubMxth7WqZSRl3AXBWzAxpAl0JreE
-         Yh7tkjbrkYqlcRoRqFlIVSunEmFsSYZTHAp7xQBAn2qF7SccE81h/eD0NyvTWSx3WeF5
-         lXeWwNp1Q9CAisI7IjT4x6pAa4UohKGggk/4EgZ/+yUBi8FIYim+G5asijGD8tL5byB1
-         ZyiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696524009; x=1697128809;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2thL5ZLQW73WF1UYkoIC5cbGYf0wYlLtd79y60/Ixhs=;
-        b=WMSJ1PetdyvrtVvnQn/8afqwGlMbq675JqDhMQcukmFWyxKmG1Dj4sZo5O1MTphYBT
-         wm4LQjtEHA4cBcQfPUmMlHCIg3f7K1oK5et3tqdaZpm6cefpA6Px9Dfugpkg1W6UjKtK
-         Vmdx+8kuNdjgiB0vw293zwqWac7cbqpuabAACPmaq2lyRgI0J2RZQ0lGFQreXHd8aIcn
-         nDdZeyrcD1jIHehoLNKOSIBSgLur3rgYWhnBoRr8MNEWMx+pShRpkn3/HQu2UtgpNzhs
-         RtEOeHxb/D1nzq2yUiRorEtl0N0b7qUPMEkH3Q6VdeClhByHuauHxff7EcItQjWHgejz
-         UfYw==
-X-Gm-Message-State: AOJu0YzgdYZ0Jt38wshbBRPH45lUlvbZqLuUAEWBXoQMLbK5ucO7OYfP
-        taJ3jz++jl2gm1308lcFb+X104KqLzupNwykWSF0tQ==
-X-Google-Smtp-Source: AGHT+IGp+XVpQcjXnNjDev251fg85e0y40eaefH6LoORjDhsnCDOKiusiRkHPjF3o1dfGTYNLNGXfSFV1bgrV6Sbzd8=
-X-Received: by 2002:a67:ea4f:0:b0:44d:626b:94da with SMTP id
- r15-20020a67ea4f000000b0044d626b94damr4990497vso.32.1696524008739; Thu, 05
- Oct 2023 09:40:08 -0700 (PDT)
+        with ESMTP id S233356AbjJEQqm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:46:42 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4037F2707;
+        Thu,  5 Oct 2023 09:40:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 95214C433CA;
+        Thu,  5 Oct 2023 16:40:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696524025;
+        bh=o7kiTe0OXPEOLZf74e9pOzyCSg3hSTh4aw0DUkNUZK8=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=Rw9sF5G5dpA34C4+BwnzaHUbjEuNXTaFeNYAgR4b0/NERJITwSmOUoCiK8GkFKpt9
+         wNNjkxKkE/snQEGCnuLKYQ8TX6xH2K+zeV5uBliupFN1Q2047ym5laAJlfADte69Xi
+         tLnpXb8E0k+7+hAW2Kx6LtGH1tv5s2ahMcT+4KOUu/Z4EONGeHGdvCiGvIXmRdesB6
+         qHm+61eb3b7eVVmxPAR4FxUoo+pXMkcYOd+ekY3Ts0vAm89hgX2k0dsAhKrG6RnQSj
+         W+rGrnqyKXuVqU2pY9FGfb+Wc1ySbb7aMpErR7qn4S0Ond3pU+dO6ApMfOa5V2fiLR
+         ioWa40CXbrVvg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 73685E632D7;
+        Thu,  5 Oct 2023 16:40:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20231004175217.404851126@linuxfoundation.org>
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 5 Oct 2023 22:09:57 +0530
-Message-ID: <CA+G9fYsqbZhSQnEi-qSc7n+4d7nPap8HWcdbZGWLfo3mTH-L7A@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/259] 6.1.56-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-nfs@vger.kernel.org
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Olga Kornievskaia <kolga@netapp.com>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Anna Schumaker <Anna.Schumaker@netapp.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        LTP List <ltp@lists.linux.it>, Petr Vorel <pvorel@suse.cz>,
-        Richard Palethorpe <rpalethorpe@suse.com>,
-        Eryu Guan <eguan@redhat.com>, chrubis <chrubis@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: stmmac: remove unneeded stmmac_poll_controller
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <169652402546.29548.6404027864255533481.git-patchwork-notify@kernel.org>
+Date:   Thu, 05 Oct 2023 16:40:25 +0000
+References: <1c156a6d8c9170bd6a17825f2277115525b4d50f.1696429960.git.repk@triplefau.lt>
+In-Reply-To: <1c156a6d8c9170bd6a17825f2277115525b4d50f.1696429960.git.repk@triplefau.lt>
+To:     Remi Pommarel <repk@triplefau.lt>
+Cc:     alexandre.torgue@foss.st.com, joabreu@synopsys.com,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 4 Oct 2023 at 23:41, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.56 release.
-> There are 259 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.56-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hello:
 
-Results from Linaro=E2=80=99s test farm.
-Regressions on arm64 bcm2711-rpi-4-b device running LTP dio tests on
-NFS mounted rootfs.
-and LTP hugetlb hugemmap11 test case failed on x86 and arm64 bcm2711-rpi-4-=
-b.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+On Wed,  4 Oct 2023 16:33:56 +0200 you wrote:
+> Using netconsole netpoll_poll_dev could be called from interrupt
+> context, thus using disable_irq() would cause the following kernel
+> warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
+> 
+>   BUG: sleeping function called from invalid context at kernel/irq/manage.c:137
+>   in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksoftirqd/0
+>   CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00075-g816b502b2298-dirty #117
+>   Hardware name: aml (r1) (DT)
+>   Call trace:
+>    dump_backtrace+0x0/0x270
+>    show_stack+0x14/0x20
+>    dump_stack_lvl+0x8c/0xac
+>    dump_stack+0x18/0x30
+>    ___might_sleep+0x150/0x194
+>    __might_sleep+0x64/0xbc
+>    synchronize_irq+0x8c/0x150
+>    disable_irq+0x2c/0x40
+>    stmmac_poll_controller+0x140/0x1a0
+>    netpoll_poll_dev+0x6c/0x220
+>    netpoll_send_skb+0x308/0x390
+>    netpoll_send_udp+0x418/0x760
+>    write_msg+0x118/0x140 [netconsole]
+>    console_unlock+0x404/0x500
+>    vprintk_emit+0x118/0x250
+>    dev_vprintk_emit+0x19c/0x1cc
+>    dev_printk_emit+0x90/0xa8
+>    __dev_printk+0x78/0x9c
+>    _dev_warn+0xa4/0xbc
+>    ath10k_warn+0xe8/0xf0 [ath10k_core]
+>    ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
+>    ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
+>    __napi_poll+0x58/0x1f4
+>    net_rx_action+0x504/0x590
+>    _stext+0x1b8/0x418
+>    run_ksoftirqd+0x74/0xa4
+>    smpboot_thread_fn+0x210/0x3c0
+>    kthread+0x1fc/0x210
+>    ret_from_fork+0x10/0x20
+> 
+> [...]
 
-LTP hugetlb tests failed log
-  tst_hugepage.c:83: TINFO: 1 hugepage(s) reserved
-  tst_test.c:1558: TINFO: Timeout per run is 0h 05m 00s
-  hugemmap11.c:47: TFAIL: Memory mismatch after Direct-IO write
+Here is the summary with links:
+  - [net,v3] net: stmmac: remove unneeded stmmac_poll_controller
+    https://git.kernel.org/netdev/net/c/3eef85558910
 
-LTP dio tests failed log
-  compare_file: char mismatch: infile offset 4096: 0x01 .   outfile
-offset 4096: 0x00 .
-  diotest01    1  TFAIL  :  diotest1.c:158: file compare failed for
-infile and outfile
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-## Build
-* kernel: 6.1.56-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: 0353a7bfd2b60c5e42c8651eb3fa4cc48159db5f
-* git describe: v6.1.55-260-g0353a7bfd2b6
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.5=
-5-260-g0353a7bfd2b6
 
-## Test Regressions (compared to v6.1.55)
-* x86_64-clang, ltp-hugetlb
-* bcm2711-rpi-4-b, ltp-hugetlb
-* bcm2711-rpi-4-b-clang, ltp-hugetlb
-* bcm2711-rpi-4-b-64k_page_size, ltp-hugetlb
-  - hugemmap11
-
-Test log:
---------
-  tst_hugepage.c:83: TINFO: 1 hugepage(s) reserved
-  tst_test.c:1558: TINFO: Timeout per run is 0h 05m 00s
-  hugemmap11.c:47: TFAIL: Memory mismatch after Direct-IO write
-
-Links:
-  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6=
-.1.55-260-g0353a7bfd2b6/testrun/20259639/suite/ltp-hugetlb/test/hugemmap11/=
-log
-  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6=
-.1.55-260-g0353a7bfd2b6/testrun/20260457/suite/ltp-hugetlb/test/hugemmap11/=
-history/
-
-* bcm2711-rpi-4-b, ltp-dio
-* bcm2711-rpi-4-b-clang, ltp-dio
-* bcm2711-rpi-4-b-64k_page_size, ltp-dio
-  - dio01
-  - dio02
-  - dio03
-  - dio05
-  - dio06
-  - dio07
-  - dio08
-  - dio09
-  - dio11
-
-Test log:
---------
-  compare_file: char mismatch: infile offset 4096: 0x01 .   outfile
-offset 4096: 0x00 .
-  diotest01    1  TFAIL  :  diotest1.c:158: file compare failed for
-infile and outfile
-  bufcmp: offset 0: Expected: 0x1, got 0x0
-  bufcmp: offset 0: Expected: 0x1, got 0x0
-  diotest02    1  TPASS  :  Read with Direct IO, Write without
-  diotest02    2  TFAIL  :  diotest2.c:119: read/write comparision failed
-  diotest02    3  TFAIL  :  diotest2.c:210: Write with Direct IO, Read with=
-out
-  diotest02    4  TFAIL  :  diotest2.c:119: read/write comparision failed
-  diotest02    5  TFAIL  :  diotest2.c:231: Read, Write with Direct IO
-  diotest02    0  TINFO  :  2/3 testblocks failed
-  bufcmp: offset 0: Expected: 0x1, got 0x0
-  diotest03    1  TPASS  :  Read with Direct IO, Write without
-  diotest03    2  TFAIL  :  diotest3.c:136: comparsion failed; child=3D0 of=
-fset=3D0
-  diotest03    3  TFAIL  :  diotest3.c:189: Write Direct-child 0 failed
-  bufcmp: offset 0: Expected: 0x1, got 0x0
-  diotest03    1  TPASS  :  Read with Direct IO, Write without
-  diotest03    2  TFAIL  :  diotest3.c:306: Write with Direct IO, Read with=
-out
-  diotest03    3  TFAIL  :  diotest3.c:136: comparsion failed; child=3D0 of=
-fset=3D0
-  diotest03    4  TFAIL  :  diotest3.c:210: RDWR Direct-child 0 failed
-  diotest03    1  TPASS  :  Read with Direct IO, Write without
-  diotest03    2  TFAIL  :  diotest3.c:306: Write with Direct IO, Read with=
-out
-  diotest03    3  TFAIL  :  diotest3.c:323: Read, Write with Direct IO
-  ...
-  diotest05    1  TPASS  :  Read with Direct IO, Write without
-  diotest05    2  TFAIL  :  diotest5.c:141: readv/writev comparision failed
-  diotest05    3  TFAIL  :  diotest5.c:250: Write with Direct IO, Read with=
-out
-  diotest05    4  TFAIL  :  diotest5.c:141: readv/writev comparision failed
-  diotest05    5  TFAIL  :  diotest5.c:271: Read, Write with Direct IO
-  diotest05    0  TINFO  :  2/3 testblocks failed
-
-Links:
-  - https://lkft.validation.linaro.org/scheduler/job/6842177#L1666
-  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6=
-.1.55-260-g0353a7bfd2b6/testrun/20260389/suite/ltp-dio/test/dio01/history/
-
-## Metric Regressions (compared to v6.1.55)
-
-## Test Fixes (compared to v6.1.55)
-
-## Metric Fixes (compared to v6.1.55)
-
-## Test result summary
-total: 121166, pass: 102582, fail: 2234, skip: 16177, xfail: 173
-
-## Build Summary
-* arc: 4 total, 4 passed, 0 failed
-* arm: 140 total, 140 passed, 0 failed
-* arm64: 49 total, 49 passed, 0 failed
-* i386: 33 total, 33 passed, 0 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 34 passed, 0 failed
-* riscv: 12 total, 12 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 11 total, 11 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 40 total, 40 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
