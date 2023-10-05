@@ -2,70 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01C2C7BA659
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21E317BA555
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231417AbjJEQdi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 12:33:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
+        id S230309AbjJEQPz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 12:15:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232146AbjJEQck (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:32:40 -0400
-Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB11E5B8F
-        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 22:55:37 -0700 (PDT)
-Received: by mail-ua1-x92e.google.com with SMTP id a1e0cc1a2514c-7b07548b085so244285241.2
-        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 22:55:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696485337; x=1697090137; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8ZcZ92+aK7pFvnYG3Zmua4wSvYZMloUcgVE7tYVuTB8=;
-        b=OOdPTqgfhKSvdxtXNmfCpMtSHONe8CGrGlucUFT1/hKomeEh99dtQpuQVHhOhjNB8A
-         fzXqRwHZ+b9+41AsRw8erunFGOWk2n94JxkF7q3RbKks6mZiUdO2TG3ZGTRvde+r18E4
-         CTFgUTphDVT2lWMSA9k9WxK9V04P0hFQHpzo3GgCFp09hQ+jEVJxxuYfJjBbYxdV8K3Z
-         UeX6+OeTK6lStTLY6oiJhbUncSGuH3+YOOXPJHkcIgWIsAgAqyafN1sfiU7C9SPmsPj3
-         yygGVLrIO7ZGR+LB53RtUHpjXrp0n1UrJqy/IB9rnWmV9oGYMOS6YfMduGxVpoaGWStD
-         yQwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696485337; x=1697090137;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8ZcZ92+aK7pFvnYG3Zmua4wSvYZMloUcgVE7tYVuTB8=;
-        b=d+rJWTEQN0OM5GyUUbZ95dLDh220VGs7J7jD06DhLgGswZEBz1olqo8DleJkIKuR3P
-         6gK6BQlYgQHfQsCXz/msy2NPayP/oeyoHNZ/cl46EXsF60owycCc46qbmyVX9GJjbspT
-         wAcvnqd7enNRD7n3TNJL0q2WcDeJ7AFWWXT2UP4dv2pkAeN8UuSQdVAMEuZz47u051YG
-         TGBEt/Sn8NdKku3gHybJXZY5zPsrTCxH0diFWkkaIIAZujAcYLKXSKhenMSIZSIN9Dm6
-         7RRlwpbI/ghfXrfjQeE6BeY4g+9izHa5Q/TP5PC1bvGkCXoNJd9csxNVbMKYIleB36I9
-         Q7yg==
-X-Gm-Message-State: AOJu0YwCqomIuTQ9y+xi89nGdSqksoE14Dtl5Fg+EYYDWl5qqF4GbF8k
-        H+i1XTmW1xqgAE9zRdieLsY8UnjG+FPxEO3f1Wfn7g==
-X-Google-Smtp-Source: AGHT+IEfqFq+XiDNz2eIQnSJe4kBwvfbehxMBH2culMzbddsGyBv9EAUAsoMj1f9NVtaqL/bP7MZWcqyYrY+8efqtTY=
-X-Received: by 2002:a67:b34a:0:b0:454:6faf:204d with SMTP id
- b10-20020a67b34a000000b004546faf204dmr4357700vsm.2.1696485335477; Wed, 04 Oct
- 2023 22:55:35 -0700 (PDT)
+        with ESMTP id S241483AbjJEQO2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:14:28 -0400
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::221])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3609683FE;
+        Thu,  5 Oct 2023 01:03:54 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3DEF1240003;
+        Thu,  5 Oct 2023 08:03:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1696493032;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=nWCgRkBzHmBU9mQHZ8RJ874KCeFsXDwO/MzoGa06zI0=;
+        b=Da52x2X7h83zz1KiOdWz2Pa0Gw4mtWUrpO2eSl+yCaWEPo2LglKwUD97DR3QT10zroCNc8
+        gyeLF/Rvz1MVi3QzLlOzUrB/wkP3YNy9l1u7k3Eyw6W0TLRGot9mao9nkb0SH+rIoGKB79
+        g48JfG63T3U2TLujyTp2JqQZGa0c01WZQOtAcvwyvAWgBfkQSS5v+NyhpMeLn7cs8SVuaS
+        lV5863/HmFRj5nHhMEnc4uMAyfxd6yYG8oHa5B+qci8AtvBPtsC5e8YIvPxAsRLV5sixir
+        yfgEIVKYTfrVHZ46ZgNHumO8Ts0MShZSQrT7+my2w19Ei/640thGY6e3z1lRIQ==
+Date:   Thu, 5 Oct 2023 10:03:49 +0200
+From:   =?UTF-8?B?S8O2cnk=?= Maincent <kory.maincent@bootlin.com>
+To:     Simon Horman <horms@kernel.org>
+Cc:     Michal Kubecek <mkubecek@suse.cz>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        stable@vger.kernel.org, thomas.petazzoni@bootlin.com,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net 1/1] ethtool: Fix mod state of verbose no_mask
+ bitset
+Message-ID: <20231005100349.113f3bf1@kmaincent-XPS-13-7390>
+In-Reply-To: <ZR1HYg2ElUjy2aud@kernel.org>
+References: <20231003085653.3104411-1-kory.maincent@bootlin.com>
+        <ZR1HYg2ElUjy2aud@kernel.org>
+Organization: bootlin
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-References: <20231004175229.211487444@linuxfoundation.org>
-In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 5 Oct 2023 11:25:24 +0530
-Message-ID: <CA+G9fYuH90g8jQ5SZHE98k16iQV5n+d2-G64xT9W9wrVmpt_Dg@mail.gmail.com>
-Subject: Re: [PATCH 6.5 000/321] 6.5.6-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jinjie Ruan <ruanjinjie@huawei.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Netdev <netdev@vger.kernel.org>,
-        kunit-dev@googlegroups.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: kory.maincent@bootlin.com
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,98 +61,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 4 Oct 2023 at 23:53, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+Hello Simon,
+
+Thank for your review.
+
+On Wed, 4 Oct 2023 13:07:14 +0200
+Simon Horman <horms@kernel.org> wrote:
+
+> On Tue, Oct 03, 2023 at 10:56:52AM +0200, K=C3=B6ry Maincent wrote:
+> > From: Kory Maincent <kory.maincent@bootlin.com>
 >
-> This is the start of the stable review cycle for the 6.5.6 release.
-> There are 321 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.6-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> > @@ -448,8 +450,11 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned
+> > int nbits, }
+> > =20
+> >  	no_mask =3D tb[ETHTOOL_A_BITSET_NOMASK];
+> > -	if (no_mask)
+> > -		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
+> > +	if (no_mask) {
+> > +		tmp =3D kcalloc(nbits, sizeof(u32), GFP_KERNEL);
+> > +		memcpy(tmp, bitmap, nbits); =20
+>=20
+> Hi K=C3=B6ry,
+>=20
+> I'm no expert on etnhl bitmaps. But the above doesn't seem correct to me.
+> Given that sizeof(u32) =3D=3D 4:
+>=20
+> * The allocation is for nbits * 4 bytes
+> * The copy is for its for nbits bytes
+> * I believe that bitmap contains space for the value followed by a mask.
+>   So it seems to me the size of bitmap, in words, is
+>   DIV_ROUND_UP(nbits, 32) * 2
+>   And in bytes: DIV_ROUND_UP(nbits, 32) * 16
+>   But perhaps only half is needed if only the value part of tmp is used.
+>=20
+> If I'm on the right track here I'd suggest helpers might be in order.
 
-While running kunit testing on qemu-armv7 following test failures noticed
-on stable rc 6.5.6-rc1.
+You are right I should use the same alloc as ethnl_update_bitset with tmp
+instead of bitmap32:
 
-# req_destroy works: EXPECTATION FAILED at net/handshake/handshake-test.c:477
+        u32 small_bitmap32[ETHNL_SMALL_BITMAP_WORDS];                     =
+=20
+        u32 *bitmap32 =3D small_bitmap32;=20
+        if (nbits > ETHNL_SMALL_BITMAP_BITS) {                            =
+=20
+                unsigned int dst_words =3D DIV_ROUND_UP(nbits, 32);        =
+ =20
+                                                                          =
+=20
+                bitmap32 =3D kmalloc_array(dst_words, sizeof(u32), GFP_KERN=
+EL);
+                if (!bitmap32)                                            =
+=20
+                        return -ENOMEM;                                   =
+=20
+        }  =20
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+But I am still wondering if it needs to be double as you said for the size =
+of
+the value followed by the mask. Not sure about it, as ethnl_update_bitset d=
+oes
+not do it.=20
 
-Test log:
-----------
-<6>[ 1351.687335]     KTAP version 1
-<6>[ 1351.688300]     # Subtest: Handshake API tests
-<6>[ 1351.688760]     1..11
-<6>[ 1351.689362]         KTAP version 1
-<6>[ 1351.689985]         # Subtest: req_alloc API fuzzing
-<6>[ 1351.694360]         ok 1 handshake_req_alloc NULL proto
-<6>[ 1351.705855]         ok 2 handshake_req_alloc CLASS_NONE
-<6>[ 1351.710878]         ok 3 handshake_req_alloc CLASS_MAX
-<6>[ 1351.715435]         ok 4 handshake_req_alloc no callbacks
-<6>[ 1351.722026]         ok 5 handshake_req_alloc no done callback
-<6>[ 1351.726579]         ok 6 handshake_req_alloc excessive privsize
-<6>[ 1351.732397]         ok 7 handshake_req_alloc all good
-<6>[ 1351.732934]     # req_alloc API fuzzing: pass:7 fail:0 skip:0 total:7
-<6>[ 1351.733586]     ok 1 req_alloc API fuzzing
-<6>[ 1351.741251]     ok 2 req_submit NULL req arg
-<6>[ 1351.745979]     ok 3 req_submit NULL sock arg
-<6>[ 1351.753307]     ok 4 req_submit NULL sock->file
-<6>[ 1351.763090]     ok 5 req_lookup works
-<6>[ 1351.770057]     ok 6 req_submit max pending
-<6>[ 1351.774878]     ok 7 req_submit multiple
-<6>[ 1351.782411]     ok 8 req_cancel before accept
-<6>[ 1351.787423]     ok 9 req_cancel after accept
-<6>[ 1351.795660]     ok 10 req_cancel after done
-<3>[ 1351.799741]     # req_destroy works: EXPECTATION FAILED at
-net/handshake/handshake-test.c:477
-<3>[ 1351.799741]     Expected handshake_req_destroy_test == req, but
-<3>[ 1351.799741]         handshake_req_destroy_test == 00000000
-<3>[ 1351.799741]         req == cae22700
-<6>[ 1351.803368]     not ok 11 req_destroy works
-<6>[ 1351.804539] # Handshake API tests: pass:10 fail:1 skip:0 total:11
-<6>[ 1351.805460] # Totals: pass:16 fail:1 skip:0 total:17
-<6>[ 1351.806276] not ok 95 Handshake API tests
-
-Links:
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.5-322-g9327d0db36be/testrun/20257175/suite/kunit/test/req_alloc/log
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.5-322-g9327d0db36be/testrun/20257175/suite/kunit/test/req_alloc/details/
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2WJGlCUgDzR8asQbd2BxMssFcEc/
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2WJGlCUgDzR8asQbd2BxMssFcEc/config
-
-Steps to reproduce:
-# To install tuxrun to your home directory at ~/.local/bin:
-# pip3 install -U --user tuxrun==0.49.2
-#
-# Or install a deb/rpm depending on the running distribution
-# See https://tuxmake.org/install-deb/ or
-# https://tuxmake.org/install-rpm/
-#
-# See https://tuxrun.org/ for complete documentation.
-Link to reproducer,
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2WJGlCUgDzR8asQbd2BxMssFcEc/tuxmake_reproducer.sh
-
-or
-
-tuxrun --runtime podman --device qemu-armv7 --boot-args rw --kernel
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2WJGlCUgDzR8asQbd2BxMssFcEc/zImage
---modules https://storage.tuxsuite.com/public/linaro/lkft/builds/2WJGlCUgDzR8asQbd2BxMssFcEc/modules.tar.xz
---rootfs https://storage.tuxboot.com/debian/bookworm/armhf/rootfs.ext4.xz
---parameters SKIPFILE=skipfile-lkft.yaml --image
-docker.io/linaro/tuxrun-dispatcher:v0.49.2 --tests kunit --timeouts
-boot=30
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Regards,
