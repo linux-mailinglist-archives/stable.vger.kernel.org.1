@@ -2,121 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D15D7BA301
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 17:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5661A7BA520
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 18:15:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234914AbjJEPug (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 11:50:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55244 "EHLO
+        id S237681AbjJEQOA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 12:14:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235462AbjJEPtZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 11:49:25 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8920A8690;
-        Thu,  5 Oct 2023 08:09:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696518574; x=1728054574;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=jpcWaEz7B26fb8p/m9yTGm1Sg1FRrUAivyKn3XZFmUo=;
-  b=nmRlPngEzhc132Ips5FS1/9djdzS/HgZ8a8z6EuiaziABaroJEw9vX4D
-   cFN6ZMYSZZbRBN7pegwyKZRRFjIS+SuPcv4PoyM7N1/u99ubVs224lcOd
-   Qw7rOfI7PnggqmpWfdi5FgGZASIOftEj7I2lMli+qoUpyVUUIyWL0v+u1
-   oSciTjyILpaCqSw67573b9Q2ysrLy+xt1heyhlNBiQxHOy/Z97JxYDSzx
-   ardJ8oPzM9M0IUL4ISYxtu9sCulFaJ9mE2KHeXPzFNiZDwaiA1ph7QONR
-   IJaO63xaIiCs6EojtnEJyD5/SRXSHETWl3CiKsvwSTXSwuoHj5+3E65B4
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="373880505"
-X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
-   d="scan'208";a="373880505"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 08:09:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="745479250"
-X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
-   d="scan'208";a="745479250"
-Received: from spandruv-desk1.amr.corp.intel.com ([10.209.88.30])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 08:09:34 -0700
-Message-ID: <ff3f7c023d73c2c8216cff2910e4965a026cdd98.camel@linux.intel.com>
-Subject: Re: [PATCH] thermal: intel: powerclamp: fix mismatch in get
- function for max_idle
-From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     David Arcari <darcari@redhat.com>, linux-pm@vger.kernel.org
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>, Chen Yu <yu.c.chen@intel.com>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date:   Thu, 05 Oct 2023 08:09:34 -0700
-In-Reply-To: <20231005111757.1293740-1-darcari@redhat.com>
-References: <20231005111757.1293740-1-darcari@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S240880AbjJEQNK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 12:13:10 -0400
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1175C27B39
+        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 06:44:20 -0700 (PDT)
+Received: from cwcc.thunk.org (pool-173-48-111-143.bstnma.fios.verizon.net [173.48.111.143])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 3953sXJk007135
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 4 Oct 2023 23:54:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+        t=1696478078; bh=hzB6MdeqZv3ajavUtULVc5NBhUId8bTwLyK5LgsA3tw=;
+        h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+        b=KIEfYnHbRSra228veLHwH76PZ/lzRd5prVf2XL5yZ1C7O3pw0lNYA1DxaHgl545eK
+         qhAEd6Dcg/KiN7JAISZ8bliQd3ZB9sOZcN+Bv8r626nISfr2vTTQPgjMMF/diZaAYI
+         cLzSjvAydLfZe59YW6rALrH6lY83NDVGfsZBReMeCYTCrvMBRB7NB3iVtPbfvc+dNg
+         0j/sUkg446VwKmdIzO72/YhRcf7QhmNXA/StXetUuciURLtEasCGKaNT3g2bm0qvOG
+         w0wSMvQX6tspye7wWH+hehUNuWOdQI7fd8nyeYSf57cHKNteDAqzTcJ3/LdsoDq0N+
+         8MBQgri7lU2SQ==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+        id 7D2B515C0250; Wed,  4 Oct 2023 23:54:33 -0400 (EDT)
+Date:   Wed, 4 Oct 2023 23:54:33 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     Mathieu Othacehe <othacehe@gnu.org>, stable@vger.kernel.org,
+        jack@suse.cz, Marcus Hoffmann <marcus.hoffmann@othermo.de>,
+        famzah@icdsoft.com, gregkh@linuxfoundation.org,
+        anton.reding@landisgyr.com
+Subject: Re: kernel BUG at fs/ext4/inode.c:1914 - page_buffers()
+Message-ID: <20231005035433.GA6358@mit.edu>
+References: <871qeau3sd.fsf@gnu.org>
+ <ZR06COwVo7bEfP/5@sashalap>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZR06COwVo7bEfP/5@sashalap>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 2023-10-05 at 07:17 -0400, David Arcari wrote:
-> KASAN reported this
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [ 444.853098] BUG: KASAN: global-out-of-bo=
-unds in
-> param_get_int+0x77/0x90
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [ 444.853111] Read of size 4 at addr fffff=
-fffc16c9220 by task
-> cat/2105
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ...
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [ 444.853442] The buggy address belongs to=
- the variable:
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [ 444.853443] max_idle+0x0/0xffffffffffffc=
-de0
-> [intel_powerclamp]
->=20
-> There is a mismatch between the param_get_int and the definition of
-> max_idle.=C2=A0 Replacing param_get_int with param_get_byte resolves this
-> issue.
->=20
-> Fixes: ebf519710218 ("thermal: intel: powerclamp: Add two module
-> parameters")
->=20
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
-> Cc: Amit Kucheria <amitk@kernel.org>
-> Cc: Zhang Rui <rui.zhang@intel.com>
-> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: David Arcari <darcari@redhat.com>
-> Cc: Chen Yu <yu.c.chen@intel.com>
-> Cc: linux-kernel@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Arcari <darcari@redhat.com>
-Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+On Wed, Oct 04, 2023 at 06:10:16AM -0400, Sasha Levin wrote:
+> On Wed, Oct 04, 2023 at 11:37:22AM +0200, Mathieu Othacehe wrote:
+> > 
+> > bd159398a2d2 ("jdb2: Don't refuse invalidation of already invalidated buffers")
+> > d84c9ebdac1e ("ext4: Mark pages with journalled data dirty")
+> > 265e72efa99f ("ext4: Keep pages with journalled data dirty")
+> > 5e1bdea6391d ("ext4: Clear dirty bit from pages without data to write")
+> > 1f1a55f0bf06 ("ext4: Commit transaction before writing back pages in data=journal mode")
+> > e360c6ed7274 ("ext4: Drop special handling of journalled data from ext4_sync_file()")
+> > c000dfec7e88 ("ext4: Drop special handling of journalled data from extent shifting operations")
+> > 783ae448b7a2 ("ext4: Fix special handling of journalled data from extent zeroing")
+> > 56c2a0e3d90d ("ext4: Drop special handling of journalled data from ext4_evict_inode()")
+> > 7c375870fdc5 ("ext4: Drop special handling of journalled data from ext4_quota_on()")
+> > 951cafa6b80e ("ext4: Simplify handling of journalled data in ext4_bmap()")
+> > ab382539adcb ("ext4: Update comment in mpage_prepare_extent_to_map()")
+> > d0ab8368c175 ("Revert "ext4: Fix warnings when freezing filesystem with journaled data"")
+> > 1077b2d53ef5 ("ext4: fix fsync for non-directories")
+> > 
+> > Or apply the proposed, attached patch. Do you think that would be an
+> > option?
+> 
+> Backporting the series would be ideal. Is this only for the 5.15 kernel?
 
-> ---
-> =C2=A0drivers/thermal/intel/intel_powerclamp.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/thermal/intel/intel_powerclamp.c
-> b/drivers/thermal/intel/intel_powerclamp.c
-> index 36243a3972fd..5ac5cb60bae6 100644
-> --- a/drivers/thermal/intel/intel_powerclamp.c
-> +++ b/drivers/thermal/intel/intel_powerclamp.c
-> @@ -256,7 +256,7 @@ static int max_idle_set(const char *arg, const
-> struct kernel_param *kp)
-> =C2=A0
-> =C2=A0static const struct kernel_param_ops max_idle_ops =3D {
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.set =3D max_idle_set,
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.get =3D param_get_int,
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.get =3D param_get_byte,
-> =C2=A0};
-> =C2=A0
-> =C2=A0module_param_cb(max_idle, &max_idle_ops, &max_idle, 0644);
+If we're going to backport all of these patches, I'd really would like
+to see a full regression test run, using something like:
 
+   gce-xfstests ltm -c ext4/all -g auto
+
+before and after applying all of these patches, to make sure there are
+no regression.
+
+(or you can "kvm-xfstests -c ext4/all -g auto" but be prepared for it
+to take over 24 hours of run time.  With gce-xfstesets we start a
+dozen VM's in parallel so it finishes in about 2.5 hours.  See
+https://thunk.org/gce-xfstests for more information.)
+
+If you someone who does the backports can send me a pointer to a git
+branch, I can run the tests for you, if that would be helpful.
+
+Thanks!!
+
+				       - Ted
