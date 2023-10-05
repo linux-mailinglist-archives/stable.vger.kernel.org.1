@@ -2,81 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 623877BA884
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 19:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5ACC7BA8FB
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 20:23:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230263AbjJER4u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 13:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39618 "EHLO
+        id S229764AbjJESXU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 14:23:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230440AbjJER4k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 13:56:40 -0400
+        with ESMTP id S229598AbjJESXU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 14:23:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38046AB
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 10:56:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8E4C433C8;
-        Thu,  5 Oct 2023 17:56:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696528598;
-        bh=bO8/wFTfou8A3ArEbkt75Gr8XCrGtgW4BjPjmadSVjU=;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4590090
+        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 11:23:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9601C433C7;
+        Thu,  5 Oct 2023 18:23:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696530198;
+        bh=O+4R9sJ3ItttYb7aLCVqUtOczGBHIqVieGpsmvDQ1AY=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=sVtBVzPhi4rmj3h5Rj97vD1BSM8sEOGuJqkSpi+2du3Uvz2mFyBfqlUq0UnZV4gxK
-         XwCVkUrn2FDWDtpYVkzVxuLP4hqZKLSpabw7qDeu0uA1wZTPUdU4Sj2A1aJNOgWha+
-         K44kpiKvFiDtTC/EUabBkM0eCqCOd3SHoRpj7J/s=
-Date:   Thu, 5 Oct 2023 19:56:36 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc:     akpm@linux-foundation.org, pedro.falcato@gmail.com,
-        stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] maple_tree: add mas_is_active() to detect
- in-tree walks" failed to apply to 6.5-stable tree
-Message-ID: <2023100558-condition-endowment-e7b9@gregkh>
-References: <2023100439-obtuse-unchain-b580@gregkh>
- <20231005162754.7f2nr4feb7exkfus@revolver>
+        b=cIoPcYI4vfUKR9W2mwKaznpXGrsS83eZofL4iFMBdepsXsNAKTCKmXj6sda7Atxoq
+         gZcF610CDlWf9iakSQjJTeEaJWJgBqsAST86Q3vD0kpwTpJ8kCfLZfmyljzq7j9p/2
+         YBkT6Nw+bptA1rFQyO4+naP2fGbhfA0QiKPsCRh/Ef8/Q7onzIHkKp8SrE6vTm0mhi
+         C+K8A8/YLq8FGquIaa2KxoOyTjcEDeUCn0k2JdUqqinz3oNCKDTu9lKwzPqH529bBE
+         JprV7VhhsnQgE9gMCxC8o7BVyBM2vGCIVYCbdeeh/SantUkiQLTlonYo2Ups2u1oJm
+         /uXOmfqDMrTfQ==
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+        id D500D40508; Thu,  5 Oct 2023 15:23:15 -0300 (-03)
+Date:   Thu, 5 Oct 2023 15:23:15 -0300
+From:   Arnaldo Carvalho de Melo <acme@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     Namhyung Kim <namhyung@gmail.com>, stable@vger.kernel.org,
+        Akemi Yagi <toracat@elrepo.org>
+Subject: Re: 6.5-stable backport request
+Message-ID: <ZR7/E4KKl0q7NBUX@kernel.org>
+References: <CAM9d7cggeTaXR5VBD1BoPr9TLPoE7s9YSS2y0w-PGzTMAGsFWA@mail.gmail.com>
+ <ZRv6IFKjB+KMr6CH@sashalap>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231005162754.7f2nr4feb7exkfus@revolver>
+In-Reply-To: <ZRv6IFKjB+KMr6CH@sashalap>
+X-Url:  http://acmel.wordpress.com
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Oct 05, 2023 at 12:27:54PM -0400, Liam R. Howlett wrote:
-> * gregkh@linuxfoundation.org <gregkh@linuxfoundation.org> [231004 10:59]:
+Em Tue, Oct 03, 2023 at 07:25:20AM -0400, Sasha Levin escreveu:
+> On Thu, Sep 28, 2023 at 01:41:34PM -0700, Namhyung Kim wrote:
+> > Hello,
 > > 
-> > The patch below does not apply to the 6.5-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
+> > Please queue up this commit for 6.5-stable:
 > > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
+> > * commit: 88cc47e24597971b05b6e94c28a2fc81d2a8d61a
+> >   ("perf build: Define YYNOMEM as YYNOABORT for bison < 3.81")
+> > * Author: Arnaldo Carvalho de Melo <acme@redhat.com>
 > > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 5c590804b6b0ff933ed4e5cee5d76de3a5048d9f
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100439-obtuse-unchain-b580@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
-> > 
-> > Possible dependencies:
-> > 
-> > 
-> >
-> ...
+> > The recent change v6.5 series added YYNOMEM changes
+> > in the perf tool and it caused a build failure on machines with
+> > older bison.  The above commit should be applied to fix it.
 > 
-> This applies cleanly and builds without issue following the steps above.
-> Is there more details on the failure?
+> Queued up, thanks!
 
-The patch after this does not apply, so I dropped this one as well as it
-is not needed without that one with the hope that both would be sent as
-a series :)
+Thanks a lot!
 
-thanks,
-
-greg k-h
+- Arnaldo
