@@ -2,109 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0290F7BA2A2
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 17:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D15D7BA301
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 17:50:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233418AbjJEPnn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 11:43:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57998 "EHLO
+        id S234914AbjJEPug (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 11:50:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233313AbjJEPnN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 11:43:13 -0400
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97CAE6702
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 07:59:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1696517979; x=1728053979;
-  h=message-id:date:mime-version:to:cc:from:subject:
-   content-transfer-encoding;
-  bh=F4DXyzvks4SjCO39rTIRcQaJk8nbyPccC5eJCgdjSQs=;
-  b=p8ju+BljMo5mjb0Dnophgy8dJZkzo02Z6cbVHRRhulo3X2bkVPA/tjSz
-   16jb/xPNTgOKl/p0idI5ALfD1hdMDWXz6P07UDbKE6XAun7rLwOqVzshi
-   B1mvqiHYhdxy3yxgXkjEnvQFDZ8jGleW7UDeXyoTkogAXc7Bn/xhpkjXW
-   k=;
-X-IronPort-AV: E=Sophos;i="6.03,203,1694736000"; 
-   d="scan'208";a="243635462"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 14:59:36 +0000
-Received: from smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev (iad7-ws-svc-p70-lb3-vlan3.iad.amazon.com [10.32.235.38])
-        by email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com (Postfix) with ESMTPS id 9C63A484A9;
-        Thu,  5 Oct 2023 14:59:33 +0000 (UTC)
-Received: from EX19MTAUEB001.ant.amazon.com [10.0.29.78:19359]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.50.19:2525] with esmtp (Farcaster)
- id ea6e9579-e480-4773-b428-3ff4a08893c4; Thu, 5 Oct 2023 14:59:33 +0000 (UTC)
-X-Farcaster-Flow-ID: ea6e9579-e480-4773-b428-3ff4a08893c4
-Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
- EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Thu, 5 Oct 2023 14:59:32 +0000
-Received: from [10.136.71.253] (10.136.71.253) by
- EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Thu, 5 Oct 2023 14:59:31 +0000
-Message-ID: <010edf5a-453d-4c98-9c07-12e75d3f983c@amazon.com>
-Date:   Thu, 5 Oct 2023 10:59:28 -0400
+        with ESMTP id S235462AbjJEPtZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 11:49:25 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8920A8690;
+        Thu,  5 Oct 2023 08:09:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696518574; x=1728054574;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=jpcWaEz7B26fb8p/m9yTGm1Sg1FRrUAivyKn3XZFmUo=;
+  b=nmRlPngEzhc132Ips5FS1/9djdzS/HgZ8a8z6EuiaziABaroJEw9vX4D
+   cFN6ZMYSZZbRBN7pegwyKZRRFjIS+SuPcv4PoyM7N1/u99ubVs224lcOd
+   Qw7rOfI7PnggqmpWfdi5FgGZASIOftEj7I2lMli+qoUpyVUUIyWL0v+u1
+   oSciTjyILpaCqSw67573b9Q2ysrLy+xt1heyhlNBiQxHOy/Z97JxYDSzx
+   ardJ8oPzM9M0IUL4ISYxtu9sCulFaJ9mE2KHeXPzFNiZDwaiA1ph7QONR
+   IJaO63xaIiCs6EojtnEJyD5/SRXSHETWl3CiKsvwSTXSwuoHj5+3E65B4
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="373880505"
+X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
+   d="scan'208";a="373880505"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 08:09:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10854"; a="745479250"
+X-IronPort-AV: E=Sophos;i="6.03,203,1694761200"; 
+   d="scan'208";a="745479250"
+Received: from spandruv-desk1.amr.corp.intel.com ([10.209.88.30])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2023 08:09:34 -0700
+Message-ID: <ff3f7c023d73c2c8216cff2910e4965a026cdd98.camel@linux.intel.com>
+Subject: Re: [PATCH] thermal: intel: powerclamp: fix mismatch in get
+ function for max_idle
+From:   srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     David Arcari <darcari@redhat.com>, linux-pm@vger.kernel.org
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>, Chen Yu <yu.c.chen@intel.com>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date:   Thu, 05 Oct 2023 08:09:34 -0700
+In-Reply-To: <20231005111757.1293740-1-darcari@redhat.com>
+References: <20231005111757.1293740-1-darcari@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        <krisman@suse.de>, <will@kernel.org>
-CC:     Greg KH <gregkh@linuxfoundation.org>, <anshuman.khandual@arm.com>,
-        <catalin.marinas@arm.com>
-From:   Luiz Capitulino <luizcap@amazon.com>
-Subject: [5.15,6.1] Please apply a89c6bcdac22bec1bfbe6e64060b4cf5838d4f47
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.136.71.253]
-X-ClientProxiedBy: EX19D042UWB003.ant.amazon.com (10.13.139.135) To
- EX19D028UEC003.ant.amazon.com (10.252.137.159)
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Thu, 2023-10-05 at 07:17 -0400, David Arcari wrote:
+> KASAN reported this
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [ 444.853098] BUG: KASAN: global-out-of-bo=
+unds in
+> param_get_int+0x77/0x90
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [ 444.853111] Read of size 4 at addr fffff=
+fffc16c9220 by task
+> cat/2105
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ...
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [ 444.853442] The buggy address belongs to=
+ the variable:
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 [ 444.853443] max_idle+0x0/0xffffffffffffc=
+de0
+> [intel_powerclamp]
+>=20
+> There is a mismatch between the param_get_int and the definition of
+> max_idle.=C2=A0 Replacing param_get_int with param_get_byte resolves this
+> issue.
+>=20
+> Fixes: ebf519710218 ("thermal: intel: powerclamp: Add two module
+> parameters")
+>=20
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: Daniel Lezcano <daniel.lezcano@linaro.org>
+> Cc: Amit Kucheria <amitk@kernel.org>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Cc: David Arcari <darcari@redhat.com>
+> Cc: Chen Yu <yu.c.chen@intel.com>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Arcari <darcari@redhat.com>
+Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-We found that commits 46bdb4277f98 and 0388f9c74330 (merged in v5.12)
-introduced more than 40% performance regression in UnixBench's process
-creation benchmark when comparing 5.10 with 5.15 and 6.1 on AWS'
-virtualized Graviton instances.
+> ---
+> =C2=A0drivers/thermal/intel/intel_powerclamp.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/thermal/intel/intel_powerclamp.c
+> b/drivers/thermal/intel/intel_powerclamp.c
+> index 36243a3972fd..5ac5cb60bae6 100644
+> --- a/drivers/thermal/intel/intel_powerclamp.c
+> +++ b/drivers/thermal/intel/intel_powerclamp.c
+> @@ -256,7 +256,7 @@ static int max_idle_set(const char *arg, const
+> struct kernel_param *kp)
+> =C2=A0
+> =C2=A0static const struct kernel_param_ops max_idle_ops =3D {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.set =3D max_idle_set,
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.get =3D param_get_int,
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.get =3D param_get_byte,
+> =C2=A0};
+> =C2=A0
+> =C2=A0module_param_cb(max_idle, &max_idle_ops, &max_idle, 0644);
 
-This has been mostly fixed by the following upstream commit:
-
-"""
-commit a89c6bcdac22bec1bfbe6e64060b4cf5838d4f47
-Author: Gabriel Krisman Bertazi <krisman@suse.de>
-Date: Mon Jan 9 12:19:55 2023 -0300
-
-  arm64: Avoid repeated AA64MMFR1_EL1 register read on pagefault path
-"""
-(This is merged in v6.3 and applies cleanly in 5.15 and 6.1).
-
-We performed functional and performance regression tests on both 5.15
-and 6.1 with this patch applied. We can also observe 10% improvement
-in system time in other benchmarks.
-
-Just to be transparent, we initially observed 5% degradation in a
-benchmark we have with fio randwrite on EBS volumes with our 6.1
-downstream kernel but this doesn't seem reproducible and we don't
-think this patch would cause it.
-
-Here's some quick UnixBench process creation measurements on
-m7gd.16xlarge instance type. All results are the average of 5
-consecutive runs with a single process:
-
-* 5.10.197: 9886.68 lps (baseline)
-* 6.1.55:   5531.24 lps (unfixed - 44% degradation)
-* 5.15.133: 5960.12 lps (unfixed - 39% degradation)
-* 5.15.133: 10306.4 lps (fixed - actually better than baseline)
-* 6.1.55:   9393.42 lps (fixed - degradation reduced to 5%)
-
-- Luiz
