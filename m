@@ -2,131 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA5BF7BA9ED
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 21:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6254F7BAA33
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 21:34:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229766AbjJETVJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 15:21:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32858 "EHLO
+        id S229826AbjJETem (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 15:34:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230420AbjJETVI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 15:21:08 -0400
-Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DBB2DC
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 12:21:07 -0700 (PDT)
-Received: by mail-ua1-x92d.google.com with SMTP id a1e0cc1a2514c-7abe4fa15ceso870584241.1
-        for <stable@vger.kernel.org>; Thu, 05 Oct 2023 12:21:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696533667; x=1697138467; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V3YAwa7B2OJPRUP59nwxn3A11jwk1jGLcSNDbqpCUEs=;
-        b=I1tuKsyYs8KLTCBbO4XyPQD4vMYyicmH4C2pUL5fy9jhjOafmCKS8+sCGScEMItApK
-         Lvp9GFIMpce5ZLEN1gEMVDTta2pLi8OToRgguuIS74ZMZQTwxA8jP/r3gs9QvdzU2gjN
-         7uKt8otiw7vbK7e4ChAZH5MYKTmNXBq01j+R3ZowgBLXKvUAYJg1NVPRsQqT+0nLw7YS
-         oKcnxe5pZlPQsOTIzATCDelznHj57UJavzTLLMBto0Ik+rNIiVApVUKysFz+t5U9zm21
-         PcB2UeSDZrW1Rh5hN9/O4DxIYl5CUooWecyEQh/iKFShYjX8U/w4iE9DmVEyiOkYg3pd
-         hupA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696533667; x=1697138467;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V3YAwa7B2OJPRUP59nwxn3A11jwk1jGLcSNDbqpCUEs=;
-        b=BVHq7C8zMTW7BuTF7Cyuo/SprACJRr5Kc/wJyd3/8DltJbWP+wlTTSESCF6whkI3+x
-         ulpjSrqNVyBRahoAjr5iuaOKSfB9xlT+4LjPSd9D9ukQt5xPgJ20E/VsZa/8e4qvHdSb
-         YdpJz/Gr/4Hwk1Si3++6O1LyFWCo0gxSoOwHMxvdV9UwTFG8j8YUcJH3qrAcEfAeH7VV
-         idaEHHBO/yCjwzTeEPeI5JUpBLeCF6EM2YrDC2GhIdifXgQJXazzEJkG/S4c28ej1MtP
-         qgHxh+p7TcNuCfINj69wY3MVDbEm1Zj8rNh95pUKeLIxtPYr4welep4V1ai95quyD59C
-         K7vg==
-X-Gm-Message-State: AOJu0YyNzygOEfC47shCGkelNduFx5ggAGh6ZmM9i6qjdsfaZT4wCC8/
-        N1EsMSpjII0UdpS35OryTImziWddMWzfLplF5Uhwow==
-X-Google-Smtp-Source: AGHT+IFhEXUCf6hg0p0VkgiUHPuy9O4n5JiWEsbvC4N0pJ6GZCevj6BKaE5f4ZMr3qR2O1q/atILq+7gURY5Qemu1P4=
-X-Received: by 2002:a05:6122:4201:b0:49a:b587:ab79 with SMTP id
- cm1-20020a056122420100b0049ab587ab79mr1292189vkb.8.1696533666626; Thu, 05 Oct
- 2023 12:21:06 -0700 (PDT)
+        with ESMTP id S229502AbjJETel (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 15:34:41 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C9F5198
+        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 12:34:38 -0700 (PDT)
+Received: from rrs24-12-35.corp.microsoft.com (unknown [131.107.174.0])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 3764820B74C0;
+        Thu,  5 Oct 2023 12:34:38 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3764820B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1696534478;
+        bh=4bTx6iSMLIZp2oLJUq73sp1I7vWBytIUpdUjl+5xY1A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=BIyPHBA2A1yM7164IaGrLyRSmOxm7F8kh5SMswKwewL3sEqqzrDUwFEy/QlsmkmOt
+         e7cXpLUzNtcOkPOOQnnl9dPI/in/PhVRYA1R6z5GbUGUWGNbS4qLsXeQG9p1EbGoal
+         0+icGqQNZyW8Ooz/xCatc4DouWz6WtflekRNQxnY=
+From:   Easwar Hariharan <eahariha@linux.microsoft.com>
+To:     stable@vger.kernel.org
+Cc:     Robin Murphy <robin.murphy@arm.com>, Rui Zhu <zhurui3@huawei.com>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 6.5] iommu/arm-smmu-v3: Avoid constructing invalid range commands
+Date:   Thu,  5 Oct 2023 19:34:25 +0000
+Message-Id: <20231005193425.656925-1-eahariha@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20231004175217.404851126@linuxfoundation.org> <CA+G9fYsqbZhSQnEi-qSc7n+4d7nPap8HWcdbZGWLfo3mTH-L7A@mail.gmail.com>
- <20231005172448.GA161140@pevik>
-In-Reply-To: <20231005172448.GA161140@pevik>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Fri, 6 Oct 2023 00:50:55 +0530
-Message-ID: <CA+G9fYuyXgWvsRhznP2x2VE5CvSyCCgcvxPz2J=dbvg6YW2iUA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/259] 6.1.56-rc1 review
-To:     Petr Vorel <pvorel@suse.cz>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-nfs@vger.kernel.org, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Olga Kornievskaia <kolga@netapp.com>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Anna Schumaker <Anna.Schumaker@netapp.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        LTP List <ltp@lists.linux.it>,
-        Richard Palethorpe <rpalethorpe@suse.com>,
-        Eryu Guan <eguan@redhat.com>, chrubis <chrubis@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 5 Oct 2023 at 22:54, Petr Vorel <pvorel@suse.cz> wrote:
->
-> Hi Naresh,
->
-> > On Wed, 4 Oct 2023 at 23:41, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
->
-> > > This is the start of the stable review cycle for the 6.1.56 release.
-> > > There are 259 patches in this series, all will be posted as a respons=
-e
-> > > to this one.  If anyone has any issues with these being applied, plea=
-se
-> > > let me know.
->
-> > > Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
-> > > Anything received after that time might be too late.
->
-> > > The whole patch series can be found in one patch at:
-> > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/pa=
-tch-6.1.56-rc1.gz
-> > > or in the git tree and branch at:
-> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git linux-6.1.y
-> > > and the diffstat can be found below.
->
-> > > thanks,
->
-> > > greg k-h
->
-> > Results from Linaro=E2=80=99s test farm.
-> > Regressions on arm64 bcm2711-rpi-4-b device running LTP dio tests on
-> Could you please note in your reports also LTP version?
+From: Robin Murphy <robin.murphy@arm.com>
 
-Sure.
-We are running LTP Version: 20230516 for our testing.
+commit eb6c97647be227822c7ce23655482b05e348fba5 upstream
 
-We will update the latest LTP release (20230929) next week.
+Although io-pgtable's non-leaf invalidations are always for full tables,
+I missed that SVA also uses non-leaf invalidations, while being at the
+mercy of whatever range the MMU notifier throws at it. This means it
+definitely wants the previous TTL fix as well, since it also doesn't
+know exactly which leaf level(s) may need invalidating, but it can also
+give us less-aligned ranges wherein certain corners may lead to building
+an invalid command where TTL, Num and Scale are all 0. It should be fine
+to handle this by over-invalidating an extra page, since falling back to
+a non-range command opens up a whole can of errata-flavoured worms.
 
-> FYI the best LTP release is always the latest release or git master branc=
-h.
+Fixes: 6833b8f2e199 ("iommu/arm-smmu-v3: Set TTL invalidation hint better")
+Reported-by: Rui Zhu <zhurui3@huawei.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/b99cfe71af2bd93a8a2930f20967fb2a4f7748dd.1694432734.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+---
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-We have two threads here.
-1) LTP release tag testing on all stable-rc branches
-2) LTP master testing on a given specific kernel version [a]
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 9b0dc3505601..6ccbae9b93a1 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -1895,18 +1895,23 @@ static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
+ 		/* Get the leaf page size */
+ 		tg = __ffs(smmu_domain->domain.pgsize_bitmap);
+ 
++		num_pages = size >> tg;
++
+ 		/* Convert page size of 12,14,16 (log2) to 1,2,3 */
+ 		cmd->tlbi.tg = (tg - 10) / 2;
+ 
+ 		/*
+-		 * Determine what level the granule is at. For non-leaf, io-pgtable
+-		 * assumes .tlb_flush_walk can invalidate multiple levels at once,
+-		 * so ignore the nominal last-level granule and leave TTL=0.
++		 * Determine what level the granule is at. For non-leaf, both
++		 * io-pgtable and SVA pass a nominal last-level granule because
++		 * they don't know what level(s) actually apply, so ignore that
++		 * and leave TTL=0. However for various errata reasons we still
++		 * want to use a range command, so avoid the SVA corner case
++		 * where both scale and num could be 0 as well.
+ 		 */
+ 		if (cmd->tlbi.leaf)
+ 			cmd->tlbi.ttl = 4 - ((ilog2(granule) - 3) / (tg - 3));
+-
+-		num_pages = size >> tg;
++		else if ((num_pages & CMDQ_TLBI_RANGE_NUM_MAX) == 1)
++			num_pages++;
+ 	}
+ 
+ 	cmds.num = 0;
+-- 
+2.34.1
 
-[a] https://qa-reports.linaro.org/lkft/ltp-master/
-
-- Naresh
