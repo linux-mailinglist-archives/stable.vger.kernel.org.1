@@ -2,75 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73E297B9F3A
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 16:21:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31CA57B9F1B
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 16:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233193AbjJEOTJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 10:19:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47248 "EHLO
+        id S233254AbjJEOSc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 10:18:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233303AbjJEOQg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 10:16:36 -0400
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB92B1985;
-        Wed,  4 Oct 2023 20:41:48 -0700 (PDT)
-Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3ae5ce4a4ceso367909b6e.1;
-        Wed, 04 Oct 2023 20:41:48 -0700 (PDT)
+        with ESMTP id S232113AbjJEOQT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 10:16:19 -0400
+Received: from mail-vs1-xe2d.google.com (mail-vs1-xe2d.google.com [IPv6:2607:f8b0:4864:20::e2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF1805271
+        for <stable@vger.kernel.org>; Wed,  4 Oct 2023 22:35:16 -0700 (PDT)
+Received: by mail-vs1-xe2d.google.com with SMTP id ada2fe7eead31-4547322a756so290660137.3
+        for <stable@vger.kernel.org>; Wed, 04 Oct 2023 22:35:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696477308; x=1697082108; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sk95zFTEUxg4VjqgqYYBz24a5vuW35vcpYZ4u3hihIA=;
-        b=bRsd4/1Mwzhz9yJGInmZt/jHSjOSAivNlYwzlNatu2WibkwWWEn3nIJ5LKqbYDXrDT
-         hQoil8UpeCtl3x8NCxpaqgfMxsQMicUDOyuuwEc2bVc/rGFeNk4c0cTySpiP5dJxz1kn
-         TpHtV77ZUzieukGlQwGOFf90TsAwwzjDJG0jptPNedIPq68eDAV6lLpSuRIVNmewvHtP
-         HwTTonS9o4Ui+DcVUU65MXeuLjFCAIq+XMM7njMVs6JqClSE44ELvkTJrkiaoD9UwrQY
-         6pS5Td1PXxJB7SYkRx+qayEgdm1Itet1V+cdMdmbjoZBOJ3ve1GrwI40zd2hbwoawXRd
-         I/fw==
+        d=linaro.org; s=google; t=1696484116; x=1697088916; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/LQ+X+x8kIqTkVd50ogLWp0VaSEkcS2ypomcdLaAgP0=;
+        b=HRKR344OmuVWhytU6DzNKf+MPwLpppjOMBdea3pGdCoarPxHlnNKLjBlDAd3pV0pYY
+         drzHsdf8mP+SGH9Pu7J9JkLfja8LseMUe7Q0ILOxsNkEta7RceNPLVCyYt9/C1DQza4j
+         S7gVMuQ+kT8yC7KnR//NZx+OvlyX0zLjjyhfv0wE/88/s9uLFyjZ+wp5/En0j4AXpFTj
+         heizjGqyxt8MlRZZhIg9KSSDDNw10hCrJSqEVNFgU7iKPB5v7fczClm2t9hvMKE4oShm
+         lqrmS/37NxLYNdo6Fv0Wx7nIvO/YjlUivsCa+BflON5jrJEPjwQ7pekMvo1uSfLyGGWK
+         5sag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696477308; x=1697082108;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sk95zFTEUxg4VjqgqYYBz24a5vuW35vcpYZ4u3hihIA=;
-        b=Y2Th3X/PPx8/aCrRlEvTTL/pzHevmJlI/HaflLx87ULvunBURzQE9qGQSPvEN5rPeS
-         dTciyF1836+uHSlLcGV/3L2QbG/GUfYA1A+InAQxNwOgXSJ8BsZfQgioRpOgjwl4pPEF
-         Dm7/tHGZY8hCm+0d4wSOf0F1Dy0uTaeKFAnssGZPlGLewzxbkVfEGvJ9WSWJSsg3imkh
-         5DKMsS53JCK3XOW3JM6CIHFjxcHw15dGyda0VA03fmFcxHdFo6+EgTMhxlJvyyp+DCSo
-         Zn3zdLOh0bDwwWzOfXIHNLK/uMcpo1FMcYakGi9mGTQt1kbNuZgiVz13QsCwJwdQoWQZ
-         jOjw==
-X-Gm-Message-State: AOJu0YxUFuzCE5/WdcLJT0CnDGVSTzfYN7dFE8nMLiV0hsxrxlxhvGK4
-        gPnAHeaxPUvGRlouZGmeX9E=
-X-Google-Smtp-Source: AGHT+IGVDo7JufNBKQ83S5yooQvJh8P01DU3SZTzTijKLEVf7t3x+8HdemVgB7X0KbSn4SsCM+FIsw==
-X-Received: by 2002:a05:6808:2382:b0:3ad:f866:39bd with SMTP id bp2-20020a056808238200b003adf86639bdmr4665141oib.27.1696477308089;
-        Wed, 04 Oct 2023 20:41:48 -0700 (PDT)
-Received: from debian.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id a9-20020a63bd09000000b005891f3af36asm316522pgf.87.2023.10.04.20.41.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 20:41:47 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 81C2C80FCC18; Thu,  5 Oct 2023 10:41:41 +0700 (WIB)
-Date:   Thu, 5 Oct 2023 10:41:40 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.1 000/259] 6.1.56-rc1 review
-Message-ID: <ZR4wdCFV9lT3XFKV@debian.me>
-References: <20231004175217.404851126@linuxfoundation.org>
+        d=1e100.net; s=20230601; t=1696484116; x=1697088916;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/LQ+X+x8kIqTkVd50ogLWp0VaSEkcS2ypomcdLaAgP0=;
+        b=HVGb81lxBnwPywPITuaGQV/L9dV0Id0hwTKoe2s2DG+Viivl66S6xJMRhNkt6wSw83
+         KwiiUCwgqGzlzBh+yNj3tNhoEZkT/K/7uvgknf0uIQa2Of1V1CFcj1iZstSI5HNv0yNR
+         e5fSAYyY5zwF2wxP4RDfrexsxuGkRD9qp4yBCmsz4eb9JU3xcWgtl56nG1rGFXcF4GX6
+         A3oCUtUDP2AzqhMiFTdAFDYP+AJSj1Ace9D0KtI9Vl8IyT7x0TlltTsdtyegcl/ss1Eo
+         6+xD6TeNyUGJiU1sEn1h4DqkrghYiB+A8S9vof76bPNQa/dLNg1XpCmhO0XQCdy3fzzX
+         x82w==
+X-Gm-Message-State: AOJu0YzrOWq1OYGzPxAx6uUK8JBT+3A9v8W6WYQwwMzkjBKqLlT2J0eY
+        F3mzYvYKt/4q4s1cO1ALPg+IvBffRv2NSX4Glo4DNQ==
+X-Google-Smtp-Source: AGHT+IFyUEy98cMidc1tr4QnSypHpNlXUtm1aI5nwEWjnjVyHJ6lFX/6zV9UcK6yLBCnVPD0b2cF/SGIK7DsUIDhFMI=
+X-Received: by 2002:a05:6102:282a:b0:452:d5f6:cf5d with SMTP id
+ ba10-20020a056102282a00b00452d5f6cf5dmr3993630vsb.32.1696484115747; Wed, 04
+ Oct 2023 22:35:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="2A/QDMh1jEjOPF+0"
-Content-Disposition: inline
-In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
+References: <20231004175229.211487444@linuxfoundation.org>
+In-Reply-To: <20231004175229.211487444@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 5 Oct 2023 11:05:04 +0530
+Message-ID: <CA+G9fYuE9Pu3QCVDywA8Ss-41jVfiy2e2kpxjhpTe3CRgmZkBw@mail.gmail.com>
+Subject: Re: [PATCH 6.5 000/321] 6.5.6-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Hou Tao <houtao1@huawei.com>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, bpf <bpf@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,36 +73,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
---2A/QDMh1jEjOPF+0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Oct 04, 2023 at 07:52:53PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.56 release.
-> There are 259 patches in this series, all will be posted as a response
+On Wed, 4 Oct 2023 at 23:53, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.5.6 release.
+> There are 321 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->=20
+>
+> Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.6-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Successfully compiled and installed bindeb-pkgs on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+The following kernel warning was noticed on qemu-armv7 while booting
+with kselftest merge configs enabled build on stable-rc 6.5.6-rc1.
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
---=20
-An old man doll... just what I always wanted! - Clara
+> Hou Tao <houtao1@huawei.com>
+>     bpf: Ensure unit_size is matched with slab cache object size
 
---2A/QDMh1jEjOPF+0
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+bpf: Ensure unit_size is matched with slab cache object size
+[ Upstream commit c930472552022bd09aab3cd946ba3f243070d5c7 ]
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZR4wbwAKCRD2uYlJVVFO
-o25wAP486peTivssGitHaDW69OLp2joiFPR3ZIZ3MEPDmy3pYwD/bmNcEDqkqMEA
-Gvfhbed2QiGCwwYAW3Aa9d6SzE/LHwE=
-=/usy
------END PGP SIGNATURE-----
+[    2.525383] ------------[ cut here ]------------
+[    2.525743] WARNING: CPU: 0 PID: 1 at kernel/bpf/memalloc.c:385
+bpf_mem_alloc_init+0x3b0/0x3b4
+[    2.527241] bpf_mem_cache[0]: unexpected object size 128, expect 96
+[    2.527897] Modules linked in:
+[    2.528721] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.5.6-rc1 #1
+[    2.529525] Hardware name: Generic DT based system
+[    2.531279]  unwind_backtrace from show_stack+0x10/0x14
+[    2.531684]  show_stack from dump_stack_lvl+0x48/0x54
+[    2.532220]  dump_stack_lvl from __warn+0xd4/0x200
+[    2.532878]  __warn from warn_slowpath_fmt+0xb4/0x168
+[    2.533516]  warn_slowpath_fmt from bpf_mem_alloc_init+0x3b0/0x3b4
+[    2.534133]  bpf_mem_alloc_init from bpf_global_ma_init+0x18/0x30
+[    2.534911]  bpf_global_ma_init from do_one_initcall+0x118/0x250
+[    2.535594]  do_one_initcall from do_initcall_level+0xe8/0xf4
+[    2.536016]  do_initcall_level from do_initcalls+0x50/0x80
+[    2.536618]  do_initcalls from kernel_init_freeable+0x90/0xd8
+[    2.537220]  kernel_init_freeable from kernel_init+0x14/0x1b4
+[    2.537634]  kernel_init from ret_from_fork+0x14/0x28
+[    2.538271] Exception stack(0xf0825fb0 to 0xf0825ff8)
+[    2.539230] 5fa0:                                     00000000
+00000000 00000000 00000000
+[    2.539792] 5fc0: 00000000 00000000 00000000 00000000 00000000
+00000000 00000000 00000000
+[    2.540497] 5fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+[    2.541682] ---[ end trace 0000000000000000 ]---
 
---2A/QDMh1jEjOPF+0--
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.5-322-g9327d0db36be/testrun/20257234/suite/log-parser-boot/test/check-kernel-exception/log
+ - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2WJGm4kyWj47rr0KEArH4BwqPCs
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.5-322-g9327d0db36be/testrun/20257234/suite/log-parser-boot/tests/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
