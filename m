@@ -2,62 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0AF97B9DC1
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 15:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73E297B9F3A
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 16:21:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229677AbjJENzx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 5 Oct 2023 09:55:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33800 "EHLO
+        id S233193AbjJEOTJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 5 Oct 2023 10:19:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244098AbjJENvP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 09:51:15 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0898B1F75C
-        for <stable@vger.kernel.org>; Thu,  5 Oct 2023 02:59:59 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-4064876e8b8so7433025e9.0
-        for <stable@vger.kernel.org>; Thu, 05 Oct 2023 02:59:58 -0700 (PDT)
+        with ESMTP id S233303AbjJEOQg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 10:16:36 -0400
+Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB92B1985;
+        Wed,  4 Oct 2023 20:41:48 -0700 (PDT)
+Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3ae5ce4a4ceso367909b6e.1;
+        Wed, 04 Oct 2023 20:41:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696499997; x=1697104797; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tfdb1dM/aoOmDJrjt2RWm8chCIw3FIQo5AAZYxu0Nh8=;
-        b=fnLfsAtht9SkmpKhsHgWS1oVqTyt0rU10Of0lSuL5F6e+BS1E46P9Hia8me8wV1SVw
-         ByYJyDjR/EnIAp/yO9tMYSXqJQy6u16VI1vD+J1E3CbF1ad5KubWVDSIKwvzAi8+STvC
-         eZnOhuJMYrM+WBqfSu5eBxMD2kwZI+Ya4oo7dJZjCr/sZmreoPVslnuN5NN5ABohhb0p
-         AyRK4WK7JxwQEIS6WvmhGzbQkpMUwrl/mpn2Yoq7pMwpvPb4DjGzA8VDhgcZHIbw+3XG
-         jWxk1D+6fUREdvvGiDIddoDI4uKn8DGunIwuYPxO19FD5H4r8yhwQsX2j3+pxZDnG7JY
-         gNuw==
+        d=gmail.com; s=20230601; t=1696477308; x=1697082108; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sk95zFTEUxg4VjqgqYYBz24a5vuW35vcpYZ4u3hihIA=;
+        b=bRsd4/1Mwzhz9yJGInmZt/jHSjOSAivNlYwzlNatu2WibkwWWEn3nIJ5LKqbYDXrDT
+         hQoil8UpeCtl3x8NCxpaqgfMxsQMicUDOyuuwEc2bVc/rGFeNk4c0cTySpiP5dJxz1kn
+         TpHtV77ZUzieukGlQwGOFf90TsAwwzjDJG0jptPNedIPq68eDAV6lLpSuRIVNmewvHtP
+         HwTTonS9o4Ui+DcVUU65MXeuLjFCAIq+XMM7njMVs6JqClSE44ELvkTJrkiaoD9UwrQY
+         6pS5Td1PXxJB7SYkRx+qayEgdm1Itet1V+cdMdmbjoZBOJ3ve1GrwI40zd2hbwoawXRd
+         I/fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696499997; x=1697104797;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tfdb1dM/aoOmDJrjt2RWm8chCIw3FIQo5AAZYxu0Nh8=;
-        b=hmFONV6+lJHiGGU2AwCf/xb6v06NMdmgfM49+VucICpR6/NWO0NsjlEsI1nOQZLrGz
-         bdJBDrVAf+60kuFBZ9Zqkh1yC05EkV/jV7bl1wSA9xR32Tu51wHqF5bpAphXhxZnwNx2
-         0xbVWB6GTKOlwfJcWPYmrOkMjQMhFkCujh0WBmhx+2nJtejDbV4YrQA4YlkQasqLr7WG
-         HXAUENL2ybc5UNVYYfGKKRDf3pK0g/KutL6fYmghzeUmh4YOYQdooUj2UnWhwHTAHRSF
-         Rl0Yrxu9oAIHAu266rnquBoRpGfGOCs2tl/AnykC8MOXDSoHHCI2xLXR7TIf8Lf2dI8z
-         rtQQ==
-X-Gm-Message-State: AOJu0Yy1OY9B2qkrq7TXv3Po+zZT/XSurenTiOan8UqfKQxhh/1IMw/H
-        Ox5kgMO6YLJxE/IFJe6X6Os9riukiOI=
-X-Google-Smtp-Source: AGHT+IH+FCFC61djK0BudwRxrwbf2s95j4EBj+uKQH2HxSJqPnyQcXIR479gNW9OmAfU9zdK9zxNhg==
-X-Received: by 2002:a7b:c391:0:b0:405:359a:c950 with SMTP id s17-20020a7bc391000000b00405359ac950mr4540879wmj.19.1696499997296;
-        Thu, 05 Oct 2023 02:59:57 -0700 (PDT)
-Received: from localhost.localdomain (ip-94-112-167-15.bb.vodafone.cz. [94.112.167.15])
-        by smtp.gmail.com with ESMTPSA id a11-20020a5d4d4b000000b003231ca246b6sm1389897wru.95.2023.10.05.02.59.55
+        d=1e100.net; s=20230601; t=1696477308; x=1697082108;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Sk95zFTEUxg4VjqgqYYBz24a5vuW35vcpYZ4u3hihIA=;
+        b=Y2Th3X/PPx8/aCrRlEvTTL/pzHevmJlI/HaflLx87ULvunBURzQE9qGQSPvEN5rPeS
+         dTciyF1836+uHSlLcGV/3L2QbG/GUfYA1A+InAQxNwOgXSJ8BsZfQgioRpOgjwl4pPEF
+         Dm7/tHGZY8hCm+0d4wSOf0F1Dy0uTaeKFAnssGZPlGLewzxbkVfEGvJ9WSWJSsg3imkh
+         5DKMsS53JCK3XOW3JM6CIHFjxcHw15dGyda0VA03fmFcxHdFo6+EgTMhxlJvyyp+DCSo
+         Zn3zdLOh0bDwwWzOfXIHNLK/uMcpo1FMcYakGi9mGTQt1kbNuZgiVz13QsCwJwdQoWQZ
+         jOjw==
+X-Gm-Message-State: AOJu0YxUFuzCE5/WdcLJT0CnDGVSTzfYN7dFE8nMLiV0hsxrxlxhvGK4
+        gPnAHeaxPUvGRlouZGmeX9E=
+X-Google-Smtp-Source: AGHT+IGVDo7JufNBKQ83S5yooQvJh8P01DU3SZTzTijKLEVf7t3x+8HdemVgB7X0KbSn4SsCM+FIsw==
+X-Received: by 2002:a05:6808:2382:b0:3ad:f866:39bd with SMTP id bp2-20020a056808238200b003adf86639bdmr4665141oib.27.1696477308089;
+        Wed, 04 Oct 2023 20:41:48 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id a9-20020a63bd09000000b005891f3af36asm316522pgf.87.2023.10.04.20.41.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Oct 2023 02:59:56 -0700 (PDT)
-From:   Ilya Dryomov <idryomov@gmail.com>
-To:     stable@vger.kernel.org
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH for 5.10-6.1 0/4] rbd: fix a deadlock around header_rwsem and lock_rwsem
-Date:   Thu,  5 Oct 2023 11:59:31 +0200
-Message-ID: <20231005095937.317188-1-idryomov@gmail.com>
-X-Mailer: git-send-email 2.41.0
+        Wed, 04 Oct 2023 20:41:47 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 81C2C80FCC18; Thu,  5 Oct 2023 10:41:41 +0700 (WIB)
+Date:   Thu, 5 Oct 2023 10:41:40 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 000/259] 6.1.56-rc1 review
+Message-ID: <ZR4wdCFV9lT3XFKV@debian.me>
+References: <20231004175217.404851126@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="2A/QDMh1jEjOPF+0"
+Content-Disposition: inline
+In-Reply-To: <20231004175217.404851126@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -68,25 +78,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
 
-Patch 1/4 needed a trivial adjustment, the rest were taken verbatim and
-included here just for convenience.
+--2A/QDMh1jEjOPF+0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks,
+On Wed, Oct 04, 2023 at 07:52:53PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.56 release.
+> There are 259 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-                Ilya
+Successfully compiled and installed bindeb-pkgs on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-Ilya Dryomov (4):
-  rbd: move rbd_dev_refresh() definition
-  rbd: decouple header read-in from updating rbd_dev->header
-  rbd: decouple parent info read-in from updating rbd_dev
-  rbd: take header_rwsem in rbd_dev_refresh() only when updating
+--=20
+An old man doll... just what I always wanted! - Clara
 
- drivers/block/rbd.c | 412 ++++++++++++++++++++++++--------------------
- 1 file changed, 225 insertions(+), 187 deletions(-)
+--2A/QDMh1jEjOPF+0
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-2.41.0
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZR4wbwAKCRD2uYlJVVFO
+o25wAP486peTivssGitHaDW69OLp2joiFPR3ZIZ3MEPDmy3pYwD/bmNcEDqkqMEA
+Gvfhbed2QiGCwwYAW3Aa9d6SzE/LHwE=
+=/usy
+-----END PGP SIGNATURE-----
+
+--2A/QDMh1jEjOPF+0--
