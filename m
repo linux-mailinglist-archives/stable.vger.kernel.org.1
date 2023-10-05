@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CB897BAA35
-	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 21:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163127BAA36
+	for <lists+stable@lfdr.de>; Thu,  5 Oct 2023 21:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbjJETfO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S229734AbjJETfO (ORCPT <rfc822;lists+stable@lfdr.de>);
         Thu, 5 Oct 2023 15:35:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34226 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229734AbjJETfN (ORCPT
+        with ESMTP id S229939AbjJETfN (ORCPT
         <rfc822;stable@vger.kernel.org>); Thu, 5 Oct 2023 15:35:13 -0400
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 287EDCE
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5A561DB
         for <stable@vger.kernel.org>; Thu,  5 Oct 2023 12:35:11 -0700 (PDT)
 Received: from rrs24-12-35.corp.microsoft.com (unknown [131.107.1.128])
-        by linux.microsoft.com (Postfix) with ESMTPSA id AF83920B74C2;
+        by linux.microsoft.com (Postfix) with ESMTPSA id CF77B20B74C3;
         Thu,  5 Oct 2023 12:35:10 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AF83920B74C2
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CF77B20B74C3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
         s=default; t=1696534510;
-        bh=0rLftGJJjoX9NTEGfIp0gy1k+7vcQlfs++YbS5qPELA=;
+        bh=Kic4VFAv48XKhysYyNiBWgAF46JvmXDZd0EU//vuFsE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KlXkItxkzQ+hpbt6eB8BMZRAZMOl74wiCQQ1zZ6+Tf9lkZ2Y6KeN9sR2+rkQs3ysO
-         +hVCtQaesCwhVtPMGDd4cYFcGaEyLvD2mWz2DVtFvCHfbeNAZCTImT5AIF+qvl4dQ4
-         V8M39JF0HjhpRsxoZax/HeOXr466S4CeNTS+Yuiw=
+        b=pBPbGXfBa3I2QQEaCi8Q7Ppf2mvX/2c971Bn1YewT96uXoUhogApPGzyoLDffZmIG
+         fUuB3j6aElOai/cEW1evXmkRREaN5iUubKr0kDZYvHU8SePR7BTk3p8Ky3z14m8sKD
+         tcrX3XT6Azp3HPTr4iLDEGW6tjrKyv5y9jOZlVHw=
 From:   Easwar Hariharan <eahariha@linux.microsoft.com>
 To:     stable@vger.kernel.org
-Cc:     Robin Murphy <robin.murphy@arm.com>, Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 1/2] iommu/arm-smmu-v3: Set TTL invalidation hint better
-Date:   Thu,  5 Oct 2023 19:35:01 +0000
-Message-Id: <20231005193502.657149-2-eahariha@linux.microsoft.com>
+Cc:     Robin Murphy <robin.murphy@arm.com>, Rui Zhu <zhurui3@huawei.com>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 6.1 2/2] iommu/arm-smmu-v3: Avoid constructing invalid range commands
+Date:   Thu,  5 Oct 2023 19:35:02 +0000
+Message-Id: <20231005193502.657149-3-eahariha@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231005193502.657149-1-eahariha@linux.microsoft.com>
 References: <20231005193502.657149-1-eahariha@linux.microsoft.com>
@@ -48,47 +49,61 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Robin Murphy <robin.murphy@arm.com>
 
-commit 6833b8f2e19945a41e4d5efd8c6d9f4cae9a5b7d upstream
+commit eb6c97647be227822c7ce23655482b05e348fba5 upstream
 
-When io-pgtable unmaps a whole table, rather than waste time walking it
-to find the leaf entries to invalidate exactly, it simply expects
-.tlb_flush_walk with nominal last-level granularity to invalidate any
-leaf entries at higher intermediate levels as well. This works fine with
-page-based invalidation, but with range commands we need to be careful
-with the TTL hint - unconditionally setting it based on the given level
-3 granule means that an invalidation for a level 1 table would strictly
-not be required to affect level 2 block entries. It's easy to comply
-with the expected behaviour by simply not setting the TTL hint for
-non-leaf invalidations, so let's do that.
+Although io-pgtable's non-leaf invalidations are always for full tables,
+I missed that SVA also uses non-leaf invalidations, while being at the
+mercy of whatever range the MMU notifier throws at it. This means it
+definitely wants the previous TTL fix as well, since it also doesn't
+know exactly which leaf level(s) may need invalidating, but it can also
+give us less-aligned ranges wherein certain corners may lead to building
+an invalid command where TTL, Num and Scale are all 0. It should be fine
+to handle this by over-invalidating an extra page, since falling back to
+a non-range command opens up a whole can of errata-flavoured worms.
 
+Fixes: 6833b8f2e199 ("iommu/arm-smmu-v3: Set TTL invalidation hint better")
+Reported-by: Rui Zhu <zhurui3@huawei.com>
 Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/b409d9a17c52dc0db51faee91d92737bb7975f5b.1685637456.git.robin.murphy@arm.com
+Link: https://lore.kernel.org/r/b99cfe71af2bd93a8a2930f20967fb2a4f7748dd.1694432734.git.robin.murphy@arm.com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index db33dc87f69e..becf37c08877 100644
+index becf37c08877..8966f7d5aab6 100644
 --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
 +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -1889,8 +1889,13 @@ static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
+@@ -1886,18 +1886,23 @@ static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
+ 		/* Get the leaf page size */
+ 		tg = __ffs(smmu_domain->domain.pgsize_bitmap);
+ 
++		num_pages = size >> tg;
++
  		/* Convert page size of 12,14,16 (log2) to 1,2,3 */
  		cmd->tlbi.tg = (tg - 10) / 2;
  
--		/* Determine what level the granule is at */
--		cmd->tlbi.ttl = 4 - ((ilog2(granule) - 3) / (tg - 3));
-+		/*
-+		 * Determine what level the granule is at. For non-leaf, io-pgtable
-+		 * assumes .tlb_flush_walk can invalidate multiple levels at once,
-+		 * so ignore the nominal last-level granule and leave TTL=0.
-+		 */
-+		if (cmd->tlbi.leaf)
-+			cmd->tlbi.ttl = 4 - ((ilog2(granule) - 3) / (tg - 3));
- 
- 		num_pages = size >> tg;
+ 		/*
+-		 * Determine what level the granule is at. For non-leaf, io-pgtable
+-		 * assumes .tlb_flush_walk can invalidate multiple levels at once,
+-		 * so ignore the nominal last-level granule and leave TTL=0.
++		 * Determine what level the granule is at. For non-leaf, both
++		 * io-pgtable and SVA pass a nominal last-level granule because
++		 * they don't know what level(s) actually apply, so ignore that
++		 * and leave TTL=0. However for various errata reasons we still
++		 * want to use a range command, so avoid the SVA corner case
++		 * where both scale and num could be 0 as well.
+ 		 */
+ 		if (cmd->tlbi.leaf)
+ 			cmd->tlbi.ttl = 4 - ((ilog2(granule) - 3) / (tg - 3));
+-
+-		num_pages = size >> tg;
++		else if ((num_pages & CMDQ_TLBI_RANGE_NUM_MAX) == 1)
++			num_pages++;
  	}
+ 
+ 	cmds.num = 0;
 -- 
 2.34.1
 
