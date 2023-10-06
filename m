@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A6D87BBFA8
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 21:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B5207BBFA9
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 21:18:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233361AbjJFTSZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 15:18:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35596 "EHLO
+        id S233284AbjJFTS0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 15:18:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233284AbjJFTSY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 15:18:24 -0400
+        with ESMTP id S233365AbjJFTSZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 15:18:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F82295;
-        Fri,  6 Oct 2023 12:18:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C970BC433C7;
-        Fri,  6 Oct 2023 19:18:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BCEAA2;
+        Fri,  6 Oct 2023 12:18:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B030CC433CA;
+        Fri,  6 Oct 2023 19:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696619900;
-        bh=uABycE8o4rekFlNJjW0nqGIk6/zv7qZN7umK9wlSsqY=;
+        s=korg; t=1696619903;
+        bh=QI29I3DlfPkKEl854+NQuvPDPNWvR84y/r5nhlYEXxo=;
         h=Date:To:From:Subject:From;
-        b=pvinlfxvm5ELKUFL3sOGSqjpGAr3w19dIcxS+8oQCJ95wifLMylX3oT3eS72MYX9D
-         umvgYfpXLVFmRLMUjVDTAPegjVoykUeeyY5Ez5gs2Ia7zKXdwFEQoZcWbyqaBVdmYW
-         twFFMaBhuUQixx+vrT10VXGxPMCXc4Cx792YfH+8=
-Date:   Fri, 06 Oct 2023 12:18:17 -0700
+        b=XxnLajM99R/O6KLaE+nDr2lpoWFQVttL0blJraxOSEwhGWz6eC1e9TD2QxBjNEs4g
+         APn9/Rmn5jcF2LMCuvds3Zs4k1Y06VE0pJycZM9gozKKfKHyxiUg8FJUktffRpYS7W
+         ocDNXVGlK4mg4TRYipVBsSWQ20RWtNTVCxmXIBlE=
+Date:   Fri, 06 Oct 2023 12:18:20 -0700
 To:     mm-commits@vger.kernel.org, willy@infradead.org,
         stable@vger.kernel.org, muchun.song@linux.dev,
         mike.kravetz@oracle.com, riel@surriel.com,
         akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + hugetlbfs-extend-hugetlb_vma_lock-to-private-vmas.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231006191819.C970BC433C7@smtp.kernel.org>
+Subject: + hugetlbfs-clear-resv_map-pointer-if-mmap-fails.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231006191822.B030CC433CA@smtp.kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -42,12 +42,12 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The patch titled
-     Subject: hugetlbfs: extend hugetlb_vma_lock to private VMAs
+     Subject: hugetlbfs: clear resv_map pointer if mmap fails
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     hugetlbfs-extend-hugetlb_vma_lock-to-private-vmas.patch
+     hugetlbfs-clear-resv_map-pointer-if-mmap-fails.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/hugetlbfs-extend-hugetlb_vma_lock-to-private-vmas.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/hugetlbfs-clear-resv_map-pointer-if-mmap-fails.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -66,159 +66,87 @@ and is updated there every 2-3 working days
 
 ------------------------------------------------------
 From: Rik van Riel <riel@surriel.com>
-Subject: hugetlbfs: extend hugetlb_vma_lock to private VMAs
-Date: Thu, 5 Oct 2023 23:59:07 -0400
+Subject: hugetlbfs: clear resv_map pointer if mmap fails
+Date: Thu, 5 Oct 2023 23:59:06 -0400
 
-Extend the locking scheme used to protect shared hugetlb mappings from
-truncate vs page fault races, in order to protect private hugetlb mappings
-(with resv_map) against MADV_DONTNEED.
+Patch series "hugetlbfs: close race between MADV_DONTNEED and page fault", v7.
 
-Add a read-write semaphore to the resv_map data structure, and use that
-from the hugetlb_vma_(un)lock_* functions, in preparation for closing the
-race between MADV_DONTNEED and page faults.
+Malloc libraries, like jemalloc and tcalloc, take decisions on when to
+call madvise independently from the code in the main application.
 
-Link: https://lkml.kernel.org/r/20231006040020.3677377-3-riel@surriel.com
+This sometimes results in the application page faulting on an address,
+right after the malloc library has shot down the backing memory with
+MADV_DONTNEED.
+
+Usually this is harmless, because we always have some 4kB pages sitting
+around to satisfy a page fault.  However, with hugetlbfs systems often
+allocate only the exact number of huge pages that the application wants.
+
+Due to TLB batching, hugetlbfs MADV_DONTNEED will free pages outside of
+any lock taken on the page fault path, which can open up the following
+race condition:
+
+       CPU 1                            CPU 2
+
+       MADV_DONTNEED
+       unmap page
+       shoot down TLB entry
+                                       page fault
+                                       fail to allocate a huge page
+                                       killed with SIGBUS
+       free page
+
+Fix that race by extending the hugetlb_vma_lock locking scheme to also
+cover private hugetlb mappings (with resv_map), and pulling the locking
+from __unmap_hugepage_final_range into helper functions called from
+zap_page_range_single.  This ensures page faults stay locked out of the
+MADV_DONTNEED VMA until the huge pages have actually been freed.
+
+
+This patch (of 3):
+
+Hugetlbfs leaves a dangling pointer in the VMA if mmap fails.  This has
+not been a problem so far, but other code in this patch series tries to
+follow that pointer.
+
+Link: https://lkml.kernel.org/r/20231006040020.3677377-1-riel@surriel.com
+Link: https://lkml.kernel.org/r/20231006040020.3677377-2-riel@surriel.com
 Fixes: 04ada095dcfc ("hugetlb: don't delete vma_lock in hugetlb MADV_DONTNEED processing")
+Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
 Signed-off-by: Rik van Riel <riel@surriel.com>
-Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
 Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
 Cc: Muchun Song <muchun.song@linux.dev>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/hugetlb.h |    6 +++++
- mm/hugetlb.c            |   41 ++++++++++++++++++++++++++++++++++----
- 2 files changed, 43 insertions(+), 4 deletions(-)
+ mm/hugetlb.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/include/linux/hugetlb.h~hugetlbfs-extend-hugetlb_vma_lock-to-private-vmas
-+++ a/include/linux/hugetlb.h
-@@ -60,6 +60,7 @@ struct resv_map {
- 	long adds_in_progress;
- 	struct list_head region_cache;
- 	long region_cache_count;
-+	struct rw_semaphore rw_sema;
- #ifdef CONFIG_CGROUP_HUGETLB
- 	/*
- 	 * On private mappings, the counter to uncharge reservations is stored
-@@ -1233,6 +1234,11 @@ static inline bool __vma_shareable_lock(
- 	return (vma->vm_flags & VM_MAYSHARE) && vma->vm_private_data;
- }
- 
-+static inline bool __vma_private_lock(struct vm_area_struct *vma)
-+{
-+	return (!(vma->vm_flags & VM_MAYSHARE)) && vma->vm_private_data;
-+}
-+
- /*
-  * Safe version of huge_pte_offset() to check the locks.  See comments
-  * above huge_pte_offset().
---- a/mm/hugetlb.c~hugetlbfs-extend-hugetlb_vma_lock-to-private-vmas
+--- a/mm/hugetlb.c~hugetlbfs-clear-resv_map-pointer-if-mmap-fails
 +++ a/mm/hugetlb.c
-@@ -97,6 +97,7 @@ static void hugetlb_vma_lock_alloc(struc
- static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
- static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 		unsigned long start, unsigned long end);
-+static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
+@@ -1138,8 +1138,7 @@ static void set_vma_resv_map(struct vm_a
+ 	VM_BUG_ON_VMA(!is_vm_hugetlb_page(vma), vma);
+ 	VM_BUG_ON_VMA(vma->vm_flags & VM_MAYSHARE, vma);
  
- static inline bool subpool_is_free(struct hugepage_subpool *spool)
- {
-@@ -267,6 +268,10 @@ void hugetlb_vma_lock_read(struct vm_are
- 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
- 
- 		down_read(&vma_lock->rw_sema);
-+	} else if (__vma_private_lock(vma)) {
-+		struct resv_map *resv_map = vma_resv_map(vma);
-+
-+		down_read(&resv_map->rw_sema);
- 	}
+-	set_vma_private_data(vma, (get_vma_private_data(vma) &
+-				HPAGE_RESV_MASK) | (unsigned long)map);
++	set_vma_private_data(vma, (unsigned long)map);
  }
  
-@@ -276,6 +281,10 @@ void hugetlb_vma_unlock_read(struct vm_a
- 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
- 
- 		up_read(&vma_lock->rw_sema);
-+	} else if (__vma_private_lock(vma)) {
-+		struct resv_map *resv_map = vma_resv_map(vma);
-+
-+		up_read(&resv_map->rw_sema);
- 	}
- }
- 
-@@ -285,6 +294,10 @@ void hugetlb_vma_lock_write(struct vm_ar
- 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
- 
- 		down_write(&vma_lock->rw_sema);
-+	} else if (__vma_private_lock(vma)) {
-+		struct resv_map *resv_map = vma_resv_map(vma);
-+
-+		down_write(&resv_map->rw_sema);
- 	}
- }
- 
-@@ -294,17 +307,27 @@ void hugetlb_vma_unlock_write(struct vm_
- 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
- 
- 		up_write(&vma_lock->rw_sema);
-+	} else if (__vma_private_lock(vma)) {
-+		struct resv_map *resv_map = vma_resv_map(vma);
-+
-+		up_write(&resv_map->rw_sema);
- 	}
- }
- 
- int hugetlb_vma_trylock_write(struct vm_area_struct *vma)
- {
--	struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
- 
--	if (!__vma_shareable_lock(vma))
--		return 1;
-+	if (__vma_shareable_lock(vma)) {
-+		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
- 
--	return down_write_trylock(&vma_lock->rw_sema);
-+		return down_write_trylock(&vma_lock->rw_sema);
-+	} else if (__vma_private_lock(vma)) {
-+		struct resv_map *resv_map = vma_resv_map(vma);
-+
-+		return down_write_trylock(&resv_map->rw_sema);
+ static void set_vma_resv_flags(struct vm_area_struct *vma, unsigned long flags)
+@@ -6811,8 +6810,10 @@ out_err:
+ 		 */
+ 		if (chg >= 0 && add < 0)
+ 			region_abort(resv_map, from, to, regions_needed);
+-	if (vma && is_vma_resv_set(vma, HPAGE_RESV_OWNER))
++	if (vma && is_vma_resv_set(vma, HPAGE_RESV_OWNER)) {
+ 		kref_put(&resv_map->refs, resv_map_release);
++		set_vma_resv_map(vma, NULL);
 +	}
-+
-+	return 1;
+ 	return false;
  }
  
- void hugetlb_vma_assert_locked(struct vm_area_struct *vma)
-@@ -313,6 +336,10 @@ void hugetlb_vma_assert_locked(struct vm
- 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
- 
- 		lockdep_assert_held(&vma_lock->rw_sema);
-+	} else if (__vma_private_lock(vma)) {
-+		struct resv_map *resv_map = vma_resv_map(vma);
-+
-+		lockdep_assert_held(&resv_map->rw_sema);
- 	}
- }
- 
-@@ -345,6 +372,11 @@ static void __hugetlb_vma_unlock_write_f
- 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
- 
- 		__hugetlb_vma_unlock_write_put(vma_lock);
-+	} else if (__vma_private_lock(vma)) {
-+		struct resv_map *resv_map = vma_resv_map(vma);
-+
-+		/* no free for anon vmas, but still need to unlock */
-+		up_write(&resv_map->rw_sema);
- 	}
- }
- 
-@@ -1068,6 +1100,7 @@ struct resv_map *resv_map_alloc(void)
- 	kref_init(&resv_map->refs);
- 	spin_lock_init(&resv_map->lock);
- 	INIT_LIST_HEAD(&resv_map->regions);
-+	init_rwsem(&resv_map->rw_sema);
- 
- 	resv_map->adds_in_progress = 0;
- 	/*
 _
 
 Patches currently in -mm which might be from riel@surriel.com are
