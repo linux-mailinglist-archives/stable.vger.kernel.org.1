@@ -2,123 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF787BC161
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 23:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61CF67BC183
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 23:46:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233652AbjJFVlF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 17:41:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44014 "EHLO
+        id S233701AbjJFVqj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 17:46:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233710AbjJFVlB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 17:41:01 -0400
-Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C563BD;
-        Fri,  6 Oct 2023 14:41:00 -0700 (PDT)
-Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-35164833a21so11146215ab.0;
-        Fri, 06 Oct 2023 14:41:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696628459; x=1697233259; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4EmFZA6ZudbHCtkJzwnbsAak5FQyVkG6XojscroYQT8=;
-        b=ZU6Q/6F8366DRFjnozMnQTOnZby3B4xsOyyx6bTH8VpC28IQCjXG9E4oBLOlug0DtN
-         m0PjIHaggoTzIFg+mryuBvtMmlfdp9pdA1rQ0FWeprBHST2zDTyjca1rKdHDYyhiupum
-         4WEv9yNmNxQAq/JIUsE9gg5DVLpgGysWwLxOyuvoDXTyZ7fUGGb9HFTZR2UnM9etsv4q
-         mSnoML3MA/0HnX7x6GPPU5TNeKwm9ebcb0a2NJhMPbixxRZ50C/H1xNUhtqBaiYqAkY4
-         chlm4rcQ+6bRWMMSKZNVJkfZwJkiCyeU93r2apoyqr97n8JFrCVt3s8WIO1PMO96Srby
-         +3dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696628459; x=1697233259;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4EmFZA6ZudbHCtkJzwnbsAak5FQyVkG6XojscroYQT8=;
-        b=NHAdrCIOePTjtTVK1RhHXLoRyIASd7gHd2Wv7+YnSH48fY767i8w2+4NoOVxLRh9nh
-         on/lCd7xLEbZkIDZJr7pnmZwylwU+kN5I7n3k7QSms5b/dtgtzTr5fS5ANJKgF+V9nyd
-         fsjl3yMTVEhoDcFkhx2C5pA8TEaQ/bw+T7kP8uKoBWe+4pFgQDSYpWLctXwWlnFlrG1Z
-         eh4yGBExH+o2ebdZ83+HcC+pLva2Dg+D+pflcAH/+CtKtszJ5nhl2kr6Fmk1erIvD73r
-         eg/sZhii1WgbckMAsNX7177XffRE1rj7yGmYTki/BNM42zg/5Y7H3tyWjBnxFEtcOcQC
-         alLA==
-X-Gm-Message-State: AOJu0Yyd8UG2GTz+Ldge5BwuREzOEtB/Rpj7XrPCz+UbZLeKROM08J4L
-        MWf199jIzlye4zgfpLeNn0ycPC1XOJ5PVbjK98M=
-X-Google-Smtp-Source: AGHT+IHodFA/ilXdPb/jzYomsHaHDtUIqyVnsR3U1Hj6jGv1nlXbDmO4JKj7h6sUHGLzXf1HFmiNp54Div/A6N5nzo0=
-X-Received: by 2002:a05:6e02:1a05:b0:351:375f:2a31 with SMTP id
- s5-20020a056e021a0500b00351375f2a31mr4529823ild.6.1696628459466; Fri, 06 Oct
- 2023 14:40:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231006160024.170748-1-hannes@cmpxchg.org>
-In-Reply-To: <20231006160024.170748-1-hannes@cmpxchg.org>
-From:   Nhat Pham <nphamcs@gmail.com>
-Date:   Fri, 6 Oct 2023 14:40:48 -0700
-Message-ID: <CAKEwX=N_8ZORaiUDrGQON7RFgC0mXCyyHhR9s9Zki1qONEHnKw@mail.gmail.com>
-Subject: Re: [PATCH] mm: zswap: fix pool refcount bug around shrink_worker()
-To:     Johannes Weiner <hannes@cmpxchg.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Chris Mason <clm@fb.com>,
-        stable@vger.kernel.org, Vitaly Wool <vitaly.wool@konsulko.com>,
-        Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S233704AbjJFVqi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 17:46:38 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F961BE;
+        Fri,  6 Oct 2023 14:46:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD177C433C8;
+        Fri,  6 Oct 2023 21:46:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1696628797;
+        bh=PCl4CBWRE6qLOar8gKrsXLI2bjflznbGFV52K5Zf7g0=;
+        h=Date:To:From:Subject:From;
+        b=sCoVwAV9QVPl9vtKnDdxldauXG+d40T4+MqQo92JEm1/Ncsy7B48wtFahvtVKgT1/
+         /mFRM5Ykk3vKAoGBHUpibwJU/a7/LZnk2xdColQsFOfBjTXvtumpoT3twhfaIVl9T6
+         La3D+v8EEczoGL/5T/jT9VzBkpB9aTUVxN8Rhx7s=
+Date:   Fri, 06 Oct 2023 14:46:33 -0700
+To:     mm-commits@vger.kernel.org, willy@infradead.org,
+        stable@vger.kernel.org, osalvador@suse.de, naoya.horiguchi@nec.com,
+        shikemeng@huaweicloud.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-page_alloc-correct-start-page-when-guard-page-debug-is-enabled.patch removed from -mm tree
+Message-Id: <20231006214636.AD177C433C8@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 6, 2023 at 9:00=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org>=
- wrote:
->
-> When a zswap store fails due to the limit, it acquires a pool
-> reference and queues the shrinker. When the shrinker runs, it drops
-> the reference. However, there can be multiple store attempts before
-> the shrinker wakes up and runs once. This results in reference leaks
-> and eventual saturation warnings for the pool refcount.
->
-> Fix this by dropping the reference again when the shrinker is already
-> queued. This ensures one reference per shrinker run.
->
-> Reported-by: Chris Mason <clm@fb.com>
-> Fixes: 45190f01dd40 ("mm/zswap.c: add allocation hysteresis if pool limit=
- is hit")
-> Cc: stable@vger.kernel.org      [5.6+]
-> Cc: Vitaly Wool <vitaly.wool@konsulko.com>
-> Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-> Cc: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> ---
->  mm/zswap.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 083c693602b8..37d2b1cb2ecb 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1383,8 +1383,8 @@ bool zswap_store(struct folio *folio)
->
->  shrink:
->         pool =3D zswap_pool_last_get();
-> -       if (pool)
-> -               queue_work(shrink_wq, &pool->shrink_work);
-> +       if (pool && !queue_work(shrink_wq, &pool->shrink_work))
-> +               zswap_pool_put(pool);
->         goto reject;
->  }
->
-> --
-> 2.42.0
->
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+The quilt patch titled
+     Subject: mm/page_alloc: correct start page when guard page debug is enabled
+has been removed from the -mm tree.  Its filename was
+     mm-page_alloc-correct-start-page-when-guard-page-debug-is-enabled.patch
 
-Random tangent: this asynchronous writeback mechanism
-is always kinda weird to me. We could have quite a bit of memory
-inversion before the shrinker finally kicks in and frees up zswap
-pool space. But I guess if it doesn't break then don't fix it.
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Maybe a shrinker that proactively writes pages back as memory
-pressure builds up could help ;)
+------------------------------------------------------
+From: Kemeng Shi <shikemeng@huaweicloud.com>
+Subject: mm/page_alloc: correct start page when guard page debug is enabled
+Date: Wed, 27 Sep 2023 17:44:01 +0800
+
+When guard page debug is enabled and set_page_guard returns success, we
+miss to forward page to point to start of next split range and we will do
+split unexpectedly in page range without target page.  Move start page
+update before set_page_guard to fix this.
+
+As we split to wrong target page, then splited pages are not able to merge
+back to original order when target page is put back and splited pages
+except target page is not usable.  To be specific:
+
+Consider target page is the third page in buddy page with order 2.
+| buddy-2 | Page | Target | Page |
+
+After break down to target page, we will only set first page to Guard
+because of bug.
+| Guard   | Page | Target | Page |
+
+When we try put_page_back_buddy with target page, the buddy page of target
+if neither guard nor buddy, Then it's not able to construct original page
+with order 2
+| Guard | Page | buddy-0 | Page |
+
+All pages except target page is not in free list and is not usable.
+
+Link: https://lkml.kernel.org/r/20230927094401.68205-1-shikemeng@huaweicloud.com
+Fixes: 06be6ff3d2ec ("mm,hwpoison: rework soft offline for free pages")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/page_alloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/page_alloc.c~mm-page_alloc-correct-start-page-when-guard-page-debug-is-enabled
++++ a/mm/page_alloc.c
+@@ -6475,6 +6475,7 @@ static void break_down_buddy_pages(struc
+ 			next_page = page;
+ 			current_buddy = page + size;
+ 		}
++		page = next_page;
+ 
+ 		if (set_page_guard(zone, current_buddy, high, migratetype))
+ 			continue;
+@@ -6482,7 +6483,6 @@ static void break_down_buddy_pages(struc
+ 		if (current_buddy != target) {
+ 			add_to_free_list(current_buddy, zone, high, migratetype);
+ 			set_buddy_order(current_buddy, high);
+-			page = next_page;
+ 		}
+ 	}
+ }
+_
+
+Patches currently in -mm which might be from shikemeng@huaweicloud.com are
+
+mm-page_alloc-remove-unnecessary-check-in-break_down_buddy_pages.patch
+mm-page_alloc-remove-unnecessary-next_page-in-break_down_buddy_pages.patch
+
