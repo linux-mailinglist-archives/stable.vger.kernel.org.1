@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E61957BB9D2
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 15:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E33A77BB9FF
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 16:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232335AbjJFNzJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 09:55:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47920 "EHLO
+        id S232499AbjJFOMM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 10:12:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231891AbjJFNzJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 09:55:09 -0400
+        with ESMTP id S232503AbjJFOML (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 10:12:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD95D83
-        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 06:55:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35307C433C8;
-        Fri,  6 Oct 2023 13:55:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706729E;
+        Fri,  6 Oct 2023 07:12:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5605C433CB;
+        Fri,  6 Oct 2023 14:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696600508;
-        bh=vnyWRKmmQuJbi1kCAUfP/uEng106aaLJHidrgE3TiYY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TXYR7l1PY1di0oKsHfIbcK5ZC7isUuF27YYiDxhxblc9znWn/k99heekEwvUZ+5wZ
-         8MPSKw6NMthgrDjbpcY9O9pn1OF7yHx2BLLdqMlaQ2bjWLf/byMMQiRGl9umFXPfqY
-         IveLkwfjIYlq6p6oPpu/Ih7AeWaZA014XidiPUCQINPVvQel8t0MVWw9pGH+f4QmLd
-         f47svOa1BhU3fEQraKvO5rt6jG/idxuodgTGWkO09XgdJJ6oEeyuw06NXbqflYWnz/
-         8YStRBireZDMA7kBKG0v1BoBGhXi1jCLQ+pxbbfa0q9yyfnEfYopBIYdGdhGqZ/kPS
-         YEL2JN5w6/tMA==
-Date:   Fri, 6 Oct 2023 09:55:07 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Ilya Dryomov <idryomov@gmail.com>
-Cc:     stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: Re: [PATCH for 5.10-6.1 0/4] rbd: fix a deadlock around header_rwsem
- and lock_rwsem
-Message-ID: <ZSARu1_1Wy0YY4n8@sashalap>
-References: <20231005095937.317188-1-idryomov@gmail.com>
+        s=k20201202; t=1696601529;
+        bh=PEJSGqUvssmM13ESjCNwtPIKW4jeWq6BELPGXygd/KE=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=MRWXJ0jEtRpRqq3ho51/bSvI73M9nVi/6IhvjQDLBGSqduvVk9cacypgxdnUmJFge
+         aAOPUcJGFdilbmkSpU3wKs0P55FooMzDB/HDSAq0FOQwjrV1n0fTuHH/UeZQ3k3CO5
+         4GEXSqX7pkpLXPgHUdjVOly3NwMy/WTFsky51V9t4AJaRoTeutqG1lOc23j/3oV4We
+         2v3GpuGiY5lYPQl1TVQdrnbccJs7Uj5UAODS8IVFwL2OpN9PcVYuNHJVOmCo10qc15
+         DCIFtA+fpgW/YLPh2eLL3KznCX6xFWAsoU4jYM0Bdb4ZrMZNuA3weOt+9ZCysxk50Y
+         1H5bLzGO8KISg==
+From:   Benjamin Tissoires <bentiss@kernel.org>
+To:     =?utf-8?q?Filipe_La=C3=ADns?= <lains@riseup.net>,
+        Bastien Nocera <hadess@hadess.net>,
+        Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     linux-input@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20231005182638.3776-1-hdegoede@redhat.com>
+References: <20231005182638.3776-1-hdegoede@redhat.com>
+Subject: Re: [PATCH] HID: logitech-hidpp: Fix kernel crash on receiver USB
+ disconnect
+Message-Id: <169660152754.2015335.1504667640819590220.b4-ty@kernel.org>
+Date:   Fri, 06 Oct 2023 16:12:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20231005095937.317188-1-idryomov@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.1
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -49,14 +53,24 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Oct 05, 2023 at 11:59:31AM +0200, Ilya Dryomov wrote:
->Hello,
->
->Patch 1/4 needed a trivial adjustment, the rest were taken verbatim and
->included here just for convenience.
+On Thu, 05 Oct 2023 20:26:38 +0200, Hans de Goede wrote:
+> hidpp_connect_event() has *four* time-of-check vs time-of-use (TOCTOU)
+> races when it races with itself.
+> 
+> hidpp_connect_event() primarily runs from a workqueue but it also runs
+> on probe() and if a "device-connected" packet is received by the hw
+> when the thread running hidpp_connect_event() from probe() is waiting on
+> the hw, then a second thread running hidpp_connect_event() will be
+> started from the workqueue.
+> 
+> [...]
 
-Queued up, thanks!
+Applied to hid/hid.git (for-6.6/upstream-fixes), thanks!
 
+[1/1] HID: logitech-hidpp: Fix kernel crash on receiver USB disconnect
+      https://git.kernel.org/hid/hid/c/dac501397b9d
+
+Cheers,
 -- 
-Thanks,
-Sasha
+Benjamin Tissoires <bentiss@kernel.org>
+
