@@ -2,103 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D8817BB40B
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 11:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3CBA7BB40E
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 11:16:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231284AbjJFJQR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 05:16:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44706 "EHLO
+        id S231215AbjJFJQo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 05:16:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231388AbjJFJQO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 05:16:14 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADA1F95
-        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 02:15:58 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 6B68721877;
-        Fri,  6 Oct 2023 09:15:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1696583757; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0HRENDiKHcVlBZ+XaaEaXrQ7A+wbnVb52ACfwKB+Aq4=;
-        b=vwemwxhAKq8hnfX6MKkAnnbxhTevI8xYehAbL0W9m/T08IV3tMQbp6b3JeGivkC4cB3jzK
-        7Tfn9cDbDn7ZM+bFHVxr086GxAt19YE+Bi9urHmTcbNjjj9/v2lKhMTIeAiU1yZiddU5xZ
-        gApYlgxCmg46QKLWPUf1BJ4YrEqfOjY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1696583757;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=0HRENDiKHcVlBZ+XaaEaXrQ7A+wbnVb52ACfwKB+Aq4=;
-        b=WelkEy10VxpRShkm67Mw40iU0/YTtzzTxNKy3NtyYy72Rts5ws1dRc6JJVH93B/M4W2NI0
-        pw8Wgq6B40CFEHAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5DD2813586;
-        Fri,  6 Oct 2023 09:15:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id fa/bFk3QH2XmMAAAMHmgww
-        (envelope-from <jack@suse.cz>); Fri, 06 Oct 2023 09:15:57 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id DDD98A07CC; Fri,  6 Oct 2023 11:15:56 +0200 (CEST)
-Date:   Fri, 6 Oct 2023 11:15:56 +0200
-From:   Jan Kara <jack@suse.cz>
-To:     Mathieu Othacehe <othacehe@gnu.org>
-Cc:     Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        jack@suse.cz, Marcus Hoffmann <marcus.hoffmann@othermo.de>,
-        tytso@mit.edu, famzah@icdsoft.com, gregkh@linuxfoundation.org,
-        anton.reding@landisgyr.com
-Subject: Re: kernel BUG at fs/ext4/inode.c:1914 - page_buffers()
-Message-ID: <20231006091556.c6qqlb5seusvzl7a@quack3>
-References: <871qeau3sd.fsf@gnu.org>
- <ZR06COwVo7bEfP/5@sashalap>
- <87wmw1v94t.fsf@gnu.org>
+        with ESMTP id S231373AbjJFJQo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 05:16:44 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91C659E;
+        Fri,  6 Oct 2023 02:16:41 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qogwp-0007BH-NA; Fri, 06 Oct 2023 11:16:39 +0200
+Message-ID: <740b0d7e-c789-47b5-b419-377014a99f22@leemhuis.info>
+Date:   Fri, 6 Oct 2023 11:16:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87wmw1v94t.fsf@gnu.org>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC
+ requirement
+Content-Language: en-US, de-DE
+To:     Christian Theune <ct@flyingcircus.io>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     stable@vger.kernel.org, netdev@vger.kernel.org,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com
+References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
+ <207a8e5d-5f2a-4b33-9fc1-86811ad9f48a@leemhuis.info>
+ <879EA0B7-F334-4A17-92D5-166F627BEE6F@flyingcircus.io>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <879EA0B7-F334-4A17-92D5-166F627BEE6F@flyingcircus.io>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1696583801;ed113103;
+X-HE-SMSGID: 1qogwp-0007BH-NA
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello!
-
-On Thu 05-10-23 09:08:50, Mathieu Othacehe wrote:
-> > Backporting the series would be ideal. Is this only for the 5.15 kernel?
+On 06.10.23 11:07, Christian Theune wrote:
 > 
-> OK. I spotted it on a 5.15 but as far as I understand, this affects all
-> stables with 5c48a7df9149, i.e all stables. Is that correct Jan?
+> it seems that 6.6rc4 is affected as well:
+> 
+> ----
+> commit b3d26c5702c7d6c45456326e56d2ccf3f103e60f
+> Author: Budimir Markovic <markovicbudimir@gmail.com>
+> Date:   Thu Aug 24 01:49:05 2023 -0700
+> 
+>     net/sched: sch_hfsc: Ensure inner classes have fsc curve
+> ——
 
-Yes, that is correct. Also I have realized that before patches I've already
-mentioned are applicable, you will also need to pick up:
+Did you actually try if the problem occurs with 6.6-rc4? That the commit
+is in there is expected (everything that lands in stable trees has to go
+to mainline first).
 
-9462f770eda8 ("ext4: Update stale comment about write constraints")
-c8e8e16dbbf0 ("ext4: Use nr_to_write directly in mpage_prepare_extent_to_map()")
-3f5d30636d2a ("ext4: Mark page for delayed dirtying only if it is pinned")
-f1496362e9d7 ("ext4: Don't unlock page in ext4_bio_write_page()")
-eaf2ca10ca4b ("ext4: Move page unlocking out of mpage_submit_page()")
-d8be7607de03 ("ext4: Move mpage_page_done() calls after error handling")
-3f079114bf52 ("ext4: Convert data=journal writeback to use ext4_writepages()")
-e6c28a26b799 ("ext4: Fix warnings when freezing filesystem with journaled data")
-  This commit actually gets reverted in the series of patches I have
-already mentioned.
+Ciao, Thorsten
 
-So sadly the backport is even larger than what I originally thought.
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> I have not found newer commits that would suggest they change any behaviour around this in any way, but I might be wrong.
+> 
+> Christian
+> 
+>> On 6. Oct 2023, at 11:01, Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info> wrote:
+>>
+>> On 06.10.23 10:37, Christian Theune wrote:
+>>>
+>>> (prefix, I was not aware of the regression reporting process and incorrectly reported this informally with the developers mentioned in the change)
+>>
+>> Don't worry too much about that, but thx for taking care of all the
+>> details. FWIW, there is one more thing that would be good to know:
+>>
+>> Does the problem happen with mainline (e.g. 6.6-rc4) as well? That's
+>> relevant, as different people might care[1].
+>>
+>> Ciao, Thorsten
+>>
+>> [1] this among others is explained here:
+>> https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-kernel-bug-reports-are-ignored/
+>>
+>>> I upgraded from 6.1.38 to 6.1.55 this morning and it broke my traffic shaping script, leaving me with a non-functional uplink on a remote router.
+>>>
+>>> The script errors out like this:
+>>>
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ext=ispA
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ext_ingress=ifb0
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + modprobe ifb
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + modprobe act_mirred
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ispA root
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2061]: Error: Cannot delete qdisc with handle of zero.
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ispA ingress
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2064]: Error: Cannot find specified qdisc on specified device.
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ifb0 root
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2066]: Error: Cannot delete qdisc with handle of zero.
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ifb0 ingress
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2067]: Error: Cannot find specified qdisc on specified device.
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc add dev ispA handle ffff: ingress
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ifconfig ifb0 up
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc filter add dev ispA parent ffff: protocol all u32 match u32 0 0 action mirred egress redirect dev ifb0
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc add dev ifb0 root handle 1: hfsc default 1
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc class add dev ifb0 parent 1: classid 1:999 hfsc rt m2 2.5gbit
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc class add dev ifb0 parent 1:999 classid 1:1 hfsc sc rate 50mbit
+>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2077]: Error: Invalid parent - parent class must have FSC.
+>>>
+>>> The error message is also a bit weird (but that’s likely due to iproute2 being weird) as the CLI interface for `tc` and the error message do not map well. (I think I would have to choose `hfsc sc` on the parent to enable the FSC option which isn’t mentioned anywhere in the hfsc manpage).
+>>>
+>>> The breaking change was introduced in 6.1.53[1] and a multitude of other currently supported kernels:
+>>>
+>>> ----
+>>> commit a1e820fc7808e42b990d224f40e9b4895503ac40
+>>> Author: Budimir Markovic <markovicbudimir@gmail.com>
+>>> Date: Thu Aug 24 01:49:05 2023 -0700
+>>>
+>>> net/sched: sch_hfsc: Ensure inner classes have fsc curve
+>>>
+>>> [ Upstream commit b3d26c5702c7d6c45456326e56d2ccf3f103e60f ]
+>>>
+>>> HFSC assumes that inner classes have an fsc curve, but it is currently
+>>> possible for classes without an fsc curve to become parents. This leads
+>>> to bugs including a use-after-free.
+>>>
+>>> Don't allow non-root classes without HFSC_FSC to become parents.
+>>>
+>>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>>> Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+>>> Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
+>>> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+>>> Link: https://lore.kernel.org/r/20230824084905.422-1-markovicbudimir@gmail.com
+>>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>> ----
+>>>
+>>> Regards,
+>>> Christian
+>>>
+>>> [1] https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.53
+>>>
+>>> #regzbot introduced: a1e820fc7808e42b990d224f40e9b4895503ac40
+>>>
+>>>
+> 
+> Liebe Grüße,
+> Christian Theune
+> 
