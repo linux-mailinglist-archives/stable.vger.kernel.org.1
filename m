@@ -2,34 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FDD37BC18A
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 23:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 679717BC190
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 23:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233790AbjJFVrC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 17:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44772 "EHLO
+        id S233634AbjJFVsA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 17:48:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233789AbjJFVq7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 17:46:59 -0400
+        with ESMTP id S233811AbjJFVrq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 17:47:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06E83BD;
-        Fri,  6 Oct 2023 14:46:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E191C433C7;
-        Fri,  6 Oct 2023 21:46:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7156E10E;
+        Fri,  6 Oct 2023 14:47:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0A6C433C8;
+        Fri,  6 Oct 2023 21:47:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696628817;
-        bh=8EH6af39gP68L2bR47iCfwIfZq1PTJVGBFtsA+9cCAU=;
+        s=korg; t=1696628865;
+        bh=ux3gL0mi7ZOJBcaEmLh4fGqG4Z4Ip+jU1XdzxEsrX6E=;
         h=Date:To:From:Subject:From;
-        b=WM9IKxrakyIh6KcgrdXflQsL/FaXdwon7/b92g05gVGcMv/tCIbHJeU4uJ6A5NhY5
-         2KNofkYCA5Ly/XWo9SzEYfXziPCa351HwjsBPaoSaYRwgZQnbJunIRXOrEBsmZG13R
-         PF4lyXv+oiS1GRVuzySmL7mF5KSr3PfrduqNetOY=
-Date:   Fri, 06 Oct 2023 14:46:55 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        Jonathan.Cameron@huawei.com, gregory.price@memverge.com,
-        arnd@arndb.de, gourry.memverge@gmail.com, akpm@linux-foundation.org
+        b=Yr1cYFMY311akwsn2CElPpDsshqr+kpX+5/gxzf3LdRouHGvXc1rwOirGGk1xjv8N
+         eCtmLYWx+j9XmWZugimIWtyZ6zrNIPVKC36Ypy1ppeCTKVvvsMc9/kAbUqFBBdGAw8
+         KyUVJQYDl5musFi8op8CCmf6HqIdXWBxSQqp05R4=
+Date:   Fri, 06 Oct 2023 14:47:42 -0700
+To:     mm-commits@vger.kernel.org, toiwoton@gmail.com,
+        Szabolcs.Nagy@arm.com, stable@vger.kernel.org,
+        ryan.roberts@arm.com, peterx@redhat.com, mhocko@suse.com,
+        kpsingh@kernel.org, keescook@chromium.org, joey.gouly@arm.com,
+        izbyshev@ispras.ru, gthelen@google.com, david@redhat.com,
+        catalin.marinas@arm.com, broonie@kernel.org, ayush.jain3@amd.com,
+        anshuman.khandual@arm.com, revest@chromium.org,
+        akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-migrate-fix-do_pages_move-for-compat-pointers.patch removed from -mm tree
-Message-Id: <20231006214657.3E191C433C7@smtp.kernel.org>
+Subject: [merged mm-stable] mm-make-pr_mdwe_refuse_exec_gain-an-unsigned-long.patch removed from -mm tree
+Message-Id: <20231006214744.AE0A6C433C8@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -41,86 +46,84 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm/migrate: fix do_pages_move for compat pointers
+     Subject: mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long
 has been removed from the -mm tree.  Its filename was
-     mm-migrate-fix-do_pages_move-for-compat-pointers.patch
+     mm-make-pr_mdwe_refuse_exec_gain-an-unsigned-long.patch
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
+This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Gregory Price <gourry.memverge@gmail.com>
-Subject: mm/migrate: fix do_pages_move for compat pointers
-Date: Tue, 3 Oct 2023 10:48:56 -0400
+From: Florent Revest <revest@chromium.org>
+Subject: mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long
+Date: Mon, 28 Aug 2023 17:08:56 +0200
 
-do_pages_move does not handle compat pointers for the page list. 
-correctly.  Add in_compat_syscall check and appropriate get_user fetch
-when iterating the page list.
+Defining a prctl flag as an int is a footgun because on a 64 bit machine
+and with a variadic implementation of prctl (like in musl and glibc), when
+used directly as a prctl argument, it can get casted to long with garbage
+upper bits which would result in unexpected behaviors.
 
-It makes the syscall in compat mode (32-bit userspace, 64-bit kernel)
-work the same way as the native 32-bit syscall again, restoring the
-behavior before my broken commit 5b1b561ba73c ("mm: simplify
-compat_sys_move_pages").
+This patch changes the constant to an unsigned long to eliminate that
+possibilities.  This does not break UAPI.
 
-More specifically, my patch moved the parsing of the 'pages' array from
-the main entry point into do_pages_stat(), which left the syscall
-working correctly for the 'stat' operation (nodes = NULL), while the
-'move' operation (nodes != NULL) is now missing the conversion and
-interprets 'pages' as an array of 64-bit pointers instead of the
-intended 32-bit userspace pointers.
+I think that a stable backport would be "nice to have": to reduce the
+chances that users build binaries that could end up with garbage bits in
+their MDWE prctl arguments.  We are not aware of anyone having yet
+encountered this corner case with MDWE prctls but a backport would reduce
+the likelihood it happens, since this sort of issues has happened with
+other prctls.  But If this is perceived as a backporting burden, I suppose
+we could also live without a stable backport.
 
-It is possible that nobody noticed this bug because the few
-applications that actually call move_pages are unlikely to run in
-compat mode because of their large memory requirements, but this
-clearly fixes a user-visible regression and should have been caught by
-ltp.
-
-Link: https://lkml.kernel.org/r/20231003144857.752952-1-gregory.price@memverge.com
-Fixes: 5b1b561ba73c ("mm: simplify compat_sys_move_pages")
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Co-developed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lkml.kernel.org/r/20230828150858.393570-5-revest@chromium.org
+Fixes: b507808ebce2 ("mm: implement memory-deny-write-execute as a prctl")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Suggested-by: Alexey Izbyshev <izbyshev@ispras.ru>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Ayush Jain <ayush.jain3@amd.com>
+Cc: Greg Thelen <gthelen@google.com>
+Cc: Joey Gouly <joey.gouly@arm.com>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Szabolcs Nagy <Szabolcs.Nagy@arm.com>
+Cc: Topi Miettinen <toiwoton@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/migrate.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ include/uapi/linux/prctl.h       |    2 +-
+ tools/include/uapi/linux/prctl.h |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/migrate.c~mm-migrate-fix-do_pages_move-for-compat-pointers
-+++ a/mm/migrate.c
-@@ -2162,6 +2162,7 @@ static int do_pages_move(struct mm_struc
- 			 const int __user *nodes,
- 			 int __user *status, int flags)
- {
-+	compat_uptr_t __user *compat_pages = (void __user *)pages;
- 	int current_node = NUMA_NO_NODE;
- 	LIST_HEAD(pagelist);
- 	int start, i;
-@@ -2174,8 +2175,17 @@ static int do_pages_move(struct mm_struc
- 		int node;
+--- a/include/uapi/linux/prctl.h~mm-make-pr_mdwe_refuse_exec_gain-an-unsigned-long
++++ a/include/uapi/linux/prctl.h
+@@ -283,7 +283,7 @@ struct prctl_mm_map {
  
- 		err = -EFAULT;
--		if (get_user(p, pages + i))
--			goto out_flush;
-+		if (in_compat_syscall()) {
-+			compat_uptr_t cp;
-+
-+			if (get_user(cp, compat_pages + i))
-+				goto out_flush;
-+
-+			p = compat_ptr(cp);
-+		} else {
-+			if (get_user(p, pages + i))
-+				goto out_flush;
-+		}
- 		if (get_user(node, nodes + i))
- 			goto out_flush;
+ /* Memory deny write / execute */
+ #define PR_SET_MDWE			65
+-# define PR_MDWE_REFUSE_EXEC_GAIN	1
++# define PR_MDWE_REFUSE_EXEC_GAIN	(1UL << 0)
+ 
+ #define PR_GET_MDWE			66
+ 
+--- a/tools/include/uapi/linux/prctl.h~mm-make-pr_mdwe_refuse_exec_gain-an-unsigned-long
++++ a/tools/include/uapi/linux/prctl.h
+@@ -283,7 +283,7 @@ struct prctl_mm_map {
+ 
+ /* Memory deny write / execute */
+ #define PR_SET_MDWE			65
+-# define PR_MDWE_REFUSE_EXEC_GAIN	1
++# define PR_MDWE_REFUSE_EXEC_GAIN	(1UL << 0)
+ 
+ #define PR_GET_MDWE			66
  
 _
 
-Patches currently in -mm which might be from gourry.memverge@gmail.com are
+Patches currently in -mm which might be from revest@chromium.org are
 
-mm-migrate-remove-unused-mm-argument-from-do_move_pages_to_node.patch
 
