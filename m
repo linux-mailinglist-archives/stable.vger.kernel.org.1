@@ -2,214 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E23777BB5AD
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 12:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF2C7BB5B0
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 12:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231838AbjJFKwD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 06:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42306 "EHLO
+        id S231312AbjJFKxb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 06:53:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231312AbjJFKwC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 06:52:02 -0400
-Received: from mail.flyingcircus.io (mail.flyingcircus.io [IPv6:2a02:238:f030:102::1064])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED75FF4;
-        Fri,  6 Oct 2023 03:51:56 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
-        s=mail; t=1696589512;
-        bh=HGa8c10xvK/NHUXiTFrZYL/EKgFpWUXN0LPr1D3e83g=;
-        h=Subject:From:In-Reply-To:Date:Cc:References:To;
-        b=QcvC75h9aDKEOpxsnLcRCnTzd4FcEG9DzmGKpFecctFrBz0wlDuNXgjDOHmXZO+d3
-         K94yYE3QMkKj0QL3hCX7mP1gTnZ0K2ibJLTLBeIKmFgKvfEsxOIYspM96W3OMHvtv6
-         xjPAZ4x9k/3mY0O6O2M3JNbeplOOov29VXKkESGk=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
-Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC
- requirement
-From:   Christian Theune <ct@flyingcircus.io>
-In-Reply-To: <740b0d7e-c789-47b5-b419-377014a99f22@leemhuis.info>
-Date:   Fri, 6 Oct 2023 12:51:32 +0200
-Cc:     stable@vger.kernel.org, netdev@vger.kernel.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com
+        with ESMTP id S231262AbjJFKxb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 06:53:31 -0400
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD26383;
+        Fri,  6 Oct 2023 03:53:29 -0700 (PDT)
+Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-57be3d8e738so1062729eaf.1;
+        Fri, 06 Oct 2023 03:53:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696589609; x=1697194409; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E6vE3/krN1AO7j/bpBiLGzhOiia0/4oh1GEJ69E90i0=;
+        b=VDNQgqAGie/WFKpUoxKr8D/zyefQ46ApeYQU5VXmLlqIBAAedb+SZt3hJzwCUcJaA2
+         5Ba96BcR/72Gq2Q6nYE6ChpQaGlMMx1lTX5qKUliWETXl1ir6ZjJeFjD2gVJOZwKoGRX
+         BIXiDrRQIUUSW04FrwUu1TntgrAQbSwU+ZFrNCP66ycH6BVXfyJoxVG1pbmA5Ihb0Sxs
+         M1Gf6G3JqYL2zICw6Ot+uyVjIavruxtHGlrnI9ljOaVNw+uwLnAGOdXjF5dxLVU2wGKO
+         1RNJ7O6bPbl0cG8pEx3iqGBE9STlPLIxiuQe4cVdox2Mx0H1icY4d5H7dTqPS9yevX+B
+         vcJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696589609; x=1697194409;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E6vE3/krN1AO7j/bpBiLGzhOiia0/4oh1GEJ69E90i0=;
+        b=F/PK0a4jF3+rEnAp94MoSrucbKa8Ll2PqnL9g1y9kWxIeCO8GyQ6V1cMZLyzxCq5pA
+         haFJMTtpnKuVi+kVL9KCK6PqbA3nyrlm5OU+dHpovcJUqkcqKyOk5GnZBoUPDT8CeHUe
+         dG41/bDIVS2YjZpxR9AP9SrsOXWvoGI6/FPT6bknBaqisx75nHVgLJHtv3aj36iYEnmi
+         pL2wPL94CddQiCqhDbTw55/Qn6tQnA4FXvMUHknH+888s6g/kzw1Beauju2Y+GAdeB34
+         YNeVm9TdRGNmebrKL7jKDcWUo2nI8qnGDq5boYKNlA+T31SHOiJTx68aMVS0zub9RMKA
+         8yEw==
+X-Gm-Message-State: AOJu0YwLZGDEPGidykFlIbmhent/YcG39Xmj0VvOFIoK2HeleIY3Kyzr
+        mfKpWojO6ALw8+PNeOAH0zCDB04rJrnPIc4EcXY=
+X-Google-Smtp-Source: AGHT+IEfKjob26JT9W05dIl3WLBo9U7hfgjJU2Rcr+N6dOI+zpgwbWFUqONWtnPMnSvNA4fvDvTN/wVkNJMchlF66Ko=
+X-Received: by 2002:a4a:d2dc:0:b0:571:1a1d:f230 with SMTP id
+ j28-20020a4ad2dc000000b005711a1df230mr7726107oos.9.1696589609082; Fri, 06 Oct
+ 2023 03:53:29 -0700 (PDT)
+MIME-Version: 1.0
+References: <20231004233827.1274148-1-jrife@google.com>
+In-Reply-To: <20231004233827.1274148-1-jrife@google.com>
+From:   Ilya Dryomov <idryomov@gmail.com>
+Date:   Fri, 6 Oct 2023 12:53:17 +0200
+Message-ID: <CAOi1vP-9L7rDxL6Wv_=6uuxVV_d-qK7StyDLBbvpZZcXmg6+Mg@mail.gmail.com>
+Subject: Re: [PATCH] ceph: use kernel_connect()
+To:     Jordan Rife <jrife@google.com>
+Cc:     ceph-devel@vger.kernel.org, xiubli@redhat.com, jlayton@kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <BBEA77E4-D376-45CE-9A93-415F2E0703D7@flyingcircus.io>
-References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
- <207a8e5d-5f2a-4b33-9fc1-86811ad9f48a@leemhuis.info>
- <879EA0B7-F334-4A17-92D5-166F627BEE6F@flyingcircus.io>
- <740b0d7e-c789-47b5-b419-377014a99f22@leemhuis.info>
-To:     Linux regressions mailing list <regressions@lists.linux.dev>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Thu, Oct 5, 2023 at 1:39=E2=80=AFAM Jordan Rife <jrife@google.com> wrote=
+:
+>
+> Direct calls to ops->connect() can overwrite the address parameter when
+> used in conjunction with BPF SOCK_ADDR hooks. Recent changes to
+> kernel_connect() ensure that callers are insulated from such side
+> effects. This patch wraps the direct call to ops->connect() with
+> kernel_connect() to prevent unexpected changes to the address passed to
+> ceph_tcp_connect().
+>
+> This change was originally part of a larger patch targeting the net tree
+> addressing all instances of unprotected calls to ops->connect()
+> throughout the kernel, but this change was split up into several patches
+> targeting various trees.
+>
+> Link: https://lore.kernel.org/netdev/20230821100007.559638-1-jrife@google=
+.com/
+> Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d93=
+3ba9.camel@redhat.com/
+> Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jordan Rife <jrife@google.com>
+> ---
+>  net/ceph/messenger.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/ceph/messenger.c b/net/ceph/messenger.c
+> index 10a41cd9c5235..3c8b78d9c4d1c 100644
+> --- a/net/ceph/messenger.c
+> +++ b/net/ceph/messenger.c
+> @@ -459,8 +459,8 @@ int ceph_tcp_connect(struct ceph_connection *con)
+>         set_sock_callbacks(sock, con);
+>
+>         con_sock_state_connecting(con);
+> -       ret =3D sock->ops->connect(sock, (struct sockaddr *)&ss, sizeof(s=
+s),
+> -                                O_NONBLOCK);
+> +       ret =3D kernel_connect(sock, (struct sockaddr *)&ss, sizeof(ss),
+> +                            O_NONBLOCK);
+>         if (ret =3D=3D -EINPROGRESS) {
+>                 dout("connect %s EINPROGRESS sk_state =3D %u\n",
+>                      ceph_pr_addr(&con->peer_addr),
+> --
+> 2.42.0.582.g8ccd20d70d-goog
+>
 
-sorry, no I didn=E2=80=99t. I don=E2=80=99t have a testbed available =
-right now to try this out quickly.
+Hi Jordan,
 
-Christian
+I'm a bit confused.  This is marked as fixing commit d74bad4e74ee
+("bpf: Hooks for sys_connect") and also for stable, but doesn't
+(explicitly, at least) mention the prerequisite commit 0bdf399342c5
+("net: Avoid address overwrite in kernel_connect") which isn't marked
+for stable.  Was it forwarded to the stable team separately?
 
-> On 6. Oct 2023, at 11:16, Linux regression tracking (Thorsten =
-Leemhuis) <regressions@leemhuis.info> wrote:
->=20
-> On 06.10.23 11:07, Christian Theune wrote:
->>=20
->> it seems that 6.6rc4 is affected as well:
->>=20
->> ----
->> commit b3d26c5702c7d6c45456326e56d2ccf3f103e60f
->> Author: Budimir Markovic <markovicbudimir@gmail.com>
->> Date:   Thu Aug 24 01:49:05 2023 -0700
->>=20
->>    net/sched: sch_hfsc: Ensure inner classes have fsc curve
->> =E2=80=94=E2=80=94
->=20
-> Did you actually try if the problem occurs with 6.6-rc4? That the =
-commit
-> is in there is expected (everything that lands in stable trees has to =
-go
-> to mainline first).
->=20
-> Ciao, Thorsten
->=20
->> I have not found newer commits that would suggest they change any =
-behaviour around this in any way, but I might be wrong.
->>=20
->> Christian
->>=20
->>> On 6. Oct 2023, at 11:01, Linux regression tracking (Thorsten =
-Leemhuis) <regressions@leemhuis.info> wrote:
->>>=20
->>> On 06.10.23 10:37, Christian Theune wrote:
->>>>=20
->>>> (prefix, I was not aware of the regression reporting process and =
-incorrectly reported this informally with the developers mentioned in =
-the change)
->>>=20
->>> Don't worry too much about that, but thx for taking care of all the
->>> details. FWIW, there is one more thing that would be good to know:
->>>=20
->>> Does the problem happen with mainline (e.g. 6.6-rc4) as well? That's
->>> relevant, as different people might care[1].
->>>=20
->>> Ciao, Thorsten
->>>=20
->>> [1] this among others is explained here:
->>> =
-https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-ke=
-rnel-bug-reports-are-ignored/
->>>=20
->>>> I upgraded from 6.1.38 to 6.1.55 this morning and it broke my =
-traffic shaping script, leaving me with a non-functional uplink on a =
-remote router.
->>>>=20
->>>> The script errors out like this:
->>>>=20
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ext=3DispA
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + =
-ext_ingress=3Difb0
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + modprobe =
-ifb
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + modprobe =
-act_mirred
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc =
-del dev ispA root
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2061]: Error: =
-Cannot delete qdisc with handle of zero.
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc =
-del dev ispA ingress
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2064]: Error: =
-Cannot find specified qdisc on specified device.
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc =
-del dev ifb0 root
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2066]: Error: =
-Cannot delete qdisc with handle of zero.
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc =
-del dev ifb0 ingress
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2067]: Error: =
-Cannot find specified qdisc on specified device.
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc =
-add dev ispA handle ffff: ingress
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ifconfig =
-ifb0 up
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc filter =
-add dev ispA parent ffff: protocol all u32 match u32 0 0 action mirred =
-egress redirect dev ifb0
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc =
-add dev ifb0 root handle 1: hfsc default 1
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc class =
-add dev ifb0 parent 1: classid 1:999 hfsc rt m2 2.5gbit
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc class =
-add dev ifb0 parent 1:999 classid 1:1 hfsc sc rate 50mbit
->>>> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2077]: Error: =
-Invalid parent - parent class must have FSC.
->>>>=20
->>>> The error message is also a bit weird (but that=E2=80=99s likely =
-due to iproute2 being weird) as the CLI interface for `tc` and the error =
-message do not map well. (I think I would have to choose `hfsc sc` on =
-the parent to enable the FSC option which isn=E2=80=99t mentioned =
-anywhere in the hfsc manpage).
->>>>=20
->>>> The breaking change was introduced in 6.1.53[1] and a multitude of =
-other currently supported kernels:
->>>>=20
->>>> ----
->>>> commit a1e820fc7808e42b990d224f40e9b4895503ac40
->>>> Author: Budimir Markovic <markovicbudimir@gmail.com>
->>>> Date: Thu Aug 24 01:49:05 2023 -0700
->>>>=20
->>>> net/sched: sch_hfsc: Ensure inner classes have fsc curve
->>>>=20
->>>> [ Upstream commit b3d26c5702c7d6c45456326e56d2ccf3f103e60f ]
->>>>=20
->>>> HFSC assumes that inner classes have an fsc curve, but it is =
-currently
->>>> possible for classes without an fsc curve to become parents. This =
-leads
->>>> to bugs including a use-after-free.
->>>>=20
->>>> Don't allow non-root classes without HFSC_FSC to become parents.
->>>>=20
->>>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->>>> Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
->>>> Signed-off-by: Budimir Markovic <markovicbudimir@gmail.com>
->>>> Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
->>>> Link: =
-https://lore.kernel.org/r/20230824084905.422-1-markovicbudimir@gmail.com
->>>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
->>>> ----
->>>>=20
->>>> Regards,
->>>> Christian
->>>>=20
->>>> [1] https://cdn.kernel.org/pub/linux/kernel/v6.x/ChangeLog-6.1.53
->>>>=20
->>>> #regzbot introduced: a1e820fc7808e42b990d224f40e9b4895503ac40
->>>>=20
->>>>=20
->>=20
->> Liebe Gr=C3=BC=C3=9Fe,
->> Christian Theune
->>=20
+Thanks,
 
-Liebe Gr=C3=BC=C3=9Fe,
-Christian Theune
-
---=20
-Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
-Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
-Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
-HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
-Christian Zagrodnick
-
+                Ilya
