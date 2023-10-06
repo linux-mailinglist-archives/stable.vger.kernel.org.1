@@ -2,128 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 679717BC190
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 23:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E49567BC216
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 00:13:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233634AbjJFVsA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 17:48:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41664 "EHLO
+        id S233648AbjJFWMx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 18:12:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233811AbjJFVrq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 17:47:46 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7156E10E;
-        Fri,  6 Oct 2023 14:47:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0A6C433C8;
-        Fri,  6 Oct 2023 21:47:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696628865;
-        bh=ux3gL0mi7ZOJBcaEmLh4fGqG4Z4Ip+jU1XdzxEsrX6E=;
-        h=Date:To:From:Subject:From;
-        b=Yr1cYFMY311akwsn2CElPpDsshqr+kpX+5/gxzf3LdRouHGvXc1rwOirGGk1xjv8N
-         eCtmLYWx+j9XmWZugimIWtyZ6zrNIPVKC36Ypy1ppeCTKVvvsMc9/kAbUqFBBdGAw8
-         KyUVJQYDl5musFi8op8CCmf6HqIdXWBxSQqp05R4=
-Date:   Fri, 06 Oct 2023 14:47:42 -0700
-To:     mm-commits@vger.kernel.org, toiwoton@gmail.com,
-        Szabolcs.Nagy@arm.com, stable@vger.kernel.org,
-        ryan.roberts@arm.com, peterx@redhat.com, mhocko@suse.com,
-        kpsingh@kernel.org, keescook@chromium.org, joey.gouly@arm.com,
-        izbyshev@ispras.ru, gthelen@google.com, david@redhat.com,
-        catalin.marinas@arm.com, broonie@kernel.org, ayush.jain3@amd.com,
-        anshuman.khandual@arm.com, revest@chromium.org,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-make-pr_mdwe_refuse_exec_gain-an-unsigned-long.patch removed from -mm tree
-Message-Id: <20231006214744.AE0A6C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S233397AbjJFWMw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 18:12:52 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6891BF
+        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 15:12:50 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1c874b43123so22103555ad.2
+        for <stable@vger.kernel.org>; Fri, 06 Oct 2023 15:12:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1696630370; x=1697235170; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iHQtvCOqet4K+ZxgJSgWcab3IirKmkpaYjS7FQ4Cvcc=;
+        b=D2RfmYGl8b8qjw74OumE1KeEPBqg/v3XzlcSTvg2OBueTmFN0aHBeAlem543lpoUai
+         zKgLTR4VJGyqnID4JASC4+YoW8+0bM2or+5vxQCEO8JAu4T3bCjyaHmcEAhtCkZW80e3
+         T4QCOR0erfHIMaJm2ynMWar4e6SVQJ/NANLqw6Xp9kcw0B/bfGglNHZ7HbHSuijIKZiF
+         HU3mjr65wXatbgzjAmdGugvnhfnmI4cxX1LbILlq2aEUKcHcwuswjheCuGck+gyuzNWI
+         4m6BgnmR9ownByprzb+tAZ6EGH5cTCyW43qIcB4ghq8TYkzkSO8E0+/KLTrpYBcGGJ+n
+         Wcpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696630370; x=1697235170;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iHQtvCOqet4K+ZxgJSgWcab3IirKmkpaYjS7FQ4Cvcc=;
+        b=IGUd0Wi4ZosFIMmMvZ0qNElaSOdgL+x0rnGYQIXsGBxAvzuQGZ3I1VoYt+Aa4NYgd9
+         8/6ZaZTY5DsPod2+vgaMA+nO5jXLrPyj/47vQNqRWfPpitilJCM6NVZ19DcqDJCfd6kZ
+         3wnOgCaOlpAWzS3BN5A6IDBeCDdloZ9SeFiJHBiX5T5gmDwlxFq0gGmW1beBqw9nUhOQ
+         fAlOaVeC3RVWcpTaqewRGe2NCFAZVNfeWmWDiKFUchXUApwBWF2xebV9Mt0a8F/mqnUH
+         qiVUOnQsIx0cO7hUKcYpLfT7O5M8VgaHIOcwsAn/ZWcGooadJXXA9kvSSGCRcE9AkZWn
+         KX+g==
+X-Gm-Message-State: AOJu0YxTleIraI/Wlo/Heel5tTrl2/xglujEeMA8vWQu1/GZqqHJ3QKQ
+        61Z6XgmqqQ0LEoM8hfvnnvKISA==
+X-Google-Smtp-Source: AGHT+IFch0L2eBB11k+yQ7Pp4uZMeyMYYxH4y9b95LG8JPljPZHp5HnbtE3E2Lg41WF/o5h824lBjA==
+X-Received: by 2002:a17:902:8f8b:b0:1c5:f0fd:51be with SMTP id z11-20020a1709028f8b00b001c5f0fd51bemr8305666plo.69.1696630370236;
+        Fri, 06 Oct 2023 15:12:50 -0700 (PDT)
+Received: from ?IPV6:2804:14d:5c5e:44fb:4bb6:b4ed:3ecb:e6a6? ([2804:14d:5c5e:44fb:4bb6:b4ed:3ecb:e6a6])
+        by smtp.gmail.com with ESMTPSA id n3-20020a170902e54300b001c20c608373sm4411655plf.296.2023.10.06.15.12.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Oct 2023 15:12:49 -0700 (PDT)
+Message-ID: <065a0dac-499f-7375-ddb4-1800e8ef61d1@mojatatu.com>
+Date:   Fri, 6 Oct 2023 19:12:46 -0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC
+ requirement
+Content-Language: en-US
+To:     Christian Theune <ct@flyingcircus.io>, stable@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     regressions@lists.linux.dev, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
+From:   Pedro Tammela <pctammela@mojatatu.com>
+In-Reply-To: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 06/10/2023 05:37, Christian Theune wrote:
+> Hi,
+> 
+> (prefix, I was not aware of the regression reporting process and incorrectly reported this informally with the developers mentioned in the change)
+> 
+> I upgraded from 6.1.38 to 6.1.55 this morning and it broke my traffic shaping script, leaving me with a non-functional uplink on a remote router.
+> 
+> The script errors out like this:
+> 
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ext=ispA
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ext_ingress=ifb0
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + modprobe ifb
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + modprobe act_mirred
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ispA root
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2061]: Error: Cannot delete qdisc with handle of zero.
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ispA ingress
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2064]: Error: Cannot find specified qdisc on specified device.
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ifb0 root
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2066]: Error: Cannot delete qdisc with handle of zero.
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ifb0 ingress
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2067]: Error: Cannot find specified qdisc on specified device.
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc add dev ispA handle ffff: ingress
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ifconfig ifb0 up
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc filter add dev ispA parent ffff: protocol all u32 match u32 0 0 action mirred egress redirect dev ifb0
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc add dev ifb0 root handle 1: hfsc default 1
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc class add dev ifb0 parent 1: classid 1:999 hfsc rt m2 2.5gbit
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc class add dev ifb0 parent 1:999 classid 1:1 hfsc sc rate 50mbit
+> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2077]: Error: Invalid parent - parent class must have FSC.
+> 
+> The error message is also a bit weird (but that’s likely due to iproute2 being weird) as the CLI interface for `tc` and the error message do not map well. (I think I would have to choose `hfsc sc` on the parent to enable the FSC option which isn’t mentioned anywhere in the hfsc manpage).
+> 
+> The breaking change was introduced in 6.1.53[1] and a multitude of other currently supported kernels:
+> 
 
-The quilt patch titled
-     Subject: mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long
-has been removed from the -mm tree.  Its filename was
-     mm-make-pr_mdwe_refuse_exec_gain-an-unsigned-long.patch
+Hi,
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Your script is actually incorrect.
+`man 7 tc-hfsc` goes in depth into why, but I just wanna highlight this 
+section:
+SEPARATE LS / RT SCs
+        Another difference from the original HFSC paper is that RT and 
+LS SCs can be specified separately. Moreover, leaf classes are
+        allowed to have only either RT SC or LS SC. For interior 
+classes, only LS SCs make sense: any RT SC will be ignored.
 
-------------------------------------------------------
-From: Florent Revest <revest@chromium.org>
-Subject: mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long
-Date: Mon, 28 Aug 2023 17:08:56 +0200
-
-Defining a prctl flag as an int is a footgun because on a 64 bit machine
-and with a variadic implementation of prctl (like in musl and glibc), when
-used directly as a prctl argument, it can get casted to long with garbage
-upper bits which would result in unexpected behaviors.
-
-This patch changes the constant to an unsigned long to eliminate that
-possibilities.  This does not break UAPI.
-
-I think that a stable backport would be "nice to have": to reduce the
-chances that users build binaries that could end up with garbage bits in
-their MDWE prctl arguments.  We are not aware of anyone having yet
-encountered this corner case with MDWE prctls but a backport would reduce
-the likelihood it happens, since this sort of issues has happened with
-other prctls.  But If this is perceived as a backporting burden, I suppose
-we could also live without a stable backport.
-
-Link: https://lkml.kernel.org/r/20230828150858.393570-5-revest@chromium.org
-Fixes: b507808ebce2 ("mm: implement memory-deny-write-execute as a prctl")
-Signed-off-by: Florent Revest <revest@chromium.org>
-Suggested-by: Alexey Izbyshev <izbyshev@ispras.ru>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Ayush Jain <ayush.jain3@amd.com>
-Cc: Greg Thelen <gthelen@google.com>
-Cc: Joey Gouly <joey.gouly@arm.com>
-Cc: KP Singh <kpsingh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Szabolcs Nagy <Szabolcs.Nagy@arm.com>
-Cc: Topi Miettinen <toiwoton@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/uapi/linux/prctl.h       |    2 +-
- tools/include/uapi/linux/prctl.h |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
---- a/include/uapi/linux/prctl.h~mm-make-pr_mdwe_refuse_exec_gain-an-unsigned-long
-+++ a/include/uapi/linux/prctl.h
-@@ -283,7 +283,7 @@ struct prctl_mm_map {
- 
- /* Memory deny write / execute */
- #define PR_SET_MDWE			65
--# define PR_MDWE_REFUSE_EXEC_GAIN	1
-+# define PR_MDWE_REFUSE_EXEC_GAIN	(1UL << 0)
- 
- #define PR_GET_MDWE			66
- 
---- a/tools/include/uapi/linux/prctl.h~mm-make-pr_mdwe_refuse_exec_gain-an-unsigned-long
-+++ a/tools/include/uapi/linux/prctl.h
-@@ -283,7 +283,7 @@ struct prctl_mm_map {
- 
- /* Memory deny write / execute */
- #define PR_SET_MDWE			65
--# define PR_MDWE_REFUSE_EXEC_GAIN	1
-+# define PR_MDWE_REFUSE_EXEC_GAIN	(1UL << 0)
- 
- #define PR_GET_MDWE			66
- 
-_
-
-Patches currently in -mm which might be from revest@chromium.org are
+The last part ("For interior classes...") was what the referenced patch 
+fixed. We were mistakenly allowing RTs into "interior classes" which the 
+implementation never accounted for and this was a source of crashes. I'm 
+surprised you were lucky enough to never crash the kernel ;)
+-=
+I believe the script could be updated to the following and still achieve 
+the same results:
+tc class add dev ifb0 parent 1: classid 1:999 hfsc ls m2 2.5gbit
+tc class add dev ifb0 parent 1:999 classid 1:1 hfsc rt rate 50mbit
 
 
