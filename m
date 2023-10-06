@@ -2,169 +2,213 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0E117BBDA5
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 19:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B81D57BBDB6
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 19:25:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232774AbjJFRXO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 13:23:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46486 "EHLO
+        id S233033AbjJFRZ5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 13:25:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232766AbjJFRXO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 13:23:14 -0400
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0096AD;
-        Fri,  6 Oct 2023 10:23:12 -0700 (PDT)
-Received: by mail-qk1-x72f.google.com with SMTP id af79cd13be357-7741c2e76a3so144115985a.1;
-        Fri, 06 Oct 2023 10:23:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696612991; x=1697217791; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=91W3G0cEbqqRmxPXwGQ1t1R3vCvJsYOaB9Imo0LgEtU=;
-        b=KBADtVhkfpMAnNQCYvDrIuWNWRt1PRvj7iPUtNrp3Izl1bwQ0dr4RzFK7dpe0c9n+i
-         i3srU7CMQg21cpzl3tk9W48VEHMog0BAKdXu+9UOw7J2IBd02dPNS2v7qDkR7dCPOLiS
-         ROUSKy8A34j6iFHMYJZULbbp1PhvASA7/LH+Fz7y9VUIC1+GZFmCWlnf8EVMwsO9bCZj
-         MwcYdn3TmVPVC6SyGBZZletmJBRtJ74IWymO3By8Mf3cq6WcXTs3/fN9c8/8wW87fT4N
-         sZM3D5Ku/H9l0hqUk6J44vUM1j9DnldypLAL9UuU5nkllPLwWHc6WnHdusuFm49wEFk4
-         6O3g==
+        with ESMTP id S233056AbjJFRZz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 13:25:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C43D1E4
+        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 10:25:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1696613104;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mLVUyshwnPobqcpQLpDXI/mKyIxKrhmdCJN7MIIJQGo=;
+        b=Izkm11vA8HswCMIBl8QHbVxYnGV/Fzpd2y3/jlQ989xE7D7/AkFOVi4pLV2dZJVNAq4zeU
+        n9e0vm8xUpW1XOaVH4Ghd9AjQANmQOuLPt6KgwYy4SRIc1cDNqVfjlLfpccB3Qk+o3NyJC
+        88jMokLIOTTAzlN/awV30ruj+ZkyWuc=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-656-gFocclgdMs-0dEwfpg5_Kg-1; Fri, 06 Oct 2023 13:25:02 -0400
+X-MC-Unique: gFocclgdMs-0dEwfpg5_Kg-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-9b99b6b8315so204490966b.2
+        for <stable@vger.kernel.org>; Fri, 06 Oct 2023 10:25:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696612991; x=1697217791;
+        d=1e100.net; s=20230601; t=1696613101; x=1697217901;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=91W3G0cEbqqRmxPXwGQ1t1R3vCvJsYOaB9Imo0LgEtU=;
-        b=ZT05XecNJoUz7Hq9FYv6gF23OYpqgFVwy55Ge5vLdoD8X++8VnWFTTRqi7aCFK5/FL
-         PbTeMI8ZpL87UKbozXUx4+x21KTZqLXGovp1HHEaOfwCllIQjhVnKqwdkMkBu4pfNJ1c
-         e9Gi+8Vw5KzwGdfB+bjALClRPwmlMtuQN79E/PQj8EQRZWZrkxxJUYp2MP73cp+iAfle
-         y0wpwKfBX3l3AJSo696gCnGo5nomXrYasGVCn+SzaiKj4yBmj8UCgCrGWCspFppp+Ze5
-         0uezJN+iQtuy9JhzaQpnChXapEnabxjMWUAkwSLg50XzZ7GvfBYxQFSTrE0L/38bJOgq
-         8RXw==
-X-Gm-Message-State: AOJu0YweJs5aihSWzW5IJhYcZeQhoh/PN4qcUWnTrYeUwmMIvGdIippQ
-        Gok8C+RCzxYy0lYhxH23Enk=
-X-Google-Smtp-Source: AGHT+IFCGO1cTN5edw+2V4mOATys+PyAqaL62Y5qWGvXMNzZWrVIpId2KCZRfaxMCWapM1Nv26wZHg==
-X-Received: by 2002:a05:620a:25ce:b0:76e:f3a3:4ac6 with SMTP id y14-20020a05620a25ce00b0076ef3a34ac6mr8463665qko.35.1696612991507;
-        Fri, 06 Oct 2023 10:23:11 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id p4-20020a05620a112400b007684220a08csm1433521qkk.70.2023.10.06.10.23.05
+        bh=mLVUyshwnPobqcpQLpDXI/mKyIxKrhmdCJN7MIIJQGo=;
+        b=UJ3waBNeqDJn3duRUIQe4odl2cVL9Ksstf4dyCBSdsLXaPKX47T5A9ZqjF//jdloSo
+         OuEmEGgLEFk0eqbNfgRai4dbfCVu+qFPXEpbV/cI8aUJXzKInfChVDRnXWEzVkMola3O
+         t/4nxyrR+w+epfZQhlxK4ozST5hGL9N1+BvwWhrhgiBDsa2U6GnEg+jgqV9iW8mZdjFE
+         2aDjtnw3xheS3CVJG9w4+piK7Kn2Q0fSdGRh7ARFl4wfKttfoIR1Yrh5riH1pvO/1KFG
+         jjtv0xS/U92A1uQjb1NBmyGbXzLJma9tEGA7VatxJB8SJl9KB3juuPKmPXPe4j64L+8o
+         NM/g==
+X-Gm-Message-State: AOJu0YyE6lVScbqiDoaXWckHLivesJA3nEIEqVFvW435Zr9XBgmdFnsF
+        bOTcDF1xhPmjOScF0nG7CktRxll3DzZhVhhk46mAa1rSyyCHfZhKOnamz/OBFjH9GcGFLj0KSdG
+        vAi9r9iVgasrSz1yYwVoTPEVN
+X-Received: by 2002:a17:906:1d:b0:9b2:be12:d9bd with SMTP id 29-20020a170906001d00b009b2be12d9bdmr6538912eja.77.1696613101179;
+        Fri, 06 Oct 2023 10:25:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGRNa55c2g9/ctollg94wEkfJry5YMJf4KRXKiNitRB43l1A3bH/tSlCrT9ezKyQWEe8NE5Jw==
+X-Received: by 2002:a17:906:1d:b0:9b2:be12:d9bd with SMTP id 29-20020a170906001d00b009b2be12d9bdmr6538902eja.77.1696613100838;
+        Fri, 06 Oct 2023 10:25:00 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id j24-20020a170906051800b00993470682e5sm3156694eja.32.2023.10.06.10.24.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Oct 2023 10:23:10 -0700 (PDT)
-Message-ID: <4dd84bac-fcde-4bd6-be9c-dc2107cc2e89@gmail.com>
-Date:   Fri, 6 Oct 2023 10:23:02 -0700
+        Fri, 06 Oct 2023 10:25:00 -0700 (PDT)
+Message-ID: <c5d79ddb-43ff-2a3d-8577-92fbd52ccb44@redhat.com>
+Date:   Fri, 6 Oct 2023 19:24:59 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/183] 5.15.134-rc1 review
-Content-Language: en-US
-To:     Sasha Levin <sashal@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Vegard Nossum <vegard.nossum@oracle.com>,
-        Darren Kenny <darren.kenny@oracle.com>
-References: <20231004175203.943277832@linuxfoundation.org>
- <ec06c2fb-6737-489f-8439-307e0d84687b@gmail.com>
- <2023100601-ending-prevalent-c8d4@gregkh>
- <9fec75ba-a319-027c-6cf2-b65e703d3ce7@oracle.com>
- <2023100610-purge-pupil-b754@gregkh> <ZR_6Wl_pNbdF9M-k@sashalap>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <ZR_6Wl_pNbdF9M-k@sashalap>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] HID: logitech-hidpp: Avoid hidpp_connect_event()
+ running while probe() restarts IO
+Content-Language: en-US, nl
+To:     Benjamin Tissoires <bentiss@kernel.org>
+Cc:     =?UTF-8?Q?Filipe_La=c3=adns?= <lains@riseup.net>,
+        Bastien Nocera <hadess@hadess.net>,
+        Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org, stable@vger.kernel.org
+References: <20231006081858.17677-1-hdegoede@redhat.com>
+ <20231006081858.17677-2-hdegoede@redhat.com>
+ <iqchunho27bqb6dp24ptfx32gdwbq6f6v654ftfme4kel3hoa6@5t2x4kcms2wk>
+ <686e8973-613b-2fb3-efd6-26f3dd21ed9d@redhat.com>
+ <zjiang3fdy4o7r3daupwpnx6zesmeeerldpx5fno2adzialpre@cdp7tq4araww>
+From:   Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <zjiang3fdy4o7r3daupwpnx6zesmeeerldpx5fno2adzialpre@cdp7tq4araww>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        GUARANTEED_100_PERCENT,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/6/23 05:15, Sasha Levin wrote:
-> On Fri, Oct 06, 2023 at 01:03:30PM +0200, Greg Kroah-Hartman wrote:
->> On Fri, Oct 06, 2023 at 04:07:14PM +0530, Harshit Mogalapalli wrote:
->>>
->>>
->>> On 06/10/23 3:55 pm, Greg Kroah-Hartman wrote:
->>> > On Wed, Oct 04, 2023 at 11:43:46AM -0700, Florian Fainelli wrote:
->>> > > On 10/4/23 10:53, Greg Kroah-Hartman wrote:
->>> > > > This is the start of the stable review cycle for the 5.15.134 
->>> release.
->>> > > > There are 183 patches in this series, all will be posted as a 
->>> response
->>> > > > to this one.  If anyone has any issues with these being 
->>> applied, please
->>> > > > let me know.
->>> > > >
->>> > > > Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
->>> > > > Anything received after that time might be too late.
->>> > > >
->>> > > > The whole patch series can be found in one patch at:
->>> > > >     
->>> https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.134-rc1.gz
->>> > > > or in the git tree and branch at:
->>> > > >     
->>> git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
->>> > > > and the diffstat can be found below.
->>> > > >
->>> > > > thanks,
->>> > > >
->>> > > > greg k-h
->>> > >
->>> > > perf fails to build with:
->>> > >
->>> > >    CC 
->>> /local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/util/metricgroup.o
->>> > > util/metricgroup.c: In function 'metricgroup__parse_groups':
->>> > > util/metricgroup.c:1261:7: error: 'table' undeclared (first use 
->>> in this
->>> > > function)
->>> > >    if (!table)
->>> > >         ^~~~~
->>> > > util/metricgroup.c:1261:7: note: each undeclared identifier is 
->>> reported only
->>> > > once for each function it appears in
->>> > > make[6]: *** 
->>> [/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/build/Makefile.build:97: /local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/util/metricgroup.o]
->>> > > Error 1
->>> > >
->>> > > caused by c1ef510a0f2a879bf29ddebae766ec9f0790eb8f ("perf metric: 
->>> Return
->>> > > early if no CPU PMU table exists"). Dropping this commit allows 
->>> the build to
->>> > > continue.
->>> > >
->>> > > I had reported in the previous cycle that 00facc760903be66 ("perf 
->>> jevents:
->>> > > Switch build to use jevents.py") was causing build failures:
->>> > >
->>> > > 
->>> https://lore.kernel.org/all/6a577578-8adb-aa70-1bf8-b1a4573152cf@gmail.com/
->>> > >
->>> > > do we still want these commits to be included?
->>> >
->>> > No, I'll go drop them now, thanks for the report.
->>>
->>> Thought:
->>> It's not the first time we see build failures in tools/perf -- would 
->>> it make
->>> sense to add this to your own build tests to reduce the round trip 
->>> time for
->>> these errors ?
->>
->> Last time I tried to build perf, I couldn't do it at all so I just gave
->> up trying to test for it :)
-> 
-> Same... I've also removed perf from AUTOSEL for that reason.
+Hi,
 
-I suppose that is fair, if there is a critical bug in perf, we could 
-submit it "manually" to ensure it reaches the stable trees. Probably 
-better managed that way. Thanks!
--- 
-Florian
+On 10/6/23 18:28, Benjamin Tissoires wrote:
+> On Oct 06 2023, Hans de Goede wrote:
+
+<snip>
+
+>>>> @@ -4207,36 +4208,39 @@ static void hidpp_connect_event(struct hidpp_device *hidpp)
+>>>>  		return;
+>>>>  	}
+>>>>  
+>>>> +	/* Avoid probe() restarting IO */
+>>>> +	mutex_lock(&hidpp->io_mutex);
+>>>
+>>> I'd put a `__must_hold(&hidpp->io_mutex);` here, not changing any return
+>>> path and forcing any caller to `hidpp_connect_event()` (which will
+>>> eventually only be the work struct) to take the lock.
+>>>
+>>> This should simplify the patch by a lot and also ensure someone doesn't
+>>> forget the `goto out_unlock`.
+>>
+>> Ok, I can add the __must_hold() here and make 
+>> delayed_Work_cb take the lock, but that would make it
+>> impossible to implement patch 2/2 in a clean manner and
+>> I do like patch 2/2 since it makes it clear that
+>> hidpp_connect_event must only run from the workqueue
+>> but I guess we could just add a comment for that
+>> instead.
+> 
+> In 2/2, just rename this function to __do_hidpp_connect_event(), and
+> have hidpp_connect_event() being the worker, which takes the lock, and
+> calls __do_hidpp_connect_event().
+
+Ok, will do for v2.
+
+<snip>
+
+>>>> @@ -4519,6 +4526,9 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+>>>>  	flush_work(&hidpp->work);
+>>>>  
+>>>>  	if (will_restart) {
+>>>> +		/* Avoid hidpp_connect_event() running while restarting */
+>>>> +		mutex_lock(&hidpp->io_mutex);
+>>>> +
+>>>>  		/* Reset the HID node state */
+>>>>  		hid_device_io_stop(hdev);
+>>>
+>>> That's the part that makes me raise an eyebrow. Because we lock, then
+>>> release the semaphore to get it back later. Can this induce a dead lock?
+>>>
+>>> Can't we solve that same scenario without a mutex, but forcing either
+>>> the workqueue to not run or to be finished at this point?
+>>
+>> I'm not sure what you are worried about after the mutex_lock
+>> the line above we are 100% guaranteed that hidpp_connect_event()
+>> is not running and since it is not running it will also not
+>> be holding any other locks, so it can not cause any problems.
+> 
+> Agree, but my point is that you are not entirely solving the issue:
+> if now, between hid_device_io_stop() and hid_hw_close() we receive a
+> connect notification from the device, hid_input_report() will return
+> -EBUSY, and we will lose it (it will not be stacked in the workqueue).
+> 
+> I was thinking at adding a flush_work(&hidpp->work) here, instead of
+> the mutex solution, but yours ensures that any connect event already
+> started will be handled properly, which is a plus.
+> 
+> Still if between the mutex lock here we receive a connect event from the
+> device, we still get -EBUSY at the hid-core layer, and so we will lose
+> it. Maybe that's OK because we might re-ask for the device later (I
+> don't remember exactly the code), but my point is that because we add a
+> mutex doesn't mean we will solve all multi-thread problems. So finding a
+> non-mutex solution sometimes is better :)
+> 
+> And the fact that we need to think through every preemption case often
+> means that there is something wrong *elsewhere*.
+
+Right, I did consider seeing if we can get rid of the restart
+altogether, as the whole restarting thing is actually the problem
+here. AFAICT this is only really necessary in the WTP path since
+there where we need to know resolution before instantiating the
+input device.
+
+But atm this is also done for all unifying devices, which seems
+unnecessary.
+
+Buy we still need the restart anyways for the WTP case,
+so we need to make it work reliable anyways.
+
+Now that I understand your concern about the missed connect
+packet, which I agree is a real concern I think I know how to
+fix this. I'll prepare a new version of this series tomorrow.
+
+Hmm, thinking more about this, if we normally just create
+the input device right away even for unifying devices and
+we already always delay the creation for WTP even during
+the restart:
+
+                if (hidpp->quirks & HIDPP_QUIRK_DELAYED_INIT)
+                        connect_mask &= ~HID_CONNECT_HIDINPUT;
+
+Then I wonder why do we even bother to do the restart
+thing for unifying devices. Do you know what this is based on ?
+
+I guess this might have to do with ensuring the configure
+commands are send before creating the input + hidraw
+devices, but if the connect event comes later on then
+the configuration is already done later on after
+the input device has already been created ?
+
+So maybe we should indeed just remove the whole restart
+thing entirely and also always rely on hidpp_connect_event
+to send the configuration commands, because currently
+those are send twice if the device is already connnected
+at probe() time.
+
+Regards,
+
+Hans
+
+
+
 
