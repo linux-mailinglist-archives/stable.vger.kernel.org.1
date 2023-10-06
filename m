@@ -2,34 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61CF67BC183
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 23:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD627BC184
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 23:46:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233701AbjJFVqj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 17:46:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50604 "EHLO
+        id S233719AbjJFVqs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 17:46:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233704AbjJFVqi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 17:46:38 -0400
+        with ESMTP id S233725AbjJFVqq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 17:46:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F961BE;
-        Fri,  6 Oct 2023 14:46:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD177C433C8;
-        Fri,  6 Oct 2023 21:46:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80856BD;
+        Fri,  6 Oct 2023 14:46:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB984C433C9;
+        Fri,  6 Oct 2023 21:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696628797;
-        bh=PCl4CBWRE6qLOar8gKrsXLI2bjflznbGFV52K5Zf7g0=;
+        s=korg; t=1696628805;
+        bh=dqE84yQW1hf//szjupMG01qhA06ookFdBeDwy8HCbHE=;
         h=Date:To:From:Subject:From;
-        b=sCoVwAV9QVPl9vtKnDdxldauXG+d40T4+MqQo92JEm1/Ncsy7B48wtFahvtVKgT1/
-         /mFRM5Ykk3vKAoGBHUpibwJU/a7/LZnk2xdColQsFOfBjTXvtumpoT3twhfaIVl9T6
-         La3D+v8EEczoGL/5T/jT9VzBkpB9aTUVxN8Rhx7s=
-Date:   Fri, 06 Oct 2023 14:46:33 -0700
-To:     mm-commits@vger.kernel.org, willy@infradead.org,
-        stable@vger.kernel.org, osalvador@suse.de, naoya.horiguchi@nec.com,
-        shikemeng@huaweicloud.com, akpm@linux-foundation.org
+        b=zPR1IQkIsOyF2lVR5nb8tF9TPye8pSMppYHER7msW7SPau0VRRId2lpjZWdh5lA/Z
+         57z+9XkI0ifWDI8/0dblcPMHSRSoXcflSWpBYsAU1lDWvuGtS4FoTeK5BoQ7tySa/5
+         TbOeBnD7P6Zgk9ZASVuTAnQXdPmb3cfgpNGuBsqY=
+Date:   Fri, 06 Oct 2023 14:46:42 -0700
+To:     mm-commits@vger.kernel.org, willy@infradead.org, vbabka@suse.cz,
+        surenb@google.com, stable@vger.kernel.org, lstoakes@gmail.com,
+        jannh@google.com, Liam.Howlett@oracle.com,
+        akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-page_alloc-correct-start-page-when-guard-page-debug-is-enabled.patch removed from -mm tree
-Message-Id: <20231006214636.AD177C433C8@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mmap-fix-vma_iterator-in-error-path-of-vma_merge.patch removed from -mm tree
+Message-Id: <20231006214644.CB984C433C9@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -41,76 +42,80 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm/page_alloc: correct start page when guard page debug is enabled
+     Subject: mmap: fix vma_iterator in error path of vma_merge()
 has been removed from the -mm tree.  Its filename was
-     mm-page_alloc-correct-start-page-when-guard-page-debug-is-enabled.patch
+     mmap-fix-vma_iterator-in-error-path-of-vma_merge.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Kemeng Shi <shikemeng@huaweicloud.com>
-Subject: mm/page_alloc: correct start page when guard page debug is enabled
-Date: Wed, 27 Sep 2023 17:44:01 +0800
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: mmap: fix vma_iterator in error path of vma_merge()
+Date: Fri, 29 Sep 2023 14:30:39 -0400
 
-When guard page debug is enabled and set_page_guard returns success, we
-miss to forward page to point to start of next split range and we will do
-split unexpectedly in page range without target page.  Move start page
-update before set_page_guard to fix this.
+During the error path, the vma iterator may not be correctly positioned or
+set to the correct range.  Undo the vma_prev() call by resetting to the
+passed in address.  Re-walking to the same range will fix the range to the
+area previously passed in.
 
-As we split to wrong target page, then splited pages are not able to merge
-back to original order when target page is put back and splited pages
-except target page is not usable.  To be specific:
+Users would notice increased cycles as vma_merge() would be called an
+extra time with vma == prev, and thus would fail to merge and return.
 
-Consider target page is the third page in buddy page with order 2.
-| buddy-2 | Page | Target | Page |
-
-After break down to target page, we will only set first page to Guard
-because of bug.
-| Guard   | Page | Target | Page |
-
-When we try put_page_back_buddy with target page, the buddy page of target
-if neither guard nor buddy, Then it's not able to construct original page
-with order 2
-| Guard | Page | buddy-0 | Page |
-
-All pages except target page is not in free list and is not usable.
-
-Link: https://lkml.kernel.org/r/20230927094401.68205-1-shikemeng@huaweicloud.com
-Fixes: 06be6ff3d2ec ("mm,hwpoison: rework soft offline for free pages")
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Link: https://lore.kernel.org/linux-mm/CAG48ez12VN1JAOtTNMY+Y2YnsU45yL5giS-Qn=ejtiHpgJAbdQ@mail.gmail.com/
+Link: https://lkml.kernel.org/r/20230929183041.2835469-2-Liam.Howlett@oracle.com
+Fixes: 18b098af2890 ("vma_merge: set vma iterator to correct position.")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Jann Horn <jannh@google.com>
+Closes: https://lore.kernel.org/linux-mm/CAG48ez12VN1JAOtTNMY+Y2YnsU45yL5giS-Qn=ejtiHpgJAbdQ@mail.gmail.com/
+Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/page_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/mmap.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/mm/page_alloc.c~mm-page_alloc-correct-start-page-when-guard-page-debug-is-enabled
-+++ a/mm/page_alloc.c
-@@ -6475,6 +6475,7 @@ static void break_down_buddy_pages(struc
- 			next_page = page;
- 			current_buddy = page + size;
- 		}
-+		page = next_page;
+--- a/mm/mmap.c~mmap-fix-vma_iterator-in-error-path-of-vma_merge
++++ a/mm/mmap.c
+@@ -975,7 +975,7 @@ struct vm_area_struct *vma_merge(struct
  
- 		if (set_page_guard(zone, current_buddy, high, migratetype))
- 			continue;
-@@ -6482,7 +6483,6 @@ static void break_down_buddy_pages(struc
- 		if (current_buddy != target) {
- 			add_to_free_list(current_buddy, zone, high, migratetype);
- 			set_buddy_order(current_buddy, high);
--			page = next_page;
- 		}
+ 	/* Error in anon_vma clone. */
+ 	if (err)
+-		return NULL;
++		goto anon_vma_fail;
+ 
+ 	if (vma_start < vma->vm_start || vma_end > vma->vm_end)
+ 		vma_expanded = true;
+@@ -988,7 +988,7 @@ struct vm_area_struct *vma_merge(struct
  	}
+ 
+ 	if (vma_iter_prealloc(vmi, vma))
+-		return NULL;
++		goto prealloc_fail;
+ 
+ 	init_multi_vma_prep(&vp, vma, adjust, remove, remove2);
+ 	VM_WARN_ON(vp.anon_vma && adjust && adjust->anon_vma &&
+@@ -1016,6 +1016,12 @@ struct vm_area_struct *vma_merge(struct
+ 	vma_complete(&vp, vmi, mm);
+ 	khugepaged_enter_vma(res, vm_flags);
+ 	return res;
++
++prealloc_fail:
++anon_vma_fail:
++	vma_iter_set(vmi, addr);
++	vma_iter_load(vmi);
++	return NULL;
  }
+ 
+ /*
 _
 
-Patches currently in -mm which might be from shikemeng@huaweicloud.com are
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
 
-mm-page_alloc-remove-unnecessary-check-in-break_down_buddy_pages.patch
-mm-page_alloc-remove-unnecessary-next_page-in-break_down_buddy_pages.patch
+mmap-add-clarifying-comment-to-vma_merge-code.patch
+radix-tree-test-suite-fix-allocation-calculation-in-kmem_cache_alloc_bulk.patch
 
