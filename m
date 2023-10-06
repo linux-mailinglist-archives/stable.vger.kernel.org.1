@@ -2,76 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 599647BBE66
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 20:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A1A67BBE9A
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 20:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233227AbjJFSGu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 14:06:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49926 "EHLO
+        id S233090AbjJFSVA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 14:21:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233210AbjJFSGr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 14:06:47 -0400
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37A0EDB
-        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 11:06:46 -0700 (PDT)
-Received: from cwcc.thunk.org (pool-173-48-111-143.bstnma.fios.verizon.net [173.48.111.143])
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 396I6ZKA008091
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 6 Oct 2023 14:06:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-        t=1696615597; bh=HK6IeKP0jWF8kC294G6zEBqKMUWq1VQhsQhaMg9FHGQ=;
-        h=From:Subject:Date:Message-Id:MIME-Version:Content-Type;
-        b=X7ljnKWO5tRZGDYl/jQNBLhz08m5QxDzi0441T263o9oo8Cdc/W8BYThu2KVWN+Rm
-         c9lIYFLfesAtG1uXZVwmDaaU8jv9LTq1SIK4iRv+Ys2/cuLC0DFdxkPNDBxqZrsMxQ
-         QyB8fTmyJ8Mfms4PdgiG60if7S9xENsr82h135Pdc9qrNg2WK2FJmQfQ2RRMdEq8tS
-         L9LtARksRiUTT94nDXDNDa2FhLa0/ZdtwZ+gsq+yNz4hjgD1y1AfUcENlNpFCQyqVR
-         hQXsyW3DsTUIFAiI3d0iRdetBzgsC3BCrwv2yBlT4632Hunr5Ewx2zS6zJwF0cGITO
-         HyCvXhNuiAuvw==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-        id 24D7415C0262; Fri,  6 Oct 2023 14:06:33 -0400 (EDT)
-From:   "Theodore Ts'o" <tytso@mit.edu>
-To:     Andreas Dilger <adilger.kernel@dilger.ca>,
-        Max Kellermann <max.kellermann@ionos.com>
-Cc:     "Theodore Ts'o" <tytso@mit.edu>, stable@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "J. Bruce Fields" <bfields@fieldses.org>
-Subject: Re: [PATCH] fs/ext4/acl: apply umask if ACL support is disabled
-Date:   Fri,  6 Oct 2023 14:06:22 -0400
-Message-Id: <169661554698.173366.5671652974499380760.b4-ty@mit.edu>
-X-Mailer: git-send-email 2.31.0
-In-Reply-To: <20230919081824.1096619-1-max.kellermann@ionos.com>
-References: <20230919081824.1096619-1-max.kellermann@ionos.com>
+        with ESMTP id S232906AbjJFSU7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 14:20:59 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA2A1B6;
+        Fri,  6 Oct 2023 11:20:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461EEC433C8;
+        Fri,  6 Oct 2023 18:20:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696616457;
+        bh=bW7xb8UcwfoF/vlsFYDPvx7RfEeNLXCBqnmUHKIXv6s=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=YMddIapoFKWjCnbNCVbFVs6w/jUVcZyHar1ZNtg6Lgm+t6RD67qeCCtrLrWZI5jkq
+         vbITgAQs5Nw7mx2S+4/DzzvQexQitGyduWJELFYuVQ/uu1Gp7+uN+uHEKkXjWDBaZq
+         bPnWkqW3PbyyacsIr6NL4c2xfJjl4iXbZsVcgxZ0wAi1b5bPrRJjm5XbqjJ+ZJRMd9
+         TKcrzMx2IqyLoSppbG2Ca9nBFEywhE8bUv/odlLv/+PcxH6c4p5IVW9AacmrIEsHNl
+         qc+Ue+oUUorDJpArpbgSAfj5CxXVedDY2lVwTiWxuqjCEO2XKk8AiBR0Msn+lXjI15
+         RziamoxWQ9Tng==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+        id D5489CE0B6B; Fri,  6 Oct 2023 11:20:56 -0700 (PDT)
+Date:   Fri, 6 Oct 2023 11:20:56 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Chengming Zhou <zhouchengming@bytedance.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ovidiu Panait <ovidiu.panait@windriver.com>,
+        Ingo Molnar <mingo@kernel.org>, rcu <rcu@vger.kernel.org>
+Subject: Re: [PATCH 5.15 000/183] 5.15.134-rc1 review
+Message-ID: <7652477c-a37c-4509-9dc9-7f9d1dc08291@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20231004175203.943277832@linuxfoundation.org>
+ <CA+G9fYunnEUT2evdabX1KOTiryP1heNHWDH4LWZCt2SVRmnKOA@mail.gmail.com>
+ <20231006162038.d3q7sl34b4ouvjxf@revolver>
+ <57c1ff4d-f138-4f89-8add-c96fb3ba6701@paulmck-laptop>
+ <20231006175714.begtgj6wrs46ukmo@revolver>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
+In-Reply-To: <20231006175714.begtgj6wrs46ukmo@revolver>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-On Tue, 19 Sep 2023 10:18:23 +0200, Max Kellermann wrote:
-> The function ext4_init_acl() calls posix_acl_create() which is
-> responsible for applying the umask.  But without
-> CONFIG_EXT4_FS_POSIX_ACL, ext4_init_acl() is an empty inline function,
-> and nobody applies the umask.
+On Fri, Oct 06, 2023 at 01:57:14PM -0400, Liam R. Howlett wrote:
+> * Paul E. McKenney <paulmck@kernel.org> [231006 12:47]:
+> > On Fri, Oct 06, 2023 at 12:20:38PM -0400, Liam R. Howlett wrote:
+> > > * Naresh Kamboju <naresh.kamboju@linaro.org> [231005 13:49]:
+> > > > On Wed, 4 Oct 2023 at 23:33, Greg Kroah-Hartman
+> > > > <gregkh@linuxfoundation.org> wrote:
+> > > > >
+> > > > > This is the start of the stable review cycle for the 5.15.134 release.
+> > > > > There are 183 patches in this series, all will be posted as a response
+> > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > let me know.
+> > > > >
+> > > > > Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
+> > > > > Anything received after that time might be too late.
+> > > > >
+> > > > > The whole patch series can be found in one patch at:
+> > > > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.134-rc1.gz
+> > > > > or in the git tree and branch at:
+> > > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> > > > > and the diffstat can be found below.
+> > > > >
+> > > > > thanks,
+> > > > >
+> > > > > greg k-h
+> > > > 
+> > > > Results from Linaro’s test farm.
+> > > > Regressions on x86.
+> > > > 
+> > > > Following kernel warning noticed on x86 while booting stable-rc 5.15.134-rc1
+> > > > with selftest merge config built kernel.
+> > > > 
+> > > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > > > 
+> > > > Anyone noticed this kernel warning ?
+> > > > 
+> > > > This is always reproducible while booting x86 with a given config.
+> > > 
+> > > >From that config:
+> > > #
+> > > # RCU Subsystem
+> > > #
+> > > CONFIG_TREE_RCU=y
+> > > # CONFIG_RCU_EXPERT is not set
+> > > CONFIG_SRCU=y
+> > > CONFIG_TREE_SRCU=y
+> > > CONFIG_TASKS_RCU_GENERIC=y
+> > > CONFIG_TASKS_RUDE_RCU=y
+> > > CONFIG_TASKS_TRACE_RCU=y
+> > > CONFIG_RCU_STALL_COMMON=y
+> > > CONFIG_RCU_NEED_SEGCBLIST=y
+> > > # end of RCU Subsystem    
+> > > 
+> > > #
+> > > # RCU Debugging
+> > > #
+> > > CONFIG_PROVE_RCU=y
+> > > # CONFIG_RCU_SCALE_TEST is not set
+> > > # CONFIG_RCU_TORTURE_TEST is not set
+> > > # CONFIG_RCU_REF_SCALE_TEST is not set
+> > > CONFIG_RCU_CPU_STALL_TIMEOUT=21
+> > > CONFIG_RCU_TRACE=y
+> > > # CONFIG_RCU_EQS_DEBUG is not set
+> > > # end of RCU Debugging
+> > > 
+> > > 
+> > > > 
+> > > > x86 boot log:
+> > > > -----
+> > > > [    0.000000] Linux version 5.15.134-rc1 (tuxmake@tuxmake)
+> > > > (x86_64-linux-gnu-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils
+> > > > for Debian) 2.40) #1 SMP @1696443178
+> > > > ...
+> > > > [    1.480701] ------------[ cut here ]------------
+> > > > [    1.481296] WARNING: CPU: 0 PID: 13 at kernel/rcu/tasks.h:958
+> > > > trc_inspect_reader+0x80/0xb0
+> > > > [    1.481296] Modules linked in:
+> > > > [    1.481296] CPU: 0 PID: 13 Comm: rcu_tasks_trace Not tainted 5.15.134-rc1 #1
+> > > > [    1.481296] Hardware name: Supermicro SYS-5019S-ML/X11SSH-F, BIOS
+> > > > 2.5 11/26/2020
+> > > > [    1.481296] RIP: 0010:trc_inspect_reader+0x80/0xb0
+> > > 
+> > > This function has changed a lot, including the dropping of this
+> > > WARN_ON_ONCE().  The warning was replaced in 897ba84dc5aa ("rcu-tasks:
+> > > Handle idle tasks for recently offlined CPUs") with something that looks
+> > > equivalent so I'm not sure why it would not trigger in newer revisions.
+> > > 
+> > > Obviously the behaviour I changed was the test for the task being idle.
+> > > I am not sure how best to short-circuit that test from happening during
+> > > boot as I am not familiar with the RCU code.
+> > 
+> > The usual test for RCU's notion of early boot being completed is
+> > (rcu_scheduler_active != RCU_SCHEDULER_INIT).
+> > 
+> > Except that "ofl" should always be false that early in boot, at least
+> > in mainline.
 > 
-> This fixes a bug which causes the umask to be ignored with O_TMPFILE
-> on ext4:
+> Is this still true in the final version of the patch where we set the
+> boot task as !idle until just before the early boot is finished?  I
+> wouldn't think of this as 'early in boot' anymore as much as the entire
+> kernel setup.  Maybe we need to shorten the time we stay in !idle mode
+> for earlier kernels?
+
+In mainline, the ofl variable is defined as cpu_is_offline(cpu), and
+during boot, the boot CPU is guaranteed to be online.  (As opposed to
+the boot CPU's idle-task state.)
+
+> How frequent is this function called?  We could check something for
+> early boot... or track down where the cpu is put online and restore idle
+> before that happens?
+
+Once per RCU Tasks Trace grace period per reader seen to be blocking
+that grace period.  Its performance is as issue, but not to anywhere
+near the same extent as (say) rcu_read_lock_trace().
+
+> > > It's also worth noting that the bug this fixes wasn't exposed until the
+> > > maple tree (added in v6.1) was used for the IRQ descriptors (added in
+> > > v6.5).
+> > 
+> > Lots of latent bugs, to be sure, even with rcutorture.  :-/
 > 
-> [...]
+> The Right Thing is to fix the bug all the way back to the introduction,
+> but what fallout makes the backport less desirable than living with the
+> unexposed bug?
 
-Applied, thanks!
+You are quite right that it is possible for the risk of a backport to
+exceed the risk of the original bug.
 
-[1/1] fs/ext4/acl: apply umask if ACL support is disabled
-      commit: 484fd6c1de13b336806a967908a927cc0356e312
+I defer to Joel (CCed) on how best to resolve this in -stable.
 
-Best regards,
--- 
-Theodore Ts'o <tytso@mit.edu>
+							Thanx, Paul
