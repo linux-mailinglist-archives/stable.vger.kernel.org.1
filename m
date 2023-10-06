@@ -2,86 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 732A97BB7D1
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 14:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C3637BB848
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 14:55:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231334AbjJFMiK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 08:38:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50524 "EHLO
+        id S231334AbjJFMzo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 08:55:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231278AbjJFMiJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 08:38:09 -0400
-X-Greylist: delayed 14444 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 Oct 2023 05:38:07 PDT
-Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2893C6;
-        Fri,  6 Oct 2023 05:38:07 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
-        s=mail; t=1696595884;
-        bh=QROki/xLmnzh8Ufw7wb6+X7Eml957imSqlgKLlkSy5s=;
-        h=Subject:From:In-Reply-To:Date:Cc:References:To;
-        b=FO27+VlxnQ3cXrTELOkkm8HUlgD1XHloGN6D9tHnuiZAZ14IoN7cVZEBaiHrqMaDI
-         iK1NFrEvV6wdFPLG2J7I8qdMT3cPgW+gqnF/etTXonALd9oVdUarNd0cD4Ios/lOHv
-         HNqXnriIu3z1BRIa88uYaCanBBy1f9+T3B1fuEIw=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
-Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC
- requirement
-From:   Christian Theune <ct@flyingcircus.io>
-In-Reply-To: <982dc76d-0832-4c8a-a486-5e6a2f5fb49a@gmail.com>
-Date:   Fri, 6 Oct 2023 14:37:43 +0200
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org, netdev@vger.kernel.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0AAB089F-A296-472B-8E6F-0D60B9ACCB95@flyingcircus.io>
-References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
- <207a8e5d-5f2a-4b33-9fc1-86811ad9f48a@leemhuis.info>
- <879EA0B7-F334-4A17-92D5-166F627BEE6F@flyingcircus.io>
- <740b0d7e-c789-47b5-b419-377014a99f22@leemhuis.info>
- <BBEA77E4-D376-45CE-9A93-415F2E0703D7@flyingcircus.io>
- <982dc76d-0832-4c8a-a486-5e6a2f5fb49a@gmail.com>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232314AbjJFMzm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 08:55:42 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20AADFB;
+        Fri,  6 Oct 2023 05:55:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BABDC433C8;
+        Fri,  6 Oct 2023 12:55:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696596940;
+        bh=CaAJAaUkmo9qFT1sX60nD4yOm7k2sG7FItez9Toav58=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=X2GNxUhFC7tJomuVmbcvsseypuRzGAo1ahYukNqrvZpo7bRZmjANxOOPmsjPg+gbI
+         I5nxwBLtCFWfNcv/XvvnEB4DZzCgz7F+USMCHnbNGZJ3Zj4BHZ9UXgzUbTg/y1THYo
+         eNjWYI832+Dptq140gHxRMcBE2Vbex9d3jMYi2kc=
+Date:   Fri, 6 Oct 2023 14:55:37 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Pavel Machek <pavel@denx.de>
+Cc:     sakari.ailus@linux.intel.com, davthompson@nvidia.com,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.1 000/259] 6.1.56-rc1 review
+Message-ID: <2023100624-aneurism-overboard-55ac@gregkh>
+References: <20231004175217.404851126@linuxfoundation.org>
+ <ZR6rvGqpwdSeOeHt@duo.ucw.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZR6rvGqpwdSeOeHt@duo.ucw.cz>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Thu, Oct 05, 2023 at 02:27:40PM +0200, Pavel Machek wrote:
+> Hi!
+> 
+> > This is the start of the stable review cycle for the 6.1.56 release.
+> > There are 259 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> 
+> Here are some issues:
+> 
+> > Sakari Ailus <sakari.ailus@linux.intel.com>
+> >     media: via: Use correct dependency for camera sensor drivers
+> > Sakari Ailus <sakari.ailus@linux.intel.com>
+> >     media: v4l: Use correct dependency for camera sensor drivers
+> 
+> These are is unsuitable for 6.1 as the VIDEO_CAMERA_SENSOR symbol does
+> not exist in 6.1. Please drop.
 
-> On 6. Oct 2023, at 14:07, Bagas Sanjaya <bagasdotme@gmail.com> wrote:
->=20
-> On 06/10/2023 17:51, Christian Theune wrote:
->> Hi,
->>=20
->> sorry, no I didn=E2=80=99t. I don=E2=80=99t have a testbed available =
-right now to try this out quickly.
->>=20
->=20
-> Please don't top-post; reply inline with appropriate context instead.
-
-Sorry, I will avoid that in the future - I was a bit in a hurry and thus =
-negligent, but you=E2=80=99re right of course.
-
-> You need to have testing system, unfortunately. It should mimic your
-> production setup as much as possible. Your organization may have one
-> already, but if not, you have to arrange for it.
-
-I=E2=80=99m able to do that, I just didn=E2=80=99t have one at hand at =
-this very moment and no time to prepare one within a few minutes. I=E2=80=99=
-ll try to reproduce with a 6.6rc in the next days.
-
-Christian
-
---=20
-Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
-Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
-Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
-HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
-Christian Zagrodnick
-
+It is in the 6.1.y tree, please look closer.
