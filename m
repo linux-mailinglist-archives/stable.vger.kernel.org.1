@@ -2,295 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A20457BBFAA
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 21:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 029E17BBFC6
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 21:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233374AbjJFTS2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 15:18:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60530 "EHLO
+        id S233125AbjJFTk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 15:40:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233365AbjJFTS1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 15:18:27 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62F5095;
-        Fri,  6 Oct 2023 12:18:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D83C433C8;
-        Fri,  6 Oct 2023 19:18:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696619906;
-        bh=jKImvkpY/tE08Uo91HCPGd94iWx4nmZN9/qFGCgkYXw=;
-        h=Date:To:From:Subject:From;
-        b=FRZ+MHGx7kzR6dM//Tl6WXkIxTDkDxWr6XriV6PkDB3rLn7hn4t+8hH81ATk/Wli1
-         jJtzuMbaGzac6LYYNPwS4oLYtsZstYrSblSK6FCuMBTek9YSG2DW8mhgWn9ykUaYne
-         2BI5jyCi0hu5kXHb4MApAPncYfN1giUU8ubbT5hw=
-Date:   Fri, 06 Oct 2023 12:18:23 -0700
-To:     mm-commits@vger.kernel.org, willy@infradead.org,
-        stable@vger.kernel.org, muchun.song@linux.dev,
-        mike.kravetz@oracle.com, riel@surriel.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + hugetlbfs-close-race-between-madv_dontneed-and-page-fault.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231006191825.A5D83C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231163AbjJFTk6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 15:40:58 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B869695
+        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 12:40:56 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-51e24210395so2778a12.0
+        for <stable@vger.kernel.org>; Fri, 06 Oct 2023 12:40:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1696621255; x=1697226055; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=giwnefe0AiIi7rCZolwl6BOn/XsQceQpPQ5YuDO483U=;
+        b=lZ4VcHHBR7gN+W3oam7F7WuQzkd709chTefppnpAu056nNoElyfSyRxsixKTGXduY5
+         hrFi62gaPWhDivud1cX3DdRIsCQ40UdHHmMO+4urtZtjqy38xY/FRsreXgsdgJTUG4CO
+         rkim+fKywNKgQs9tEwZRow2TzIXjAq0NkS1HY1tXhMQ+jUDcGPRKCz3YLIwnr9OsMaCn
+         uJpQmOUkjzLyGiwF6Z4xoLO/FyDrl+xfskSqgoQ1JCGNrv146fFXQDNT9cK1nuvz6qQZ
+         4CpPf1/WTp3ZMsgglMmvCe3oMX0K5PGKBQWBm2Ui/uLZJhRbrUaWM4sKqScDSk34LLGs
+         nHIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696621255; x=1697226055;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=giwnefe0AiIi7rCZolwl6BOn/XsQceQpPQ5YuDO483U=;
+        b=WPaHITqYjxnzB6TmXujNYJPtu5nKvPxvGjl5wOO6v2vnao9+F4+XbcIfudZnhKiqGU
+         wghl5CpwuxylxDTe6EY7kDsJVes22VTiENsCGn8CVOcSkj975PmA0df+3DuR9EXqn4Ci
+         Edf5qig+0TCEIgZUFIj5aJnB4wMhCbgHpvBbizi65aWPm8mPIMBbBBMS7kuYHIjst83i
+         PlpWDyR5CrUmiQ8hRz4GBw1DloE/eyeOotwUFTOcYu97Ah6fUPjB2U+Yzzi7aBki4ChB
+         FsX26SWfsQvyCX2FAH0sHtx+lrm69JybQlh24Ln+Wj4Jb8JQE0GA7rpebO4NQP0dczar
+         4ZnA==
+X-Gm-Message-State: AOJu0YxniymfmeMTKqJti/6MfBqPEAhrM+E+gqN21zJ2JPDBWLtLEVxx
+        NGCdyjwTlQd05LQdiGtss0CVCPGzMTUrwLq3a3fOKQ==
+X-Google-Smtp-Source: AGHT+IF2KbJEQsEWkRh1woOaoRKI+1TJoJSwSWf1qgkwO8AvgP6Fc3D3fG6zN4DPjYg0I1OHf1JnAR5W9m6EPT4RUeg=
+X-Received: by 2002:a50:9fa4:0:b0:538:5f9e:f0fc with SMTP id
+ c33-20020a509fa4000000b005385f9ef0fcmr245886edf.0.1696621254966; Fri, 06 Oct
+ 2023 12:40:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230925211034.905320-1-prohr@google.com> <CANLD9C1gOnYNPtSn=dMv9YjBz3H0qW6xRZdM-PYkG+Gnz7q-bg@mail.gmail.com>
+ <2023100653-diffusion-brownnose-4671@gregkh> <2023100618-abdominal-unscathed-8d62@gregkh>
+ <CANP3RGdnYyEY8mYjcxcj2L-tWrVyN3TS1bb6u41QCR5WKQDf2A@mail.gmail.com> <ZR_69QZ6H4Tr_nUY@sashalap>
+In-Reply-To: <ZR_69QZ6H4Tr_nUY@sashalap>
+From:   =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
+Date:   Fri, 6 Oct 2023 12:40:36 -0700
+Message-ID: <CANP3RGevdZXoWS2UNfZpQJc34D2fA=ydAJuOSG3JCVgsTe=pJA@mail.gmail.com>
+Subject: Re: [PATCH 6.1 0/3] net: add sysctl accept_ra_min_lft
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Patrick Rohr <prohr@google.com>, stable@vger.kernel.org,
+        Lorenzo Colitti <lorenzo@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+> >> > > Was this rejected?
+> >> > > Any resolution on this (ACK or NAK) would be useful. Thanks!
+> >> >
+> >> > They are in our "to get to" queue, which is very long still due to
+> >> > multiple conferences and travel.
+> >> >
+> >> > But I will note, you didn't put the git id of the patches in the patches
+> >> > themselves, so it will take me extra work to add them there when
+> >> > applying.
+> >> >
+> >> > Also, why just 6.1?  What about newer stable kernels?  You can't update
+> >> > and have a regression, right?
+> >>
+> >> Note, because of this, we can not take these patches now at all anyway :(
+> >
+> >Because without any knowledge of whether these patches would even be
+> >accepted into stable, or whether they would need to go in via ACK,
+> >preparing them for more trees seemed like pointless busywork...
+>
+> FWIW, the above just means that we get to do the busywork rather than
+> the submitter...
 
-The patch titled
-     Subject: hugetlbfs: close race between MADV_DONTNEED and page fault
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     hugetlbfs-close-race-between-madv_dontneed-and-page-fault.patch
+We're certainly willing to do the work, but we're not entirely sure
+what you want,
+and whether you will indeed even accept these patches...
+We're just trying to be mindful of everyone's time...
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/hugetlbfs-close-race-between-madv_dontneed-and-page-fault.patch
+For example as a reviewer myself I know that in many cases it is
+simply easier to do the
+clean (!) cherrypick yourself (you presumably have scripts that
+automate the entire thing),
+rather than try to verify that someone else's cherrypick is actually
+indeed clean.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+These patches cleanly cherry pick, build, and pass our tests on
+current 6.5 and 6.1 LTS.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+git checkout remotes/linux-stable/v6.5.6 && git cherry-pick
+1671bcfd76fdc0b9e65153cf759153083755fe4c && git cherry-pick
+5027d54a9c30bc7ec808360378e2b4753f053f25 && git cherry-pick
+5cb249686e67dbef3ffe53887fa725eefc5a7144  && run_uml_ack_net_test
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+(and same thing with 6.1.56)
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Do you simply want the upstream sha1s?
+Or do you want us to follow up with patches?
 
-------------------------------------------------------
-From: Rik van Riel <riel@surriel.com>
-Subject: hugetlbfs: close race between MADV_DONTNEED and page fault
-Date: Thu, 5 Oct 2023 23:59:08 -0400
+The situation gets more complex with 5.15 and older:
 
-Malloc libraries, like jemalloc and tcalloc, take decisions on when to
-call madvise independently from the code in the main application.
+In this particular case, there are 3 patches, they could (and maybe
+even should?)
+be squashed into 1 patch for <=5.15 stable.  Greg didn't like that - I
+get why - I don't have
+an opinion here.  But it does result in complexities... for example:
+one of the patches
+adds to UAPI (and cannot be trivially cherrypicked to older kernels
+because the enum
+needs previous enums to be added first), and then the next patch renames it...
 
-This sometimes results in the application page faulting on an address,
-right after the malloc library has shot down the backing memory with
-MADV_DONTNEED.
+There's no clear obviously correct thing to do here, there's at least
+a few possibilities:
+(a) 4 patches: the first has no upstream equivalent and simply fast
+forwards the enum
+to the point where the next apply, 3 as clean as possible backports follow up
+(b) 3 patches, the first one squashes in all the uapi enum fast forwarding
+- including the patch that renames the UAPI constant
+(c) just a single squashed patch
+(d) we could also cherrypick without the UAPI portions... they're not
+terribly important...
+(e...) maybe other ways I've missed
 
-Usually this is harmless, because we always have some 4kB pages sitting
-around to satisfy a page fault.  However, with hugetlbfs systems often
-allocate only the exact number of huge pages that the application wants.
-
-Due to TLB batching, hugetlbfs MADV_DONTNEED will free pages outside of
-any lock taken on the page fault path, which can open up the following
-race condition:
-
-       CPU 1                            CPU 2
-
-       MADV_DONTNEED
-       unmap page
-       shoot down TLB entry
-                                       page fault
-                                       fail to allocate a huge page
-                                       killed with SIGBUS
-       free page
-
-Fix that race by pulling the locking from __unmap_hugepage_final_range
-into helper functions called from zap_page_range_single.  This ensures
-page faults stay locked out of the MADV_DONTNEED VMA until the huge pages
-have actually been freed.
-
-Link: https://lkml.kernel.org/r/20231006040020.3677377-4-riel@surriel.com
-Fixes: 04ada095dcfc ("hugetlb: don't delete vma_lock in hugetlb MADV_DONTNEED processing")
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/hugetlb.h |   35 +++++++++++++++++++++++++++++++++--
- mm/hugetlb.c            |   34 ++++++++++++++++++++++------------
- mm/memory.c             |   13 ++++++++-----
- 3 files changed, 63 insertions(+), 19 deletions(-)
-
---- a/include/linux/hugetlb.h~hugetlbfs-close-race-between-madv_dontneed-and-page-fault
-+++ a/include/linux/hugetlb.h
-@@ -139,7 +139,7 @@ struct page *hugetlb_follow_page_mask(st
- void unmap_hugepage_range(struct vm_area_struct *,
- 			  unsigned long, unsigned long, struct page *,
- 			  zap_flags_t);
--void __unmap_hugepage_range_final(struct mmu_gather *tlb,
-+void __unmap_hugepage_range(struct mmu_gather *tlb,
- 			  struct vm_area_struct *vma,
- 			  unsigned long start, unsigned long end,
- 			  struct page *ref_page, zap_flags_t zap_flags);
-@@ -246,6 +246,25 @@ int huge_pmd_unshare(struct mm_struct *m
- void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
- 				unsigned long *start, unsigned long *end);
- 
-+extern void __hugetlb_zap_begin(struct vm_area_struct *vma,
-+				unsigned long *begin, unsigned long *end);
-+extern void __hugetlb_zap_end(struct vm_area_struct *vma,
-+			      struct zap_details *details);
-+
-+static inline void hugetlb_zap_begin(struct vm_area_struct *vma,
-+				     unsigned long *start, unsigned long *end)
-+{
-+	if (is_vm_hugetlb_page(vma))
-+		__hugetlb_zap_begin(vma, start, end);
-+}
-+
-+static inline void hugetlb_zap_end(struct vm_area_struct *vma,
-+				   struct zap_details *details)
-+{
-+	if (is_vm_hugetlb_page(vma))
-+		__hugetlb_zap_end(vma, details);
-+}
-+
- void hugetlb_vma_lock_read(struct vm_area_struct *vma);
- void hugetlb_vma_unlock_read(struct vm_area_struct *vma);
- void hugetlb_vma_lock_write(struct vm_area_struct *vma);
-@@ -297,6 +316,18 @@ static inline void adjust_range_if_pmd_s
- {
- }
- 
-+static inline void hugetlb_zap_begin(
-+				struct vm_area_struct *vma,
-+				unsigned long *start, unsigned long *end)
-+{
-+}
-+
-+static inline void hugetlb_zap_end(
-+				struct vm_area_struct *vma,
-+				struct zap_details *details)
-+{
-+}
-+
- static inline struct page *hugetlb_follow_page_mask(
-     struct vm_area_struct *vma, unsigned long address, unsigned int flags,
-     unsigned int *page_mask)
-@@ -442,7 +473,7 @@ static inline long hugetlb_change_protec
- 	return 0;
- }
- 
--static inline void __unmap_hugepage_range_final(struct mmu_gather *tlb,
-+static inline void __unmap_hugepage_range(struct mmu_gather *tlb,
- 			struct vm_area_struct *vma, unsigned long start,
- 			unsigned long end, struct page *ref_page,
- 			zap_flags_t zap_flags)
---- a/mm/hugetlb.c~hugetlbfs-close-race-between-madv_dontneed-and-page-fault
-+++ a/mm/hugetlb.c
-@@ -5306,9 +5306,9 @@ int move_hugetlb_page_tables(struct vm_a
- 	return len + old_addr - old_end;
- }
- 
--static void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
--				   unsigned long start, unsigned long end,
--				   struct page *ref_page, zap_flags_t zap_flags)
-+void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
-+			    unsigned long start, unsigned long end,
-+			    struct page *ref_page, zap_flags_t zap_flags)
- {
- 	struct mm_struct *mm = vma->vm_mm;
- 	unsigned long address;
-@@ -5437,16 +5437,25 @@ static void __unmap_hugepage_range(struc
- 		tlb_flush_mmu_tlbonly(tlb);
- }
- 
--void __unmap_hugepage_range_final(struct mmu_gather *tlb,
--			  struct vm_area_struct *vma, unsigned long start,
--			  unsigned long end, struct page *ref_page,
--			  zap_flags_t zap_flags)
-+void __hugetlb_zap_begin(struct vm_area_struct *vma,
-+			 unsigned long *start, unsigned long *end)
- {
-+	if (!vma->vm_file)	/* hugetlbfs_file_mmap error */
-+		return;
-+
-+	adjust_range_if_pmd_sharing_possible(vma, start, end);
- 	hugetlb_vma_lock_write(vma);
--	i_mmap_lock_write(vma->vm_file->f_mapping);
-+	if (vma->vm_file)
-+		i_mmap_lock_write(vma->vm_file->f_mapping);
-+}
-+
-+void __hugetlb_zap_end(struct vm_area_struct *vma,
-+		       struct zap_details *details)
-+{
-+	zap_flags_t zap_flags = details ? details->zap_flags : 0;
- 
--	/* mmu notification performed in caller */
--	__unmap_hugepage_range(tlb, vma, start, end, ref_page, zap_flags);
-+	if (!vma->vm_file)	/* hugetlbfs_file_mmap error */
-+		return;
- 
- 	if (zap_flags & ZAP_FLAG_UNMAP) {	/* final unmap */
- 		/*
-@@ -5459,11 +5468,12 @@ void __unmap_hugepage_range_final(struct
- 		 * someone else.
- 		 */
- 		__hugetlb_vma_unlock_write_free(vma);
--		i_mmap_unlock_write(vma->vm_file->f_mapping);
- 	} else {
--		i_mmap_unlock_write(vma->vm_file->f_mapping);
- 		hugetlb_vma_unlock_write(vma);
- 	}
-+
-+	if (vma->vm_file)
-+		i_mmap_unlock_write(vma->vm_file->f_mapping);
- }
- 
- void unmap_hugepage_range(struct vm_area_struct *vma, unsigned long start,
---- a/mm/memory.c~hugetlbfs-close-race-between-madv_dontneed-and-page-fault
-+++ a/mm/memory.c
-@@ -1683,7 +1683,7 @@ static void unmap_single_vma(struct mmu_
- 			if (vma->vm_file) {
- 				zap_flags_t zap_flags = details ?
- 				    details->zap_flags : 0;
--				__unmap_hugepage_range_final(tlb, vma, start, end,
-+				__unmap_hugepage_range(tlb, vma, start, end,
- 							     NULL, zap_flags);
- 			}
- 		} else
-@@ -1728,8 +1728,12 @@ void unmap_vmas(struct mmu_gather *tlb,
- 				start_addr, end_addr);
- 	mmu_notifier_invalidate_range_start(&range);
- 	do {
--		unmap_single_vma(tlb, vma, start_addr, end_addr, &details,
-+		unsigned long start = start_addr;
-+		unsigned long end = end_addr;
-+		hugetlb_zap_begin(vma, &start, &end);
-+		unmap_single_vma(tlb, vma, start, end, &details,
- 				 mm_wr_locked);
-+		hugetlb_zap_end(vma, &details);
- 	} while ((vma = mas_find(mas, tree_end - 1)) != NULL);
- 	mmu_notifier_invalidate_range_end(&range);
- }
-@@ -1753,9 +1757,7 @@ void zap_page_range_single(struct vm_are
- 	lru_add_drain();
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
- 				address, end);
--	if (is_vm_hugetlb_page(vma))
--		adjust_range_if_pmd_sharing_possible(vma, &range.start,
--						     &range.end);
-+	hugetlb_zap_begin(vma, &range.start, &range.end);
- 	tlb_gather_mmu(&tlb, vma->vm_mm);
- 	update_hiwater_rss(vma->vm_mm);
- 	mmu_notifier_invalidate_range_start(&range);
-@@ -1766,6 +1768,7 @@ void zap_page_range_single(struct vm_are
- 	unmap_single_vma(&tlb, vma, address, end, details, false);
- 	mmu_notifier_invalidate_range_end(&range);
- 	tlb_finish_mmu(&tlb);
-+	hugetlb_zap_end(vma, details);
- }
- 
- /**
-_
-
-Patches currently in -mm which might be from riel@surriel.com are
-
-hugetlbfs-clear-resv_map-pointer-if-mmap-fails.patch
-hugetlbfs-extend-hugetlb_vma_lock-to-private-vmas.patch
-hugetlbfs-close-race-between-madv_dontneed-and-page-fault.patch
-
+Thanks,
+- Maciej
