@@ -2,231 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 735D47BB2E8
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 10:20:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA3CA7BB2F5
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 10:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230472AbjJFIT6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 04:19:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45276 "EHLO
+        id S230406AbjJFIVw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 04:21:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230344AbjJFIT5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 04:19:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA413EA
-        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 01:19:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1696580352;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=08nYJkbaV3Kkvb8bdQaO3igrrqm3tGjSO1L7fdRIweM=;
-        b=GY58gTt5PhA5dMa092q4h+rh35yO5fZ8IP+WBSNKS3PrHrAWeCcMrXtFrdRohRuOW4LV4e
-        pcoUjepynOvTgYik409LhE86qnMR4v3QpjDYxRDrpWuUuhaiBTybGoudQ0QlgNnHXjOllV
-        UNmhYlHJkTpO01EFq9RaXRdYlE65zBE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-186-ekj7CWkHOoKgL2EnC50xrQ-1; Fri, 06 Oct 2023 04:19:06 -0400
-X-MC-Unique: ekj7CWkHOoKgL2EnC50xrQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6CF1185A5A8;
-        Fri,  6 Oct 2023 08:19:06 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.193.111])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6CBF8140E950;
-        Fri,  6 Oct 2023 08:19:05 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     =?UTF-8?q?Filipe=20La=C3=ADns?= <lains@riseup.net>,
-        Bastien Nocera <hadess@hadess.net>,
-        Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-input@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH 1/2] HID: logitech-hidpp: Avoid hidpp_connect_event() running while probe() restarts IO
-Date:   Fri,  6 Oct 2023 10:18:57 +0200
-Message-ID: <20231006081858.17677-2-hdegoede@redhat.com>
-In-Reply-To: <20231006081858.17677-1-hdegoede@redhat.com>
-References: <20231006081858.17677-1-hdegoede@redhat.com>
+        with ESMTP id S230344AbjJFIVv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 04:21:51 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B801E9;
+        Fri,  6 Oct 2023 01:21:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEBFC433C7;
+        Fri,  6 Oct 2023 08:21:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696580509;
+        bh=Rleyk+ijWu/nDpxQgC3SNjU9qlvK6Ft6iDjWmhbKDIY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=br3bgF/3/cRbaRJkBy3sRCjuWMUfnImgEykeBlfA8FIxEy2wPP8oSIi8IElBxVS/F
+         BybGhOPmrxEKJfWzLGitiqFsXcVfNxxuCMctgyKZ7DWbYjSweS1CDFznttr1R/O7ED
+         mrdpUTgGvPM4k+VaVLycb8ZeScw/wikpXbRP9poFuj954GaWiXiGGrMhY5kxxBPsYJ
+         aW7NL9cpr4CGsLsRT1G91GUrR0SSRkvTR8zZTCBG+k7Cufy5hhijjW7eDsEIuOJhgF
+         iFWyt8b+ta9VFf/OO1aKci9OBm/hgAaHgJo7VSpIfceLuTTgltILJ2CkcyANzlIUKZ
+         v71a5H2bfqo3Q==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1qog63-0004M8-2O;
+        Fri, 06 Oct 2023 10:22:08 +0200
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH] regmap: fix NULL deref on lookup
+Date:   Fri,  6 Oct 2023 10:21:04 +0200
+Message-ID: <20231006082104.16707-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-hidpp_probe() restarts IO after setting things up, if we get a connect
-event just before hidpp_probe() stops all IO then hidpp_connect_event()
-will see IO errors causing it to fail to setup the connected device.
+Not all regmaps have a name so make sure to check for that to avoid
+dereferencing a NULL pointer when dev_get_regmap() is used to lookup a
+named regmap.
 
-Add a new io_mutex which hidpp_probe() locks while restarting IO and
-which is also taken by hidpp_connect_event() to avoid these 2 things
-from racing.
-
-Hopefully this will help with the occasional connect errors leading to
-e.g. missing battery monitoring.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: e84861fec32d ("regmap: dev_get_regmap_match(): fix string comparison")
+Cc: stable@vger.kernel.org      # 5.8
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 35 ++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+ drivers/base/regmap/regmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index a209d51bd247..33f9cd98485a 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -181,6 +181,7 @@ struct hidpp_scroll_counter {
- struct hidpp_device {
- 	struct hid_device *hid_dev;
- 	struct input_dev *input;
-+	struct mutex io_mutex;
- 	struct mutex send_mutex;
- 	void *send_receive_buf;
- 	char *name;		/* will never be NULL and should not be freed */
-@@ -4207,36 +4208,39 @@ static void hidpp_connect_event(struct hidpp_device *hidpp)
- 		return;
- 	}
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 884cb51c8f67..234a84ecde8b 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1478,7 +1478,7 @@ static int dev_get_regmap_match(struct device *dev, void *res, void *data)
  
-+	/* Avoid probe() restarting IO */
-+	mutex_lock(&hidpp->io_mutex);
-+
- 	if (hidpp->quirks & HIDPP_QUIRK_CLASS_WTP) {
- 		ret = wtp_connect(hdev, connected);
- 		if (ret)
--			return;
-+			goto out_unlock;
- 	} else if (hidpp->quirks & HIDPP_QUIRK_CLASS_M560) {
- 		ret = m560_send_config_command(hdev, connected);
- 		if (ret)
--			return;
-+			goto out_unlock;
- 	} else if (hidpp->quirks & HIDPP_QUIRK_CLASS_K400) {
- 		ret = k400_connect(hdev, connected);
- 		if (ret)
--			return;
-+			goto out_unlock;
- 	}
- 
- 	if (hidpp->quirks & HIDPP_QUIRK_HIDPP_WHEELS) {
- 		ret = hidpp10_wheel_connect(hidpp);
- 		if (ret)
--			return;
-+			goto out_unlock;
- 	}
- 
- 	if (hidpp->quirks & HIDPP_QUIRK_HIDPP_EXTRA_MOUSE_BTNS) {
- 		ret = hidpp10_extra_mouse_buttons_connect(hidpp);
- 		if (ret)
--			return;
-+			goto out_unlock;
- 	}
- 
- 	if (hidpp->quirks & HIDPP_QUIRK_HIDPP_CONSUMER_VENDOR_KEYS) {
- 		ret = hidpp10_consumer_keys_connect(hidpp);
- 		if (ret)
--			return;
-+			goto out_unlock;
- 	}
- 
- 	/* the device is already connected, we can ask for its name and
-@@ -4245,7 +4249,7 @@ static void hidpp_connect_event(struct hidpp_device *hidpp)
- 		ret = hidpp_root_get_protocol_version(hidpp);
- 		if (ret) {
- 			hid_err(hdev, "Can not get the protocol version.\n");
--			return;
-+			goto out_unlock;
- 		}
- 	}
- 
-@@ -4256,7 +4260,7 @@ static void hidpp_connect_event(struct hidpp_device *hidpp)
- 						   "%s", name);
- 			kfree(name);
- 			if (!devm_name)
--				return;
-+				goto out_unlock;
- 
- 			hidpp->name = devm_name;
- 		}
-@@ -4291,12 +4295,12 @@ static void hidpp_connect_event(struct hidpp_device *hidpp)
- 
- 	if (!(hidpp->quirks & HIDPP_QUIRK_DELAYED_INIT) || hidpp->delayed_input)
- 		/* if the input nodes are already created, we can stop now */
--		return;
-+		goto out_unlock;
- 
- 	input = hidpp_allocate_input(hdev);
- 	if (!input) {
- 		hid_err(hdev, "cannot allocate new input device: %d\n", ret);
--		return;
-+		goto out_unlock;
- 	}
- 
- 	hidpp_populate_input(hidpp, input);
-@@ -4304,10 +4308,12 @@ static void hidpp_connect_event(struct hidpp_device *hidpp)
- 	ret = input_register_device(input);
- 	if (ret) {
- 		input_free_device(input);
--		return;
-+		goto out_unlock;
- 	}
- 
- 	hidpp->delayed_input = input;
-+out_unlock:
-+	mutex_unlock(&hidpp->io_mutex);
+ 	/* If the user didn't specify a name match any */
+ 	if (data)
+-		return !strcmp((*r)->name, data);
++		return (*r)->name && !strcmp((*r)->name, data);
+ 	else
+ 		return 1;
  }
- 
- static DEVICE_ATTR(builtin_power_supply, 0000, NULL, NULL);
-@@ -4450,6 +4456,7 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 		will_restart = true;
- 
- 	INIT_WORK(&hidpp->work, delayed_work_cb);
-+	mutex_init(&hidpp->io_mutex);
- 	mutex_init(&hidpp->send_mutex);
- 	init_waitqueue_head(&hidpp->wait);
- 
-@@ -4519,6 +4526,9 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	flush_work(&hidpp->work);
- 
- 	if (will_restart) {
-+		/* Avoid hidpp_connect_event() running while restarting */
-+		mutex_lock(&hidpp->io_mutex);
-+
- 		/* Reset the HID node state */
- 		hid_device_io_stop(hdev);
- 		hid_hw_close(hdev);
-@@ -4529,6 +4539,7 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 
- 		/* Now export the actual inputs and hidraw nodes to the world */
- 		ret = hid_hw_start(hdev, connect_mask);
-+		mutex_unlock(&hidpp->io_mutex);
- 		if (ret) {
- 			hid_err(hdev, "%s:hid_hw_start returned error\n", __func__);
- 			goto hid_hw_start_fail;
-@@ -4553,6 +4564,7 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	sysfs_remove_group(&hdev->dev.kobj, &ps_attribute_group);
- 	cancel_work_sync(&hidpp->work);
- 	mutex_destroy(&hidpp->send_mutex);
-+	mutex_destroy(&hidpp->io_mutex);
- 	return ret;
- }
- 
-@@ -4568,6 +4580,7 @@ static void hidpp_remove(struct hid_device *hdev)
- 	hid_hw_stop(hdev);
- 	cancel_work_sync(&hidpp->work);
- 	mutex_destroy(&hidpp->send_mutex);
-+	mutex_destroy(&hidpp->io_mutex);
- }
- 
- #define LDJ_DEVICE(product) \
 -- 
 2.41.0
 
