@@ -2,230 +2,265 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C334B7BD1C4
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 03:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74F217BD275
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 05:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344748AbjJIBU5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 21:20:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34490 "EHLO
+        id S1345049AbjJID6J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 23:58:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbjJIBU4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 21:20:56 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF84A8F;
-        Sun,  8 Oct 2023 18:20:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66436C433C8;
-        Mon,  9 Oct 2023 01:20:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696814454;
-        bh=7gAv73UahqlRDkAdV7zG6Yav5Q15X8TM/NpqO7VNnhE=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=EvKVKXNNS2VxXvTN0u+KzRfdpZH+3KoHZnBhPWtwExP2kHbWO71x3TweOgAEPbvsu
-         P47iB4YhzAQCyscj9RVpaN3+2fVrvGop84tmpTVG0xHggK5L1nAipbsKAJbx+6Pvhi
-         68sy3AHmTP1aOfJrrpyVG4XzcpPW1VIqJq103ZuEJxEdl3JMYbla0H/i3TCEiHaqE+
-         KrucU1g2+6r6fxacFMUbOziIgBVi57TsgKnBcx85srekaNKs0EoazStSyc/UEJa1HV
-         FUHlZBDSQv82DRxIPv1KiFhYbBysRkujeq2wwddysvlH8dvdssoBZKM0QhN9FqRQ/E
-         Xf/OXcQDqNdxA==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id E88ADCE0831; Sun,  8 Oct 2023 18:20:53 -0700 (PDT)
-Date:   Sun, 8 Oct 2023 18:20:53 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Chengming Zhou <zhouchengming@bytedance.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ovidiu Panait <ovidiu.panait@windriver.com>,
-        Ingo Molnar <mingo@kernel.org>, rcu <rcu@vger.kernel.org>
-Subject: Re: [PATCH 5.15 000/183] 5.15.134-rc1 review
-Message-ID: <9470dab6-dee5-4505-95a2-f6782b648726@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20231004175203.943277832@linuxfoundation.org>
- <CA+G9fYunnEUT2evdabX1KOTiryP1heNHWDH4LWZCt2SVRmnKOA@mail.gmail.com>
- <20231006162038.d3q7sl34b4ouvjxf@revolver>
- <57c1ff4d-f138-4f89-8add-c96fb3ba6701@paulmck-laptop>
- <20231006175714.begtgj6wrs46ukmo@revolver>
- <7652477c-a37c-4509-9dc9-7f9d1dc08291@paulmck-laptop>
- <CAEXW_YS16NxPxg52T=3FcyZ2qocj36zKyhPnEQL3nBTbD-qJ-A@mail.gmail.com>
+        with ESMTP id S1344883AbjJID6I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 23:58:08 -0400
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB85A3
+        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 20:58:06 -0700 (PDT)
+Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
+        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20231009035802epoutp04f62925871d98b96f566ae07e1cdb676f~MVFSq7wDB2322423224epoutp04u
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 03:58:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20231009035802epoutp04f62925871d98b96f566ae07e1cdb676f~MVFSq7wDB2322423224epoutp04u
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1696823882;
+        bh=66RnzGW075jp+6jf5N9yCQS6VbcfbkyM8+NJckzV1XU=;
+        h=From:To:Cc:Subject:Date:References:From;
+        b=uP9hs+7+369RgeZMxGsyuiywTHPTJDLqnrXPAJlcYoQAysECrHAaAzUNRvvNhP6Ep
+         tB1xIbdpN9w8f/qE13+2jSE1tmG54ztVdsFbw+THfOn85dnwpuii15DH8P9X4m14BT
+         hyOOUqfoRNWjce+1ePK6GqQ0sDJ0/BnrEg/clENc=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+        epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+        20231009035801epcas5p401f28b9ac90606cea5f12dcb11d5de1f~MVFSFSqO30118601186epcas5p4R;
+        Mon,  9 Oct 2023 03:58:01 +0000 (GMT)
+Received: from epcpadp4 (unknown [182.195.40.18]) by epsnrtp2.localdomain
+        (Postfix) with ESMTP id 4S3lcT40pTz4x9Pt; Mon,  9 Oct 2023 03:58:01 +0000
+        (GMT)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+        20231006135322epcas5p1c9acf38b04f35017181c715c706281dc~LiRPEIHz11084510845epcas5p1x;
+        Fri,  6 Oct 2023 13:53:22 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20231006135322epsmtrp22c420b2d1fc904f8488b40101ff4d97f~LiRPDafSS3163131631epsmtrp2a;
+        Fri,  6 Oct 2023 13:53:22 +0000 (GMT)
+X-AuditID: b6c32a28-001ff700000021c9-e1-652011527c3e
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        1C.FA.08649.25110256; Fri,  6 Oct 2023 22:53:22 +0900 (KST)
+Received: from localhost.localdomain (unknown [107.99.41.245]) by
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20231006135320epsmtip2301b167209b42d8b4e6a5a713580c630~LiRNOFpKt1516815168epsmtip26;
+        Fri,  6 Oct 2023 13:53:20 +0000 (GMT)
+From:   Kanchan Joshi <joshi.k@samsung.com>
+To:     hch@lst.de, kbusch@kernel.org, axboe@kernel.dk, sagi@grimberg.me
+Cc:     linux-nvme@lists.infradead.org, vincentfu@gmail.com,
+        ankit.kumar@samsung.com, joshiiitr@gmail.com, cpgs@samsung.com,
+        Kanchan Joshi <joshi.k@samsung.com>, stable@vger.kernel.org,
+        Vincent Fu <vincent.fu@samsung.com>
+Subject: [PATCH v3] nvme: fix memory corruption for passthrough metadata
+Date:   Fri,  6 Oct 2023 19:17:06 +0530
+Message-Id: <1891546521.01696823881551.JavaMail.epsvc@epcpadp4>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEXW_YS16NxPxg52T=3FcyZ2qocj36zKyhPnEQL3nBTbD-qJ-A@mail.gmail.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrALMWRmVeSWpSXmKPExsWy7bCSvG6QoEKqwecGRYs1V36zW6y+289m
+        8fKQpsXK1UeZLI7+f8tmcf7tYSaLSYeuMVrMX/aU3WLd6/csFgs2PmK0eNzdwWixoU3Qgcdj
+        56y77B7n721k8bh8ttRj06pONo/NS+o9dt9sYPPo27KK0ePzJrkAjigum5TUnMyy1CJ9uwSu
+        jP+9agV/DSvWv3nL1sDYpNnFyMkhIWAiMW3eWuYuRi4OIYHdjBI/dz9nhUiISzRf+8EOYQtL
+        rPz3HMwWEvjIKHH7v3gXIwcHm4CmxIXJpSBhEQEviXmzF7CA2MwCzxkl9uznALGFBTwk1s3t
+        YASxWQRUJU7NOQxm8wpYSNxe0csCMV5eYual7+wQcUGJkzOfQM2Rl2jeOpt5AiPfLCSpWUhS
+        CxiZVjFKphYU56bnJhsWGOallusVJ+YWl+al6yXn525iBAe6lsYOxnvz/+kdYmTiYDzEKMHB
+        rCTCm94gkyrEm5JYWZValB9fVJqTWnyIUZqDRUmc13DG7BQhgfTEktTs1NSC1CKYLBMHp1QD
+        08a75x5otOa0zV683zUwNUc59HnCvd/SIRkWfcyhEZzrX+que3dpwc8lXW4ry2YqahXyTZxW
+        HbHt01SlPcKpfLvnGt1Nb4qOfKZypVf8ns6HbebzD3EvCtqds/HkGefVP7Muv3GqVW1aX9H7
+        suBU4ilP4yW1zz5/mTlT4mPLuxVbVp8WXe3gfDK3PIlDRZbB+o2dqEX2ayHTbu1/KwXuLuNv
+        2c92a9uX53eOnH5SyW9548vBsvOHVCx0yj8nVZ6aZSqYmXfv8q2efZy1TvKiptWe0572Pw87
+        ZVl/R2fLrg3n+iaWc7peZmkP2SzP+Pq7Xde8uJN/6p9zvrQXrH2pnMfycUXogev9k9Y81Mmf
+        8EWJpTgj0VCLuag4EQC9YqOA4wIAAA==
+X-CMS-MailID: 20231006135322epcas5p1c9acf38b04f35017181c715c706281dc
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+X-CPGSPASS: Y
+X-Hop-Count: 3
+X-CMS-RootMailID: 20231006135322epcas5p1c9acf38b04f35017181c715c706281dc
+References: <CGME20231006135322epcas5p1c9acf38b04f35017181c715c706281dc@epcas5p1.samsung.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Oct 07, 2023 at 09:22:55PM -0400, Joel Fernandes wrote:
-> On Fri, Oct 6, 2023 at 2:20 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> >
-> > On Fri, Oct 06, 2023 at 01:57:14PM -0400, Liam R. Howlett wrote:
-> > > * Paul E. McKenney <paulmck@kernel.org> [231006 12:47]:
-> > > > On Fri, Oct 06, 2023 at 12:20:38PM -0400, Liam R. Howlett wrote:
-> > > > > * Naresh Kamboju <naresh.kamboju@linaro.org> [231005 13:49]:
-> > > > > > On Wed, 4 Oct 2023 at 23:33, Greg Kroah-Hartman
-> > > > > > <gregkh@linuxfoundation.org> wrote:
-> > > > > > >
-> > > > > > > This is the start of the stable review cycle for the 5.15.134 release.
-> > > > > > > There are 183 patches in this series, all will be posted as a response
-> > > > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > > > let me know.
-> > > > > > >
-> > > > > > > Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
-> > > > > > > Anything received after that time might be too late.
-> > > > > > >
-> > > > > > > The whole patch series can be found in one patch at:
-> > > > > > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.134-rc1.gz
-> > > > > > > or in the git tree and branch at:
-> > > > > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> > > > > > > and the diffstat can be found below.
-> > > > > > >
-> > > > > > > thanks,
-> > > > > > >
-> > > > > > > greg k-h
-> > > > > >
-> > > > > > Results from Linaro’s test farm.
-> > > > > > Regressions on x86.
-> > > > > >
-> > > > > > Following kernel warning noticed on x86 while booting stable-rc 5.15.134-rc1
-> > > > > > with selftest merge config built kernel.
-> > > > > >
-> > > > > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > > > > >
-> > > > > > Anyone noticed this kernel warning ?
-> > > > > >
-> > > > > > This is always reproducible while booting x86 with a given config.
-> > > > >
-> > > > > >From that config:
-> > > > > #
-> > > > > # RCU Subsystem
-> > > > > #
-> > > > > CONFIG_TREE_RCU=y
-> > > > > # CONFIG_RCU_EXPERT is not set
-> > > > > CONFIG_SRCU=y
-> > > > > CONFIG_TREE_SRCU=y
-> > > > > CONFIG_TASKS_RCU_GENERIC=y
-> > > > > CONFIG_TASKS_RUDE_RCU=y
-> > > > > CONFIG_TASKS_TRACE_RCU=y
-> > > > > CONFIG_RCU_STALL_COMMON=y
-> > > > > CONFIG_RCU_NEED_SEGCBLIST=y
-> > > > > # end of RCU Subsystem
-> > > > >
-> > > > > #
-> > > > > # RCU Debugging
-> > > > > #
-> > > > > CONFIG_PROVE_RCU=y
-> > > > > # CONFIG_RCU_SCALE_TEST is not set
-> > > > > # CONFIG_RCU_TORTURE_TEST is not set
-> > > > > # CONFIG_RCU_REF_SCALE_TEST is not set
-> > > > > CONFIG_RCU_CPU_STALL_TIMEOUT=21
-> > > > > CONFIG_RCU_TRACE=y
-> > > > > # CONFIG_RCU_EQS_DEBUG is not set
-> > > > > # end of RCU Debugging
-> > > > >
-> > > > >
-> > > > > >
-> > > > > > x86 boot log:
-> > > > > > -----
-> > > > > > [    0.000000] Linux version 5.15.134-rc1 (tuxmake@tuxmake)
-> > > > > > (x86_64-linux-gnu-gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils
-> > > > > > for Debian) 2.40) #1 SMP @1696443178
-> > > > > > ...
-> > > > > > [    1.480701] ------------[ cut here ]------------
-> > > > > > [    1.481296] WARNING: CPU: 0 PID: 13 at kernel/rcu/tasks.h:958
-> > > > > > trc_inspect_reader+0x80/0xb0
-> > > > > > [    1.481296] Modules linked in:
-> > > > > > [    1.481296] CPU: 0 PID: 13 Comm: rcu_tasks_trace Not tainted 5.15.134-rc1 #1
-> > > > > > [    1.481296] Hardware name: Supermicro SYS-5019S-ML/X11SSH-F, BIOS
-> > > > > > 2.5 11/26/2020
-> > > > > > [    1.481296] RIP: 0010:trc_inspect_reader+0x80/0xb0
-> > > > >
-> > > > > This function has changed a lot, including the dropping of this
-> > > > > WARN_ON_ONCE().  The warning was replaced in 897ba84dc5aa ("rcu-tasks:
-> > > > > Handle idle tasks for recently offlined CPUs") with something that looks
-> > > > > equivalent so I'm not sure why it would not trigger in newer revisions.
-> > > > >
-> > > > > Obviously the behaviour I changed was the test for the task being idle.
-> > > > > I am not sure how best to short-circuit that test from happening during
-> > > > > boot as I am not familiar with the RCU code.
-> > > >
-> > > > The usual test for RCU's notion of early boot being completed is
-> > > > (rcu_scheduler_active != RCU_SCHEDULER_INIT).
-> > > >
-> > > > Except that "ofl" should always be false that early in boot, at least
-> > > > in mainline.
-> > >
-> > > Is this still true in the final version of the patch where we set the
-> > > boot task as !idle until just before the early boot is finished?  I
-> > > wouldn't think of this as 'early in boot' anymore as much as the entire
-> > > kernel setup.  Maybe we need to shorten the time we stay in !idle mode
-> > > for earlier kernels?
-> >
-> > In mainline, the ofl variable is defined as cpu_is_offline(cpu), and
-> > during boot, the boot CPU is guaranteed to be online.  (As opposed to
-> > the boot CPU's idle-task state.)
-> >
-> > > How frequent is this function called?  We could check something for
-> > > early boot... or track down where the cpu is put online and restore idle
-> > > before that happens?
-> >
-> > Once per RCU Tasks Trace grace period per reader seen to be blocking
-> > that grace period.  Its performance is as issue, but not to anywhere
-> > near the same extent as (say) rcu_read_lock_trace().
-> >
-> > > > > It's also worth noting that the bug this fixes wasn't exposed until the
-> > > > > maple tree (added in v6.1) was used for the IRQ descriptors (added in
-> > > > > v6.5).
-> > > >
-> > > > Lots of latent bugs, to be sure, even with rcutorture.  :-/
-> > >
-> > > The Right Thing is to fix the bug all the way back to the introduction,
-> > > but what fallout makes the backport less desirable than living with the
-> > > unexposed bug?
-> >
-> > You are quite right that it is possible for the risk of a backport to
-> > exceed the risk of the original bug.
-> >
-> > I defer to Joel (CCed) on how best to resolve this in -stable.
-> 
-> Maybe I am missing something but this issue should also be happening
-> in mainline right?
-> 
-> Even though mainline has 897ba84dc5aa ("rcu-tasks: Handle idle tasks
-> for recently offlined CPUs") , the warning should still be happening
-> due to Liam's "kernel/sched: Modify initial boot task idle setup"
-> because the warning is just rearranged a bit but essentially the same.
-> 
-> IMHO, the right thing to do then is to drop Liam's patch from 5.15 and
-> fix it in mainline (using the ideas described in this thread), then
-> backport both that new fix and Liam's patch to 5.15.
-> 
-> Or is there a reason this warning does not show up on the mainline?
-> 
-> My impression is that dropping Liam's patch for the stable release and
-> revisiting it later is a better approach since tiny RCU is used way
-> less in the wild than tree/tasks RCU. Thoughts?
+User can specify a smaller meta buffer than what the device is
+wired to update/access. Kernel makes a copy of the meta buffer into
+which the device does DMA.
+As a result, the device overwrites the unrelated kernel memory, causing
+random kernel crashes.
 
-I think that this one is strange enough that we need to write down the
-situation in detail, make sure we have all the corner cases covered in
-both mainline and -stable, and decide what to do from there.
+Same issue is possible for extended-lba case also. When user specifies a
+short unaligned buffer, the kernel makes a copy and uses that for DMA.
 
-Yes, I know, this email thread contains much of this information, but
-a little organizing of it would be good.
+Detect these situations for sync/uring passthrough, and bail out.
 
-Would you like to put that together, or should I?  If me, I will get
-a draft out by the end of this coming Tuesday, Pacific Time.
+Fixes: 456cba386e94 ("nvme: wire-up uring-cmd support for io-passthru on char-device")
+Cc: stable@vger.kernel.org
 
-							Thanx, Paul
+Reported-by: Vincent Fu <vincent.fu@samsung.com>
+Signed-off-by: Kanchan Joshi <joshi.k@samsung.com>
+---
+
+Changes since v2:
+- Handle extended-lba case: short unaligned buffer IO
+- Reduce the scope of check to only well-known commands
+- Do not check early. Move it deeper so that check gets executed less
+  often
+- Combine two patches into one.
+
+Changes since v1:
+- Revise the check to exclude PRACT=1 case
+
+Random crash example:
+
+[ 6815.014478] general protection fault, probably for non-canonical address 0x70e3cdbe9133b7a6: 0000 [#1] PREEMPT SMP PTI
+[ 6815.014505] CPU: 1 PID: 434 Comm: systemd-timesyn Tainted: G           OE      6.4.0-rc3+ #5
+[ 6815.014516] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+[ 6815.014522] RIP: 0010:__kmem_cache_alloc_node+0x100/0x440
+[ 6815.014551] Code: 48 85 c0 0f 84 fb 02 00 00 41 83 ff ff 74 10 48 8b 00 48 c1 e8 36 41 39 c7 0f 85 e5 02 00 00 41 8b 45 28 49 8b 7d 00 4c 01 e0 <48> 8b 18 48 89 c1 49 33 9d b8 00 00 00 4c 89 e0 48 0f c9 48 31 cb
+[ 6815.014559] RSP: 0018:ffffb510c0577d18 EFLAGS: 00010216
+[ 6815.014569] RAX: 70e3cdbe9133b7a6 RBX: ffff8a9ec1042300 RCX: 0000000000000010
+[ 6815.014575] RDX: 00000000048b0001 RSI: 0000000000000dc0 RDI: 0000000000037060
+[ 6815.014581] RBP: ffffb510c0577d58 R08: ffffffffb9ffa280 R09: 0000000000000000
+[ 6815.014586] R10: ffff8a9ecbcab1f0 R11: 0000000000000000 R12: 70e3cdbe9133b79e
+[ 6815.014591] R13: ffff8a9ec1042300 R14: 0000000000000dc0 R15: 00000000ffffffff
+[ 6815.014597] FS:  00007fce590d6940(0000) GS:ffff8a9f3dd00000(0000) knlGS:0000000000000000
+[ 6815.014604] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 6815.014609] CR2: 00005579abbb6498 CR3: 000000000d9b0000 CR4: 00000000000006e0
+[ 6815.014622] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 6815.014627] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[ 6815.014632] Call Trace:
+[ 6815.014650]  <TASK>
+[ 6815.014655]  ? apparmor_sk_alloc_security+0x40/0x80
+[ 6815.014673]  kmalloc_trace+0x2a/0xa0
+[ 6815.014684]  apparmor_sk_alloc_security+0x40/0x80
+[ 6815.014694]  security_sk_alloc+0x3f/0x60
+[ 6815.014703]  sk_prot_alloc+0x75/0x110
+[ 6815.014712]  sk_alloc+0x31/0x200
+[ 6815.014721]  inet_create+0xd8/0x3a0
+[ 6815.014734]  __sock_create+0x11b/0x220
+[ 6815.014749]  __sys_socket_create.part.0+0x49/0x70
+[ 6815.014756]  ? __secure_computing+0x94/0xf0
+[ 6815.014768]  __sys_socket+0x3c/0xc0
+[ 6815.014776]  __x64_sys_socket+0x1a/0x30
+[ 6815.014783]  do_syscall_64+0x3b/0x90
+[ 6815.014794]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+[ 6815.014804] RIP: 0033:0x7fce59aa795b
+
+ drivers/nvme/host/ioctl.c | 76 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
+
+diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
+index d8ff796fd5f2..8147750beff4 100644
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -158,6 +158,67 @@ static struct request *nvme_alloc_user_request(struct request_queue *q,
+ 	return req;
+ }
+ 
++static inline bool nvme_nlb_in_cdw12(u8 opcode)
++{
++	switch (opcode) {
++	case nvme_cmd_read:
++	case nvme_cmd_write:
++	case nvme_cmd_compare:
++	case nvme_cmd_zone_append:
++		return true;
++	}
++	return false;
++}
++
++static bool nvme_validate_passthru_meta(struct nvme_ns *ns,
++					struct nvme_command *c,
++					__u32 meta_len,
++					unsigned data_len)
++{
++	/*
++	 * User may specify smaller meta-buffer with a larger data-buffer.
++	 * Driver allocated meta buffer will also be small.
++	 * Device can do larger dma into that, overwriting unrelated kernel
++	 * memory.
++	 * For extended lba case, if user provides a short unaligned buffer,
++	 * the device will corrupt kernel memory.
++	 * Avoid running into corruption in both situations.
++	 */
++	bool ext_lba = ns->features & NVME_NS_EXT_LBAS;
++	u16 nlb, control;
++	unsigned dlen, mlen;
++
++	/* Exclude commands that do not have nlb in cdw12 */
++	if (!nvme_nlb_in_cdw12(c->common.opcode))
++		return true;
++
++	control = upper_16_bits(le32_to_cpu(c->common.cdw12));
++	/* Exclude when meta transfer from/to host is not done */
++	if (control & NVME_RW_PRINFO_PRACT && ns->ms == ns->pi_size)
++		return true;
++
++	nlb = lower_16_bits(le32_to_cpu(c->common.cdw12));
++	mlen = (nlb + 1) * ns->ms;
++
++	/* sanity for interleaved buffer */
++	if (ext_lba) {
++		dlen = (nlb + 1) << ns->lba_shift;
++		if (data_len < (dlen + mlen))
++			goto out_false;
++		return true;
++	}
++	/* sanity for separate meta buffer */
++	if (meta_len < mlen)
++		goto out_false;
++
++	return true;
++
++out_false:
++	dev_err(ns->ctrl->device,
++		"%s: metadata length is small!\n", current->comm);
++	return false;
++}
++
+ static int nvme_map_user_request(struct request *req, u64 ubuffer,
+ 		unsigned bufflen, void __user *meta_buffer, unsigned meta_len,
+ 		u32 meta_seed, void **metap, struct io_uring_cmd *ioucmd,
+@@ -194,6 +255,12 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
+ 		bio_set_dev(bio, bdev);
+ 
+ 	if (bdev && meta_buffer && meta_len) {
++		if (!nvme_validate_passthru_meta(ns, nvme_req(req)->cmd,
++					meta_len, bufflen)) {
++			ret = -EINVAL;
++			goto out_unmap;
++		}
++
+ 		meta = nvme_add_user_metadata(req, meta_buffer, meta_len,
+ 				meta_seed);
+ 		if (IS_ERR(meta)) {
+@@ -203,6 +270,15 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
+ 		*metap = meta;
+ 	}
+ 
++	/* guard another case when kernel memory is being used */
++	if (bio->bi_private && ns && ns->features & NVME_NS_EXT_LBAS) {
++		if (!nvme_validate_passthru_meta(ns, nvme_req(req)->cmd,
++					meta_len, bufflen)) {
++			ret = -EINVAL;
++			goto out_unmap;
++		}
++	}
++
+ 	return ret;
+ 
+ out_unmap:
+-- 
+2.25.1
+
+
