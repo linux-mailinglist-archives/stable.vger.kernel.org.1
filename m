@@ -2,71 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D53C17BC127
-	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 23:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFF787BC161
+	for <lists+stable@lfdr.de>; Fri,  6 Oct 2023 23:41:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233473AbjJFVcd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 17:32:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32914 "EHLO
+        id S233652AbjJFVlF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 17:41:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233277AbjJFVcc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 17:32:32 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E31BBE
-        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 14:32:30 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-5a2478862dbso32314027b3.2
-        for <stable@vger.kernel.org>; Fri, 06 Oct 2023 14:32:30 -0700 (PDT)
+        with ESMTP id S233710AbjJFVlB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 17:41:01 -0400
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C563BD;
+        Fri,  6 Oct 2023 14:41:00 -0700 (PDT)
+Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-35164833a21so11146215ab.0;
+        Fri, 06 Oct 2023 14:41:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696627949; x=1697232749; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1696628459; x=1697233259; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=n7nhNrrcEioXD0TPvV1pN7kd7gJMiVym43CUY/dMMZM=;
-        b=wDuI+2jcAn3wsh7XgXl6U2TkZx5jEf2Hmi0273zvlD0pNffroaL6zS5hld1Z1iQU7I
-         NImuZCJfXtaC7rEWg78JT49wfoe74p0WdlCdwMnrqOA5ZmA2FMU3TM6kaKrQ8srrkxCn
-         R0HtMiEdstP6RW77watFRzEpFpj/VcU68S4m0xMCGWuAtmT9TwVhcZDbu7vQk/ugs9bT
-         4bXBqw55OWvFkixdyTB0xWrUU+h//lWi/+LpTI8XBgRrQ1Z3WEDh04zPnjxErS/2X5q5
-         gstDZXSr+NGcrvxRm/K00yCawMlKE+oEYYsDP0SJ50AyvVLQgT69dIJrAGglGySAlBQ+
-         pFbA==
+        bh=4EmFZA6ZudbHCtkJzwnbsAak5FQyVkG6XojscroYQT8=;
+        b=ZU6Q/6F8366DRFjnozMnQTOnZby3B4xsOyyx6bTH8VpC28IQCjXG9E4oBLOlug0DtN
+         m0PjIHaggoTzIFg+mryuBvtMmlfdp9pdA1rQ0FWeprBHST2zDTyjca1rKdHDYyhiupum
+         4WEv9yNmNxQAq/JIUsE9gg5DVLpgGysWwLxOyuvoDXTyZ7fUGGb9HFTZR2UnM9etsv4q
+         mSnoML3MA/0HnX7x6GPPU5TNeKwm9ebcb0a2NJhMPbixxRZ50C/H1xNUhtqBaiYqAkY4
+         chlm4rcQ+6bRWMMSKZNVJkfZwJkiCyeU93r2apoyqr97n8JFrCVt3s8WIO1PMO96Srby
+         +3dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696627949; x=1697232749;
+        d=1e100.net; s=20230601; t=1696628459; x=1697233259;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=n7nhNrrcEioXD0TPvV1pN7kd7gJMiVym43CUY/dMMZM=;
-        b=t6ki/xNKUo3N+SRwaxEJRVFCNHZOTaLkUrkA7M9fEtTJ/X6kFGmCJC15bs8qMS6v1Q
-         nqpNemFLc22V9nR5I43NIKDboQpI/T+h4SDQr+uwJWLI5Bka6hZP4Q1n7BZ93fJptGna
-         ASWbRZP+FehHMPQnSJ2onTkfvty0MAYSEVdClqnODXortKk3aU6/m7SOMBAY0cWY17K2
-         U6mpLeQsqtCRADAu/m5szPTvEU4T4Odcg5OS6o8yZ8CZdlHOC7r3OLxEPvcG0uPcoIeC
-         xFwP186h+2hKf+RePkSG6+XvktDtg33Bd7gl//UhZ7lgwows6xYNPxUpLzwjyG/24dzq
-         SStA==
-X-Gm-Message-State: AOJu0Yy7Zho6Wun2cUkkf92IaJfmPzgxXUiVLyhFTT6naqMmvaZG3bBc
-        kmqhcjKVhImNFZNj6wu1n6MW6NRLwkVWEMPccoBuPQ==
-X-Google-Smtp-Source: AGHT+IFNpoSi4VeIsa9zfB3rqLPoPdfRSLaaGEwTNK5oWcXngp98EkgmA/haYR4GP0iIgDVJRjgR58wej7BM9q+PMWA=
-X-Received: by 2002:a81:8494:0:b0:59f:728b:ac0f with SMTP id
- u142-20020a818494000000b0059f728bac0fmr9816573ywf.6.1696627949389; Fri, 06
- Oct 2023 14:32:29 -0700 (PDT)
+        bh=4EmFZA6ZudbHCtkJzwnbsAak5FQyVkG6XojscroYQT8=;
+        b=NHAdrCIOePTjtTVK1RhHXLoRyIASd7gHd2Wv7+YnSH48fY767i8w2+4NoOVxLRh9nh
+         on/lCd7xLEbZkIDZJr7pnmZwylwU+kN5I7n3k7QSms5b/dtgtzTr5fS5ANJKgF+V9nyd
+         fsjl3yMTVEhoDcFkhx2C5pA8TEaQ/bw+T7kP8uKoBWe+4pFgQDSYpWLctXwWlnFlrG1Z
+         eh4yGBExH+o2ebdZ83+HcC+pLva2Dg+D+pflcAH/+CtKtszJ5nhl2kr6Fmk1erIvD73r
+         eg/sZhii1WgbckMAsNX7177XffRE1rj7yGmYTki/BNM42zg/5Y7H3tyWjBnxFEtcOcQC
+         alLA==
+X-Gm-Message-State: AOJu0Yyd8UG2GTz+Ldge5BwuREzOEtB/Rpj7XrPCz+UbZLeKROM08J4L
+        MWf199jIzlye4zgfpLeNn0ycPC1XOJ5PVbjK98M=
+X-Google-Smtp-Source: AGHT+IHodFA/ilXdPb/jzYomsHaHDtUIqyVnsR3U1Hj6jGv1nlXbDmO4JKj7h6sUHGLzXf1HFmiNp54Div/A6N5nzo0=
+X-Received: by 2002:a05:6e02:1a05:b0:351:375f:2a31 with SMTP id
+ s5-20020a056e021a0500b00351375f2a31mr4529823ild.6.1696628459466; Fri, 06 Oct
+ 2023 14:40:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230929183041.2835469-1-Liam.Howlett@oracle.com>
- <20230929183041.2835469-3-Liam.Howlett@oracle.com> <CAJuCfpFx3zxv1ZgkLh4dkafOCHvL_674cysJiuQPQhKXX9BuzQ@mail.gmail.com>
- <20231006140834.07110f7008677c646af1694d@linux-foundation.org>
-In-Reply-To: <20231006140834.07110f7008677c646af1694d@linux-foundation.org>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Fri, 6 Oct 2023 14:32:16 -0700
-Message-ID: <CAJuCfpETk0=meVBHO0wfchm12eYZk2j7NcjJYxvh=qJOe4ySqQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] mmap: Fix error paths with dup_anon_vma()
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Jann Horn <jannh@google.com>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Matthew Wilcox <willy@infradead.org>, stable@vger.kernel.org
+References: <20231006160024.170748-1-hannes@cmpxchg.org>
+In-Reply-To: <20231006160024.170748-1-hannes@cmpxchg.org>
+From:   Nhat Pham <nphamcs@gmail.com>
+Date:   Fri, 6 Oct 2023 14:40:48 -0700
+Message-ID: <CAKEwX=N_8ZORaiUDrGQON7RFgC0mXCyyHhR9s9Zki1qONEHnKw@mail.gmail.com>
+Subject: Re: [PATCH] mm: zswap: fix pool refcount bug around shrink_worker()
+To:     Johannes Weiner <hannes@cmpxchg.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Chris Mason <clm@fb.com>,
+        stable@vger.kernel.org, Vitaly Wool <vitaly.wool@konsulko.com>,
+        Domenico Cerasuolo <cerasuolodomenico@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,27 +70,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 6, 2023 at 2:08=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
+On Fri, Oct 6, 2023 at 9:00=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org>=
+ wrote:
 >
-> On Tue, 3 Oct 2023 09:21:22 -0700 Suren Baghdasaryan <surenb@google.com> =
-wrote:
+> When a zswap store fails due to the limit, it acquires a pool
+> reference and queues the shrinker. When the shrinker runs, it drops
+> the reference. However, there can be multiple store attempts before
+> the shrinker wakes up and runs once. This results in reference leaks
+> and eventual saturation warnings for the pool refcount.
 >
-> > > @@ -633,7 +641,7 @@ int vma_expand(struct vma_iterator *vmi, struct v=
-m_area_struct *vma,
-> > >
-> > >                 remove_next =3D true;
-> > >                 vma_start_write(next);
-> > > -               ret =3D dup_anon_vma(vma, next);
-> > > +               ret =3D dup_anon_vma(vma, next, &anon_dup);
-> > >                 if (ret)
-> > >                         return ret;
-> >
-> > Shouldn't the above be changed to a "goto nomem" instead of "return ret=
-" ?
+> Fix this by dropping the reference again when the shrinker is already
+> queued. This ensures one reference per shrinker run.
 >
-> It looks OK to me as-is - dup_anon_vma() leaves anon_dup=3D=3DNULL
-> when it returns error.
+> Reported-by: Chris Mason <clm@fb.com>
+> Fixes: 45190f01dd40 ("mm/zswap.c: add allocation hysteresis if pool limit=
+ is hit")
+> Cc: stable@vger.kernel.org      [5.6+]
+> Cc: Vitaly Wool <vitaly.wool@konsulko.com>
+> Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+> Cc: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> ---
+>  mm/zswap.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 083c693602b8..37d2b1cb2ecb 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1383,8 +1383,8 @@ bool zswap_store(struct folio *folio)
+>
+>  shrink:
+>         pool =3D zswap_pool_last_get();
+> -       if (pool)
+> -               queue_work(shrink_wq, &pool->shrink_work);
+> +       if (pool && !queue_work(shrink_wq, &pool->shrink_work))
+> +               zswap_pool_put(pool);
+>         goto reject;
+>  }
+>
+> --
+> 2.42.0
+>
 
-Yes, I realised that after sending the question and didn't want to
-create more noise than I already did... All seems good.
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+
+Random tangent: this asynchronous writeback mechanism
+is always kinda weird to me. We could have quite a bit of memory
+inversion before the shrinker finally kicks in and frees up zswap
+pool space. But I guess if it doesn't break then don't fix it.
+
+Maybe a shrinker that proactively writes pages back as memory
+pressure builds up could help ;)
