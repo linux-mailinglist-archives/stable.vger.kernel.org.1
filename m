@@ -2,137 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F3617BC7B3
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A8E97BC7F0
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 15:11:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343919AbjJGMnH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 08:43:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34720 "EHLO
+        id S1343627AbjJGNK6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 09:10:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343882AbjJGMnG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:43:06 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE1BAB
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:43:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A53C433C9;
-        Sat,  7 Oct 2023 12:43:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696682584;
-        bh=AQXCe5d8oWFCeDEu+DYFWVDX3WDJ4o+MaMTQk6Qxf9c=;
-        h=Subject:To:Cc:From:Date:From;
-        b=0OZSz1J52jaLW+CN7C6vlls3zlgAzDHo0pWiPgd8wx9QKMyfYg+4YcHd68q7cOaSb
-         hg+2f4mA4WIpryQ3Y9grjdq4qN91YPWYfL5WAvFMGkRPpT37Nf1VPNus8yjphiD5R+
-         ijcpXi1ayiA/JGGkaZSoTVdQESTMNI2KS8vMOyb0=
-Subject: FAILED: patch "[PATCH] drm/amd/display: apply edge-case DISPCLK WDIVIDER changes to" failed to apply to 6.5-stable tree
-To:     samson.tam@amd.com, alexander.deucher@amd.com, alvin.lee2@amd.com,
-        aurabindo.pillai@amd.com, daniel.wheeler@amd.com,
-        mario.limonciello@amd.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 07 Oct 2023 14:43:01 +0200
-Message-ID: <2023100701-upheaval-crispness-02a3@gregkh>
+        with ESMTP id S231290AbjJGNK5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 09:10:57 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D444FB6;
+        Sat,  7 Oct 2023 06:10:56 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-40535597f01so28024495e9.3;
+        Sat, 07 Oct 2023 06:10:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696684255; x=1697289055; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JckiUdume8/244qoGkEzxCY5dVAABsvgSL01kRwzTpg=;
+        b=QwxvqicZggpuwNM75/jGjk3fHA3Hx7R5gUo5KUdfuWY7oP3oIdiZ6hSZShIlZe/i+L
+         lK0L+HRxQQjlsCfRhmh1hR6uKbisxRrdLkOBYF4f1gqtD8EUOvqn2IVj5oAsPQe99zGY
+         W+ldEt4nlA9NB9Y58mUfbUPMhtc8uv7HY0EZBVPR+Wv5cdvhAeKeafGzwgnK5BVe8zGD
+         bsZZG4jbNVWhJzX7B3qhzmGNTgQRmnrhbG/BMCBx4hYQnUzcyE0SxvNPJL3oTQAWBeyL
+         KCB8u8jvFmy0Us929j+ka/nha0Ii6a24XY2mu8Furelpjg6f1/5gxXYbjqIB6FEsyQb9
+         gJUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696684255; x=1697289055;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JckiUdume8/244qoGkEzxCY5dVAABsvgSL01kRwzTpg=;
+        b=Hgt6GRVcb576J5JnjKvAH9S4CcZ/ywxhfvQQB3SMLeji7OYFhCHlyHug/9z29ry+Ab
+         lh6iBEJUTdizr4j3zQiltCKhBctLGKB4qsoR7U0yeAHvZXp9NFhkYZdn7szQgz96FtwG
+         Q/KL5D0LFvlWKxePJHuTiXeY+t9G4Q0FKZY8E2fAp5MRZ+OPRJiHqSuZtZvDugZhhDIk
+         JrfdrxErZ6N699i71Xd0dyaf6Q7PfE95CcT6SchYpVZN62YYaEQjM8X/ld1K3SvGNVjn
+         amRThEqcDr7HQqmIEaJqLxid4ohW7Tlwa5gCzpDTGe42oeU9uBnxYctDDO4CapsGF2Xx
+         uplA==
+X-Gm-Message-State: AOJu0Yxyb6npuhisaSSB1OR60V89l1esz4W0FWdMg7KK+2g+IFHlkuyG
+        fxJexrhkQg3NXb7af4PAib0=
+X-Google-Smtp-Source: AGHT+IHLkfk9ITx4gK1tDu0r7cmJuMEf4/dyDkcAuowsCwxPpMICDJ8fKG+kvks9164B/5egGGr3dA==
+X-Received: by 2002:a1c:7407:0:b0:401:c338:ab94 with SMTP id p7-20020a1c7407000000b00401c338ab94mr9969808wmc.29.1696684254888;
+        Sat, 07 Oct 2023 06:10:54 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id v10-20020a05600c470a00b00407460234f9sm513922wmo.21.2023.10.07.06.10.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Oct 2023 06:10:54 -0700 (PDT)
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Li Zetao <lizetao1@huawei.com>, linux-leds@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     stable@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: [net PATCH] leds: trigger: netdev: move size check in set_device_name
+Date:   Sat,  7 Oct 2023 15:10:42 +0200
+Message-Id: <20231007131042.15032-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+GCC 13.2 complains about array subscript 17 is above array bounds of
+'char[16]' with IFNAMSIZ set to 16.
 
-The patch below does not apply to the 6.5-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The warning is correct but this scenario is impossible.
+set_device_name is called by device_name_store (store sysfs entry) and
+netdev_trig_activate.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+device_name_store already check if size is >= of IFNAMSIZ and return
+-EINVAL. (making the warning scenario impossible)
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
-git checkout FETCH_HEAD
-git cherry-pick -x b206011bf05069797df1f4c5ce639398728978e2
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100701-upheaval-crispness-02a3@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+netdev_trig_activate works on already defined interface, where the name
+has already been checked and should already follow the condition of
+strlen() < IFNAMSIZ.
 
-Possible dependencies:
+Aside from the scenario being impossible, set_device_name can be
+improved to both mute the warning and make the function safer.
+To make it safer, move size check from device_name_store directly to
+set_device_name and prevent any out of bounds scenario.
 
-b206011bf050 ("drm/amd/display: apply edge-case DISPCLK WDIVIDER changes to master OTG pipes only")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From b206011bf05069797df1f4c5ce639398728978e2 Mon Sep 17 00:00:00 2001
-From: Samson Tam <samson.tam@amd.com>
-Date: Mon, 18 Sep 2023 18:43:13 -0400
-Subject: [PATCH] drm/amd/display: apply edge-case DISPCLK WDIVIDER changes to
- master OTG pipes only
-
-[Why]
-The edge-case DISPCLK WDIVIDER changes call stream_enc functions.
-But with MPC pipes, downstream pipes have null stream_enc and will
- cause crash.
-
-[How]
-Only call stream_enc functions for pipes that are OTG master.
-
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Samson Tam <samson.tam@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 28a6a2ef18ad ("leds: trigger: netdev: refactor code setting device name")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309192035.GTJEEbem-lkp@intel.com/
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/leds/trigger/ledtrig-netdev.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn20/dcn20_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn20/dcn20_clk_mgr.c
-index c435f7632e8e..5ee87965a078 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn20/dcn20_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn20/dcn20_clk_mgr.c
-@@ -157,7 +157,7 @@ void dcn20_update_clocks_update_dentist(struct clk_mgr_internal *clk_mgr, struct
- 			int32_t N;
- 			int32_t j;
+diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
+index 58f3352539e8..e358e77e4b38 100644
+--- a/drivers/leds/trigger/ledtrig-netdev.c
++++ b/drivers/leds/trigger/ledtrig-netdev.c
+@@ -221,6 +221,9 @@ static ssize_t device_name_show(struct device *dev,
+ static int set_device_name(struct led_netdev_data *trigger_data,
+ 			   const char *name, size_t size)
+ {
++	if (size >= IFNAMSIZ)
++		return -EINVAL;
++
+ 	cancel_delayed_work_sync(&trigger_data->work);
  
--			if (!pipe_ctx->stream)
-+			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
- 				continue;
- 			/* Virtual encoders don't have this function */
- 			if (!stream_enc->funcs->get_fifo_cal_average_level)
-@@ -188,7 +188,7 @@ void dcn20_update_clocks_update_dentist(struct clk_mgr_internal *clk_mgr, struct
- 			int32_t N;
- 			int32_t j;
+ 	mutex_lock(&trigger_data->lock);
+@@ -263,9 +266,6 @@ static ssize_t device_name_store(struct device *dev,
+ 	struct led_netdev_data *trigger_data = led_trigger_get_drvdata(dev);
+ 	int ret;
  
--			if (!pipe_ctx->stream)
-+			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
- 				continue;
- 			/* Virtual encoders don't have this function */
- 			if (!stream_enc->funcs->get_fifo_cal_average_level)
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-index 984b52923534..e9345f6554db 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-@@ -355,7 +355,7 @@ static void dcn32_update_clocks_update_dentist(
- 			int32_t N;
- 			int32_t j;
+-	if (size >= IFNAMSIZ)
+-		return -EINVAL;
+-
+ 	ret = set_device_name(trigger_data, buf, size);
  
--			if (!pipe_ctx->stream)
-+			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
- 				continue;
- 			/* Virtual encoders don't have this function */
- 			if (!stream_enc->funcs->get_fifo_cal_average_level)
-@@ -401,7 +401,7 @@ static void dcn32_update_clocks_update_dentist(
- 			int32_t N;
- 			int32_t j;
- 
--			if (!pipe_ctx->stream)
-+			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
- 				continue;
- 			/* Virtual encoders don't have this function */
- 			if (!stream_enc->funcs->get_fifo_cal_average_level)
+ 	if (ret < 0)
+-- 
+2.40.1
 
