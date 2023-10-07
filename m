@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63A057BC761
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F33C7BC762
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:03:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343891AbjJGMDn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 08:03:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53372 "EHLO
+        id S1343897AbjJGMDq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 08:03:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343680AbjJGMDn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:03:43 -0400
+        with ESMTP id S1343680AbjJGMDq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:03:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 493CFBC
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:03:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853E0C433C9;
-        Sat,  7 Oct 2023 12:03:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27349B6
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:03:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696CCC433C9;
+        Sat,  7 Oct 2023 12:03:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696680221;
-        bh=JLDSypaot5qMmC9v1RAx8RWI7Bk+U7CNvXcyFQMHOfk=;
+        s=korg; t=1696680224;
+        bh=QmLtgNLE3ixpJeAOOOezmZzTNLAUArTKAbMwu5KzmTA=;
         h=Subject:To:Cc:From:Date:From;
-        b=FYWqCQA6VxZs3xADQFiF4lSl+NnD0JdFk2p33sN/yHiHg2uO4lnfx82T8R2I0/gRH
-         S6nxHQaHusR5kNS937TlxY3LbcBwIFkO94zx/pMn9lJPQB1LU+XV4H9/AVKSa18l5V
-         s3+qbGkJCzN2tfGdVKJE+mRzPfEuYr8WxziP0R64=
-Subject: FAILED: patch "[PATCH] net: ethernet: mediatek: disable irq before schedule napi" failed to apply to 5.10-stable tree
+        b=g0Rbz+TsBCB411BtHoFGfP+ndM2ZlVQE/gE5EhozDYWSu8CbByb1sn9mESegYtsEW
+         WQgp4eDyMuUceqsCvLa+Kw7xFGV1DcFykLrJdXoV4g7o4IHuGn8GrzDBILNpE8M3+T
+         JHfsJPSo41n8XgcLT/LjQdfADB1iJ6tnM3NHLy2w=
+Subject: FAILED: patch "[PATCH] net: ethernet: mediatek: disable irq before schedule napi" failed to apply to 5.4-stable tree
 To:     ansuelsmth@gmail.com, pabeni@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 07 Oct 2023 14:03:36 +0200
-Message-ID: <2023100736-shopping-wasp-ff3a@gregkh>
+Date:   Sat, 07 Oct 2023 14:03:37 +0200
+Message-ID: <2023100737-curable-anatomy-6d39@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x fcdfc462881d8acf9db77f483b2c821e286ca97b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100736-shopping-wasp-ff3a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100737-curable-anatomy-6d39@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
