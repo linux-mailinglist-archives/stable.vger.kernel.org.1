@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 299D67BC783
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:32:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E177BC784
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:32:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343930AbjJGMcm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 08:32:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53412 "EHLO
+        id S1343942AbjJGMcp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 08:32:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343882AbjJGMcm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:32:42 -0400
+        with ESMTP id S1343882AbjJGMco (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:32:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38A0AAB
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:32:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4959AC433C8;
-        Sat,  7 Oct 2023 12:32:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666EAAB
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:32:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6567C433C7;
+        Sat,  7 Oct 2023 12:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696681959;
-        bh=bXoQYrjpF69c2F2x0jhIqEBisgZPBt867JPp6eu0thQ=;
+        s=korg; t=1696681963;
+        bh=ZlGkvpGBXng4qSavf/M4QR+k+zfkntJdr7XVpPiJD/E=;
         h=Subject:To:Cc:From:Date:From;
-        b=EkajWAebVNoZFi5iASbfA7H7A27fU18IdZIASJGHh+Z2nBtEgs6gpkej0Sn6tpYgp
-         fUQ3QkwU+ntm1Btb+FLAIPIULNMCmQ0Zz6XWbHT2yBLla7XRAhDDUa2J3yDnK2RZHe
-         J52Lxu9Z8JYUOmXeS5SZxAJFe67ELWNYnd6ybyS0=
-Subject: FAILED: patch "[PATCH] net: prevent address rewrite in kernel_bind()" failed to apply to 6.5-stable tree
+        b=VQh+MVhhklSi+Mjd7QLAfJUD49VOmj0Br7ozZz3rPePf1FsN178kQ65nO1JDsoCo6
+         N/gLS9XEh+/qf7lTz/4pWrzJiE4FxyvTDN1cDvGHlw5/Wzg4ymPgF2ENwy74fKX39D
+         7n45UKl9VJU8rl3yEi7LF34kGLF6RMgneHS1uFaQ=
+Subject: FAILED: patch "[PATCH] net: prevent address rewrite in kernel_bind()" failed to apply to 6.1-stable tree
 To:     jrife@google.com, davem@davemloft.net, horms@kernel.org,
         willemb@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 07 Oct 2023 14:32:36 +0200
-Message-ID: <2023100736-putdown-capitol-693a@gregkh>
+Date:   Sat, 07 Oct 2023 14:32:37 +0200
+Message-ID: <2023100737-replace-severity-183e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,25 +43,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x c889a99a21bf124c3db08d09df919f0eccc5ea4c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100736-putdown-capitol-693a@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100737-replace-severity-183e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 c889a99a21bf ("net: prevent address rewrite in kernel_bind()")
 1ded5e5a5931 ("net: annotate data-races around sock->ops")
 8936bf53a091 ("net: Use sockaddr_storage for getsockopt(SO_PEERNAME).")
+3a8a670eeeaa ("Merge tag 'net-next-6.5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next")
 
 thanks,
 
