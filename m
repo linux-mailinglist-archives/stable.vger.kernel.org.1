@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB18B7BC78E
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:34:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E771D7BC78F
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343886AbjJGMer (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 08:34:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45510 "EHLO
+        id S1343891AbjJGMew (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 08:34:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343891AbjJGMer (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:34:47 -0400
+        with ESMTP id S1343680AbjJGMev (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:34:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46E4EAB
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:34:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942B8C433C8;
-        Sat,  7 Oct 2023 12:34:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07CDEAB
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:34:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24207C433C7;
+        Sat,  7 Oct 2023 12:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696682085;
-        bh=9dswNyZZRKpN6I5+LHT7R3vo6DS29+13pKxc9DpN1nk=;
+        s=korg; t=1696682089;
+        bh=7E/w3r9uE/cJSmKsXSpMttFlOogU8f31ZW65c21FRNo=;
         h=Subject:To:Cc:From:Date:From;
-        b=X2SekeLZKRlIMBXRYcDo0Tg9wYn1dGQ9odETiht22GO3JrXnRvLhsjPQnrY4i/R2D
-         70M94l3thP0Dazx81N54E6h5dPmX3PDPsr5ETNT7epm9BZGdGwxIuTNUpJdYK+fDBG
-         X/aPN/hcFl9S9T1mfhaag/PCwjdIKLO7B1Olf7Dk=
-Subject: FAILED: patch "[PATCH] arm64: errata: Add Cortex-A520 speculative unprivileged load" failed to apply to 6.1-stable tree
+        b=ndV8BdhKvISQ/0Qzf5ctkggwilL9yw1nNphs4yU8aaoovX3jmgZcEZHpXUI+HF4z3
+         nUg42tifX8bzMJACUcUtB+KKyMUXVFQjkyhsp5+NqRbhNSYvq0vVbB5XoMFEN1s7BE
+         MQel0to2HUTHOC+xN7Hl6YV6dzCKqnyl7/zzKY3U=
+Subject: FAILED: patch "[PATCH] arm64: errata: Add Cortex-A520 speculative unprivileged load" failed to apply to 5.15-stable tree
 To:     robh@kernel.org, will@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 07 Oct 2023 14:34:42 +0200
-Message-ID: <2023100742-aching-treble-ff08@gregkh>
+Date:   Sat, 07 Oct 2023 14:34:44 +0200
+Message-ID: <2023100743-evasion-figment-fbcc@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 471470bc7052d28ce125901877dd10e4c048e513
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100742-aching-treble-ff08@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100743-evasion-figment-fbcc@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
