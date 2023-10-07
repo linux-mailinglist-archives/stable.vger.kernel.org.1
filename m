@@ -2,261 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FFEB7BC766
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5C7C7BC798
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:38:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343904AbjJGMEJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 08:04:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34868 "EHLO
+        id S1343939AbjJGMis (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 08:38:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343899AbjJGMEJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:04:09 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EBFFB6
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:04:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831FCC433C9;
-        Sat,  7 Oct 2023 12:04:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696680246;
-        bh=Nwso+fW1CBfXNU/mtQGyRpFq39Zjc0t3xWCFL3VK/Nc=;
-        h=Subject:To:Cc:From:Date:From;
-        b=13I8ByszlQY9kqYt+HiEwAhSSAMf+Q88sFaa8tkeUGC1cgRrP+Ybrd45+HLrNAQGq
-         d/hAU+KOV6rpMsqQRSLf1XQb4KCJZpvCBmP9Cv+cZp+Y5vEicCKJbqy2Bkzd4b5qoU
-         DTrQLX2ZWda1VfnHpMfaMc7/mIb4OcikIwqntSmA=
-Subject: FAILED: patch "[PATCH] mptcp: fix delegated action races" failed to apply to 5.15-stable tree
-To:     pabeni@redhat.com, kuba@kernel.org, martineau@kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 07 Oct 2023 14:03:56 +0200
-Message-ID: <2023100756-undone-joining-d316@gregkh>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S1343897AbjJGMir (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:38:47 -0400
+X-Greylist: delayed 403 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 07 Oct 2023 05:38:46 PDT
+Received: from gofer.mess.org (gofer.mess.org [IPv6:2a02:8011:d000:212::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B18FB6
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:38:46 -0700 (PDT)
+Received: by gofer.mess.org (Postfix, from userid 501)
+        id 7B588100057; Sat,  7 Oct 2023 13:32:00 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mess.org; s=2020;
+        t=1696681920; bh=rOBP2wQ6cH9vnnvMHhphypU81Jp3mFXrC6UZzoQjoM0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Sni86AsxZpbp/gQsZjXdVg1Kfbm7X3sdEXxVaSyfEMbRG/TQuy6RYcur4DQC2aEXi
+         X0WFwSC7pGUm/xMo4m+FRgCcvLt4K8vxYxWO24Vz9jtH3JTeEusNMEC1PvDeFXb9Xl
+         ozn/WgdO0OQEMxt8rTYxruas4q7uf9yrHNeCJG/mgKIO+Fm6RSMe8X8ILQQlbFZYls
+         FsP4sYl1isXqPHlPVpF5Pjvm0JYae231WfNWWf7C+r6GSmUE+9ml7QLt3MaX+dYAhF
+         pNQ10rfmU+eRSBLy83rZfRIdd8xQMN4nLPyipAeC+6cH+1WFJUFllGWnW31LVxIAYG
+         7u2U3EFH9HtHg==
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
+Received: from bigcore.mess.org (unknown [IPv6:2a02:8011:d000:212:ca7f:54ff:fe51:14d6])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by gofer.mess.org (Postfix) with ESMTPSA id 73A04100057;
+        Sat,  7 Oct 2023 13:31:58 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mess.org; s=2020;
+        t=1696681918; bh=rOBP2wQ6cH9vnnvMHhphypU81Jp3mFXrC6UZzoQjoM0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=knqb0WvDFjlUdrIqLXQYEz9R4cp4vJmKBf9VZeoBP1US3ZpKfJ8Szl2aQzBG2Zrfg
+         2RjU+SSaGhWTi8Fyv6YoC3Qx0UDJJDLsAw0NskJpN9dOmKtA1sSYTNaB+LpX8rh05F
+         bi851ahx7PnWUK85tw6cYuC7NvTTiSPnfRbRll+qmx1J58A/W/L4z/QUmPKcHNNjoN
+         qscw/GZxo6nSChatzvVa2LbK9YCkHG+Ni+CUILrBjyqG0Avnbdj/jcY9ED27p5+j4U
+         IYvS/rMSlGhcdvz7D/j4XiDbpwb+Cn63aSa5vwwIj+GveDWwfhupdwstDLfcLlj79K
+         Wvb1KCA851hOQ==
+From:   Sean Young <sean@mess.org>
+To:     linux-media@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: lirc: drop trailing space from scancode transmit
+Date:   Sat,  7 Oct 2023 13:31:33 +0100
+Message-ID: <20231007123133.6718-1-sean@mess.org>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+When transmitting, infrared drivers expect an odd number of samples; iow
+without a trailing space. No problems have been observed so far, so
+this is just belt and braces.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x a5efdbcece83af94180e8d7c0a6e22947318499d
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100756-undone-joining-d316@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-a5efdbcece83 ("mptcp: fix delegated action races")
-3e5014909b56 ("mptcp: cleanup MPJ subflow list handling")
-b29fcfb54cd7 ("mptcp: full disconnect implementation")
-3ce0852c86b9 ("mptcp: enforce HoL-blocking estimation")
-7cd2802d7496 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From a5efdbcece83af94180e8d7c0a6e22947318499d Mon Sep 17 00:00:00 2001
-From: Paolo Abeni <pabeni@redhat.com>
-Date: Wed, 4 Oct 2023 13:38:11 -0700
-Subject: [PATCH] mptcp: fix delegated action races
-
-The delegated action infrastructure is prone to the following
-race: different CPUs can try to schedule different delegated
-actions on the same subflow at the same time.
-
-Each of them will check different bits via mptcp_subflow_delegate(),
-and will try to schedule the action on the related per-cpu napi
-instance.
-
-Depending on the timing, both can observe an empty delegated list
-node, causing the same entry to be added simultaneously on two different
-lists.
-
-The root cause is that the delegated actions infra does not provide
-a single synchronization point. Address the issue reserving an additional
-bit to mark the subflow as scheduled for delegation. Acquiring such bit
-guarantee the caller to own the delegated list node, and being able to
-safely schedule the subflow.
-
-Clear such bit only when the subflow scheduling is completed, ensuring
-proper barrier in place.
-
-Additionally swap the meaning of the delegated_action bitmask, to allow
-the usage of the existing helper to set multiple bit at once.
-
-Fixes: bcd97734318d ("mptcp: use delegate action to schedule 3rd ack retrans")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231004-send-net-20231004-v1-1-28de4ac663ae@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sean Young <sean@mess.org>
+---
+ drivers/media/rc/lirc_dev.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index e252539b1e19..c3b83cb390d9 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3425,24 +3425,21 @@ static void schedule_3rdack_retransmission(struct sock *ssk)
- 	sk_reset_timer(ssk, &icsk->icsk_delack_timer, timeout);
- }
+diff --git a/drivers/media/rc/lirc_dev.c b/drivers/media/rc/lirc_dev.c
+index 043d23aaa3cb..a537734832c5 100644
+--- a/drivers/media/rc/lirc_dev.c
++++ b/drivers/media/rc/lirc_dev.c
+@@ -276,7 +276,11 @@ static ssize_t lirc_transmit(struct file *file, const char __user *buf,
+ 		if (ret < 0)
+ 			goto out_kfree_raw;
  
--void mptcp_subflow_process_delegated(struct sock *ssk)
-+void mptcp_subflow_process_delegated(struct sock *ssk, long status)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
- 	struct sock *sk = subflow->conn;
+-		count = ret;
++		/* drop trailing space */
++		if (!(ret % 2))
++			count = ret - 1;
++		else
++			count = ret;
  
--	if (test_bit(MPTCP_DELEGATE_SEND, &subflow->delegated_status)) {
-+	if (status & BIT(MPTCP_DELEGATE_SEND)) {
- 		mptcp_data_lock(sk);
- 		if (!sock_owned_by_user(sk))
- 			__mptcp_subflow_push_pending(sk, ssk, true);
- 		else
- 			__set_bit(MPTCP_PUSH_PENDING, &mptcp_sk(sk)->cb_flags);
- 		mptcp_data_unlock(sk);
--		mptcp_subflow_delegated_done(subflow, MPTCP_DELEGATE_SEND);
- 	}
--	if (test_bit(MPTCP_DELEGATE_ACK, &subflow->delegated_status)) {
-+	if (status & BIT(MPTCP_DELEGATE_ACK))
- 		schedule_3rdack_retransmission(ssk);
--		mptcp_subflow_delegated_done(subflow, MPTCP_DELEGATE_ACK);
--	}
- }
- 
- static int mptcp_hash(struct sock *sk)
-@@ -3968,14 +3965,17 @@ static int mptcp_napi_poll(struct napi_struct *napi, int budget)
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
- 		bh_lock_sock_nested(ssk);
--		if (!sock_owned_by_user(ssk) &&
--		    mptcp_subflow_has_delegated_action(subflow))
--			mptcp_subflow_process_delegated(ssk);
--		/* ... elsewhere tcp_release_cb_override already processed
--		 * the action or will do at next release_sock().
--		 * In both case must dequeue the subflow here - on the same
--		 * CPU that scheduled it.
--		 */
-+		if (!sock_owned_by_user(ssk)) {
-+			mptcp_subflow_process_delegated(ssk, xchg(&subflow->delegated_status, 0));
-+		} else {
-+			/* tcp_release_cb_override already processed
-+			 * the action or will do at next release_sock().
-+			 * In both case must dequeue the subflow here - on the same
-+			 * CPU that scheduled it.
-+			 */
-+			smp_wmb();
-+			clear_bit(MPTCP_DELEGATE_SCHEDULED, &subflow->delegated_status);
-+		}
- 		bh_unlock_sock(ssk);
- 		sock_put(ssk);
- 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index ed61d6850cce..3612545fa62e 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -444,9 +444,11 @@ struct mptcp_delegated_action {
- 
- DECLARE_PER_CPU(struct mptcp_delegated_action, mptcp_delegated_actions);
- 
--#define MPTCP_DELEGATE_SEND		0
--#define MPTCP_DELEGATE_ACK		1
-+#define MPTCP_DELEGATE_SCHEDULED	0
-+#define MPTCP_DELEGATE_SEND		1
-+#define MPTCP_DELEGATE_ACK		2
- 
-+#define MPTCP_DELEGATE_ACTIONS_MASK	(~BIT(MPTCP_DELEGATE_SCHEDULED))
- /* MPTCP subflow context */
- struct mptcp_subflow_context {
- 	struct	list_head node;/* conn_list of subflows */
-@@ -564,23 +566,24 @@ mptcp_subflow_get_mapped_dsn(const struct mptcp_subflow_context *subflow)
- 	return subflow->map_seq + mptcp_subflow_get_map_offset(subflow);
- }
- 
--void mptcp_subflow_process_delegated(struct sock *ssk);
-+void mptcp_subflow_process_delegated(struct sock *ssk, long actions);
- 
- static inline void mptcp_subflow_delegate(struct mptcp_subflow_context *subflow, int action)
- {
-+	long old, set_bits = BIT(MPTCP_DELEGATE_SCHEDULED) | BIT(action);
- 	struct mptcp_delegated_action *delegated;
- 	bool schedule;
- 
- 	/* the caller held the subflow bh socket lock */
- 	lockdep_assert_in_softirq();
- 
--	/* The implied barrier pairs with mptcp_subflow_delegated_done(), and
--	 * ensures the below list check sees list updates done prior to status
--	 * bit changes
-+	/* The implied barrier pairs with tcp_release_cb_override()
-+	 * mptcp_napi_poll(), and ensures the below list check sees list
-+	 * updates done prior to delegated status bits changes
- 	 */
--	if (!test_and_set_bit(action, &subflow->delegated_status)) {
--		/* still on delegated list from previous scheduling */
--		if (!list_empty(&subflow->delegated_node))
-+	old = set_mask_bits(&subflow->delegated_status, 0, set_bits);
-+	if (!(old & BIT(MPTCP_DELEGATE_SCHEDULED))) {
-+		if (WARN_ON_ONCE(!list_empty(&subflow->delegated_node)))
- 			return;
- 
- 		delegated = this_cpu_ptr(&mptcp_delegated_actions);
-@@ -605,20 +608,6 @@ mptcp_subflow_delegated_next(struct mptcp_delegated_action *delegated)
- 	return ret;
- }
- 
--static inline bool mptcp_subflow_has_delegated_action(const struct mptcp_subflow_context *subflow)
--{
--	return !!READ_ONCE(subflow->delegated_status);
--}
--
--static inline void mptcp_subflow_delegated_done(struct mptcp_subflow_context *subflow, int action)
--{
--	/* pairs with mptcp_subflow_delegate, ensures delegate_node is updated before
--	 * touching the status bit
--	 */
--	smp_wmb();
--	clear_bit(action, &subflow->delegated_status);
--}
--
- int mptcp_is_enabled(const struct net *net);
- unsigned int mptcp_get_add_addr_timeout(const struct net *net);
- int mptcp_is_checksum_enabled(const struct net *net);
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 918c1a235790..9c1f8d1d63d2 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1956,9 +1956,15 @@ static void subflow_ulp_clone(const struct request_sock *req,
- static void tcp_release_cb_override(struct sock *ssk)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+	long status;
- 
--	if (mptcp_subflow_has_delegated_action(subflow))
--		mptcp_subflow_process_delegated(ssk);
-+	/* process and clear all the pending actions, but leave the subflow into
-+	 * the napi queue. To respect locking, only the same CPU that originated
-+	 * the action can touch the list. mptcp_napi_poll will take care of it.
-+	 */
-+	status = set_mask_bits(&subflow->delegated_status, MPTCP_DELEGATE_ACTIONS_MASK, 0);
-+	if (status)
-+		mptcp_subflow_process_delegated(ssk, status);
- 
- 	tcp_release_cb(ssk);
- }
+ 		txbuf = kmalloc_array(count, sizeof(unsigned int), GFP_KERNEL);
+ 		if (!txbuf) {
+-- 
+2.42.0
 
