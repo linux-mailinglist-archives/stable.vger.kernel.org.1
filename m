@@ -2,72 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F0307BC6E9
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 12:45:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 035F37BC70C
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 13:20:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343832AbjJGKpf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 06:45:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54140 "EHLO
+        id S1343859AbjJGLU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 07:20:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343821AbjJGKpe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 06:45:34 -0400
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31DDF92;
-        Sat,  7 Oct 2023 03:45:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-        s=mail; t=1696675531;
-        bh=maMScBc4Mt8jkDu4ndjP5a/QW0aFcACPqJA18uWVSKQ=;
+        with ESMTP id S1343812AbjJGLU0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 07:20:26 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE34CB6;
+        Sat,  7 Oct 2023 04:20:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8EAC433C8;
+        Sat,  7 Oct 2023 11:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696677624;
+        bh=Goru+Y5pM62Bn1EeWJzqWekpTQbwFCJNQZgYQQ0SQNk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lea5HSwSqGy0m5HSNvD78SXW9MpzZpXym/Hxb6DDAibCtwnn1nXfZY0oM5o3n79cL
-         uokuMuBEHoaNNz3qe4w8UuNiM+43IWK/vsWThNiUmJ6ehvc7deixRB6l70YAMXRVSh
-         40j2Ky0fEIZDApmCvuCR/H8DghOJ3UeqlIMRN8Cw=
-Date:   Sat, 7 Oct 2023 12:45:30 +0200
-From:   Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To:     Willy Tarreau <w@1wt.eu>
-Cc:     Shuah Khan <shuah@kernel.org>, Zhangjin Wu <falcon@tinylab.org>,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] tools/nolibc: drop test for getauxval(AT_PAGESZ)
-Message-ID: <6721ed01-8438-4325-8645-d307f82e30ec@t-8ch.de>
-References: <20231007-nolibc-auxval-pagesz-v1-1-af00804edead@weissschuh.net>
- <20231007103620.GB23812@1wt.eu>
+        b=hSrDEXQwDwf8oKRRHiluOYocUBf8moy3ZQB1+xGnHCoXic/X5D3AP5g/MEmzYlYFm
+         aAztTn4ZGnw15r/c1FYE6avriDZRcZOunqg3X4/ayJeAUlu166/M/FT/GKpcMBEnp/
+         F0LH8Du2ie1cgCZYXjY7uYOxHPj+M7gIG+qd2//E=
+Date:   Sat, 7 Oct 2023 13:20:14 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Prashanth K <quic_prashk@quicinc.com>
+Cc:     linux-kernel@vger.kernel.org, Hongyu Xie <xy521521@gmail.com>,
+        Mathias Nyman <mathias.nyman@intel.com>, stable@kernel.org,
+        Hongyu Xie <xiehongyu1@kylinos.cn>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        "# 5 . 15" <stable@vger.kernel.org>
+Subject: Re: [PATCH RESEND] xhci: Keep interrupt disabled in initialization
+ until host is running.
+Message-ID: <2023100753-jargon-resolute-0e55@gregkh>
+References: <1695379724-28628-1-git-send-email-quic_prashk@quicinc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231007103620.GB23812@1wt.eu>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <1695379724-28628-1-git-send-email-quic_prashk@quicinc.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-10-07 12:36:20+0200, Willy Tarreau wrote:
-> On Sat, Oct 07, 2023 at 12:18:55PM +0200, Thomas Weißschuh wrote:
-> > The test will not work for systems with pagesize != 4096 like aarch64
-> > and some others.
-> > 
-> > Other testcases are already testing the same functionality:
-> > * auxv_AT_UID tests getauxval() in general.
-> > * test_getpagesize() tests pagesize() which directly calls
-> >   getauxval(AT_PAGESZ).
-> > 
-> > Fixes: 48967b73f8fe ("selftests/nolibc: add testcases for startup code")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-> > ---
-> > Note:
-> > 
-> > This should probably also make it into 6.6.
+On Fri, Sep 22, 2023 at 04:18:44PM +0530, Prashanth K wrote:
+> From: Hongyu Xie <xy521521@gmail.com>
 > 
-> Agreed, you should just push it to the fixes branch.
+> [ Upstream commit 808925075fb750804a60ff0710614466c396db4 ]
 
-Good point.
+This is not a valid git commit id in Linus's tree, where is it from?
 
-'fixes' now contains Ammar's alignment fix, the tree location update and
-this patch.
+confused,
 
-Thomas
+greg k-h
