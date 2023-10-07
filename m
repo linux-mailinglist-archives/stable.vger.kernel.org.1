@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B30767BC71F
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 13:31:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7B157BC720
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 13:33:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234186AbjJGLbo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 07:31:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58020 "EHLO
+        id S233669AbjJGLdV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 07:33:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234087AbjJGLbn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 07:31:43 -0400
+        with ESMTP id S233662AbjJGLdV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 07:33:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8423FB6
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 04:31:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7707C433C8;
-        Sat,  7 Oct 2023 11:31:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73F7CB9;
+        Sat,  7 Oct 2023 04:33:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A7DC433C8;
+        Sat,  7 Oct 2023 11:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696678302;
-        bh=4XG/Jk5F5eQTuTEMbx16/JO24WDdsumuVcBOxLnFDXU=;
+        s=korg; t=1696678400;
+        bh=MhC2Xsh1F0Dp/xiGufKa2htr3zYIzm0ooEtftPrfJ5g=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ozKhFJMLXT68tWpHyAf4UWo0hsbR7Y/Db2doMRa/KD58kfxcVGKSbyNHNdlrLYVL7
-         dd/RPfqYc5fRRuIYgGDdnazTFPFvP/y6tvdrkduHXsO4ZeQRJBn1Z/r4uDkkjBt+gD
-         J37PzSzn1eDJZDpmW8I9HeDkTE5q1x/vRQxc/ypU=
-Date:   Sat, 7 Oct 2023 13:31:39 +0200
+        b=rDr1R2umQ5BwJUJxxoc2jFkKlxL2yQU6SkCbIMRVdn4NYYTg8CmJH154fL9154PU2
+         +ZKCVfl5tqG5SksBNrtI6kwF0uNqyQdfZTSpXm9eEl80y2j2YQUafulniKHjQHtmxf
+         ldQuN/RPF5ZBqHna+Mn9BpEnAE7SFVvcMSO8BCS8=
+Date:   Sat, 7 Oct 2023 13:33:17 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc:     stable@vger.kernel.org, Pedro Falcato <pedro.falcato@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.5.y 1/3] maple_tree: add mas_is_active() to detect
- in-tree walks
-Message-ID: <2023100728-anything-shorts-1f39@gregkh>
-References: <2023100439-obtuse-unchain-b580@gregkh>
- <20231005195900.252077-1-Liam.Howlett@oracle.com>
+To:     Yajun Deng <yajun.deng@linux.dev>
+Cc:     jesse.brandeburg@intel.com, anthony.l.nguyen@intel.com,
+        jacob.e.keller@intel.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] i40e: fix the wrong PTP frequency calculation
+Message-ID: <2023100707-hydrogen-tapestry-62e8@gregkh>
+References: <20230926071059.1239033-1-yajun.deng@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231005195900.252077-1-Liam.Howlett@oracle.com>
+In-Reply-To: <20230926071059.1239033-1-yajun.deng@linux.dev>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -47,9 +46,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Oct 05, 2023 at 03:58:58PM -0400, Liam R. Howlett wrote:
-> Patch series "maple_tree: Fix mas_prev() state regression".
+On Tue, Sep 26, 2023 at 03:10:59PM +0800, Yajun Deng wrote:
+> The new adjustment should be based on the base frequency, not the
+> I40E_PTP_40GB_INCVAL in i40e_ptp_adjfine().
+> 
+> This issue was introduced in commit 3626a690b717 ("i40e: use
+> mul_u64_u64_div_u64 for PTP frequency calculation"), frequency is left
+> just as base I40E_PTP_40GB_INCVAL before the commit. After the commit,
+> frequency is the I40E_PTP_40GB_INCVAL times the ptp_adj_mult value.
+> But then the diff is applied on the wrong value, and no multiplication
+> is done afterwards.
+> 
+> It was accidentally fixed in commit 1060707e3809 ("ptp: introduce helpers
+> to adjust by scaled parts per million"). It uses adjust_by_scaled_ppm
+> correctly performs the calculation and uses the base adjustment, so
+> there's no error here. But it is a new feature and doesn't need to
+> backported to the stable releases.
+> 
+> This issue affects both v6.0 and v6.1, and the v6.1 version is an LTS
+> release. Therefore, the patch only needs to be applied to v6.1 stable.
+> 
+> Fixes: 3626a690b717 ("i40e: use mul_u64_u64_div_u64 for PTP frequency calculation")
+> Cc: <stable@vger.kernel.org> # 6.1
+> Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+> Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+> ---
+>  drivers/net/ethernet/intel/i40e/i40e_ptp.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-All now queued up, thanks.
+Now queued up, thanks.
 
 greg k-h
