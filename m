@@ -2,40 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E6DF7BC742
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 13:44:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 012447BC746
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 13:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343869AbjJGLoS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 07:44:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37682 "EHLO
+        id S1343875AbjJGLxs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 07:53:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343837AbjJGLoR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 07:44:17 -0400
+        with ESMTP id S1343680AbjJGLxs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 07:53:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98B4FB6
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 04:44:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99F4C433C7;
-        Sat,  7 Oct 2023 11:44:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5386AB6;
+        Sat,  7 Oct 2023 04:53:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 472E6C433C8;
+        Sat,  7 Oct 2023 11:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696679056;
-        bh=s8a5HRpv6ncDmOAZ3OoS2FcU/Djzd1Ioyod870SGjyY=;
+        s=korg; t=1696679626;
+        bh=dqUCLf7VJJQ0WmX/MCm12hiJxadk/DBDL9bDj5rTUg0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Wj506HPS30JldB+Ipk7YGi/iQZxQfxbxnQCbnVtEL+YNRMZOfIswOgq4AGas4W6uM
-         NQJAFUEnghhKu2PoaDhl2HMjEfdUcKh6oI12Ea/7zPuhR6Its02RTJ2GQ9LJYLWily
-         h9Ut1LPPcCntC79yhUqEBWe6qxi+Tw+gFIWqJacI=
-Date:   Sat, 7 Oct 2023 13:44:13 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Marek Vasut <marex@denx.de>
-Cc:     linux-stable <stable@vger.kernel.org>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: Re: Drop from 5.15 and older -- clk: imx: pll14xx: dynamically
- configure PLL for 393216000/361267200Hz
-Message-ID: <2023100738-shell-scant-cfb6@gregkh>
-References: <4e5fa5b2-66b8-8f0b-ccb9-c2b774054e4e@denx.de>
+        b=W2pkUPldZaTK/U7f0cFp/yf/G63SlUhl3nWK3cjfVeiNanEE7E9G2CMVFUHlLgvBB
+         7Vr0vlqLLcAmWY7UkdAVjMhXigqf8FVEPeV1idcOBdEOYz7DSTQ2XOYnJk/+quBebH
+         G9YW5ejUnFDKPcawvr4tWTQFF3r8BQEUIYsLULnE=
+Date:   Sat, 7 Oct 2023 13:53:44 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Ben Hutchings <ben@decadent.org.uk>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        stable <stable@kernel.org>,
+        Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Christoph Hellwig <hch@lst.de>, linux-media@vger.kernel.org,
+        linux-modules@vger.kernel.org,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: Re: [PATCH 4.19 178/273] media: dvb: symbol fixup for dvb_attach()
+Message-ID: <2023100730-imprint-follow-56ec@gregkh>
+References: <20230920112846.440597133@linuxfoundation.org>
+ <20230920112852.017230256@linuxfoundation.org>
+ <b12435b2311ada131db05d3cf195b4b5d87708eb.camel@decadent.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4e5fa5b2-66b8-8f0b-ccb9-c2b774054e4e@denx.de>
+In-Reply-To: <b12435b2311ada131db05d3cf195b4b5d87708eb.camel@decadent.org.uk>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -46,22 +53,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 03, 2023 at 10:52:25PM +0200, Marek Vasut wrote:
-> Please drop the following commits from stable 5.10.y and 5.15.y respectively
+On Thu, Sep 28, 2023 at 01:36:06AM +0200, Ben Hutchings wrote:
+> On Wed, 2023-09-20 at 13:30 +0200, Greg Kroah-Hartman wrote:
+> > 4.19-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > 
+> > commit 86495af1171e1feec79faa9b64c05c89f46e41d1 upstream.
+> > 
+> > In commit 9011e49d54dc ("modules: only allow symbol_get of
+> > EXPORT_SYMBOL_GPL modules") the use of symbol_get is properly restricted
+> > to GPL-only marked symbols.  This interacts oddly with the DVB logic
+> > which only uses dvb_attach() to load the dvb driver which then uses
+> > symbol_get().
+> > 
+> > Fix this up by properly marking all of the dvb_attach attach symbols as
+> > EXPORT_SYMBOL_GPL().
+> [...]
 > 
-> 972acd701b19 ("clk: imx: pll14xx: dynamically configure PLL for
-> 393216000/361267200Hz")
-> a8474506c912 ("clk: imx: pll14xx: dynamically configure PLL for
-> 393216000/361267200Hz")
+> This (and other) backports missed a couple of affected exports:
 > 
-> The commit message states 'Cc: stable@vger.kernel.org # v5.18+'
-> and the commit should only be applied to Linux 5.18.y and newer,
-> on anything older it breaks PLL configuration due to missing
-> prerequisite patches.
+> - sp8870_attach in drivers/media/dvb-frontends/sp8870.c
+>   (renamed to drivers/staging/media/av7110/sp8870.c upstream)
+> - xc2028_attach in drivers/media/tuners/tuner-xc2028.c
+>   (renamed to drivers/media/tuners/xc2028.c upstream)
 
-Ok, I'll go revert them, but the Fixes: tag in this commit is very wrong
-as that's what we used to determine how far back to take these changes.
-
-thanks,
+Thanks for catching this, fixed up now for 4.14.y and 4.19.y.
 
 greg k-h
