@@ -2,136 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E49567BC216
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 00:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A5207BC3AC
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 03:28:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233648AbjJFWMx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 18:12:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45456 "EHLO
+        id S234067AbjJGB2j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 21:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233397AbjJFWMw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 18:12:52 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6891BF
-        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 15:12:50 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1c874b43123so22103555ad.2
-        for <stable@vger.kernel.org>; Fri, 06 Oct 2023 15:12:50 -0700 (PDT)
+        with ESMTP id S234042AbjJGB22 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 21:28:28 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4C4EBD
+        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 18:28:26 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-690bd59322dso2291839b3a.3
+        for <stable@vger.kernel.org>; Fri, 06 Oct 2023 18:28:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1696630370; x=1697235170; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iHQtvCOqet4K+ZxgJSgWcab3IirKmkpaYjS7FQ4Cvcc=;
-        b=D2RfmYGl8b8qjw74OumE1KeEPBqg/v3XzlcSTvg2OBueTmFN0aHBeAlem543lpoUai
-         zKgLTR4VJGyqnID4JASC4+YoW8+0bM2or+5vxQCEO8JAu4T3bCjyaHmcEAhtCkZW80e3
-         T4QCOR0erfHIMaJm2ynMWar4e6SVQJ/NANLqw6Xp9kcw0B/bfGglNHZ7HbHSuijIKZiF
-         HU3mjr65wXatbgzjAmdGugvnhfnmI4cxX1LbILlq2aEUKcHcwuswjheCuGck+gyuzNWI
-         4m6BgnmR9ownByprzb+tAZ6EGH5cTCyW43qIcB4ghq8TYkzkSO8E0+/KLTrpYBcGGJ+n
-         Wcpw==
+        d=chromium.org; s=google; t=1696642106; x=1697246906; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rQNnXBnSwzfsN2zrI7/k3aUY1SO1WpMoDwjEZpkrIxM=;
+        b=Tkim1QONG/9kE53t1d6txbvvKmIc7Wh3I3WmMxd/izzCCouscolK1+hLMTvNI2JTHU
+         YwgOP2Vu/g7xIlXGqixd4BJr7GHQARDHGU+UPnZDVuADEtEbBA84LE6nR9UlXw2ujStc
+         RgerBIaeaG8VG4cR7KSNbu5p5UyQuLuOEvxUs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696630370; x=1697235170;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iHQtvCOqet4K+ZxgJSgWcab3IirKmkpaYjS7FQ4Cvcc=;
-        b=IGUd0Wi4ZosFIMmMvZ0qNElaSOdgL+x0rnGYQIXsGBxAvzuQGZ3I1VoYt+Aa4NYgd9
-         8/6ZaZTY5DsPod2+vgaMA+nO5jXLrPyj/47vQNqRWfPpitilJCM6NVZ19DcqDJCfd6kZ
-         3wnOgCaOlpAWzS3BN5A6IDBeCDdloZ9SeFiJHBiX5T5gmDwlxFq0gGmW1beBqw9nUhOQ
-         fAlOaVeC3RVWcpTaqewRGe2NCFAZVNfeWmWDiKFUchXUApwBWF2xebV9Mt0a8F/mqnUH
-         qiVUOnQsIx0cO7hUKcYpLfT7O5M8VgaHIOcwsAn/ZWcGooadJXXA9kvSSGCRcE9AkZWn
-         KX+g==
-X-Gm-Message-State: AOJu0YxTleIraI/Wlo/Heel5tTrl2/xglujEeMA8vWQu1/GZqqHJ3QKQ
-        61Z6XgmqqQ0LEoM8hfvnnvKISA==
-X-Google-Smtp-Source: AGHT+IFch0L2eBB11k+yQ7Pp4uZMeyMYYxH4y9b95LG8JPljPZHp5HnbtE3E2Lg41WF/o5h824lBjA==
-X-Received: by 2002:a17:902:8f8b:b0:1c5:f0fd:51be with SMTP id z11-20020a1709028f8b00b001c5f0fd51bemr8305666plo.69.1696630370236;
-        Fri, 06 Oct 2023 15:12:50 -0700 (PDT)
-Received: from ?IPV6:2804:14d:5c5e:44fb:4bb6:b4ed:3ecb:e6a6? ([2804:14d:5c5e:44fb:4bb6:b4ed:3ecb:e6a6])
-        by smtp.gmail.com with ESMTPSA id n3-20020a170902e54300b001c20c608373sm4411655plf.296.2023.10.06.15.12.47
+        d=1e100.net; s=20230601; t=1696642106; x=1697246906;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rQNnXBnSwzfsN2zrI7/k3aUY1SO1WpMoDwjEZpkrIxM=;
+        b=Xktmut0XZSZXoRM6Ri38NRzDId19wScL1amz+m2F+EdSsqqo+S0CKHFnAzS61qJ8uE
+         U2XlSks4yu2l+rumjagWeMlqGVc3MxhFcTRNsZJL9w/y8i8FXODSkwwMoNYg5b/Bh1qU
+         qX7+R0E6bXOgEHem433Y9ASivfBcXdhoHvNWahA4brJSemypXZzt72vRuNL0c5Y+/yun
+         polmoz/NJfgWkOTz1GGU2gJaU4GH0Y6nJk71/qac/PdZeMcTyisja1JYZ1W8pbWFqcX/
+         +DA4Ay31d2jH8r8gskfN0s3aKmjBP/aGx1bTJnMSSknk7jJba/8V/NU3AzagGTzHgQU2
+         NQEg==
+X-Gm-Message-State: AOJu0YxL7+SGAhF9ARZxWhAtMoxRXONn4WbvLhKMvo50XV0P/nXy1/yH
+        5u1tghGsx+OmzN3PIUCWPk44/A==
+X-Google-Smtp-Source: AGHT+IFgSpdJXRlHpObTlC1ba3rWEGA93CD9bVltNHco7wy1/jSBrQ0keIe/jvsDstn28NxLhH5baA==
+X-Received: by 2002:a05:6a20:9699:b0:161:2bed:6b36 with SMTP id hp25-20020a056a20969900b001612bed6b36mr8700355pzc.31.1696642106158;
+        Fri, 06 Oct 2023 18:28:26 -0700 (PDT)
+Received: from localhost ([2620:15c:9d:2:138c:8976:eb4a:a91c])
+        by smtp.gmail.com with UTF8SMTPSA id kx14-20020a170902f94e00b001ab39cd875csm4580815plb.133.2023.10.06.18.28.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Oct 2023 15:12:49 -0700 (PDT)
-Message-ID: <065a0dac-499f-7375-ddb4-1800e8ef61d1@mojatatu.com>
-Date:   Fri, 6 Oct 2023 19:12:46 -0300
+        Fri, 06 Oct 2023 18:28:25 -0700 (PDT)
+From:   Sarthak Kukreti <sarthakkukreti@chromium.org>
+To:     dm-devel@redhat.com, linux-block@vger.kernel.org,
+        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org
+Cc:     Jens Axboe <axboe@kernel.dk>, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        Brian Foster <bfoster@redhat.com>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Bart Van Assche <bvanassche@google.com>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Dave Chinner <david@fromorbit.com>,
+        Sarthak Kukreti <sarthakkukreti@chromium.org>,
+        stable@vger.kernel.org, Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v8 1/5] block: Don't invalidate pagecache for invalid falloc modes
+Date:   Fri,  6 Oct 2023 18:28:13 -0700
+Message-ID: <20231007012817.3052558-2-sarthakkukreti@chromium.org>
+X-Mailer: git-send-email 2.42.0.609.gbb76f46606-goog
+In-Reply-To: <20231007012817.3052558-1-sarthakkukreti@chromium.org>
+References: <20231007012817.3052558-1-sarthakkukreti@chromium.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC
- requirement
-Content-Language: en-US
-To:     Christian Theune <ct@flyingcircus.io>, stable@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     regressions@lists.linux.dev, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
-From:   Pedro Tammela <pctammela@mojatatu.com>
-In-Reply-To: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 06/10/2023 05:37, Christian Theune wrote:
-> Hi,
-> 
-> (prefix, I was not aware of the regression reporting process and incorrectly reported this informally with the developers mentioned in the change)
-> 
-> I upgraded from 6.1.38 to 6.1.55 this morning and it broke my traffic shaping script, leaving me with a non-functional uplink on a remote router.
-> 
-> The script errors out like this:
-> 
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ext=ispA
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ext_ingress=ifb0
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + modprobe ifb
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + modprobe act_mirred
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ispA root
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2061]: Error: Cannot delete qdisc with handle of zero.
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ispA ingress
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2064]: Error: Cannot find specified qdisc on specified device.
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ifb0 root
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2066]: Error: Cannot delete qdisc with handle of zero.
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc del dev ifb0 ingress
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2067]: Error: Cannot find specified qdisc on specified device.
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + true
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc add dev ispA handle ffff: ingress
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + ifconfig ifb0 up
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc filter add dev ispA parent ffff: protocol all u32 match u32 0 0 action mirred egress redirect dev ifb0
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc qdisc add dev ifb0 root handle 1: hfsc default 1
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc class add dev ifb0 parent 1: classid 1:999 hfsc rt m2 2.5gbit
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2053]: + tc class add dev ifb0 parent 1:999 classid 1:1 hfsc sc rate 50mbit
-> Oct 06 05:49:22 wendy00 isp-setup-shaping-start[2077]: Error: Invalid parent - parent class must have FSC.
-> 
-> The error message is also a bit weird (but that’s likely due to iproute2 being weird) as the CLI interface for `tc` and the error message do not map well. (I think I would have to choose `hfsc sc` on the parent to enable the FSC option which isn’t mentioned anywhere in the hfsc manpage).
-> 
-> The breaking change was introduced in 6.1.53[1] and a multitude of other currently supported kernels:
-> 
+Only call truncate_bdev_range() if the fallocate mode is
+supported. This fixes a bug where data in the pagecache
+could be invalidated if the fallocate() was called on the
+block device with an invalid mode.
 
-Hi,
+Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
+Cc: stable@vger.kernel.org
+Reported-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+---
+ block/fops.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-Your script is actually incorrect.
-`man 7 tc-hfsc` goes in depth into why, but I just wanna highlight this 
-section:
-SEPARATE LS / RT SCs
-        Another difference from the original HFSC paper is that RT and 
-LS SCs can be specified separately. Moreover, leaf classes are
-        allowed to have only either RT SC or LS SC. For interior 
-classes, only LS SCs make sense: any RT SC will be ignored.
-
-The last part ("For interior classes...") was what the referenced patch 
-fixed. We were mistakenly allowing RTs into "interior classes" which the 
-implementation never accounted for and this was a source of crashes. I'm 
-surprised you were lucky enough to never crash the kernel ;)
--=
-I believe the script could be updated to the following and still achieve 
-the same results:
-tc class add dev ifb0 parent 1: classid 1:999 hfsc ls m2 2.5gbit
-tc class add dev ifb0 parent 1:999 classid 1:1 hfsc rt rate 50mbit
-
+diff --git a/block/fops.c b/block/fops.c
+index acff3d5d22d4..73e42742543f 100644
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -772,24 +772,35 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
+ 
+ 	filemap_invalidate_lock(inode->i_mapping);
+ 
+-	/* Invalidate the page cache, including dirty pages. */
+-	error = truncate_bdev_range(bdev, file_to_blk_mode(file), start, end);
+-	if (error)
+-		goto fail;
+-
++	/*
++	 * Invalidate the page cache, including dirty pages, for valid
++	 * de-allocate mode calls to fallocate().
++	 */
+ 	switch (mode) {
+ 	case FALLOC_FL_ZERO_RANGE:
+ 	case FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE:
++		error = truncate_bdev_range(bdev, file_to_blk_mode(file), start, end);
++		if (error)
++			goto fail;
++
+ 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
+ 					     len >> SECTOR_SHIFT, GFP_KERNEL,
+ 					     BLKDEV_ZERO_NOUNMAP);
+ 		break;
+ 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE:
++		error = truncate_bdev_range(bdev, file_to_blk_mode(file), start, end);
++		if (error)
++			goto fail;
++
+ 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
+ 					     len >> SECTOR_SHIFT, GFP_KERNEL,
+ 					     BLKDEV_ZERO_NOFALLBACK);
+ 		break;
+ 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE | FALLOC_FL_NO_HIDE_STALE:
++		error = truncate_bdev_range(bdev, file_to_blk_mode(file), start, end);
++		if (error)
++			goto fail;
++
+ 		error = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
+ 					     len >> SECTOR_SHIFT, GFP_KERNEL);
+ 		break;
+-- 
+2.42.0.609.gbb76f46606-goog
 
