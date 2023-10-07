@@ -2,64 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55BDC7BC996
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 20:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C06937BC9A9
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 22:04:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233364AbjJGSm4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 14:42:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35482 "EHLO
+        id S1343828AbjJGUEj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 16:04:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjJGSmz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 14:42:55 -0400
-Received: from proxima.lasnet.de (proxima.lasnet.de [IPv6:2a01:4f8:121:31eb:3::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0198F93;
-        Sat,  7 Oct 2023 11:42:53 -0700 (PDT)
-Received: from [IPV6:2003:e9:d743:5c31:3105:419d:bcff:11c7] (p200300e9d7435c313105419dbcff11c7.dip0.t-ipconnect.de [IPv6:2003:e9:d743:5c31:3105:419d:bcff:11c7])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: stefan@datenfreihafen.org)
-        by proxima.lasnet.de (Postfix) with ESMTPSA id A9B5FC018D;
-        Sat,  7 Oct 2023 20:42:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=datenfreihafen.org;
-        s=2021; t=1696704167;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EPgzJpN+KSTuOzQ3xY/vszJbchz47yeonl0DRQJME30=;
-        b=jXhPRJ0iXYmaQCXG3Z910vQRe/gBwBVtk5SLWoak+NGfuKK6D9+7AJQfyC2Z3UHsFelL4c
-        3kaw92Co2LihIDymaKx7g0gaK3QvbNfU9RZ+Pm24SJ7JHZXAL8IQ5/21NTsDSpghBRqvxd
-        /XDp8xuqFEUHt+sglqW7M/ZAaojsYPO3/j6Sdl6WM9YsTLiA4hYb3lxVxECVJNiArM4+ao
-        y3G2ksL+b5rJs7EeGmPqXw0YU+FYEuBH5YNbLxFnS60XPKtfYBIGRaNJNw3yUSgdp3Pn3L
-        v6BnP0dho/ZNEPMonOuoQUqyohWZ/0lGYGPo3gp6zhAXXa48YvuQ7yH5RV3qZQ==
-Message-ID: <c2b7264f-c533-2d80-e41e-a7019aefb602@datenfreihafen.org>
-Date:   Sat, 7 Oct 2023 20:42:46 +0200
+        with ESMTP id S1343782AbjJGUEj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 16:04:39 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1DFBBA;
+        Sat,  7 Oct 2023 13:04:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C135EC433C7;
+        Sat,  7 Oct 2023 20:04:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696709077;
+        bh=k+E7o4trRwpUVpsgiWw9zd/8lmV+kOwn1CHhDi4J/Yo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jblyM3cEtrib/74xHI17sH3ZJytEYYeAjCDJPFD3KBCStlKs9wJ2HGxDFdvarbqFx
+         P36i22ZGZM67vyqEdfO9Ad3jx1oaK//GGZA5uBXorrNyJvqkq5qnAKDP3V+ZaLnAh2
+         lnmDVYg1qVN84i7cblbu/rhsRCro+/X6M3LTbksmIv1zXohwfC6C2WMYnKpP5LF3nw
+         VMkFPEsWGWpg5KxdeWJFzPh8lQX0cgNxP7+f1bOspOyGrTM+fU2vkjw3ycEjAq5AIE
+         O7yLzUTUHvd33/7pklmbQ53JP1Ni2pVLHSs0yw0YoLHOV0pPcH2ij2q6ez5KgWvQWF
+         JrOsensvDSjTg==
+From:   SeongJae Park <sj@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     SeongJae Park <sj@kernel.org>, damon@lists.linux.dev,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH 1/1] mm/damon/sysfs: check DAMOS regions update progress from before_terminate()
+Date:   Sat,  7 Oct 2023 20:04:32 +0000
+Message-Id: <20231007200432.3110-1-sj@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] [v4] ieee802154: ca8210: Fix a potential UAF in
- ca8210_probe
-Content-Language: en-US
-To:     Dinghao Liu <dinghao.liu@zju.edu.cn>
-Cc:     stable@vger.kernel.org, Alexander Aring <alex.aring@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Harry Morris <harrymorris12@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20231007033049.22353-1-dinghao.liu@zju.edu.cn>
-From:   Stefan Schmidt <stefan@datenfreihafen.org>
-In-Reply-To: <20231007033049.22353-1-dinghao.liu@zju.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,37 +47,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello.
+DAMON_SYSFS can receive DAMOS tried regions update request while kdamond
+is already out of the main loop and before_terminate callback
+(damon_sysfs_before_terminate() in this case) is not yet called.  And
+damon_sysfs_handle_cmd() can further be finished before the callback is
+invoked.  Then, damon_sysfs_before_terminate() unlocks damon_sysfs_lock,
+which is not locked by anyone.  This happens because the callback
+function assumes damon_sysfs_cmd_request_callback() should be called
+before it.  Check if the assumption was true before doing the unlock, to
+avoid this problem.
 
-On 07.10.23 05:30, Dinghao Liu wrote:
-> If of_clk_add_provider() fails in ca8210_register_ext_clock(),
-> it calls clk_unregister() to release priv->clk and returns an
-> error. However, the caller ca8210_probe() then calls ca8210_remove(),
-> where priv->clk is freed again in ca8210_unregister_ext_clock(). In
-> this case, a use-after-free may happen in the second time we call
-> clk_unregister().
-> 
-> Fix this by removing the first clk_unregister(). Also, priv->clk could
-> be an error code on failure of clk_register_fixed_rate(). Use
-> IS_ERR_OR_NULL to catch this case in ca8210_unregister_ext_clock().
-> 
-> Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
-> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-> ---
-> 
-> Changelog:
-> 
-> v2: -Remove the first clk_unregister() instead of nulling priv->clk.
-> 
-> v3: -Simplify ca8210_register_ext_clock().
->      -Add a ';' after return in ca8210_unregister_ext_clock().
-> 
-> v4: -Remove an unused variable 'ret'.
+Fixes: f1d13cacabe1 ("mm/damon/sysfs: implement DAMOS tried regions update command")
+Cc: <stable@vger.kernel.org> # 6.2.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/sysfs.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-
-This patch has been applied to the wpan tree and will be
-part of the next pull request to net. Thanks!
-
-regards
-Stefan Schmidt
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index b86ba7b0a921..f60e56150feb 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1208,6 +1208,8 @@ static int damon_sysfs_set_targets(struct damon_ctx *ctx,
+ 	return 0;
+ }
+ 
++static bool damon_sysfs_schemes_regions_updating;
++
+ static void damon_sysfs_before_terminate(struct damon_ctx *ctx)
+ {
+ 	struct damon_target *t, *next;
+@@ -1219,8 +1221,10 @@ static void damon_sysfs_before_terminate(struct damon_ctx *ctx)
+ 	cmd = damon_sysfs_cmd_request.cmd;
+ 	if (kdamond && ctx == kdamond->damon_ctx &&
+ 			(cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_REGIONS ||
+-			 cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_BYTES)) {
++			 cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_BYTES) &&
++			damon_sysfs_schemes_regions_updating) {
+ 		damon_sysfs_schemes_update_regions_stop(ctx);
++		damon_sysfs_schemes_regions_updating = false;
+ 		mutex_unlock(&damon_sysfs_lock);
+ 	}
+ 
+@@ -1340,7 +1344,6 @@ static int damon_sysfs_commit_input(struct damon_sysfs_kdamond *kdamond)
+ static int damon_sysfs_cmd_request_callback(struct damon_ctx *c)
+ {
+ 	struct damon_sysfs_kdamond *kdamond;
+-	static bool damon_sysfs_schemes_regions_updating;
+ 	bool total_bytes_only = false;
+ 	int err = 0;
+ 
+-- 
+2.34.1
 
