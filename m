@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E771D7BC78F
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:34:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40A0B7BC790
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343891AbjJGMew (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 08:34:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45520 "EHLO
+        id S1343916AbjJGMez (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 08:34:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343680AbjJGMev (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:34:51 -0400
+        with ESMTP id S1343680AbjJGMey (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:34:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07CDEAB
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:34:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24207C433C7;
-        Sat,  7 Oct 2023 12:34:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06E29AB
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:34:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB98C433C8;
+        Sat,  7 Oct 2023 12:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696682089;
-        bh=7E/w3r9uE/cJSmKsXSpMttFlOogU8f31ZW65c21FRNo=;
+        s=korg; t=1696682092;
+        bh=ojnG+CxZhmZ0Zu89lc78tYbUguNnZ/z1csg7tvMak1c=;
         h=Subject:To:Cc:From:Date:From;
-        b=ndV8BdhKvISQ/0Qzf5ctkggwilL9yw1nNphs4yU8aaoovX3jmgZcEZHpXUI+HF4z3
-         nUg42tifX8bzMJACUcUtB+KKyMUXVFQjkyhsp5+NqRbhNSYvq0vVbB5XoMFEN1s7BE
-         MQel0to2HUTHOC+xN7Hl6YV6dzCKqnyl7/zzKY3U=
-Subject: FAILED: patch "[PATCH] arm64: errata: Add Cortex-A520 speculative unprivileged load" failed to apply to 5.15-stable tree
+        b=xs3pLdzrd21CJ8ZoiOFCSFxEh37VpkeO1fruFnWdKJQn5A17neZ89V9WwROMZWyzc
+         QyyfSV2j/v/SdJ+f8ebr1JNaF4rwB4XEgamoZFbdOiEQYlrLDRu0Or2mj6XoNDgO8C
+         QS0M0azL6JGl+TknkqjVAot+9oqNt+kDBFmgg/bU=
+Subject: FAILED: patch "[PATCH] arm64: errata: Add Cortex-A520 speculative unprivileged load" failed to apply to 5.10-stable tree
 To:     robh@kernel.org, will@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 07 Oct 2023 14:34:44 +0200
-Message-ID: <2023100743-evasion-figment-fbcc@gregkh>
+Date:   Sat, 07 Oct 2023 14:34:45 +0200
+Message-ID: <2023100745-statute-component-dd0f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 471470bc7052d28ce125901877dd10e4c048e513
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100743-evasion-figment-fbcc@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100745-statute-component-dd0f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
