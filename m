@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA207BC78B
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 440087BC78C
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:33:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343964AbjJGMdG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 08:33:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39528 "EHLO
+        id S1343962AbjJGMdK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 08:33:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344000AbjJGMdF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:33:05 -0400
+        with ESMTP id S1343965AbjJGMdJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:33:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D84BC
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:33:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0F9C433C8;
-        Sat,  7 Oct 2023 12:33:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50600B9
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:33:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0131C433C8;
+        Sat,  7 Oct 2023 12:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696681982;
-        bh=fysPsl/xGHS4LZen0EdRIVCS878ciNCz81B9YDZ/Ddg=;
+        s=korg; t=1696681986;
+        bh=qiYJ/ZQBb6unMFt7O+VoUr65m+uxgEIoXTneo22Nxq0=;
         h=Subject:To:Cc:From:Date:From;
-        b=E4mydffQgmVQ3RXJ3Le95cfHpGWjl5GPF7ZiaJ/knSv9BIpukZrCFYt2iapoNBgbM
-         zs/1lHslaRYG3s0UlUQRCA/jEu37vzMuuDGdDxkXp6kd7FkJUrp1QbxyxhAyrKoEwn
-         tupjgtwQpfcm7xvuHPmjjafwtGB1BA3JJNjaIlQE=
-Subject: FAILED: patch "[PATCH] net: stmmac: remove unneeded stmmac_poll_controller" failed to apply to 6.1-stable tree
+        b=beBXg4CtuqYORIy58AAz23/DWqmLIVHXEkME4YDzWKHixvRAnrqVxDHaH03zE7Ieq
+         DuH7vb5GGdLb2IdL9rlACKpsUxxK/OgOwhd7qjA1H9CxYznnU2dQazMRACsRqJJM3+
+         kLjZ29UQlosCf79iXU+TikylEdm7WwGapEcFFP/g=
+Subject: FAILED: patch "[PATCH] net: stmmac: remove unneeded stmmac_poll_controller" failed to apply to 5.15-stable tree
 To:     repk@triplefau.lt, horms@kernel.org, kuba@kernel.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 07 Oct 2023 14:32:57 +0200
-Message-ID: <2023100756-pep-portfolio-7013@gregkh>
+Date:   Sat, 07 Oct 2023 14:32:58 +0200
+Message-ID: <2023100758-frosting-motto-83c1@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3eef8555891026628aa1cc6dbc01db86df88aa26
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100756-pep-portfolio-7013@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100758-frosting-motto-83c1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
