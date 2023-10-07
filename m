@@ -2,97 +2,179 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 991767BC3D5
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 03:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B49A7BC40E
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 04:01:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234018AbjJGBg0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 6 Oct 2023 21:36:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60932 "EHLO
+        id S233755AbjJGCB5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 6 Oct 2023 22:01:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233822AbjJGBgX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 21:36:23 -0400
-Received: from zg8tndyumtaxlji0oc4xnzya.icoremail.net (zg8tndyumtaxlji0oc4xnzya.icoremail.net [46.101.248.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E7CEEBF
-        for <stable@vger.kernel.org>; Fri,  6 Oct 2023 18:36:20 -0700 (PDT)
-Received: from dinghao.liu$zju.edu.cn ( [10.190.65.233] ) by
- ajax-webmail-mail-app4 (Coremail) ; Sat, 7 Oct 2023 09:35:16 +0800
- (GMT+08:00)
-X-Originating-IP: [10.190.65.233]
-Date:   Sat, 7 Oct 2023 09:35:16 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From:   dinghao.liu@zju.edu.cn
-To:     "Stefan Schmidt" <stefan@datenfreihafen.org>
-Cc:     "kernel test robot" <lkp@intel.com>, oe-kbuild-all@lists.linux.dev,
-        stable@vger.kernel.org, "Alexander Aring" <alex.aring@gmail.com>,
-        "Miquel Raynal" <miquel.raynal@bootlin.com>,
-        "Eric Dumazet" <edumazet@google.com>,
-        "Jakub Kicinski" <kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        "Harry Morris" <harrymorris12@gmail.com>,
-        "Marcel Holtmann" <marcel@holtmann.org>,
-        linux-wpan@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] [v3] ieee802154: ca8210: Fix a potential UAF in
- ca8210_probe
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2023.2-cmXT5 build
- 20230825(e13b6a3b) Copyright (c) 2002-2023 www.mailtech.cn
- mispb-4df6dc2c-e274-4d1c-b502-72c5c3dfa9ce-zj.edu.cn
-In-Reply-To: <1ed2f41f-ac5a-0b76-1012-410857d4da54@datenfreihafen.org>
-References: <20231001054949.14624-1-dinghao.liu@zju.edu.cn>
- <202310011548.qyQMuodI-lkp@intel.com>
- <1ed2f41f-ac5a-0b76-1012-410857d4da54@datenfreihafen.org>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=UTF-8
+        with ESMTP id S233040AbjJGCB4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 6 Oct 2023 22:01:56 -0400
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 089F5BD;
+        Fri,  6 Oct 2023 19:01:52 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=35;SR=0;TI=SMTPD_---0VtTbrvR_1696644107;
+Received: from 30.240.114.194(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VtTbrvR_1696644107)
+          by smtp.aliyun-inc.com;
+          Sat, 07 Oct 2023 10:01:50 +0800
+Message-ID: <645ee424-316b-c093-6113-9abdfb42dab5@linux.alibaba.com>
+Date:   Sat, 7 Oct 2023 10:01:46 +0800
 MIME-Version: 1.0
-Message-ID: <364ac434.4e95.18b07c644b7.Coremail.dinghao.liu@zju.edu.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: cS_KCgCHWPXUtSBlDLgmAA--.2669W
-X-CM-SenderInfo: qrrzjiaqtzq6lmxovvfxof0/1tbiAgIABmUexqIjNQAEsL
-X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
-        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
-        daVFxhVjvjDU=
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [RESEND PATCH v8 2/2] ACPI: APEI: handle synchronous exceptions
+ in task work
+To:     Naoya Horiguchi <naoya.horiguchi@linux.dev>
+Cc:     rafael@kernel.org, wangkefeng.wang@huawei.com,
+        tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
+        linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com,
+        gregkh@linuxfoundation.org, will@kernel.org,
+        linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+        stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+        ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+        baolin.wang@linux.alibaba.com, bp@alien8.de, tglx@linutronix.de,
+        mingo@redhat.com, dave.hansen@linux.intel.com, jarkko@kernel.org,
+        lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com,
+        lvying6@huawei.com, xiexiuqi@huawei.com,
+        zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20230919022127.69732-3-xueshuai@linux.alibaba.com>
+ <20231003082858.GA750796@ik1-406-35019.vs.sakura.ne.jp>
+Content-Language: en-US
+From:   Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20231003082858.GA750796@ik1-406-35019.vs.sakura.ne.jp>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-12.7 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Cj4gSGVsbG8gRGluZ2hhbywKPiAKPiAKPiBPbiAwMS4xMC4yMyAwOToxOSwga2VybmVsIHRlc3Qg
-cm9ib3Qgd3JvdGU6Cj4gPiBIaSBEaW5naGFvLAo+ID4gCj4gPiBrZXJuZWwgdGVzdCByb2JvdCBu
-b3RpY2VkIHRoZSBmb2xsb3dpbmcgYnVpbGQgd2FybmluZ3M6Cj4gPiAKPiA+IFthdXRvIGJ1aWxk
-IHRlc3QgV0FSTklORyBvbiBsaW51cy9tYXN0ZXJdCj4gPiBbYWxzbyBidWlsZCB0ZXN0IFdBUk5J
-Tkcgb24gdjYuNi1yYzMgbmV4dC0yMDIzMDkyOV0KPiA+IFtJZiB5b3VyIHBhdGNoIGlzIGFwcGxp
-ZWQgdG8gdGhlIHdyb25nIGdpdCB0cmVlLCBraW5kbHkgZHJvcCB1cyBhIG5vdGUuCj4gPiBBbmQg
-d2hlbiBzdWJtaXR0aW5nIHBhdGNoLCB3ZSBzdWdnZXN0IHRvIHVzZSAnLS1iYXNlJyBhcyBkb2N1
-bWVudGVkIGluCj4gPiBodHRwczovL2dpdC1zY20uY29tL2RvY3MvZ2l0LWZvcm1hdC1wYXRjaCNf
-YmFzZV90cmVlX2luZm9ybWF0aW9uXQo+ID4gCj4gPiB1cmw6ICAgIGh0dHBzOi8vZ2l0aHViLmNv
-bS9pbnRlbC1sYWItbGtwL2xpbnV4L2NvbW1pdHMvRGluZ2hhby1MaXUvaWVlZTgwMjE1NC1jYTgy
-MTAtRml4LWEtcG90ZW50aWFsLVVBRi1pbi1jYTgyMTBfcHJvYmUvMjAyMzEwMDEtMTM1MTMwCj4g
-PiBiYXNlOiAgIGxpbnVzL21hc3Rlcgo+ID4gcGF0Y2ggbGluazogICAgaHR0cHM6Ly9sb3JlLmtl
-cm5lbC5vcmcvci8yMDIzMTAwMTA1NDk0OS4xNDYyNC0xLWRpbmdoYW8ubGl1JTQwemp1LmVkdS5j
-bgo+ID4gcGF0Y2ggc3ViamVjdDogW1BBVENIXSBbdjNdIGllZWU4MDIxNTQ6IGNhODIxMDogRml4
-IGEgcG90ZW50aWFsIFVBRiBpbiBjYTgyMTBfcHJvYmUKPiA+IGNvbmZpZzogbTY4ay1hbGx5ZXNj
-b25maWcgKGh0dHBzOi8vZG93bmxvYWQuMDEub3JnLzBkYXktY2kvYXJjaGl2ZS8yMDIzMTAwMS8y
-MDIzMTAwMTE1NDgucXlRTXVvZEktbGtwQGludGVsLmNvbS9jb25maWcpCj4gPiBjb21waWxlcjog
-bTY4ay1saW51eC1nY2MgKEdDQykgMTMuMi4wCj4gPiByZXByb2R1Y2UgKHRoaXMgaXMgYSBXPTEg
-YnVpbGQpOiAoaHR0cHM6Ly9kb3dubG9hZC4wMS5vcmcvMGRheS1jaS9hcmNoaXZlLzIwMjMxMDAx
-LzIwMjMxMDAxMTU0OC5xeVFNdW9kSS1sa3BAaW50ZWwuY29tL3JlcHJvZHVjZSkKPiA+IAo+ID4g
-SWYgeW91IGZpeCB0aGUgaXNzdWUgaW4gYSBzZXBhcmF0ZSBwYXRjaC9jb21taXQgKGkuZS4gbm90
-IGp1c3QgYSBuZXcgdmVyc2lvbiBvZgo+ID4gdGhlIHNhbWUgcGF0Y2gvY29tbWl0KSwga2luZGx5
-IGFkZCBmb2xsb3dpbmcgdGFncwo+ID4gfCBSZXBvcnRlZC1ieToga2VybmVsIHRlc3Qgcm9ib3Qg
-PGxrcEBpbnRlbC5jb20+Cj4gPiB8IENsb3NlczogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvb2Ut
-a2J1aWxkLWFsbC8yMDIzMTAwMTE1NDgucXlRTXVvZEktbGtwQGludGVsLmNvbS8KPiA+IAo+ID4g
-QWxsIHdhcm5pbmdzIChuZXcgb25lcyBwcmVmaXhlZCBieSA+Pik6Cj4gPiAKPiA+ICAgICBkcml2
-ZXJzL25ldC9pZWVlODAyMTU0L2NhODIxMC5jOiBJbiBmdW5jdGlvbiAnY2E4MjEwX3JlZ2lzdGVy
-X2V4dF9jbG9jayc6Cj4gPj4+IGRyaXZlcnMvbmV0L2llZWU4MDIxNTQvY2E4MjEwLmM6Mjc0Mzox
-Mzogd2FybmluZzogdW51c2VkIHZhcmlhYmxlICdyZXQnIFstV3VudXNlZC12YXJpYWJsZV0KPiA+
-ICAgICAgMjc0MyB8ICAgICAgICAgaW50IHJldCA9IDA7Cj4gPiAgICAgICAgICAgfCAgICAgICAg
-ICAgICBefn4KPiA+IAo+IAo+IFBsZWFzZSB0YWtlIGNhcmUgb2YgdGhpcyBub3cgdW51c2VkIHZh
-cmlhYmxlIGFmdGVyIHlvdXIgcmUtZmFjdG9yLgo+IFdpdGggdGhpcyBmaXhlZCBhbmQgc2VuZCBv
-dXQgYXMgdjQgSSBhbSBoYXBweSB0byBnZXQgdGhpcyBhcHBsaWVkIHRvIHRoZSAKPiB3cGFuIHRy
-ZWUuCgpJIHdpbGwgcmVzZW5kIHRoZSB2NCBwYXRjaCBzb29uLCB0aGFua3MhCgpSZWdhcmRzLApE
-aW5naGFvCg==
+
+
+On 2023/10/3 16:28, Naoya Horiguchi wrote:
+> On Tue, Sep 19, 2023 at 10:21:27AM +0800, Shuai Xue wrote:
+>> Hardware errors could be signaled by synchronous interrupt, e.g.  when an
+>> error is detected by a background scrubber, or signaled by synchronous
+>> exception, e.g. when an uncorrected error is consumed. Both synchronous and
+>> asynchronous error are queued and handled by a dedicated kthread in
+>> workqueue.
+>>
+>> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
+>> synchronous errors") keep track of whether memory_failure() work was
+>> queued, and make task_work pending to flush out the workqueue so that the
+>> work for synchronous error is processed before returning to user-space.
+>> The trick ensures that the corrupted page is unmapped and poisoned. And
+>> after returning to user-space, the task starts at current instruction which
+>> triggering a page fault in which kernel will send SIGBUS to current process
+>> due to VM_FAULT_HWPOISON.
+>>
+>> However, the memory failure recovery for hwpoison-aware mechanisms does not
+>> work as expected. For example, hwpoison-aware user-space processes like
+>> QEMU register their customized SIGBUS handler and enable early kill mode by
+>> seting PF_MCE_EARLY at initialization. Then the kernel will directy notify
+>> the process by sending a SIGBUS signal in memory failure with wrong
+>> si_code: the actual user-space process accessing the corrupt memory
+>> location, but its memory failure work is handled in a kthread context, so
+>> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
+>> process instead of BUS_MCEERR_AR in kill_proc().
+>>
+>> To this end, separate synchronous and asynchronous error handling into
+>> different paths like X86 platform does:
+>>
+>> - valid synchronous errors: queue a task_work to synchronously send SIGBUS
+>>   before ret_to_user.
+>> - valid asynchronous errors: queue a work into workqueue to asynchronously
+>>   handle memory failure.
+>> - abnormal branches such as invalid PA, unexpected severity, no memory
+>>   failure config support, invalid GUID section, OOM, etc.
+>>
+>> Then for valid synchronous errors, the current context in memory failure is
+>> exactly belongs to the task consuming poison data and it will send SIBBUS
+>> with proper si_code.
+>>
+>> Fixes: 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for synchronous errors")
+>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+>> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>  arch/x86/kernel/cpu/mce/core.c |  9 +---
+>>  drivers/acpi/apei/ghes.c       | 84 +++++++++++++++++++++-------------
+>>  include/acpi/ghes.h            |  3 --
+>>  mm/memory-failure.c            | 17 ++-----
+>>  4 files changed, 56 insertions(+), 57 deletions(-)
+>>
+> ...
+> 
+>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>> index 4d6e43c88489..80e1ea1cc56d 100644
+>> --- a/mm/memory-failure.c
+>> +++ b/mm/memory-failure.c
+>> @@ -2163,7 +2163,9 @@ static int memory_failure_dev_pagemap(unsigned long pfn, int flags,
+>>   *
+>>   * Return: 0 for successfully handled the memory error,
+>>   *         -EOPNOTSUPP for hwpoison_filter() filtered the error event,
+>> - *         < 0(except -EOPNOTSUPP) on failure.
+>> + *         -EHWPOISON for already sent SIGBUS to the current process with
+>> + *         the proper error info,
+> 
+> The meaning of this comment is understood, but the sentence seems to be
+> a little too long. Could you sort this out with bullet points (like below)?
+> 
+>  * Return values:
+>  *   0             - success
+>  *   -EOPNOTSUPP   - hwpoison_filter() filtered the error event.
+>  *   -EHWPOISON    - sent SIGBUS to the current process with the proper
+>  *                   error info by kill_accessing_process().
+>  *   other negative values - failure
+> 
+
+Of course, will do it.
+
+
+>> + *         other negative error code on failure.
+>>   */
+>>  int memory_failure(unsigned long pfn, int flags)
+>>  {
+>> @@ -2445,19 +2447,6 @@ static void memory_failure_work_func(struct work_struct *work)
+>>  	}
+>>  }
+>>  
+>> -/*
+>> - * Process memory_failure work queued on the specified CPU.
+>> - * Used to avoid return-to-userspace racing with the memory_failure workqueue.
+>> - */
+>> -void memory_failure_queue_kick(int cpu)
+>> -{
+>> -	struct memory_failure_cpu *mf_cpu;
+>> -
+>> -	mf_cpu = &per_cpu(memory_failure_cpu, cpu);
+>> -	cancel_work_sync(&mf_cpu->work);
+>> -	memory_failure_work_func(&mf_cpu->work);
+>> -}
+>> -
+> 
+> The declaration of memory_failure_queue_kick() still remains in include/linux/mm.h,
+> so you can remove it together.
+
+Good catch, will remove it too.
+
+> 
+> Thanks,
+> Naoya Horiguchi
+
+
+Thank you for valuable comments.
+
+Best Regards,
+Shuai
