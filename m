@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 149277BC788
-	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 718F37BC789
+	for <lists+stable@lfdr.de>; Sat,  7 Oct 2023 14:32:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343968AbjJGMcz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 7 Oct 2023 08:32:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53788 "EHLO
+        id S1343976AbjJGMc6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 7 Oct 2023 08:32:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343962AbjJGMcy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:32:54 -0400
+        with ESMTP id S1343985AbjJGMc5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 7 Oct 2023 08:32:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6D5EBC
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:32:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37991C433C7;
-        Sat,  7 Oct 2023 12:32:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EFCFC5
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 05:32:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05F8C433C7;
+        Sat,  7 Oct 2023 12:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696681972;
-        bh=Hr7Gi9w5+KkD1WpdhAnhcEskvateTls3iy9ANE0Gtnw=;
+        s=korg; t=1696681976;
+        bh=luPY/GkvzT9eplq9fjB3AFbgjsixF6+ruIfTrdx922s=;
         h=Subject:To:Cc:From:Date:From;
-        b=GTLt3qzTaqNbJbVns5kEu8lkW5IoVzKT1qI/Ozd9mJzHuhJmcV9tlmH9u9VKWiHuR
-         sb089eLeIPa4GaMx3bEsg3oKcNFVuWCbIM3aitP8OcQfBFUK48Dd8C22zg/0498Qzg
-         RpXEBJabsD2N8C8oK3dKOMu1OEZwKHmHyPHVdc7U=
-Subject: FAILED: patch "[PATCH] net: prevent address rewrite in kernel_bind()" failed to apply to 5.4-stable tree
+        b=aEs+ax6ejkw/eDHtFvFC66Ra1TCJiuPU72xTa1cY2ynaB/ZP3er8EvS/gN1X34KXl
+         5t4wHpXEQFzrtU15U16NT8BV96aluYxLRKUenH1S8CdO+WHebzCthBzkkcBxk0klXs
+         9FCNnAPYIkqtpshEj1hgKgAmO50f1i+q7dFTZB4I=
+Subject: FAILED: patch "[PATCH] net: prevent address rewrite in kernel_bind()" failed to apply to 4.19-stable tree
 To:     jrife@google.com, davem@davemloft.net, horms@kernel.org,
         willemb@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 07 Oct 2023 14:32:40 +0200
-Message-ID: <2023100740-gigabyte-marsupial-d71b@gregkh>
+Date:   Sat, 07 Oct 2023 14:32:41 +0200
+Message-ID: <2023100741-hamster-schematic-f357@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x c889a99a21bf124c3db08d09df919f0eccc5ea4c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100740-gigabyte-marsupial-d71b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100741-hamster-schematic-f357@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
