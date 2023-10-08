@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94C937BCC5F
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:30:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 482A37BCC60
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:30:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344382AbjJHFaQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 01:30:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33376 "EHLO
+        id S1344388AbjJHFaS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 01:30:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344363AbjJHFaP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:30:15 -0400
+        with ESMTP id S1344363AbjJHFaR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:30:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5491DB6
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:30:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F2FC433CB;
-        Sun,  8 Oct 2023 05:30:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F111B6
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:30:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF919C433C7;
+        Sun,  8 Oct 2023 05:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696743013;
-        bh=XcQgO167bGpg0RT0uqYk9XsAW/ORBkaaEp5sDudMYoA=;
+        s=korg; t=1696743016;
+        bh=U5SKE8rwthfqOqciiv4lkM4rR+WeqK4vqSiHWTld+ec=;
         h=Subject:To:Cc:From:Date:From;
-        b=RznmNlyoo0CAshUpSX4yiMkZgOEBlftzCe0Y3nBQoxbpNlmqjI1KuOjx4rajzuqDZ
-         BkzxIkuxC8RifbU76P+WbaQDPCfbZzoILO6d1WlYhSDpLYtetM+EjA09IrJMypsf/2
-         U8oWcmTHfzysDwpK1Y99zF2SP9kHG2+W9RaX7ppg=
-Subject: FAILED: patch "[PATCH] parisc: Restore __ldcw_align for PA-RISC 2.0 processors" failed to apply to 5.10-stable tree
+        b=H482XNiubjndrytVeVTeh/HXSwYvp58WgptNTA6gAbCy0Y8w1LcDPTJ/MZv3d/yYx
+         D3hkP8eg8GDNjExv9IkPDIDOf8Shdlff9BYKOlWdr0iFQ+5ePA59z8cMzlReXNXyQa
+         M5Sub388rt35wBYkLk6Ej6aBDXWsTo/SMs6Yicgw=
+Subject: FAILED: patch "[PATCH] parisc: Restore __ldcw_align for PA-RISC 2.0 processors" failed to apply to 5.4-stable tree
 To:     dave@parisc-linux.org, dave.anglin@bell.net, deller@gmx.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 08 Oct 2023 07:30:04 +0200
-Message-ID: <2023100804-disregard-unimpeded-7daa@gregkh>
+Date:   Sun, 08 Oct 2023 07:30:06 +0200
+Message-ID: <2023100806-award-delirium-71f7@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 914988e099fc658436fbd7b8f240160c352b6552
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100804-disregard-unimpeded-7daa@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100806-award-delirium-71f7@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
