@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 433787BCFDC
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 21:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61E327BCFDD
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 21:44:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344557AbjJHToC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 15:44:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60686 "EHLO
+        id S1344551AbjJHToF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 15:44:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344421AbjJHToC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 15:44:02 -0400
+        with ESMTP id S1344421AbjJHToF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 15:44:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FAC1B3
-        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 12:44:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBEDC433CA;
-        Sun,  8 Oct 2023 19:43:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3CD5B3
+        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 12:44:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF4CC433C9;
+        Sun,  8 Oct 2023 19:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696794240;
-        bh=NK9s4R/l/kz7czvvamVYH0VK10nSoaZG3YZR8aN0rCw=;
+        s=korg; t=1696794243;
+        bh=1oErtrPdk++P9fvzbqUjyrxzvxUoUbJb4y65CeSCRBo=;
         h=Subject:To:Cc:From:Date:From;
-        b=yWwuZJRXd1uex/sTpwp00Z+eCiL8tv0QUiBuqiGo4K6KRD+YA5WBLeXFZJmUsmI46
-         iwPodFkQ6MbrSUOhmSK6ezy9DbnCCBcsoPkuJUR6vjOIS8udOt4/0h8+z+jUeByolP
-         qZ/9T/K3Qshf9PZBOOghGRkiB/yus/WSuX2/1Wj8=
-Subject: FAILED: patch "[PATCH] ksmbd: fix race condition from parallel smb2 logoff requests" failed to apply to 6.1-stable tree
+        b=0v7x+tziYYH2wW2hHMJiuqWy7Flcu2UACovxiJ/lCX1SMgIN2prikuE/42i9qxzmu
+         J76rOuK71dOlCW3M/mREPmleRbMwCa3Z+hzkazXFSoGZoN7QIKqpZx/uD574qe4tMj
+         pAX6pWUuZEzzcpTNvRdPW+GmHDIlFT1PvSFT/i/0=
+Subject: FAILED: patch "[PATCH] ksmbd: fix race condition from parallel smb2 logoff requests" failed to apply to 5.15-stable tree
 To:     linkinjeon@kernel.org, rootlab@huawei.com, stfrench@microsoft.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 08 Oct 2023 21:43:48 +0200
-Message-ID: <2023100848-cofounder-humbly-8f14@gregkh>
+Date:   Sun, 08 Oct 2023 21:43:49 +0200
+Message-ID: <2023100849-celibacy-urchin-788f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7ca9da7d873ee8024e9548d3366101c2b6843eab
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100848-cofounder-humbly-8f14@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100849-celibacy-urchin-788f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
