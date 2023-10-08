@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1D397BCFD8
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 21:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DA577BCFD9
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 21:43:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344467AbjJHTnt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 15:43:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59410 "EHLO
+        id S1344565AbjJHTny (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 15:43:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344551AbjJHTnt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 15:43:49 -0400
+        with ESMTP id S1344551AbjJHTnw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 15:43:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FDC6B9
-        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 12:43:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE01C433C8;
-        Sun,  8 Oct 2023 19:43:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40EADAC
+        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 12:43:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F919C433C8;
+        Sun,  8 Oct 2023 19:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696794225;
-        bh=rZtJ9bUC3EprLbxqigWx5Ku8iXJIaDvktg/cIq22GSc=;
+        s=korg; t=1696794230;
+        bh=7zZBoyKuGwzBUfH+yFVBaL06iiexC6NNNst7BQX0pa0=;
         h=Subject:To:Cc:From:Date:From;
-        b=JolrXNL8mrW/Osapl9TeNWgBKb7A8rGB6KyjsmDSHfbLT6aEgryLCyKdmmjWB1kf7
-         Xvf3BYryJpI/5j+83SJdj+V7Fe/D34/+wfMk20BuHo6HFmrjbU0eFZfrYV2GXF2po5
-         olO91KxgZukgSBBE/EkgPeK4FrffO+EzOP5ApoAE=
-Subject: FAILED: patch "[PATCH] ksmbd: fix race condition between tree conn lookup and" failed to apply to 6.5-stable tree
+        b=O5wOR/g0UKQsHKQicUesXutYf8up5UtkgQZmAamthmT5jZ5hqj+UY/FAU25M+yEJ7
+         afgi8guOht4nzh/xSMpeANxmMfyMYB6l8UTcL57ZIJz3EjUuKzS5JJEvys2XH/XzKR
+         zDvOFqDiM7Hh0W5r4XFUlM2cPfpd+YR292gthFIc=
+Subject: FAILED: patch "[PATCH] ksmbd: fix race condition between tree conn lookup and" failed to apply to 6.1-stable tree
 To:     linkinjeon@kernel.org, rootlab@huawei.com, stfrench@microsoft.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 08 Oct 2023 21:43:37 +0200
-Message-ID: <2023100837-afloat-lucrative-aa29@gregkh>
+Date:   Sun, 08 Oct 2023 21:43:43 +0200
+Message-ID: <2023100843-aide-untaken-d964@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,24 +42,35 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 33b235a6e6ebe0f05f3586a71e8d281d00f71e2e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100837-afloat-lucrative-aa29@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100843-aide-untaken-d964@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 33b235a6e6eb ("ksmbd: fix race condition between tree conn lookup and disconnect")
 e2b76ab8b5c9 ("ksmbd: add support for read compound")
+e202a1e8634b ("ksmbd: no response from compound read")
+7b7d709ef7cf ("ksmbd: add missing compound request handing in some commands")
+81a94b27847f ("ksmbd: use kvzalloc instead of kvmalloc")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+30210947a343 ("ksmbd: fix racy issue under cocurrent smb2 tree disconnect")
+abcc506a9a71 ("ksmbd: fix racy issue from smb2 close and logoff with multichannel")
+ea174a918939 ("ksmbd: destroy expired sessions")
+f5c779b7ddbd ("ksmbd: fix racy issue from session setup and logoff")
+74d7970febf7 ("ksmbd: fix racy issue from using ->d_parent and ->d_name")
+34e8ccf9ce24 ("ksmbd: set NegotiateContextCount once instead of every inc")
+42bc6793e452 ("Merge tag 'pull-lock_rename_child' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs into ksmbd-for-next")
 
 thanks,
 
