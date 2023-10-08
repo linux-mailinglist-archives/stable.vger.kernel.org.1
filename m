@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 047E17BCC6D
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:33:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C797A7BCC6E
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344392AbjJHFdX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 01:33:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50732 "EHLO
+        id S1344363AbjJHFd0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 01:33:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344363AbjJHFdW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:33:22 -0400
+        with ESMTP id S1344389AbjJHFdZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:33:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B333BD
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:33:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640EFC433C8;
-        Sun,  8 Oct 2023 05:33:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AECA1BD
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:33:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EDBC433C8;
+        Sun,  8 Oct 2023 05:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696743200;
-        bh=ZxTKL/wdzr4TraNBjquCYRa8hA2SwRB1Pq6ObYfS3Qc=;
+        s=korg; t=1696743204;
+        bh=xWruFsrAftpuCoS7Eha/69NyDZufQIqA3CblYR0qPH0=;
         h=Subject:To:Cc:From:Date:From;
-        b=wWk5vwlYU3Kt2rf3iyulQU9cWmGFpV86FqdQz3qYRxnxqSqJmNP3B3r3hg3WltvV/
-         7iF4hJgnXjKW4w/yAA2Qb0h6GIvbJb37tO9RbdfF+52tb1wBXeerusH8B4bSmKjMrK
-         L8UASn18Zi9r+kG+uMTWxFaC41/D8h/gzNgO+tiI=
-Subject: FAILED: patch "[PATCH] RDMA/srp: Do not call scsi_done() from srp_abort()" failed to apply to 5.4-stable tree
+        b=CckUImIFbe82qwOmYHwBh0E0cX+73rYx6c39O3B9Yx9n9LehnanuDWymXOgMZmWKI
+         vFaqwNknAfnSkk5i/kbuVj01g+/MCveBttXQ1sghgIZPOi09vifodovqpW3iYTJekr
+         utjwXHXKExls5L7PoxKpxHw1VZKd1LWQqBY/MZ14=
+Subject: FAILED: patch "[PATCH] RDMA/srp: Do not call scsi_done() from srp_abort()" failed to apply to 4.19-stable tree
 To:     bvanassche@acm.org, leon@kernel.org, rpearsonhpe@gmail.com,
         shinichiro.kawasaki@wdc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 08 Oct 2023 07:33:12 +0200
-Message-ID: <2023100812-clump-absently-aa46@gregkh>
+Date:   Sun, 08 Oct 2023 07:33:14 +0200
+Message-ID: <2023100813-tweak-designing-9e34@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x e193b7955dfad68035b983a0011f4ef3590c85eb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100812-clump-absently-aa46@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100813-tweak-designing-9e34@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,6 +67,18 @@ ad215aaea4f9 ("RDMA/srp: Make struct scsi_cmnd and struct srp_request adjacent")
 f273ad4f8d90 ("RDMA/srp: Remove support for FMR memory registration")
 87fee61c3513 ("RDMA/srp: Make the channel count configurable per target")
 547ed331bbe8 ("RDMA/srp: Add parse function for maximum initiator to target IU size")
+a163afc88556 ("IB/core: Remove ib_sg_dma_address() and ib_sg_dma_len()")
+882981f4a411 ("RDMA/srp: Add support for immediate data")
+513d5647116b ("RDMA/srp: Rework handling of the maximum information unit length")
+4f6d498c360c ("RDMA/srp: Move srp_rdma_ch.max_ti_iu_len declaration")
+482fffc43c03 ("RDMA/srp: Handle large SCSI CDBs correctly")
+3023a1e93656 ("RDMA: Start use ib_device_ops")
+02a42f8e40ca ("RDMA/rdmavt: Initialize ib_device_ops struct")
+521ed0d92ab0 ("RDMA/core: Introduce ib_device_ops")
+9af3f5cf9d64 ("RDMA/core: Validate port number in query_pkey verb")
+7eebced1bae0 ("RDMA/uverbs: Simplify ib_uverbs_ex_query_device")
+9a0738575f26 ("RDMA/uverbs: Use uverbs_response() for remaining response copying")
+07f05f40d956 ("RDMA/uverbs: Use uverbs_attr_bundle to pass udata for ioctl()")
 
 thanks,
 
