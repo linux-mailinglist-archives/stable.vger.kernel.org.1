@@ -2,55 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A880F7BCDCC
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 12:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF037BCFD6
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 21:43:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234308AbjJHKaj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 06:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41484 "EHLO
+        id S1344485AbjJHTnL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 15:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230412AbjJHKai (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 06:30:38 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3792EC6;
-        Sun,  8 Oct 2023 03:30:36 -0700 (PDT)
-Date:   Sun, 08 Oct 2023 10:30:33 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1696761034;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=RFcgvCwtBkHjmjC5Kv59Tho8cI5sB4+dK7KBM8mjgEo=;
-        b=kwiLjNQmuwlGGMi4EdsYkoz71pGXXZ0BIeUR/pN0bHENed0HdVB5+vK3OF7d+KDAAoCEUI
-        Whqe2DtedUA5cOuGrJPI2iJlkIWFwVa66lWwv9z8LcybXPAzzWLUbRYR9Df7zgEO9j7ZAM
-        sDf6+Oa16Tnkk/xwVb70G00/wvx0HzrmyQoqtsRKTYz80CyJy8jBYt0wdEEuC35UedBXPI
-        xStItsIqbw+xG/xqkUtPCPM1o7JPCmaPw1H6r/OaTPhysn7YE9MdfXb2gZqZsXaXvxJxS7
-        Ze2teRbhAUuDpCTxuSGrCMSSjh14BhtUT8oY68E3mD3lxF6vHYftgJrmgZjvXQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1696761034;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=RFcgvCwtBkHjmjC5Kv59Tho8cI5sB4+dK7KBM8mjgEo=;
-        b=5SsDrl6Fd6RtNGDTB9P4PsIR2dJg2M//yECJsaid/TgeB4fr3GRxMotUyQpq8FXQP6/eoW
-        BcWllE6zz6s4WcCA==
-From:   "tip-bot2 for JP Kobryn" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/lbr: Filter vsyscall addresses
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        JP Kobryn <inwardvessel@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
+        with ESMTP id S1344467AbjJHTnL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 15:43:11 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FD14AC
+        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 12:43:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8D4C433C8;
+        Sun,  8 Oct 2023 19:43:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696794189;
+        bh=MN5BKK1Ewqo2FbbqX5zUfyfEFCfhe4gLCJfYqUi3Q5A=;
+        h=Subject:To:Cc:From:Date:From;
+        b=hx0BNzqlxK94Vgv1OxQwPZdOsaAkw6+H1VOTZrWoQ4Ec2eWKbeBr9eEJ5Zrb+ZFlb
+         o5J11u572BqSOxDvgZ9YlTjmVwwYvH0tgWYasfrNiLlucT/i5UyJy0bXQ/h2/QLcLv
+         W8zs7fOpMPvEIL80R4ZD9kNiy9ohoEAasQax5gds=
+Subject: FAILED: patch "[PATCH] ksmbd: fix race condition from parallel smb2 lock requests" failed to apply to 5.15-stable tree
+To:     linkinjeon@kernel.org, rootlab@huawei.com, stfrench@microsoft.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 08 Oct 2023 21:43:06 +0200
+Message-ID: <2023100806-buckwheat-epiphany-17f3@gregkh>
 MIME-Version: 1.0
-Message-ID: <169676103391.3135.1323905069105939036.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,77 +41,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     e53899771a02f798d436655efbd9d4b46c0f9265
-Gitweb:        https://git.kernel.org/tip/e53899771a02f798d436655efbd9d4b46c0f9265
-Author:        JP Kobryn <inwardvessel@gmail.com>
-AuthorDate:    Fri, 06 Oct 2023 11:57:26 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 08 Oct 2023 12:25:18 +02:00
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-perf/x86/lbr: Filter vsyscall addresses
+To reproduce the conflict and resubmit, you may use the following commands:
 
-We found that a panic can occur when a vsyscall is made while LBR sampling
-is active. If the vsyscall is interrupted (NMI) for perf sampling, this
-call sequence can occur (most recent at top):
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 75ac9a3dd65f7eab4d12b0a0f744234b5300a491
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100806-buckwheat-epiphany-17f3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-    __insn_get_emulate_prefix()
-    insn_get_emulate_prefix()
-    insn_get_prefixes()
-    insn_get_opcode()
-    decode_branch_type()
-    get_branch_type()
-    intel_pmu_lbr_filter()
-    intel_pmu_handle_irq()
-    perf_event_nmi_handler()
+Possible dependencies:
 
-Within __insn_get_emulate_prefix() at frame 0, a macro is called:
+75ac9a3dd65f ("ksmbd: fix race condition from parallel smb2 lock requests")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+3a9b557f44ea ("ksmbd: delete asynchronous work from list")
+d3ca9f7aeba7 ("ksmbd: fix possible memory leak in smb2_lock()")
+f8d6e7442aa7 ("ksmbd: fix typo, syncronous->synchronous")
+abdb1742a312 ("cifs: get rid of mount options string parsing")
+9fd29a5bae6e ("cifs: use fs_context for automounts")
+5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
+332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
 
-    peek_nbyte_next(insn_byte_t, insn, i)
+thanks,
 
-Within this macro, this dereference occurs:
+greg k-h
 
-    (insn)->next_byte
+------------------ original commit in Linus's tree ------------------
 
-Inspecting registers at this point, the value of the next_byte field is the
-address of the vsyscall made, for example the location of the vsyscall
-version of gettimeofday() at 0xffffffffff600000. The access to an address
-in the vsyscall region will trigger an oops due to an unhandled page fault.
+From 75ac9a3dd65f7eab4d12b0a0f744234b5300a491 Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Wed, 4 Oct 2023 18:31:03 +0900
+Subject: [PATCH] ksmbd: fix race condition from parallel smb2 lock requests
 
-To fix the bug, filtering for vsyscalls can be done when
-determining the branch type. This patch will return
-a "none" branch if a kernel address if found to lie in the
-vsyscall region.
+There is a race condition issue between parallel smb2 lock request.
 
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/x86/events/utils.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+                                            Time
+                                             +
+Thread A                                     | Thread A
+smb2_lock                                    | smb2_lock
+                                             |
+ insert smb_lock to lock_list                |
+ spin_unlock(&work->conn->llist_lock)        |
+                                             |
+                                             |   spin_lock(&conn->llist_lock);
+                                             |   kfree(cmp_lock);
+                                             |
+ // UAF!                                     |
+ list_add(&smb_lock->llist, &rollback_list)  +
 
-diff --git a/arch/x86/events/utils.c b/arch/x86/events/utils.c
-index 76b1f8b..dab4ed1 100644
---- a/arch/x86/events/utils.c
-+++ b/arch/x86/events/utils.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <asm/insn.h>
-+#include <linux/mm.h>
+This patch swaps the line for adding the smb lock to the rollback list and
+adding the lock list of connection to fix the race issue.
+
+Reported-by: luosili <rootlab@huawei.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index e774c9855f7f..fd6f05786ac2 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -7038,10 +7038,6 @@ int smb2_lock(struct ksmbd_work *work)
  
- #include "perf_event.h"
+ 				ksmbd_debug(SMB,
+ 					    "would have to wait for getting lock\n");
+-				spin_lock(&work->conn->llist_lock);
+-				list_add_tail(&smb_lock->clist,
+-					      &work->conn->lock_list);
+-				spin_unlock(&work->conn->llist_lock);
+ 				list_add(&smb_lock->llist, &rollback_list);
  
-@@ -132,9 +133,9 @@ static int get_branch_type(unsigned long from, unsigned long to, int abort,
- 		 * The LBR logs any address in the IP, even if the IP just
- 		 * faulted. This means userspace can control the from address.
- 		 * Ensure we don't blindly read any address by validating it is
--		 * a known text address.
-+		 * a known text address and not a vsyscall address.
- 		 */
--		if (kernel_text_address(from)) {
-+		if (kernel_text_address(from) && !in_gate_area_no_mm(from)) {
- 			addr = (void *)from;
- 			/*
- 			 * Assume we can get the maximum possible size
+ 				argv = kmalloc(sizeof(void *), GFP_KERNEL);
+@@ -7072,9 +7068,6 @@ int smb2_lock(struct ksmbd_work *work)
+ 
+ 				if (work->state != KSMBD_WORK_ACTIVE) {
+ 					list_del(&smb_lock->llist);
+-					spin_lock(&work->conn->llist_lock);
+-					list_del(&smb_lock->clist);
+-					spin_unlock(&work->conn->llist_lock);
+ 					locks_free_lock(flock);
+ 
+ 					if (work->state == KSMBD_WORK_CANCELLED) {
+@@ -7094,19 +7087,16 @@ int smb2_lock(struct ksmbd_work *work)
+ 				}
+ 
+ 				list_del(&smb_lock->llist);
+-				spin_lock(&work->conn->llist_lock);
+-				list_del(&smb_lock->clist);
+-				spin_unlock(&work->conn->llist_lock);
+ 				release_async_work(work);
+ 				goto retry;
+ 			} else if (!rc) {
++				list_add(&smb_lock->llist, &rollback_list);
+ 				spin_lock(&work->conn->llist_lock);
+ 				list_add_tail(&smb_lock->clist,
+ 					      &work->conn->lock_list);
+ 				list_add_tail(&smb_lock->flist,
+ 					      &fp->lock_list);
+ 				spin_unlock(&work->conn->llist_lock);
+-				list_add(&smb_lock->llist, &rollback_list);
+ 				ksmbd_debug(SMB, "successful in taking lock\n");
+ 			} else {
+ 				goto out;
+
