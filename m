@@ -2,178 +2,182 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 900FB7BCC3F
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB9A27BCC5D
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344392AbjJHFSg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 01:18:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48038 "EHLO
+        id S1344346AbjJHFaI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 01:30:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344346AbjJHFSf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:18:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76AF4BD
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:17:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1696742267;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XIBFYES1oNSbgdg44IpiRY5MDLveYfd/44xts2VnIss=;
-        b=QC4Mm8ZFz02yIcA1EwbMIypdoElK6XV33KqM1d1f8xjM/lvE8HU0P9D4Es3Bucnl86NimW
-        B1mXW4+o2aQx8NicVXkC2CDKcTI/SrxH0Rah/IdVW+8++LOvjsfIF4vcq6eGPnldMzSNrH
-        iAthzHx0bqhJmt5BkcSOZDtIJ18+kNc=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-602-lrAuG9e7OZeCobiEZs2VUg-1; Sun, 08 Oct 2023 01:17:36 -0400
-X-MC-Unique: lrAuG9e7OZeCobiEZs2VUg-1
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5041bea78a5so3114092e87.3
-        for <stable@vger.kernel.org>; Sat, 07 Oct 2023 22:17:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696742254; x=1697347054;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XIBFYES1oNSbgdg44IpiRY5MDLveYfd/44xts2VnIss=;
-        b=VTuT/zhXlySO86HAOmGGi2IL78dqC10XyF5UE6DVDYRYkjXBZpfM6PDwoBqQ13zDkf
-         JY9qGzXoG3m/GCEFGMwu4ggYUo1EGrKlD2GFmVQLTW8hgJfIQSmpLpzGUHwiU+bVnDun
-         GfYfHW1TXCB8sragsMFPAfOkKyZaWAIcvVfMTgp9Ub6qPPNvcEAdnKQB2ukJ5GAzs+9o
-         vV6efHlRzco1NkD8bMeWbGA6sGqEHarb/WyZQVOD6aH9w7DSwElesMT0J6FUyns5g5HM
-         atVvyuVUwdw0NU9O9ac9lMn18PmGEMINlqwzkFng4RxusuO1pQ3Lc/M1q6ZS9Pn0Eml9
-         Fgwg==
-X-Gm-Message-State: AOJu0YwMNdJ7VkSARRJEqFiPw6fXcVFauG5jacfIRR7AE85LlBRKRSqc
-        DmD67li8cf3Fxu9yhoPiO703IDesFM67Qw66fg0rggUK7VJXedeYttoCv1qih3/DdOEdeeBYZNz
-        tnDjVbOg5tqNRBsjw0xs/ssfC0LQKT1J2
-X-Received: by 2002:a05:6512:31d2:b0:500:acf1:b432 with SMTP id j18-20020a05651231d200b00500acf1b432mr12100667lfe.63.1696742254618;
-        Sat, 07 Oct 2023 22:17:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHih9jNBj+mm3gln1ZCsXonlccj1/oAiZNJ1d8VXWVWaywkwRq06DB7RjMZgwJPLinVPauKckcWGYfUL6bhA9o=
-X-Received: by 2002:a05:6512:31d2:b0:500:acf1:b432 with SMTP id
- j18-20020a05651231d200b00500acf1b432mr12100655lfe.63.1696742254306; Sat, 07
- Oct 2023 22:17:34 -0700 (PDT)
+        with ESMTP id S1344322AbjJHFaH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:30:07 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00223B6
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:30:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25DF9C433C8;
+        Sun,  8 Oct 2023 05:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696743005;
+        bh=HYoQFEU+IOGOn40Wamo2zmIxLOqbNv6qpiZUyWy7uXI=;
+        h=Subject:To:Cc:From:Date:From;
+        b=mhKFiituKaIrbKEAA3qX8daqYPNGaX7W6awoR3Heo8AKh9I4FrFlDUfFdlUU3iw6i
+         WRer6ewuM30bhbE8FH+1LgFeqG0sQ3R2HptLpvTVVjY0OK1I9orBQcJZj9oAbH22Bg
+         1s1XbgKB+ILsAiqTgEXxN2iAspD4xH1WRLgXWhnk=
+Subject: FAILED: patch "[PATCH] parisc: Restore __ldcw_align for PA-RISC 2.0 processors" failed to apply to 6.1-stable tree
+To:     dave@parisc-linux.org, dave.anglin@bell.net, deller@gmx.de
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 08 Oct 2023 07:30:02 +0200
+Message-ID: <2023100802-occupant-unsalted-d02b@gregkh>
 MIME-Version: 1.0
-References: <20230912030008.3599514-1-lulu@redhat.com> <20230912030008.3599514-4-lulu@redhat.com>
- <CACGkMEuKcgH0kdLPmWZ69fL6SYvoVPfeGv11QwhQDW2sr9DZ3Q@mail.gmail.com> <db93d5aa-64c4-42a4-73dc-ae25e9e3833e@redhat.com>
-In-Reply-To: <db93d5aa-64c4-42a4-73dc-ae25e9e3833e@redhat.com>
-From:   Jason Wang <jasowang@redhat.com>
-Date:   Sun, 8 Oct 2023 13:17:23 +0800
-Message-ID: <CACGkMEsNfLOQkmnWUH53iTptAmhELs_U8B4D-CfO49rs=+HfLw@mail.gmail.com>
-Subject: Re: [RFC v2 3/4] vduse: update the vq_info in ioctl
-To:     Maxime Coquelin <maxime.coquelin@redhat.com>
-Cc:     Cindy Lu <lulu@redhat.com>, mst@redhat.com,
-        xieyongji@bytedance.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 29, 2023 at 5:12=E2=80=AFPM Maxime Coquelin
-<maxime.coquelin@redhat.com> wrote:
->
->
->
-> On 9/12/23 09:39, Jason Wang wrote:
-> > On Tue, Sep 12, 2023 at 11:00=E2=80=AFAM Cindy Lu <lulu@redhat.com> wro=
-te:
-> >>
-> >> In VDUSE_VQ_GET_INFO, the driver will sync the last_avail_idx
-> >> with reconnect info, After mapping the reconnect pages to userspace
-> >> The userspace App will update the reconnect_time in
-> >> struct vhost_reconnect_vring, If this is not 0 then it means this
-> >> vq is reconnected and will update the last_avail_idx
-> >>
-> >> Signed-off-by: Cindy Lu <lulu@redhat.com>
-> >> ---
-> >>   drivers/vdpa/vdpa_user/vduse_dev.c | 13 +++++++++++++
-> >>   include/uapi/linux/vduse.h         |  6 ++++++
-> >>   2 files changed, 19 insertions(+)
-> >>
-> >> diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_us=
-er/vduse_dev.c
-> >> index 2c69f4004a6e..680b23dbdde2 100644
-> >> --- a/drivers/vdpa/vdpa_user/vduse_dev.c
-> >> +++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-> >> @@ -1221,6 +1221,8 @@ static long vduse_dev_ioctl(struct file *file, u=
-nsigned int cmd,
-> >>                  struct vduse_vq_info vq_info;
-> >>                  struct vduse_virtqueue *vq;
-> >>                  u32 index;
-> >> +               struct vdpa_reconnect_info *area;
-> >> +               struct vhost_reconnect_vring *vq_reconnect;
-> >>
-> >>                  ret =3D -EFAULT;
-> >>                  if (copy_from_user(&vq_info, argp, sizeof(vq_info)))
-> >> @@ -1252,6 +1254,17 @@ static long vduse_dev_ioctl(struct file *file, =
-unsigned int cmd,
-> >>
-> >>                  vq_info.ready =3D vq->ready;
-> >>
-> >> +               area =3D &vq->reconnect_info;
-> >> +
-> >> +               vq_reconnect =3D (struct vhost_reconnect_vring *)area-=
->vaddr;
-> >> +               /*check if the vq is reconnect, if yes then update the=
- last_avail_idx*/
-> >> +               if ((vq_reconnect->last_avail_idx !=3D
-> >> +                    vq_info.split.avail_index) &&
-> >> +                   (vq_reconnect->reconnect_time !=3D 0)) {
-> >> +                       vq_info.split.avail_index =3D
-> >> +                               vq_reconnect->last_avail_idx;
-> >> +               }
-> >> +
-> >>                  ret =3D -EFAULT;
-> >>                  if (copy_to_user(argp, &vq_info, sizeof(vq_info)))
-> >>                          break;
-> >> diff --git a/include/uapi/linux/vduse.h b/include/uapi/linux/vduse.h
-> >> index 11bd48c72c6c..d585425803fd 100644
-> >> --- a/include/uapi/linux/vduse.h
-> >> +++ b/include/uapi/linux/vduse.h
-> >> @@ -350,4 +350,10 @@ struct vduse_dev_response {
-> >>          };
-> >>   };
-> >>
-> >> +struct vhost_reconnect_vring {
-> >> +       __u16 reconnect_time;
-> >> +       __u16 last_avail_idx;
-> >> +       _Bool avail_wrap_counter;
-> >
-> > Please add a comment for each field.
-> >
-> > And I never saw _Bool is used in uapi before, maybe it's better to
-> > pack it with last_avail_idx into a __u32.
->
-> Better as two distincts __u16 IMHO.
 
-Fine with me.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Thanks
+To reproduce the conflict and resubmit, you may use the following commands:
 
->
-> Thanks,
-> Maxime
->
-> >
-> > Btw, do we need to track inflight descriptors as well?
-> >
-> > Thanks
-> >
-> >> +};
-> >> +
-> >>   #endif /* _UAPI_VDUSE_H_ */
-> >> --
-> >> 2.34.3
-> >>
-> >
->
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 914988e099fc658436fbd7b8f240160c352b6552
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100802-occupant-unsalted-d02b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+914988e099fc ("parisc: Restore __ldcw_align for PA-RISC 2.0 processors")
+15e64ef6520e ("parisc: Add lightweight spinlock checks")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 914988e099fc658436fbd7b8f240160c352b6552 Mon Sep 17 00:00:00 2001
+From: John David Anglin <dave@parisc-linux.org>
+Date: Tue, 19 Sep 2023 17:51:40 +0000
+Subject: [PATCH] parisc: Restore __ldcw_align for PA-RISC 2.0 processors
+
+Back in 2005, Kyle McMartin removed the 16-byte alignment for
+ldcw semaphores on PA 2.0 machines (CONFIG_PA20). This broke
+spinlocks on pre PA8800 processors. The main symptom was random
+faults in mmap'd memory (e.g., gcc compilations, etc).
+
+Unfortunately, the errata for this ldcw change is lost.
+
+The issue is the 16-byte alignment required for ldcw semaphore
+instructions can only be reduced to natural alignment when the
+ldcw operation can be handled coherently in cache. Only PA8800
+and PA8900 processors actually support doing the operation in
+cache.
+
+Aligning the spinlock dynamically adds two integer instructions
+to each spinlock.
+
+Tested on rp3440, c8000 and a500.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Link: https://lore.kernel.org/linux-parisc/6b332788-2227-127f-ba6d-55e99ecf4ed8@bell.net/T/#t
+Link: https://lore.kernel.org/linux-parisc/20050609050702.GB4641@roadwarrior.mcmartin.ca/
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git a/arch/parisc/include/asm/ldcw.h b/arch/parisc/include/asm/ldcw.h
+index 6d28b5514699..ee9e071859b2 100644
+--- a/arch/parisc/include/asm/ldcw.h
++++ b/arch/parisc/include/asm/ldcw.h
+@@ -2,39 +2,42 @@
+ #ifndef __PARISC_LDCW_H
+ #define __PARISC_LDCW_H
+ 
+-#ifndef CONFIG_PA20
+ /* Because kmalloc only guarantees 8-byte alignment for kmalloc'd data,
+    and GCC only guarantees 8-byte alignment for stack locals, we can't
+    be assured of 16-byte alignment for atomic lock data even if we
+    specify "__attribute ((aligned(16)))" in the type declaration.  So,
+    we use a struct containing an array of four ints for the atomic lock
+    type and dynamically select the 16-byte aligned int from the array
+-   for the semaphore.  */
++   for the semaphore. */
++
++/* From: "Jim Hull" <jim.hull of hp.com>
++   I've attached a summary of the change, but basically, for PA 2.0, as
++   long as the ",CO" (coherent operation) completer is implemented, then the
++   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
++   they only require "natural" alignment (4-byte for ldcw, 8-byte for
++   ldcd).
++
++   Although the cache control hint is accepted by all PA 2.0 processors,
++   it is only implemented on PA8800/PA8900 CPUs. Prior PA8X00 CPUs still
++   require 16-byte alignment. If the address is unaligned, the operation
++   of the instruction is undefined. The ldcw instruction does not generate
++   unaligned data reference traps so misaligned accesses are not detected.
++   This hid the problem for years. So, restore the 16-byte alignment dropped
++   by Kyle McMartin in "Remove __ldcw_align for PA-RISC 2.0 processors". */
+ 
+ #define __PA_LDCW_ALIGNMENT	16
+-#define __PA_LDCW_ALIGN_ORDER	4
+ #define __ldcw_align(a) ({					\
+ 	unsigned long __ret = (unsigned long) &(a)->lock[0];	\
+ 	__ret = (__ret + __PA_LDCW_ALIGNMENT - 1)		\
+ 		& ~(__PA_LDCW_ALIGNMENT - 1);			\
+ 	(volatile unsigned int *) __ret;			\
+ })
+-#define __LDCW	"ldcw"
+ 
+-#else /*CONFIG_PA20*/
+-/* From: "Jim Hull" <jim.hull of hp.com>
+-   I've attached a summary of the change, but basically, for PA 2.0, as
+-   long as the ",CO" (coherent operation) completer is specified, then the
+-   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
+-   they only require "natural" alignment (4-byte for ldcw, 8-byte for
+-   ldcd). */
+-
+-#define __PA_LDCW_ALIGNMENT	4
+-#define __PA_LDCW_ALIGN_ORDER	2
+-#define __ldcw_align(a) (&(a)->slock)
++#ifdef CONFIG_PA20
+ #define __LDCW	"ldcw,co"
+-
+-#endif /*!CONFIG_PA20*/
++#else
++#define __LDCW	"ldcw"
++#endif
+ 
+ /* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.
+    We don't explicitly expose that "*a" may be written as reload
+diff --git a/arch/parisc/include/asm/spinlock_types.h b/arch/parisc/include/asm/spinlock_types.h
+index efd06a897c6a..7b986b09dba8 100644
+--- a/arch/parisc/include/asm/spinlock_types.h
++++ b/arch/parisc/include/asm/spinlock_types.h
+@@ -9,15 +9,10 @@
+ #ifndef __ASSEMBLY__
+ 
+ typedef struct {
+-#ifdef CONFIG_PA20
+-	volatile unsigned int slock;
+-# define __ARCH_SPIN_LOCK_UNLOCKED { __ARCH_SPIN_LOCK_UNLOCKED_VAL }
+-#else
+ 	volatile unsigned int lock[4];
+ # define __ARCH_SPIN_LOCK_UNLOCKED	\
+ 	{ { __ARCH_SPIN_LOCK_UNLOCKED_VAL, __ARCH_SPIN_LOCK_UNLOCKED_VAL, \
+ 	    __ARCH_SPIN_LOCK_UNLOCKED_VAL, __ARCH_SPIN_LOCK_UNLOCKED_VAL } }
+-#endif
+ } arch_spinlock_t;
+ 
+ 
 
