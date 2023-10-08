@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E60C67BCC6B
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB647BCC6C
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:33:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344382AbjJHFdO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 01:33:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44632 "EHLO
+        id S1344388AbjJHFdT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 01:33:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344363AbjJHFdN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:33:13 -0400
+        with ESMTP id S1344363AbjJHFdS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:33:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA99EB6
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:33:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8B6C433C8;
-        Sun,  8 Oct 2023 05:33:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDAD5B6
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:33:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E3EC433C8;
+        Sun,  8 Oct 2023 05:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696743192;
-        bh=wAj5xLjiGpiwWSpWbC7A+Y4CMrihv2Exng7L9l5Tb9E=;
+        s=korg; t=1696743197;
+        bh=vzQV8Fzt26+lOKpboP6IfjhAx/hcSPcKRZO+Q7nrRUc=;
         h=Subject:To:Cc:From:Date:From;
-        b=2rg+TTHrxGb2TY3S8fgGabelhxfmiREY87qlNyEff/WkVeI8mb9mNPGRS0Xe9vnZp
-         tS32CS4dhyI904TLka2OxqJND2OZDFsuHTLBuoqaP7UAIvFvmP5fNOF+2vGCMy0w5E
-         sskrdmi8g4h3yVcowCfXeh207V9Syv8t2p127Zhg=
-Subject: FAILED: patch "[PATCH] RDMA/srp: Do not call scsi_done() from srp_abort()" failed to apply to 5.15-stable tree
+        b=C/rcVYQk892o0xQesnfCu8lzTxQqqMr+vn8Lzvi/kGwwdFraJUjf/IvX/JqyY0nrc
+         PBZnokVf4Lqf9GCymE+41ouZB+0JXUpXxaVPQ/eFha+B58+koGVTaj/6zX4DacFwdl
+         qyjCvjxE07NBZsZoVUcN3B96QcAr5DpFf+9LRBz4=
+Subject: FAILED: patch "[PATCH] RDMA/srp: Do not call scsi_done() from srp_abort()" failed to apply to 5.10-stable tree
 To:     bvanassche@acm.org, leon@kernel.org, rpearsonhpe@gmail.com,
         shinichiro.kawasaki@wdc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 08 Oct 2023 07:33:08 +0200
-Message-ID: <2023100808-discourse-comfy-1731@gregkh>
+Date:   Sun, 08 Oct 2023 07:33:10 +0200
+Message-ID: <2023100810-consensus-basically-78d8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,24 +43,27 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x e193b7955dfad68035b983a0011f4ef3590c85eb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100808-discourse-comfy-1731@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100810-consensus-basically-78d8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 e193b7955dfa ("RDMA/srp: Do not call scsi_done() from srp_abort()")
 5f9ae9eecb15 ("scsi: ib_srp: Call scsi_done() directly")
+ad215aaea4f9 ("RDMA/srp: Make struct scsi_cmnd and struct srp_request adjacent")
+7ec2e27a3aff ("RDMA/srp: Fix a recently introduced memory leak")
+2b5715fc1738 ("RDMA/srp: Fix support for unpopulated and unbalanced NUMA nodes")
 
 thanks,
 
