@@ -2,219 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 674007BCFDF
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 21:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDD807BD171
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 02:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344421AbjJHToL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 15:44:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38100 "EHLO
+        id S229820AbjJIAiO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 20:38:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344562AbjJHToL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 15:44:11 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86B7B3
-        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 12:44:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC32C433C8;
-        Sun,  8 Oct 2023 19:44:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696794249;
-        bh=zbVyiKY7tqKQozQtwnWnm+SnBAJ5VKQZTUdVxaGL54g=;
-        h=Subject:To:Cc:From:Date:From;
-        b=Migu2Hvu7WLsWhW1/fbJCI/Mid7Mp+w3FBWgyKlpyIYcqWjTwoKl2mXOdLw81Sjms
-         rYC02i7VSUg62q3rvbelsnTo527DRAWMf6Oi5AnIBm/2Dxu2776boKNu9bqZm3PaSS
-         LENeNiI22UCjD4mu59wW2YiLSCulMTbuf1rsbHFQ=
-Subject: FAILED: patch "[PATCH] ksmbd: fix race condition with fp" failed to apply to 5.15-stable tree
-To:     linkinjeon@kernel.org, rootlab@huawei.com, stfrench@microsoft.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 08 Oct 2023 21:43:55 +0200
-Message-ID: <2023100855-deserve-deity-6387@gregkh>
+        with ESMTP id S229663AbjJIAiN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 20:38:13 -0400
+X-Greylist: delayed 5318 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 Oct 2023 17:38:12 PDT
+Received: from mx.ucpejv.edu.cu (mail.ucpejv.edu.cu [200.14.49.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 50904AB
+        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 17:38:12 -0700 (PDT)
+Received: from mx.ucpejv.edu.cu (localhost.localdomain [127.0.0.1])
+        by mx.ucpejv.edu.cu (mx.ucpejv.edu.cu) with ESMTP id CB882EE200;
+        Sun,  8 Oct 2023 17:53:12 -0400 (CDT)
+Received: from mail.ucpejv.edu.cu (mail.ucpejv.edu.cu [10.68.100.8])
+        by mx.ucpejv.edu.cu (mx.ucpejv.edu.cu) with ESMTPS id B2D64EE520;
+        Sun,  8 Oct 2023 17:53:12 -0400 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.ucpejv.edu.cu (Postfix) with ESMTP id 80D0E703574;
+        Sun,  8 Oct 2023 17:53:12 -0400 (CDT)
+Received: from mail.ucpejv.edu.cu ([127.0.0.1])
+        by localhost (mail.ucpejv.edu.cu [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id KMCKqO6HgcoK; Sun,  8 Oct 2023 17:53:12 -0400 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.ucpejv.edu.cu (Postfix) with ESMTP id C17E6704FB1;
+        Sun,  8 Oct 2023 17:53:11 -0400 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.ucpejv.edu.cu C17E6704FB1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucpejv.edu.cu;
+        s=6944A500-D828-11EB-A78A-E8BC65E2ACE4; t=1696801991;
+        bh=YVQkxxsQjcA28pTrfdCHmYTQQhEotWPiglViH2UlrcU=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=Z1EQSqdNPpRzUbxVAgQUYpc0Kt/75XTKdn4omYzlcxr/P7gBPQ8mPmTlCT1SnoGGk
+         qlptjqQfIIVrM3RLB31MeoHmr7mD/iK+wYuaFNLKvpm/1C6U2VU/2wSfZNcZhnnAjj
+         9rTQ+9o3/DDW1NRu8e4Az7bx36AUgIWA5PRwTZu8GTx5GDR9hMRW/8yWSzMI6y/CON
+         NGEmsYwmamoa8X0CCnadc5b639wy/hgLMwwmoGUBFKw6kEZKpmihIV/VW8mEAviQqX
+         KdpSWbQsm5/3PCUYql6i9KG8jiw5IoFANyxSQtjKid2CDj1NgFajUIrOcE92l87OTb
+         8tP1K+zBpNVpg==
+X-Virus-Scanned: amavisd-new at ucpejv.edu.cu
+Received: from mail.ucpejv.edu.cu ([127.0.0.1])
+        by localhost (mail.ucpejv.edu.cu [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id jkjybbSz5C6g; Sun,  8 Oct 2023 17:53:11 -0400 (CDT)
+Received: from mail.ucpejv.edu.cu (mail.ucpejv.edu.cu [10.68.100.8])
+        by mail.ucpejv.edu.cu (Postfix) with ESMTP id C61D2704437;
+        Sun,  8 Oct 2023 17:53:09 -0400 (CDT)
+Date:   Sun, 8 Oct 2023 17:53:09 -0400 (CDT)
+From:   Han <atencionalapoblacion@ucpejv.edu.cu>
+Reply-To: Han <han92728817@proton.me>
+Message-ID: <2011838480.26168.1696801989789.JavaMail.zimbra@ucpejv.edu.cu>
+Subject: Gesture
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.68.100.8]
+X-Mailer: Zimbra 8.8.15_GA_4508 (zclient/8.8.15_GA_4508)
+Thread-Index: EGi3Fr5PpR5imlohh72ndyOaFdyCdw==
+Thread-Topic: Gesture
+X-Spam-Status: No, score=3.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MISSING_HEADERS,
+        RCVD_IN_DNSWL_BLOCKED,REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 5a7ee91d1154f35418367a6eaae74046fd06ed89
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100855-deserve-deity-6387@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-5a7ee91d1154 ("ksmbd: fix race condition with fp")
-e2b76ab8b5c9 ("ksmbd: add support for read compound")
-e202a1e8634b ("ksmbd: no response from compound read")
-7b7d709ef7cf ("ksmbd: add missing compound request handing in some commands")
-81a94b27847f ("ksmbd: use kvzalloc instead of kvmalloc")
-38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
-30210947a343 ("ksmbd: fix racy issue under cocurrent smb2 tree disconnect")
-abcc506a9a71 ("ksmbd: fix racy issue from smb2 close and logoff with multichannel")
-ea174a918939 ("ksmbd: destroy expired sessions")
-f5c779b7ddbd ("ksmbd: fix racy issue from session setup and logoff")
-74d7970febf7 ("ksmbd: fix racy issue from using ->d_parent and ->d_name")
-34e8ccf9ce24 ("ksmbd: set NegotiateContextCount once instead of every inc")
-42bc6793e452 ("Merge tag 'pull-lock_rename_child' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs into ksmbd-for-next")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 5a7ee91d1154f35418367a6eaae74046fd06ed89 Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Wed, 4 Oct 2023 18:28:39 +0900
-Subject: [PATCH] ksmbd: fix race condition with fp
-
-fp can used in each command. If smb2_close command is coming at the
-same time, UAF issue can happen by race condition.
-
-                           Time
-                            +
-Thread A                    | Thread B1 B2 .... B5
-smb2_open                   | smb2_close
-                            |
- __open_id                  |
-   insert fp to file_table  |
-                            |
-                            |   atomic_dec_and_test(&fp->refcount)
-                            |   if fp->refcount == 0, free fp by kfree.
- // UAF!                    |
- use fp                     |
-                            +
-This patch add f_state not to use freed fp is used and not to free fp in
-use.
-
-Reported-by: luosili <rootlab@huawei.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 544022dd6d20..420e7691c8cf 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3370,8 +3370,10 @@ int smb2_open(struct ksmbd_work *work)
- 	}
- 	ksmbd_revert_fsids(work);
- err_out1:
--	if (!rc)
-+	if (!rc) {
-+		ksmbd_update_fstate(&work->sess->file_table, fp, FP_INITED);
- 		rc = ksmbd_iov_pin_rsp(work, (void *)rsp, iov_len);
-+	}
- 	if (rc) {
- 		if (rc == -EINVAL)
- 			rsp->hdr.Status = STATUS_INVALID_PARAMETER;
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index f41f8d6108ce..c4b80ab7df74 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -333,6 +333,9 @@ static void __ksmbd_close_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
- 
- static struct ksmbd_file *ksmbd_fp_get(struct ksmbd_file *fp)
- {
-+	if (fp->f_state != FP_INITED)
-+		return NULL;
-+
- 	if (!atomic_inc_not_zero(&fp->refcount))
- 		return NULL;
- 	return fp;
-@@ -382,15 +385,20 @@ int ksmbd_close_fd(struct ksmbd_work *work, u64 id)
- 		return 0;
- 
- 	ft = &work->sess->file_table;
--	read_lock(&ft->lock);
-+	write_lock(&ft->lock);
- 	fp = idr_find(ft->idr, id);
- 	if (fp) {
- 		set_close_state_blocked_works(fp);
- 
--		if (!atomic_dec_and_test(&fp->refcount))
-+		if (fp->f_state != FP_INITED)
- 			fp = NULL;
-+		else {
-+			fp->f_state = FP_CLOSED;
-+			if (!atomic_dec_and_test(&fp->refcount))
-+				fp = NULL;
-+		}
- 	}
--	read_unlock(&ft->lock);
-+	write_unlock(&ft->lock);
- 
- 	if (!fp)
- 		return -EINVAL;
-@@ -570,6 +578,7 @@ struct ksmbd_file *ksmbd_open_fd(struct ksmbd_work *work, struct file *filp)
- 	fp->tcon		= work->tcon;
- 	fp->volatile_id		= KSMBD_NO_FID;
- 	fp->persistent_id	= KSMBD_NO_FID;
-+	fp->f_state		= FP_NEW;
- 	fp->f_ci		= ksmbd_inode_get(fp);
- 
- 	if (!fp->f_ci) {
-@@ -591,6 +600,14 @@ struct ksmbd_file *ksmbd_open_fd(struct ksmbd_work *work, struct file *filp)
- 	return ERR_PTR(ret);
- }
- 
-+void ksmbd_update_fstate(struct ksmbd_file_table *ft, struct ksmbd_file *fp,
-+			 unsigned int state)
-+{
-+	write_lock(&ft->lock);
-+	fp->f_state = state;
-+	write_unlock(&ft->lock);
-+}
-+
- static int
- __close_file_table_ids(struct ksmbd_file_table *ft,
- 		       struct ksmbd_tree_connect *tcon,
-diff --git a/fs/smb/server/vfs_cache.h b/fs/smb/server/vfs_cache.h
-index fcb13413fa8d..03d0bf941216 100644
---- a/fs/smb/server/vfs_cache.h
-+++ b/fs/smb/server/vfs_cache.h
-@@ -60,6 +60,12 @@ struct ksmbd_inode {
- 	__le32				m_fattr;
- };
- 
-+enum {
-+	FP_NEW = 0,
-+	FP_INITED,
-+	FP_CLOSED
-+};
-+
- struct ksmbd_file {
- 	struct file			*filp;
- 	u64				persistent_id;
-@@ -98,6 +104,7 @@ struct ksmbd_file {
- 	/* if ls is happening on directory, below is valid*/
- 	struct ksmbd_readdir_data	readdir_data;
- 	int				dot_dotdot[2];
-+	unsigned int			f_state;
- };
- 
- static inline void set_ctx_actor(struct dir_context *ctx,
-@@ -142,6 +149,8 @@ int ksmbd_close_inode_fds(struct ksmbd_work *work, struct inode *inode);
- int ksmbd_init_global_file_table(void);
- void ksmbd_free_global_file_table(void);
- void ksmbd_set_fd_limit(unsigned long limit);
-+void ksmbd_update_fstate(struct ksmbd_file_table *ft, struct ksmbd_file *fp,
-+			 unsigned int state);
- 
- /*
-  * INODE hash
+A smile is a small gesture that expresses an interest and is a first step towards getting to know someone better! I am sending you a smile,I would love to know you more.I am 100% genuine in my search to hopefully meet someone special and withwhom together we can start as Friends and from that strong foundation hopefully build a life lasting relationship.Han
 
