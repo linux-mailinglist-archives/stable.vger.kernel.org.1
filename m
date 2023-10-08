@@ -2,164 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ECDB7BCD18
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 09:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A880F7BCDCC
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 12:30:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234118AbjJHHzP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 03:55:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56414 "EHLO
+        id S234308AbjJHKaj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 06:30:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344503AbjJHHzO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 03:55:14 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F2F7CF
-        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 00:55:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 985B9C433C8;
-        Sun,  8 Oct 2023 07:55:10 +0000 (UTC)
-Date:   Sun, 8 Oct 2023 09:55:07 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     gregkh@linuxfoundation.org
-Cc:     dave@parisc-linux.org, dave.anglin@bell.net, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] parisc: Restore __ldcw_align for PA-RISC
- 2.0 processors" failed to apply to 6.1-stable tree
-Message-ID: <ZSJgW3xJ1xj0RwhB@p100>
-References: <2023100802-occupant-unsalted-d02b@gregkh>
+        with ESMTP id S230412AbjJHKai (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 06:30:38 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3792EC6;
+        Sun,  8 Oct 2023 03:30:36 -0700 (PDT)
+Date:   Sun, 08 Oct 2023 10:30:33 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1696761034;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=RFcgvCwtBkHjmjC5Kv59Tho8cI5sB4+dK7KBM8mjgEo=;
+        b=kwiLjNQmuwlGGMi4EdsYkoz71pGXXZ0BIeUR/pN0bHENed0HdVB5+vK3OF7d+KDAAoCEUI
+        Whqe2DtedUA5cOuGrJPI2iJlkIWFwVa66lWwv9z8LcybXPAzzWLUbRYR9Df7zgEO9j7ZAM
+        sDf6+Oa16Tnkk/xwVb70G00/wvx0HzrmyQoqtsRKTYz80CyJy8jBYt0wdEEuC35UedBXPI
+        xStItsIqbw+xG/xqkUtPCPM1o7JPCmaPw1H6r/OaTPhysn7YE9MdfXb2gZqZsXaXvxJxS7
+        Ze2teRbhAUuDpCTxuSGrCMSSjh14BhtUT8oY68E3mD3lxF6vHYftgJrmgZjvXQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1696761034;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=RFcgvCwtBkHjmjC5Kv59Tho8cI5sB4+dK7KBM8mjgEo=;
+        b=5SsDrl6Fd6RtNGDTB9P4PsIR2dJg2M//yECJsaid/TgeB4fr3GRxMotUyQpq8FXQP6/eoW
+        BcWllE6zz6s4WcCA==
+From:   "tip-bot2 for JP Kobryn" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/lbr: Filter vsyscall addresses
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        JP Kobryn <inwardvessel@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023100802-occupant-unsalted-d02b@gregkh>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Message-ID: <169676103391.3135.1323905069105939036.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-* gregkh@linuxfoundation.org <gregkh@linuxfoundation.org>:
-> The patch below does not apply to the 6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+The following commit has been merged into the perf/urgent branch of tip:
 
-Hi Greg,
+Commit-ID:     e53899771a02f798d436655efbd9d4b46c0f9265
+Gitweb:        https://git.kernel.org/tip/e53899771a02f798d436655efbd9d4b46c0f9265
+Author:        JP Kobryn <inwardvessel@gmail.com>
+AuthorDate:    Fri, 06 Oct 2023 11:57:26 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 08 Oct 2023 12:25:18 +02:00
 
-below is the manually adjusted patch which applies cleanly to kernel
-4.14-stable and up to kernel 6.1-stable.
-(commit 914988e099fc658436fbd7b8f240160c352b6552 upstream.)
+perf/x86/lbr: Filter vsyscall addresses
 
-Thanks!
-Helge
+We found that a panic can occur when a vsyscall is made while LBR sampling
+is active. If the vsyscall is interrupted (NMI) for perf sampling, this
+call sequence can occur (most recent at top):
 
+    __insn_get_emulate_prefix()
+    insn_get_emulate_prefix()
+    insn_get_prefixes()
+    insn_get_opcode()
+    decode_branch_type()
+    get_branch_type()
+    intel_pmu_lbr_filter()
+    intel_pmu_handle_irq()
+    perf_event_nmi_handler()
 
-From 914988e099fc658436fbd7b8f240160c352b6552 Mon Sep 17 00:00:00 2001
-From: John David Anglin <dave@parisc-linux.org>
-Date: Tue, 19 Sep 2023 17:51:40 +0000
-Subject: [PATCH] parisc: Restore __ldcw_align for PA-RISC 2.0 processors
+Within __insn_get_emulate_prefix() at frame 0, a macro is called:
 
-Back in 2005, Kyle McMartin removed the 16-byte alignment for
-ldcw semaphores on PA 2.0 machines (CONFIG_PA20). This broke
-spinlocks on pre PA8800 processors. The main symptom was random
-faults in mmap'd memory (e.g., gcc compilations, etc).
+    peek_nbyte_next(insn_byte_t, insn, i)
 
-Unfortunately, the errata for this ldcw change is lost.
+Within this macro, this dereference occurs:
 
-The issue is the 16-byte alignment required for ldcw semaphore
-instructions can only be reduced to natural alignment when the
-ldcw operation can be handled coherently in cache. Only PA8800
-and PA8900 processors actually support doing the operation in
-cache.
+    (insn)->next_byte
 
-Aligning the spinlock dynamically adds two integer instructions
-to each spinlock.
+Inspecting registers at this point, the value of the next_byte field is the
+address of the vsyscall made, for example the location of the vsyscall
+version of gettimeofday() at 0xffffffffff600000. The access to an address
+in the vsyscall region will trigger an oops due to an unhandled page fault.
 
-Tested on rp3440, c8000 and a500.
+To fix the bug, filtering for vsyscalls can be done when
+determining the branch type. This patch will return
+a "none" branch if a kernel address if found to lie in the
+vsyscall region.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Link: https://lore.kernel.org/linux-parisc/6b332788-2227-127f-ba6d-55e99ecf4ed8@bell.net/T/#t
-Link: https://lore.kernel.org/linux-parisc/20050609050702.GB4641@roadwarrior.mcmartin.ca/
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+---
+ arch/x86/events/utils.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/include/asm/ldcw.h b/arch/parisc/include/asm/ldcw.h
-index 3eb4bfc1fb36..5ed52819e956 100644
---- a/arch/parisc/include/asm/ldcw.h
-+++ b/arch/parisc/include/asm/ldcw.h
-@@ -2,14 +2,28 @@
- #ifndef __PARISC_LDCW_H
- #define __PARISC_LDCW_H
+diff --git a/arch/x86/events/utils.c b/arch/x86/events/utils.c
+index 76b1f8b..dab4ed1 100644
+--- a/arch/x86/events/utils.c
++++ b/arch/x86/events/utils.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <asm/insn.h>
++#include <linux/mm.h>
  
--#ifndef CONFIG_PA20
- /* Because kmalloc only guarantees 8-byte alignment for kmalloc'd data,
-    and GCC only guarantees 8-byte alignment for stack locals, we can't
-    be assured of 16-byte alignment for atomic lock data even if we
-    specify "__attribute ((aligned(16)))" in the type declaration.  So,
-    we use a struct containing an array of four ints for the atomic lock
-    type and dynamically select the 16-byte aligned int from the array
--   for the semaphore.  */
-+   for the semaphore. */
-+
-+/* From: "Jim Hull" <jim.hull of hp.com>
-+   I've attached a summary of the change, but basically, for PA 2.0, as
-+   long as the ",CO" (coherent operation) completer is implemented, then the
-+   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
-+   they only require "natural" alignment (4-byte for ldcw, 8-byte for
-+   ldcd).
-+
-+   Although the cache control hint is accepted by all PA 2.0 processors,
-+   it is only implemented on PA8800/PA8900 CPUs. Prior PA8X00 CPUs still
-+   require 16-byte alignment. If the address is unaligned, the operation
-+   of the instruction is undefined. The ldcw instruction does not generate
-+   unaligned data reference traps so misaligned accesses are not detected.
-+   This hid the problem for years. So, restore the 16-byte alignment dropped
-+   by Kyle McMartin in "Remove __ldcw_align for PA-RISC 2.0 processors". */
+ #include "perf_event.h"
  
- #define __PA_LDCW_ALIGNMENT	16
- #define __PA_LDCW_ALIGN_ORDER	4
-@@ -19,22 +33,12 @@
- 		& ~(__PA_LDCW_ALIGNMENT - 1);			\
- 	(volatile unsigned int *) __ret;			\
- })
--#define __LDCW	"ldcw"
- 
--#else /*CONFIG_PA20*/
--/* From: "Jim Hull" <jim.hull of hp.com>
--   I've attached a summary of the change, but basically, for PA 2.0, as
--   long as the ",CO" (coherent operation) completer is specified, then the
--   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
--   they only require "natural" alignment (4-byte for ldcw, 8-byte for
--   ldcd). */
--
--#define __PA_LDCW_ALIGNMENT	4
--#define __PA_LDCW_ALIGN_ORDER	2
--#define __ldcw_align(a) (&(a)->slock)
-+#ifdef CONFIG_PA20
- #define __LDCW	"ldcw,co"
--
--#endif /*!CONFIG_PA20*/
-+#else
-+#define __LDCW	"ldcw"
-+#endif
- 
- /* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.
-    We don't explicitly expose that "*a" may be written as reload
-diff --git a/arch/parisc/include/asm/spinlock_types.h b/arch/parisc/include/asm/spinlock_types.h
-index 42979c5704dc..82d2384c3f22 100644
---- a/arch/parisc/include/asm/spinlock_types.h
-+++ b/arch/parisc/include/asm/spinlock_types.h
-@@ -3,13 +3,8 @@
- #define __ASM_SPINLOCK_TYPES_H
- 
- typedef struct {
--#ifdef CONFIG_PA20
--	volatile unsigned int slock;
--# define __ARCH_SPIN_LOCK_UNLOCKED { 1 }
--#else
- 	volatile unsigned int lock[4];
- # define __ARCH_SPIN_LOCK_UNLOCKED	{ { 1, 1, 1, 1 } }
--#endif
- } arch_spinlock_t;
- 
- typedef struct {
+@@ -132,9 +133,9 @@ static int get_branch_type(unsigned long from, unsigned long to, int abort,
+ 		 * The LBR logs any address in the IP, even if the IP just
+ 		 * faulted. This means userspace can control the from address.
+ 		 * Ensure we don't blindly read any address by validating it is
+-		 * a known text address.
++		 * a known text address and not a vsyscall address.
+ 		 */
+-		if (kernel_text_address(from)) {
++		if (kernel_text_address(from) && !in_gate_area_no_mm(from)) {
+ 			addr = (void *)from;
+ 			/*
+ 			 * Assume we can get the maximum possible size
