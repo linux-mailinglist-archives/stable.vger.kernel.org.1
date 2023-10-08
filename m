@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BF037BCFD6
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 21:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53E3D7BCFD7
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 21:43:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344485AbjJHTnL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 15:43:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59850 "EHLO
+        id S1344511AbjJHTnZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 15:43:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344467AbjJHTnL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 15:43:11 -0400
+        with ESMTP id S1344467AbjJHTnZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 15:43:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FD14AC
-        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 12:43:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8D4C433C8;
-        Sun,  8 Oct 2023 19:43:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF67AC
+        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 12:43:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A92BC433C8;
+        Sun,  8 Oct 2023 19:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696794189;
-        bh=MN5BKK1Ewqo2FbbqX5zUfyfEFCfhe4gLCJfYqUi3Q5A=;
+        s=korg; t=1696794203;
+        bh=WEHuFUOlDPEMe3VBMfxensXVWG1qJnbtRSD0gXnzwY0=;
         h=Subject:To:Cc:From:Date:From;
-        b=hx0BNzqlxK94Vgv1OxQwPZdOsaAkw6+H1VOTZrWoQ4Ec2eWKbeBr9eEJ5Zrb+ZFlb
-         o5J11u572BqSOxDvgZ9YlTjmVwwYvH0tgWYasfrNiLlucT/i5UyJy0bXQ/h2/QLcLv
-         W8zs7fOpMPvEIL80R4ZD9kNiy9ohoEAasQax5gds=
-Subject: FAILED: patch "[PATCH] ksmbd: fix race condition from parallel smb2 lock requests" failed to apply to 5.15-stable tree
+        b=DMncjc5GKUBUq4RmkOdvOtM2OcXcAmNNnQa0iQj2LmVWIXcF6i1wyiq/Q4P1ljetv
+         6v0KjOVbmoU37qhM0dm7IJi21LSdKlIi4ni6qWvJgOHlNe+dCb7bjJtTf5wlXbqMq1
+         DV3GWGMlRaWEy94B8wtEuzj4FVx4uosm7N/vxyF4=
+Subject: FAILED: patch "[PATCH] ksmbd: fix race condition from parallel smb2 lock requests" failed to apply to 6.1-stable tree
 To:     linkinjeon@kernel.org, rootlab@huawei.com, stfrench@microsoft.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 08 Oct 2023 21:43:06 +0200
-Message-ID: <2023100806-buckwheat-epiphany-17f3@gregkh>
+Date:   Sun, 08 Oct 2023 21:43:07 +0200
+Message-ID: <2023100807-alright-overeager-19bc@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 75ac9a3dd65f7eab4d12b0a0f744234b5300a491
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100806-buckwheat-epiphany-17f3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100807-alright-overeager-19bc@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -65,8 +65,6 @@ d3ca9f7aeba7 ("ksmbd: fix possible memory leak in smb2_lock()")
 f8d6e7442aa7 ("ksmbd: fix typo, syncronous->synchronous")
 abdb1742a312 ("cifs: get rid of mount options string parsing")
 9fd29a5bae6e ("cifs: use fs_context for automounts")
-5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
-332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
 
 thanks,
 
