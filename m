@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FD407BCC5E
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94C937BCC5F
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:30:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344322AbjJHFaM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 01:30:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33364 "EHLO
+        id S1344382AbjJHFaQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 01:30:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344382AbjJHFaL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:30:11 -0400
+        with ESMTP id S1344363AbjJHFaP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:30:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAAFFB6
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:30:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6E2C433C8;
-        Sun,  8 Oct 2023 05:30:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5491DB6
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:30:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F2FC433CB;
+        Sun,  8 Oct 2023 05:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696743009;
-        bh=8PdAF8y17+VUydcKHG4Nx0M7eF8Y+pWy04DXyXL8HBw=;
+        s=korg; t=1696743013;
+        bh=XcQgO167bGpg0RT0uqYk9XsAW/ORBkaaEp5sDudMYoA=;
         h=Subject:To:Cc:From:Date:From;
-        b=lrrMzPxlC+lAVMSV942jR/JdiXnxIV7kiFJFZPWDH4661mpLgmUnG57WrOeldjcTK
-         og3+3eV5mUCbCpUutJTl4DRxyxPMzA81ZSgY4NMz0qyXDXHx6wHR9ne9jtY7jN2Drm
-         mF4fiIRmZV1YZoaHCCo9Vstbh3d9v2GZavHJnUtM=
-Subject: FAILED: patch "[PATCH] parisc: Restore __ldcw_align for PA-RISC 2.0 processors" failed to apply to 5.15-stable tree
+        b=RznmNlyoo0CAshUpSX4yiMkZgOEBlftzCe0Y3nBQoxbpNlmqjI1KuOjx4rajzuqDZ
+         BkzxIkuxC8RifbU76P+WbaQDPCfbZzoILO6d1WlYhSDpLYtetM+EjA09IrJMypsf/2
+         U8oWcmTHfzysDwpK1Y99zF2SP9kHG2+W9RaX7ppg=
+Subject: FAILED: patch "[PATCH] parisc: Restore __ldcw_align for PA-RISC 2.0 processors" failed to apply to 5.10-stable tree
 To:     dave@parisc-linux.org, dave.anglin@bell.net, deller@gmx.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 08 Oct 2023 07:30:03 +0200
-Message-ID: <2023100803-mocker-spry-19ba@gregkh>
+Date:   Sun, 08 Oct 2023 07:30:04 +0200
+Message-ID: <2023100804-disregard-unimpeded-7daa@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,24 +42,34 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 914988e099fc658436fbd7b8f240160c352b6552
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100803-mocker-spry-19ba@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100804-disregard-unimpeded-7daa@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 914988e099fc ("parisc: Restore __ldcw_align for PA-RISC 2.0 processors")
 15e64ef6520e ("parisc: Add lightweight spinlock checks")
+4aae683f1327 ("tracing: Refactor TRACE_IRQFLAGS_SUPPORT in Kconfig")
+113616ec5b64 ("hexagon: select ARCH_WANT_LD_ORPHAN_WARN")
+63703f37aa09 ("mm: generalize ZONE_[DMA|DMA32]")
+ca6e51d592d2 ("arm64/Kconfig: introduce ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE")
+91024b3ce247 ("mm: generalize ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE]")
+c2280be81de4 ("mm: generalize ARCH_HAS_CACHE_LINE_SIZE")
+7677f7fd8be7 ("userfaultfd: add minor fault registration mode")
+18107f8a2df6 ("arm64: Support execute-only permissions with Enhanced PAN")
+07fb6dc327f1 ("arm64/mm: Drop redundant ARCH_WANT_HUGE_PMD_SHARE")
+591fd30eee47 ("Merge branch 'work.elf-compat' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs")
 
 thanks,
 
