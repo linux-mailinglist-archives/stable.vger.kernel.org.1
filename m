@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3DA37BCC62
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:30:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E60C67BCC6B
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 07:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344389AbjJHFa0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 01:30:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43412 "EHLO
+        id S1344382AbjJHFdO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 01:33:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344399AbjJHFaZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:30:25 -0400
+        with ESMTP id S1344363AbjJHFdN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 01:33:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 613B9BD
-        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:30:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C82DC433C7;
-        Sun,  8 Oct 2023 05:30:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA99EB6
+        for <stable@vger.kernel.org>; Sat,  7 Oct 2023 22:33:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8B6C433C8;
+        Sun,  8 Oct 2023 05:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696743024;
-        bh=rBlUSKhb2L3/WnSmK6BlVX7IorlJyvZW/46Zo8dZV2g=;
+        s=korg; t=1696743192;
+        bh=wAj5xLjiGpiwWSpWbC7A+Y4CMrihv2Exng7L9l5Tb9E=;
         h=Subject:To:Cc:From:Date:From;
-        b=Ks6xmeLXKQFMVeLpOC9G151vcV26gjDrayfjzqbJh7R93TNa1nXea3TfQOT2QSg8o
-         Oia862VLrrtneaonCBkaq9K9Xfpvvb9icrQw5V8vk3iMUCJSzSnbG4qQHcc3RuY16n
-         uHodT9ZmsSnWQ0hvzxEVLM0WmNOB+FGWUQWcnQOk=
-Subject: FAILED: patch "[PATCH] parisc: Restore __ldcw_align for PA-RISC 2.0 processors" failed to apply to 4.14-stable tree
-To:     dave@parisc-linux.org, dave.anglin@bell.net, deller@gmx.de
+        b=2rg+TTHrxGb2TY3S8fgGabelhxfmiREY87qlNyEff/WkVeI8mb9mNPGRS0Xe9vnZp
+         tS32CS4dhyI904TLka2OxqJND2OZDFsuHTLBuoqaP7UAIvFvmP5fNOF+2vGCMy0w5E
+         sskrdmi8g4h3yVcowCfXeh207V9Syv8t2p127Zhg=
+Subject: FAILED: patch "[PATCH] RDMA/srp: Do not call scsi_done() from srp_abort()" failed to apply to 5.15-stable tree
+To:     bvanassche@acm.org, leon@kernel.org, rpearsonhpe@gmail.com,
+        shinichiro.kawasaki@wdc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 08 Oct 2023 07:30:09 +0200
-Message-ID: <2023100809-rethink-refueling-8ca3@gregkh>
+Date:   Sun, 08 Oct 2023 07:33:08 +0200
+Message-ID: <2023100808-discourse-comfy-1731@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,34 +43,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 914988e099fc658436fbd7b8f240160c352b6552
+git cherry-pick -x e193b7955dfad68035b983a0011f4ef3590c85eb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100809-rethink-refueling-8ca3@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100808-discourse-comfy-1731@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-914988e099fc ("parisc: Restore __ldcw_align for PA-RISC 2.0 processors")
-15e64ef6520e ("parisc: Add lightweight spinlock checks")
-4aae683f1327 ("tracing: Refactor TRACE_IRQFLAGS_SUPPORT in Kconfig")
-113616ec5b64 ("hexagon: select ARCH_WANT_LD_ORPHAN_WARN")
-63703f37aa09 ("mm: generalize ZONE_[DMA|DMA32]")
-ca6e51d592d2 ("arm64/Kconfig: introduce ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE")
-91024b3ce247 ("mm: generalize ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE]")
-c2280be81de4 ("mm: generalize ARCH_HAS_CACHE_LINE_SIZE")
-7677f7fd8be7 ("userfaultfd: add minor fault registration mode")
-18107f8a2df6 ("arm64: Support execute-only permissions with Enhanced PAN")
-07fb6dc327f1 ("arm64/mm: Drop redundant ARCH_WANT_HUGE_PMD_SHARE")
-591fd30eee47 ("Merge branch 'work.elf-compat' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs")
+e193b7955dfa ("RDMA/srp: Do not call scsi_done() from srp_abort()")
+5f9ae9eecb15 ("scsi: ib_srp: Call scsi_done() directly")
 
 thanks,
 
@@ -77,117 +68,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 914988e099fc658436fbd7b8f240160c352b6552 Mon Sep 17 00:00:00 2001
-From: John David Anglin <dave@parisc-linux.org>
-Date: Tue, 19 Sep 2023 17:51:40 +0000
-Subject: [PATCH] parisc: Restore __ldcw_align for PA-RISC 2.0 processors
+From e193b7955dfad68035b983a0011f4ef3590c85eb Mon Sep 17 00:00:00 2001
+From: Bart Van Assche <bvanassche@acm.org>
+Date: Wed, 23 Aug 2023 13:57:27 -0700
+Subject: [PATCH] RDMA/srp: Do not call scsi_done() from srp_abort()
 
-Back in 2005, Kyle McMartin removed the 16-byte alignment for
-ldcw semaphores on PA 2.0 machines (CONFIG_PA20). This broke
-spinlocks on pre PA8800 processors. The main symptom was random
-faults in mmap'd memory (e.g., gcc compilations, etc).
+After scmd_eh_abort_handler() has called the SCSI LLD eh_abort_handler
+callback, it performs one of the following actions:
+* Call scsi_queue_insert().
+* Call scsi_finish_command().
+* Call scsi_eh_scmd_add().
+Hence, SCSI abort handlers must not call scsi_done(). Otherwise all
+the above actions would trigger a use-after-free. Hence remove the
+scsi_done() call from srp_abort(). Keep the srp_free_req() call
+before returning SUCCESS because we may not see the command again if
+SUCCESS is returned.
 
-Unfortunately, the errata for this ldcw change is lost.
+Cc: Bob Pearson <rpearsonhpe@gmail.com>
+Cc: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Fixes: d8536670916a ("IB/srp: Avoid having aborted requests hang")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20230823205727.505681-1-bvanassche@acm.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 
-The issue is the 16-byte alignment required for ldcw semaphore
-instructions can only be reduced to natural alignment when the
-ldcw operation can be handled coherently in cache. Only PA8800
-and PA8900 processors actually support doing the operation in
-cache.
-
-Aligning the spinlock dynamically adds two integer instructions
-to each spinlock.
-
-Tested on rp3440, c8000 and a500.
-
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Link: https://lore.kernel.org/linux-parisc/6b332788-2227-127f-ba6d-55e99ecf4ed8@bell.net/T/#t
-Link: https://lore.kernel.org/linux-parisc/20050609050702.GB4641@roadwarrior.mcmartin.ca/
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/arch/parisc/include/asm/ldcw.h b/arch/parisc/include/asm/ldcw.h
-index 6d28b5514699..ee9e071859b2 100644
---- a/arch/parisc/include/asm/ldcw.h
-+++ b/arch/parisc/include/asm/ldcw.h
-@@ -2,39 +2,42 @@
- #ifndef __PARISC_LDCW_H
- #define __PARISC_LDCW_H
+diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
+index 1574218764e0..2916e77f589b 100644
+--- a/drivers/infiniband/ulp/srp/ib_srp.c
++++ b/drivers/infiniband/ulp/srp/ib_srp.c
+@@ -2784,7 +2784,6 @@ static int srp_abort(struct scsi_cmnd *scmnd)
+ 	u32 tag;
+ 	u16 ch_idx;
+ 	struct srp_rdma_ch *ch;
+-	int ret;
  
--#ifndef CONFIG_PA20
- /* Because kmalloc only guarantees 8-byte alignment for kmalloc'd data,
-    and GCC only guarantees 8-byte alignment for stack locals, we can't
-    be assured of 16-byte alignment for atomic lock data even if we
-    specify "__attribute ((aligned(16)))" in the type declaration.  So,
-    we use a struct containing an array of four ints for the atomic lock
-    type and dynamically select the 16-byte aligned int from the array
--   for the semaphore.  */
-+   for the semaphore. */
-+
-+/* From: "Jim Hull" <jim.hull of hp.com>
-+   I've attached a summary of the change, but basically, for PA 2.0, as
-+   long as the ",CO" (coherent operation) completer is implemented, then the
-+   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
-+   they only require "natural" alignment (4-byte for ldcw, 8-byte for
-+   ldcd).
-+
-+   Although the cache control hint is accepted by all PA 2.0 processors,
-+   it is only implemented on PA8800/PA8900 CPUs. Prior PA8X00 CPUs still
-+   require 16-byte alignment. If the address is unaligned, the operation
-+   of the instruction is undefined. The ldcw instruction does not generate
-+   unaligned data reference traps so misaligned accesses are not detected.
-+   This hid the problem for years. So, restore the 16-byte alignment dropped
-+   by Kyle McMartin in "Remove __ldcw_align for PA-RISC 2.0 processors". */
+ 	shost_printk(KERN_ERR, target->scsi_host, "SRP abort called\n");
  
- #define __PA_LDCW_ALIGNMENT	16
--#define __PA_LDCW_ALIGN_ORDER	4
- #define __ldcw_align(a) ({					\
- 	unsigned long __ret = (unsigned long) &(a)->lock[0];	\
- 	__ret = (__ret + __PA_LDCW_ALIGNMENT - 1)		\
- 		& ~(__PA_LDCW_ALIGNMENT - 1);			\
- 	(volatile unsigned int *) __ret;			\
- })
--#define __LDCW	"ldcw"
+@@ -2798,19 +2797,14 @@ static int srp_abort(struct scsi_cmnd *scmnd)
+ 	shost_printk(KERN_ERR, target->scsi_host,
+ 		     "Sending SRP abort for tag %#x\n", tag);
+ 	if (srp_send_tsk_mgmt(ch, tag, scmnd->device->lun,
+-			      SRP_TSK_ABORT_TASK, NULL) == 0)
+-		ret = SUCCESS;
+-	else if (target->rport->state == SRP_RPORT_LOST)
+-		ret = FAST_IO_FAIL;
+-	else
+-		ret = FAILED;
+-	if (ret == SUCCESS) {
++			      SRP_TSK_ABORT_TASK, NULL) == 0) {
+ 		srp_free_req(ch, req, scmnd, 0);
+-		scmnd->result = DID_ABORT << 16;
+-		scsi_done(scmnd);
++		return SUCCESS;
+ 	}
++	if (target->rport->state == SRP_RPORT_LOST)
++		return FAST_IO_FAIL;
  
--#else /*CONFIG_PA20*/
--/* From: "Jim Hull" <jim.hull of hp.com>
--   I've attached a summary of the change, but basically, for PA 2.0, as
--   long as the ",CO" (coherent operation) completer is specified, then the
--   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
--   they only require "natural" alignment (4-byte for ldcw, 8-byte for
--   ldcd). */
--
--#define __PA_LDCW_ALIGNMENT	4
--#define __PA_LDCW_ALIGN_ORDER	2
--#define __ldcw_align(a) (&(a)->slock)
-+#ifdef CONFIG_PA20
- #define __LDCW	"ldcw,co"
--
--#endif /*!CONFIG_PA20*/
-+#else
-+#define __LDCW	"ldcw"
-+#endif
+-	return ret;
++	return FAILED;
+ }
  
- /* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.
-    We don't explicitly expose that "*a" may be written as reload
-diff --git a/arch/parisc/include/asm/spinlock_types.h b/arch/parisc/include/asm/spinlock_types.h
-index efd06a897c6a..7b986b09dba8 100644
---- a/arch/parisc/include/asm/spinlock_types.h
-+++ b/arch/parisc/include/asm/spinlock_types.h
-@@ -9,15 +9,10 @@
- #ifndef __ASSEMBLY__
- 
- typedef struct {
--#ifdef CONFIG_PA20
--	volatile unsigned int slock;
--# define __ARCH_SPIN_LOCK_UNLOCKED { __ARCH_SPIN_LOCK_UNLOCKED_VAL }
--#else
- 	volatile unsigned int lock[4];
- # define __ARCH_SPIN_LOCK_UNLOCKED	\
- 	{ { __ARCH_SPIN_LOCK_UNLOCKED_VAL, __ARCH_SPIN_LOCK_UNLOCKED_VAL, \
- 	    __ARCH_SPIN_LOCK_UNLOCKED_VAL, __ARCH_SPIN_LOCK_UNLOCKED_VAL } }
--#endif
- } arch_spinlock_t;
- 
- 
+ static int srp_reset_device(struct scsi_cmnd *scmnd)
 
