@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE5B67BCFDE
-	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 21:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 684F97BCFE0
+	for <lists+stable@lfdr.de>; Sun,  8 Oct 2023 21:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344558AbjJHToI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 15:44:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38074 "EHLO
+        id S1344532AbjJHToP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 15:44:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344421AbjJHToH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 15:44:07 -0400
+        with ESMTP id S1344529AbjJHToO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 15:44:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEE2BAC
-        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 12:44:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E92CC433C7;
-        Sun,  8 Oct 2023 19:44:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E992BAC
+        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 12:44:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386B4C433C7;
+        Sun,  8 Oct 2023 19:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696794246;
-        bh=3cZf1QIZU4JkwrzBomIq2eTcESEOwC5qcGCVzLwHyYI=;
+        s=korg; t=1696794252;
+        bh=9HYlN4DWaIMQi8DQOYQLZrRNtrX1k/kaJ0D8aVK2Ihc=;
         h=Subject:To:Cc:From:Date:From;
-        b=FE2JnnG0hRR2cpdCqck4UTDeZGgYihrHDD67nf8zX1w+OmJpz4hNfSsNmkCkZIcEX
-         17aWZhSjuqhM/c8AB/V90CJlmlBtN7vV5PdM+/3d6QDahm18uO+yzFUvNQjOQDjEat
-         0kGpSvdJADLJpf/Krv+bOSj6kbBgDPRklaAUUHVw=
-Subject: FAILED: patch "[PATCH] ksmbd: fix race condition with fp" failed to apply to 6.5-stable tree
+        b=ipXRnbC0Sdb29jMXXYFVLX1LsfDn4z1xovqu9g4+vNzIxKWUpHbo6/6CySneyqqUs
+         JTZ9d5wBbe0vrWBbAQhRQEzx+an8rswDR1qxB4xyDbVPwEiDxkr+viCmv43Ic1lN2W
+         SXvlQmc8RFJBJO7UdLA9e5l7+/pRy1l+RrQ422tY=
+Subject: FAILED: patch "[PATCH] ksmbd: fix race condition with fp" failed to apply to 6.1-stable tree
 To:     linkinjeon@kernel.org, rootlab@huawei.com, stfrench@microsoft.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 08 Oct 2023 21:43:54 +0200
-Message-ID: <2023100854-usable-entree-9b37@gregkh>
+Date:   Sun, 08 Oct 2023 21:43:55 +0200
+Message-ID: <2023100855-speckled-spectator-9001@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,24 +42,35 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5a7ee91d1154f35418367a6eaae74046fd06ed89
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100854-usable-entree-9b37@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100855-speckled-spectator-9001@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 5a7ee91d1154 ("ksmbd: fix race condition with fp")
 e2b76ab8b5c9 ("ksmbd: add support for read compound")
+e202a1e8634b ("ksmbd: no response from compound read")
+7b7d709ef7cf ("ksmbd: add missing compound request handing in some commands")
+81a94b27847f ("ksmbd: use kvzalloc instead of kvmalloc")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+30210947a343 ("ksmbd: fix racy issue under cocurrent smb2 tree disconnect")
+abcc506a9a71 ("ksmbd: fix racy issue from smb2 close and logoff with multichannel")
+ea174a918939 ("ksmbd: destroy expired sessions")
+f5c779b7ddbd ("ksmbd: fix racy issue from session setup and logoff")
+74d7970febf7 ("ksmbd: fix racy issue from using ->d_parent and ->d_name")
+34e8ccf9ce24 ("ksmbd: set NegotiateContextCount once instead of every inc")
+42bc6793e452 ("Merge tag 'pull-lock_rename_child' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs into ksmbd-for-next")
 
 thanks,
 
