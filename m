@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DB1F7BE1B1
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C064E7BE120
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377484AbjJINxD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:53:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35664 "EHLO
+        id S1377451AbjJINrO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:47:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377520AbjJINxC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:02 -0400
+        with ESMTP id S1377467AbjJINrL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:47:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35FA994
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAC3C433C8;
-        Mon,  9 Oct 2023 13:52:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A933CB6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:47:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3505C433C8;
+        Mon,  9 Oct 2023 13:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859579;
-        bh=Ea/Q146n3WDinjUjPWuwaOUeg2wR4ALlpr7u5zE162M=;
+        s=korg; t=1696859229;
+        bh=lwfUT/BssXa+Fl8XW8t/khg0MAZ8iZcLSfoL2Epz/Uc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P+i0b08ehj6KyNNSIiRhk5sC8RYcVyRd1gi+BuXodOeQWvQFCDwg1yMrhyIUW9jKm
-         mNpEXXrBzcUap8e4pSIB1dlew3w0GgQ60ehuoLVvoANeP7puIm3qtlUejDj3r8yHHj
-         VAL2VNE9PLSgYjgIYzqICdsmXW/X/Br+GjpPrIzA=
+        b=XvCxfJ6RBMl/hCzyQ9X50u3AlIpWpsXaSaR04rwcsDyaUwKI3nU0z8mLrostK0cLC
+         R8A8gMTSI9UaMM+h0UG+MSbkrrP/6hbzHao0hRD4t5M5KtzP61VfATE8NY4EwjFGpe
+         CmwjMX2/O5DBmbwFpNMPyC2ZLqy06DJCBIPQbpZo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Borkmann <daniel@iogearbox.net>,
-        Stanislav Fomichev <sdf@google.com>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 39/91] bpf: Clarify error expectations from bpf_clone_redirect
+Subject: [PATCH 4.14 12/55] parisc: iosapic.c: Fix sparse warnings
 Date:   Mon,  9 Oct 2023 15:06:11 +0200
-Message-ID: <20231009130112.878726875@linuxfoundation.org>
+Message-ID: <20231009130108.181225428@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,65 +48,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@google.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 7cb779a6867fea00b4209bcf6de2f178a743247d ]
+[ Upstream commit 927c6c8aa27c284a799b8c18784e37d3373af908 ]
 
-Commit 151e887d8ff9 ("veth: Fixing transmit return status for dropped
-packets") exposed the fact that bpf_clone_redirect is capable of
-returning raw NET_XMIT_XXX return codes.
-
-This is in the conflict with its UAPI doc which says the following:
-"0 on success, or a negative error in case of failure."
-
-Update the UAPI to reflect the fact that bpf_clone_redirect can
-return positive error numbers, but don't explicitly define
-their meaning.
-
-Reported-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230911194731.286342-1-sdf@google.com
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       | 4 +++-
- tools/include/uapi/linux/bpf.h | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/parisc/iosapic.c         | 4 ++--
+ drivers/parisc/iosapic_private.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 6334aede67fc2..91c43f3756123 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -693,7 +693,9 @@ union bpf_attr {
-  * 		performed again, if the helper is used in combination with
-  * 		direct packet access.
-  * 	Return
-- * 		0 on success, or a negative error in case of failure.
-+ * 		0 on success, or a negative error in case of failure. Positive
-+ * 		error indicates a potential drop or congestion in the target
-+ * 		device. The particular positive error codes are not defined.
-  *
-  * u64 bpf_get_current_pid_tgid(void)
-  * 	Return
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 0c30ab898e2a5..37259bae15010 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -691,7 +691,9 @@ union bpf_attr {
-  * 		performed again, if the helper is used in combination with
-  * 		direct packet access.
-  * 	Return
-- * 		0 on success, or a negative error in case of failure.
-+ * 		0 on success, or a negative error in case of failure. Positive
-+ * 		error indicates a potential drop or congestion in the target
-+ * 		device. The particular positive error codes are not defined.
-  *
-  * u64 bpf_get_current_pid_tgid(void)
-  * 	Return
+diff --git a/drivers/parisc/iosapic.c b/drivers/parisc/iosapic.c
+index eb9137faccf74..4cc08d13b82fa 100644
+--- a/drivers/parisc/iosapic.c
++++ b/drivers/parisc/iosapic.c
+@@ -216,9 +216,9 @@ static inline void iosapic_write(void __iomem *iosapic, unsigned int reg, u32 va
+ 
+ static DEFINE_SPINLOCK(iosapic_lock);
+ 
+-static inline void iosapic_eoi(void __iomem *addr, unsigned int data)
++static inline void iosapic_eoi(__le32 __iomem *addr, __le32 data)
+ {
+-	__raw_writel(data, addr);
++	__raw_writel((__force u32)data, addr);
+ }
+ 
+ /*
+diff --git a/drivers/parisc/iosapic_private.h b/drivers/parisc/iosapic_private.h
+index 6e05e30a2450a..7a928c03d5201 100644
+--- a/drivers/parisc/iosapic_private.h
++++ b/drivers/parisc/iosapic_private.h
+@@ -132,8 +132,8 @@ struct iosapic_irt {
+ struct vector_info {
+ 	struct iosapic_info *iosapic;	/* I/O SAPIC this vector is on */
+ 	struct irt_entry *irte;		/* IRT entry */
+-	u32 __iomem *eoi_addr;		/* precalculate EOI reg address */
+-	u32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
++	__le32 __iomem *eoi_addr;	/* precalculate EOI reg address */
++	__le32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
+ 	int	txn_irq;		/* virtual IRQ number for processor */
+ 	ulong	txn_addr;		/* IA64: id_eid  PA: partial HPA */
+ 	u32	txn_data;		/* CPU interrupt bit */
 -- 
 2.40.1
 
