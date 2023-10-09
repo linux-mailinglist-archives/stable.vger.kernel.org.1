@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50E8F7BDDE7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4BA47BDE9D
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376882AbjJINOK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
+        id S1376353AbjJINVO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:21:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376908AbjJINNq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:46 -0400
+        with ESMTP id S1376366AbjJINVK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60864100
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1B9C433C8;
-        Mon,  9 Oct 2023 13:13:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C276699
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A94C433C9;
+        Mon,  9 Oct 2023 13:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857216;
-        bh=ToFLRMZx2W0fHLEA+whMPb3PlANBZoo7SeySjyY/J/s=;
+        s=korg; t=1696857668;
+        bh=k4/FRHAxoZSgWqKqBEZ08qxIoMXM7WlQzRQVAC+M8vU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SJzZUBM6lhI36GDMdHLiaCqBeTKLOP74YduLBY6Md1kUHuygSQfSW6CF6U4Ki7lth
-         PWiT5fmbAJOOypY5EtsalEJZWeGUZ43LV8h8cZtW875hfrS4HyrthJusTy/MjsnDTs
-         rdnZ3nUcXupqstzmmbXCf1PJWCAHi5JEOsBNVw3M=
+        b=J7OsY5AbH6p17zeO2Wa7HDsyMb4KKwbuYDxgzrAlR5TMhAJnEgN+srTGnNOr4lIba
+         PAy/Wq+waMdQk//9ZcKWBxDnHUbOFta7Po1NpyXDYwUeumxNXWFZSMZDXa5tt7nh0A
+         JYmqf2ftH8/hSdyhoIQrq7+vBbPc0WkLV80rITfs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Bryan Whitehead <bryan.whitehead@microchip.com>,
-        UNGLinuxDriver@microchip.com, Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 136/163] net: lan743x: also select PHYLIB
+Subject: [PATCH 6.1 119/162] netfilter: handle the connecting collision properly in nf_conntrack_proto_sctp
 Date:   Mon,  9 Oct 2023 15:01:40 +0200
-Message-ID: <20231009130127.802185928@linuxfoundation.org>
+Message-ID: <20231009130126.215516958@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,49 +49,176 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 566aeed6871ac2189b5bfe03e1a5b3b7be5eca38 ]
+[ Upstream commit 8e56b063c86569e51eed1c5681ce6361fa97fc7a ]
 
-Since FIXED_PHY depends on PHYLIB, PHYLIB needs to be set to avoid
-a kconfig warning:
+In Scenario A and B below, as the delayed INIT_ACK always changes the peer
+vtag, SCTP ct with the incorrect vtag may cause packet loss.
 
-WARNING: unmet direct dependencies detected for FIXED_PHY
-  Depends on [n]: NETDEVICES [=y] && PHYLIB [=n]
-  Selected by [y]:
-  - LAN743X [=y] && NETDEVICES [=y] && ETHERNET [=y] && NET_VENDOR_MICROCHIP [=y] && PCI [=y] && PTP_1588_CLOCK_OPTIONAL [=y]
+Scenario A: INIT_ACK is delayed until the peer receives its own INIT_ACK
 
-Fixes: 73c4d1b307ae ("net: lan743x: select FIXED_PHY")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: lore.kernel.org/r/202309261802.JPbRHwti-lkp@intel.com
-Cc: Bryan Whitehead <bryan.whitehead@microchip.com>
-Cc: UNGLinuxDriver@microchip.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Link: https://lore.kernel.org/r/20231002193544.14529-1-rdunlap@infradead.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  192.168.1.2 > 192.168.1.1: [INIT] [init tag: 1328086772]
+    192.168.1.1 > 192.168.1.2: [INIT] [init tag: 1414468151]
+    192.168.1.2 > 192.168.1.1: [INIT ACK] [init tag: 1328086772]
+  192.168.1.1 > 192.168.1.2: [INIT ACK] [init tag: 1650211246] *
+  192.168.1.2 > 192.168.1.1: [COOKIE ECHO]
+    192.168.1.1 > 192.168.1.2: [COOKIE ECHO]
+    192.168.1.2 > 192.168.1.1: [COOKIE ACK]
+
+Scenario B: INIT_ACK is delayed until the peer completes its own handshake
+
+  192.168.1.2 > 192.168.1.1: sctp (1) [INIT] [init tag: 3922216408]
+    192.168.1.1 > 192.168.1.2: sctp (1) [INIT] [init tag: 144230885]
+    192.168.1.2 > 192.168.1.1: sctp (1) [INIT ACK] [init tag: 3922216408]
+    192.168.1.1 > 192.168.1.2: sctp (1) [COOKIE ECHO]
+    192.168.1.2 > 192.168.1.1: sctp (1) [COOKIE ACK]
+  192.168.1.1 > 192.168.1.2: sctp (1) [INIT ACK] [init tag: 3914796021] *
+
+This patch fixes it as below:
+
+In SCTP_CID_INIT processing:
+- clear ct->proto.sctp.init[!dir] if ct->proto.sctp.init[dir] &&
+  ct->proto.sctp.init[!dir]. (Scenario E)
+- set ct->proto.sctp.init[dir].
+
+In SCTP_CID_INIT_ACK processing:
+- drop it if !ct->proto.sctp.init[!dir] && ct->proto.sctp.vtag[!dir] &&
+  ct->proto.sctp.vtag[!dir] != ih->init_tag. (Scenario B, Scenario C)
+- drop it if ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir] &&
+  ct->proto.sctp.vtag[!dir] != ih->init_tag. (Scenario A)
+
+In SCTP_CID_COOKIE_ACK processing:
+- clear ct->proto.sctp.init[dir] and ct->proto.sctp.init[!dir].
+  (Scenario D)
+
+Also, it's important to allow the ct state to move forward with cookie_echo
+and cookie_ack from the opposite dir for the collision scenarios.
+
+There are also other Scenarios where it should allow the packet through,
+addressed by the processing above:
+
+Scenario C: new CT is created by INIT_ACK.
+
+Scenario D: start INIT on the existing ESTABLISHED ct.
+
+Scenario E: start INIT after the old collision on the existing ESTABLISHED
+ct.
+
+  192.168.1.2 > 192.168.1.1: sctp (1) [INIT] [init tag: 3922216408]
+  192.168.1.1 > 192.168.1.2: sctp (1) [INIT] [init tag: 144230885]
+  (both side are stopped, then start new connection again in hours)
+  192.168.1.2 > 192.168.1.1: sctp (1) [INIT] [init tag: 242308742]
+
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/netfilter/nf_conntrack_sctp.h |  1 +
+ net/netfilter/nf_conntrack_proto_sctp.c     | 43 ++++++++++++++++-----
+ 2 files changed, 34 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/Kconfig b/drivers/net/ethernet/microchip/Kconfig
-index 329e374b9539c..43ba71e82260c 100644
---- a/drivers/net/ethernet/microchip/Kconfig
-+++ b/drivers/net/ethernet/microchip/Kconfig
-@@ -46,6 +46,7 @@ config LAN743X
- 	tristate "LAN743x support"
- 	depends on PCI
- 	depends on PTP_1588_CLOCK_OPTIONAL
-+	select PHYLIB
- 	select FIXED_PHY
- 	select CRC16
- 	select CRC32
+diff --git a/include/linux/netfilter/nf_conntrack_sctp.h b/include/linux/netfilter/nf_conntrack_sctp.h
+index 625f491b95de8..fb31312825ae5 100644
+--- a/include/linux/netfilter/nf_conntrack_sctp.h
++++ b/include/linux/netfilter/nf_conntrack_sctp.h
+@@ -9,6 +9,7 @@ struct ip_ct_sctp {
+ 	enum sctp_conntrack state;
+ 
+ 	__be32 vtag[IP_CT_DIR_MAX];
++	u8 init[IP_CT_DIR_MAX];
+ 	u8 last_dir;
+ 	u8 flags;
+ };
+diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
+index 7247af51bdfc4..c94a9971d790c 100644
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -112,7 +112,7 @@ static const u8 sctp_conntracks[2][11][SCTP_CONNTRACK_MAX] = {
+ /* shutdown_ack */ {sSA, sCL, sCW, sCE, sES, sSA, sSA, sSA, sSA},
+ /* error        */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCL},/* Can't have Stale cookie*/
+ /* cookie_echo  */ {sCL, sCL, sCE, sCE, sES, sSS, sSR, sSA, sCL},/* 5.2.4 - Big TODO */
+-/* cookie_ack   */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCL},/* Can't come in orig dir */
++/* cookie_ack   */ {sCL, sCL, sCW, sES, sES, sSS, sSR, sSA, sCL},/* Can't come in orig dir */
+ /* shutdown_comp*/ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sCL, sCL},
+ /* heartbeat    */ {sHS, sCL, sCW, sCE, sES, sSS, sSR, sSA, sHS},
+ /* heartbeat_ack*/ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sHS},
+@@ -126,7 +126,7 @@ static const u8 sctp_conntracks[2][11][SCTP_CONNTRACK_MAX] = {
+ /* shutdown     */ {sIV, sCL, sCW, sCE, sSR, sSS, sSR, sSA, sIV},
+ /* shutdown_ack */ {sIV, sCL, sCW, sCE, sES, sSA, sSA, sSA, sIV},
+ /* error        */ {sIV, sCL, sCW, sCL, sES, sSS, sSR, sSA, sIV},
+-/* cookie_echo  */ {sIV, sCL, sCW, sCE, sES, sSS, sSR, sSA, sIV},/* Can't come in reply dir */
++/* cookie_echo  */ {sIV, sCL, sCE, sCE, sES, sSS, sSR, sSA, sIV},/* Can't come in reply dir */
+ /* cookie_ack   */ {sIV, sCL, sCW, sES, sES, sSS, sSR, sSA, sIV},
+ /* shutdown_comp*/ {sIV, sCL, sCW, sCE, sES, sSS, sSR, sCL, sIV},
+ /* heartbeat    */ {sIV, sCL, sCW, sCE, sES, sSS, sSR, sSA, sHS},
+@@ -426,6 +426,9 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
+ 			/* (D) vtag must be same as init_vtag as found in INIT_ACK */
+ 			if (sh->vtag != ct->proto.sctp.vtag[dir])
+ 				goto out_unlock;
++		} else if (sch->type == SCTP_CID_COOKIE_ACK) {
++			ct->proto.sctp.init[dir] = 0;
++			ct->proto.sctp.init[!dir] = 0;
+ 		} else if (sch->type == SCTP_CID_HEARTBEAT) {
+ 			if (ct->proto.sctp.vtag[dir] == 0) {
+ 				pr_debug("Setting %d vtag %x for dir %d\n", sch->type, sh->vtag, dir);
+@@ -474,16 +477,18 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
+ 		}
+ 
+ 		/* If it is an INIT or an INIT ACK note down the vtag */
+-		if (sch->type == SCTP_CID_INIT ||
+-		    sch->type == SCTP_CID_INIT_ACK) {
+-			struct sctp_inithdr _inithdr, *ih;
++		if (sch->type == SCTP_CID_INIT) {
++			struct sctp_inithdr _ih, *ih;
+ 
+-			ih = skb_header_pointer(skb, offset + sizeof(_sch),
+-						sizeof(_inithdr), &_inithdr);
+-			if (ih == NULL)
++			ih = skb_header_pointer(skb, offset + sizeof(_sch), sizeof(*ih), &_ih);
++			if (!ih)
+ 				goto out_unlock;
+-			pr_debug("Setting vtag %x for dir %d\n",
+-				 ih->init_tag, !dir);
++
++			if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir])
++				ct->proto.sctp.init[!dir] = 0;
++			ct->proto.sctp.init[dir] = 1;
++
++			pr_debug("Setting vtag %x for dir %d\n", ih->init_tag, !dir);
+ 			ct->proto.sctp.vtag[!dir] = ih->init_tag;
+ 
+ 			/* don't renew timeout on init retransmit so
+@@ -494,6 +499,24 @@ int nf_conntrack_sctp_packet(struct nf_conn *ct,
+ 			    old_state == SCTP_CONNTRACK_CLOSED &&
+ 			    nf_ct_is_confirmed(ct))
+ 				ignore = true;
++		} else if (sch->type == SCTP_CID_INIT_ACK) {
++			struct sctp_inithdr _ih, *ih;
++			__be32 vtag;
++
++			ih = skb_header_pointer(skb, offset + sizeof(_sch), sizeof(*ih), &_ih);
++			if (!ih)
++				goto out_unlock;
++
++			vtag = ct->proto.sctp.vtag[!dir];
++			if (!ct->proto.sctp.init[!dir] && vtag && vtag != ih->init_tag)
++				goto out_unlock;
++			/* collision */
++			if (ct->proto.sctp.init[dir] && ct->proto.sctp.init[!dir] &&
++			    vtag != ih->init_tag)
++				goto out_unlock;
++
++			pr_debug("Setting vtag %x for dir %d\n", ih->init_tag, !dir);
++			ct->proto.sctp.vtag[!dir] = ih->init_tag;
+ 		}
+ 
+ 		ct->proto.sctp.state = new_state;
 -- 
 2.40.1
 
