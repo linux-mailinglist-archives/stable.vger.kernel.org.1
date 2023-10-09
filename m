@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACBE87BDF5E
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:29:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 545F67BE076
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376980AbjJIN3X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:29:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49888 "EHLO
+        id S1376970AbjJINk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:40:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377175AbjJIN3I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:29:08 -0400
+        with ESMTP id S1377376AbjJINkW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E8999
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:29:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B90C433C8;
-        Mon,  9 Oct 2023 13:29:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFCA7100
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:40:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C297C433CB;
+        Mon,  9 Oct 2023 13:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858147;
-        bh=NWWMM5YWf8HeNa4Lyd6KZj2TPV5cW1FJXecIeaRAL4g=;
+        s=korg; t=1696858819;
+        bh=KOX4WuBrPc8qaK1pa/xd7qkdyIytgPHaxDZE3BrRPAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1NJAu2hVOlmWv5D3GLhtUmv5AYJ+uYsLGeN6KEDW82+tHZHAFelZzZDKSRCXlmt+M
-         hZtIUJ2hGrKql/0QppaWHB+/JmZlEWctEQ38xdSjinNRNjZHvu2KFY/8XiONl/mUZ/
-         pQ/4xZjyKbxvGIe9kf6jkvi4aIefbj78YYI8RkEg=
+        b=XHbOe4Nql9E6usKywWKtS4Cf4xL4guQp3h5Qcunh8+F7Ooqf8Gjka7x4WiNKSLsTn
+         Zvnxk0pcroJXD16tWO/OJCuTq4d263bTDyWUD2+QWzK0rd1oB9SMyGhs6zYCNbWiUH
+         XL1gM4B045meYaEj2ufEureMLcqpQqQyirmWTb5U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 031/131] gpio: tb10x: Fix an error handling path in tb10x_gpio_probe()
+Subject: [PATCH 5.10 110/226] parisc: iosapic.c: Fix sparse warnings
 Date:   Mon,  9 Oct 2023 15:01:11 +0200
-Message-ID: <20231009130117.261680886@linuxfoundation.org>
+Message-ID: <20231009130129.655961657@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +48,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit b547b5e52a0587e6b25ea520bf2f9e03d00cbcb6 ]
+[ Upstream commit 927c6c8aa27c284a799b8c18784e37d3373af908 ]
 
-If an error occurs after a successful irq_domain_add_linear() call, it
-should be undone by a corresponding irq_domain_remove(), as already done
-in the remove function.
-
-Fixes: c6ce2b6bffe5 ("gpio: add TB10x GPIO driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tb10x.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/parisc/iosapic.c         | 4 ++--
+ drivers/parisc/iosapic_private.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio-tb10x.c b/drivers/gpio/gpio-tb10x.c
-index 5e375186f90ef..2a5e6263570fe 100644
---- a/drivers/gpio/gpio-tb10x.c
-+++ b/drivers/gpio/gpio-tb10x.c
-@@ -195,7 +195,7 @@ static int tb10x_gpio_probe(struct platform_device *pdev)
- 				handle_edge_irq, IRQ_NOREQUEST, IRQ_NOPROBE,
- 				IRQ_GC_INIT_MASK_CACHE);
- 		if (ret)
--			return ret;
-+			goto err_remove_domain;
+diff --git a/drivers/parisc/iosapic.c b/drivers/parisc/iosapic.c
+index fd99735dca3e6..6ef663bbcdb01 100644
+--- a/drivers/parisc/iosapic.c
++++ b/drivers/parisc/iosapic.c
+@@ -202,9 +202,9 @@ static inline void iosapic_write(void __iomem *iosapic, unsigned int reg, u32 va
  
- 		gc = tb10x_gpio->domain->gc->gc[0];
- 		gc->reg_base                         = tb10x_gpio->base;
-@@ -209,6 +209,10 @@ static int tb10x_gpio_probe(struct platform_device *pdev)
- 	}
+ static DEFINE_SPINLOCK(iosapic_lock);
  
- 	return 0;
-+
-+err_remove_domain:
-+	irq_domain_remove(tb10x_gpio->domain);
-+	return ret;
+-static inline void iosapic_eoi(void __iomem *addr, unsigned int data)
++static inline void iosapic_eoi(__le32 __iomem *addr, __le32 data)
+ {
+-	__raw_writel(data, addr);
++	__raw_writel((__force u32)data, addr);
  }
  
- static int tb10x_gpio_remove(struct platform_device *pdev)
+ /*
+diff --git a/drivers/parisc/iosapic_private.h b/drivers/parisc/iosapic_private.h
+index 73ecc657ad954..bd8ff40162b4b 100644
+--- a/drivers/parisc/iosapic_private.h
++++ b/drivers/parisc/iosapic_private.h
+@@ -118,8 +118,8 @@ struct iosapic_irt {
+ struct vector_info {
+ 	struct iosapic_info *iosapic;	/* I/O SAPIC this vector is on */
+ 	struct irt_entry *irte;		/* IRT entry */
+-	u32 __iomem *eoi_addr;		/* precalculate EOI reg address */
+-	u32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
++	__le32 __iomem *eoi_addr;	/* precalculate EOI reg address */
++	__le32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
+ 	int	txn_irq;		/* virtual IRQ number for processor */
+ 	ulong	txn_addr;		/* IA64: id_eid  PA: partial HPA */
+ 	u32	txn_data;		/* CPU interrupt bit */
 -- 
 2.40.1
 
