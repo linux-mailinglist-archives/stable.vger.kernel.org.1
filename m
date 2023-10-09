@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3C8F7BDF92
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41E5E7BE088
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:41:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377076AbjJINb3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:31:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60306 "EHLO
+        id S1377344AbjJINlL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:41:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377078AbjJINb3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:29 -0400
+        with ESMTP id S1377370AbjJINlK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:41:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E86B6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95355C433C7;
-        Mon,  9 Oct 2023 13:31:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE5DEDE
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E68C433BA;
+        Mon,  9 Oct 2023 13:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858287;
-        bh=zC/bwarjffb1wH+FyFZTvIuumW3FjgkxT42dBH4VefI=;
+        s=korg; t=1696858867;
+        bh=FzQXAIEPq73bbaLDPZZ2ws2vVbcg3NX4M3rc6zKEfgY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KRScla58yr76M89RTWG+qLF0UE4efZmfkk3TgIvpOxWElronDxjymBm7704+VO093
-         teTV5Dj4dtpTI/cBV97xh8w/o/jzbXDZ0/Ptw4JFPyCxNS4pTkxdXTA2Q0zi8pTgb8
-         xSc644Te7QbdmAXltBk/OJEcPDf9wVyj3EcXH+10=
+        b=xkmrO7/rfNZm70DQZ6L2E/2cE6OJWHPLvCchgR3mrBPNwW+KkeqwROZIMhxf5/sqh
+         HjvjRbSgL2dYBcj/M1vcMfr7K2zhHeGNR3uyGoyiXOLvfO/wwuW3eMWA33re1pykuZ
+         ZFND7nqA1PmwsVGYPuLf+wNY4KwwZ3fuKPas4oZ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        kernel test robot <lkp@intel.com>,
+        patches@lists.linux.dev,
+        Johnathan Mantey <johnathanx.mantey@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 047/131] xtensa: add default definition for XCHAL_HAVE_DIV32
+Subject: [PATCH 5.10 126/226] ncsi: Propagate carrier gain/loss events to the NCSI controller
 Date:   Mon,  9 Oct 2023 15:01:27 +0200
-Message-ID: <20231009130117.749513950@linuxfoundation.org>
+Message-ID: <20231009130130.067707273@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,47 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Johnathan Mantey <johnathanx.mantey@intel.com>
 
-[ Upstream commit 494e87ffa0159b3f879694a9231089707792a44d ]
+[ Upstream commit 3780bb29311eccb7a1c9641032a112eed237f7e3 ]
 
-When variant FSF is set, XCHAL_HAVE_DIV32 is not defined. Add default
-definition for that macro to prevent build warnings:
+Report the carrier/no-carrier state for the network interface
+shared between the BMC and the passthrough channel. Without this
+functionality the BMC is unable to reconfigure the NIC in the event
+of a re-cabling to a different subnet.
 
-arch/xtensa/lib/divsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
-    9 | #if XCHAL_HAVE_DIV32
-arch/xtensa/lib/modsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
-    9 | #if XCHAL_HAVE_DIV32
-
-Fixes: 173d6681380a ("xtensa: remove extra header files")
-Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: lore.kernel.org/r/202309150556.t0yCdv3g-lkp@intel.com
+Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/xtensa/include/asm/core.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ncsi/ncsi-aen.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/xtensa/include/asm/core.h b/arch/xtensa/include/asm/core.h
-index 5975b244b7b80..02c93e08d5925 100644
---- a/arch/xtensa/include/asm/core.h
-+++ b/arch/xtensa/include/asm/core.h
-@@ -6,6 +6,10 @@
+diff --git a/net/ncsi/ncsi-aen.c b/net/ncsi/ncsi-aen.c
+index 62fb1031763d1..f8854bff286cb 100644
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -89,6 +89,11 @@ static int ncsi_aen_handler_lsc(struct ncsi_dev_priv *ndp,
+ 	if ((had_link == has_link) || chained)
+ 		return 0;
  
- #include <variant/core.h>
- 
-+#ifndef XCHAL_HAVE_DIV32
-+#define XCHAL_HAVE_DIV32 0
-+#endif
++	if (had_link)
++		netif_carrier_off(ndp->ndev.dev);
++	else
++		netif_carrier_on(ndp->ndev.dev);
 +
- #ifndef XCHAL_HAVE_EXCLUSIVE
- #define XCHAL_HAVE_EXCLUSIVE 0
- #endif
+ 	if (!ndp->multi_package && !nc->package->multi_channel) {
+ 		if (had_link) {
+ 			ndp->flags |= NCSI_DEV_RESHUFFLE;
 -- 
 2.40.1
 
