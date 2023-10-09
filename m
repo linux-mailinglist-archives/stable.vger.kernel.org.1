@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83B737BDF59
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1165D7BDE68
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376756AbjJIN3U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:29:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58260 "EHLO
+        id S1376735AbjJINTX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:19:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377042AbjJIN2u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:28:50 -0400
+        with ESMTP id S1377065AbjJINTW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:19:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC270FD
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:28:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34204C433C7;
-        Mon,  9 Oct 2023 13:28:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7D999
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:19:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF552C433CB;
+        Mon,  9 Oct 2023 13:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858128;
-        bh=kuKTPMB9bRMvs81PNX0XrDs8rGO6sZRY/O3NBZsKF74=;
+        s=korg; t=1696857560;
+        bh=vX1idf7RSso39h+X7wrK7hp/+Vz9dM6x/1RuYfUCbpc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H29lU7CRNibTPj/zcgLqI/tkSrvqU0v21721ICTieqMzGGQA1wgqCJaIehlHeXJ4D
-         jex8lSk9muKQZuDrM+2wBguNMpK4wjzvJtFDrccnqMuIrtwNZYOD4DqZrCcR++QHVm
-         DJAN2t1addefWwGd5njsICKK51/J8tbfAXp7fZcY=
+        b=Hx2wsBytaB+D4Mpq9C94YxeeBsWRXwFCyjYEEi7h8pziBc2f4PfMST+1d5EnZ5yki
+         6GMOJ/FfnJENwm8/JNLCRTeO1e4qIBObF0woi5003PSZu9L8ebxWwXhTlXjy5vlJYE
+         oS1B5HwmfKwMil4u84wlPv6vrSyxXsG2cL0Qn3Tk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jann Horn <jannh@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/131] dccp: fix dccp_v4_err()/dccp_v6_err() again
-Date:   Mon,  9 Oct 2023 15:01:05 +0200
-Message-ID: <20231009130117.081717257@linuxfoundation.org>
+Subject: [PATCH 6.1 085/162] regulator: mt6358: Drop *_SSHUB regulators
+Date:   Mon,  9 Oct 2023 15:01:06 +0200
+Message-ID: <20231009130125.264341149@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,134 +52,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 6af289746a636f71f4c0535a9801774118486c7a ]
+[ Upstream commit 04ba665248ed91576d326041108e5fc2ec2254eb ]
 
-dh->dccph_x is the 9th byte (offset 8) in "struct dccp_hdr",
-not in the "byte 7" as Jann claimed.
+The *_SSHUB regulators are actually alternate configuration interfaces
+for their non *_SSHUB counterparts. They are not separate regulator
+outputs. These registers are intended for the companion processor to
+use to configure the power rails while the main processor is sleeping.
+They are not intended for the main operating system to use.
 
-We need to make sure the ICMP messages are big enough,
-using more standard ways (no more assumptions).
+Since they are not real outputs they shouldn't be modeled separately.
+Remove them. Luckily no device tree actually uses them.
 
-syzbot reported:
-BUG: KMSAN: uninit-value in pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
-BUG: KMSAN: uninit-value in pskb_may_pull include/linux/skbuff.h:2681 [inline]
-BUG: KMSAN: uninit-value in dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
-pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
-pskb_may_pull include/linux/skbuff.h:2681 [inline]
-dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
-icmpv6_notify+0x4c7/0x880 net/ipv6/icmp.c:867
-icmpv6_rcv+0x19d5/0x30d0
-ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
-ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
-NF_HOOK include/linux/netfilter.h:304 [inline]
-ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
-ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
-dst_input include/net/dst.h:468 [inline]
-ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
-NF_HOOK include/linux/netfilter.h:304 [inline]
-ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
-__netif_receive_skb_one_core net/core/dev.c:5523 [inline]
-__netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5637
-netif_receive_skb_internal net/core/dev.c:5723 [inline]
-netif_receive_skb+0x58/0x660 net/core/dev.c:5782
-tun_rx_batched+0x83b/0x920
-tun_get_user+0x564c/0x6940 drivers/net/tun.c:2002
-tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-call_write_iter include/linux/fs.h:1985 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x8ef/0x15c0 fs/read_write.c:584
-ksys_write+0x20f/0x4c0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x93/0xd0 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Uninit was created at:
-slab_post_alloc_hook+0x12f/0xb70 mm/slab.h:767
-slab_alloc_node mm/slub.c:3478 [inline]
-kmem_cache_alloc_node+0x577/0xa80 mm/slub.c:3523
-kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:559
-__alloc_skb+0x318/0x740 net/core/skbuff.c:650
-alloc_skb include/linux/skbuff.h:1286 [inline]
-alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6313
-sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2795
-tun_alloc_skb drivers/net/tun.c:1531 [inline]
-tun_get_user+0x23cf/0x6940 drivers/net/tun.c:1846
-tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-call_write_iter include/linux/fs.h:1985 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x8ef/0x15c0 fs/read_write.c:584
-ksys_write+0x20f/0x4c0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x93/0xd0 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-CPU: 0 PID: 4995 Comm: syz-executor153 Not tainted 6.6.0-rc1-syzkaller-00014-ga747acc0b752 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
-
-Fixes: 977ad86c2a1b ("dccp: Fix out of bounds access in DCCP error handler")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jann Horn <jannh@google.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/r/20230609083009.2822259-5-wenst@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 7e37c851374e ("regulator: mt6358: split ops for buck and linear range LDO regulators")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dccp/ipv4.c | 9 ++-------
- net/dccp/ipv6.c | 9 ++-------
- 2 files changed, 4 insertions(+), 14 deletions(-)
+ drivers/regulator/mt6358-regulator.c       | 14 --------------
+ include/linux/regulator/mt6358-regulator.h |  4 ----
+ 2 files changed, 18 deletions(-)
 
-diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
-index bc4fef1250f45..249beb41ff89d 100644
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -243,13 +243,8 @@ static int dccp_v4_err(struct sk_buff *skb, u32 info)
- 	int err;
- 	struct net *net = dev_net(skb->dev);
+diff --git a/drivers/regulator/mt6358-regulator.c b/drivers/regulator/mt6358-regulator.c
+index 8a5ce990f1bf9..153c1fd5fb0b7 100644
+--- a/drivers/regulator/mt6358-regulator.c
++++ b/drivers/regulator/mt6358-regulator.c
+@@ -505,9 +505,6 @@ static struct mt6358_regulator_info mt6358_regulators[] = {
+ 	MT6358_BUCK("buck_vcore", VCORE, 500000, 1293750, 6250,
+ 		    buck_volt_range1, 0x7f, MT6358_BUCK_VCORE_DBG0, 0x7f,
+ 		    MT6358_VCORE_VGPU_ANA_CON0, 1),
+-	MT6358_BUCK("buck_vcore_sshub", VCORE_SSHUB, 500000, 1293750, 6250,
+-		    buck_volt_range1, 0x7f, MT6358_BUCK_VCORE_SSHUB_ELR0, 0x7f,
+-		    MT6358_VCORE_VGPU_ANA_CON0, 1),
+ 	MT6358_BUCK("buck_vpa", VPA, 500000, 3650000, 50000,
+ 		    buck_volt_range3, 0x3f, MT6358_BUCK_VPA_DBG0, 0x3f,
+ 		    MT6358_VPA_ANA_CON0, 3),
+@@ -587,10 +584,6 @@ static struct mt6358_regulator_info mt6358_regulators[] = {
+ 	MT6358_LDO1("ldo_vsram_others", VSRAM_OTHERS, 500000, 1293750, 6250,
+ 		    buck_volt_range1, MT6358_LDO_VSRAM_OTHERS_DBG0, 0x7f00,
+ 		    MT6358_LDO_VSRAM_CON2, 0x7f),
+-	MT6358_LDO1("ldo_vsram_others_sshub", VSRAM_OTHERS_SSHUB, 500000,
+-		    1293750, 6250, buck_volt_range1,
+-		    MT6358_LDO_VSRAM_OTHERS_SSHUB_CON1, 0x7f,
+-		    MT6358_LDO_VSRAM_OTHERS_SSHUB_CON1, 0x7f),
+ 	MT6358_LDO1("ldo_vsram_gpu", VSRAM_GPU, 500000, 1293750, 6250,
+ 		    buck_volt_range1, MT6358_LDO_VSRAM_GPU_DBG0, 0x7f00,
+ 		    MT6358_LDO_VSRAM_CON3, 0x7f),
+@@ -607,9 +600,6 @@ static struct mt6358_regulator_info mt6366_regulators[] = {
+ 	MT6366_BUCK("buck_vcore", VCORE, 500000, 1293750, 6250,
+ 		    buck_volt_range1, 0x7f, MT6358_BUCK_VCORE_DBG0, 0x7f,
+ 		    MT6358_VCORE_VGPU_ANA_CON0, 1),
+-	MT6366_BUCK("buck_vcore_sshub", VCORE_SSHUB, 500000, 1293750, 6250,
+-		    buck_volt_range1, 0x7f, MT6358_BUCK_VCORE_SSHUB_ELR0, 0x7f,
+-		    MT6358_VCORE_VGPU_ANA_CON0, 1),
+ 	MT6366_BUCK("buck_vpa", VPA, 500000, 3650000, 50000,
+ 		    buck_volt_range3, 0x3f, MT6358_BUCK_VPA_DBG0, 0x3f,
+ 		    MT6358_VPA_ANA_CON0, 3),
+@@ -678,10 +668,6 @@ static struct mt6358_regulator_info mt6366_regulators[] = {
+ 	MT6366_LDO1("ldo_vsram_others", VSRAM_OTHERS, 500000, 1293750, 6250,
+ 		    buck_volt_range1, MT6358_LDO_VSRAM_OTHERS_DBG0, 0x7f00,
+ 		    MT6358_LDO_VSRAM_CON2, 0x7f),
+-	MT6366_LDO1("ldo_vsram_others_sshub", VSRAM_OTHERS_SSHUB, 500000,
+-		    1293750, 6250, buck_volt_range1,
+-		    MT6358_LDO_VSRAM_OTHERS_SSHUB_CON1, 0x7f,
+-		    MT6358_LDO_VSRAM_OTHERS_SSHUB_CON1, 0x7f),
+ 	MT6366_LDO1("ldo_vsram_gpu", VSRAM_GPU, 500000, 1293750, 6250,
+ 		    buck_volt_range1, MT6358_LDO_VSRAM_GPU_DBG0, 0x7f00,
+ 		    MT6358_LDO_VSRAM_CON3, 0x7f),
+diff --git a/include/linux/regulator/mt6358-regulator.h b/include/linux/regulator/mt6358-regulator.h
+index bdcf83cd719ef..be9f61e3e8e6d 100644
+--- a/include/linux/regulator/mt6358-regulator.h
++++ b/include/linux/regulator/mt6358-regulator.h
+@@ -48,8 +48,6 @@ enum {
+ 	MT6358_ID_VLDO28,
+ 	MT6358_ID_VAUD28,
+ 	MT6358_ID_VSIM2,
+-	MT6358_ID_VCORE_SSHUB,
+-	MT6358_ID_VSRAM_OTHERS_SSHUB,
+ 	MT6358_ID_RG_MAX,
+ };
  
--	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
--	 * which is in byte 7 of the dccp header.
--	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
--	 *
--	 * Later on, we want to access the sequence number fields, which are
--	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
--	 */
-+	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
-+		return -EINVAL;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
- 		return -EINVAL;
-diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
-index 5554752c21822..a7e3939022534 100644
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -76,13 +76,8 @@ static int dccp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 	__u64 seq;
- 	struct net *net = dev_net(skb->dev);
+@@ -90,8 +88,6 @@ enum {
+ 	MT6366_ID_VMC,
+ 	MT6366_ID_VAUD28,
+ 	MT6366_ID_VSIM2,
+-	MT6366_ID_VCORE_SSHUB,
+-	MT6366_ID_VSRAM_OTHERS_SSHUB,
+ 	MT6366_ID_RG_MAX,
+ };
  
--	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
--	 * which is in byte 7 of the dccp header.
--	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
--	 *
--	 * Later on, we want to access the sequence number fields, which are
--	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
--	 */
-+	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
-+		return -EINVAL;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
- 		return -EINVAL;
 -- 
 2.40.1
 
