@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF7967BE05F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 720187BDE32
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377261AbjJINjf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:39:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42548 "EHLO
+        id S1376964AbjJINQ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:16:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377501AbjJINjI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:39:08 -0400
+        with ESMTP id S1376955AbjJINQ6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:16:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70925FA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:39:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFF0C433CB;
-        Mon,  9 Oct 2023 13:39:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5F38F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:16:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8BCC433C8;
+        Mon,  9 Oct 2023 13:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858741;
-        bh=u9a0dRoMtLeclEAc/w5X2fR5zrCecOZQd4UfIvQK4rA=;
+        s=korg; t=1696857416;
+        bh=t1fA3ilmVtygiC1tpTrzCaF6ZXfCiN2Q8HShW+KaotI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BXsDnj0LzSkWodtWIH+1tVWuiT3KZ0AQyi78mCt1lGDFOfM/KCrj502foWdRMllcp
-         dAC3QBAH5jg1IYdpBPZGQkeunWNgH55+5kK6L12pC0Q+lHD6YNgA2gm8wcWPYvi/7z
-         qDxN2tijTd/i0yBH0iiNE6bexDiRVWqLXQ0PxLIY=
+        b=S9fpKpCbO+UxktStlS/vvv7suWjAHzJxQRy4/YPlm35ao+uYVAMknNsxAloRL/TKw
+         l9SZGZdSsQv1HQXCOP8vzcCnHNm87xJv1d4WqALY13ohKwPe0HQ7h8xA5/4cxpwhaR
+         woaVIt8AkcuLmfHiD5osliujIic9gyLLDtiyqv9A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Chan <michael.chan@broadcom.com>,
-        Andy Gospodarek <gospo@broadcom.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Gabriel Krisman Bertazi <krisman@suse.de>,
+        Will Deacon <will@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/226] bnxt_en: Flush XDP for bnxt_poll_nitroa0()s NAPI
+Subject: [PATCH 6.1 038/162] arm64: Avoid repeated AA64MMFR1_EL1 register read on pagefault path
 Date:   Mon,  9 Oct 2023 15:00:19 +0200
-Message-ID: <20231009130128.304063676@linuxfoundation.org>
+Message-ID: <20231009130123.991791042@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,64 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit edc0140cc3b7b91874ebe70eb7d2a851e8817ccc ]
+[ Upstream commit a89c6bcdac22bec1bfbe6e64060b4cf5838d4f47 ]
 
-bnxt_poll_nitroa0() invokes bnxt_rx_pkt() which can run a XDP program
-which in turn can return XDP_REDIRECT. bnxt_rx_pkt() is also used by
-__bnxt_poll_work() which flushes (xdp_do_flush()) the packets after each
-round. bnxt_poll_nitroa0() lacks this feature.
-xdp_do_flush() should be invoked before leaving the NAPI callback.
+Accessing AA64MMFR1_EL1 is expensive in KVM guests, since it is emulated
+in the hypervisor.  In fact, ARM documentation mentions some feature
+registers are not supposed to be accessed frequently by the OS, and
+therefore should be emulated for guests [1].
 
-Invoke xdp_do_flush() after a redirect in bnxt_poll_nitroa0() NAPI.
+Commit 0388f9c74330 ("arm64: mm: Implement
+arch_wants_old_prefaulted_pte()") introduced a read of this register in
+the page fault path.  But, even when the feature of setting faultaround
+pages with the old flag is disabled for a given cpu, we are still paying
+the cost of checking the register on every pagefault. This results in an
+explosion of vmexit events in KVM guests, which directly impacts the
+performance of virtualized workloads.  For instance, running kernbench
+yields a 15% increase in system time solely due to the increased vmexit
+cycles.
 
-Cc: Michael Chan <michael.chan@broadcom.com>
-Fixes: f18c2b77b2e4e ("bnxt_en: optimized XDP_REDIRECT support")
-Reviewed-by: Andy Gospodarek <gospo@broadcom.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Acked-by: Jesper Dangaard Brouer <hawk@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This patch avoids the extra cost by using the sanitized cached value.
+It should be safe to do so, since this register mustn't change for a
+given cpu.
+
+[1] https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Learn%20the%20Architecture/Armv8-A%20virtualization.pdf?revision=a765a7df-1a00-434d-b241-357bfda2dd31
+
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Acked-by: Will Deacon <will@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20230109151955.8292-1-krisman@suse.de
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/include/asm/cpufeature.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index d8366351cf14a..c67a108c2c07f 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -2404,6 +2404,7 @@ static int bnxt_poll_nitroa0(struct napi_struct *napi, int budget)
- 	struct rx_cmp_ext *rxcmp1;
- 	u32 cp_cons, tmp_raw_cons;
- 	u32 raw_cons = cpr->cp_raw_cons;
-+	bool flush_xdp = false;
- 	u32 rx_pkts = 0;
- 	u8 event = 0;
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index f73f11b550425..5bf0f9aa46267 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -863,7 +863,11 @@ static inline bool cpu_has_hw_af(void)
+ 	if (!IS_ENABLED(CONFIG_ARM64_HW_AFDBM))
+ 		return false;
  
-@@ -2438,6 +2439,8 @@ static int bnxt_poll_nitroa0(struct napi_struct *napi, int budget)
- 				rx_pkts++;
- 			else if (rc == -EBUSY)	/* partial completion */
- 				break;
-+			if (event & BNXT_REDIRECT_EVENT)
-+				flush_xdp = true;
- 		} else if (unlikely(TX_CMP_TYPE(txcmp) ==
- 				    CMPL_BASE_TYPE_HWRM_DONE)) {
- 			bnxt_hwrm_handler(bp, txcmp);
-@@ -2457,6 +2460,8 @@ static int bnxt_poll_nitroa0(struct napi_struct *napi, int budget)
- 
- 	if (event & BNXT_AGG_EVENT)
- 		bnxt_db_write(bp, &rxr->rx_agg_db, rxr->rx_agg_prod);
-+	if (flush_xdp)
-+		xdp_do_flush();
- 
- 	if (!bnxt_has_work(bp, cpr) && rx_pkts < budget) {
- 		napi_complete_done(napi, rx_pkts);
+-	mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
++	/*
++	 * Use cached version to avoid emulated msr operation on KVM
++	 * guests.
++	 */
++	mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
+ 	return cpuid_feature_extract_unsigned_field(mmfr1,
+ 						ID_AA64MMFR1_EL1_HAFDBS_SHIFT);
+ }
 -- 
 2.40.1
 
