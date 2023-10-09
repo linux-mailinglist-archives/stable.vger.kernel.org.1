@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70B6D7BDEE6
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BBF47BDDE2
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376487AbjJINYV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:24:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54698 "EHLO
+        id S1376808AbjJINOH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:14:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377042AbjJINYK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:10 -0400
+        with ESMTP id S1376951AbjJINNo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3E87A3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E7AC433C9;
-        Mon,  9 Oct 2023 13:24:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93F9B94
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE552C433C7;
+        Mon,  9 Oct 2023 13:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857849;
-        bh=N43C2HqR0zvMmxiV5ffCN8VPEJ0CALRhP1hUhh/ZSPE=;
+        s=korg; t=1696857202;
+        bh=Fwhy3Rs/JdAY9GmGIzPhfU5Gks9mvFmZtl0Gf0h/il4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZzFgQGi3LgMZYjyTtHdZ+hmdx/30jXm+W/xixemAi3QfsMq7r8cxZKm04zHlLJXAt
-         UFzkIaGmPVgAjGCqWwU4kdpo9EnZyh5lp0DJtzpFNSSiszy8q33t69xchz6mlFXja4
-         h+Ghz9e7s8wzhOrM8nScYM9B8Sv1+gw+/2RQmaFI=
+        b=RZLCn6e1NWfHOxwwMl8zLasNi+jv0A7ubYPIvvXXS92x8XLLuxPtLIouZqq7Jwbax
+         UFAOIF3zkvgDWIwsAccqlCA1obx+CrK7VXKqoYQGa30NGsXKoHytpRDKHTTkpBfbzb
+         of8h9oyFPGir4bHAro4VYZpGcqD1BNlyPgkuri6M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
+        patches@lists.linux.dev, Haiyang Zhang <haiyangz@microsoft.com>,
+        Simon Horman <horms@kernel.org>,
+        Shradha Gupta <shradhagupta@linux.microsoft.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/75] rbd: move rbd_dev_refresh() definition
+Subject: [PATCH 6.5 131/163] net: mana: Fix the tso_bytes calculation
 Date:   Mon,  9 Oct 2023 15:01:35 +0200
-Message-ID: <20231009130111.698047620@linuxfoundation.org>
+Message-ID: <20231009130127.659991056@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,121 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-commit 0b035401c57021fc6c300272cbb1c5a889d4fe45 upstream.
+commit 7a54de92657455210d0ca71d4176b553952c871a upstream.
 
-Move rbd_dev_refresh() definition further down to avoid having to
-move struct parent_image_info definition in the next commit.  This
-spares some forward declarations too.
+sizeof(struct hop_jumbo_hdr) is not part of tso_bytes, so remove
+the subtraction from header size.
 
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-[idryomov@gmail.com: backport to 5.10-6.1: context]
+Cc: stable@vger.kernel.org
+Fixes: bd7fc6e1957c ("net: mana: Add new MANA VF performance counters for easier troubleshooting")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: a43e8e9ffa0d ("net: mana: Fix oversized sge0 for GSO packets")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c | 68 ++++++++++++++++++++++-----------------------
- 1 file changed, 33 insertions(+), 35 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index fe8bdbf4616bc..772e28d6c1384 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -633,8 +633,6 @@ static void rbd_dev_remove_parent(struct rbd_device *rbd_dev);
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -262,8 +262,6 @@ netdev_tx_t mana_start_xmit(struct sk_bu
+ 				ihs = skb_transport_offset(skb) + sizeof(struct udphdr);
+ 			} else {
+ 				ihs = skb_tcp_all_headers(skb);
+-				if (ipv6_has_hopopt_jumbo(skb))
+-					ihs -= sizeof(struct hop_jumbo_hdr);
+ 			}
  
- static int rbd_dev_refresh(struct rbd_device *rbd_dev);
- static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev);
--static int rbd_dev_header_info(struct rbd_device *rbd_dev);
--static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev);
- static const char *rbd_dev_v2_snap_name(struct rbd_device *rbd_dev,
- 					u64 snap_id);
- static int _rbd_dev_v2_snap_size(struct rbd_device *rbd_dev, u64 snap_id,
-@@ -4933,39 +4931,6 @@ static void rbd_dev_update_size(struct rbd_device *rbd_dev)
- 	}
- }
- 
--static int rbd_dev_refresh(struct rbd_device *rbd_dev)
--{
--	u64 mapping_size;
--	int ret;
--
--	down_write(&rbd_dev->header_rwsem);
--	mapping_size = rbd_dev->mapping.size;
--
--	ret = rbd_dev_header_info(rbd_dev);
--	if (ret)
--		goto out;
--
--	/*
--	 * If there is a parent, see if it has disappeared due to the
--	 * mapped image getting flattened.
--	 */
--	if (rbd_dev->parent) {
--		ret = rbd_dev_v2_parent_info(rbd_dev);
--		if (ret)
--			goto out;
--	}
--
--	rbd_assert(!rbd_is_snap(rbd_dev));
--	rbd_dev->mapping.size = rbd_dev->header.image_size;
--
--out:
--	up_write(&rbd_dev->header_rwsem);
--	if (!ret && mapping_size != rbd_dev->mapping.size)
--		rbd_dev_update_size(rbd_dev);
--
--	return ret;
--}
--
- static const struct blk_mq_ops rbd_mq_ops = {
- 	.queue_rq	= rbd_queue_rq,
- };
-@@ -7047,6 +7012,39 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
- 	return ret;
- }
- 
-+static int rbd_dev_refresh(struct rbd_device *rbd_dev)
-+{
-+	u64 mapping_size;
-+	int ret;
-+
-+	down_write(&rbd_dev->header_rwsem);
-+	mapping_size = rbd_dev->mapping.size;
-+
-+	ret = rbd_dev_header_info(rbd_dev);
-+	if (ret)
-+		goto out;
-+
-+	/*
-+	 * If there is a parent, see if it has disappeared due to the
-+	 * mapped image getting flattened.
-+	 */
-+	if (rbd_dev->parent) {
-+		ret = rbd_dev_v2_parent_info(rbd_dev);
-+		if (ret)
-+			goto out;
-+	}
-+
-+	rbd_assert(!rbd_is_snap(rbd_dev));
-+	rbd_dev->mapping.size = rbd_dev->header.image_size;
-+
-+out:
-+	up_write(&rbd_dev->header_rwsem);
-+	if (!ret && mapping_size != rbd_dev->mapping.size)
-+		rbd_dev_update_size(rbd_dev);
-+
-+	return ret;
-+}
-+
- static ssize_t do_rbd_add(struct bus_type *bus,
- 			  const char *buf,
- 			  size_t count)
--- 
-2.40.1
-
+ 			u64_stats_update_begin(&tx_stats->syncp);
 
 
