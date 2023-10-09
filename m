@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 875867BE001
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 384F17BDD70
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:10:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377198AbjJINgj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45308 "EHLO
+        id S1376791AbjJINKH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:10:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377210AbjJINgh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:37 -0400
+        with ESMTP id S1376772AbjJINKG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:10:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8B410A
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059A6C433C7;
-        Mon,  9 Oct 2023 13:36:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C501AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751FDC433C7;
+        Mon,  9 Oct 2023 13:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858592;
-        bh=uwduOR496cqupJIA2kCGxx3G7/GKODdo60vJlOm0hSY=;
+        s=korg; t=1696857004;
+        bh=7GRgdodDZqDn6YqUhws/BKt+MLOkTW56kt29RM8HrRY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e5MqXiLiKnHSSNVjZNz5FBQsuW8hJNseDSF+qgj5Ta4JtlzI2IH5vZNsoKNfoiVG3
-         hUjz74Rfp4D2GzqIxU2QYNA2ojQ8hcwEhU6o74pHdJpPDFT14HiyBkOmrLMWTBkZuJ
-         NkiIneE3UzSEyllvM/VKsBKcGwGDv+c2fEIQLUzE=
+        b=awjl0iWb04dq6YZvhcibLjh/5RDUsv+hajQJYH1W47cOx9FjqROxF0AvT4+03Za9c
+         XBSUbymzscN1xBDNhc8C1DoKwnUdl0zEt+AkksLeSCcJf6l4IKFRVN+v00Ukr7bVWC
+         Gz+3JcgO4XfMBgmhBQgM0ekgg0sxk2Wf9wI+pDWA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/226] i40e: Fix VF VLAN offloading when port VLAN is configured
-Date:   Mon,  9 Oct 2023 15:00:00 +0200
-Message-ID: <20231009130127.814755880@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.5 037/163] Bluetooth: hci_sync: Fix handling of HCI_QUIRK_STRICT_DUPLICATE_FILTER
+Date:   Mon,  9 Oct 2023 15:00:01 +0200
+Message-ID: <20231009130125.029041020@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,92 +48,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d0d362ffa33da4acdcf7aee2116ceef8c8fef658 ]
+commit 941c998b42f5c90384f49da89a6e11233de567cf upstream.
 
-If port VLAN is configured on a VF then any other VLANs on top of this VF
-are broken.
+When HCI_QUIRK_STRICT_DUPLICATE_FILTER is set LE scanning requires
+periodic restarts of the scanning procedure as the controller would
+consider device previously found as duplicated despite of RSSI changes,
+but in order to set the scan timeout properly set le_scan_restart needs
+to be synchronous so it shall not use hci_cmd_sync_queue which defers
+the command processing to cmd_sync_work.
 
-During i40e_ndo_set_vf_port_vlan() call the i40e driver reset the VF and
-iavf driver asks PF (using VIRTCHNL_OP_GET_VF_RESOURCES) for VF capabilities
-but this reset occurs too early, prior setting of vf->info.pvid field
-and because this field can be zero during i40e_vc_get_vf_resources_msg()
-then VIRTCHNL_VF_OFFLOAD_VLAN capability is reported to iavf driver.
-
-This is wrong because iavf driver should not report VLAN offloading
-capability when port VLAN is configured as i40e does not support QinQ
-offloading.
-
-Fix the issue by moving VF reset after setting of vf->port_vlan_id
-field.
-
-Without this patch:
-$ echo 1 > /sys/class/net/enp2s0f0/device/sriov_numvfs
-$ ip link set enp2s0f0 vf 0 vlan 3
-$ ip link set enp2s0f0v0 up
-$ ip link add link enp2s0f0v0 name vlan4 type vlan id 4
-$ ip link set vlan4 up
-...
-$ ethtool -k enp2s0f0v0 | grep vlan-offload
-rx-vlan-offload: on
-tx-vlan-offload: on
-$ dmesg -l err | grep iavf
-[1292500.742914] iavf 0000:02:02.0: Failed to add VLAN filter, error IAVF_ERR_INVALID_QP_ID
-
-With this patch:
-$ echo 1 > /sys/class/net/enp2s0f0/device/sriov_numvfs
-$ ip link set enp2s0f0 vf 0 vlan 3
-$ ip link set enp2s0f0v0 up
-$ ip link add link enp2s0f0v0 name vlan4 type vlan id 4
-$ ip link set vlan4 up
-...
-$ ethtool -k enp2s0f0v0 | grep vlan-offload
-rx-vlan-offload: off [requested on]
-tx-vlan-offload: off [requested on]
-$ dmesg -l err | grep iavf
-
-Fixes: f9b4b6278d51 ("i40e: Reset the VF upon conflicting VLAN configuration")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/linux-bluetooth/578e6d7afd676129decafba846a933f5@agner.ch/#t
+Fixes: 27d54b778ad1 ("Bluetooth: Rework le_scan_restart for hci_sync")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/bluetooth/hci_sync.c |   13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index bb2a79b70c3ae..dfaa34f2473ab 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -4332,9 +4332,6 @@ int i40e_ndo_set_vf_port_vlan(struct net_device *netdev, int vf_id,
- 		/* duplicate request, so just return success */
- 		goto error_pvid;
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -412,11 +412,6 @@ static int hci_le_scan_restart_sync(stru
+ 					   LE_SCAN_FILTER_DUP_ENABLE);
+ }
  
--	i40e_vc_reset_vf(vf, true);
--	/* During reset the VF got a new VSI, so refresh a pointer. */
--	vsi = pf->vsi[vf->lan_vsi_idx];
- 	/* Locked once because multiple functions below iterate list */
- 	spin_lock_bh(&vsi->mac_filter_hash_lock);
+-static int le_scan_restart_sync(struct hci_dev *hdev, void *data)
+-{
+-	return hci_le_scan_restart_sync(hdev);
+-}
+-
+ static void le_scan_restart(struct work_struct *work)
+ {
+ 	struct hci_dev *hdev = container_of(work, struct hci_dev,
+@@ -426,15 +421,15 @@ static void le_scan_restart(struct work_
  
-@@ -4420,6 +4417,10 @@ int i40e_ndo_set_vf_port_vlan(struct net_device *netdev, int vf_id,
- 	 */
- 	vf->port_vlan_id = le16_to_cpu(vsi->info.pvid);
+ 	bt_dev_dbg(hdev, "");
  
-+	i40e_vc_reset_vf(vf, true);
-+	/* During reset the VF got a new VSI, so refresh a pointer. */
-+	vsi = pf->vsi[vf->lan_vsi_idx];
+-	hci_dev_lock(hdev);
+-
+-	status = hci_cmd_sync_queue(hdev, le_scan_restart_sync, NULL, NULL);
++	status = hci_le_scan_restart_sync(hdev);
+ 	if (status) {
+ 		bt_dev_err(hdev, "failed to restart LE scan: status %d",
+ 			   status);
+-		goto unlock;
++		return;
+ 	}
+ 
++	hci_dev_lock(hdev);
 +
- 	ret = i40e_config_vf_promiscuous_mode(vf, vsi->id, allmulti, alluni);
- 	if (ret) {
- 		dev_err(&pf->pdev->dev, "Unable to config vf promiscuous mode\n");
--- 
-2.40.1
-
+ 	if (!test_bit(HCI_QUIRK_STRICT_DUPLICATE_FILTER, &hdev->quirks) ||
+ 	    !hdev->discovery.scan_start)
+ 		goto unlock;
 
 
