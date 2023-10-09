@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0404C7BDF94
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC3447BDDF4
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377081AbjJINbc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60346 "EHLO
+        id S1376754AbjJINO0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:14:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377077AbjJINbb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:31 -0400
+        with ESMTP id S1376856AbjJINOZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D5BB9
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD49BC433C8;
-        Mon,  9 Oct 2023 13:31:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C2D3B4
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A7DC433C7;
+        Mon,  9 Oct 2023 13:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858290;
-        bh=zKGL3RVIboiZMfOo5Lirthiy1Ggr8qyrIOoy7NKU2u4=;
+        s=korg; t=1696857260;
+        bh=MdOCCOqG/vqfOqiwP03GCS63X4YwP7uKHGfnWihVGL0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AUIIqhpOX97GLHAYh3LtTgZOxjwwj/iRxFOn2CWWnN3BHQcN6h31gE0eYp9cibzwQ
-         Yyweq45JT3CmkumR1EKlR81UxcJHn0AqM+UXNmYW8Da1iZrGRxBUgVgwmObn45QGPE
-         o3yd0ZwbTL4tPO47hH0j5TkbW+jKB3k84UjWvumE=
+        b=vZG4MUTwsQOtAJXdbX+yUXxT2lxZNTbyrP10orx8MeAkXU8UQwF3iZzIz88/eQkg4
+         9Pl0BeILPzgSS6ogrMXaiwsAC3FtYYkV4CJqEq59EUyaR/rm3FPN8xl5XjgxIuOQqP
+         3RrK0VOK2XjzDkqE9fjD8GW3p7zP3Q470TDs2MIU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
+        patches@lists.linux.dev,
+        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 048/131] xtensa: iss/network: make functions static
+Subject: [PATCH 6.5 124/163] net: stmmac: dwmac-stm32: fix resume on STM32 MCU
 Date:   Mon,  9 Oct 2023 15:01:28 +0200
-Message-ID: <20231009130117.778676629@linuxfoundation.org>
+Message-ID: <20231009130127.461498323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +51,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
 
-[ Upstream commit 1b59efeb59851277266318f4e0132aa61ce3455e ]
+[ Upstream commit 6f195d6b0da3b689922ba9e302af2f49592fa9fc ]
 
-Make 2 functions static to prevent build warnings:
+The STM32MP1 keeps clk_rx enabled during suspend, and therefore the
+driver does not enable the clock in stm32_dwmac_init() if the device was
+suspended. The problem is that this same code runs on STM32 MCUs, which
+do disable clk_rx during suspend, causing the clock to never be
+re-enabled on resume.
 
-arch/xtensa/platforms/iss/network.c:204:16: warning: no previous prototype for 'tuntap_protocol' [-Wmissing-prototypes]
-  204 | unsigned short tuntap_protocol(struct sk_buff *skb)
-arch/xtensa/platforms/iss/network.c:444:6: warning: no previous prototype for 'iss_net_user_timer_expire' [-Wmissing-prototypes]
-  444 | void iss_net_user_timer_expire(struct timer_list *unused)
+This patch adds a variant flag to indicate that clk_rx remains enabled
+during suspend, and uses this to decide whether to enable the clock in
+stm32_dwmac_init() if the device was suspended.
 
-Fixes: 7282bee78798 ("xtensa: Architecture support for Tensilica Xtensa Part 8")
-Fixes: d8479a21a98b ("xtensa: Convert timers to use timer_setup()")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Message-Id: <20230920052139.10570-14-rdunlap@infradead.org>
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+This approach fixes this specific bug with limited opportunity for
+unintended side-effects, but I have a follow up patch that will refactor
+the clock configuration and hopefully make it less error prone.
+
+Fixes: 6528e02cc9ff ("net: ethernet: stmmac: add adaptation for stm32mp157c.")
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20230927175749.1419774-1-ben.wolsieffer@hefring.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/xtensa/platforms/iss/network.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/xtensa/platforms/iss/network.c b/arch/xtensa/platforms/iss/network.c
-index cbca91bb5334a..d54bcaa194d46 100644
---- a/arch/xtensa/platforms/iss/network.c
-+++ b/arch/xtensa/platforms/iss/network.c
-@@ -204,7 +204,7 @@ static int tuntap_write(struct iss_net_private *lp, struct sk_buff **skb)
- 	return simc_write(lp->tp.info.tuntap.fd, (*skb)->data, (*skb)->len);
- }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
+index bdb4de59a6727..28c8ca5fba6c5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
+@@ -105,6 +105,7 @@ struct stm32_ops {
+ 	int (*parse_data)(struct stm32_dwmac *dwmac,
+ 			  struct device *dev);
+ 	u32 syscfg_eth_mask;
++	bool clk_rx_enable_in_suspend;
+ };
  
--unsigned short tuntap_protocol(struct sk_buff *skb)
-+static unsigned short tuntap_protocol(struct sk_buff *skb)
- {
- 	return eth_type_trans(skb, skb->dev);
- }
-@@ -477,7 +477,7 @@ static int iss_net_change_mtu(struct net_device *dev, int new_mtu)
- 	return -EINVAL;
- }
+ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
+@@ -122,7 +123,8 @@ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
+ 	if (ret)
+ 		return ret;
  
--void iss_net_user_timer_expire(struct timer_list *unused)
-+static void iss_net_user_timer_expire(struct timer_list *unused)
- {
- }
+-	if (!dwmac->dev->power.is_suspended) {
++	if (!dwmac->ops->clk_rx_enable_in_suspend ||
++	    !dwmac->dev->power.is_suspended) {
+ 		ret = clk_prepare_enable(dwmac->clk_rx);
+ 		if (ret) {
+ 			clk_disable_unprepare(dwmac->clk_tx);
+@@ -514,7 +516,8 @@ static struct stm32_ops stm32mp1_dwmac_data = {
+ 	.suspend = stm32mp1_suspend,
+ 	.resume = stm32mp1_resume,
+ 	.parse_data = stm32mp1_parse_data,
+-	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK
++	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK,
++	.clk_rx_enable_in_suspend = true
+ };
  
+ static const struct of_device_id stm32_dwmac_match[] = {
 -- 
 2.40.1
 
