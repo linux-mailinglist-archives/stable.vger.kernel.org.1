@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F31EB7BDE0E
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B82227BDED4
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376814AbjJINPb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:15:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42156 "EHLO
+        id S1376450AbjJINXk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:23:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376914AbjJINP0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:26 -0400
+        with ESMTP id S1376443AbjJINXj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51299E0
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82237C433B9;
-        Mon,  9 Oct 2023 13:15:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDDC194
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35142C433CA;
+        Mon,  9 Oct 2023 13:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857319;
-        bh=sA7deC6FFx0xv0coxly/8wYcJfGB6ADuHMwJCx4zfBE=;
+        s=korg; t=1696857817;
+        bh=BMAOaAaPDcrzn251JEyzy0ikTpdiwfkZC9jJwdhiAHQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tk+B/tTHA9++r9NiMiWFY0hUN6z5vhbMMoZdBzbitesrdbieZvdi7wRMukrAQEPYB
-         8b1o3BcLoNxFH8uB4F8z4aDMo9KBjzYduKBFYnPZIy5fWSlC+UlS2dkVGg+mhowxGo
-         67UETyjaxDdr8h9lXeii5oa6ABGw+MJXbKko4dys=
+        b=beNnHWyNmoBYP/TwJXnCI0IdnJxVXazqEms6MRU124PW8fjphIEKxDOjTHQ2Stxic
+         ypEhlmVMzDwSLcKeJGDrABXMaTVx+Mq/bV520wMbApWn2+BkoE0ANTgWUjAFFdgW0K
+         0GsLmTB5bYuQ/7r0Ghp2YELmTDzeogxKnA3EdRpo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.5 156/163] ALSA: hda/realtek: Fix spelling mistake "powe" -> "power"
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.1 139/162] dm zoned: free dmz->ddev array in dmz_put_zoned_devices
 Date:   Mon,  9 Oct 2023 15:02:00 +0200
-Message-ID: <20231009130128.322048556@linuxfoundation.org>
+Message-ID: <20231009130126.744415628@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,35 +48,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit f286620b5dc974fe281d8feed6e228fd2f39d013 upstream.
+commit 9850ccd5dd88075b2b7fd28d96299d5535f58cc5 upstream.
 
-There is a spelling mistake in a quirk entry. Fix it.
+Commit 4dba12881f88 ("dm zoned: support arbitrary number of devices")
+made the pointers to additional zoned devices to be stored in a
+dynamically allocated dmz->ddev array. However, this array is not freed.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Fixes: 3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-Link: https://lore.kernel.org/r/20230821080003.16678-1-colin.i.king@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Rename dmz_put_zoned_device to dmz_put_zoned_devices and fix it to
+free the dmz->ddev array when cleaning up zoned device information.
+Remove NULL assignment for all dmz->ddev elements and just free the
+dmz->ddev array instead.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 4dba12881f88 ("dm zoned: support arbitrary number of devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-zoned-target.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10016,7 +10016,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x387d, "Yoga S780-16 pro Quad AAC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x387e, "Yoga S780-16 pro Quad YC", ALC287_FIXUP_TAS2781_I2C),
--	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual powe mode2 YC", ALC287_FIXUP_TAS2781_I2C),
-+	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual power mode2 YC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3884, "Y780 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3886, "Y780 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38a7, "Y780P AMD YG dual", ALC287_FIXUP_TAS2781_I2C),
+--- a/drivers/md/dm-zoned-target.c
++++ b/drivers/md/dm-zoned-target.c
+@@ -748,17 +748,16 @@ err:
+ /*
+  * Cleanup zoned device information.
+  */
+-static void dmz_put_zoned_device(struct dm_target *ti)
++static void dmz_put_zoned_devices(struct dm_target *ti)
+ {
+ 	struct dmz_target *dmz = ti->private;
+ 	int i;
+ 
+-	for (i = 0; i < dmz->nr_ddevs; i++) {
+-		if (dmz->ddev[i]) {
++	for (i = 0; i < dmz->nr_ddevs; i++)
++		if (dmz->ddev[i])
+ 			dm_put_device(ti, dmz->ddev[i]);
+-			dmz->ddev[i] = NULL;
+-		}
+-	}
++
++	kfree(dmz->ddev);
+ }
+ 
+ static int dmz_fixup_devices(struct dm_target *ti)
+@@ -948,7 +947,7 @@ err_bio:
+ err_meta:
+ 	dmz_dtr_metadata(dmz->metadata);
+ err_dev:
+-	dmz_put_zoned_device(ti);
++	dmz_put_zoned_devices(ti);
+ err:
+ 	kfree(dmz->dev);
+ 	kfree(dmz);
+@@ -978,7 +977,7 @@ static void dmz_dtr(struct dm_target *ti
+ 
+ 	bioset_exit(&dmz->bio_set);
+ 
+-	dmz_put_zoned_device(ti);
++	dmz_put_zoned_devices(ti);
+ 
+ 	mutex_destroy(&dmz->chunk_lock);
+ 
 
 
