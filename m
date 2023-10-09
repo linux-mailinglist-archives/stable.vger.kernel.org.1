@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD8407BDE85
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C90407BDF6A
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:29:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234532AbjJINUU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47358 "EHLO
+        id S1377001AbjJIN3s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:29:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234536AbjJINUS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:18 -0400
+        with ESMTP id S1376855AbjJIN3r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:29:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75CE3AF
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B544BC433C8;
-        Mon,  9 Oct 2023 13:20:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67223B7
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:29:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FF3C433C7;
+        Mon,  9 Oct 2023 13:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857614;
-        bh=n4dm06FpEH5nLmNc3qHQ7geQVP140o/9q7wjL9cHgnY=;
+        s=korg; t=1696858186;
+        bh=tf3drTAHvw0ZXXtLi7ScIfxNchNEeBFgfRg0dGWGbGg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q8HspfGDql3yXX4iXA/BUIaG74Vm7SfhUQ7MHfV/tsKJ5cWkmXS3Hpg7mD1O7exIb
-         N94T0nMD6yunMENt/I3sO5k867uacLB5PV9m2co8z8/S2Rt+UwS9th2XAUSo1J9mjY
-         dUGp1c8Bk9dUpLjA4PeKSoAERZDpp94+WzLJr8h0=
+        b=S1rYO1MeHZLN/pMvIKoZRRtxItUjTsGOMMbY64llzM38KQ7uFOsv5+wxiuLD8dt9O
+         FVAiPzRMMpX+HSMR1OtZWRASBQPwdHCQyI0/sspAKERJBNVSj6oECO0nGYJn6uMlsb
+         VcvEYfn+n+vqVwhmYYRCbeCp7vRfM6uJJ/U65kog=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@oracle.com>,
+        Kees Cook <keescook@chromium.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/162] wifi: iwlwifi: dbg_ini: fix structure packing
+Subject: [PATCH 5.4 016/131] selftests/tls: Add {} to avoid static checker warning
 Date:   Mon,  9 Oct 2023 15:00:56 +0200
-Message-ID: <20231009130124.988730373@linuxfoundation.org>
+Message-ID: <20231009130116.815713656@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 424c82e8ad56756bb98b08268ffcf68d12d183eb ]
+[ Upstream commit f50688b47c5858d2ff315d020332bf4cb6710837 ]
 
-The iwl_fw_ini_error_dump_range structure has conflicting alignment
-requirements for the inner union and the outer struct:
+This silences a static checker warning due to the unusual macro
+construction of EXPECT_*() by adding explicit {}s around the enclosing
+while loop.
 
-In file included from drivers/net/wireless/intel/iwlwifi/fw/dbg.c:9:
-drivers/net/wireless/intel/iwlwifi/fw/error-dump.h:312:2: error: field  within 'struct iwl_fw_ini_error_dump_range' is less aligned than 'union iwl_fw_ini_error_dump_range::(anonymous at drivers/net/wireless/intel/iwlwifi/fw/error-dump.h:312:2)' and is usually due to 'struct iwl_fw_ini_error_dump_range' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
-        union {
-
-As the original intention was apparently to make the entire structure
-unaligned, mark the innermost members the same way so the union
-becomes packed as well.
-
-Fixes: 973193554cae6 ("iwlwifi: dbg_ini: dump headers cleanup")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230616090343.2454061-1-arnd@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Fixes: 7f657d5bf507 ("selftests: tls: add selftests for TLS sockets")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: c326ca98446e ("selftests: tls: swap the TX and RX sockets in some tests")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/error-dump.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/tls.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-index c62576e442bdf..2d481849a9c23 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-@@ -295,9 +295,9 @@ struct iwl_fw_ini_fifo_hdr {
- struct iwl_fw_ini_error_dump_range {
- 	__le32 range_data_size;
- 	union {
--		__le32 internal_base_addr;
--		__le64 dram_base_addr;
--		__le32 page_num;
-+		__le32 internal_base_addr __packed;
-+		__le64 dram_base_addr __packed;
-+		__le32 page_num __packed;
- 		struct iwl_fw_ini_fifo_hdr fifo_hdr;
- 		struct iwl_cmd_header fw_pkt_hdr;
- 	};
+diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
+index 0ea44d975b6c1..032e08e8ce016 100644
+--- a/tools/testing/selftests/net/tls.c
++++ b/tools/testing/selftests/net/tls.c
+@@ -314,8 +314,9 @@ TEST_F(tls, sendmsg_large)
+ 		EXPECT_EQ(sendmsg(self->cfd, &msg, 0), send_len);
+ 	}
+ 
+-	while (recvs++ < sends)
++	while (recvs++ < sends) {
+ 		EXPECT_NE(recv(self->fd, mem, send_len, 0), -1);
++	}
+ 
+ 	free(mem);
+ }
 -- 
 2.40.1
 
