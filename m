@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA8A77BDD22
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC0AF7BDFEA
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:35:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376689AbjJINHq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:07:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54376 "EHLO
+        id S1377182AbjJINfd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:35:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376690AbjJINHp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:07:45 -0400
+        with ESMTP id S1377175AbjJINfb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:35:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124949C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:07:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF85C433C7;
-        Mon,  9 Oct 2023 13:07:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F30409D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:35:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF1FC433C7;
+        Mon,  9 Oct 2023 13:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856862;
-        bh=CYhkPMWNklI8j96i5Gip3eAAKmTTkC2fWiJZRWOHIBg=;
+        s=korg; t=1696858528;
+        bh=TCkD9Rc6izbDwjgtEsrr6RsmW+JWMQokUb4mQ8YOBQM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PErFPXpC8TViNANe7ZocDyNEpXsJd1UCPxi1EAkhUcLbhXWLtZxjAaTFnFx9lgQCM
-         wcSEcW0JvFpAhybOMXw1ZINO0GS0BJbc8el1DgWhVguiiYKKosnwSPn0+MMmCLzyO2
-         OTr/39hg8IXRzGJKshCI8x3xDJ6SdBROaprckWng=
+        b=m6QHSTAGw+BzfFgo/mqyUCLwx2+FTFcxLGxtNLUuMF6kRuzTaQeYP9yY6I5o7r3pO
+         BzAEtlyDI9C+7V7pQfCTZq5BSALkaEySVIb6X6JAtTVYDd2R+gc/BqmWkjlvbPvPKF
+         s64m8yohfTpPDIVVl5p8DGUPJohH8XYdj3/qbgPM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Christoph Hellwig <hch@lst.de>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 016/163] btrfs: remove end_extent_writepage
+Subject: [PATCH 5.10 019/226] netfilter: nf_tables: adapt set backend to use GC transaction API
 Date:   Mon,  9 Oct 2023 14:59:40 +0200
-Message-ID: <20231009130124.464175935@linuxfoundation.org>
+Message-ID: <20231009130127.240040524@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,218 +48,527 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 9783e4deed7291996459858a1a16f41a8988dd60 ]
+commit f6c383b8c31a93752a52697f8430a71dcbc46adf upstream.
 
-end_extent_writepage is a small helper that combines a call to
-btrfs_mark_ordered_io_finished with conditional error-only calls to
-btrfs_page_clear_uptodate and mapping_set_error with a somewhat
-unfortunate calling convention that passes and inclusive end instead
-of the len expected by the underlying functions.
+Use the GC transaction API to replace the old and buggy gc API and the
+busy mark approach.
 
-Remove end_extent_writepage and open code it in the 4 callers. Out
-of those two already are error-only and thus don't need the extra
-conditional, and one already has the mapping_set_error, so a duplicate
-call can be avoided.
+No set elements are removed from async garbage collection anymore,
+instead the _DEAD bit is set on so the set element is not visible from
+lookup path anymore. Async GC enqueues transaction work that might be
+aborted and retried later.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: b595d2599632 ("btrfs: don't clear uptodate on write errors")
+rbtree and pipapo set backends does not set on the _DEAD bit from the
+sync GC path since this runs in control plane path where mutex is held.
+In this case, set elements are deactivated, removed and then released
+via RCU callback, sync GC never fails.
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Fixes: 8d8540c4f5e0 ("netfilter: nft_set_rbtree: add timeout support")
+Fixes: 9d0982927e79 ("netfilter: nft_hash: add support for timeouts")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 44 +++++++++++++++-----------------------------
- fs/btrfs/extent_io.h |  2 --
- fs/btrfs/inode.c     | 42 ++++++++++++++++++++++--------------------
- 3 files changed, 37 insertions(+), 51 deletions(-)
+ net/netfilter/nft_set_hash.c   |  77 +++++++++++-------
+ net/netfilter/nft_set_pipapo.c |  43 +++++++---
+ net/netfilter/nft_set_rbtree.c | 138 +++++++++++++++++++++------------
+ 3 files changed, 172 insertions(+), 86 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index b051b6e52022c..009c322c5418d 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -497,29 +497,6 @@ static void end_page_read(struct page *page, bool uptodate, u64 start, u32 len)
- 		btrfs_subpage_end_reader(fs_info, page, start, len);
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index ea7bd8549bea8..6ae99b3107bc9 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -17,6 +17,9 @@
+ #include <linux/netfilter.h>
+ #include <linux/netfilter/nf_tables.h>
+ #include <net/netfilter/nf_tables_core.h>
++#include <net/netns/generic.h>
++
++extern unsigned int nf_tables_net_id;
+ 
+ /* We target a hash table size of 4, element hint is 75% of final size */
+ #define NFT_RHASH_ELEMENT_HINT 3
+@@ -59,6 +62,8 @@ static inline int nft_rhash_cmp(struct rhashtable_compare_arg *arg,
+ 
+ 	if (memcmp(nft_set_ext_key(&he->ext), x->key, x->set->klen))
+ 		return 1;
++	if (nft_set_elem_is_dead(&he->ext))
++		return 1;
+ 	if (nft_set_elem_expired(&he->ext))
+ 		return 1;
+ 	if (!nft_set_elem_active(&he->ext, x->genmask))
+@@ -187,7 +192,6 @@ static void nft_rhash_activate(const struct net *net, const struct nft_set *set,
+ 	struct nft_rhash_elem *he = elem->priv;
+ 
+ 	nft_set_elem_change_active(net, set, &he->ext);
+-	nft_set_elem_clear_busy(&he->ext);
  }
  
--/* lots and lots of room for performance fixes in the end_bio funcs */
--
--void end_extent_writepage(struct page *page, int err, u64 start, u64 end)
--{
--	struct btrfs_inode *inode;
--	const bool uptodate = (err == 0);
--	int ret = 0;
--	u32 len = end + 1 - start;
--
--	ASSERT(end + 1 - start <= U32_MAX);
--	ASSERT(page && page->mapping);
--	inode = BTRFS_I(page->mapping->host);
--	btrfs_mark_ordered_io_finished(inode, page, start, len, uptodate);
--
--	if (!uptodate) {
--		const struct btrfs_fs_info *fs_info = inode->root->fs_info;
--
--		btrfs_page_clear_uptodate(fs_info, page, start, len);
--		ret = err < 0 ? err : -EIO;
--		mapping_set_error(page->mapping, ret);
--	}
--}
--
- /*
-  * after a writepage IO is done, we need to:
-  * clear the uptodate bits on error
-@@ -1485,7 +1462,6 @@ static int __extent_writepage(struct page *page, struct btrfs_bio_ctrl *bio_ctrl
- 	struct folio *folio = page_folio(page);
- 	struct inode *inode = page->mapping->host;
- 	const u64 page_start = page_offset(page);
--	const u64 page_end = page_start + PAGE_SIZE - 1;
- 	int ret;
- 	int nr = 0;
- 	size_t pg_offset;
-@@ -1529,8 +1505,13 @@ static int __extent_writepage(struct page *page, struct btrfs_bio_ctrl *bio_ctrl
- 		set_page_writeback(page);
- 		end_page_writeback(page);
- 	}
--	if (ret)
--		end_extent_writepage(page, ret, page_start, page_end);
-+	if (ret) {
-+		btrfs_mark_ordered_io_finished(BTRFS_I(inode), page, page_start,
-+					       PAGE_SIZE, !ret);
-+		btrfs_page_clear_uptodate(btrfs_sb(inode->i_sb), page,
-+					  page_start, PAGE_SIZE);
-+		mapping_set_error(page->mapping, ret);
-+	}
- 	unlock_page(page);
- 	ASSERT(ret <= 0);
- 	return ret;
-@@ -2248,6 +2229,7 @@ int extent_write_locked_range(struct inode *inode, u64 start, u64 end,
- 
- 	while (cur <= end) {
- 		u64 cur_end = min(round_down(cur, PAGE_SIZE) + PAGE_SIZE - 1, end);
-+		u32 cur_len = cur_end + 1 - cur;
- 		struct page *page;
- 		int nr = 0;
- 
-@@ -2271,9 +2253,13 @@ int extent_write_locked_range(struct inode *inode, u64 start, u64 end,
- 			set_page_writeback(page);
- 			end_page_writeback(page);
- 		}
--		if (ret)
--			end_extent_writepage(page, ret, cur, cur_end);
--		btrfs_page_unlock_writer(fs_info, page, cur, cur_end + 1 - cur);
-+		if (ret) {
-+			btrfs_mark_ordered_io_finished(BTRFS_I(inode), page,
-+						       cur, cur_len, !ret);
-+			btrfs_page_clear_uptodate(fs_info, page, cur, cur_len);
-+			mapping_set_error(page->mapping, ret);
-+		}
-+		btrfs_page_unlock_writer(fs_info, page, cur, cur_len);
- 		if (ret < 0) {
- 			found_error = true;
- 			first_error = ret;
-diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index f61b7896320a1..e7b293717dc14 100644
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -284,8 +284,6 @@ void btrfs_clear_buffer_dirty(struct btrfs_trans_handle *trans,
- 
- int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array);
- 
--void end_extent_writepage(struct page *page, int err, u64 start, u64 end);
--
- #ifdef CONFIG_BTRFS_FS_RUN_SANITY_TESTS
- bool find_lock_delalloc_range(struct inode *inode,
- 			     struct page *locked_page, u64 *start,
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index e0bb4018ddb28..b126394ca3dde 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -423,11 +423,10 @@ static inline void btrfs_cleanup_ordered_extents(struct btrfs_inode *inode,
- 
- 	while (index <= end_index) {
- 		/*
--		 * For locked page, we will call end_extent_writepage() on it
--		 * in run_delalloc_range() for the error handling.  That
--		 * end_extent_writepage() function will call
--		 * btrfs_mark_ordered_io_finished() to clear page Ordered and
--		 * run the ordered extent accounting.
-+		 * For locked page, we will call btrfs_mark_ordered_io_finished
-+		 * through btrfs_mark_ordered_io_finished() on it
-+		 * in run_delalloc_range() for the error handling, which will
-+		 * clear page Ordered and run the ordered extent accounting.
- 		 *
- 		 * Here we can't just clear the Ordered bit, or
- 		 * btrfs_mark_ordered_io_finished() would skip the accounting
-@@ -1157,11 +1156,16 @@ static int submit_uncompressed_range(struct btrfs_inode *inode,
- 		btrfs_cleanup_ordered_extents(inode, locked_page, start, end - start + 1);
- 		if (locked_page) {
- 			const u64 page_start = page_offset(locked_page);
--			const u64 page_end = page_start + PAGE_SIZE - 1;
- 
- 			set_page_writeback(locked_page);
- 			end_page_writeback(locked_page);
--			end_extent_writepage(locked_page, ret, page_start, page_end);
-+			btrfs_mark_ordered_io_finished(inode, locked_page,
-+						       page_start, PAGE_SIZE,
-+						       !ret);
-+			btrfs_page_clear_uptodate(inode->root->fs_info,
-+						  locked_page, page_start,
-+						  PAGE_SIZE);
-+			mapping_set_error(locked_page->mapping, ret);
- 			unlock_page(locked_page);
- 		}
- 		return ret;
-@@ -2840,23 +2844,19 @@ struct btrfs_writepage_fixup {
- 
- static void btrfs_writepage_fixup_worker(struct btrfs_work *work)
+ static bool nft_rhash_flush(const struct net *net,
+@@ -195,12 +199,9 @@ static bool nft_rhash_flush(const struct net *net,
  {
--	struct btrfs_writepage_fixup *fixup;
-+	struct btrfs_writepage_fixup *fixup =
-+		container_of(work, struct btrfs_writepage_fixup, work);
- 	struct btrfs_ordered_extent *ordered;
- 	struct extent_state *cached_state = NULL;
- 	struct extent_changeset *data_reserved = NULL;
--	struct page *page;
--	struct btrfs_inode *inode;
--	u64 page_start;
--	u64 page_end;
-+	struct page *page = fixup->page;
-+	struct btrfs_inode *inode = fixup->inode;
-+	struct btrfs_fs_info *fs_info = inode->root->fs_info;
-+	u64 page_start = page_offset(page);
-+	u64 page_end = page_offset(page) + PAGE_SIZE - 1;
- 	int ret = 0;
- 	bool free_delalloc_space = true;
+ 	struct nft_rhash_elem *he = priv;
  
--	fixup = container_of(work, struct btrfs_writepage_fixup, work);
--	page = fixup->page;
--	inode = fixup->inode;
--	page_start = page_offset(page);
--	page_end = page_offset(page) + PAGE_SIZE - 1;
+-	if (!nft_set_elem_mark_busy(&he->ext) ||
+-	    !nft_is_active(net, &he->ext)) {
+-		nft_set_elem_change_active(net, set, &he->ext);
+-		return true;
+-	}
+-	return false;
++	nft_set_elem_change_active(net, set, &he->ext);
++
++	return true;
+ }
+ 
+ static void *nft_rhash_deactivate(const struct net *net,
+@@ -217,9 +218,8 @@ static void *nft_rhash_deactivate(const struct net *net,
+ 
+ 	rcu_read_lock();
+ 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
+-	if (he != NULL &&
+-	    !nft_rhash_flush(net, set, he))
+-		he = NULL;
++	if (he)
++		nft_set_elem_change_active(net, set, &he->ext);
+ 
+ 	rcu_read_unlock();
+ 
+@@ -295,49 +295,75 @@ static void nft_rhash_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 
+ static void nft_rhash_gc(struct work_struct *work)
+ {
++	struct nftables_pernet *nft_net;
+ 	struct nft_set *set;
+ 	struct nft_rhash_elem *he;
+ 	struct nft_rhash *priv;
+-	struct nft_set_gc_batch *gcb = NULL;
+ 	struct rhashtable_iter hti;
++	struct nft_trans_gc *gc;
++	struct net *net;
++	u32 gc_seq;
+ 
+ 	priv = container_of(work, struct nft_rhash, gc_work.work);
+ 	set  = nft_set_container_of(priv);
++	net  = read_pnet(&set->net);
++	nft_net = net_generic(net, nf_tables_net_id);
++	gc_seq = READ_ONCE(nft_net->gc_seq);
++
++	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
++	if (!gc)
++		goto done;
+ 
+ 	rhashtable_walk_enter(&priv->ht, &hti);
+ 	rhashtable_walk_start(&hti);
+ 
+ 	while ((he = rhashtable_walk_next(&hti))) {
+ 		if (IS_ERR(he)) {
+-			if (PTR_ERR(he) != -EAGAIN)
+-				break;
++			if (PTR_ERR(he) != -EAGAIN) {
++				nft_trans_gc_destroy(gc);
++				gc = NULL;
++				goto try_later;
++			}
+ 			continue;
+ 		}
+ 
++		/* Ruleset has been updated, try later. */
++		if (READ_ONCE(nft_net->gc_seq) != gc_seq) {
++			nft_trans_gc_destroy(gc);
++			gc = NULL;
++			goto try_later;
++		}
++
++		if (nft_set_elem_is_dead(&he->ext))
++			goto dead_elem;
++
+ 		if (nft_set_ext_exists(&he->ext, NFT_SET_EXT_EXPR)) {
+ 			struct nft_expr *expr = nft_set_ext_expr(&he->ext);
+ 
+ 			if (expr->ops->gc &&
+ 			    expr->ops->gc(read_pnet(&set->net), expr))
+-				goto gc;
++				goto needs_gc_run;
+ 		}
++
+ 		if (!nft_set_elem_expired(&he->ext))
+ 			continue;
+-gc:
+-		if (nft_set_elem_mark_busy(&he->ext))
+-			continue;
 -
- 	/*
- 	 * This is similar to page_mkwrite, we need to reserve the space before
- 	 * we take the page lock.
-@@ -2949,10 +2949,12 @@ static void btrfs_writepage_fixup_worker(struct btrfs_work *work)
- 		 * to reflect the errors and clean the page.
- 		 */
- 		mapping_set_error(page->mapping, ret);
--		end_extent_writepage(page, ret, page_start, page_end);
-+		btrfs_mark_ordered_io_finished(inode, page, page_start,
-+					       PAGE_SIZE, !ret);
-+		btrfs_page_clear_uptodate(fs_info, page, page_start, PAGE_SIZE);
- 		clear_page_dirty_for_io(page);
+-		gcb = nft_set_gc_batch_check(set, gcb, GFP_ATOMIC);
+-		if (gcb == NULL)
+-			break;
+-		rhashtable_remove_fast(&priv->ht, &he->node, nft_rhash_params);
+-		atomic_dec(&set->nelems);
+-		nft_set_gc_batch_add(gcb, he);
++needs_gc_run:
++		nft_set_elem_dead(&he->ext);
++dead_elem:
++		gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
++		if (!gc)
++			goto try_later;
++
++		nft_trans_gc_elem_add(gc, he);
  	}
--	btrfs_page_clear_checked(inode->root->fs_info, page, page_start, PAGE_SIZE);
-+	btrfs_page_clear_checked(fs_info, page, page_start, PAGE_SIZE);
- 	unlock_page(page);
- 	put_page(page);
- 	kfree(fixup);
++
++try_later:
+ 	rhashtable_walk_stop(&hti);
+ 	rhashtable_walk_exit(&hti);
+ 
+-	nft_set_gc_batch_complete(gcb);
++	if (gc)
++		nft_trans_gc_queue_async_done(gc);
++done:
+ 	queue_delayed_work(system_power_efficient_wq, &priv->gc_work,
+ 			   nft_set_gc_interval(set));
+ }
+@@ -400,7 +426,6 @@ static void nft_rhash_destroy(const struct nft_ctx *ctx,
+ 	};
+ 
+ 	cancel_delayed_work_sync(&priv->gc_work);
+-	rcu_barrier();
+ 	rhashtable_free_and_destroy(&priv->ht, nft_rhash_elem_destroy,
+ 				    (void *)&rhash_ctx);
+ }
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 89fa1fedadf7c..63d0723950d32 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1544,15 +1544,32 @@ static void pipapo_drop(struct nft_pipapo_match *m,
+ 	}
+ }
+ 
++static void nft_pipapo_gc_deactivate(struct net *net, struct nft_set *set,
++				     struct nft_pipapo_elem *e)
++{
++	struct nft_set_elem elem = {
++		.priv   = e,
++	};
++
++	nft_setelem_data_deactivate(net, set, &elem);
++}
++
+ /**
+  * pipapo_gc() - Drop expired entries from set, destroy start and end elements
+- * @set:	nftables API set representation
++ * @_set:	nftables API set representation
+  * @m:		Matching data
+  */
+-static void pipapo_gc(const struct nft_set *set, struct nft_pipapo_match *m)
++static void pipapo_gc(const struct nft_set *_set, struct nft_pipapo_match *m)
+ {
++	struct nft_set *set = (struct nft_set *) _set;
+ 	struct nft_pipapo *priv = nft_set_priv(set);
++	struct net *net = read_pnet(&set->net);
+ 	int rules_f0, first_rule = 0;
++	struct nft_trans_gc *gc;
++
++	gc = nft_trans_gc_alloc(set, 0, GFP_KERNEL);
++	if (!gc)
++		return;
+ 
+ 	while ((rules_f0 = pipapo_rules_same_key(m->f, first_rule))) {
+ 		union nft_pipapo_map_bucket rulemap[NFT_PIPAPO_MAX_FIELDS];
+@@ -1577,13 +1594,19 @@ static void pipapo_gc(const struct nft_set *set, struct nft_pipapo_match *m)
+ 		f--;
+ 		i--;
+ 		e = f->mt[rulemap[i].to].e;
+-		if (nft_set_elem_expired(&e->ext) &&
+-		    !nft_set_elem_mark_busy(&e->ext)) {
++		/* synchronous gc never fails, there is no need to set on
++		 * NFT_SET_ELEM_DEAD_BIT.
++		 */
++		if (nft_set_elem_expired(&e->ext)) {
+ 			priv->dirty = true;
+-			pipapo_drop(m, rulemap);
+ 
+-			rcu_barrier();
+-			nft_set_elem_destroy(set, e, true);
++			gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
++			if (!gc)
++				break;
++
++			nft_pipapo_gc_deactivate(net, set, e);
++			pipapo_drop(m, rulemap);
++			nft_trans_gc_elem_add(gc, e);
+ 
+ 			/* And check again current first rule, which is now the
+ 			 * first we haven't checked.
+@@ -1593,7 +1616,10 @@ static void pipapo_gc(const struct nft_set *set, struct nft_pipapo_match *m)
+ 		}
+ 	}
+ 
+-	priv->last_gc = jiffies;
++	if (gc) {
++		nft_trans_gc_queue_sync_done(gc);
++		priv->last_gc = jiffies;
++	}
+ }
+ 
+ /**
+@@ -1718,7 +1744,6 @@ static void nft_pipapo_activate(const struct net *net,
+ 		return;
+ 
+ 	nft_set_elem_change_active(net, set, &e->ext);
+-	nft_set_elem_clear_busy(&e->ext);
+ }
+ 
+ /**
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 2aa3776c5fbb7..ed14849aa47f4 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -14,6 +14,9 @@
+ #include <linux/netfilter.h>
+ #include <linux/netfilter/nf_tables.h>
+ #include <net/netfilter/nf_tables_core.h>
++#include <net/netns/generic.h>
++
++extern unsigned int nf_tables_net_id;
+ 
+ struct nft_rbtree {
+ 	struct rb_root		root;
+@@ -46,6 +49,12 @@ static int nft_rbtree_cmp(const struct nft_set *set,
+ 		      set->klen);
+ }
+ 
++static bool nft_rbtree_elem_expired(const struct nft_rbtree_elem *rbe)
++{
++	return nft_set_elem_expired(&rbe->ext) ||
++	       nft_set_elem_is_dead(&rbe->ext);
++}
++
+ static bool __nft_rbtree_lookup(const struct net *net, const struct nft_set *set,
+ 				const u32 *key, const struct nft_set_ext **ext,
+ 				unsigned int seq)
+@@ -80,7 +89,7 @@ static bool __nft_rbtree_lookup(const struct net *net, const struct nft_set *set
+ 				continue;
+ 			}
+ 
+-			if (nft_set_elem_expired(&rbe->ext))
++			if (nft_rbtree_elem_expired(rbe))
+ 				return false;
+ 
+ 			if (nft_rbtree_interval_end(rbe)) {
+@@ -98,7 +107,7 @@ static bool __nft_rbtree_lookup(const struct net *net, const struct nft_set *set
+ 
+ 	if (set->flags & NFT_SET_INTERVAL && interval != NULL &&
+ 	    nft_set_elem_active(&interval->ext, genmask) &&
+-	    !nft_set_elem_expired(&interval->ext) &&
++	    !nft_rbtree_elem_expired(interval) &&
+ 	    nft_rbtree_interval_start(interval)) {
+ 		*ext = &interval->ext;
+ 		return true;
+@@ -214,6 +223,18 @@ static void *nft_rbtree_get(const struct net *net, const struct nft_set *set,
+ 	return rbe;
+ }
+ 
++static void nft_rbtree_gc_remove(struct net *net, struct nft_set *set,
++				 struct nft_rbtree *priv,
++				 struct nft_rbtree_elem *rbe)
++{
++	struct nft_set_elem elem = {
++		.priv   = rbe,
++	};
++
++	nft_setelem_data_deactivate(net, set, &elem);
++	rb_erase(&rbe->node, &priv->root);
++}
++
+ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 			      struct nft_rbtree *priv,
+ 			      struct nft_rbtree_elem *rbe,
+@@ -221,11 +242,12 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ {
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
++	struct net *net = read_pnet(&set->net);
+ 	struct nft_rbtree_elem *rbe_prev;
+-	struct nft_set_gc_batch *gcb;
++	struct nft_trans_gc *gc;
+ 
+-	gcb = nft_set_gc_batch_check(set, NULL, GFP_ATOMIC);
+-	if (!gcb)
++	gc = nft_trans_gc_alloc(set, 0, GFP_ATOMIC);
++	if (!gc)
+ 		return -ENOMEM;
+ 
+ 	/* search for end interval coming before this element.
+@@ -243,17 +265,28 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 
+ 	if (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
++		nft_rbtree_gc_remove(net, set, priv, rbe_prev);
+ 
+-		rb_erase(&rbe_prev->node, &priv->root);
+-		atomic_dec(&set->nelems);
+-		nft_set_gc_batch_add(gcb, rbe_prev);
++		/* There is always room in this trans gc for this element,
++		 * memory allocation never actually happens, hence, the warning
++		 * splat in such case. No need to set NFT_SET_ELEM_DEAD_BIT,
++		 * this is synchronous gc which never fails.
++		 */
++		gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
++		if (WARN_ON_ONCE(!gc))
++			return -ENOMEM;
++
++		nft_trans_gc_elem_add(gc, rbe_prev);
+ 	}
+ 
+-	rb_erase(&rbe->node, &priv->root);
+-	atomic_dec(&set->nelems);
++	nft_rbtree_gc_remove(net, set, priv, rbe);
++	gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
++	if (WARN_ON_ONCE(!gc))
++		return -ENOMEM;
++
++	nft_trans_gc_elem_add(gc, rbe);
+ 
+-	nft_set_gc_batch_add(gcb, rbe);
+-	nft_set_gc_batch_complete(gcb);
++	nft_trans_gc_queue_sync_done(gc);
+ 
+ 	return 0;
+ }
+@@ -481,7 +514,6 @@ static void nft_rbtree_activate(const struct net *net,
+ 	struct nft_rbtree_elem *rbe = elem->priv;
+ 
+ 	nft_set_elem_change_active(net, set, &rbe->ext);
+-	nft_set_elem_clear_busy(&rbe->ext);
+ }
+ 
+ static bool nft_rbtree_flush(const struct net *net,
+@@ -489,12 +521,9 @@ static bool nft_rbtree_flush(const struct net *net,
+ {
+ 	struct nft_rbtree_elem *rbe = priv;
+ 
+-	if (!nft_set_elem_mark_busy(&rbe->ext) ||
+-	    !nft_is_active(net, &rbe->ext)) {
+-		nft_set_elem_change_active(net, set, &rbe->ext);
+-		return true;
+-	}
+-	return false;
++	nft_set_elem_change_active(net, set, &rbe->ext);
++
++	return true;
+ }
+ 
+ static void *nft_rbtree_deactivate(const struct net *net,
+@@ -569,26 +598,40 @@ static void nft_rbtree_walk(const struct nft_ctx *ctx,
+ 
+ static void nft_rbtree_gc(struct work_struct *work)
+ {
+-	struct nft_rbtree_elem *rbe, *rbe_end = NULL, *rbe_prev = NULL;
+-	struct nft_set_gc_batch *gcb = NULL;
++	struct nft_rbtree_elem *rbe, *rbe_end = NULL;
++	struct nftables_pernet *nft_net;
+ 	struct nft_rbtree *priv;
++	struct nft_trans_gc *gc;
+ 	struct rb_node *node;
+ 	struct nft_set *set;
++	unsigned int gc_seq;
+ 	struct net *net;
+-	u8 genmask;
+ 
+ 	priv = container_of(work, struct nft_rbtree, gc_work.work);
+ 	set  = nft_set_container_of(priv);
+ 	net  = read_pnet(&set->net);
+-	genmask = nft_genmask_cur(net);
++	nft_net = net_generic(net, nf_tables_net_id);
++	gc_seq	= READ_ONCE(nft_net->gc_seq);
++
++	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
++	if (!gc)
++		goto done;
+ 
+ 	write_lock_bh(&priv->lock);
+ 	write_seqcount_begin(&priv->count);
+ 	for (node = rb_first(&priv->root); node != NULL; node = rb_next(node)) {
++
++		/* Ruleset has been updated, try later. */
++		if (READ_ONCE(nft_net->gc_seq) != gc_seq) {
++			nft_trans_gc_destroy(gc);
++			gc = NULL;
++			goto try_later;
++		}
++
+ 		rbe = rb_entry(node, struct nft_rbtree_elem, node);
+ 
+-		if (!nft_set_elem_active(&rbe->ext, genmask))
+-			continue;
++		if (nft_set_elem_is_dead(&rbe->ext))
++			goto dead_elem;
+ 
+ 		/* elements are reversed in the rbtree for historical reasons,
+ 		 * from highest to lowest value, that is why end element is
+@@ -601,40 +644,33 @@ static void nft_rbtree_gc(struct work_struct *work)
+ 		if (!nft_set_elem_expired(&rbe->ext))
+ 			continue;
+ 
+-		if (nft_set_elem_mark_busy(&rbe->ext)) {
+-			rbe_end = NULL;
++		nft_set_elem_dead(&rbe->ext);
++
++		if (!rbe_end)
+ 			continue;
+-		}
+ 
+-		if (rbe_prev) {
+-			rb_erase(&rbe_prev->node, &priv->root);
+-			rbe_prev = NULL;
+-		}
+-		gcb = nft_set_gc_batch_check(set, gcb, GFP_ATOMIC);
+-		if (!gcb)
+-			break;
++		nft_set_elem_dead(&rbe_end->ext);
+ 
+-		atomic_dec(&set->nelems);
+-		nft_set_gc_batch_add(gcb, rbe);
+-		rbe_prev = rbe;
++		gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
++		if (!gc)
++			goto try_later;
+ 
+-		if (rbe_end) {
+-			atomic_dec(&set->nelems);
+-			nft_set_gc_batch_add(gcb, rbe_end);
+-			rb_erase(&rbe_end->node, &priv->root);
+-			rbe_end = NULL;
+-		}
+-		node = rb_next(node);
+-		if (!node)
+-			break;
++		nft_trans_gc_elem_add(gc, rbe_end);
++		rbe_end = NULL;
++dead_elem:
++		gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
++		if (!gc)
++			goto try_later;
++
++		nft_trans_gc_elem_add(gc, rbe);
+ 	}
+-	if (rbe_prev)
+-		rb_erase(&rbe_prev->node, &priv->root);
++try_later:
+ 	write_seqcount_end(&priv->count);
+ 	write_unlock_bh(&priv->lock);
+ 
+-	nft_set_gc_batch_complete(gcb);
+-
++	if (gc)
++		nft_trans_gc_queue_async_done(gc);
++done:
+ 	queue_delayed_work(system_power_efficient_wq, &priv->gc_work,
+ 			   nft_set_gc_interval(set));
+ }
 -- 
 2.40.1
 
