@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ADAD7BE0AE
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C92C77BDF27
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376840AbjJINmz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:42:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58194 "EHLO
+        id S1376490AbjJIN04 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:26:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377394AbjJINmy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:54 -0400
+        with ESMTP id S1376720AbjJIN0z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17B81B9
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59387C433C8;
-        Mon,  9 Oct 2023 13:42:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FFF49D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F04C433C8;
+        Mon,  9 Oct 2023 13:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858972;
-        bh=nPcO1lc7YcUqkJHgPZJnSiSnUT09839cIDEDeAkNuqU=;
+        s=korg; t=1696858013;
+        bh=o4SppjLVDL5R5gejrAXnj1vcEaPdkl/hjjbmb4fGqFU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YjqjEZ5gAUOFXCOjbwoIwnVbdHs+4ArqcIFK33xzvJVpQzG9dd771kjuAV4Bqf4Sl
-         QEez3YaJunjW7gBwc1zNQrVTdleqnEo3LYrhHxxNhyjn6BjG3iLue+QKdGAt0JWpS5
-         4c6MdIeFfCbXd0HUcke4ZdxaLLU15MwqVnn/uNvw=
+        b=k7M1TPtWqRy8pIrtSZajE5S84VJobXkgxE3nA4aRs7AEnXNlogR8xzhncxfmIkuMm
+         DyyNzlQB0Ys3LegX1yJjZ3CLRKoux34hsmfOU8C+HK6sl0R+uRF4ZamvWXqeAvXHLw
+         4BxsgHLPZa/bMc1Go5xVg3ECY+FGhPHyHQCFL6IQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Hannes Reinecke <hare@suse.de>,
-        "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Bart Van Assche <bvanassche@acm.org>
-Subject: [PATCH 5.10 159/226] ata: libata-core: Fix ata_port_request_pm() locking
+        patches@lists.linux.dev, Oleksandr Tymoshenko <ovt@google.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 38/75] ima: Finish deprecation of IMA_TRUSTED_KEYRING Kconfig
 Date:   Mon,  9 Oct 2023 15:02:00 +0200
-Message-ID: <20231009130130.841999728@linuxfoundation.org>
+Message-ID: <20231009130112.564371188@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,79 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Oleksandr Tymoshenko <ovt@google.com>
 
-commit 3b8e0af4a7a331d1510e963b8fd77e2fca0a77f1 upstream.
+[ Upstream commit be210c6d3597faf330cb9af33b9f1591d7b2a983 ]
 
-The function ata_port_request_pm() checks the port flag
-ATA_PFLAG_PM_PENDING and calls ata_port_wait_eh() if this flag is set to
-ensure that power management operations for a port are not scheduled
-simultaneously. However, this flag check is done without holding the
-port lock.
+The removal of IMA_TRUSTED_KEYRING made IMA_LOAD_X509
+and IMA_BLACKLIST_KEYRING unavailable because the latter
+two depend on the former. Since IMA_TRUSTED_KEYRING was
+deprecated in favor of INTEGRITY_TRUSTED_KEYRING use it
+as a dependency for the two Kconfigs affected by the
+deprecation.
 
-Fix this by taking the port lock on entry to the function and checking
-the flag under this lock. The lock is released and re-taken if
-ata_port_wait_eh() needs to be called. The two WARN_ON() macros checking
-that the ATA_PFLAG_PM_PENDING flag was cleared are removed as the first
-call is racy and the second one done without holding the port lock.
-
-Fixes: 5ef41082912b ("ata: add ata port system PM callbacks")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5087fd9e80e5 ("ima: Remove deprecated IMA_TRUSTED_KEYRING Kconfig")
+Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+Reviewed-by: Nayna Jain <nayna@linux.ibm.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ security/integrity/ima/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4974,17 +4974,19 @@ static void ata_port_request_pm(struct a
- 	struct ata_link *link;
- 	unsigned long flags;
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index 7bc416c172119..2200262489103 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -268,7 +268,7 @@ config IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY
+ config IMA_BLACKLIST_KEYRING
+ 	bool "Create IMA machine owner blacklist keyrings (EXPERIMENTAL)"
+ 	depends on SYSTEM_TRUSTED_KEYRING
+-	depends on IMA_TRUSTED_KEYRING
++	depends on INTEGRITY_TRUSTED_KEYRING
+ 	default n
+ 	help
+ 	   This option creates an IMA blacklist keyring, which contains all
+@@ -278,7 +278,7 @@ config IMA_BLACKLIST_KEYRING
  
--	/* Previous resume operation might still be in
--	 * progress.  Wait for PM_PENDING to clear.
-+	spin_lock_irqsave(ap->lock, flags);
-+
-+	/*
-+	 * A previous PM operation might still be in progress. Wait for
-+	 * ATA_PFLAG_PM_PENDING to clear.
- 	 */
- 	if (ap->pflags & ATA_PFLAG_PM_PENDING) {
-+		spin_unlock_irqrestore(ap->lock, flags);
- 		ata_port_wait_eh(ap);
--		WARN_ON(ap->pflags & ATA_PFLAG_PM_PENDING);
-+		spin_lock_irqsave(ap->lock, flags);
- 	}
- 
--	/* request PM ops to EH */
--	spin_lock_irqsave(ap->lock, flags);
--
-+	/* Request PM operation to EH */
- 	ap->pm_mesg = mesg;
- 	ap->pflags |= ATA_PFLAG_PM_PENDING;
- 	ata_for_each_link(link, ap, HOST_FIRST) {
-@@ -4996,10 +4998,8 @@ static void ata_port_request_pm(struct a
- 
- 	spin_unlock_irqrestore(ap->lock, flags);
- 
--	if (!async) {
-+	if (!async)
- 		ata_port_wait_eh(ap);
--		WARN_ON(ap->pflags & ATA_PFLAG_PM_PENDING);
--	}
- }
- 
- /*
+ config IMA_LOAD_X509
+ 	bool "Load X509 certificate onto the '.ima' trusted keyring"
+-	depends on IMA_TRUSTED_KEYRING
++	depends on INTEGRITY_TRUSTED_KEYRING
+ 	default n
+ 	help
+ 	   File signature verification is based on the public keys
+-- 
+2.40.1
+
 
 
