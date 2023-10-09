@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09EC17BE0B2
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5C9F7BDF08
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377233AbjJINnI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53132 "EHLO
+        id S1376521AbjJINZu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376306AbjJINnH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:07 -0400
+        with ESMTP id S1376738AbjJINZr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1389A3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E14C433C7;
-        Mon,  9 Oct 2023 13:43:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57965E4
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4FCC433C9;
+        Mon,  9 Oct 2023 13:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858985;
-        bh=pWKBm3MfPqavX/0Z9sD2eT6ywmCQh61Kjud3+Kgcjsg=;
+        s=korg; t=1696857941;
+        bh=g1IDWOrQPLLyFTtfdDUN45Dn5fzKfBMWKOde3UC8qYU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1tW6kw/5VPWKxt81gRVeDvBMpJHqGqZqGHsaEdRrOIebtxiYS00gUldn5zm169OwV
-         fXBLrHE6Ph2kkJZAGHvq7IIG3X0ogYM7S1FecONegbf3xusFI1VitiRgTnekzP32zo
-         2J79wWZRFJXXdDWuo7veVByZN0Fk4EctS1UR7oMU=
+        b=sGY83Keb6J/6ld9mZDsmUsLHeLI2vY771I4oqezGAVY9zOJpQgSYUkj1dEQHaqByH
+         2wRnxuAg+I2OmpEC7Dh1uR7OmwyJuKINbPg6Hnyr2w8OLPK2j8haTmPE0aBv1g0/yh
+         5UxStuZ3H19rSaJd6+9roE04fhkxORNKgedtqLhU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Greg Ungerer <gerg@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Kees Cook <keescook@chromium.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 163/226] fs: binfmt_elf_efpic: fix personality for ELF-FDPIC
+        patches@lists.linux.dev, Jakub Sitnicki <jakub@cloudflare.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 42/75] bpf, sockmap: Reject sk_msg egress redirects to non-TCP sockets
 Date:   Mon,  9 Oct 2023 15:02:04 +0200
-Message-ID: <20231009130130.934241273@linuxfoundation.org>
+Message-ID: <20231009130112.703916513@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,67 +50,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Ungerer <gerg@kernel.org>
+From: Jakub Sitnicki <jakub@cloudflare.com>
 
-commit 7c3151585730b7095287be8162b846d31e6eee61 upstream.
+[ Upstream commit b80e31baa43614e086a9d29dc1151932b1bd7fc5 ]
 
-The elf-fdpic loader hard sets the process personality to either
-PER_LINUX_FDPIC for true elf-fdpic binaries or to PER_LINUX for normal ELF
-binaries (in this case they would be constant displacement compiled with
--pie for example).  The problem with that is that it will lose any other
-bits that may be in the ELF header personality (such as the "bug
-emulation" bits).
+With a SOCKMAP/SOCKHASH map and an sk_msg program user can steer messages
+sent from one TCP socket (s1) to actually egress from another TCP
+socket (s2):
 
-On the ARM architecture the ADDR_LIMIT_32BIT flag is used to signify a
-normal 32bit binary - as opposed to a legacy 26bit address binary.  This
-matters since start_thread() will set the ARM CPSR register as required
-based on this flag.  If the elf-fdpic loader loses this bit the process
-will be mis-configured and crash out pretty quickly.
+tcp_bpf_sendmsg(s1)		// = sk_prot->sendmsg
+  tcp_bpf_send_verdict(s1)	// __SK_REDIRECT case
+    tcp_bpf_sendmsg_redir(s2)
+      tcp_bpf_push_locked(s2)
+	tcp_bpf_push(s2)
+	  tcp_rate_check_app_limited(s2) // expects tcp_sock
+	  tcp_sendmsg_locked(s2)	 // ditto
 
-Modify elf-fdpic loader personality setting so that it preserves the upper
-three bytes by using the SET_PERSONALITY macro to set it.  This macro in
-the generic case sets PER_LINUX and preserves the upper bytes.
-Architectures can override this for their specific use case, and ARM does
-exactly this.
+There is a hard-coded assumption in the call-chain, that the egress
+socket (s2) is a TCP socket.
 
-The problem shows up quite easily running under qemu using the ARM
-architecture, but not necessarily on all types of real ARM hardware.  If
-the underlying ARM processor does not support the legacy 26-bit addressing
-mode then everything will work as expected.
+However in commit 122e6c79efe1 ("sock_map: Update sock type checks for
+UDP") we have enabled redirects to non-TCP sockets. This was done for the
+sake of BPF sk_skb programs. There was no indention to support sk_msg
+send-to-egress use case.
 
-Link: https://lkml.kernel.org/r/20230907011808.2985083-1-gerg@kernel.org
-Fixes: 1bde925d23547 ("fs/binfmt_elf_fdpic.c: provide NOMMU loader for regular ELF binaries")
-Signed-off-by: Greg Ungerer <gerg@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: Greg Ungerer <gerg@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a result, attempts to send-to-egress through a non-TCP socket lead to a
+crash due to invalid downcast from sock to tcp_sock:
+
+ BUG: kernel NULL pointer dereference, address: 000000000000002f
+ ...
+ Call Trace:
+  <TASK>
+  ? show_regs+0x60/0x70
+  ? __die+0x1f/0x70
+  ? page_fault_oops+0x80/0x160
+  ? do_user_addr_fault+0x2d7/0x800
+  ? rcu_is_watching+0x11/0x50
+  ? exc_page_fault+0x70/0x1c0
+  ? asm_exc_page_fault+0x27/0x30
+  ? tcp_tso_segs+0x14/0xa0
+  tcp_write_xmit+0x67/0xce0
+  __tcp_push_pending_frames+0x32/0xf0
+  tcp_push+0x107/0x140
+  tcp_sendmsg_locked+0x99f/0xbb0
+  tcp_bpf_push+0x19d/0x3a0
+  tcp_bpf_sendmsg_redir+0x55/0xd0
+  tcp_bpf_send_verdict+0x407/0x550
+  tcp_bpf_sendmsg+0x1a1/0x390
+  inet_sendmsg+0x6a/0x70
+  sock_sendmsg+0x9d/0xc0
+  ? sockfd_lookup_light+0x12/0x80
+  __sys_sendto+0x10e/0x160
+  ? syscall_enter_from_user_mode+0x20/0x60
+  ? __this_cpu_preempt_check+0x13/0x20
+  ? lockdep_hardirqs_on+0x82/0x110
+  __x64_sys_sendto+0x1f/0x30
+  do_syscall_64+0x38/0x90
+  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Reject selecting a non-TCP sockets as redirect target from a BPF sk_msg
+program to prevent the crash. When attempted, user will receive an EACCES
+error from send/sendto/sendmsg() syscall.
+
+Fixes: 122e6c79efe1 ("sock_map: Update sock type checks for UDP")
+Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20230920102055.42662-1-jakub@cloudflare.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf_fdpic.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/core/sock_map.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -345,10 +345,9 @@ static int load_elf_fdpic_binary(struct
- 	/* there's now no turning back... the old userspace image is dead,
- 	 * defunct, deceased, etc.
- 	 */
-+	SET_PERSONALITY(exec_params.hdr);
- 	if (elf_check_fdpic(&exec_params.hdr))
--		set_personality(PER_LINUX_FDPIC);
--	else
--		set_personality(PER_LINUX);
-+		current->personality |= PER_LINUX_FDPIC;
- 	if (elf_read_implies_exec(&exec_params.hdr, executable_stack))
- 		current->personality |= READ_IMPLIES_EXEC;
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index caae43e66353d..ba6d5b38fb238 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -676,6 +676,8 @@ BPF_CALL_4(bpf_msg_redirect_map, struct sk_msg *, msg,
+ 	sk = __sock_map_lookup_elem(map, key);
+ 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
+ 		return SK_DROP;
++	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
++		return SK_DROP;
  
+ 	msg->flags = flags;
+ 	msg->sk_redir = sk;
+@@ -1269,6 +1271,8 @@ BPF_CALL_4(bpf_msg_redirect_hash, struct sk_msg *, msg,
+ 	sk = __sock_hash_lookup_elem(map, key);
+ 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
+ 		return SK_DROP;
++	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
++		return SK_DROP;
+ 
+ 	msg->flags = flags;
+ 	msg->sk_redir = sk;
+-- 
+2.40.1
+
 
 
