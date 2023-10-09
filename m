@@ -2,146 +2,172 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D983D7BE1B5
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:53:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70E547BE13A
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377511AbjJINxP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:53:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54036 "EHLO
+        id S234538AbjJINsW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377520AbjJINxO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:14 -0400
+        with ESMTP id S234542AbjJINsV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:48:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD096A3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1648AC433C8;
-        Mon,  9 Oct 2023 13:53:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7EF194
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:48:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D16C433C8;
+        Mon,  9 Oct 2023 13:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859592;
-        bh=SYNpO4a+hFN7o+tfAT4cWPkHLJrHb4SlJtFPfMG58sE=;
+        s=korg; t=1696859299;
+        bh=DhRMaoApclZtblBb+WoWnISpKxLHcUXKstzPAHSgboE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ye2UYJsZMAjnME7kk2ppIlL75pvSEZoe2itO+YEHyk3x9kST+snEDwCFOej0OV25N
-         GSrCiE0Lqm3bgVCt8eAYCrXrou+rHJ+aJcGLPFTNv6/oybKPG2F79jyDMaYM1sXZdM
-         2VrxSHuGOakYKbkcTswUgJj6DWoCNUcDKDFIFDf4=
+        b=ZZ1sUUQkFO/jUN7dHfDRtIktUEWbBYlOx/qyHZ9Rm6EmIIZAE6N6Tk5qyXOh699mf
+         wglAC2jn8uS5/BE2ozH+cng0uAQqUkttUeYtm0tFdA/tndATgBDDvVAmdPvReGJmQW
+         UtI6YXpIXKGIrep/4IsLNccNIaw5+BzBfwsH0WoM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "=?UTF-8?q?Daniel=20P . =20Berrang=C3=A9?=" <berrange@redhat.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
+        Damien Le Moal <dlemoal@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 43/91] watchdog: iTCO_wdt: Set NO_REBOOT if the watchdog is not already running
+Subject: [PATCH 4.14 16/55] ata: libata-eh: do not clear ATA_PFLAG_EH_PENDING in ata_eh_reset()
 Date:   Mon,  9 Oct 2023 15:06:15 +0200
-Message-ID: <20231009130113.014117701@linuxfoundation.org>
+Message-ID: <20231009130108.331405003@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-commit ef9b7bf52c2f47f0a9bf988543c577b92c92d15e upstream.
+[ Upstream commit 80cc944eca4f0baa9c381d0706f3160e491437f2 ]
 
-Daniel reported that the commit 1ae3e78c0820 ("watchdog: iTCO_wdt: No
-need to stop the timer in probe") makes QEMU implementation of the iTCO
-watchdog not to trigger reboot anymore when NO_REBOOT flag is initially
-cleared using this option (in QEMU command line):
+ata_scsi_port_error_handler() starts off by clearing ATA_PFLAG_EH_PENDING,
+before calling ap->ops->error_handler() (without holding the ap->lock).
 
-  -global ICH9-LPC.noreboot=false
+If an error IRQ is received while ap->ops->error_handler() is running,
+the irq handler will set ATA_PFLAG_EH_PENDING.
 
-The problem with the commit is that it left the unconditional setting of
-NO_REBOOT that is not cleared anymore when the kernel keeps pinging the
-watchdog (as opposed to the previous code that called iTCO_wdt_stop()
-that cleared it).
+Once ap->ops->error_handler() returns, ata_scsi_port_error_handler()
+checks if ATA_PFLAG_EH_PENDING is set, and if it is, another iteration
+of ATA EH is performed.
 
-Fix this so that we only set NO_REBOOT if the watchdog was not initially
-running.
+The problem is that ATA_PFLAG_EH_PENDING is not only cleared by
+ata_scsi_port_error_handler(), it is also cleared by ata_eh_reset().
 
-Fixes: 1ae3e78c0820 ("watchdog: iTCO_wdt: No need to stop the timer in probe")
-Reported-by: Daniel P. Berrangé <berrange@redhat.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Tested-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20221028062750.45451-1-mika.westerberg@linux.intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+ata_eh_reset() is called by ap->ops->error_handler(). This additional
+clearing done by ata_eh_reset() breaks the whole retry logic in
+ata_scsi_port_error_handler(). Thus, if an error IRQ is received while
+ap->ops->error_handler() is running, the port will currently remain
+frozen and will never get re-enabled.
+
+The additional clearing in ata_eh_reset() was introduced in commit
+1e641060c4b5 ("libata: clear eh_info on reset completion").
+
+Looking at the original error report:
+https://marc.info/?l=linux-ide&m=124765325828495&w=2
+
+We can see the following happening:
+[    1.074659] ata3: XXX port freeze
+[    1.074700] ata3: XXX hardresetting link, stopping engine
+[    1.074746] ata3: XXX flipping SControl
+
+[    1.411471] ata3: XXX irq_stat=400040 CONN|PHY
+[    1.411475] ata3: XXX port freeze
+
+[    1.420049] ata3: XXX starting engine
+[    1.420096] ata3: XXX rc=0, class=1
+[    1.420142] ata3: XXX clearing IRQs for thawing
+[    1.420188] ata3: XXX port thawed
+[    1.420234] ata3: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+
+We are not supposed to be able to receive an error IRQ while the port is
+frozen (PxIE is set to 0, i.e. all IRQs for the port are disabled).
+
+AHCI 1.3.1 section 10.7.1.1 First Tier (IS Register) states:
+"Each bit location can be thought of as reporting a '1' if the virtual
+"interrupt line" for that port is indicating it wishes to generate an
+interrupt. That is, if a port has one or more interrupt status bit set,
+and the enables for those status bits are set, then this bit shall be set."
+
+Additionally, AHCI state P:ComInit clearly shows that the state machine
+will only jump to P:ComInitSetIS (which sets IS.IPS(x) to '1'), if PxIE.PCE
+is set to '1'. In our case, PxIE is set to 0, so IS.IPS(x) won't get set.
+
+So IS.IPS(x) only gets set if PxIS and PxIE is set.
+
+AHCI 1.3.1 section 10.7.1.1 First Tier (IS Register) also states:
+"The bits in this register are read/write clear. It is set by the level of
+the virtual interrupt line being a set, and cleared by a write of '1' from
+the software."
+
+So if IS.IPS(x) is set, you need to explicitly clear it by writing a 1 to
+IS.IPS(x) for that port.
+
+Since PxIE is cleared, the only way to get an interrupt while the port is
+frozen, is if IS.IPS(x) is set, and the only way IS.IPS(x) can be set when
+the port is frozen, is if it was set before the port was frozen.
+
+However, since commit 737dd811a3db ("ata: libahci: clear pending interrupt
+status"), we clear both PxIS and IS.IPS(x) after freezing the port, but
+before the COMRESET, so the problem that commit 1e641060c4b5 ("libata:
+clear eh_info on reset completion") fixed can no longer happen.
+
+Thus, revert commit 1e641060c4b5 ("libata: clear eh_info on reset
+completion"), so that the retry logic in ata_scsi_port_error_handler()
+works once again. (The retry logic is still needed, since we can still
+get an error IRQ _after_ the port has been thawed, but before
+ata_scsi_port_error_handler() takes the ap->lock in order to check
+if ATA_PFLAG_EH_PENDING is set.)
+
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/iTCO_wdt.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/ata/libata-eh.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
-index 930798bac582d..5ec52032117a7 100644
---- a/drivers/watchdog/iTCO_wdt.c
-+++ b/drivers/watchdog/iTCO_wdt.c
-@@ -401,14 +401,18 @@ static unsigned int iTCO_wdt_get_timeleft(struct watchdog_device *wd_dev)
- 	return time_left;
- }
- 
--static void iTCO_wdt_set_running(struct iTCO_wdt_private *p)
-+/* Returns true if the watchdog was running */
-+static bool iTCO_wdt_set_running(struct iTCO_wdt_private *p)
- {
- 	u16 val;
- 
--	/* Bit 11: TCO Timer Halt -> 0 = The TCO timer is * enabled */
-+	/* Bit 11: TCO Timer Halt -> 0 = The TCO timer is enabled */
- 	val = inw(TCO1_CNT(p));
--	if (!(val & BIT(11)))
-+	if (!(val & BIT(11))) {
- 		set_bit(WDOG_HW_RUNNING, &p->wddev.status);
-+		return true;
-+	}
-+	return false;
- }
- 
- /*
-@@ -486,9 +490,6 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
- 		return -ENODEV;	/* Cannot reset NO_REBOOT bit */
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index cbe9af624a06f..8a789de056807 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -2948,18 +2948,11 @@ int ata_eh_reset(struct ata_link *link, int classify,
+ 			postreset(slave, classes);
  	}
  
--	/* Set the NO_REBOOT bit to prevent later reboots, just for sure */
--	p->update_no_reboot_bit(p->no_reboot_priv, true);
--
- 	/* The TCO logic uses the TCO_EN bit in the SMI_EN register */
- 	if (!devm_request_region(dev, p->smi_res->start,
- 				 resource_size(p->smi_res),
-@@ -547,7 +548,13 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
- 	watchdog_set_drvdata(&p->wddev, p);
- 	platform_set_drvdata(pdev, p);
+-	/*
+-	 * Some controllers can't be frozen very well and may set spurious
+-	 * error conditions during reset.  Clear accumulated error
+-	 * information and re-thaw the port if frozen.  As reset is the
+-	 * final recovery action and we cross check link onlineness against
+-	 * device classification later, no hotplug event is lost by this.
+-	 */
++	/* clear cached SError */
+ 	spin_lock_irqsave(link->ap->lock, flags);
+-	memset(&link->eh_info, 0, sizeof(link->eh_info));
++	link->eh_info.serror = 0;
+ 	if (slave)
+-		memset(&slave->eh_info, 0, sizeof(link->eh_info));
+-	ap->pflags &= ~ATA_PFLAG_EH_PENDING;
++		slave->eh_info.serror = 0;
+ 	spin_unlock_irqrestore(link->ap->lock, flags);
  
--	iTCO_wdt_set_running(p);
-+	if (!iTCO_wdt_set_running(p)) {
-+		/*
-+		 * If the watchdog was not running set NO_REBOOT now to
-+		 * prevent later reboots.
-+		 */
-+		p->update_no_reboot_bit(p->no_reboot_priv, true);
-+	}
- 
- 	/* Check that the heartbeat value is within it's range;
- 	   if not reset to the default */
+ 	if (ap->pflags & ATA_PFLAG_FROZEN)
 -- 
 2.40.1
 
