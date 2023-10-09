@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F0D67BDF71
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 631537BDDB5
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:12:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377010AbjJINaL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:30:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55074 "EHLO
+        id S1376842AbjJINMn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:12:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377015AbjJINaK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:30:10 -0400
+        with ESMTP id S1376914AbjJINMa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60953B7
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:30:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15CCC433C8;
-        Mon,  9 Oct 2023 13:30:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DD831FFE
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79853C433C8;
+        Mon,  9 Oct 2023 13:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858208;
-        bh=wHgqPtVQfPAQIl6Drs8Ax9ZQX88et2NkxFgOTObXBwk=;
+        s=korg; t=1696857080;
+        bh=iK18w4ZWMzLVwB+92cOTtvuLBsC7TkSnrmVKICFKbOI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kG237QxmsTgR/62aEd7yyfrKfKjyMZIsxzA3kmTE1xH+gt9DorUzECzYRzGxNE+8/
-         Lt8Oipv+FczRG1mgoGHwHt+Dks+8ZomG4vsC07kVGtxzAp7NuhWJNdTCcU2pExUwx6
-         tXXvjebW9Qe+wqLdlwQ7TLf1EUTCKUWomJf9WPuU=
+        b=CVQbuPTyb/F+vMmThjP+eQGLBWJal1Q9sl9Im+2om/vUYXctZk7wTR4qB+yhQ4agJ
+         SwM56Ks38y2qa0rPKKpiXWTpp7wHAs7DUx/A6TSIPaYixaAuO+7uq3VapLRaRW8L2w
+         x8pC2LWlx3VCZ6LEXczjGfaVJjr+bfNP34ZBrmKs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jerome Brunet <jbrunet@baylibre.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Benjamin Berg <benjamin.berg@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 013/131] ASoC: meson: spdifin: start hw on dai probe
+Subject: [PATCH 6.5 089/163] wifi: mac80211: Create resources for disabled links
 Date:   Mon,  9 Oct 2023 15:00:53 +0200
-Message-ID: <20231009130116.727594474@linuxfoundation.org>
+Message-ID: <20231009130126.496165627@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,109 +49,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit aedf323b66b2b875137422ecb7d2525179759076 ]
+[ Upstream commit aaba3cd33fc9593a858beeee419c0e6671ee9551 ]
 
-For spdif input to report the locked rate correctly, even when no capture
-is running, the HW and reference clock must be started as soon as
-the dai is probed.
+When associating to an MLD AP, links may be disabled. Create all
+resources associated with a disabled link so that we can later enable it
+without having to create these resources on the fly.
 
-Fixes: 5ce5658375e6 ("ASoC: meson: add axg spdif input")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20230907090504.12700-1-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 6d543b34dbcf ("wifi: mac80211: Support disabled links during association")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Link: https://lore.kernel.org/r/20230925173028.f9afdb26f6c7.I4e6e199aaefc1bf017362d64f3869645fa6830b5@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-spdifin.c | 49 ++++++++++++-----------------------
- 1 file changed, 17 insertions(+), 32 deletions(-)
+ net/mac80211/mlme.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/meson/axg-spdifin.c b/sound/soc/meson/axg-spdifin.c
-index d0d09f945b489..7aaded1fc376b 100644
---- a/sound/soc/meson/axg-spdifin.c
-+++ b/sound/soc/meson/axg-spdifin.c
-@@ -112,34 +112,6 @@ static int axg_spdifin_prepare(struct snd_pcm_substream *substream,
- 	return 0;
- }
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 46d46cfab6c84..24b2833e0e475 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5107,9 +5107,10 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 				continue;
  
--static int axg_spdifin_startup(struct snd_pcm_substream *substream,
--			       struct snd_soc_dai *dai)
--{
--	struct axg_spdifin *priv = snd_soc_dai_get_drvdata(dai);
--	int ret;
--
--	ret = clk_prepare_enable(priv->refclk);
--	if (ret) {
--		dev_err(dai->dev,
--			"failed to enable spdifin reference clock\n");
--		return ret;
--	}
--
--	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN,
--			   SPDIFIN_CTRL0_EN);
--
--	return 0;
--}
--
--static void axg_spdifin_shutdown(struct snd_pcm_substream *substream,
--				 struct snd_soc_dai *dai)
--{
--	struct axg_spdifin *priv = snd_soc_dai_get_drvdata(dai);
--
--	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN, 0);
--	clk_disable_unprepare(priv->refclk);
--}
--
- static void axg_spdifin_write_mode_param(struct regmap *map, int mode,
- 					 unsigned int val,
- 					 unsigned int num_per_reg,
-@@ -251,25 +223,38 @@ static int axg_spdifin_dai_probe(struct snd_soc_dai *dai)
- 	ret = axg_spdifin_sample_mode_config(dai, priv);
- 	if (ret) {
- 		dev_err(dai->dev, "mode configuration failed\n");
--		clk_disable_unprepare(priv->pclk);
--		return ret;
-+		goto pclk_err;
- 	}
- 
-+	ret = clk_prepare_enable(priv->refclk);
-+	if (ret) {
-+		dev_err(dai->dev,
-+			"failed to enable spdifin reference clock\n");
-+		goto pclk_err;
-+	}
+ 			valid_links |= BIT(link_id);
+-			if (assoc_data->link[link_id].disabled) {
++			if (assoc_data->link[link_id].disabled)
+ 				dormant_links |= BIT(link_id);
+-			} else if (link_id != assoc_data->assoc_link_id) {
 +
-+	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN,
-+			   SPDIFIN_CTRL0_EN);
-+
- 	return 0;
-+
-+pclk_err:
-+	clk_disable_unprepare(priv->pclk);
-+	return ret;
- }
++			if (link_id != assoc_data->assoc_link_id) {
+ 				err = ieee80211_sta_allocate_link(sta, link_id);
+ 				if (err)
+ 					goto out_err;
+@@ -5124,7 +5125,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 		struct ieee80211_link_data *link;
+ 		struct link_sta_info *link_sta;
  
- static int axg_spdifin_dai_remove(struct snd_soc_dai *dai)
- {
- 	struct axg_spdifin *priv = snd_soc_dai_get_drvdata(dai);
+-		if (!cbss || assoc_data->link[link_id].disabled)
++		if (!cbss)
+ 			continue;
  
-+	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN, 0);
-+	clk_disable_unprepare(priv->refclk);
- 	clk_disable_unprepare(priv->pclk);
- 	return 0;
- }
- 
- static const struct snd_soc_dai_ops axg_spdifin_ops = {
- 	.prepare	= axg_spdifin_prepare,
--	.startup	= axg_spdifin_startup,
--	.shutdown	= axg_spdifin_shutdown,
- };
- 
- static int axg_spdifin_iec958_info(struct snd_kcontrol *kcontrol,
+ 		link = sdata_dereference(sdata->link[link_id], sdata);
 -- 
 2.40.1
 
