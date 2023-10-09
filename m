@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74A9D7BE077
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E6997BDE6F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377257AbjJINkd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:40:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36170 "EHLO
+        id S1377048AbjJINTm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:19:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377341AbjJINkZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:25 -0400
+        with ESMTP id S1377045AbjJINTk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:19:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F12C9D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:40:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE1CC433C7;
-        Mon,  9 Oct 2023 13:40:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B19994
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:19:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB598C433CC;
+        Mon,  9 Oct 2023 13:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858822;
-        bh=YDJ9sLu0ZNXXBvuOf7dGx8NaeF/2GvXVTM4DlQdxOR4=;
+        s=korg; t=1696857579;
+        bh=HVZeRI2xd2PzJle0jUbC7kN4y+QqdY7sEMfS/hy2+LA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jGCpPb8fm2KYepcw0YyDCkqXgix7k+XDfZtKgfIYsJ1cyojQgsWIgp6s4Kim9dZZ1
-         uD6wS4PxQTfJnZKBQ+IT+auDM6KjNX1j5Y8FdHfFkl3Flh7EMhUhSJvcS5LSg7KShk
-         n/kfDk6El/25c+BGITdVapOLGOz4bdQpZ6t9f3Uo=
+        b=Wtey03XI2pcG8E+iNWSueeXQEVeQO1mLCm8FP7QCgwn8tNNz+/kETOpH3KeQiDnol
+         v2l5OeQ+F3bhsCgDB0PBWXdrxshsouXbfk21HFY7lH2GmOYAZadq0pmrbLTNmvUrb6
+         dYGL7J2CUDbpjv/LLmj+yicVxb+f7RtjH8SaDbq0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        patches@lists.linux.dev, Shiji Yang <yangshiji66@outlook.com>,
+        Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 111/226] parisc: drivers: Fix sparse warning
+Subject: [PATCH 6.1 091/162] wifi: mt76: mt76x02: fix MT76x0 external LNA gain handling
 Date:   Mon,  9 Oct 2023 15:01:12 +0200
-Message-ID: <20231009130129.683067716@linuxfoundation.org>
+Message-ID: <20231009130125.432756887@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,37 +49,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit b137b9d60b8add5620a06c687a71ce18776730b0 ]
+[ Upstream commit 684e45e120b82deccaf8b85633905304a3bbf56d ]
 
-Fix "warning: directive in macro's argument list" warning.
+On MT76x0, LNA gain should be applied for both external and internal LNA.
+On MT76x2, LNA gain should be treated as 0 for external LNA.
+Move the LNA type based logic to mt76x2 in order to fix mt76x0.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 2daa67588f34 ("mt76x0: unify lna_gain parsing")
+Reported-by: Shiji Yang <yangshiji66@outlook.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230919194747.31647-1-nbd@nbd.name
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/drivers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c |  7 -------
+ drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c  | 13 +++++++++++--
+ 2 files changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/arch/parisc/kernel/drivers.c b/arch/parisc/kernel/drivers.c
-index d95157488832a..d11a3123f3dc4 100644
---- a/arch/parisc/kernel/drivers.c
-+++ b/arch/parisc/kernel/drivers.c
-@@ -925,9 +925,9 @@ static __init void qemu_header(void)
- 	pr_info("#define PARISC_MODEL \"%s\"\n\n",
- 			boot_cpu_data.pdc.sys_model_name);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
+index 0acabba2d1a50..5d402cf2951cb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
+@@ -131,15 +131,8 @@ u8 mt76x02_get_lna_gain(struct mt76x02_dev *dev,
+ 			s8 *lna_2g, s8 *lna_5g,
+ 			struct ieee80211_channel *chan)
+ {
+-	u16 val;
+ 	u8 lna;
  
-+	#define p ((unsigned long *)&boot_cpu_data.pdc.model)
- 	pr_info("#define PARISC_PDC_MODEL 0x%lx, 0x%lx, 0x%lx, "
- 		"0x%lx, 0x%lx, 0x%lx, 0x%lx, 0x%lx, 0x%lx\n\n",
--	#define p ((unsigned long *)&boot_cpu_data.pdc.model)
- 		p[0], p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8]);
- 	#undef p
+-	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
+-	if (val & MT_EE_NIC_CONF_1_LNA_EXT_2G)
+-		*lna_2g = 0;
+-	if (val & MT_EE_NIC_CONF_1_LNA_EXT_5G)
+-		memset(lna_5g, 0, sizeof(s8) * 3);
+-
+ 	if (chan->band == NL80211_BAND_2GHZ)
+ 		lna = *lna_2g;
+ 	else if (chan->hw_value <= 64)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
+index c57e05a5c65e4..91807bf662dde 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
+@@ -256,7 +256,8 @@ void mt76x2_read_rx_gain(struct mt76x02_dev *dev)
+ 	struct ieee80211_channel *chan = dev->mphy.chandef.chan;
+ 	int channel = chan->hw_value;
+ 	s8 lna_5g[3], lna_2g;
+-	u8 lna;
++	bool use_lna;
++	u8 lna = 0;
+ 	u16 val;
  
+ 	if (chan->band == NL80211_BAND_2GHZ)
+@@ -275,7 +276,15 @@ void mt76x2_read_rx_gain(struct mt76x02_dev *dev)
+ 	dev->cal.rx.mcu_gain |= (lna_5g[1] & 0xff) << 16;
+ 	dev->cal.rx.mcu_gain |= (lna_5g[2] & 0xff) << 24;
+ 
+-	lna = mt76x02_get_lna_gain(dev, &lna_2g, lna_5g, chan);
++	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
++	if (chan->band == NL80211_BAND_2GHZ)
++		use_lna = !(val & MT_EE_NIC_CONF_1_LNA_EXT_2G);
++	else
++		use_lna = !(val & MT_EE_NIC_CONF_1_LNA_EXT_5G);
++
++	if (use_lna)
++		lna = mt76x02_get_lna_gain(dev, &lna_2g, lna_5g, chan);
++
+ 	dev->cal.rx.lna_gain = mt76x02_sign_extend(lna, 8);
+ }
+ EXPORT_SYMBOL_GPL(mt76x2_read_rx_gain);
 -- 
 2.40.1
 
