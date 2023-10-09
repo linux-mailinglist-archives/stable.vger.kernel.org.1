@@ -2,61 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABE6C7BDE4C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF11F7BDE8B
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376995AbjJINSH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:18:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50842 "EHLO
+        id S234551AbjJINUc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:20:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377003AbjJINSG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:06 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D5638F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:04 -0700 (PDT)
+        with ESMTP id S234544AbjJINU3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:29 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F19C4AC
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:26 -0700 (PDT)
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id A57B71F390;
-        Mon,  9 Oct 2023 13:18:00 +0000 (UTC)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 6A7972186E;
+        Mon,  9 Oct 2023 13:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1696857480; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+        t=1696857625; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=7sYAN8+Dqtg5GnzI91asAcItN4Q6GfEuCK+TiIASYjw=;
-        b=uf104IYaYRb75YjupYY2dipiGUdo08YdrsV7QYHVl81ogczOVUhgtvucHwz+epMEwFmjOi
-        wjtBTydvDEKNRQv1+359f1A7qRWEiiipzFmAyN/CzTQTgzmVOYdlDCwNBZsitKHn+ehTyB
-        SwMdJ53x+Y9eZOsqCht7DrLg6zFsZpE=
+        bh=z2ZXXEqP2O4NuijRsnKWuAkXvo2OUCcCuxMdEaTwpMw=;
+        b=V2S/rVUb6qrBtWegxgpQyRv642Ie45bLj72Xk23J12slOpqm4WKn6G3dDdleMaetbfoYQe
+        59KzYdzIBHq9EvF3HxFKYYcXVPht91zFjRnoHZIIT5NyoZvhc+qM29/WhrkpltP0q8J8Lw
+        b5mzRXRlcyyC5LkjcC2/Of1X5TAbhA0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1696857480;
+        s=susede2_ed25519; t=1696857625;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=7sYAN8+Dqtg5GnzI91asAcItN4Q6GfEuCK+TiIASYjw=;
-        b=m61WVQ8+YbZyAdcrL1u5UDDd2ahc7vYchmGtd1fyVUyBOeq7pc5p5PzoElAQ7C778uV+tH
-        aHF86DYPQ920v5AQ==
+        bh=z2ZXXEqP2O4NuijRsnKWuAkXvo2OUCcCuxMdEaTwpMw=;
+        b=L3c7Dk112CDHU5zhv5CJQzvdSScgOhhhFPaiYFNA8AGxh3hApqRkSvAKU7SQj/Z/Q9FmmD
+        tgHBIOvF9yj9HECQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7E17113586;
-        Mon,  9 Oct 2023 13:18:00 +0000 (UTC)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 34A9F13586;
+        Mon,  9 Oct 2023 13:20:25 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
         by imap2.suse-dmz.suse.de with ESMTPSA
-        id uAP5HYj9I2XpYwAAMHmgww
-        (envelope-from <tiwai@suse.de>); Mon, 09 Oct 2023 13:18:00 +0000
-Date:   Mon, 09 Oct 2023 15:17:59 +0200
-Message-ID: <875y3gsznc.wl-tiwai@suse.de>
+        id CxenCxn+I2VNZQAAMHmgww
+        (envelope-from <tiwai@suse.de>); Mon, 09 Oct 2023 13:20:25 +0000
+Date:   Mon, 09 Oct 2023 15:20:24 +0200
+Message-ID: <874jj0szjb.wl-tiwai@suse.de>
 From:   Takashi Iwai <tiwai@suse.de>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         Shenghao Ding <shenghao-ding@ti.com>,
         Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.5 001/163] ALSA: hda/tas2781: Add tas2781 HDA driver
-In-Reply-To: <20231009130124.064374662@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
-        <20231009130124.064374662@linuxfoundation.org>
+Subject: Re: [PATCH 6.1 003/162] ALSA: hda/tas2781: Add tas2781 HDA driver
+In-Reply-To: <20231009130123.043880540@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
+        <20231009130123.043880540@linuxfoundation.org>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
 Content-Type: text/plain; charset=US-ASCII
@@ -69,10 +69,10 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 09 Oct 2023 14:59:25 +0200,
+On Mon, 09 Oct 2023 14:59:44 +0200,
 Greg Kroah-Hartman wrote:
 > 
-> 6.5-stable review patch.  If anyone has any objections, please let me know.
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
 > 
 > ------------------
 > 
@@ -92,14 +92,7 @@ Greg Kroah-Hartman wrote:
 > Stable-dep-of: 41b07476da38 ("ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support")
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-This makes little sense without the backport of commit
-5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver").
-Confusingly, the patch subject is very same as this commit...
-
-And the above commit has more follow-up fixes, too.
-1c80cc055b3f
-17a1eab7b70d
-ed81cb9e0517
+I'm afraid this and related stuff doesn't fit with 6.1.y.
 
 
 thanks,
@@ -111,7 +104,7 @@ Takashi
 >  1 file changed, 85 insertions(+), 3 deletions(-)
 > 
 > diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-> index 4a13747b2b0f3..ccf99f881cc4f 100644
+> index 57e07aa4e136c..7d549229d0b95 100644
 > --- a/sound/pci/hda/patch_realtek.c
 > +++ b/sound/pci/hda/patch_realtek.c
 > @@ -6721,7 +6721,7 @@ static void comp_generic_playback_hook(struct hda_pcm_stream *hinfo, struct hda_
@@ -166,7 +159,7 @@ Takashi
 >  	int ret, i;
 >  
 >  	switch (action) {
-> @@ -6779,6 +6799,41 @@ static void cs35l41_generic_fixup(struct hda_codec *cdc, int action, const char
+> @@ -6776,6 +6796,41 @@ static void cs35l41_generic_fixup(struct hda_codec *cdc, int action, const char
 >  	}
 >  }
 >  
@@ -208,7 +201,7 @@ Takashi
 >  static void cs35l41_fixup_i2c_two(struct hda_codec *cdc, const struct hda_fixup *fix, int action)
 >  {
 >  	cs35l41_generic_fixup(cdc, action, "i2c", "CSC3551", 2);
-> @@ -6806,6 +6861,12 @@ static void alc287_fixup_legion_16ithg6_speakers(struct hda_codec *cdc, const st
+> @@ -6803,6 +6858,12 @@ static void alc287_fixup_legion_16ithg6_speakers(struct hda_codec *cdc, const st
 >  	cs35l41_generic_fixup(cdc, action, "i2c", "CLSA0101", 2);
 >  }
 >  
@@ -221,7 +214,7 @@ Takashi
 >  /* for alc295_fixup_hp_top_speakers */
 >  #include "hp_x360_helper.c"
 >  
-> @@ -7231,6 +7292,7 @@ enum {
+> @@ -7227,6 +7288,7 @@ enum {
 >  	ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS,
 >  	ALC236_FIXUP_DELL_DUAL_CODECS,
 >  	ALC287_FIXUP_CS35L41_I2C_2_THINKPAD_ACPI,
@@ -229,7 +222,7 @@ Takashi
 >  };
 >  
 >  /* A special fixup for Lenovo C940 and Yoga Duet 7;
-> @@ -9309,6 +9371,12 @@ static const struct hda_fixup alc269_fixups[] = {
+> @@ -9296,6 +9358,12 @@ static const struct hda_fixup alc269_fixups[] = {
 >  		.chained = true,
 >  		.chain_id = ALC269_FIXUP_THINKPAD_ACPI,
 >  	},
@@ -242,7 +235,7 @@ Takashi
 >  };
 >  
 >  static const struct snd_pci_quirk alc269_fixup_tbl[] = {
-> @@ -9890,6 +9958,20 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+> @@ -9867,6 +9935,20 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
 >  	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
 >  	SND_PCI_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6", ALC287_FIXUP_LEGION_16ITHG6),
 >  	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
