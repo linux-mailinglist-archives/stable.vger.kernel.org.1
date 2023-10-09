@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D73157BDEB6
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0317BDDFD
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376400AbjJINWS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:22:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59858 "EHLO
+        id S1376764AbjJINOl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:14:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376389AbjJINWQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:16 -0400
+        with ESMTP id S1376665AbjJINOk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EF22B6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EBAC433C7;
-        Mon,  9 Oct 2023 13:22:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA828F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37356C433CA;
+        Mon,  9 Oct 2023 13:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857735;
-        bh=uRXb6Ro5oNGT9PW7Dg8bqrRXDaPgQkJcixIsKAIyvBw=;
+        s=korg; t=1696857278;
+        bh=wNB94y0Hb8JLF+G2+c2mKhKTD3kbPxQwe++Qd1KY8oM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rbstCRzdanNhDHGJQ6IquDwHCqx7fCdhnR7m6y5JSO9Vswh9ljwwFDEkFRdb3by4Q
-         O/N4Zi6j25m9eQs19zPrrlsMJtKNLXFhjSGDrWuMI2HGtKgzYgA1pUeTIOqevSZPg3
-         3/uwPFMkD/ViE0Hvv+Y+pIXRi0bgWhQtmxRkHc+E=
+        b=VbdbFlre9vLi3uVgB6vd4YKj2cEY01NtcAoKs8jrmYSeZC688tUMaS6jLbQaz6Rli
+         qtHJAn9/iHb25GlPKBbkSPXgc1Nv15md0GGvwtpk8GtDXynKpvM9tY5+zV6+bakjOA
+         Hjp5SXll5/Fd1xuyr1eroWhlpvRMzh6m7NChhH90=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Parav Pandit <parav@nvidia.com>,
-        Leon Romanovsky <leonro@nvidia.com>
-Subject: [PATCH 6.1 140/162] RDMA/core: Require admin capabilities to set system parameters
+        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.5 157/163] ALSA: hda/realtek - Fixed two speaker platform
 Date:   Mon,  9 Oct 2023 15:02:01 +0200
-Message-ID: <20231009130126.771357469@linuxfoundation.org>
+Message-ID: <20231009130128.347202998@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,35 +48,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit c38d23a54445f9a8aa6831fafc9af0496ba02f9e upstream.
+commit fb6254df09bba303db2a1002085f6c0b90a456ed upstream.
 
-Like any other set command, require admin permissions to do it.
+If system has two speakers and one connect to 0x14 pin, use this
+function will disable it.
 
-Cc: stable@vger.kernel.org
-Fixes: 2b34c5580226 ("RDMA/core: Add command to set ib_core device net namspace sharing mode")
-Link: https://lore.kernel.org/r/75d329fdd7381b52cbdf87910bef16c9965abb1f.1696443438.git.leon@kernel.org
-Reviewed-by: Parav Pandit <parav@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: e43252db7e20 ("ALSA: hda/realtek - ALC287 I2S speaker platform support")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/r/e3f2aac3fe6a47079d728a6443358cc2@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/nldev.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/patch_realtek.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/infiniband/core/nldev.c
-+++ b/drivers/infiniband/core/nldev.c
-@@ -2501,6 +2501,7 @@ static const struct rdma_nl_cbs nldev_cb
- 	},
- 	[RDMA_NLDEV_CMD_SYS_SET] = {
- 		.doit = nldev_set_sys_set_doit,
-+		.flags = RDMA_NL_ADMIN_PERM,
- 	},
- 	[RDMA_NLDEV_CMD_STAT_SET] = {
- 		.doit = nldev_stat_set_doit,
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7065,8 +7065,10 @@ static void alc287_fixup_bind_dacs(struc
+ 	snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
+ 	spec->gen.preferred_dacs = preferred_pairs;
+ 	spec->gen.auto_mute_via_amp = 1;
+-	snd_hda_codec_write_cache(codec, 0x14, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
+-			    0x0); /* Make sure 0x14 was disable */
++	if (spec->gen.autocfg.speaker_pins[0] != 0x14) {
++		snd_hda_codec_write_cache(codec, 0x14, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
++					0x0); /* Make sure 0x14 was disable */
++	}
+ }
+ 
+ 
 
 
