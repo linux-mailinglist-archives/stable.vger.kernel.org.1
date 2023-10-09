@@ -2,223 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B9B7BEB5B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 22:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D7277BEB61
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 22:15:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378520AbjJIUNk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 16:13:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40638 "EHLO
+        id S1378544AbjJIUPj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 16:15:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378523AbjJIUNj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 16:13:39 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93CD2A3;
-        Mon,  9 Oct 2023 13:13:37 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 039091C006C; Mon,  9 Oct 2023 22:13:36 +0200 (CEST)
-Date:   Mon, 9 Oct 2023 22:13:35 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Pavel Machek <pavel@denx.de>, wsa+renesas@sang-engineering.com,
-        niklas.soderlund+renesas@ragnatech.se,
-        yoshihiro.shimoda.uh@renesas.com, geert+renesas@glider.be,
-        biju.das.jz@bp.renesas.com
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Chris.Paterson2@renesas.com, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: renesas_sdhi problems in 5.10-stable was Re: [PATCH 5.10 000/226]
- 5.10.198-rc1 review
-Message-ID: <ZSRe78MAQwbBdyFP@duo.ucw.cz>
-References: <20231009130126.697995596@linuxfoundation.org>
- <ZSRVgj5AqJbDXqZU@duo.ucw.cz>
+        with ESMTP id S1378530AbjJIUPi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 16:15:38 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74797B0
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 13:15:36 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1c434c33ec0so29436565ad.3
+        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 13:15:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1696882536; x=1697487336; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KDFbaSwdbSiZRdRTlwqK2IxJqwEgX2EDTqDwpd1TSYQ=;
+        b=St5eDxRCX6O+tz2OOkDeq4l0ftdhO5hCp8dYhPEIIUPkv6Zi9R828WiwUgKujVEXfS
+         86SfoQUAo/tIXfHLWMc8pF5AAH4gmHMikDe/2qGSOHc1pVPmM9WiOH6br9C/kG5QpIOP
+         ZR0/wHV/Ikp4iOs3IUbgW9jtNpyQQQGkJ8GBI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696882536; x=1697487336;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KDFbaSwdbSiZRdRTlwqK2IxJqwEgX2EDTqDwpd1TSYQ=;
+        b=pdZepskh9mXLtySbkYtweGppJT409mFudI/MA0an1Y5JoMn24pMf7GiL4ZrnVs4uHx
+         HZXg6mtYgqwoCzlczAGNC7qNHiY2OLCgJepWks8OacsKhnmR/WU4XXawf4x5DVCMDha2
+         +u1rkS4LNXI+tjIcxXhP+bCZHxzYMOcaY54QVY7GAyFz9yiVp3DGoXOymyn/dtSanmiL
+         q8e/GjikbaI8CDofSxKyaOuw/AHdCwKQO1rnNV/UGN7mDHo+yKWGZb9u+2Hm+K+Ltqkm
+         SK9jGcuYvKCd54OW91tnzkbjlq9vGYRZrrbWhI1A3IaVqoDcKgx4C/+58U4896F+Nijz
+         QxDw==
+X-Gm-Message-State: AOJu0Yymvu7JZIYqiq07+fCdyQ59vweqm3wyrjRAHpAO6i5Zme0Kron0
+        PYlJiwqErGh0KQCPgwgfD9C/2Q==
+X-Google-Smtp-Source: AGHT+IHYYI/O+fK0SIGugLT8JGNaNBnCAefJgj5X+jc7ltNG/YWo68rvsHnAI1Y2XfQe6ujeIHx3gw==
+X-Received: by 2002:a17:902:e847:b0:1bd:d92d:6b2 with SMTP id t7-20020a170902e84700b001bdd92d06b2mr16471450plg.10.1696882535935;
+        Mon, 09 Oct 2023 13:15:35 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id b19-20020a170902ed1300b001c737950e4dsm10038137pld.2.2023.10.09.13.15.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Oct 2023 13:15:34 -0700 (PDT)
+Date:   Mon, 9 Oct 2023 13:15:32 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Chun-Yi Lee <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        stable@vger.kernel.org, Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>,
+        linux-bluetooth@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Bluetooth: mark bacmp() and bacpy() as __always_inline
+Message-ID: <202310091310.F560494@keescook>
+References: <20231009134826.1063869-1-arnd@kernel.org>
+ <2abaad09-b6e0-4dd5-9796-939f20804865@app.fastmail.com>
+ <202310090902.10ED782652@keescook>
+ <73f552a4-4ff5-441a-a624-ddc34365742f@app.fastmail.com>
+ <202310091246.ED5A2AFB21@keescook>
+ <15f6b85f-b1ce-409a-a728-38a7223a7c6c@app.fastmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="bqgKRRZNMaEHlqWY"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZSRVgj5AqJbDXqZU@duo.ucw.cz>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_NEUTRAL autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <15f6b85f-b1ce-409a-a728-38a7223a7c6c@app.fastmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, Oct 09, 2023 at 10:08:01PM +0200, Arnd Bergmann wrote:
+> On Mon, Oct 9, 2023, at 21:48, Kees Cook wrote:
+> > On Mon, Oct 09, 2023 at 08:23:08PM +0200, Arnd Bergmann wrote:
+> >> On Mon, Oct 9, 2023, at 18:02, Kees Cook wrote:
+> >> > On Mon, Oct 09, 2023 at 05:36:55PM +0200, Arnd Bergmann wrote:
+> >> >> On Mon, Oct 9, 2023, at 15:48, Arnd Bergmann wrote:
+> >> >> 
+> >> >> Sorry, I have to retract this, something went wrong on my
+> >> >> testing and I now see the same problem in some configs regardless
+> >> >> of whether the patch is applied or not.
+> >> >
+> >> > Perhaps turn them into macros instead?
+> >> 
+> >> I just tried that and still see the problem even with the macro,
+> >> so whatever gcc is doing must be a different issue. Maybe it
+> >> has correctly found a codepath that triggers this?
+> >> 
+> >> If you are able to help debug the issue better,
+> >> see these defconfigs for examples:
+> >> 
+> >> https://pastebin.com/raw/pC8Lnrn2
+> >> https://pastebin.com/raw/yb965unC
+> >
+> > This seems like a GCC bug. It is complaining about &hdev->bdaddr for
+> > some reason. This silences it:
+> >
+> > -	if (!bacmp(&hdev->bdaddr, &ev->bdaddr)) {
+> > +	a = hdev->bdaddr;
+> > +	if (!bacmp(&a, &ev->bdaddr)) {
+> 
+> Right, I see this addresses all instances. I tried another thing
+> and this also seems to address them for me:
+> 
+> --- a/net/bluetooth/hci_event.c
+> +++ b/net/bluetooth/hci_event.c
+> @@ -3273,7 +3273,7 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
+>         /* Reject incoming connection from device with same BD ADDR against
+>          * CVE-2020-26555
+>          */
+> -       if (!bacmp(&hdev->bdaddr, &ev->bdaddr)) {
+> +       if (hdev && !bacmp(&hdev->bdaddr, &ev->bdaddr)) {
+>                 bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
+>                            &ev->bdaddr);
+>                 hci_reject_conn(hdev, &ev->bdaddr);
+> 
+> and also this one does the trick:
+> 
+> --- a/include/net/bluetooth/bluetooth.h
+> +++ b/include/net/bluetooth/bluetooth.h
+> @@ -266,7 +266,7 @@ void bt_err_ratelimited(const char *fmt, ...);
+>  #define BT_DBG(fmt, ...)       pr_debug(fmt "\n", ##__VA_ARGS__)
+>  #endif
+>  
+> -#define bt_dev_name(hdev) ((hdev) ? (hdev)->name : "null")
+> +#define bt_dev_name(hdev) ((hdev)->name)
+>  
+>  #define bt_dev_info(hdev, fmt, ...)                            \
+>         BT_INFO("%s: " fmt, bt_dev_name(hdev), ##__VA_ARGS__)
+> 
+> So what is actually going on is that the bt_dev_dbg() introduces
+> the idea that hdev might be NULL because of the check.
 
---bqgKRRZNMaEHlqWY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Oh thank you for finding that. Yeah, it looked to me like it thought
+hdev was NULL, but I couldn't find where. :)
 
-On Mon 2023-10-09 21:33:22, Pavel Machek wrote:
-> Hi!
->=20
-> > This is the start of the stable review cycle for the 5.10.198 release.
-> > There are 226 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >=20
-> > Responses should be made by Wed, 11 Oct 2023 13:00:55 +0000.
-> > Anything received after that time might be too late.
->=20
-> 4.14, 4.19 and 6.1 tests ok, 5.10 seems to have problems:
+I think the best work-around here is your "hdev && " addition.
 
-Guessing from stack traces, these may be relevant:
-
- |e10d3d256 b161d8 o: 5.10| mmc: renesas_sdhi: probe into TMIO after SCC pa=
-rameters have been setu\
-p
- |493b70c48 d14ac6 o: 5.10| mmc: renesas_sdhi: populate SCC pointer at the =
-proper place
- |c508545f4 0d856c o: 5.10| mmc: tmio: support custom irq masks
- |8df1f0639 74f45d o: 5.10| mmc: renesas_sdhi: register irqs before registe=
-ring controller
-
-Leaving below for context...
-
-Best regards,
-								Pavel
-
-> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines=
-/1030540843
->=20
-> Lets see arm64_defconfig:
->=20
-> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/5254=
-610954
->=20
-> ...and this seems  to be real failure:
->=20
-> https://lava.ciplatform.org/scheduler/job/1018088
->=20
-> [   62.871632] renesas_sdhi_internal_dmac ee100000.mmc: Got CD GPIO
-> [   62.874253] rcar-dmac e6700000.dma-controller: deferred probe timeout,=
- ignoring dependency
-> [   62.889345] rcar-dmac e7300000.dma-controller: deferred probe timeout,=
- ignoring dependency
-> [   62.892139] Unable to handle kernel NULL pointer dereference at virtua=
-l address 0000000000000018
-> [   62.901256] rcar-dmac e7310000.dma-controller: deferred probe timeout,=
- ignoring dependency
-> [   62.906431] Mem abort info:
-> [   62.906438]   ESR =3D 0x96000004
-> [   62.917751] rcar-dmac ec700000.dma-controller: deferred probe timeout,=
- ignoring dependency
-> [   62.920548]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-> [   62.920551]   SET =3D 0, FnV =3D 0
-> [   62.920554]   EA =3D 0, S1PTW =3D 0
-> [   62.920559] Data abort info:
-> [   62.927031] renesas_sdhi_internal_dmac ee100000.mmc: mmc1 base at 0x00=
-000000ee100000, max clock rate 200 MHz
-> [   62.931976] rcar-dmac ec720000.dma-controller: deferred probe timeout,=
- ignoring dependency
-> [   62.934138]   ISV =3D 0, ISS =3D 0x00000004
-> [   62.934145]   CM =3D 0, WnR =3D 0
-> [   62.940844] ravb e6800000.ethernet: deferred probe timeout, ignoring d=
-ependency
-> [   62.943210] [0000000000000018] user address but active_mm is swapper
-> [   62.943221] Internal error: Oops: 96000004 [#1] PREEMPT SMP
-> [   62.954866] ravb e6800000.ethernet eth0: Base address at 0xe6800000, f=
-c:28:99:92:7b:e0, IRQ 118.
-> [   62.961296] Modules linked in:
-> [   62.961313] CPU: 5 PID: 135 Comm: kworker/u12:2 Not tainted 5.10.198-r=
-c1-g18c65c1b4996 #1
-> [   63.007289] Hardware name: HopeRun HiHope RZ/G2M with sub board (DT)
-> [   63.013658] Workqueue: events_unbound async_run_entry_fn
-> [   63.018971] pstate: 20000005 (nzCv daif -PAN -UAO -TCO BTYPE=3D--)
-> [   63.024982] pc : renesas_sdhi_reset_scc+0x94/0xe0
-> [   63.029681] lr : renesas_sdhi_reset_scc+0x60/0xe0
-> [   63.034379] sp : ffff800012353ab0
-> [   63.037688] x29: ffff800012353ab0 x28: ffff80001110b2c0=20
-> [   63.042998] x27: 0000000000000000 x26: ffff0005c03f6e80=20
-> [   63.048308] x25: ffff0005c11c7a90 x24: ffff0005c0822010=20
-> [   63.053618] x23: ffff0005c0822000 x22: ffff0005c08221d0=20
-> [   63.058928] x21: ffff0005c11c7a80 x20: 0000000000000020
->=20
-> Let's see bbb_defconfig:
->=20
-> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/5254=
-611119
->=20
-> Fails:
->=20
-> https://lava.ciplatform.org/scheduler/job/1018083
->=20
-> bootz 0x82000000 - 0x88000000
-> zimage: Bad magic!
-> bootloader-commands timed out after 281 seconds
-> end: 2.4.3 bootloader-commands (duration 00:04:41) [common]
->=20
-> Not sure about this one.
->=20
-> Lets see arm_shmobile_defconfig:
->=20
-> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/5254=
-611233
->=20
-> That's:
->=20
-> https://lava.ciplatform.org/scheduler/job/1018084
->=20
-> Seems similar to previous failure:
->=20
-> 2.092944] usbcore: registered new interface driver usbhid
-> [    2.098710] sh_mobile_sdhi ee140000.mmc: Got CD GPIO
-> [    2.103206] usbhid: USB HID core driver
-> [    2.108224] sh_mobile_sdhi ee140000.mmc: Got WP GPIO
-> [    2.124168] 8<--- cut here ---
-> [    2.124476] sgtl5000 0-000a: sgtl5000 revision 0x11
-> [    2.127222] Unable to handle kernel NULL pointer dereference at virtua=
-l address 0000000c
-> [    2.127228] pgd =3D (ptrval)
-> [    2.140755] rcar_sound ec500000.sound: probed
-> [    2.142917] [0000000c] *pgd=3D00000000
-> [    2.147915] NET: Registered protocol family 10
-> [    2.150849] Internal error: Oops: 5 [#1] SMP ARM
-> [    2.155700] sh_mmcif ee200000.mmc: Chip version 0x0003, clock rate 12M=
-Hz
-> [    2.159894] CPU: 1 PID: 7 Comm: kworker/u4:0 Not tainted 5.10.198-rc1-=
-g18c65c1b4996 #1
-> [    2.174486] Hardware name: Generic RZ/G1 (Flattened Device Tree)
-> [    2.174540] Segment Routing with IPv6
-> [    2.180501] Workqueue: events_unbound async_run_entry_fn
-> [    2.184234] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
-> [    2.189455] PC is at renesas_sdhi_reset_scc+0x34/0x50
-> [    2.189462] LR is at sd_ctrl_write16+0x30/0x48
-> [    2.195810] NET: Registered protocol family 17
-> [    2.200409] pc : [<c05da960>]    lr : [<c05da754>]    psr: 60000013
-> [    2.200415] sp : c10a9e30  ip : 00000024  fp : c11b3cc0
-> [    2.204877] can: controller area network core
-> [    2.209282] r10: c11ae410  r9 : c11ae400  r8 : c18e9d48
-> [    2.209288] r7 : fffffe00  r6 : c18e9d48  r5 : c18e9d40  r4 : c1970b80
-> [    2.215590] NET: Registered protocol family 29
-> [    2.220759] r3 : 0000000c  r2 : 00000006  r1 : 00000001  r0 : 00000000
-> [    2.225117] can: raw protocol
-> [    2.230322] Flags: nZCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segme=
-nt none
-> [    2.236848] can: broadcast manager protocol
->=20
-> Best regards,
-> 								Pavel
-
-
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---bqgKRRZNMaEHlqWY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZSRe7wAKCRAw5/Bqldv6
-8lWvAJ4o+78CmzeqYTuoVeAMXewcUEcVjQCgxN3GtsUioMz6oMM6DgzZkbTBK5E=
-=NEGZ
------END PGP SIGNATURE-----
-
---bqgKRRZNMaEHlqWY--
+-- 
+Kees Cook
