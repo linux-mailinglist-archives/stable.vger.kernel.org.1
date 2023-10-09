@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49ECD7BDE53
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1F5C7BE054
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:39:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376714AbjJINSU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:18:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35808 "EHLO
+        id S1377253AbjJINja (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:39:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377022AbjJINSS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:18 -0400
+        with ESMTP id S1377478AbjJINjE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:39:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62959B4
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C72CC433CC;
-        Mon,  9 Oct 2023 13:18:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81093C5
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EBBC433C7;
+        Mon,  9 Oct 2023 13:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857497;
-        bh=ZDkULb42HxhX/ExruO2lSRDwCb08l/7iqNrvAW7xiM8=;
+        s=korg; t=1696858738;
+        bh=dxaBw4e0Kx5dF+W8hssmsAgL0Vnx6/7LHaGgQHQS94E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cT5Zr3eKV1n7Sz0cxI4GOE9MSCKFRDi71s2eMKf8f2xfnRo2NqCfdKUXeGOKpzrQI
-         bjxs7qDSEyJtm00Z70VkDhHthbXCQtey7D58YVVfiaWad0s++6dTs1a5+pLKXRxZSw
-         Tr/hwlySvCVIlcj2bUwCRJWaV5pWdURJabr6q+fI=
+        b=iflsj3a3iVwCj2IoQk7f6YinB/1BkSOvBc4lsts2oymxtD6+2niyFYOyHl5s4JIwf
+         FecA295ukhM0X9AizZs1FowCuMFycZcXzIoHZH0QU7jUnaP6u3kRj09BPMr5k4P8Bm
+         3dbaX6KTy6x1xJ4/iMPHseoWUWU4iMST3EcVifvQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
-        Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: [PATCH 6.1 064/162] PCI: qcom: Fix IPQ8074 enumeration
+        patches@lists.linux.dev, Paul Menzel <pmenzel@molgen.mpg.de>,
+        Tejun Heo <tj@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 084/226] ata: ahci: Add support for AMD A85 FCH (Hudson D4)
 Date:   Mon,  9 Oct 2023 15:00:45 +0200
-Message-ID: <20231009130124.694765431@linuxfoundation.org>
+Message-ID: <20231009130128.981450986@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +50,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sricharan Ramabadhran <quic_srichara@quicinc.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-commit 6a878a54d0053ef21f3b829dc267487c2302b012 upstream.
+[ Upstream commit a17ab7aba5df4135ef77d7f6d7105e1ea414936f ]
 
-PARF_SLV_ADDR_SPACE_SIZE_2_3_3 is used by qcom_pcie_post_init_2_3_3().
-This PCIe slave address space size register offset is 0x358 but was
-incorrectly changed to 0x16c by 39171b33f652 ("PCI: qcom: Remove PCIE20_
-prefix from register definitions").
+Add support for the AMD A85 FCH (Hudson D4) AHCI adapter.
 
-This prevented access to slave address space registers like iATU, etc.,
-so the IPQ8074 PCIe controller was not enumerated.
+Since this adapter does not require the default 200 ms debounce delay
+in sata_link_resume(), create a new board board_ahci_no_debounce_delay
+with the link flag ATA_LFLAG_NO_DEBOUNCE_DELAY, and, for now, configure
+the AMD A85 FCH (Hudson D4) to use it. On the ASUS F2A85-M PRO it
+reduces the Linux kernel boot time by the expected 200 ms from 787 ms
+to 585 ms.
 
-Revert back to the correct 0x358 offset and remove the unused
-PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
-
-Fixes: 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from register definitions")
-Link: https://lore.kernel.org/r/20230919102948.1844909-1-quic_srichara@quicinc.com
-Tested-by: Robert Marko <robimarko@gmail.com>
-Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: stable@vger.kernel.org	# v6.4+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: Tejun Heo <tj@kernel.org>
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Stable-dep-of: 2a2df98ec592 ("ata: ahci: Add Elkhart Lake AHCI controller")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/ata/ahci.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -40,7 +40,6 @@
- #define PARF_PHY_REFCLK				0x4c
- #define PARF_CONFIG_BITS			0x50
- #define PARF_DBI_BASE_ADDR			0x168
--#define PARF_SLV_ADDR_SPACE_SIZE_2_3_3		0x16c /* Register offset specific to IP ver 2.3.3 */
- #define PARF_MHI_CLOCK_RESET_CTRL		0x174
- #define PARF_AXI_MSTR_WR_ADDR_HALT		0x178
- #define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1a8
-@@ -1148,8 +1147,7 @@ static int qcom_pcie_post_init_2_3_3(str
- 	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
- 	u32 val;
- 
--	writel(SLV_ADDR_SPACE_SZ,
--		pcie->parf + PARF_SLV_ADDR_SPACE_SIZE_2_3_3);
-+	writel(SLV_ADDR_SPACE_SZ, pcie->parf + PARF_SLV_ADDR_SPACE_SIZE);
- 
- 	val = readl(pcie->parf + PARF_PHY_CTRL);
- 	val &= ~BIT(0);
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index d831a80c25f04..1a3608f4209ec 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -51,6 +51,7 @@ enum board_ids {
+ 	board_ahci,
+ 	board_ahci_ign_iferr,
+ 	board_ahci_mobile,
++	board_ahci_no_debounce_delay,
+ 	board_ahci_nomsi,
+ 	board_ahci_noncq,
+ 	board_ahci_nosntf,
+@@ -142,6 +143,13 @@ static const struct ata_port_info ahci_port_info[] = {
+ 		.udma_mask	= ATA_UDMA6,
+ 		.port_ops	= &ahci_ops,
+ 	},
++	[board_ahci_no_debounce_delay] = {
++		.flags		= AHCI_FLAG_COMMON,
++		.link_flags	= ATA_LFLAG_NO_DEBOUNCE_DELAY,
++		.pio_mask	= ATA_PIO4,
++		.udma_mask	= ATA_UDMA6,
++		.port_ops	= &ahci_ops,
++	},
+ 	[board_ahci_nomsi] = {
+ 		AHCI_HFLAGS	(AHCI_HFLAG_NO_MSI),
+ 		.flags		= AHCI_FLAG_COMMON,
+@@ -442,6 +450,7 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 		board_ahci_al },
+ 	/* AMD */
+ 	{ PCI_VDEVICE(AMD, 0x7800), board_ahci }, /* AMD Hudson-2 */
++	{ PCI_VDEVICE(AMD, 0x7801), board_ahci_no_debounce_delay }, /* AMD Hudson-2 (AHCI mode) */
+ 	{ PCI_VDEVICE(AMD, 0x7900), board_ahci }, /* AMD CZ */
+ 	{ PCI_VDEVICE(AMD, 0x7901), board_ahci_mobile }, /* AMD Green Sardine */
+ 	/* AMD is using RAID class only for ahci controllers */
+-- 
+2.40.1
+
 
 
