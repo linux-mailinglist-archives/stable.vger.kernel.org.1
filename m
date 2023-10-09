@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 653537BE092
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:41:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87E067BDDD2
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377366AbjJINlm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:41:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43026 "EHLO
+        id S1376772AbjJINNj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:13:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377357AbjJINll (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:41:41 -0400
+        with ESMTP id S1376904AbjJINNY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95E059C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B3CC433C7;
-        Mon,  9 Oct 2023 13:41:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F64125
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:12:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C2EC433C7;
+        Mon,  9 Oct 2023 13:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858899;
-        bh=gLqudXEzJtMF08SF7/anXHMlH9eZ8Xumqj6ol1aY9Q4=;
+        s=korg; t=1696857157;
+        bh=3lOgvGdHm9HSsST5KzulPAjoI0LrfmYMgfI2PzE6EuM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bbLD2Be5DqFO7kiFreKZU0K//+vnclyL4l+QKOsYntyc9vHUv6r8YT+goC16JTDay
-         5gOP4RmqNGS3K7Dawan9ZN9Yf45nj034GQJvzxrjdRKmp1Kb26AaG1wI8kQ3SVKL1J
-         z9Uu2oydWWR6kdw7vIzlCXkZSO8ILYxju5KLQHrA=
+        b=WA8zZK46/9GuIQrHY810ZR9DLlcsiWbjqGw6Sy+cBIhiELLGfCktOTLOVpJ7CVrid
+         WnTYQ1vzpIdFMf3mVfAUHQBych/OsOi3q2xyk4tbRg5btqE2Mm2BL7w5gjJNSS1MId
+         FpS50WqfoqM+b2MdnTeN07vLcVV7XHdoJUwY5/V4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        David Thompson <davthompson@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Roger Quadros <rogerq@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 118/226] platform/mellanox: mlxbf-bootctl: add NET dependency into Kconfig
+Subject: [PATCH 6.5 115/163] net: ethernet: ti: am65-cpsw: Fix error code in am65_cpsw_nuss_init_tx_chns()
 Date:   Mon,  9 Oct 2023 15:01:19 +0200
-Message-ID: <20231009130129.861096418@linuxfoundation.org>
+Message-ID: <20231009130127.204095916@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +50,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c2dffda1d8f7511505bbbf16ba282f2079b30089 ]
+[ Upstream commit 37d4f55567982e445f86dc0ff4ecfa72921abfe8 ]
 
-The latest version of the mlxbf_bootctl driver utilizes
-"sysfs_format_mac", and this API is only available if
-NET is defined in the kernel configuration. This patch
-changes the mlxbf_bootctl Kconfig to depend on NET.
+This accidentally returns success, but it should return a negative error
+code.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309031058.JvwNDBKt-lkp@intel.com/
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Link: https://lore.kernel.org/r/20230905133243.31550-1-davthompson@nvidia.com
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/Kconfig | 1 +
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/mellanox/Kconfig b/drivers/platform/mellanox/Kconfig
-index 916b39dc11bc6..1a11d1a441b53 100644
---- a/drivers/platform/mellanox/Kconfig
-+++ b/drivers/platform/mellanox/Kconfig
-@@ -48,6 +48,7 @@ config MLXBF_BOOTCTL
- 	tristate "Mellanox BlueField Firmware Boot Control driver"
- 	depends on ARM64
- 	depends on ACPI
-+	depends on NET
- 	help
- 	  The Mellanox BlueField firmware implements functionality to
- 	  request swapping the primary and alternate eMMC boot partition,
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index bebcfd5e6b579..a3d952f67ae32 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -1749,6 +1749,7 @@ static int am65_cpsw_nuss_init_tx_chns(struct am65_cpsw_common *common)
+ 		if (tx_chn->irq <= 0) {
+ 			dev_err(dev, "Failed to get tx dma irq %d\n",
+ 				tx_chn->irq);
++			ret = tx_chn->irq ?: -ENXIO;
+ 			goto err;
+ 		}
+ 
 -- 
 2.40.1
 
