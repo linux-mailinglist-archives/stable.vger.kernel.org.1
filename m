@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FF0A7BE124
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA14D7BE187
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:51:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376824AbjJINrV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:47:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51760 "EHLO
+        id S1377263AbjJINvM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:51:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377457AbjJINrV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:47:21 -0400
+        with ESMTP id S1377326AbjJINvK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:51:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1CA8F0
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:47:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39313C433C9;
-        Mon,  9 Oct 2023 13:47:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC992B9
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:51:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0E7C433C7;
+        Mon,  9 Oct 2023 13:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859238;
-        bh=xHkCYykRw7NxmKiG56as6/rjm4khFaILFLzfOrKPIQ8=;
+        s=korg; t=1696859468;
+        bh=Wd0S+7u5IxVsEIbsxw4BbrPj33sR3VNQJGrC6ojyBjs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=flsT8S4LMMjAb1TLygZzItIsLcvnmLGlrJgmd3SPD+smRizBMZ/bJNp6yqWfaCCIx
-         Q55odXnVbODahUbptbY1tACBSyw8T/lTgaEpN0H/yN9HsDkL11uQEkZqyQvPAiUhnu
-         vTLdQSnw7pLEqSsXo0foMgL0wH4ZKxyGaAtfKjoU=
+        b=oZiTE6FCIJwDJ130m1cFUcBSJI6Vq1mxoI9XzW+ty3iIsq0TE4IrzD3QCHPPaRW4Z
+         YtqZHuvTL25+JH+Y9ytVGKf65/hYHD9cIK+/n4KP2bKbhJ3IjqJRpMt6XusE0O89fa
+         2O39Y7RqCr5QW1eql46WqZ3cCrOrzmfuTSmu5eV4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krishan Gopal Sarawast <krishang@linux.vnet.ibm.com>,
-        Kajol Jain <kjain@linux.ibm.com>,
-        Disha Goel <disgoel@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 03/55] powerpc/perf/hv-24x7: Update domain value check
+Subject: [PATCH 4.19 30/91] ARM: dts: ti: omap: motorola-mapphone: Fix abe_clkctrl warning on boot
 Date:   Mon,  9 Oct 2023 15:06:02 +0200
-Message-ID: <20231009130107.839064095@linuxfoundation.org>
+Message-ID: <20231009130112.570522225@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,65 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 4ff3ba4db5943cac1045e3e4a3c0463ea10f6930 ]
+[ Upstream commit ac08bda1569b06b7a62c7b4dd00d4c3b28ceaaec ]
 
-Valid domain value is in range 1 to HV_PERF_DOMAIN_MAX. Current code has
-check for domain value greater than or equal to HV_PERF_DOMAIN_MAX. But
-the check for domain value 0 is missing.
+Commit 0840242e8875 ("ARM: dts: Configure clock parent for pwm vibra")
+attempted to fix the PWM settings but ended up causin an additional clock
+reparenting error:
 
-Fix this issue by adding check for domain value 0.
+clk: failed to reparent abe-clkctrl:0060:24 to sys_clkin_ck: -22
 
-Before:
-  # ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
-  Using CPUID 00800200
-  Control descriptor is not initialized
-  Error:
-  The sys_perf_event_open() syscall returned with 5 (Input/output error) for
-  event (hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/).
-  /bin/dmesg | grep -i perf may provide additional information.
+Only timer9 is in the PER domain and can use the sys_clkin_ck clock source.
+For timer8, the there is no sys_clkin_ck available as it's in the ABE
+domain, instead it should use syc_clk_div_ck. However, for power
+management, we want to use the always on sys_32k_ck instead.
 
-  Result from dmesg:
-  [   37.819387] hv-24x7: hcall failed: [0 0x60040000 0x100 0] => ret
-  0xfffffffffffffffc (-4) detail=0x2000000 failing ix=0
-
-After:
-  # ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
-  Using CPUID 00800200
-  Control descriptor is not initialized
-  Warning:
-  hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ event is not supported by the kernel.
-  failed to read counter hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
-
-Fixes: ebd4a5a3ebd9 ("powerpc/perf/hv-24x7: Minor improvements")
-Reported-by: Krishan Gopal Sarawast <krishang@linux.vnet.ibm.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Tested-by: Disha Goel <disgoel@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230825055601.360083-1-kjain@linux.ibm.com
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Carl Philipp Klemm <philipp@uvos.xyz>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 0840242e8875 ("ARM: dts: Configure clock parent for pwm vibra")
+Depends-on: 61978617e905 ("ARM: dts: Add minimal support for Droid Bionic xt875")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/hv-24x7.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/omap4-droid4-xt894.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-index 2bb798918483d..e6eb2b4cf97ea 100644
---- a/arch/powerpc/perf/hv-24x7.c
-+++ b/arch/powerpc/perf/hv-24x7.c
-@@ -1326,7 +1326,7 @@ static int h_24x7_event_init(struct perf_event *event)
- 	}
+diff --git a/arch/arm/boot/dts/omap4-droid4-xt894.dts b/arch/arm/boot/dts/omap4-droid4-xt894.dts
+index 67d77eee9433c..459720f5f5586 100644
+--- a/arch/arm/boot/dts/omap4-droid4-xt894.dts
++++ b/arch/arm/boot/dts/omap4-droid4-xt894.dts
+@@ -647,12 +647,12 @@
+ /* Configure pwm clock source for timers 8 & 9 */
+ &timer8 {
+ 	assigned-clocks = <&abe_clkctrl OMAP4_TIMER8_CLKCTRL 24>;
+-	assigned-clock-parents = <&sys_clkin_ck>;
++	assigned-clock-parents = <&sys_32k_ck>;
+ };
  
- 	domain = event_get_domain(event);
--	if (domain >= HV_PERF_DOMAIN_MAX) {
-+	if (domain  == 0 || domain >= HV_PERF_DOMAIN_MAX) {
- 		pr_devel("invalid domain %d\n", domain);
- 		return -EINVAL;
- 	}
+ &timer9 {
+ 	assigned-clocks = <&l4_per_clkctrl OMAP4_TIMER9_CLKCTRL 24>;
+-	assigned-clock-parents = <&sys_clkin_ck>;
++	assigned-clock-parents = <&sys_32k_ck>;
+ };
+ 
+ /*
 -- 
 2.40.1
 
