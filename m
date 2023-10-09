@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 987737BE195
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 107497BE171
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377445AbjJINvq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:51:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60828 "EHLO
+        id S1377240AbjJINuU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:50:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377424AbjJINvp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:51:45 -0400
+        with ESMTP id S1377373AbjJINuT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:50:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93D6B9
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:51:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE212C433C9;
-        Mon,  9 Oct 2023 13:51:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34D591
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:50:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AA4C433CC;
+        Mon,  9 Oct 2023 13:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859503;
-        bh=3VqU/FAO/7lfBEtY+1LJWV2/EwyMnDbYuVUj1E6ApFI=;
+        s=korg; t=1696859417;
+        bh=AhYEI+R0raPDWiVKlsqzIuF43RU22UHLEqmugNzbnh0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d7bjTvvulmFb8vs+duwflMRmUAawu6imt7pey+PQBYsCqq1J56k0hA4Ge5YEGN4U9
-         5zYmpjR+pT7e1QhrTYlsZL+BkeCU+6F7oMiEieQlMQzq2JK6RWFctd7AlBrjStPmIL
-         PDsVaPNwT3qWkQz+smdfispb+67t8t2R3VwEVH4M=
+        b=BxVesnBLJskPeyJTDKxY6xvoMwgY6lXm0ld6p0Z8/dGKSJzkOBl8B4GWec4xDUwb/
+         MarvN7I8UDjqFennd8XttR/cqJUP8T2yDkoygDoyYLZsSWoxRunZhIYAH0iA5/akT7
+         bFuUdkQa6hj4dmrBs7YvnP4IRE8VFLpoULDbKmkQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiaoke Wang <xkernel.wang@foxmail.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 14/91] i2c: mux: demux-pinctrl: check the return value of devm_kstrdup()
-Date:   Mon,  9 Oct 2023 15:05:46 +0200
-Message-ID: <20231009130112.027515330@linuxfoundation.org>
+        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 15/91] Input: i8042 - add quirk for TUXEDO Gemini 17 Gen1/Clevo PD70PN
+Date:   Mon,  9 Oct 2023 15:05:47 +0200
+Message-ID: <20231009130112.064554831@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
 References: <20231009130111.518916887@linuxfoundation.org>
@@ -52,36 +53,48 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Xiaoke Wang <xkernel.wang@foxmail.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit 7c0195fa9a9e263df204963f88a22b21688ffb66 ]
+[ Upstream commit eb09074bdb05ffd6bfe77f8b4a41b76ef78c997b ]
 
-devm_kstrdup() returns pointer to allocated string on success,
-NULL on failure. So it is better to check the return value of it.
+The touchpad of this device is both connected via PS/2 and i2c. This causes
+strange behavior when both driver fight for control. The easy fix is to
+prevent the PS/2 driver from accessing the mouse port as the full feature
+set of the touchpad is only supported in the i2c interface anyway.
 
-Fixes: e35478eac030 ("i2c: mux: demux-pinctrl: run properly with multiple instances")
-Signed-off-by: Xiaoke Wang <xkernel.wang@foxmail.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+The strange behavior in this case is, that when an external screen is
+connected and the notebook is closed, the pointer on the external screen is
+moving to the lower right corner. When the notebook is opened again, this
+movement stops, but the touchpad clicks are unresponsive afterwards until
+reboot.
+
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230607173331.851192-1-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/muxes/i2c-demux-pinctrl.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/input/serio/i8042-x86ia64io.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/i2c/muxes/i2c-demux-pinctrl.c b/drivers/i2c/muxes/i2c-demux-pinctrl.c
-index 1b99d0b928a0d..092ebc08549ff 100644
---- a/drivers/i2c/muxes/i2c-demux-pinctrl.c
-+++ b/drivers/i2c/muxes/i2c-demux-pinctrl.c
-@@ -244,6 +244,10 @@ static int i2c_demux_pinctrl_probe(struct platform_device *pdev)
- 
- 		props[i].name = devm_kstrdup(&pdev->dev, "status", GFP_KERNEL);
- 		props[i].value = devm_kstrdup(&pdev->dev, "ok", GFP_KERNEL);
-+		if (!props[i].name || !props[i].value) {
-+			err = -ENOMEM;
-+			goto err_rollback;
-+		}
- 		props[i].length = 3;
- 
- 		of_changeset_init(&priv->chan[i].chgset);
+diff --git a/drivers/input/serio/i8042-x86ia64io.h b/drivers/input/serio/i8042-x86ia64io.h
+index da2bf8259330e..0cf9a37873261 100644
+--- a/drivers/input/serio/i8042-x86ia64io.h
++++ b/drivers/input/serio/i8042-x86ia64io.h
+@@ -1188,6 +1188,13 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	/* See comment on TUXEDO InfinityBook S17 Gen6 / Clevo NS70MU above */
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "PD5x_7xPNP_PNR_PNN_PNT"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
++	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
 -- 
 2.40.1
 
