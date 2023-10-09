@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56F6B7BDFCB
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C19467BE0F7
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:45:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377132AbjJINeN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:34:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45618 "EHLO
+        id S1376935AbjJINpz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:45:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377235AbjJINeE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:34:04 -0400
+        with ESMTP id S1377289AbjJINpN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:45:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B28594
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:34:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C211C433C8;
-        Mon,  9 Oct 2023 13:34:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A8899C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:45:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F94C433C7;
+        Mon,  9 Oct 2023 13:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858442;
-        bh=TGkqpmD+58qysESYg3b9Zv8gmMER+pWrChfyvTulgyc=;
+        s=korg; t=1696859112;
+        bh=tQ3q1Clx9msE8mJWX+Qf6jXYjg7IQZSVW6T/4LPvnvE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BItwbrPbylQH9Jt2m95RaXAentE1HeDEfIW/tAbPnIPm2IgJclD9Uuk4VHfQbT4vP
-         nskDgnBizAw3VpSQJmMAQhcM02jzYeSYJGNjk0gnPKpdq9OstuJkVlLiepKM9t+FSS
-         hdSyHIkTUY+F41sasv8khA1CpxrL0Q/4ORJo8764=
+        b=eHf1lr9wVRfEGcD1V+9zhDaQ/AFEz4m0Nd/pJlyjCXB4mFHDl3rQtt3swekUS0Eyz
+         2OosVq2XMcbuuTJTZ/nQmmx6qq5ERZFXMqlWdAkDCI5zEYgypzkM+g9mDLOkXmbMlD
+         l7++ucKY8phzB1nPPiFgF80a5g6kgqe8V7E03RCI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Andy Shevchenko <andy@kernel.org>,
-        Andrew Jeffery <andrew@codeconstruct.com.au>
-Subject: [PATCH 5.4 123/131] gpio: aspeed: fix the GPIO number passed to pinctrl_gpio_set_config()
+        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+c1d0a03d305972dbbe14@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 202/226] net: nfc: llcp: Add lock when modifying device list
 Date:   Mon,  9 Oct 2023 15:02:43 +0200
-Message-ID: <20231009130120.187781790@linuxfoundation.org>
+Message-ID: <20231009130131.856346835@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,37 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Jeremy Cline <jeremy@jcline.org>
 
-commit f9315f17bf778cb8079a29639419fcc8a41a3c84 upstream.
+[ Upstream commit dfc7f7a988dad34c3bf4c053124fb26aa6c5f916 ]
 
-pinctrl_gpio_set_config() expects the GPIO number from the global GPIO
-numberspace, not the controller-relative offset, which needs to be added
-to the chip base.
+The device list needs its associated lock held when modifying it, or the
+list could become corrupted, as syzbot discovered.
 
-Fixes: 5ae4cb94b313 ("gpio: aspeed: Add debounce support")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+c1d0a03d305972dbbe14@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c1d0a03d305972dbbe14
+Signed-off-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by nfc_llcp_find_local")
+Link: https://lore.kernel.org/r/20230908235853.1319596-1-jeremy@jcline.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-aspeed.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/nfc/llcp_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpio/gpio-aspeed.c
-+++ b/drivers/gpio/gpio-aspeed.c
-@@ -967,7 +967,7 @@ static int aspeed_gpio_set_config(struct
- 	else if (param == PIN_CONFIG_BIAS_DISABLE ||
- 			param == PIN_CONFIG_BIAS_PULL_DOWN ||
- 			param == PIN_CONFIG_DRIVE_STRENGTH)
--		return pinctrl_gpio_set_config(offset, config);
-+		return pinctrl_gpio_set_config(chip->base + offset, config);
- 	else if (param == PIN_CONFIG_DRIVE_OPEN_DRAIN ||
- 			param == PIN_CONFIG_DRIVE_OPEN_SOURCE)
- 		/* Return -ENOTSUPP to trigger emulation, as per datasheet */
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index ddfd159f64e13..b1107570eaee8 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1646,7 +1646,9 @@ int nfc_llcp_register_device(struct nfc_dev *ndev)
+ 	timer_setup(&local->sdreq_timer, nfc_llcp_sdreq_timer, 0);
+ 	INIT_WORK(&local->sdreq_timeout_work, nfc_llcp_sdreq_timeout_work);
+ 
++	spin_lock(&llcp_devices_lock);
+ 	list_add(&local->list, &llcp_devices);
++	spin_unlock(&llcp_devices_lock);
+ 
+ 	return 0;
+ }
+-- 
+2.40.1
+
 
 
