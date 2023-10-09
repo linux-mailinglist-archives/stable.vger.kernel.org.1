@@ -2,35 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1F277BE1B7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2967BE197
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:51:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377103AbjJINxV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50148 "EHLO
+        id S1377326AbjJINvv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:51:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377532AbjJINxU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:20 -0400
+        with ESMTP id S1376857AbjJINvu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:51:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6680FA3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87904C433C9;
-        Mon,  9 Oct 2023 13:53:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1EF19D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:51:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9A2C433C8;
+        Mon,  9 Oct 2023 13:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859598;
-        bh=ZvFescG9jvqfdGZE6jmiKjUjP4SpB1pd6Q1FuV/oBMA=;
+        s=korg; t=1696859509;
+        bh=507lxvLVbvYcSRfkxwtZw7Yz47avZVp2R8HvZ+lsJg8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QYsTLQCQJMW6tXqgRu0df5tKcpKcJSsg6RCJ7ldyi/zKXjZ/TDN2X1ujSP3CRd30y
-         l9+0LqgAuy5cuaF7S+pRVtNa2bBIlIHWXfoGc7Km2HTSiRKCHD3082zzkVfCVM8it0
-         O8xWl98E1lpLlpS9gyC5Wstd1su0N78OvCCL39Q0=
+        b=v6xeZzRQuhKW2HNcpXFRAJzVG4tM10p5f4s5LJEKtbyPAfMUfb0Hdm71GJWXEvwb6
+         6cejFGbl4mJN8tO4ITzVO5dJG4kDRZT1Jjq0jkSsDQvZrtO3A3KaL7QPwm9aUMzfk7
+         K6jfB1J4d6vyxcZu5OtLgyTw8hG102i8j7w3mvN8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 35/91] parisc: irq: Make irq_stack_union static to avoid sparse warning
-Date:   Mon,  9 Oct 2023 15:06:07 +0200
-Message-ID: <20231009130112.750713728@linuxfoundation.org>
+Subject: [PATCH 4.19 36/91] selftests/ftrace: Correctly enable event in instance-event.tc
+Date:   Mon,  9 Oct 2023 15:06:08 +0200
+Message-ID: <20231009130112.786118030@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
 References: <20231009130111.518916887@linuxfoundation.org>
@@ -52,29 +55,49 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit b1bef1388c427cdad7331a9c8eb4ebbbe5b954b0 ]
+[ Upstream commit f4e4ada586995b17f828c6d147d1800eb1471450 ]
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Function instance_set() expects to enable event 'sched_switch', so we
+should set 1 to its 'enable' file.
+
+Testcase passed after this patch:
+  # ./ftracetest test.d/instances/instance-event.tc
+  === Ftrace unit tests ===
+  [1] Test creation and deletion of trace instances while setting an event
+  [PASS]
+
+  # of passed:  1
+  # of failed:  0
+  # of unresolved:  0
+  # of untested:  0
+  # of unsupported:  0
+  # of xfailed:  0
+  # of undefined(test bug):  0
+
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/irq.c | 2 +-
+ .../testing/selftests/ftrace/test.d/instances/instance-event.tc | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
-index c152c30c2d06d..11c1505775f87 100644
---- a/arch/parisc/kernel/irq.c
-+++ b/arch/parisc/kernel/irq.c
-@@ -392,7 +392,7 @@ union irq_stack_union {
- 	volatile unsigned int lock[1];
- };
+diff --git a/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc b/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc
+index 4fa0f79144f4a..9473934a573a1 100644
+--- a/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc
++++ b/tools/testing/selftests/ftrace/test.d/instances/instance-event.tc
+@@ -43,7 +43,7 @@ instance_read() {
  
--DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
-+static DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
- 		.slock = { 1,1,1,1 },
- 	};
- #endif
+ instance_set() {
+         while :; do
+-                echo 1 > foo/events/sched/sched_switch
++                echo 1 > foo/events/sched/sched_switch/enable
+         done 2> /dev/null
+ }
+ 
 -- 
 2.40.1
 
