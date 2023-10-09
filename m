@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62F547BDEC7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDF557BDF18
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376396AbjJINXB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:23:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43424 "EHLO
+        id S1376659AbjJIN0Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:26:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376443AbjJINW7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:59 -0400
+        with ESMTP id S1376766AbjJIN0P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7172BA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8079C433C7;
-        Mon,  9 Oct 2023 13:22:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6801CB9
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1ADC433C7;
+        Mon,  9 Oct 2023 13:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857776;
-        bh=ELsHlCuYllAekTC+ZjCzLKTVtHETPCfrliw/KE0dW34=;
+        s=korg; t=1696857972;
+        bh=JnYqDURCnZyKxIdr7F3nquaZ6HDar0sG8lNexXASHvQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wnNKxhyI0QAMNvRKfl0Clesf0sWOzhfA3TRIE84W215xQu2vWi+Cro2+HtMBEdxEL
-         QaRqd53/DCQtDD/WuQKUMQZAiogjJdpKmuDHCIMZ6vbEvrv5Y5uhg1fip8vE+U/EMd
-         gch83leie5CbRYJgA6eiBIdlXGtQsOklH8FJ7mKc=
+        b=c9valaHKsTPk2VQU70GTw5YSRE2UdGf09Y/+zFqgIEjxQrVKD2oBSUPZId6HxS5rQ
+         XBg9OcLjzrZ2sdFsQWybcVaAQix/Lx1pu5ehmK+r3jRtA2wTHi+0sLOsuQcXIvMVh0
+         lKjJsrTHpyUf/BDJUrKXikg50CQrDtUmNuYa2WmE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 152/162] ALSA: hda/realtek: Fix spelling mistake "powe" -> "power"
+        patches@lists.linux.dev, David Wilder <dwilder@us.ibm.com>,
+        Nick Child <nnac123@linux.ibm.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 51/75] ibmveth: Remove condition to recompute TCP header checksum.
 Date:   Mon,  9 Oct 2023 15:02:13 +0200
-Message-ID: <20231009130127.111071485@linuxfoundation.org>
+Message-ID: <20231009130113.024501579@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,35 +51,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: David Wilder <dwilder@us.ibm.com>
 
-commit f286620b5dc974fe281d8feed6e228fd2f39d013 upstream.
+[ Upstream commit 51e7a66666e0ca9642c59464ef8359f0ac604d41 ]
 
-There is a spelling mistake in a quirk entry. Fix it.
+In some OVS environments the TCP pseudo header checksum may need to be
+recomputed. Currently this is only done when the interface instance is
+configured for "Trunk Mode". We found the issue also occurs in some
+Kubernetes environments, these environments do not use "Trunk Mode",
+therefor the condition is removed.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Fixes: 3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-Link: https://lore.kernel.org/r/20230821080003.16678-1-colin.i.king@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Performance tests with this change show only a fractional decrease in
+throughput (< 0.2%).
+
+Fixes: 7525de2516fb ("ibmveth: Set CHECKSUM_PARTIAL if NULL TCP CSUM.")
+Signed-off-by: David Wilder <dwilder@us.ibm.com>
+Reviewed-by: Nick Child <nnac123@linux.ibm.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/ibm/ibmveth.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9993,7 +9993,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x387d, "Yoga S780-16 pro Quad AAC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x387e, "Yoga S780-16 pro Quad YC", ALC287_FIXUP_TAS2781_I2C),
--	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual powe mode2 YC", ALC287_FIXUP_TAS2781_I2C),
-+	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual power mode2 YC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3884, "Y780 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3886, "Y780 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38a7, "Y780P AMD YG dual", ALC287_FIXUP_TAS2781_I2C),
+diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+index 05759f690e1fd..67ea2cb21e849 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -1297,24 +1297,23 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
+ 	 * the user space for finding a flow. During this process, OVS computes
+ 	 * checksum on the first packet when CHECKSUM_PARTIAL flag is set.
+ 	 *
+-	 * So, re-compute TCP pseudo header checksum when configured for
+-	 * trunk mode.
++	 * So, re-compute TCP pseudo header checksum.
+ 	 */
++
+ 	if (iph_proto == IPPROTO_TCP) {
+ 		struct tcphdr *tcph = (struct tcphdr *)(skb->data + iphlen);
++
+ 		if (tcph->check == 0x0000) {
+ 			/* Recompute TCP pseudo header checksum  */
+-			if (adapter->is_active_trunk) {
+-				tcphdrlen = skb->len - iphlen;
+-				if (skb_proto == ETH_P_IP)
+-					tcph->check =
+-					 ~csum_tcpudp_magic(iph->saddr,
+-					iph->daddr, tcphdrlen, iph_proto, 0);
+-				else if (skb_proto == ETH_P_IPV6)
+-					tcph->check =
+-					 ~csum_ipv6_magic(&iph6->saddr,
+-					&iph6->daddr, tcphdrlen, iph_proto, 0);
+-			}
++			tcphdrlen = skb->len - iphlen;
++			if (skb_proto == ETH_P_IP)
++				tcph->check =
++				 ~csum_tcpudp_magic(iph->saddr,
++				iph->daddr, tcphdrlen, iph_proto, 0);
++			else if (skb_proto == ETH_P_IPV6)
++				tcph->check =
++				 ~csum_ipv6_magic(&iph6->saddr,
++				&iph6->daddr, tcphdrlen, iph_proto, 0);
+ 			/* Setup SKB fields for checksum offload */
+ 			skb_partial_csum_set(skb, iphlen,
+ 					     offsetof(struct tcphdr, check));
+-- 
+2.40.1
+
 
 
