@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE9837BE112
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 749F57BE114
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377385AbjJINq7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54348 "EHLO
+        id S1376794AbjJINrC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377489AbjJINqq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:46:46 -0400
+        with ESMTP id S1377575AbjJINqs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:46:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0296B100
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:46:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9FEC433C8;
-        Mon,  9 Oct 2023 13:46:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A668F0
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:46:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D79C433CA;
+        Mon,  9 Oct 2023 13:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859197;
-        bh=h/DkxThCuSqUVzJ7bK34f/4qOBdso7eWLchNjhRE+f4=;
+        s=korg; t=1696859200;
+        bh=h5xpjg718yNJa0PpC+STGoIM7LISFSLbHCXT58R7o24=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lyLYvN7vyLfIDWW0KUnJhUDF062j4byYBSXRJRqbdCdy4mTT7fxFl8qnUvHHogyqW
-         jIIzcySqp4tQYWfeoj5ArdbqgmOOzmiygpUOZDRe552QcoKRP/cS6XiZbsru88ywBt
-         3DkKiSWCZsuOJkRp4DoyIbSanne0wSIiv8awI9Bw=
+        b=wfB/YzYxdAi47IelykHhRtfyHHzGHHBch/uAW3oMMCXGBad+VMjc+f8PT51R6kVxX
+         5dj+8EncBUsoAUjB9BgXDMWJatEpyju8KOJsq3XiYjtEl4URZyYUJ4+rYVoL3a5dmd
+         5x0oaJVioA4Cf+KfDO8FFKqGF03Q65zP2SLu071o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 5.10 213/226] dm zoned: free dmz->ddev array in dmz_put_zoned_devices
-Date:   Mon,  9 Oct 2023 15:02:54 +0200
-Message-ID: <20231009130132.113244300@linuxfoundation.org>
+        patches@lists.linux.dev, Parav Pandit <parav@nvidia.com>,
+        Leon Romanovsky <leonro@nvidia.com>
+Subject: [PATCH 5.10 214/226] RDMA/core: Require admin capabilities to set system parameters
+Date:   Mon,  9 Oct 2023 15:02:55 +0200
+Message-ID: <20231009130132.136549950@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
 References: <20231009130126.697995596@linuxfoundation.org>
@@ -52,72 +52,31 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit 9850ccd5dd88075b2b7fd28d96299d5535f58cc5 upstream.
+commit c38d23a54445f9a8aa6831fafc9af0496ba02f9e upstream.
 
-Commit 4dba12881f88 ("dm zoned: support arbitrary number of devices")
-made the pointers to additional zoned devices to be stored in a
-dynamically allocated dmz->ddev array. However, this array is not freed.
+Like any other set command, require admin permissions to do it.
 
-Rename dmz_put_zoned_device to dmz_put_zoned_devices and fix it to
-free the dmz->ddev array when cleaning up zoned device information.
-Remove NULL assignment for all dmz->ddev elements and just free the
-dmz->ddev array instead.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 4dba12881f88 ("dm zoned: support arbitrary number of devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Fixes: 2b34c5580226 ("RDMA/core: Add command to set ib_core device net namspace sharing mode")
+Link: https://lore.kernel.org/r/75d329fdd7381b52cbdf87910bef16c9965abb1f.1696443438.git.leon@kernel.org
+Reviewed-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-zoned-target.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/infiniband/core/nldev.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/dm-zoned-target.c
-+++ b/drivers/md/dm-zoned-target.c
-@@ -750,17 +750,16 @@ err:
- /*
-  * Cleanup zoned device information.
-  */
--static void dmz_put_zoned_device(struct dm_target *ti)
-+static void dmz_put_zoned_devices(struct dm_target *ti)
- {
- 	struct dmz_target *dmz = ti->private;
- 	int i;
- 
--	for (i = 0; i < dmz->nr_ddevs; i++) {
--		if (dmz->ddev[i]) {
-+	for (i = 0; i < dmz->nr_ddevs; i++)
-+		if (dmz->ddev[i])
- 			dm_put_device(ti, dmz->ddev[i]);
--			dmz->ddev[i] = NULL;
--		}
--	}
-+
-+	kfree(dmz->ddev);
- }
- 
- static int dmz_fixup_devices(struct dm_target *ti)
-@@ -951,7 +950,7 @@ err_bio:
- err_meta:
- 	dmz_dtr_metadata(dmz->metadata);
- err_dev:
--	dmz_put_zoned_device(ti);
-+	dmz_put_zoned_devices(ti);
- err:
- 	kfree(dmz->dev);
- 	kfree(dmz);
-@@ -982,7 +981,7 @@ static void dmz_dtr(struct dm_target *ti
- 
- 	bioset_exit(&dmz->bio_set);
- 
--	dmz_put_zoned_device(ti);
-+	dmz_put_zoned_devices(ti);
- 
- 	mutex_destroy(&dmz->chunk_lock);
- 
+--- a/drivers/infiniband/core/nldev.c
++++ b/drivers/infiniband/core/nldev.c
+@@ -2148,6 +2148,7 @@ static const struct rdma_nl_cbs nldev_cb
+ 	},
+ 	[RDMA_NLDEV_CMD_SYS_SET] = {
+ 		.doit = nldev_set_sys_set_doit,
++		.flags = RDMA_NL_ADMIN_PERM,
+ 	},
+ 	[RDMA_NLDEV_CMD_STAT_SET] = {
+ 		.doit = nldev_stat_set_doit,
 
 
