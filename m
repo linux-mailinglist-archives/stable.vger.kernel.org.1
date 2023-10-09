@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCD417BDF8C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B3567BDDEE
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377063AbjJINbH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:31:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60962 "EHLO
+        id S1376923AbjJINOP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:14:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376789AbjJINbG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:06 -0400
+        with ESMTP id S1377041AbjJINOE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA61DA3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D92C433C8;
-        Mon,  9 Oct 2023 13:31:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48A48F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30A0C433C7;
+        Mon,  9 Oct 2023 13:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858264;
-        bh=UxvuRHfGbY/uxqtZZrRhTIuvl1zevkGPU9glo6hF0PE=;
+        s=korg; t=1696857243;
+        bh=kgXMBOBUKZNjw2CbF/7BQDc40Pk+IYjc/uPFFyBu+T0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PG0kb1ULp+AbDSn4sufWrujETT1A5G7xIK3A8FOrf5/hSB6Dp3thfwid9Ys3xCBt4
-         6DpWGA1s5s8TP12VokcSrv9KOcmWDmAtwB8otF1l85IUYMiIwn6JazJcTpCpVJfFk5
-         iwCK7XYJDsN7APWfrPwOs+XcGDbKgVcpZB82MRu8=
+        b=PyLKOEQXVV/Wd2pFOnxsYLpmOWFf43QO3Lx1hvqpIzvsVPHvu8TyjRfaP0ijKSEzU
+         tDClPpqv1BHV+9cK26zdQ3sE4pyaRVyGm/xO7vpY2/DgkO9sECuU8ClKYJ0RHUVciw
+         zz6mstef2/vljNhCXGQVqEzLZlCk6tOWPs24y+js=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Assmann <sassmann@kpanic.de>,
-        Konrad Jankowski <konrad0.jankowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.4 067/131] i40e: improve locking of mac_filter_hash
-Date:   Mon,  9 Oct 2023 15:01:47 +0200
-Message-ID: <20231009130118.345051867@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH 6.5 144/163] gpio: aspeed: fix the GPIO number passed to pinctrl_gpio_set_config()
+Date:   Mon,  9 Oct 2023 15:01:48 +0200
+Message-ID: <20231009130128.013732473@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,90 +50,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Assmann <sassmann@kpanic.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 8b4b06919fd66caf49fdf4fe59f9d6312cf7956d ]
+commit f9315f17bf778cb8079a29639419fcc8a41a3c84 upstream.
 
-i40e_config_vf_promiscuous_mode() calls
-i40e_getnum_vf_vsi_vlan_filters() without acquiring the
-mac_filter_hash_lock spinlock.
+pinctrl_gpio_set_config() expects the GPIO number from the global GPIO
+numberspace, not the controller-relative offset, which needs to be added
+to the chip base.
 
-This is unsafe because mac_filter_hash may get altered in another thread
-while i40e_getnum_vf_vsi_vlan_filters() traverses the hashes.
-
-Simply adding the spinlock in i40e_getnum_vf_vsi_vlan_filters() is not
-possible as it already gets called in i40e_get_vlan_list_sync() with the
-spinlock held. Therefore adding a wrapper that acquires the spinlock and
-call the correct function where appropriate.
-
-Fixes: 37d318d7805f ("i40e: Remove scheduling while atomic possibility")
-Fix-suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Stefan Assmann <sassmann@kpanic.de>
-Tested-by: Konrad Jankowski <konrad0.jankowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5ae4cb94b313 ("gpio: aspeed: Add debounce support")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 23 ++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/gpio/gpio-aspeed.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 1a3017e5f44c1..291ee55b125f8 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1117,12 +1117,12 @@ static int i40e_quiesce_vf_pci(struct i40e_vf *vf)
- }
- 
- /**
-- * i40e_getnum_vf_vsi_vlan_filters
-+ * __i40e_getnum_vf_vsi_vlan_filters
-  * @vsi: pointer to the vsi
-  *
-  * called to get the number of VLANs offloaded on this VF
-  **/
--static int i40e_getnum_vf_vsi_vlan_filters(struct i40e_vsi *vsi)
-+static int __i40e_getnum_vf_vsi_vlan_filters(struct i40e_vsi *vsi)
- {
- 	struct i40e_mac_filter *f;
- 	int num_vlans = 0, bkt;
-@@ -1135,6 +1135,23 @@ static int i40e_getnum_vf_vsi_vlan_filters(struct i40e_vsi *vsi)
- 	return num_vlans;
- }
- 
-+/**
-+ * i40e_getnum_vf_vsi_vlan_filters
-+ * @vsi: pointer to the vsi
-+ *
-+ * wrapper for __i40e_getnum_vf_vsi_vlan_filters() with spinlock held
-+ **/
-+static int i40e_getnum_vf_vsi_vlan_filters(struct i40e_vsi *vsi)
-+{
-+	int num_vlans;
-+
-+	spin_lock_bh(&vsi->mac_filter_hash_lock);
-+	num_vlans = __i40e_getnum_vf_vsi_vlan_filters(vsi);
-+	spin_unlock_bh(&vsi->mac_filter_hash_lock);
-+
-+	return num_vlans;
-+}
-+
- /**
-  * i40e_get_vlan_list_sync
-  * @vsi: pointer to the VSI
-@@ -1152,7 +1169,7 @@ static void i40e_get_vlan_list_sync(struct i40e_vsi *vsi, int *num_vlans,
- 	int bkt;
- 
- 	spin_lock_bh(&vsi->mac_filter_hash_lock);
--	*num_vlans = i40e_getnum_vf_vsi_vlan_filters(vsi);
-+	*num_vlans = __i40e_getnum_vf_vsi_vlan_filters(vsi);
- 	*vlan_list = kcalloc(*num_vlans, sizeof(**vlan_list), GFP_ATOMIC);
- 	if (!(*vlan_list))
- 		goto err;
--- 
-2.40.1
-
+--- a/drivers/gpio/gpio-aspeed.c
++++ b/drivers/gpio/gpio-aspeed.c
+@@ -973,7 +973,7 @@ static int aspeed_gpio_set_config(struct
+ 	else if (param == PIN_CONFIG_BIAS_DISABLE ||
+ 			param == PIN_CONFIG_BIAS_PULL_DOWN ||
+ 			param == PIN_CONFIG_DRIVE_STRENGTH)
+-		return pinctrl_gpio_set_config(offset, config);
++		return pinctrl_gpio_set_config(chip->base + offset, config);
+ 	else if (param == PIN_CONFIG_DRIVE_OPEN_DRAIN ||
+ 			param == PIN_CONFIG_DRIVE_OPEN_SOURCE)
+ 		/* Return -ENOTSUPP to trigger emulation, as per datasheet */
 
 
