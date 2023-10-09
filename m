@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8F037BDEE7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 726D67BE091
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:41:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376508AbjJINYW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:24:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54744 "EHLO
+        id S1376588AbjJINlj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:41:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377096AbjJINYP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:15 -0400
+        with ESMTP id S1377335AbjJINlh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:41:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20DFA8F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2F2C433C8;
-        Mon,  9 Oct 2023 13:24:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7788A91
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA38C433C8;
+        Mon,  9 Oct 2023 13:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857852;
-        bh=ps6MWJZBB5RPOe32Q2wrUfJ1YoZybHgAgIWmZeNRrKY=;
+        s=korg; t=1696858896;
+        bh=wH7ODUTxoi5gY9nKVc6XOe1ujn6t2tlKVERet+Xfwqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FuP7Nrh2XibURdRUALkew97/3hbZs4qtLtC3HJ9Sa1eNNgd84Ft3swL72Cn0DsT1e
-         N4+7PMY1pVUze8R0Nt/vQ8QIu3jK5rL6jAztQVrCT/XsqhgSN2mjk7EXHfzSzyQUQk
-         yQH5RtUr3qJOBlOxOSsCna7yfj6kfwpLzQicuzCc=
+        b=Fam92ueqR35rdiiTCcadJq2OFfusu0+MN7L5W+s3LQwA0puI8EkQQV+TLnBqYplzP
+         ej7sxdympdTXTuIE0D/MsmQJNY4W30VFVccgjzMSWAYEcNmglKSecmKvSHDrKGOFGk
+         jovKV5RKTL/DToEgv6FXYfdYdxKLIxefJgFzIA5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 14/75] rbd: decouple header read-in from updating rbd_dev->header
+Subject: [PATCH 5.10 135/226] nvme-pci: factor out a nvme_pci_alloc_dev helper
 Date:   Mon,  9 Oct 2023 15:01:36 +0200
-Message-ID: <20231009130111.732415231@linuxfoundation.org>
+Message-ID: <20231009130130.280021788@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,452 +51,170 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 510a7330c82a7754d5df0117a8589e8a539067c7 upstream.
+[ Upstream commit 2e87570be9d2746e7c4e7ab1cc18fd3ca7de2768 ]
 
-Make rbd_dev_header_info() populate a passed struct rbd_image_header
-instead of rbd_dev->header and introduce rbd_dev_update_header() for
-updating mutable fields in rbd_dev->header upon refresh.  The initial
-read-in of both mutable and immutable fields in rbd_dev_image_probe()
-passes in rbd_dev->header so no update step is required there.
+Add a helper that allocates the nvme_dev structure up to the point where
+we can call nvme_init_ctrl.  This pairs with the free_ctrl method and can
+thus be used to cleanup the teardown path and make it more symmetric.
 
-rbd_init_layout() is now called directly from rbd_dev_image_probe()
-instead of individually in format 1 and format 2 implementations.
+Note that this now calls nvme_init_ctrl a lot earlier during probing,
+which also means the per-controller character device shows up earlier.
+Due to the controller state no commnds can be send on it, but it might
+make sense to delay the cdev registration until nvme_init_ctrl_finish.
 
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Tested-by Gerd Bayer <gbayer@linxu.ibm.com>
+Stable-dep-of: dad651b2a44e ("nvme-pci: do not set the NUMA node of device if it has none")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c | 206 ++++++++++++++++++++++++--------------------
- 1 file changed, 114 insertions(+), 92 deletions(-)
+ drivers/nvme/host/pci.c | 81 +++++++++++++++++++++++------------------
+ 1 file changed, 46 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 772e28d6c1384..37bbfcca8b624 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -632,7 +632,8 @@ void rbd_warn(struct rbd_device *rbd_dev, const char *fmt, ...)
- static void rbd_dev_remove_parent(struct rbd_device *rbd_dev);
- 
- static int rbd_dev_refresh(struct rbd_device *rbd_dev);
--static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev);
-+static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev,
-+				     struct rbd_image_header *header);
- static const char *rbd_dev_v2_snap_name(struct rbd_device *rbd_dev,
- 					u64 snap_id);
- static int _rbd_dev_v2_snap_size(struct rbd_device *rbd_dev, u64 snap_id,
-@@ -994,15 +995,24 @@ static void rbd_init_layout(struct rbd_device *rbd_dev)
- 	RCU_INIT_POINTER(rbd_dev->layout.pool_ns, NULL);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 48886355ce90c..c329f73dbbf38 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2572,6 +2572,7 @@ static void nvme_free_tagset(struct nvme_dev *dev)
+ 	dev->ctrl.tagset = NULL;
  }
  
-+static void rbd_image_header_cleanup(struct rbd_image_header *header)
-+{
-+	kfree(header->object_prefix);
-+	ceph_put_snap_context(header->snapc);
-+	kfree(header->snap_sizes);
-+	kfree(header->snap_names);
-+
-+	memset(header, 0, sizeof(*header));
-+}
-+
- /*
-  * Fill an rbd image header with information from the given format 1
-  * on-disk header.
-  */
--static int rbd_header_from_disk(struct rbd_device *rbd_dev,
--				 struct rbd_image_header_ondisk *ondisk)
-+static int rbd_header_from_disk(struct rbd_image_header *header,
-+				struct rbd_image_header_ondisk *ondisk,
-+				bool first_time)
++/* pairs with nvme_pci_alloc_dev */
+ static void nvme_pci_free_ctrl(struct nvme_ctrl *ctrl)
  {
--	struct rbd_image_header *header = &rbd_dev->header;
--	bool first_time = header->object_prefix == NULL;
- 	struct ceph_snap_context *snapc;
- 	char *object_prefix = NULL;
- 	char *snap_names = NULL;
-@@ -1069,11 +1079,6 @@ static int rbd_header_from_disk(struct rbd_device *rbd_dev,
- 	if (first_time) {
- 		header->object_prefix = object_prefix;
- 		header->obj_order = ondisk->options.order;
--		rbd_init_layout(rbd_dev);
--	} else {
--		ceph_put_snap_context(header->snapc);
--		kfree(header->snap_names);
--		kfree(header->snap_sizes);
+ 	struct nvme_dev *dev = to_nvme_dev(ctrl);
+@@ -2857,19 +2858,23 @@ static void nvme_async_probe(void *data, async_cookie_t cookie)
+ 	nvme_put_ctrl(&dev->ctrl);
+ }
+ 
+-static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
++		const struct pci_device_id *id)
+ {
+-	int node, result = -ENOMEM;
+-	struct nvme_dev *dev;
+ 	unsigned long quirks = id->driver_data;
++	int node = dev_to_node(&pdev->dev);
++	struct nvme_dev *dev;
++	int ret = -ENOMEM;
+ 
+-	node = dev_to_node(&pdev->dev);
+ 	if (node == NUMA_NO_NODE)
+ 		set_dev_node(&pdev->dev, first_memory_node);
+ 
+ 	dev = kzalloc_node(sizeof(*dev), GFP_KERNEL, node);
+ 	if (!dev)
+-		return -ENOMEM;
++		return NULL;
++	INIT_WORK(&dev->ctrl.reset_work, nvme_reset_work);
++	INIT_WORK(&dev->remove_work, nvme_remove_dead_ctrl_work);
++	mutex_init(&dev->shutdown_lock);
+ 
+ 	dev->nr_write_queues = write_queues;
+ 	dev->nr_poll_queues = poll_queues;
+@@ -2877,25 +2882,11 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	dev->queues = kcalloc_node(dev->nr_allocated_queues,
+ 			sizeof(struct nvme_queue), GFP_KERNEL, node);
+ 	if (!dev->queues)
+-		goto free;
++		goto out_free_dev;
+ 
+ 	dev->dev = get_device(&pdev->dev);
+-	pci_set_drvdata(pdev, dev);
+-
+-	result = nvme_dev_map(dev);
+-	if (result)
+-		goto put_pci;
+-
+-	INIT_WORK(&dev->ctrl.reset_work, nvme_reset_work);
+-	INIT_WORK(&dev->remove_work, nvme_remove_dead_ctrl_work);
+-	mutex_init(&dev->shutdown_lock);
+-
+-	result = nvme_setup_prp_pools(dev);
+-	if (result)
+-		goto unmap;
+ 
+ 	quirks |= check_vendor_combination_bug(pdev);
+-
+ 	if (!noacpi && acpi_storage_d3(&pdev->dev)) {
+ 		/*
+ 		 * Some systems use a bios work around to ask for D3 on
+@@ -2905,34 +2896,54 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 			 "platform quirk: setting simple suspend\n");
+ 		quirks |= NVME_QUIRK_SIMPLE_SUSPEND;
  	}
- 
- 	/* The remaining fields always get updated (when we refresh) */
-@@ -4859,7 +4864,9 @@ static int rbd_obj_read_sync(struct rbd_device *rbd_dev,
-  * return, the rbd_dev->header field will contain up-to-date
-  * information about the image.
-  */
--static int rbd_dev_v1_header_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_v1_header_info(struct rbd_device *rbd_dev,
-+				  struct rbd_image_header *header,
-+				  bool first_time)
- {
- 	struct rbd_image_header_ondisk *ondisk = NULL;
- 	u32 snap_count = 0;
-@@ -4907,7 +4914,7 @@ static int rbd_dev_v1_header_info(struct rbd_device *rbd_dev)
- 		snap_count = le32_to_cpu(ondisk->snap_count);
- 	} while (snap_count != want_count);
- 
--	ret = rbd_header_from_disk(rbd_dev, ondisk);
-+	ret = rbd_header_from_disk(header, ondisk, first_time);
- out:
- 	kfree(ondisk);
- 
-@@ -5473,17 +5480,12 @@ static int _rbd_dev_v2_snap_size(struct rbd_device *rbd_dev, u64 snap_id,
- 	return 0;
- }
- 
--static int rbd_dev_v2_image_size(struct rbd_device *rbd_dev)
--{
--	return _rbd_dev_v2_snap_size(rbd_dev, CEPH_NOSNAP,
--					&rbd_dev->header.obj_order,
--					&rbd_dev->header.image_size);
--}
--
--static int rbd_dev_v2_object_prefix(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_object_prefix(struct rbd_device *rbd_dev,
-+				    char **pobject_prefix)
- {
- 	size_t size;
- 	void *reply_buf;
-+	char *object_prefix;
- 	int ret;
- 	void *p;
- 
-@@ -5501,16 +5503,16 @@ static int rbd_dev_v2_object_prefix(struct rbd_device *rbd_dev)
- 		goto out;
- 
- 	p = reply_buf;
--	rbd_dev->header.object_prefix = ceph_extract_encoded_string(&p,
--						p + ret, NULL, GFP_NOIO);
-+	object_prefix = ceph_extract_encoded_string(&p, p + ret, NULL,
-+						    GFP_NOIO);
-+	if (IS_ERR(object_prefix)) {
-+		ret = PTR_ERR(object_prefix);
-+		goto out;
-+	}
- 	ret = 0;
- 
--	if (IS_ERR(rbd_dev->header.object_prefix)) {
--		ret = PTR_ERR(rbd_dev->header.object_prefix);
--		rbd_dev->header.object_prefix = NULL;
--	} else {
--		dout("  object_prefix = %s\n", rbd_dev->header.object_prefix);
--	}
-+	*pobject_prefix = object_prefix;
-+	dout("  object_prefix = %s\n", object_prefix);
- out:
- 	kfree(reply_buf);
- 
-@@ -5561,13 +5563,6 @@ static int _rbd_dev_v2_snap_features(struct rbd_device *rbd_dev, u64 snap_id,
- 	return 0;
- }
- 
--static int rbd_dev_v2_features(struct rbd_device *rbd_dev)
--{
--	return _rbd_dev_v2_snap_features(rbd_dev, CEPH_NOSNAP,
--					 rbd_is_ro(rbd_dev),
--					 &rbd_dev->header.features);
--}
--
- /*
-  * These are generic image flags, but since they are used only for
-  * object map, store them in rbd_dev->object_map_flags.
-@@ -5842,14 +5837,14 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
- 	return ret;
- }
- 
--static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev,
-+				    u64 *stripe_unit, u64 *stripe_count)
- {
- 	struct {
- 		__le64 stripe_unit;
- 		__le64 stripe_count;
- 	} __attribute__ ((packed)) striping_info_buf = { 0 };
- 	size_t size = sizeof (striping_info_buf);
--	void *p;
- 	int ret;
- 
- 	ret = rbd_obj_method_sync(rbd_dev, &rbd_dev->header_oid,
-@@ -5861,27 +5856,33 @@ static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev)
- 	if (ret < size)
- 		return -ERANGE;
- 
--	p = &striping_info_buf;
--	rbd_dev->header.stripe_unit = ceph_decode_64(&p);
--	rbd_dev->header.stripe_count = ceph_decode_64(&p);
-+	*stripe_unit = le64_to_cpu(striping_info_buf.stripe_unit);
-+	*stripe_count = le64_to_cpu(striping_info_buf.stripe_count);
-+	dout("  stripe_unit = %llu stripe_count = %llu\n", *stripe_unit,
-+	     *stripe_count);
-+
- 	return 0;
- }
- 
--static int rbd_dev_v2_data_pool(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_data_pool(struct rbd_device *rbd_dev, s64 *data_pool_id)
- {
--	__le64 data_pool_id;
-+	__le64 data_pool_buf;
- 	int ret;
- 
- 	ret = rbd_obj_method_sync(rbd_dev, &rbd_dev->header_oid,
- 				  &rbd_dev->header_oloc, "get_data_pool",
--				  NULL, 0, &data_pool_id, sizeof(data_pool_id));
-+				  NULL, 0, &data_pool_buf,
-+				  sizeof(data_pool_buf));
-+	dout("%s: rbd_obj_method_sync returned %d\n", __func__, ret);
- 	if (ret < 0)
- 		return ret;
--	if (ret < sizeof(data_pool_id))
-+	if (ret < sizeof(data_pool_buf))
- 		return -EBADMSG;
- 
--	rbd_dev->header.data_pool_id = le64_to_cpu(data_pool_id);
--	WARN_ON(rbd_dev->header.data_pool_id == CEPH_NOPOOL);
-+	*data_pool_id = le64_to_cpu(data_pool_buf);
-+	dout("  data_pool_id = %lld\n", *data_pool_id);
-+	WARN_ON(*data_pool_id == CEPH_NOPOOL);
-+
- 	return 0;
- }
- 
-@@ -6073,7 +6074,8 @@ static int rbd_spec_fill_names(struct rbd_device *rbd_dev)
- 	return ret;
- }
- 
--static int rbd_dev_v2_snap_context(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_snap_context(struct rbd_device *rbd_dev,
-+				   struct ceph_snap_context **psnapc)
- {
- 	size_t size;
- 	int ret;
-@@ -6134,9 +6136,7 @@ static int rbd_dev_v2_snap_context(struct rbd_device *rbd_dev)
- 	for (i = 0; i < snap_count; i++)
- 		snapc->snaps[i] = ceph_decode_64(&p);
- 
--	ceph_put_snap_context(rbd_dev->header.snapc);
--	rbd_dev->header.snapc = snapc;
--
-+	*psnapc = snapc;
- 	dout("  snap context seq = %llu, snap_count = %u\n",
- 		(unsigned long long)seq, (unsigned int)snap_count);
- out:
-@@ -6185,38 +6185,42 @@ static const char *rbd_dev_v2_snap_name(struct rbd_device *rbd_dev,
- 	return snap_name;
- }
- 
--static int rbd_dev_v2_header_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_header_info(struct rbd_device *rbd_dev,
-+				  struct rbd_image_header *header,
-+				  bool first_time)
- {
--	bool first_time = rbd_dev->header.object_prefix == NULL;
- 	int ret;
- 
--	ret = rbd_dev_v2_image_size(rbd_dev);
-+	ret = _rbd_dev_v2_snap_size(rbd_dev, CEPH_NOSNAP,
-+				    first_time ? &header->obj_order : NULL,
-+				    &header->image_size);
- 	if (ret)
- 		return ret;
- 
- 	if (first_time) {
--		ret = rbd_dev_v2_header_onetime(rbd_dev);
-+		ret = rbd_dev_v2_header_onetime(rbd_dev, header);
- 		if (ret)
- 			return ret;
- 	}
- 
--	ret = rbd_dev_v2_snap_context(rbd_dev);
--	if (ret && first_time) {
--		kfree(rbd_dev->header.object_prefix);
--		rbd_dev->header.object_prefix = NULL;
--	}
-+	ret = rbd_dev_v2_snap_context(rbd_dev, &header->snapc);
++	ret = nvme_init_ctrl(&dev->ctrl, &pdev->dev, &nvme_pci_ctrl_ops,
++			     quirks);
 +	if (ret)
-+		return ret;
++		goto out_put_device;
++	return dev;
  
--	return ret;
-+	return 0;
- }
- 
--static int rbd_dev_header_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_header_info(struct rbd_device *rbd_dev,
-+			       struct rbd_image_header *header,
-+			       bool first_time)
- {
- 	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
-+	rbd_assert(!header->object_prefix && !header->snapc);
- 
- 	if (rbd_dev->image_format == 1)
--		return rbd_dev_v1_header_info(rbd_dev);
-+		return rbd_dev_v1_header_info(rbd_dev, header, first_time);
- 
--	return rbd_dev_v2_header_info(rbd_dev);
-+	return rbd_dev_v2_header_info(rbd_dev, header, first_time);
- }
- 
- /*
-@@ -6703,60 +6707,49 @@ static int rbd_dev_image_id(struct rbd_device *rbd_dev)
-  */
- static void rbd_dev_unprobe(struct rbd_device *rbd_dev)
- {
--	struct rbd_image_header	*header;
--
- 	rbd_dev_parent_put(rbd_dev);
- 	rbd_object_map_free(rbd_dev);
- 	rbd_dev_mapping_clear(rbd_dev);
- 
- 	/* Free dynamic fields from the header, then zero it out */
- 
--	header = &rbd_dev->header;
--	ceph_put_snap_context(header->snapc);
--	kfree(header->snap_sizes);
--	kfree(header->snap_names);
--	kfree(header->object_prefix);
--	memset(header, 0, sizeof (*header));
-+	rbd_image_header_cleanup(&rbd_dev->header);
- }
- 
--static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev,
-+				     struct rbd_image_header *header)
- {
- 	int ret;
- 
--	ret = rbd_dev_v2_object_prefix(rbd_dev);
-+	ret = rbd_dev_v2_object_prefix(rbd_dev, &header->object_prefix);
- 	if (ret)
--		goto out_err;
-+		return ret;
- 
- 	/*
- 	 * Get the and check features for the image.  Currently the
- 	 * features are assumed to never change.
- 	 */
--	ret = rbd_dev_v2_features(rbd_dev);
-+	ret = _rbd_dev_v2_snap_features(rbd_dev, CEPH_NOSNAP,
-+					rbd_is_ro(rbd_dev), &header->features);
- 	if (ret)
--		goto out_err;
-+		return ret;
- 
- 	/* If the image supports fancy striping, get its parameters */
- 
--	if (rbd_dev->header.features & RBD_FEATURE_STRIPINGV2) {
--		ret = rbd_dev_v2_striping_info(rbd_dev);
--		if (ret < 0)
--			goto out_err;
-+	if (header->features & RBD_FEATURE_STRIPINGV2) {
-+		ret = rbd_dev_v2_striping_info(rbd_dev, &header->stripe_unit,
-+					       &header->stripe_count);
-+		if (ret)
-+			return ret;
- 	}
- 
--	if (rbd_dev->header.features & RBD_FEATURE_DATA_POOL) {
--		ret = rbd_dev_v2_data_pool(rbd_dev);
-+	if (header->features & RBD_FEATURE_DATA_POOL) {
-+		ret = rbd_dev_v2_data_pool(rbd_dev, &header->data_pool_id);
- 		if (ret)
--			goto out_err;
-+			return ret;
- 	}
- 
--	rbd_init_layout(rbd_dev);
- 	return 0;
--
--out_err:
--	rbd_dev->header.features = 0;
--	kfree(rbd_dev->header.object_prefix);
--	rbd_dev->header.object_prefix = NULL;
--	return ret;
- }
- 
- /*
-@@ -6951,13 +6944,15 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
- 	if (!depth)
- 		down_write(&rbd_dev->header_rwsem);
- 
--	ret = rbd_dev_header_info(rbd_dev);
-+	ret = rbd_dev_header_info(rbd_dev, &rbd_dev->header, true);
- 	if (ret) {
- 		if (ret == -ENOENT && !need_watch)
- 			rbd_print_dne(rbd_dev, false);
- 		goto err_out_probe;
- 	}
- 
-+	rbd_init_layout(rbd_dev);
-+
- 	/*
- 	 * If this image is the one being mapped, we have pool name and
- 	 * id, image name and id, and snap name - need to fill snap id.
-@@ -7012,15 +7007,39 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
- 	return ret;
- }
- 
-+static void rbd_dev_update_header(struct rbd_device *rbd_dev,
-+				  struct rbd_image_header *header)
-+{
-+	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
-+	rbd_assert(rbd_dev->header.object_prefix); /* !first_time */
-+
-+	rbd_dev->header.image_size = header->image_size;
-+
-+	ceph_put_snap_context(rbd_dev->header.snapc);
-+	rbd_dev->header.snapc = header->snapc;
-+	header->snapc = NULL;
-+
-+	if (rbd_dev->image_format == 1) {
-+		kfree(rbd_dev->header.snap_names);
-+		rbd_dev->header.snap_names = header->snap_names;
-+		header->snap_names = NULL;
-+
-+		kfree(rbd_dev->header.snap_sizes);
-+		rbd_dev->header.snap_sizes = header->snap_sizes;
-+		header->snap_sizes = NULL;
-+	}
+-	result = nvme_pci_alloc_iod_mempool(dev);
++out_put_device:
++	put_device(dev->dev);
++	kfree(dev->queues);
++out_free_dev:
++	kfree(dev);
++	return ERR_PTR(ret);
 +}
 +
- static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- {
-+	struct rbd_image_header	header = { 0 };
- 	u64 mapping_size;
- 	int ret;
- 
- 	down_write(&rbd_dev->header_rwsem);
- 	mapping_size = rbd_dev->mapping.size;
- 
--	ret = rbd_dev_header_info(rbd_dev);
-+	ret = rbd_dev_header_info(rbd_dev, &header, false);
- 	if (ret)
- 		goto out;
- 
-@@ -7034,6 +7053,8 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 			goto out;
- 	}
- 
-+	rbd_dev_update_header(rbd_dev, &header);
++static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct nvme_dev *dev;
++	int result = -ENOMEM;
 +
- 	rbd_assert(!rbd_is_snap(rbd_dev));
- 	rbd_dev->mapping.size = rbd_dev->header.image_size;
++	dev = nvme_pci_alloc_dev(pdev, id);
++	if (!dev)
++		return -ENOMEM;
++
++	result = nvme_dev_map(dev);
+ 	if (result)
+-		goto release_pools;
++		goto out_uninit_ctrl;
  
-@@ -7042,6 +7063,7 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 	if (!ret && mapping_size != rbd_dev->mapping.size)
- 		rbd_dev_update_size(rbd_dev);
+-	result = nvme_init_ctrl(&dev->ctrl, &pdev->dev, &nvme_pci_ctrl_ops,
+-			quirks);
++	result = nvme_setup_prp_pools(dev);
++	if (result)
++		goto out_dev_unmap;
++
++	result = nvme_pci_alloc_iod_mempool(dev);
+ 	if (result)
+-		goto release_mempool;
++		goto out_release_prp_pools;
  
-+	rbd_image_header_cleanup(&header);
- 	return ret;
+ 	dev_info(dev->ctrl.device, "pci function %s\n", dev_name(&pdev->dev));
++	pci_set_drvdata(pdev, dev);
+ 
+ 	nvme_reset_ctrl(&dev->ctrl);
+ 	async_schedule(nvme_async_probe, dev);
+-
+ 	return 0;
+ 
+- release_mempool:
+-	mempool_destroy(dev->iod_mempool);
+- release_pools:
++out_release_prp_pools:
+ 	nvme_release_prp_pools(dev);
+- unmap:
++out_dev_unmap:
+ 	nvme_dev_unmap(dev);
+- put_pci:
+-	put_device(dev->dev);
+- free:
+-	kfree(dev->queues);
+-	kfree(dev);
++out_uninit_ctrl:
++	nvme_uninit_ctrl(&dev->ctrl);
+ 	return result;
  }
  
 -- 
