@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 559607BDFB8
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:33:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B13F37BE0AD
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377126AbjJINdI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:33:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58934 "EHLO
+        id S1377391AbjJINmw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:42:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377137AbjJINdG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:33:06 -0400
+        with ESMTP id S1377398AbjJINmv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A872CF
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:33:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0F0C433C9;
-        Mon,  9 Oct 2023 13:33:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B87D8
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D647DC433C7;
+        Mon,  9 Oct 2023 13:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858385;
-        bh=ILy9wAbrmlbc052by9LcMdqM80EGlHAsNhHeonA0tGY=;
+        s=korg; t=1696858969;
+        bh=mptkYOxD1+ryQEvn1WVmb6nfu/1JbppnpcCClgWhZTs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u/8clMtZmlbthxcOgBXlMs8OWdddLlD0xuyjmdPFiGRBSluRk6GBLZzJMIq5uatng
-         aSsjBACAZgoWbLwOFeHnKNtwkeiXsxHOxWBw4qY7XYVVO0XysRi4p2fsXd+RxOq4do
-         RI0q6bLePNhs9X7G3OYjKu10aAgAD4lvVMGcrbJE=
+        b=N2uQ1NUrr6xSrhSyi1poCHzRLfL5aE7mqFaW/Z5DZvaVKCqcF/reN/PMpFVmJFNXL
+         OyJ/aArbi4ouNe/xCCx9vJxToL0l/yyks+OaGaBe/L9XLLEqJZfQADXnlTdzH29imI
+         ekvsos9eQaMG9X4NdgYnoZeOmEQHcnmuPabD7WRM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 079/131] btrfs: properly report 0 avail for very full file systems
+        patches@lists.linux.dev, Alex Balcanquall <alex@alexbal.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 158/226] net: thunderbolt: Fix TCPv6 GSO checksum calculation
 Date:   Mon,  9 Oct 2023 15:01:59 +0200
-Message-ID: <20231009130118.754737400@linuxfoundation.org>
+Message-ID: <20231009130130.817470046@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,47 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit 58bfe2ccec5f9f137b41dd38f335290dcc13cd5c upstream.
+commit e0b65f9b81fef180cf5f103adecbe5505c961153 upstream.
 
-A user reported some issues with smaller file systems that get very
-full.  While investigating this issue I noticed that df wasn't showing
-100% full, despite having 0 chunk space and having < 1MiB of available
-metadata space.
+Alex reported that running ssh over IPv6 does not work with
+Thunderbolt/USB4 networking driver. The reason for that is that driver
+should call skb_is_gso() before calling skb_is_gso_v6(), and it should
+not return false after calculates the checksum successfully. This probably
+was a copy paste error from the original driver where it was done properly.
 
-This turns out to be an overflow issue, we're doing:
-
-  total_available_metadata_space - SZ_4M < global_block_rsv_size
-
-to determine if there's not enough space to make metadata allocations,
-which overflows if total_available_metadata_space is < 4M.  Fix this by
-checking to see if our available space is greater than the 4M threshold.
-This makes df properly report 100% usage on the file system.
-
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reported-by: Alex Balcanquall <alex@alexbal.com>
+Fixes: e69b6c02b4c3 ("net: Add support for networking over Thunderbolt cable")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/super.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/thunderbolt.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -2135,7 +2135,7 @@ static int btrfs_statfs(struct dentry *d
- 	 * calculated f_bavail.
- 	 */
- 	if (!mixed && block_rsv->space_info->full &&
--	    total_free_meta - thresh < block_rsv->size)
-+	    (total_free_meta < thresh || total_free_meta - thresh < block_rsv->size))
- 		buf->f_bavail = 0;
- 
- 	buf->f_type = BTRFS_SUPER_MAGIC;
+--- a/drivers/net/thunderbolt.c
++++ b/drivers/net/thunderbolt.c
+@@ -958,12 +958,11 @@ static bool tbnet_xmit_csum_and_map(stru
+ 		*tucso = ~csum_tcpudp_magic(ip_hdr(skb)->saddr,
+ 					    ip_hdr(skb)->daddr, 0,
+ 					    ip_hdr(skb)->protocol, 0);
+-	} else if (skb_is_gso_v6(skb)) {
++	} else if (skb_is_gso(skb) && skb_is_gso_v6(skb)) {
+ 		tucso = dest + ((void *)&(tcp_hdr(skb)->check) - data);
+ 		*tucso = ~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
+ 					  &ipv6_hdr(skb)->daddr, 0,
+ 					  IPPROTO_TCP, 0);
+-		return false;
+ 	} else if (protocol == htons(ETH_P_IPV6)) {
+ 		tucso = dest + skb_checksum_start_offset(skb) + skb->csum_offset;
+ 		*tucso = ~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
 
 
