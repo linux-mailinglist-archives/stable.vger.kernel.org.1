@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98DA67BE0C5
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CC297BDF1B
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377410AbjJINns (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:43:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56550 "EHLO
+        id S1376270AbjJIN01 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:26:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377236AbjJINns (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:48 -0400
+        with ESMTP id S1376769AbjJIN00 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F939C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A08C433CA;
-        Mon,  9 Oct 2023 13:43:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32364C5
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD44C433C9;
+        Mon,  9 Oct 2023 13:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859026;
-        bh=tyFcjQlQhrg56TetRyEJPV+eFdflSDmuYBsMcEnlm1c=;
+        s=korg; t=1696857982;
+        bh=yzUPHzKXbBNSQEuqmpo+P4AZTLNOcBXZ0Qvm6J+44VQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r/+Hcns1BTJ8VzLmHJ5bO61WJwiX/knOX4VegeEMx7+0YLh19JXF5rA622jLmqLP8
-         9Iy3LoJeywphX/oIOHpTv7lOvwtDTj38Q7hbtLgwLbk241gAzsvzhiaK2X2sajPtvx
-         ilBubBkLtQfPg6Kruk5xDqmVELPzGpjytiQK9d/A=
+        b=0fVZPeG/zndMHGtHPISTpYPN4KTRcoN2Nq1818svBLJhN3a/ABkkLmvzFkgcsmCGB
+         JQ6iH1ZimNm85SKJHvakw428B5yAueOeFqrlRZfMuEVwwm6P+2IZcD+E2F2tCph1wc
+         4dS1qA58+q7T5ZlkGj7oWWIUk5LvYzV9LzDIoyfc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
+        patches@lists.linux.dev, Benjamin Poirier <bpoirier@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <horms@kernel.org>,
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 175/226] rbd: take header_rwsem in rbd_dev_refresh() only when updating
+Subject: [PATCH 5.15 54/75] ipv4: Set offload_failed flag in fibmatch results
 Date:   Mon,  9 Oct 2023 15:02:16 +0200
-Message-ID: <20231009130131.216993522@linuxfoundation.org>
+Message-ID: <20231009130113.131156286@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,111 +52,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-commit 0b207d02bd9ab8dcc31b262ca9f60dbc1822500d upstream.
+[ Upstream commit 0add5c597f3253a9c6108a0a81d57f44ab0d9d30 ]
 
-rbd_dev_refresh() has been holding header_rwsem across header and
-parent info read-in unnecessarily for ages.  With commit 870611e4877e
-("rbd: get snapshot context after exclusive lock is ensured to be
-held"), the potential for deadlocks became much more real owning to
-a) header_rwsem now nesting inside lock_rwsem and b) rw_semaphores
-not allowing new readers after a writer is registered.
+Due to a small omission, the offload_failed flag is missing from ipv4
+fibmatch results. Make sure it is set correctly.
 
-For example, assuming that I/O request 1, I/O request 2 and header
-read-in request all target the same OSD:
+The issue can be witnessed using the following commands:
+echo "1 1" > /sys/bus/netdevsim/new_device
+ip link add dummy1 up type dummy
+ip route add 192.0.2.0/24 dev dummy1
+echo 1 > /sys/kernel/debug/netdevsim/netdevsim1/fib/fail_route_offload
+ip route add 198.51.100.0/24 dev dummy1
+ip route
+	# 192.168.15.0/24 has rt_trap
+	# 198.51.100.0/24 has rt_offload_failed
+ip route get 192.168.15.1 fibmatch
+	# Result has rt_trap
+ip route get 198.51.100.1 fibmatch
+	# Result differs from the route shown by `ip route`, it is missing
+	# rt_offload_failed
+ip link del dev dummy1
+echo 1 > /sys/bus/netdevsim/del_device
 
-1. I/O request 1 comes in and gets submitted
-2. watch error occurs
-3. rbd_watch_errcb() takes lock_rwsem for write, clears owner_cid and
-   releases lock_rwsem
-4. after reestablishing the watch, rbd_reregister_watch() calls
-   rbd_dev_refresh() which takes header_rwsem for write and submits
-   a header read-in request
-5. I/O request 2 comes in: after taking lock_rwsem for read in
-   __rbd_img_handle_request(), it blocks trying to take header_rwsem
-   for read in rbd_img_object_requests()
-6. another watch error occurs
-7. rbd_watch_errcb() blocks trying to take lock_rwsem for write
-8. I/O request 1 completion is received by the messenger but can't be
-   processed because lock_rwsem won't be granted anymore
-9. header read-in request completion can't be received, let alone
-   processed, because the messenger is stranded
-
-Change rbd_dev_refresh() to take header_rwsem only for actually
-updating rbd_dev->header.  Header and parent info read-in don't need
-any locking.
-
-Cc: stable@vger.kernel.org # 0b035401c570: rbd: move rbd_dev_refresh() definition
-Cc: stable@vger.kernel.org # 510a7330c82a: rbd: decouple header read-in from updating rbd_dev->header
-Cc: stable@vger.kernel.org # c10311776f0a: rbd: decouple parent info read-in from updating rbd_dev
-Cc: stable@vger.kernel.org
-Fixes: 870611e4877e ("rbd: get snapshot context after exclusive lock is ensured to be held")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Fixes: 36c5100e859d ("IPv4: Add "offload failed" indication to routes")
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230926182730.231208-1-bpoirier@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ net/ipv4/route.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 628b986351ee9..b0f7930524ba0 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -7058,7 +7058,14 @@ static void rbd_dev_update_header(struct rbd_device *rbd_dev,
- 	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
- 	rbd_assert(rbd_dev->header.object_prefix); /* !first_time */
- 
--	rbd_dev->header.image_size = header->image_size;
-+	if (rbd_dev->header.image_size != header->image_size) {
-+		rbd_dev->header.image_size = header->image_size;
-+
-+		if (!rbd_is_snap(rbd_dev)) {
-+			rbd_dev->mapping.size = header->image_size;
-+			rbd_dev_update_size(rbd_dev);
-+		}
-+	}
- 
- 	ceph_put_snap_context(rbd_dev->header.snapc);
- 	rbd_dev->header.snapc = header->snapc;
-@@ -7116,11 +7123,9 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- {
- 	struct rbd_image_header	header = { 0 };
- 	struct parent_image_info pii = { 0 };
--	u64 mapping_size;
- 	int ret;
- 
--	down_write(&rbd_dev->header_rwsem);
--	mapping_size = rbd_dev->mapping.size;
-+	dout("%s rbd_dev %p\n", __func__, rbd_dev);
- 
- 	ret = rbd_dev_header_info(rbd_dev, &header, false);
- 	if (ret)
-@@ -7136,18 +7141,13 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 			goto out;
- 	}
- 
-+	down_write(&rbd_dev->header_rwsem);
- 	rbd_dev_update_header(rbd_dev, &header);
- 	if (rbd_dev->parent)
- 		rbd_dev_update_parent(rbd_dev, &pii);
--
--	rbd_assert(!rbd_is_snap(rbd_dev));
--	rbd_dev->mapping.size = rbd_dev->header.image_size;
--
--out:
- 	up_write(&rbd_dev->header_rwsem);
--	if (!ret && mapping_size != rbd_dev->mapping.size)
--		rbd_dev_update_size(rbd_dev);
- 
-+out:
- 	rbd_parent_info_cleanup(&pii);
- 	rbd_image_header_cleanup(&header);
- 	return ret;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 968cc4aa6e96c..ea5329cb0fce2 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -3430,6 +3430,8 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 				    fa->fa_type == fri.type) {
+ 					fri.offload = READ_ONCE(fa->offload);
+ 					fri.trap = READ_ONCE(fa->trap);
++					fri.offload_failed =
++						READ_ONCE(fa->offload_failed);
+ 					break;
+ 				}
+ 			}
 -- 
 2.40.1
 
