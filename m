@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAFA67BE0BA
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BAAA7BDEC0
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376329AbjJINnY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58174 "EHLO
+        id S1376410AbjJINWk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:22:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377383AbjJINnY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:24 -0400
+        with ESMTP id S1376375AbjJINWj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B834B9C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044DBC433C7;
-        Mon,  9 Oct 2023 13:43:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9624E91
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8265C433C8;
+        Mon,  9 Oct 2023 13:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859001;
-        bh=ix5ab/ff4zRK+84F9YTiY3nPHSBgEH82Bgo+95wdOU0=;
+        s=korg; t=1696857757;
+        bh=QC6Zt0pY3hss5R18n1dHFd2MozOYVlwsy69kEt/B0vU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AL9/NSHFc539+wD155kRRjD04uO3k846zOig3CjdT8s54T9dJCVmmArQoAWTLuuRh
-         epks9KEuSCyPNojPpLqlMg6u0D05NstK4ke715SdXEvlgz/Naad4JmEHG6NtYEV6YH
-         cQvEpKq8oCQDGjF+AisLtUxr1s6tPlV+ytwPHU10=
+        b=b0gAQWplPbFqrLUIA1fLxirelbIM+BrCbdWqKsKAml9NOKzvfEbWeuckQqbGZ7Zxq
+         yccG58mgFp7ZFomdIOkfa7/l8Uei1UnrxZvflIMvkbzydvy8hRoFHm5wqdKJdya/8U
+         J3jjv3HdzmxTvl3eZnd8Gl0MvsWbMkRdCe7YeXKc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Coddington <bcodding@redhat.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 167/226] NFS: rename nfs_client_kset to nfs_kset
+        patches@lists.linux.dev,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>,
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.1 147/162] RDMA/uverbs: Fix typo of sizeof argument
 Date:   Mon,  9 Oct 2023 15:02:08 +0200
-Message-ID: <20231009130131.029764808@linuxfoundation.org>
+Message-ID: <20231009130126.969684258@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,77 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-[ Upstream commit 8b18a2edecc0741b0eecf8b18fdb356a0f8682de ]
+commit c489800e0d48097fc6afebd862c6afa039110a36 upstream.
 
-Be brief and match the subsystem name.  There's no need to distinguish this
-kset variable from the server.
+Since size of 'hdr' pointer and '*hdr' structure is equal on 64-bit
+machines issue probably didn't cause any wrong behavior. But anyway,
+fixing of typo is required.
 
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 956fd46f97d2 ("NFSv4: Fix a state manager thread deadlock regression")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: da0f60df7bd5 ("RDMA/uverbs: Prohibit write() calls with too small buffers")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Link: https://lore.kernel.org/r/20230905103258.1738246-1-konstantin.meskhidze@huawei.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/sysfs.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/infiniband/core/uverbs_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
-index 8cb70755e3c9e..f7f778e3e5ca7 100644
---- a/fs/nfs/sysfs.c
-+++ b/fs/nfs/sysfs.c
-@@ -18,7 +18,7 @@
- #include "sysfs.h"
+--- a/drivers/infiniband/core/uverbs_main.c
++++ b/drivers/infiniband/core/uverbs_main.c
+@@ -535,7 +535,7 @@ static ssize_t verify_hdr(struct ib_uver
+ 	if (hdr->in_words * 4 != count)
+ 		return -EINVAL;
  
- struct kobject *nfs_client_kobj;
--static struct kset *nfs_client_kset;
-+static struct kset *nfs_kset;
- 
- static void nfs_netns_object_release(struct kobject *kobj)
- {
-@@ -55,13 +55,13 @@ static struct kobject *nfs_netns_object_alloc(const char *name,
- 
- int nfs_sysfs_init(void)
- {
--	nfs_client_kset = kset_create_and_add("nfs", NULL, fs_kobj);
--	if (!nfs_client_kset)
-+	nfs_kset = kset_create_and_add("nfs", NULL, fs_kobj);
-+	if (!nfs_kset)
- 		return -ENOMEM;
--	nfs_client_kobj = nfs_netns_object_alloc("net", nfs_client_kset, NULL);
-+	nfs_client_kobj = nfs_netns_object_alloc("net", nfs_kset, NULL);
- 	if  (!nfs_client_kobj) {
--		kset_unregister(nfs_client_kset);
--		nfs_client_kset = NULL;
-+		kset_unregister(nfs_kset);
-+		nfs_kset = NULL;
- 		return -ENOMEM;
- 	}
- 	return 0;
-@@ -70,7 +70,7 @@ int nfs_sysfs_init(void)
- void nfs_sysfs_exit(void)
- {
- 	kobject_put(nfs_client_kobj);
--	kset_unregister(nfs_client_kset);
-+	kset_unregister(nfs_kset);
- }
- 
- static ssize_t nfs_netns_identifier_show(struct kobject *kobj,
-@@ -158,7 +158,7 @@ static struct nfs_netns_client *nfs_netns_client_alloc(struct kobject *parent,
- 	p = kzalloc(sizeof(*p), GFP_KERNEL);
- 	if (p) {
- 		p->net = net;
--		p->kobject.kset = nfs_client_kset;
-+		p->kobject.kset = nfs_kset;
- 		if (kobject_init_and_add(&p->kobject, &nfs_netns_client_type,
- 					parent, "nfs_client") == 0)
- 			return p;
--- 
-2.40.1
-
+-	if (count < method_elm->req_size + sizeof(hdr)) {
++	if (count < method_elm->req_size + sizeof(*hdr)) {
+ 		/*
+ 		 * rdma-core v18 and v19 have a bug where they send DESTROY_CQ
+ 		 * with a 16 byte write instead of 24. Old kernels didn't
 
 
