@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D51417BE13B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 126277BE1AD
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:52:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234542AbjJINsY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:48:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39936 "EHLO
+        id S1377502AbjJINwt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:52:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232860AbjJINsY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:48:24 -0400
+        with ESMTP id S1377454AbjJINws (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:52:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D068994
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:48:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4CBC433C9;
-        Mon,  9 Oct 2023 13:48:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2882B94
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:52:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635CAC433CA;
+        Mon,  9 Oct 2023 13:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859302;
-        bh=IHO2gGPJrUePJTk6V8kSOgjZJSZgyrzD8IzRGSX6d/E=;
+        s=korg; t=1696859566;
+        bh=TZzh1Yeg7XpJIKfNBYxqsKvp4016rL4GBEH+43px7MM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=prJPZ3U6DePBV930jfqpt6AswtKdEhAYFZfRCQ4nN2Hs5tJQaxX2pPCvVdC5zK2Nu
-         u5o7JBuXhyKUF8i1hu8cwfTSZ+wfIbFrB6bfAU2iH3SS8VT7nYK9Hb2AYgZK8VUHxv
-         mK78YoqqymnCgJywlQ41m2shnLwdVprSmLI2y9+c=
+        b=e44zSoocBB0baBiSo2rIQ3BQFVHgbCH5vbCOHJfNhDpmw1ImF16R7RsJ9esvef3I0
+         dDgYO61m9XwBBM4ivutc/H1R57cUp89xnIkn4ejz9VImSz7vjkCyIKJHKikZuNKbom
+         SK/pcMOuNIY/fxmYlfpab24FCEwyz7o3LvZtcVrg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 4.14 34/55] ata: libata: disallow dev-initiated LPM transitions to unsupported states
+        patches@lists.linux.dev, stable@kernel.org,
+        Andreas Dilger <adilger@dilger.ca>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Shida Zhang <zhangshida@kylinos.cn>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.19 61/91] ext4: fix rec_len verify error
 Date:   Mon,  9 Oct 2023 15:06:33 +0200
-Message-ID: <20231009130108.996470435@linuxfoundation.org>
+Message-ID: <20231009130113.620133770@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,114 +51,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+From: Shida Zhang <zhangshida@kylinos.cn>
 
-commit 24e0e61db3cb86a66824531989f1df80e0939f26 upstream.
+commit 7fda67e8c3ab6069f75888f67958a6d30454a9f6 upstream.
 
-In AHCI 1.3.1, the register description for CAP.SSC:
-"When cleared to ‘0’, software must not allow the HBA to initiate
-transitions to the Slumber state via agressive link power management nor
-the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
-must be programmed to disallow device initiated Slumber requests."
+With the configuration PAGE_SIZE 64k and filesystem blocksize 64k,
+a problem occurred when more than 13 million files were directly created
+under a directory:
 
-In AHCI 1.3.1, the register description for CAP.PSC:
-"When cleared to ‘0’, software must not allow the HBA to initiate
-transitions to the Partial state via agressive link power management nor
-the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
-must be programmed to disallow device initiated Partial requests."
+EXT4-fs error (device xx): ext4_dx_csum_set:492: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): ext4_dx_csum_verify:463: inode #xxxx: comm xxxxx: dir seems corrupt?  Run e2fsck -D.
+EXT4-fs error (device xx): dx_probe:856: inode #xxxx: block 8188: comm xxxxx: Directory index failed checksum
 
-Ensure that we always set the corresponding bits in PxSCTL.IPM, such that
-a device is not allowed to initiate transitions to power states which are
-unsupported by the HBA.
+When enough files are created, the fake_dirent->reclen will be 0xffff.
+it doesn't equal to the blocksize 65536, i.e. 0x10000.
 
-DevSleep is always initiated by the HBA, however, for completeness, set the
-corresponding bit in PxSCTL.IPM such that agressive link power management
-cannot transition to DevSleep if DevSleep is not supported.
+But it is not the same condition when blocksize equals to 4k.
+when enough files are created, the fake_dirent->reclen will be 0x1000.
+it equals to the blocksize 4k, i.e. 0x1000.
 
-sata_link_scr_lpm() is used by libahci, ata_piix and libata-pmp.
-However, only libahci has the ability to read the CAP/CAP2 register to see
-if these features are supported. Therefore, in order to not introduce any
-regressions on ata_piix or libata-pmp, create flags that indicate that the
-respective feature is NOT supported. This way, the behavior for ata_piix
-and libata-pmp should remain unchanged.
+The problem seems to be related to the limitation of the 16-bit field
+when the blocksize is set to 64k.
+To address this, helpers like ext4_rec_len_{from,to}_disk has already
+been introduced to complete the conversion between the encoded and the
+plain form of rec_len.
 
-This change is based on a patch originally submitted by Runa Guo-oc.
+So fix this one by using the helper, and all the other in this file too.
 
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Fixes: 1152b2617a6e ("libata: implement sata_link_scr_lpm() and make ata_dev_set_feature() global")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Cc: stable@kernel.org
+Fixes: dbe89444042a ("ext4: Calculate and verify checksums for htree nodes")
+Suggested-by: Andreas Dilger <adilger@dilger.ca>
+Suggested-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20230803060938.1929759-1-zhangshida@kylinos.cn
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/ahci.c        |    9 +++++++++
- drivers/ata/libata-core.c |   19 ++++++++++++++++---
- include/linux/libata.h    |    4 ++++
- 3 files changed, 29 insertions(+), 3 deletions(-)
+ fs/ext4/namei.c |   26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1775,6 +1775,15 @@ static int ahci_init_one(struct pci_dev
- 	else
- 		dev_info(&pdev->dev, "SSS flag set, parallel bus scan disabled\n");
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -322,17 +322,17 @@ static struct ext4_dir_entry_tail *get_d
+ 						   struct ext4_dir_entry *de)
+ {
+ 	struct ext4_dir_entry_tail *t;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
  
-+	if (!(hpriv->cap & HOST_CAP_PART))
-+		host->flags |= ATA_HOST_NO_PART;
-+
-+	if (!(hpriv->cap & HOST_CAP_SSC))
-+		host->flags |= ATA_HOST_NO_SSC;
-+
-+	if (!(hpriv->cap2 & HOST_CAP2_SDS))
-+		host->flags |= ATA_HOST_NO_DEVSLP;
-+
- 	if (pi.flags & ATA_FLAG_EM)
- 		ahci_reset_em(host);
+ #ifdef PARANOID
+ 	struct ext4_dir_entry *d, *top;
  
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -3993,10 +3993,23 @@ int sata_link_scr_lpm(struct ata_link *l
- 		scontrol |= (0x6 << 8);
- 		break;
- 	case ATA_LPM_MIN_POWER:
--		if (ata_link_nr_enabled(link) > 0)
--			/* no restrictions on LPM transitions */
-+		if (ata_link_nr_enabled(link) > 0) {
-+			/* assume no restrictions on LPM transitions */
- 			scontrol &= ~(0x7 << 8);
--		else {
-+
-+			/*
-+			 * If the controller does not support partial, slumber,
-+			 * or devsleep, then disallow these transitions.
-+			 */
-+			if (link->ap->host->flags & ATA_HOST_NO_PART)
-+				scontrol |= (0x1 << 8);
-+
-+			if (link->ap->host->flags & ATA_HOST_NO_SSC)
-+				scontrol |= (0x2 << 8);
-+
-+			if (link->ap->host->flags & ATA_HOST_NO_DEVSLP)
-+				scontrol |= (0x4 << 8);
-+		} else {
- 			/* empty port, power off */
- 			scontrol &= ~0xf;
- 			scontrol |= (0x1 << 2);
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -279,6 +279,10 @@ enum {
- 	ATA_HOST_PARALLEL_SCAN	= (1 << 2),	/* Ports on this host can be scanned in parallel */
- 	ATA_HOST_IGNORE_ATA	= (1 << 3),	/* Ignore ATA devices on this host. */
+ 	d = de;
+ 	top = (struct ext4_dir_entry *)(((void *)de) +
+-		(EXT4_BLOCK_SIZE(inode->i_sb) -
+-		sizeof(struct ext4_dir_entry_tail)));
+-	while (d < top && d->rec_len)
++		(blocksize - sizeof(struct ext4_dir_entry_tail)));
++	while (d < top && ext4_rec_len_from_disk(d->rec_len, blocksize))
+ 		d = (struct ext4_dir_entry *)(((void *)d) +
+-		    le16_to_cpu(d->rec_len));
++		    ext4_rec_len_from_disk(d->rec_len, blocksize));
  
-+	ATA_HOST_NO_PART	= (1 << 4), /* Host does not support partial */
-+	ATA_HOST_NO_SSC		= (1 << 5), /* Host does not support slumber */
-+	ATA_HOST_NO_DEVSLP	= (1 << 6), /* Host does not support devslp */
-+
- 	/* bits 24:31 of host->flags are reserved for LLD specific flags */
+ 	if (d != top)
+ 		return NULL;
+@@ -343,7 +343,8 @@ static struct ext4_dir_entry_tail *get_d
+ #endif
  
- 	/* various lengths of time */
+ 	if (t->det_reserved_zero1 ||
+-	    le16_to_cpu(t->det_rec_len) != sizeof(struct ext4_dir_entry_tail) ||
++	    (ext4_rec_len_from_disk(t->det_rec_len, blocksize) !=
++	     sizeof(struct ext4_dir_entry_tail)) ||
+ 	    t->det_reserved_zero2 ||
+ 	    t->det_reserved_ft != EXT4_FT_DIR_CSUM)
+ 		return NULL;
+@@ -425,13 +426,14 @@ static struct dx_countlimit *get_dx_coun
+ 	struct ext4_dir_entry *dp;
+ 	struct dx_root_info *root;
+ 	int count_offset;
++	int blocksize = EXT4_BLOCK_SIZE(inode->i_sb);
++	unsigned int rlen = ext4_rec_len_from_disk(dirent->rec_len, blocksize);
+ 
+-	if (le16_to_cpu(dirent->rec_len) == EXT4_BLOCK_SIZE(inode->i_sb))
++	if (rlen == blocksize)
+ 		count_offset = 8;
+-	else if (le16_to_cpu(dirent->rec_len) == 12) {
++	else if (rlen == 12) {
+ 		dp = (struct ext4_dir_entry *)(((void *)dirent) + 12);
+-		if (le16_to_cpu(dp->rec_len) !=
+-		    EXT4_BLOCK_SIZE(inode->i_sb) - 12)
++		if (ext4_rec_len_from_disk(dp->rec_len, blocksize) != blocksize - 12)
+ 			return NULL;
+ 		root = (struct dx_root_info *)(((void *)dp + 12));
+ 		if (root->reserved_zero ||
+@@ -1244,6 +1246,7 @@ static int dx_make_map(struct inode *dir
+ 	unsigned int buflen = bh->b_size;
+ 	char *base = bh->b_data;
+ 	struct dx_hash_info h = *hinfo;
++	int blocksize = EXT4_BLOCK_SIZE(dir->i_sb);
+ 
+ 	if (ext4_has_metadata_csum(dir->i_sb))
+ 		buflen -= sizeof(struct ext4_dir_entry_tail);
+@@ -1257,11 +1260,12 @@ static int dx_make_map(struct inode *dir
+ 			map_tail--;
+ 			map_tail->hash = h.hash;
+ 			map_tail->offs = ((char *) de - base)>>2;
+-			map_tail->size = le16_to_cpu(de->rec_len);
++			map_tail->size = ext4_rec_len_from_disk(de->rec_len,
++								blocksize);
+ 			count++;
+ 			cond_resched();
+ 		}
+-		de = ext4_next_entry(de, dir->i_sb->s_blocksize);
++		de = ext4_next_entry(de, blocksize);
+ 	}
+ 	return count;
+ }
 
 
