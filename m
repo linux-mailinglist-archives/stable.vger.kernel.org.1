@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BAA27BDE6B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73ED27BDF5C
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:29:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377038AbjJINTb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:19:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38440 "EHLO
+        id S1376979AbjJIN3W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:29:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377040AbjJINTb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:19:31 -0400
+        with ESMTP id S1377133AbjJIN3C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:29:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBC9D94
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:19:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369EEC433CB;
-        Mon,  9 Oct 2023 13:19:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B41BCC6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:29:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF37C433C7;
+        Mon,  9 Oct 2023 13:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857569;
-        bh=MB9J7nd3O7gX0LG7cx2c15shubYHPS22Zx08CebNJYk=;
+        s=korg; t=1696858141;
+        bh=ZgnkX/Zcp1YzgQZtPa17KqYuEiFz2Mfqxe80/W/AMHg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DTGbC80aeGOZATs2LCT6BY6BGFFQwEURYsQhVNlOwsFy+bgCLTTvmCsOM6ULzgWP8
-         6B8lVuFd0Euq6Tx4o2DJLRyh/eiO9TLqjmQ5za/LjwWB13FB42b9S2KlsNO1DKElxe
-         GJAnDRbj9NB8TII7E9XVQmP7JSgn9GlLi5TD5aK8=
+        b=RKeI2C7yBwzdIl42JPbBIe7Sv1+Qceu+osdvpdvkZhZ2O7eUo0Ua0OjV+KLux5uFc
+         2mEP6LujbU8U/2HmJ/kd7fPOTYvD30BYxipeA9UnzCTbvlqjD4BpoH5CGVuuLfi4Q+
+         GNUF/HxOZHvsp6PXTAThYVbGb64/EW/bFEQ4D9Tk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yao Xiao <xiaoyao@rock-chips.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev,
+        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/162] Bluetooth: Delete unused hci_req_prepare_suspend() declaration
+Subject: [PATCH 5.4 029/131] net: rds: Fix possible NULL-pointer dereference
 Date:   Mon,  9 Oct 2023 15:01:09 +0200
-Message-ID: <20231009130125.349909918@linuxfoundation.org>
+Message-ID: <20231009130117.203256707@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,37 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Xiao <xiaoyao@rock-chips.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit cbaabbcdcbd355f0a1ccc09a925575c51c270750 ]
+[ Upstream commit f1d95df0f31048f1c59092648997686e3f7d9478 ]
 
-hci_req_prepare_suspend() has been deprecated in favor of
-hci_suspend_sync().
+In rds_rdma_cm_event_handler_cmn() check, if conn pointer exists
+before dereferencing it as rdma_set_service_type() argument
 
-Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
-Signed-off-by: Yao Xiao <xiaoyao@rock-chips.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: fd261ce6a30e ("rds: rdma: update rdma transport for tos")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_request.h | 2 --
- 1 file changed, 2 deletions(-)
+ net/rds/rdma_transport.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_request.h b/net/bluetooth/hci_request.h
-index b9c5a98238374..0be75cf0efed8 100644
---- a/net/bluetooth/hci_request.h
-+++ b/net/bluetooth/hci_request.h
-@@ -71,7 +71,5 @@ struct sk_buff *hci_prepare_cmd(struct hci_dev *hdev, u16 opcode, u32 plen,
- void hci_req_add_le_scan_disable(struct hci_request *req, bool rpa_le_conn);
- void hci_req_add_le_passive_scan(struct hci_request *req);
+diff --git a/net/rds/rdma_transport.c b/net/rds/rdma_transport.c
+index 5f741e51b4baa..bb38124a5d3db 100644
+--- a/net/rds/rdma_transport.c
++++ b/net/rds/rdma_transport.c
+@@ -86,10 +86,12 @@ static int rds_rdma_cm_event_handler_cmn(struct rdma_cm_id *cm_id,
+ 		break;
  
--void hci_req_prepare_suspend(struct hci_dev *hdev, enum suspended_state next);
--
- void hci_request_setup(struct hci_dev *hdev);
- void hci_request_cancel_all(struct hci_dev *hdev);
+ 	case RDMA_CM_EVENT_ADDR_RESOLVED:
+-		rdma_set_service_type(cm_id, conn->c_tos);
+-		/* XXX do we need to clean up if this fails? */
+-		ret = rdma_resolve_route(cm_id,
++		if (conn) {
++			rdma_set_service_type(cm_id, conn->c_tos);
++			/* XXX do we need to clean up if this fails? */
++			ret = rdma_resolve_route(cm_id,
+ 					 RDS_RDMA_RESOLVE_TIMEOUT_MS);
++		}
+ 		break;
+ 
+ 	case RDMA_CM_EVENT_ROUTE_RESOLVED:
 -- 
 2.40.1
 
