@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D3F7BDD1A
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BF967BDFF3
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376326AbjJINH1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:07:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42644 "EHLO
+        id S1377191AbjJINgC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:36:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376665AbjJINH1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:07:27 -0400
+        with ESMTP id S1377192AbjJINgA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCE199
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:07:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFD8C433C7;
-        Mon,  9 Oct 2023 13:07:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3AB8B6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:35:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB44C433C7;
+        Mon,  9 Oct 2023 13:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856844;
-        bh=aCOinenyqnF1/q4dI03klcYOVHMTCXsa5VSye9jiQRY=;
+        s=korg; t=1696858557;
+        bh=ieH/DvJ/nOWgkksxEdzT0cJGQ9MM2C6Ht7DQSzP4exk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rtW/iwBTiv9ob4p+rLCbAsQJrYTCYLoLnLPJL4I+MgqnDYKAiY6/xlVv+3ZwfN5Zk
-         XfxLFXZ+wmaAp/zRKaH9tVtvxm4Yml3YUmN6MIJUMU75YRUpyEz4fyuEWLTGwc9B6a
-         VPqbLpbxfdbpjNd+JpDkesbmyPx5PtzhxMbpeEgw=
+        b=nZEi8cAULExHvObYth/Br2LgPWYfB38tyWmccLMqylNknkxxvPkadXSTID4OKuDGV
+         sulhVJnezF3K31X3pixjTsNDlv222//ZYmrv0RLNj6EiWzwKg9Nmazy4vd2gfEDW2T
+         qzfLiDKVclYvZgTaS+Z7AsA2I3b0oVyDeFhlaMVQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, SungHwan Jung <onenowy@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 002/163] ALSA: hda/realtek: Add quirk for HP Victus 16-d1xxx to enable mute LED
+        patches@lists.linux.dev, Hannes Reinecke <hare@suse.de>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 005/226] ata: ahci: Drop pointless VPRINTK() calls and convert the remaining ones
 Date:   Mon,  9 Oct 2023 14:59:26 +0200
-Message-ID: <20231009130124.091196309@linuxfoundation.org>
+Message-ID: <20231009130126.854433422@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,80 +49,156 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SungHwan Jung <onenowy@gmail.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit 93dc18e11b1ab2d485b69f91c973e6b83e47ebd0 ]
+[ Upstream commit 93c7711494f47f9c829321e2a8711671b02f6e4c ]
 
-This quirk enables mute LED on HP Victus 16-d1xxx (8A25) laptops, which
-use ALC245 codec.
+Drop pointless VPRINTK() calls for entering and existing interrupt
+routines and convert the remaining calls to dev_dbg().
 
-Signed-off-by: SungHwan Jung <onenowy@gmail.com>
-Link: https://lore.kernel.org/r/20230823114051.3921-1-onenowy@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 41b07476da38 ("ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support")
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Stable-dep-of: 737dd811a3db ("ata: libahci: clear pending interrupt status")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/ata/ahci.c       |  4 +---
+ drivers/ata/ahci_xgene.c |  4 ----
+ drivers/ata/libahci.c    | 18 ++++--------------
+ 3 files changed, 5 insertions(+), 21 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index ccf99f881cc4f..00051c14e263a 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4639,6 +4639,22 @@ static void alc236_fixup_hp_mute_led_coefbit2(struct hda_codec *codec,
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index bf949f7da483f..d831a80c25f04 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -703,7 +703,7 @@ static void ahci_pci_init_controller(struct ata_host *host)
+ 
+ 		/* clear port IRQ */
+ 		tmp = readl(port_mmio + PORT_IRQ_STAT);
+-		VPRINTK("PORT_IRQ_STAT 0x%x\n", tmp);
++		dev_dbg(&pdev->dev, "PORT_IRQ_STAT 0x%x\n", tmp);
+ 		if (tmp)
+ 			writel(tmp, port_mmio + PORT_IRQ_STAT);
  	}
+@@ -1495,7 +1495,6 @@ static irqreturn_t ahci_thunderx_irq_handler(int irq, void *dev_instance)
+ 	u32 irq_stat, irq_masked;
+ 	unsigned int handled = 1;
+ 
+-	VPRINTK("ENTER\n");
+ 	hpriv = host->private_data;
+ 	mmio = hpriv->mmio;
+ 	irq_stat = readl(mmio + HOST_IRQ_STAT);
+@@ -1512,7 +1511,6 @@ static irqreturn_t ahci_thunderx_irq_handler(int irq, void *dev_instance)
+ 		irq_stat = readl(mmio + HOST_IRQ_STAT);
+ 		spin_unlock(&host->lock);
+ 	} while (irq_stat);
+-	VPRINTK("EXIT\n");
+ 
+ 	return IRQ_RETVAL(handled);
+ }
+diff --git a/drivers/ata/ahci_xgene.c b/drivers/ata/ahci_xgene.c
+index 16246c843365e..e0f0577ac191c 100644
+--- a/drivers/ata/ahci_xgene.c
++++ b/drivers/ata/ahci_xgene.c
+@@ -588,8 +588,6 @@ static irqreturn_t xgene_ahci_irq_intr(int irq, void *dev_instance)
+ 	void __iomem *mmio;
+ 	u32 irq_stat, irq_masked;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	hpriv = host->private_data;
+ 	mmio = hpriv->mmio;
+ 
+@@ -612,8 +610,6 @@ static irqreturn_t xgene_ahci_irq_intr(int irq, void *dev_instance)
+ 
+ 	spin_unlock(&host->lock);
+ 
+-	VPRINTK("EXIT\n");
+-
+ 	return IRQ_RETVAL(rc);
  }
  
-+static void alc245_fixup_hp_mute_led_coefbit(struct hda_codec *codec,
-+					  const struct hda_fixup *fix,
-+					  int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		spec->mute_led_polarity = 0;
-+		spec->mute_led_coef.idx = 0x0b;
-+		spec->mute_led_coef.mask = 3 << 2;
-+		spec->mute_led_coef.on = 2 << 2;
-+		spec->mute_led_coef.off = 1 << 2;
-+		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
-+	}
-+}
-+
- /* turn on/off mic-mute LED per capture hook by coef bit */
- static int coef_micmute_led_set(struct led_classdev *led_cdev,
- 				enum led_brightness brightness)
-@@ -7293,6 +7309,7 @@ enum {
- 	ALC236_FIXUP_DELL_DUAL_CODECS,
- 	ALC287_FIXUP_CS35L41_I2C_2_THINKPAD_ACPI,
- 	ALC287_FIXUP_TAS2781_I2C,
-+	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
- };
+diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
+index fec2e9754aed2..08c4b641691b1 100644
+--- a/drivers/ata/libahci.c
++++ b/drivers/ata/libahci.c
+@@ -1215,12 +1215,12 @@ static void ahci_port_init(struct device *dev, struct ata_port *ap,
  
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -9377,6 +9394,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC269_FIXUP_THINKPAD_ACPI,
- 	},
-+	[ALC245_FIXUP_HP_MUTE_LED_COEFBIT] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc245_fixup_hp_mute_led_coefbit,
-+	},
- };
+ 	/* clear SError */
+ 	tmp = readl(port_mmio + PORT_SCR_ERR);
+-	VPRINTK("PORT_SCR_ERR 0x%x\n", tmp);
++	dev_dbg(dev, "PORT_SCR_ERR 0x%x\n", tmp);
+ 	writel(tmp, port_mmio + PORT_SCR_ERR);
  
- static const struct snd_pci_quirk alc269_fixup_tbl[] = {
-@@ -9650,6 +9671,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x89c6, "Zbook Fury 17 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x89ca, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x89d3, "HP EliteBook 645 G9 (MB 89D2)", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8a25, "HP Victus 16-d1xxx (MB 8A25)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8a78, "HP Dev One", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x103c, 0x8aa0, "HP ProBook 440 G9 (MB 8A9E)", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8aa3, "HP ProBook 450 G9 (MB 8AA1)", ALC236_FIXUP_HP_GPIO_LED),
+ 	/* clear port IRQ */
+ 	tmp = readl(port_mmio + PORT_IRQ_STAT);
+-	VPRINTK("PORT_IRQ_STAT 0x%x\n", tmp);
++	dev_dbg(dev, "PORT_IRQ_STAT 0x%x\n", tmp);
+ 	if (tmp)
+ 		writel(tmp, port_mmio + PORT_IRQ_STAT);
+ 
+@@ -1251,10 +1251,10 @@ void ahci_init_controller(struct ata_host *host)
+ 	}
+ 
+ 	tmp = readl(mmio + HOST_CTL);
+-	VPRINTK("HOST_CTL 0x%x\n", tmp);
++	dev_dbg(host->dev, "HOST_CTL 0x%x\n", tmp);
+ 	writel(tmp | HOST_IRQ_EN, mmio + HOST_CTL);
+ 	tmp = readl(mmio + HOST_CTL);
+-	VPRINTK("HOST_CTL 0x%x\n", tmp);
++	dev_dbg(host->dev, "HOST_CTL 0x%x\n", tmp);
+ }
+ EXPORT_SYMBOL_GPL(ahci_init_controller);
+ 
+@@ -1905,8 +1905,6 @@ static irqreturn_t ahci_multi_irqs_intr_hard(int irq, void *dev_instance)
+ 	void __iomem *port_mmio = ahci_port_base(ap);
+ 	u32 status;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	status = readl(port_mmio + PORT_IRQ_STAT);
+ 	writel(status, port_mmio + PORT_IRQ_STAT);
+ 
+@@ -1914,8 +1912,6 @@ static irqreturn_t ahci_multi_irqs_intr_hard(int irq, void *dev_instance)
+ 	ahci_handle_port_interrupt(ap, port_mmio, status);
+ 	spin_unlock(ap->lock);
+ 
+-	VPRINTK("EXIT\n");
+-
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -1932,9 +1928,7 @@ u32 ahci_handle_port_intr(struct ata_host *host, u32 irq_masked)
+ 		ap = host->ports[i];
+ 		if (ap) {
+ 			ahci_port_intr(ap);
+-			VPRINTK("port %u\n", i);
+ 		} else {
+-			VPRINTK("port %u (no irq)\n", i);
+ 			if (ata_ratelimit())
+ 				dev_warn(host->dev,
+ 					 "interrupt on disabled port %u\n", i);
+@@ -1955,8 +1949,6 @@ static irqreturn_t ahci_single_level_irq_intr(int irq, void *dev_instance)
+ 	void __iomem *mmio;
+ 	u32 irq_stat, irq_masked;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	hpriv = host->private_data;
+ 	mmio = hpriv->mmio;
+ 
+@@ -1984,8 +1976,6 @@ static irqreturn_t ahci_single_level_irq_intr(int irq, void *dev_instance)
+ 
+ 	spin_unlock(&host->lock);
+ 
+-	VPRINTK("EXIT\n");
+-
+ 	return IRQ_RETVAL(rc);
+ }
+ 
 -- 
 2.40.1
 
