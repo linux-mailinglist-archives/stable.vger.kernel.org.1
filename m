@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F13D7BE0A4
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEA037BDDE6
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377376AbjJINm3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:42:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48590 "EHLO
+        id S1376863AbjJINOI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:14:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377377AbjJINm2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:28 -0400
+        with ESMTP id S1376931AbjJINNm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 384819D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF3FC433C7;
-        Mon,  9 Oct 2023 13:42:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0496F91
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431A5C433C7;
+        Mon,  9 Oct 2023 13:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858946;
-        bh=yiqx4y9AifpPfEUIhqh4ETayJHIj5YagPxvwAPw9oQM=;
+        s=korg; t=1696857190;
+        bh=WwTladKqb2T9+ql1JjjSDPNRSuGvtWKFG0RcJVpuRYM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=waHYcdW2mQHV2RKQkhcLFnaT3rNQLLgM/diaXGVeMvUrrjgdKsxHXyIbIRQF7WKG3
-         GkSgH3BIXLBh9kHWfwomhfZdGhEyPsY40ubET+47u8DW5FVCAXYMdyetQq+EbpLNCx
-         b1BsBk+JvIdtNkV3HXHYD1uNB4ajuO1kokHJwKCc=
+        b=ZxUg0wansMQv55cOQPZSTHQzuMkl3nEeGFIQaJodtMQimcNkL94Uu8i19W6UhaZB4
+         mSEfKXlTS0XD/huOKS/MtSR1PoLZbvxI3iONu4TJGbSdgL92nxDXM03mkJw+z29DJe
+         MVpleRMLb/34Mg/mkSpKcWkNNm6EmZB84aIbwK+8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Han Xu <han.xu@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Phil Sutter <phil@nwl.cc>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 122/226] spi: nxp-fspi: reset the FLSHxCR1 registers
+Subject: [PATCH 6.5 119/163] selftests: netfilter: Test nf_tables audit logging
 Date:   Mon,  9 Oct 2023 15:01:23 +0200
-Message-ID: <20231009130129.965969399@linuxfoundation.org>
+Message-ID: <20231009130127.316281688@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +49,354 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Han Xu <han.xu@nxp.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 18495676f7886e105133f1dc06c1d5e8d5436f32 ]
+[ Upstream commit e8dbde59ca3fe925d0105bfb380e8429928b16dd ]
 
-Reset the FLSHxCR1 registers to default value. ROM may set the register
-value and it affects the SPI NAND normal functions.
+Compare NETFILTER_CFG type audit logs emitted from kernel upon ruleset
+modifications against expected output.
 
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Link: https://lore.kernel.org/r/20230906183254.235847-1-han.xu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 0d880dc6f032 ("netfilter: nf_tables: Deduplicate nft_register_obj audit logs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/netfilter/.gitignore  |   1 +
+ tools/testing/selftests/netfilter/Makefile    |   4 +-
+ .../selftests/netfilter/audit_logread.c       | 165 ++++++++++++++++++
+ tools/testing/selftests/netfilter/config      |   1 +
+ .../testing/selftests/netfilter/nft_audit.sh  | 108 ++++++++++++
+ 5 files changed, 277 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/netfilter/audit_logread.c
+ create mode 100755 tools/testing/selftests/netfilter/nft_audit.sh
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index bcc0b5a3a459c..90b5fbc914ae2 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -950,6 +950,13 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
- 	fspi_writel(f, FSPI_AHBCR_PREF_EN | FSPI_AHBCR_RDADDROPT,
- 		 base + FSPI_AHBCR);
+diff --git a/tools/testing/selftests/netfilter/.gitignore b/tools/testing/selftests/netfilter/.gitignore
+index 4cb887b574138..4b2928e1c19d8 100644
+--- a/tools/testing/selftests/netfilter/.gitignore
++++ b/tools/testing/selftests/netfilter/.gitignore
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ nf-queue
+ connect_close
++audit_logread
+diff --git a/tools/testing/selftests/netfilter/Makefile b/tools/testing/selftests/netfilter/Makefile
+index 3686bfa6c58d7..321db8850da00 100644
+--- a/tools/testing/selftests/netfilter/Makefile
++++ b/tools/testing/selftests/netfilter/Makefile
+@@ -6,13 +6,13 @@ TEST_PROGS := nft_trans_stress.sh nft_fib.sh nft_nat.sh bridge_brouter.sh \
+ 	nft_concat_range.sh nft_conntrack_helper.sh \
+ 	nft_queue.sh nft_meta.sh nf_nat_edemux.sh \
+ 	ipip-conntrack-mtu.sh conntrack_tcp_unreplied.sh \
+-	conntrack_vrf.sh nft_synproxy.sh rpath.sh
++	conntrack_vrf.sh nft_synproxy.sh rpath.sh nft_audit.sh
  
-+	/* Reset the FLSHxCR1 registers. */
-+	reg = FSPI_FLSHXCR1_TCSH(0x3) | FSPI_FLSHXCR1_TCSS(0x3);
-+	fspi_writel(f, reg, base + FSPI_FLSHA1CR1);
-+	fspi_writel(f, reg, base + FSPI_FLSHA2CR1);
-+	fspi_writel(f, reg, base + FSPI_FLSHB1CR1);
-+	fspi_writel(f, reg, base + FSPI_FLSHB2CR1);
+ HOSTPKG_CONFIG := pkg-config
+ 
+ CFLAGS += $(shell $(HOSTPKG_CONFIG) --cflags libmnl 2>/dev/null)
+ LDLIBS += $(shell $(HOSTPKG_CONFIG) --libs libmnl 2>/dev/null || echo -lmnl)
+ 
+-TEST_GEN_FILES =  nf-queue connect_close
++TEST_GEN_FILES =  nf-queue connect_close audit_logread
+ 
+ include ../lib.mk
+diff --git a/tools/testing/selftests/netfilter/audit_logread.c b/tools/testing/selftests/netfilter/audit_logread.c
+new file mode 100644
+index 0000000000000..a0a880fc2d9de
+--- /dev/null
++++ b/tools/testing/selftests/netfilter/audit_logread.c
+@@ -0,0 +1,165 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- 	/* AHB Read - Set lut sequence ID for all CS. */
- 	fspi_writel(f, SEQID_LUT, base + FSPI_FLSHA1CR2);
- 	fspi_writel(f, SEQID_LUT, base + FSPI_FLSHA2CR2);
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <poll.h>
++#include <signal.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/socket.h>
++#include <unistd.h>
++#include <linux/audit.h>
++#include <linux/netlink.h>
++
++static int fd;
++
++#define MAX_AUDIT_MESSAGE_LENGTH	8970
++struct audit_message {
++	struct nlmsghdr nlh;
++	union {
++		struct audit_status s;
++		char data[MAX_AUDIT_MESSAGE_LENGTH];
++	} u;
++};
++
++int audit_recv(int fd, struct audit_message *rep)
++{
++	struct sockaddr_nl addr;
++	socklen_t addrlen = sizeof(addr);
++	int ret;
++
++	do {
++		ret = recvfrom(fd, rep, sizeof(*rep), 0,
++			       (struct sockaddr *)&addr, &addrlen);
++	} while (ret < 0 && errno == EINTR);
++
++	if (ret < 0 ||
++	    addrlen != sizeof(addr) ||
++	    addr.nl_pid != 0 ||
++	    rep->nlh.nlmsg_type == NLMSG_ERROR) /* short-cut for now */
++		return -1;
++
++	return ret;
++}
++
++int audit_send(int fd, uint16_t type, uint32_t key, uint32_t val)
++{
++	static int seq = 0;
++	struct audit_message msg = {
++		.nlh = {
++			.nlmsg_len   = NLMSG_SPACE(sizeof(msg.u.s)),
++			.nlmsg_type  = type,
++			.nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK,
++			.nlmsg_seq   = ++seq,
++		},
++		.u.s = {
++			.mask    = key,
++			.enabled = key == AUDIT_STATUS_ENABLED ? val : 0,
++			.pid     = key == AUDIT_STATUS_PID ? val : 0,
++		}
++	};
++	struct sockaddr_nl addr = {
++		.nl_family = AF_NETLINK,
++	};
++	int ret;
++
++	do {
++		ret = sendto(fd, &msg, msg.nlh.nlmsg_len, 0,
++			     (struct sockaddr *)&addr, sizeof(addr));
++	} while (ret < 0 && errno == EINTR);
++
++	if (ret != (int)msg.nlh.nlmsg_len)
++		return -1;
++	return 0;
++}
++
++int audit_set(int fd, uint32_t key, uint32_t val)
++{
++	struct audit_message rep = { 0 };
++	int ret;
++
++	ret = audit_send(fd, AUDIT_SET, key, val);
++	if (ret)
++		return ret;
++
++	ret = audit_recv(fd, &rep);
++	if (ret < 0)
++		return ret;
++	return 0;
++}
++
++int readlog(int fd)
++{
++	struct audit_message rep = { 0 };
++	int ret = audit_recv(fd, &rep);
++	const char *sep = "";
++	char *k, *v;
++
++	if (ret < 0)
++		return ret;
++
++	if (rep.nlh.nlmsg_type != AUDIT_NETFILTER_CFG)
++		return 0;
++
++	/* skip the initial "audit(...): " part */
++	strtok(rep.u.data, " ");
++
++	while ((k = strtok(NULL, "="))) {
++		v = strtok(NULL, " ");
++
++		/* these vary and/or are uninteresting, ignore */
++		if (!strcmp(k, "pid") ||
++		    !strcmp(k, "comm") ||
++		    !strcmp(k, "subj"))
++			continue;
++
++		/* strip the varying sequence number */
++		if (!strcmp(k, "table"))
++			*strchrnul(v, ':') = '\0';
++
++		printf("%s%s=%s", sep, k, v);
++		sep = " ";
++	}
++	if (*sep) {
++		printf("\n");
++		fflush(stdout);
++	}
++	return 0;
++}
++
++void cleanup(int sig)
++{
++	audit_set(fd, AUDIT_STATUS_ENABLED, 0);
++	close(fd);
++	if (sig)
++		exit(0);
++}
++
++int main(int argc, char **argv)
++{
++	struct sigaction act = {
++		.sa_handler = cleanup,
++	};
++
++	fd = socket(PF_NETLINK, SOCK_RAW, NETLINK_AUDIT);
++	if (fd < 0) {
++		perror("Can't open netlink socket");
++		return -1;
++	}
++
++	if (sigaction(SIGTERM, &act, NULL) < 0 ||
++	    sigaction(SIGINT, &act, NULL) < 0) {
++		perror("Can't set signal handler");
++		close(fd);
++		return -1;
++	}
++
++	audit_set(fd, AUDIT_STATUS_ENABLED, 1);
++	audit_set(fd, AUDIT_STATUS_PID, getpid());
++
++	while (1)
++		readlog(fd);
++}
+diff --git a/tools/testing/selftests/netfilter/config b/tools/testing/selftests/netfilter/config
+index 4faf2ce021d90..7c42b1b2c69b4 100644
+--- a/tools/testing/selftests/netfilter/config
++++ b/tools/testing/selftests/netfilter/config
+@@ -6,3 +6,4 @@ CONFIG_NFT_REDIR=m
+ CONFIG_NFT_MASQ=m
+ CONFIG_NFT_FLOW_OFFLOAD=m
+ CONFIG_NF_CT_NETLINK=m
++CONFIG_AUDIT=y
+diff --git a/tools/testing/selftests/netfilter/nft_audit.sh b/tools/testing/selftests/netfilter/nft_audit.sh
+new file mode 100755
+index 0000000000000..83c271b1c7352
+--- /dev/null
++++ b/tools/testing/selftests/netfilter/nft_audit.sh
+@@ -0,0 +1,108 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++#
++# Check that audit logs generated for nft commands are as expected.
++
++SKIP_RC=4
++RC=0
++
++nft --version >/dev/null 2>&1 || {
++	echo "SKIP: missing nft tool"
++	exit $SKIP_RC
++}
++
++logfile=$(mktemp)
++echo "logging into $logfile"
++./audit_logread >"$logfile" &
++logread_pid=$!
++trap 'kill $logread_pid; rm -f $logfile' EXIT
++exec 3<"$logfile"
++
++do_test() { # (cmd, log)
++	echo -n "testing for cmd: $1 ... "
++	cat <&3 >/dev/null
++	$1 >/dev/null || exit 1
++	sleep 0.1
++	res=$(diff -a -u <(echo "$2") - <&3)
++	[ $? -eq 0 ] && { echo "OK"; return; }
++	echo "FAIL"
++	echo "$res"
++	((RC++))
++}
++
++nft flush ruleset
++
++for table in t1 t2; do
++	do_test "nft add table $table" \
++	"table=$table family=2 entries=1 op=nft_register_table"
++
++	do_test "nft add chain $table c1" \
++	"table=$table family=2 entries=1 op=nft_register_chain"
++
++	do_test "nft add chain $table c2; add chain $table c3" \
++	"table=$table family=2 entries=2 op=nft_register_chain"
++
++	cmd="add rule $table c1 counter"
++
++	do_test "nft $cmd" \
++	"table=$table family=2 entries=1 op=nft_register_rule"
++
++	do_test "nft $cmd; $cmd" \
++	"table=$table family=2 entries=2 op=nft_register_rule"
++
++	cmd=""
++	sep=""
++	for chain in c2 c3; do
++		for i in {1..3}; do
++			cmd+="$sep add rule $table $chain counter"
++			sep=";"
++		done
++	done
++	do_test "nft $cmd" \
++	"table=$table family=2 entries=6 op=nft_register_rule"
++done
++
++do_test 'nft reset rules t1 c2' \
++'table=t1 family=2 entries=3 op=nft_reset_rule'
++
++do_test 'nft reset rules table t1' \
++'table=t1 family=2 entries=3 op=nft_reset_rule
++table=t1 family=2 entries=3 op=nft_reset_rule
++table=t1 family=2 entries=3 op=nft_reset_rule'
++
++do_test 'nft reset rules' \
++'table=t1 family=2 entries=3 op=nft_reset_rule
++table=t1 family=2 entries=3 op=nft_reset_rule
++table=t1 family=2 entries=3 op=nft_reset_rule
++table=t2 family=2 entries=3 op=nft_reset_rule
++table=t2 family=2 entries=3 op=nft_reset_rule
++table=t2 family=2 entries=3 op=nft_reset_rule'
++
++for ((i = 0; i < 500; i++)); do
++	echo "add rule t2 c3 counter accept comment \"rule $i\""
++done | do_test 'nft -f -' \
++'table=t2 family=2 entries=500 op=nft_register_rule'
++
++do_test 'nft reset rules t2 c3' \
++'table=t2 family=2 entries=189 op=nft_reset_rule
++table=t2 family=2 entries=188 op=nft_reset_rule
++table=t2 family=2 entries=126 op=nft_reset_rule'
++
++do_test 'nft reset rules t2' \
++'table=t2 family=2 entries=3 op=nft_reset_rule
++table=t2 family=2 entries=3 op=nft_reset_rule
++table=t2 family=2 entries=186 op=nft_reset_rule
++table=t2 family=2 entries=188 op=nft_reset_rule
++table=t2 family=2 entries=129 op=nft_reset_rule'
++
++do_test 'nft reset rules' \
++'table=t1 family=2 entries=3 op=nft_reset_rule
++table=t1 family=2 entries=3 op=nft_reset_rule
++table=t1 family=2 entries=3 op=nft_reset_rule
++table=t2 family=2 entries=3 op=nft_reset_rule
++table=t2 family=2 entries=3 op=nft_reset_rule
++table=t2 family=2 entries=180 op=nft_reset_rule
++table=t2 family=2 entries=188 op=nft_reset_rule
++table=t2 family=2 entries=135 op=nft_reset_rule'
++
++exit $RC
 -- 
 2.40.1
 
