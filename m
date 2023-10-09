@@ -2,109 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23AB57BE141
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3134D7BE203
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 16:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377393AbjJINsg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53284 "EHLO
+        id S1377548AbjJIOBu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 10:01:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376760AbjJINsg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:48:36 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAB4794;
-        Mon,  9 Oct 2023 06:48:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CECC433C8;
-        Mon,  9 Oct 2023 13:48:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696859314;
-        bh=+HSuQE4uwcv/S7v9Nu+yPUKMpHFCIut7bedSD0CoE+8=;
-        h=From:To:Cc:Subject:Date:From;
-        b=tUT2ZZjjoyKrHy9spdRqLkKumZ59dlMndP1ekBAykHym+I9g1k39CRcqUXSeoVTqo
-         Z3xuUbY7mXsnOwgIi7yBQdMycUPRHFK35wzu94NkC9wXqe/ov4uMJ3UABP+2vXkI9y
-         UgteuuzSZhHsyo0DlcXKeFIzGGvj/2vjsvHXPD0PwUMqWZvXMU8qPTz9T5yoCbeEDu
-         R1dUaGDrRW5kAPCebPaeAyyc3t1SX9N6IF0/VFFSi5q/r7GjWPMHOv9zDuGbTtPEas
-         H4u/mTKT2CY5C6k5UY61G0i73TUhMGHtV5AmPgywk6CReOKL866HVwmyoAJWy+ZG2L
-         S4CgJoKX+MF3A==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, "Lee, Chun-Yi" <jlee@suse.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>,
-        Lee@vger.kernel.org,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        stable@vger.kernel.org, Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] Bluetooth: mark bacmp() and bacpy() as __always_inline
-Date:   Mon,  9 Oct 2023 15:48:19 +0200
-Message-Id: <20231009134826.1063869-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S1376693AbjJIOBt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 10:01:49 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA55AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 07:01:48 -0700 (PDT)
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+        by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <a.fatoum@pengutronix.de>)
+        id 1qpqpO-0002eK-PD; Mon, 09 Oct 2023 16:01:46 +0200
+Message-ID: <fc5955b8-7c4d-620c-9960-0ff644192fb3@pengutronix.de>
+Date:   Mon, 9 Oct 2023 16:01:46 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5.4 038/131] clk: imx: pll14xx: dynamically configure PLL
+ for 393216000/361267200Hz
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, Marco Felsch <m.felsch@pengutronix.de>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>
+References: <20231009130116.329529591@linuxfoundation.org>
+ <20231009130117.474995235@linuxfoundation.org>
+From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20231009130117.474995235@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hello Greg,
 
-These functions are simple wrappers around memcmp() and memcpy(), which
-contain compile-time checks for buffer overflow. Something in gcc-13 and
-likely other versions makes this trigger a warning when the functions
-are not inlined and the compiler misunderstands the buffer length:
+On 09.10.23 15:01, Greg Kroah-Hartman wrote:
+> 5.4-stable review patch.  If anyone has any objections, please let me know.
 
-In file included from net/bluetooth/hci_event.c:32:
-In function 'bacmp',
-    inlined from 'hci_conn_request_evt' at net/bluetooth/hci_event.c:3276:7:
-include/net/bluetooth/bluetooth.h:364:16: error: 'memcmp' specified bound 6 exceeds source size 0 [-Werror=stringop-overread]
-  364 |         return memcmp(ba1, ba2, sizeof(bdaddr_t));
-      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As mentioned before[1][2], this is not v5.4 stable material.
 
-Use the __always_inline annotation to ensure that the helpers are
-correctly checked. This has no effect on the actual correctness
-of the code, but avoids the warning. Since the patch that introduced
-the warning is marked for stable backports, this one should also
-go that way to avoid introducing build regressions.
+Please drop from your queue for all releases older than v5.18.
 
-Fixes: d70e44fef8621 ("Bluetooth: Reject connection with the device which has same BD_ADDR")
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Lee, Chun-Yi <jlee@suse.com>
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- include/net/bluetooth/bluetooth.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+[1]: https://lore.kernel.org/all/6e3ad25c-1042-f786-6f0e-f71ae85aed6b@pengutronix.de/
+[2]: <a76406b2-4154-2de4-b1f5-43e86312d487@pengutronix.de>
 
-diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
-index 7ffa8c192c3f2..27ee1bf51c235 100644
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -359,11 +359,11 @@ static inline bool bdaddr_type_is_le(u8 type)
- #define BDADDR_NONE (&(bdaddr_t) {{0xff, 0xff, 0xff, 0xff, 0xff, 0xff}})
- 
- /* Copy, swap, convert BD Address */
--static inline int bacmp(const bdaddr_t *ba1, const bdaddr_t *ba2)
-+static __always_inline int bacmp(const bdaddr_t *ba1, const bdaddr_t *ba2)
- {
- 	return memcmp(ba1, ba2, sizeof(bdaddr_t));
- }
--static inline void bacpy(bdaddr_t *dst, const bdaddr_t *src)
-+static __always_inline void bacpy(bdaddr_t *dst, const bdaddr_t *src)
- {
- 	memcpy(dst, src, sizeof(bdaddr_t));
- }
+Thanks,
+Ahmad
+
+> 
+> ------------------
+> 
+> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> 
+> [ Upstream commit 72d00e560d10665e6139c9431956a87ded6e9880 ]
+> 
+> Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates"),
+> the driver has the ability to dynamically compute PLL parameters to
+> approximate the requested rates. This is not always used, because the
+> logic is as follows:
+> 
+>   - Check if the target rate is hardcoded in the frequency table
+>   - Check if varying only kdiv is possible, so switch over is glitch free
+>   - Compute rate dynamically by iterating over pdiv range
+> 
+> If we skip the frequency table for the 1443x PLL, we find that the
+> computed values differ to the hardcoded ones. This can be valid if the
+> hardcoded values guarantee for example an earlier lock-in or if the
+> divisors are chosen, so that other important rates are more likely to
+> be reached glitch-free.
+> 
+> For rates (393216000 and 361267200, this doesn't seem to be the case:
+> They are only approximated by existing parameters (393215995 and
+> 361267196 Hz, respectively) and they aren't reachable glitch-free from
+> other hardcoded frequencies. Dropping them from the table allows us
+> to lock-in to these frequencies exactly.
+> 
+> This is immediately noticeable because they are the assigned-clock-rates
+> for IMX8MN_AUDIO_PLL1 and IMX8MN_AUDIO_PLL2, respectively and a look
+> into clk_summary so far showed that they were a few Hz short of the target:
+> 
+> imx8mn-board:~# grep audio_pll[12]_out /sys/kernel/debug/clk/clk_summary
+> audio_pll2_out           0        0        0   361267196 0     0  50000   N
+> audio_pll1_out           1        1        0   393215995 0     0  50000   Y
+> 
+> and afterwards:
+> 
+> imx8mn-board:~# grep audio_pll[12]_out /sys/kernel/debug/clk/clk_summary
+> audio_pll2_out           0        0        0   361267200 0     0  50000   N
+> audio_pll1_out           1        1        0   393216000 0     0  50000   Y
+> 
+> This change is equivalent to adding following hardcoded values:
+> 
+>   /*               rate     mdiv  pdiv  sdiv   kdiv */
+>   PLL_1443X_RATE(393216000, 655,    5,    3,  23593),
+>   PLL_1443X_RATE(361267200, 497,   33,    0, -16882),
+> 
+> Fixes: 053a4ffe2988 ("clk: imx: imx8mm: fix audio pll setting")
+> Cc: stable@vger.kernel.org # v5.18+
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> Link: https://lore.kernel.org/r/20230807084744.1184791-2-m.felsch@pengutronix.de
+> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/clk/imx/clk-pll14xx.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
+> index e7bf6babc28b4..0dbe8c05af478 100644
+> --- a/drivers/clk/imx/clk-pll14xx.c
+> +++ b/drivers/clk/imx/clk-pll14xx.c
+> @@ -57,8 +57,6 @@ static const struct imx_pll14xx_rate_table imx_pll1443x_tbl[] = {
+>  	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
+>  	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
+>  	PLL_1443X_RATE(519750000U, 173, 2, 2, 16384),
+> -	PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
+> -	PLL_1443X_RATE(361267200U, 361, 3, 3, 17511),
+>  };
+>  
+>  struct imx_pll14xx_clk imx_1443x_pll = {
+
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
