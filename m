@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04B9A7BE079
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCF607BDF63
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:29:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377294AbjJINke (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:40:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40438 "EHLO
+        id S1376779AbjJIN30 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:29:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377329AbjJINka (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:30 -0400
+        with ESMTP id S1376992AbjJIN3Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:29:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91FB8AB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:40:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3080C433C7;
-        Mon,  9 Oct 2023 13:40:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A625AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:29:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5BBC433C7;
+        Mon,  9 Oct 2023 13:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858829;
-        bh=0OaPoWzsnU93MUoegrCru7AMxsNjZJvxoJKwoZDe7JY=;
+        s=korg; t=1696858163;
+        bh=ibL43TwsuB3aQtr1bsMDR2tREucnso9PG+xfNSGL5qQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=glz5+eadF+6BWtDuC6c+Y1DPCxjib6NvfsC7rjdGmS8SOeqmVwTuIk7BM/BVIhmzW
-         AwQxURxH41PYzMLJ9jTiLU9d2QrJyHqUpGkQHqEX0nRfiFSEJsKzcM99vP52DyKu/r
-         9QyWOzSw68/bFifiFF3XxiMJQy1Z89nEvrZlzhQ0=
+        b=t41t+qNlSlFmhaiNhAyOd8/QNlhWCZWmWBLakVJQ8xymcZgOLhibVgtCrJZVZqvb6
+         Df2LJOaWwRLwnK/NHB18PHpKWYm7d8mRfNBGkrpnHsKMpGbkqh7pCwoD9uA4ghLwPe
+         5fuCxHYSTJMUTFrG6hLBePcfmd+B2eaXrheQTIaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Javed Hasan <jhasan@marvell.com>,
-        Saurav Kashyap <skashyap@marvell.com>,
+        patches@lists.linux.dev, Quinn Tran <qutran@marvell.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 113/226] scsi: qedf: Add synchronization between I/O completions and abort
-Date:   Mon,  9 Oct 2023 15:01:14 +0200
-Message-ID: <20231009130129.732594449@linuxfoundation.org>
+Subject: [PATCH 5.4 035/131] scsi: qla2xxx: Fix deletion race condition
+Date:   Mon,  9 Oct 2023 15:01:15 +0200
+Message-ID: <20231009130117.382985539@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,101 +51,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javed Hasan <jhasan@marvell.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit 7df0b2605489bef3f4223ad66f1f9bb8d50d4cd2 ]
+[ Upstream commit 6dfe4344c168c6ca20fe7640649aacfcefcccb26 ]
 
-Avoid race condition between I/O completion and abort processing by
-protecting the cmd_type with the rport lock.
+System crash when using debug kernel due to link list corruption. The cause
+of the link list corruption is due to session deletion was allowed to queue
+up twice.  Here's the internal trace that show the same port was allowed to
+double queue for deletion on different cpu.
 
-Signed-off-by: Javed Hasan <jhasan@marvell.com>
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Link: https://lore.kernel.org/r/20230901060646.27885-1-skashyap@marvell.com
+20808683956 015 qla2xxx [0000:13:00.1]-e801:4: Scheduling sess ffff93ebf9306800 for deletion 50:06:0e:80:12:48:ff:50 fc4_type 1
+20808683957 027 qla2xxx [0000:13:00.1]-e801:4: Scheduling sess ffff93ebf9306800 for deletion 50:06:0e:80:12:48:ff:50 fc4_type 1
+
+Move the clearing/setting of deleted flag lock.
+
+Cc: stable@vger.kernel.org
+Fixes: 726b85487067 ("qla2xxx: Add framework for async fabric discovery")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230714070104.40052-2-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_io.c   | 10 ++++++++--
- drivers/scsi/qedf/qedf_main.c |  7 ++++++-
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_init.c   | 16 ++++++++++++++--
+ drivers/scsi/qla2xxx/qla_target.c | 12 ++++++------
+ 2 files changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/scsi/qedf/qedf_io.c b/drivers/scsi/qedf/qedf_io.c
-index 472374d83cede..1f8e81296beb7 100644
---- a/drivers/scsi/qedf/qedf_io.c
-+++ b/drivers/scsi/qedf/qedf_io.c
-@@ -1924,6 +1924,7 @@ int qedf_initiate_abts(struct qedf_ioreq *io_req, bool return_scsi_cmd_on_abts)
- 		goto drop_rdata_kref;
- 	}
- 
-+	spin_lock_irqsave(&fcport->rport_lock, flags);
- 	if (!test_bit(QEDF_CMD_OUTSTANDING, &io_req->flags) ||
- 	    test_bit(QEDF_CMD_IN_CLEANUP, &io_req->flags) ||
- 	    test_bit(QEDF_CMD_IN_ABORT, &io_req->flags)) {
-@@ -1931,17 +1932,20 @@ int qedf_initiate_abts(struct qedf_ioreq *io_req, bool return_scsi_cmd_on_abts)
- 			 "io_req xid=0x%x sc_cmd=%p already in cleanup or abort processing or already completed.\n",
- 			 io_req->xid, io_req->sc_cmd);
- 		rc = 1;
-+		spin_unlock_irqrestore(&fcport->rport_lock, flags);
- 		goto drop_rdata_kref;
- 	}
- 
-+	/* Set the command type to abort */
-+	io_req->cmd_type = QEDF_ABTS;
-+	spin_unlock_irqrestore(&fcport->rport_lock, flags);
-+
- 	kref_get(&io_req->refcount);
- 
- 	xid = io_req->xid;
- 	qedf->control_requests++;
- 	qedf->packet_aborts++;
- 
--	/* Set the command type to abort */
--	io_req->cmd_type = QEDF_ABTS;
- 	io_req->return_scsi_cmd_on_abts = return_scsi_cmd_on_abts;
- 
- 	set_bit(QEDF_CMD_IN_ABORT, &io_req->flags);
-@@ -2230,7 +2234,9 @@ int qedf_initiate_cleanup(struct qedf_ioreq *io_req,
- 		  refcount, fcport, fcport->rdata->ids.port_id);
- 
- 	/* Cleanup cmds re-use the same TID as the original I/O */
-+	spin_lock_irqsave(&fcport->rport_lock, flags);
- 	io_req->cmd_type = QEDF_CLEANUP;
-+	spin_unlock_irqrestore(&fcport->rport_lock, flags);
- 	io_req->return_scsi_cmd_on_abts = return_scsi_cmd_on_abts;
- 
- 	init_completion(&io_req->cleanup_done);
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index 63c9368bafcf1..6923862be3fbc 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -2803,6 +2803,8 @@ void qedf_process_cqe(struct qedf_ctx *qedf, struct fcoe_cqe *cqe)
- 	struct qedf_ioreq *io_req;
- 	struct qedf_rport *fcport;
- 	u32 comp_type;
-+	u8 io_comp_type;
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index 28ba87cd227a2..8a0ac87f70a9d 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -485,6 +485,7 @@ static
+ void qla24xx_handle_adisc_event(scsi_qla_host_t *vha, struct event_arg *ea)
+ {
+ 	struct fc_port *fcport = ea->fcport;
 +	unsigned long flags;
  
- 	comp_type = (cqe->cqe_data >> FCOE_CQE_CQE_TYPE_SHIFT) &
- 	    FCOE_CQE_CQE_TYPE_MASK;
-@@ -2836,11 +2838,14 @@ void qedf_process_cqe(struct qedf_ctx *qedf, struct fcoe_cqe *cqe)
+ 	ql_dbg(ql_dbg_disc, vha, 0x20d2,
+ 	    "%s %8phC DS %d LS %d rc %d login %d|%d rscn %d|%d lid %d\n",
+@@ -499,9 +500,15 @@ void qla24xx_handle_adisc_event(scsi_qla_host_t *vha, struct event_arg *ea)
+ 		ql_dbg(ql_dbg_disc, vha, 0x2066,
+ 		    "%s %8phC: adisc fail: post delete\n",
+ 		    __func__, ea->fcport->port_name);
++
++		spin_lock_irqsave(&vha->work_lock, flags);
+ 		/* deleted = 0 & logout_on_delete = force fw cleanup */
+-		fcport->deleted = 0;
++		if (fcport->deleted == QLA_SESS_DELETED)
++			fcport->deleted = 0;
++
+ 		fcport->logout_on_delete = 1;
++		spin_unlock_irqrestore(&vha->work_lock, flags);
++
+ 		qlt_schedule_sess_for_deletion(ea->fcport);
  		return;
  	}
+@@ -1402,7 +1409,6 @@ void __qla24xx_handle_gpdb_event(scsi_qla_host_t *vha, struct event_arg *ea)
  
-+	spin_lock_irqsave(&fcport->rport_lock, flags);
-+	io_comp_type = io_req->cmd_type;
-+	spin_unlock_irqrestore(&fcport->rport_lock, flags);
+ 	spin_lock_irqsave(&vha->hw->tgt.sess_lock, flags);
+ 	ea->fcport->login_gen++;
+-	ea->fcport->deleted = 0;
+ 	ea->fcport->logout_on_delete = 1;
  
- 	switch (comp_type) {
- 	case FCOE_GOOD_COMPLETION_CQE_TYPE:
- 		atomic_inc(&fcport->free_sqes);
--		switch (io_req->cmd_type) {
-+		switch (io_comp_type) {
- 		case QEDF_SCSI_CMD:
- 			qedf_scsi_completion(qedf, cqe, io_req);
- 			break;
+ 	if (!ea->fcport->login_succ && !IS_SW_RESV_ADDR(ea->fcport->d_id)) {
+@@ -5475,6 +5481,8 @@ qla2x00_reg_remote_port(scsi_qla_host_t *vha, fc_port_t *fcport)
+ void
+ qla2x00_update_fcport(scsi_qla_host_t *vha, fc_port_t *fcport)
+ {
++	unsigned long flags;
++
+ 	if (IS_SW_RESV_ADDR(fcport->d_id))
+ 		return;
+ 
+@@ -5484,7 +5492,11 @@ qla2x00_update_fcport(scsi_qla_host_t *vha, fc_port_t *fcport)
+ 	qla2x00_set_fcport_disc_state(fcport, DSC_UPD_FCPORT);
+ 	fcport->login_retry = vha->hw->login_retry_count;
+ 	fcport->flags &= ~(FCF_LOGIN_NEEDED | FCF_ASYNC_SENT);
++
++	spin_lock_irqsave(&vha->work_lock, flags);
+ 	fcport->deleted = 0;
++	spin_unlock_irqrestore(&vha->work_lock, flags);
++
+ 	if (vha->hw->current_topology == ISP_CFG_NL)
+ 		fcport->logout_on_delete = 0;
+ 	else
+diff --git a/drivers/scsi/qla2xxx/qla_target.c b/drivers/scsi/qla2xxx/qla_target.c
+index cb97565b6a333..a95ea2f70f97f 100644
+--- a/drivers/scsi/qla2xxx/qla_target.c
++++ b/drivers/scsi/qla2xxx/qla_target.c
+@@ -1046,10 +1046,6 @@ void qlt_free_session_done(struct work_struct *work)
+ 			(struct imm_ntfy_from_isp *)sess->iocb, SRB_NACK_LOGO);
+ 	}
+ 
+-	spin_lock_irqsave(&vha->work_lock, flags);
+-	sess->flags &= ~FCF_ASYNC_SENT;
+-	spin_unlock_irqrestore(&vha->work_lock, flags);
+-
+ 	spin_lock_irqsave(&ha->tgt.sess_lock, flags);
+ 	if (sess->se_sess) {
+ 		sess->se_sess = NULL;
+@@ -1059,7 +1055,6 @@ void qlt_free_session_done(struct work_struct *work)
+ 
+ 	qla2x00_set_fcport_disc_state(sess, DSC_DELETED);
+ 	sess->fw_login_state = DSC_LS_PORT_UNAVAIL;
+-	sess->deleted = QLA_SESS_DELETED;
+ 
+ 	if (sess->login_succ && !IS_SW_RESV_ADDR(sess->d_id)) {
+ 		vha->fcport_count--;
+@@ -1111,7 +1106,12 @@ void qlt_free_session_done(struct work_struct *work)
+ 
+ 	sess->explicit_logout = 0;
+ 	spin_unlock_irqrestore(&ha->tgt.sess_lock, flags);
++
++	spin_lock_irqsave(&vha->work_lock, flags);
++	sess->flags &= ~FCF_ASYNC_SENT;
++	sess->deleted = QLA_SESS_DELETED;
+ 	sess->free_pending = 0;
++	spin_unlock_irqrestore(&vha->work_lock, flags);
+ 
+ 	ql_dbg(ql_dbg_disc, vha, 0xf001,
+ 	    "Unregistration of sess %p %8phC finished fcp_cnt %d\n",
+@@ -1161,12 +1161,12 @@ void qlt_unreg_sess(struct fc_port *sess)
+ 	 * management from being sent.
+ 	 */
+ 	sess->flags |= FCF_ASYNC_SENT;
++	sess->deleted = QLA_SESS_DELETION_IN_PROGRESS;
+ 	spin_unlock_irqrestore(&sess->vha->work_lock, flags);
+ 
+ 	if (sess->se_sess)
+ 		vha->hw->tgt.tgt_ops->clear_nacl_from_fcport_map(sess);
+ 
+-	sess->deleted = QLA_SESS_DELETION_IN_PROGRESS;
+ 	qla2x00_set_fcport_disc_state(sess, DSC_DELETE_PEND);
+ 	sess->last_rscn_gen = sess->rscn_gen;
+ 	sess->last_login_gen = sess->login_gen;
 -- 
 2.40.1
 
