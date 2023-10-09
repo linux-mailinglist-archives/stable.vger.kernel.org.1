@@ -2,41 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13BAE7BDD28
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C9757BDD2C
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376666AbjJINIC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:08:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51316 "EHLO
+        id S1376704AbjJINIL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:08:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376701AbjJINIB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:01 -0400
+        with ESMTP id S1376707AbjJINIK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB78093
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABD5C433C7;
-        Mon,  9 Oct 2023 13:07:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A25538F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2925C433C9;
+        Mon,  9 Oct 2023 13:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856880;
-        bh=Od9kaKBFT2Fk/9r0AGKyrFUevwxLabknWCSyEwGPm6Y=;
+        s=korg; t=1696856886;
+        bh=YfDhM6iMnY0xzzhZps3W+qIyAzMj8ZLuUKW40U9FG4g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fYzNyFBxrjXMT/qnyfI1WfwzHmmyW6Hfdmt8fn9iX4v31VcU83UKGUZP5dpmXrMru
-         UpNopBzLjd/IixReVGVChqk6LjW3f+5YJIyJXEg4OQNmcuYVZOcf5NAa5o/5ktzU6+
-         7oXgWXOo7rs/D2d/IFPWYlWtHVig4ByrbpsWzIrs=
+        b=B5UHCfis30XJrHH7RfzfVJiVOvY/ZKYucKCQqq3EESpYjgrOAtnK0Q46POMDLdVjS
+         sfNNs0BIW34esunHFnPDpM7wEyHeIVSqUNE5u032WrK/etxSCwS5K1b9WAEbjikBsm
+         BN058yhPVyd0FIL1RtcanJVekLCWdjO+2P8+YPSM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-        Lorenzo Colitti <lorenzo@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Simon Horman <horms@kernel.org>,
-        Patrick Rohr <prohr@google.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.5 022/163] net: release reference to inet6_dev pointer
-Date:   Mon,  9 Oct 2023 14:59:46 +0200
-Message-ID: <20231009130124.622192711@linuxfoundation.org>
+        patches@lists.linux.dev, Rui Zhu <zhurui3@huawei.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 023/163] iommu/arm-smmu-v3: Avoid constructing invalid range commands
+Date:   Mon,  9 Oct 2023 14:59:47 +0200
+Message-ID: <20231009130124.649720603@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
 References: <20231009130124.021290599@linuxfoundation.org>
@@ -44,7 +39,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -59,38 +53,65 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Patrick Rohr <prohr@google.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-commit 5cb249686e67dbef3ffe53887fa725eefc5a7144 upstream.
+[ Upstream commit eb6c97647be227822c7ce23655482b05e348fba5 ]
 
-addrconf_prefix_rcv returned early without releasing the inet6_dev
-pointer when the PIO lifetime is less than accept_ra_min_lft.
+Although io-pgtable's non-leaf invalidations are always for full tables,
+I missed that SVA also uses non-leaf invalidations, while being at the
+mercy of whatever range the MMU notifier throws at it. This means it
+definitely wants the previous TTL fix as well, since it also doesn't
+know exactly which leaf level(s) may need invalidating, but it can also
+give us less-aligned ranges wherein certain corners may lead to building
+an invalid command where TTL, Num and Scale are all 0. It should be fine
+to handle this by over-invalidating an extra page, since falling back to
+a non-range command opens up a whole can of errata-flavoured worms.
 
-Fixes: 5027d54a9c30 ("net: change accept_ra_min_rtr_lft to affect all RA lifetimes")
-Cc: Maciej Żenczykowski <maze@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: Simon Horman <horms@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Signed-off-by: Patrick Rohr <prohr@google.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6833b8f2e199 ("iommu/arm-smmu-v3: Set TTL invalidation hint better")
+Reported-by: Rui Zhu <zhurui3@huawei.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/b99cfe71af2bd93a8a2930f20967fb2a4f7748dd.1694432734.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -2734,7 +2734,7 @@ void addrconf_prefix_rcv(struct net_devi
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 9b0dc35056019..6ccbae9b93a14 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -1895,18 +1895,23 @@ static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
+ 		/* Get the leaf page size */
+ 		tg = __ffs(smmu_domain->domain.pgsize_bitmap);
+ 
++		num_pages = size >> tg;
++
+ 		/* Convert page size of 12,14,16 (log2) to 1,2,3 */
+ 		cmd->tlbi.tg = (tg - 10) / 2;
+ 
+ 		/*
+-		 * Determine what level the granule is at. For non-leaf, io-pgtable
+-		 * assumes .tlb_flush_walk can invalidate multiple levels at once,
+-		 * so ignore the nominal last-level granule and leave TTL=0.
++		 * Determine what level the granule is at. For non-leaf, both
++		 * io-pgtable and SVA pass a nominal last-level granule because
++		 * they don't know what level(s) actually apply, so ignore that
++		 * and leave TTL=0. However for various errata reasons we still
++		 * want to use a range command, so avoid the SVA corner case
++		 * where both scale and num could be 0 as well.
+ 		 */
+ 		if (cmd->tlbi.leaf)
+ 			cmd->tlbi.ttl = 4 - ((ilog2(granule) - 3) / (tg - 3));
+-
+-		num_pages = size >> tg;
++		else if ((num_pages & CMDQ_TLBI_RANGE_NUM_MAX) == 1)
++			num_pages++;
  	}
  
- 	if (valid_lft != 0 && valid_lft < in6_dev->cnf.accept_ra_min_lft)
--		return;
-+		goto put;
- 
- 	/*
- 	 *	Two things going on here:
+ 	cmds.num = 0;
+-- 
+2.40.1
+
 
 
