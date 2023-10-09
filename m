@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 720187BDE32
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B92537BDD5D
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376964AbjJINQ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:16:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49512 "EHLO
+        id S1376762AbjJINJr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:09:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376955AbjJINQ6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:16:58 -0400
+        with ESMTP id S1376779AbjJINJq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:09:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5F38F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:16:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8BCC433C8;
-        Mon,  9 Oct 2023 13:16:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66155DB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:09:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7563C433C7;
+        Mon,  9 Oct 2023 13:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857416;
-        bh=t1fA3ilmVtygiC1tpTrzCaF6ZXfCiN2Q8HShW+KaotI=;
+        s=korg; t=1696856984;
+        bh=390FwvnZ6P+HCdSv7O2wglk9zLMMEQsoy0V9yvvy2dE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S9fpKpCbO+UxktStlS/vvv7suWjAHzJxQRy4/YPlm35ao+uYVAMknNsxAloRL/TKw
-         l9SZGZdSsQv1HQXCOP8vzcCnHNm87xJv1d4WqALY13ohKwPe0HQ7h8xA5/4cxpwhaR
-         woaVIt8AkcuLmfHiD5osliujIic9gyLLDtiyqv9A=
+        b=TAQ8RZ9RXEUXm9doBjRFUBdrlGgKEwAxUiz1ND2kwMPmFZagGbwpT3rGrcJQUF+Wg
+         1LBO7mU47tOljX96/OvqnRfS6bL+L27IqT2agGPqYS59DMadPTb+xz9AUI1swee0Vg
+         6McchE3lgQvdSbWJ8UQhnD69wWF/9w1L8k3qpZHc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gabriel Krisman Bertazi <krisman@suse.de>,
-        Will Deacon <will@kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/162] arm64: Avoid repeated AA64MMFR1_EL1 register read on pagefault path
-Date:   Mon,  9 Oct 2023 15:00:19 +0200
-Message-ID: <20231009130123.991791042@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 056/163] HID: sony: Fix a potential memory leak in sony_probe()
+Date:   Mon,  9 Oct 2023 15:00:20 +0200
+Message-ID: <20231009130125.583645752@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,61 +49,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit a89c6bcdac22bec1bfbe6e64060b4cf5838d4f47 ]
+[ Upstream commit e1cd4004cde7c9b694bbdd8def0e02288ee58c74 ]
 
-Accessing AA64MMFR1_EL1 is expensive in KVM guests, since it is emulated
-in the hypervisor.  In fact, ARM documentation mentions some feature
-registers are not supposed to be accessed frequently by the OS, and
-therefore should be emulated for guests [1].
+If an error occurs after a successful usb_alloc_urb() call, usb_free_urb()
+should be called.
 
-Commit 0388f9c74330 ("arm64: mm: Implement
-arch_wants_old_prefaulted_pte()") introduced a read of this register in
-the page fault path.  But, even when the feature of setting faultaround
-pages with the old flag is disabled for a given cpu, we are still paying
-the cost of checking the register on every pagefault. This results in an
-explosion of vmexit events in KVM guests, which directly impacts the
-performance of virtualized workloads.  For instance, running kernbench
-yields a 15% increase in system time solely due to the increased vmexit
-cycles.
-
-This patch avoids the extra cost by using the sanitized cached value.
-It should be safe to do so, since this register mustn't change for a
-given cpu.
-
-[1] https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Learn%20the%20Architecture/Armv8-A%20virtualization.pdf?revision=a765a7df-1a00-434d-b241-357bfda2dd31
-
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Acked-by: Will Deacon <will@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20230109151955.8292-1-krisman@suse.de
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: fb1a79a6b6e1 ("HID: sony: fix freeze when inserting ghlive ps3/wii dongles")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cpufeature.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hid/hid-sony.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-index f73f11b550425..5bf0f9aa46267 100644
---- a/arch/arm64/include/asm/cpufeature.h
-+++ b/arch/arm64/include/asm/cpufeature.h
-@@ -863,7 +863,11 @@ static inline bool cpu_has_hw_af(void)
- 	if (!IS_ENABLED(CONFIG_ARM64_HW_AFDBM))
- 		return false;
+diff --git a/drivers/hid/hid-sony.c b/drivers/hid/hid-sony.c
+index dd942061fd775..a02046a78b2da 100644
+--- a/drivers/hid/hid-sony.c
++++ b/drivers/hid/hid-sony.c
+@@ -2155,6 +2155,9 @@ static int sony_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	return ret;
  
--	mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
-+	/*
-+	 * Use cached version to avoid emulated msr operation on KVM
-+	 * guests.
-+	 */
-+	mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
- 	return cpuid_feature_extract_unsigned_field(mmfr1,
- 						ID_AA64MMFR1_EL1_HAFDBS_SHIFT);
+ err:
++	if (sc->ghl_urb)
++		usb_free_urb(sc->ghl_urb);
++
+ 	hid_hw_stop(hdev);
+ 	return ret;
  }
 -- 
 2.40.1
