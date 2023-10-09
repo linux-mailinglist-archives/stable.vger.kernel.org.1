@@ -2,37 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 378167BE1CE
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D970E7BE1D3
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377562AbjJINyY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:54:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37200 "EHLO
+        id S1377557AbjJINyZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:54:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377662AbjJINyL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:54:11 -0400
+        with ESMTP id S1377682AbjJINyO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:54:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9013F99
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:54:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4661C433C7;
-        Mon,  9 Oct 2023 13:54:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53EF94
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:54:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19944C433C8;
+        Mon,  9 Oct 2023 13:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859649;
-        bh=yYH8He+HjuIO8pbH94q8E3rES+jBR130eM8I4SFT93w=;
+        s=korg; t=1696859652;
+        bh=nmMs6HekBtxZ928l5FvkjYftI2A+sIw4yu6zNjt1oKc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1i/+h7sF1R6p/WhVqJ0cqLRiZ0bg1TDqcuVqgYrc0ip7NQsuzcPAydclrqOXaoxyL
-         ClHLUC2LcfpsQ9spkpAFfdqqwkxG3QbC9yoFIUfE+kRD7POnsRYh19bSwoIbIa8hhI
-         p1CTRanmZCcA5IGzI7OkXr5jGN4JS/N+9ogfakx0=
+        b=hl4gJdP6RMUhN0+ee7V8HEfOLsh4ZPN2OErOx0ITESs6BjY0VvrT2CX9asDVsiy59
+         SntylxggaC3BktO+mLD4QwGOEfvenOBAdaEvcdnvsvOUPI4H1xHWMyxWdtbN8Xiwu2
+         EaTRwIi5eKQKeppnYo6XfHy3V94ke0dqQZJL57pA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
-        Andy Shevchenko <andy@kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 4.19 87/91] gpio: pxa: disable pinctrl calls for MMP_GPIO
-Date:   Mon,  9 Oct 2023 15:06:59 +0200
-Message-ID: <20231009130114.566085295@linuxfoundation.org>
+        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>
+Subject: [PATCH 4.19 88/91] RDMA/cma: Fix truncation compilation warning in make_cma_ports
+Date:   Mon,  9 Oct 2023 15:07:00 +0200
+Message-ID: <20231009130114.600815232@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
 References: <20231009130111.518916887@linuxfoundation.org>
@@ -55,31 +52,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Duje Mihanović <duje.mihanovic@skole.hr>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit f0575116507b981e6a810e78ce3c9040395b958b upstream.
+commit 18126c767658ae8a831257c6cb7776c5ba5e7249 upstream.
 
-Similarly to PXA3xx and MMP2, pinctrl-single isn't capable of setting
-pin direction on MMP either.
+The following compilation error is false alarm as RDMA devices don't
+have such large amount of ports to actually cause to format truncation.
 
-Fixes: a770d946371e ("gpio: pxa: add pin control gpio direction and request")
-Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+drivers/infiniband/core/cma_configfs.c: In function ‘make_cma_ports’:
+drivers/infiniband/core/cma_configfs.c:223:57: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  223 |                 snprintf(port_str, sizeof(port_str), "%u", i + 1);
+      |                                                         ^
+drivers/infiniband/core/cma_configfs.c:223:17: note: ‘snprintf’ output between 2 and 11 bytes into a destination of size 10
+  223 |                 snprintf(port_str, sizeof(port_str), "%u", i + 1);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[5]: *** [scripts/Makefile.build:243: drivers/infiniband/core/cma_configfs.o] Error 1
+
+Fixes: 045959db65c6 ("IB/cma: Add configfs for rdma_cm")
+Link: https://lore.kernel.org/r/a7e3b347ee134167fa6a3787c56ef231a04bc8c2.1694434639.git.leonro@nvidia.com
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-pxa.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/core/cma_configfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-pxa.c
-+++ b/drivers/gpio/gpio-pxa.c
-@@ -246,6 +246,7 @@ static bool pxa_gpio_has_pinctrl(void)
- 	switch (gpio_type) {
- 	case PXA3XX_GPIO:
- 	case MMP2_GPIO:
-+	case MMP_GPIO:
- 		return false;
+--- a/drivers/infiniband/core/cma_configfs.c
++++ b/drivers/infiniband/core/cma_configfs.c
+@@ -215,7 +215,7 @@ static int make_cma_ports(struct cma_dev
+ 	}
  
- 	default:
+ 	for (i = 0; i < ports_num; i++) {
+-		char port_str[10];
++		char port_str[11];
+ 
+ 		ports[i].port_num = i + 1;
+ 		snprintf(port_str, sizeof(port_str), "%u", i + 1);
 
 
