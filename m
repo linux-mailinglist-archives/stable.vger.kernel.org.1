@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C95A7BDEE0
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCCB37BDF3A
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:27:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346568AbjJINYS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:24:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59428 "EHLO
+        id S1376817AbjJIN15 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:27:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376519AbjJINXz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:55 -0400
+        with ESMTP id S1376820AbjJIN14 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:27:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A178F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241CFC433C9;
-        Mon,  9 Oct 2023 13:23:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0959D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:27:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA73C433C7;
+        Mon,  9 Oct 2023 13:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857833;
-        bh=EJ1JiyABQV/TcWqBSemQ7ptie1+stlnSqP0Wvny97rQ=;
+        s=korg; t=1696858074;
+        bh=eTrlPt5wQnaoxJyFP66Jr05GYov7pWHHrb/lHVRFMKo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ocy1jq+w+tzLn/D/fj8BBGMV1Qifa/rLYXk6rgRGDTNzUZ8Kbg7ufeSQ/9IOX2KK5
-         oywb11BYCgiqWxkaaSSvc+yPOIt2vUvrqExFptFV5Ua8bFZ7Vqpued14L46W49Oio5
-         ex9VtWjwoVy4NzimwdxffZ4nlAL2VpGowoVnARMs=
+        b=X6ljkISGv1LFMQUk3yVDtJA239mPoLlIw44fJGECciX9HOhfr/jIJesxKphpQmPBX
+         MlYDTUcbg2I5qa59iJk7TDQ9iHCptf/vWeB8DOohEt+UWabF/VlaqaSSEcwxL+8+HI
+         A9Ekthq/Rlc+YOswssYOJytfwo5mMXe+Cl9iDx4A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Ido Schimmel <idosch@nvidia.com>,
-        David Ahern <dsahern@kernel.org>,
+        patches@lists.linux.dev, Neal Cardwell <ncardwell@google.com>,
+        Yuchung Cheng <ycheng@google.com>,
         Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 159/162] vrf: Fix lockdep splat in output path
+        Xin Guo <guoxin0309@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 58/75] tcp: fix delayed ACKs for MSS boundary condition
 Date:   Mon,  9 Oct 2023 15:02:20 +0200
-Message-ID: <20231009130127.311150880@linuxfoundation.org>
+Message-ID: <20231009130113.282801735@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,155 +52,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Neal Cardwell <ncardwell@google.com>
 
-commit 2033ab90380d46e0e9f0520fd6776a73d107fd95 upstream.
+[ Upstream commit 4720852ed9afb1c5ab84e96135cb5b73d5afde6f ]
 
-Cited commit converted the neighbour code to use the standard RCU
-variant instead of the RCU-bh variant, but the VRF code still uses
-rcu_read_lock_bh() / rcu_read_unlock_bh() around the neighbour lookup
-code in its IPv4 and IPv6 output paths, resulting in lockdep splats
-[1][2]. Can be reproduced using [3].
+This commit fixes poor delayed ACK behavior that can cause poor TCP
+latency in a particular boundary condition: when an application makes
+a TCP socket write that is an exact multiple of the MSS size.
 
-Fix by switching to rcu_read_lock() / rcu_read_unlock().
+The problem is that there is painful boundary discontinuity in the
+current delayed ACK behavior. With the current delayed ACK behavior,
+we have:
 
-[1]
-=============================
-WARNING: suspicious RCU usage
-6.5.0-rc1-custom-g9c099e6dbf98 #403 Not tainted
------------------------------
-include/net/neighbour.h:302 suspicious rcu_dereference_check() usage!
+(1) If an app reads data when > 1*MSS is unacknowledged, then
+    tcp_cleanup_rbuf() ACKs immediately because of:
 
-other info that might help us debug this:
+     tp->rcv_nxt - tp->rcv_wup > icsk->icsk_ack.rcv_mss ||
 
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by ping/183:
- #0: ffff888105ea1d80 (sk_lock-AF_INET){+.+.}-{0:0}, at: raw_sendmsg+0xc6c/0x33c0
- #1: ffffffff85b46820 (rcu_read_lock_bh){....}-{1:2}, at: vrf_output+0x2e3/0x2030
+(2) If an app reads all received data, and the packets were < 1*MSS,
+    and either (a) the app is not ping-pong or (b) we received two
+    packets < 1*MSS, then tcp_cleanup_rbuf() ACKs immediately beecause
+    of:
 
-stack backtrace:
-CPU: 0 PID: 183 Comm: ping Not tainted 6.5.0-rc1-custom-g9c099e6dbf98 #403
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc37 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xc1/0xf0
- lockdep_rcu_suspicious+0x211/0x3b0
- vrf_output+0x1380/0x2030
- ip_push_pending_frames+0x125/0x2a0
- raw_sendmsg+0x200d/0x33c0
- inet_sendmsg+0xa2/0xe0
- __sys_sendto+0x2aa/0x420
- __x64_sys_sendto+0xe5/0x1c0
- do_syscall_64+0x38/0x80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+     ((icsk->icsk_ack.pending & ICSK_ACK_PUSHED2) ||
+      ((icsk->icsk_ack.pending & ICSK_ACK_PUSHED) &&
+       !inet_csk_in_pingpong_mode(sk))) &&
 
-[2]
-=============================
-WARNING: suspicious RCU usage
-6.5.0-rc1-custom-g9c099e6dbf98 #403 Not tainted
------------------------------
-include/net/neighbour.h:302 suspicious rcu_dereference_check() usage!
+(3) *However*: if an app reads exactly 1*MSS of data,
+    tcp_cleanup_rbuf() does not send an immediate ACK. This is true
+    even if the app is not ping-pong and the 1*MSS of data had the PSH
+    bit set, suggesting the sending application completed an
+    application write.
 
-other info that might help us debug this:
+Thus if the app is not ping-pong, we have this painful case where
+>1*MSS gets an immediate ACK, and <1*MSS gets an immediate ACK, but a
+write whose last skb is an exact multiple of 1*MSS can get a 40ms
+delayed ACK. This means that any app that transfers data in one
+direction and takes care to align write size or packet size with MSS
+can suffer this problem. With receive zero copy making 4KB MSS values
+more common, it is becoming more common to have application writes
+naturally align with MSS, and more applications are likely to
+encounter this delayed ACK problem.
 
-rcu_scheduler_active = 2, debug_locks = 1
-2 locks held by ping6/182:
- #0: ffff888114b63000 (sk_lock-AF_INET6){+.+.}-{0:0}, at: rawv6_sendmsg+0x1602/0x3e50
- #1: ffffffff85b46820 (rcu_read_lock_bh){....}-{1:2}, at: vrf_output6+0xe9/0x1310
+The fix in this commit is to refine the delayed ACK heuristics with a
+simple check: immediately ACK a received 1*MSS skb with PSH bit set if
+the app reads all data. Why? If an skb has a len of exactly 1*MSS and
+has the PSH bit set then it is likely the end of an application
+write. So more data may not be arriving soon, and yet the data sender
+may be waiting for an ACK if cwnd-bound or using TX zero copy. Thus we
+set ICSK_ACK_PUSHED in this case so that tcp_cleanup_rbuf() will send
+an ACK immediately if the app reads all of the data and is not
+ping-pong. Note that this logic is also executed for the case where
+len > MSS, but in that case this logic does not matter (and does not
+hurt) because tcp_cleanup_rbuf() will always ACK immediately if the
+app reads data and there is more than an MSS of unACKed data.
 
-stack backtrace:
-CPU: 0 PID: 182 Comm: ping6 Not tainted 6.5.0-rc1-custom-g9c099e6dbf98 #403
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc37 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xc1/0xf0
- lockdep_rcu_suspicious+0x211/0x3b0
- vrf_output6+0xd32/0x1310
- ip6_local_out+0xb4/0x1a0
- ip6_send_skb+0xbc/0x340
- ip6_push_pending_frames+0xe5/0x110
- rawv6_sendmsg+0x2e6e/0x3e50
- inet_sendmsg+0xa2/0xe0
- __sys_sendto+0x2aa/0x420
- __x64_sys_sendto+0xe5/0x1c0
- do_syscall_64+0x38/0x80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-[3]
-#!/bin/bash
-
-ip link add name vrf-red up numtxqueues 2 type vrf table 10
-ip link add name swp1 up master vrf-red type dummy
-ip address add 192.0.2.1/24 dev swp1
-ip address add 2001:db8:1::1/64 dev swp1
-ip neigh add 192.0.2.2 lladdr 00:11:22:33:44:55 nud perm dev swp1
-ip neigh add 2001:db8:1::2 lladdr 00:11:22:33:44:55 nud perm dev swp1
-ip vrf exec vrf-red ping 192.0.2.2 -c 1 &> /dev/null
-ip vrf exec vrf-red ping6 2001:db8:1::2 -c 1 &> /dev/null
-
-Fixes: 09eed1192cec ("neighbour: switch to standard rcu, instead of rcu_bh")
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Link: https://lore.kernel.org/netdev/CA+G9fYtEr-=GbcXNDYo3XOkwR+uYgehVoDjsP0pFLUpZ_AZcyg@mail.gmail.com/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Yuchung Cheng <ycheng@google.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230715153605.4068066-1-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Xin Guo <guoxin0309@gmail.com>
+Link: https://lore.kernel.org/r/20231001151239.1866845-2-ncardwell.sw@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vrf.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/ipv4/tcp_input.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/net/vrf.c
-+++ b/drivers/net/vrf.c
-@@ -664,7 +664,7 @@ static int vrf_finish_output6(struct net
- 	skb->protocol = htons(ETH_P_IPV6);
- 	skb->dev = dev;
- 
--	rcu_read_lock_bh();
-+	rcu_read_lock();
- 	nexthop = rt6_nexthop((struct rt6_info *)dst, &ipv6_hdr(skb)->daddr);
- 	neigh = __ipv6_neigh_lookup_noref(dst->dev, nexthop);
- 	if (unlikely(!neigh))
-@@ -672,10 +672,10 @@ static int vrf_finish_output6(struct net
- 	if (!IS_ERR(neigh)) {
- 		sock_confirm_neigh(skb, neigh);
- 		ret = neigh_output(neigh, skb, false);
--		rcu_read_unlock_bh();
-+		rcu_read_unlock();
- 		return ret;
- 	}
--	rcu_read_unlock_bh();
-+	rcu_read_unlock();
- 
- 	IP6_INC_STATS(dev_net(dst->dev),
- 		      ip6_dst_idev(dst), IPSTATS_MIB_OUTNOROUTES);
-@@ -889,7 +889,7 @@ static int vrf_finish_output(struct net
- 		}
- 	}
- 
--	rcu_read_lock_bh();
-+	rcu_read_lock();
- 
- 	neigh = ip_neigh_for_gw(rt, skb, &is_v6gw);
- 	if (!IS_ERR(neigh)) {
-@@ -898,11 +898,11 @@ static int vrf_finish_output(struct net
- 		sock_confirm_neigh(skb, neigh);
- 		/* if crossing protocols, can not use the cached header */
- 		ret = neigh_output(neigh, skb, is_v6gw);
--		rcu_read_unlock_bh();
-+		rcu_read_unlock();
- 		return ret;
- 	}
- 
--	rcu_read_unlock_bh();
-+	rcu_read_unlock();
- 	vrf_tx_error(skb->dev, skb);
- 	return -EINVAL;
- }
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 94633f499e148..d1e431ad5f619 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -243,6 +243,19 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
+ 		if (unlikely(len > icsk->icsk_ack.rcv_mss +
+ 				   MAX_TCP_OPTION_SPACE))
+ 			tcp_gro_dev_warn(sk, skb, len);
++		/* If the skb has a len of exactly 1*MSS and has the PSH bit
++		 * set then it is likely the end of an application write. So
++		 * more data may not be arriving soon, and yet the data sender
++		 * may be waiting for an ACK if cwnd-bound or using TX zero
++		 * copy. So we set ICSK_ACK_PUSHED here so that
++		 * tcp_cleanup_rbuf() will send an ACK immediately if the app
++		 * reads all of the data and is not ping-pong. If len > MSS
++		 * then this logic does not matter (and does not hurt) because
++		 * tcp_cleanup_rbuf() will always ACK immediately if the app
++		 * reads data and there is more than an MSS of unACKed data.
++		 */
++		if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_PSH)
++			icsk->icsk_ack.pending |= ICSK_ACK_PUSHED;
+ 	} else {
+ 		/* Otherwise, we make more careful check taking into account,
+ 		 * that SACKs block is variable.
+-- 
+2.40.1
+
 
 
