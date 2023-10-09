@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBC117BE09C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12FC37BDEA4
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376950AbjJINmE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:42:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52706 "EHLO
+        id S1376379AbjJINVb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:21:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377389AbjJINmD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:03 -0400
+        with ESMTP id S1376429AbjJINV1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D781EB9
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247FBC433C8;
-        Mon,  9 Oct 2023 13:42:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CADFA9E
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED069C433C8;
+        Mon,  9 Oct 2023 13:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858921;
-        bh=XpgpNN+usouE1Z3w+s5NHobsvjg/dyptNbRzN1tmVRc=;
+        s=korg; t=1696857684;
+        bh=78jERhu4FuaiLsxdycvARjYBPz595TgiktUWxNjQRmQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=woEX//xQC9q9N0PVEdJDsDB3TKPxLadi72sx6qN6t2Mdk9Cj2SFsLo830S6AcXk4Z
-         rZZyBrAqOYk8XdY+dNuCLx1FJ4xa5e16ax3F5crieI4LWIr5UqV5gwRFLeFwFX2rCE
-         N+hZmaY07za+2Kw/kvM+jbqeOHG3mYWmNQ7HLnw4=
+        b=spWB38af9tDemF1sH4UHGkaVSM7E+ceTmBqOijNCQ2saUf2i3q+RTlj4skR0x/5y+
+         SJmvn+IpTaPj+JIfVP5ffY5xaDiW6in2w4FPnupzS5s3uzoPfGRnqRehlIbZFNwMlb
+         uiVg68F5jE7Le/VtuuLDXr6MAnMF5hUB+l1ypras=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roberto Sassu <roberto.sassu@huawei.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 142/226] smack: Record transmuting in smk_transmuted
-Date:   Mon,  9 Oct 2023 15:01:43 +0200
-Message-ID: <20231009130130.444104557@linuxfoundation.org>
+Subject: [PATCH 6.1 123/162] netfilter: nf_tables: nft_set_rbtree: fix spurious insertion failure
+Date:   Mon,  9 Oct 2023 15:01:44 +0200
+Message-ID: <20231009130126.322368418@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,127 +48,182 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 2c085f3a8f23c9b444e8b99d93c15d7ce870fc4e ]
+[ Upstream commit 087388278e0f301f4c61ddffb1911d3a180f84b8 ]
 
-smack_dentry_create_files_as() determines whether transmuting should occur
-based on the label of the parent directory the new inode will be added to,
-and not the label of the directory where it is created.
+nft_rbtree_gc_elem() walks back and removes the end interval element that
+comes before the expired element.
 
-This helps for example to do transmuting on overlayfs, since the latter
-first creates the inode in the working directory, and then moves it to the
-correct destination.
+There is a small chance that we've cached this element as 'rbe_ge'.
+If this happens, we hold and test a pointer that has been queued for
+freeing.
 
-However, despite smack_dentry_create_files_as() provides the correct label,
-smack_inode_init_security() does not know from passed information whether
-or not transmuting occurred. Without this information,
-smack_inode_init_security() cannot set SMK_INODE_CHANGED in smk_flags,
-which will result in the SMACK64TRANSMUTE xattr not being set in
-smack_d_instantiate().
+It also causes spurious insertion failures:
 
-Thus, add the smk_transmuted field to the task_smack structure, and set it
-in smack_dentry_create_files_as() to smk_task if transmuting occurred. If
-smk_task is equal to smk_transmuted in smack_inode_init_security(), act as
-if transmuting was successful but without taking the label from the parent
-directory (the inode label was already set correctly from the current
-credentials in smack_inode_alloc_security()).
+$ cat test-testcases-sets-0044interval_overlap_0.1/testout.log
+Error: Could not process rule: File exists
+add element t s {  0 -  2 }
+                   ^^^^^^
+Failed to insert  0 -  2 given:
+table ip t {
+        set s {
+                type inet_service
+                flags interval,timeout
+                timeout 2s
+                gc-interval 2s
+        }
+}
 
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+The set (rbtree) is empty. The 'failure' doesn't happen on next attempt.
+
+Reason is that when we try to insert, the tree may hold an expired
+element that collides with the range we're adding.
+While we do evict/erase this element, we can trip over this check:
+
+if (rbe_ge && nft_rbtree_interval_end(rbe_ge) && nft_rbtree_interval_end(new))
+      return -ENOTEMPTY;
+
+rbe_ge was erased by the synchronous gc, we should not have done this
+check.  Next attempt won't find it, so retry results in successful
+insertion.
+
+Restart in-kernel to avoid such spurious errors.
+
+Such restart are rare, unless userspace intentionally adds very large
+numbers of elements with very short timeouts while setting a huge
+gc interval.
+
+Even in this case, this cannot loop forever, on each retry an existing
+element has been removed.
+
+As the caller is holding the transaction mutex, its impossible
+for a second entity to add more expiring elements to the tree.
+
+After this it also becomes feasible to remove the async gc worker
+and perform all garbage collection from the commit path.
+
+Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack.h     |  1 +
- security/smack/smack_lsm.c | 41 +++++++++++++++++++++++++++-----------
- 2 files changed, 30 insertions(+), 12 deletions(-)
+ net/netfilter/nft_set_rbtree.c | 46 +++++++++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/security/smack/smack.h b/security/smack/smack.h
-index a9768b12716bf..b5187915e074e 100644
---- a/security/smack/smack.h
-+++ b/security/smack/smack.h
-@@ -120,6 +120,7 @@ struct inode_smack {
- struct task_smack {
- 	struct smack_known	*smk_task;	/* label for access control */
- 	struct smack_known	*smk_forked;	/* label when forked */
-+	struct smack_known	*smk_transmuted;/* label when transmuted */
- 	struct list_head	smk_rules;	/* per task access rules */
- 	struct mutex		smk_rules_lock;	/* lock for the rules */
- 	struct list_head	smk_relabel;	/* transit allowed labels */
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index b36b8668f1f4a..e7f6f55bbae24 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -972,8 +972,9 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
- 				     const struct qstr *qstr, const char **name,
- 				     void **value, size_t *len)
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index 487572dcd6144..2660ceab3759d 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -233,10 +233,9 @@ static void nft_rbtree_gc_remove(struct net *net, struct nft_set *set,
+ 	rb_erase(&rbe->node, &priv->root);
+ }
+ 
+-static int nft_rbtree_gc_elem(const struct nft_set *__set,
+-			      struct nft_rbtree *priv,
+-			      struct nft_rbtree_elem *rbe,
+-			      u8 genmask)
++static const struct nft_rbtree_elem *
++nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
++		   struct nft_rbtree_elem *rbe, u8 genmask)
  {
-+	struct task_smack *tsp = smack_cred(current_cred());
- 	struct inode_smack *issp = smack_inode(inode);
--	struct smack_known *skp = smk_of_current();
-+	struct smack_known *skp = smk_of_task(tsp);
- 	struct smack_known *isp = smk_of_inode(inode);
- 	struct smack_known *dsp = smk_of_inode(dir);
- 	int may;
-@@ -982,20 +983,34 @@ static int smack_inode_init_security(struct inode *inode, struct inode *dir,
- 		*name = XATTR_SMACK_SUFFIX;
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+@@ -246,7 +245,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
  
- 	if (value && len) {
--		rcu_read_lock();
--		may = smk_access_entry(skp->smk_known, dsp->smk_known,
--				       &skp->smk_rules);
--		rcu_read_unlock();
-+		/*
-+		 * If equal, transmuting already occurred in
-+		 * smack_dentry_create_files_as(). No need to check again.
-+		 */
-+		if (tsp->smk_task != tsp->smk_transmuted) {
-+			rcu_read_lock();
-+			may = smk_access_entry(skp->smk_known, dsp->smk_known,
-+					       &skp->smk_rules);
-+			rcu_read_unlock();
-+		}
+ 	gc = nft_trans_gc_alloc(set, 0, GFP_ATOMIC);
+ 	if (!gc)
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
  
- 		/*
--		 * If the access rule allows transmutation and
--		 * the directory requests transmutation then
--		 * by all means transmute.
-+		 * In addition to having smk_task equal to smk_transmuted,
-+		 * if the access rule allows transmutation and the directory
-+		 * requests transmutation then by all means transmute.
- 		 * Mark the inode as changed.
- 		 */
--		if (may > 0 && ((may & MAY_TRANSMUTE) != 0) &&
--		    smk_inode_transmutable(dir)) {
--			isp = dsp;
-+		if ((tsp->smk_task == tsp->smk_transmuted) ||
-+		    (may > 0 && ((may & MAY_TRANSMUTE) != 0) &&
-+		     smk_inode_transmutable(dir))) {
-+			/*
-+			 * The caller of smack_dentry_create_files_as()
-+			 * should have overridden the current cred, so the
-+			 * inode label was already set correctly in
-+			 * smack_inode_alloc_security().
-+			 */
-+			if (tsp->smk_task != tsp->smk_transmuted)
-+				isp = dsp;
- 			issp->smk_flags |= SMK_INODE_CHANGED;
- 		}
- 
-@@ -4685,8 +4700,10 @@ static int smack_dentry_create_files_as(struct dentry *dentry, int mode,
- 		 * providing access is transmuting use the containing
- 		 * directory label instead of the process label.
- 		 */
--		if (may > 0 && (may & MAY_TRANSMUTE))
-+		if (may > 0 && (may & MAY_TRANSMUTE)) {
- 			ntsp->smk_task = isp->smk_inode;
-+			ntsp->smk_transmuted = ntsp->smk_task;
-+		}
+ 	/* search for end interval coming before this element.
+ 	 * end intervals don't carry a timeout extension, they
+@@ -261,6 +260,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 		prev = rb_prev(prev);
  	}
- 	return 0;
+ 
++	rbe_prev = NULL;
+ 	if (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+ 		nft_rbtree_gc_remove(net, set, priv, rbe_prev);
+@@ -272,7 +272,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 		 */
+ 		gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
+ 		if (WARN_ON_ONCE(!gc))
+-			return -ENOMEM;
++			return ERR_PTR(-ENOMEM);
+ 
+ 		nft_trans_gc_elem_add(gc, rbe_prev);
+ 	}
+@@ -280,13 +280,13 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 	nft_rbtree_gc_remove(net, set, priv, rbe);
+ 	gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
+ 	if (WARN_ON_ONCE(!gc))
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	nft_trans_gc_elem_add(gc, rbe);
+ 
+ 	nft_trans_gc_queue_sync_done(gc);
+ 
+-	return 0;
++	return rbe_prev;
+ }
+ 
+ static bool nft_rbtree_update_first(const struct nft_set *set,
+@@ -314,7 +314,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	u8 cur_genmask = nft_genmask_cur(net);
+ 	u8 genmask = nft_genmask_next(net);
+-	int d, err;
++	int d;
+ 
+ 	/* Descend the tree to search for an existing element greater than the
+ 	 * key value to insert that is greater than the new element. This is the
+@@ -363,9 +363,14 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 		 */
+ 		if (nft_set_elem_expired(&rbe->ext) &&
+ 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
+-			err = nft_rbtree_gc_elem(set, priv, rbe, genmask);
+-			if (err < 0)
+-				return err;
++			const struct nft_rbtree_elem *removed_end;
++
++			removed_end = nft_rbtree_gc_elem(set, priv, rbe, genmask);
++			if (IS_ERR(removed_end))
++				return PTR_ERR(removed_end);
++
++			if (removed_end == rbe_le || removed_end == rbe_ge)
++				return -EAGAIN;
+ 
+ 			continue;
+ 		}
+@@ -486,11 +491,18 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	struct nft_rbtree_elem *rbe = elem->priv;
+ 	int err;
+ 
+-	write_lock_bh(&priv->lock);
+-	write_seqcount_begin(&priv->count);
+-	err = __nft_rbtree_insert(net, set, rbe, ext);
+-	write_seqcount_end(&priv->count);
+-	write_unlock_bh(&priv->lock);
++	do {
++		if (fatal_signal_pending(current))
++			return -EINTR;
++
++		cond_resched();
++
++		write_lock_bh(&priv->lock);
++		write_seqcount_begin(&priv->count);
++		err = __nft_rbtree_insert(net, set, rbe, ext);
++		write_seqcount_end(&priv->count);
++		write_unlock_bh(&priv->lock);
++	} while (err == -EAGAIN);
+ 
+ 	return err;
  }
 -- 
 2.40.1
