@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6313F7BDEF9
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7C4B7BDEAD
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376553AbjJINZI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:25:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52508 "EHLO
+        id S1376385AbjJINVx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:21:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376538AbjJINZH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:07 -0400
+        with ESMTP id S1376396AbjJINVw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B550B6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC009C433C7;
-        Mon,  9 Oct 2023 13:25:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC0619F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2635C433C7;
+        Mon,  9 Oct 2023 13:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857906;
-        bh=2RtmlAmmM68utYKbW2nekhy/aigrmCRphBtDMcy4eiY=;
+        s=korg; t=1696857710;
+        bh=cVMNvs7Fe2NX/9BpiGCjnXL09FvI3ptIEWRHM1IP0fo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p6ZOPDdYkyfWTmAva/wSHazQl6OowRnkHFkER/+duovKR0fC5U46cky+StANcKphH
-         SsuJ8mzM5Z2Gdgw4pKi8AlOCX9hhB69A2mqJTZKL2z6MdJvmykvGSGA51M3k/o/sDx
-         CZij08sqYVkWHEnTBJiiW9bzgoXE53oWBbBC05L0=
+        b=1f6Pec+pd8xqm/YFCgwQb8OKjqOeUT9MsfN5DU4Zio/FxT/eF8Nt75Q5aWdtro5uM
+         gkwDl/A/uMAHovNwnVDgpwMLJ3KNiffUFpb/eMa0m+Zq9mTHkgdDMalNjysi+DMPlD
+         lDBoMNi8VU8zg9SYFcgm0o6PpOlQG7Hd/HOylqlI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sameer Pujar <spujar@nvidia.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        Mauricio Faria de Oliveira <mfo@canonical.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 04/75] ASoC: tegra: Fix redundant PLLA and PLLA_OUT0 updates
+Subject: [PATCH 6.1 105/162] modpost: add missing else to the "of" check
 Date:   Mon,  9 Oct 2023 15:01:26 +0200
-Message-ID: <20231009130111.350245775@linuxfoundation.org>
+Message-ID: <20231009130125.820181115@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,92 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sameer Pujar <spujar@nvidia.com>
+From: Mauricio Faria de Oliveira <mfo@canonical.com>
 
-[ Upstream commit e765886249c533e1bb5cbc3cd741bad677417312 ]
+[ Upstream commit cbc3d00cf88fda95dbcafee3b38655b7a8f2650a ]
 
-Tegra audio graph card has many DAI links which connects internal
-AHUB modules and external audio codecs. Since these are DPCM links,
-hw_params() call in the machine driver happens for each connected
-BE link and PLLA is updated every time. This is not really needed
-for all links as only I/O link DAIs derive respective clocks from
-PLLA_OUT0 and thus from PLLA. Hence add checks to limit the clock
-updates to DAIs over I/O links.
+Without this 'else' statement, an "usb" name goes into two handlers:
+the first/previous 'if' statement _AND_ the for-loop over 'devtable',
+but the latter is useless as it has no 'usb' device_id entry anyway.
 
-This found to be fixing a DMIC clock discrepancy which is suspected
-to happen because of back to back quick PLLA and PLLA_OUT0 rate
-updates. This was observed on Jetson TX2 platform where DMIC clock
-ended up with unexpected value.
+Tested with allmodconfig before/after patch; no changes to *.mod.c:
 
-Fixes: 202e2f774543 ("ASoC: tegra: Add audio graph based card driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sameer Pujar <spujar@nvidia.com>
-Link: https://lore.kernel.org/r/1694098945-32760-3-git-send-email-spujar@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+    git checkout v6.6-rc3
+    make -j$(nproc) allmodconfig
+    make -j$(nproc) olddefconfig
+
+    make -j$(nproc)
+    find . -name '*.mod.c' | cpio -pd /tmp/before
+
+    # apply patch
+
+    make -j$(nproc)
+    find . -name '*.mod.c' | cpio -pd /tmp/after
+
+    diff -r /tmp/before/ /tmp/after/
+    # no difference
+
+Fixes: acbef7b76629 ("modpost: fix module autoloading for OF devices with generic compatible property")
+Signed-off-by: Mauricio Faria de Oliveira <mfo@canonical.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/tegra/tegra_audio_graph_card.c | 30 ++++++++++++++----------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ scripts/mod/file2alias.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/tegra/tegra_audio_graph_card.c b/sound/soc/tegra/tegra_audio_graph_card.c
-index 1f2c5018bf5ac..4737e776d3837 100644
---- a/sound/soc/tegra/tegra_audio_graph_card.c
-+++ b/sound/soc/tegra/tegra_audio_graph_card.c
-@@ -10,6 +10,7 @@
- #include <linux/platform_device.h>
- #include <sound/graph_card.h>
- #include <sound/pcm_params.h>
-+#include <sound/soc-dai.h>
- 
- #define MAX_PLLA_OUT0_DIV 128
- 
-@@ -44,6 +45,21 @@ struct tegra_audio_cdata {
- 	unsigned int plla_out0_rates[NUM_RATE_TYPE];
- };
- 
-+static bool need_clk_update(struct snd_soc_dai *dai)
-+{
-+	if (snd_soc_dai_is_dummy(dai) ||
-+	    !dai->driver->ops ||
-+	    !dai->driver->name)
-+		return false;
-+
-+	if (strstr(dai->driver->name, "I2S") ||
-+	    strstr(dai->driver->name, "DMIC") ||
-+	    strstr(dai->driver->name, "DSPK"))
-+		return true;
-+
-+	return false;
-+}
-+
- /* Setup PLL clock as per the given sample rate */
- static int tegra_audio_graph_update_pll(struct snd_pcm_substream *substream,
- 					struct snd_pcm_hw_params *params)
-@@ -140,19 +156,7 @@ static int tegra_audio_graph_hw_params(struct snd_pcm_substream *substream,
- 	struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
- 	int err;
- 
--	/*
--	 * This gets called for each DAI link (FE or BE) when DPCM is used.
--	 * We may not want to update PLLA rate for each call. So PLLA update
--	 * must be restricted to external I/O links (I2S, DMIC or DSPK) since
--	 * they actually depend on it. I/O modules update their clocks in
--	 * hw_param() of their respective component driver and PLLA rate
--	 * update here helps them to derive appropriate rates.
--	 *
--	 * TODO: When more HW accelerators get added (like sample rate
--	 * converter, volume gain controller etc., which don't really
--	 * depend on PLLA) we need a better way to filter here.
--	 */
--	if (cpu_dai->driver->ops && rtd->dai_link->no_pcm) {
-+	if (need_clk_update(cpu_dai)) {
- 		err = tegra_audio_graph_update_pll(substream, params);
- 		if (err)
- 			return err;
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 80d973144fded..111d5464c12df 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -1577,7 +1577,7 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
+ 	/* First handle the "special" cases */
+ 	if (sym_is(name, namelen, "usb"))
+ 		do_usb_table(symval, sym->st_size, mod);
+-	if (sym_is(name, namelen, "of"))
++	else if (sym_is(name, namelen, "of"))
+ 		do_of_table(symval, sym->st_size, mod);
+ 	else if (sym_is(name, namelen, "pnp"))
+ 		do_pnp_device_entry(symval, sym->st_size, mod);
 -- 
 2.40.1
 
