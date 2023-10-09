@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F1FE7BE0D1
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E7FE7BDEF5
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377418AbjJINoZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55668 "EHLO
+        id S1376518AbjJINY6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377653AbjJINoT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:19 -0400
+        with ESMTP id S1376626AbjJINYz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509F1A3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CF0C433C7;
-        Mon,  9 Oct 2023 13:44:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC548F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACFDC433C7;
+        Mon,  9 Oct 2023 13:24:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859058;
-        bh=m0FsOJVNfhxrRh+axhQpzPvhHgLViamXPA3Lcxzw0mo=;
+        s=korg; t=1696857893;
+        bh=YT387D7VCDzQvju+afrxRSfeE+GzTEKMzJgibaSS2d0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IcZiy5TTJNlsUxZ/TsdoR7lHMDMyxae+o5A+UkqFO4/ez7+SWzXwHC0qUiq3mxCS8
-         N3rkL8uP7QkAVJFq/NH/QuLAjq9YSqeHiXVv+sNqD49IfcI4PmncSTham9Nwn+4bV7
-         qB1T8Pzk+U/ZI0BG244WFJjqnqvfrukRh+FhIXZg=
+        b=A/rwBhYfc+pKTSiFEc2JIFEfp5usZXnn/fekvsPWhVk1ODDHmtp0XRbWh30B/AN3i
+         3q/zix6GJc12yMvMEKlfpgZg955eUTF1h80AUSjn/OtjslAcjprinGrGee/p0M7MTX
+         iulOEw8cOGfmkHgmFO12sTZF6bkkBoTcetwzRsIc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pan Bian <bianpan2016@163.com>,
-        Ferry Meng <mengferry@linux.alibaba.com>,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 147/226] nilfs2: fix potential use after free in nilfs_gccache_submit_read_data()
+        patches@lists.linux.dev, Jun Ma <Jun.Ma2@amd.com>,
+        David Perry <David.Perry@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 26/75] drm/amd: Fix detection of _PR3 on the PCIe root port
 Date:   Mon,  9 Oct 2023 15:01:48 +0200
-Message-ID: <20231009130130.561282299@linuxfoundation.org>
+Message-ID: <20231009130112.153199323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,65 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pan Bian <bianpan2016@163.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 7ee29facd8a9c5a26079148e36bcf07141b3a6bc upstream.
+commit 134b8c5d8674e7cde380f82e9aedfd46dcdd16f7 upstream.
 
-In nilfs_gccache_submit_read_data(), brelse(bh) is called to drop the
-reference count of bh when the call to nilfs_dat_translate() fails.  If
-the reference count hits 0 and its owner page gets unlocked, bh may be
-freed.  However, bh->b_page is dereferenced to put the page after that,
-which may result in a use-after-free bug.  This patch moves the release
-operation after unlocking and putting the page.
+On some systems with Navi3x dGPU will attempt to use BACO for runtime
+PM but fails to resume properly.  This is because on these systems
+the root port goes into D3cold which is incompatible with BACO.
 
-NOTE: The function in question is only called in GC, and in combination
-with current userland tools, address translation using DAT does not occur
-in that function, so the code path that causes this issue will not be
-executed.  However, it is possible to run that code path by intentionally
-modifying the userland GC library or by calling the GC ioctl directly.
+This happens because in this case dGPU is connected to a bridge between
+root port which causes BOCO detection logic to fail.  Fix the intent of
+the logic by looking at root port, not the immediate upstream bridge for
+_PR3.
 
-[konishi.ryusuke@gmail.com: NOTE added to the commit log]
-Link: https://lkml.kernel.org/r/1543201709-53191-1-git-send-email-bianpan2016@163.com
-Link: https://lkml.kernel.org/r/20230921141731.10073-1-konishi.ryusuke@gmail.com
-Fixes: a3d93f709e89 ("nilfs2: block cache for garbage collection")
-Signed-off-by: Pan Bian <bianpan2016@163.com>
-Reported-by: Ferry Meng <mengferry@linux.alibaba.com>
-Closes: https://lkml.kernel.org/r/20230818092022.111054-1-mengferry@linux.alibaba.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Suggested-by: Jun Ma <Jun.Ma2@amd.com>
+Tested-by: David Perry <David.Perry@amd.com>
+Fixes: b10c1c5b3a4e ("drm/amdgpu: add check for ACPI power resources")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/gcinode.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/gcinode.c
-+++ b/fs/nilfs2/gcinode.c
-@@ -73,10 +73,8 @@ int nilfs_gccache_submit_read_data(struc
- 		struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -2225,7 +2225,7 @@ static int amdgpu_device_ip_early_init(s
+ 		adev->flags |= AMD_IS_PX;
  
- 		err = nilfs_dat_translate(nilfs->ns_dat, vbn, &pbn);
--		if (unlikely(err)) { /* -EIO, -ENOMEM, -ENOENT */
--			brelse(bh);
-+		if (unlikely(err)) /* -EIO, -ENOMEM, -ENOENT */
- 			goto failed;
--		}
+ 	if (!(adev->flags & AMD_IS_APU)) {
+-		parent = pci_upstream_bridge(adev->pdev);
++		parent = pcie_find_root_port(adev->pdev);
+ 		adev->has_pr3 = parent ? pci_pr3_present(parent) : false;
  	}
- 
- 	lock_buffer(bh);
-@@ -102,6 +100,8 @@ int nilfs_gccache_submit_read_data(struc
-  failed:
- 	unlock_page(bh->b_page);
- 	put_page(bh->b_page);
-+	if (unlikely(err))
-+		brelse(bh);
- 	return err;
- }
  
 
 
