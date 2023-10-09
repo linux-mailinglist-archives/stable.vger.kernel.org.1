@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8F107BDF25
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA0577BDED2
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376556AbjJIN0u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:26:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37748 "EHLO
+        id S1376444AbjJINXc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:23:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376490AbjJIN0t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:49 -0400
+        with ESMTP id S1376443AbjJINXc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC3D394
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271B3C433C7;
-        Mon,  9 Oct 2023 13:26:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E1A18F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEABAC433C7;
+        Mon,  9 Oct 2023 13:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858007;
-        bh=kiSSt3jErTOA9XLm8f6tT5XaXR9ecvM3qmx8oIBFZxs=;
+        s=korg; t=1696857811;
+        bh=SoMPrE/sujzynQqyrN4ugL5vfzIU06k6kuLbHsnDEFQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x3GjgwcXvUdn7kfuzkRXLpuZELQFmnwH2SNMHc6AyswUS5NOZEmXsqXUUqyHUFySN
-         GiQnJ28G0rDM53YoIHmd3HcDLefRbSte0a4OOgHuVbQKouIpoH8RW3k1kq9rBhy2Sy
-         n9W/jEvHwjYkny6e71HRNl0mjMMEvDwwcILpXQwo=
+        b=O6gElAGCqsQ9edH4zGv6zVXCDXx/OikYAT67yjEQZKq5FZCgp87bfENVkklYdMRMB
+         R7PHWc3hytmRrI4Lx0ZuwoK5tTPbPkQ6HILdtODP+06w8C021aX/jfyQleBGIB1uYY
+         R69Gt0OKG/b4noP4ztSPThXc0M1ZL/LPAiiNwnAU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shiji Yang <yangshiji66@outlook.com>,
-        Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 36/75] wifi: mt76: mt76x02: fix MT76x0 external LNA gain handling
+        patches@lists.linux.dev, Jordan Rife <jrife@google.com>,
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 137/162] smb: use kernel_connect() and kernel_bind()
 Date:   Mon,  9 Oct 2023 15:01:58 +0200
-Message-ID: <20231009130112.493936862@linuxfoundation.org>
+Message-ID: <20231009130126.690857507@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,82 +49,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Jordan Rife <jrife@google.com>
 
-[ Upstream commit 684e45e120b82deccaf8b85633905304a3bbf56d ]
+commit cedc019b9f260facfadd20c6c490e403abf292e3 upstream.
 
-On MT76x0, LNA gain should be applied for both external and internal LNA.
-On MT76x2, LNA gain should be treated as 0 for external LNA.
-Move the LNA type based logic to mt76x2 in order to fix mt76x0.
+Recent changes to kernel_connect() and kernel_bind() ensure that
+callers are insulated from changes to the address parameter made by BPF
+SOCK_ADDR hooks. This patch wraps direct calls to ops->connect() and
+ops->bind() with kernel_connect() and kernel_bind() to ensure that SMB
+mounts do not see their mount address overwritten in such cases.
 
-Fixes: 2daa67588f34 ("mt76x0: unify lna_gain parsing")
-Reported-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230919194747.31647-1-nbd@nbd.name
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
+Cc: <stable@vger.kernel.org> # 6.0+
+Signed-off-by: Jordan Rife <jrife@google.com>
+Acked-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c |  7 -------
- drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c  | 13 +++++++++++--
- 2 files changed, 11 insertions(+), 9 deletions(-)
+ fs/smb/client/connect.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
-index 0acabba2d1a50..5d402cf2951cb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
-@@ -131,15 +131,8 @@ u8 mt76x02_get_lna_gain(struct mt76x02_dev *dev,
- 			s8 *lna_2g, s8 *lna_5g,
- 			struct ieee80211_channel *chan)
- {
--	u16 val;
- 	u8 lna;
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -2901,9 +2901,9 @@ bind_socket(struct TCP_Server_Info *serv
+ 	if (server->srcaddr.ss_family != AF_UNSPEC) {
+ 		/* Bind to the specified local IP address */
+ 		struct socket *socket = server->ssocket;
+-		rc = socket->ops->bind(socket,
+-				       (struct sockaddr *) &server->srcaddr,
+-				       sizeof(server->srcaddr));
++		rc = kernel_bind(socket,
++				 (struct sockaddr *) &server->srcaddr,
++				 sizeof(server->srcaddr));
+ 		if (rc < 0) {
+ 			struct sockaddr_in *saddr4;
+ 			struct sockaddr_in6 *saddr6;
+@@ -3050,8 +3050,8 @@ generic_ip_connect(struct TCP_Server_Inf
+ 		 socket->sk->sk_sndbuf,
+ 		 socket->sk->sk_rcvbuf, socket->sk->sk_rcvtimeo);
  
--	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
--	if (val & MT_EE_NIC_CONF_1_LNA_EXT_2G)
--		*lna_2g = 0;
--	if (val & MT_EE_NIC_CONF_1_LNA_EXT_5G)
--		memset(lna_5g, 0, sizeof(s8) * 3);
--
- 	if (chan->band == NL80211_BAND_2GHZ)
- 		lna = *lna_2g;
- 	else if (chan->hw_value <= 64)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
-index c57e05a5c65e4..91807bf662dde 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
-@@ -256,7 +256,8 @@ void mt76x2_read_rx_gain(struct mt76x02_dev *dev)
- 	struct ieee80211_channel *chan = dev->mphy.chandef.chan;
- 	int channel = chan->hw_value;
- 	s8 lna_5g[3], lna_2g;
--	u8 lna;
-+	bool use_lna;
-+	u8 lna = 0;
- 	u16 val;
- 
- 	if (chan->band == NL80211_BAND_2GHZ)
-@@ -275,7 +276,15 @@ void mt76x2_read_rx_gain(struct mt76x02_dev *dev)
- 	dev->cal.rx.mcu_gain |= (lna_5g[1] & 0xff) << 16;
- 	dev->cal.rx.mcu_gain |= (lna_5g[2] & 0xff) << 24;
- 
--	lna = mt76x02_get_lna_gain(dev, &lna_2g, lna_5g, chan);
-+	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
-+	if (chan->band == NL80211_BAND_2GHZ)
-+		use_lna = !(val & MT_EE_NIC_CONF_1_LNA_EXT_2G);
-+	else
-+		use_lna = !(val & MT_EE_NIC_CONF_1_LNA_EXT_5G);
-+
-+	if (use_lna)
-+		lna = mt76x02_get_lna_gain(dev, &lna_2g, lna_5g, chan);
-+
- 	dev->cal.rx.lna_gain = mt76x02_sign_extend(lna, 8);
- }
- EXPORT_SYMBOL_GPL(mt76x2_read_rx_gain);
--- 
-2.40.1
-
+-	rc = socket->ops->connect(socket, saddr, slen,
+-				  server->noblockcnt ? O_NONBLOCK : 0);
++	rc = kernel_connect(socket, saddr, slen,
++			    server->noblockcnt ? O_NONBLOCK : 0);
+ 	/*
+ 	 * When mounting SMB root file systems, we do not want to block in
+ 	 * connect. Otherwise bail out and then let cifs_reconnect() perform
 
 
