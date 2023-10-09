@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEB07BDE56
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1036D7BE06F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377013AbjJINSa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:18:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46634 "EHLO
+        id S1376947AbjJINkM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:40:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377011AbjJINS3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:29 -0400
+        with ESMTP id S1377335AbjJINkL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 927E29F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5118C433C7;
-        Mon,  9 Oct 2023 13:18:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB5D4112
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:40:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7AD9C433C9;
+        Mon,  9 Oct 2023 13:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857506;
-        bh=Cke7oSTpq6XnqI9HEMiRn5zKyKns24vAPDore4gjvSc=;
+        s=korg; t=1696858801;
+        bh=MhMNGkNX0LYJTwIA8+myPWprkMNQj21SwZr8Sk85pb8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iaJ+8DhH6HC2GAIbkfE6IL5UIamHz1a1VF7Xh7S/e6gZS8mF+YL2ZWTWMkNsFJ/J4
-         RULzNmA1uFvkK6BeiXvRx7UDhWJhu6aq7Tc7b4bGMTVLIVvmhE3/KtphxyYfKhouok
-         DoNTjiyJ6lhSXzsPAbQrvUUcsmBi6vPSpUFDYskw=
+        b=V7R0rzvFrKHoz5TOzDotY7g/ts8DJ9z/GQpopGME1sEwmVTgXwTnLOa7nGI7jPo7x
+         a57zUK8ORuSHWb9mJ9eONnMkIdnDF/ZaDlxcEB9Oib4P4ZKjWSHqGpMsXm9bmHF19N
+         t9L9aBbi9MqHd+owClnBDZvhgwnvqLvHQlnGzePc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
-        Jordan Rife <jrife@google.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 067/162] net: prevent rewrite of msg_name in sock_sendmsg()
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 087/226] btrfs: reset destination buffer when read_extent_buffer() gets invalid range
 Date:   Mon,  9 Oct 2023 15:00:48 +0200
-Message-ID: <20231009130124.776987225@linuxfoundation.org>
+Message-ID: <20231009130129.051418904@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,109 +49,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 86a7e0b69bd5b812e48a20c66c2161744f3caa16 upstream.
+[ Upstream commit 74ee79142c0a344d4eae2eb7012ebc4e82254109 ]
 
-Callers of sock_sendmsg(), and similarly kernel_sendmsg(), in kernel
-space may observe their value of msg_name change in cases where BPF
-sendmsg hooks rewrite the send address. This has been confirmed to break
-NFS mounts running in UDP mode and has the potential to break other
-systems.
+Commit f98b6215d7d1 ("btrfs: extent_io: do extra check for extent buffer
+read write functions") changed how we handle invalid extent buffer range
+for read_extent_buffer().
 
-This patch:
+Previously if the range is invalid we just set the destination to zero,
+but after the patch we do nothing and error out.
 
-1) Creates a new function called __sock_sendmsg() with same logic as the
-   old sock_sendmsg() function.
-2) Replaces calls to sock_sendmsg() made by __sys_sendto() and
-   __sys_sendmsg() with __sock_sendmsg() to avoid an unnecessary copy,
-   as these system calls are already protected.
-3) Modifies sock_sendmsg() so that it makes a copy of msg_name if
-   present before passing it down the stack to insulate callers from
-   changes to the send address.
+This can lead to smatch static checker errors like:
 
-Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
-Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
-Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  fs/btrfs/print-tree.c:186 print_uuid_item() error: uninitialized symbol 'subvol_id'.
+  fs/btrfs/tests/extent-io-tests.c:338 check_eb_bitmap() error: uninitialized symbol 'has'.
+  fs/btrfs/tests/extent-io-tests.c:353 check_eb_bitmap() error: uninitialized symbol 'has'.
+  fs/btrfs/uuid-tree.c:203 btrfs_uuid_tree_remove() error: uninitialized symbol 'read_subid'.
+  fs/btrfs/uuid-tree.c:353 btrfs_uuid_tree_iterate() error: uninitialized symbol 'subid_le'.
+  fs/btrfs/uuid-tree.c:72 btrfs_uuid_tree_lookup() error: uninitialized symbol 'data'.
+  fs/btrfs/volumes.c:7415 btrfs_dev_stats_value() error: uninitialized symbol 'val'.
+
+Fix those warnings by reverting back to the old memset() behavior.
+By this we keep the static checker happy and would still make a lot of
+noise when such invalid ranges are passed in.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: f98b6215d7d1 ("btrfs: extent_io: do extra check for extent buffer read write functions")
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/socket.c |   29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+ fs/btrfs/extent_io.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -720,6 +720,14 @@ static inline int sock_sendmsg_nosec(str
- 	return ret;
- }
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 0e266772beaef..685a375bb6af5 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -5634,8 +5634,14 @@ void read_extent_buffer(const struct extent_buffer *eb, void *dstv,
+ 	char *dst = (char *)dstv;
+ 	unsigned long i = start >> PAGE_SHIFT;
  
-+static int __sock_sendmsg(struct socket *sock, struct msghdr *msg)
-+{
-+	int err = security_socket_sendmsg(sock, msg,
-+					  msg_data_left(msg));
-+
-+	return err ?: sock_sendmsg_nosec(sock, msg);
-+}
-+
- /**
-  *	sock_sendmsg - send a message through @sock
-  *	@sock: socket
-@@ -730,10 +738,19 @@ static inline int sock_sendmsg_nosec(str
-  */
- int sock_sendmsg(struct socket *sock, struct msghdr *msg)
- {
--	int err = security_socket_sendmsg(sock, msg,
--					  msg_data_left(msg));
-+	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
-+	struct sockaddr_storage address;
-+	int ret;
- 
--	return err ?: sock_sendmsg_nosec(sock, msg);
-+	if (msg->msg_name) {
-+		memcpy(&address, msg->msg_name, msg->msg_namelen);
-+		msg->msg_name = &address;
+-	if (check_eb_range(eb, start, len))
++	if (check_eb_range(eb, start, len)) {
++		/*
++		 * Invalid range hit, reset the memory, so callers won't get
++		 * some random garbage for their uninitialzed memory.
++		 */
++		memset(dstv, 0, len);
+ 		return;
 +	}
-+
-+	ret = __sock_sendmsg(sock, msg);
-+	msg->msg_name = save_addr;
-+
-+	return ret;
- }
- EXPORT_SYMBOL(sock_sendmsg);
  
-@@ -1110,7 +1127,7 @@ static ssize_t sock_write_iter(struct ki
- 	if (sock->type == SOCK_SEQPACKET)
- 		msg.msg_flags |= MSG_EOR;
+ 	offset = offset_in_page(start);
  
--	res = sock_sendmsg(sock, &msg);
-+	res = __sock_sendmsg(sock, &msg);
- 	*from = msg.msg_iter;
- 	return res;
- }
-@@ -2114,7 +2131,7 @@ int __sys_sendto(int fd, void __user *bu
- 	if (sock->file->f_flags & O_NONBLOCK)
- 		flags |= MSG_DONTWAIT;
- 	msg.msg_flags = flags;
--	err = sock_sendmsg(sock, &msg);
-+	err = __sock_sendmsg(sock, &msg);
- 
- out_put:
- 	fput_light(sock->file, fput_needed);
-@@ -2479,7 +2496,7 @@ static int ____sys_sendmsg(struct socket
- 		err = sock_sendmsg_nosec(sock, msg_sys);
- 		goto out_freectl;
- 	}
--	err = sock_sendmsg(sock, msg_sys);
-+	err = __sock_sendmsg(sock, msg_sys);
- 	/*
- 	 * If this is sendmmsg() and sending to current destination address was
- 	 * successful, remember it.
+-- 
+2.40.1
+
 
 
