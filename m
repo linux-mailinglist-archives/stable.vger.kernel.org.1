@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0B97BDF7D
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D930C7BDE98
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377052AbjJINae (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51656 "EHLO
+        id S1346549AbjJINVB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:21:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377072AbjJINac (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:30:32 -0400
+        with ESMTP id S1346584AbjJINVA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 359879D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:30:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74431C433C9;
-        Mon,  9 Oct 2023 13:30:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2A2CAC
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3939AC433C7;
+        Mon,  9 Oct 2023 13:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858229;
-        bh=sVEfaCBBFvzgZQeMknVtobRw9CQ+747b9wBq5RM6EGE=;
+        s=korg; t=1696857658;
+        bh=IjjuDzuT9+fZOzRB62sFw2nV5rDKoVUI2E+6nOuJ/OQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p93wfh3YRgwYh/ZQl33R51R1dEstTT+gg5wZuFrYSb+WThsn8XD4+4jca5D4xqiB2
-         6KKFyICSl3J8h8a35KYJukF5ByJsgM4ypBU127iXKQpPWF2ejTbzAVLifc0pHZ++2/
-         Uqzo5mHVEdJphmxIGlBxP3y9xCncACphr6hder9I=
+        b=YW1ayFFLNP8onT5z/mI2E1FTbN6g649+FxeX+SWlitfKHLTp2CxtxkGfUZYJeRhG8
+         HwaBuFNuuiwf+876RTLENVytOIPIFCazXsfybLs+QF1PvkcpExNAEXRUxX1SEKMYhF
+         AuJbghqFzLPGfbGMrIsGgpOP0UQcpPzmoXF0oioA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 057/131] ring-buffer: Avoid softlockup in ring_buffer_resize()
+        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+c1d0a03d305972dbbe14@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 116/162] net: nfc: llcp: Add lock when modifying device list
 Date:   Mon,  9 Oct 2023 15:01:37 +0200
-Message-ID: <20231009130118.040559352@linuxfoundation.org>
+Message-ID: <20231009130126.135550161@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,47 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Jeremy Cline <jeremy@jcline.org>
 
-[ Upstream commit f6bd2c92488c30ef53b5bd80c52f0a7eee9d545a ]
+[ Upstream commit dfc7f7a988dad34c3bf4c053124fb26aa6c5f916 ]
 
-When user resize all trace ring buffer through file 'buffer_size_kb',
-then in ring_buffer_resize(), kernel allocates buffer pages for each
-cpu in a loop.
+The device list needs its associated lock held when modifying it, or the
+list could become corrupted, as syzbot discovered.
 
-If the kernel preemption model is PREEMPT_NONE and there are many cpus
-and there are many buffer pages to be allocated, it may not give up cpu
-for a long time and finally cause a softlockup.
-
-To avoid it, call cond_resched() after each cpu buffer allocation.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230906081930.3939106-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-and-tested-by: syzbot+c1d0a03d305972dbbe14@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c1d0a03d305972dbbe14
+Signed-off-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by nfc_llcp_find_local")
+Link: https://lore.kernel.org/r/20230908235853.1319596-1-jeremy@jcline.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 2 ++
+ net/nfc/llcp_core.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 445475c229b3a..2a4fb4f1e3cad 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1821,6 +1821,8 @@ int ring_buffer_resize(struct ring_buffer *buffer, unsigned long size,
- 				err = -ENOMEM;
- 				goto out_err;
- 			}
-+
-+			cond_resched();
- 		}
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index f60e424e06076..6705bb895e239 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1636,7 +1636,9 @@ int nfc_llcp_register_device(struct nfc_dev *ndev)
+ 	timer_setup(&local->sdreq_timer, nfc_llcp_sdreq_timer, 0);
+ 	INIT_WORK(&local->sdreq_timeout_work, nfc_llcp_sdreq_timeout_work);
  
- 		get_online_cpus();
++	spin_lock(&llcp_devices_lock);
+ 	list_add(&local->list, &llcp_devices);
++	spin_unlock(&llcp_devices_lock);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
