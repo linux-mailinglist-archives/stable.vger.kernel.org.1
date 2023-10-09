@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF2C47BDEAC
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 844767BE0A8
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376399AbjJINVw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:21:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48912 "EHLO
+        id S1377389AbjJINmg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:42:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376384AbjJINVu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:50 -0400
+        with ESMTP id S1377381AbjJINmf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AEC3EA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1788C433C9;
-        Mon,  9 Oct 2023 13:21:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00AA79C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CCEC433CD;
+        Mon,  9 Oct 2023 13:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857707;
-        bh=xAG5TTWs7T2jh2T/DG9fu0IyjGNcp07pVsKEUIf9sVc=;
+        s=korg; t=1696858953;
+        bh=IkBBfBHdIUb0IcnIxYaw4dhWoPL6i3nR2XwSqIpmdIw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A7Dhd8WUbLb0cjQPiYp75VwhgoD4DS4iMNNv5IVHPV21xt/+OILI/0USprdvrYxja
-         HPs26mXG/lkyWcJBP4YdOvai4Lb65m6hWC0JaGW0izXuFQXTKujASVsAod5pOYxSlC
-         dZX1ZkNQQIjfdVMI3IV2vy8Bu9gvLjQENgyf/jJg=
+        b=RAgwsPzU1KxWQzpbMQU3FPeNR5Dqj1wRColfKPMwfp6prqyMBlaH/0MUmB6GOieBd
+         AJHFK0mqQJov6UlNnVk7BTABnI4EjLN0Lx6JGKadk3LXSs7bhpxhRL0xrYrlG89/vG
+         g7XlVLA/Q+HINdpCf6u7A0lUr3r2f/wpdSSdVOgc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Sitnicki <jakub@cloudflare.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        John Fastabend <john.fastabend@gmail.com>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        David Hildenbrand <david@redhat.com>,
+        Yikebaer Aizezi <yikebaer61@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/162] bpf, sockmap: Reject sk_msg egress redirects to non-TCP sockets
+Subject: [PATCH 5.10 124/226] media: vb2: frame_vector.c: replace WARN_ONCE with a comment
 Date:   Mon,  9 Oct 2023 15:01:25 +0200
-Message-ID: <20231009130125.793547017@linuxfoundation.org>
+Message-ID: <20231009130130.016752643@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,104 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Sitnicki <jakub@cloudflare.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit b80e31baa43614e086a9d29dc1151932b1bd7fc5 ]
+[ Upstream commit 735de5caf79e06cc9fb96b1b4f4974674ae3e917 ]
 
-With a SOCKMAP/SOCKHASH map and an sk_msg program user can steer messages
-sent from one TCP socket (s1) to actually egress from another TCP
-socket (s2):
+The WARN_ONCE was issued also in cases that had nothing to do with VM_IO
+(e.g. if the start address was just a random value and uaccess fails with
+-EFAULT).
 
-tcp_bpf_sendmsg(s1)		// = sk_prot->sendmsg
-  tcp_bpf_send_verdict(s1)	// __SK_REDIRECT case
-    tcp_bpf_sendmsg_redir(s2)
-      tcp_bpf_push_locked(s2)
-	tcp_bpf_push(s2)
-	  tcp_rate_check_app_limited(s2) // expects tcp_sock
-	  tcp_sendmsg_locked(s2)	 // ditto
+There are no reports of WARN_ONCE being issued for actual VM_IO cases, so
+just drop it and instead add a note to the comment before the function.
 
-There is a hard-coded assumption in the call-chain, that the egress
-socket (s2) is a TCP socket.
-
-However in commit 122e6c79efe1 ("sock_map: Update sock type checks for
-UDP") we have enabled redirects to non-TCP sockets. This was done for the
-sake of BPF sk_skb programs. There was no indention to support sk_msg
-send-to-egress use case.
-
-As a result, attempts to send-to-egress through a non-TCP socket lead to a
-crash due to invalid downcast from sock to tcp_sock:
-
- BUG: kernel NULL pointer dereference, address: 000000000000002f
- ...
- Call Trace:
-  <TASK>
-  ? show_regs+0x60/0x70
-  ? __die+0x1f/0x70
-  ? page_fault_oops+0x80/0x160
-  ? do_user_addr_fault+0x2d7/0x800
-  ? rcu_is_watching+0x11/0x50
-  ? exc_page_fault+0x70/0x1c0
-  ? asm_exc_page_fault+0x27/0x30
-  ? tcp_tso_segs+0x14/0xa0
-  tcp_write_xmit+0x67/0xce0
-  __tcp_push_pending_frames+0x32/0xf0
-  tcp_push+0x107/0x140
-  tcp_sendmsg_locked+0x99f/0xbb0
-  tcp_bpf_push+0x19d/0x3a0
-  tcp_bpf_sendmsg_redir+0x55/0xd0
-  tcp_bpf_send_verdict+0x407/0x550
-  tcp_bpf_sendmsg+0x1a1/0x390
-  inet_sendmsg+0x6a/0x70
-  sock_sendmsg+0x9d/0xc0
-  ? sockfd_lookup_light+0x12/0x80
-  __sys_sendto+0x10e/0x160
-  ? syscall_enter_from_user_mode+0x20/0x60
-  ? __this_cpu_preempt_check+0x13/0x20
-  ? lockdep_hardirqs_on+0x82/0x110
-  __x64_sys_sendto+0x1f/0x30
-  do_syscall_64+0x38/0x90
-  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Reject selecting a non-TCP sockets as redirect target from a BPF sk_msg
-program to prevent the crash. When attempted, user will receive an EACCES
-error from send/sendto/sendmsg() syscall.
-
-Fixes: 122e6c79efe1 ("sock_map: Update sock type checks for UDP")
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20230920102055.42662-1-jakub@cloudflare.com
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/frame_vector.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 96db7409baa12..38e01f82f2ef3 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -670,6 +670,8 @@ BPF_CALL_4(bpf_msg_redirect_map, struct sk_msg *, msg,
- 	sk = __sock_map_lookup_elem(map, key);
- 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
- 		return SK_DROP;
-+	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
-+		return SK_DROP;
+diff --git a/mm/frame_vector.c b/mm/frame_vector.c
+index 0e589a9a88012..1cd81d38ad2d0 100644
+--- a/mm/frame_vector.c
++++ b/mm/frame_vector.c
+@@ -29,6 +29,10 @@
+  * different type underlying the specified range of virtual addresses.
+  * When the function isn't able to map a single page, it returns error.
+  *
++ * Note that get_vaddr_frames() cannot follow VM_IO mappings. It used
++ * to be able to do that, but that could (racily) return non-refcounted
++ * pfns.
++ *
+  * This function takes care of grabbing mmap_lock as necessary.
+  */
+ int get_vaddr_frames(unsigned long start, unsigned int nr_frames,
+@@ -77,8 +81,6 @@ int get_vaddr_frames(unsigned long start, unsigned int nr_frames,
+ 			goto out;
+ 	}
  
- 	msg->flags = flags;
- 	msg->sk_redir = sk;
-@@ -1262,6 +1264,8 @@ BPF_CALL_4(bpf_msg_redirect_hash, struct sk_msg *, msg,
- 	sk = __sock_hash_lookup_elem(map, key);
- 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
- 		return SK_DROP;
-+	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
-+		return SK_DROP;
+-	/* This used to (racily) return non-refcounted pfns. Let people know */
+-	WARN_ONCE(1, "get_vaddr_frames() cannot follow VM_IO mapping");
+ 	vec->nr_frames = 0;
  
- 	msg->flags = flags;
- 	msg->sk_redir = sk;
+ out:
 -- 
 2.40.1
 
