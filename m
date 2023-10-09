@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEBF97BE04E
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 253427BDD5B
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:09:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377243AbjJINii (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:38:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51056 "EHLO
+        id S1376688AbjJINJm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:09:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377292AbjJINia (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:30 -0400
+        with ESMTP id S1376750AbjJINJj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:09:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12EF107
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F529C433C8;
-        Mon,  9 Oct 2023 13:38:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A8708F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:09:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3458C433CA;
+        Mon,  9 Oct 2023 13:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858706;
-        bh=EgJ5HWX1m61vhwxKknitBJAij2SE8LDY+IOeYnlzGbA=;
+        s=korg; t=1696856978;
+        bh=Jc3qmpAHu6w6XngSzUd2piie/1kRzgCL8y8j4aTtV7w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m6vCRy3cz1/PWyjRD7zJpUsBklhDq9z7VoNAmVsdWVDMwaTL9Fp/MtfTx9VROMEP0
-         ohV99DFIHyok1PXMM4zCkxYNfp+9Diw8JPO+zx8qtn7a3GgvIlOGow+0/9V+lHpjuC
-         mnGI0Hki4wB3gX8QUGhZ8f4qYwM6+ag4CogC74NM=
+        b=0fBZdYY/7Uk+bsn3m6AhhJ0XyZGx58YtzojTdq+ux2yRF4JflnQsyP0dUlFN6zaiW
+         qziEsZ2BAtqQkDhOooB+7kBtTb8Hr+IL7VrX2w8zYnmuDYgj4YSLSUmlU7twjiBjoW
+         JPbg0fK84tZK61MFq0WO9LaYu3z7zKoRFHFRoPXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 057/226] locking/seqlock: Do the lockdep annotation before locking in do_write_seqcount_begin_nested()
+        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 6.5 054/163] arm64: Add Cortex-A520 CPU part definition
 Date:   Mon,  9 Oct 2023 15:00:18 +0200
-Message-ID: <20231009130128.278968140@linuxfoundation.org>
+Message-ID: <20231009130125.527865683@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,62 +48,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit 41b43b6c6e30a832c790b010a06772e793bca193 ]
+commit a654a69b9f9c06b2e56387d0b99f0e3e6b0ff4ef upstream.
 
-It was brought up by Tetsuo that the following sequence:
+Add the CPU Part number for the new Arm design.
 
-   write_seqlock_irqsave()
-   printk_deferred_enter()
-
-could lead to a deadlock if the lockdep annotation within
-write_seqlock_irqsave() triggers.
-
-The problem is that the sequence counter is incremented before the lockdep
-annotation is performed. The lockdep splat would then attempt to invoke
-printk() but the reader side, of the same seqcount, could have a
-tty_port::lock acquired waiting for the sequence number to become even again.
-
-The other lockdep annotations come before the actual locking because "we
-want to see the locking error before it happens". There is no reason why
-seqcount should be different here.
-
-Do the lockdep annotation first then perform the locking operation (the
-sequence increment).
-
-Fixes: 1ca7d67cf5d5a ("seqcount: Add lockdep functionality to seqcount/seqlock structures")
-Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230920104627._DTHgPyA@linutronix.de
-
-Closes: https://lore.kernel.org/20230621130641.-5iueY1I@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20230921194156.1050055-1-robh@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/seqlock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 008fa88ad58e7..0928a60b8f825 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -511,8 +511,8 @@ do {									\
- 
- static inline void do_write_seqcount_begin_nested(seqcount_t *s, int subclass)
- {
--	do_raw_write_seqcount_begin(s);
- 	seqcount_acquire(&s->dep_map, subclass, 0, _RET_IP_);
-+	do_raw_write_seqcount_begin(s);
- }
- 
- /**
--- 
-2.40.1
-
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -79,6 +79,7 @@
+ #define ARM_CPU_PART_CORTEX_A78AE	0xD42
+ #define ARM_CPU_PART_CORTEX_X1		0xD44
+ #define ARM_CPU_PART_CORTEX_A510	0xD46
++#define ARM_CPU_PART_CORTEX_A520	0xD80
+ #define ARM_CPU_PART_CORTEX_A710	0xD47
+ #define ARM_CPU_PART_CORTEX_A715	0xD4D
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+@@ -148,6 +149,7 @@
+ #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
+ #define MIDR_CORTEX_X1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1)
+ #define MIDR_CORTEX_A510 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A510)
++#define MIDR_CORTEX_A520 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A520)
+ #define MIDR_CORTEX_A710 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A710)
+ #define MIDR_CORTEX_A715 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A715)
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
 
 
