@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0FB77BDDB8
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:12:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95B7E7BE028
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376790AbjJINMs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:12:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58844 "EHLO
+        id S1376377AbjJINiH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:38:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376923AbjJINMh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:37 -0400
+        with ESMTP id S1377239AbjJINiG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01378181
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FEEC433CA;
-        Mon,  9 Oct 2023 13:11:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC2649C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44CDC433C9;
+        Mon,  9 Oct 2023 13:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857086;
-        bh=XyJ0H08b1dWwIi5Lp3Aeif7zeOyOa7F5ZkZEA2lBAHg=;
+        s=korg; t=1696858684;
+        bh=LTsg5uqiHL8IZMCQcdsqf1TqhVzLLt6/JA4XQF3YnDA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QFEOvuK8a1dZR6vQku5EbuvpI7wokgtf4iKTT0UIzuGAYvR33PIJNj65mVmQqXk09
-         qcvsGa0d+qvRSASP9B+Pesp4IRrJwisBkp72GUNpFk9jL0CYwnbWE0Q0m2VeyBxnAe
-         vEtJe6s8Bu3wiJbQuP98vGYXVZHXdSggkvlG4eP8=
+        b=O9jxJNZ6vJGbqe54NPwOn/TdCDuRzINdnZAwXT4GNNYjnBKnEUh7LLYLEOpSCU1jS
+         /4hQxMWoTlxxnMiVT0II6+r0bHR3tZCpXDCPRLoq2z0sdQfcySkYTm5snRPC4Xi5kH
+         4qIRMUSfyvLQRkSkHE1PWrtAbG8k3cOLPGUjS+7Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Daniel Bristot de Oliveira <bristot@kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 065/163] rtla/timerlat_aa: Zero thread sum after every sample analysis
+Subject: [PATCH 5.10 068/226] mmc: tmio: support custom irq masks
 Date:   Mon,  9 Oct 2023 15:00:29 +0200
-Message-ID: <20231009130125.840286791@linuxfoundation.org>
+Message-ID: <20231009130128.559156482@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +51,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 02d89917ef68acbe65c7cc2323f1db4429879878 ]
+[ Upstream commit 0d856c4c68c639f96cb12c26aaeb906353b9a76e ]
 
-The thread thread_thread_sum accounts for thread interference
-during a single activation. It was not being zeroed, so it was
-accumulating thread interference over all activations.
+SDHI Gen2+ has a different value for TMIO_MASK_ALL, so add a member to
+support that. If the member is not used, the previous default value is
+applied.
 
-It was not that visible when timerlat was the highest priority.
-
-Link: https://lore.kernel.org/lkml/97bff55b0141f2d01b47d9450a5672fde147b89a.1691162043.git.bristot@kernel.org
-
-Fixes: 27e348b221f6 ("rtla/timerlat: Add auto-analysis core")
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://lore.kernel.org/r/20210223100830.25125-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 74f45de394d9 ("mmc: renesas_sdhi: register irqs before registering controller")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/timerlat_aa.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/tmio_mmc.h      | 1 +
+ drivers/mmc/host/tmio_mmc_core.c | 8 +++++---
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/timerlat_aa.c b/tools/tracing/rtla/src/timerlat_aa.c
-index e0ffe69c271c6..dec5b4c4511e1 100644
---- a/tools/tracing/rtla/src/timerlat_aa.c
-+++ b/tools/tracing/rtla/src/timerlat_aa.c
-@@ -159,6 +159,7 @@ static int timerlat_aa_irq_latency(struct timerlat_aa_data *taa_data,
- 	taa_data->thread_nmi_sum = 0;
- 	taa_data->thread_irq_sum = 0;
- 	taa_data->thread_softirq_sum = 0;
-+	taa_data->thread_thread_sum = 0;
- 	taa_data->thread_blocking_duration = 0;
- 	taa_data->timer_irq_start_time = 0;
- 	taa_data->timer_irq_duration = 0;
+diff --git a/drivers/mmc/host/tmio_mmc.h b/drivers/mmc/host/tmio_mmc.h
+index 9546e542619cb..d6ed5e1f8386e 100644
+--- a/drivers/mmc/host/tmio_mmc.h
++++ b/drivers/mmc/host/tmio_mmc.h
+@@ -161,6 +161,7 @@ struct tmio_mmc_host {
+ 	u32			sdio_irq_mask;
+ 	unsigned int		clk_cache;
+ 	u32			sdcard_irq_setbit_mask;
++	u32			sdcard_irq_mask_all;
+ 
+ 	spinlock_t		lock;		/* protect host private data */
+ 	unsigned long		last_req_ts;
+diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
+index ac4e7874a3f13..abf36acb2641f 100644
+--- a/drivers/mmc/host/tmio_mmc_core.c
++++ b/drivers/mmc/host/tmio_mmc_core.c
+@@ -1158,7 +1158,9 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
+ 	tmio_mmc_reset(_host);
+ 
+ 	_host->sdcard_irq_mask = sd_ctrl_read16_and_16_as_32(_host, CTL_IRQ_MASK);
+-	tmio_mmc_disable_mmc_irqs(_host, TMIO_MASK_ALL);
++	if (!_host->sdcard_irq_mask_all)
++		_host->sdcard_irq_mask_all = TMIO_MASK_ALL;
++	tmio_mmc_disable_mmc_irqs(_host, _host->sdcard_irq_mask_all);
+ 
+ 	if (_host->native_hotplug)
+ 		tmio_mmc_enable_mmc_irqs(_host,
+@@ -1212,7 +1214,7 @@ void tmio_mmc_host_remove(struct tmio_mmc_host *host)
+ 	cancel_work_sync(&host->done);
+ 	cancel_delayed_work_sync(&host->delayed_reset_work);
+ 	tmio_mmc_release_dma(host);
+-	tmio_mmc_disable_mmc_irqs(host, TMIO_MASK_ALL);
++	tmio_mmc_disable_mmc_irqs(host, host->sdcard_irq_mask_all);
+ 
+ 	if (host->native_hotplug)
+ 		pm_runtime_put_noidle(&pdev->dev);
+@@ -1242,7 +1244,7 @@ int tmio_mmc_host_runtime_suspend(struct device *dev)
+ {
+ 	struct tmio_mmc_host *host = dev_get_drvdata(dev);
+ 
+-	tmio_mmc_disable_mmc_irqs(host, TMIO_MASK_ALL);
++	tmio_mmc_disable_mmc_irqs(host, host->sdcard_irq_mask_all);
+ 
+ 	if (host->clk_cache)
+ 		host->set_clock(host, 0);
 -- 
 2.40.1
 
