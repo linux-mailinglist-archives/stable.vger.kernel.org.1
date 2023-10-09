@@ -2,118 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF7947BE09F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C8E17BDF8B
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377357AbjJINmO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:42:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48058 "EHLO
+        id S1377073AbjJINbE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:31:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377385AbjJINmM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:12 -0400
+        with ESMTP id S1377075AbjJINbD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E6F9C6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9736CC433C9;
-        Mon,  9 Oct 2023 13:42:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6F04C6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A19C433C8;
+        Mon,  9 Oct 2023 13:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858931;
-        bh=kfY0oxERcQIbwB4ua+aGvkEU3SAGLtJqCMCmY/NeeEc=;
+        s=korg; t=1696858261;
+        bh=3GD8jhQZP8GOtnHE/MalfTDj168tFUI7cHzd0v2QjDc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jXOKIX/nCLYRa7v8bEd6xmzuudxYZzn85kXOD5tsPxec9nOfb1VFQMGa8MTxfBOXX
-         Nvb3e4OJesi+NYL7v8pVGfVnr3AD1S2lGp/T9XuNkWGXe4/+scgjZneLegcdOOK7Dw
-         qmfoOgOyPiTz+X3irTpQZp/WSXK+J+m2oDoUZT5w=
+        b=m1xWWQxkj+12OWg/JOA2+gmsoi6POepHBLEfTGz9rd9SUcxP4vbBiXnqrHQEOsMUk
+         Dge/ArhGIY8AYDpTemnUtOqwPDJP4E6DwHix1Jd65F7iYvBbmuBf57aV61yvuVeYUh
+         dsunJlmVPiVZuLsTNdYDDj7GKwhDynu4/lf+LdMw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Daniel Starke <daniel.starke@siemens.com>
-Subject: [PATCH 5.10 145/226] Revert "tty: n_gsm: fix UAF in gsm_cleanup_mux"
+        patches@lists.linux.dev,
+        "=?UTF-8?q?Daniel=20P . =20Berrang=C3=A9?=" <berrange@redhat.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 066/131] watchdog: iTCO_wdt: Set NO_REBOOT if the watchdog is not already running
 Date:   Mon,  9 Oct 2023 15:01:46 +0200
-Message-ID: <20231009130130.513511210@linuxfoundation.org>
+Message-ID: <20231009130118.311548758@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Starke <daniel.starke@siemens.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit 29346e217b8ab8a52889b88f00b268278d6b7668 upstream.
+commit ef9b7bf52c2f47f0a9bf988543c577b92c92d15e upstream.
 
-This reverts commit 9b9c8195f3f0d74a826077fc1c01b9ee74907239.
+Daniel reported that the commit 1ae3e78c0820 ("watchdog: iTCO_wdt: No
+need to stop the timer in probe") makes QEMU implementation of the iTCO
+watchdog not to trigger reboot anymore when NO_REBOOT flag is initially
+cleared using this option (in QEMU command line):
 
-The commit above is reverted as it did not solve the original issue.
+  -global ICH9-LPC.noreboot=false
 
-gsm_cleanup_mux() tries to free up the virtual ttys by calling
-gsm_dlci_release() for each available DLCI. There, dlci_put() is called to
-decrease the reference counter for the DLCI via tty_port_put() which
-finally calls gsm_dlci_free(). This already clears the pointer which is
-being checked in gsm_cleanup_mux() before calling gsm_dlci_release().
-Therefore, it is not necessary to clear this pointer in gsm_cleanup_mux()
-as done in the reverted commit. The commit introduces a null pointer
-dereference:
- <TASK>
- ? __die+0x1f/0x70
- ? page_fault_oops+0x156/0x420
- ? search_exception_tables+0x37/0x50
- ? fixup_exception+0x21/0x310
- ? exc_page_fault+0x69/0x150
- ? asm_exc_page_fault+0x26/0x30
- ? tty_port_put+0x19/0xa0
- gsmtty_cleanup+0x29/0x80 [n_gsm]
- release_one_tty+0x37/0xe0
- process_one_work+0x1e6/0x3e0
- worker_thread+0x4c/0x3d0
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xe1/0x110
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2f/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
+The problem with the commit is that it left the unconditional setting of
+NO_REBOOT that is not cleared anymore when the kernel keeps pinging the
+watchdog (as opposed to the previous code that called iTCO_wdt_stop()
+that cleared it).
 
-The actual issue is that nothing guards dlci_put() from being called
-multiple times while the tty driver was triggered but did not yet finished
-calling gsm_dlci_free().
+Fix this so that we only set NO_REBOOT if the watchdog was not initially
+running.
 
-Fixes: 9b9c8195f3f0 ("tty: n_gsm: fix UAF in gsm_cleanup_mux")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20230914051507.3240-1-daniel.starke@siemens.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ae3e78c0820 ("watchdog: iTCO_wdt: No need to stop the timer in probe")
+Reported-by: Daniel P. Berrangé <berrange@redhat.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Tested-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20221028062750.45451-1-mika.westerberg@linux.intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/watchdog/iTCO_wdt.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -2179,10 +2179,8 @@ static void gsm_cleanup_mux(struct gsm_m
+diff --git a/drivers/watchdog/iTCO_wdt.c b/drivers/watchdog/iTCO_wdt.c
+index 22091a775f49f..134237d8b8fca 100644
+--- a/drivers/watchdog/iTCO_wdt.c
++++ b/drivers/watchdog/iTCO_wdt.c
+@@ -413,14 +413,18 @@ static unsigned int iTCO_wdt_get_timeleft(struct watchdog_device *wd_dev)
+ 	return time_left;
+ }
  
- 	/* Free up any link layer users and finally the control channel */
- 	for (i = NUM_DLCI - 1; i >= 0; i--)
--		if (gsm->dlci[i]) {
-+		if (gsm->dlci[i])
- 			gsm_dlci_release(gsm->dlci[i]);
--			gsm->dlci[i] = NULL;
--		}
- 	mutex_unlock(&gsm->mutex);
- 	/* Now wipe the queues */
- 	tty_ldisc_flush(gsm->tty);
+-static void iTCO_wdt_set_running(struct iTCO_wdt_private *p)
++/* Returns true if the watchdog was running */
++static bool iTCO_wdt_set_running(struct iTCO_wdt_private *p)
+ {
+ 	u16 val;
+ 
+-	/* Bit 11: TCO Timer Halt -> 0 = The TCO timer is * enabled */
++	/* Bit 11: TCO Timer Halt -> 0 = The TCO timer is enabled */
+ 	val = inw(TCO1_CNT(p));
+-	if (!(val & BIT(11)))
++	if (!(val & BIT(11))) {
+ 		set_bit(WDOG_HW_RUNNING, &p->wddev.status);
++		return true;
++	}
++	return false;
+ }
+ 
+ /*
+@@ -511,9 +515,6 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
+ 		return -ENODEV;	/* Cannot reset NO_REBOOT bit */
+ 	}
+ 
+-	/* Set the NO_REBOOT bit to prevent later reboots, just for sure */
+-	p->update_no_reboot_bit(p->no_reboot_priv, true);
+-
+ 	if (turn_SMI_watchdog_clear_off >= p->iTCO_version) {
+ 		/*
+ 		 * Bit 13: TCO_EN -> 0
+@@ -565,7 +566,13 @@ static int iTCO_wdt_probe(struct platform_device *pdev)
+ 	watchdog_set_drvdata(&p->wddev, p);
+ 	platform_set_drvdata(pdev, p);
+ 
+-	iTCO_wdt_set_running(p);
++	if (!iTCO_wdt_set_running(p)) {
++		/*
++		 * If the watchdog was not running set NO_REBOOT now to
++		 * prevent later reboots.
++		 */
++		p->update_no_reboot_bit(p->no_reboot_priv, true);
++	}
+ 
+ 	/* Check that the heartbeat value is within it's range;
+ 	   if not reset to the default */
+-- 
+2.40.1
+
 
 
