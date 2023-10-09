@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A92F7BDD97
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C61607BDFFE
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376962AbjJINLD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:11:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42264 "EHLO
+        id S1377223AbjJINgc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:36:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376837AbjJINKh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:10:37 -0400
+        with ESMTP id S1377213AbjJINga (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D96F2101
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B16AC433CC;
-        Mon,  9 Oct 2023 13:10:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C27791
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DE9C433C8;
+        Mon,  9 Oct 2023 13:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857019;
-        bh=cNXyyGd8wYQNWBBAWwmS1GCsGBe5fL0LqwBFPyxutvE=;
+        s=korg; t=1696858582;
+        bh=B3uzr6nz3k4rrOiXcK8H3VnYeo46vleP4FP0xnfsE+I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kNKnyj+xJhzPExaGL5dwEOgDvyyjztjR2I+0ULBrudl3XNXuvhIINpaTtVrmBYyM3
-         EgxOVoKAUBE+cEe31G5OrrXxw2hg5debV4J3dFlTgP3ECY3ZMCgwsniJ86dI2ubAGF
-         0YZVnztCYPOV5EoRzzePmRjV09rkbdYHqmcVOYGA=
+        b=inFdEdzpWzEVCL8qKAHITb23uzpNph6s6o8rq1nAAZY55VlNfhJpC875dLocmfxYb
+         OFIXUkk3kSNa1Ydr8RK6V/hMW35lrge5zA1/D8EANE/4JxJLsMXNanULiBv3PxhcaI
+         hxIO5ymrZcmtWWeXz64duX6wAVqmwzRkH3LSGhgI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.5 032/163] mptcp: fix delegated action races
-Date:   Mon,  9 Oct 2023 14:59:56 +0200
-Message-ID: <20231009130124.891608721@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@oracle.com>,
+        Kees Cook <keescook@chromium.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 036/226] selftests/tls: Add {} to avoid static checker warning
+Date:   Mon,  9 Oct 2023 14:59:57 +0200
+Message-ID: <20231009130127.729142484@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,196 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Kees Cook <keescook@chromium.org>
 
-commit a5efdbcece83af94180e8d7c0a6e22947318499d upstream.
+[ Upstream commit f50688b47c5858d2ff315d020332bf4cb6710837 ]
 
-The delegated action infrastructure is prone to the following
-race: different CPUs can try to schedule different delegated
-actions on the same subflow at the same time.
+This silences a static checker warning due to the unusual macro
+construction of EXPECT_*() by adding explicit {}s around the enclosing
+while loop.
 
-Each of them will check different bits via mptcp_subflow_delegate(),
-and will try to schedule the action on the related per-cpu napi
-instance.
-
-Depending on the timing, both can observe an empty delegated list
-node, causing the same entry to be added simultaneously on two different
-lists.
-
-The root cause is that the delegated actions infra does not provide
-a single synchronization point. Address the issue reserving an additional
-bit to mark the subflow as scheduled for delegation. Acquiring such bit
-guarantee the caller to own the delegated list node, and being able to
-safely schedule the subflow.
-
-Clear such bit only when the subflow scheduling is completed, ensuring
-proper barrier in place.
-
-Additionally swap the meaning of the delegated_action bitmask, to allow
-the usage of the existing helper to set multiple bit at once.
-
-Fixes: bcd97734318d ("mptcp: use delegate action to schedule 3rd ack retrans")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231004-send-net-20231004-v1-1-28de4ac663ae@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Fixes: 7f657d5bf507 ("selftests: tls: add selftests for TLS sockets")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: c326ca98446e ("selftests: tls: swap the TX and RX sockets in some tests")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |   28 ++++++++++++++--------------
- net/mptcp/protocol.h |   35 ++++++++++++-----------------------
- net/mptcp/subflow.c  |   10 ++++++++--
- 3 files changed, 34 insertions(+), 39 deletions(-)
+ tools/testing/selftests/net/tls.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3409,24 +3409,21 @@ static void schedule_3rdack_retransmissi
- 	sk_reset_timer(ssk, &icsk->icsk_delack_timer, timeout);
- }
- 
--void mptcp_subflow_process_delegated(struct sock *ssk)
-+void mptcp_subflow_process_delegated(struct sock *ssk, long status)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
- 	struct sock *sk = subflow->conn;
- 
--	if (test_bit(MPTCP_DELEGATE_SEND, &subflow->delegated_status)) {
-+	if (status & BIT(MPTCP_DELEGATE_SEND)) {
- 		mptcp_data_lock(sk);
- 		if (!sock_owned_by_user(sk))
- 			__mptcp_subflow_push_pending(sk, ssk, true);
- 		else
- 			__set_bit(MPTCP_PUSH_PENDING, &mptcp_sk(sk)->cb_flags);
- 		mptcp_data_unlock(sk);
--		mptcp_subflow_delegated_done(subflow, MPTCP_DELEGATE_SEND);
+diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
+index b599f1fa99b55..44984741bd41d 100644
+--- a/tools/testing/selftests/net/tls.c
++++ b/tools/testing/selftests/net/tls.c
+@@ -387,8 +387,9 @@ TEST_F(tls, sendmsg_large)
+ 		EXPECT_EQ(sendmsg(self->cfd, &msg, 0), send_len);
  	}
--	if (test_bit(MPTCP_DELEGATE_ACK, &subflow->delegated_status)) {
-+	if (status & BIT(MPTCP_DELEGATE_ACK))
- 		schedule_3rdack_retransmission(ssk);
--		mptcp_subflow_delegated_done(subflow, MPTCP_DELEGATE_ACK);
--	}
+ 
+-	while (recvs++ < sends)
++	while (recvs++ < sends) {
+ 		EXPECT_NE(recv(self->fd, mem, send_len, 0), -1);
++	}
+ 
+ 	free(mem);
  }
- 
- static int mptcp_hash(struct sock *sk)
-@@ -3932,14 +3929,17 @@ static int mptcp_napi_poll(struct napi_s
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
- 		bh_lock_sock_nested(ssk);
--		if (!sock_owned_by_user(ssk) &&
--		    mptcp_subflow_has_delegated_action(subflow))
--			mptcp_subflow_process_delegated(ssk);
--		/* ... elsewhere tcp_release_cb_override already processed
--		 * the action or will do at next release_sock().
--		 * In both case must dequeue the subflow here - on the same
--		 * CPU that scheduled it.
--		 */
-+		if (!sock_owned_by_user(ssk)) {
-+			mptcp_subflow_process_delegated(ssk, xchg(&subflow->delegated_status, 0));
-+		} else {
-+			/* tcp_release_cb_override already processed
-+			 * the action or will do at next release_sock().
-+			 * In both case must dequeue the subflow here - on the same
-+			 * CPU that scheduled it.
-+			 */
-+			smp_wmb();
-+			clear_bit(MPTCP_DELEGATE_SCHEDULED, &subflow->delegated_status);
-+		}
- 		bh_unlock_sock(ssk);
- 		sock_put(ssk);
- 
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -440,9 +440,11 @@ struct mptcp_delegated_action {
- 
- DECLARE_PER_CPU(struct mptcp_delegated_action, mptcp_delegated_actions);
- 
--#define MPTCP_DELEGATE_SEND		0
--#define MPTCP_DELEGATE_ACK		1
-+#define MPTCP_DELEGATE_SCHEDULED	0
-+#define MPTCP_DELEGATE_SEND		1
-+#define MPTCP_DELEGATE_ACK		2
- 
-+#define MPTCP_DELEGATE_ACTIONS_MASK	(~BIT(MPTCP_DELEGATE_SCHEDULED))
- /* MPTCP subflow context */
- struct mptcp_subflow_context {
- 	struct	list_head node;/* conn_list of subflows */
-@@ -559,23 +561,24 @@ mptcp_subflow_get_mapped_dsn(const struc
- 	return subflow->map_seq + mptcp_subflow_get_map_offset(subflow);
- }
- 
--void mptcp_subflow_process_delegated(struct sock *ssk);
-+void mptcp_subflow_process_delegated(struct sock *ssk, long actions);
- 
- static inline void mptcp_subflow_delegate(struct mptcp_subflow_context *subflow, int action)
- {
-+	long old, set_bits = BIT(MPTCP_DELEGATE_SCHEDULED) | BIT(action);
- 	struct mptcp_delegated_action *delegated;
- 	bool schedule;
- 
- 	/* the caller held the subflow bh socket lock */
- 	lockdep_assert_in_softirq();
- 
--	/* The implied barrier pairs with mptcp_subflow_delegated_done(), and
--	 * ensures the below list check sees list updates done prior to status
--	 * bit changes
-+	/* The implied barrier pairs with tcp_release_cb_override()
-+	 * mptcp_napi_poll(), and ensures the below list check sees list
-+	 * updates done prior to delegated status bits changes
- 	 */
--	if (!test_and_set_bit(action, &subflow->delegated_status)) {
--		/* still on delegated list from previous scheduling */
--		if (!list_empty(&subflow->delegated_node))
-+	old = set_mask_bits(&subflow->delegated_status, 0, set_bits);
-+	if (!(old & BIT(MPTCP_DELEGATE_SCHEDULED))) {
-+		if (WARN_ON_ONCE(!list_empty(&subflow->delegated_node)))
- 			return;
- 
- 		delegated = this_cpu_ptr(&mptcp_delegated_actions);
-@@ -600,20 +603,6 @@ mptcp_subflow_delegated_next(struct mptc
- 	return ret;
- }
- 
--static inline bool mptcp_subflow_has_delegated_action(const struct mptcp_subflow_context *subflow)
--{
--	return !!READ_ONCE(subflow->delegated_status);
--}
--
--static inline void mptcp_subflow_delegated_done(struct mptcp_subflow_context *subflow, int action)
--{
--	/* pairs with mptcp_subflow_delegate, ensures delegate_node is updated before
--	 * touching the status bit
--	 */
--	smp_wmb();
--	clear_bit(action, &subflow->delegated_status);
--}
--
- int mptcp_is_enabled(const struct net *net);
- unsigned int mptcp_get_add_addr_timeout(const struct net *net);
- int mptcp_is_checksum_enabled(const struct net *net);
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1956,9 +1956,15 @@ static void subflow_ulp_clone(const stru
- static void tcp_release_cb_override(struct sock *ssk)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+	long status;
- 
--	if (mptcp_subflow_has_delegated_action(subflow))
--		mptcp_subflow_process_delegated(ssk);
-+	/* process and clear all the pending actions, but leave the subflow into
-+	 * the napi queue. To respect locking, only the same CPU that originated
-+	 * the action can touch the list. mptcp_napi_poll will take care of it.
-+	 */
-+	status = set_mask_bits(&subflow->delegated_status, MPTCP_DELEGATE_ACTIONS_MASK, 0);
-+	if (status)
-+		mptcp_subflow_process_delegated(ssk, status);
- 
- 	tcp_release_cb(ssk);
- }
+-- 
+2.40.1
+
 
 
