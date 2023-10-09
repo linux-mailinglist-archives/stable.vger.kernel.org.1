@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA8747BDF9B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32A617BDDFF
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377088AbjJINbz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:31:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47688 "EHLO
+        id S1376890AbjJINOu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:14:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377092AbjJINby (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:54 -0400
+        with ESMTP id S1376665AbjJINOq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01EF9A3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407B5C433C9;
-        Mon,  9 Oct 2023 13:31:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20276E1
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAEFC433C9;
+        Mon,  9 Oct 2023 13:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858312;
-        bh=yIiJzfy2Wn9Zc3Oha7Tf6znikA7L0tQA38nF3EVvVNQ=;
+        s=korg; t=1696857284;
+        bh=fNaBhPmXptWKvwByQ9ap0+FjW8TaZyq5S0ArUatop0Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nzvfL97ByHp/3r0g53WoBUh7q/dUCLnlohawrHJNzz0Yf1I0JZLpwdP37T0GPsPaE
-         FkjShKPTVAhDeNUGEPpy/mzvHHVVcq+aYO3m8Iqb/FJhB8vRIUniTUuRieHxAMwp+t
-         qXf0qSOCNUT0e4cEwz6AHJ/JQa1/b1k8vT1njmvI=
+        b=pggvU5dOl1oxYgH0dMwZVOYJFtgcj16URWUbU/dmNsCVFucTQtScf19HhTgCOLdhI
+         GnsX1K8yF8OFnbSwNDEvhLdhlx7vdoo17ZghwRwP1Uczm3gpm22LW6Btwf0mYUdvIC
+         Ai9Hyh+96csPkesv73Sy5mF0doSVT7zkUBJW5Rzg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Hannes Reinecke <hare@suse.de>,
-        "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        John Garry <john.g.garry@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 083/131] ata: libata-core: Do not register PM operations for SAS ports
+        patches@lists.linux.dev, Tom Lendacky <thomas.lendacky@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
+Subject: [PATCH 6.5 159/163] x86/sev: Use the GHCB protocol when available for SNP CPUID requests
 Date:   Mon,  9 Oct 2023 15:02:03 +0200
-Message-ID: <20231009130118.893526813@linuxfoundation.org>
+Message-ID: <20231009130128.398593797@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,86 +48,211 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-commit 75e2bd5f1ede42a2bc88aa34b431e1ace8e0bea0 upstream.
+commit 6bc6f7d9d7ac3cdbe9e8b0495538b4a0cc11f032 upstream.
 
-libsas does its own domain based power management of ports. For such
-ports, libata should not use a device type defining power management
-operations as executing these operations for suspend/resume in addition
-to libsas calls to ata_sas_port_suspend() and ata_sas_port_resume() is
-not necessary (and likely dangerous to do, even though problems are not
-seen currently).
+SNP retrieves the majority of CPUID information from the SNP CPUID page.
+But there are times when that information needs to be supplemented by the
+hypervisor, for example, obtaining the initial APIC ID of the vCPU from
+leaf 1.
 
-Introduce the new ata_port_sas_type device_type for ports managed by
-libsas. This new device type is used in ata_tport_add() and is defined
-without power management operations.
+The current implementation uses the MSR protocol to retrieve the data from
+the hypervisor, even when a GHCB exists. The problem arises when an NMI
+arrives on return from the VMGEXIT. The NMI will be immediately serviced
+and may generate a #VC requiring communication with the hypervisor.
 
-Fixes: 2fcbdcb4c802 ("[SCSI] libata: export ata_port suspend/resume infrastructure for sas")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Since a GHCB exists in this case, it will be used. As part of using the
+GHCB, the #VC handler will write the GHCB physical address into the GHCB
+MSR and the #VC will be handled.
+
+When the NMI completes, processing resumes at the site of the VMGEXIT
+which is expecting to read the GHCB MSR and find a CPUID MSR protocol
+response. Since the NMI handling overwrote the GHCB MSR response, the
+guest will see an invalid reply from the hypervisor and self-terminate.
+
+Fix this problem by using the GHCB when it is available. Any NMI
+received is properly handled because the GHCB contents are copied into
+a backup page and restored on NMI exit, thus preserving the active GHCB
+request or result.
+
+  [ bp: Touchups. ]
+
+Fixes: ee0bfa08a345 ("x86/compressed/64: Add support for SEV-SNP CPUID table in #VC handlers")
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/a5856fa1ebe3879de91a8f6298b6bbd901c61881.1690578565.git.thomas.lendacky@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c      |    2 +-
- drivers/ata/libata-transport.c |    9 ++++++++-
- drivers/ata/libata.h           |    2 ++
- 3 files changed, 11 insertions(+), 2 deletions(-)
+ arch/x86/kernel/sev-shared.c |   69 ++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 55 insertions(+), 14 deletions(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5942,7 +5942,7 @@ void ata_host_resume(struct ata_host *ho
- #endif
- 
- const struct device_type ata_port_type = {
--	.name = "ata_port",
-+	.name = ATA_PORT_TYPE_NAME,
- #ifdef CONFIG_PM
- 	.pm = &ata_port_pm_ops,
- #endif
---- a/drivers/ata/libata-transport.c
-+++ b/drivers/ata/libata-transport.c
-@@ -266,6 +266,10 @@ void ata_tport_delete(struct ata_port *a
- 	put_device(dev);
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -256,7 +256,7 @@ static int __sev_cpuid_hv(u32 fn, int re
+ 	return 0;
  }
  
-+static const struct device_type ata_port_sas_type = {
-+	.name = ATA_PORT_TYPE_NAME,
-+};
-+
- /** ata_tport_add - initialize a transport ATA port structure
-  *
-  * @parent:	parent device
-@@ -283,7 +287,10 @@ int ata_tport_add(struct device *parent,
- 	struct device *dev = &ap->tdev;
+-static int sev_cpuid_hv(struct cpuid_leaf *leaf)
++static int __sev_cpuid_hv_msr(struct cpuid_leaf *leaf)
+ {
+ 	int ret;
  
- 	device_initialize(dev);
--	dev->type = &ata_port_type;
-+	if (ap->flags & ATA_FLAG_SAS_HOST)
-+		dev->type = &ata_port_sas_type;
+@@ -279,6 +279,45 @@ static int sev_cpuid_hv(struct cpuid_lea
+ 	return ret;
+ }
+ 
++static int __sev_cpuid_hv_ghcb(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
++{
++	u32 cr4 = native_read_cr4();
++	int ret;
++
++	ghcb_set_rax(ghcb, leaf->fn);
++	ghcb_set_rcx(ghcb, leaf->subfn);
++
++	if (cr4 & X86_CR4_OSXSAVE)
++		/* Safe to read xcr0 */
++		ghcb_set_xcr0(ghcb, xgetbv(XCR_XFEATURE_ENABLED_MASK));
 +	else
-+		dev->type = &ata_port_type;
- 
- 	dev->parent = parent;
- 	ata_host_get(ap->host);
---- a/drivers/ata/libata.h
-+++ b/drivers/ata/libata.h
-@@ -30,6 +30,8 @@ enum {
- 	ATA_DNXFER_QUIET	= (1 << 31),
- };
- 
-+#define ATA_PORT_TYPE_NAME	"ata_port"
++		/* xgetbv will cause #UD - use reset value for xcr0 */
++		ghcb_set_xcr0(ghcb, 1);
 +
- extern atomic_t ata_print_id;
- extern int atapi_passthru16;
- extern int libata_fua;
++	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_CPUID, 0, 0);
++	if (ret != ES_OK)
++		return ret;
++
++	if (!(ghcb_rax_is_valid(ghcb) &&
++	      ghcb_rbx_is_valid(ghcb) &&
++	      ghcb_rcx_is_valid(ghcb) &&
++	      ghcb_rdx_is_valid(ghcb)))
++		return ES_VMM_ERROR;
++
++	leaf->eax = ghcb->save.rax;
++	leaf->ebx = ghcb->save.rbx;
++	leaf->ecx = ghcb->save.rcx;
++	leaf->edx = ghcb->save.rdx;
++
++	return ES_OK;
++}
++
++static int sev_cpuid_hv(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
++{
++	return ghcb ? __sev_cpuid_hv_ghcb(ghcb, ctxt, leaf)
++		    : __sev_cpuid_hv_msr(leaf);
++}
++
+ /*
+  * This may be called early while still running on the initial identity
+  * mapping. Use RIP-relative addressing to obtain the correct address
+@@ -388,19 +427,20 @@ snp_cpuid_get_validated_func(struct cpui
+ 	return false;
+ }
+ 
+-static void snp_cpuid_hv(struct cpuid_leaf *leaf)
++static void snp_cpuid_hv(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
+ {
+-	if (sev_cpuid_hv(leaf))
++	if (sev_cpuid_hv(ghcb, ctxt, leaf))
+ 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_CPUID_HV);
+ }
+ 
+-static int snp_cpuid_postprocess(struct cpuid_leaf *leaf)
++static int snp_cpuid_postprocess(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
++				 struct cpuid_leaf *leaf)
+ {
+ 	struct cpuid_leaf leaf_hv = *leaf;
+ 
+ 	switch (leaf->fn) {
+ 	case 0x1:
+-		snp_cpuid_hv(&leaf_hv);
++		snp_cpuid_hv(ghcb, ctxt, &leaf_hv);
+ 
+ 		/* initial APIC ID */
+ 		leaf->ebx = (leaf_hv.ebx & GENMASK(31, 24)) | (leaf->ebx & GENMASK(23, 0));
+@@ -419,7 +459,7 @@ static int snp_cpuid_postprocess(struct
+ 		break;
+ 	case 0xB:
+ 		leaf_hv.subfn = 0;
+-		snp_cpuid_hv(&leaf_hv);
++		snp_cpuid_hv(ghcb, ctxt, &leaf_hv);
+ 
+ 		/* extended APIC ID */
+ 		leaf->edx = leaf_hv.edx;
+@@ -467,7 +507,7 @@ static int snp_cpuid_postprocess(struct
+ 		}
+ 		break;
+ 	case 0x8000001E:
+-		snp_cpuid_hv(&leaf_hv);
++		snp_cpuid_hv(ghcb, ctxt, &leaf_hv);
+ 
+ 		/* extended APIC ID */
+ 		leaf->eax = leaf_hv.eax;
+@@ -488,7 +528,7 @@ static int snp_cpuid_postprocess(struct
+  * Returns -EOPNOTSUPP if feature not enabled. Any other non-zero return value
+  * should be treated as fatal by caller.
+  */
+-static int snp_cpuid(struct cpuid_leaf *leaf)
++static int snp_cpuid(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
+ {
+ 	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
+ 
+@@ -522,7 +562,7 @@ static int snp_cpuid(struct cpuid_leaf *
+ 			return 0;
+ 	}
+ 
+-	return snp_cpuid_postprocess(leaf);
++	return snp_cpuid_postprocess(ghcb, ctxt, leaf);
+ }
+ 
+ /*
+@@ -544,14 +584,14 @@ void __init do_vc_no_ghcb(struct pt_regs
+ 	leaf.fn = fn;
+ 	leaf.subfn = subfn;
+ 
+-	ret = snp_cpuid(&leaf);
++	ret = snp_cpuid(NULL, NULL, &leaf);
+ 	if (!ret)
+ 		goto cpuid_done;
+ 
+ 	if (ret != -EOPNOTSUPP)
+ 		goto fail;
+ 
+-	if (sev_cpuid_hv(&leaf))
++	if (__sev_cpuid_hv_msr(&leaf))
+ 		goto fail;
+ 
+ cpuid_done:
+@@ -848,14 +888,15 @@ static enum es_result vc_handle_ioio(str
+ 	return ret;
+ }
+ 
+-static int vc_handle_cpuid_snp(struct pt_regs *regs)
++static int vc_handle_cpuid_snp(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ {
++	struct pt_regs *regs = ctxt->regs;
+ 	struct cpuid_leaf leaf;
+ 	int ret;
+ 
+ 	leaf.fn = regs->ax;
+ 	leaf.subfn = regs->cx;
+-	ret = snp_cpuid(&leaf);
++	ret = snp_cpuid(ghcb, ctxt, &leaf);
+ 	if (!ret) {
+ 		regs->ax = leaf.eax;
+ 		regs->bx = leaf.ebx;
+@@ -874,7 +915,7 @@ static enum es_result vc_handle_cpuid(st
+ 	enum es_result ret;
+ 	int snp_cpuid_ret;
+ 
+-	snp_cpuid_ret = vc_handle_cpuid_snp(regs);
++	snp_cpuid_ret = vc_handle_cpuid_snp(ghcb, ctxt);
+ 	if (!snp_cpuid_ret)
+ 		return ES_OK;
+ 	if (snp_cpuid_ret != -EOPNOTSUPP)
 
 
