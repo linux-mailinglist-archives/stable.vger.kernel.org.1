@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC787BDE3B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D1267BE003
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376959AbjJINRX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:17:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47884 "EHLO
+        id S1377189AbjJINgo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:36:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376734AbjJINRW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:22 -0400
+        with ESMTP id S1377195AbjJINgn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08F988F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:17:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46708C433C8;
-        Mon,  9 Oct 2023 13:17:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBB9BCF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DB0C433C7;
+        Mon,  9 Oct 2023 13:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857440;
-        bh=d39iHFO1GUfvjEabZzZPf7yWjY1Bi7T3HfsL+ldVdeE=;
+        s=korg; t=1696858598;
+        bh=ctaIeMmejbUwuwUQnzpPskOwddckm7pDg6tUNz+tckQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b08m4Sfod9Py7IR4rEHxuXJWLc6HvGCQHZz5Ekf4fybIENWsiSdlI7OIw3AtFNFuh
-         4Gw/UiYKo1G2DpVQC4TqVR3oqcUwEcqD2QarLNsRjXGtvv4GSCl3CD/4KEdGsPKuyb
-         MOFF1EkxiIFgYgxNZ2ahqnNjOD6JeSi60JBzw1Go=
+        b=HasgPF19HZV4+1hv/y7dbEpsapjNDV6kupKIszy8qWGF5gCfUD30ftjXHws28PSXT
+         3k3JcpJtqu5bOtsjBtSY3eSpmLAMkJ9DuV2/WN/nYdmKGBFnuG9pbWAiB0OwFaWy25
+         hI0+Z0BXyOGOMnoHdaMVLfav9Pn5uuMBVV+2VaBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Hannes Reinecke <hare@suse.de>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Krishan Gopal Sarawast <krishang@linux.vnet.ibm.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Disha Goel <disgoel@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/162] ata: libata-scsi: Fix delayed scsi_rescan_device() execution
-Date:   Mon,  9 Oct 2023 15:00:01 +0200
-Message-ID: <20231009130123.507742214@linuxfoundation.org>
+Subject: [PATCH 5.10 041/226] powerpc/perf/hv-24x7: Update domain value check
+Date:   Mon,  9 Oct 2023 15:00:02 +0200
+Message-ID: <20231009130127.871055230@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,154 +52,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit 8b4d9469d0b0e553208ee6f62f2807111fde18b9 ]
+[ Upstream commit 4ff3ba4db5943cac1045e3e4a3c0463ea10f6930 ]
 
-Commit 6aa0365a3c85 ("ata: libata-scsi: Avoid deadlock on rescan after
-device resume") modified ata_scsi_dev_rescan() to check the scsi device
-"is_suspended" power field to ensure that the scsi device associated
-with an ATA device is fully resumed when scsi_rescan_device() is
-executed. However, this fix is problematic as:
-1) It relies on a PM internal field that should not be used without PM
-   device locking protection.
-2) The check for is_suspended and the call to scsi_rescan_device() are
-   not atomic and a suspend PM event may be triggered between them,
-   casuing scsi_rescan_device() to be called on a suspended device and
-   in that function blocking while holding the scsi device lock. This
-   would deadlock a following resume operation.
-These problems can trigger PM deadlocks on resume, especially with
-resume operations triggered quickly after or during suspend operations.
-E.g., a simple bash script like:
+Valid domain value is in range 1 to HV_PERF_DOMAIN_MAX. Current code has
+check for domain value greater than or equal to HV_PERF_DOMAIN_MAX. But
+the check for domain value 0 is missing.
 
-for (( i=0; i<10; i++ )); do
-	echo "+2 > /sys/class/rtc/rtc0/wakealarm
-	echo mem > /sys/power/state
-done
+Fix this issue by adding check for domain value 0.
 
-that triggers a resume 2 seconds after starting suspending a system can
-quickly lead to a PM deadlock preventing the system from correctly
-resuming.
+Before:
+  # ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
+  Using CPUID 00800200
+  Control descriptor is not initialized
+  Error:
+  The sys_perf_event_open() syscall returned with 5 (Input/output error) for
+  event (hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/).
+  /bin/dmesg | grep -i perf may provide additional information.
 
-Fix this by replacing the check on is_suspended with a check on the
-return value given by scsi_rescan_device() as that function will fail if
-called against a suspended device. Also make sure rescan tasks already
-scheduled are first cancelled before suspending an ata port.
+  Result from dmesg:
+  [   37.819387] hv-24x7: hcall failed: [0 0x60040000 0x100 0] => ret
+  0xfffffffffffffffc (-4) detail=0x2000000 failing ix=0
 
-Fixes: 6aa0365a3c85 ("ata: libata-scsi: Avoid deadlock on rescan after device resume")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+After:
+  # ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
+  Using CPUID 00800200
+  Control descriptor is not initialized
+  Warning:
+  hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ event is not supported by the kernel.
+  failed to read counter hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
+
+Fixes: ebd4a5a3ebd9 ("powerpc/perf/hv-24x7: Minor improvements")
+Reported-by: Krishan Gopal Sarawast <krishang@linux.vnet.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Tested-by: Disha Goel <disgoel@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230825055601.360083-1-kjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c | 16 ++++++++++++++++
- drivers/ata/libata-scsi.c | 33 +++++++++++++++------------------
- 2 files changed, 31 insertions(+), 18 deletions(-)
+ arch/powerpc/perf/hv-24x7.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 25b9bdf2fc380..6a053cd0cf410 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5022,11 +5022,27 @@ static const unsigned int ata_port_suspend_ehi = ATA_EHI_QUIET
- 
- static void ata_port_suspend(struct ata_port *ap, pm_message_t mesg)
- {
-+	/*
-+	 * We are about to suspend the port, so we do not care about
-+	 * scsi_rescan_device() calls scheduled by previous resume operations.
-+	 * The next resume will schedule the rescan again. So cancel any rescan
-+	 * that is not done yet.
-+	 */
-+	cancel_delayed_work_sync(&ap->scsi_rescan_task);
-+
- 	ata_port_request_pm(ap, mesg, 0, ata_port_suspend_ehi, false);
- }
- 
- static void ata_port_suspend_async(struct ata_port *ap, pm_message_t mesg)
- {
-+	/*
-+	 * We are about to suspend the port, so we do not care about
-+	 * scsi_rescan_device() calls scheduled by previous resume operations.
-+	 * The next resume will schedule the rescan again. So cancel any rescan
-+	 * that is not done yet.
-+	 */
-+	cancel_delayed_work_sync(&ap->scsi_rescan_task);
-+
- 	ata_port_request_pm(ap, mesg, 0, ata_port_suspend_ehi, true);
- }
- 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index b348f77b91231..7b9c9264b9a72 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4648,7 +4648,7 @@ void ata_scsi_dev_rescan(struct work_struct *work)
- 	struct ata_link *link;
- 	struct ata_device *dev;
- 	unsigned long flags;
--	bool delay_rescan = false;
-+	int ret = 0;
- 
- 	mutex_lock(&ap->scsi_scan_mutex);
- 	spin_lock_irqsave(ap->lock, flags);
-@@ -4657,37 +4657,34 @@ void ata_scsi_dev_rescan(struct work_struct *work)
- 		ata_for_each_dev(dev, link, ENABLED) {
- 			struct scsi_device *sdev = dev->sdev;
- 
-+			/*
-+			 * If the port was suspended before this was scheduled,
-+			 * bail out.
-+			 */
-+			if (ap->pflags & ATA_PFLAG_SUSPENDED)
-+				goto unlock;
-+
- 			if (!sdev)
- 				continue;
- 			if (scsi_device_get(sdev))
- 				continue;
- 
--			/*
--			 * If the rescan work was scheduled because of a resume
--			 * event, the port is already fully resumed, but the
--			 * SCSI device may not yet be fully resumed. In such
--			 * case, executing scsi_rescan_device() may cause a
--			 * deadlock with the PM code on device_lock(). Prevent
--			 * this by giving up and retrying rescan after a short
--			 * delay.
--			 */
--			delay_rescan = sdev->sdev_gendev.power.is_suspended;
--			if (delay_rescan) {
--				scsi_device_put(sdev);
--				break;
--			}
--
- 			spin_unlock_irqrestore(ap->lock, flags);
--			scsi_rescan_device(sdev);
-+			ret = scsi_rescan_device(sdev);
- 			scsi_device_put(sdev);
- 			spin_lock_irqsave(ap->lock, flags);
-+
-+			if (ret)
-+				goto unlock;
- 		}
+diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+index 1cd2351d241e8..61a08747b1641 100644
+--- a/arch/powerpc/perf/hv-24x7.c
++++ b/arch/powerpc/perf/hv-24x7.c
+@@ -1410,7 +1410,7 @@ static int h_24x7_event_init(struct perf_event *event)
  	}
  
-+unlock:
- 	spin_unlock_irqrestore(ap->lock, flags);
- 	mutex_unlock(&ap->scsi_scan_mutex);
- 
--	if (delay_rescan)
-+	/* Reschedule with a delay if scsi_rescan_device() returned an error */
-+	if (ret)
- 		schedule_delayed_work(&ap->scsi_rescan_task,
- 				      msecs_to_jiffies(5));
- }
+ 	domain = event_get_domain(event);
+-	if (domain >= HV_PERF_DOMAIN_MAX) {
++	if (domain  == 0 || domain >= HV_PERF_DOMAIN_MAX) {
+ 		pr_devel("invalid domain %d\n", domain);
+ 		return -EINVAL;
+ 	}
 -- 
 2.40.1
 
