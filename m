@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C27707BE125
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8284E7BE189
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377407AbjJINrY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51878 "EHLO
+        id S1377241AbjJINvS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:51:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377457AbjJINrX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:47:23 -0400
+        with ESMTP id S1377372AbjJINvR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:51:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AD1C5
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:47:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC57C433D9;
-        Mon,  9 Oct 2023 13:47:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 201A2AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:51:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E65C433C7;
+        Mon,  9 Oct 2023 13:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859241;
-        bh=1/yFd9v93/6ZQUA65cWKEmDUzLhjJGYQaxT3wnRHbj8=;
+        s=korg; t=1696859474;
+        bh=XXPHjNnrX2H7M0OhsPorjEOLtFG9bIr6K6hslYH3ZHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nE23zh/g/+/HHDZIRPlqzrFV18Uy/O1Gquvkxw/a0h0pA+IdRWjy2T3V3eJ7/RFfR
-         Nm4SG6zfwvF3PNidr12eWpDLbWmGLmb+VJxsB6FBfz2xbfkkbylkt6HvB1ZI4/hT19
-         WEQmFrY4DXhWpxbnB87a3Nd4SbeESNPT9lhZ1nWI=
+        b=i0+QzkMTfCg57aZaKMXuRxvsoFTv+Vc8o8Pa9r8NJTwu642nx/BfO+IuAmoeLAoR8
+         8y76rScw3JKDRsf/8eehysqruBUR11xVDCwH3rBK403PoRXxWxaIU8ObfNoeXBCizX
+         sAVn9CfmURdlEMfw6Tvc3gDDm4lSwqcQzZt8pcfY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jann Horn <jannh@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 04/55] dccp: fix dccp_v4_err()/dccp_v6_err() again
-Date:   Mon,  9 Oct 2023 15:06:03 +0200
-Message-ID: <20231009130107.874303424@linuxfoundation.org>
+Subject: [PATCH 4.19 32/91] parisc: sba: Fix compile warning wrt list of SBA devices
+Date:   Mon,  9 Oct 2023 15:06:04 +0200
+Message-ID: <20231009130112.641222689@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,129 +48,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 6af289746a636f71f4c0535a9801774118486c7a ]
+[ Upstream commit eb3255ee8f6f4691471a28fbf22db5e8901116cd ]
 
-dh->dccph_x is the 9th byte (offset 8) in "struct dccp_hdr",
-not in the "byte 7" as Jann claimed.
+Fix this makecheck warning:
+drivers/parisc/sba_iommu.c:98:19: warning: symbol 'sba_list'
+	was not declared. Should it be static?
 
-We need to make sure the ICMP messages are big enough,
-using more standard ways (no more assumptions).
-
-syzbot reported:
-BUG: KMSAN: uninit-value in pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
-BUG: KMSAN: uninit-value in pskb_may_pull include/linux/skbuff.h:2681 [inline]
-BUG: KMSAN: uninit-value in dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
-pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
-pskb_may_pull include/linux/skbuff.h:2681 [inline]
-dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
-icmpv6_notify+0x4c7/0x880 net/ipv6/icmp.c:867
-icmpv6_rcv+0x19d5/0x30d0
-ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
-ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
-NF_HOOK include/linux/netfilter.h:304 [inline]
-ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
-ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
-dst_input include/net/dst.h:468 [inline]
-ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
-NF_HOOK include/linux/netfilter.h:304 [inline]
-ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
-__netif_receive_skb_one_core net/core/dev.c:5523 [inline]
-__netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5637
-netif_receive_skb_internal net/core/dev.c:5723 [inline]
-netif_receive_skb+0x58/0x660 net/core/dev.c:5782
-tun_rx_batched+0x83b/0x920
-tun_get_user+0x564c/0x6940 drivers/net/tun.c:2002
-tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-call_write_iter include/linux/fs.h:1985 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x8ef/0x15c0 fs/read_write.c:584
-ksys_write+0x20f/0x4c0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x93/0xd0 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Uninit was created at:
-slab_post_alloc_hook+0x12f/0xb70 mm/slab.h:767
-slab_alloc_node mm/slub.c:3478 [inline]
-kmem_cache_alloc_node+0x577/0xa80 mm/slub.c:3523
-kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:559
-__alloc_skb+0x318/0x740 net/core/skbuff.c:650
-alloc_skb include/linux/skbuff.h:1286 [inline]
-alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6313
-sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2795
-tun_alloc_skb drivers/net/tun.c:1531 [inline]
-tun_get_user+0x23cf/0x6940 drivers/net/tun.c:1846
-tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-call_write_iter include/linux/fs.h:1985 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x8ef/0x15c0 fs/read_write.c:584
-ksys_write+0x20f/0x4c0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x93/0xd0 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-CPU: 0 PID: 4995 Comm: syz-executor153 Not tainted 6.6.0-rc1-syzkaller-00014-ga747acc0b752 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
-
-Fixes: 977ad86c2a1b ("dccp: Fix out of bounds access in DCCP error handler")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jann Horn <jannh@google.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dccp/ipv4.c |    9 ++-------
- net/dccp/ipv6.c |    9 ++-------
- 2 files changed, 4 insertions(+), 14 deletions(-)
+ arch/parisc/include/asm/ropes.h | 3 +++
+ drivers/char/agp/parisc-agp.c   | 2 --
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -247,13 +247,8 @@ static void dccp_v4_err(struct sk_buff *
- 	int err;
- 	struct net *net = dev_net(skb->dev);
+diff --git a/arch/parisc/include/asm/ropes.h b/arch/parisc/include/asm/ropes.h
+index 8e51c775c80a6..62399c7ea94a1 100644
+--- a/arch/parisc/include/asm/ropes.h
++++ b/arch/parisc/include/asm/ropes.h
+@@ -86,6 +86,9 @@ struct sba_device {
+ 	struct ioc		ioc[MAX_IOC];
+ };
  
--	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
--	 * which is in byte 7 of the dccp header.
--	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
--	 *
--	 * Later on, we want to access the sequence number fields, which are
--	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
--	 */
-+	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
-+		return;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
- 		return;
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -80,13 +80,8 @@ static void dccp_v6_err(struct sk_buff *
- 	__u64 seq;
- 	struct net *net = dev_net(skb->dev);
- 
--	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
--	 * which is in byte 7 of the dccp header.
--	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
--	 *
--	 * Later on, we want to access the sequence number fields, which are
--	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
--	 */
-+	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
-+		return;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
- 		return;
++/* list of SBA's in system, see drivers/parisc/sba_iommu.c */
++extern struct sba_device *sba_list;
++
+ #define ASTRO_RUNWAY_PORT	0x582
+ #define IKE_MERCED_PORT		0x803
+ #define REO_MERCED_PORT		0x804
+diff --git a/drivers/char/agp/parisc-agp.c b/drivers/char/agp/parisc-agp.c
+index 1d5510cb6db4e..1962ff624b7c5 100644
+--- a/drivers/char/agp/parisc-agp.c
++++ b/drivers/char/agp/parisc-agp.c
+@@ -385,8 +385,6 @@ find_quicksilver(struct device *dev, void *data)
+ static int __init
+ parisc_agp_init(void)
+ {
+-	extern struct sba_device *sba_list;
+-
+ 	int err = -1;
+ 	struct parisc_device *sba = NULL, *lba = NULL;
+ 	struct lba_device *lbadev = NULL;
+-- 
+2.40.1
+
 
 
