@@ -2,113 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4278A7BE254
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 16:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C73507BE2A4
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 16:25:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234547AbjJIOR7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 10:17:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54204 "EHLO
+        id S234559AbjJIOZR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 10:25:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234088AbjJIOR6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 10:17:58 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E182B8E
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 07:17:56 -0700 (PDT)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-        by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <a.fatoum@pengutronix.de>)
-        id 1qpr4z-0004rd-Uc; Mon, 09 Oct 2023 16:17:53 +0200
-Message-ID: <6092d57f-4688-aaf2-120d-0e10c40f89c6@pengutronix.de>
-Date:   Mon, 9 Oct 2023 16:17:53 +0200
+        with ESMTP id S234553AbjJIOZQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 10:25:16 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D707299
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 07:25:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F14C433CA;
+        Mon,  9 Oct 2023 14:25:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696861515;
+        bh=WOlnNGHMyydzvtJIBcYhAJgvZj7qinJUk2Gu0CNK4Ww=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=eG7oVkJ3uGTek6paPwZnTq6ZPWlWPgP6h0LP5qi/hxeXRmRwfySaNr97Rcw1de+px
+         0Sy00/pRGxriSD35VHsVrNOo2bBd3v5qZi22OP7MkxNJc+dG3I/EDduSKskEcxChE/
+         9aV0CWgRIKsrxk/y9jjc3kZTf3at+KEQqBVQnaNviOX2wwPiKY2c0LYdqZOXbdb+Ii
+         2AO8xiS5H06m4b/wvij6waXbDoPlxj8R+NJSgmPkqrrxJ2iLAwBrvpWGDF2d/qWSwt
+         SOdGYEbJolW4kpIOlEGnknkSXkMHYl+0gpOmu1b4nySeppSX1Y0dXmwB9rlllQAIzE
+         f80eMUS8CoSJg==
+Date:   Mon, 9 Oct 2023 10:25:13 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        Shenghao Ding <shenghao-ding@ti.com>
+Subject: Re: [PATCH 6.5 001/163] ALSA: hda/tas2781: Add tas2781 HDA driver
+Message-ID: <ZSQNSeJtY2WxedV3@sashalap>
+References: <20231009130124.021290599@linuxfoundation.org>
+ <20231009130124.064374662@linuxfoundation.org>
+ <875y3gsznc.wl-tiwai@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: Re: Drop from 5.15 and older -- clk: imx: pll14xx: dynamically
- configure PLL for 393216000/361267200Hz
-To:     Greg KH <gregkh@linuxfoundation.org>, Marek Vasut <marex@denx.de>
-Cc:     linux-stable <stable@vger.kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <4e5fa5b2-66b8-8f0b-ccb9-c2b774054e4e@denx.de>
- <2023100738-shell-scant-cfb6@gregkh>
-Content-Language: en-US
-In-Reply-To: <2023100738-shell-scant-cfb6@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <875y3gsznc.wl-tiwai@suse.de>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello Greg,
-
-On 07.10.23 13:44, Greg KH wrote:
-> On Tue, Oct 03, 2023 at 10:52:25PM +0200, Marek Vasut wrote:
->> Please drop the following commits from stable 5.10.y and 5.15.y respectively
+On Mon, Oct 09, 2023 at 03:17:59PM +0200, Takashi Iwai wrote:
+>On Mon, 09 Oct 2023 14:59:25 +0200,
+>Greg Kroah-Hartman wrote:
 >>
->> 972acd701b19 ("clk: imx: pll14xx: dynamically configure PLL for
->> 393216000/361267200Hz")
->> a8474506c912 ("clk: imx: pll14xx: dynamically configure PLL for
->> 393216000/361267200Hz")
+>> 6.5-stable review patch.  If anyone has any objections, please let me know.
 >>
->> The commit message states 'Cc: stable@vger.kernel.org # v5.18+'
->> and the commit should only be applied to Linux 5.18.y and newer,
->> on anything older it breaks PLL configuration due to missing
->> prerequisite patches.
-> 
-> Ok, I'll go revert them, but the Fixes: tag in this commit is very wrong
-> as that's what we used to determine how far back to take these changes.
+>> ------------------
+>>
+>> From: Shenghao Ding <shenghao-ding@ti.com>
+>>
+>> [ Upstream commit 3babae915f4c15d76a5134e55806a1c1588e2865 ]
+>>
+>> Integrate tas2781 configs for Lenovo Laptops. All of the tas2781s in the
+>> laptop will be aggregated as one audio device. The code support realtek
+>> as the primary codec. Rename "struct cs35l41_dev_name" to
+>> "struct scodec_dev_name" for all other side codecs instead of the certain
+>> one.
+>>
+>> Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+>> Link: https://lore.kernel.org/r/20230818085836.1442-1-shenghao-ding@ti.com
+>> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+>> Stable-dep-of: 41b07476da38 ("ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support")
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>This makes little sense without the backport of commit
+>5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver").
+>Confusingly, the patch subject is very same as this commit...
 
-The Fixes tag is correct. The PLL parameters added in that commit were
-deemed suboptimal. Kernels >= v5.18 can compute better parameters on the fly,
-so that's why the patch says
+This is a tricky one: 3babae915f4 really doesn't add a new driver but
+rather just refactors some of the quirk handling which is needed for
+later patches to apply. It's the following 5be27f1e3ec9 which actually
+adds the driver (which we don't need here).
 
-  Cc: stable@vger.kernel.org # v5.18+
+We don't actually want to bring in a new driver, so 5be27f1e3ec9 is
+unnecessary.
 
-Which is the syntax described in Documentation/admin-guide/reporting-issues.rst.
-I see now though that Documentation/process/stable-kernel-rules.rst has a slightly
-different syntax:
+>And the above commit has more follow-up fixes, too.
+>1c80cc055b3f
+>17a1eab7b70d
+>ed81cb9e0517
 
-  Cc: <stable@vger.kernel.org> # 3.3.x
-
-Perhaps your maintainer scripts can't handle both cases?
-
-FWIW, I've reached out multiple times about that the patches aren't suitable for
-backports:
-
-  - https://lore.kernel.org/all/6e3ad25c-1042-f786-6f0e-f71ae85aed6b@pengutronix.de/
-  - <a76406b2-4154-2de4-b1f5-43e86312d487@pengutronix.de> (reply to linux-stable-commits)
-  - https://lore.kernel.org/all/7df69de2-1b3a-5226-7dc2-d1489e48f6a2@pengutronix.de/
-  - https://lore.kernel.org/all/e85da95c-5451-31ea-cae9-76d697fb548f@pengutronix.de/
-
-Yet, today I got an email[1] telling me that it's being added to v5.4.258-rc1, although
-it had been dropped from v5.4.257-rc1 after I objected to it.
-
-So that looks like another potential avenue for improving the maintainer scripts.
-
-[1]: https://lore.kernel.org/all/20231009130131.263594775@linuxfoundation.org/
-
-Thanks,
-Ahmad
-
-
-> 
-> thanks,
-> 
-> greg k-h
-> 
+If we don't take 5be27f1e3ec9 then we don't need any of the follow-up
+fixes.
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+Thanks,
+Sasha
