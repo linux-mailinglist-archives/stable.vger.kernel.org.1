@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1905F7BDEAF
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BECD7BDEFE
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376339AbjJINV7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57828 "EHLO
+        id S1376538AbjJINZQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376364AbjJINV6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:58 -0400
+        with ESMTP id S1376708AbjJINZO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3AE094
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF1DC433C7;
-        Mon,  9 Oct 2023 13:21:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A33DE
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C18BC433D9;
+        Mon,  9 Oct 2023 13:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857716;
-        bh=SfZt6r2Ec1vFuCLyGLooShNr2tnvzgdU7kt9bwMPe14=;
+        s=korg; t=1696857912;
+        bh=w0XoCo3i5YH70W2p/OkCWGbeCMt0VxHGeVl05ct+jZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xEbL7Xt3ufgJUMnBYK+9NRts9Sq0t08zprA5CNn0ZzD4RSeMG8E3tf+o7QrrezgBc
-         G7RVWRqp1yy27/PwPf2HlUIBUuYg4hySbTlDFKPu8VIgJ1pSJzABPUmFm77pUcuhLM
-         0hZVOdofWkcZ1SS4D/sy4h+EK69zp9ppUEHLGNeg=
+        b=eyOPoHsb8/4svxlzRTBlgVisR+a96i4bwc4v9LEQWWyZFH3T5KNhB+sCmhYRX2WpA
+         cUO6xleDKRHPv+zTVmcX1zcLTmxWgngOEBllWOKKX0fdidCEWSV17oBAQPywqOyI4M
+         8KnB0N6omknpq5ZeGyzS9s3vltrSfaspaCZK+Kn0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Benjamin Coddington <bcodding@redhat.com>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/162] bpf: Add BPF_FIB_LOOKUP_SKIP_NEIGH for bpf_fib_lookup
+Subject: [PATCH 5.15 06/75] NFS: rename nfs_client_kset to nfs_kset
 Date:   Mon,  9 Oct 2023 15:01:28 +0200
-Message-ID: <20231009130125.876616171@linuxfoundation.org>
+Message-ID: <20231009130111.425294297@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,186 +49,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 31de4105f00d64570139bc5494a201b0bd57349f ]
+[ Upstream commit 8b18a2edecc0741b0eecf8b18fdb356a0f8682de ]
 
-The bpf_fib_lookup() also looks up the neigh table.
-This was done before bpf_redirect_neigh() was added.
+Be brief and match the subsystem name.  There's no need to distinguish this
+kset variable from the server.
 
-In the use case that does not manage the neigh table
-and requires bpf_fib_lookup() to lookup a fib to
-decide if it needs to redirect or not, the bpf prog can
-depend only on using bpf_redirect_neigh() to lookup the
-neigh. It also keeps the neigh entries fresh and connected.
-
-This patch adds a bpf_fib_lookup flag, SKIP_NEIGH, to avoid
-the double neigh lookup when the bpf prog always call
-bpf_redirect_neigh() to do the neigh lookup. The params->smac
-output is skipped together when SKIP_NEIGH is set because
-bpf_redirect_neigh() will figure out the smac also.
-
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230217205515.3583372-1-martin.lau@linux.dev
-Stable-dep-of: 5baa0433a15e ("neighbour: fix data-races around n->output")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 956fd46f97d2 ("NFSv4: Fix a state manager thread deadlock regression")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       |  6 ++++++
- net/core/filter.c              | 39 ++++++++++++++++++++++------------
- tools/include/uapi/linux/bpf.h |  6 ++++++
- 3 files changed, 38 insertions(+), 13 deletions(-)
+ fs/nfs/sysfs.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 53bc487947197..92dbe89dafbf5 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -3112,6 +3112,11 @@ union bpf_attr {
-  *		**BPF_FIB_LOOKUP_OUTPUT**
-  *			Perform lookup from an egress perspective (default is
-  *			ingress).
-+ *		**BPF_FIB_LOOKUP_SKIP_NEIGH**
-+ *			Skip the neighbour table lookup. *params*->dmac
-+ *			and *params*->smac will not be set as output. A common
-+ *			use case is to call **bpf_redirect_neigh**\ () after
-+ *			doing **bpf_fib_lookup**\ ().
-  *
-  *		*ctx* is either **struct xdp_md** for XDP programs or
-  *		**struct sk_buff** tc cls_act programs.
-@@ -6678,6 +6683,7 @@ struct bpf_raw_tracepoint_args {
- enum {
- 	BPF_FIB_LOOKUP_DIRECT  = (1U << 0),
- 	BPF_FIB_LOOKUP_OUTPUT  = (1U << 1),
-+	BPF_FIB_LOOKUP_SKIP_NEIGH = (1U << 2),
- };
+diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
+index 8cb70755e3c9e..f7f778e3e5ca7 100644
+--- a/fs/nfs/sysfs.c
++++ b/fs/nfs/sysfs.c
+@@ -18,7 +18,7 @@
+ #include "sysfs.h"
  
- enum {
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 9fd7c88b5db4e..6ef62d84dcac5 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -5674,12 +5674,8 @@ static const struct bpf_func_proto bpf_skb_get_xfrm_state_proto = {
- #endif
+ struct kobject *nfs_client_kobj;
+-static struct kset *nfs_client_kset;
++static struct kset *nfs_kset;
  
- #if IS_ENABLED(CONFIG_INET) || IS_ENABLED(CONFIG_IPV6)
--static int bpf_fib_set_fwd_params(struct bpf_fib_lookup *params,
--				  const struct neighbour *neigh,
--				  const struct net_device *dev, u32 mtu)
-+static int bpf_fib_set_fwd_params(struct bpf_fib_lookup *params, u32 mtu)
+ static void nfs_netns_object_release(struct kobject *kobj)
  {
--	memcpy(params->dmac, neigh->ha, ETH_ALEN);
--	memcpy(params->smac, dev->dev_addr, ETH_ALEN);
- 	params->h_vlan_TCI = 0;
- 	params->h_vlan_proto = 0;
- 	if (mtu)
-@@ -5790,21 +5786,29 @@ static int bpf_ipv4_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
- 	if (likely(nhc->nhc_gw_family != AF_INET6)) {
- 		if (nhc->nhc_gw_family)
- 			params->ipv4_dst = nhc->nhc_gw.ipv4;
--
--		neigh = __ipv4_neigh_lookup_noref(dev,
--						 (__force u32)params->ipv4_dst);
- 	} else {
- 		struct in6_addr *dst = (struct in6_addr *)params->ipv6_dst;
+@@ -55,13 +55,13 @@ static struct kobject *nfs_netns_object_alloc(const char *name,
  
- 		params->family = AF_INET6;
- 		*dst = nhc->nhc_gw.ipv6;
--		neigh = __ipv6_neigh_lookup_noref_stub(dev, dst);
+ int nfs_sysfs_init(void)
+ {
+-	nfs_client_kset = kset_create_and_add("nfs", NULL, fs_kobj);
+-	if (!nfs_client_kset)
++	nfs_kset = kset_create_and_add("nfs", NULL, fs_kobj);
++	if (!nfs_kset)
+ 		return -ENOMEM;
+-	nfs_client_kobj = nfs_netns_object_alloc("net", nfs_client_kset, NULL);
++	nfs_client_kobj = nfs_netns_object_alloc("net", nfs_kset, NULL);
+ 	if  (!nfs_client_kobj) {
+-		kset_unregister(nfs_client_kset);
+-		nfs_client_kset = NULL;
++		kset_unregister(nfs_kset);
++		nfs_kset = NULL;
+ 		return -ENOMEM;
  	}
- 
-+	if (flags & BPF_FIB_LOOKUP_SKIP_NEIGH)
-+		goto set_fwd_params;
-+
-+	if (likely(nhc->nhc_gw_family != AF_INET6))
-+		neigh = __ipv4_neigh_lookup_noref(dev,
-+						  (__force u32)params->ipv4_dst);
-+	else
-+		neigh = __ipv6_neigh_lookup_noref_stub(dev, params->ipv6_dst);
-+
- 	if (!neigh || !(neigh->nud_state & NUD_VALID))
- 		return BPF_FIB_LKUP_RET_NO_NEIGH;
-+	memcpy(params->dmac, neigh->ha, ETH_ALEN);
-+	memcpy(params->smac, dev->dev_addr, ETH_ALEN);
- 
--	return bpf_fib_set_fwd_params(params, neigh, dev, mtu);
-+set_fwd_params:
-+	return bpf_fib_set_fwd_params(params, mtu);
- }
- #endif
- 
-@@ -5912,24 +5916,33 @@ static int bpf_ipv6_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
- 	params->rt_metric = res.f6i->fib6_metric;
- 	params->ifindex = dev->ifindex;
- 
-+	if (flags & BPF_FIB_LOOKUP_SKIP_NEIGH)
-+		goto set_fwd_params;
-+
- 	/* xdp and cls_bpf programs are run in RCU-bh so rcu_read_lock_bh is
- 	 * not needed here.
- 	 */
- 	neigh = __ipv6_neigh_lookup_noref_stub(dev, dst);
- 	if (!neigh || !(neigh->nud_state & NUD_VALID))
- 		return BPF_FIB_LKUP_RET_NO_NEIGH;
-+	memcpy(params->dmac, neigh->ha, ETH_ALEN);
-+	memcpy(params->smac, dev->dev_addr, ETH_ALEN);
- 
--	return bpf_fib_set_fwd_params(params, neigh, dev, mtu);
-+set_fwd_params:
-+	return bpf_fib_set_fwd_params(params, mtu);
- }
- #endif
- 
-+#define BPF_FIB_LOOKUP_MASK (BPF_FIB_LOOKUP_DIRECT | BPF_FIB_LOOKUP_OUTPUT | \
-+			     BPF_FIB_LOOKUP_SKIP_NEIGH)
-+
- BPF_CALL_4(bpf_xdp_fib_lookup, struct xdp_buff *, ctx,
- 	   struct bpf_fib_lookup *, params, int, plen, u32, flags)
+ 	return 0;
+@@ -70,7 +70,7 @@ int nfs_sysfs_init(void)
+ void nfs_sysfs_exit(void)
  {
- 	if (plen < sizeof(*params))
- 		return -EINVAL;
+ 	kobject_put(nfs_client_kobj);
+-	kset_unregister(nfs_client_kset);
++	kset_unregister(nfs_kset);
+ }
  
--	if (flags & ~(BPF_FIB_LOOKUP_DIRECT | BPF_FIB_LOOKUP_OUTPUT))
-+	if (flags & ~BPF_FIB_LOOKUP_MASK)
- 		return -EINVAL;
- 
- 	switch (params->family) {
-@@ -5967,7 +5980,7 @@ BPF_CALL_4(bpf_skb_fib_lookup, struct sk_buff *, skb,
- 	if (plen < sizeof(*params))
- 		return -EINVAL;
- 
--	if (flags & ~(BPF_FIB_LOOKUP_DIRECT | BPF_FIB_LOOKUP_OUTPUT))
-+	if (flags & ~BPF_FIB_LOOKUP_MASK)
- 		return -EINVAL;
- 
- 	if (params->tot_len)
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 53bc487947197..92dbe89dafbf5 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -3112,6 +3112,11 @@ union bpf_attr {
-  *		**BPF_FIB_LOOKUP_OUTPUT**
-  *			Perform lookup from an egress perspective (default is
-  *			ingress).
-+ *		**BPF_FIB_LOOKUP_SKIP_NEIGH**
-+ *			Skip the neighbour table lookup. *params*->dmac
-+ *			and *params*->smac will not be set as output. A common
-+ *			use case is to call **bpf_redirect_neigh**\ () after
-+ *			doing **bpf_fib_lookup**\ ().
-  *
-  *		*ctx* is either **struct xdp_md** for XDP programs or
-  *		**struct sk_buff** tc cls_act programs.
-@@ -6678,6 +6683,7 @@ struct bpf_raw_tracepoint_args {
- enum {
- 	BPF_FIB_LOOKUP_DIRECT  = (1U << 0),
- 	BPF_FIB_LOOKUP_OUTPUT  = (1U << 1),
-+	BPF_FIB_LOOKUP_SKIP_NEIGH = (1U << 2),
- };
- 
- enum {
+ static ssize_t nfs_netns_identifier_show(struct kobject *kobj,
+@@ -158,7 +158,7 @@ static struct nfs_netns_client *nfs_netns_client_alloc(struct kobject *parent,
+ 	p = kzalloc(sizeof(*p), GFP_KERNEL);
+ 	if (p) {
+ 		p->net = net;
+-		p->kobject.kset = nfs_client_kset;
++		p->kobject.kset = nfs_kset;
+ 		if (kobject_init_and_add(&p->kobject, &nfs_netns_client_type,
+ 					parent, "nfs_client") == 0)
+ 			return p;
 -- 
 2.40.1
 
