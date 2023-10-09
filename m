@@ -2,105 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76DE07BEB93
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 22:25:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8085D7BEB9C
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 22:31:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234593AbjJIUZH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 16:25:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60916 "EHLO
+        id S1346657AbjJIUbp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 16:31:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234540AbjJIUZG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 16:25:06 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88F489E;
-        Mon,  9 Oct 2023 13:25:01 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-564b6276941so3615824a12.3;
-        Mon, 09 Oct 2023 13:25:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696883101; x=1697487901; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dHLtgNs/RgwJBT4RjvnNxunGnFoxHtAWIXgMjp/5w7c=;
-        b=hXPO3YsSNGbeSpjtt0rSqmdVaE7S+dwzSGPDiB1EsnDz6cCA4gw4teLMEyITQNdZYs
-         j5Crvk4VBuGIBdYMzUajR2mGQeQwbej0oJ0sQwm3qy1Mn5CGgWsUfGPPURyvBuHHPpQx
-         wxXcM1KtVxhVxsjk2XBr82R9l5YA0+/iablZeAHzQ4nygFN2kuocmTJI24hGVioay7pn
-         RFvYbhQ5MppYXwXv5jKgG+Wo5MHaldj12N/YX72FMX4lMc1Z/vjYTXYWGS11u20lcpEB
-         SwqNLmlzn2SMXz/74EKjZs4goGuZVdEfQrxxprc+JeB6JxVEo1v+2D+Eu0GGyb31/DVW
-         KPGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696883101; x=1697487901;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dHLtgNs/RgwJBT4RjvnNxunGnFoxHtAWIXgMjp/5w7c=;
-        b=Jtt/d/0M9Av8u36AbzHup0ecTh2woEom2ehlYbBicvAhYRCgYyWHCwaiDonoZkmHtY
-         LRXMCaABDNaSYYucwsxWXsAYtH/r4pxnRNFOj24CGJAY5gkAPn4cux7LXcr+I7szreBu
-         nD5ldmVA0mcJ0U03AMyT2WFaIk2EIBRRrLhjD9yfdruWm05qrmGJFPhjHw1r1JRVIMf1
-         cSuyq3596BS/o8z0fuOvoefHj3axjq9sFPZl+1j6rrKUEhyc91QJ38RzARbNBQ1yFkcH
-         FnZOCGfEtdCbs+o1eAkhs7vzu7cxGy8cLJBjk4uBOvDNz/NtsXoHey78qbysqMCnVuCV
-         WT4Q==
-X-Gm-Message-State: AOJu0YzYrQVM4WnhAL1qSnN43K43FbrRYdzJKMpbedzo/BjTlIZS+o82
-        /mzlx2NgSMqay4N2vezxQxg=
-X-Google-Smtp-Source: AGHT+IGz/SLuOVtpJrZrOd5rtyqvsTpUymuLyu7aGUZba6bIlpEhLM4AHh5pFHuAWQvOmmyU6B3Ogw==
-X-Received: by 2002:a05:6a20:2583:b0:161:76a4:4f74 with SMTP id k3-20020a056a20258300b0016176a44f74mr18943479pzd.1.1696883100781;
-        Mon, 09 Oct 2023 13:25:00 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id z18-20020a170902ee1200b001c55e13bf2asm10060425plb.283.2023.10.09.13.24.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Oct 2023 13:24:59 -0700 (PDT)
-Message-ID: <c63be538-b479-4eb5-a1c1-5f3a44d416ff@gmail.com>
-Date:   Mon, 9 Oct 2023 13:24:57 -0700
+        with ESMTP id S1346656AbjJIUbp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 16:31:45 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10D95BA;
+        Mon,  9 Oct 2023 13:31:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE88C433C8;
+        Mon,  9 Oct 2023 20:31:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696883503;
+        bh=xaK2DMT9p8cdvjJ5eMYdV4mFYDZb/2yZjgUx3PDg2U4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=box2g981w42aOfic7W3fkG/XekqUpb4n8/3IUFQZ/90A46ASXNrLJonm/21Fh7jon
+         YmP6417D/od5m4stjAkk7Ebq/hHf8rcbGDfHRttqYwR8Yo2s1aHAD5JIKZZCh4Aa2y
+         3345UqrKQW00s0+Qx8nKvt3SxY9K09IJhyOPCM/djK5wfN/YRsBI2g2ue0A0smfvON
+         cCkEZ1whXbkZwxExrFkMqcs2wUcy9XXHp4hSXpMYpZIMjDRNwTYS0luoL7zAUu2ztC
+         jaKOrxpIcyp/8MdawfbgkiD/mWFKKVXHqjvLfkDqzF+wbaz5i3sYOVcn9Fb/xWQg36
+         XJ384d3P4TIBg==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        "Lee, Chun-Yi" <jlee@suse.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        stable@vger.kernel.org, Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+        Pauli Virtanen <pav@iki.fi>, Jakub Kicinski <kuba@kernel.org>,
+        Claudia Draghicescu <claudia.rosu@nxp.com>,
+        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] [v2] Bluetooth: avoid memcmp() out of bounds warning
+Date:   Mon,  9 Oct 2023 22:31:31 +0200
+Message-Id: <20231009203137.3125516-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/226] 5.10.198-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20231009130126.697995596@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/9/23 05:59, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.198 release.
-> There are 226 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 11 Oct 2023 13:00:55 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.198-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: Arnd Bergmann <arnd@arndb.de>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+bacmp() is a wrapper around memcpy(), which contain compile-time
+checks for buffer overflow. Since the hci_conn_request_evt() also calls
+bt_dev_dbg() with an implicit NULL pointer check, the compiler is now
+aware of a case where 'hdev' is NULL and treats this as meaning that
+zero bytes are available:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+In file included from net/bluetooth/hci_event.c:32:
+In function 'bacmp',
+    inlined from 'hci_conn_request_evt' at net/bluetooth/hci_event.c:3276:7:
+include/net/bluetooth/bluetooth.h:364:16: error: 'memcmp' specified bound 6 exceeds source size 0 [-Werror=stringop-overread]
+  364 |         return memcmp(ba1, ba2, sizeof(bdaddr_t));
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add another NULL pointer check before the bacmp() to ensure the compiler
+understands the code flow enough to not warn about it.  Since the patch
+that introduced the warning is marked for stable backports, this one
+should also go that way to avoid introducing build regressions.
+
+Fixes: d70e44fef8621 ("Bluetooth: Reject connection with the device which has same BD_ADDR")
+Cc: Kees Cook <keescook@chromium.org>
+Cc: "Lee, Chun-Yi" <jlee@suse.com>
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+v2: rewrite completely
+---
+ net/bluetooth/hci_event.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 6f4409b4c3648..9b34c9f8ee02c 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3273,7 +3273,7 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
+ 	/* Reject incoming connection from device with same BD ADDR against
+ 	 * CVE-2020-26555
+ 	 */
+-	if (!bacmp(&hdev->bdaddr, &ev->bdaddr)) {
++	if (hdev && !bacmp(&hdev->bdaddr, &ev->bdaddr)) {
+ 		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
+ 			   &ev->bdaddr);
+ 		hci_reject_conn(hdev, &ev->bdaddr);
 -- 
-Florian
+2.39.2
 
