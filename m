@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0855F7BDE0C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8F107BDF25
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376926AbjJINPR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:15:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34426 "EHLO
+        id S1376556AbjJIN0u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:26:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376892AbjJINPP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:15 -0400
+        with ESMTP id S1376490AbjJIN0t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B2B94
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CAEC433C9;
-        Mon,  9 Oct 2023 13:15:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC3D394
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271B3C433C7;
+        Mon,  9 Oct 2023 13:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857313;
-        bh=cKyF1AihLpOqlRFxEsI8jmf7Vx3DgjFs90HVw+gxric=;
+        s=korg; t=1696858007;
+        bh=kiSSt3jErTOA9XLm8f6tT5XaXR9ecvM3qmx8oIBFZxs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RQ2zYjV2NfgaLpiepdWkQX6ePjSlcFfMxb7PrMrxx+RaG/Pk1A2jKN3LUJyGKLtFr
-         aKmVbXOi+1BqTUvtimrzEyBzVAxIazYvDaoshIR/VpZ4sqixqkHsn30Dzri2initFz
-         ZZLIGKXWe0DvBshY8rtp0dgrjgrDGnE4M0Y8L0YE=
+        b=x3GjgwcXvUdn7kfuzkRXLpuZELQFmnwH2SNMHc6AyswUS5NOZEmXsqXUUqyHUFySN
+         GiQnJ28G0rDM53YoIHmd3HcDLefRbSte0a4OOgHuVbQKouIpoH8RW3k1kq9rBhy2Sy
+         n9W/jEvHwjYkny6e71HRNl0mjMMEvDwwcILpXQwo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Bloch <mbloch@nvidia.com>,
-        Hamdan Igbaria <hamdani@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.5 154/163] RDMA/mlx5: Fix mutex unlocking on error flow for steering anchor creation
+        patches@lists.linux.dev, Shiji Yang <yangshiji66@outlook.com>,
+        Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 36/75] wifi: mt76: mt76x02: fix MT76x0 external LNA gain handling
 Date:   Mon,  9 Oct 2023 15:01:58 +0200
-Message-ID: <20231009130128.271257751@linuxfoundation.org>
+Message-ID: <20231009130112.493936862@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +49,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamdan Igbaria <hamdani@nvidia.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 2fad8f06a582cd431d398a0b3f9be21d069603ab upstream.
+[ Upstream commit 684e45e120b82deccaf8b85633905304a3bbf56d ]
 
-The mutex was not unlocked on some of the error flows.
-Moved the unlock location to include all the error flow scenarios.
+On MT76x0, LNA gain should be applied for both external and internal LNA.
+On MT76x2, LNA gain should be treated as 0 for external LNA.
+Move the LNA type based logic to mt76x2 in order to fix mt76x0.
 
-Fixes: e1f4a52ac171 ("RDMA/mlx5: Create an indirect flow table for steering anchor")
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Hamdan Igbaria <hamdani@nvidia.com>
-Link: https://lore.kernel.org/r/1244a69d783da997c0af0b827c622eb00495492e.1695203958.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2daa67588f34 ("mt76x0: unify lna_gain parsing")
+Reported-by: Shiji Yang <yangshiji66@outlook.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230919194747.31647-1-nbd@nbd.name
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c |  7 -------
+ drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c  | 13 +++++++++++--
+ 2 files changed, 11 insertions(+), 9 deletions(-)
 
---- a/drivers/infiniband/hw/mlx5/fs.c
-+++ b/drivers/infiniband/hw/mlx5/fs.c
-@@ -2470,8 +2470,8 @@ destroy_res:
- 	mlx5_steering_anchor_destroy_res(ft_prio);
- put_flow_table:
- 	put_flow_table(dev, ft_prio, true);
--	mutex_unlock(&dev->flow_db->lock);
- free_obj:
-+	mutex_unlock(&dev->flow_db->lock);
- 	kfree(obj);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
+index 0acabba2d1a50..5d402cf2951cb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
+@@ -131,15 +131,8 @@ u8 mt76x02_get_lna_gain(struct mt76x02_dev *dev,
+ 			s8 *lna_2g, s8 *lna_5g,
+ 			struct ieee80211_channel *chan)
+ {
+-	u16 val;
+ 	u8 lna;
  
- 	return err;
+-	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
+-	if (val & MT_EE_NIC_CONF_1_LNA_EXT_2G)
+-		*lna_2g = 0;
+-	if (val & MT_EE_NIC_CONF_1_LNA_EXT_5G)
+-		memset(lna_5g, 0, sizeof(s8) * 3);
+-
+ 	if (chan->band == NL80211_BAND_2GHZ)
+ 		lna = *lna_2g;
+ 	else if (chan->hw_value <= 64)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
+index c57e05a5c65e4..91807bf662dde 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
+@@ -256,7 +256,8 @@ void mt76x2_read_rx_gain(struct mt76x02_dev *dev)
+ 	struct ieee80211_channel *chan = dev->mphy.chandef.chan;
+ 	int channel = chan->hw_value;
+ 	s8 lna_5g[3], lna_2g;
+-	u8 lna;
++	bool use_lna;
++	u8 lna = 0;
+ 	u16 val;
+ 
+ 	if (chan->band == NL80211_BAND_2GHZ)
+@@ -275,7 +276,15 @@ void mt76x2_read_rx_gain(struct mt76x02_dev *dev)
+ 	dev->cal.rx.mcu_gain |= (lna_5g[1] & 0xff) << 16;
+ 	dev->cal.rx.mcu_gain |= (lna_5g[2] & 0xff) << 24;
+ 
+-	lna = mt76x02_get_lna_gain(dev, &lna_2g, lna_5g, chan);
++	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
++	if (chan->band == NL80211_BAND_2GHZ)
++		use_lna = !(val & MT_EE_NIC_CONF_1_LNA_EXT_2G);
++	else
++		use_lna = !(val & MT_EE_NIC_CONF_1_LNA_EXT_5G);
++
++	if (use_lna)
++		lna = mt76x02_get_lna_gain(dev, &lna_2g, lna_5g, chan);
++
+ 	dev->cal.rx.lna_gain = mt76x02_sign_extend(lna, 8);
+ }
+ EXPORT_SYMBOL_GPL(mt76x2_read_rx_gain);
+-- 
+2.40.1
+
 
 
