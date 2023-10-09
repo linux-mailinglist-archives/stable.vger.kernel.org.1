@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E84A7BDDBB
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 335117BE045
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376698AbjJINM4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:12:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52346 "EHLO
+        id S1377288AbjJINiY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:38:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376968AbjJINMq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:46 -0400
+        with ESMTP id S1377229AbjJINiT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9986D53
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E54C433C8;
-        Mon,  9 Oct 2023 13:11:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6421EDB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97608C433D9;
+        Mon,  9 Oct 2023 13:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857095;
-        bh=qVgVK9to3MbkVHD6z32ethxBBgNESBYLxehQQWPlCtE=;
+        s=korg; t=1696858697;
+        bh=z9Ttz8eB1PAvr4l7z2iBfWPVRk3eXNfFQ7kt8StygzU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o6D8CnKFNeedviiuu7vmoFEWCgTYiyFbbJXH+/jRx4EwtdBx+2X2EFtP4hu4wr/Z5
-         FzbJ0qRklUdX7skc7OV7nKxEajfHW9F4cevzwKt9ykbt/1IGU6mHziCMXjHVAqS+SX
-         ZZWznJdKuWVu5An8IlWoyU2y5BlNVO80ywCyL1GE=
+        b=zpeB6FWE0wcuM6leUJ9lQxJW9VR0efRLDgCT9CbbznH8ZZBEQf787/tu4EL5aaP38
+         neqhx8s3r7LPA6D0KcyCbhMtR2/DiynLYnWgr+tcdMc+08G7ugw/eXhjd6YoIypQIU
+         FETX1y4XJxTbm5ScRCOaUQ8m1suAUzdzwlhqPBlM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Rothwell <sfr@canb.auug.org.au>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        Dikshita Agarwal <dikshita@codeaurora.org>,
+        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 068/163] wifi: cfg80211: add missing kernel-doc for cqm_rssi_work
-Date:   Mon,  9 Oct 2023 15:00:32 +0200
-Message-ID: <20231009130125.925481241@linuxfoundation.org>
+Subject: [PATCH 5.10 072/226] media: venus: hfi: Define additional 6xx registers
+Date:   Mon,  9 Oct 2023 15:00:33 +0200
+Message-ID: <20231009130128.666828777@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,37 +52,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Dikshita Agarwal <dikshita@codeaurora.org>
 
-[ Upstream commit d1383077c225ceb87ac7a3b56b2c505193f77ed7 ]
+[ Upstream commit 7f6631295f46070ee5cdbe939136ce48cc617272 ]
 
-As reported by Stephen, I neglected to add the kernel-doc
-for the new struct member. Fix that.
+- Add X2 RPMh registers and definitions from the downstream example.
+- Add 6xx core power definitions
+- Add 6xx AON definitions
+- Add 6xx wrapper tz definitions
+- Add 6xx wrapper interrupt definitions
+- Add 6xx soft interrupt definitions
+- Define wrapper LPI register offsets
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Dikshita Agarwal <dikshita@codeaurora.org>
+Co-developed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: d74e48160980 ("media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/cfg80211.h | 1 +
- 1 file changed, 1 insertion(+)
+ .../media/platform/qcom/venus/hfi_venus_io.h  | 30 +++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 0debc3c9364e8..641c6edc9b81d 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -5942,6 +5942,7 @@ void wiphy_delayed_work_cancel(struct wiphy *wiphy,
-  * @event_lock: (private) lock for event list
-  * @owner_nlportid: (private) owner socket port ID
-  * @nl_owner_dead: (private) owner socket went away
-+ * @cqm_rssi_work: (private) CQM RSSI reporting work
-  * @cqm_config: (private) nl80211 RSSI monitor state
-  * @pmsr_list: (private) peer measurement requests
-  * @pmsr_lock: (private) peer measurements requests/results lock
+diff --git a/drivers/media/platform/qcom/venus/hfi_venus_io.h b/drivers/media/platform/qcom/venus/hfi_venus_io.h
+index 4c392b67252c2..9cad15eac9e80 100644
+--- a/drivers/media/platform/qcom/venus/hfi_venus_io.h
++++ b/drivers/media/platform/qcom/venus/hfi_venus_io.h
+@@ -53,10 +53,22 @@
+ #define UC_REGION_ADDR				0x64
+ #define UC_REGION_SIZE				0x68
+ 
++#define CPU_CS_H2XSOFTINTEN_V6			0x148
++
++#define CPU_CS_X2RPMH_V6			0x168
++#define CPU_CS_X2RPMH_MASK0_BMSK_V6		0x1
++#define CPU_CS_X2RPMH_MASK0_SHFT_V6		0x0
++#define CPU_CS_X2RPMH_MASK1_BMSK_V6		0x2
++#define CPU_CS_X2RPMH_MASK1_SHFT_V6		0x1
++#define CPU_CS_X2RPMH_SWOVERRIDE_BMSK_V6	0x4
++#define CPU_CS_X2RPMH_SWOVERRIDE_SHFT_V6	0x3
++
+ /* Relative to CPU_IC_BASE */
+ #define CPU_IC_SOFTINT				0x18
++#define CPU_IC_SOFTINT_V6			0x150
+ #define CPU_IC_SOFTINT_H2A_MASK			0x8000
+ #define CPU_IC_SOFTINT_H2A_SHIFT		0xf
++#define CPU_IC_SOFTINT_H2A_SHIFT_V6		0x0
+ 
+ /* Venus wrapper */
+ #define WRAPPER_BASE				0x000e0000
+@@ -84,6 +96,9 @@
+ #define WRAPPER_INTR_MASK_A2HCPU_MASK		0x4
+ #define WRAPPER_INTR_MASK_A2HCPU_SHIFT		0x2
+ 
++#define WRAPPER_INTR_STATUS_A2HWD_MASK_V6	0x8
++#define WRAPPER_INTR_MASK_A2HWD_BASK_V6		0x8
++
+ #define WRAPPER_INTR_CLEAR			0x14
+ #define WRAPPER_INTR_CLEAR_A2HWD_MASK		0x10
+ #define WRAPPER_INTR_CLEAR_A2HWD_SHIFT		0x4
+@@ -93,6 +108,8 @@
+ #define WRAPPER_POWER_STATUS			0x44
+ #define WRAPPER_VDEC_VCODEC_POWER_CONTROL	0x48
+ #define WRAPPER_VENC_VCODEC_POWER_CONTROL	0x4c
++#define WRAPPER_DEBUG_BRIDGE_LPI_CONTROL_V6	0x54
++#define WRAPPER_DEBUG_BRIDGE_LPI_STATUS_V6	0x58
+ #define WRAPPER_VDEC_VENC_AHB_BRIDGE_SYNC_RESET	0x64
+ 
+ #define WRAPPER_CPU_CLOCK_CONFIG		0x2000
+@@ -121,4 +138,17 @@
+ #define WRAPPER_VCODEC1_MMCC_POWER_STATUS	0x110
+ #define WRAPPER_VCODEC1_MMCC_POWER_CONTROL	0x114
+ 
++/* Venus 6xx */
++#define WRAPPER_CORE_POWER_STATUS_V6		0x80
++#define WRAPPER_CORE_POWER_CONTROL_V6		0x84
++
++/* Wrapper TZ 6xx */
++#define WRAPPER_TZ_BASE_V6			0x000c0000
++#define WRAPPER_TZ_CPU_STATUS_V6		0x10
++
++/* Venus AON */
++#define AON_BASE_V6				0x000e0000
++#define AON_WRAPPER_MVP_NOC_LPI_CONTROL		0x00
++#define AON_WRAPPER_MVP_NOC_LPI_STATUS		0x04
++
+ #endif
 -- 
 2.40.1
 
