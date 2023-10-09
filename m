@@ -2,45 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CA957BDD45
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:09:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1BB17BE00C
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376735AbjJINJG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:09:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41270 "EHLO
+        id S1377206AbjJINhA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:37:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376837AbjJINJE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:09:04 -0400
+        with ESMTP id S1377204AbjJINg7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52D0594
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:09:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959A2C433C7;
-        Mon,  9 Oct 2023 13:09:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCBBCBA
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26555C433C9;
+        Mon,  9 Oct 2023 13:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856943;
-        bh=3fGi+drUIRhm7xo+LC02nTz5ujWvHnOoVSrYOhtzdpg=;
+        s=korg; t=1696858617;
+        bh=TsE4Q7Hz7Y9neRmGhADLdP73sFqqmT2x01b94Szgu64=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lDmT6vOh+sPsCApEX+Zg6cvvdr7tPQWt/WpxOTA2CZkLRAY+gApipj0VXaJbPWyCi
-         Of0ZBzogGx0uyOBcIJJfvqrIRIkCcYgLYzix1OBpRauGOOEIs5APWCz11H6lmcMTSX
-         M+2Z7NBpcEMEdxxvD0gR+aETtah4bgrw5jVLSpuc=
+        b=AdTL87mRamsQz6CjWtM5dlTNGcUloUzvL2e2iJ+Co8LDGn3bytxrpD75xAIchSz+Z
+         rULbdLUtLzBPNapcBKhA3ZNqrLctA68iLUMyICJIQ5TeD6FV++rTrnQNx6LIaswIoO
+         QvsWhWEDXrivgxc7V9BbPWti+jLo6OJA5MI3G7jw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Marko <robimarko@gmail.com>,
-        Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: [PATCH 6.5 043/163] PCI: qcom: Fix IPQ8074 enumeration
+        patches@lists.linux.dev, Prashant Malani <pmalani@chromium.org>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 046/226] platform/x86: intel_scu_ipc: Fail IPC send if still busy
 Date:   Mon,  9 Oct 2023 15:00:07 +0200
-Message-ID: <20231009130125.206592779@linuxfoundation.org>
+Message-ID: <20231009130127.999078586@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,58 +56,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sricharan Ramabadhran <quic_srichara@quicinc.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-commit 6a878a54d0053ef21f3b829dc267487c2302b012 upstream.
+[ Upstream commit 85e654c9f722853a595fa941dca60c157b707b86 ]
 
-PARF_SLV_ADDR_SPACE_SIZE_2_3_3 is used by qcom_pcie_post_init_2_3_3().
-This PCIe slave address space size register offset is 0x358 but was
-incorrectly changed to 0x16c by 39171b33f652 ("PCI: qcom: Remove PCIE20_
-prefix from register definitions").
+It's possible for interrupts to get significantly delayed to the point
+that callers of intel_scu_ipc_dev_command() and friends can call the
+function once, hit a timeout, and call it again while the interrupt
+still hasn't been processed. This driver will get seriously confused if
+the interrupt is finally processed after the second IPC has been sent
+with ipc_command(). It won't know which IPC has been completed. This
+could be quite disastrous if calling code assumes something has happened
+upon return from intel_scu_ipc_dev_simple_command() when it actually
+hasn't.
 
-This prevented access to slave address space registers like iATU, etc.,
-so the IPQ8074 PCIe controller was not enumerated.
+Let's avoid this scenario by simply returning -EBUSY in this case.
+Hopefully higher layers will know to back off or fail gracefully when
+this happens. It's all highly unlikely anyway, but it's better to be
+correct here as we have no way to know which IPC the status register is
+telling us about if we send a second IPC while the previous IPC is still
+processing.
 
-Revert back to the correct 0x358 offset and remove the unused
-PARF_SLV_ADDR_SPACE_SIZE_2_3_3.
-
-Fixes: 39171b33f652 ("PCI: qcom: Remove PCIE20_ prefix from register definitions")
-Link: https://lore.kernel.org/r/20230919102948.1844909-1-quic_srichara@quicinc.com
-Tested-by: Robert Marko <robimarko@gmail.com>
-Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: stable@vger.kernel.org	# v6.4+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Prashant Malani <pmalani@chromium.org>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: ed12f295bfd5 ("ipc: Added support for IPC interrupt mode")
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20230913212723.3055315-5-swboyd@chromium.org
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/platform/x86/intel_scu_ipc.c | 40 +++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -43,7 +43,6 @@
- #define PARF_PHY_REFCLK				0x4c
- #define PARF_CONFIG_BITS			0x50
- #define PARF_DBI_BASE_ADDR			0x168
--#define PARF_SLV_ADDR_SPACE_SIZE_2_3_3		0x16c /* Register offset specific to IP ver 2.3.3 */
- #define PARF_MHI_CLOCK_RESET_CTRL		0x174
- #define PARF_AXI_MSTR_WR_ADDR_HALT		0x178
- #define PARF_AXI_MSTR_WR_ADDR_HALT_V2		0x1a8
-@@ -797,8 +796,7 @@ static int qcom_pcie_post_init_2_3_3(str
- 	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
- 	u32 val;
+diff --git a/drivers/platform/x86/intel_scu_ipc.c b/drivers/platform/x86/intel_scu_ipc.c
+index 60e7f95bc5554..84ed828694630 100644
+--- a/drivers/platform/x86/intel_scu_ipc.c
++++ b/drivers/platform/x86/intel_scu_ipc.c
+@@ -266,6 +266,24 @@ static int intel_scu_ipc_check_status(struct intel_scu_ipc_dev *scu)
+ 	return scu->irq > 0 ? ipc_wait_for_interrupt(scu) : busy_loop(scu);
+ }
  
--	writel(SLV_ADDR_SPACE_SZ,
--		pcie->parf + PARF_SLV_ADDR_SPACE_SIZE_2_3_3);
-+	writel(SLV_ADDR_SPACE_SZ, pcie->parf + PARF_SLV_ADDR_SPACE_SIZE);
++static struct intel_scu_ipc_dev *intel_scu_ipc_get(struct intel_scu_ipc_dev *scu)
++{
++	u8 status;
++
++	if (!scu)
++		scu = ipcdev;
++	if (!scu)
++		return ERR_PTR(-ENODEV);
++
++	status = ipc_read_status(scu);
++	if (status & IPC_STATUS_BUSY) {
++		dev_dbg(&scu->dev, "device is busy\n");
++		return ERR_PTR(-EBUSY);
++	}
++
++	return scu;
++}
++
+ /* Read/Write power control(PMIC in Langwell, MSIC in PenWell) registers */
+ static int pwr_reg_rdwr(struct intel_scu_ipc_dev *scu, u16 *addr, u8 *data,
+ 			u32 count, u32 op, u32 id)
+@@ -279,11 +297,10 @@ static int pwr_reg_rdwr(struct intel_scu_ipc_dev *scu, u16 *addr, u8 *data,
+ 	memset(cbuf, 0, sizeof(cbuf));
  
- 	val = readl(pcie->parf + PARF_PHY_CTRL);
- 	val &= ~PHY_TEST_PWR_DOWN;
+ 	mutex_lock(&ipclock);
+-	if (!scu)
+-		scu = ipcdev;
+-	if (!scu) {
++	scu = intel_scu_ipc_get(scu);
++	if (IS_ERR(scu)) {
+ 		mutex_unlock(&ipclock);
+-		return -ENODEV;
++		return PTR_ERR(scu);
+ 	}
+ 
+ 	for (nc = 0; nc < count; nc++, offset += 2) {
+@@ -438,12 +455,12 @@ int intel_scu_ipc_dev_simple_command(struct intel_scu_ipc_dev *scu, int cmd,
+ 	int err;
+ 
+ 	mutex_lock(&ipclock);
+-	if (!scu)
+-		scu = ipcdev;
+-	if (!scu) {
++	scu = intel_scu_ipc_get(scu);
++	if (IS_ERR(scu)) {
+ 		mutex_unlock(&ipclock);
+-		return -ENODEV;
++		return PTR_ERR(scu);
+ 	}
++
+ 	cmdval = sub << 12 | cmd;
+ 	ipc_command(scu, cmdval);
+ 	err = intel_scu_ipc_check_status(scu);
+@@ -483,11 +500,10 @@ int intel_scu_ipc_dev_command_with_size(struct intel_scu_ipc_dev *scu, int cmd,
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&ipclock);
+-	if (!scu)
+-		scu = ipcdev;
+-	if (!scu) {
++	scu = intel_scu_ipc_get(scu);
++	if (IS_ERR(scu)) {
+ 		mutex_unlock(&ipclock);
+-		return -ENODEV;
++		return PTR_ERR(scu);
+ 	}
+ 
+ 	memcpy(inbuf, in, inlen);
+-- 
+2.40.1
+
 
 
