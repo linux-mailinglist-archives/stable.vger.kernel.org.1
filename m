@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 241947BDEC9
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBFA37BE0C4
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:43:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376424AbjJINXF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:23:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43552 "EHLO
+        id S1377397AbjJINnq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:43:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376434AbjJINXE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:04 -0400
+        with ESMTP id S1377403AbjJINnp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19469B6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC45C433C7;
-        Mon,  9 Oct 2023 13:23:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D75189C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5ACC433C8;
+        Mon,  9 Oct 2023 13:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857782;
-        bh=/ieAj7VtzqQ+VkJrhQFVgX8TKXBsjywIAwxliITNe30=;
+        s=korg; t=1696859023;
+        bh=6Qw5KBCaDf+bWQXC/Lqq+bfqZDpJ1JIUwUMJ+sjoy0A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K9qZcbaUoH0tjVrWjMGHIMJZdtFwqanpusiMS9qSlnPfxvNCjUWMadDTjbs8eA3d1
-         GKEcGcE6odxZC6SMgZg8CrgJWNQw6vkXRe9pBNozC1VHacgRSlz8g6mWr187RYB8I5
-         JrVcF57xOZlhuaoMt+7Iyx0V+lomuKDJy7m6mppM=
+        b=BkQ8L2JwUdhbatYQ+wPRjtbIvC/ImQwgk7mNYKE8HCUDqgOnWkESqIqYBZ9463b7R
+         ZvBH1EJ0p99Lj+3jazMwurzxzReL+issGRZHeSjZRW/cjgMvvRvN8embqiV/h5zsJc
+         whmRxSSwtWUG/790VTB7LHWnOzJnhALP8UhpNWNE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Lendacky <thomas.lendacky@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
-Subject: [PATCH 6.1 154/162] x86/sev: Use the GHCB protocol when available for SNP CPUID requests
+        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 174/226] rbd: decouple parent info read-in from updating rbd_dev
 Date:   Mon,  9 Oct 2023 15:02:15 +0200
-Message-ID: <20231009130127.166773774@linuxfoundation.org>
+Message-ID: <20231009130131.193677737@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,211 +49,277 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 6bc6f7d9d7ac3cdbe9e8b0495538b4a0cc11f032 upstream.
+commit c10311776f0a8ddea2276df96e255625b07045a8 upstream.
 
-SNP retrieves the majority of CPUID information from the SNP CPUID page.
-But there are times when that information needs to be supplemented by the
-hypervisor, for example, obtaining the initial APIC ID of the vCPU from
-leaf 1.
+Unlike header read-in, parent info read-in is already decoupled in
+get_parent_info(), but it's buried in rbd_dev_v2_parent_info() along
+with the processing logic.
 
-The current implementation uses the MSR protocol to retrieve the data from
-the hypervisor, even when a GHCB exists. The problem arises when an NMI
-arrives on return from the VMGEXIT. The NMI will be immediately serviced
-and may generate a #VC requiring communication with the hypervisor.
+Separate the initial read-in and update read-in logic into
+rbd_dev_setup_parent() and rbd_dev_update_parent() respectively and
+have rbd_dev_v2_parent_info() just populate struct parent_image_info
+(i.e. what get_parent_info() did).  Some existing QoI issues, like
+flatten of a standalone clone being disregarded on refresh, remain.
 
-Since a GHCB exists in this case, it will be used. As part of using the
-GHCB, the #VC handler will write the GHCB physical address into the GHCB
-MSR and the #VC will be handled.
-
-When the NMI completes, processing resumes at the site of the VMGEXIT
-which is expecting to read the GHCB MSR and find a CPUID MSR protocol
-response. Since the NMI handling overwrote the GHCB MSR response, the
-guest will see an invalid reply from the hypervisor and self-terminate.
-
-Fix this problem by using the GHCB when it is available. Any NMI
-received is properly handled because the GHCB contents are copied into
-a backup page and restored on NMI exit, thus preserving the active GHCB
-request or result.
-
-  [ bp: Touchups. ]
-
-Fixes: ee0bfa08a345 ("x86/compressed/64: Add support for SEV-SNP CPUID table in #VC handlers")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/a5856fa1ebe3879de91a8f6298b6bbd901c61881.1690578565.git.thomas.lendacky@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/sev-shared.c |   69 ++++++++++++++++++++++++++++++++++---------
- 1 file changed, 55 insertions(+), 14 deletions(-)
+ drivers/block/rbd.c | 142 +++++++++++++++++++++++++-------------------
+ 1 file changed, 80 insertions(+), 62 deletions(-)
 
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -253,7 +253,7 @@ static int __sev_cpuid_hv(u32 fn, int re
- 	return 0;
- }
+diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
+index 73f917a429f38..628b986351ee9 100644
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -5667,6 +5667,14 @@ struct parent_image_info {
+ 	u64		overlap;
+ };
  
--static int sev_cpuid_hv(struct cpuid_leaf *leaf)
-+static int __sev_cpuid_hv_msr(struct cpuid_leaf *leaf)
- {
- 	int ret;
- 
-@@ -276,6 +276,45 @@ static int sev_cpuid_hv(struct cpuid_lea
- 	return ret;
- }
- 
-+static int __sev_cpuid_hv_ghcb(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
++static void rbd_parent_info_cleanup(struct parent_image_info *pii)
 +{
-+	u32 cr4 = native_read_cr4();
-+	int ret;
++	kfree(pii->pool_ns);
++	kfree(pii->image_id);
 +
-+	ghcb_set_rax(ghcb, leaf->fn);
-+	ghcb_set_rcx(ghcb, leaf->subfn);
-+
-+	if (cr4 & X86_CR4_OSXSAVE)
-+		/* Safe to read xcr0 */
-+		ghcb_set_xcr0(ghcb, xgetbv(XCR_XFEATURE_ENABLED_MASK));
-+	else
-+		/* xgetbv will cause #UD - use reset value for xcr0 */
-+		ghcb_set_xcr0(ghcb, 1);
-+
-+	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_CPUID, 0, 0);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (!(ghcb_rax_is_valid(ghcb) &&
-+	      ghcb_rbx_is_valid(ghcb) &&
-+	      ghcb_rcx_is_valid(ghcb) &&
-+	      ghcb_rdx_is_valid(ghcb)))
-+		return ES_VMM_ERROR;
-+
-+	leaf->eax = ghcb->save.rax;
-+	leaf->ebx = ghcb->save.rbx;
-+	leaf->ecx = ghcb->save.rcx;
-+	leaf->edx = ghcb->save.rdx;
-+
-+	return ES_OK;
-+}
-+
-+static int sev_cpuid_hv(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
-+{
-+	return ghcb ? __sev_cpuid_hv_ghcb(ghcb, ctxt, leaf)
-+		    : __sev_cpuid_hv_msr(leaf);
++	memset(pii, 0, sizeof(*pii));
 +}
 +
  /*
-  * This may be called early while still running on the initial identity
-  * mapping. Use RIP-relative addressing to obtain the correct address
-@@ -385,19 +424,20 @@ snp_cpuid_get_validated_func(struct cpui
- 	return false;
- }
- 
--static void snp_cpuid_hv(struct cpuid_leaf *leaf)
-+static void snp_cpuid_hv(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
- {
--	if (sev_cpuid_hv(leaf))
-+	if (sev_cpuid_hv(ghcb, ctxt, leaf))
- 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_CPUID_HV);
- }
- 
--static int snp_cpuid_postprocess(struct cpuid_leaf *leaf)
-+static int snp_cpuid_postprocess(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
-+				 struct cpuid_leaf *leaf)
- {
- 	struct cpuid_leaf leaf_hv = *leaf;
- 
- 	switch (leaf->fn) {
- 	case 0x1:
--		snp_cpuid_hv(&leaf_hv);
-+		snp_cpuid_hv(ghcb, ctxt, &leaf_hv);
- 
- 		/* initial APIC ID */
- 		leaf->ebx = (leaf_hv.ebx & GENMASK(31, 24)) | (leaf->ebx & GENMASK(23, 0));
-@@ -416,7 +456,7 @@ static int snp_cpuid_postprocess(struct
- 		break;
- 	case 0xB:
- 		leaf_hv.subfn = 0;
--		snp_cpuid_hv(&leaf_hv);
-+		snp_cpuid_hv(ghcb, ctxt, &leaf_hv);
- 
- 		/* extended APIC ID */
- 		leaf->edx = leaf_hv.edx;
-@@ -464,7 +504,7 @@ static int snp_cpuid_postprocess(struct
- 		}
- 		break;
- 	case 0x8000001E:
--		snp_cpuid_hv(&leaf_hv);
-+		snp_cpuid_hv(ghcb, ctxt, &leaf_hv);
- 
- 		/* extended APIC ID */
- 		leaf->eax = leaf_hv.eax;
-@@ -485,7 +525,7 @@ static int snp_cpuid_postprocess(struct
-  * Returns -EOPNOTSUPP if feature not enabled. Any other non-zero return value
-  * should be treated as fatal by caller.
+  * The caller is responsible for @pii.
   */
--static int snp_cpuid(struct cpuid_leaf *leaf)
-+static int snp_cpuid(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
- {
- 	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
+@@ -5736,6 +5744,9 @@ static int __get_parent_info(struct rbd_device *rbd_dev,
+ 	if (pii->has_overlap)
+ 		ceph_decode_64_safe(&p, end, pii->overlap, e_inval);
  
-@@ -519,7 +559,7 @@ static int snp_cpuid(struct cpuid_leaf *
- 			return 0;
++	dout("%s pool_id %llu pool_ns %s image_id %s snap_id %llu has_overlap %d overlap %llu\n",
++	     __func__, pii->pool_id, pii->pool_ns, pii->image_id, pii->snap_id,
++	     pii->has_overlap, pii->overlap);
+ 	return 0;
+ 
+ e_inval:
+@@ -5774,14 +5785,17 @@ static int __get_parent_info_legacy(struct rbd_device *rbd_dev,
+ 	pii->has_overlap = true;
+ 	ceph_decode_64_safe(&p, end, pii->overlap, e_inval);
+ 
++	dout("%s pool_id %llu pool_ns %s image_id %s snap_id %llu has_overlap %d overlap %llu\n",
++	     __func__, pii->pool_id, pii->pool_ns, pii->image_id, pii->snap_id,
++	     pii->has_overlap, pii->overlap);
+ 	return 0;
+ 
+ e_inval:
+ 	return -EINVAL;
+ }
+ 
+-static int get_parent_info(struct rbd_device *rbd_dev,
+-			   struct parent_image_info *pii)
++static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev,
++				  struct parent_image_info *pii)
+ {
+ 	struct page *req_page, *reply_page;
+ 	void *p;
+@@ -5809,7 +5823,7 @@ static int get_parent_info(struct rbd_device *rbd_dev,
+ 	return ret;
+ }
+ 
+-static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
++static int rbd_dev_setup_parent(struct rbd_device *rbd_dev)
+ {
+ 	struct rbd_spec *parent_spec;
+ 	struct parent_image_info pii = { 0 };
+@@ -5819,37 +5833,12 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
+ 	if (!parent_spec)
+ 		return -ENOMEM;
+ 
+-	ret = get_parent_info(rbd_dev, &pii);
++	ret = rbd_dev_v2_parent_info(rbd_dev, &pii);
+ 	if (ret)
+ 		goto out_err;
+ 
+-	dout("%s pool_id %llu pool_ns %s image_id %s snap_id %llu has_overlap %d overlap %llu\n",
+-	     __func__, pii.pool_id, pii.pool_ns, pii.image_id, pii.snap_id,
+-	     pii.has_overlap, pii.overlap);
+-
+-	if (pii.pool_id == CEPH_NOPOOL || !pii.has_overlap) {
+-		/*
+-		 * Either the parent never existed, or we have
+-		 * record of it but the image got flattened so it no
+-		 * longer has a parent.  When the parent of a
+-		 * layered image disappears we immediately set the
+-		 * overlap to 0.  The effect of this is that all new
+-		 * requests will be treated as if the image had no
+-		 * parent.
+-		 *
+-		 * If !pii.has_overlap, the parent image spec is not
+-		 * applicable.  It's there to avoid duplication in each
+-		 * snapshot record.
+-		 */
+-		if (rbd_dev->parent_overlap) {
+-			rbd_dev->parent_overlap = 0;
+-			rbd_dev_parent_put(rbd_dev);
+-			pr_info("%s: clone image has been flattened\n",
+-				rbd_dev->disk->disk_name);
+-		}
+-
++	if (pii.pool_id == CEPH_NOPOOL || !pii.has_overlap)
+ 		goto out;	/* No parent?  No problem. */
+-	}
+ 
+ 	/* The ceph file layout needs to fit pool id in 32 bits */
+ 
+@@ -5861,46 +5850,34 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
  	}
  
--	return snp_cpuid_postprocess(leaf);
-+	return snp_cpuid_postprocess(ghcb, ctxt, leaf);
- }
+ 	/*
+-	 * The parent won't change (except when the clone is
+-	 * flattened, already handled that).  So we only need to
+-	 * record the parent spec we have not already done so.
++	 * The parent won't change except when the clone is flattened,
++	 * so we only need to record the parent image spec once.
+ 	 */
+-	if (!rbd_dev->parent_spec) {
+-		parent_spec->pool_id = pii.pool_id;
+-		if (pii.pool_ns && *pii.pool_ns) {
+-			parent_spec->pool_ns = pii.pool_ns;
+-			pii.pool_ns = NULL;
+-		}
+-		parent_spec->image_id = pii.image_id;
+-		pii.image_id = NULL;
+-		parent_spec->snap_id = pii.snap_id;
+-
+-		rbd_dev->parent_spec = parent_spec;
+-		parent_spec = NULL;	/* rbd_dev now owns this */
++	parent_spec->pool_id = pii.pool_id;
++	if (pii.pool_ns && *pii.pool_ns) {
++		parent_spec->pool_ns = pii.pool_ns;
++		pii.pool_ns = NULL;
+ 	}
++	parent_spec->image_id = pii.image_id;
++	pii.image_id = NULL;
++	parent_spec->snap_id = pii.snap_id;
++
++	rbd_assert(!rbd_dev->parent_spec);
++	rbd_dev->parent_spec = parent_spec;
++	parent_spec = NULL;	/* rbd_dev now owns this */
  
- /*
-@@ -541,14 +581,14 @@ void __init do_vc_no_ghcb(struct pt_regs
- 	leaf.fn = fn;
- 	leaf.subfn = subfn;
+ 	/*
+-	 * We always update the parent overlap.  If it's zero we issue
+-	 * a warning, as we will proceed as if there was no parent.
++	 * Record the parent overlap.  If it's zero, issue a warning as
++	 * we will proceed as if there is no parent.
+ 	 */
+-	if (!pii.overlap) {
+-		if (parent_spec) {
+-			/* refresh, careful to warn just once */
+-			if (rbd_dev->parent_overlap)
+-				rbd_warn(rbd_dev,
+-				    "clone now standalone (overlap became 0)");
+-		} else {
+-			/* initial probe */
+-			rbd_warn(rbd_dev, "clone is standalone (overlap 0)");
+-		}
+-	}
++	if (!pii.overlap)
++		rbd_warn(rbd_dev, "clone is standalone (overlap 0)");
+ 	rbd_dev->parent_overlap = pii.overlap;
  
--	ret = snp_cpuid(&leaf);
-+	ret = snp_cpuid(NULL, NULL, &leaf);
- 	if (!ret)
- 		goto cpuid_done;
- 
- 	if (ret != -EOPNOTSUPP)
- 		goto fail;
- 
--	if (sev_cpuid_hv(&leaf))
-+	if (__sev_cpuid_hv_msr(&leaf))
- 		goto fail;
- 
- cpuid_done:
-@@ -845,14 +885,15 @@ static enum es_result vc_handle_ioio(str
+ out:
+ 	ret = 0;
+ out_err:
+-	kfree(pii.pool_ns);
+-	kfree(pii.image_id);
++	rbd_parent_info_cleanup(&pii);
+ 	rbd_spec_put(parent_spec);
  	return ret;
  }
+@@ -7049,7 +7026,7 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
+ 	}
  
--static int vc_handle_cpuid_snp(struct pt_regs *regs)
-+static int vc_handle_cpuid_snp(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ 	if (rbd_dev->header.features & RBD_FEATURE_LAYERING) {
+-		ret = rbd_dev_v2_parent_info(rbd_dev);
++		ret = rbd_dev_setup_parent(rbd_dev);
+ 		if (ret)
+ 			goto err_out_probe;
+ 	}
+@@ -7098,9 +7075,47 @@ static void rbd_dev_update_header(struct rbd_device *rbd_dev,
+ 	}
+ }
+ 
++static void rbd_dev_update_parent(struct rbd_device *rbd_dev,
++				  struct parent_image_info *pii)
++{
++	if (pii->pool_id == CEPH_NOPOOL || !pii->has_overlap) {
++		/*
++		 * Either the parent never existed, or we have
++		 * record of it but the image got flattened so it no
++		 * longer has a parent.  When the parent of a
++		 * layered image disappears we immediately set the
++		 * overlap to 0.  The effect of this is that all new
++		 * requests will be treated as if the image had no
++		 * parent.
++		 *
++		 * If !pii.has_overlap, the parent image spec is not
++		 * applicable.  It's there to avoid duplication in each
++		 * snapshot record.
++		 */
++		if (rbd_dev->parent_overlap) {
++			rbd_dev->parent_overlap = 0;
++			rbd_dev_parent_put(rbd_dev);
++			pr_info("%s: clone has been flattened\n",
++				rbd_dev->disk->disk_name);
++		}
++	} else {
++		rbd_assert(rbd_dev->parent_spec);
++
++		/*
++		 * Update the parent overlap.  If it became zero, issue
++		 * a warning as we will proceed as if there is no parent.
++		 */
++		if (!pii->overlap && rbd_dev->parent_overlap)
++			rbd_warn(rbd_dev,
++				 "clone has become standalone (overlap 0)");
++		rbd_dev->parent_overlap = pii->overlap;
++	}
++}
++
+ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
  {
-+	struct pt_regs *regs = ctxt->regs;
- 	struct cpuid_leaf leaf;
+ 	struct rbd_image_header	header = { 0 };
++	struct parent_image_info pii = { 0 };
+ 	u64 mapping_size;
  	int ret;
  
- 	leaf.fn = regs->ax;
- 	leaf.subfn = regs->cx;
--	ret = snp_cpuid(&leaf);
-+	ret = snp_cpuid(ghcb, ctxt, &leaf);
- 	if (!ret) {
- 		regs->ax = leaf.eax;
- 		regs->bx = leaf.ebx;
-@@ -871,7 +912,7 @@ static enum es_result vc_handle_cpuid(st
- 	enum es_result ret;
- 	int snp_cpuid_ret;
+@@ -7116,12 +7131,14 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
+ 	 * mapped image getting flattened.
+ 	 */
+ 	if (rbd_dev->parent) {
+-		ret = rbd_dev_v2_parent_info(rbd_dev);
++		ret = rbd_dev_v2_parent_info(rbd_dev, &pii);
+ 		if (ret)
+ 			goto out;
+ 	}
  
--	snp_cpuid_ret = vc_handle_cpuid_snp(regs);
-+	snp_cpuid_ret = vc_handle_cpuid_snp(ghcb, ctxt);
- 	if (!snp_cpuid_ret)
- 		return ES_OK;
- 	if (snp_cpuid_ret != -EOPNOTSUPP)
+ 	rbd_dev_update_header(rbd_dev, &header);
++	if (rbd_dev->parent)
++		rbd_dev_update_parent(rbd_dev, &pii);
+ 
+ 	rbd_assert(!rbd_is_snap(rbd_dev));
+ 	rbd_dev->mapping.size = rbd_dev->header.image_size;
+@@ -7131,6 +7148,7 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
+ 	if (!ret && mapping_size != rbd_dev->mapping.size)
+ 		rbd_dev_update_size(rbd_dev);
+ 
++	rbd_parent_info_cleanup(&pii);
+ 	rbd_image_header_cleanup(&header);
+ 	return ret;
+ }
+-- 
+2.40.1
+
 
 
