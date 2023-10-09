@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2AAA7BDFD3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A632B7BE0FC
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377149AbjJINea (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:34:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49348 "EHLO
+        id S1377545AbjJINqM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:46:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377146AbjJINea (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:34:30 -0400
+        with ESMTP id S1377573AbjJINpu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:45:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B9C94
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:34:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA5DCC433C7;
-        Mon,  9 Oct 2023 13:34:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC33311C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:45:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F52C433C8;
+        Mon,  9 Oct 2023 13:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858468;
-        bh=2EAG0nqZ3Dek+SaBxAn5+IQNciDtEb2eqcdGviyH/ac=;
+        s=korg; t=1696859140;
+        bh=SX4CdGb94+K5geChoz9WatwzEYbzgvpjsMlac9P252E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U7/x/U+tHqnJSVapVBB/JAxExpKaE559U96hwaOdnnwL1xVaxwfexK965dV9jC59o
-         7icwgQF8NGoFEzDD941dNPrtdLn7yu/vJEd1AO+X3uZpCBVTaZDC5zcvCBYkLnqsJx
-         9YfTgFm+kAi2DYeHWDsY0ENGhHehfjKWxoP7KiY0=
+        b=l1Id5ilmc72i1y99usRgHd5tIUiMump7gE7KaQaExrLoPUpsCoEG+f6ZV0smFHNg/
+         nvwE12SbuIorW8VEZOK3INuA1JRw4Vniwru89DJdbhEQ5L+F5W3lpouHGXgHDUT0xZ
+         n2xsAjmc7lwj6JtO5SA05N8vhinH8bb4oigArars=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chuck Lever <chuck.lever@oracle.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 105/131] NFS4: Trace state recovery operation
+        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
+        Jordan Rife <jrife@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 184/226] net: prevent rewrite of msg_name in sock_sendmsg()
 Date:   Mon,  9 Oct 2023 15:02:25 +0200
-Message-ID: <20231009130119.630511529@linuxfoundation.org>
+Message-ID: <20231009130131.436564862@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,160 +50,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jordan Rife <jrife@google.com>
 
-[ Upstream commit 511ba52e4c01fd1878140774e6215e0de6c2f36f ]
+commit 86a7e0b69bd5b812e48a20c66c2161744f3caa16 upstream.
 
-Add a trace point in the main state manager loop to observe state
-recovery operation. Help track down state recovery bugs.
+Callers of sock_sendmsg(), and similarly kernel_sendmsg(), in kernel
+space may observe their value of msg_name change in cases where BPF
+sendmsg hooks rewrite the send address. This has been confirmed to break
+NFS mounts running in UDP mode and has the potential to break other
+systems.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: ed1cc05aa1f7 ("NFSv4: Fix a nfs4_state_manager() race")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch:
+
+1) Creates a new function called __sock_sendmsg() with same logic as the
+   old sock_sendmsg() function.
+2) Replaces calls to sock_sendmsg() made by __sys_sendto() and
+   __sys_sendmsg() with __sock_sendmsg() to avoid an unnecessary copy,
+   as these system calls are already protected.
+3) Modifies sock_sendmsg() so that it makes a copy of msg_name if
+   present before passing it down the stack to insulate callers from
+   changes to the send address.
+
+Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
+Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4state.c |  3 ++
- fs/nfs/nfs4trace.h | 93 ++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 96 insertions(+)
+ net/socket.c |   29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index 01b1856705941..04aa8e34d1129 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -61,6 +61,7 @@
- #include "nfs4session.h"
- #include "pnfs.h"
- #include "netns.h"
-+#include "nfs4trace.h"
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -655,6 +655,14 @@ static inline int sock_sendmsg_nosec(str
+ 	return ret;
+ }
  
- #define NFSDBG_FACILITY		NFSDBG_STATE
++static int __sock_sendmsg(struct socket *sock, struct msghdr *msg)
++{
++	int err = security_socket_sendmsg(sock, msg,
++					  msg_data_left(msg));
++
++	return err ?: sock_sendmsg_nosec(sock, msg);
++}
++
+ /**
+  *	sock_sendmsg - send a message through @sock
+  *	@sock: socket
+@@ -665,10 +673,19 @@ static inline int sock_sendmsg_nosec(str
+  */
+ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
+ {
+-	int err = security_socket_sendmsg(sock, msg,
+-					  msg_data_left(msg));
++	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
++	struct sockaddr_storage address;
++	int ret;
  
-@@ -2525,6 +2526,7 @@ static void nfs4_state_manager(struct nfs_client *clp)
+-	return err ?: sock_sendmsg_nosec(sock, msg);
++	if (msg->msg_name) {
++		memcpy(&address, msg->msg_name, msg->msg_namelen);
++		msg->msg_name = &address;
++	}
++
++	ret = __sock_sendmsg(sock, msg);
++	msg->msg_name = save_addr;
++
++	return ret;
+ }
+ EXPORT_SYMBOL(sock_sendmsg);
  
- 	/* Ensure exclusive access to NFSv4 state */
- 	do {
-+		trace_nfs4_state_mgr(clp);
- 		clear_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state);
- 		if (test_bit(NFS4CLNT_PURGE_STATE, &clp->cl_state)) {
- 			section = "purge state";
-@@ -2641,6 +2643,7 @@ static void nfs4_state_manager(struct nfs_client *clp)
- out_error:
- 	if (strlen(section))
- 		section_sep = ": ";
-+	trace_nfs4_state_mgr_failed(clp, section, status);
- 	pr_warn_ratelimited("NFS: state manager%s%s failed on NFSv4 server %s"
- 			" with error %d\n", section_sep, section,
- 			clp->cl_hostname, -status);
-diff --git a/fs/nfs/nfs4trace.h b/fs/nfs/nfs4trace.h
-index 2295a934a154e..010ee5e6fa326 100644
---- a/fs/nfs/nfs4trace.h
-+++ b/fs/nfs/nfs4trace.h
-@@ -563,6 +563,99 @@ TRACE_EVENT(nfs4_setup_sequence,
- 		)
- );
+@@ -995,7 +1012,7 @@ static ssize_t sock_write_iter(struct ki
+ 	if (sock->type == SOCK_SEQPACKET)
+ 		msg.msg_flags |= MSG_EOR;
  
-+TRACE_DEFINE_ENUM(NFS4CLNT_MANAGER_RUNNING);
-+TRACE_DEFINE_ENUM(NFS4CLNT_CHECK_LEASE);
-+TRACE_DEFINE_ENUM(NFS4CLNT_LEASE_EXPIRED);
-+TRACE_DEFINE_ENUM(NFS4CLNT_RECLAIM_REBOOT);
-+TRACE_DEFINE_ENUM(NFS4CLNT_RECLAIM_NOGRACE);
-+TRACE_DEFINE_ENUM(NFS4CLNT_DELEGRETURN);
-+TRACE_DEFINE_ENUM(NFS4CLNT_SESSION_RESET);
-+TRACE_DEFINE_ENUM(NFS4CLNT_LEASE_CONFIRM);
-+TRACE_DEFINE_ENUM(NFS4CLNT_SERVER_SCOPE_MISMATCH);
-+TRACE_DEFINE_ENUM(NFS4CLNT_PURGE_STATE);
-+TRACE_DEFINE_ENUM(NFS4CLNT_BIND_CONN_TO_SESSION);
-+TRACE_DEFINE_ENUM(NFS4CLNT_MOVED);
-+TRACE_DEFINE_ENUM(NFS4CLNT_LEASE_MOVED);
-+TRACE_DEFINE_ENUM(NFS4CLNT_DELEGATION_EXPIRED);
-+TRACE_DEFINE_ENUM(NFS4CLNT_RUN_MANAGER);
-+TRACE_DEFINE_ENUM(NFS4CLNT_DELEGRETURN_RUNNING);
-+
-+#define show_nfs4_clp_state(state) \
-+	__print_flags(state, "|", \
-+		{ NFS4CLNT_MANAGER_RUNNING,	"MANAGER_RUNNING" }, \
-+		{ NFS4CLNT_CHECK_LEASE,		"CHECK_LEASE" }, \
-+		{ NFS4CLNT_LEASE_EXPIRED,	"LEASE_EXPIRED" }, \
-+		{ NFS4CLNT_RECLAIM_REBOOT,	"RECLAIM_REBOOT" }, \
-+		{ NFS4CLNT_RECLAIM_NOGRACE,	"RECLAIM_NOGRACE" }, \
-+		{ NFS4CLNT_DELEGRETURN,		"DELEGRETURN" }, \
-+		{ NFS4CLNT_SESSION_RESET,	"SESSION_RESET" }, \
-+		{ NFS4CLNT_LEASE_CONFIRM,	"LEASE_CONFIRM" }, \
-+		{ NFS4CLNT_SERVER_SCOPE_MISMATCH, \
-+						"SERVER_SCOPE_MISMATCH" }, \
-+		{ NFS4CLNT_PURGE_STATE,		"PURGE_STATE" }, \
-+		{ NFS4CLNT_BIND_CONN_TO_SESSION, \
-+						"BIND_CONN_TO_SESSION" }, \
-+		{ NFS4CLNT_MOVED,		"MOVED" }, \
-+		{ NFS4CLNT_LEASE_MOVED,		"LEASE_MOVED" }, \
-+		{ NFS4CLNT_DELEGATION_EXPIRED,	"DELEGATION_EXPIRED" }, \
-+		{ NFS4CLNT_RUN_MANAGER,		"RUN_MANAGER" }, \
-+		{ NFS4CLNT_DELEGRETURN_RUNNING,	"DELEGRETURN_RUNNING" })
-+
-+TRACE_EVENT(nfs4_state_mgr,
-+		TP_PROTO(
-+			const struct nfs_client *clp
-+		),
-+
-+		TP_ARGS(clp),
-+
-+		TP_STRUCT__entry(
-+			__field(unsigned long, state)
-+			__string(hostname, clp->cl_hostname)
-+		),
-+
-+		TP_fast_assign(
-+			__entry->state = clp->cl_state;
-+			__assign_str(hostname, clp->cl_hostname)
-+		),
-+
-+		TP_printk(
-+			"hostname=%s clp state=%s", __get_str(hostname),
-+			show_nfs4_clp_state(__entry->state)
-+		)
-+)
-+
-+TRACE_EVENT(nfs4_state_mgr_failed,
-+		TP_PROTO(
-+			const struct nfs_client *clp,
-+			const char *section,
-+			int status
-+		),
-+
-+		TP_ARGS(clp, section, status),
-+
-+		TP_STRUCT__entry(
-+			__field(unsigned long, error)
-+			__field(unsigned long, state)
-+			__string(hostname, clp->cl_hostname)
-+			__string(section, section)
-+		),
-+
-+		TP_fast_assign(
-+			__entry->error = status;
-+			__entry->state = clp->cl_state;
-+			__assign_str(hostname, clp->cl_hostname);
-+			__assign_str(section, section);
-+		),
-+
-+		TP_printk(
-+			"hostname=%s clp state=%s error=%ld (%s) section=%s",
-+			__get_str(hostname),
-+			show_nfs4_clp_state(__entry->state), -__entry->error,
-+			show_nfsv4_errors(__entry->error), __get_str(section)
-+
-+		)
-+)
-+
- TRACE_EVENT(nfs4_xdr_status,
- 		TP_PROTO(
- 			const struct xdr_stream *xdr,
--- 
-2.40.1
-
+-	res = sock_sendmsg(sock, &msg);
++	res = __sock_sendmsg(sock, &msg);
+ 	*from = msg.msg_iter;
+ 	return res;
+ }
+@@ -1983,7 +2000,7 @@ int __sys_sendto(int fd, void __user *bu
+ 	if (sock->file->f_flags & O_NONBLOCK)
+ 		flags |= MSG_DONTWAIT;
+ 	msg.msg_flags = flags;
+-	err = sock_sendmsg(sock, &msg);
++	err = __sock_sendmsg(sock, &msg);
+ 
+ out_put:
+ 	fput_light(sock->file, fput_needed);
+@@ -2356,7 +2373,7 @@ static int ____sys_sendmsg(struct socket
+ 		err = sock_sendmsg_nosec(sock, msg_sys);
+ 		goto out_freectl;
+ 	}
+-	err = sock_sendmsg(sock, msg_sys);
++	err = __sock_sendmsg(sock, msg_sys);
+ 	/*
+ 	 * If this is sendmmsg() and sending to current destination address was
+ 	 * successful, remember it.
 
 
