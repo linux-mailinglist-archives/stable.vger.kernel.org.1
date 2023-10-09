@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5A777BDE20
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:16:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEB457BE007
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376937AbjJINQM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:16:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35430 "EHLO
+        id S1377196AbjJINgv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376940AbjJINQL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:16:11 -0400
+        with ESMTP id S1377206AbjJINgv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B17D9D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:16:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BE4C433C8;
-        Mon,  9 Oct 2023 13:16:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0FE99
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F4FC433C7;
+        Mon,  9 Oct 2023 13:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857369;
-        bh=Kl1/x780WCEcyjtI43YxPbR41sMRQ4EVsBsA4vnotao=;
+        s=korg; t=1696858608;
+        bh=+iFhSFM6paddAXr3xH6LaBVSFFywpXPkodnbf4rgKJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DbVR9hAYuNwbe8Iz19I/0Sb3DPm0PJJ0xxdNVU55hUW8NWcEpetWfgRXrdqwDBvkM
-         mAjc79LS0+SU92Rz7WjeQw7v2LwPj3iNn+DoIIXOwduRhbQBYkxEAfTwsOIul/ALYF
-         kXqzrng6HPi4BsuccNVD2sOhH3tJklHAR0KQV8aM=
+        b=vT3byc0lV/lW24/QYvDZi4kwAp0d0Tqoi0eEYP+3/vokl6dQuHr4+GEJnUIAngpMz
+         Fr0o74nijP/KNfhrq4aqO30NoNmorZozvv+PndYzjAeZKdVPMVbTQ32q3nofaKTSjT
+         la6KZTtzTS5W0S5t21LeICXxKXpyiIvGR5v2khpk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        SeongJae Park <sj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Prashant Malani <pmalani@chromium.org>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/162] mm/memory: add vm_normal_folio()
+Subject: [PATCH 5.10 044/226] platform/x86: intel_scu_ipc: Check status upon timeout in ipc_wait_for_interrupt()
 Date:   Mon,  9 Oct 2023 15:00:05 +0200
-Message-ID: <20231009130123.614056789@linuxfoundation.org>
+Message-ID: <20231009130127.948383919@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,78 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit 318e9342fbbb6888d903d86e83865609901a1c65 ]
+[ Upstream commit 427fada620733e6474d783ae6037a66eae42bf8c ]
 
-Patch series "Convert deactivate_page() to folio_deactivate()", v4.
+It's possible for the completion in ipc_wait_for_interrupt() to timeout,
+simply because the interrupt was delayed in being processed. A timeout
+in itself is not an error. This driver should check the status register
+upon a timeout to ensure that scheduling or interrupt processing delays
+don't affect the outcome of the IPC return value.
 
-Deactivate_page() has already been converted to use folios.  This patch
-series modifies the callers of deactivate_page() to use folios.  It also
-introduces vm_normal_folio() to assist with folio conversions, and
-converts deactivate_page() to folio_deactivate() which takes in a folio.
+ CPU0                                                   SCU
+ ----                                                   ---
+ ipc_wait_for_interrupt()
+  wait_for_completion_timeout(&scu->cmd_complete)
+  [TIMEOUT]                                             status[IPC_STATUS_BUSY]=0
 
-This patch (of 4):
+Fix this problem by reading the status bit in all cases, regardless of
+the timeout. If the completion times out, we'll assume the problem was
+that the IPC_STATUS_BUSY bit was still set, but if the status bit is
+cleared in the meantime we know that we hit some scheduling delay and we
+should just check the error bit.
 
-Introduce a wrapper function called vm_normal_folio().  This function
-calls vm_normal_page() and returns the folio of the page found, or null if
-no page is found.
-
-This function allows callers to get a folio from a pte, which will
-eventually allow them to completely replace their struct page variables
-with struct folio instead.
-
-Link: https://lkml.kernel.org/r/20221221180848.20774-1-vishal.moola@gmail.com
-Link: https://lkml.kernel.org/r/20221221180848.20774-2-vishal.moola@gmail.com
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: SeongJae Park <sj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 24526268f4e3 ("mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and MPOL_MF_MOVE are specified")
+Cc: Prashant Malani <pmalani@chromium.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: ed12f295bfd5 ("ipc: Added support for IPC interrupt mode")
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20230913212723.3055315-3-swboyd@chromium.org
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mm.h |  2 ++
- mm/memory.c        | 10 ++++++++++
- 2 files changed, 12 insertions(+)
+ drivers/platform/x86/intel_scu_ipc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 104ec00823da8..eefb0948110ae 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1906,6 +1906,8 @@ static inline bool can_do_mlock(void) { return false; }
- extern int user_shm_lock(size_t, struct ucounts *);
- extern void user_shm_unlock(size_t, struct ucounts *);
+diff --git a/drivers/platform/x86/intel_scu_ipc.c b/drivers/platform/x86/intel_scu_ipc.c
+index 0b5029bca4a45..4c053c715cde0 100644
+--- a/drivers/platform/x86/intel_scu_ipc.c
++++ b/drivers/platform/x86/intel_scu_ipc.c
+@@ -249,10 +249,12 @@ static inline int ipc_wait_for_interrupt(struct intel_scu_ipc_dev *scu)
+ {
+ 	int status;
  
-+struct folio *vm_normal_folio(struct vm_area_struct *vma, unsigned long addr,
-+			     pte_t pte);
- struct page *vm_normal_page(struct vm_area_struct *vma, unsigned long addr,
- 			     pte_t pte);
- struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
-diff --git a/mm/memory.c b/mm/memory.c
-index 2083078cd0615..0d1b3ee8fcd7a 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -672,6 +672,16 @@ struct page *vm_normal_page(struct vm_area_struct *vma, unsigned long addr,
- 	return pfn_to_page(pfn);
- }
+-	if (!wait_for_completion_timeout(&scu->cmd_complete, IPC_TIMEOUT))
+-		return -ETIMEDOUT;
++	wait_for_completion_timeout(&scu->cmd_complete, IPC_TIMEOUT);
  
-+struct folio *vm_normal_folio(struct vm_area_struct *vma, unsigned long addr,
-+			    pte_t pte)
-+{
-+	struct page *page = vm_normal_page(vma, addr, pte);
+ 	status = ipc_read_status(scu);
++	if (status & IPC_STATUS_BUSY)
++		return -ETIMEDOUT;
 +
-+	if (page)
-+		return page_folio(page);
-+	return NULL;
-+}
-+
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
- 				pmd_t pmd)
+ 	if (status & IPC_STATUS_ERR)
+ 		return -EIO;
+ 
 -- 
 2.40.1
 
