@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33BC27BDF34
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B75F77BE0FB
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:46:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376776AbjJIN1h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:27:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50314 "EHLO
+        id S1377505AbjJINqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:46:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376805AbjJIN1h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:27:37 -0400
+        with ESMTP id S1377464AbjJINpr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:45:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA4D49D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:27:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A80DC433C8;
-        Mon,  9 Oct 2023 13:27:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 716D7E9
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:45:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A409FC433C9;
+        Mon,  9 Oct 2023 13:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858055;
-        bh=wZvVHr0Hd+5ugS0I+bydfyRfO1GSQ8XjAC24sqJEEl0=;
+        s=korg; t=1696859137;
+        bh=IIEvWm92lfoPLPeW0bh01ZSNBYEywe31Ikfwa+elcaw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ti14Fwu1f1f3pO/RPBNRHF+gzublBpi8iMBQSXqHzA7F4J9evnefmkIqXlllTTnq9
-         /F/MxTrrDHJVbuh87/bD8Z0bPgXD0QHvDw63r8FcREKwZaKqCat5kSMFEd49MTRAMS
-         B11EN06VME+yEvK1S9/Qx8SkKl9ef8Y85USNAox4=
+        b=z3nvUUuEw0ayyi4ocFAxW5CPH8RTZz8tRigSteNLVzfqf6JaIX9IUVqp4ssinS5Cj
+         0u3+5W5IXvGS5X8tV0hA9WZp68IppWfGjftGYKGsmZsgygRdGOCndhVlvZtU59LtbF
+         6gKCb8cj5PppxgaR9VVgGu3ROhkh6TdkfXiCNb5Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 62/75] HID: intel-ish-hid: ipc: Disable and reenable ACPI GPE bit
+        patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
+        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 183/226] btrfs: reject unknown mount options early
 Date:   Mon,  9 Oct 2023 15:02:24 +0200
-Message-ID: <20231009130113.430231228@linuxfoundation.org>
+Message-ID: <20231009130131.413264622@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,59 +48,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 8f02139ad9a7e6e5c05712f8c1501eebed8eacfd ]
+commit 5f521494cc73520ffac18ede0758883b9aedd018 upstream.
 
-The EHL (Elkhart Lake) based platforms provide a OOB (Out of band)
-service, which allows to wakup device when the system is in S5 (Soft-Off
-state). This OOB service can be enabled/disabled from BIOS settings. When
-enabled, the ISH device gets PME wake capability. To enable PME wakeup,
-driver also needs to enable ACPI GPE bit.
+[BUG]
+The following script would allow invalid mount options to be specified
+(although such invalid options would just be ignored):
 
-On resume, BIOS will clear the wakeup bit. So driver need to re-enable it
-in resume function to keep the next wakeup capability. But this BIOS
-clearing of wakeup bit doesn't decrement internal OS GPE reference count,
-so this reenabling on every resume will cause reference count to overflow.
+  # mkfs.btrfs -f $dev
+  # mount $dev $mnt1		<<< Successful mount expected
+  # mount $dev $mnt2 -o junk	<<< Failed mount expected
+  # echo $?
+  0
 
-So first disable and reenable ACPI GPE bit using acpi_disable_gpe().
+[CAUSE]
+For the 2nd mount, since the fs is already mounted, we won't go through
+open_ctree() thus no btrfs_parse_options(), but only through
+btrfs_parse_subvol_options().
 
-Fixes: 2e23a70edabe ("HID: intel-ish-hid: ipc: finish power flow for EHL OOB")
-Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Closes: https://lore.kernel.org/lkml/CAAd53p4=oLYiH2YbVSmrPNj1zpMcfp=Wxbasb5vhMXOWCArLCg@mail.gmail.com/T/
-Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However we do not treat unrecognized options from valid but irrelevant
+options, thus those invalid options would just be ignored by
+btrfs_parse_subvol_options().
+
+[FIX]
+Add the handling for Opt_err to handle invalid options and error out,
+while still ignore other valid options inside btrfs_parse_subvol_options().
+
+Reported-by: Anand Jain <anand.jain@oracle.com>
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/intel-ish-hid/ipc/pci-ish.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/btrfs/super.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-index 8e9d9450cb835..5916ef2933e27 100644
---- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-+++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-@@ -129,6 +129,14 @@ static int enable_gpe(struct device *dev)
- 	}
- 	wakeup = &adev->wakeup;
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -1123,6 +1123,10 @@ static int btrfs_parse_subvol_options(co
  
-+	/*
-+	 * Call acpi_disable_gpe(), so that reference count
-+	 * gpe_event_info->runtime_count doesn't overflow.
-+	 * When gpe_event_info->runtime_count = 0, the call
-+	 * to acpi_disable_gpe() simply return.
-+	 */
-+	acpi_disable_gpe(wakeup->gpe_device, wakeup->gpe_number);
-+
- 	acpi_sts = acpi_enable_gpe(wakeup->gpe_device, wakeup->gpe_number);
- 	if (ACPI_FAILURE(acpi_sts)) {
- 		dev_err(dev, "enable ose_gpe failed\n");
--- 
-2.40.1
-
+ 			*subvol_objectid = subvolid;
+ 			break;
++		case Opt_err:
++			btrfs_err(NULL, "unrecognized mount option '%s'", p);
++			error = -EINVAL;
++			goto out;
+ 		default:
+ 			break;
+ 		}
 
 
