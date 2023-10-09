@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F38257BDDEA
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB057BE09B
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376898AbjJINOL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54490 "EHLO
+        id S1376910AbjJINmD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:42:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376889AbjJINNs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:48 -0400
+        with ESMTP id S1377386AbjJINmB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0344C10E
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43036C433C7;
-        Mon,  9 Oct 2023 13:13:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB287CF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020CEC433C9;
+        Mon,  9 Oct 2023 13:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857225;
-        bh=F0bpRUv2xtGFvhKQkse5lJAtMAJ2pOydfylJxbh/8f4=;
+        s=korg; t=1696858918;
+        bh=L92vWIw7RMY336w4OqoWJsF7PpqF/1oPFTzm09x3dpo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LDTDvNjgltjD/MzAcM7yBcqdOPDsjm4gYVlFDE24xDhlalYZ/9urUmgvYOBs5O0qT
-         nodARhLdMzRnP90j6q3ZKqPMjf3Kni2GDld8+cozybq7jfQFkgxn+gl0fhHRFWUja8
-         TF8KW12UTXmKnK2VEKKfplu0F9sJVL546wzDaZqg=
+        b=h4IiIUTRcQhO14HcEAimG4o96Ka91BBklmLqLadeN+qTc1KMTNteEjxhh5sjAsyYY
+         6YecBsF2Vp5mgFuDSd4NkzhAi4H1PHLOvMiY08fmTQCzd2HtKJJ2EHChRGJkpC4AF1
+         pUX57e64Wsy8TBrwSqVy6IfTAfbE6Bzp0u17GI/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jordan Rife <jrife@google.com>,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.5 138/163] smb: use kernel_connect() and kernel_bind()
+        patches@lists.linux.dev, Irvin Cote <irvin.cote@insa-lyon.fr>,
+        Keith Busch <kbusch@kernel.org>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 141/226] nvme-pci: always return an ERR_PTR from nvme_pci_alloc_dev
 Date:   Mon,  9 Oct 2023 15:01:42 +0200
-Message-ID: <20231009130127.857057057@linuxfoundation.org>
+Message-ID: <20231009130130.420530709@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,55 +49,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Irvin Cote <irvin.cote@insa-lyon.fr>
 
-commit cedc019b9f260facfadd20c6c490e403abf292e3 upstream.
+[ Upstream commit dc785d69d753a3894c93afc23b91404652382ead ]
 
-Recent changes to kernel_connect() and kernel_bind() ensure that
-callers are insulated from changes to the address parameter made by BPF
-SOCK_ADDR hooks. This patch wraps direct calls to ops->connect() and
-ops->bind() with kernel_connect() and kernel_bind() to ensure that SMB
-mounts do not see their mount address overwritten in such cases.
+Don't mix NULL and ERR_PTR returns.
 
-Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
-Cc: <stable@vger.kernel.org> # 6.0+
-Signed-off-by: Jordan Rife <jrife@google.com>
-Acked-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2e87570be9d2 ("nvme-pci: factor out a nvme_pci_alloc_dev helper")
+Signed-off-by: Irvin Cote <irvin.cote@insa-lyon.fr>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/nvme/host/pci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -2890,9 +2890,9 @@ bind_socket(struct TCP_Server_Info *serv
- 	if (server->srcaddr.ss_family != AF_UNSPEC) {
- 		/* Bind to the specified local IP address */
- 		struct socket *socket = server->ssocket;
--		rc = socket->ops->bind(socket,
--				       (struct sockaddr *) &server->srcaddr,
--				       sizeof(server->srcaddr));
-+		rc = kernel_bind(socket,
-+				 (struct sockaddr *) &server->srcaddr,
-+				 sizeof(server->srcaddr));
- 		if (rc < 0) {
- 			struct sockaddr_in *saddr4;
- 			struct sockaddr_in6 *saddr6;
-@@ -3041,8 +3041,8 @@ generic_ip_connect(struct TCP_Server_Inf
- 		 socket->sk->sk_sndbuf,
- 		 socket->sk->sk_rcvbuf, socket->sk->sk_rcvtimeo);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 7bb42d0e087af..9c67ebd4eac38 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2868,7 +2868,7 @@ static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
  
--	rc = socket->ops->connect(socket, saddr, slen,
--				  server->noblockcnt ? O_NONBLOCK : 0);
-+	rc = kernel_connect(socket, saddr, slen,
-+			    server->noblockcnt ? O_NONBLOCK : 0);
- 	/*
- 	 * When mounting SMB root file systems, we do not want to block in
- 	 * connect. Otherwise bail out and then let cifs_reconnect() perform
+ 	dev = kzalloc_node(sizeof(*dev), GFP_KERNEL, node);
+ 	if (!dev)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 	INIT_WORK(&dev->ctrl.reset_work, nvme_reset_work);
+ 	INIT_WORK(&dev->remove_work, nvme_remove_dead_ctrl_work);
+ 	mutex_init(&dev->shutdown_lock);
+@@ -2913,8 +2913,8 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	int result = -ENOMEM;
+ 
+ 	dev = nvme_pci_alloc_dev(pdev, id);
+-	if (!dev)
+-		return -ENOMEM;
++	if (IS_ERR(dev))
++		return PTR_ERR(dev);
+ 
+ 	result = nvme_dev_map(dev);
+ 	if (result)
+-- 
+2.40.1
+
 
 
