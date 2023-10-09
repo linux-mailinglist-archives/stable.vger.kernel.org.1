@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20A407BE164
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AA057BE14F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377059AbjJINt6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:49:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58100 "EHLO
+        id S1377490AbjJINtZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:49:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377097AbjJINt5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:49:57 -0400
+        with ESMTP id S1377756AbjJINtS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:49:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E157C9D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:49:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AB4C433C9;
-        Mon,  9 Oct 2023 13:49:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7E59D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:49:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F07C433C7;
+        Mon,  9 Oct 2023 13:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859394;
-        bh=t4u20W3xhNPq+zYzCztTOlmCY4tu/E8eoC6NA5oDc+E=;
+        s=korg; t=1696859356;
+        bh=xIH5DXtBWnJWbY+1oc7zi8vBcXCdA+pXhFbQfC7A2ls=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2vDsqwWi6txLbOFaAiPxyeWwCuPJ20yx6ulR93IrLI3bh0fOHem9au1OgBrlrQjPl
-         7ilrblZQDedi92crPWV0cu6f4aa6IjzOOEAkvNWt5iMAumvg+FFrAbjBqiwCXO3F3z
-         zarGBFwia4c/qNPhX0iWYOmanzQNp/wlrvyQC2rk=
+        b=eEXn1a9Hw/MprPYcJB4CB9oLQiQZlnegJDX6SDKYr75E4OC1APE9tsxk93y0HvsHq
+         ADpsAYyvovHT9yfz5LsvOIauLn8g4e9CkzQWRB9dRbfhEhruL6GomN51h4R/ps2szn
+         nzljBHL4ot8OqQRMVmvjBjmJWJY8RiygErL06otk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Junxiao Bi <junxiao.bi@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Mauricio Faria de Oliveira <mfo@canonical.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 43/55] scsi: target: core: Fix deadlock due to recursive locking
-Date:   Mon,  9 Oct 2023 15:06:42 +0200
-Message-ID: <20231009130109.341244730@linuxfoundation.org>
+Subject: [PATCH 4.14 44/55] modpost: add missing else to the "of" check
+Date:   Mon,  9 Oct 2023 15:06:43 +0200
+Message-ID: <20231009130109.378268288@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
 References: <20231009130107.717692466@linuxfoundation.org>
@@ -54,96 +54,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Junxiao Bi <junxiao.bi@oracle.com>
+From: Mauricio Faria de Oliveira <mfo@canonical.com>
 
-[ Upstream commit a154f5f643c6ecddd44847217a7a3845b4350003 ]
+[ Upstream commit cbc3d00cf88fda95dbcafee3b38655b7a8f2650a ]
 
-The following call trace shows a deadlock issue due to recursive locking of
-mutex "device_mutex". First lock acquire is in target_for_each_device() and
-second in target_free_device().
+Without this 'else' statement, an "usb" name goes into two handlers:
+the first/previous 'if' statement _AND_ the for-loop over 'devtable',
+but the latter is useless as it has no 'usb' device_id entry anyway.
 
- PID: 148266   TASK: ffff8be21ffb5d00  CPU: 10   COMMAND: "iscsi_ttx"
-  #0 [ffffa2bfc9ec3b18] __schedule at ffffffffa8060e7f
-  #1 [ffffa2bfc9ec3ba0] schedule at ffffffffa8061224
-  #2 [ffffa2bfc9ec3bb8] schedule_preempt_disabled at ffffffffa80615ee
-  #3 [ffffa2bfc9ec3bc8] __mutex_lock at ffffffffa8062fd7
-  #4 [ffffa2bfc9ec3c40] __mutex_lock_slowpath at ffffffffa80631d3
-  #5 [ffffa2bfc9ec3c50] mutex_lock at ffffffffa806320c
-  #6 [ffffa2bfc9ec3c68] target_free_device at ffffffffc0935998 [target_core_mod]
-  #7 [ffffa2bfc9ec3c90] target_core_dev_release at ffffffffc092f975 [target_core_mod]
-  #8 [ffffa2bfc9ec3ca0] config_item_put at ffffffffa79d250f
-  #9 [ffffa2bfc9ec3cd0] config_item_put at ffffffffa79d2583
- #10 [ffffa2bfc9ec3ce0] target_devices_idr_iter at ffffffffc0933f3a [target_core_mod]
- #11 [ffffa2bfc9ec3d00] idr_for_each at ffffffffa803f6fc
- #12 [ffffa2bfc9ec3d60] target_for_each_device at ffffffffc0935670 [target_core_mod]
- #13 [ffffa2bfc9ec3d98] transport_deregister_session at ffffffffc0946408 [target_core_mod]
- #14 [ffffa2bfc9ec3dc8] iscsit_close_session at ffffffffc09a44a6 [iscsi_target_mod]
- #15 [ffffa2bfc9ec3df0] iscsit_close_connection at ffffffffc09a4a88 [iscsi_target_mod]
- #16 [ffffa2bfc9ec3df8] finish_task_switch at ffffffffa76e5d07
- #17 [ffffa2bfc9ec3e78] iscsit_take_action_for_connection_exit at ffffffffc0991c23 [iscsi_target_mod]
- #18 [ffffa2bfc9ec3ea0] iscsi_target_tx_thread at ffffffffc09a403b [iscsi_target_mod]
- #19 [ffffa2bfc9ec3f08] kthread at ffffffffa76d8080
- #20 [ffffa2bfc9ec3f50] ret_from_fork at ffffffffa8200364
+Tested with allmodconfig before/after patch; no changes to *.mod.c:
 
-Fixes: 36d4cb460bcb ("scsi: target: Avoid that EXTENDED COPY commands trigger lock inversion")
-Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
-Link: https://lore.kernel.org/r/20230918225848.66463-1-junxiao.bi@oracle.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    git checkout v6.6-rc3
+    make -j$(nproc) allmodconfig
+    make -j$(nproc) olddefconfig
+
+    make -j$(nproc)
+    find . -name '*.mod.c' | cpio -pd /tmp/before
+
+    # apply patch
+
+    make -j$(nproc)
+    find . -name '*.mod.c' | cpio -pd /tmp/after
+
+    diff -r /tmp/before/ /tmp/after/
+    # no difference
+
+Fixes: acbef7b76629 ("modpost: fix module autoloading for OF devices with generic compatible property")
+Signed-off-by: Mauricio Faria de Oliveira <mfo@canonical.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_device.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ scripts/mod/file2alias.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index 68b2fa562201c..907b06056f029 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -906,7 +906,6 @@ struct se_device *target_find_device(int id, bool do_depend)
- EXPORT_SYMBOL(target_find_device);
- 
- struct devices_idr_iter {
--	struct config_item *prev_item;
- 	int (*fn)(struct se_device *dev, void *data);
- 	void *data;
- };
-@@ -916,11 +915,9 @@ static int target_devices_idr_iter(int id, void *p, void *data)
- {
- 	struct devices_idr_iter *iter = data;
- 	struct se_device *dev = p;
-+	struct config_item *item;
- 	int ret;
- 
--	config_item_put(iter->prev_item);
--	iter->prev_item = NULL;
--
- 	/*
- 	 * We add the device early to the idr, so it can be used
- 	 * by backend modules during configuration. We do not want
-@@ -930,12 +927,13 @@ static int target_devices_idr_iter(int id, void *p, void *data)
- 	if (!(dev->dev_flags & DF_CONFIGURED))
- 		return 0;
- 
--	iter->prev_item = config_item_get_unless_zero(&dev->dev_group.cg_item);
--	if (!iter->prev_item)
-+	item = config_item_get_unless_zero(&dev->dev_group.cg_item);
-+	if (!item)
- 		return 0;
- 	mutex_unlock(&device_mutex);
- 
- 	ret = iter->fn(dev, iter->data);
-+	config_item_put(item);
- 
- 	mutex_lock(&device_mutex);
- 	return ret;
-@@ -958,7 +956,6 @@ int target_for_each_device(int (*fn)(struct se_device *dev, void *data),
- 	mutex_lock(&device_mutex);
- 	ret = idr_for_each(&devices_idr, target_devices_idr_iter, &iter);
- 	mutex_unlock(&device_mutex);
--	config_item_put(iter.prev_item);
- 	return ret;
- }
- 
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 55b4c0dc2b935..ac2b11ef37c46 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -1331,7 +1331,7 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
+ 	/* First handle the "special" cases */
+ 	if (sym_is(name, namelen, "usb"))
+ 		do_usb_table(symval, sym->st_size, mod);
+-	if (sym_is(name, namelen, "of"))
++	else if (sym_is(name, namelen, "of"))
+ 		do_of_table(symval, sym->st_size, mod);
+ 	else if (sym_is(name, namelen, "pnp"))
+ 		do_pnp_device_entry(symval, sym->st_size, mod);
 -- 
 2.40.1
 
