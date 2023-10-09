@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 000247BE0B1
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:43:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B24E47BDEBB
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376272AbjJINnE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:43:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41272 "EHLO
+        id S1376387AbjJINWY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:22:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377393AbjJINnD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:03 -0400
+        with ESMTP id S1376396AbjJINWY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3C239D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35D8C433C8;
-        Mon,  9 Oct 2023 13:43:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE715B6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA21C433C8;
+        Mon,  9 Oct 2023 13:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858982;
-        bh=YyZ8BRpCkwUlJMbqNfEDsiLWNcuCD82ZYBDYquT77XU=;
+        s=korg; t=1696857741;
+        bh=uRMEnUY/gl7jFaAjbSZmH6GoJ5UmGkjJNAzJYuMEAgg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h27x35piqGGwCjB3TrhBF4llrcMWQPHyjrJEPrGY1z2kzNUf/TrLfG86bl5dZteRz
-         Uz0IlFq0p2odbEr6jvD0Dyog+h92uXZUjMyrnvoT4HJnnD2L+6pE0V/01L8w8V6cR5
-         mniXn2/20h1/YZArEMVR12sLAdOdYzWo9e0dpg1I=
+        b=cSbXuMK+4LnBQyHPW/3e2eRcKyLm00p67wzWb82jkQ+oGA4C3qkQ5We80fHQ3SAci
+         ob2Fvm9mtw1nVPrDWVsVAIObfkW5B88G9XPgtktjP4Fd6RczaxzEHDBfUwxHeAMt47
+         f6MT4vWoScbguwNKDmak6Wgl9v8lxPMO1NuhcpEk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Matthias Schiffer <mschiffer@universe-factory.net>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.10 162/226] ata: libata-sata: increase PMP SRST timeout to 10s
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.1 142/162] IB/mlx4: Fix the size of a buffer in add_port_entries()
 Date:   Mon,  9 Oct 2023 15:02:03 +0200
-Message-ID: <20231009130130.911221199@linuxfoundation.org>
+Message-ID: <20231009130126.826482345@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,54 +50,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <mschiffer@universe-factory.net>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 753a4d531bc518633ea88ac0ed02b25a16823d51 upstream.
+commit d7f393430a17c2bfcdf805462a5aa80be4285b27 upstream.
 
-On certain SATA controllers, softreset fails after wakeup from S2RAM with
-the message "softreset failed (1st FIS failed)", sometimes resulting in
-drives not being detected again. With the increased timeout, this issue
-is avoided. Instead, "softreset failed (device not ready)" is now
-logged 1-2 times; this later failure seems to cause fewer problems
-however, and the drives are detected reliably once they've spun up and
-the probe is retried.
+In order to be sure that 'buff' is never truncated, its size should be
+12, not 11.
 
-The issue was observed with the primary SATA controller of the QNAP
-TS-453B, which is an "Intel Corporation Celeron/Pentium Silver Processor
-SATA Controller [8086:31e3] (rev 06)" integrated in the Celeron J4125 CPU,
-and the following drives:
+When building with W=1, this fixes the following warnings:
 
-- Seagate IronWolf ST12000VN0008
-- Seagate IronWolf ST8000NE0004
+  drivers/infiniband/hw/mlx4/sysfs.c: In function ‘add_port_entries’:
+  drivers/infiniband/hw/mlx4/sysfs.c:268:34: error: ‘sprintf’ may write a terminating nul past the end of the destination [-Werror=format-overflow=]
+    268 |                 sprintf(buff, "%d", i);
+        |                                  ^
+  drivers/infiniband/hw/mlx4/sysfs.c:268:17: note: ‘sprintf’ output between 2 and 12 bytes into a destination of size 11
+    268 |                 sprintf(buff, "%d", i);
+        |                 ^~~~~~~~~~~~~~~~~~~~~~
+  drivers/infiniband/hw/mlx4/sysfs.c:286:34: error: ‘sprintf’ may write a terminating nul past the end of the destination [-Werror=format-overflow=]
+    286 |                 sprintf(buff, "%d", i);
+        |                                  ^
+  drivers/infiniband/hw/mlx4/sysfs.c:286:17: note: ‘sprintf’ output between 2 and 12 bytes into a destination of size 11
+    286 |                 sprintf(buff, "%d", i);
+        |                 ^~~~~~~~~~~~~~~~~~~~~~
 
-The SATA controller seems to be more relevant to this issue than the
-drives, as the same drives are always detected reliably on the secondary
-SATA controller on the same board (an ASMedia 106x) without any "softreset
-failed" errors even without the increased timeout.
-
-Fixes: e7d3ef13d52a ("libata: change drive ready wait after hard reset to 5s")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthias Schiffer <mschiffer@universe-factory.net>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Fixes: c1e7e466120b ("IB/mlx4: Add iov directory in sysfs under the ib device")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/0bb1443eb47308bc9be30232cc23004c4d4cf43e.1695448530.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/libata.h |    2 +-
+ drivers/infiniband/hw/mlx4/sysfs.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -297,7 +297,7 @@ enum {
- 	 * advised to wait only for the following duration before
- 	 * doing SRST.
- 	 */
--	ATA_TMOUT_PMP_SRST_WAIT	= 5000,
-+	ATA_TMOUT_PMP_SRST_WAIT	= 10000,
- 
- 	/* When the LPM policy is set to ATA_LPM_MAX_POWER, there might
- 	 * be a spurious PHY event, so ignore the first PHY event that
+--- a/drivers/infiniband/hw/mlx4/sysfs.c
++++ b/drivers/infiniband/hw/mlx4/sysfs.c
+@@ -223,7 +223,7 @@ void del_sysfs_port_mcg_attr(struct mlx4
+ static int add_port_entries(struct mlx4_ib_dev *device, int port_num)
+ {
+ 	int i;
+-	char buff[11];
++	char buff[12];
+ 	struct mlx4_ib_iov_port *port = NULL;
+ 	int ret = 0 ;
+ 	struct ib_port_attr attr;
 
 
