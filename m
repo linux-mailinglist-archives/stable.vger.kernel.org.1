@@ -2,230 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CE147BEAA6
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 21:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 745237BEAA7
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 21:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346674AbjJITdV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 15:33:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42408 "EHLO
+        id S1377502AbjJITd1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 15:33:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346671AbjJITdU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 15:33:20 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6514994
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 12:33:19 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1c8a1541232so17168715ad.0
-        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 12:33:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1696879998; x=1697484798; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ueiFSeNqprZQP42zsEi4I45SovLNwXVqr+GuFwu4Boc=;
-        b=S+jltCTUMHZcIMPvS3hCD1y5vE2CwQ/7TYnpJDTcKLdTtjOOf7217JPbRp2Ml0EA0X
-         cIOmhtQ+8BYmwiOvlAIVomXGzyEb+yr+3mKjqDcq1OfDDjwPNSx2z5htnhjvkgfPzHcG
-         YxjPEU/kYdL4bAWQlUXlDGeedpWuFpyNMXDd9jMIN9qbos6GMXw+leppX4m2VroF06Um
-         EJMpN4SbdXcfUsmXx4wIq1DLSoBUmb/nL8G+w3u2nc7rCQ6oHCQLyYo5wLh6wOyN+efz
-         zzMdrAKsXJAV89ZoP5TW6ueKpiiQ+N+oE/dJvpuKNZ/yBkoAFXRkcgswqMDiLiOUxoGJ
-         0pyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696879998; x=1697484798;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ueiFSeNqprZQP42zsEi4I45SovLNwXVqr+GuFwu4Boc=;
-        b=gD9MSEANRXNUHaMwBU9sc+SoSeT8IItNDMTtmC5PehuqYtBCdBSJsb+/nfX4lIbzpO
-         h/QDjZuwgDWCQAIrwb2NNJBNJg4DOGT31dIfFf8fDRMQFGO2g13cixGQwUjxxJCciDHF
-         kj0rA5lGKu5hA9XG2JLtFwfTHKxx//GkwwZGElhuOv8DwEBr9oSQZeETwy7hHIDRBBRB
-         H93SveQEGMc765lbZE5zN35Wj9bLhRAVIjiqHl/dt8mMhxPZmNRZUYtaSbpe7tYv/rcZ
-         s//r0nd+fw82hTjSDy1ueDna8wKifLzCDXHA3OG5laX/eBv32AVRArrtNahIoMxu8LWf
-         /xoA==
-X-Gm-Message-State: AOJu0YwToMepEb07ifU9FPs2jXzAatqqDPsbthZOo7mXQbX9YnArRGQp
-        vCeASJphoe4TEu0VBoKkd4uwU7q+PNmzwYAhRTwURw==
-X-Google-Smtp-Source: AGHT+IFfx5Slts1n/1c3vUPdN6NtAiQpxwWgbDD7EDj83vp9YtGS22SRxlSaRpsSscgffbzl0duxXQ==
-X-Received: by 2002:a17:902:f54f:b0:1b8:66f6:87a3 with SMTP id h15-20020a170902f54f00b001b866f687a3mr20634696plf.52.1696879998438;
-        Mon, 09 Oct 2023 12:33:18 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id s2-20020a170902ea0200b001ba066c589dsm9970102plg.137.2023.10.09.12.33.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Oct 2023 12:33:17 -0700 (PDT)
-Message-ID: <6524557d.170a0220.b8ae9.9c15@mx.google.com>
-Date:   Mon, 09 Oct 2023 12:33:17 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S1377727AbjJITd1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 15:33:27 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C78A4;
+        Mon,  9 Oct 2023 12:33:24 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id DCAD41C006C; Mon,  9 Oct 2023 21:33:22 +0200 (CEST)
+Date:   Mon, 9 Oct 2023 21:33:22 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Chris.Paterson2@renesas.com
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 5.10 000/226] 5.10.198-rc1 review
+Message-ID: <ZSRVgj5AqJbDXqZU@duo.ucw.cz>
+References: <20231009130126.697995596@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.10.197-227-g18c65c1b4996
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 5 warnings (v5.10.197-227-g18c65c1b4996)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="+7JMdyyWGl6EnF8R"
+Content-Disposition: inline
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_NEUTRAL autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 5 warnings (v=
-5.10.197-227-g18c65c1b4996)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.197-227-g18c65c1b4996/
+--+7JMdyyWGl6EnF8R
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.197-227-g18c65c1b4996
-Git Commit: 18c65c1b4996e3f6f8986a05eceaf427355a7a4f
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+Hi!
 
-Warnings Detected:
+> This is the start of the stable review cycle for the 5.10.198 release.
+> There are 226 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Wed, 11 Oct 2023 13:00:55 +0000.
+> Anything received after that time might be too late.
 
-arc:
+4.14, 4.19 and 6.1 tests ok, 5.10 seems to have problems:
 
-arm64:
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1=
+030540843
 
-arm:
+Lets see arm64_defconfig:
 
-i386:
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/525461=
+0954
 
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
+=2E..and this seems  to be real failure:
 
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
+https://lava.ciplatform.org/scheduler/job/1018088
 
-x86_64:
+[   62.871632] renesas_sdhi_internal_dmac ee100000.mmc: Got CD GPIO
+[   62.874253] rcar-dmac e6700000.dma-controller: deferred probe timeout, i=
+gnoring dependency
+[   62.889345] rcar-dmac e7300000.dma-controller: deferred probe timeout, i=
+gnoring dependency
+[   62.892139] Unable to handle kernel NULL pointer dereference at virtual =
+address 0000000000000018
+[   62.901256] rcar-dmac e7310000.dma-controller: deferred probe timeout, i=
+gnoring dependency
+[   62.906431] Mem abort info:
+[   62.906438]   ESR =3D 0x96000004
+[   62.917751] rcar-dmac ec700000.dma-controller: deferred probe timeout, i=
+gnoring dependency
+[   62.920548]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
+[   62.920551]   SET =3D 0, FnV =3D 0
+[   62.920554]   EA =3D 0, S1PTW =3D 0
+[   62.920559] Data abort info:
+[   62.927031] renesas_sdhi_internal_dmac ee100000.mmc: mmc1 base at 0x0000=
+0000ee100000, max clock rate 200 MHz
+[   62.931976] rcar-dmac ec720000.dma-controller: deferred probe timeout, i=
+gnoring dependency
+[   62.934138]   ISV =3D 0, ISS =3D 0x00000004
+[   62.934145]   CM =3D 0, WnR =3D 0
+[   62.940844] ravb e6800000.ethernet: deferred probe timeout, ignoring dep=
+endency
+[   62.943210] [0000000000000018] user address but active_mm is swapper
+[   62.943221] Internal error: Oops: 96000004 [#1] PREEMPT SMP
+[   62.954866] ravb e6800000.ethernet eth0: Base address at 0xe6800000, fc:=
+28:99:92:7b:e0, IRQ 118.
+[   62.961296] Modules linked in:
+[   62.961313] CPU: 5 PID: 135 Comm: kworker/u12:2 Not tainted 5.10.198-rc1=
+-g18c65c1b4996 #1
+[   63.007289] Hardware name: HopeRun HiHope RZ/G2M with sub board (DT)
+[   63.013658] Workqueue: events_unbound async_run_entry_fn
+[   63.018971] pstate: 20000005 (nzCv daif -PAN -UAO -TCO BTYPE=3D--)
+[   63.024982] pc : renesas_sdhi_reset_scc+0x94/0xe0
+[   63.029681] lr : renesas_sdhi_reset_scc+0x60/0xe0
+[   63.034379] sp : ffff800012353ab0
+[   63.037688] x29: ffff800012353ab0 x28: ffff80001110b2c0=20
+[   63.042998] x27: 0000000000000000 x26: ffff0005c03f6e80=20
+[   63.048308] x25: ffff0005c11c7a90 x24: ffff0005c0822010=20
+[   63.053618] x23: ffff0005c0822000 x22: ffff0005c08221d0=20
+[   63.058928] x21: ffff0005c11c7a80 x20: 0000000000000020
 
+Let's see bbb_defconfig:
 
-Warnings summary:
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/525461=
+1119
 
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
+Fails:
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+https://lava.ciplatform.org/scheduler/job/1018083
 
-Detailed per-defconfig build reports:
+bootz 0x82000000 - 0x88000000
+zimage: Bad magic!
+bootloader-commands timed out after 281 seconds
+end: 2.4.3 bootloader-commands (duration 00:04:41) [common]
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
+Not sure about this one.
 
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
+Lets see arm_shmobile_defconfig:
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/525461=
+1233
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
+That's:
 
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+https://lava.ciplatform.org/scheduler/job/1018084
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+Seems similar to previous failure:
 
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
+2.092944] usbcore: registered new interface driver usbhid
+[    2.098710] sh_mobile_sdhi ee140000.mmc: Got CD GPIO
+[    2.103206] usbhid: USB HID core driver
+[    2.108224] sh_mobile_sdhi ee140000.mmc: Got WP GPIO
+[    2.124168] 8<--- cut here ---
+[    2.124476] sgtl5000 0-000a: sgtl5000 revision 0x11
+[    2.127222] Unable to handle kernel NULL pointer dereference at virtual =
+address 0000000c
+[    2.127228] pgd =3D (ptrval)
+[    2.140755] rcar_sound ec500000.sound: probed
+[    2.142917] [0000000c] *pgd=3D00000000
+[    2.147915] NET: Registered protocol family 10
+[    2.150849] Internal error: Oops: 5 [#1] SMP ARM
+[    2.155700] sh_mmcif ee200000.mmc: Chip version 0x0003, clock rate 12MHz
+[    2.159894] CPU: 1 PID: 7 Comm: kworker/u4:0 Not tainted 5.10.198-rc1-g1=
+8c65c1b4996 #1
+[    2.174486] Hardware name: Generic RZ/G1 (Flattened Device Tree)
+[    2.174540] Segment Routing with IPv6
+[    2.180501] Workqueue: events_unbound async_run_entry_fn
+[    2.184234] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+[    2.189455] PC is at renesas_sdhi_reset_scc+0x34/0x50
+[    2.189462] LR is at sd_ctrl_write16+0x30/0x48
+[    2.195810] NET: Registered protocol family 17
+[    2.200409] pc : [<c05da960>]    lr : [<c05da754>]    psr: 60000013
+[    2.200415] sp : c10a9e30  ip : 00000024  fp : c11b3cc0
+[    2.204877] can: controller area network core
+[    2.209282] r10: c11ae410  r9 : c11ae400  r8 : c18e9d48
+[    2.209288] r7 : fffffe00  r6 : c18e9d48  r5 : c18e9d40  r4 : c1970b80
+[    2.215590] NET: Registered protocol family 29
+[    2.220759] r3 : 0000000c  r2 : 00000006  r1 : 00000001  r0 : 00000000
+[    2.225117] can: raw protocol
+[    2.230322] Flags: nZCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment=
+ none
+[    2.236848] can: broadcast manager protocol
 
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
+--+7JMdyyWGl6EnF8R
+Content-Type: application/pgp-signature; name="signature.asc"
 
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
+-----BEGIN PGP SIGNATURE-----
 
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZSRVggAKCRAw5/Bqldv6
+8iUSAJ4zccITOyGdlz5sQNJNYGO6ftZ4TACeKDAlNWbmdERfrC9VmYPkwfBkrMk=
+=xitt
+-----END PGP SIGNATURE-----
 
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+--+7JMdyyWGl6EnF8R--
