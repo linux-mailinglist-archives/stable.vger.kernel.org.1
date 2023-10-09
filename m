@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AA207BDFCE
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51C687BE0F4
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:45:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377144AbjJINeQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:34:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36572 "EHLO
+        id S1376956AbjJINpx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:45:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377141AbjJINeP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:34:15 -0400
+        with ESMTP id S1377590AbjJINpg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:45:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9171194
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:34:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F2FC433CA;
-        Mon,  9 Oct 2023 13:34:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D88B5196
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:45:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8CCC433CA;
+        Mon,  9 Oct 2023 13:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858452;
-        bh=IRdLXW6uTg+ujRIqye0wdO6MyhRWi7K4KHfq7piC0/A=;
+        s=korg; t=1696859121;
+        bh=7w0PTO5q3pw+dqfGhSJ9F7JyeK7WfmQUU7CCbBnRwTw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HzOn1Cie8Le/0uQwHrcLLkkWMglL3t75dfOAmFRweppI0ocSDLUZA+Vous2UiN9JS
-         wAkt+pawmWk4MkyUoeV6SPHmU8LBHG+NdA8KQvhmEaciQsi8S4z1bG74q0ZDBxt5W5
-         ri3c34DvXFbtDsmcJ1b4+QbRqvvFY2pDvjw2VYYI=
+        b=V30M6YHuALuZPOXoWfXWmNsrpzBaeDwIVurUS2xNbTrhkcOHfu5KUWsJtyrrXgWru
+         gBunhknEe9sY5hrjennN2H2yU1kR/iwaRiP9F3hgHmrqyHakvvh5HfcIBSQd9DomUO
+         rKLx5k3y3O++IC5NLQnpr8zbiGQptDW3iP3cQfBc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>,
-        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.4 126/131] RDMA/uverbs: Fix typo of sizeof argument
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 205/226] netfilter: nf_tables: nft_set_rbtree: fix spurious insertion failure
 Date:   Mon,  9 Oct 2023 15:02:46 +0200
-Message-ID: <20231009130120.277769924@linuxfoundation.org>
+Message-ID: <20231009130131.926302115@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +48,185 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit c489800e0d48097fc6afebd862c6afa039110a36 upstream.
+[ Upstream commit 087388278e0f301f4c61ddffb1911d3a180f84b8 ]
 
-Since size of 'hdr' pointer and '*hdr' structure is equal on 64-bit
-machines issue probably didn't cause any wrong behavior. But anyway,
-fixing of typo is required.
+nft_rbtree_gc_elem() walks back and removes the end interval element that
+comes before the expired element.
 
-Fixes: da0f60df7bd5 ("RDMA/uverbs: Prohibit write() calls with too small buffers")
-Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Signed-off-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Link: https://lore.kernel.org/r/20230905103258.1738246-1-konstantin.meskhidze@huawei.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+There is a small chance that we've cached this element as 'rbe_ge'.
+If this happens, we hold and test a pointer that has been queued for
+freeing.
+
+It also causes spurious insertion failures:
+
+$ cat test-testcases-sets-0044interval_overlap_0.1/testout.log
+Error: Could not process rule: File exists
+add element t s {  0 -  2 }
+                   ^^^^^^
+Failed to insert  0 -  2 given:
+table ip t {
+        set s {
+                type inet_service
+                flags interval,timeout
+                timeout 2s
+                gc-interval 2s
+        }
+}
+
+The set (rbtree) is empty. The 'failure' doesn't happen on next attempt.
+
+Reason is that when we try to insert, the tree may hold an expired
+element that collides with the range we're adding.
+While we do evict/erase this element, we can trip over this check:
+
+if (rbe_ge && nft_rbtree_interval_end(rbe_ge) && nft_rbtree_interval_end(new))
+      return -ENOTEMPTY;
+
+rbe_ge was erased by the synchronous gc, we should not have done this
+check.  Next attempt won't find it, so retry results in successful
+insertion.
+
+Restart in-kernel to avoid such spurious errors.
+
+Such restart are rare, unless userspace intentionally adds very large
+numbers of elements with very short timeouts while setting a huge
+gc interval.
+
+Even in this case, this cannot loop forever, on each retry an existing
+element has been removed.
+
+As the caller is holding the transaction mutex, its impossible
+for a second entity to add more expiring elements to the tree.
+
+After this it also becomes feasible to remove the async gc worker
+and perform all garbage collection from the commit path.
+
+Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_set_rbtree.c | 46 +++++++++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 17 deletions(-)
 
---- a/drivers/infiniband/core/uverbs_main.c
-+++ b/drivers/infiniband/core/uverbs_main.c
-@@ -633,7 +633,7 @@ static ssize_t verify_hdr(struct ib_uver
- 	if (hdr->in_words * 4 != count)
- 		return -EINVAL;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index cc32e19b4041a..17abf17b673e2 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -235,10 +235,9 @@ static void nft_rbtree_gc_remove(struct net *net, struct nft_set *set,
+ 	rb_erase(&rbe->node, &priv->root);
+ }
  
--	if (count < method_elm->req_size + sizeof(hdr)) {
-+	if (count < method_elm->req_size + sizeof(*hdr)) {
- 		/*
- 		 * rdma-core v18 and v19 have a bug where they send DESTROY_CQ
- 		 * with a 16 byte write instead of 24. Old kernels didn't
+-static int nft_rbtree_gc_elem(const struct nft_set *__set,
+-			      struct nft_rbtree *priv,
+-			      struct nft_rbtree_elem *rbe,
+-			      u8 genmask)
++static const struct nft_rbtree_elem *
++nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
++		   struct nft_rbtree_elem *rbe, u8 genmask)
+ {
+ 	struct nft_set *set = (struct nft_set *)__set;
+ 	struct rb_node *prev = rb_prev(&rbe->node);
+@@ -248,7 +247,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 
+ 	gc = nft_trans_gc_alloc(set, 0, GFP_ATOMIC);
+ 	if (!gc)
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	/* search for end interval coming before this element.
+ 	 * end intervals don't carry a timeout extension, they
+@@ -263,6 +262,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 		prev = rb_prev(prev);
+ 	}
+ 
++	rbe_prev = NULL;
+ 	if (prev) {
+ 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
+ 		nft_rbtree_gc_remove(net, set, priv, rbe_prev);
+@@ -274,7 +274,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 		 */
+ 		gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
+ 		if (WARN_ON_ONCE(!gc))
+-			return -ENOMEM;
++			return ERR_PTR(-ENOMEM);
+ 
+ 		nft_trans_gc_elem_add(gc, rbe_prev);
+ 	}
+@@ -282,13 +282,13 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ 	nft_rbtree_gc_remove(net, set, priv, rbe);
+ 	gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
+ 	if (WARN_ON_ONCE(!gc))
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	nft_trans_gc_elem_add(gc, rbe);
+ 
+ 	nft_trans_gc_queue_sync_done(gc);
+ 
+-	return 0;
++	return rbe_prev;
+ }
+ 
+ static bool nft_rbtree_update_first(const struct nft_set *set,
+@@ -316,7 +316,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	struct nft_rbtree *priv = nft_set_priv(set);
+ 	u8 cur_genmask = nft_genmask_cur(net);
+ 	u8 genmask = nft_genmask_next(net);
+-	int d, err;
++	int d;
+ 
+ 	/* Descend the tree to search for an existing element greater than the
+ 	 * key value to insert that is greater than the new element. This is the
+@@ -365,9 +365,14 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 		 */
+ 		if (nft_set_elem_expired(&rbe->ext) &&
+ 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
+-			err = nft_rbtree_gc_elem(set, priv, rbe, genmask);
+-			if (err < 0)
+-				return err;
++			const struct nft_rbtree_elem *removed_end;
++
++			removed_end = nft_rbtree_gc_elem(set, priv, rbe, genmask);
++			if (IS_ERR(removed_end))
++				return PTR_ERR(removed_end);
++
++			if (removed_end == rbe_le || removed_end == rbe_ge)
++				return -EAGAIN;
+ 
+ 			continue;
+ 		}
+@@ -488,11 +493,18 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
+ 	struct nft_rbtree_elem *rbe = elem->priv;
+ 	int err;
+ 
+-	write_lock_bh(&priv->lock);
+-	write_seqcount_begin(&priv->count);
+-	err = __nft_rbtree_insert(net, set, rbe, ext);
+-	write_seqcount_end(&priv->count);
+-	write_unlock_bh(&priv->lock);
++	do {
++		if (fatal_signal_pending(current))
++			return -EINTR;
++
++		cond_resched();
++
++		write_lock_bh(&priv->lock);
++		write_seqcount_begin(&priv->count);
++		err = __nft_rbtree_insert(net, set, rbe, ext);
++		write_seqcount_end(&priv->count);
++		write_unlock_bh(&priv->lock);
++	} while (err == -EAGAIN);
+ 
+ 	return err;
+ }
+-- 
+2.40.1
+
 
 
