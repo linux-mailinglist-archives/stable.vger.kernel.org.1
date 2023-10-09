@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B13F37BE0AD
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F31EB7BDE0E
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377391AbjJINmw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:42:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58048 "EHLO
+        id S1376814AbjJINPb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:15:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377398AbjJINmv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:51 -0400
+        with ESMTP id S1376914AbjJINP0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B87D8
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D647DC433C7;
-        Mon,  9 Oct 2023 13:42:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51299E0
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82237C433B9;
+        Mon,  9 Oct 2023 13:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858969;
-        bh=mptkYOxD1+ryQEvn1WVmb6nfu/1JbppnpcCClgWhZTs=;
+        s=korg; t=1696857319;
+        bh=sA7deC6FFx0xv0coxly/8wYcJfGB6ADuHMwJCx4zfBE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N2uQ1NUrr6xSrhSyi1poCHzRLfL5aE7mqFaW/Z5DZvaVKCqcF/reN/PMpFVmJFNXL
-         OyJ/aArbi4ouNe/xCCx9vJxToL0l/yyks+OaGaBe/L9XLLEqJZfQADXnlTdzH29imI
-         ekvsos9eQaMG9X4NdgYnoZeOmEQHcnmuPabD7WRM=
+        b=tk+B/tTHA9++r9NiMiWFY0hUN6z5vhbMMoZdBzbitesrdbieZvdi7wRMukrAQEPYB
+         8b1o3BcLoNxFH8uB4F8z4aDMo9KBjzYduKBFYnPZIy5fWSlC+UlS2dkVGg+mhowxGo
+         67UETyjaxDdr8h9lXeii5oa6ABGw+MJXbKko4dys=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Balcanquall <alex@alexbal.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 158/226] net: thunderbolt: Fix TCPv6 GSO checksum calculation
-Date:   Mon,  9 Oct 2023 15:01:59 +0200
-Message-ID: <20231009130130.817470046@linuxfoundation.org>
+        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.5 156/163] ALSA: hda/realtek: Fix spelling mistake "powe" -> "power"
+Date:   Mon,  9 Oct 2023 15:02:00 +0200
+Message-ID: <20231009130128.322048556@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +48,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit e0b65f9b81fef180cf5f103adecbe5505c961153 upstream.
+commit f286620b5dc974fe281d8feed6e228fd2f39d013 upstream.
 
-Alex reported that running ssh over IPv6 does not work with
-Thunderbolt/USB4 networking driver. The reason for that is that driver
-should call skb_is_gso() before calling skb_is_gso_v6(), and it should
-not return false after calculates the checksum successfully. This probably
-was a copy paste error from the original driver where it was done properly.
+There is a spelling mistake in a quirk entry. Fix it.
 
-Reported-by: Alex Balcanquall <alex@alexbal.com>
-Fixes: e69b6c02b4c3 ("net: Add support for networking over Thunderbolt cable")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Fixes: 3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+Link: https://lore.kernel.org/r/20230821080003.16678-1-colin.i.king@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/thunderbolt.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/thunderbolt.c
-+++ b/drivers/net/thunderbolt.c
-@@ -958,12 +958,11 @@ static bool tbnet_xmit_csum_and_map(stru
- 		*tucso = ~csum_tcpudp_magic(ip_hdr(skb)->saddr,
- 					    ip_hdr(skb)->daddr, 0,
- 					    ip_hdr(skb)->protocol, 0);
--	} else if (skb_is_gso_v6(skb)) {
-+	} else if (skb_is_gso(skb) && skb_is_gso_v6(skb)) {
- 		tucso = dest + ((void *)&(tcp_hdr(skb)->check) - data);
- 		*tucso = ~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
- 					  &ipv6_hdr(skb)->daddr, 0,
- 					  IPPROTO_TCP, 0);
--		return false;
- 	} else if (protocol == htons(ETH_P_IPV6)) {
- 		tucso = dest + skb_checksum_start_offset(skb) + skb->csum_offset;
- 		*tucso = ~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10016,7 +10016,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x387d, "Yoga S780-16 pro Quad AAC", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x387e, "Yoga S780-16 pro Quad YC", ALC287_FIXUP_TAS2781_I2C),
+-	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual powe mode2 YC", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual power mode2 YC", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3884, "Y780 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3886, "Y780 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38a7, "Y780P AMD YG dual", ALC287_FIXUP_TAS2781_I2C),
 
 
