@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EE827BE15F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D0867BDD63
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:10:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377071AbjJINty (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:49:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57088 "EHLO
+        id S1376785AbjJINKA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:10:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377607AbjJINjS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:39:18 -0400
+        with ESMTP id S1376775AbjJINJ7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:09:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79B1D9C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:39:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A88C433C8;
-        Mon,  9 Oct 2023 13:39:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4B8F8F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:09:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF699C433D9;
+        Mon,  9 Oct 2023 13:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858757;
-        bh=UH0OEMJuIIK2PLSg8Hd4lS6MsZlT+hlACZEiuSNyD5c=;
+        s=korg; t=1696856996;
+        bh=KHSa7mPNjCDo/PA/B9vyot0n3aDpRpu7kxqm0NLS5Ms=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KeQDe074XkcnzlDDHQA4eFVUkDHfVV7I5wdc8sATIiq4hKqaOOen1BLSQYVezG3Dy
-         1OhF93lE/49Tjm9YB1/2AcZ6h9tWXjj6oJEpUK6urkLd1b0CzogV/8fW04gKKaGaZy
-         spMeukzUFJ+mZiOY9dluxPflswrdjGlX4cWJ3QH0=
+        b=Wqr/z66iw6hLtiNnm7m85/8sCnNADosax/wK8/epjTowlWzD3G68A2H90Eyvu0BMt
+         FY3PVqXICZdsksg26ZFG9QP0EmZZLlsebecNdBQncpg0ZskCLmcf4dGDNOOh0z1ca/
+         VpwRN1Kiei4eueZmF1wIn16DMlHYAqP03atlYb4o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Wen Gong <quic_wgong@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/226] netfilter: nf_tables: double hook unregistration in netns path
+Subject: [PATCH 6.5 060/163] wifi: cfg80211/mac80211: hold link BSSes when assoc fails for MLO connection
 Date:   Mon,  9 Oct 2023 15:00:24 +0200
-Message-ID: <20231009130128.431993160@linuxfoundation.org>
+Message-ID: <20231009130125.691845538@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,147 +49,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Wen Gong <quic_wgong@quicinc.com>
 
-commit f9a43007d3f7ba76d5e7f9421094f00f2ef202f8 upstream.
+[ Upstream commit 234249d88b091d006b82f8d570343aae5f383736 ]
 
-[ This backport includes ab5e5c062f67 ("netfilter: nf_tables: use
-  kfree_rcu(ptr, rcu) to release hooks in clean_net path") ]
+When connect to MLO AP with more than one link, and the assoc response of
+AP is not success, then cfg80211_unhold_bss() is not called for all the
+links' cfg80211_bss except the primary link which means the link used by
+the latest successful association request. Thus the hold value of the
+cfg80211_bss is not reset to 0 after the assoc fail, and then the
+__cfg80211_unlink_bss() will not be called for the cfg80211_bss by
+__cfg80211_bss_expire().
 
-__nft_release_hooks() is called from pre_netns exit path which
-unregisters the hooks, then the NETDEV_UNREGISTER event is triggered
-which unregisters the hooks again.
+Then the AP always looks exist even the AP is shutdown or reconfigured
+to another type, then it will lead error while connecting it again.
 
-[  565.221461] WARNING: CPU: 18 PID: 193 at net/netfilter/core.c:495 __nf_unregister_net_hook+0x247/0x270
-[...]
-[  565.246890] CPU: 18 PID: 193 Comm: kworker/u64:1 Tainted: G            E     5.18.0-rc7+ #27
-[  565.253682] Workqueue: netns cleanup_net
-[  565.257059] RIP: 0010:__nf_unregister_net_hook+0x247/0x270
-[...]
-[  565.297120] Call Trace:
-[  565.300900]  <TASK>
-[  565.304683]  nf_tables_flowtable_event+0x16a/0x220 [nf_tables]
-[  565.308518]  raw_notifier_call_chain+0x63/0x80
-[  565.312386]  unregister_netdevice_many+0x54f/0xb50
+The detail info are as below.
 
-Unregister and destroy netdev hook from netns pre_exit via kfree_rcu
-so the NETDEV_UNREGISTER path see unregistered hooks.
+When connect with muti-links AP, cfg80211_hold_bss() is called by
+cfg80211_mlme_assoc() for each cfg80211_bss of all the links. When
+assoc response from AP is not success(such as status_code==1), the
+ieee80211_link_data of non-primary link(sdata->link[link_id]) is NULL
+because ieee80211_assoc_success()->ieee80211_vif_update_links() is
+not called for the links.
 
-Fixes: 767d1216bff8 ("netfilter: nftables: fix possible UAF over chains from packet path in netns")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Then struct cfg80211_rx_assoc_resp resp in cfg80211_rx_assoc_resp() and
+struct cfg80211_connect_resp_params cr in __cfg80211_connect_result()
+will only have the data of the primary link, and finally function
+cfg80211_connect_result_release_bsses() only call cfg80211_unhold_bss()
+for the primary link. Then cfg80211_bss of the other links will never free
+because its hold is always > 0 now.
+
+Hence assign value for the bss and status from assoc_data since it is
+valid for this case. Also assign value of addr from assoc_data when the
+link is NULL because the addrs of assoc_data and link both represent the
+local link addr and they are same value for success connection.
+
+Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Link: https://lore.kernel.org/r/20230825070055.28164-1-quic_wgong@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 54 ++++++++++++++++++++++++++---------
- 1 file changed, 41 insertions(+), 13 deletions(-)
+ include/net/cfg80211.h |  2 +-
+ net/mac80211/mlme.c    | 11 ++++++-----
+ net/wireless/mlme.c    |  3 ++-
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index efbcf85cd6b7a..16e2500e8590b 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -303,12 +303,18 @@ static int nft_netdev_register_hooks(struct net *net,
- }
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index d6fa7c8767ad3..3f03f9b375e56 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -7232,7 +7232,7 @@ struct cfg80211_rx_assoc_resp {
+ 	int uapsd_queues;
+ 	const u8 *ap_mld_addr;
+ 	struct {
+-		const u8 *addr;
++		u8 addr[ETH_ALEN] __aligned(2);
+ 		struct cfg80211_bss *bss;
+ 		u16 status;
+ 	} links[IEEE80211_MLD_MAX_NUM_LINKS];
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index f93eb38ae0b8d..46d46cfab6c84 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5429,17 +5429,18 @@ static void ieee80211_rx_mgmt_assoc_resp(struct ieee80211_sub_if_data *sdata,
+ 	for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
+ 		struct ieee80211_link_data *link;
  
- static void nft_netdev_unregister_hooks(struct net *net,
--					struct list_head *hook_list)
-+					struct list_head *hook_list,
-+					bool release_netdev)
- {
--	struct nft_hook *hook;
-+	struct nft_hook *hook, *next;
+-		link = sdata_dereference(sdata->link[link_id], sdata);
+-		if (!link)
+-			continue;
+-
+ 		if (!assoc_data->link[link_id].bss)
+ 			continue;
  
--	list_for_each_entry(hook, hook_list, list)
-+	list_for_each_entry_safe(hook, next, hook_list, list) {
- 		nf_unregister_net_hook(net, &hook->ops);
-+		if (release_netdev) {
-+			list_del(&hook->list);
-+			kfree_rcu(hook, rcu);
-+		}
-+	}
- }
+ 		resp.links[link_id].bss = assoc_data->link[link_id].bss;
+-		resp.links[link_id].addr = link->conf->addr;
++		ether_addr_copy(resp.links[link_id].addr,
++				assoc_data->link[link_id].addr);
+ 		resp.links[link_id].status = assoc_data->link[link_id].status;
  
- static int nf_tables_register_hook(struct net *net,
-@@ -334,9 +340,10 @@ static int nf_tables_register_hook(struct net *net,
- 	return nf_register_net_hook(net, &basechain->ops);
- }
- 
--static void nf_tables_unregister_hook(struct net *net,
--				      const struct nft_table *table,
--				      struct nft_chain *chain)
-+static void __nf_tables_unregister_hook(struct net *net,
-+					const struct nft_table *table,
-+					struct nft_chain *chain,
-+					bool release_netdev)
- {
- 	struct nft_base_chain *basechain;
- 	const struct nf_hook_ops *ops;
-@@ -351,11 +358,19 @@ static void nf_tables_unregister_hook(struct net *net,
- 		return basechain->type->ops_unregister(net, ops);
- 
- 	if (nft_base_chain_netdev(table->family, basechain->ops.hooknum))
--		nft_netdev_unregister_hooks(net, &basechain->hook_list);
-+		nft_netdev_unregister_hooks(net, &basechain->hook_list,
-+					    release_netdev);
- 	else
- 		nf_unregister_net_hook(net, &basechain->ops);
- }
- 
-+static void nf_tables_unregister_hook(struct net *net,
-+				      const struct nft_table *table,
-+				      struct nft_chain *chain)
-+{
-+	return __nf_tables_unregister_hook(net, table, chain, false);
-+}
++		link = sdata_dereference(sdata->link[link_id], sdata);
++		if (!link)
++			continue;
 +
- static void nft_trans_commit_list_add_tail(struct net *net, struct nft_trans *trans)
- {
- 	struct nftables_pernet *nft_net;
-@@ -6822,13 +6837,25 @@ static void nft_unregister_flowtable_hook(struct net *net,
- 				    FLOW_BLOCK_UNBIND);
- }
+ 		/* get uapsd queues configuration - same for all links */
+ 		resp.uapsd_queues = 0;
+ 		for (ac = 0; ac < IEEE80211_NUM_ACS; ac++)
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 775cac4d61006..3e2c398abddcc 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -52,7 +52,8 @@ void cfg80211_rx_assoc_resp(struct net_device *dev,
+ 		cr.links[link_id].bssid = data->links[link_id].bss->bssid;
+ 		cr.links[link_id].addr = data->links[link_id].addr;
+ 		/* need to have local link addresses for MLO connections */
+-		WARN_ON(cr.ap_mld_addr && !cr.links[link_id].addr);
++		WARN_ON(cr.ap_mld_addr &&
++			!is_valid_ether_addr(cr.links[link_id].addr));
  
--static void nft_unregister_flowtable_net_hooks(struct net *net,
--					       struct list_head *hook_list)
-+static void __nft_unregister_flowtable_net_hooks(struct net *net,
-+						 struct list_head *hook_list,
-+					         bool release_netdev)
- {
--	struct nft_hook *hook;
-+	struct nft_hook *hook, *next;
+ 		BUG_ON(!cr.links[link_id].bss->channel);
  
--	list_for_each_entry(hook, hook_list, list)
-+	list_for_each_entry_safe(hook, next, hook_list, list) {
- 		nf_unregister_net_hook(net, &hook->ops);
-+		if (release_netdev) {
-+			list_del(&hook->list);
-+			kfree_rcu(hook, rcu);
-+		}
-+	}
-+}
-+
-+static void nft_unregister_flowtable_net_hooks(struct net *net,
-+					       struct list_head *hook_list)
-+{
-+	__nft_unregister_flowtable_net_hooks(net, hook_list, false);
- }
- 
- static int nft_register_flowtable_net_hooks(struct net *net,
-@@ -9472,9 +9499,10 @@ static void __nft_release_hook(struct net *net, struct nft_table *table)
- 	struct nft_chain *chain;
- 
- 	list_for_each_entry(chain, &table->chains, list)
--		nf_tables_unregister_hook(net, table, chain);
-+		__nf_tables_unregister_hook(net, table, chain, true);
- 	list_for_each_entry(flowtable, &table->flowtables, list)
--		nft_unregister_flowtable_net_hooks(net, &flowtable->hook_list);
-+		__nft_unregister_flowtable_net_hooks(net, &flowtable->hook_list,
-+						     true);
- }
- 
- static void __nft_release_hooks(struct net *net)
 -- 
 2.40.1
 
