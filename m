@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCAB87BDE5C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BC267BDDB6
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:12:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377025AbjJINSs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:18:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56028 "EHLO
+        id S1376928AbjJINMp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:12:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377031AbjJINSr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:47 -0400
+        with ESMTP id S1376561AbjJINMe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706548F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8877C433C8;
-        Mon,  9 Oct 2023 13:18:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F031C2115
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664F3C433C9;
+        Mon,  9 Oct 2023 13:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857525;
-        bh=1XkIjkFGYLLZWzbkvi4y4/t+1ubJZN5jdHJa4o66pyE=;
+        s=korg; t=1696857083;
+        bh=jAgeB3Jnls67FEr8ESHGscHKrr9VG396PWPZEsIhR5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H4g48PXLNYlN/PH7RhZjFQIn9Cevwu+6yK43uiXgg4eBNLeOGQ6mMPtlbPxAIjBKM
-         TvCPywQN4tezL813agavZbhcgI3uaEPGMEUrZF4KzMoxG1mJvAjhzV8IkTj0Vu0PWj
-         JaqYTM+lPqxM3ExxA5rOSHR7iLglUBdJ2v0ax4w0=
+        b=g8xp/UvloMqMSILaQojNw+H2VAoKj/TXU/TV6+a9FUgv/W+ePY7b3TZT0Rde4RFhY
+         3rzZz+VPbTvLCArWYZ2B2Bgzy2GJ5DFq7rWh8O+q4NcABTsit0KM8mLenxbUTf2Fcl
+         X4L3pm0zBlFwpw/MPJEvCymxFXZkwvz6WEYmt+Mk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/162] rbd: decouple header read-in from updating rbd_dev->header
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Max Schulze <max.schulze@online.de>
+Subject: [PATCH 6.5 064/163] wifi: cfg80211: fix cqm_config access race
 Date:   Mon,  9 Oct 2023 15:00:28 +0200
-Message-ID: <20231009130124.236528924@linuxfoundation.org>
+Message-ID: <20231009130125.810142036@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,454 +49,332 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 510a7330c82a7754d5df0117a8589e8a539067c7 upstream.
+[ Upstream commit 37c20b2effe987b806c8de6d12978e4ffeff026f ]
 
-Make rbd_dev_header_info() populate a passed struct rbd_image_header
-instead of rbd_dev->header and introduce rbd_dev_update_header() for
-updating mutable fields in rbd_dev->header upon refresh.  The initial
-read-in of both mutable and immutable fields in rbd_dev_image_probe()
-passes in rbd_dev->header so no update step is required there.
+Max Schulze reports crashes with brcmfmac. The reason seems
+to be a race between userspace removing the CQM config and
+the driver calling cfg80211_cqm_rssi_notify(), where if the
+data is freed while cfg80211_cqm_rssi_notify() runs it will
+crash since it assumes wdev->cqm_config is set. This can't
+be fixed with a simple non-NULL check since there's nothing
+we can do for locking easily, so use RCU instead to protect
+the pointer, but that requires pulling the updates out into
+an asynchronous worker so they can sleep and call back into
+the driver.
 
-rbd_init_layout() is now called directly from rbd_dev_image_probe()
-instead of individually in format 1 and format 2 implementations.
+Since we need to change the free anyway, also change it to
+go back to the old settings if changing the settings fails.
 
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Reported-and-tested-by: Max Schulze <max.schulze@online.de>
+Closes: https://lore.kernel.org/r/ac96309a-8d8d-4435-36e6-6d152eb31876@online.de
+Fixes: 4a4b8169501b ("cfg80211: Accept multiple RSSI thresholds for CQM")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c | 206 ++++++++++++++++++++++++--------------------
- 1 file changed, 114 insertions(+), 92 deletions(-)
+ include/net/cfg80211.h |  3 +-
+ net/wireless/core.c    | 14 +++----
+ net/wireless/core.h    |  7 +++-
+ net/wireless/nl80211.c | 93 +++++++++++++++++++++++++++---------------
+ 4 files changed, 75 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 762795430b4d8..b1c44c6338573 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -632,7 +632,8 @@ void rbd_warn(struct rbd_device *rbd_dev, const char *fmt, ...)
- static void rbd_dev_remove_parent(struct rbd_device *rbd_dev);
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 3f03f9b375e56..0debc3c9364e8 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -6014,7 +6014,8 @@ struct wireless_dev {
+ 	} wext;
+ #endif
  
- static int rbd_dev_refresh(struct rbd_device *rbd_dev);
--static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev);
-+static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev,
-+				     struct rbd_image_header *header);
- static const char *rbd_dev_v2_snap_name(struct rbd_device *rbd_dev,
- 					u64 snap_id);
- static int _rbd_dev_v2_snap_size(struct rbd_device *rbd_dev, u64 snap_id,
-@@ -993,15 +994,24 @@ static void rbd_init_layout(struct rbd_device *rbd_dev)
- 	RCU_INIT_POINTER(rbd_dev->layout.pool_ns, NULL);
+-	struct cfg80211_cqm_config *cqm_config;
++	struct wiphy_work cqm_rssi_work;
++	struct cfg80211_cqm_config __rcu *cqm_config;
+ 
+ 	struct list_head pmsr_list;
+ 	spinlock_t pmsr_lock;
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 25bc2e50a0615..64e8616171104 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1181,16 +1181,11 @@ void wiphy_rfkill_set_hw_state_reason(struct wiphy *wiphy, bool blocked,
  }
+ EXPORT_SYMBOL(wiphy_rfkill_set_hw_state_reason);
  
-+static void rbd_image_header_cleanup(struct rbd_image_header *header)
-+{
-+	kfree(header->object_prefix);
-+	ceph_put_snap_context(header->snapc);
-+	kfree(header->snap_sizes);
-+	kfree(header->snap_names);
-+
-+	memset(header, 0, sizeof(*header));
-+}
-+
- /*
-  * Fill an rbd image header with information from the given format 1
-  * on-disk header.
-  */
--static int rbd_header_from_disk(struct rbd_device *rbd_dev,
--				 struct rbd_image_header_ondisk *ondisk)
-+static int rbd_header_from_disk(struct rbd_image_header *header,
-+				struct rbd_image_header_ondisk *ondisk,
-+				bool first_time)
- {
--	struct rbd_image_header *header = &rbd_dev->header;
--	bool first_time = header->object_prefix == NULL;
- 	struct ceph_snap_context *snapc;
- 	char *object_prefix = NULL;
- 	char *snap_names = NULL;
-@@ -1068,11 +1078,6 @@ static int rbd_header_from_disk(struct rbd_device *rbd_dev,
- 	if (first_time) {
- 		header->object_prefix = object_prefix;
- 		header->obj_order = ondisk->options.order;
--		rbd_init_layout(rbd_dev);
--	} else {
--		ceph_put_snap_context(header->snapc);
--		kfree(header->snap_names);
--		kfree(header->snap_sizes);
- 	}
- 
- 	/* The remaining fields always get updated (when we refresh) */
-@@ -4858,7 +4863,9 @@ static int rbd_obj_read_sync(struct rbd_device *rbd_dev,
-  * return, the rbd_dev->header field will contain up-to-date
-  * information about the image.
-  */
--static int rbd_dev_v1_header_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_v1_header_info(struct rbd_device *rbd_dev,
-+				  struct rbd_image_header *header,
-+				  bool first_time)
- {
- 	struct rbd_image_header_ondisk *ondisk = NULL;
- 	u32 snap_count = 0;
-@@ -4906,7 +4913,7 @@ static int rbd_dev_v1_header_info(struct rbd_device *rbd_dev)
- 		snap_count = le32_to_cpu(ondisk->snap_count);
- 	} while (snap_count != want_count);
- 
--	ret = rbd_header_from_disk(rbd_dev, ondisk);
-+	ret = rbd_header_from_disk(header, ondisk, first_time);
- out:
- 	kfree(ondisk);
- 
-@@ -5469,17 +5476,12 @@ static int _rbd_dev_v2_snap_size(struct rbd_device *rbd_dev, u64 snap_id,
- 	return 0;
- }
- 
--static int rbd_dev_v2_image_size(struct rbd_device *rbd_dev)
+-void cfg80211_cqm_config_free(struct wireless_dev *wdev)
 -{
--	return _rbd_dev_v2_snap_size(rbd_dev, CEPH_NOSNAP,
--					&rbd_dev->header.obj_order,
--					&rbd_dev->header.image_size);
+-	kfree(wdev->cqm_config);
+-	wdev->cqm_config = NULL;
 -}
 -
--static int rbd_dev_v2_object_prefix(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_object_prefix(struct rbd_device *rbd_dev,
-+				    char **pobject_prefix)
+ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
+ 				      bool unregister_netdev)
  {
- 	size_t size;
- 	void *reply_buf;
-+	char *object_prefix;
- 	int ret;
- 	void *p;
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
++	struct cfg80211_cqm_config *cqm_config;
+ 	unsigned int link_id;
  
-@@ -5497,16 +5499,16 @@ static int rbd_dev_v2_object_prefix(struct rbd_device *rbd_dev)
- 		goto out;
- 
- 	p = reply_buf;
--	rbd_dev->header.object_prefix = ceph_extract_encoded_string(&p,
--						p + ret, NULL, GFP_NOIO);
-+	object_prefix = ceph_extract_encoded_string(&p, p + ret, NULL,
-+						    GFP_NOIO);
-+	if (IS_ERR(object_prefix)) {
-+		ret = PTR_ERR(object_prefix);
-+		goto out;
-+	}
- 	ret = 0;
- 
--	if (IS_ERR(rbd_dev->header.object_prefix)) {
--		ret = PTR_ERR(rbd_dev->header.object_prefix);
--		rbd_dev->header.object_prefix = NULL;
--	} else {
--		dout("  object_prefix = %s\n", rbd_dev->header.object_prefix);
--	}
-+	*pobject_prefix = object_prefix;
-+	dout("  object_prefix = %s\n", object_prefix);
- out:
- 	kfree(reply_buf);
- 
-@@ -5557,13 +5559,6 @@ static int _rbd_dev_v2_snap_features(struct rbd_device *rbd_dev, u64 snap_id,
- 	return 0;
- }
- 
--static int rbd_dev_v2_features(struct rbd_device *rbd_dev)
--{
--	return _rbd_dev_v2_snap_features(rbd_dev, CEPH_NOSNAP,
--					 rbd_is_ro(rbd_dev),
--					 &rbd_dev->header.features);
--}
--
- /*
-  * These are generic image flags, but since they are used only for
-  * object map, store them in rbd_dev->object_map_flags.
-@@ -5838,14 +5833,14 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
- 	return ret;
- }
- 
--static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev,
-+				    u64 *stripe_unit, u64 *stripe_count)
- {
- 	struct {
- 		__le64 stripe_unit;
- 		__le64 stripe_count;
- 	} __attribute__ ((packed)) striping_info_buf = { 0 };
- 	size_t size = sizeof (striping_info_buf);
--	void *p;
- 	int ret;
- 
- 	ret = rbd_obj_method_sync(rbd_dev, &rbd_dev->header_oid,
-@@ -5857,27 +5852,33 @@ static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev)
- 	if (ret < size)
- 		return -ERANGE;
- 
--	p = &striping_info_buf;
--	rbd_dev->header.stripe_unit = ceph_decode_64(&p);
--	rbd_dev->header.stripe_count = ceph_decode_64(&p);
-+	*stripe_unit = le64_to_cpu(striping_info_buf.stripe_unit);
-+	*stripe_count = le64_to_cpu(striping_info_buf.stripe_count);
-+	dout("  stripe_unit = %llu stripe_count = %llu\n", *stripe_unit,
-+	     *stripe_count);
-+
- 	return 0;
- }
- 
--static int rbd_dev_v2_data_pool(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_data_pool(struct rbd_device *rbd_dev, s64 *data_pool_id)
- {
--	__le64 data_pool_id;
-+	__le64 data_pool_buf;
- 	int ret;
- 
- 	ret = rbd_obj_method_sync(rbd_dev, &rbd_dev->header_oid,
- 				  &rbd_dev->header_oloc, "get_data_pool",
--				  NULL, 0, &data_pool_id, sizeof(data_pool_id));
-+				  NULL, 0, &data_pool_buf,
-+				  sizeof(data_pool_buf));
-+	dout("%s: rbd_obj_method_sync returned %d\n", __func__, ret);
- 	if (ret < 0)
- 		return ret;
--	if (ret < sizeof(data_pool_id))
-+	if (ret < sizeof(data_pool_buf))
- 		return -EBADMSG;
- 
--	rbd_dev->header.data_pool_id = le64_to_cpu(data_pool_id);
--	WARN_ON(rbd_dev->header.data_pool_id == CEPH_NOPOOL);
-+	*data_pool_id = le64_to_cpu(data_pool_buf);
-+	dout("  data_pool_id = %lld\n", *data_pool_id);
-+	WARN_ON(*data_pool_id == CEPH_NOPOOL);
-+
- 	return 0;
- }
- 
-@@ -6069,7 +6070,8 @@ static int rbd_spec_fill_names(struct rbd_device *rbd_dev)
- 	return ret;
- }
- 
--static int rbd_dev_v2_snap_context(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_snap_context(struct rbd_device *rbd_dev,
-+				   struct ceph_snap_context **psnapc)
- {
- 	size_t size;
- 	int ret;
-@@ -6130,9 +6132,7 @@ static int rbd_dev_v2_snap_context(struct rbd_device *rbd_dev)
- 	for (i = 0; i < snap_count; i++)
- 		snapc->snaps[i] = ceph_decode_64(&p);
- 
--	ceph_put_snap_context(rbd_dev->header.snapc);
--	rbd_dev->header.snapc = snapc;
--
-+	*psnapc = snapc;
- 	dout("  snap context seq = %llu, snap_count = %u\n",
- 		(unsigned long long)seq, (unsigned int)snap_count);
- out:
-@@ -6181,38 +6181,42 @@ static const char *rbd_dev_v2_snap_name(struct rbd_device *rbd_dev,
- 	return snap_name;
- }
- 
--static int rbd_dev_v2_header_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_header_info(struct rbd_device *rbd_dev,
-+				  struct rbd_image_header *header,
-+				  bool first_time)
- {
--	bool first_time = rbd_dev->header.object_prefix == NULL;
- 	int ret;
- 
--	ret = rbd_dev_v2_image_size(rbd_dev);
-+	ret = _rbd_dev_v2_snap_size(rbd_dev, CEPH_NOSNAP,
-+				    first_time ? &header->obj_order : NULL,
-+				    &header->image_size);
- 	if (ret)
- 		return ret;
- 
- 	if (first_time) {
--		ret = rbd_dev_v2_header_onetime(rbd_dev);
-+		ret = rbd_dev_v2_header_onetime(rbd_dev, header);
- 		if (ret)
- 			return ret;
- 	}
- 
--	ret = rbd_dev_v2_snap_context(rbd_dev);
--	if (ret && first_time) {
--		kfree(rbd_dev->header.object_prefix);
--		rbd_dev->header.object_prefix = NULL;
--	}
-+	ret = rbd_dev_v2_snap_context(rbd_dev, &header->snapc);
-+	if (ret)
-+		return ret;
- 
--	return ret;
-+	return 0;
- }
- 
--static int rbd_dev_header_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_header_info(struct rbd_device *rbd_dev,
-+			       struct rbd_image_header *header,
-+			       bool first_time)
- {
- 	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
-+	rbd_assert(!header->object_prefix && !header->snapc);
- 
- 	if (rbd_dev->image_format == 1)
--		return rbd_dev_v1_header_info(rbd_dev);
-+		return rbd_dev_v1_header_info(rbd_dev, header, first_time);
- 
--	return rbd_dev_v2_header_info(rbd_dev);
-+	return rbd_dev_v2_header_info(rbd_dev, header, first_time);
- }
- 
- /*
-@@ -6700,60 +6704,49 @@ static int rbd_dev_image_id(struct rbd_device *rbd_dev)
-  */
- static void rbd_dev_unprobe(struct rbd_device *rbd_dev)
- {
--	struct rbd_image_header	*header;
--
- 	rbd_dev_parent_put(rbd_dev);
- 	rbd_object_map_free(rbd_dev);
- 	rbd_dev_mapping_clear(rbd_dev);
- 
- 	/* Free dynamic fields from the header, then zero it out */
- 
--	header = &rbd_dev->header;
--	ceph_put_snap_context(header->snapc);
--	kfree(header->snap_sizes);
--	kfree(header->snap_names);
--	kfree(header->object_prefix);
--	memset(header, 0, sizeof (*header));
-+	rbd_image_header_cleanup(&rbd_dev->header);
- }
- 
--static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev,
-+				     struct rbd_image_header *header)
- {
- 	int ret;
- 
--	ret = rbd_dev_v2_object_prefix(rbd_dev);
-+	ret = rbd_dev_v2_object_prefix(rbd_dev, &header->object_prefix);
- 	if (ret)
--		goto out_err;
-+		return ret;
+ 	ASSERT_RTNL();
+@@ -1227,7 +1222,10 @@ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
+ 	kfree_sensitive(wdev->wext.keys);
+ 	wdev->wext.keys = NULL;
+ #endif
+-	cfg80211_cqm_config_free(wdev);
++	wiphy_work_cancel(wdev->wiphy, &wdev->cqm_rssi_work);
++	/* deleted from the list, so can't be found from nl80211 any more */
++	cqm_config = rcu_access_pointer(wdev->cqm_config);
++	kfree_rcu(cqm_config, rcu_head);
  
  	/*
- 	 * Get the and check features for the image.  Currently the
- 	 * features are assumed to never change.
+ 	 * Ensure that all events have been processed and
+@@ -1379,6 +1377,8 @@ void cfg80211_init_wdev(struct wireless_dev *wdev)
+ 	wdev->wext.connect.auth_type = NL80211_AUTHTYPE_AUTOMATIC;
+ #endif
+ 
++	wiphy_work_init(&wdev->cqm_rssi_work, cfg80211_cqm_rssi_notify_work);
++
+ 	if (wdev->wiphy->flags & WIPHY_FLAG_PS_ON_BY_DEFAULT)
+ 		wdev->ps = true;
+ 	else
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 8a807b609ef73..86f209abc06ab 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -295,12 +295,17 @@ struct cfg80211_beacon_registration {
+ };
+ 
+ struct cfg80211_cqm_config {
++	struct rcu_head rcu_head;
+ 	u32 rssi_hyst;
+ 	s32 last_rssi_event_value;
++	enum nl80211_cqm_rssi_threshold_event last_rssi_event_type;
+ 	int n_rssi_thresholds;
+ 	s32 rssi_thresholds[];
+ };
+ 
++void cfg80211_cqm_rssi_notify_work(struct wiphy *wiphy,
++				   struct wiphy_work *work);
++
+ void cfg80211_destroy_ifaces(struct cfg80211_registered_device *rdev);
+ 
+ /* free object */
+@@ -566,8 +571,6 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ #define CFG80211_DEV_WARN_ON(cond)	({bool __r = (cond); __r; })
+ #endif
+ 
+-void cfg80211_cqm_config_free(struct wireless_dev *wdev);
+-
+ void cfg80211_release_pmsr(struct wireless_dev *wdev, u32 portid);
+ void cfg80211_pmsr_wdev_down(struct wireless_dev *wdev);
+ void cfg80211_pmsr_free_wk(struct work_struct *work);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 4dcbc40d07c85..705d1cf048309 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12797,7 +12797,8 @@ static int nl80211_set_cqm_txe(struct genl_info *info,
+ }
+ 
+ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
+-				    struct net_device *dev)
++				    struct net_device *dev,
++				    struct cfg80211_cqm_config *cqm_config)
+ {
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+ 	s32 last, low, high;
+@@ -12806,7 +12807,7 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
+ 	int err;
+ 
+ 	/* RSSI reporting disabled? */
+-	if (!wdev->cqm_config)
++	if (!cqm_config)
+ 		return rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
+ 
+ 	/*
+@@ -12815,7 +12816,7 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
+ 	 * connection is established and enough beacons received to calculate
+ 	 * the average.
  	 */
--	ret = rbd_dev_v2_features(rbd_dev);
-+	ret = _rbd_dev_v2_snap_features(rbd_dev, CEPH_NOSNAP,
-+					rbd_is_ro(rbd_dev), &header->features);
- 	if (ret)
--		goto out_err;
-+		return ret;
+-	if (!wdev->cqm_config->last_rssi_event_value &&
++	if (!cqm_config->last_rssi_event_value &&
+ 	    wdev->links[0].client.current_bss &&
+ 	    rdev->ops->get_station) {
+ 		struct station_info sinfo = {};
+@@ -12829,30 +12830,30 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
  
- 	/* If the image supports fancy striping, get its parameters */
- 
--	if (rbd_dev->header.features & RBD_FEATURE_STRIPINGV2) {
--		ret = rbd_dev_v2_striping_info(rbd_dev);
--		if (ret < 0)
--			goto out_err;
-+	if (header->features & RBD_FEATURE_STRIPINGV2) {
-+		ret = rbd_dev_v2_striping_info(rbd_dev, &header->stripe_unit,
-+					       &header->stripe_count);
-+		if (ret)
-+			return ret;
+ 		cfg80211_sinfo_release_content(&sinfo);
+ 		if (sinfo.filled & BIT_ULL(NL80211_STA_INFO_BEACON_SIGNAL_AVG))
+-			wdev->cqm_config->last_rssi_event_value =
++			cqm_config->last_rssi_event_value =
+ 				(s8) sinfo.rx_beacon_signal_avg;
  	}
  
--	if (rbd_dev->header.features & RBD_FEATURE_DATA_POOL) {
--		ret = rbd_dev_v2_data_pool(rbd_dev);
-+	if (header->features & RBD_FEATURE_DATA_POOL) {
-+		ret = rbd_dev_v2_data_pool(rbd_dev, &header->data_pool_id);
- 		if (ret)
--			goto out_err;
-+			return ret;
+-	last = wdev->cqm_config->last_rssi_event_value;
+-	hyst = wdev->cqm_config->rssi_hyst;
+-	n = wdev->cqm_config->n_rssi_thresholds;
++	last = cqm_config->last_rssi_event_value;
++	hyst = cqm_config->rssi_hyst;
++	n = cqm_config->n_rssi_thresholds;
+ 
+ 	for (i = 0; i < n; i++) {
+ 		i = array_index_nospec(i, n);
+-		if (last < wdev->cqm_config->rssi_thresholds[i])
++		if (last < cqm_config->rssi_thresholds[i])
+ 			break;
  	}
  
--	rbd_init_layout(rbd_dev);
- 	return 0;
--
--out_err:
--	rbd_dev->header.features = 0;
--	kfree(rbd_dev->header.object_prefix);
--	rbd_dev->header.object_prefix = NULL;
--	return ret;
- }
- 
- /*
-@@ -6948,13 +6941,15 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
- 	if (!depth)
- 		down_write(&rbd_dev->header_rwsem);
- 
--	ret = rbd_dev_header_info(rbd_dev);
-+	ret = rbd_dev_header_info(rbd_dev, &rbd_dev->header, true);
- 	if (ret) {
- 		if (ret == -ENOENT && !need_watch)
- 			rbd_print_dne(rbd_dev, false);
- 		goto err_out_probe;
+ 	low_index = i - 1;
+ 	if (low_index >= 0) {
+ 		low_index = array_index_nospec(low_index, n);
+-		low = wdev->cqm_config->rssi_thresholds[low_index] - hyst;
++		low = cqm_config->rssi_thresholds[low_index] - hyst;
+ 	} else {
+ 		low = S32_MIN;
  	}
- 
-+	rbd_init_layout(rbd_dev);
-+
- 	/*
- 	 * If this image is the one being mapped, we have pool name and
- 	 * id, image name and id, and snap name - need to fill snap id.
-@@ -7009,15 +7004,39 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
- 	return ret;
- }
- 
-+static void rbd_dev_update_header(struct rbd_device *rbd_dev,
-+				  struct rbd_image_header *header)
-+{
-+	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
-+	rbd_assert(rbd_dev->header.object_prefix); /* !first_time */
-+
-+	rbd_dev->header.image_size = header->image_size;
-+
-+	ceph_put_snap_context(rbd_dev->header.snapc);
-+	rbd_dev->header.snapc = header->snapc;
-+	header->snapc = NULL;
-+
-+	if (rbd_dev->image_format == 1) {
-+		kfree(rbd_dev->header.snap_names);
-+		rbd_dev->header.snap_names = header->snap_names;
-+		header->snap_names = NULL;
-+
-+		kfree(rbd_dev->header.snap_sizes);
-+		rbd_dev->header.snap_sizes = header->snap_sizes;
-+		header->snap_sizes = NULL;
-+	}
-+}
-+
- static int rbd_dev_refresh(struct rbd_device *rbd_dev)
+ 	if (i < n) {
+ 		i = array_index_nospec(i, n);
+-		high = wdev->cqm_config->rssi_thresholds[i] + hyst - 1;
++		high = cqm_config->rssi_thresholds[i] + hyst - 1;
+ 	} else {
+ 		high = S32_MAX;
+ 	}
+@@ -12865,6 +12866,7 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 				u32 hysteresis)
  {
-+	struct rbd_image_header	header = { 0 };
- 	u64 mapping_size;
- 	int ret;
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
++	struct cfg80211_cqm_config *cqm_config = NULL, *old;
+ 	struct net_device *dev = info->user_ptr[1];
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+ 	int i, err;
+@@ -12882,10 +12884,6 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 	    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT)
+ 		return -EOPNOTSUPP;
  
- 	down_write(&rbd_dev->header_rwsem);
- 	mapping_size = rbd_dev->mapping.size;
+-	wdev_lock(wdev);
+-	cfg80211_cqm_config_free(wdev);
+-	wdev_unlock(wdev);
+-
+ 	if (n_thresholds <= 1 && rdev->ops->set_cqm_rssi_config) {
+ 		if (n_thresholds == 0 || thresholds[0] == 0) /* Disabling */
+ 			return rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
+@@ -12902,9 +12900,10 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 		n_thresholds = 0;
  
--	ret = rbd_dev_header_info(rbd_dev);
-+	ret = rbd_dev_header_info(rbd_dev, &header, false);
- 	if (ret)
- 		goto out;
+ 	wdev_lock(wdev);
+-	if (n_thresholds) {
+-		struct cfg80211_cqm_config *cqm_config;
++	old = rcu_dereference_protected(wdev->cqm_config,
++					lockdep_is_held(&wdev->mtx));
  
-@@ -7031,6 +7050,8 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 			goto out;
++	if (n_thresholds) {
+ 		cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
+ 						 n_thresholds),
+ 				     GFP_KERNEL);
+@@ -12919,11 +12918,18 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 		       flex_array_size(cqm_config, rssi_thresholds,
+ 				       n_thresholds));
+ 
+-		wdev->cqm_config = cqm_config;
++		rcu_assign_pointer(wdev->cqm_config, cqm_config);
++	} else {
++		RCU_INIT_POINTER(wdev->cqm_config, NULL);
  	}
  
-+	rbd_dev_update_header(rbd_dev, &header);
+-	err = cfg80211_cqm_rssi_update(rdev, dev);
+-
++	err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
++	if (err) {
++		rcu_assign_pointer(wdev->cqm_config, old);
++		kfree_rcu(cqm_config, rcu_head);
++	} else {
++		kfree_rcu(old, rcu_head);
++	}
+ unlock:
+ 	wdev_unlock(wdev);
+ 
+@@ -19074,9 +19080,8 @@ void cfg80211_cqm_rssi_notify(struct net_device *dev,
+ 			      enum nl80211_cqm_rssi_threshold_event rssi_event,
+ 			      s32 rssi_level, gfp_t gfp)
+ {
+-	struct sk_buff *msg;
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+-	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
++	struct cfg80211_cqm_config *cqm_config;
+ 
+ 	trace_cfg80211_cqm_rssi_notify(dev, rssi_event, rssi_level);
+ 
+@@ -19084,18 +19089,41 @@ void cfg80211_cqm_rssi_notify(struct net_device *dev,
+ 		    rssi_event != NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH))
+ 		return;
+ 
+-	if (wdev->cqm_config) {
+-		wdev->cqm_config->last_rssi_event_value = rssi_level;
++	rcu_read_lock();
++	cqm_config = rcu_dereference(wdev->cqm_config);
++	if (cqm_config) {
++		cqm_config->last_rssi_event_value = rssi_level;
++		cqm_config->last_rssi_event_type = rssi_event;
++		wiphy_work_queue(wdev->wiphy, &wdev->cqm_rssi_work);
++	}
++	rcu_read_unlock();
++}
++EXPORT_SYMBOL(cfg80211_cqm_rssi_notify);
 +
- 	rbd_assert(!rbd_is_snap(rbd_dev));
- 	rbd_dev->mapping.size = rbd_dev->header.image_size;
++void cfg80211_cqm_rssi_notify_work(struct wiphy *wiphy, struct wiphy_work *work)
++{
++	struct wireless_dev *wdev = container_of(work, struct wireless_dev,
++						 cqm_rssi_work);
++	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
++	enum nl80211_cqm_rssi_threshold_event rssi_event;
++	struct cfg80211_cqm_config *cqm_config;
++	struct sk_buff *msg;
++	s32 rssi_level;
  
-@@ -7039,6 +7060,7 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 	if (!ret && mapping_size != rbd_dev->mapping.size)
- 		rbd_dev_update_size(rbd_dev);
+-		cfg80211_cqm_rssi_update(rdev, dev);
++	wdev_lock(wdev);
++	cqm_config = rcu_dereference_protected(wdev->cqm_config,
++					       lockdep_is_held(&wdev->mtx));
++	if (!wdev->cqm_config)
++		goto unlock;
  
-+	rbd_image_header_cleanup(&header);
- 	return ret;
+-		if (rssi_level == 0)
+-			rssi_level = wdev->cqm_config->last_rssi_event_value;
+-	}
++	cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
+ 
+-	msg = cfg80211_prepare_cqm(dev, NULL, gfp);
++	rssi_level = cqm_config->last_rssi_event_value;
++	rssi_event = cqm_config->last_rssi_event_type;
++
++	msg = cfg80211_prepare_cqm(wdev->netdev, NULL, GFP_KERNEL);
+ 	if (!msg)
+-		return;
++		goto unlock;
+ 
+ 	if (nla_put_u32(msg, NL80211_ATTR_CQM_RSSI_THRESHOLD_EVENT,
+ 			rssi_event))
+@@ -19105,14 +19133,15 @@ void cfg80211_cqm_rssi_notify(struct net_device *dev,
+ 				      rssi_level))
+ 		goto nla_put_failure;
+ 
+-	cfg80211_send_cqm(msg, gfp);
++	cfg80211_send_cqm(msg, GFP_KERNEL);
+ 
+-	return;
++	goto unlock;
+ 
+  nla_put_failure:
+ 	nlmsg_free(msg);
++ unlock:
++	wdev_unlock(wdev);
  }
+-EXPORT_SYMBOL(cfg80211_cqm_rssi_notify);
  
+ void cfg80211_cqm_txe_notify(struct net_device *dev,
+ 			     const u8 *peer, u32 num_packets,
 -- 
 2.40.1
 
