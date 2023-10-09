@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 066737BDE5B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6589F7BE025
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377027AbjJINSp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:18:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36622 "EHLO
+        id S1377204AbjJINiA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:38:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377026AbjJINSo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:44 -0400
+        with ESMTP id S1377239AbjJINh7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:37:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 436749F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C573C433C8;
-        Mon,  9 Oct 2023 13:18:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E63E94
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:37:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920B3C433C9;
+        Mon,  9 Oct 2023 13:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857521;
-        bh=IrU3Ipo19p33GW1Jes7AmhruFeS/R8/tQ3DKvgrw57M=;
+        s=korg; t=1696858678;
+        bh=iaaR9IBRS9kG31JpHzuC3LY1zGpMdYEpom/9jUajREc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D5MuKn+dosufWuJTPdD762slYHgwv5xTOL0jZ5W4zatZCMkvauKPRm0GiHlcF26s3
-         6BdqhR/CNTx/NUv5HRmQNR8xaj0YF+8rMOu8eFDY2NX5iB8IMMhPihSPRT0idJrRNV
-         nQf99VDxWHgnUCmk2xYUa4N+ZSsHSne0CCCw2O9Q=
+        b=SaG37E4YCTxVrk5KyPWPgs5f5nyv5IixojnmbxlOvaKyQeV9wihUGpyUIVXexRzSn
+         lCj9Fxl8yDim2jWaeaEjKi76ZQTUBHrTuXXSqh8tGwx+SNxfF08uPfVtkIrIX+AJJM
+         YuZgZcE1+BVKajpp2/oEM6KhSPP6CAk2pyRjgeik=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
+        patches@lists.linux.dev,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/162] rbd: move rbd_dev_refresh() definition
+Subject: [PATCH 5.10 066/226] mmc: renesas_sdhi: probe into TMIO after SCC parameters have been setup
 Date:   Mon,  9 Oct 2023 15:00:27 +0200
-Message-ID: <20231009130124.209786478@linuxfoundation.org>
+Message-ID: <20231009130128.509573506@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,119 +54,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 0b035401c57021fc6c300272cbb1c5a889d4fe45 upstream.
+[ Upstream commit b161d87dfd3d9f3fb064a089a9e521d0e5d3e38f ]
 
-Move rbd_dev_refresh() definition further down to avoid having to
-move struct parent_image_info definition in the next commit.  This
-spares some forward declarations too.
+Setting up the SCC parameters does not need a probed TMIO device. But in
+the near future, probing the TMIO device needs the SCC parameters setup.
+So, fix the ordering.
 
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-[idryomov@gmail.com: backport to 5.10-6.1: context]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://lore.kernel.org/r/20201110142058.36393-3-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 74f45de394d9 ("mmc: renesas_sdhi: register irqs before registering controller")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c | 68 ++++++++++++++++++++++-----------------------
- 1 file changed, 33 insertions(+), 35 deletions(-)
+ drivers/mmc/host/renesas_sdhi_core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 74ef3da545361..762795430b4d8 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -633,8 +633,6 @@ static void rbd_dev_remove_parent(struct rbd_device *rbd_dev);
- 
- static int rbd_dev_refresh(struct rbd_device *rbd_dev);
- static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev);
--static int rbd_dev_header_info(struct rbd_device *rbd_dev);
--static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev);
- static const char *rbd_dev_v2_snap_name(struct rbd_device *rbd_dev,
- 					u64 snap_id);
- static int _rbd_dev_v2_snap_size(struct rbd_device *rbd_dev, u64 snap_id,
-@@ -4932,39 +4930,6 @@ static void rbd_dev_update_size(struct rbd_device *rbd_dev)
+diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+index a49b8fe2a0982..2cf7360d6cade 100644
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -1070,10 +1070,6 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+ 			quirks->hs400_calib_table + 1);
  	}
- }
  
--static int rbd_dev_refresh(struct rbd_device *rbd_dev)
--{
--	u64 mapping_size;
--	int ret;
+-	ret = tmio_mmc_host_probe(host);
+-	if (ret < 0)
+-		goto edisclk;
 -
--	down_write(&rbd_dev->header_rwsem);
--	mapping_size = rbd_dev->mapping.size;
--
--	ret = rbd_dev_header_info(rbd_dev);
--	if (ret)
--		goto out;
--
--	/*
--	 * If there is a parent, see if it has disappeared due to the
--	 * mapped image getting flattened.
--	 */
--	if (rbd_dev->parent) {
--		ret = rbd_dev_v2_parent_info(rbd_dev);
--		if (ret)
--			goto out;
--	}
--
--	rbd_assert(!rbd_is_snap(rbd_dev));
--	rbd_dev->mapping.size = rbd_dev->header.image_size;
--
--out:
--	up_write(&rbd_dev->header_rwsem);
--	if (!ret && mapping_size != rbd_dev->mapping.size)
--		rbd_dev_update_size(rbd_dev);
--
--	return ret;
--}
--
- static const struct blk_mq_ops rbd_mq_ops = {
- 	.queue_rq	= rbd_queue_rq,
- };
-@@ -7044,6 +7009,39 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
- 	return ret;
- }
+ 	/* Enable tuning iff we have an SCC and a supported mode */
+ 	if (of_data && of_data->scc_offset &&
+ 	    (host->mmc->caps & MMC_CAP_UHS_SDR104 ||
+@@ -1105,6 +1101,10 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+ 		host->ops.hs400_complete = renesas_sdhi_hs400_complete;
+ 	}
  
-+static int rbd_dev_refresh(struct rbd_device *rbd_dev)
-+{
-+	u64 mapping_size;
-+	int ret;
++	ret = tmio_mmc_host_probe(host);
++	if (ret < 0)
++		goto edisclk;
 +
-+	down_write(&rbd_dev->header_rwsem);
-+	mapping_size = rbd_dev->mapping.size;
-+
-+	ret = rbd_dev_header_info(rbd_dev);
-+	if (ret)
-+		goto out;
-+
-+	/*
-+	 * If there is a parent, see if it has disappeared due to the
-+	 * mapped image getting flattened.
-+	 */
-+	if (rbd_dev->parent) {
-+		ret = rbd_dev_v2_parent_info(rbd_dev);
-+		if (ret)
-+			goto out;
-+	}
-+
-+	rbd_assert(!rbd_is_snap(rbd_dev));
-+	rbd_dev->mapping.size = rbd_dev->header.image_size;
-+
-+out:
-+	up_write(&rbd_dev->header_rwsem);
-+	if (!ret && mapping_size != rbd_dev->mapping.size)
-+		rbd_dev_update_size(rbd_dev);
-+
-+	return ret;
-+}
-+
- static ssize_t do_rbd_add(struct bus_type *bus,
- 			  const char *buf,
- 			  size_t count)
+ 	num_irqs = platform_irq_count(pdev);
+ 	if (num_irqs < 0) {
+ 		ret = num_irqs;
 -- 
 2.40.1
 
