@@ -2,147 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BB157BE6C1
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 18:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F16A57BE858
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 19:39:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376990AbjJIQoA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 12:44:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48692 "EHLO
+        id S233096AbjJIRjb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 13:39:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377815AbjJIQn6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 12:43:58 -0400
-Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DACDA6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 09:43:56 -0700 (PDT)
-Received: by mail-vk1-xa35.google.com with SMTP id 71dfb90a1353d-49e035bdca7so1125283e0c.2
-        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 09:43:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696869835; x=1697474635; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h74o2AZcTC7GyQaZvo8+es5i4OkJLBnswUlj7gMbv2U=;
-        b=hgyFnpAWsJpN7F0W7spdSAao0D1Fh8p55b2VjSkcyyxpOPa1YXwJJXhof/z/XpVf9+
-         RZFwlUGH2mrkYhA6AuIyT5xN8j4jiE3mfTab9D+6MueuLE9dLeKJFLyIlEIcUgiJdVi3
-         EGS1hJYliShtFphZYvgt3a4q1si8CcevvwqWPybfJa78Zq2Z8XwLhAG+/r8M5nAHnm9y
-         vVhS6YlhLA+EBi3jAQeDQrZy5SJqTu4liDvaiRVEsx99vWaEmv8rkeyWPHPYQc8HyvH+
-         ANd8IOqy4q5wfOgOq0GqmxLjaq5Z7HWgE6zr+I3I9KDDkmF6FiIJeSDSVhbuB1sjLxjP
-         rbiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696869835; x=1697474635;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h74o2AZcTC7GyQaZvo8+es5i4OkJLBnswUlj7gMbv2U=;
-        b=VKcNajDa75ixPzIt302Yve1ex5fJdMxw4DiCT3/PVIjGVAu+BeHQEJyQAwdX8XKDpl
-         TlzojVH0e5v0RttX9J8+LFxYOItvP3t/ODJPZ3a1XdmNM6FwofMcjyDQT//1ZdoXLZ8v
-         7Nsja4+7eoeW/1pMdIYoEH7m5KlVLj02oTNIZlL3dde19gfzkXKKokl10Z+3pQzAUcpf
-         EcdIvORJGXDGQ47ZqGXB0gMxTW+M3mQnAGYdRvRTD8AWdC3SYgNCfV8RZ/ZPJTASyQwd
-         WLbGBIgBdYe2RvxkAIFhMw5SJ0xijltMe30NcpZ+5fFP7lGc3YJd7ZY07bHojaHBC/y1
-         pR+w==
-X-Gm-Message-State: AOJu0YzsDcLBvPAnB4bc5zU+5qdMaP5Az48lnIWctFVS8ixlprsmY/qv
-        4duAqHlENj9nvCKLOfc9/6SI52jhnVKicMTwhkiL0w==
-X-Google-Smtp-Source: AGHT+IEkXqZBLHppN9aD1rPab7CXnRnbSPIio7BIWqrTQXvtR6190yK7ITH0FWBWUzGCmJoQh0UXep8/jjC65cWusQM=
-X-Received: by 2002:a1f:d686:0:b0:49d:a52a:441f with SMTP id
- n128-20020a1fd686000000b0049da52a441fmr12470392vkg.7.1696869835132; Mon, 09
- Oct 2023 09:43:55 -0700 (PDT)
+        with ESMTP id S233250AbjJIRja (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 13:39:30 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AE3EC5
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 10:39:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12892C433C7;
+        Mon,  9 Oct 2023 17:39:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1696873168;
+        bh=0dEay+sldvn2MMQf3MJ+a6pHpjWE/yf7vOI+fennvhI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Mmlm+EwpJvlVz45Nw4BljP1YmP5uV+A7b91duFWr7/7Uvg0rijruCNEWxiv3hFGwy
+         lSCWfSwIB81fmupATlIMfvlGP5fpsAXgGivp9Jyh0EbQpLD0RttFIxlbizJEYcbA7l
+         cqjbgUaih9RX2+mhKMl4R/B7GAnQn5cwadBMo5RqQbqXCZkHwb6MNtdNH/kvODJu4l
+         wy5kFxeVp8fewrDEZze4BvRnBLsPeAHMBMcn/D+nR5MTnZQ0S/L5FPY6ylxLZmdXJv
+         b4kTYxfqPtq1c2nihhHEdVaufPSpVVxMQTCzJDrgiffj4ybtDTxFa6fd6eYOHmx4eL
+         G0c0QeutReCZA==
+Date:   Mon, 9 Oct 2023 13:39:26 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        Shenghao Ding <shenghao-ding@ti.com>
+Subject: Re: [PATCH 6.5 001/163] ALSA: hda/tas2781: Add tas2781 HDA driver
+Message-ID: <ZSQ6zq0BeYyc7MHF@sashalap>
+References: <20231009130124.021290599@linuxfoundation.org>
+ <20231009130124.064374662@linuxfoundation.org>
+ <875y3gsznc.wl-tiwai@suse.de>
+ <ZSQNSeJtY2WxedV3@sashalap>
+ <87pm1nswbx.wl-tiwai@suse.de>
 MIME-Version: 1.0
-References: <20231004175217.404851126@linuxfoundation.org> <CA+G9fYsqbZhSQnEi-qSc7n+4d7nPap8HWcdbZGWLfo3mTH-L7A@mail.gmail.com>
- <CAEUSe78O-Ho=22nTeioT4eqPRoDNfcWCpc=5O=B59eaMvOkzpg@mail.gmail.com> <2023100755-livestock-barcode-fe41@gregkh>
-In-Reply-To: <2023100755-livestock-barcode-fe41@gregkh>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Mon, 9 Oct 2023 22:13:42 +0530
-Message-ID: <CA+G9fYvzV03=-LTmburzzwRpw0xuxoAXBKo0n1muYwOOiVG_bw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/259] 6.1.56-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>,
-        linux-nfs@vger.kernel.org, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Olga Kornievskaia <kolga@netapp.com>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Anna Schumaker <Anna.Schumaker@netapp.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        LTP List <ltp@lists.linux.it>, Petr Vorel <pvorel@suse.cz>,
-        Richard Palethorpe <rpalethorpe@suse.com>,
-        Eryu Guan <eguan@redhat.com>, chrubis <chrubis@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <87pm1nswbx.wl-tiwai@suse.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, 7 Oct 2023 at 14:28, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Mon, Oct 09, 2023 at 04:29:38PM +0200, Takashi Iwai wrote:
+>On Mon, 09 Oct 2023 16:25:13 +0200,
+>Sasha Levin wrote:
+>>
+>> On Mon, Oct 09, 2023 at 03:17:59PM +0200, Takashi Iwai wrote:
+>> > On Mon, 09 Oct 2023 14:59:25 +0200,
+>> > Greg Kroah-Hartman wrote:
+>> >>
+>> >> 6.5-stable review patch.  If anyone has any objections, please let me know.
+>> >>
+>> >> ------------------
+>> >>
+>> >> From: Shenghao Ding <shenghao-ding@ti.com>
+>> >>
+>> >> [ Upstream commit 3babae915f4c15d76a5134e55806a1c1588e2865 ]
+>> >>
+>> >> Integrate tas2781 configs for Lenovo Laptops. All of the tas2781s in the
+>> >> laptop will be aggregated as one audio device. The code support realtek
+>> >> as the primary codec. Rename "struct cs35l41_dev_name" to
+>> >> "struct scodec_dev_name" for all other side codecs instead of the certain
+>> >> one.
+>> >>
+>> >> Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+>> >> Link: https://lore.kernel.org/r/20230818085836.1442-1-shenghao-ding@ti.com
+>> >> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+>> >> Stable-dep-of: 41b07476da38 ("ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support")
+>> >> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> >
+>> > This makes little sense without the backport of commit
+>> > 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver").
+>> > Confusingly, the patch subject is very same as this commit...
+>>
+>> This is a tricky one: 3babae915f4 really doesn't add a new driver but
+>> rather just refactors some of the quirk handling which is needed for
+>> later patches to apply. It's the following 5be27f1e3ec9 which actually
+>> adds the driver (which we don't need here).
+>>
+>> We don't actually want to bring in a new driver, so 5be27f1e3ec9 is
+>> unnecessary.
 >
-> On Fri, Oct 06, 2023 at 12:42:04PM -0600, Daniel D=C3=ADaz wrote:
-> > Hello!
-> >
-> > On Thu, 5 Oct 2023 at 10:40, Naresh Kamboju <naresh.kamboju@linaro.org>=
- wrote:
-> > > On Wed, 4 Oct 2023 at 23:41, Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > This is the start of the stable review cycle for the 6.1.56 release=
-.
-> > > > There are 259 patches in this series, all will be posted as a respo=
-nse
-> > > > to this one.  If anyone has any issues with these being applied, pl=
-ease
-> > > > let me know.
-> > > >
-> > > > Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
-> > > > Anything received after that time might be too late.
-> > > >
-> > > > The whole patch series can be found in one patch at:
-> > > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/=
-patch-6.1.56-rc1.gz
-> > > > or in the git tree and branch at:
-> > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-=
-stable-rc.git linux-6.1.y
-> > > > and the diffstat can be found below.
-> > > >
-> > > > thanks,
-> > > >
-> > > > greg k-h
-> > >
-> > > Results from Linaro=E2=80=99s test farm.
-> > > Regressions on arm64 bcm2711-rpi-4-b device running LTP dio tests on
-> > > NFS mounted rootfs.
-> > > and LTP hugetlb hugemmap11 test case failed on x86 and arm64 bcm2711-=
-rpi-4-b.
-> > >
-> > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > >
-> > > LTP hugetlb tests failed log
-> > >   tst_hugepage.c:83: TINFO: 1 hugepage(s) reserved
-> > >   tst_test.c:1558: TINFO: Timeout per run is 0h 05m 00s
-> > >   hugemmap11.c:47: TFAIL: Memory mismatch after Direct-IO write
-> > >
-> > > LTP dio tests failed log
-> > >   compare_file: char mismatch: infile offset 4096: 0x01 .   outfile
-> > > offset 4096: 0x00 .
-> > >   diotest01    1  TFAIL  :  diotest1.c:158: file compare failed for
-> > > infile and outfile
-> >
-> > Bisection led to "NFS: Fix O_DIRECT locking issues" (upstream commit
-> > 7c6339322ce0c6128acbe36aacc1eeb986dd7bf1). Reverting that patch and
-> > "NFS: Fix error handling for O_DIRECT write scheduling" (upstream
-> > commit 954998b60caa8f2a3bf3abe490de6f08d283687a) (not a clean revert
-> > this one) made ltp-dio pass again.
->
-> So this is also an issue in Linus's tree?  Or is it only on the 6.1.y
+>If we don't want the backport of 5be27f1e3ec9, this commit
+>(3babae915f4c) and other relevant ones must be dropped, too.
 
- It is only on the 6.1.y branch.
+Sure, I've dropped:
 
-- Naresh
+3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+93dc18e11b1a ("ALSA: hda/realtek: Add quirk for HP Victus 16-d1xxx to enable mute LED")
+c99c26b16c15 ("ALSA: hda/realtek: Add quirk for mute LEDs on HP ENVY x360 15-eu0xxx")
+e43252db7e20 ("ALSA: hda/realtek - ALC287 I2S speaker platform support")
+41b07476da38 ("ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support")
+
+-- 
+Thanks,
+Sasha
