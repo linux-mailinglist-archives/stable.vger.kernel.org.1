@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C9B47BDF07
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC1587BDEB9
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376478AbjJINZs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:25:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46602 "EHLO
+        id S1376384AbjJINWU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376641AbjJINZg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:36 -0400
+        with ESMTP id S1376387AbjJINWT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03D4BAB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B49C433C9;
-        Mon,  9 Oct 2023 13:25:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A056D8F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2F0C433C8;
+        Mon,  9 Oct 2023 13:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857934;
-        bh=CoxNfthRQEoOI6n+k70Ys41YYRohluc8AOWZn6MPqM4=;
+        s=korg; t=1696857738;
+        bh=vhOhAtCeyF+rw25NXZCG58itRPm+oJLuD+AFb8SnYQo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x1fzoMBAA7jalFW3Zatglumwzag0mR7LRni+OpPMXDjG0Bfo1uDtIkqac7/y+CAW7
-         5GZseP+t5Zky6uUNIq45VboV8RlO+oGZurGuPm8XDQyvJBCGPrHsujRp625QsfkVu6
-         Lz7Ag/4NRnMd+DrWBi8qP4e/oLpXnRuxO4DaE/Io=
+        b=TB36agKh7Gj7Y61oLof9ZM+VQucBuTdbjIoobMQanyhUpbnCnCmo7dnZusyqezgf6
+         nnhvgwsvNL0vgQTd0Cu1zVHxGeuOHEfDUVOkkWXkp/WfHyz/xCWt427ZttPMGoEUku
+         GeYGR/69NDGLXtHLdaOUxCwEeaeqOvnCsXM6ErEI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/75] ima: rework CONFIG_IMA dependency block
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH 6.1 141/162] of: dynamic: Fix potential memory leak in of_changeset_action()
 Date:   Mon,  9 Oct 2023 15:02:02 +0200
-Message-ID: <20231009130112.640368726@linuxfoundation.org>
+Message-ID: <20231009130126.800184271@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,145 +50,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 91e326563ee34509c35267808a4b1b3ea3db62a8 ]
+commit 55e95bfccf6db8d26a66c46e1de50d53c59a6774 upstream.
 
-Changing the direct dependencies of IMA_BLACKLIST_KEYRING and
-IMA_LOAD_X509 caused them to no longer depend on IMA, but a
-a configuration without IMA results in link failures:
+Smatch complains that the error path where "action" is invalid leaks
+the "ce" allocation:
+    drivers/of/dynamic.c:935 of_changeset_action()
+    warn: possible memory leak of 'ce'
 
-arm-linux-gnueabi-ld: security/integrity/iint.o: in function `integrity_load_keys':
-iint.c:(.init.text+0xd8): undefined reference to `ima_load_x509'
+Fix this by doing the validation before the allocation.
 
-aarch64-linux-ld: security/integrity/digsig_asymmetric.o: in function `asymmetric_verify':
-digsig_asymmetric.c:(.text+0x104): undefined reference to `ima_blacklist_keyring'
+Note that there is not any actual problem with upstream kernels. All
+callers of of_changeset_action() are static inlines with fixed action
+values.
 
-Adding explicit dependencies on IMA would fix this, but a more reliable
-way to do this is to enclose the entire Kconfig file in an 'if IMA' block.
-This also allows removing the existing direct dependencies.
-
-Fixes: be210c6d3597f ("ima: Finish deprecation of IMA_TRUSTED_KEYRING Kconfig")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 914d9d831e61 ("of: dynamic: Refactor action prints to not use "%pOF" inside devtree_lock")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202309011059.EOdr4im9-lkp@intel.com/
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/7dfaf999-30ad-491c-9615-fb1138db121c@moroto.mountain
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/ima/Kconfig | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ drivers/of/dynamic.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index 2200262489103..17d1290c1b642 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -29,9 +29,11 @@ config IMA
- 	  to learn more about IMA.
- 	  If unsure, say N.
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -902,13 +902,13 @@ int of_changeset_action(struct of_change
+ {
+ 	struct of_changeset_entry *ce;
  
-+if IMA
++	if (WARN_ON(action >= ARRAY_SIZE(action_names)))
++		return -EINVAL;
 +
- config IMA_KEXEC
- 	bool "Enable carrying the IMA measurement list across a soft boot"
--	depends on IMA && TCG_TPM && HAVE_IMA_KEXEC
-+	depends on TCG_TPM && HAVE_IMA_KEXEC
- 	default n
- 	help
- 	   TPM PCRs are only reset on a hard reboot.  In order to validate
-@@ -43,7 +45,6 @@ config IMA_KEXEC
+ 	ce = kzalloc(sizeof(*ce), GFP_KERNEL);
+ 	if (!ce)
+ 		return -ENOMEM;
  
- config IMA_MEASURE_PCR_IDX
- 	int
--	depends on IMA
- 	range 8 14
- 	default 10
- 	help
-@@ -53,7 +54,7 @@ config IMA_MEASURE_PCR_IDX
- 
- config IMA_LSM_RULES
- 	bool
--	depends on IMA && AUDIT && (SECURITY_SELINUX || SECURITY_SMACK || SECURITY_APPARMOR)
-+	depends on AUDIT && (SECURITY_SELINUX || SECURITY_SMACK || SECURITY_APPARMOR)
- 	default y
- 	help
- 	  Disabling this option will disregard LSM based policy rules.
-@@ -61,7 +62,6 @@ config IMA_LSM_RULES
- choice
- 	prompt "Default template"
- 	default IMA_NG_TEMPLATE
--	depends on IMA
- 	help
- 	  Select the default IMA measurement template.
- 
-@@ -80,14 +80,12 @@ endchoice
- 
- config IMA_DEFAULT_TEMPLATE
- 	string
--	depends on IMA
- 	default "ima-ng" if IMA_NG_TEMPLATE
- 	default "ima-sig" if IMA_SIG_TEMPLATE
- 
- choice
- 	prompt "Default integrity hash algorithm"
- 	default IMA_DEFAULT_HASH_SHA1
--	depends on IMA
- 	help
- 	   Select the default hash algorithm used for the measurement
- 	   list, integrity appraisal and audit log.  The compiled default
-@@ -117,7 +115,6 @@ endchoice
- 
- config IMA_DEFAULT_HASH
- 	string
--	depends on IMA
- 	default "sha1" if IMA_DEFAULT_HASH_SHA1
- 	default "sha256" if IMA_DEFAULT_HASH_SHA256
- 	default "sha512" if IMA_DEFAULT_HASH_SHA512
-@@ -126,7 +123,6 @@ config IMA_DEFAULT_HASH
- 
- config IMA_WRITE_POLICY
- 	bool "Enable multiple writes to the IMA policy"
--	depends on IMA
- 	default n
- 	help
- 	  IMA policy can now be updated multiple times.  The new rules get
-@@ -137,7 +133,6 @@ config IMA_WRITE_POLICY
- 
- config IMA_READ_POLICY
- 	bool "Enable reading back the current IMA policy"
--	depends on IMA
- 	default y if IMA_WRITE_POLICY
- 	default n if !IMA_WRITE_POLICY
- 	help
-@@ -147,7 +142,6 @@ config IMA_READ_POLICY
- 
- config IMA_APPRAISE
- 	bool "Appraise integrity measurements"
--	depends on IMA
- 	default n
- 	help
- 	  This option enables local measurement integrity appraisal.
-@@ -303,7 +297,6 @@ config IMA_APPRAISE_SIGNED_INIT
- 
- config IMA_MEASURE_ASYMMETRIC_KEYS
- 	bool
--	depends on IMA
- 	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE=y
- 	default y
- 
-@@ -322,7 +315,8 @@ config IMA_SECURE_AND_OR_TRUSTED_BOOT
- 
- config IMA_DISABLE_HTABLE
- 	bool "Disable htable to allow measurement of duplicate records"
--	depends on IMA
- 	default n
- 	help
- 	   This option disables htable to allow measurement of duplicate records.
-+
-+endif
--- 
-2.40.1
-
+-	if (WARN_ON(action >= ARRAY_SIZE(action_names)))
+-		return -EINVAL;
+-
+ 	/* get a reference to the node */
+ 	ce->action = action;
+ 	ce->np = of_node_get(np);
 
 
