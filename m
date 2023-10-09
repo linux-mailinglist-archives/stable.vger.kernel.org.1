@@ -2,41 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA14D7BE187
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0178B7BE188
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:51:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377263AbjJINvM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36586 "EHLO
+        id S1377362AbjJINvO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:51:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377326AbjJINvK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:51:10 -0400
+        with ESMTP id S1377241AbjJINvM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:51:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC992B9
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:51:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0E7C433C7;
-        Mon,  9 Oct 2023 13:51:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4996AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:51:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EF8C433C8;
+        Mon,  9 Oct 2023 13:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859468;
-        bh=Wd0S+7u5IxVsEIbsxw4BbrPj33sR3VNQJGrC6ojyBjs=;
+        s=korg; t=1696859471;
+        bh=IVKqACwMBuInVNeWMSFrl11Po/Q/ZsM5VG2XgTNdaos=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oZiTE6FCIJwDJ130m1cFUcBSJI6Vq1mxoI9XzW+ty3iIsq0TE4IrzD3QCHPPaRW4Z
-         YtqZHuvTL25+JH+Y9ytVGKf65/hYHD9cIK+/n4KP2bKbhJ3IjqJRpMt6XusE0O89fa
-         2O39Y7RqCr5QW1eql46WqZ3cCrOrzmfuTSmu5eV4=
+        b=YRa3Vwm7haJbvYtQKdZbS72gEdpbajIIiLkWEs4lwDu9tC1C+p4/vp0hzvfFElx1N
+         wQgNfdp9xWDg4OMYwrh+TWi+AxzWHk5Ips1/DEmaTIWfJbh7A9TQ1vrKXq/al8lMJp
+         HYIYC5YSXjstGcvESnTlo+ff6Uv3bfKxUdLTe3Vo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Wenhua Lin <Wenhua.Lin@unisoc.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 30/91] ARM: dts: ti: omap: motorola-mapphone: Fix abe_clkctrl warning on boot
-Date:   Mon,  9 Oct 2023 15:06:02 +0200
-Message-ID: <20231009130112.570522225@linuxfoundation.org>
+Subject: [PATCH 4.19 31/91] gpio: pmic-eic-sprd: Add can_sleep flag for PMIC EIC chip
+Date:   Mon,  9 Oct 2023 15:06:03 +0200
+Message-ID: <20231009130112.607159234@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
 References: <20231009130111.518916887@linuxfoundation.org>
@@ -58,53 +53,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Wenhua Lin <Wenhua.Lin@unisoc.com>
 
-[ Upstream commit ac08bda1569b06b7a62c7b4dd00d4c3b28ceaaec ]
+[ Upstream commit 26d9e5640d2130ee16df7b1fb6a908f460ab004c ]
 
-Commit 0840242e8875 ("ARM: dts: Configure clock parent for pwm vibra")
-attempted to fix the PWM settings but ended up causin an additional clock
-reparenting error:
+The drivers uses a mutex and I2C bus access in its PMIC EIC chip
+get implementation. This means these functions can sleep and the PMIC EIC
+chip should set the can_sleep property to true.
 
-clk: failed to reparent abe-clkctrl:0060:24 to sys_clkin_ck: -22
+This will ensure that a warning is printed when trying to get the
+value from a context that potentially can't sleep.
 
-Only timer9 is in the PER domain and can use the sys_clkin_ck clock source.
-For timer8, the there is no sys_clkin_ck available as it's in the ABE
-domain, instead it should use syc_clk_div_ck. However, for power
-management, we want to use the always on sys_32k_ck instead.
-
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Carl Philipp Klemm <philipp@uvos.xyz>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Fixes: 0840242e8875 ("ARM: dts: Configure clock parent for pwm vibra")
-Depends-on: 61978617e905 ("ARM: dts: Add minimal support for Droid Bionic xt875")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fixes: 348f3cde84ab ("gpio: Add Spreadtrum PMIC EIC driver support")
+Signed-off-by: Wenhua Lin <Wenhua.Lin@unisoc.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/omap4-droid4-xt894.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-pmic-eic-sprd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/omap4-droid4-xt894.dts b/arch/arm/boot/dts/omap4-droid4-xt894.dts
-index 67d77eee9433c..459720f5f5586 100644
---- a/arch/arm/boot/dts/omap4-droid4-xt894.dts
-+++ b/arch/arm/boot/dts/omap4-droid4-xt894.dts
-@@ -647,12 +647,12 @@
- /* Configure pwm clock source for timers 8 & 9 */
- &timer8 {
- 	assigned-clocks = <&abe_clkctrl OMAP4_TIMER8_CLKCTRL 24>;
--	assigned-clock-parents = <&sys_clkin_ck>;
-+	assigned-clock-parents = <&sys_32k_ck>;
- };
+diff --git a/drivers/gpio/gpio-pmic-eic-sprd.c b/drivers/gpio/gpio-pmic-eic-sprd.c
+index 29e044ff4b17d..7697cb96bf36f 100644
+--- a/drivers/gpio/gpio-pmic-eic-sprd.c
++++ b/drivers/gpio/gpio-pmic-eic-sprd.c
+@@ -341,6 +341,7 @@ static int sprd_pmic_eic_probe(struct platform_device *pdev)
+ 	pmic_eic->chip.set_config = sprd_pmic_eic_set_config;
+ 	pmic_eic->chip.set = sprd_pmic_eic_set;
+ 	pmic_eic->chip.get = sprd_pmic_eic_get;
++	pmic_eic->chip.can_sleep = true;
  
- &timer9 {
- 	assigned-clocks = <&l4_per_clkctrl OMAP4_TIMER9_CLKCTRL 24>;
--	assigned-clock-parents = <&sys_clkin_ck>;
-+	assigned-clock-parents = <&sys_32k_ck>;
- };
- 
- /*
+ 	pmic_eic->intc.name = dev_name(&pdev->dev);
+ 	pmic_eic->intc.irq_mask = sprd_pmic_eic_irq_mask;
 -- 
 2.40.1
 
