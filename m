@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C92C77BDF27
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42FCF7BDFB9
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376490AbjJIN04 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37846 "EHLO
+        id S1377143AbjJINdL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:33:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376720AbjJIN0z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:55 -0400
+        with ESMTP id S1377135AbjJINdK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:33:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FFF49D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F04C433C8;
-        Mon,  9 Oct 2023 13:26:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4D22D6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:33:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40EBC433C8;
+        Mon,  9 Oct 2023 13:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858013;
-        bh=o4SppjLVDL5R5gejrAXnj1vcEaPdkl/hjjbmb4fGqFU=;
+        s=korg; t=1696858388;
+        bh=SxrtH2GtL8T7Rk2abQvUe4LUUoi+OVe6btftPlYoVoc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k7M1TPtWqRy8pIrtSZajE5S84VJobXkgxE3nA4aRs7AEnXNlogR8xzhncxfmIkuMm
-         DyyNzlQB0Ys3LegX1yJjZ3CLRKoux34hsmfOU8C+HK6sl0R+uRF4ZamvWXqeAvXHLw
-         4BxsgHLPZa/bMc1Go5xVg3ECY+FGhPHyHQCFL6IQ=
+        b=jb3czG0Az2BMFQPLUdcy5/1cJ0p1FW4f/NZopYicAzGYFPXik5xoucIQ3SJKNWap9
+         OEEn9glyksJUyONOs2cShZyxB5eUJom/z7WyrvglUm0EVzKyeokBZEHFMVwdphSxSs
+         dIAHN5cczg7YrKJzQDN748nPf2rfoQ+6YofNclHs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oleksandr Tymoshenko <ovt@google.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 38/75] ima: Finish deprecation of IMA_TRUSTED_KEYRING Kconfig
+        patches@lists.linux.dev, Alex Balcanquall <alex@alexbal.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 080/131] net: thunderbolt: Fix TCPv6 GSO checksum calculation
 Date:   Mon,  9 Oct 2023 15:02:00 +0200
-Message-ID: <20231009130112.564371188@linuxfoundation.org>
+Message-ID: <20231009130118.790279560@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Tymoshenko <ovt@google.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit be210c6d3597faf330cb9af33b9f1591d7b2a983 ]
+commit e0b65f9b81fef180cf5f103adecbe5505c961153 upstream.
 
-The removal of IMA_TRUSTED_KEYRING made IMA_LOAD_X509
-and IMA_BLACKLIST_KEYRING unavailable because the latter
-two depend on the former. Since IMA_TRUSTED_KEYRING was
-deprecated in favor of INTEGRITY_TRUSTED_KEYRING use it
-as a dependency for the two Kconfigs affected by the
-deprecation.
+Alex reported that running ssh over IPv6 does not work with
+Thunderbolt/USB4 networking driver. The reason for that is that driver
+should call skb_is_gso() before calling skb_is_gso_v6(), and it should
+not return false after calculates the checksum successfully. This probably
+was a copy paste error from the original driver where it was done properly.
 
-Fixes: 5087fd9e80e5 ("ima: Remove deprecated IMA_TRUSTED_KEYRING Kconfig")
-Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
-Reviewed-by: Nayna Jain <nayna@linux.ibm.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Alex Balcanquall <alex@alexbal.com>
+Fixes: e69b6c02b4c3 ("net: Add support for networking over Thunderbolt cable")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/ima/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/thunderbolt.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index 7bc416c172119..2200262489103 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -268,7 +268,7 @@ config IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY
- config IMA_BLACKLIST_KEYRING
- 	bool "Create IMA machine owner blacklist keyrings (EXPERIMENTAL)"
- 	depends on SYSTEM_TRUSTED_KEYRING
--	depends on IMA_TRUSTED_KEYRING
-+	depends on INTEGRITY_TRUSTED_KEYRING
- 	default n
- 	help
- 	   This option creates an IMA blacklist keyring, which contains all
-@@ -278,7 +278,7 @@ config IMA_BLACKLIST_KEYRING
- 
- config IMA_LOAD_X509
- 	bool "Load X509 certificate onto the '.ima' trusted keyring"
--	depends on IMA_TRUSTED_KEYRING
-+	depends on INTEGRITY_TRUSTED_KEYRING
- 	default n
- 	help
- 	   File signature verification is based on the public keys
--- 
-2.40.1
-
+--- a/drivers/net/thunderbolt.c
++++ b/drivers/net/thunderbolt.c
+@@ -958,12 +958,11 @@ static bool tbnet_xmit_csum_and_map(stru
+ 		*tucso = ~csum_tcpudp_magic(ip_hdr(skb)->saddr,
+ 					    ip_hdr(skb)->daddr, 0,
+ 					    ip_hdr(skb)->protocol, 0);
+-	} else if (skb_is_gso_v6(skb)) {
++	} else if (skb_is_gso(skb) && skb_is_gso_v6(skb)) {
+ 		tucso = dest + ((void *)&(tcp_hdr(skb)->check) - data);
+ 		*tucso = ~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
+ 					  &ipv6_hdr(skb)->daddr, 0,
+ 					  IPPROTO_TCP, 0);
+-		return false;
+ 	} else if (protocol == htons(ETH_P_IPV6)) {
+ 		tucso = dest + skb_checksum_start_offset(skb) + skb->csum_offset;
+ 		*tucso = ~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
 
 
