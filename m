@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E454E7BE152
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DD127BE1C6
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377460AbjJINt3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:49:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40848 "EHLO
+        id S1377546AbjJINyV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:54:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377463AbjJINt2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:49:28 -0400
+        with ESMTP id S1377557AbjJINxz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6874BA3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:49:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6ACC433C9;
-        Mon,  9 Oct 2023 13:49:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE24C91
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFC8C433C7;
+        Mon,  9 Oct 2023 13:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859366;
-        bh=SpNze+RHEhdHpTQmcqDrU+7x3qfFFj5wATzfBUT2d34=;
+        s=korg; t=1696859633;
+        bh=RTQkYVQX0tPoEgYXRsuOwyIcCPjR6oPWmNFDPp0LDbk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OfeM5crVkjzYIAirbKfK8L+gFyX8FP0MeELWnrR5ypjzGrpWh1nvjmpjuN8vfwLgz
-         HJu3Z6MqxgcVMpf8R+oliuyhKTIThm5OKS0x8/urap92bSR9sC2ZQhMqKJv4o1GV1K
-         WQhQ6v3Bp96FG3Aiwg9IiCktqYnV6rP4+//a61AE=
+        b=sgh/PkqLzPo9eCpt6fwaCBpCnWu2yTTpCxH51SDb49dkjF09JdnyWKF+Fy3F0zSXK
+         10/kqCnJk9Dq87Ps1qzCeVdtmPfvXrX3SbVTVP9XWxN9/GMiTk24NnINa/WzsrrrVJ
+         cCquDFz2SY/72daecsvkzgYOhRBhIHkBHFvGpOLc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.14 55/55] parisc: Restore __ldcw_align for PA-RISC 2.0 processors
-Date:   Mon,  9 Oct 2023 15:06:54 +0200
-Message-ID: <20231009130109.802418405@linuxfoundation.org>
+        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 83/91] sctp: update hb timer immediately after users change hb_interval
+Date:   Mon,  9 Oct 2023 15:06:55 +0200
+Message-ID: <20231009130114.427857385@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,118 +50,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave@parisc-linux.org>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit 914988e099fc658436fbd7b8f240160c352b6552 upstream.
+[ Upstream commit 1f4e803cd9c9166eb8b6c8b0b8e4124f7499fc07 ]
 
-Back in 2005, Kyle McMartin removed the 16-byte alignment for
-ldcw semaphores on PA 2.0 machines (CONFIG_PA20). This broke
-spinlocks on pre PA8800 processors. The main symptom was random
-faults in mmap'd memory (e.g., gcc compilations, etc).
+Currently, when hb_interval is changed by users, it won't take effect
+until the next expiry of hb timer. As the default value is 30s, users
+have to wait up to 30s to wait its hb_interval update to work.
 
-Unfortunately, the errata for this ldcw change is lost.
+This becomes pretty bad in containers where a much smaller value is
+usually set on hb_interval. This patch improves it by resetting the
+hb timer immediately once the value of hb_interval is updated by users.
 
-The issue is the 16-byte alignment required for ldcw semaphore
-instructions can only be reduced to natural alignment when the
-ldcw operation can be handled coherently in cache. Only PA8800
-and PA8900 processors actually support doing the operation in
-cache.
+Note that we don't address the already existing 'problem' when sending
+a heartbeat 'on demand' if one hb has just been sent(from the timer)
+mentioned in:
 
-Aligning the spinlock dynamically adds two integer instructions
-to each spinlock.
+  https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg590224.html
 
-Tested on rp3440, c8000 and a500.
-
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Link: https://lore.kernel.org/linux-parisc/6b332788-2227-127f-ba6d-55e99ecf4ed8@bell.net/T/#t
-Link: https://lore.kernel.org/linux-parisc/20050609050702.GB4641@roadwarrior.mcmartin.ca/
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/r/75465785f8ee5df2fb3acdca9b8fafdc18984098.1696172660.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/ldcw.h           |   36 +++++++++++++++++--------------
- arch/parisc/include/asm/spinlock_types.h |    5 ----
- 2 files changed, 20 insertions(+), 21 deletions(-)
+ net/sctp/socket.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/parisc/include/asm/ldcw.h
-+++ b/arch/parisc/include/asm/ldcw.h
-@@ -2,14 +2,28 @@
- #ifndef __PARISC_LDCW_H
- #define __PARISC_LDCW_H
- 
--#ifndef CONFIG_PA20
- /* Because kmalloc only guarantees 8-byte alignment for kmalloc'd data,
-    and GCC only guarantees 8-byte alignment for stack locals, we can't
-    be assured of 16-byte alignment for atomic lock data even if we
-    specify "__attribute ((aligned(16)))" in the type declaration.  So,
-    we use a struct containing an array of four ints for the atomic lock
-    type and dynamically select the 16-byte aligned int from the array
--   for the semaphore.  */
-+   for the semaphore. */
-+
-+/* From: "Jim Hull" <jim.hull of hp.com>
-+   I've attached a summary of the change, but basically, for PA 2.0, as
-+   long as the ",CO" (coherent operation) completer is implemented, then the
-+   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
-+   they only require "natural" alignment (4-byte for ldcw, 8-byte for
-+   ldcd).
-+
-+   Although the cache control hint is accepted by all PA 2.0 processors,
-+   it is only implemented on PA8800/PA8900 CPUs. Prior PA8X00 CPUs still
-+   require 16-byte alignment. If the address is unaligned, the operation
-+   of the instruction is undefined. The ldcw instruction does not generate
-+   unaligned data reference traps so misaligned accesses are not detected.
-+   This hid the problem for years. So, restore the 16-byte alignment dropped
-+   by Kyle McMartin in "Remove __ldcw_align for PA-RISC 2.0 processors". */
- 
- #define __PA_LDCW_ALIGNMENT	16
- #define __PA_LDCW_ALIGN_ORDER	4
-@@ -19,22 +33,12 @@
- 		& ~(__PA_LDCW_ALIGNMENT - 1);			\
- 	(volatile unsigned int *) __ret;			\
- })
--#define __LDCW	"ldcw"
- 
--#else /*CONFIG_PA20*/
--/* From: "Jim Hull" <jim.hull of hp.com>
--   I've attached a summary of the change, but basically, for PA 2.0, as
--   long as the ",CO" (coherent operation) completer is specified, then the
--   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
--   they only require "natural" alignment (4-byte for ldcw, 8-byte for
--   ldcd). */
--
--#define __PA_LDCW_ALIGNMENT	4
--#define __PA_LDCW_ALIGN_ORDER	2
--#define __ldcw_align(a) (&(a)->slock)
-+#ifdef CONFIG_PA20
- #define __LDCW	"ldcw,co"
--
--#endif /*!CONFIG_PA20*/
-+#else
-+#define __LDCW	"ldcw"
-+#endif
- 
- /* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.
-    We don't explicitly expose that "*a" may be written as reload
---- a/arch/parisc/include/asm/spinlock_types.h
-+++ b/arch/parisc/include/asm/spinlock_types.h
-@@ -3,13 +3,8 @@
- #define __ASM_SPINLOCK_TYPES_H
- 
- typedef struct {
--#ifdef CONFIG_PA20
--	volatile unsigned int slock;
--# define __ARCH_SPIN_LOCK_UNLOCKED { 1 }
--#else
- 	volatile unsigned int lock[4];
- # define __ARCH_SPIN_LOCK_UNLOCKED	{ { 1, 1, 1, 1 } }
--#endif
- } arch_spinlock_t;
- 
- typedef struct {
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 432dccd375064..f954d3c8876db 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -2578,6 +2578,7 @@ static int sctp_apply_peer_addr_params(struct sctp_paddrparams *params,
+ 			if (trans) {
+ 				trans->hbinterval =
+ 				    msecs_to_jiffies(params->spp_hbinterval);
++				sctp_transport_reset_hb_timer(trans);
+ 			} else if (asoc) {
+ 				asoc->hbinterval =
+ 				    msecs_to_jiffies(params->spp_hbinterval);
+-- 
+2.40.1
+
 
 
