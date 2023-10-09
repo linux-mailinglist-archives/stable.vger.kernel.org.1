@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C49EA7BDD1C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 771AD7BDFF5
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376676AbjJINHd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:07:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42720 "EHLO
+        id S1377170AbjJINgH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:36:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376666AbjJINHc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:07:32 -0400
+        with ESMTP id S1377190AbjJINgF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 439979C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:07:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 818D7C433C7;
-        Mon,  9 Oct 2023 13:07:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E92994
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C588C433C7;
+        Mon,  9 Oct 2023 13:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856850;
-        bh=oDXdg/kKm23+GmUZ+TsLYv7GhClBxscqZeFt268V1t8=;
+        s=korg; t=1696858563;
+        bh=KMjAhxYLd805wJUSLA/4tNIvOeXU8JzqDoDTk5hVhMI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=db4Hxos+R/ZggKJTomWt8Hu6agy9AvY7z8CtCyIhyBxaRbx0sdSnsRwKPORDPvyls
-         wgjPPNiJa392jFaQaDflcI9RwPAH7xjsaKoAIO+9gzRHY3G+dv/Ef3168oqulq2hY8
-         OCB6JAbP9PgZ9wSFxWRLccbmqMNTQeXJgvCADPCM=
+        b=oF4r1EJmZxqI+HYEdLShfeo597Lp7SBc4W92ibQLxWk/Epvsl8+DYBwHvi8afx1mV
+         Min0mdK/sKE8QdTiMueyI/NsfMswi+Y6OgQRTxEW1IcpO7pUqkcDqbVnPb7UoPAaeA
+         xtK/tbMJnhzDYhUpZLXWnRxXqoyVJqtJAx1z50Ug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Pearson <mpearson@lenovo.com>,
-        Kailang Yang <kailang@realtek.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 004/163] ALSA: hda/realtek - ALC287 I2S speaker platform support
+        patches@lists.linux.dev, Andreas Dilger <adilger@dilger.ca>,
+        Wang Jianchao <wangjianchao@kuaishou.com>,
+        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 007/226] ext4: remove the group parameter of ext4_trim_extent
 Date:   Mon,  9 Oct 2023 14:59:28 +0200
-Message-ID: <20231009130124.144934262@linuxfoundation.org>
+Message-ID: <20231009130126.910323711@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,91 +50,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Wang Jianchao <wangjianchao@kuaishou.com>
 
-[ Upstream commit e43252db7e207a2e194e6a4883a43a31a776a968 ]
+[ Upstream commit bd2eea8d0a6b6a9aca22f20bf74f73b71d8808af ]
 
-0x17 was only speaker pin, DAC assigned will be 0x03. Headphone
-assigned to 0x02.
-Playback via headphone will get EQ filter processing. So,it needs to
-swap DAC.
+Get rid of the 'group' parameter of ext4_trim_extent as we can get
+it from the 'e4b'.
 
-Tested-by: Mark Pearson <mpearson@lenovo.com>
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/4e4cfa1b3b4c46838aecafc6e8b6f876@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 41b07476da38 ("ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support")
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Signed-off-by: Wang Jianchao <wangjianchao@kuaishou.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20210724074124.25731-2-jianchao.wan9@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ fs/ext4/mballoc.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 57bd11c6057d5..b040889b22880 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7049,6 +7049,27 @@ static void alc295_fixup_dell_inspiron_top_speakers(struct hda_codec *codec,
- 	}
- }
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 2f6ed59d81f02..342225c1cf332 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5859,19 +5859,19 @@ int ext4_group_add_blocks(handle_t *handle, struct super_block *sb,
+  * @sb:		super block for the file system
+  * @start:	starting block of the free extent in the alloc. group
+  * @count:	number of blocks to TRIM
+- * @group:	alloc. group we are working with
+  * @e4b:	ext4 buddy for the group
+  *
+  * Trim "count" blocks starting at "start" in the "group". To assure that no
+  * one will allocate those blocks, mark it as used in buddy bitmap. This must
+  * be called with under the group lock.
+  */
+-static int ext4_trim_extent(struct super_block *sb, int start, int count,
+-			     ext4_group_t group, struct ext4_buddy *e4b)
++static int ext4_trim_extent(struct super_block *sb,
++		int start, int count, struct ext4_buddy *e4b)
+ __releases(bitlock)
+ __acquires(bitlock)
+ {
+ 	struct ext4_free_extent ex;
++	ext4_group_t group = e4b->bd_group;
+ 	int ret = 0;
  
-+/* Forcibly assign NID 0x03 to HP while NID 0x02 to SPK */
-+static void alc287_fixup_bind_dacs(struct hda_codec *codec,
-+				    const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	static const hda_nid_t conn[] = { 0x02, 0x03 }; /* exclude 0x06 */
-+	static const hda_nid_t preferred_pairs[] = {
-+		0x17, 0x02, 0x21, 0x03, 0
-+	};
-+
-+	if (action != HDA_FIXUP_ACT_PRE_PROBE)
-+		return;
-+
-+	snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
-+	spec->gen.preferred_dacs = preferred_pairs;
-+	spec->gen.auto_mute_via_amp = 1;
-+	snd_hda_codec_write_cache(codec, 0x14, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
-+			    0x0); /* Make sure 0x14 was disable */
-+}
-+
-+
- enum {
- 	ALC269_FIXUP_GPIO2,
- 	ALC269_FIXUP_SONY_VAIO,
-@@ -7311,6 +7332,7 @@ enum {
- 	ALC287_FIXUP_TAS2781_I2C,
- 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
- 	ALC245_FIXUP_HP_X360_MUTE_LEDS,
-+	ALC287_FIXUP_THINKPAD_I2S_SPK,
- };
+ 	trace_ext4_trim_extent(sb, group, start, count);
+@@ -5947,8 +5947,7 @@ ext4_trim_all_free(struct super_block *sb, ext4_group_t group,
+ 		next = mb_find_next_bit(bitmap, max + 1, start);
  
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -9405,6 +9427,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC245_FIXUP_HP_GPIO_LED
- 	},
-+	[ALC287_FIXUP_THINKPAD_I2S_SPK] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc287_fixup_bind_dacs,
-+	},
- };
- 
- static const struct snd_pci_quirk alc269_fixup_tbl[] = {
-@@ -10537,6 +10563,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
- 		{0x17, 0x90170111},
- 		{0x19, 0x03a11030},
- 		{0x21, 0x03211020}),
-+	SND_HDA_PIN_QUIRK(0x10ec0287, 0x17aa, "Lenovo", ALC287_FIXUP_THINKPAD_I2S_SPK,
-+		{0x17, 0x90170110},
-+		{0x19, 0x03a11030},
-+		{0x21, 0x03211020}),
- 	SND_HDA_PIN_QUIRK(0x10ec0286, 0x1025, "Acer", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE,
- 		{0x12, 0x90a60130},
- 		{0x17, 0x90170110},
+ 		if ((next - start) >= minblocks) {
+-			ret = ext4_trim_extent(sb, start,
+-					       next - start, group, &e4b);
++			ret = ext4_trim_extent(sb, start, next - start, &e4b);
+ 			if (ret && ret != -EOPNOTSUPP)
+ 				break;
+ 			ret = 0;
 -- 
 2.40.1
 
