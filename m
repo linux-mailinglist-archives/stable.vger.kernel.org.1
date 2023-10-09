@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E1567BDF4B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B27D7BDE55
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:18:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376827AbjJIN23 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:28:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53486 "EHLO
+        id S1377024AbjJINS0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:18:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376893AbjJIN22 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:28:28 -0400
+        with ESMTP id S1377011AbjJINSZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 745D1D8
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:28:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043F6C433C9;
-        Mon,  9 Oct 2023 13:28:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8EA91
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB31FC433C8;
+        Mon,  9 Oct 2023 13:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858106;
-        bh=txLNGn1BjSxuzd5LOL2C4TyQhzlpxPX0+xHTREhC/fU=;
+        s=korg; t=1696857503;
+        bh=4dcOHUSYD8H6RXEuKVnxSqXyzoXQLWRoHQPTvb1VeyQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0q1JJ+9LBfPUDalepcuYMepQbM8+Izy0HQybGruVugAPIFsbFdsKvl07hkBmNdkla
-         PuZcmhunEHClR/l6cW/xnvRtUNHq4bVPe0tneX7hwFSRu0FWGNsCfmaigUL/aniE1w
-         VyCQyoAs1vlOxZUsQHy9QL8q374nMbz8xY70QwME=
+        b=WhSKsaDzOGWaw24r7YPPFOYYEtyUeYQiwtpe/uiuvQ8qUVxxSxiKyKZlIa5U7NqFJ
+         wgAnQsr2XBXusCL3s4/WIkiLEjLE3nBJ99J63mma0W/0JeR2015etK9WHxtrQSoeQN
+         yT/ybPFfYiT5jOhWS0UTih+hKrpgKkWBbZrD9mcU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 007/131] ext4: scope ret locally in ext4_try_to_trim_range()
+        patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
+        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 066/162] btrfs: reject unknown mount options early
 Date:   Mon,  9 Oct 2023 15:00:47 +0200
-Message-ID: <20231009130116.553818958@linuxfoundation.org>
+Message-ID: <20231009130124.749820251@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,59 +48,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit afcc4e32f606dbfb47aa7309172c89174b86e74c ]
+commit 5f521494cc73520ffac18ede0758883b9aedd018 upstream.
 
-As commit 6920b3913235 ("ext4: add new helper interface
-ext4_try_to_trim_range()") moves some code into the separate function
-ext4_try_to_trim_range(), the use of the variable ret within that
-function is more limited and can be adjusted as well.
+[BUG]
+The following script would allow invalid mount options to be specified
+(although such invalid options would just be ignored):
 
-Scope the use of the variable ret locally and drop dead assignments.
+  # mkfs.btrfs -f $dev
+  # mount $dev $mnt1		<<< Successful mount expected
+  # mount $dev $mnt2 -o junk	<<< Failed mount expected
+  # echo $?
+  0
 
-No functional change.
+[CAUSE]
+For the 2nd mount, since the fs is already mounted, we won't go through
+open_ctree() thus no btrfs_parse_options(), but only through
+btrfs_parse_subvol_options().
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Link: https://lore.kernel.org/r/20210820120853.23134-1-lukas.bulwahn@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However we do not treat unrecognized options from valid but irrelevant
+options, thus those invalid options would just be ignored by
+btrfs_parse_subvol_options().
+
+[FIX]
+Add the handling for Opt_err to handle invalid options and error out,
+while still ignore other valid options inside btrfs_parse_subvol_options().
+
+Reported-by: Anand Jain <anand.jain@oracle.com>
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/btrfs/super.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 5a7fe5aa0fc38..e1b487acb843b 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5200,7 +5200,6 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- {
- 	ext4_grpblk_t next, count, free_count;
- 	void *bitmap;
--	int ret = 0;
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -1260,6 +1260,10 @@ static int btrfs_parse_subvol_options(co
  
- 	bitmap = e4b->bd_bitmap;
- 	start = (e4b->bd_info->bb_first_free > start) ?
-@@ -5215,10 +5214,10 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- 		next = mb_find_next_bit(bitmap, max + 1, start);
- 
- 		if ((next - start) >= minblocks) {
--			ret = ext4_trim_extent(sb, start, next - start, e4b);
-+			int ret = ext4_trim_extent(sb, start, next - start, e4b);
-+
- 			if (ret && ret != -EOPNOTSUPP)
- 				break;
--			ret = 0;
- 			count += next - start;
+ 			*subvol_objectid = subvolid;
+ 			break;
++		case Opt_err:
++			btrfs_err(NULL, "unrecognized mount option '%s'", p);
++			error = -EINVAL;
++			goto out;
+ 		default:
+ 			break;
  		}
- 		free_count += next - start;
--- 
-2.40.1
-
 
 
