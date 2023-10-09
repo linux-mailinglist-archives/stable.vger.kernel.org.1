@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39A037BE151
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2A487BE1C5
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377493AbjJINt0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:49:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48780 "EHLO
+        id S1377542AbjJINyU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:54:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377463AbjJINtY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:49:24 -0400
+        with ESMTP id S1377536AbjJINxw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A2259D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:49:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B890C433C7;
-        Mon,  9 Oct 2023 13:49:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3FEB91
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0311DC433C7;
+        Mon,  9 Oct 2023 13:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859362;
-        bh=ViJOIQzNz+ZcS+iCMvFfffJzokau8IMAhyUzNV69JbQ=;
+        s=korg; t=1696859630;
+        bh=xi4DNL5XEWL4SkWJZIOqWPTreZvdEBJu0hjsTd+EIBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ydsLPW7mOs6nezNBViYsUCiTWDcrZJ6l0q0NLksazsdkOYWfW2BqJcbOc313uw9C5
-         exj08p9hO6COn2ak+zs0tmCQrfYPEUWdr00nHFWEljfO8BuwomSZmS8e8gzmza00vk
-         1DR63biYf5CVPxjDZ64+sOBLA9QYKVH0NlX6pZcw=
+        b=bR3WBZrad3H1Ua0GLABq3KgLdnRG1WB0TK5FXMu3gUUvGrg1Qw0fpG9hVxuIvgk09
+         sr9fWk7tK/qL9SoBDdeeBrSU9Imf/Sg8SBCl42ghUrSzmBsbA8fCAEVB613J5Wbkl/
+         CST+deHeac8ACFvBjhLdhCONZQ4FMAcAa0zDOQI8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 4.14 54/55] RDMA/mlx5: Fix NULL string error
-Date:   Mon,  9 Oct 2023 15:06:53 +0200
-Message-ID: <20231009130109.767609994@linuxfoundation.org>
+        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 82/91] sctp: update transport state when processing a dupcook packet
+Date:   Mon,  9 Oct 2023 15:06:54 +0200
+Message-ID: <20231009130114.391699545@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,35 +50,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit dab994bcc609a172bfdab15a0d4cb7e50e8b5458 upstream.
+[ Upstream commit 2222a78075f0c19ca18db53fd6623afb4aff602d ]
 
-checkpath is complaining about NULL string, change it to 'Unknown'.
+During the 4-way handshake, the transport's state is set to ACTIVE in
+sctp_process_init() when processing INIT_ACK chunk on client or
+COOKIE_ECHO chunk on server.
 
-Fixes: 37aa5c36aa70 ("IB/mlx5: Add UARs write-combining and non-cached mapping")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Link: https://lore.kernel.org/r/8638e5c14fadbde5fa9961874feae917073af920.1695203958.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the collision scenario below:
+
+  192.168.1.2 > 192.168.1.1: sctp (1) [INIT] [init tag: 3922216408]
+    192.168.1.1 > 192.168.1.2: sctp (1) [INIT] [init tag: 144230885]
+    192.168.1.2 > 192.168.1.1: sctp (1) [INIT ACK] [init tag: 3922216408]
+    192.168.1.1 > 192.168.1.2: sctp (1) [COOKIE ECHO]
+    192.168.1.2 > 192.168.1.1: sctp (1) [COOKIE ACK]
+  192.168.1.1 > 192.168.1.2: sctp (1) [INIT ACK] [init tag: 3914796021]
+
+when processing COOKIE_ECHO on 192.168.1.2, as it's in COOKIE_WAIT state,
+sctp_sf_do_dupcook_b() is called by sctp_sf_do_5_2_4_dupcook() where it
+creates a new association and sets its transport to ACTIVE then updates
+to the old association in sctp_assoc_update().
+
+However, in sctp_assoc_update(), it will skip the transport update if it
+finds a transport with the same ipaddr already existing in the old asoc,
+and this causes the old asoc's transport state not to move to ACTIVE
+after the handshake.
+
+This means if DATA retransmission happens at this moment, it won't be able
+to enter PF state because of the check 'transport->state == SCTP_ACTIVE'
+in sctp_do_8_2_transport_strike().
+
+This patch fixes it by updating the transport in sctp_assoc_update() with
+sctp_assoc_add_peer() where it updates the transport state if there is
+already a transport with the same ipaddr exists in the old asoc.
+
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/r/fd17356abe49713ded425250cc1ae51e9f5846c6.1696172325.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sctp/associola.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -1680,7 +1680,7 @@ static inline char *mmap_cmd2str(enum ml
- 	case MLX5_IB_MMAP_NC_PAGE:
- 		return "NC";
- 	default:
--		return NULL;
-+		return "Unknown";
- 	}
- }
+diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+index d17708800652a..78c1429d1301c 100644
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -1181,8 +1181,7 @@ int sctp_assoc_update(struct sctp_association *asoc,
+ 		/* Add any peer addresses from the new association. */
+ 		list_for_each_entry(trans, &new->peer.transport_addr_list,
+ 				    transports)
+-			if (!sctp_assoc_lookup_paddr(asoc, &trans->ipaddr) &&
+-			    !sctp_assoc_add_peer(asoc, &trans->ipaddr,
++			if (!sctp_assoc_add_peer(asoc, &trans->ipaddr,
+ 						 GFP_ATOMIC, trans->state))
+ 				return -ENOMEM;
  
+-- 
+2.40.1
+
 
 
