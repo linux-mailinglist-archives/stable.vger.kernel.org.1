@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E12037BE024
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CADCF7BDD99
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:11:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377234AbjJINh6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:37:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42356 "EHLO
+        id S1376806AbjJINLG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:11:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377241AbjJINh5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:37:57 -0400
+        with ESMTP id S1376841AbjJINKl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:10:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FEE2B9
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:37:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70148C433C8;
-        Mon,  9 Oct 2023 13:37:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC302113
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB01C433C8;
+        Mon,  9 Oct 2023 13:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858674;
-        bh=hc+WrSLB8NRvNkkDaTI4a12OaIVlSVoDxEjWlECcAx0=;
+        s=korg; t=1696857022;
+        bh=8w/o176i7s7SQ5JcxR+9Ef4d1zPMIEfN0MUlWDDJ1yM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ItMdRS+1pKG4L7lrHxMQtUTr10zS8ZFB4W5Fs1k+/VQBuE54EZfXSW8oY/J9njiIM
-         B+B5gDOOYiMecseHPDsU3hri/UvYeUAPdf2As+CgcAtGocE8p/TnlYEbggCaEOfqeb
-         g0SF7BYjejCVkpeX1kpsL3MkzuokIZdVZrbWoyA8=
+        b=AJHTJBhFyioOkxsuq0HG1PAzSkvGJ9GAT+wxnV006mU6ZMggX20mVflgH15mepZpT
+         SHHmJ9ONynBARm70RIxRN1zHN+VtJY3s6sFQCSuFYh6b+J8/1B8FxMUbmYElCShK9w
+         Q+NOuKbsNr18lvSzurb5iZPWJ5oVG2LKkoP6fDZw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/226] Input: i8042 - add quirk for TUXEDO Gemini 17 Gen1/Clevo PD70PN
+Subject: [PATCH 6.5 062/163] wifi: iwlwifi: dbg_ini: fix structure packing
 Date:   Mon,  9 Oct 2023 15:00:26 +0200
-Message-ID: <20231009130128.483267421@linuxfoundation.org>
+Message-ID: <20231009130125.751217510@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,52 +50,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit eb09074bdb05ffd6bfe77f8b4a41b76ef78c997b ]
+[ Upstream commit 424c82e8ad56756bb98b08268ffcf68d12d183eb ]
 
-The touchpad of this device is both connected via PS/2 and i2c. This causes
-strange behavior when both driver fight for control. The easy fix is to
-prevent the PS/2 driver from accessing the mouse port as the full feature
-set of the touchpad is only supported in the i2c interface anyway.
+The iwl_fw_ini_error_dump_range structure has conflicting alignment
+requirements for the inner union and the outer struct:
 
-The strange behavior in this case is, that when an external screen is
-connected and the notebook is closed, the pointer on the external screen is
-moving to the lower right corner. When the notebook is opened again, this
-movement stops, but the touchpad clicks are unresponsive afterwards until
-reboot.
+In file included from drivers/net/wireless/intel/iwlwifi/fw/dbg.c:9:
+drivers/net/wireless/intel/iwlwifi/fw/error-dump.h:312:2: error: field  within 'struct iwl_fw_ini_error_dump_range' is less aligned than 'union iwl_fw_ini_error_dump_range::(anonymous at drivers/net/wireless/intel/iwlwifi/fw/error-dump.h:312:2)' and is usually due to 'struct iwl_fw_ini_error_dump_range' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
+        union {
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230607173331.851192-1-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+As the original intention was apparently to make the entire structure
+unaligned, mark the innermost members the same way so the union
+becomes packed as well.
+
+Fixes: 973193554cae6 ("iwlwifi: dbg_ini: dump headers cleanup")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230616090343.2454061-1-arnd@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/error-dump.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index ced72b45aedc8..1bd5898abb97d 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1184,6 +1184,13 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	/* See comment on TUXEDO InfinityBook S17 Gen6 / Clevo NS70MU above */
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "PD5x_7xPNP_PNR_PNN_PNT"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
+index f5e08988dc7bf..06d6f7f664308 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
+@@ -310,9 +310,9 @@ struct iwl_fw_ini_fifo_hdr {
+ struct iwl_fw_ini_error_dump_range {
+ 	__le32 range_data_size;
+ 	union {
+-		__le32 internal_base_addr;
+-		__le64 dram_base_addr;
+-		__le32 page_num;
++		__le32 internal_base_addr __packed;
++		__le64 dram_base_addr __packed;
++		__le32 page_num __packed;
+ 		struct iwl_fw_ini_fifo_hdr fifo_hdr;
+ 		struct iwl_cmd_header fw_pkt_hdr;
+ 	};
 -- 
 2.40.1
 
