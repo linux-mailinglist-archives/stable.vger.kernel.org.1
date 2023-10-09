@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D629E7BE0A0
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 582E87BDE83
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377378AbjJINmR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:42:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39262 "EHLO
+        id S1346463AbjJINUL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:20:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377332AbjJINmQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:16 -0400
+        with ESMTP id S1346459AbjJINUK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84BBB91
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C414FC433C7;
-        Mon,  9 Oct 2023 13:42:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC15CA
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84815C433C8;
+        Mon,  9 Oct 2023 13:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858934;
-        bh=9/bmWRw88BZ1Y0V074KIVuZB2A3/NftkfjJxFSwyGyU=;
+        s=korg; t=1696857607;
+        bh=KhnhA6R9Zw8E7NFnCu3a8gOmPEC8CUmvyiwsVzYqLRs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ds+m6AwIdYsih2Z6VOLNDIKMf+AWgMCbPm/0HHMm9+/MF1V1NSLsmZ0R3qRgwqXGv
-         SmVrEZG19eb8mwu0f68lHf4Mxjgg1A1q7lYy8wlzh2Iz5h7Ax20R8Z7pwGcT9ckH+a
-         GIu8cDaknVwUIw61ghqgiNfl6rbXmA67Xe6xySfA=
+        b=Mk+HXDAGKsdVgkK1YdiihqcDnqSA1vlwVGHhopfBkXQF1TpObuUj8LWV3ct7Da+zc
+         D8vdc15iexKu4GfiTLUA3ZduTwpUYuRmAMSaRZgONX/glJA08ni8ywvFArjmnACsq9
+         qAasbZaZdNfqvh/esYBDZWT89Vx7rGruMhdKTeeY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Grzedzicki <mge@meta.com>,
-        Jack Wang <jinpu.wang@ionos.com>,
+        patches@lists.linux.dev, Junxiao Bi <junxiao.bi@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/226] scsi: pm80xx: Use phy-specific SAS address when sending PHY_START command
+Subject: [PATCH 6.1 099/162] scsi: target: core: Fix deadlock due to recursive locking
 Date:   Mon,  9 Oct 2023 15:01:20 +0200
-Message-ID: <20231009130129.887664964@linuxfoundation.org>
+Message-ID: <20231009130125.655025154@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +50,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Grzedzicki <mge@meta.com>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-[ Upstream commit 71996bb835aed58c7ec4967be1d05190a27339ec ]
+[ Upstream commit a154f5f643c6ecddd44847217a7a3845b4350003 ]
 
-Some cards have more than one SAS address. Using an incorrect address
-causes communication issues with some devices like expanders.
+The following call trace shows a deadlock issue due to recursive locking of
+mutex "device_mutex". First lock acquire is in target_for_each_device() and
+second in target_free_device().
 
-Closes: https://lore.kernel.org/linux-kernel/A57AEA84-5CA0-403E-8053-106033C73C70@fb.com/
-Signed-off-by: Michal Grzedzicki <mge@meta.com>
-Link: https://lore.kernel.org/r/20230913155611.3183612-1-mge@meta.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
+ PID: 148266   TASK: ffff8be21ffb5d00  CPU: 10   COMMAND: "iscsi_ttx"
+  #0 [ffffa2bfc9ec3b18] __schedule at ffffffffa8060e7f
+  #1 [ffffa2bfc9ec3ba0] schedule at ffffffffa8061224
+  #2 [ffffa2bfc9ec3bb8] schedule_preempt_disabled at ffffffffa80615ee
+  #3 [ffffa2bfc9ec3bc8] __mutex_lock at ffffffffa8062fd7
+  #4 [ffffa2bfc9ec3c40] __mutex_lock_slowpath at ffffffffa80631d3
+  #5 [ffffa2bfc9ec3c50] mutex_lock at ffffffffa806320c
+  #6 [ffffa2bfc9ec3c68] target_free_device at ffffffffc0935998 [target_core_mod]
+  #7 [ffffa2bfc9ec3c90] target_core_dev_release at ffffffffc092f975 [target_core_mod]
+  #8 [ffffa2bfc9ec3ca0] config_item_put at ffffffffa79d250f
+  #9 [ffffa2bfc9ec3cd0] config_item_put at ffffffffa79d2583
+ #10 [ffffa2bfc9ec3ce0] target_devices_idr_iter at ffffffffc0933f3a [target_core_mod]
+ #11 [ffffa2bfc9ec3d00] idr_for_each at ffffffffa803f6fc
+ #12 [ffffa2bfc9ec3d60] target_for_each_device at ffffffffc0935670 [target_core_mod]
+ #13 [ffffa2bfc9ec3d98] transport_deregister_session at ffffffffc0946408 [target_core_mod]
+ #14 [ffffa2bfc9ec3dc8] iscsit_close_session at ffffffffc09a44a6 [iscsi_target_mod]
+ #15 [ffffa2bfc9ec3df0] iscsit_close_connection at ffffffffc09a4a88 [iscsi_target_mod]
+ #16 [ffffa2bfc9ec3df8] finish_task_switch at ffffffffa76e5d07
+ #17 [ffffa2bfc9ec3e78] iscsit_take_action_for_connection_exit at ffffffffc0991c23 [iscsi_target_mod]
+ #18 [ffffa2bfc9ec3ea0] iscsi_target_tx_thread at ffffffffc09a403b [iscsi_target_mod]
+ #19 [ffffa2bfc9ec3f08] kthread at ffffffffa76d8080
+ #20 [ffffa2bfc9ec3f50] ret_from_fork at ffffffffa8200364
+
+Fixes: 36d4cb460bcb ("scsi: target: Avoid that EXTENDED COPY commands trigger lock inversion")
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Link: https://lore.kernel.org/r/20230918225848.66463-1-junxiao.bi@oracle.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm8001_hwi.c | 2 +-
- drivers/scsi/pm8001/pm80xx_hwi.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/target/target_core_device.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_hwi.c b/drivers/scsi/pm8001/pm8001_hwi.c
-index e9b3485baee01..2b20c6a0293f5 100644
---- a/drivers/scsi/pm8001/pm8001_hwi.c
-+++ b/drivers/scsi/pm8001/pm8001_hwi.c
-@@ -4344,7 +4344,7 @@ pm8001_chip_phy_start_req(struct pm8001_hba_info *pm8001_ha, u8 phy_id)
- 	payload.sas_identify.dev_type = SAS_END_DEVICE;
- 	payload.sas_identify.initiator_bits = SAS_PROTOCOL_ALL;
- 	memcpy(payload.sas_identify.sas_addr,
--		pm8001_ha->sas_addr, SAS_ADDR_SIZE);
-+		&pm8001_ha->phy[phy_id].dev_sas_addr, SAS_ADDR_SIZE);
- 	payload.sas_identify.phy_id = phy_id;
- 	ret = pm8001_mpi_build_cmd(pm8001_ha, circularQ, opcode, &payload,
- 			sizeof(payload), 0);
-diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
-index c98c0a53a018c..ed01c93062091 100644
---- a/drivers/scsi/pm8001/pm80xx_hwi.c
-+++ b/drivers/scsi/pm8001/pm80xx_hwi.c
-@@ -4741,7 +4741,7 @@ pm80xx_chip_phy_start_req(struct pm8001_hba_info *pm8001_ha, u8 phy_id)
- 	payload.sas_identify.dev_type = SAS_END_DEVICE;
- 	payload.sas_identify.initiator_bits = SAS_PROTOCOL_ALL;
- 	memcpy(payload.sas_identify.sas_addr,
--	  &pm8001_ha->sas_addr, SAS_ADDR_SIZE);
-+		&pm8001_ha->phy[phy_id].dev_sas_addr, SAS_ADDR_SIZE);
- 	payload.sas_identify.phy_id = phy_id;
- 	ret = pm8001_mpi_build_cmd(pm8001_ha, circularQ, opcode, &payload,
- 			sizeof(payload), 0);
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index d21f88de197c7..301fe376a1206 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -883,7 +883,6 @@ sector_t target_to_linux_sector(struct se_device *dev, sector_t lb)
+ EXPORT_SYMBOL(target_to_linux_sector);
+ 
+ struct devices_idr_iter {
+-	struct config_item *prev_item;
+ 	int (*fn)(struct se_device *dev, void *data);
+ 	void *data;
+ };
+@@ -893,11 +892,9 @@ static int target_devices_idr_iter(int id, void *p, void *data)
+ {
+ 	struct devices_idr_iter *iter = data;
+ 	struct se_device *dev = p;
++	struct config_item *item;
+ 	int ret;
+ 
+-	config_item_put(iter->prev_item);
+-	iter->prev_item = NULL;
+-
+ 	/*
+ 	 * We add the device early to the idr, so it can be used
+ 	 * by backend modules during configuration. We do not want
+@@ -907,12 +904,13 @@ static int target_devices_idr_iter(int id, void *p, void *data)
+ 	if (!target_dev_configured(dev))
+ 		return 0;
+ 
+-	iter->prev_item = config_item_get_unless_zero(&dev->dev_group.cg_item);
+-	if (!iter->prev_item)
++	item = config_item_get_unless_zero(&dev->dev_group.cg_item);
++	if (!item)
+ 		return 0;
+ 	mutex_unlock(&device_mutex);
+ 
+ 	ret = iter->fn(dev, iter->data);
++	config_item_put(item);
+ 
+ 	mutex_lock(&device_mutex);
+ 	return ret;
+@@ -935,7 +933,6 @@ int target_for_each_device(int (*fn)(struct se_device *dev, void *data),
+ 	mutex_lock(&device_mutex);
+ 	ret = idr_for_each(&devices_idr, target_devices_idr_iter, &iter);
+ 	mutex_unlock(&device_mutex);
+-	config_item_put(iter.prev_item);
+ 	return ret;
+ }
+ 
 -- 
 2.40.1
 
