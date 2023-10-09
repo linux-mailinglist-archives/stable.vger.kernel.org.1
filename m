@@ -2,37 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A0507BE14D
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B86087BE12F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377485AbjJINtY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:49:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50078 "EHLO
+        id S1377466AbjJINrz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:47:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377716AbjJINtL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:49:11 -0400
+        with ESMTP id S1377464AbjJINrs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:47:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8916B9D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:49:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA494C433C8;
-        Mon,  9 Oct 2023 13:49:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DAC0D8
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:47:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3617C433CA;
+        Mon,  9 Oct 2023 13:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859350;
-        bh=rQY0ybrSKoXT+KqRc8gSuKb/JUv5MLzK6DBTH8BnmVc=;
+        s=korg; t=1696859267;
+        bh=L4VSnQ1OsmwhDblt7VqrbLegJbShW2A1GFYG80i45qs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V17VM5u3xPZgUKRMPCebnV+CkcbzXIGtVJrYcAZPDeM0n8kRKDizfH8tTgq3/6pLJ
-         WSKngGygm1373e3VsMHNr5zwcljzH0UAGlWVmMwRmZNnTDvF6QafpxoPzze6DeKtaM
-         G6to8Ywb22/WBuX82dh0lJUSWOoJwh0Q+Hmc0NOw=
+        b=MfD9+N35md+OZC5dtTf6dBudWKuzk7OFDIT0IzHYoti1MQQbKQaD8lWBLIfOib4Jl
+         /a1/f99jxBQW9jqSWzDyBoCgZMvncZtWeiKb2txjlLa25e826qPvqBMNZ1IbMqTS23
+         wRFOE8cxwQsrzae+50sKd+mxdFVDRbpmF+X8+kTM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pan Bian <bianpan2016@163.com>,
-        Ferry Meng <mengferry@linux.alibaba.com>,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 23/55] nilfs2: fix potential use after free in nilfs_gccache_submit_read_data()
-Date:   Mon,  9 Oct 2023 15:06:22 +0200
-Message-ID: <20231009130108.595362827@linuxfoundation.org>
+        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 4.14 24/55] ata: libata-scsi: ignore reserved bits for REPORT SUPPORTED OPERATION CODES
+Date:   Mon,  9 Oct 2023 15:06:23 +0200
+Message-ID: <20231009130108.625784305@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
 References: <20231009130107.717692466@linuxfoundation.org>
@@ -54,61 +52,40 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Pan Bian <bianpan2016@163.com>
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-commit 7ee29facd8a9c5a26079148e36bcf07141b3a6bc upstream.
+commit 3ef600923521616ebe192c893468ad0424de2afb upstream.
 
-In nilfs_gccache_submit_read_data(), brelse(bh) is called to drop the
-reference count of bh when the call to nilfs_dat_translate() fails.  If
-the reference count hits 0 and its owner page gets unlocked, bh may be
-freed.  However, bh->b_page is dereferenced to put the page after that,
-which may result in a use-after-free bug.  This patch moves the release
-operation after unlocking and putting the page.
+For REPORT SUPPORTED OPERATION CODES command, the service action field is
+defined as bits 0-4 in the second byte in the CDB. Bits 5-7 in the second
+byte are reserved.
 
-NOTE: The function in question is only called in GC, and in combination
-with current userland tools, address translation using DAT does not occur
-in that function, so the code path that causes this issue will not be
-executed.  However, it is possible to run that code path by intentionally
-modifying the userland GC library or by calling the GC ioctl directly.
+Only look at the service action field in the second byte when determining
+if the MAINTENANCE IN opcode is a REPORT SUPPORTED OPERATION CODES command.
 
-[konishi.ryusuke@gmail.com: NOTE added to the commit log]
-Link: https://lkml.kernel.org/r/1543201709-53191-1-git-send-email-bianpan2016@163.com
-Link: https://lkml.kernel.org/r/20230921141731.10073-1-konishi.ryusuke@gmail.com
-Fixes: a3d93f709e89 ("nilfs2: block cache for garbage collection")
-Signed-off-by: Pan Bian <bianpan2016@163.com>
-Reported-by: Ferry Meng <mengferry@linux.alibaba.com>
-Closes: https://lkml.kernel.org/r/20230818092022.111054-1-mengferry@linux.alibaba.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This matches how we only look at the service action field in the second
+byte when determining if the SERVICE ACTION IN(16) opcode is a READ
+CAPACITY(16) command (reserved bits 5-7 in the second byte are ignored).
+
+Fixes: 7b2030942859 ("libata: Add support for SCT Write Same")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/gcinode.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/ata/libata-scsi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/gcinode.c
-+++ b/fs/nilfs2/gcinode.c
-@@ -82,10 +82,8 @@ int nilfs_gccache_submit_read_data(struc
- 		struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4562,7 +4562,7 @@ void ata_scsi_simulate(struct ata_device
+ 		break;
  
- 		err = nilfs_dat_translate(nilfs->ns_dat, vbn, &pbn);
--		if (unlikely(err)) { /* -EIO, -ENOMEM, -ENOENT */
--			brelse(bh);
-+		if (unlikely(err)) /* -EIO, -ENOMEM, -ENOENT */
- 			goto failed;
--		}
- 	}
- 
- 	lock_buffer(bh);
-@@ -111,6 +109,8 @@ int nilfs_gccache_submit_read_data(struc
-  failed:
- 	unlock_page(bh->b_page);
- 	put_page(bh->b_page);
-+	if (unlikely(err))
-+		brelse(bh);
- 	return err;
- }
- 
+ 	case MAINTENANCE_IN:
+-		if (scsicmd[1] == MI_REPORT_SUPPORTED_OPERATION_CODES)
++		if ((scsicmd[1] & 0x1f) == MI_REPORT_SUPPORTED_OPERATION_CODES)
+ 			ata_scsi_rbuf_fill(&args, ata_scsiop_maint_in);
+ 		else
+ 			ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
 
 
