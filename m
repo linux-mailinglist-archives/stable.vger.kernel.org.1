@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A36797BDDB3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:12:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB4647BE07E
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376800AbjJINMg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:12:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59310 "EHLO
+        id S1377338AbjJINkp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:40:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376903AbjJINMU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:20 -0400
+        with ESMTP id S1377312AbjJINkn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E198A12E
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0661C433CB;
-        Mon,  9 Oct 2023 13:11:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 621749D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:40:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A3AC433C8;
+        Mon,  9 Oct 2023 13:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857072;
-        bh=2zuVP+GCTb3gUovTqxj+vEzClwM3WJh4lmUEwYMI5XI=;
+        s=korg; t=1696858842;
+        bh=BrFQmTkptpam5NSMcrzTRbYDWTo4lzjbEftnjz9HvCQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KEPqkQYfYsDXaIbIQz01FkC6JUfRQby1kARArv6CKG0/5U/lOQz+pZ+5IwdiPWHCb
-         YkTFBQttNAM0xjPbrQKrMscdXbLvG8bK7WWFVRMr7JJek6bEJJ553CvtBuWxypJ39y
-         L4C6IOjX/86smwYJYcNH3d7YXt+gBeoDcC6Gv4Mg=
+        b=g+DnhvPgKKeicVSaOZfJQlfNY+gLeOR/9xR4kbkQmIjkSWZZf3V6LYewJ0vsTEbBB
+         2LlMO3Lt4RZ5BfZx1uhc7Tw4Rk8tS8Pf5XAL0tCfNYBhv1URMFKTgarx6HEypogMkG
+         H+cTMHCaeXMZHcNnyWsHt9eeIENR2D97MvG7xVUM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Julien Panis <jpanis@baylibre.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 086/163] wifi: mac80211: fix potential key use-after-free
+Subject: [PATCH 5.10 089/226] bus: ti-sysc: Use fsleep() instead of usleep_range() in sysc_reset()
 Date:   Mon,  9 Oct 2023 15:00:50 +0200
-Message-ID: <20231009130126.418217905@linuxfoundation.org>
+Message-ID: <20231009130129.099607892@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,60 +49,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Julien Panis <jpanis@baylibre.com>
 
-[ Upstream commit 31db78a4923ef5e2008f2eed321811ca79e7f71b ]
+[ Upstream commit d929b2b7464f95ec01e47f560b1e687482ba8929 ]
 
-When ieee80211_key_link() is called by ieee80211_gtk_rekey_add()
-but returns 0 due to KRACK protection (identical key reinstall),
-ieee80211_gtk_rekey_add() will still return a pointer into the
-key, in a potential use-after-free. This normally doesn't happen
-since it's only called by iwlwifi in case of WoWLAN rekey offload
-which has its own KRACK protection, but still better to fix, do
-that by returning an error code and converting that to success on
-the cfg80211 boundary only, leaving the error for bad callers of
-ieee80211_gtk_rekey_add().
+The am335x-evm started producing boot errors because of subtle timing
+changes:
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: fdf7cb4185b6 ("mac80211: accept key reinstall without changing anything")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Unhandled fault: external abort on non-linefetch (0x1008) at 0xf03c1010
+...
+sysc_reset from sysc_probe+0xf60/0x1514
+sysc_probe from platform_probe+0x5c/0xbc
+...
+
+The fix consists in using the appropriate sleep function in sysc reset.
+For flexible sleeping, fsleep is recommended. Here, sysc delay parameter
+can take any value in [0 - 255] us range. As a result, fsleep() should
+be used, calling udelay() for a sysc delay lower than 10 us.
+
+Signed-off-by: Julien Panis <jpanis@baylibre.com>
+Fixes: e709ed70d122 ("bus: ti-sysc: Fix missing reset delay handling")
+Message-ID: <20230821-fix-ti-sysc-reset-v1-1-5a0a5d8fae55@baylibre.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 3 +++
- net/mac80211/key.c | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/bus/ti-sysc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 45e7a5d9c7d94..e883c41a2163b 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -566,6 +566,9 @@ static int ieee80211_add_key(struct wiphy *wiphy, struct net_device *dev,
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 5e8c078efd22a..24d589b43dfe7 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -2085,8 +2085,7 @@ static int sysc_reset(struct sysc *ddata)
  	}
  
- 	err = ieee80211_key_link(key, link, sta);
-+	/* KRACK protection, shouldn't happen but just silently accept key */
-+	if (err == -EALREADY)
-+		err = 0;
+ 	if (ddata->cfg.srst_udelay)
+-		usleep_range(ddata->cfg.srst_udelay,
+-			     ddata->cfg.srst_udelay * 2);
++		fsleep(ddata->cfg.srst_udelay);
  
-  out_unlock:
- 	mutex_unlock(&local->sta_mtx);
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 21cf5a2089101..f719abe33a328 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -905,7 +905,7 @@ int ieee80211_key_link(struct ieee80211_key *key,
- 	 */
- 	if (ieee80211_key_identical(sdata, old_key, key)) {
- 		ieee80211_key_free_unused(key);
--		ret = 0;
-+		ret = -EALREADY;
- 		goto out;
- 	}
- 
+ 	if (ddata->post_reset_quirk)
+ 		ddata->post_reset_quirk(ddata);
 -- 
 2.40.1
 
