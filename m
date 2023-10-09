@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25F987BDF74
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A4D57BDE8F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377043AbjJINaR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:30:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55120 "EHLO
+        id S1346513AbjJINUl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:20:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376463AbjJINaO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:30:14 -0400
+        with ESMTP id S1346521AbjJINUl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78822A3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:30:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE539C433C7;
-        Mon,  9 Oct 2023 13:30:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA1AB8F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A01C433CA;
+        Mon,  9 Oct 2023 13:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858211;
-        bh=6Ji8HmQ4BKVW84OW31OFI4LTZI5uNlfQ4fI+7eZENpU=;
+        s=korg; t=1696857639;
+        bh=pXHh0Uvx01GffeQvkxSL6qdhp1r1zNXjfuqXnaNjZQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b27KV2ulSQrtiCNNo0KBHmZuKo7Z5NFrV2iTxLy85IyrAivttGxpEhK8YTNMKnaLi
-         1cXOc8efTh4e39ObyQVqWhx+8mYUUwPS7VjaFXV/l2aYU2uOKsmLt3fPJoWIREq0Rg
-         pum3oKBAdEYGnFf+26kmSNa4IbN5u/h4bpYg2VIE=
+        b=zrqGho+6iscXClEvoMQ0ALAFRkxQvCkwl9OcTl5lVXo8T8yoNCvoc/CN3eMSW1xH1
+         TpI7FmMRrEJbu8hqqbBWKHCv3vQGPXRq3bTgnOREdrTqKPJcaBQB4dBEQBOtocdBq7
+         ytYcDCkGlW9ubwpt6qEra6hMRmn3+cdBf6aYJDGE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        patches@lists.linux.dev, John Fastabend <john.fastabend@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jakub Sitnicki <jakub@cloudflare.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 043/131] MIPS: Alchemy: only build mmc support helpers if au1xmmc is enabled
+Subject: [PATCH 6.1 102/162] bpf: tcp_read_skb needs to pop skb regardless of seq
 Date:   Mon,  9 Oct 2023 15:01:23 +0200
-Message-ID: <20231009130117.629550008@linuxfoundation.org>
+Message-ID: <20231009130125.740199791@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,136 +50,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: John Fastabend <john.fastabend@gmail.com>
 
-[ Upstream commit ef8f8f04a0b25e8f294b24350e8463a8d6a9ba0b ]
+[ Upstream commit 9b7177b1df64b8d7f85700027c324aadd6aded00 ]
 
-While commit d4a5c59a955b ("mmc: au1xmmc: force non-modular build and
-remove symbol_get usage") to be built in, it can still build a kernel
-without MMC support and thuse no mmc_detect_change symbol at all.
+Before fix e5c6de5fa0258 tcp_read_skb() would increment the tp->copied-seq
+value. This (as described in the commit) would cause an error for apps
+because once that is incremented the application might believe there is no
+data to be read. Then some apps would stall or abort believing no data is
+available.
 
-Add ifdefs to build the mmc support code in the alchemy arch code
-conditional on mmc support.
+However, the fix is incomplete because it introduces another issue in
+the skb dequeue. The loop does tcp_recv_skb() in a while loop to consume
+as many skbs as possible. The problem is the call is ...
 
-Fixes: d4a5c59a955b ("mmc: au1xmmc: force non-modular build and remove symbol_get usage")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+  tcp_recv_skb(sk, seq, &offset)
+
+... where 'seq' is:
+
+  u32 seq = tp->copied_seq;
+
+Now we can hit a case where we've yet incremented copied_seq from BPF side,
+but then tcp_recv_skb() fails this test ...
+
+ if (offset < skb->len || (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN))
+
+... so that instead of returning the skb we call tcp_eat_recv_skb() which
+frees the skb. This is because the routine believes the SKB has been collapsed
+per comment:
+
+ /* This looks weird, but this can happen if TCP collapsing
+  * splitted a fat GRO packet, while we released socket lock
+  * in skb_splice_bits()
+  */
+
+This can't happen here we've unlinked the full SKB and orphaned it. Anyways
+it would confuse any BPF programs if the data were suddenly moved underneath
+it.
+
+To fix this situation do simpler operation and just skb_peek() the data
+of the queue followed by the unlink. It shouldn't need to check this
+condition and tcp_read_skb() reads entire skbs so there is no need to
+handle the 'offset!=0' case as we would see in tcp_read_sock().
+
+Fixes: e5c6de5fa0258 ("bpf, sockmap: Incorrectly handling copied_seq")
+Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Link: https://lore.kernel.org/bpf/20230926035300.135096-2-john.fastabend@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/alchemy/devboards/db1000.c | 4 ++++
- arch/mips/alchemy/devboards/db1200.c | 6 ++++++
- arch/mips/alchemy/devboards/db1300.c | 4 ++++
- 3 files changed, 14 insertions(+)
+ net/ipv4/tcp.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
-index 50de86eb8784c..3183df60ad337 100644
---- a/arch/mips/alchemy/devboards/db1000.c
-+++ b/arch/mips/alchemy/devboards/db1000.c
-@@ -164,6 +164,7 @@ static struct platform_device db1x00_audio_dev = {
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index fab25d4f3a6f1..96fdde6e42b1b 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1755,16 +1755,13 @@ EXPORT_SYMBOL(tcp_read_sock);
  
- /******************************************************************************/
- 
-+#ifdef CONFIG_MMC_AU1X
- static irqreturn_t db1100_mmc_cd(int irq, void *ptr)
+ int tcp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
  {
- 	mmc_detect_change(ptr, msecs_to_jiffies(500));
-@@ -369,6 +370,7 @@ static struct platform_device db1100_mmc1_dev = {
- 	.num_resources	= ARRAY_SIZE(au1100_mmc1_res),
- 	.resource	= au1100_mmc1_res,
- };
-+#endif /* CONFIG_MMC_AU1X */
+-	struct tcp_sock *tp = tcp_sk(sk);
+-	u32 seq = tp->copied_seq;
+ 	struct sk_buff *skb;
+ 	int copied = 0;
+-	u32 offset;
  
- /******************************************************************************/
+ 	if (sk->sk_state == TCP_LISTEN)
+ 		return -ENOTCONN;
  
-@@ -432,8 +434,10 @@ static struct platform_device *db1x00_devs[] = {
+-	while ((skb = tcp_recv_skb(sk, seq, &offset)) != NULL) {
++	while ((skb = skb_peek(&sk->sk_receive_queue)) != NULL) {
+ 		u8 tcp_flags;
+ 		int used;
  
- static struct platform_device *db1100_devs[] = {
- 	&au1100_lcd_device,
-+#ifdef CONFIG_MMC_AU1X
- 	&db1100_mmc0_dev,
- 	&db1100_mmc1_dev,
-+#endif
- };
+@@ -1777,13 +1774,10 @@ int tcp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ 				copied = used;
+ 			break;
+ 		}
+-		seq += used;
+ 		copied += used;
  
- int __init db1000_dev_setup(void)
-diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
-index b70e2cf8a27bc..414f92eacb5e5 100644
---- a/arch/mips/alchemy/devboards/db1200.c
-+++ b/arch/mips/alchemy/devboards/db1200.c
-@@ -326,6 +326,7 @@ static struct platform_device db1200_ide_dev = {
- 
- /**********************************************************************/
- 
-+#ifdef CONFIG_MMC_AU1X
- /* SD carddetects:  they're supposed to be edge-triggered, but ack
-  * doesn't seem to work (CPLD Rev 2).  Instead, the screaming one
-  * is disabled and its counterpart enabled.  The 200ms timeout is
-@@ -584,6 +585,7 @@ static struct platform_device pb1200_mmc1_dev = {
- 	.num_resources	= ARRAY_SIZE(au1200_mmc1_res),
- 	.resource	= au1200_mmc1_res,
- };
-+#endif /* CONFIG_MMC_AU1X */
- 
- /**********************************************************************/
- 
-@@ -751,7 +753,9 @@ static struct platform_device db1200_audiodma_dev = {
- static struct platform_device *db1200_devs[] __initdata = {
- 	NULL,		/* PSC0, selected by S6.8 */
- 	&db1200_ide_dev,
-+#ifdef CONFIG_MMC_AU1X
- 	&db1200_mmc0_dev,
-+#endif
- 	&au1200_lcd_dev,
- 	&db1200_eth_dev,
- 	&db1200_nand_dev,
-@@ -762,7 +766,9 @@ static struct platform_device *db1200_devs[] __initdata = {
- };
- 
- static struct platform_device *pb1200_devs[] __initdata = {
-+#ifdef CONFIG_MMC_AU1X
- 	&pb1200_mmc1_dev,
-+#endif
- };
- 
- /* Some peripheral base addresses differ on the PB1200 */
-diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
-index 6f16543c16fc5..fcfefa48d2608 100644
---- a/arch/mips/alchemy/devboards/db1300.c
-+++ b/arch/mips/alchemy/devboards/db1300.c
-@@ -450,6 +450,7 @@ static struct platform_device db1300_ide_dev = {
- 
- /**********************************************************************/
- 
-+#ifdef CONFIG_MMC_AU1X
- static irqreturn_t db1300_mmc_cd(int irq, void *ptr)
- {
- 	disable_irq_nosync(irq);
-@@ -632,6 +633,7 @@ static struct platform_device db1300_sd0_dev = {
- 	.resource	= au1300_sd0_res,
- 	.num_resources	= ARRAY_SIZE(au1300_sd0_res),
- };
-+#endif /* CONFIG_MMC_AU1X */
- 
- /**********************************************************************/
- 
-@@ -769,8 +771,10 @@ static struct platform_device *db1300_dev[] __initdata = {
- 	&db1300_5waysw_dev,
- 	&db1300_nand_dev,
- 	&db1300_ide_dev,
-+#ifdef CONFIG_MMC_AU1X
- 	&db1300_sd0_dev,
- 	&db1300_sd1_dev,
-+#endif
- 	&db1300_lcd_dev,
- 	&db1300_ac97_dev,
- 	&db1300_i2s_dev,
+-		if (tcp_flags & TCPHDR_FIN) {
+-			++seq;
++		if (tcp_flags & TCPHDR_FIN)
+ 			break;
+-		}
+ 	}
+ 	return copied;
+ }
 -- 
 2.40.1
 
