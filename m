@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C78C67BE149
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BFE97BE199
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376848AbjJINtX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:49:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47252 "EHLO
+        id S1377305AbjJINv6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:51:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377664AbjJINtB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:49:01 -0400
+        with ESMTP id S1377237AbjJINv5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:51:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5DD1A3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:48:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CE8C433C8;
-        Mon,  9 Oct 2023 13:48:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55382AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:51:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A22C433C8;
+        Mon,  9 Oct 2023 13:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859337;
-        bh=B1qH2txrwlm9F5yWvBok2P6nR6n38yxIL6GnX+qlVvE=;
+        s=korg; t=1696859515;
+        bh=FgnKFMADbxsUyx4Wf3So8CP24dusaJrA63EVJ0obm5U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0nN/MjdsLWhcJtUcRQUyqFS9zqGsPjBByMZkEJlUbJV34w3Chm/KiDpAgg1Wd6vz6
-         d3tdKJQ0zePkwNSYUValcGh16Ursc5/kAbf1Vnjf48YSHZ8NfmZdM0/Rr3WXYXssJt
-         4F9ZUhHb/NtMiaSNsEqNUOal8ropEJsZilnNCzzs=
+        b=2cTowki7Y88H8X41Zewblyiv9Vf8X9GOSqQVCgeHqo8mqbZTCH3z06vcm74SvBAc8
+         09j2YZnS8XX59BbQ0v1ctSUvu6Gu/cyLWYz2iT7sD6vYs79K7skrnkb3H0oAgPHzZ7
+         G40cblKCTYYm2EIakVvPW8xX2l3Aiup4WETi3nLg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Szuying Chen <Chloe_Chen@asmedia.com.tw>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
+        patches@lists.linux.dev, Vishal Goel <vishal.goel@samsung.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Munehisa Kamata <kamatam@amazon.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 19/55] ata: libahci: clear pending interrupt status
+Subject: [PATCH 4.19 46/91] Smack:- Use overlay inode label in smack_inode_copy_up()
 Date:   Mon,  9 Oct 2023 15:06:18 +0200
-Message-ID: <20231009130108.451550433@linuxfoundation.org>
+Message-ID: <20231009130113.121946269@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,103 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Szuying Chen <chensiying21@gmail.com>
+From: Vishal Goel <vishal.goel@samsung.com>
 
-[ Upstream commit 737dd811a3dbfd7edd4ad2ba5152e93d99074f83 ]
+commit 387ef964460f14fe1c1ea29aba70e22731ea7cf7 upstream.
 
-When a CRC error occurs, the HBA asserts an interrupt to indicate an
-interface fatal error (PxIS.IFS). The ISR clears PxIE and PxIS, then
-does error recovery. If the adapter receives another SDB FIS
-with an error (PxIS.TFES) from the device before the start of the EH
-recovery process, the interrupt signaling the new SDB cannot be
-serviced as PxIE was cleared already. This in turn results in the HBA
-inability to issue any command during the error recovery process after
-setting PxCMD.ST to 1 because PxIS.TFES is still set.
+Currently in "smack_inode_copy_up()" function, process label is
+changed with the label on parent inode. Due to which,
+process is assigned directory label and whatever file or directory
+created by the process are also getting directory label
+which is wrong label.
 
-According to AHCI 1.3.1 specifications section 6.2.2, fatal errors
-notified by setting PxIS.HBFS, PxIS.HBDS, PxIS.IFS or PxIS.TFES will
-cause the HBA to enter the ERR:Fatal state. In this state, the HBA
-shall not issue any new commands.
+Changes has been done to use label of overlay inode instead
+of parent inode.
 
-To avoid this situation, introduce the function
-ahci_port_clear_pending_irq() to clear pending interrupts before
-executing a COMRESET. This follows the AHCI 1.3.1 - section 6.2.2.2
-specification.
-
-Signed-off-by: Szuying Chen <Chloe_Chen@asmedia.com.tw>
-Fixes: e0bfd149973d ("[PATCH] ahci: stop engine during hard reset")
-Cc: stable@vger.kernel.org
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Vishal Goel <vishal.goel@samsung.com>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+[4.19: adjusted for the lack of helper functions]
+Fixes: d6d80cb57be4 ("Smack: Base support for overlayfs")
+Signed-off-by: Munehisa Kamata <kamatam@amazon.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libahci.c | 35 +++++++++++++++++++++++------------
- 1 file changed, 23 insertions(+), 12 deletions(-)
+ security/smack/smack_lsm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
-index 3111c649816a2..563fcef14b7cb 100644
---- a/drivers/ata/libahci.c
-+++ b/drivers/ata/libahci.c
-@@ -1196,6 +1196,26 @@ static ssize_t ahci_activity_show(struct ata_device *dev, char *buf)
- 	return sprintf(buf, "%d\n", emp->blink_policy);
- }
- 
-+static void ahci_port_clear_pending_irq(struct ata_port *ap)
-+{
-+	struct ahci_host_priv *hpriv = ap->host->private_data;
-+	void __iomem *port_mmio = ahci_port_base(ap);
-+	u32 tmp;
-+
-+	/* clear SError */
-+	tmp = readl(port_mmio + PORT_SCR_ERR);
-+	dev_dbg(ap->host->dev, "PORT_SCR_ERR 0x%x\n", tmp);
-+	writel(tmp, port_mmio + PORT_SCR_ERR);
-+
-+	/* clear port IRQ */
-+	tmp = readl(port_mmio + PORT_IRQ_STAT);
-+	dev_dbg(ap->host->dev, "PORT_IRQ_STAT 0x%x\n", tmp);
-+	if (tmp)
-+		writel(tmp, port_mmio + PORT_IRQ_STAT);
-+
-+	writel(1 << ap->port_no, hpriv->mmio + HOST_IRQ_STAT);
-+}
-+
- static void ahci_port_init(struct device *dev, struct ata_port *ap,
- 			   int port_no, void __iomem *mmio,
- 			   void __iomem *port_mmio)
-@@ -1210,18 +1230,7 @@ static void ahci_port_init(struct device *dev, struct ata_port *ap,
- 	if (rc)
- 		dev_warn(dev, "%s (%d)\n", emsg, rc);
- 
--	/* clear SError */
--	tmp = readl(port_mmio + PORT_SCR_ERR);
--	dev_dbg(dev, "PORT_SCR_ERR 0x%x\n", tmp);
--	writel(tmp, port_mmio + PORT_SCR_ERR);
--
--	/* clear port IRQ */
--	tmp = readl(port_mmio + PORT_IRQ_STAT);
--	dev_dbg(dev, "PORT_IRQ_STAT 0x%x\n", tmp);
--	if (tmp)
--		writel(tmp, port_mmio + PORT_IRQ_STAT);
--
--	writel(1 << port_no, mmio + HOST_IRQ_STAT);
-+	ahci_port_clear_pending_irq(ap);
- 
- 	/* mark esata ports */
- 	tmp = readl(port_mmio + PORT_CMD);
-@@ -1551,6 +1560,8 @@ int ahci_do_hardreset(struct ata_link *link, unsigned int *class,
- 	tf.command = ATA_BUSY;
- 	ata_tf_to_fis(&tf, 0, 0, d2h_fis);
- 
-+	ahci_port_clear_pending_irq(ap);
-+
- 	rc = sata_link_hardreset(link, timing, deadline, online,
- 				 ahci_check_ready);
- 
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 4f65d953fe318..a09a9c6bbdf63 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4612,7 +4612,7 @@ static int smack_inode_copy_up(struct dentry *dentry, struct cred **new)
+ 	/*
+ 	 * Get label from overlay inode and set it in create_sid
+ 	 */
+-	isp = d_inode(dentry->d_parent)->i_security;
++	isp = d_inode(dentry)->i_security;
+ 	skp = isp->smk_inode;
+ 	tsp->smk_task = skp;
+ 	*new = new_creds;
 -- 
 2.40.1
 
