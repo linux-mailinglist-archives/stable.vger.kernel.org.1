@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3134D7BE203
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 16:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4278A7BE254
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 16:18:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377548AbjJIOBu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 10:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53252 "EHLO
+        id S234547AbjJIOR7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 10:17:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376693AbjJIOBt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 10:01:49 -0400
+        with ESMTP id S234088AbjJIOR6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 10:17:58 -0400
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA55AB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 07:01:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E182B8E
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 07:17:56 -0700 (PDT)
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
         by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
         (envelope-from <a.fatoum@pengutronix.de>)
-        id 1qpqpO-0002eK-PD; Mon, 09 Oct 2023 16:01:46 +0200
-Message-ID: <fc5955b8-7c4d-620c-9960-0ff644192fb3@pengutronix.de>
-Date:   Mon, 9 Oct 2023 16:01:46 +0200
+        id 1qpr4z-0004rd-Uc; Mon, 09 Oct 2023 16:17:53 +0200
+Message-ID: <6092d57f-4688-aaf2-120d-0e10c40f89c6@pengutronix.de>
+Date:   Mon, 9 Oct 2023 16:17:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 5.4 038/131] clk: imx: pll14xx: dynamically configure PLL
- for 393216000/361267200Hz
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, Marco Felsch <m.felsch@pengutronix.de>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20231009130116.329529591@linuxfoundation.org>
- <20231009130117.474995235@linuxfoundation.org>
 From:   Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20231009130117.474995235@linuxfoundation.org>
+Subject: Re: Drop from 5.15 and older -- clk: imx: pll14xx: dynamically
+ configure PLL for 393216000/361267200Hz
+To:     Greg KH <gregkh@linuxfoundation.org>, Marek Vasut <marex@denx.de>
+Cc:     linux-stable <stable@vger.kernel.org>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>
+References: <4e5fa5b2-66b8-8f0b-ccb9-c2b774054e4e@denx.de>
+ <2023100738-shell-scant-cfb6@gregkh>
+Content-Language: en-US
+In-Reply-To: <2023100738-shell-scant-cfb6@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
@@ -53,91 +50,61 @@ X-Mailing-List: stable@vger.kernel.org
 
 Hello Greg,
 
-On 09.10.23 15:01, Greg Kroah-Hartman wrote:
-> 5.4-stable review patch.  If anyone has any objections, please let me know.
+On 07.10.23 13:44, Greg KH wrote:
+> On Tue, Oct 03, 2023 at 10:52:25PM +0200, Marek Vasut wrote:
+>> Please drop the following commits from stable 5.10.y and 5.15.y respectively
+>>
+>> 972acd701b19 ("clk: imx: pll14xx: dynamically configure PLL for
+>> 393216000/361267200Hz")
+>> a8474506c912 ("clk: imx: pll14xx: dynamically configure PLL for
+>> 393216000/361267200Hz")
+>>
+>> The commit message states 'Cc: stable@vger.kernel.org # v5.18+'
+>> and the commit should only be applied to Linux 5.18.y and newer,
+>> on anything older it breaks PLL configuration due to missing
+>> prerequisite patches.
+> 
+> Ok, I'll go revert them, but the Fixes: tag in this commit is very wrong
+> as that's what we used to determine how far back to take these changes.
 
-As mentioned before[1][2], this is not v5.4 stable material.
+The Fixes tag is correct. The PLL parameters added in that commit were
+deemed suboptimal. Kernels >= v5.18 can compute better parameters on the fly,
+so that's why the patch says
 
-Please drop from your queue for all releases older than v5.18.
+  Cc: stable@vger.kernel.org # v5.18+
 
-[1]: https://lore.kernel.org/all/6e3ad25c-1042-f786-6f0e-f71ae85aed6b@pengutronix.de/
-[2]: <a76406b2-4154-2de4-b1f5-43e86312d487@pengutronix.de>
+Which is the syntax described in Documentation/admin-guide/reporting-issues.rst.
+I see now though that Documentation/process/stable-kernel-rules.rst has a slightly
+different syntax:
+
+  Cc: <stable@vger.kernel.org> # 3.3.x
+
+Perhaps your maintainer scripts can't handle both cases?
+
+FWIW, I've reached out multiple times about that the patches aren't suitable for
+backports:
+
+  - https://lore.kernel.org/all/6e3ad25c-1042-f786-6f0e-f71ae85aed6b@pengutronix.de/
+  - <a76406b2-4154-2de4-b1f5-43e86312d487@pengutronix.de> (reply to linux-stable-commits)
+  - https://lore.kernel.org/all/7df69de2-1b3a-5226-7dc2-d1489e48f6a2@pengutronix.de/
+  - https://lore.kernel.org/all/e85da95c-5451-31ea-cae9-76d697fb548f@pengutronix.de/
+
+Yet, today I got an email[1] telling me that it's being added to v5.4.258-rc1, although
+it had been dropped from v5.4.257-rc1 after I objected to it.
+
+So that looks like another potential avenue for improving the maintainer scripts.
+
+[1]: https://lore.kernel.org/all/20231009130131.263594775@linuxfoundation.org/
 
 Thanks,
 Ahmad
 
+
 > 
-> ------------------
+> thanks,
 > 
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> greg k-h
 > 
-> [ Upstream commit 72d00e560d10665e6139c9431956a87ded6e9880 ]
-> 
-> Since commit b09c68dc57c9 ("clk: imx: pll14xx: Support dynamic rates"),
-> the driver has the ability to dynamically compute PLL parameters to
-> approximate the requested rates. This is not always used, because the
-> logic is as follows:
-> 
->   - Check if the target rate is hardcoded in the frequency table
->   - Check if varying only kdiv is possible, so switch over is glitch free
->   - Compute rate dynamically by iterating over pdiv range
-> 
-> If we skip the frequency table for the 1443x PLL, we find that the
-> computed values differ to the hardcoded ones. This can be valid if the
-> hardcoded values guarantee for example an earlier lock-in or if the
-> divisors are chosen, so that other important rates are more likely to
-> be reached glitch-free.
-> 
-> For rates (393216000 and 361267200, this doesn't seem to be the case:
-> They are only approximated by existing parameters (393215995 and
-> 361267196 Hz, respectively) and they aren't reachable glitch-free from
-> other hardcoded frequencies. Dropping them from the table allows us
-> to lock-in to these frequencies exactly.
-> 
-> This is immediately noticeable because they are the assigned-clock-rates
-> for IMX8MN_AUDIO_PLL1 and IMX8MN_AUDIO_PLL2, respectively and a look
-> into clk_summary so far showed that they were a few Hz short of the target:
-> 
-> imx8mn-board:~# grep audio_pll[12]_out /sys/kernel/debug/clk/clk_summary
-> audio_pll2_out           0        0        0   361267196 0     0  50000   N
-> audio_pll1_out           1        1        0   393215995 0     0  50000   Y
-> 
-> and afterwards:
-> 
-> imx8mn-board:~# grep audio_pll[12]_out /sys/kernel/debug/clk/clk_summary
-> audio_pll2_out           0        0        0   361267200 0     0  50000   N
-> audio_pll1_out           1        1        0   393216000 0     0  50000   Y
-> 
-> This change is equivalent to adding following hardcoded values:
-> 
->   /*               rate     mdiv  pdiv  sdiv   kdiv */
->   PLL_1443X_RATE(393216000, 655,    5,    3,  23593),
->   PLL_1443X_RATE(361267200, 497,   33,    0, -16882),
-> 
-> Fixes: 053a4ffe2988 ("clk: imx: imx8mm: fix audio pll setting")
-> Cc: stable@vger.kernel.org # v5.18+
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> Link: https://lore.kernel.org/r/20230807084744.1184791-2-m.felsch@pengutronix.de
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/clk/imx/clk-pll14xx.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-> index e7bf6babc28b4..0dbe8c05af478 100644
-> --- a/drivers/clk/imx/clk-pll14xx.c
-> +++ b/drivers/clk/imx/clk-pll14xx.c
-> @@ -57,8 +57,6 @@ static const struct imx_pll14xx_rate_table imx_pll1443x_tbl[] = {
->  	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
->  	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
->  	PLL_1443X_RATE(519750000U, 173, 2, 2, 16384),
-> -	PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
-> -	PLL_1443X_RATE(361267200U, 361, 3, 3, 17511),
->  };
->  
->  struct imx_pll14xx_clk imx_1443x_pll = {
 
 -- 
 Pengutronix e.K.                           |                             |
