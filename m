@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFF957BDEAE
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3C8F7BDF92
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376376AbjJINV4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:21:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48962 "EHLO
+        id S1377076AbjJINb3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:31:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376386AbjJINVz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:55 -0400
+        with ESMTP id S1377078AbjJINb3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB15A9F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38CFC433C9;
-        Mon,  9 Oct 2023 13:21:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53E86B6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95355C433C7;
+        Mon,  9 Oct 2023 13:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857713;
-        bh=z5m1/VFwkEiEkiSTCA3DXHd8aUFEpgE94e3csaWk1t4=;
+        s=korg; t=1696858287;
+        bh=zC/bwarjffb1wH+FyFZTvIuumW3FjgkxT42dBH4VefI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TnT6Lfm1S8Be9JIJIOaTOAId784+ypbcixMneyQ0VdES7NbljsSiYO7TSldKSlkYt
-         PISxasXadu4j3Rxx+b7U4wbEUj6OQLq8s0KdAgRGsMUfSbs/6BGuExZ9M5QULnAoEJ
-         TNOE7C8ss+Xa6UJg2zPp8nUkgtQsE8b541dmKcQU=
+        b=KRScla58yr76M89RTWG+qLF0UE4efZmfkk3TgIvpOxWElronDxjymBm7704+VO093
+         teTV5Dj4dtpTI/cBV97xh8w/o/jzbXDZ0/Ptw4JFPyCxNS4pTkxdXTA2Q0zi8pTgb8
+         xSc644Te7QbdmAXltBk/OJEcPDf9wVyj3EcXH+10=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        kernel test robot <lkp@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/162] net: fix possible store tearing in neigh_periodic_work()
+Subject: [PATCH 5.4 047/131] xtensa: add default definition for XCHAL_HAVE_DIV32
 Date:   Mon,  9 Oct 2023 15:01:27 +0200
-Message-ID: <20231009130125.847785531@linuxfoundation.org>
+Message-ID: <20231009130117.749513950@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit 25563b581ba3a1f263a00e8c9a97f5e7363be6fd ]
+[ Upstream commit 494e87ffa0159b3f879694a9231089707792a44d ]
 
-While looking at a related syzbot report involving neigh_periodic_work(),
-I found that I forgot to add an annotation when deleting an
-RCU protected item from a list.
+When variant FSF is set, XCHAL_HAVE_DIV32 is not defined. Add default
+definition for that macro to prevent build warnings:
 
-Readers use rcu_deference(*np), we need to use either
-rcu_assign_pointer() or WRITE_ONCE() on writer side
-to prevent store tearing.
+arch/xtensa/lib/divsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
+    9 | #if XCHAL_HAVE_DIV32
+arch/xtensa/lib/modsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
+    9 | #if XCHAL_HAVE_DIV32
 
-I use rcu_assign_pointer() to have lockdep support,
-this was the choice made in neigh_flush_dev().
-
-Fixes: 767e97e1e0db ("neigh: RCU conversion of struct neighbour")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 173d6681380a ("xtensa: remove extra header files")
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: lore.kernel.org/r/202309150556.t0yCdv3g-lkp@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/xtensa/include/asm/core.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 6c0f2149f2c72..8e726eb0548f6 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -988,7 +988,9 @@ static void neigh_periodic_work(struct work_struct *work)
- 			    (state == NUD_FAILED ||
- 			     !time_in_range_open(jiffies, n->used,
- 						 n->used + NEIGH_VAR(n->parms, GC_STALETIME)))) {
--				*np = n->next;
-+				rcu_assign_pointer(*np,
-+					rcu_dereference_protected(n->next,
-+						lockdep_is_held(&tbl->lock)));
- 				neigh_mark_dead(n);
- 				write_unlock(&n->lock);
- 				neigh_cleanup_and_release(n);
+diff --git a/arch/xtensa/include/asm/core.h b/arch/xtensa/include/asm/core.h
+index 5975b244b7b80..02c93e08d5925 100644
+--- a/arch/xtensa/include/asm/core.h
++++ b/arch/xtensa/include/asm/core.h
+@@ -6,6 +6,10 @@
+ 
+ #include <variant/core.h>
+ 
++#ifndef XCHAL_HAVE_DIV32
++#define XCHAL_HAVE_DIV32 0
++#endif
++
+ #ifndef XCHAL_HAVE_EXCLUSIVE
+ #define XCHAL_HAVE_EXCLUSIVE 0
+ #endif
 -- 
 2.40.1
 
