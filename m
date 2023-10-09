@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2798C7BDE9E
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CBE67BE09A
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:41:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376369AbjJINVQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:21:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56792 "EHLO
+        id S1376894AbjJINl5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:41:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376348AbjJINVO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:14 -0400
+        with ESMTP id S1377377AbjJINl4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:41:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DF56E0
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FEDC433C7;
-        Mon,  9 Oct 2023 13:21:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98D22B9
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD91FC433C7;
+        Mon,  9 Oct 2023 13:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857671;
-        bh=9zCr2ucCK7FhVhj5G7aGfYpL4lNqlhlROhV8xxv+z8g=;
+        s=korg; t=1696858915;
+        bh=665OEBUA/BcYOyHKOt70jFidWhLO4oA80Vhp4ZWwKXg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lxdrQdk+PN5BD1td/sMyjRcVKyhYerXV7CB+XOVV/gxDJPa2bbQwWfuphG5vsJQvF
-         MCJK3V3rVfjKIsFp9sJSin9BppbWtyflbauZiuMNXUJRTRekTIMEPCmlybK81e1M5k
-         1xhBfNpSaF4QItBwjXmMvKVkJnUk64bpenVF4zxg=
+        b=Ju5CEkDtXjIRFeBC0H0O0RV+CFdwhxz9hb/mdnkt1mpX8mSl8M+9E2C9jPB04AM9E
+         eoZEaHOajQ+PWuF9BkXmmQGAyQ+5WSKsbiqYNBEjF/G8uNRW44FUljIhHQboMDWxc1
+         CswUxb1StCbJ2n/c7QXc43ccrfrfUaH7l3z4RDRM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Phil Sutter <phil@nwl.cc>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Phil Sutter <phil@nwl.cc>,
         Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/162] selftests: netfilter: Test nf_tables audit logging
+Subject: [PATCH 5.10 140/226] netfilter: nft_exthdr: Fix for unsafe packet data read
 Date:   Mon,  9 Oct 2023 15:01:41 +0200
-Message-ID: <20231009130126.243261173@linuxfoundation.org>
+Message-ID: <20231009130130.396884966@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,354 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit e8dbde59ca3fe925d0105bfb380e8429928b16dd ]
+[ Upstream commit cf6b5ffdce5a78b2fcb0e53b3a2487c490bcbf7f ]
 
-Compare NETFILTER_CFG type audit logs emitted from kernel upon ruleset
-modifications against expected output.
+While iterating through an SCTP packet's chunks, skb_header_pointer() is
+called for the minimum expected chunk header size. If (that part of) the
+skbuff is non-linear, the following memcpy() may read data past
+temporary buffer '_sch'. Use skb_copy_bits() instead which does the
+right thing in this situation.
 
+Fixes: 133dc203d77df ("netfilter: nft_exthdr: Support SCTP chunks")
+Suggested-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Phil Sutter <phil@nwl.cc>
+Reviewed-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 0d880dc6f032 ("netfilter: nf_tables: Deduplicate nft_register_obj audit logs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/netfilter/.gitignore  |   1 +
- tools/testing/selftests/netfilter/Makefile    |   4 +-
- .../selftests/netfilter/audit_logread.c       | 165 ++++++++++++++++++
- tools/testing/selftests/netfilter/config      |   1 +
- .../testing/selftests/netfilter/nft_audit.sh  | 108 ++++++++++++
- 5 files changed, 277 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/netfilter/audit_logread.c
- create mode 100755 tools/testing/selftests/netfilter/nft_audit.sh
+ net/netfilter/nft_exthdr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/netfilter/.gitignore b/tools/testing/selftests/netfilter/.gitignore
-index 4cb887b574138..4b2928e1c19d8 100644
---- a/tools/testing/selftests/netfilter/.gitignore
-+++ b/tools/testing/selftests/netfilter/.gitignore
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0-only
- nf-queue
- connect_close
-+audit_logread
-diff --git a/tools/testing/selftests/netfilter/Makefile b/tools/testing/selftests/netfilter/Makefile
-index 3686bfa6c58d7..321db8850da00 100644
---- a/tools/testing/selftests/netfilter/Makefile
-+++ b/tools/testing/selftests/netfilter/Makefile
-@@ -6,13 +6,13 @@ TEST_PROGS := nft_trans_stress.sh nft_fib.sh nft_nat.sh bridge_brouter.sh \
- 	nft_concat_range.sh nft_conntrack_helper.sh \
- 	nft_queue.sh nft_meta.sh nf_nat_edemux.sh \
- 	ipip-conntrack-mtu.sh conntrack_tcp_unreplied.sh \
--	conntrack_vrf.sh nft_synproxy.sh rpath.sh
-+	conntrack_vrf.sh nft_synproxy.sh rpath.sh nft_audit.sh
+diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
+index 274c5f0085186..eb183c024ac46 100644
+--- a/net/netfilter/nft_exthdr.c
++++ b/net/netfilter/nft_exthdr.c
+@@ -389,7 +389,9 @@ static void nft_exthdr_sctp_eval(const struct nft_expr *expr,
+ 				break;
  
- HOSTPKG_CONFIG := pkg-config
- 
- CFLAGS += $(shell $(HOSTPKG_CONFIG) --cflags libmnl 2>/dev/null)
- LDLIBS += $(shell $(HOSTPKG_CONFIG) --libs libmnl 2>/dev/null || echo -lmnl)
- 
--TEST_GEN_FILES =  nf-queue connect_close
-+TEST_GEN_FILES =  nf-queue connect_close audit_logread
- 
- include ../lib.mk
-diff --git a/tools/testing/selftests/netfilter/audit_logread.c b/tools/testing/selftests/netfilter/audit_logread.c
-new file mode 100644
-index 0000000000000..a0a880fc2d9de
---- /dev/null
-+++ b/tools/testing/selftests/netfilter/audit_logread.c
-@@ -0,0 +1,165 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <poll.h>
-+#include <signal.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/socket.h>
-+#include <unistd.h>
-+#include <linux/audit.h>
-+#include <linux/netlink.h>
-+
-+static int fd;
-+
-+#define MAX_AUDIT_MESSAGE_LENGTH	8970
-+struct audit_message {
-+	struct nlmsghdr nlh;
-+	union {
-+		struct audit_status s;
-+		char data[MAX_AUDIT_MESSAGE_LENGTH];
-+	} u;
-+};
-+
-+int audit_recv(int fd, struct audit_message *rep)
-+{
-+	struct sockaddr_nl addr;
-+	socklen_t addrlen = sizeof(addr);
-+	int ret;
-+
-+	do {
-+		ret = recvfrom(fd, rep, sizeof(*rep), 0,
-+			       (struct sockaddr *)&addr, &addrlen);
-+	} while (ret < 0 && errno == EINTR);
-+
-+	if (ret < 0 ||
-+	    addrlen != sizeof(addr) ||
-+	    addr.nl_pid != 0 ||
-+	    rep->nlh.nlmsg_type == NLMSG_ERROR) /* short-cut for now */
-+		return -1;
-+
-+	return ret;
-+}
-+
-+int audit_send(int fd, uint16_t type, uint32_t key, uint32_t val)
-+{
-+	static int seq = 0;
-+	struct audit_message msg = {
-+		.nlh = {
-+			.nlmsg_len   = NLMSG_SPACE(sizeof(msg.u.s)),
-+			.nlmsg_type  = type,
-+			.nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK,
-+			.nlmsg_seq   = ++seq,
-+		},
-+		.u.s = {
-+			.mask    = key,
-+			.enabled = key == AUDIT_STATUS_ENABLED ? val : 0,
-+			.pid     = key == AUDIT_STATUS_PID ? val : 0,
-+		}
-+	};
-+	struct sockaddr_nl addr = {
-+		.nl_family = AF_NETLINK,
-+	};
-+	int ret;
-+
-+	do {
-+		ret = sendto(fd, &msg, msg.nlh.nlmsg_len, 0,
-+			     (struct sockaddr *)&addr, sizeof(addr));
-+	} while (ret < 0 && errno == EINTR);
-+
-+	if (ret != (int)msg.nlh.nlmsg_len)
-+		return -1;
-+	return 0;
-+}
-+
-+int audit_set(int fd, uint32_t key, uint32_t val)
-+{
-+	struct audit_message rep = { 0 };
-+	int ret;
-+
-+	ret = audit_send(fd, AUDIT_SET, key, val);
-+	if (ret)
-+		return ret;
-+
-+	ret = audit_recv(fd, &rep);
-+	if (ret < 0)
-+		return ret;
-+	return 0;
-+}
-+
-+int readlog(int fd)
-+{
-+	struct audit_message rep = { 0 };
-+	int ret = audit_recv(fd, &rep);
-+	const char *sep = "";
-+	char *k, *v;
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	if (rep.nlh.nlmsg_type != AUDIT_NETFILTER_CFG)
-+		return 0;
-+
-+	/* skip the initial "audit(...): " part */
-+	strtok(rep.u.data, " ");
-+
-+	while ((k = strtok(NULL, "="))) {
-+		v = strtok(NULL, " ");
-+
-+		/* these vary and/or are uninteresting, ignore */
-+		if (!strcmp(k, "pid") ||
-+		    !strcmp(k, "comm") ||
-+		    !strcmp(k, "subj"))
-+			continue;
-+
-+		/* strip the varying sequence number */
-+		if (!strcmp(k, "table"))
-+			*strchrnul(v, ':') = '\0';
-+
-+		printf("%s%s=%s", sep, k, v);
-+		sep = " ";
-+	}
-+	if (*sep) {
-+		printf("\n");
-+		fflush(stdout);
-+	}
-+	return 0;
-+}
-+
-+void cleanup(int sig)
-+{
-+	audit_set(fd, AUDIT_STATUS_ENABLED, 0);
-+	close(fd);
-+	if (sig)
-+		exit(0);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	struct sigaction act = {
-+		.sa_handler = cleanup,
-+	};
-+
-+	fd = socket(PF_NETLINK, SOCK_RAW, NETLINK_AUDIT);
-+	if (fd < 0) {
-+		perror("Can't open netlink socket");
-+		return -1;
-+	}
-+
-+	if (sigaction(SIGTERM, &act, NULL) < 0 ||
-+	    sigaction(SIGINT, &act, NULL) < 0) {
-+		perror("Can't set signal handler");
-+		close(fd);
-+		return -1;
-+	}
-+
-+	audit_set(fd, AUDIT_STATUS_ENABLED, 1);
-+	audit_set(fd, AUDIT_STATUS_PID, getpid());
-+
-+	while (1)
-+		readlog(fd);
-+}
-diff --git a/tools/testing/selftests/netfilter/config b/tools/testing/selftests/netfilter/config
-index 4faf2ce021d90..7c42b1b2c69b4 100644
---- a/tools/testing/selftests/netfilter/config
-+++ b/tools/testing/selftests/netfilter/config
-@@ -6,3 +6,4 @@ CONFIG_NFT_REDIR=m
- CONFIG_NFT_MASQ=m
- CONFIG_NFT_FLOW_OFFLOAD=m
- CONFIG_NF_CT_NETLINK=m
-+CONFIG_AUDIT=y
-diff --git a/tools/testing/selftests/netfilter/nft_audit.sh b/tools/testing/selftests/netfilter/nft_audit.sh
-new file mode 100755
-index 0000000000000..83c271b1c7352
---- /dev/null
-+++ b/tools/testing/selftests/netfilter/nft_audit.sh
-@@ -0,0 +1,108 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Check that audit logs generated for nft commands are as expected.
-+
-+SKIP_RC=4
-+RC=0
-+
-+nft --version >/dev/null 2>&1 || {
-+	echo "SKIP: missing nft tool"
-+	exit $SKIP_RC
-+}
-+
-+logfile=$(mktemp)
-+echo "logging into $logfile"
-+./audit_logread >"$logfile" &
-+logread_pid=$!
-+trap 'kill $logread_pid; rm -f $logfile' EXIT
-+exec 3<"$logfile"
-+
-+do_test() { # (cmd, log)
-+	echo -n "testing for cmd: $1 ... "
-+	cat <&3 >/dev/null
-+	$1 >/dev/null || exit 1
-+	sleep 0.1
-+	res=$(diff -a -u <(echo "$2") - <&3)
-+	[ $? -eq 0 ] && { echo "OK"; return; }
-+	echo "FAIL"
-+	echo "$res"
-+	((RC++))
-+}
-+
-+nft flush ruleset
-+
-+for table in t1 t2; do
-+	do_test "nft add table $table" \
-+	"table=$table family=2 entries=1 op=nft_register_table"
-+
-+	do_test "nft add chain $table c1" \
-+	"table=$table family=2 entries=1 op=nft_register_chain"
-+
-+	do_test "nft add chain $table c2; add chain $table c3" \
-+	"table=$table family=2 entries=2 op=nft_register_chain"
-+
-+	cmd="add rule $table c1 counter"
-+
-+	do_test "nft $cmd" \
-+	"table=$table family=2 entries=1 op=nft_register_rule"
-+
-+	do_test "nft $cmd; $cmd" \
-+	"table=$table family=2 entries=2 op=nft_register_rule"
-+
-+	cmd=""
-+	sep=""
-+	for chain in c2 c3; do
-+		for i in {1..3}; do
-+			cmd+="$sep add rule $table $chain counter"
-+			sep=";"
-+		done
-+	done
-+	do_test "nft $cmd" \
-+	"table=$table family=2 entries=6 op=nft_register_rule"
-+done
-+
-+do_test 'nft reset rules t1 c2' \
-+'table=t1 family=2 entries=3 op=nft_reset_rule'
-+
-+do_test 'nft reset rules table t1' \
-+'table=t1 family=2 entries=3 op=nft_reset_rule
-+table=t1 family=2 entries=3 op=nft_reset_rule
-+table=t1 family=2 entries=3 op=nft_reset_rule'
-+
-+do_test 'nft reset rules' \
-+'table=t1 family=2 entries=3 op=nft_reset_rule
-+table=t1 family=2 entries=3 op=nft_reset_rule
-+table=t1 family=2 entries=3 op=nft_reset_rule
-+table=t2 family=2 entries=3 op=nft_reset_rule
-+table=t2 family=2 entries=3 op=nft_reset_rule
-+table=t2 family=2 entries=3 op=nft_reset_rule'
-+
-+for ((i = 0; i < 500; i++)); do
-+	echo "add rule t2 c3 counter accept comment \"rule $i\""
-+done | do_test 'nft -f -' \
-+'table=t2 family=2 entries=500 op=nft_register_rule'
-+
-+do_test 'nft reset rules t2 c3' \
-+'table=t2 family=2 entries=189 op=nft_reset_rule
-+table=t2 family=2 entries=188 op=nft_reset_rule
-+table=t2 family=2 entries=126 op=nft_reset_rule'
-+
-+do_test 'nft reset rules t2' \
-+'table=t2 family=2 entries=3 op=nft_reset_rule
-+table=t2 family=2 entries=3 op=nft_reset_rule
-+table=t2 family=2 entries=186 op=nft_reset_rule
-+table=t2 family=2 entries=188 op=nft_reset_rule
-+table=t2 family=2 entries=129 op=nft_reset_rule'
-+
-+do_test 'nft reset rules' \
-+'table=t1 family=2 entries=3 op=nft_reset_rule
-+table=t1 family=2 entries=3 op=nft_reset_rule
-+table=t1 family=2 entries=3 op=nft_reset_rule
-+table=t2 family=2 entries=3 op=nft_reset_rule
-+table=t2 family=2 entries=3 op=nft_reset_rule
-+table=t2 family=2 entries=180 op=nft_reset_rule
-+table=t2 family=2 entries=188 op=nft_reset_rule
-+table=t2 family=2 entries=135 op=nft_reset_rule'
-+
-+exit $RC
+ 			dest[priv->len / NFT_REG32_SIZE] = 0;
+-			memcpy(dest, (char *)sch + priv->offset, priv->len);
++			if (skb_copy_bits(pkt->skb, offset + priv->offset,
++					  dest, priv->len) < 0)
++				break;
+ 			return;
+ 		}
+ 		offset += SCTP_PAD4(ntohs(sch->length));
 -- 
 2.40.1
 
