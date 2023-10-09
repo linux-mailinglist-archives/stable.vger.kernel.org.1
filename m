@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C0BA7BE099
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50E8F7BDDE7
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377334AbjJINlz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:41:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50044 "EHLO
+        id S1376882AbjJINOK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:14:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377378AbjJINly (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:41:54 -0400
+        with ESMTP id S1376908AbjJINNq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65649D3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFACC433C8;
-        Mon,  9 Oct 2023 13:41:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60864100
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1B9C433C8;
+        Mon,  9 Oct 2023 13:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858912;
-        bh=LMp5tPAm9ByF33cVux4M8S2gvUTq9Qqr1e2bJFgdMBg=;
+        s=korg; t=1696857216;
+        bh=ToFLRMZx2W0fHLEA+whMPb3PlANBZoo7SeySjyY/J/s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bcchAaR9ZLpyuLY51DuYYYK/raCJ6PIZbd4oMT0ix6Pm8C/4ZeOR3ev/3/QfaHbVq
-         1N/1FMQYa9DT4BB0rIYb5S3Z/wFtujOBM1qc8E2R/4qiafqNx6GViBTFDeIjLZK/t2
-         QKZ+t0Yzt9zBFblQk2pv6+Yo4heWH1o2vcWmzxBw=
+        b=SJzZUBM6lhI36GDMdHLiaCqBeTKLOP74YduLBY6Md1kUHuygSQfSW6CF6U4Ki7lth
+         PWiT5fmbAJOOypY5EtsalEJZWeGUZ43LV8h8cZtW875hfrS4HyrthJusTy/MjsnDTs
+         rdnZ3nUcXupqstzmmbXCf1PJWCAHi5JEOsBNVw3M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Phil Sutter <phil@nwl.cc>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Bryan Whitehead <bryan.whitehead@microchip.com>,
+        UNGLinuxDriver@microchip.com, Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 139/226] netfilter: nft_exthdr: Search chunks in SCTP packets only
+Subject: [PATCH 6.5 136/163] net: lan743x: also select PHYLIB
 Date:   Mon,  9 Oct 2023 15:01:40 +0200
-Message-ID: <20231009130130.373671698@linuxfoundation.org>
+Message-ID: <20231009130127.802185928@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,49 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 5acc44f39458f43dac9724cefa4da29847cfe997 ]
+[ Upstream commit 566aeed6871ac2189b5bfe03e1a5b3b7be5eca38 ]
 
-Since user space does not generate a payload dependency, plain sctp
-chunk matches cause searching in non-SCTP packets, too. Avoid this
-potential mis-interpretation of packet data by checking pkt->tprot.
+Since FIXED_PHY depends on PHYLIB, PHYLIB needs to be set to avoid
+a kconfig warning:
 
-Fixes: 133dc203d77df ("netfilter: nft_exthdr: Support SCTP chunks")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+WARNING: unmet direct dependencies detected for FIXED_PHY
+  Depends on [n]: NETDEVICES [=y] && PHYLIB [=n]
+  Selected by [y]:
+  - LAN743X [=y] && NETDEVICES [=y] && ETHERNET [=y] && NET_VENDOR_MICROCHIP [=y] && PCI [=y] && PTP_1588_CLOCK_OPTIONAL [=y]
+
+Fixes: 73c4d1b307ae ("net: lan743x: select FIXED_PHY")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: lore.kernel.org/r/202309261802.JPbRHwti-lkp@intel.com
+Cc: Bryan Whitehead <bryan.whitehead@microchip.com>
+Cc: UNGLinuxDriver@microchip.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Link: https://lore.kernel.org/r/20231002193544.14529-1-rdunlap@infradead.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_exthdr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index b4682aeabab96..274c5f0085186 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -371,6 +371,9 @@ static void nft_exthdr_sctp_eval(const struct nft_expr *expr,
- 	const struct sctp_chunkhdr *sch;
- 	struct sctp_chunkhdr _sch;
- 
-+	if (pkt->tprot != IPPROTO_SCTP)
-+		goto err;
-+
- 	do {
- 		sch = skb_header_pointer(pkt->skb, offset, sizeof(_sch), &_sch);
- 		if (!sch || !sch->length)
-@@ -391,7 +394,7 @@ static void nft_exthdr_sctp_eval(const struct nft_expr *expr,
- 		}
- 		offset += SCTP_PAD4(ntohs(sch->length));
- 	} while (offset < pkt->skb->len);
--
-+err:
- 	if (priv->flags & NFT_EXTHDR_F_PRESENT)
- 		nft_reg_store8(dest, false);
- 	else
+diff --git a/drivers/net/ethernet/microchip/Kconfig b/drivers/net/ethernet/microchip/Kconfig
+index 329e374b9539c..43ba71e82260c 100644
+--- a/drivers/net/ethernet/microchip/Kconfig
++++ b/drivers/net/ethernet/microchip/Kconfig
+@@ -46,6 +46,7 @@ config LAN743X
+ 	tristate "LAN743x support"
+ 	depends on PCI
+ 	depends on PTP_1588_CLOCK_OPTIONAL
++	select PHYLIB
+ 	select FIXED_PHY
+ 	select CRC16
+ 	select CRC32
 -- 
 2.40.1
 
