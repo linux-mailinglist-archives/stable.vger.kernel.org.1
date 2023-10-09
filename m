@@ -2,382 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19B647BEC42
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 23:04:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB1C27BEDF8
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 00:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378136AbjJIVEo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 17:04:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40062 "EHLO
+        id S1378726AbjJIWCz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 18:02:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378144AbjJIVEn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 17:04:43 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4E2AC;
-        Mon,  9 Oct 2023 14:04:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=pV2vO5314ghs1+5B0S4wyhRSc2XzWZFqjOwqRnCj9Ww=; b=kOhH5W9K7DfUPfvZ1kiaZCo2pW
-        5pM+bb2DbS7T3vTF6W745IcC8RIOmsOLD3crHZCtsPYjIB+6O1ScFMVhGIgjNbsXAwU2rotr1de/W
-        xKwHdBKwhkemDi4P/CUTKKcmfo0wF1lmkGfFWvG+EfITrr/0ecJpFTGR/zOz5g5u5ke/k6BdQ9kpW
-        OUGKb7n941wa8Db5dFFEov+WPmaVxzww6X5ju8li6+mx+FzMqOb6B5HVJLYvRmsttsW+0U4fEGkkR
-        xwwJFHOJQVBmYEe6FVb5+1ZWYu4lKBpEVrT6aWfRasoAa/zqoaoMrMKi2/iDySx/U6tYUjxVHYOHF
-        3L2m/UXA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qpxQO-00G8XD-0O;
-        Mon, 09 Oct 2023 21:04:26 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 33C89300454; Mon,  9 Oct 2023 23:04:25 +0200 (CEST)
-Date:   Mon, 9 Oct 2023 23:04:25 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Namhyung Kim <namhyung@kernel.org>
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] perf/core: Introduce cpuctx->cgrp_ctx_list
-Message-ID: <20231009210425.GC6307@noisy.programming.kicks-ass.net>
-References: <20231004040844.797044-1-namhyung@kernel.org>
- <20231004160224.GB6307@noisy.programming.kicks-ass.net>
- <CAM9d7cizC0J85ByuF5fBmc_Bqi=wpNJpiVsw+3F1Avusn2aQog@mail.gmail.com>
+        with ESMTP id S1378321AbjJIWCy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 18:02:54 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D053F99
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 15:02:52 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2c15463ddd4so56368231fa.3
+        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 15:02:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696888971; x=1697493771; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DY/DD0OlfoUqWCPcaHwwLrXANER1/Hg3tF5ZHTBZ1LU=;
+        b=KG6uqJmqAeDaON3hU8JYlgUlZRkyl3pHPkC4xJaEzpqO4+3YMUJtjLd9td48Ml+M9Z
+         NMw4iJmkhvEDaz88jf8/Dru5FN/lh1d18fTC/CgwwnOgkrl/MR9XbxWJZbuGRwn8vFjG
+         AH7YQyWlCT6t1pN+Um/xSHnqsJnK6Ee/qUZPMQij/lM3qX+7opWmbGhJaYcPgp8AdSk2
+         YB0ImGVh+cvLO2wOQLi+MINnPaCCq2A7U/OO5xBn65h93jiUeCOu6POQ6WrjJejGiOCi
+         ajukPft1A+g/L54jjVxjFZ+iHgK45HZlDEHpmjlzMJJRSzJTtjCEb2zDghlXOi6zQVzb
+         hWAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696888971; x=1697493771;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DY/DD0OlfoUqWCPcaHwwLrXANER1/Hg3tF5ZHTBZ1LU=;
+        b=afcdgGJzFFkGhCaHVwtZFOV0TubjlA+p77FKw4cuL81Nmbfkv25i52LItTvne9JWAK
+         vSJ3BBNu7eap9Oe4dDPD4Gs1aoG6KLOkGhomyis0DIA/yTwLfWkmW0FC5E3DD/0BBi15
+         1k/KRyq+nZO1js2yyuV4c3oNzau76POP6OGij6tRQ+ZUWWzK/fTxrJKn4ZImAUppA/zB
+         QgJ7XKm6N8hB8avCmUhLvgYhXVilGgwVCTvh+OdsYVI2dJ+mb1G1je6iBcZzr4qo9C4U
+         08fty7y6nM80Oax8XFiFiWX5o4Uv+vdVDhCsobOZLzrgRuLtSatzPKEBOo6mFp2DeAzg
+         X1zA==
+X-Gm-Message-State: AOJu0YzPC04yDPkONmgTHjfsUL/GymBon0CGWrN5e2ZbGG9eZ4epO2cM
+        hUD6ag2KRy0LuY6E8GFpGuKaLBpQAmVL8EAp7FU=
+X-Google-Smtp-Source: AGHT+IHzqXbI1sX3nGgYn8+pAug+SoIndCTr0l49EgoKfMs76ByXleVW928nM+rYNSO6QgyrQ9FAfGnmlKHmB6i1xeE=
+X-Received: by 2002:a2e:9b97:0:b0:2bf:d379:275b with SMTP id
+ z23-20020a2e9b97000000b002bfd379275bmr16221583lji.20.1696888970644; Mon, 09
+ Oct 2023 15:02:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAM9d7cizC0J85ByuF5fBmc_Bqi=wpNJpiVsw+3F1Avusn2aQog@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Sender: martines.rose02@gmail.com
+Received: by 2002:aa6:ca0b:0:b0:279:6e2:6ea0 with HTTP; Mon, 9 Oct 2023
+ 15:02:48 -0700 (PDT)
+From:   Sandrina Omaru <sandrina.omaru2022@gmail.com>
+Date:   Tue, 10 Oct 2023 00:02:48 +0200
+X-Google-Sender-Auth: edIt0JNV9YPEel4V6QUKM7KfOXY
+Message-ID: <CAB3C3EdviqtMZF+ePibOQE1xo8cTY69+=qvxnxqOOpe2mZOsvw@mail.gmail.com>
+Subject: =?UTF-8?B?0J7QtCDQodCw0L3QtNGA0LjQvdC1?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 04, 2023 at 09:32:24AM -0700, Namhyung Kim wrote:
-
-> Yeah, I know.. but I couldn't come up with a better solution.
-
-Not been near a compiler, and haven't fully thought it through, but
-could something like the work work?
-
-
----
- include/linux/perf_event.h |   1 +
- kernel/events/core.c       | 115 +++++++++++++++++++++++----------------------
- 2 files changed, 61 insertions(+), 55 deletions(-)
-
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index f31f962a6445..0367d748fae0 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -878,6 +878,7 @@ struct perf_event_pmu_context {
- 	unsigned int			embedded : 1;
- 
- 	unsigned int			nr_events;
-+	unsigned int			nr_cgroups;
- 
- 	atomic_t			refcount; /* event <-> epc */
- 	struct rcu_head			rcu_head;
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 708d474c2ede..f3d5d47ecdfc 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -375,6 +375,7 @@ enum event_type_t {
- 	EVENT_TIME = 0x4,
- 	/* see ctx_resched() for details */
- 	EVENT_CPU = 0x8,
-+	EVENT_CGROUP = 0x10,
- 	EVENT_ALL = EVENT_FLEXIBLE | EVENT_PINNED,
- };
- 
-@@ -684,20 +685,26 @@ do {									\
- 	___p;								\
- })
- 
--static void perf_ctx_disable(struct perf_event_context *ctx)
-+static void perf_ctx_disable(struct perf_event_context *ctx, bool cgroup)
- {
- 	struct perf_event_pmu_context *pmu_ctx;
- 
--	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
-+	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
-+		if (cgroup && !pmu_ctx->nr_cgroups)
-+			continue;
- 		perf_pmu_disable(pmu_ctx->pmu);
-+	}
- }
- 
--static void perf_ctx_enable(struct perf_event_context *ctx)
-+static void perf_ctx_enable(struct perf_event_context *ctx. bool cgroup)
- {
- 	struct perf_event_pmu_context *pmu_ctx;
- 
--	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
-+	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
-+		if (cgroup && !pmu_ctx->nr_cgroups)
-+			continue;
- 		perf_pmu_enable(pmu_ctx->pmu);
-+	}
- }
- 
- static void ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type);
-@@ -856,9 +863,9 @@ static void perf_cgroup_switch(struct task_struct *task)
- 		return;
- 
- 	perf_ctx_lock(cpuctx, cpuctx->task_ctx);
--	perf_ctx_disable(&cpuctx->ctx);
-+	perf_ctx_disable(&cpuctx->ctx, true);
- 
--	ctx_sched_out(&cpuctx->ctx, EVENT_ALL);
-+	ctx_sched_out(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
- 	/*
- 	 * must not be done before ctxswout due
- 	 * to update_cgrp_time_from_cpuctx() in
-@@ -870,9 +877,9 @@ static void perf_cgroup_switch(struct task_struct *task)
- 	 * perf_cgroup_set_timestamp() in ctx_sched_in()
- 	 * to not have to pass task around
- 	 */
--	ctx_sched_in(&cpuctx->ctx, EVENT_ALL);
-+	ctx_sched_in(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
- 
--	perf_ctx_enable(&cpuctx->ctx);
-+	perf_ctx_enable(&cpuctx->ctx, true);
- 	perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
- }
- 
-@@ -965,6 +972,8 @@ perf_cgroup_event_enable(struct perf_event *event, struct perf_event_context *ct
- 	if (!is_cgroup_event(event))
- 		return;
- 
-+	event->pmu_ctx->nr_cgroups++;
-+
- 	/*
- 	 * Because cgroup events are always per-cpu events,
- 	 * @ctx == &cpuctx->ctx.
-@@ -985,6 +994,8 @@ perf_cgroup_event_disable(struct perf_event *event, struct perf_event_context *c
- 	if (!is_cgroup_event(event))
- 		return;
- 
-+	event->pmu_ctx->nr_cgroups--;
-+
- 	/*
- 	 * Because cgroup events are always per-cpu events,
- 	 * @ctx == &cpuctx->ctx.
-@@ -2677,9 +2688,9 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
- 
- 	event_type &= EVENT_ALL;
- 
--	perf_ctx_disable(&cpuctx->ctx);
-+	perf_ctx_disable(&cpuctx->ctx, false);
- 	if (task_ctx) {
--		perf_ctx_disable(task_ctx);
-+		perf_ctx_disable(task_ctx, false);
- 		task_ctx_sched_out(task_ctx, event_type);
- 	}
- 
-@@ -2697,9 +2708,9 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
- 
- 	perf_event_sched_in(cpuctx, task_ctx);
- 
--	perf_ctx_enable(&cpuctx->ctx);
-+	perf_ctx_enable(&cpuctx->ctx, false);
- 	if (task_ctx)
--		perf_ctx_enable(task_ctx);
-+		perf_ctx_enable(task_ctx, false);
- }
- 
- void perf_pmu_resched(struct pmu *pmu)
-@@ -3244,6 +3255,9 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
- 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
- 	struct perf_event_pmu_context *pmu_ctx;
- 	int is_active = ctx->is_active;
-+	bool cgroup = event_type & EVENT_CGROUP;
-+
-+	event_type &= ~EVENT_CGROUP;
- 
- 	lockdep_assert_held(&ctx->lock);
- 
-@@ -3290,8 +3304,11 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
- 
- 	is_active ^= ctx->is_active; /* changed bits */
- 
--	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
-+	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
-+		if (cgroup && !pmu_ctx->nr_cgroups)
-+			continue;
- 		__pmu_ctx_sched_out(pmu_ctx, is_active);
-+	}
- }
- 
- /*
-@@ -3482,7 +3499,7 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
- 		raw_spin_lock_nested(&next_ctx->lock, SINGLE_DEPTH_NESTING);
- 		if (context_equiv(ctx, next_ctx)) {
- 
--			perf_ctx_disable(ctx);
-+			perf_ctx_disable(ctx, false);
- 
- 			/* PMIs are disabled; ctx->nr_pending is stable. */
- 			if (local_read(&ctx->nr_pending) ||
-@@ -3502,7 +3519,7 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
- 			perf_ctx_sched_task_cb(ctx, false);
- 			perf_event_swap_task_ctx_data(ctx, next_ctx);
- 
--			perf_ctx_enable(ctx);
-+			perf_ctx_enable(ctx, false);
- 
- 			/*
- 			 * RCU_INIT_POINTER here is safe because we've not
-@@ -3526,13 +3543,13 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
- 
- 	if (do_switch) {
- 		raw_spin_lock(&ctx->lock);
--		perf_ctx_disable(ctx);
-+		perf_ctx_disable(ctx, false);
- 
- inside_switch:
- 		perf_ctx_sched_task_cb(ctx, false);
- 		task_ctx_sched_out(ctx, EVENT_ALL);
- 
--		perf_ctx_enable(ctx);
-+		perf_ctx_enable(ctx, false);
- 		raw_spin_unlock(&ctx->lock);
- 	}
- }
-@@ -3818,47 +3835,32 @@ static int merge_sched_in(struct perf_event *event, void *data)
- 	return 0;
- }
- 
--static void ctx_pinned_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
-+static void pmu_groups_sched_in(struct perf_event_context *ctx,
-+				struct perf_event_groups *groups,
-+				struct pmu *pmu)
- {
--	struct perf_event_pmu_context *pmu_ctx;
- 	int can_add_hw = 1;
--
--	if (pmu) {
--		visit_groups_merge(ctx, &ctx->pinned_groups,
--				   smp_processor_id(), pmu,
--				   merge_sched_in, &can_add_hw);
--	} else {
--		list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
--			can_add_hw = 1;
--			visit_groups_merge(ctx, &ctx->pinned_groups,
--					   smp_processor_id(), pmu_ctx->pmu,
--					   merge_sched_in, &can_add_hw);
--		}
--	}
-+	visit_groups_merge(ctx, groups, smp_processor_id(), pmu,
-+			   merge_sched_in, &can_add_hw);
- }
- 
--static void ctx_flexible_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
-+static void ctx_groups_sched_in(struct perf_event_context *ctx,
-+				struct perf_event_groups *groups,
-+				bool cgroup)
- {
- 	struct perf_event_pmu_context *pmu_ctx;
--	int can_add_hw = 1;
- 
--	if (pmu) {
--		visit_groups_merge(ctx, &ctx->flexible_groups,
--				   smp_processor_id(), pmu,
--				   merge_sched_in, &can_add_hw);
--	} else {
--		list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
--			can_add_hw = 1;
--			visit_groups_merge(ctx, &ctx->flexible_groups,
--					   smp_processor_id(), pmu_ctx->pmu,
--					   merge_sched_in, &can_add_hw);
--		}
-+	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
-+		if (cgroup && !pmu_ctx->nr_cgroups)
-+			continue;
-+		pmu_groups_sched_in(ctx, groups, pmu_ctx->pmu);
- 	}
- }
- 
--static void __pmu_ctx_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
-+static void __pmu_ctx_sched_in(struct perf_event_context *ctx,
-+			       struct pmu *pmu)
- {
--	ctx_flexible_sched_in(ctx, pmu);
-+	pmu_groups_sched_in(ctx, &ctx->flexible_groups, pmu);
- }
- 
- static void
-@@ -3866,6 +3868,9 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
- {
- 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
- 	int is_active = ctx->is_active;
-+	bool cgroup = event_type & EVENT_CGROUP;
-+
-+	event_type &= ~EVENT_CGROUP;
- 
- 	lockdep_assert_held(&ctx->lock);
- 
-@@ -3898,11 +3903,11 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
- 	 * in order to give them the best chance of going on.
- 	 */
- 	if (is_active & EVENT_PINNED)
--		ctx_pinned_sched_in(ctx, NULL);
-+		ctx_groups_sched_in(ctx, &ctx->pinned_groups, cgroup);
- 
- 	/* Then walk through the lower prio flexible groups */
- 	if (is_active & EVENT_FLEXIBLE)
--		ctx_flexible_sched_in(ctx, NULL);
-+		ctx_groups_sched_in(ctx, &ctx->flexible_groups, cgroup);
- }
- 
- static void perf_event_context_sched_in(struct task_struct *task)
-@@ -3917,11 +3922,11 @@ static void perf_event_context_sched_in(struct task_struct *task)
- 
- 	if (cpuctx->task_ctx == ctx) {
- 		perf_ctx_lock(cpuctx, ctx);
--		perf_ctx_disable(ctx);
-+		perf_ctx_disable(ctx, false);
- 
- 		perf_ctx_sched_task_cb(ctx, true);
- 
--		perf_ctx_enable(ctx);
-+		perf_ctx_enable(ctx, false);
- 		perf_ctx_unlock(cpuctx, ctx);
- 		goto rcu_unlock;
- 	}
-@@ -3934,7 +3939,7 @@ static void perf_event_context_sched_in(struct task_struct *task)
- 	if (!ctx->nr_events)
- 		goto unlock;
- 
--	perf_ctx_disable(ctx);
-+	perf_ctx_disable(ctx, false);
- 	/*
- 	 * We want to keep the following priority order:
- 	 * cpu pinned (that don't need to move), task pinned,
-@@ -3944,7 +3949,7 @@ static void perf_event_context_sched_in(struct task_struct *task)
- 	 * events, no need to flip the cpuctx's events around.
- 	 */
- 	if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree)) {
--		perf_ctx_disable(&cpuctx->ctx);
-+		perf_ctx_disable(&cpuctx->ctx, false);
- 		ctx_sched_out(&cpuctx->ctx, EVENT_FLEXIBLE);
- 	}
- 
-@@ -3953,9 +3958,9 @@ static void perf_event_context_sched_in(struct task_struct *task)
- 	perf_ctx_sched_task_cb(cpuctx->task_ctx, true);
- 
- 	if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree))
--		perf_ctx_enable(&cpuctx->ctx);
-+		perf_ctx_enable(&cpuctx->ctx, false);
- 
--	perf_ctx_enable(ctx);
-+	perf_ctx_enable(ctx, false);
- 
- unlock:
- 	perf_ctx_unlock(cpuctx, ctx);
+0J7QtCDQodCw0L3QtNGA0LjQvdC1DQoNCtCf0L7Qt9C00YDQsNCyINCy0LDQvNCwINC4INCy0LDR
+iNC+0Zgg0L/QvtGA0L7QtNC40YbQuCwg0LzQvtC70LjQvCDRgdC1INC00LAg0LLQsNGBINC+0LLQ
+sCDQv9C+0YDRg9C60LAg0LfQsNGC0LXQutC90LUg0YMNCtC00L7QsdGA0L7QvCDQt9C00YDQsNCy
+0ZnRgywg0JzQvtGY0LUg0LjQvNC1INGY0LUg0KHQsNC90LTRgNC40L3QsCDQntC80LDRgNGDLCDQ
+uNC80LDQvCAyMCDQs9C+0LTQuNC90LAsINGY0LXQtNC40L3QsA0K0ZvQtdGA0LrQsCDQvNC+0LMg
+0L/QvtC60L7RmNC90L7QsyDRgNC+0LTQuNGC0LXRmdCwINCz0L7RgdC/0L7QtNC40L3QsC/Qs9C+
+0YHQv9C+0ZLQtSDQntC80LDRgNGDLiDQiNCw0LLRmdCw0Lwg0LLQsNC8INGB0LUg0ZjQtdGADQrQ
+vNC4INGY0LUg0L/QvtGC0YDQtdCx0L3QviDQtNCwINC80Lgg0LHRg9C00LXRgtC1INGB0YLQsNGA
+0LDRgtC10Zkg0YMg0YPQv9GA0LDQstGZ0LDRmtGDINC80L7RmNC+0Lwg0LLRgNC10LTQvdC+0YjR
+m9GDDQrQvdCw0YHQu9C10ZLQsCDRgdGD0LzQtSDQvtC0IDMsNiDQvNC40LvQuNC+0L3QsCDQtdCy
+0YDQsCDQutC+0ZjRgyDQvNC4INGY0LUg0LzQvtGYINC/0L7QutC+0ZjQvdC4INC+0YLQsNGGINC+
+0YHRgtCw0LLQuNC+DQrQv9GA0LUg0L3QtdCz0L4g0YjRgtC+INGY0LUg0YPQvNGA0L4uINCi0YPQ
+ttC90L4g0ZjQtSDRgNC10ZvQuCDQtNCwINGY0LUg0LzQuNGB0YLQtdGA0LjQvtC30L3QviDQv9GA
+0LXQvNC40L3Rg9C+INGDDQrQpNGA0LDQvdGG0YPRgdC60L7RmCDRgtC+0LrQvtC8INGY0LXQtNC9
+0L7QsyDQvtC0INGB0LLQvtGY0LjRhSDRgdC70YPQttCx0LXQvdC40YUg0L/Rg9GC0L7QstCw0ZrQ
+sCDRgyDQuNC90L7RgdGC0YDQsNC90YHRgtCy0L4sDQrQuNCw0LrQviDRmNC1INGa0LXQs9C+0LLQ
+sCDQuNC30L3QtdC90LDQtNC90LAg0YHQvNGA0YIg0L/QvtCy0LXQt9Cw0L3QsCDQuNC70Lgg0YHQ
+tSDRgdGD0LzRmtCw0LvQviDQtNCwINGY0YMg0ZjQtQ0K0L7RgNCz0LDQvdC40LfQvtCy0LDQviDQ
+vNC+0Zgg0YPRmNCw0Log0LrQvtGY0Lgg0ZjQtSDRgyDRgtC+INCy0YDQtdC80LUg0L/Rg9GC0L7Q
+stCw0L4g0YHQsCDRmtC40LwuINCQ0LvQuCDQkdC+0LMg0LfQvdCwDQrQuNGB0YLQuNC90YMhINCc
+0L7RmNCwINC80LDRmNC60LAg0ZjQtSDRg9C80YDQu9CwINC60LDQtNCwINGB0LDQvCDQuNC80LDQ
+viDRgdCw0LzQviA2INCz0L7QtNC40L3QsCwg0Lgg0L7QtCDRgtCw0LTQsCDQvNC1DQrRmNC1INC+
+0YLQsNGGINGD0LfQuNC80LDQviDRgtCw0LrQviDQv9C+0YHQtdCx0L3Qvi4NCg0K0KHQvNGA0YIg
+0LzQvtCzINC+0YbQsCDRmNC1INC30LDQv9GA0LDQstC+INC00L7QvdC10LvQsCDRgtGD0LPRgyDR
+gyDQvNC+0Zgg0LbQuNCy0L7Rgi4g0KLQsNC60L7RktC1INC20LXQu9C40Lwg0LTQsA0K0YPQu9C+
+0LbQuNC8INGE0L7QvdC0INC/0L7QtCDQstCw0YjQvtC8INCx0YDQuNCz0L7QvCDRmNC10YAg0L3Q
+tSDQv9C+0LfQvdCw0ZjQtdC8INC/0L7RgdC70L7QstC90Lgg0YHQstC10YIuINCY0YHQutGA0LXQ
+vdC+DQrQttC10LvQuNC8INCy0LDRiNGDINGB0LrRgNC+0LzQvdGDINC/0L7QvNC+0Zsg0YMg0L7Q
+stC+0Lwg0L/QvtCz0LvQtdC00YMuINCS0LDRiNC1INGB0YPQs9C10YHRgtC40ZjQtSDQuCDQuNC0
+0LXRmNC1INGb0LUNCtCx0LjRgtC4INCy0LXQvtC80LAg0YbQtdGa0LXQvdC1Lg0KDQrQnNC+0LvQ
+uNC8INCy0LDRgSwg0YDQsNC30LzQuNGB0LvQuNGC0LUg0L4g0YLQvtC80LUg0Lgg0ZjQsNCy0LjR
+gtC1INC80Lgg0YHQtSDRiNGC0L4g0ZjQtSDQv9GA0LUg0LzQvtCz0YPRm9C1LiDQntC00LzQsNGF
+DQrQv9C+0YLQstGA0ZLRg9GY0LXQvCDQstCw0YjRgyDRgdC/0YDQtdC80L3QvtGB0YIsINC/0L7R
+gdC70LDRm9GDINCy0LDQvCDRgdCy0L7RmNGDINGB0LvQuNC60YMg0Lgg0YLQsNC60L7RktC1INCy
+0LDRgQ0K0L7QsdCw0LLQtdGB0YLQuNGC0Lgg0L4g0LLQuNGI0LUg0LTQtdGC0LDRmdCwINC+INC+
+0LLQvtC8INC/0LjRgtCw0ZrRgy4NCg0K0KXQstCw0LvQsCDQuCDQkdC+0LMg0LLQsNGBINCx0LvQ
+sNCz0L7RgdC70L7QstC40L4uDQoNCtCh0YDQtNCw0YfQsNC9INC/0L7Qt9C00YDQsNCyLA0K0KHQ
+sNC90LTRgNC40L3QsCDQntC80LDRgNGDLg0K
