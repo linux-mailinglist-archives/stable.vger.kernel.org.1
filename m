@@ -2,39 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0768B7BDFC7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF0FC7BE0EE
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377140AbjJINdw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:33:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37278 "EHLO
+        id S1377526AbjJINpS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:45:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377114AbjJINdv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:33:51 -0400
+        with ESMTP id S1377499AbjJINpE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:45:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BF2B94
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:33:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78035C433C7;
-        Mon,  9 Oct 2023 13:33:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 956F4118
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:45:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C545C433C8;
+        Mon,  9 Oct 2023 13:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858429;
-        bh=Pu+JITH6cba+/EFHyqtoFCfPajzifns90ZUUD+YY5SI=;
+        s=korg; t=1696859102;
+        bh=Nmoisk2K/Rf/2Yri5Zl3vWnUMlzX6UqefmxtCL7wR/I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=svp7+lsxyAS3+YrjqEgYG+wTSkCNMlSKczJzZiwS4zJvnEMsJ0fvdqH6Zv6VtSyUn
-         3Svjy3+YyTnpn/x7vyeF7UX0DcnImoLnhYlBCMT9u6Xatz104DtRvLPtXtym9W79T+
-         0BZfThDCdojrUFxe/M/AW/p7jqQFBNC+DUbtACtg=
+        b=FJkVhvK0zi+UfJC9vppDMN9SDW9gjDDMetWTAWXTMMlK/a8y1/j+PBjw1PQpRDZuU
+         713PMTkKsSr9u6Uap0EXl/nilMdpDPR72+HL721lFCGfL5DGCZmHB/TUeFv1BdEldx
+         rAp+KNoSYn5UecRfSzPKWn2KzD982RTYIrMIo5qw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Babrou <ivan@cloudflare.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Hauke Mehrtens <hauke@hauke-m.de>
-Subject: [PATCH 5.4 120/131] cpupower: add Makefile dependencies for install targets
+        patches@lists.linux.dev,
+        syzbot+62cbf263225ae13ff153@syzkaller.appspotmail.com,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        David Howells <dhowells@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Ahern <dsahern@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 199/226] ipv4, ipv6: Fix handling of transhdrlen in __ip{,6}_append_data()
 Date:   Mon,  9 Oct 2023 15:02:40 +0200
-Message-ID: <20231009130120.100166252@linuxfoundation.org>
+Message-ID: <20231009130131.785844585@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,71 +57,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Babrou <ivan@cloudflare.com>
+From: David Howells <dhowells@redhat.com>
 
-commit fb7791e213a64495ec2336869b868fcd8af14346 upstream.
+[ Upstream commit 9d4c75800f61e5d75c1659ba201b6c0c7ead3070 ]
 
-This allows building cpupower in parallel rather than serially.
+Including the transhdrlen in length is a problem when the packet is
+partially filled (e.g. something like send(MSG_MORE) happened previously)
+when appending to an IPv4 or IPv6 packet as we don't want to repeat the
+transport header or account for it twice.  This can happen under some
+circumstances, such as splicing into an L2TP socket.
 
-Signed-off-by: Ivan Babrou <ivan@cloudflare.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The symptom observed is a warning in __ip6_append_data():
+
+    WARNING: CPU: 1 PID: 5042 at net/ipv6/ip6_output.c:1800 __ip6_append_data.isra.0+0x1be8/0x47f0 net/ipv6/ip6_output.c:1800
+
+that occurs when MSG_SPLICE_PAGES is used to append more data to an already
+partially occupied skbuff.  The warning occurs when 'copy' is larger than
+the amount of data in the message iterator.  This is because the requested
+length includes the transport header length when it shouldn't.  This can be
+triggered by, for example:
+
+        sfd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_L2TP);
+        bind(sfd, ...); // ::1
+        connect(sfd, ...); // ::1 port 7
+        send(sfd, buffer, 4100, MSG_MORE);
+        sendfile(sfd, dfd, NULL, 1024);
+
+Fix this by only adding transhdrlen into the length if the write queue is
+empty in l2tp_ip6_sendmsg(), analogously to how UDP does things.
+
+l2tp_ip_sendmsg() looks like it won't suffer from this problem as it builds
+the UDP packet itself.
+
+Fixes: a32e0eec7042 ("l2tp: introduce L2TPv3 IP encapsulation support for IPv6")
+Reported-by: syzbot+62cbf263225ae13ff153@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/0000000000001c12b30605378ce8@google.com/
+Suggested-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: David Ahern <dsahern@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: netdev@vger.kernel.org
+cc: bpf@vger.kernel.org
+cc: syzkaller-bugs@googlegroups.com
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/Makefile       |    8 ++++----
- tools/power/cpupower/bench/Makefile |    2 +-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/l2tp/l2tp_ip6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/power/cpupower/Makefile
-+++ b/tools/power/cpupower/Makefile
-@@ -270,14 +270,14 @@ clean:
- 	$(MAKE) -C bench O=$(OUTPUT) clean
+diff --git a/net/l2tp/l2tp_ip6.c b/net/l2tp/l2tp_ip6.c
+index 382124d6f7647..9746c624a5503 100644
+--- a/net/l2tp/l2tp_ip6.c
++++ b/net/l2tp/l2tp_ip6.c
+@@ -508,7 +508,6 @@ static int l2tp_ip6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	 */
+ 	if (len > INT_MAX - transhdrlen)
+ 		return -EMSGSIZE;
+-	ulen = len + transhdrlen;
  
+ 	/* Mirror BSD error message compatibility */
+ 	if (msg->msg_flags & MSG_OOB)
+@@ -629,6 +628,7 @@ static int l2tp_ip6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
  
--install-lib:
-+install-lib: libcpupower
- 	$(INSTALL) -d $(DESTDIR)${libdir}
- 	$(CP) $(OUTPUT)libcpupower.so* $(DESTDIR)${libdir}/
- 	$(INSTALL) -d $(DESTDIR)${includedir}
- 	$(INSTALL_DATA) lib/cpufreq.h $(DESTDIR)${includedir}/cpufreq.h
- 	$(INSTALL_DATA) lib/cpuidle.h $(DESTDIR)${includedir}/cpuidle.h
- 
--install-tools:
-+install-tools: $(OUTPUT)cpupower
- 	$(INSTALL) -d $(DESTDIR)${bindir}
- 	$(INSTALL_PROGRAM) $(OUTPUT)cpupower $(DESTDIR)${bindir}
- 	$(INSTALL) -d $(DESTDIR)${bash_completion_dir}
-@@ -293,14 +293,14 @@ install-man:
- 	$(INSTALL_DATA) -D man/cpupower-info.1 $(DESTDIR)${mandir}/man1/cpupower-info.1
- 	$(INSTALL_DATA) -D man/cpupower-monitor.1 $(DESTDIR)${mandir}/man1/cpupower-monitor.1
- 
--install-gmo:
-+install-gmo: create-gmo
- 	$(INSTALL) -d $(DESTDIR)${localedir}
- 	for HLANG in $(LANGUAGES); do \
- 		echo '$(INSTALL_DATA) -D $(OUTPUT)po/$$HLANG.gmo $(DESTDIR)${localedir}/$$HLANG/LC_MESSAGES/cpupower.mo'; \
- 		$(INSTALL_DATA) -D $(OUTPUT)po/$$HLANG.gmo $(DESTDIR)${localedir}/$$HLANG/LC_MESSAGES/cpupower.mo; \
- 	done;
- 
--install-bench:
-+install-bench: compile-bench
- 	@#DESTDIR must be set from outside to survive
- 	@sbindir=$(sbindir) bindir=$(bindir) docdir=$(docdir) confdir=$(confdir) $(MAKE) -C bench O=$(OUTPUT) install
- 
---- a/tools/power/cpupower/bench/Makefile
-+++ b/tools/power/cpupower/bench/Makefile
-@@ -27,7 +27,7 @@ $(OUTPUT)cpufreq-bench: $(OBJS)
- 
- all: $(OUTPUT)cpufreq-bench
- 
--install:
-+install: $(OUTPUT)cpufreq-bench
- 	mkdir -p $(DESTDIR)/$(sbindir)
- 	mkdir -p $(DESTDIR)/$(bindir)
- 	mkdir -p $(DESTDIR)/$(docdir)
+ back_from_confirm:
+ 	lock_sock(sk);
++	ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
+ 	err = ip6_append_data(sk, ip_generic_getfrag, msg,
+ 			      ulen, transhdrlen, &ipc6,
+ 			      &fl6, (struct rt6_info *)dst,
+-- 
+2.40.1
+
 
 
