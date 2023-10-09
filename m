@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D62157BE182
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:51:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF12A7BE11A
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376883AbjJINvB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:51:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54816 "EHLO
+        id S1377431AbjJINrI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:47:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377326AbjJINvA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:51:00 -0400
+        with ESMTP id S1377436AbjJINrH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:47:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29D31DA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:50:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52619C433C8;
-        Mon,  9 Oct 2023 13:50:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A1DC6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:47:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58995C433CA;
+        Mon,  9 Oct 2023 13:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859458;
-        bh=nRv602BPiQ/7Pa2hwQ13b5kCDY4jN0QExjNKVWb+Ff8=;
+        s=korg; t=1696859219;
+        bh=SSNt8+V0NGDy9VPp7L19Hmn7llIW5RcsVMCO2TqNTr8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zWhUj5cWU90i2xLLL4CcAxJtP7OqHJoUXxVS/NDNh9so7ULTBPtu7tRGUD+5X8gJS
-         CI13C8tPVlWVZ6Z/Z2Y0o8HBmjBY2DUhEp4LRhyP+UPPLeTNAup2qaM3yGyzgfxr9V
-         dhRRrJpthbgR+9gSv+lmKriKCz3Gqide8HQ8muhg=
+        b=oh02JrJZ93ULss527+QMCMwxVRSwf0ixx2BnPS80osoGhCLH2vzy/m9/h0i7GfpzQ
+         NRASqLdLqn5dEc4nlDbh/nzdItw42b/rHvu8R++Yyg+c+oRvjp0dVjxliZNqzaaoJN
+         IEbL0nLw7tyqum4PvlHbn9crgvPTR738BI2tKNg8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Len Brown <lenb@kernel.org>,
-        Dave Chinner <david@fromorbit.com>, Jan Kara <jack@suse.cz>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 27/91] ext4: do not let fstrim block system suspend
-Date:   Mon,  9 Oct 2023 15:05:59 +0200
-Message-ID: <20231009130112.461423106@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 01/55] NFS/pNFS: Report EINVAL errors from connect() to the server
+Date:   Mon,  9 Oct 2023 15:06:00 +0200
+Message-ID: <20231009130107.766339015@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,78 +50,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 5229a658f6453362fbb9da6bf96872ef25a7097e ]
+[ Upstream commit dd7d7ee3ba2a70d12d02defb478790cf57d5b87b ]
 
-Len Brown has reported that system suspend sometimes fail due to
-inability to freeze a task working in ext4_trim_fs() for one minute.
-Trimming a large filesystem on a disk that slowly processes discard
-requests can indeed take a long time. Since discard is just an advisory
-call, it is perfectly fine to interrupt it at any time and the return
-number of discarded blocks until that moment. Do that when we detect the
-task is being frozen.
+With IPv6, connect() can occasionally return EINVAL if a route is
+unavailable. If this happens during I/O to a data server, we want to
+report it using LAYOUTERROR as an inability to connect.
 
-Cc: stable@kernel.org
-Reported-by: Len Brown <lenb@kernel.org>
-Suggested-by: Dave Chinner <david@fromorbit.com>
-References: https://bugzilla.kernel.org/show_bug.cgi?id=216322
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230913150504.9054-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: dd52128afdde ("NFSv4.1/pnfs Ensure flexfiles reports all connection related errors")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 94b3bf8173e20..fb2f255c48e81 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -16,6 +16,7 @@
- #include <linux/slab.h>
- #include <linux/nospec.h>
- #include <linux/backing-dev.h>
-+#include <linux/freezer.h>
- #include <trace/events/ext4.h>
- 
- #ifdef CONFIG_EXT4_DEBUG
-@@ -5194,6 +5195,11 @@ static ext4_grpblk_t ext4_last_grp_cluster(struct super_block *sb,
- 					EXT4_CLUSTER_BITS(sb);
- }
- 
-+static bool ext4_trim_interrupted(void)
-+{
-+	return fatal_signal_pending(current) || freezing(current);
-+}
-+
- static int ext4_try_to_trim_range(struct super_block *sb,
- 		struct ext4_buddy *e4b, ext4_grpblk_t start,
- 		ext4_grpblk_t max, ext4_grpblk_t minblocks)
-@@ -5225,8 +5231,8 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- 		free_count += next - start;
- 		start = next + 1;
- 
--		if (fatal_signal_pending(current))
--			return -ERESTARTSYS;
-+		if (ext4_trim_interrupted())
-+			return count;
- 
- 		if (need_resched()) {
- 			ext4_unlock_group(sb, e4b->bd_group);
-@@ -5353,6 +5359,8 @@ int ext4_trim_fs(struct super_block *sb, struct fstrim_range *range)
- 	end = EXT4_CLUSTERS_PER_GROUP(sb) - 1;
- 
- 	for (group = first_group; group <= last_group; group++) {
-+		if (ext4_trim_interrupted())
-+			break;
- 		grp = ext4_get_group_info(sb, group);
- 		/* We only do this if the grp has never been initialized */
- 		if (unlikely(EXT4_MB_GRP_NEED_INIT(grp))) {
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index 9d99e19d98bdf..c87f3a7c5cdff 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -1195,6 +1195,7 @@ static void ff_layout_io_track_ds_error(struct pnfs_layout_segment *lseg,
+ 		case -EPFNOSUPPORT:
+ 		case -EPROTONOSUPPORT:
+ 		case -EOPNOTSUPP:
++		case -EINVAL:
+ 		case -ECONNREFUSED:
+ 		case -ECONNRESET:
+ 		case -EHOSTDOWN:
 -- 
 2.40.1
 
