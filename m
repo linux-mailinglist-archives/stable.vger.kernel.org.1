@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9698E7BDFBF
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA1837BE0D7
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377130AbjJINd0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:33:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39340 "EHLO
+        id S1377277AbjJINoj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:44:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377132AbjJINdZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:33:25 -0400
+        with ESMTP id S1377407AbjJINoi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B06AB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:33:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5075C433C8;
-        Mon,  9 Oct 2023 13:33:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5066CB6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D8EC433C7;
+        Mon,  9 Oct 2023 13:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858404;
-        bh=oEk6Ff0hGBtNOCpXyuFmFgltCR9tXIosgZFVRybm/88=;
+        s=korg; t=1696859076;
+        bh=fFn3q20xOi1q/eCIzu1EXSWjtDcklYtIV1N1HLoDLGY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fThgMjTNwoza6q6IyVxWx43aPqDqaiQDjBD4xSmOblmCBy/jqBXF+lGXC0Ul6fkPA
-         2vZ8pygHdcXFOpye8Y4sSUQa2yAcGf3IkC991edHur7IAPOUNV091Ei9wDbCfQNfSN
-         ZAWjSRak37+yFqX28aOKrvd9YZ1DfrqZTkLg/TVs=
+        b=BorVfhPwCzbP83b6VwSuE3W2zdVKtjUkUIfufbXYkcCcx7avDpwqAnwMW3+7KC3+C
+         xEMSGZIMYEj1J47R4fIx/F52I71z4EIfDKpKpDUfCpjV6+3PGS3hwRWsdNNQlATAtq
+         mVFnmgl6jNjydt3Or++tOjgfASHzJP5jN1x0rso4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+6966546b78d050bb0b5d@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 112/131] net: usb: smsc75xx: Fix uninit-value access in __smsc75xx_read_reg
-Date:   Mon,  9 Oct 2023 15:02:32 +0200
-Message-ID: <20231009130119.862148267@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 192/226] regmap: rbtree: Fix wrong register marked as in-cache when creating new node
+Date:   Mon,  9 Oct 2023 15:02:33 +0200
+Message-ID: <20231009130131.623498280@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,101 +50,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit e9c65989920f7c28775ec4e0c11b483910fb67b8 ]
+[ Upstream commit 7a795ac8d49e2433e1b97caf5e99129daf8e1b08 ]
 
-syzbot reported the following uninit-value access issue:
+When regcache_rbtree_write() creates a new rbtree_node it was passing the
+wrong bit number to regcache_rbtree_set_register(). The bit number is the
+offset __in number of registers__, but in the case of creating a new block
+regcache_rbtree_write() was not dividing by the address stride to get the
+number of registers.
 
-=====================================================
-BUG: KMSAN: uninit-value in smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:975 [inline]
-BUG: KMSAN: uninit-value in smsc75xx_bind+0x5c9/0x11e0 drivers/net/usb/smsc75xx.c:1482
-CPU: 0 PID: 8696 Comm: kworker/0:3 Not tainted 5.8.0-rc5-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: usb_hub_wq hub_event
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x21c/0x280 lib/dump_stack.c:118
- kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:121
- __msan_warning+0x58/0xa0 mm/kmsan/kmsan_instr.c:215
- smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:975 [inline]
- smsc75xx_bind+0x5c9/0x11e0 drivers/net/usb/smsc75xx.c:1482
- usbnet_probe+0x1152/0x3f90 drivers/net/usb/usbnet.c:1737
- usb_probe_interface+0xece/0x1550 drivers/usb/core/driver.c:374
- really_probe+0xf20/0x20b0 drivers/base/dd.c:529
- driver_probe_device+0x293/0x390 drivers/base/dd.c:701
- __device_attach_driver+0x63f/0x830 drivers/base/dd.c:807
- bus_for_each_drv+0x2ca/0x3f0 drivers/base/bus.c:431
- __device_attach+0x4e2/0x7f0 drivers/base/dd.c:873
- device_initial_probe+0x4a/0x60 drivers/base/dd.c:920
- bus_probe_device+0x177/0x3d0 drivers/base/bus.c:491
- device_add+0x3b0e/0x40d0 drivers/base/core.c:2680
- usb_set_configuration+0x380f/0x3f10 drivers/usb/core/message.c:2032
- usb_generic_driver_probe+0x138/0x300 drivers/usb/core/generic.c:241
- usb_probe_device+0x311/0x490 drivers/usb/core/driver.c:272
- really_probe+0xf20/0x20b0 drivers/base/dd.c:529
- driver_probe_device+0x293/0x390 drivers/base/dd.c:701
- __device_attach_driver+0x63f/0x830 drivers/base/dd.c:807
- bus_for_each_drv+0x2ca/0x3f0 drivers/base/bus.c:431
- __device_attach+0x4e2/0x7f0 drivers/base/dd.c:873
- device_initial_probe+0x4a/0x60 drivers/base/dd.c:920
- bus_probe_device+0x177/0x3d0 drivers/base/bus.c:491
- device_add+0x3b0e/0x40d0 drivers/base/core.c:2680
- usb_new_device+0x1bd4/0x2a30 drivers/usb/core/hub.c:2554
- hub_port_connect drivers/usb/core/hub.c:5208 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5348 [inline]
- port_event drivers/usb/core/hub.c:5494 [inline]
- hub_event+0x5e7b/0x8a70 drivers/usb/core/hub.c:5576
- process_one_work+0x1688/0x2140 kernel/workqueue.c:2269
- worker_thread+0x10bc/0x2730 kernel/workqueue.c:2415
- kthread+0x551/0x590 kernel/kthread.c:292
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:293
+Fix this by dividing by map->reg_stride.
+Compare with regcache_rbtree_read() where the bit is checked.
 
-Local variable ----buf.i87@smsc75xx_bind created at:
- __smsc75xx_read_reg drivers/net/usb/smsc75xx.c:83 [inline]
- smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:968 [inline]
- smsc75xx_bind+0x485/0x11e0 drivers/net/usb/smsc75xx.c:1482
- __smsc75xx_read_reg drivers/net/usb/smsc75xx.c:83 [inline]
- smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:968 [inline]
- smsc75xx_bind+0x485/0x11e0 drivers/net/usb/smsc75xx.c:1482
+This bug meant that the wrong register was marked as present. The register
+that was written to the cache could not be read from the cache because it
+was not marked as cached. But a nearby register could be marked as having
+a cached value even if it was never written to the cache.
 
-This issue is caused because usbnet_read_cmd() reads less bytes than requested
-(zero byte in the reproducer). In this case, 'buf' is not properly filled.
-
-This patch fixes the issue by returning -ENODATA if usbnet_read_cmd() reads
-less bytes than requested.
-
-Fixes: d0cad871703b ("smsc75xx: SMSC LAN75xx USB gigabit ethernet adapter driver")
-Reported-and-tested-by: syzbot+6966546b78d050bb0b5d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6966546b78d050bb0b5d
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230923173549.3284502-1-syoshida@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 3f4ff561bc88 ("regmap: rbtree: Make cache_present bitmap per node")
+Link: https://lore.kernel.org/r/20230922153711.28103-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/smsc75xx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/base/regmap/regcache-rbtree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/smsc75xx.c b/drivers/net/usb/smsc75xx.c
-index bd533827af8b1..9656561fc77ff 100644
---- a/drivers/net/usb/smsc75xx.c
-+++ b/drivers/net/usb/smsc75xx.c
-@@ -90,7 +90,9 @@ static int __must_check __smsc75xx_read_reg(struct usbnet *dev, u32 index,
- 	ret = fn(dev, USB_VENDOR_REQUEST_READ_REGISTER, USB_DIR_IN
- 		 | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
- 		 0, index, &buf, 4);
--	if (unlikely(ret < 0)) {
-+	if (unlikely(ret < 4)) {
-+		ret = ret < 0 ? ret : -ENODATA;
-+
- 		netdev_warn(dev->net, "Failed to read reg index 0x%08x: %d\n",
- 			    index, ret);
- 		return ret;
+diff --git a/drivers/base/regmap/regcache-rbtree.c b/drivers/base/regmap/regcache-rbtree.c
+index ae6b8788d5f3f..d65715b9e129e 100644
+--- a/drivers/base/regmap/regcache-rbtree.c
++++ b/drivers/base/regmap/regcache-rbtree.c
+@@ -453,7 +453,8 @@ static int regcache_rbtree_write(struct regmap *map, unsigned int reg,
+ 		if (!rbnode)
+ 			return -ENOMEM;
+ 		regcache_rbtree_set_register(map, rbnode,
+-					     reg - rbnode->base_reg, value);
++					     (reg - rbnode->base_reg) / map->reg_stride,
++					     value);
+ 		regcache_rbtree_insert(map, &rbtree_ctx->root, rbnode);
+ 		rbtree_ctx->cached_rbnode = rbnode;
+ 	}
 -- 
 2.40.1
 
