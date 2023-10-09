@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A9257BE1A6
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:52:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C81C7BE133
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:48:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377457AbjJINw3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:52:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48340 "EHLO
+        id S1377427AbjJINsC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377502AbjJINw3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:52:29 -0400
+        with ESMTP id S1377350AbjJINsB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:48:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0AA194
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:52:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AD4C433C9;
-        Mon,  9 Oct 2023 13:52:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B882794
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:48:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0621C433C8;
+        Mon,  9 Oct 2023 13:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859547;
-        bh=qlY7n0ya//e0rmg+KdDcwwsq66+xmDLeHjvg6vhNc8w=;
+        s=korg; t=1696859280;
+        bh=MOryr/hrOYLcOtw4kRZgA9Gde0X58FpEbSygoMty4IU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lXcU9XvrXP3sYLbrEY1ETV2kM/gOIJBEYfKUmJnCIZkEiIyzCmnbSvkceDN/DLXMA
-         8MOg2v9NWFIKVCeSkpkPprJfNvHg0TWpQEFPLndLKHfsWqfw36/z+hQPchFuCpFdeF
-         H080dhhjr3/Wux3AkNYhKc4uBFsP1274nEjPtgN4=
+        b=daphHFezurKv18Hxbek6eH4GWGVE5TlyXZb7cPFmb0IvU3NraErZMKHr9adwpCCue
+         BVPhzEFf7XXpqwgqq/Gq9STtLZomvlNqwmUu5az4kW70GAG985RUXSugNef4tGedS5
+         cESSiFnqNsfC+BO9218l88iybtiwAmV+xFg5Xsj0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Balcanquall <alex@alexbal.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 4.19 55/91] net: thunderbolt: Fix TCPv6 GSO checksum calculation
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 4.14 28/55] ata: libata-core: Fix port and device removal
 Date:   Mon,  9 Oct 2023 15:06:27 +0200
-Message-ID: <20231009130113.422199258@linuxfoundation.org>
+Message-ID: <20231009130108.777083567@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +52,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit e0b65f9b81fef180cf5f103adecbe5505c961153 upstream.
+commit 84d76529c650f887f1e18caee72d6f0589e1baf9 upstream.
 
-Alex reported that running ssh over IPv6 does not work with
-Thunderbolt/USB4 networking driver. The reason for that is that driver
-should call skb_is_gso() before calling skb_is_gso_v6(), and it should
-not return false after calculates the checksum successfully. This probably
-was a copy paste error from the original driver where it was done properly.
+Whenever an ATA adapter driver is removed (e.g. rmmod),
+ata_port_detach() is called repeatedly for all the adapter ports to
+remove (unload) the devices attached to the port and delete the port
+device itself. Removing of devices is done using libata EH with the
+ATA_PFLAG_UNLOADING port flag set. This causes libata EH to execute
+ata_eh_unload() which disables all devices attached to the port.
 
-Reported-by: Alex Balcanquall <alex@alexbal.com>
-Fixes: e69b6c02b4c3 ("net: Add support for networking over Thunderbolt cable")
+ata_port_detach() finishes by calling scsi_remove_host() to remove the
+scsi host associated with the port. This function will trigger the
+removal of all scsi devices attached to the host and in the case of
+disks, calls to sd_shutdown() which will flush the device write cache
+and stop the device. However, given that the devices were already
+disabled by ata_eh_unload(), the synchronize write cache command and
+start stop unit commands fail. E.g. running "rmmod ahci" with first
+removing sd_mod results in error messages like:
+
+ata13.00: disable device
+sd 0:0:0:0: [sda] Synchronizing SCSI cache
+sd 0:0:0:0: [sda] Synchronize Cache(10) failed: Result: hostbyte=DID_BAD_TARGET driverbyte=DRIVER_OK
+sd 0:0:0:0: [sda] Stopping disk
+sd 0:0:0:0: [sda] Start/Stop Unit failed: Result: hostbyte=DID_BAD_TARGET driverbyte=DRIVER_OK
+
+Fix this by removing all scsi devices of the ata devices connected to
+the port before scheduling libata EH to disable the ATA devices.
+
+Fixes: 720ba12620ee ("[PATCH] libata-hp: update unload-unplug")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/thunderbolt.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/ata/libata-core.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/drivers/net/thunderbolt.c
-+++ b/drivers/net/thunderbolt.c
-@@ -961,12 +961,11 @@ static bool tbnet_xmit_csum_and_map(stru
- 		*tucso = ~csum_tcpudp_magic(ip_hdr(skb)->saddr,
- 					    ip_hdr(skb)->daddr, 0,
- 					    ip_hdr(skb)->protocol, 0);
--	} else if (skb_is_gso_v6(skb)) {
-+	} else if (skb_is_gso(skb) && skb_is_gso_v6(skb)) {
- 		tucso = dest + ((void *)&(tcp_hdr(skb)->check) - data);
- 		*tucso = ~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
- 					  &ipv6_hdr(skb)->daddr, 0,
- 					  IPPROTO_TCP, 0);
--		return false;
- 	} else if (protocol == htons(ETH_P_IPV6)) {
- 		tucso = dest + skb_checksum_start_offset(skb) + skb->csum_offset;
- 		*tucso = ~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -6672,11 +6672,30 @@ static void ata_port_detach(struct ata_p
+ 	if (!ap->ops->error_handler)
+ 		goto skip_eh;
+ 
+-	/* tell EH we're leaving & flush EH */
++	/* Wait for any ongoing EH */
++	ata_port_wait_eh(ap);
++
++	mutex_lock(&ap->scsi_scan_mutex);
+ 	spin_lock_irqsave(ap->lock, flags);
++
++	/* Remove scsi devices */
++	ata_for_each_link(link, ap, HOST_FIRST) {
++		ata_for_each_dev(dev, link, ALL) {
++			if (dev->sdev) {
++				spin_unlock_irqrestore(ap->lock, flags);
++				scsi_remove_device(dev->sdev);
++				spin_lock_irqsave(ap->lock, flags);
++				dev->sdev = NULL;
++			}
++		}
++	}
++
++	/* Tell EH to disable all devices */
+ 	ap->pflags |= ATA_PFLAG_UNLOADING;
+ 	ata_port_schedule_eh(ap);
++
+ 	spin_unlock_irqrestore(ap->lock, flags);
++	mutex_unlock(&ap->scsi_scan_mutex);
+ 
+ 	/* wait till EH commits suicide */
+ 	ata_port_wait_eh(ap);
 
 
