@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A7467BDEC4
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BA6B7BDFA5
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376407AbjJINWw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:22:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58508 "EHLO
+        id S1377104AbjJINcT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:32:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376396AbjJINWv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:51 -0400
+        with ESMTP id S1377102AbjJINcT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B5EDA3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F912C433C8;
-        Mon,  9 Oct 2023 13:22:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C777599
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 187FBC433C8;
+        Mon,  9 Oct 2023 13:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857770;
-        bh=9ZQk/sBkDTrWNeyGxWH+opUnLYmDzApcD7J6/QiZfYM=;
+        s=korg; t=1696858337;
+        bh=ShR56LiGQG3OF//TRPuGYfCo9gn2PQlUMwbm4q6pkG8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YZ+G66qCDyXLR++xA+8UerZhRYMQNXru3gLwoNelSPWRhreuHrdGec6hfkosbPqaz
-         P2NIdxsKUaVvD2RDZOmYi9oEk1tTN9veVorL6KrI+AEVak/L/XEGaul90N9QyRwula
-         Lq5JHZt9Rr6DkGXUN9u5i5xw5UXFyVhpS3GUelBk=
+        b=dNxsYBc+Q4Lk1NIaWwFk+8bppluxAP6TsElXjj7W77EHnRp9N/HX2D7Ki6J7Zc54e
+         K0efJE8/1IMotuueBuZw2rXtK88WR2NQpi2D4XMDKWhv4YUoCuj/1Vjn/Oga8lSsCb
+         NFpm5ywBTA4QV7fmE/GVpCjcQ49hkiZLu9pU0YXU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Bloch <mbloch@nvidia.com>,
-        Hamdan Igbaria <hamdani@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.1 150/162] RDMA/mlx5: Fix mutex unlocking on error flow for steering anchor creation
+        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Benjamin Block <bblock@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 091/131] scsi: zfcp: Fix a double put in zfcp_port_enqueue()
 Date:   Mon,  9 Oct 2023 15:02:11 +0200
-Message-ID: <20231009130127.054409474@linuxfoundation.org>
+Message-ID: <20231009130119.162953175@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +49,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamdan Igbaria <hamdani@nvidia.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit 2fad8f06a582cd431d398a0b3f9be21d069603ab upstream.
+commit b481f644d9174670b385c3a699617052cd2a79d3 upstream.
 
-The mutex was not unlocked on some of the error flows.
-Moved the unlock location to include all the error flow scenarios.
+When device_register() fails, zfcp_port_release() will be called after
+put_device(). As a result, zfcp_ccw_adapter_put() will be called twice: one
+in zfcp_port_release() and one in the error path after device_register().
+So the reference on the adapter object is doubly put, which may lead to a
+premature free. Fix this by adjusting the error tag after
+device_register().
 
-Fixes: e1f4a52ac171 ("RDMA/mlx5: Create an indirect flow table for steering anchor")
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Hamdan Igbaria <hamdani@nvidia.com>
-Link: https://lore.kernel.org/r/1244a69d783da997c0af0b827c622eb00495492e.1695203958.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: f3450c7b9172 ("[SCSI] zfcp: Replace local reference counting with common kref")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230923103723.10320-1-dinghao.liu@zju.edu.cn
+Acked-by: Benjamin Block <bblock@linux.ibm.com>
+Cc: stable@vger.kernel.org # v2.6.33+
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/scsi/zfcp_aux.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/infiniband/hw/mlx5/fs.c
-+++ b/drivers/infiniband/hw/mlx5/fs.c
-@@ -2471,8 +2471,8 @@ destroy_res:
- 	mlx5_steering_anchor_destroy_res(ft_prio);
- put_flow_table:
- 	put_flow_table(dev, ft_prio, true);
--	mutex_unlock(&dev->flow_db->lock);
- free_obj:
-+	mutex_unlock(&dev->flow_db->lock);
- 	kfree(obj);
+--- a/drivers/s390/scsi/zfcp_aux.c
++++ b/drivers/s390/scsi/zfcp_aux.c
+@@ -488,12 +488,12 @@ struct zfcp_port *zfcp_port_enqueue(stru
+ 	if (port) {
+ 		put_device(&port->dev);
+ 		retval = -EEXIST;
+-		goto err_out;
++		goto err_put;
+ 	}
  
- 	return err;
+ 	port = kzalloc(sizeof(struct zfcp_port), GFP_KERNEL);
+ 	if (!port)
+-		goto err_out;
++		goto err_put;
+ 
+ 	rwlock_init(&port->unit_list_lock);
+ 	INIT_LIST_HEAD(&port->unit_list);
+@@ -516,7 +516,7 @@ struct zfcp_port *zfcp_port_enqueue(stru
+ 
+ 	if (dev_set_name(&port->dev, "0x%016llx", (unsigned long long)wwpn)) {
+ 		kfree(port);
+-		goto err_out;
++		goto err_put;
+ 	}
+ 	retval = -EINVAL;
+ 
+@@ -533,7 +533,8 @@ struct zfcp_port *zfcp_port_enqueue(stru
+ 
+ 	return port;
+ 
+-err_out:
++err_put:
+ 	zfcp_ccw_adapter_put(adapter);
++err_out:
+ 	return ERR_PTR(retval);
+ }
 
 
