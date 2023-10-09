@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 484507BE08A
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:41:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A96E7BDEFF
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377349AbjJINlQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:41:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51122 "EHLO
+        id S1376502AbjJINZT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377310AbjJINlP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:41:15 -0400
+        with ESMTP id S1376522AbjJINZR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30747AB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE6CC433C7;
-        Mon,  9 Oct 2023 13:41:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 337B8DE
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D3CC433C7;
+        Mon,  9 Oct 2023 13:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858873;
-        bh=xVf1poW2Vns6eGjR8b/Pih6RrD0lZfn+7NGgDYWLsYE=;
+        s=korg; t=1696857915;
+        bh=AMCEHO14sZUlR3NJmdxCq/Trduzr+wp2jHb92uz7/eY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w+79NWhRiCaboz/nrCfGTckpvCFnJTlZKyvIAELrpwnHOmDSB5esF2jGBchg4DsLT
-         cc1fTH0nzNFNl345toWatJiCXsONJjwSxDiTzi4LjOcEgsPl/7/KrDoUXNWpXYmZtE
-         5OlGSSXhOyD7lhx36is/1gIoJuXkL2/4coS10dPE=
+        b=Ket3O47tzPpyFcS2y+k5QAiFD1IY3AZB2iHMMFywVpJEcNubkpC107wNgShbcXPfb
+         Cf9QdHPfOch+slaSkpnFDCKW7viC499je+Qeb0L5Yp1cejBnZSV8tHL20vHEjPcTev
+         X2MIy2sivZ0nGa8InegqLKgyBbJRmb9PiBIhDwp0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/226] perf build: Define YYNOMEM as YYNOABORT for bison < 3.81
+Subject: [PATCH 5.15 07/75] NFSv4: Fix a state manager thread deadlock regression
 Date:   Mon,  9 Oct 2023 15:01:29 +0200
-Message-ID: <20231009130130.115254228@linuxfoundation.org>
+Message-ID: <20231009130111.466670850@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +50,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 88cc47e24597971b05b6e94c28a2fc81d2a8d61a ]
+[ Upstream commit 956fd46f97d238032cb5fa4771cdaccc6e760f9a ]
 
-YYNOMEM was introduced in bison 3.81, so define it as YYABORT for older
-versions, which should provide the previous perf behaviour.
+Commit 4dc73c679114 reintroduces the deadlock that was fixed by commit
+aeabb3c96186 ("NFSv4: Fix a NFSv4 state manager deadlock") because it
+prevents the setup of new threads to handle reboot recovery, while the
+older recovery thread is stuck returning delegations.
 
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 4dc73c679114 ("NFSv4: keep state manager thread active if swap is enabled")
+Cc: stable@vger.kernel.org
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/Build | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfs/nfs4proc.c  |  4 +++-
+ fs/nfs/nfs4state.c | 36 +++++++++++++++++++++++++-----------
+ 2 files changed, 28 insertions(+), 12 deletions(-)
 
-diff --git a/tools/perf/util/Build b/tools/perf/util/Build
-index 0cf27354aa451..0f9732d5452e6 100644
---- a/tools/perf/util/Build
-+++ b/tools/perf/util/Build
-@@ -253,6 +253,12 @@ ifeq ($(BISON_GE_35),1)
- else
-   bison_flags += -w
- endif
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 32204c0b3d098..3275763b78bc8 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -10557,7 +10557,9 @@ static void nfs4_disable_swap(struct inode *inode)
+ 	 */
+ 	struct nfs_client *clp = NFS_SERVER(inode)->nfs_client;
+ 
+-	nfs4_schedule_state_manager(clp);
++	set_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state);
++	clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
++	wake_up_var(&clp->cl_state);
+ }
+ 
+ static const struct inode_operations nfs4_dir_inode_operations = {
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index d0183a7b01a49..7590d059eb78e 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -1213,13 +1213,23 @@ void nfs4_schedule_state_manager(struct nfs_client *clp)
+ {
+ 	struct task_struct *task;
+ 	char buf[INET6_ADDRSTRLEN + sizeof("-manager") + 1];
++	struct rpc_clnt *clnt = clp->cl_rpcclient;
++	bool swapon = false;
+ 
+ 	set_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state);
+-	if (test_and_set_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state) != 0) {
+-		wake_up_var(&clp->cl_state);
+-		return;
 +
-+BISON_LT_381 := $(shell expr $(shell $(BISON) --version | grep bison | sed -e 's/.\+ \([0-9]\+\).\([0-9]\+\).\([0-9]\+\)/\1\2\3/g') \< 381)
-+ifeq ($(BISON_LT_381),1)
-+  bison_flags += -DYYNOMEM=YYABORT
-+endif
++	if (atomic_read(&clnt->cl_swapper)) {
++		swapon = !test_and_set_bit(NFS4CLNT_MANAGER_AVAILABLE,
++					   &clp->cl_state);
++		if (!swapon) {
++			wake_up_var(&clp->cl_state);
++			return;
++		}
+ 	}
+-	set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state);
 +
- CFLAGS_parse-events-bison.o += $(bison_flags)
- CFLAGS_pmu-bison.o          += -DYYLTYPE_IS_TRIVIAL=0 $(bison_flags)
- CFLAGS_expr-bison.o         += -DYYLTYPE_IS_TRIVIAL=0 $(bison_flags)
++	if (test_and_set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state) != 0)
++		return;
++
+ 	__module_get(THIS_MODULE);
+ 	refcount_inc(&clp->cl_count);
+ 
+@@ -1236,8 +1246,9 @@ void nfs4_schedule_state_manager(struct nfs_client *clp)
+ 			__func__, PTR_ERR(task));
+ 		if (!nfs_client_init_is_complete(clp))
+ 			nfs_mark_client_ready(clp, PTR_ERR(task));
++		if (swapon)
++			clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
+ 		nfs4_clear_state_manager_bit(clp);
+-		clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
+ 		nfs_put_client(clp);
+ 		module_put(THIS_MODULE);
+ 	}
+@@ -2726,22 +2737,25 @@ static int nfs4_run_state_manager(void *ptr)
+ 
+ 	allow_signal(SIGKILL);
+ again:
+-	set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state);
+ 	nfs4_state_manager(clp);
+-	if (atomic_read(&cl->cl_swapper)) {
++
++	if (test_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state) &&
++	    !test_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state)) {
+ 		wait_var_event_interruptible(&clp->cl_state,
+ 					     test_bit(NFS4CLNT_RUN_MANAGER,
+ 						      &clp->cl_state));
+-		if (atomic_read(&cl->cl_swapper) &&
+-		    test_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state))
++		if (!atomic_read(&cl->cl_swapper))
++			clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
++		if (refcount_read(&clp->cl_count) > 1 && !signalled() &&
++		    !test_and_set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state))
+ 			goto again;
+ 		/* Either no longer a swapper, or were signalled */
++		clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
+ 	}
+-	clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
+ 
+ 	if (refcount_read(&clp->cl_count) > 1 && !signalled() &&
+ 	    test_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state) &&
+-	    !test_and_set_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state))
++	    !test_and_set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state))
+ 		goto again;
+ 
+ 	nfs_put_client(clp);
 -- 
 2.40.1
 
