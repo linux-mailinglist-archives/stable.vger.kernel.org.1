@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39C377BDD25
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A002F7BDFEF
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:35:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376705AbjJINHz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:07:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36462 "EHLO
+        id S1377172AbjJINfr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:35:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376698AbjJINHy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:07:54 -0400
+        with ESMTP id S1377179AbjJINfq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:35:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD65E1
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:07:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F87C433C8;
-        Mon,  9 Oct 2023 13:07:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF61C99
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:35:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26555C433C8;
+        Mon,  9 Oct 2023 13:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856871;
-        bh=Z8NUSYRi+WUxlLFr3tm1rXBoH8Y0KBF6HPG0U9rETcw=;
+        s=korg; t=1696858544;
+        bh=79mUaHlqhpjkyDddBXbWgT+phgCK6zHzZYxvpiCHKPo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SM9kPehTeOjadogBVR3gkCgn8w0390lRcNcVSadPxWmox3dlZWik5Ybvegwp7OHZb
-         2Gp7Jp4JFBJ+DWl9ic7w0VjxoYDakst7b35Eu8oJHN9vuioNx++fGYu3kSk8Z8igEf
-         SSOZftpPQbNOGa2o8UbfzDWWbW8n+rvVuczGx/N8=
+        b=zGbwJOzmyN4ynpZrCIhzdqMtjXDTerqXLrtUAQPWss9fAHtIn74EX7cospStYhHZr
+         88ZYUI36N94oAlTLHgwlv3U6IencWDRe1+twitBreavXX7+xxeiQDTBdcYzaP1ixat
+         m/jOXcv3BUTSRYS7s8z9jZcoaoL6N3YK7Rb75n5I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kristina Martsenko <kristina.martsenko@arm.com>,
-        Mark Brown <broonie@kernel.org>, Will Deacon <will@kernel.org>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 019/163] arm64: cpufeature: Fix CLRBHB and BC detection
-Date:   Mon,  9 Oct 2023 14:59:43 +0200
-Message-ID: <20231009130124.543506050@linuxfoundation.org>
+Subject: [PATCH 5.10 023/226] netfilter: nf_tables: fix GC transaction races with netns and netlink event exit path
+Date:   Mon,  9 Oct 2023 14:59:44 +0200
+Message-ID: <20231009130127.352039452@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +49,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kristina Martsenko <kristina.martsenko@arm.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 479965a2b7ec481737df0cadf553331063b9c343 ]
+commit 6a33d8b73dfac0a41f3877894b38082bd0c9a5bc upstream.
 
-ClearBHB support is indicated by the CLRBHB field in ID_AA64ISAR2_EL1.
-Following some refactoring the kernel incorrectly checks the BC field
-instead. Fix the detection to use the right field.
+Netlink event path is missing a synchronization point with GC
+transactions. Add GC sequence number update to netns release path and
+netlink event path, any GC transaction losing race will be discarded.
 
-(Note: The original ClearBHB support had it as FTR_HIGHER_SAFE, but this
-patch uses FTR_LOWER_SAFE, which seems more correct.)
-
-Also fix the detection of BC (hinted conditional branches) to use
-FTR_LOWER_SAFE, so that it is not reported on mismatched systems.
-
-Fixes: 356137e68a9f ("arm64/sysreg: Make BHB clear feature defines match the architecture")
-Fixes: 8fcc8285c0e3 ("arm64/sysreg: Convert ID_AA64ISAR2_EL1 to automatic generation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kristina Martsenko <kristina.martsenko@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20230912133429.2606875-1-kristina.martsenko@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cpufeature.h | 2 +-
- arch/arm64/kernel/cpufeature.c      | 3 ++-
- arch/arm64/tools/sysreg             | 6 +++++-
- 3 files changed, 8 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-index 96e50227f940e..5bba393760557 100644
---- a/arch/arm64/include/asm/cpufeature.h
-+++ b/arch/arm64/include/asm/cpufeature.h
-@@ -663,7 +663,7 @@ static inline bool supports_clearbhb(int scope)
- 		isar2 = read_sanitised_ftr_reg(SYS_ID_AA64ISAR2_EL1);
- 
- 	return cpuid_feature_extract_unsigned_field(isar2,
--						    ID_AA64ISAR2_EL1_BC_SHIFT);
-+						    ID_AA64ISAR2_EL1_CLRBHB_SHIFT);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 206755eb35f3a..43da2f0a52623 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -8320,6 +8320,22 @@ static void nft_set_commit_update(struct list_head *set_update_list)
+ 	}
  }
  
- const struct cpumask *system_32bit_el0_cpumask(void);
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index ac764c1dac363..2c0b8444fea67 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -222,7 +222,8 @@ static const struct arm64_ftr_bits ftr_id_aa64isar1[] = {
- static const struct arm64_ftr_bits ftr_id_aa64isar2[] = {
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64ISAR2_EL1_CSSC_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64ISAR2_EL1_RPRFM_SHIFT, 4, 0),
--	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_HIGHER_SAFE, ID_AA64ISAR2_EL1_BC_SHIFT, 4, 0),
-+	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64ISAR2_EL1_CLRBHB_SHIFT, 4, 0),
-+	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64ISAR2_EL1_BC_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64ISAR2_EL1_MOPS_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE_IF_IS_ENABLED(CONFIG_ARM64_PTR_AUTH),
- 		       FTR_STRICT, FTR_EXACT, ID_AA64ISAR2_EL1_APA3_SHIFT, 4, 0),
-diff --git a/arch/arm64/tools/sysreg b/arch/arm64/tools/sysreg
-index 65866bf819c33..ffc81afa6caca 100644
---- a/arch/arm64/tools/sysreg
-+++ b/arch/arm64/tools/sysreg
-@@ -1347,7 +1347,11 @@ UnsignedEnum	51:48	RPRFM
- 	0b0000	NI
- 	0b0001	IMP
- EndEnum
--Res0	47:28
-+Res0	47:32
-+UnsignedEnum	31:28	CLRBHB
-+	0b0000	NI
-+	0b0001	IMP
-+EndEnum
- UnsignedEnum	27:24	PAC_frac
- 	0b0000	NI
- 	0b0001	IMP
++static unsigned int nft_gc_seq_begin(struct nftables_pernet *nft_net)
++{
++	unsigned int gc_seq;
++
++	/* Bump gc counter, it becomes odd, this is the busy mark. */
++	gc_seq = READ_ONCE(nft_net->gc_seq);
++	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
++
++	return gc_seq;
++}
++
++static void nft_gc_seq_end(struct nftables_pernet *nft_net, unsigned int gc_seq)
++{
++	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
++}
++
+ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ {
+ 	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
+@@ -8401,9 +8417,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 	while (++nft_net->base_seq == 0)
+ 		;
+ 
+-	/* Bump gc counter, it becomes odd, this is the busy mark. */
+-	gc_seq = READ_ONCE(nft_net->gc_seq);
+-	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
++	gc_seq = nft_gc_seq_begin(nft_net);
+ 
+ 	/* step 3. Start new generation, rules_gen_X now in use. */
+ 	net->nft.gencursor = nft_gencursor_next(net);
+@@ -8583,7 +8597,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 	nf_tables_gen_notify(net, skb, NFT_MSG_NEWGEN);
+ 	nf_tables_commit_audit_log(&adl, nft_net->base_seq);
+ 
+-	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
++	nft_gc_seq_end(nft_net, gc_seq);
+ 	nf_tables_commit_release(net);
+ 
+ 	return 0;
+@@ -9538,11 +9552,18 @@ static void __net_exit nf_tables_pre_exit_net(struct net *net)
+ static void __net_exit nf_tables_exit_net(struct net *net)
+ {
+ 	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
++	unsigned int gc_seq;
+ 
+ 	mutex_lock(&nft_net->commit_mutex);
++
++	gc_seq = nft_gc_seq_begin(nft_net);
++
+ 	if (!list_empty(&nft_net->commit_list))
+ 		__nf_tables_abort(net, NFNL_ABORT_NONE);
+ 	__nft_release_tables(net);
++
++	nft_gc_seq_end(nft_net, gc_seq);
++
+ 	mutex_unlock(&nft_net->commit_mutex);
+ 	WARN_ON_ONCE(!list_empty(&nft_net->tables));
+ 	WARN_ON_ONCE(!list_empty(&nft_net->module_list));
 -- 
 2.40.1
 
