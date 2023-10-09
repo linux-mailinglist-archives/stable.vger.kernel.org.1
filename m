@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65FB77BDE79
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3E1B7BDF89
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346564AbjJINTz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:19:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53244 "EHLO
+        id S1377072AbjJINa5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:30:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376853AbjJINNx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:53 -0400
+        with ESMTP id S1377015AbjJINa4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:30:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70F59F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D34C433C9;
-        Mon,  9 Oct 2023 13:13:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 705A59C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:30:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9ECEC433C9;
+        Mon,  9 Oct 2023 13:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857231;
-        bh=CyCch0Z7qxRekDi+Ho9q9smmS2i6KfrAXQIzYa+AfRs=;
+        s=korg; t=1696858255;
+        bh=SY4bmwYqYiULSmlCrEaYB8GN6Uz+huPGif9FayFboeY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JjFCxhmxUgGuxsQFWTelVp+EEq8a/ld9GvZ8hS15wifBSKb0isOSs7lxICn0O7ruL
-         6kCe9n9wIXmNBW2YGBLTN47LKxjRvDFAMtbJmyPdYLzQC/2aXXRBhnuwaCh69Adrn6
-         SyqYs8B3sQS0r5O8PIdVKDxJiw+cq24oRvaVVwvU=
+        b=mX/cnQ71CWxGsF7/wEn9/NMBWteuY8cljiW8aFF4mT0C1KXqnsrbAu09YaMaRma0B
+         IJVIRfvXIcyn0o3klh0ihIShVGsycVblcfLKsXmPdBY54GeD1rElqJNLd3fGIHqTF5
+         hPY1eNTzrDI6iQlF8rDeMy3trVqqSeHAdLiJYbpY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.5 140/163] dm zoned: free dmz->ddev array in dmz_put_zoned_devices
+        patches@lists.linux.dev, Pratyush Yadav <ptyadav@amazon.de>,
+        Keith Busch <kbusch@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 064/131] nvme-pci: do not set the NUMA node of device if it has none
 Date:   Mon,  9 Oct 2023 15:01:44 +0200
-Message-ID: <20231009130127.911849066@linuxfoundation.org>
+Message-ID: <20231009130118.255685929@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,76 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Pratyush Yadav <ptyadav@amazon.de>
 
-commit 9850ccd5dd88075b2b7fd28d96299d5535f58cc5 upstream.
+[ Upstream commit dad651b2a44eb6b201738f810254279dca29d30d ]
 
-Commit 4dba12881f88 ("dm zoned: support arbitrary number of devices")
-made the pointers to additional zoned devices to be stored in a
-dynamically allocated dmz->ddev array. However, this array is not freed.
+If a device has no NUMA node information associated with it, the driver
+puts the device in node first_memory_node (say node 0). Not having a
+NUMA node and being associated with node 0 are completely different
+things and it makes little sense to mix the two.
 
-Rename dmz_put_zoned_device to dmz_put_zoned_devices and fix it to
-free the dmz->ddev array when cleaning up zoned device information.
-Remove NULL assignment for all dmz->ddev elements and just free the
-dmz->ddev array instead.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 4dba12881f88 ("dm zoned: support arbitrary number of devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-zoned-target.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/nvme/host/pci.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/md/dm-zoned-target.c
-+++ b/drivers/md/dm-zoned-target.c
-@@ -748,17 +748,16 @@ err:
- /*
-  * Cleanup zoned device information.
-  */
--static void dmz_put_zoned_device(struct dm_target *ti)
-+static void dmz_put_zoned_devices(struct dm_target *ti)
- {
- 	struct dmz_target *dmz = ti->private;
- 	int i;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index a58711c488509..486e44d20b430 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2841,8 +2841,6 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	size_t alloc_size;
  
--	for (i = 0; i < dmz->nr_ddevs; i++) {
--		if (dmz->ddev[i]) {
-+	for (i = 0; i < dmz->nr_ddevs; i++)
-+		if (dmz->ddev[i])
- 			dm_put_device(ti, dmz->ddev[i]);
--			dmz->ddev[i] = NULL;
--		}
--	}
-+
-+	kfree(dmz->ddev);
- }
+ 	node = dev_to_node(&pdev->dev);
+-	if (node == NUMA_NO_NODE)
+-		set_dev_node(&pdev->dev, first_memory_node);
  
- static int dmz_fixup_devices(struct dm_target *ti)
-@@ -948,7 +947,7 @@ err_bio:
- err_meta:
- 	dmz_dtr_metadata(dmz->metadata);
- err_dev:
--	dmz_put_zoned_device(ti);
-+	dmz_put_zoned_devices(ti);
- err:
- 	kfree(dmz->dev);
- 	kfree(dmz);
-@@ -978,7 +977,7 @@ static void dmz_dtr(struct dm_target *ti
- 
- 	bioset_exit(&dmz->bio_set);
- 
--	dmz_put_zoned_device(ti);
-+	dmz_put_zoned_devices(ti);
- 
- 	mutex_destroy(&dmz->chunk_lock);
- 
+ 	dev = kzalloc_node(sizeof(*dev), GFP_KERNEL, node);
+ 	if (!dev)
+-- 
+2.40.1
+
 
 
