@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86FBB7BDF80
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6A527BDDE8
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377070AbjJINaj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:30:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51766 "EHLO
+        id S1376883AbjJINOK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:14:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376901AbjJINah (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:30:37 -0400
+        with ESMTP id S1376974AbjJINNq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AADD9D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:30:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2A8C433C9;
-        Mon,  9 Oct 2023 13:30:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E4D3FC
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB33C433CB;
+        Mon,  9 Oct 2023 13:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858236;
-        bh=Re4njsf6H6MGIDOOnApZu9XoOTx/o0CP5jBw8FZG7K8=;
+        s=korg; t=1696857214;
+        bh=igpQa8sHKg7GRYCseLQBcVoEHz2h9T/iTre1qUm+Cmc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2bKpdhX0KDUXfmcDgwE5htgwenUE/MNeWGBNTqBbJPUXEHeZXhl2YqWkuN6urUT3H
-         oxGhFZk08srsZ4mcisObplMohZ2N2+ivXg0r1ugiLw6JjM6rkj010T7+/Ihgs0ktTB
-         iMMPDJmQKCk40gpwb9R4egFzywIBc/g4J0I0WkWo=
+        b=GxQJ6NWBhwBgxF76zl27rk+H6CVlVWtNks1ZXB/afXsvuqMZWUMXqHik6WwSxj0f4
+         jMCeub+9etXWY/WMq2K2cAuL1JpQ4Ettc2w3jFHXZA5zW8XheNHtFFaR/NxNbXn/iT
+         /vgBhgwNh/My4j0JywljBctxmq/JOuA52WUr1vuw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Han Xu <han.xu@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 059/131] spi: nxp-fspi: reset the FLSHxCR1 registers
+        patches@lists.linux.dev,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 135/163] HID: intel-ish-hid: ipc: Disable and reenable ACPI GPE bit
 Date:   Mon,  9 Oct 2023 15:01:39 +0200
-Message-ID: <20231009130118.103427274@linuxfoundation.org>
+Message-ID: <20231009130127.773943459@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +50,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Han Xu <han.xu@nxp.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 18495676f7886e105133f1dc06c1d5e8d5436f32 ]
+[ Upstream commit 8f02139ad9a7e6e5c05712f8c1501eebed8eacfd ]
 
-Reset the FLSHxCR1 registers to default value. ROM may set the register
-value and it affects the SPI NAND normal functions.
+The EHL (Elkhart Lake) based platforms provide a OOB (Out of band)
+service, which allows to wakup device when the system is in S5 (Soft-Off
+state). This OOB service can be enabled/disabled from BIOS settings. When
+enabled, the ISH device gets PME wake capability. To enable PME wakeup,
+driver also needs to enable ACPI GPE bit.
 
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Link: https://lore.kernel.org/r/20230906183254.235847-1-han.xu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+On resume, BIOS will clear the wakeup bit. So driver need to re-enable it
+in resume function to keep the next wakeup capability. But this BIOS
+clearing of wakeup bit doesn't decrement internal OS GPE reference count,
+so this reenabling on every resume will cause reference count to overflow.
+
+So first disable and reenable ACPI GPE bit using acpi_disable_gpe().
+
+Fixes: 2e23a70edabe ("HID: intel-ish-hid: ipc: finish power flow for EHL OOB")
+Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Closes: https://lore.kernel.org/lkml/CAAd53p4=oLYiH2YbVSmrPNj1zpMcfp=Wxbasb5vhMXOWCArLCg@mail.gmail.com/T/
+Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 36a44a837031d..ee1b488d7dedc 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -897,6 +897,13 @@ static int nxp_fspi_default_setup(struct nxp_fspi *f)
- 	fspi_writel(f, FSPI_AHBCR_PREF_EN | FSPI_AHBCR_RDADDROPT,
- 		 base + FSPI_AHBCR);
+diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+index 55cb25038e632..710fda5f19e1c 100644
+--- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
++++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+@@ -133,6 +133,14 @@ static int enable_gpe(struct device *dev)
+ 	}
+ 	wakeup = &adev->wakeup;
  
-+	/* Reset the FLSHxCR1 registers. */
-+	reg = FSPI_FLSHXCR1_TCSH(0x3) | FSPI_FLSHXCR1_TCSS(0x3);
-+	fspi_writel(f, reg, base + FSPI_FLSHA1CR1);
-+	fspi_writel(f, reg, base + FSPI_FLSHA2CR1);
-+	fspi_writel(f, reg, base + FSPI_FLSHB1CR1);
-+	fspi_writel(f, reg, base + FSPI_FLSHB2CR1);
++	/*
++	 * Call acpi_disable_gpe(), so that reference count
++	 * gpe_event_info->runtime_count doesn't overflow.
++	 * When gpe_event_info->runtime_count = 0, the call
++	 * to acpi_disable_gpe() simply return.
++	 */
++	acpi_disable_gpe(wakeup->gpe_device, wakeup->gpe_number);
 +
- 	/* AHB Read - Set lut sequence ID for all CS. */
- 	fspi_writel(f, SEQID_LUT, base + FSPI_FLSHA1CR2);
- 	fspi_writel(f, SEQID_LUT, base + FSPI_FLSHA2CR2);
+ 	acpi_sts = acpi_enable_gpe(wakeup->gpe_device, wakeup->gpe_number);
+ 	if (ACPI_FAILURE(acpi_sts)) {
+ 		dev_err(dev, "enable ose_gpe failed\n");
 -- 
 2.40.1
 
