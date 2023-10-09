@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9072C7BDD36
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E866A7BE01F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:37:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376702AbjJINIb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:08:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46280 "EHLO
+        id S1377224AbjJINhn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:37:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376672AbjJINIa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:30 -0400
+        with ESMTP id S1377218AbjJINhn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:37:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C997793
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B638C433C9;
-        Mon,  9 Oct 2023 13:08:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 303B3AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:37:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718A3C433C9;
+        Mon,  9 Oct 2023 13:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856907;
-        bh=bf0UpMAOpeBUxMQ9QBsqW3gNY2a04CkVGpYvmsRkLEI=;
+        s=korg; t=1696858661;
+        bh=BKHOm0nmlmcjFSQ++LNGh4iRYRqum7NDHVWlMjS2pI4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h4HE7m832YXrre4KfODC8fQu1H3JYNr0YTqNdvlHFJf+jjYfSHn5uUapp2eoLtvR+
-         U5DlBfY7vy9n8Ce5xoRv8jENPwdvg/deloxZBAS65Y9lEt2wokp/JFyhmbBLhcAHWQ
-         hWdA0oHkziXW2snXo0pas6UQa2Gp7greRUd8ewco=
+        b=fZntzkKE9yDwb+dyeNSPxn4Wq5heAi3gdJCdlcTpaiXRHWPamzv1lNlzZkOm+UNwD
+         zI0EJXY2Y7rXiCQuz5+8n7Ir9rOJ/6bLBM4qRfs1r2doddhyp5eh3r5D4LHUG2qY8m
+         u+RGsYuq+5ofbjaqdrsm/q0kxGgNa17oHMuqtcnY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.5 030/163] vringh: dont use vringh_kiov_advance() in vringh_iov_xfer()
+        patches@lists.linux.dev, Jerome Brunet <jbrunet@baylibre.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 033/226] ASoC: meson: spdifin: start hw on dai probe
 Date:   Mon,  9 Oct 2023 14:59:54 +0200
-Message-ID: <20231009130124.836061898@linuxfoundation.org>
+Message-ID: <20231009130127.642211791@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,56 +49,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-commit 7aed44babc7f97e82b38e9a68515e699692cc100 upstream.
+[ Upstream commit aedf323b66b2b875137422ecb7d2525179759076 ]
 
-In the while loop of vringh_iov_xfer(), `partlen` could be 0 if one of
-the `iov` has 0 lenght.
-In this case, we should skip the iov and go to the next one.
-But calling vringh_kiov_advance() with 0 lenght does not cause the
-advancement, since it returns immediately if asked to advance by 0 bytes.
+For spdif input to report the locked rate correctly, even when no capture
+is running, the HW and reference clock must be started as soon as
+the dai is probed.
 
-Let's restore the code that was there before commit b8c06ad4d67d
-("vringh: implement vringh_kiov_advance()"), avoiding using
-vringh_kiov_advance().
-
-Fixes: b8c06ad4d67d ("vringh: implement vringh_kiov_advance()")
-Cc: stable@vger.kernel.org
-Reported-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5ce5658375e6 ("ASoC: meson: add axg spdif input")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20230907090504.12700-1-jbrunet@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vringh.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ sound/soc/meson/axg-spdifin.c | 49 ++++++++++++-----------------------
+ 1 file changed, 17 insertions(+), 32 deletions(-)
 
---- a/drivers/vhost/vringh.c
-+++ b/drivers/vhost/vringh.c
-@@ -123,8 +123,18 @@ static inline ssize_t vringh_iov_xfer(st
- 		done += partlen;
- 		len -= partlen;
- 		ptr += partlen;
-+		iov->consumed += partlen;
-+		iov->iov[iov->i].iov_len -= partlen;
-+		iov->iov[iov->i].iov_base += partlen;
- 
--		vringh_kiov_advance(iov, partlen);
-+		if (!iov->iov[iov->i].iov_len) {
-+			/* Fix up old iov element then increment. */
-+			iov->iov[iov->i].iov_len = iov->consumed;
-+			iov->iov[iov->i].iov_base -= iov->consumed;
-+
-+			iov->consumed = 0;
-+			iov->i++;
-+		}
- 	}
- 	return done;
+diff --git a/sound/soc/meson/axg-spdifin.c b/sound/soc/meson/axg-spdifin.c
+index d0d09f945b489..7aaded1fc376b 100644
+--- a/sound/soc/meson/axg-spdifin.c
++++ b/sound/soc/meson/axg-spdifin.c
+@@ -112,34 +112,6 @@ static int axg_spdifin_prepare(struct snd_pcm_substream *substream,
+ 	return 0;
  }
+ 
+-static int axg_spdifin_startup(struct snd_pcm_substream *substream,
+-			       struct snd_soc_dai *dai)
+-{
+-	struct axg_spdifin *priv = snd_soc_dai_get_drvdata(dai);
+-	int ret;
+-
+-	ret = clk_prepare_enable(priv->refclk);
+-	if (ret) {
+-		dev_err(dai->dev,
+-			"failed to enable spdifin reference clock\n");
+-		return ret;
+-	}
+-
+-	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN,
+-			   SPDIFIN_CTRL0_EN);
+-
+-	return 0;
+-}
+-
+-static void axg_spdifin_shutdown(struct snd_pcm_substream *substream,
+-				 struct snd_soc_dai *dai)
+-{
+-	struct axg_spdifin *priv = snd_soc_dai_get_drvdata(dai);
+-
+-	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN, 0);
+-	clk_disable_unprepare(priv->refclk);
+-}
+-
+ static void axg_spdifin_write_mode_param(struct regmap *map, int mode,
+ 					 unsigned int val,
+ 					 unsigned int num_per_reg,
+@@ -251,25 +223,38 @@ static int axg_spdifin_dai_probe(struct snd_soc_dai *dai)
+ 	ret = axg_spdifin_sample_mode_config(dai, priv);
+ 	if (ret) {
+ 		dev_err(dai->dev, "mode configuration failed\n");
+-		clk_disable_unprepare(priv->pclk);
+-		return ret;
++		goto pclk_err;
+ 	}
+ 
++	ret = clk_prepare_enable(priv->refclk);
++	if (ret) {
++		dev_err(dai->dev,
++			"failed to enable spdifin reference clock\n");
++		goto pclk_err;
++	}
++
++	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN,
++			   SPDIFIN_CTRL0_EN);
++
+ 	return 0;
++
++pclk_err:
++	clk_disable_unprepare(priv->pclk);
++	return ret;
+ }
+ 
+ static int axg_spdifin_dai_remove(struct snd_soc_dai *dai)
+ {
+ 	struct axg_spdifin *priv = snd_soc_dai_get_drvdata(dai);
+ 
++	regmap_update_bits(priv->map, SPDIFIN_CTRL0, SPDIFIN_CTRL0_EN, 0);
++	clk_disable_unprepare(priv->refclk);
+ 	clk_disable_unprepare(priv->pclk);
+ 	return 0;
+ }
+ 
+ static const struct snd_soc_dai_ops axg_spdifin_ops = {
+ 	.prepare	= axg_spdifin_prepare,
+-	.startup	= axg_spdifin_startup,
+-	.shutdown	= axg_spdifin_shutdown,
+ };
+ 
+ static int axg_spdifin_iec958_info(struct snd_kcontrol *kcontrol,
+-- 
+2.40.1
+
 
 
