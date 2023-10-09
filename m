@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFF867BE0A2
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2FE97BDE84
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377268AbjJINmW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:42:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39376 "EHLO
+        id S1346474AbjJINUN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:20:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377376AbjJINmV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:21 -0400
+        with ESMTP id S1346513AbjJINUN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE0EA91
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C318C433CA;
-        Mon,  9 Oct 2023 13:42:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E79DC5
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8D9C433C7;
+        Mon,  9 Oct 2023 13:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858940;
-        bh=TCTD6b24x8E2rK5heu9MbNW2lvOzv35cMhtt878g8Yc=;
+        s=korg; t=1696857611;
+        bh=WR8UtVXUqYuGVabK03VkstPbtUWmSKqDvHyMEj5oqhA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yy7Fd9gSyuRJzazQjIU0c8jYyxp66OZzeiw3+WeBvHTdI/g9aSFDb6YKF7bSaGggW
-         Qz4QAxLOFtEP2JCallWCfkR02wFsC6DDG1T13I8vOhU4SSeJysZOKltlwMrElnMSGh
-         QT5QhdwlParLKJ865kH95gs1gp9fC9oqafX2t4+Y=
+        b=NcoI/2DdE/WBBKSLr3IL9gC/dZo8YBiJ2w9672id6T3hzvdjE/aFX2ADnZnqhTXO2
+         tmTOEkIBu49mZLhs/XRFDhY2uYN5J1BzuZqpkwTDbQS4myUrm2CmQaiU2V0jc3y8Jt
+         +6++eNQiLGHd0wNAaSD5MHIamZHYY6RW0tbBmhcs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Grzedzicki <mge@meta.com>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Mimi Zohar <zohar@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/226] scsi: pm80xx: Avoid leaking tags when processing OPC_INB_SET_CONTROLLER_CONFIG command
+Subject: [PATCH 6.1 100/162] ima: rework CONFIG_IMA dependency block
 Date:   Mon,  9 Oct 2023 15:01:21 +0200
-Message-ID: <20231009130129.914144376@linuxfoundation.org>
+Message-ID: <20231009130125.686545143@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +49,143 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Grzedzicki <mge@meta.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit c13e7331745852d0dd7c35eabbe181cbd5b01172 ]
+[ Upstream commit 91e326563ee34509c35267808a4b1b3ea3db62a8 ]
 
-Tags allocated for OPC_INB_SET_CONTROLLER_CONFIG command need to be freed
-when we receive the response.
+Changing the direct dependencies of IMA_BLACKLIST_KEYRING and
+IMA_LOAD_X509 caused them to no longer depend on IMA, but a
+a configuration without IMA results in link failures:
 
-Signed-off-by: Michal Grzedzicki <mge@meta.com>
-Link: https://lore.kernel.org/r/20230911170340.699533-2-mge@meta.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+arm-linux-gnueabi-ld: security/integrity/iint.o: in function `integrity_load_keys':
+iint.c:(.init.text+0xd8): undefined reference to `ima_load_x509'
+
+aarch64-linux-ld: security/integrity/digsig_asymmetric.o: in function `asymmetric_verify':
+digsig_asymmetric.c:(.text+0x104): undefined reference to `ima_blacklist_keyring'
+
+Adding explicit dependencies on IMA would fix this, but a more reliable
+way to do this is to enclose the entire Kconfig file in an 'if IMA' block.
+This also allows removing the existing direct dependencies.
+
+Fixes: be210c6d3597f ("ima: Finish deprecation of IMA_TRUSTED_KEYRING Kconfig")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm80xx_hwi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ security/integrity/ima/Kconfig | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
-index ed01c93062091..89051722e04d6 100644
---- a/drivers/scsi/pm8001/pm80xx_hwi.c
-+++ b/drivers/scsi/pm8001/pm80xx_hwi.c
-@@ -3722,10 +3722,12 @@ static int mpi_set_controller_config_resp(struct pm8001_hba_info *pm8001_ha,
- 			(struct set_ctrl_cfg_resp *)(piomb + 4);
- 	u32 status = le32_to_cpu(pPayload->status);
- 	u32 err_qlfr_pgcd = le32_to_cpu(pPayload->err_qlfr_pgcd);
-+	u32 tag = le32_to_cpu(pPayload->tag);
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index e6df7c930397c..6ef7bde551263 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -29,9 +29,11 @@ config IMA
+ 	  to learn more about IMA.
+ 	  If unsure, say N.
  
- 	pm8001_dbg(pm8001_ha, MSG,
- 		   "SET CONTROLLER RESP: status 0x%x qlfr_pgcd 0x%x\n",
- 		   status, err_qlfr_pgcd);
-+	pm8001_tag_free(pm8001_ha, tag);
++if IMA
++
+ config IMA_KEXEC
+ 	bool "Enable carrying the IMA measurement list across a soft boot"
+-	depends on IMA && TCG_TPM && HAVE_IMA_KEXEC
++	depends on TCG_TPM && HAVE_IMA_KEXEC
+ 	default n
+ 	help
+ 	   TPM PCRs are only reset on a hard reboot.  In order to validate
+@@ -43,7 +45,6 @@ config IMA_KEXEC
  
- 	return 0;
- }
+ config IMA_MEASURE_PCR_IDX
+ 	int
+-	depends on IMA
+ 	range 8 14
+ 	default 10
+ 	help
+@@ -53,7 +54,7 @@ config IMA_MEASURE_PCR_IDX
+ 
+ config IMA_LSM_RULES
+ 	bool
+-	depends on IMA && AUDIT && (SECURITY_SELINUX || SECURITY_SMACK || SECURITY_APPARMOR)
++	depends on AUDIT && (SECURITY_SELINUX || SECURITY_SMACK || SECURITY_APPARMOR)
+ 	default y
+ 	help
+ 	  Disabling this option will disregard LSM based policy rules.
+@@ -61,7 +62,6 @@ config IMA_LSM_RULES
+ choice
+ 	prompt "Default template"
+ 	default IMA_NG_TEMPLATE
+-	depends on IMA
+ 	help
+ 	  Select the default IMA measurement template.
+ 
+@@ -80,14 +80,12 @@ endchoice
+ 
+ config IMA_DEFAULT_TEMPLATE
+ 	string
+-	depends on IMA
+ 	default "ima-ng" if IMA_NG_TEMPLATE
+ 	default "ima-sig" if IMA_SIG_TEMPLATE
+ 
+ choice
+ 	prompt "Default integrity hash algorithm"
+ 	default IMA_DEFAULT_HASH_SHA1
+-	depends on IMA
+ 	help
+ 	   Select the default hash algorithm used for the measurement
+ 	   list, integrity appraisal and audit log.  The compiled default
+@@ -117,7 +115,6 @@ endchoice
+ 
+ config IMA_DEFAULT_HASH
+ 	string
+-	depends on IMA
+ 	default "sha1" if IMA_DEFAULT_HASH_SHA1
+ 	default "sha256" if IMA_DEFAULT_HASH_SHA256
+ 	default "sha512" if IMA_DEFAULT_HASH_SHA512
+@@ -126,7 +123,6 @@ config IMA_DEFAULT_HASH
+ 
+ config IMA_WRITE_POLICY
+ 	bool "Enable multiple writes to the IMA policy"
+-	depends on IMA
+ 	default n
+ 	help
+ 	  IMA policy can now be updated multiple times.  The new rules get
+@@ -137,7 +133,6 @@ config IMA_WRITE_POLICY
+ 
+ config IMA_READ_POLICY
+ 	bool "Enable reading back the current IMA policy"
+-	depends on IMA
+ 	default y if IMA_WRITE_POLICY
+ 	default n if !IMA_WRITE_POLICY
+ 	help
+@@ -147,7 +142,6 @@ config IMA_READ_POLICY
+ 
+ config IMA_APPRAISE
+ 	bool "Appraise integrity measurements"
+-	depends on IMA
+ 	default n
+ 	help
+ 	  This option enables local measurement integrity appraisal.
+@@ -303,7 +297,6 @@ config IMA_APPRAISE_SIGNED_INIT
+ 
+ config IMA_MEASURE_ASYMMETRIC_KEYS
+ 	bool
+-	depends on IMA
+ 	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE=y
+ 	default y
+ 
+@@ -322,7 +315,8 @@ config IMA_SECURE_AND_OR_TRUSTED_BOOT
+ 
+ config IMA_DISABLE_HTABLE
+ 	bool "Disable htable to allow measurement of duplicate records"
+-	depends on IMA
+ 	default n
+ 	help
+ 	   This option disables htable to allow measurement of duplicate records.
++
++endif
 -- 
 2.40.1
 
