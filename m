@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B42D7BDE9C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FE847BDEEB
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376362AbjJINVK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:21:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56670 "EHLO
+        id S1376536AbjJINY2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:24:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376366AbjJINVI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:08 -0400
+        with ESMTP id S1376562AbjJINY1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8181CAF
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE50FC433C7;
-        Mon,  9 Oct 2023 13:21:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCBA894
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035A0C433C7;
+        Mon,  9 Oct 2023 13:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857665;
-        bh=8z4hQNBRcR7XCEbS/jAJRhodiujapL7Yi4djFmzRux4=;
+        s=korg; t=1696857865;
+        bh=DEbUJJerDezDjOBdZH0mMfoI9eiOd4jV3m6u/Pl0ukU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t19PiYM++K+hxtK+CShj0KPjed9+TFrLnp/osBqpYdXMyQafk/Py5ntTJ3OrdJElL
-         slr1EnpJLJBoC2yXyWiKlR7w41BSKYSTOEsH/8ZXPzZFQvwgxJtz+FbjWQqFPUpHFS
-         MIS5xOtaHILnWQvOuP+NtvctTCaT1MnX4Vb1VEVc=
+        b=b2nr3X4W0dSHjyW17sLuFxloa1U2SUJslwwUXOyOVehw3vKBhto/cBec+5d3KTZ5X
+         oeM2iR05dH4oQADCDfVS0Yp63FoNTTp/EiIaf4CgQJNTxEgLPY/fMZOextsWZvKX04
+         +jSRkza+mZMJHDFi49GtacUdnuCFyJbj9pCYI7dw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Wilder <dwilder@us.ibm.com>,
-        Nick Child <nnac123@linux.ibm.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/162] ibmveth: Remove condition to recompute TCP header checksum.
-Date:   Mon,  9 Oct 2023 15:01:39 +0200
-Message-ID: <20231009130126.189743601@linuxfoundation.org>
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Abel Vesa <abel.vesa@linaro.org>
+Subject: [PATCH 5.15 18/75] Revert "clk: imx: pll14xx: dynamically configure PLL for 393216000/361267200Hz"
+Date:   Mon,  9 Oct 2023 15:01:40 +0200
+Message-ID: <20231009130111.872245192@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,76 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wilder <dwilder@us.ibm.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 51e7a66666e0ca9642c59464ef8359f0ac604d41 ]
+This reverts commit a8474506c9127048c058fdfe466ccbadf7524048 which is
+commit 72d00e560d10665e6139c9431956a87ded6e9880 upstream.
 
-In some OVS environments the TCP pseudo header checksum may need to be
-recomputed. Currently this is only done when the interface instance is
-configured for "Trunk Mode". We found the issue also occurs in some
-Kubernetes environments, these environments do not use "Trunk Mode",
-therefor the condition is removed.
+Marek writes:
+	The commit message states 'Cc: stable@vger.kernel.org # v5.18+'
+	and the commit should only be applied to Linux 5.18.y and newer,
+	on anything older it breaks PLL configuration due to missing
+	prerequisite patches.
 
-Performance tests with this change show only a fractional decrease in
-throughput (< 0.2%).
-
-Fixes: 7525de2516fb ("ibmveth: Set CHECKSUM_PARTIAL if NULL TCP CSUM.")
-Signed-off-by: David Wilder <dwilder@us.ibm.com>
-Reviewed-by: Nick Child <nnac123@linux.ibm.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Marek Vasut <marex@denx.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/4e5fa5b2-66b8-8f0b-ccb9-c2b774054e4e@denx.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ibm/ibmveth.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/clk/imx/clk-pll14xx.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 0b4ec6e41eb41..1d21a281222d9 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -1308,24 +1308,23 @@ static void ibmveth_rx_csum_helper(struct sk_buff *skb,
- 	 * the user space for finding a flow. During this process, OVS computes
- 	 * checksum on the first packet when CHECKSUM_PARTIAL flag is set.
- 	 *
--	 * So, re-compute TCP pseudo header checksum when configured for
--	 * trunk mode.
-+	 * So, re-compute TCP pseudo header checksum.
- 	 */
-+
- 	if (iph_proto == IPPROTO_TCP) {
- 		struct tcphdr *tcph = (struct tcphdr *)(skb->data + iphlen);
-+
- 		if (tcph->check == 0x0000) {
- 			/* Recompute TCP pseudo header checksum  */
--			if (adapter->is_active_trunk) {
--				tcphdrlen = skb->len - iphlen;
--				if (skb_proto == ETH_P_IP)
--					tcph->check =
--					 ~csum_tcpudp_magic(iph->saddr,
--					iph->daddr, tcphdrlen, iph_proto, 0);
--				else if (skb_proto == ETH_P_IPV6)
--					tcph->check =
--					 ~csum_ipv6_magic(&iph6->saddr,
--					&iph6->daddr, tcphdrlen, iph_proto, 0);
--			}
-+			tcphdrlen = skb->len - iphlen;
-+			if (skb_proto == ETH_P_IP)
-+				tcph->check =
-+				 ~csum_tcpudp_magic(iph->saddr,
-+				iph->daddr, tcphdrlen, iph_proto, 0);
-+			else if (skb_proto == ETH_P_IPV6)
-+				tcph->check =
-+				 ~csum_ipv6_magic(&iph6->saddr,
-+				&iph6->daddr, tcphdrlen, iph_proto, 0);
- 			/* Setup SKB fields for checksum offload */
- 			skb_partial_csum_set(skb, iphlen,
- 					     offsetof(struct tcphdr, check));
--- 
-2.40.1
-
+--- a/drivers/clk/imx/clk-pll14xx.c
++++ b/drivers/clk/imx/clk-pll14xx.c
+@@ -60,6 +60,8 @@ static const struct imx_pll14xx_rate_tab
+ 	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
+ 	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
+ 	PLL_1443X_RATE(519750000U, 173, 2, 2, 16384),
++	PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
++	PLL_1443X_RATE(361267200U, 361, 3, 3, 17511),
+ };
+ 
+ struct imx_pll14xx_clk imx_1443x_pll = {
 
 
