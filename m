@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A11897BE08C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:41:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB267BDEE2
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377310AbjJINlX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:41:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36192 "EHLO
+        id S1376482AbjJINYT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:24:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377365AbjJINlW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:41:22 -0400
+        with ESMTP id S1376720AbjJINYB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CC49AB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD67CC433C8;
-        Mon,  9 Oct 2023 13:41:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35F3094
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DFAC433C8;
+        Mon,  9 Oct 2023 13:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858880;
-        bh=4el1q7CcPw10LMoZJ4/kkjgBIqK+QBnSXeU5TTQMqSg=;
+        s=korg; t=1696857839;
+        bh=OkiWVlhSD3ntepjnI8qRu8zE0O42s8h7cobuLc5uamw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f3UZ0KwSLY5TBgjG0ixnFLC9Y0NyBiSf2U7r8/4zFS0gCqfPHFmdhv8aMbwuUSQbU
-         gis+IXb0haVFUS5/lU/Ht0egR1lPQj6wbdxbxUmfCwZonCaG2n4GaIil/QFp+v5YTo
-         gbj8zhHoeqIxJuJEXi1DRpTXNyf4zhFj5LYCtZng=
+        b=lzZh3hwuFY4/vCcwt7Sji/qivkKRZSvKmeUbg0VxMbevTs6jUA/Ov/j/cfRKJuuuL
+         ClMYvsQeMj0Zd3/HrANbjetZ71X4fNvdLJQjS1qmVuGtlpzFGMujQRm0H0q/Woid5a
+         LgMYpIU1D6YW20zumX8xzhvGyHBIZs+77qeRJPgc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Minye Zhu <zhuminye@bytedance.com>,
-        Chengming Zhou <zhouchengming@bytedance.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Tejun Heo <tj@kernel.org>,
-        Ovidiu Panait <ovidiu.panait@windriver.com>,
+        patches@lists.linux.dev, Gabriel Krisman Bertazi <krisman@suse.de>,
+        Will Deacon <will@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 130/226] sched/cpuacct: Fix charge percpu cpuusage
-Date:   Mon,  9 Oct 2023 15:01:31 +0200
-Message-ID: <20231009130130.163242270@linuxfoundation.org>
+Subject: [PATCH 5.15 10/75] arm64: Avoid repeated AA64MMFR1_EL1 register read on pagefault path
+Date:   Mon,  9 Oct 2023 15:01:32 +0200
+Message-ID: <20231009130111.586283945@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,51 +51,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-commit 248cc9993d1cc12b8e9ed716cc3fc09f6c3517dd upstream.
+[ Upstream commit a89c6bcdac22bec1bfbe6e64060b4cf5838d4f47 ]
 
-The cpuacct_account_field() is always called by the current task
-itself, so it's ok to use __this_cpu_add() to charge the tick time.
+Accessing AA64MMFR1_EL1 is expensive in KVM guests, since it is emulated
+in the hypervisor.  In fact, ARM documentation mentions some feature
+registers are not supposed to be accessed frequently by the OS, and
+therefore should be emulated for guests [1].
 
-But cpuacct_charge() maybe called by update_curr() in load_balance()
-on a random CPU, different from the CPU on which the task is running.
-So __this_cpu_add() will charge that cputime to a random incorrect CPU.
+Commit 0388f9c74330 ("arm64: mm: Implement
+arch_wants_old_prefaulted_pte()") introduced a read of this register in
+the page fault path.  But, even when the feature of setting faultaround
+pages with the old flag is disabled for a given cpu, we are still paying
+the cost of checking the register on every pagefault. This results in an
+explosion of vmexit events in KVM guests, which directly impacts the
+performance of virtualized workloads.  For instance, running kernbench
+yields a 15% increase in system time solely due to the increased vmexit
+cycles.
 
-Fixes: 73e6aafd9ea8 ("sched/cpuacct: Simplify the cpuacct code")
-Reported-by: Minye Zhu <zhuminye@bytedance.com>
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20220220051426.5274-1-zhouchengming@bytedance.com
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+This patch avoids the extra cost by using the sanitized cached value.
+It should be safe to do so, since this register mustn't change for a
+given cpu.
+
+[1] https://developer.arm.com/-/media/Arm%20Developer%20Community/PDF/Learn%20the%20Architecture/Armv8-A%20virtualization.pdf?revision=a765a7df-1a00-434d-b241-357bfda2dd31
+
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Acked-by: Will Deacon <will@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20230109151955.8292-1-krisman@suse.de
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/cpuacct.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/cpufeature.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/cpuacct.c b/kernel/sched/cpuacct.c
-index 8a260115a137b..3c59c541dd314 100644
---- a/kernel/sched/cpuacct.c
-+++ b/kernel/sched/cpuacct.c
-@@ -328,12 +328,13 @@ static struct cftype files[] = {
-  */
- void cpuacct_charge(struct task_struct *tsk, u64 cputime)
- {
-+	unsigned int cpu = task_cpu(tsk);
- 	struct cpuacct *ca;
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index a77b5f49b3a6c..135f4b0bf3967 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -839,7 +839,11 @@ static inline bool cpu_has_hw_af(void)
+ 	if (!IS_ENABLED(CONFIG_ARM64_HW_AFDBM))
+ 		return false;
  
- 	rcu_read_lock();
- 
- 	for (ca = task_ca(tsk); ca; ca = parent_ca(ca))
--		__this_cpu_add(*ca->cpuusage, cputime);
-+		*per_cpu_ptr(ca->cpuusage, cpu) += cputime;
- 
- 	rcu_read_unlock();
+-	mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
++	/*
++	 * Use cached version to avoid emulated msr operation on KVM
++	 * guests.
++	 */
++	mmfr1 = read_sanitised_ftr_reg(SYS_ID_AA64MMFR1_EL1);
+ 	return cpuid_feature_extract_unsigned_field(mmfr1,
+ 						ID_AA64MMFR1_HADBS_SHIFT);
  }
 -- 
 2.40.1
