@@ -2,36 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70E547BE13A
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 156977BE160
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234538AbjJINsW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:48:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39930 "EHLO
+        id S1377069AbjJINtz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:49:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234542AbjJINsV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:48:21 -0400
+        with ESMTP id S1377538AbjJINsx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:48:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7EF194
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:48:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D16C433C8;
-        Mon,  9 Oct 2023 13:48:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749C2106
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:48:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAE3C433C8;
+        Mon,  9 Oct 2023 13:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859299;
-        bh=DhRMaoApclZtblBb+WoWnISpKxLHcUXKstzPAHSgboE=;
+        s=korg; t=1696859331;
+        bh=4wBfuv8KeJItGpAGDFIztXcurIekS7yrPpZh9FiubE4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZZ1sUUQkFO/jUN7dHfDRtIktUEWbBYlOx/qyHZ9Rm6EmIIZAE6N6Tk5qyXOh699mf
-         wglAC2jn8uS5/BE2ozH+cng0uAQqUkttUeYtm0tFdA/tndATgBDDvVAmdPvReGJmQW
-         UtI6YXpIXKGIrep/4IsLNccNIaw5+BzBfwsH0WoM=
+        b=EELSyNzRs4nakJAeQ918mhP8SlGnGh6wz9wSHi7T8IDe4xiBSGR8XYo1GfDZX4ySz
+         ZRqDHQ7hIy1cLtnDNHsMZKEb4Lof6FRZpuvQy6a2Gr7rbjcBbWxG6VjfiUSHr5onpI
+         c7Vchjnv9l6gh+ofiEV0uJX0CWOnaBFe1kAdpL2k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 16/55] ata: libata-eh: do not clear ATA_PFLAG_EH_PENDING in ata_eh_reset()
-Date:   Mon,  9 Oct 2023 15:06:15 +0200
-Message-ID: <20231009130108.331405003@linuxfoundation.org>
+Subject: [PATCH 4.14 17/55] fbdev/sh7760fb: Depend on FB=y
+Date:   Mon,  9 Oct 2023 15:06:16 +0200
+Message-ID: <20231009130108.369460426@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
 References: <20231009130107.717692466@linuxfoundation.org>
@@ -53,121 +56,58 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 80cc944eca4f0baa9c381d0706f3160e491437f2 ]
+[ Upstream commit f75f71b2c418a27a7c05139bb27a0c83adf88d19 ]
 
-ata_scsi_port_error_handler() starts off by clearing ATA_PFLAG_EH_PENDING,
-before calling ap->ops->error_handler() (without holding the ap->lock).
+Fix linker error if FB=m about missing fb_io_read and fb_io_write. The
+linker's error message suggests that this config setting has already
+been broken for other symbols.
 
-If an error IRQ is received while ap->ops->error_handler() is running,
-the irq handler will set ATA_PFLAG_EH_PENDING.
+  All errors (new ones prefixed by >>):
 
-Once ap->ops->error_handler() returns, ata_scsi_port_error_handler()
-checks if ATA_PFLAG_EH_PENDING is set, and if it is, another iteration
-of ATA EH is performed.
+     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_probe':
+     sh7760fb.c:(.text+0x374): undefined reference to `framebuffer_alloc'
+     sh4-linux-ld: sh7760fb.c:(.text+0x394): undefined reference to `fb_videomode_to_var'
+     sh4-linux-ld: sh7760fb.c:(.text+0x39c): undefined reference to `fb_alloc_cmap'
+     sh4-linux-ld: sh7760fb.c:(.text+0x3a4): undefined reference to `register_framebuffer'
+     sh4-linux-ld: sh7760fb.c:(.text+0x3ac): undefined reference to `fb_dealloc_cmap'
+     sh4-linux-ld: sh7760fb.c:(.text+0x434): undefined reference to `framebuffer_release'
+     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_remove':
+     sh7760fb.c:(.text+0x800): undefined reference to `unregister_framebuffer'
+     sh4-linux-ld: sh7760fb.c:(.text+0x804): undefined reference to `fb_dealloc_cmap'
+     sh4-linux-ld: sh7760fb.c:(.text+0x814): undefined reference to `framebuffer_release'
+  >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0xc): undefined reference to `fb_io_read'
+  >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x10): undefined reference to `fb_io_write'
+     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x2c): undefined reference to `cfb_fillrect'
+     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x30): undefined reference to `cfb_copyarea'
+     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x34): undefined reference to `cfb_imageblit'
 
-The problem is that ATA_PFLAG_EH_PENDING is not only cleared by
-ata_scsi_port_error_handler(), it is also cleared by ata_eh_reset().
-
-ata_eh_reset() is called by ap->ops->error_handler(). This additional
-clearing done by ata_eh_reset() breaks the whole retry logic in
-ata_scsi_port_error_handler(). Thus, if an error IRQ is received while
-ap->ops->error_handler() is running, the port will currently remain
-frozen and will never get re-enabled.
-
-The additional clearing in ata_eh_reset() was introduced in commit
-1e641060c4b5 ("libata: clear eh_info on reset completion").
-
-Looking at the original error report:
-https://marc.info/?l=linux-ide&m=124765325828495&w=2
-
-We can see the following happening:
-[    1.074659] ata3: XXX port freeze
-[    1.074700] ata3: XXX hardresetting link, stopping engine
-[    1.074746] ata3: XXX flipping SControl
-
-[    1.411471] ata3: XXX irq_stat=400040 CONN|PHY
-[    1.411475] ata3: XXX port freeze
-
-[    1.420049] ata3: XXX starting engine
-[    1.420096] ata3: XXX rc=0, class=1
-[    1.420142] ata3: XXX clearing IRQs for thawing
-[    1.420188] ata3: XXX port thawed
-[    1.420234] ata3: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
-
-We are not supposed to be able to receive an error IRQ while the port is
-frozen (PxIE is set to 0, i.e. all IRQs for the port are disabled).
-
-AHCI 1.3.1 section 10.7.1.1 First Tier (IS Register) states:
-"Each bit location can be thought of as reporting a '1' if the virtual
-"interrupt line" for that port is indicating it wishes to generate an
-interrupt. That is, if a port has one or more interrupt status bit set,
-and the enables for those status bits are set, then this bit shall be set."
-
-Additionally, AHCI state P:ComInit clearly shows that the state machine
-will only jump to P:ComInitSetIS (which sets IS.IPS(x) to '1'), if PxIE.PCE
-is set to '1'. In our case, PxIE is set to 0, so IS.IPS(x) won't get set.
-
-So IS.IPS(x) only gets set if PxIS and PxIE is set.
-
-AHCI 1.3.1 section 10.7.1.1 First Tier (IS Register) also states:
-"The bits in this register are read/write clear. It is set by the level of
-the virtual interrupt line being a set, and cleared by a write of '1' from
-the software."
-
-So if IS.IPS(x) is set, you need to explicitly clear it by writing a 1 to
-IS.IPS(x) for that port.
-
-Since PxIE is cleared, the only way to get an interrupt while the port is
-frozen, is if IS.IPS(x) is set, and the only way IS.IPS(x) can be set when
-the port is frozen, is if it was set before the port was frozen.
-
-However, since commit 737dd811a3db ("ata: libahci: clear pending interrupt
-status"), we clear both PxIS and IS.IPS(x) after freezing the port, but
-before the COMRESET, so the problem that commit 1e641060c4b5 ("libata:
-clear eh_info on reset completion") fixed can no longer happen.
-
-Thus, revert commit 1e641060c4b5 ("libata: clear eh_info on reset
-completion"), so that the retry logic in ata_scsi_port_error_handler()
-works once again. (The retry logic is still needed, since we can still
-get an error IRQ _after_ the port has been thawed, but before
-ata_scsi_port_error_handler() takes the ap->lock in order to check
-if ATA_PFLAG_EH_PENDING is set.)
-
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309130632.LS04CPWu-lkp@intel.com/
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230918090400.13264-1-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-eh.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/video/fbdev/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index cbe9af624a06f..8a789de056807 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -2948,18 +2948,11 @@ int ata_eh_reset(struct ata_link *link, int classify,
- 			postreset(slave, classes);
- 	}
+diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+index a7e8db955ef67..30654608297f1 100644
+--- a/drivers/video/fbdev/Kconfig
++++ b/drivers/video/fbdev/Kconfig
+@@ -2197,7 +2197,7 @@ config FB_COBALT
  
--	/*
--	 * Some controllers can't be frozen very well and may set spurious
--	 * error conditions during reset.  Clear accumulated error
--	 * information and re-thaw the port if frozen.  As reset is the
--	 * final recovery action and we cross check link onlineness against
--	 * device classification later, no hotplug event is lost by this.
--	 */
-+	/* clear cached SError */
- 	spin_lock_irqsave(link->ap->lock, flags);
--	memset(&link->eh_info, 0, sizeof(link->eh_info));
-+	link->eh_info.serror = 0;
- 	if (slave)
--		memset(&slave->eh_info, 0, sizeof(link->eh_info));
--	ap->pflags &= ~ATA_PFLAG_EH_PENDING;
-+		slave->eh_info.serror = 0;
- 	spin_unlock_irqrestore(link->ap->lock, flags);
- 
- 	if (ap->pflags & ATA_PFLAG_FROZEN)
+ config FB_SH7760
+ 	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
+-	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
++	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
+ 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
+ 	select FB_CFB_FILLRECT
+ 	select FB_CFB_COPYAREA
 -- 
 2.40.1
 
