@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA1837BE0D7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BB8A7BDFC0
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:33:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377277AbjJINoj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:44:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52466 "EHLO
+        id S1377134AbjJINda (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:33:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377407AbjJINoi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:38 -0400
+        with ESMTP id S1377135AbjJINd2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:33:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5066CB6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D8EC433C7;
-        Mon,  9 Oct 2023 13:44:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC0C39C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:33:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FD2C433C8;
+        Mon,  9 Oct 2023 13:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859076;
-        bh=fFn3q20xOi1q/eCIzu1EXSWjtDcklYtIV1N1HLoDLGY=;
+        s=korg; t=1696858407;
+        bh=EMQLJ1du3+3uZX1l1kAFpV60JIxS3+X2jIwum3FVd8g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BorVfhPwCzbP83b6VwSuE3W2zdVKtjUkUIfufbXYkcCcx7avDpwqAnwMW3+7KC3+C
-         xEMSGZIMYEj1J47R4fIx/F52I71z4EIfDKpKpDUfCpjV6+3PGS3hwRWsdNNQlATAtq
-         mVFnmgl6jNjydt3Or++tOjgfASHzJP5jN1x0rso4=
+        b=DZfmkTPPFEinf9bd1Lh6a86wbfMofqN+xTe9uUNIChbZNTnwGwGurbW0pJY98hch4
+         JXAtCd4vTXl7gWRVi5wWKLG/70ht9yhWmBmkQxFRStwH8lD/ijUWtTYyGtKVEbhCpK
+         9XJIXgw2gc+p+cZm8Fsmqma9EIQNikbSpt0UrM6w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Richard Fitzgerald <rf@opensource.cirrus.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 192/226] regmap: rbtree: Fix wrong register marked as in-cache when creating new node
+        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+c1d0a03d305972dbbe14@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 113/131] net: nfc: llcp: Add lock when modifying device list
 Date:   Mon,  9 Oct 2023 15:02:33 +0200
-Message-ID: <20231009130131.623498280@linuxfoundation.org>
+Message-ID: <20231009130119.893486207@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Jeremy Cline <jeremy@jcline.org>
 
-[ Upstream commit 7a795ac8d49e2433e1b97caf5e99129daf8e1b08 ]
+[ Upstream commit dfc7f7a988dad34c3bf4c053124fb26aa6c5f916 ]
 
-When regcache_rbtree_write() creates a new rbtree_node it was passing the
-wrong bit number to regcache_rbtree_set_register(). The bit number is the
-offset __in number of registers__, but in the case of creating a new block
-regcache_rbtree_write() was not dividing by the address stride to get the
-number of registers.
+The device list needs its associated lock held when modifying it, or the
+list could become corrupted, as syzbot discovered.
 
-Fix this by dividing by map->reg_stride.
-Compare with regcache_rbtree_read() where the bit is checked.
-
-This bug meant that the wrong register was marked as present. The register
-that was written to the cache could not be read from the cache because it
-was not marked as cached. But a nearby register could be marked as having
-a cached value even if it was never written to the cache.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 3f4ff561bc88 ("regmap: rbtree: Make cache_present bitmap per node")
-Link: https://lore.kernel.org/r/20230922153711.28103-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-and-tested-by: syzbot+c1d0a03d305972dbbe14@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c1d0a03d305972dbbe14
+Signed-off-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by nfc_llcp_find_local")
+Link: https://lore.kernel.org/r/20230908235853.1319596-1-jeremy@jcline.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regcache-rbtree.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/nfc/llcp_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/base/regmap/regcache-rbtree.c b/drivers/base/regmap/regcache-rbtree.c
-index ae6b8788d5f3f..d65715b9e129e 100644
---- a/drivers/base/regmap/regcache-rbtree.c
-+++ b/drivers/base/regmap/regcache-rbtree.c
-@@ -453,7 +453,8 @@ static int regcache_rbtree_write(struct regmap *map, unsigned int reg,
- 		if (!rbnode)
- 			return -ENOMEM;
- 		regcache_rbtree_set_register(map, rbnode,
--					     reg - rbnode->base_reg, value);
-+					     (reg - rbnode->base_reg) / map->reg_stride,
-+					     value);
- 		regcache_rbtree_insert(map, &rbtree_ctx->root, rbnode);
- 		rbtree_ctx->cached_rbnode = rbnode;
- 	}
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index ddfd159f64e13..b1107570eaee8 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1646,7 +1646,9 @@ int nfc_llcp_register_device(struct nfc_dev *ndev)
+ 	timer_setup(&local->sdreq_timer, nfc_llcp_sdreq_timer, 0);
+ 	INIT_WORK(&local->sdreq_timeout_work, nfc_llcp_sdreq_timeout_work);
+ 
++	spin_lock(&llcp_devices_lock);
+ 	list_add(&local->list, &llcp_devices);
++	spin_unlock(&llcp_devices_lock);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
