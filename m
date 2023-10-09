@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1036D7BE06F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AFEF7BDDB2
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376947AbjJINkM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36164 "EHLO
+        id S1376809AbjJINMb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:12:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377335AbjJINkL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:11 -0400
+        with ESMTP id S1376977AbjJINMN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB5D4112
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:40:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7AD9C433C9;
-        Mon,  9 Oct 2023 13:40:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B47091BDF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF372C433CC;
+        Mon,  9 Oct 2023 13:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858801;
-        bh=MhMNGkNX0LYJTwIA8+myPWprkMNQj21SwZr8Sk85pb8=;
+        s=korg; t=1696857066;
+        bh=KIUVSilA47RqfjFvLPfuKDnnNsX+gUtj9Nhnw77kYpc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V7R0rzvFrKHoz5TOzDotY7g/ts8DJ9z/GQpopGME1sEwmVTgXwTnLOa7nGI7jPo7x
-         a57zUK8ORuSHWb9mJ9eONnMkIdnDF/ZaDlxcEB9Oib4P4ZKjWSHqGpMsXm9bmHF19N
-         t9L9aBbi9MqHd+owClnBDZvhgwnvqLvHQlnGzePc=
+        b=ZAjcO8UmBZciSL5H9pAeTuohcO20lt8YdaJMddvwdpnNy3tADA36kBQ5rcgKLP8cn
+         UfTt8OIDn/DID8BEUtGR3qf8tnnKKVZ4V+gcG5sIMtT/iBnXqVmzDU7lfDOXA5squ0
+         ZnC9oKDdGfhM/IrpgvNXz0XpJUQ9p6lDnmfDpD3s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev,
+        Daniel Bristot de Oliveira <bristot@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 087/226] btrfs: reset destination buffer when read_extent_buffer() gets invalid range
+Subject: [PATCH 6.5 084/163] rtla/timerlat: Do not stop user-space if a cpu is offline
 Date:   Mon,  9 Oct 2023 15:00:48 +0200
-Message-ID: <20231009130129.051418904@linuxfoundation.org>
+Message-ID: <20231009130126.365453664@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,64 +49,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-[ Upstream commit 74ee79142c0a344d4eae2eb7012ebc4e82254109 ]
+[ Upstream commit e8c44d3b713b96cda055a23b21e8c4f931dd159f ]
 
-Commit f98b6215d7d1 ("btrfs: extent_io: do extra check for extent buffer
-read write functions") changed how we handle invalid extent buffer range
-for read_extent_buffer().
+If no CPU list is passed, timerlat in user-space will dispatch
+one thread per sysconf(_SC_NPROCESSORS_CONF). However, not all
+CPU might be available, for instance, if HT is disabled.
 
-Previously if the range is invalid we just set the destination to zero,
-but after the patch we do nothing and error out.
+Currently, rtla timerlat is stopping the session if an user-space
+thread cannot set affinity to a CPU, or if a running user-space
+thread is killed. However, this is too restrictive.
 
-This can lead to smatch static checker errors like:
+So, reduce the error to a debug message, and rtla timerlat run as
+long as there is at least one user-space thread alive.
 
-  fs/btrfs/print-tree.c:186 print_uuid_item() error: uninitialized symbol 'subvol_id'.
-  fs/btrfs/tests/extent-io-tests.c:338 check_eb_bitmap() error: uninitialized symbol 'has'.
-  fs/btrfs/tests/extent-io-tests.c:353 check_eb_bitmap() error: uninitialized symbol 'has'.
-  fs/btrfs/uuid-tree.c:203 btrfs_uuid_tree_remove() error: uninitialized symbol 'read_subid'.
-  fs/btrfs/uuid-tree.c:353 btrfs_uuid_tree_iterate() error: uninitialized symbol 'subid_le'.
-  fs/btrfs/uuid-tree.c:72 btrfs_uuid_tree_lookup() error: uninitialized symbol 'data'.
-  fs/btrfs/volumes.c:7415 btrfs_dev_stats_value() error: uninitialized symbol 'val'.
+Link: https://lore.kernel.org/lkml/59cf2c882900ab7de91c6ee33b382ac7fa6b4ed0.1694781909.git.bristot@kernel.org
 
-Fix those warnings by reverting back to the old memset() behavior.
-By this we keep the static checker happy and would still make a lot of
-noise when such invalid ranges are passed in.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: f98b6215d7d1 ("btrfs: extent_io: do extra check for extent buffer read write functions")
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: cdca4f4e5e8e ("rtla/timerlat_top: Add timerlat user-space support")
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/tracing/rtla/src/timerlat_u.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 0e266772beaef..685a375bb6af5 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -5634,8 +5634,14 @@ void read_extent_buffer(const struct extent_buffer *eb, void *dstv,
- 	char *dst = (char *)dstv;
- 	unsigned long i = start >> PAGE_SHIFT;
+diff --git a/tools/tracing/rtla/src/timerlat_u.c b/tools/tracing/rtla/src/timerlat_u.c
+index 05e310696dd5c..01dbf9a6b5a51 100644
+--- a/tools/tracing/rtla/src/timerlat_u.c
++++ b/tools/tracing/rtla/src/timerlat_u.c
+@@ -45,7 +45,7 @@ static int timerlat_u_main(int cpu, struct timerlat_u_params *params)
  
--	if (check_eb_range(eb, start, len))
-+	if (check_eb_range(eb, start, len)) {
-+		/*
-+		 * Invalid range hit, reset the memory, so callers won't get
-+		 * some random garbage for their uninitialzed memory.
-+		 */
-+		memset(dstv, 0, len);
- 		return;
-+	}
+ 	retval = sched_setaffinity(gettid(), sizeof(set), &set);
+ 	if (retval == -1) {
+-		err_msg("Error setting user thread affinity\n");
++		debug_msg("Error setting user thread affinity %d, is the CPU online?\n", cpu);
+ 		exit(1);
+ 	}
  
- 	offset = offset_in_page(start);
+@@ -193,7 +193,9 @@ void *timerlat_u_dispatcher(void *data)
+ 					procs_count--;
+ 				}
+ 			}
+-			break;
++
++			if (!procs_count)
++				break;
+ 		}
  
+ 		sleep(1);
 -- 
 2.40.1
 
