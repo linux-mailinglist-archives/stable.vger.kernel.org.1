@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D041B7BDFD7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20B247BDF39
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:27:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377146AbjJINeq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:34:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37398 "EHLO
+        id S1376813AbjJIN1y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:27:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377151AbjJINeo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:34:44 -0400
+        with ESMTP id S1376827AbjJIN1x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:27:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 621C79C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:34:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A107DC433C9;
-        Mon,  9 Oct 2023 13:34:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCB889C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:27:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ED8C433C9;
+        Mon,  9 Oct 2023 13:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858481;
-        bh=blI4WQR00ZiFYxmGTkETxFiXHesnTUJoyMC5zTUSLac=;
+        s=korg; t=1696858071;
+        bh=xqjfHO95pMRzD3CZ/cwJpxSiTKCYW6nplqeCcVqKbbM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nVxc7QrklSVI9M4VOTa6dGaExLptYf3iGk5ARIEhvHGaePLt5kzV+LOebBIixdrk5
-         yFliWWUCEIyXF+0bWLzbpIBfrPVPVtBHT1476IWFxDPuwHjbFlSypQc/+8DD7aU+an
-         QS5u0nEdPHaVnd4gJQiX85EP4V6+1C4GHyvBrJPs=
+        b=wPOlCDS9EKB0raG3T7QvVKrIGj64+ttsUozQ53YuJMQEcwnkZ6R6Z2+yTI1qgulaS
+         Y2wbmXCs0BFg7kW6SAYAZf/Ov7BKSnJTXuCbkdMKwOCZbE9rujkWmeUoLcA8oVthlQ
+         xDnyjN2TtLu/84GrRVTrLzwzjXAvLG5MmV586wP0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 109/131] net: fix possible store tearing in neigh_periodic_work()
+        patches@lists.linux.dev,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH 5.15 67/75] gpio: aspeed: fix the GPIO number passed to pinctrl_gpio_set_config()
 Date:   Mon,  9 Oct 2023 15:02:29 +0200
-Message-ID: <20231009130119.764479386@linuxfoundation.org>
+Message-ID: <20231009130113.604702269@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,52 +50,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 25563b581ba3a1f263a00e8c9a97f5e7363be6fd ]
+commit f9315f17bf778cb8079a29639419fcc8a41a3c84 upstream.
 
-While looking at a related syzbot report involving neigh_periodic_work(),
-I found that I forgot to add an annotation when deleting an
-RCU protected item from a list.
+pinctrl_gpio_set_config() expects the GPIO number from the global GPIO
+numberspace, not the controller-relative offset, which needs to be added
+to the chip base.
 
-Readers use rcu_deference(*np), we need to use either
-rcu_assign_pointer() or WRITE_ONCE() on writer side
-to prevent store tearing.
-
-I use rcu_assign_pointer() to have lockdep support,
-this was the choice made in neigh_flush_dev().
-
-Fixes: 767e97e1e0db ("neigh: RCU conversion of struct neighbour")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5ae4cb94b313 ("gpio: aspeed: Add debounce support")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-aspeed.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 154490415231b..c0489d8812c0e 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -935,7 +935,9 @@ static void neigh_periodic_work(struct work_struct *work)
- 			    (state == NUD_FAILED ||
- 			     !time_in_range_open(jiffies, n->used,
- 						 n->used + NEIGH_VAR(n->parms, GC_STALETIME)))) {
--				*np = n->next;
-+				rcu_assign_pointer(*np,
-+					rcu_dereference_protected(n->next,
-+						lockdep_is_held(&tbl->lock)));
- 				neigh_mark_dead(n);
- 				write_unlock(&n->lock);
- 				neigh_cleanup_and_release(n);
--- 
-2.40.1
-
+--- a/drivers/gpio/gpio-aspeed.c
++++ b/drivers/gpio/gpio-aspeed.c
+@@ -963,7 +963,7 @@ static int aspeed_gpio_set_config(struct
+ 	else if (param == PIN_CONFIG_BIAS_DISABLE ||
+ 			param == PIN_CONFIG_BIAS_PULL_DOWN ||
+ 			param == PIN_CONFIG_DRIVE_STRENGTH)
+-		return pinctrl_gpio_set_config(offset, config);
++		return pinctrl_gpio_set_config(chip->base + offset, config);
+ 	else if (param == PIN_CONFIG_DRIVE_OPEN_DRAIN ||
+ 			param == PIN_CONFIG_DRIVE_OPEN_SOURCE)
+ 		/* Return -ENOTSUPP to trigger emulation, as per datasheet */
 
 
