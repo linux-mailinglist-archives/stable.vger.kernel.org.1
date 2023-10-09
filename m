@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 753B07BDDB9
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97A957BDE5E
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376976AbjJINMw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:12:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59044 "EHLO
+        id S1376783AbjJINTM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:19:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376990AbjJINMm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:42 -0400
+        with ESMTP id S1377038AbjJINSx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30BBC213E
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1D2C433CB;
-        Mon,  9 Oct 2023 13:11:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D075D99
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18974C433C8;
+        Mon,  9 Oct 2023 13:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857089;
-        bh=qqvxmQxI3Eb12Ank7Z/TtATJ3SgNQqZSzlmqccTLvIw=;
+        s=korg; t=1696857531;
+        bh=58jHYPSN9dVun7UF0ALfz+oo8ZZv3A3bviJTsizXR+A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F58JHSM5dA9XBvta32OjmoBmbavQ39nCmh2IVH2NDrX83G5+oY23QSNPn+SxNWBD7
-         XUBufPlK1YWD+GQ0tjJhrUG27tM8CMdFtTRM2kv/dTaOG9l+qrsGhgS9dHOYyNIprb
-         lxdRCyfmyWVl5Hx+4dFIuCrqKShATK7ICeHDzydA=
+        b=kvZyxbLR8fYiV1nVD9jEnd0Aoetqe3RloBcYhumQv8ZzNCq9/JEl2+Fs65kRG9M/L
+         w2THUg/FYXzzUEcDzDX5rBtRc2pcF3brJg5hyu6VxsBnKbhG4CfKaWD80jwSh6JeOb
+         UEiUA3DxWjTaIAsvHYtvc32YQ8wauQtwovkmLeCA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Bristot de Oliveira <bristot@kernel.org>,
+        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 066/163] rtla/timerlat_aa: Fix negative IRQ delay
+Subject: [PATCH 6.1 049/162] rbd: take header_rwsem in rbd_dev_refresh() only when updating
 Date:   Mon,  9 Oct 2023 15:00:30 +0200
-Message-ID: <20231009130125.872123498@linuxfoundation.org>
+Message-ID: <20231009130124.293492792@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,65 +49,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit 6c73daf26420b97fb8b4a620e4ffee5c1f9d44d1 ]
+commit 0b207d02bd9ab8dcc31b262ca9f60dbc1822500d upstream.
 
-When estimating the IRQ timer delay, we are dealing with two different
-clock sources: the external clock source that timerlat uses as a reference
-and the clock used by the tracer. There are also two moments: the time
-reading the clock and the timer in which the event is placed in the
-buffer (the trace event timestamp).
+rbd_dev_refresh() has been holding header_rwsem across header and
+parent info read-in unnecessarily for ages.  With commit 870611e4877e
+("rbd: get snapshot context after exclusive lock is ensured to be
+held"), the potential for deadlocks became much more real owning to
+a) header_rwsem now nesting inside lock_rwsem and b) rw_semaphores
+not allowing new readers after a writer is registered.
 
-If the processor is slow or there is some hardware noise, the difference
-between the timestamp and the external clock, read can be longer than the
-IRQ handler delay, resulting in a negative time.
+For example, assuming that I/O request 1, I/O request 2 and header
+read-in request all target the same OSD:
 
-If so, set IRQ to start delay as 0. In the end, it is less near-zero and relevant
-then the noise.
+1. I/O request 1 comes in and gets submitted
+2. watch error occurs
+3. rbd_watch_errcb() takes lock_rwsem for write, clears owner_cid and
+   releases lock_rwsem
+4. after reestablishing the watch, rbd_reregister_watch() calls
+   rbd_dev_refresh() which takes header_rwsem for write and submits
+   a header read-in request
+5. I/O request 2 comes in: after taking lock_rwsem for read in
+   __rbd_img_handle_request(), it blocks trying to take header_rwsem
+   for read in rbd_img_object_requests()
+6. another watch error occurs
+7. rbd_watch_errcb() blocks trying to take lock_rwsem for write
+8. I/O request 1 completion is received by the messenger but can't be
+   processed because lock_rwsem won't be granted anymore
+9. header read-in request completion can't be received, let alone
+   processed, because the messenger is stranded
 
-Link: https://lore.kernel.org/lkml/a066fb667c7136d86dcddb3c7ccd72587db3e7c7.1691162043.git.bristot@kernel.org
+Change rbd_dev_refresh() to take header_rwsem only for actually
+updating rbd_dev->header.  Header and parent info read-in don't need
+any locking.
 
-Fixes: 27e348b221f6 ("rtla/timerlat: Add auto-analysis core")
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Cc: stable@vger.kernel.org # 0b035401c570: rbd: move rbd_dev_refresh() definition
+Cc: stable@vger.kernel.org # 510a7330c82a: rbd: decouple header read-in from updating rbd_dev->header
+Cc: stable@vger.kernel.org # c10311776f0a: rbd: decouple parent info read-in from updating rbd_dev
+Cc: stable@vger.kernel.org
+Fixes: 870611e4877e ("rbd: get snapshot context after exclusive lock is ensured to be held")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/timerlat_aa.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/block/rbd.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/timerlat_aa.c b/tools/tracing/rtla/src/timerlat_aa.c
-index dec5b4c4511e1..baf1efda0581d 100644
---- a/tools/tracing/rtla/src/timerlat_aa.c
-+++ b/tools/tracing/rtla/src/timerlat_aa.c
-@@ -338,7 +338,23 @@ static int timerlat_aa_irq_handler(struct trace_seq *s, struct tep_record *recor
- 		taa_data->timer_irq_start_time = start;
- 		taa_data->timer_irq_duration = duration;
+diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
+index 38c92b1b03466..afc92869cba42 100644
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -6987,7 +6987,14 @@ static void rbd_dev_update_header(struct rbd_device *rbd_dev,
+ 	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
+ 	rbd_assert(rbd_dev->header.object_prefix); /* !first_time */
  
--		taa_data->timer_irq_start_delay = taa_data->timer_irq_start_time - expected_start;
-+		/*
-+		 * We are dealing with two different clock sources: the
-+		 * external clock source that timerlat uses as a reference
-+		 * and the clock used by the tracer. There are also two
-+		 * moments: the time reading the clock and the timer in
-+		 * which the event is placed in the buffer (the trace
-+		 * event timestamp). If the processor is slow or there
-+		 * is some hardware noise, the difference between the
-+		 * timestamp and the external clock read can be longer
-+		 * than the IRQ handler delay, resulting in a negative
-+		 * time. If so, set IRQ start delay as 0. In the end,
-+		 * it is less relevant than the noise.
-+		 */
-+		if (expected_start < taa_data->timer_irq_start_time)
-+			taa_data->timer_irq_start_delay = taa_data->timer_irq_start_time - expected_start;
-+		else
-+			taa_data->timer_irq_start_delay = 0;
+-	rbd_dev->header.image_size = header->image_size;
++	if (rbd_dev->header.image_size != header->image_size) {
++		rbd_dev->header.image_size = header->image_size;
++
++		if (!rbd_is_snap(rbd_dev)) {
++			rbd_dev->mapping.size = header->image_size;
++			rbd_dev_update_size(rbd_dev);
++		}
++	}
  
- 		/*
- 		 * not exit from idle.
+ 	ceph_put_snap_context(rbd_dev->header.snapc);
+ 	rbd_dev->header.snapc = header->snapc;
+@@ -7045,11 +7052,9 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
+ {
+ 	struct rbd_image_header	header = { 0 };
+ 	struct parent_image_info pii = { 0 };
+-	u64 mapping_size;
+ 	int ret;
+ 
+-	down_write(&rbd_dev->header_rwsem);
+-	mapping_size = rbd_dev->mapping.size;
++	dout("%s rbd_dev %p\n", __func__, rbd_dev);
+ 
+ 	ret = rbd_dev_header_info(rbd_dev, &header, false);
+ 	if (ret)
+@@ -7065,18 +7070,13 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
+ 			goto out;
+ 	}
+ 
++	down_write(&rbd_dev->header_rwsem);
+ 	rbd_dev_update_header(rbd_dev, &header);
+ 	if (rbd_dev->parent)
+ 		rbd_dev_update_parent(rbd_dev, &pii);
+-
+-	rbd_assert(!rbd_is_snap(rbd_dev));
+-	rbd_dev->mapping.size = rbd_dev->header.image_size;
+-
+-out:
+ 	up_write(&rbd_dev->header_rwsem);
+-	if (!ret && mapping_size != rbd_dev->mapping.size)
+-		rbd_dev_update_size(rbd_dev);
+ 
++out:
+ 	rbd_parent_info_cleanup(&pii);
+ 	rbd_image_header_cleanup(&header);
+ 	return ret;
 -- 
 2.40.1
 
