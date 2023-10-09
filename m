@@ -2,38 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E3337BDF51
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D23FB7BE082
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376954AbjJIN2l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:28:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59288 "EHLO
+        id S1377329AbjJINk5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:40:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376953AbjJIN2k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:28:40 -0400
+        with ESMTP id S1377330AbjJINk4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69FDDC6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:28:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70D4C433C8;
-        Mon,  9 Oct 2023 13:28:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09961B9
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:40:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44942C433C7;
+        Mon,  9 Oct 2023 13:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858119;
-        bh=nkNOa3HZd6lXllKhxIVrO4IYXKKTTVlN2FoF2+Y88m0=;
+        s=korg; t=1696858854;
+        bh=SU9MKuIfLLFPgjzIz2tKG3QndDyA1QGua6/8yQJNouA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O0jCXbn4ps9ggr94/sAZyExV4kpC8c7yi42v98yhgFR8fASjz8Wsfmv1Erw47CFVv
-         KL4JO1Yr/+vlbWr46TRXi3tLXkoEbSWsZ1HpwKY8u71VcRi9wTPCsM+Ny3zxFXriik
-         fvpeNLmEuvh0HGLu+mZHBiMtdshYovBr97KmkMqQ=
+        b=BWFNZHeWp7rWxXkrCNSWKSZaLlH4t8Coa+4CeSznxHGRlbID8lW8LWzza0DV+RLWM
+         0PLbHoIGc1VRR4gfkFg6JbXH18qQM5IIUu8HKS1mIoriCAHq70nz6mJwX4mJ911itO
+         XgBEZZRU48h5gP7jfRbqhrLQ6SR2f/PsnBR6+ZpI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 014/131] netfilter: nf_tables: disallow element removal on anonymous sets
+Subject: [PATCH 5.10 093/226] ARM: dts: ti: omap: Fix bandgap thermal cells addressing for omap3/4
 Date:   Mon,  9 Oct 2023 15:00:54 +0200
-Message-ID: <20231009130116.756545960@linuxfoundation.org>
+Message-ID: <20231009130129.199214947@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,62 +54,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 23a3bfd4ba7acd36abf52b78605f61b21bdac216 ]
+[ Upstream commit 6469b2feade8fd82d224dd3734e146536f3e9f0e ]
 
-Anonymous sets need to be populated once at creation and then they are
-bound to rule since 938154b93be8 ("netfilter: nf_tables: reject unbound
-anonymous set before commit phase"), otherwise transaction reports
-EINVAL.
+Fix "thermal_sys: cpu_thermal: Failed to read thermal-sensors cells: -2"
+error on boot for omap3/4. This is caused by wrong addressing in the dts
+for bandgap sensor for single sensor instances.
 
-Userspace does not need to delete elements of anonymous sets that are
-not yet bound, reject this with EOPNOTSUPP.
+Note that omap4-cpu-thermal.dtsi is shared across omap4/5 and dra7, so
+we can't just change the addressing in omap4-cpu-thermal.dtsi.
 
->From flush command path, skip anonymous sets, they are expected to be
-bound already. Otherwise, EINVAL is hit at the end of this transaction
-for unbound sets.
-
-Fixes: 96518518cc41 ("netfilter: add nftables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Carl Philipp Klemm <philipp@uvos.xyz>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: a761d517bbb1 ("ARM: dts: omap3: Add cpu_thermal zone")
+Fixes: 0bbf6c54d100 ("arm: dts: add omap4 CPU thermal data")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/omap3-cpu-thermal.dtsi |    3 +--
+ arch/arm/boot/dts/omap4-cpu-thermal.dtsi |    5 ++++-
+ arch/arm/boot/dts/omap443x.dtsi          |    1 +
+ arch/arm/boot/dts/omap4460.dtsi          |    1 +
+ 4 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index a1a1f715fb624..9fc4431242e2a 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1047,8 +1047,7 @@ static int nft_flush_table(struct nft_ctx *ctx)
- 		if (!nft_is_active_next(ctx->net, set))
- 			continue;
+--- a/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
++++ b/arch/arm/boot/dts/omap3-cpu-thermal.dtsi
+@@ -15,8 +15,7 @@ cpu_thermal: cpu_thermal {
+ 	polling-delay = <1000>; /* milliseconds */
+ 	coefficients = <0 20000>;
  
--		if (nft_set_is_anonymous(set) &&
--		    !list_empty(&set->bindings))
-+		if (nft_set_is_anonymous(set))
- 			continue;
+-			/* sensor       ID */
+-	thermal-sensors = <&bandgap     0>;
++	thermal-sensors = <&bandgap>;
  
- 		err = nft_delset(ctx, set);
-@@ -5066,8 +5065,10 @@ static int nf_tables_delsetelem(struct net *net, struct sock *nlsk,
- 	if (IS_ERR(set))
- 		return PTR_ERR(set);
+ 	cpu_trips: trips {
+ 		cpu_alert0: cpu_alert {
+--- a/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
++++ b/arch/arm/boot/dts/omap4-cpu-thermal.dtsi
+@@ -15,7 +15,10 @@ cpu_thermal: cpu_thermal {
+ 	polling-delay-passive = <250>; /* milliseconds */
+ 	polling-delay = <1000>; /* milliseconds */
  
--	if (!list_empty(&set->bindings) &&
--	    (set->flags & (NFT_SET_CONSTANT | NFT_SET_ANONYMOUS)))
-+	if (nft_set_is_anonymous(set))
-+		return -EOPNOTSUPP;
-+
-+	if (!list_empty(&set->bindings) && (set->flags & NFT_SET_CONSTANT))
- 		return -EBUSY;
+-			/* sensor       ID */
++	/*
++	 * See 44xx files for single sensor addressing, omap5 and dra7 need
++	 * also sensor ID for addressing.
++	 */
+ 	thermal-sensors = <&bandgap     0>;
  
- 	if (nla[NFTA_SET_ELEM_LIST_ELEMENTS] == NULL) {
--- 
-2.40.1
-
+ 	cpu_trips: trips {
+--- a/arch/arm/boot/dts/omap443x.dtsi
++++ b/arch/arm/boot/dts/omap443x.dtsi
+@@ -72,6 +72,7 @@
+ };
+ 
+ &cpu_thermal {
++	thermal-sensors = <&bandgap>;
+ 	coefficients = <0 20000>;
+ };
+ 
+--- a/arch/arm/boot/dts/omap4460.dtsi
++++ b/arch/arm/boot/dts/omap4460.dtsi
+@@ -89,6 +89,7 @@
+ };
+ 
+ &cpu_thermal {
++	thermal-sensors = <&bandgap>;
+ 	coefficients = <348 (-9301)>;
+ };
+ 
 
 
