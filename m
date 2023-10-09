@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCCB37BDF3A
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:27:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE36D7BDFB2
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376817AbjJIN15 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:27:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41842 "EHLO
+        id S1377124AbjJINcw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:32:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376820AbjJIN14 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:27:56 -0400
+        with ESMTP id S1377123AbjJINcv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0959D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:27:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA73C433C7;
-        Mon,  9 Oct 2023 13:27:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3FC59D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DFDC433C8;
+        Mon,  9 Oct 2023 13:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858074;
-        bh=eTrlPt5wQnaoxJyFP66Jr05GYov7pWHHrb/lHVRFMKo=;
+        s=korg; t=1696858369;
+        bh=gk+CjuruHx2Q/S1vzvDgtZ2NOnWclXfikSwmFDRAIKc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X6ljkISGv1LFMQUk3yVDtJA239mPoLlIw44fJGECciX9HOhfr/jIJesxKphpQmPBX
-         MlYDTUcbg2I5qa59iJk7TDQ9iHCptf/vWeB8DOohEt+UWabF/VlaqaSSEcwxL+8+HI
-         A9Ekthq/Rlc+YOswssYOJytfwo5mMXe+Cl9iDx4A=
+        b=K74oVj7ZC0yvYx8VCFzYUM+v3AAHKhaHAml08CB4RNYqF6Yms0LeqWYqtHC91RbzM
+         76U55opal5nEvaz+OOgY/a3CmX/eVWZ4+hk1D4oVWvoWYovoMKG6Q9LAupf8SjbvK6
+         7bCU8nAZppoBYFeL349rybZRnFfqJjVClrWjHsdQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Neal Cardwell <ncardwell@google.com>,
-        Yuchung Cheng <ycheng@google.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Xin Guo <guoxin0309@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Alexandra Diupina <adiupina@astralinux.ru>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 58/75] tcp: fix delayed ACKs for MSS boundary condition
+Subject: [PATCH 5.4 100/131] drivers/net: process the result of hdlc_open() and add call of hdlc_close() in uhdlc_close()
 Date:   Mon,  9 Oct 2023 15:02:20 +0200
-Message-ID: <20231009130113.282801735@linuxfoundation.org>
+Message-ID: <20231009130119.476956604@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,101 +51,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-[ Upstream commit 4720852ed9afb1c5ab84e96135cb5b73d5afde6f ]
+[ Upstream commit a59addacf899b1b21a7b7449a1c52c98704c2472 ]
 
-This commit fixes poor delayed ACK behavior that can cause poor TCP
-latency in a particular boundary condition: when an application makes
-a TCP socket write that is an exact multiple of the MSS size.
+Process the result of hdlc_open() and call uhdlc_close()
+in case of an error. It is necessary to pass the error
+code up the control flow, similar to a possible
+error in request_irq().
+Also add a hdlc_close() call to the uhdlc_close()
+because the comment to hdlc_close() says it must be called
+by the hardware driver when the HDLC device is being closed
 
-The problem is that there is painful boundary discontinuity in the
-current delayed ACK behavior. With the current delayed ACK behavior,
-we have:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-(1) If an app reads data when > 1*MSS is unacknowledged, then
-    tcp_cleanup_rbuf() ACKs immediately because of:
-
-     tp->rcv_nxt - tp->rcv_wup > icsk->icsk_ack.rcv_mss ||
-
-(2) If an app reads all received data, and the packets were < 1*MSS,
-    and either (a) the app is not ping-pong or (b) we received two
-    packets < 1*MSS, then tcp_cleanup_rbuf() ACKs immediately beecause
-    of:
-
-     ((icsk->icsk_ack.pending & ICSK_ACK_PUSHED2) ||
-      ((icsk->icsk_ack.pending & ICSK_ACK_PUSHED) &&
-       !inet_csk_in_pingpong_mode(sk))) &&
-
-(3) *However*: if an app reads exactly 1*MSS of data,
-    tcp_cleanup_rbuf() does not send an immediate ACK. This is true
-    even if the app is not ping-pong and the 1*MSS of data had the PSH
-    bit set, suggesting the sending application completed an
-    application write.
-
-Thus if the app is not ping-pong, we have this painful case where
->1*MSS gets an immediate ACK, and <1*MSS gets an immediate ACK, but a
-write whose last skb is an exact multiple of 1*MSS can get a 40ms
-delayed ACK. This means that any app that transfers data in one
-direction and takes care to align write size or packet size with MSS
-can suffer this problem. With receive zero copy making 4KB MSS values
-more common, it is becoming more common to have application writes
-naturally align with MSS, and more applications are likely to
-encounter this delayed ACK problem.
-
-The fix in this commit is to refine the delayed ACK heuristics with a
-simple check: immediately ACK a received 1*MSS skb with PSH bit set if
-the app reads all data. Why? If an skb has a len of exactly 1*MSS and
-has the PSH bit set then it is likely the end of an application
-write. So more data may not be arriving soon, and yet the data sender
-may be waiting for an ACK if cwnd-bound or using TX zero copy. Thus we
-set ICSK_ACK_PUSHED in this case so that tcp_cleanup_rbuf() will send
-an ACK immediately if the app reads all of the data and is not
-ping-pong. Note that this logic is also executed for the case where
-len > MSS, but in that case this logic does not matter (and does not
-hurt) because tcp_cleanup_rbuf() will always ACK immediately if the
-app reads data and there is more than an MSS of unACKed data.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Yuchung Cheng <ycheng@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Cc: Xin Guo <guoxin0309@gmail.com>
-Link: https://lore.kernel.org/r/20231001151239.1866845-2-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/wan/fsl_ucc_hdlc.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 94633f499e148..d1e431ad5f619 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -243,6 +243,19 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
- 		if (unlikely(len > icsk->icsk_ack.rcv_mss +
- 				   MAX_TCP_OPTION_SPACE))
- 			tcp_gro_dev_warn(sk, skb, len);
-+		/* If the skb has a len of exactly 1*MSS and has the PSH bit
-+		 * set then it is likely the end of an application write. So
-+		 * more data may not be arriving soon, and yet the data sender
-+		 * may be waiting for an ACK if cwnd-bound or using TX zero
-+		 * copy. So we set ICSK_ACK_PUSHED here so that
-+		 * tcp_cleanup_rbuf() will send an ACK immediately if the app
-+		 * reads all of the data and is not ping-pong. If len > MSS
-+		 * then this logic does not matter (and does not hurt) because
-+		 * tcp_cleanup_rbuf() will always ACK immediately if the app
-+		 * reads data and there is more than an MSS of unACKed data.
-+		 */
-+		if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_PSH)
-+			icsk->icsk_ack.pending |= ICSK_ACK_PUSHED;
- 	} else {
- 		/* Otherwise, we make more careful check taking into account,
- 		 * that SACKs block is variable.
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+index 46077cef855b2..8a0c2ea03ff9c 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -34,6 +34,8 @@
+ #define TDM_PPPOHT_SLIC_MAXIN
+ #define RX_BD_ERRORS (R_CD_S | R_OV_S | R_CR_S | R_AB_S | R_NO_S | R_LG_S)
+ 
++static int uhdlc_close(struct net_device *dev);
++
+ static struct ucc_tdm_info utdm_primary_info = {
+ 	.uf_info = {
+ 		.tsa = 0,
+@@ -710,6 +712,7 @@ static int uhdlc_open(struct net_device *dev)
+ 	hdlc_device *hdlc = dev_to_hdlc(dev);
+ 	struct ucc_hdlc_private *priv = hdlc->priv;
+ 	struct ucc_tdm *utdm = priv->utdm;
++	int rc = 0;
+ 
+ 	if (priv->hdlc_busy != 1) {
+ 		if (request_irq(priv->ut_info->uf_info.irq,
+@@ -733,10 +736,13 @@ static int uhdlc_open(struct net_device *dev)
+ 		napi_enable(&priv->napi);
+ 		netdev_reset_queue(dev);
+ 		netif_start_queue(dev);
+-		hdlc_open(dev);
++
++		rc = hdlc_open(dev);
++		if (rc)
++			uhdlc_close(dev);
+ 	}
+ 
+-	return 0;
++	return rc;
+ }
+ 
+ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
+@@ -826,6 +832,8 @@ static int uhdlc_close(struct net_device *dev)
+ 	netdev_reset_queue(dev);
+ 	priv->hdlc_busy = 0;
+ 
++	hdlc_close(dev);
++
+ 	return 0;
+ }
+ 
 -- 
 2.40.1
 
