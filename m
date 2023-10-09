@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 734857BDD9B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A5FF7BE04F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376779AbjJINLN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:11:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48352 "EHLO
+        id S1377279AbjJINik (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:38:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376893AbjJINKz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:10:55 -0400
+        with ESMTP id S1377300AbjJINi3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EE812A;
-        Mon,  9 Oct 2023 06:10:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A62C433D9;
-        Mon,  9 Oct 2023 13:10:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3FABF1
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E874EC433CB;
+        Mon,  9 Oct 2023 13:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857025;
-        bh=jkvDx5+K2+lo0MKcZcWTC3ju5DS25KUe+EoX2cGlxqs=;
+        s=korg; t=1696858703;
+        bh=kA6TNG83qMNL4dWYkzUcmJujlbOZOx+VAkoDK4kRzZg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bLW5cSqete2/vtrTJGUJcnxgPokb825xOFhuL/F67+CUh4zpw1PxkvLTtJyjbsTHX
-         jpSo0Og8w/DzLfGHhkXMKSoC2l+vnsVobNRGZp1qCj2vYB+8JFmFPtrmHSHtOJzBI+
-         OFqDhszMzuR5VJoy/FoNrcjOu5Piej6gL6J4Ci3M=
+        b=QFY0aEV3yXQj5E9jjEXA/3KGVuzXp6Pz2HdmbjFIVYR7CSNQybazlcQz2wkpVt+2L
+         b2QLDcEP5nggmakilgyqGVscatS8Nxw0LEnazaDuGpsdSS0uTgsKdnA89I31lZgdII
+         W5YvBswuLItxypQ2KttXggHSh34dzlLVwLMW6t+Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-        Jiri Kosina <jkosina@suse.cz>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 071/163] HID: nvidia-shield: add LEDS_CLASS dependency
+        patches@lists.linux.dev,
+        Dikshita Agarwal <dikshita@codeaurora.org>,
+        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 074/226] media: venus: hfi: Add a 6xx boot logic
 Date:   Mon,  9 Oct 2023 15:00:35 +0200
-Message-ID: <20231009130126.010931258@linuxfoundation.org>
+Message-ID: <20231009130128.718445837@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,47 +52,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Dikshita Agarwal <dikshita@codeaurora.org>
 
-[ Upstream commit 058574879853260a22bbec1f94221dfc5149d85c ]
+[ Upstream commit 255385ca433ce5ff621732f26a759211a27c8f85 ]
 
-The hid-nvidia-shield driver uses functions that are built
-only when LEDS_CLASS is set, so make the driver depend on that
-symbol to prevent build errors.
+This patch adds a 6xx specific boot logic. The goal is to share as much
+code as possible between 3xx, 4xx and 6xx silicon.
 
-riscv32-linux-ld: drivers/hid/hid-nvidia-shield.o: in function `.L11':
-hid-nvidia-shield.c:(.text+0x192): undefined reference to `led_classdev_unregister'
-riscv32-linux-ld: drivers/hid/hid-nvidia-shield.o: in function `.L113':
-hid-nvidia-shield.c:(.text+0xfa4): undefined reference to `led_classdev_register_ext'
+We need to do a different write to WRAPPER_INTR_MASK with an additional
+write to CPU_CS_H2XSOFTINTEN_V6 and CPU_CS_X2RPMh_V6.
 
-Fixes: 09308562d4af ("HID: nvidia-shield: Initial driver implementation with Thunderstrike support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Cc: Jiri Kosina <jkosina@suse.cz>
-Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Cc: linux-input@vger.kernel.org
-Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+The other writes are the same for 6xx and non-6xx silicon albeit at
+different absolute relative locations to the base of the venus address
+space.
+
+Signed-off-by: Dikshita Agarwal <dikshita@codeaurora.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: d74e48160980 ("media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/qcom/venus/hfi_venus.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
-index e11c1c8036769..dc456c86e9569 100644
---- a/drivers/hid/Kconfig
-+++ b/drivers/hid/Kconfig
-@@ -792,6 +792,7 @@ config HID_NVIDIA_SHIELD
- 	tristate "NVIDIA SHIELD devices"
- 	depends on USB_HID
- 	depends on BT_HIDP
-+	depends on LEDS_CLASS
- 	help
- 	  Support for NVIDIA SHIELD accessories.
+diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
+index 3d705fc5e1093..97d36cafd8cb2 100644
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -431,14 +431,21 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
+ {
+ 	struct device *dev = hdev->core->dev;
+ 	static const unsigned int max_tries = 100;
+-	u32 ctrl_status = 0;
++	u32 ctrl_status = 0, mask_val;
+ 	unsigned int count = 0;
+ 	void __iomem *cpu_cs_base = hdev->core->cpu_cs_base;
+ 	void __iomem *wrapper_base = hdev->core->wrapper_base;
+ 	int ret = 0;
+ 
+ 	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+-	writel(WRAPPER_INTR_MASK_A2HVCODEC_MASK, wrapper_base + WRAPPER_INTR_MASK);
++	if (IS_V6(hdev->core)) {
++		mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
++		mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
++			      WRAPPER_INTR_MASK_A2HCPU_MASK);
++	} else {
++		mask_val = WRAPPER_INTR_MASK_A2HVCODEC_MASK;
++	}
++	writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
+ 	writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
+ 
+ 	while (!ctrl_status && count < max_tries) {
+@@ -456,6 +463,9 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
+ 	if (count >= max_tries)
+ 		ret = -ETIMEDOUT;
+ 
++	if (IS_V6(hdev->core))
++		writel(0x0, cpu_cs_base + CPU_CS_X2RPMH_V6);
++
+ 	return ret;
+ }
  
 -- 
 2.40.1
