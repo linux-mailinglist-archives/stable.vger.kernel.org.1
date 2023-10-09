@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 116837BDE80
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A00B87BE0AA
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376311AbjJINUB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:20:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44020 "EHLO
+        id S1377339AbjJINmm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:42:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376317AbjJINUA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:00 -0400
+        with ESMTP id S1377390AbjJINml (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE659A6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:19:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3BEC433CB;
-        Mon,  9 Oct 2023 13:19:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047BDCA
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B67EC433C9;
+        Mon,  9 Oct 2023 13:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857598;
-        bh=4Vy+Il+KI/KEktN4eqz8vLLNC8cj3LUOOFnj405H59I=;
+        s=korg; t=1696858959;
+        bh=CWzsC9lJcB50J1KiKL0ARlBnnbfERfFD2MrwCj4GfVI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=icaMY5o/UmXhRYHe45yCCy5fMqfn0C6ccKXG76zSvUS1YBFzRMuMoJJs8MrzLHJPi
-         qzuj6sQ0NO12uNcBpKE4Z/o39XtccCZQHu4ZfzPfJjx9+YK8swnP1ZnuRReJ/Lt8IF
-         EVC230p/7iQ61KlfTJ/7RkE02XaI1GYefzsyeTZU=
+        b=H3POc8So91zvyXm8vlpuEdfBalXgAbfHRYs0I5YDk5Lf5iNZ1SsN/+OM2hgtWZw87
+         smaWNEIDGZ9pKe7XjFb/4iQCqnb6WC3Y511ahl41rroOEu2JFO+FwCDWFOOheqMe45
+         +MzrMWODSylj3lav953q9DkXcr9FpES63nT5DIQU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Laura Nao <laura.nao@collabora.com>,
-        Yong Wu <yong.wu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/162] iommu/mediatek: Fix share pgtable for iova over 4GB
+        patches@lists.linux.dev,
+        "Ricardo B. Marliere" <rbmarliere@gmail.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 116/226] selftests: fix dependency checker script
 Date:   Mon,  9 Oct 2023 15:01:17 +0200
-Message-ID: <20231009130125.573228273@linuxfoundation.org>
+Message-ID: <20231009130129.808510331@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,70 +50,181 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong Wu <yong.wu@mediatek.com>
+From: Ricardo B. Marliere <rbmarliere@gmail.com>
 
-[ Upstream commit b07eba71a512eb196cbcc29765c29c8c29b11b59 ]
+[ Upstream commit 5f9dd2e896a91bfca90f8463eb6808c03d535d8a ]
 
-In mt8192/mt8186, there is only one MM IOMMU that supports 16GB iova
-space, which is shared by display, vcodec and camera. These two SoC use
-one pgtable and have not the flag SHARE_PGTABLE, we should also keep
-share pgtable for this case.
+This patch fixes inconsistencies in the parsing rules of the levels 1
+and 2 of the kselftest_deps.sh.  It was added the levels 4 and 5 to
+account for a few edge cases that are present in some tests, also some
+minor identation styling have been fixed (s/    /\t/g).
 
-In mtk_iommu_domain_finalise, MM IOMMU always share pgtable, thus remove
-the flag SHARE_PGTABLE checking. Infra IOMMU always uses independent
-pgtable.
-
-Fixes: cf69ef46dbd9 ("iommu/mediatek: Fix two IOMMU share pagetable issue")
-Reported-by: Laura Nao <laura.nao@collabora.com>
-Closes: https://lore.kernel.org/linux-iommu/20230818154156.314742-1-laura.nao@collabora.com/
-Signed-off-by: Yong Wu <yong.wu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: Laura Nao <laura.nao@collabora.com>
-Link: https://lore.kernel.org/r/20230819081443.8333-1-yong.wu@mediatek.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Ricardo B. Marliere <rbmarliere@gmail.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ tools/testing/selftests/kselftest_deps.sh | 77 +++++++++++++++++++----
+ 1 file changed, 65 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 9673cd60c84fc..0ba2a63a9538a 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -223,7 +223,7 @@ struct mtk_iommu_data {
- 	struct device			*smicomm_dev;
+diff --git a/tools/testing/selftests/kselftest_deps.sh b/tools/testing/selftests/kselftest_deps.sh
+index bbc04646346b2..e6010de678200 100755
+--- a/tools/testing/selftests/kselftest_deps.sh
++++ b/tools/testing/selftests/kselftest_deps.sh
+@@ -46,11 +46,11 @@ fi
+ print_targets=0
  
- 	struct mtk_iommu_bank_data	*bank;
--	struct mtk_iommu_domain		*share_dom; /* For 2 HWs share pgtable */
-+	struct mtk_iommu_domain		*share_dom;
+ while getopts "p" arg; do
+-    case $arg in
+-        p)
++	case $arg in
++		p)
+ 		print_targets=1
+ 	shift;;
+-    esac
++	esac
+ done
  
- 	struct regmap			*pericfg;
- 	struct mutex			mutex; /* Protect m4u_group/m4u_dom above */
-@@ -579,8 +579,8 @@ static int mtk_iommu_domain_finalise(struct mtk_iommu_domain *dom,
- 	struct mtk_iommu_domain	*share_dom = data->share_dom;
- 	const struct mtk_iommu_iova_region *region;
+ if [ $# -eq 0 ]
+@@ -92,6 +92,10 @@ pass_cnt=0
+ # Get all TARGETS from selftests Makefile
+ targets=$(egrep "^TARGETS +|^TARGETS =" Makefile | cut -d "=" -f2)
  
--	/* Always use share domain in sharing pgtable case */
--	if (MTK_IOMMU_HAS_FLAG(data->plat_data, SHARE_PGTABLE) && share_dom) {
-+	/* Share pgtable when 2 MM IOMMU share the pgtable or one IOMMU use multiple iova ranges */
-+	if (share_dom) {
- 		dom->iop = share_dom->iop;
- 		dom->cfg = share_dom->cfg;
- 		dom->domain.pgsize_bitmap = share_dom->cfg.pgsize_bitmap;
-@@ -613,8 +613,7 @@ static int mtk_iommu_domain_finalise(struct mtk_iommu_domain *dom,
- 	/* Update our support page sizes bitmap */
- 	dom->domain.pgsize_bitmap = dom->cfg.pgsize_bitmap;
++# Initially, in LDLIBS related lines, the dep checker needs
++# to ignore lines containing the following strings:
++filter="\$(VAR_LDLIBS)\|pkg-config\|PKG_CONFIG\|IOURING_EXTRA_LIBS"
++
+ # Single test case
+ if [ $# -eq 2 ]
+ then
+@@ -100,6 +104,8 @@ then
+ 	l1_test $test
+ 	l2_test $test
+ 	l3_test $test
++	l4_test $test
++	l5_test $test
  
--	if (MTK_IOMMU_HAS_FLAG(data->plat_data, SHARE_PGTABLE))
--		data->share_dom = dom;
-+	data->share_dom = dom;
+ 	print_results $1 $2
+ 	exit $?
+@@ -113,7 +119,7 @@ fi
+ # Append space at the end of the list to append more tests.
  
- update_iova_region:
- 	/* Update the iova region for this domain */
+ l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
+-		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
++		grep -v "$filter" | awk -F: '{print $1}' | uniq)
+ 
+ # Level 2: LDLIBS set dynamically.
+ #
+@@ -126,7 +132,7 @@ l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
+ # Append space at the end of the list to append more tests.
+ 
+ l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
+-		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
++		grep -v "$filter" | awk -F: '{print $1}' | uniq)
+ 
+ # Level 3
+ # gpio,  memfd and others use pkg-config to find mount and fuse libs
+@@ -140,11 +146,32 @@ l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
+ #	VAR_LDLIBS := $(shell pkg-config fuse --libs 2>/dev/null)
+ 
+ l3_tests=$(grep -r --include=Makefile "^VAR_LDLIBS" | \
+-		grep -v "pkg-config" | awk -F: '{print $1}')
++		grep -v "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
+ 
+-#echo $l1_tests
+-#echo $l2_1_tests
+-#echo $l3_tests
++# Level 4
++# some tests may fall back to default using `|| echo -l<libname>`
++# if pkg-config doesn't find the libs, instead of using VAR_LDLIBS
++# as per level 3 checks.
++# e.g:
++# netfilter/Makefile
++#	LDLIBS += $(shell $(HOSTPKG_CONFIG) --libs libmnl 2>/dev/null || echo -lmnl)
++l4_tests=$(grep -r --include=Makefile "^LDLIBS" | \
++		grep "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
++
++# Level 5
++# some tests may use IOURING_EXTRA_LIBS to add extra libs to LDLIBS,
++# which in turn may be defined in a sub-Makefile
++# e.g.:
++# mm/Makefile
++#	$(OUTPUT)/gup_longterm: LDLIBS += $(IOURING_EXTRA_LIBS)
++l5_tests=$(grep -r --include=Makefile "LDLIBS +=.*\$(IOURING_EXTRA_LIBS)" | \
++	awk -F: '{print $1}' | uniq)
++
++#echo l1_tests $l1_tests
++#echo l2_tests $l2_tests
++#echo l3_tests $l3_tests
++#echo l4_tests $l4_tests
++#echo l5_tests $l5_tests
+ 
+ all_tests
+ print_results $1 $2
+@@ -166,24 +193,32 @@ all_tests()
+ 	for test in $l3_tests; do
+ 		l3_test $test
+ 	done
++
++	for test in $l4_tests; do
++		l4_test $test
++	done
++
++	for test in $l5_tests; do
++		l5_test $test
++	done
+ }
+ 
+ # Use same parsing used for l1_tests and pick libraries this time.
+ l1_test()
+ {
+ 	test_libs=$(grep --include=Makefile "^LDLIBS" $test | \
+-			grep -v "VAR_LDLIBS" | \
++			grep -v "$filter" | \
+ 			sed -e 's/\:/ /' | \
+ 			sed -e 's/+/ /' | cut -d "=" -f 2)
+ 
+ 	check_libs $test $test_libs
+ }
+ 
+-# Use same parsing used for l2__tests and pick libraries this time.
++# Use same parsing used for l2_tests and pick libraries this time.
+ l2_test()
+ {
+ 	test_libs=$(grep --include=Makefile ": LDLIBS" $test | \
+-			grep -v "VAR_LDLIBS" | \
++			grep -v "$filter" | \
+ 			sed -e 's/\:/ /' | sed -e 's/+/ /' | \
+ 			cut -d "=" -f 2)
+ 
+@@ -199,6 +234,24 @@ l3_test()
+ 	check_libs $test $test_libs
+ }
+ 
++l4_test()
++{
++	test_libs=$(grep --include=Makefile "^VAR_LDLIBS\|^LDLIBS" $test | \
++			grep "\(pkg-config\|PKG_CONFIG\).*|| echo " | \
++			sed -e 's/.*|| echo //' | sed -e 's/)$//')
++
++	check_libs $test $test_libs
++}
++
++l5_test()
++{
++	tests=$(find $(dirname "$test") -type f -name "*.mk")
++	test_libs=$(grep "^IOURING_EXTRA_LIBS +\?=" $tests | \
++			cut -d "=" -f 2)
++
++	check_libs $test $test_libs
++}
++
+ check_libs()
+ {
+ 
 -- 
 2.40.1
 
