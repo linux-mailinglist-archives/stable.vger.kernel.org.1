@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 655AD7BDDF9
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 112A67BDF01
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376869AbjJINOg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42870 "EHLO
+        id S1376500AbjJINZZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376880AbjJINOe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:34 -0400
+        with ESMTP id S1376466AbjJINZX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5402ECF
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F628C433C8;
-        Mon,  9 Oct 2023 13:14:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BBA99D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C13BC433C7;
+        Mon,  9 Oct 2023 13:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857269;
-        bh=VQrHnUZj8Mx62oir4gSgQM0kybLN1b0LjJJhYFj0irE=;
+        s=korg; t=1696857922;
+        bh=Gufg5VoBhUW2ZM8+iLwr7vKQi2JBfHNAK5jkm2dILtQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B6NyTQnYgEYPGdVZj0vdysfokuuSaWKwFmQfSTE2797SabeCkLOOQXEyEq13NdYYi
-         stMb6oUD4w8Ot/AasRF9kG1wnsnKrZjGF6ubXuX/lwJ59zFYSjDKgCzhO10nwqACoC
-         hfkJ32+66LVCtCTWXMgRmKM67CQUaiRzqQgoVQaI=
+        b=cm8IygkZ9mXi2enCH/JgMGyPELciDtVRlC+SSZDVcZQrl6wHWGbMYcrwA0jnBPDd2
+         NdCiEDkGLzs8YnHlbcqMH1tzn8k2qbjBo9cEzghdZIE0vYU78iwEW7XbkG7xELRuzP
+         3L9E/9IMviUWxDBNC3SguL1cxGkyibth7xv7XZxU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Neal Cardwell <ncardwell@google.com>,
-        Yuchung Cheng <ycheng@google.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Xin Guo <guoxin0309@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 127/163] tcp: fix delayed ACKs for MSS boundary condition
+Subject: [PATCH 5.15 09/75] ring-buffer: Fix bytes info in per_cpu buffer stats
 Date:   Mon,  9 Oct 2023 15:01:31 +0200
-Message-ID: <20231009130127.550487190@linuxfoundation.org>
+Message-ID: <20231009130111.541174327@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,101 +49,151 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit 4720852ed9afb1c5ab84e96135cb5b73d5afde6f ]
+[ Upstream commit 45d99ea451d0c30bfd4864f0fe485d7dac014902 ]
 
-This commit fixes poor delayed ACK behavior that can cause poor TCP
-latency in a particular boundary condition: when an application makes
-a TCP socket write that is an exact multiple of the MSS size.
+The 'bytes' info in file 'per_cpu/cpu<X>/stats' means the number of
+bytes in cpu buffer that have not been consumed. However, currently
+after consuming data by reading file 'trace_pipe', the 'bytes' info
+was not changed as expected.
 
-The problem is that there is painful boundary discontinuity in the
-current delayed ACK behavior. With the current delayed ACK behavior,
-we have:
+  # cat per_cpu/cpu0/stats
+  entries: 0
+  overrun: 0
+  commit overrun: 0
+  bytes: 568             <--- 'bytes' is problematical !!!
+  oldest event ts:  8651.371479
+  now ts:  8653.912224
+  dropped events: 0
+  read events: 8
 
-(1) If an app reads data when > 1*MSS is unacknowledged, then
-    tcp_cleanup_rbuf() ACKs immediately because of:
+The root cause is incorrect stat on cpu_buffer->read_bytes. To fix it:
+  1. When stat 'read_bytes', account consumed event in rb_advance_reader();
+  2. When stat 'entries_bytes', exclude the discarded padding event which
+     is smaller than minimum size because it is invisible to reader. Then
+     use rb_page_commit() instead of BUF_PAGE_SIZE at where accounting for
+     page-based read/remove/overrun.
 
-     tp->rcv_nxt - tp->rcv_wup > icsk->icsk_ack.rcv_mss ||
+Also correct the comments of ring_buffer_bytes_cpu() in this patch.
 
-(2) If an app reads all received data, and the packets were < 1*MSS,
-    and either (a) the app is not ping-pong or (b) we received two
-    packets < 1*MSS, then tcp_cleanup_rbuf() ACKs immediately beecause
-    of:
+Link: https://lore.kernel.org/linux-trace-kernel/20230921125425.1708423-1-zhengyejian1@huawei.com
 
-     ((icsk->icsk_ack.pending & ICSK_ACK_PUSHED2) ||
-      ((icsk->icsk_ack.pending & ICSK_ACK_PUSHED) &&
-       !inet_csk_in_pingpong_mode(sk))) &&
-
-(3) *However*: if an app reads exactly 1*MSS of data,
-    tcp_cleanup_rbuf() does not send an immediate ACK. This is true
-    even if the app is not ping-pong and the 1*MSS of data had the PSH
-    bit set, suggesting the sending application completed an
-    application write.
-
-Thus if the app is not ping-pong, we have this painful case where
->1*MSS gets an immediate ACK, and <1*MSS gets an immediate ACK, but a
-write whose last skb is an exact multiple of 1*MSS can get a 40ms
-delayed ACK. This means that any app that transfers data in one
-direction and takes care to align write size or packet size with MSS
-can suffer this problem. With receive zero copy making 4KB MSS values
-more common, it is becoming more common to have application writes
-naturally align with MSS, and more applications are likely to
-encounter this delayed ACK problem.
-
-The fix in this commit is to refine the delayed ACK heuristics with a
-simple check: immediately ACK a received 1*MSS skb with PSH bit set if
-the app reads all data. Why? If an skb has a len of exactly 1*MSS and
-has the PSH bit set then it is likely the end of an application
-write. So more data may not be arriving soon, and yet the data sender
-may be waiting for an ACK if cwnd-bound or using TX zero copy. Thus we
-set ICSK_ACK_PUSHED in this case so that tcp_cleanup_rbuf() will send
-an ACK immediately if the app reads all of the data and is not
-ping-pong. Note that this logic is also executed for the case where
-len > MSS, but in that case this logic does not matter (and does not
-hurt) because tcp_cleanup_rbuf() will always ACK immediately if the
-app reads data and there is more than an MSS of unACKed data.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Yuchung Cheng <ycheng@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Cc: Xin Guo <guoxin0309@gmail.com>
-Link: https://lore.kernel.org/r/20231001151239.1866845-2-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c64e148a3be3 ("trace: Add ring buffer stats to measure rate of events")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ kernel/trace/ring_buffer.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 48c2b96b08435..a5781f86ac375 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -243,6 +243,19 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
- 		if (unlikely(len > icsk->icsk_ack.rcv_mss +
- 				   MAX_TCP_OPTION_SPACE))
- 			tcp_gro_dev_warn(sk, skb, len);
-+		/* If the skb has a len of exactly 1*MSS and has the PSH bit
-+		 * set then it is likely the end of an application write. So
-+		 * more data may not be arriving soon, and yet the data sender
-+		 * may be waiting for an ACK if cwnd-bound or using TX zero
-+		 * copy. So we set ICSK_ACK_PUSHED here so that
-+		 * tcp_cleanup_rbuf() will send an ACK immediately if the app
-+		 * reads all of the data and is not ping-pong. If len > MSS
-+		 * then this logic does not matter (and does not hurt) because
-+		 * tcp_cleanup_rbuf() will always ACK immediately if the app
-+		 * reads data and there is more than an MSS of unACKed data.
-+		 */
-+		if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_PSH)
-+			icsk->icsk_ack.pending |= ICSK_ACK_PUSHED;
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 352a7de4fc458..e5dc7b5a261c6 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -346,6 +346,11 @@ static void rb_init_page(struct buffer_data_page *bpage)
+ 	local_set(&bpage->commit, 0);
+ }
+ 
++static __always_inline unsigned int rb_page_commit(struct buffer_page *bpage)
++{
++	return local_read(&bpage->page->commit);
++}
++
+ static void free_buffer_page(struct buffer_page *bpage)
+ {
+ 	free_page((unsigned long)bpage->page);
+@@ -1984,7 +1989,7 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
+ 			 * Increment overrun to account for the lost events.
+ 			 */
+ 			local_add(page_entries, &cpu_buffer->overrun);
+-			local_sub(BUF_PAGE_SIZE, &cpu_buffer->entries_bytes);
++			local_sub(rb_page_commit(to_remove_page), &cpu_buffer->entries_bytes);
+ 			local_inc(&cpu_buffer->pages_lost);
+ 		}
+ 
+@@ -2328,11 +2333,6 @@ rb_reader_event(struct ring_buffer_per_cpu *cpu_buffer)
+ 			       cpu_buffer->reader_page->read);
+ }
+ 
+-static __always_inline unsigned rb_page_commit(struct buffer_page *bpage)
+-{
+-	return local_read(&bpage->page->commit);
+-}
+-
+ static struct ring_buffer_event *
+ rb_iter_head_event(struct ring_buffer_iter *iter)
+ {
+@@ -2478,7 +2478,7 @@ rb_handle_head_page(struct ring_buffer_per_cpu *cpu_buffer,
+ 		 * the counters.
+ 		 */
+ 		local_add(entries, &cpu_buffer->overrun);
+-		local_sub(BUF_PAGE_SIZE, &cpu_buffer->entries_bytes);
++		local_sub(rb_page_commit(next_page), &cpu_buffer->entries_bytes);
+ 		local_inc(&cpu_buffer->pages_lost);
+ 
+ 		/*
+@@ -2621,9 +2621,6 @@ rb_reset_tail(struct ring_buffer_per_cpu *cpu_buffer,
+ 
+ 	event = __rb_page_index(tail_page, tail);
+ 
+-	/* account for padding bytes */
+-	local_add(BUF_PAGE_SIZE - tail, &cpu_buffer->entries_bytes);
+-
+ 	/*
+ 	 * Save the original length to the meta data.
+ 	 * This will be used by the reader to add lost event
+@@ -2637,7 +2634,8 @@ rb_reset_tail(struct ring_buffer_per_cpu *cpu_buffer,
+ 	 * write counter enough to allow another writer to slip
+ 	 * in on this page.
+ 	 * We put in a discarded commit instead, to make sure
+-	 * that this space is not used again.
++	 * that this space is not used again, and this space will
++	 * not be accounted into 'entries_bytes'.
+ 	 *
+ 	 * If we are less than the minimum size, we don't need to
+ 	 * worry about it.
+@@ -2662,6 +2660,9 @@ rb_reset_tail(struct ring_buffer_per_cpu *cpu_buffer,
+ 	/* time delta must be non zero */
+ 	event->time_delta = 1;
+ 
++	/* account for padding bytes */
++	local_add(BUF_PAGE_SIZE - tail, &cpu_buffer->entries_bytes);
++
+ 	/* Make sure the padding is visible before the tail_page->write update */
+ 	smp_wmb();
+ 
+@@ -4177,7 +4178,7 @@ u64 ring_buffer_oldest_event_ts(struct trace_buffer *buffer, int cpu)
+ EXPORT_SYMBOL_GPL(ring_buffer_oldest_event_ts);
+ 
+ /**
+- * ring_buffer_bytes_cpu - get the number of bytes consumed in a cpu buffer
++ * ring_buffer_bytes_cpu - get the number of bytes unconsumed in a cpu buffer
+  * @buffer: The ring buffer
+  * @cpu: The per CPU buffer to read from.
+  */
+@@ -4685,6 +4686,7 @@ static void rb_advance_reader(struct ring_buffer_per_cpu *cpu_buffer)
+ 
+ 	length = rb_event_length(event);
+ 	cpu_buffer->reader_page->read += length;
++	cpu_buffer->read_bytes += length;
+ }
+ 
+ static void rb_advance_iter(struct ring_buffer_iter *iter)
+@@ -5778,7 +5780,7 @@ int ring_buffer_read_page(struct trace_buffer *buffer,
  	} else {
- 		/* Otherwise, we make more careful check taking into account,
- 		 * that SACKs block is variable.
+ 		/* update the entry counter */
+ 		cpu_buffer->read += rb_page_entries(reader);
+-		cpu_buffer->read_bytes += BUF_PAGE_SIZE;
++		cpu_buffer->read_bytes += rb_page_commit(reader);
+ 
+ 		/* swap the pages */
+ 		rb_init_page(bpage);
 -- 
 2.40.1
 
