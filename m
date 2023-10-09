@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 347DC7BDF31
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 290CD7BE0E5
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:45:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376769AbjJIN12 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:27:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49226 "EHLO
+        id S1377438AbjJINo6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:44:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376776AbjJIN11 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:27:27 -0400
+        with ESMTP id S1377430AbjJINox (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05F8D99
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:27:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47572C433C8;
-        Mon,  9 Oct 2023 13:27:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0771CDF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47092C433CA;
+        Mon,  9 Oct 2023 13:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858045;
-        bh=tjJS2ZfdDm/fB4IKb+zcBU4XpxeoQ1HWKqnV5iqrr8Y=;
+        s=korg; t=1696859089;
+        bh=hG+Uw+83ZYYZOm8BXeJOMzC1VzA59To3iFE5LMGF55Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QfNZeOHD5B8VNknGqqwCa4OwibWhbsxlU3aD8+OmykkH1pQNgp0hk0eMlqPWEA0Hh
-         PAAnBi7c7M0TouN/V4FtRqiH2neqCRMc+ZM2DSoj7kL39EbhlVWQcC8N799iDioAh4
-         6eqsOLyRy/jpZKFZFvIgvcJzCGl9ThaVuHPGogHU=
+        b=TTOHX902j7KOV27/CzsRRbC6qCffjpRh+3aQiROfnkYRpR5wUyC4N8APaTkMFDVI0
+         t5zxUS99EDU2yGzIT+8QEtbC2w6Fuz5syPILIcFrf5+RpQxLXWR4pgcOS1k1ymrtil
+         UFHDg4s/6Cao7MNx5WNibngC5ahrVudExGpUUais=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 75/75] parisc: Restore __ldcw_align for PA-RISC 2.0 processors
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 196/226] NFSv4: Fix a nfs4_state_manager() race
 Date:   Mon,  9 Oct 2023 15:02:37 +0200
-Message-ID: <20231009130113.917593405@linuxfoundation.org>
+Message-ID: <20231009130131.716347324@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,118 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave@parisc-linux.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 914988e099fc658436fbd7b8f240160c352b6552 upstream.
+[ Upstream commit ed1cc05aa1f7fe8197d300e914afc28ab9818f89 ]
 
-Back in 2005, Kyle McMartin removed the 16-byte alignment for
-ldcw semaphores on PA 2.0 machines (CONFIG_PA20). This broke
-spinlocks on pre PA8800 processors. The main symptom was random
-faults in mmap'd memory (e.g., gcc compilations, etc).
+If the NFS4CLNT_RUN_MANAGER flag got set just before we cleared
+NFS4CLNT_MANAGER_RUNNING, then we might have won the race against
+nfs4_schedule_state_manager(), and are responsible for handling the
+recovery situation.
 
-Unfortunately, the errata for this ldcw change is lost.
-
-The issue is the 16-byte alignment required for ldcw semaphore
-instructions can only be reduced to natural alignment when the
-ldcw operation can be handled coherently in cache. Only PA8800
-and PA8900 processors actually support doing the operation in
-cache.
-
-Aligning the spinlock dynamically adds two integer instructions
-to each spinlock.
-
-Tested on rp3440, c8000 and a500.
-
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Link: https://lore.kernel.org/linux-parisc/6b332788-2227-127f-ba6d-55e99ecf4ed8@bell.net/T/#t
-Link: https://lore.kernel.org/linux-parisc/20050609050702.GB4641@roadwarrior.mcmartin.ca/
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aeabb3c96186 ("NFSv4: Fix a NFSv4 state manager deadlock")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/ldcw.h           |   36 +++++++++++++++++--------------
- arch/parisc/include/asm/spinlock_types.h |    5 ----
- 2 files changed, 20 insertions(+), 21 deletions(-)
+ fs/nfs/nfs4state.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/parisc/include/asm/ldcw.h
-+++ b/arch/parisc/include/asm/ldcw.h
-@@ -2,14 +2,28 @@
- #ifndef __PARISC_LDCW_H
- #define __PARISC_LDCW_H
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index 10946b24c66f9..afb617a4a7e42 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2690,6 +2690,13 @@ static void nfs4_state_manager(struct nfs_client *clp)
+ 		nfs4_end_drain_session(clp);
+ 		nfs4_clear_state_manager_bit(clp);
  
--#ifndef CONFIG_PA20
- /* Because kmalloc only guarantees 8-byte alignment for kmalloc'd data,
-    and GCC only guarantees 8-byte alignment for stack locals, we can't
-    be assured of 16-byte alignment for atomic lock data even if we
-    specify "__attribute ((aligned(16)))" in the type declaration.  So,
-    we use a struct containing an array of four ints for the atomic lock
-    type and dynamically select the 16-byte aligned int from the array
--   for the semaphore.  */
-+   for the semaphore. */
++		if (test_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state) &&
++		    !test_and_set_bit(NFS4CLNT_MANAGER_RUNNING,
++				      &clp->cl_state)) {
++			memflags = memalloc_nofs_save();
++			continue;
++		}
 +
-+/* From: "Jim Hull" <jim.hull of hp.com>
-+   I've attached a summary of the change, but basically, for PA 2.0, as
-+   long as the ",CO" (coherent operation) completer is implemented, then the
-+   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
-+   they only require "natural" alignment (4-byte for ldcw, 8-byte for
-+   ldcd).
-+
-+   Although the cache control hint is accepted by all PA 2.0 processors,
-+   it is only implemented on PA8800/PA8900 CPUs. Prior PA8X00 CPUs still
-+   require 16-byte alignment. If the address is unaligned, the operation
-+   of the instruction is undefined. The ldcw instruction does not generate
-+   unaligned data reference traps so misaligned accesses are not detected.
-+   This hid the problem for years. So, restore the 16-byte alignment dropped
-+   by Kyle McMartin in "Remove __ldcw_align for PA-RISC 2.0 processors". */
- 
- #define __PA_LDCW_ALIGNMENT	16
- #define __PA_LDCW_ALIGN_ORDER	4
-@@ -19,22 +33,12 @@
- 		& ~(__PA_LDCW_ALIGNMENT - 1);			\
- 	(volatile unsigned int *) __ret;			\
- })
--#define __LDCW	"ldcw"
- 
--#else /*CONFIG_PA20*/
--/* From: "Jim Hull" <jim.hull of hp.com>
--   I've attached a summary of the change, but basically, for PA 2.0, as
--   long as the ",CO" (coherent operation) completer is specified, then the
--   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
--   they only require "natural" alignment (4-byte for ldcw, 8-byte for
--   ldcd). */
--
--#define __PA_LDCW_ALIGNMENT	4
--#define __PA_LDCW_ALIGN_ORDER	2
--#define __ldcw_align(a) (&(a)->slock)
-+#ifdef CONFIG_PA20
- #define __LDCW	"ldcw,co"
--
--#endif /*!CONFIG_PA20*/
-+#else
-+#define __LDCW	"ldcw"
-+#endif
- 
- /* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.
-    We don't explicitly expose that "*a" may be written as reload
---- a/arch/parisc/include/asm/spinlock_types.h
-+++ b/arch/parisc/include/asm/spinlock_types.h
-@@ -3,13 +3,8 @@
- #define __ASM_SPINLOCK_TYPES_H
- 
- typedef struct {
--#ifdef CONFIG_PA20
--	volatile unsigned int slock;
--# define __ARCH_SPIN_LOCK_UNLOCKED { 1 }
--#else
- 	volatile unsigned int lock[4];
- # define __ARCH_SPIN_LOCK_UNLOCKED	{ { 1, 1, 1, 1 } }
--#endif
- } arch_spinlock_t;
- 
- 
+ 		if (!test_and_set_bit(NFS4CLNT_RECALL_RUNNING, &clp->cl_state)) {
+ 			if (test_and_clear_bit(NFS4CLNT_DELEGRETURN, &clp->cl_state)) {
+ 				nfs_client_return_marked_delegations(clp);
+-- 
+2.40.1
+
 
 
