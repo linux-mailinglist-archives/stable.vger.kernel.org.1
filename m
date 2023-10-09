@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A72B7BDECA
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BD397BDFAE
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376426AbjJINXI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:23:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55074 "EHLO
+        id S1377099AbjJINck (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:32:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376435AbjJINXH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:07 -0400
+        with ESMTP id S1377121AbjJINcj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35F6694
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C07C433C8;
-        Mon,  9 Oct 2023 13:23:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D393EE0
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F361C433CA;
+        Mon,  9 Oct 2023 13:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857785;
-        bh=MA+fMjA9dDTUjI7SoZJlDDopUqnOiS4neuCA/r4y/m4=;
+        s=korg; t=1696858356;
+        bh=klzR27LiQVSDMmqx5FlVF2yiIMf9rtt1v9DHgVa//oA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RwsS+6pc+59E/OApMasC/zgJhT2vos9GVFmiAhQ4qbUha2G5tZJ8KHPkJXikDD6UB
-         p0aDLelhEGk1sGLf0smYLeViV5AAM0MJIJFo4xfet1y3wFpgom0mfwHHZBq8X8VqR+
-         qtR6uDiYpIqTAsoSX0wUWSknFH9H74AWS9vuLyhU=
+        b=K4hHPO1NMxO5/hvC+dA+AwwKd/6LGHYmilZHLq9yOTCSFWPD7mcrycYttx7Keqve2
+         oK2o2dm/oI2BQc166oyJirbS5ql3F6lFNXj1MOTMHy4c48eKOP05S3FZjA2mQw+9aR
+         D7uZbeznGSyxZP+PwdrxBy0ThXNglcxagoLgklwA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, luosili <rootlab@huawei.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 155/162] ksmbd: fix race condition between session lookup and expire
+        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
+        Jordan Rife <jrife@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 096/131] net: prevent rewrite of msg_name in sock_sendmsg()
 Date:   Mon,  9 Oct 2023 15:02:16 +0200
-Message-ID: <20231009130127.193700356@linuxfoundation.org>
+Message-ID: <20231009130119.337806089@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,110 +50,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Jordan Rife <jrife@google.com>
 
-commit 53ff5cf89142b978b1a5ca8dc4d4425e6a09745f upstream.
+commit 86a7e0b69bd5b812e48a20c66c2161744f3caa16 upstream.
 
- Thread A                        +  Thread B
- ksmbd_session_lookup            |  smb2_sess_setup
-   sess = xa_load                |
-                                 |
-                                 |    xa_erase(&conn->sessions, sess->id);
-                                 |
-                                 |    ksmbd_session_destroy(sess) --> kfree(sess)
-                                 |
-   // UAF!                       |
-   sess->last_active = jiffies   |
-                                 +
+Callers of sock_sendmsg(), and similarly kernel_sendmsg(), in kernel
+space may observe their value of msg_name change in cases where BPF
+sendmsg hooks rewrite the send address. This has been confirmed to break
+NFS mounts running in UDP mode and has the potential to break other
+systems.
 
-This patch add rwsem to fix race condition between ksmbd_session_lookup
-and ksmbd_expire_session.
+This patch:
 
-Reported-by: luosili <rootlab@huawei.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+1) Creates a new function called __sock_sendmsg() with same logic as the
+   old sock_sendmsg() function.
+2) Replaces calls to sock_sendmsg() made by __sys_sendto() and
+   __sys_sendmsg() with __sock_sendmsg() to avoid an unnecessary copy,
+   as these system calls are already protected.
+3) Modifies sock_sendmsg() so that it makes a copy of msg_name if
+   present before passing it down the stack to insulate callers from
+   changes to the send address.
+
+Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
+Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c        |    2 ++
- fs/smb/server/connection.h        |    1 +
- fs/smb/server/mgmt/user_session.c |   10 +++++++---
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ net/socket.c |   29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -84,6 +84,8 @@ struct ksmbd_conn *ksmbd_conn_alloc(void
- 	spin_lock_init(&conn->llist_lock);
- 	INIT_LIST_HEAD(&conn->lock_list);
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -641,6 +641,14 @@ static inline int sock_sendmsg_nosec(str
+ 	return ret;
+ }
  
-+	init_rwsem(&conn->session_lock);
++static int __sock_sendmsg(struct socket *sock, struct msghdr *msg)
++{
++	int err = security_socket_sendmsg(sock, msg,
++					  msg_data_left(msg));
 +
- 	down_write(&conn_list_lock);
- 	list_add(&conn->conns_list, &conn_list);
- 	up_write(&conn_list_lock);
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -50,6 +50,7 @@ struct ksmbd_conn {
- 	struct nls_table		*local_nls;
- 	struct unicode_map		*um;
- 	struct list_head		conns_list;
-+	struct rw_semaphore		session_lock;
- 	/* smb session 1 per user */
- 	struct xarray			sessions;
- 	unsigned long			last_active;
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -183,7 +183,7 @@ static void ksmbd_expire_session(struct
- 	unsigned long id;
- 	struct ksmbd_session *sess;
- 
--	down_write(&sessions_table_lock);
-+	down_write(&conn->session_lock);
- 	xa_for_each(&conn->sessions, id, sess) {
- 		if (sess->state != SMB2_SESSION_VALID ||
- 		    time_after(jiffies,
-@@ -194,7 +194,7 @@ static void ksmbd_expire_session(struct
- 			continue;
- 		}
- 	}
--	up_write(&sessions_table_lock);
-+	up_write(&conn->session_lock);
- }
- 
- int ksmbd_session_register(struct ksmbd_conn *conn,
-@@ -236,7 +236,9 @@ void ksmbd_sessions_deregister(struct ks
- 			}
- 		}
- 	}
-+	up_write(&sessions_table_lock);
- 
-+	down_write(&conn->session_lock);
- 	xa_for_each(&conn->sessions, id, sess) {
- 		unsigned long chann_id;
- 		struct channel *chann;
-@@ -253,7 +255,7 @@ void ksmbd_sessions_deregister(struct ks
- 			ksmbd_session_destroy(sess);
- 		}
- 	}
--	up_write(&sessions_table_lock);
-+	up_write(&conn->session_lock);
- }
- 
- struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
-@@ -261,9 +263,11 @@ struct ksmbd_session *ksmbd_session_look
++	return err ?: sock_sendmsg_nosec(sock, msg);
++}
++
+ /**
+  *	sock_sendmsg - send a message through @sock
+  *	@sock: socket
+@@ -651,10 +659,19 @@ static inline int sock_sendmsg_nosec(str
+  */
+ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
  {
- 	struct ksmbd_session *sess;
+-	int err = security_socket_sendmsg(sock, msg,
+-					  msg_data_left(msg));
++	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
++	struct sockaddr_storage address;
++	int ret;
  
-+	down_read(&conn->session_lock);
- 	sess = xa_load(&conn->sessions, id);
- 	if (sess)
- 		sess->last_active = jiffies;
-+	up_read(&conn->session_lock);
- 	return sess;
+-	return err ?: sock_sendmsg_nosec(sock, msg);
++	if (msg->msg_name) {
++		memcpy(&address, msg->msg_name, msg->msg_namelen);
++		msg->msg_name = &address;
++	}
++
++	ret = __sock_sendmsg(sock, msg);
++	msg->msg_name = save_addr;
++
++	return ret;
  }
+ EXPORT_SYMBOL(sock_sendmsg);
  
+@@ -986,7 +1003,7 @@ static ssize_t sock_write_iter(struct ki
+ 	if (sock->type == SOCK_SEQPACKET)
+ 		msg.msg_flags |= MSG_EOR;
+ 
+-	res = sock_sendmsg(sock, &msg);
++	res = __sock_sendmsg(sock, &msg);
+ 	*from = msg.msg_iter;
+ 	return res;
+ }
+@@ -1938,7 +1955,7 @@ int __sys_sendto(int fd, void __user *bu
+ 	if (sock->file->f_flags & O_NONBLOCK)
+ 		flags |= MSG_DONTWAIT;
+ 	msg.msg_flags = flags;
+-	err = sock_sendmsg(sock, &msg);
++	err = __sock_sendmsg(sock, &msg);
+ 
+ out_put:
+ 	fput_light(sock->file, fput_needed);
+@@ -2283,7 +2300,7 @@ static int ____sys_sendmsg(struct socket
+ 		err = sock_sendmsg_nosec(sock, msg_sys);
+ 		goto out_freectl;
+ 	}
+-	err = sock_sendmsg(sock, msg_sys);
++	err = __sock_sendmsg(sock, msg_sys);
+ 	/*
+ 	 * If this is sendmmsg() and sending to current destination address was
+ 	 * successful, remember it.
 
 
