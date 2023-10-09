@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 062667BE0E1
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C3277BDFC3
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:33:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377481AbjJINoy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52540 "EHLO
+        id S1377138AbjJINdk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:33:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377427AbjJINos (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:48 -0400
+        with ESMTP id S1377140AbjJINdj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:33:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF4091
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10982C433C8;
-        Mon,  9 Oct 2023 13:44:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B012D6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:33:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E06AC433C8;
+        Mon,  9 Oct 2023 13:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859086;
-        bh=z29+xHYkbzip2Ileb5Lvn5+ZT4eNc6UI1ReQfS0ATiE=;
+        s=korg; t=1696858416;
+        bh=wrO0DSVNVvIfUqFYf315ykpfHwIsrS1KWKBMHbnmrM8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w0bg1IjLjvt/dPtCN+kfwuoimFffm/UMfF19bz8wqx1xT1qdQcGIGGNZdagRwLB6r
-         o2oxcfUsBLFdDoCO5O2HZJibj13uVuQPLgO5e99Fhv5o0v0JHPGKa5RKw0vAL6SF8l
-         PMfHDNvKzM4fGYorWfnI7pHD2rWdM/+EIlOIih8Y=
+        b=N12DOHtmIkBE44SUUeiZTKuQeFvAetk3DT7OrzNtl837So9ahFY2aXvzXYCLebuv7
+         SWmg24UozQP/gLubF+1y1+IoYuzhILgSC9Fpz2iMdcU4K9815WqX+/qlFqQmB3O0eR
+         kMmBPuJquxKqbKvdN8ZiNm3BVB9nYFsPYExJyiiI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Mimi Zohar <zohar@linux.ibm.com>,
+        patches@lists.linux.dev, Neal Cardwell <ncardwell@google.com>,
+        Yuchung Cheng <ycheng@google.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 195/226] ima: rework CONFIG_IMA dependency block
+Subject: [PATCH 5.4 116/131] tcp: fix quick-ack counting to count actual ACKs of new data
 Date:   Mon,  9 Oct 2023 15:02:36 +0200
-Message-ID: <20231009130131.693133269@linuxfoundation.org>
+Message-ID: <20231009130119.983498738@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,139 +51,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Neal Cardwell <ncardwell@google.com>
 
-[ Upstream commit 91e326563ee34509c35267808a4b1b3ea3db62a8 ]
+[ Upstream commit 059217c18be6757b95bfd77ba53fb50b48b8a816 ]
 
-Changing the direct dependencies of IMA_BLACKLIST_KEYRING and
-IMA_LOAD_X509 caused them to no longer depend on IMA, but a
-a configuration without IMA results in link failures:
+This commit fixes quick-ack counting so that it only considers that a
+quick-ack has been provided if we are sending an ACK that newly
+acknowledges data.
 
-arm-linux-gnueabi-ld: security/integrity/iint.o: in function `integrity_load_keys':
-iint.c:(.init.text+0xd8): undefined reference to `ima_load_x509'
+The code was erroneously using the number of data segments in outgoing
+skbs when deciding how many quick-ack credits to remove. This logic
+does not make sense, and could cause poor performance in
+request-response workloads, like RPC traffic, where requests or
+responses can be multi-segment skbs.
 
-aarch64-linux-ld: security/integrity/digsig_asymmetric.o: in function `asymmetric_verify':
-digsig_asymmetric.c:(.text+0x104): undefined reference to `ima_blacklist_keyring'
+When a TCP connection decides to send N quick-acks, that is to
+accelerate the cwnd growth of the congestion control module
+controlling the remote endpoint of the TCP connection. That quick-ack
+decision is purely about the incoming data and outgoing ACKs. It has
+nothing to do with the outgoing data or the size of outgoing data.
 
-Adding explicit dependencies on IMA would fix this, but a more reliable
-way to do this is to enclose the entire Kconfig file in an 'if IMA' block.
-This also allows removing the existing direct dependencies.
+And in particular, an ACK only serves the intended purpose of allowing
+the remote congestion control to grow the congestion window quickly if
+the ACK is ACKing or SACKing new data.
 
-Fixes: be210c6d3597f ("ima: Finish deprecation of IMA_TRUSTED_KEYRING Kconfig")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+The fix is simple: only count packets as serving the goal of the
+quickack mechanism if they are ACKing/SACKing new data. We can tell
+whether this is the case by checking inet_csk_ack_scheduled(), since
+we schedule an ACK exactly when we are ACKing/SACKing new data.
+
+Fixes: fc6415bcb0f5 ("[TCP]: Fix quick-ack decrementing with TSO.")
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Yuchung Cheng <ycheng@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20231001151239.1866845-1-ncardwell.sw@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/Kconfig | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ include/net/tcp.h     | 6 ++++--
+ net/ipv4/tcp_output.c | 7 +++----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index d1b490705c2e8..d0d3ff58da491 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -29,9 +29,11 @@ config IMA
- 	  to learn more about IMA.
- 	  If unsure, say N.
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 3192ade55ad18..2a17c0b423946 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -343,12 +343,14 @@ ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
+ 			struct pipe_inode_info *pipe, size_t len,
+ 			unsigned int flags);
  
-+if IMA
+-static inline void tcp_dec_quickack_mode(struct sock *sk,
+-					 const unsigned int pkts)
++static inline void tcp_dec_quickack_mode(struct sock *sk)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 
+ 	if (icsk->icsk_ack.quick) {
++		/* How many ACKs S/ACKing new data have we sent? */
++		const unsigned int pkts = inet_csk_ack_scheduled(sk) ? 1 : 0;
 +
- config IMA_KEXEC
- 	bool "Enable carrying the IMA measurement list across a soft boot"
--	depends on IMA && TCG_TPM && HAVE_IMA_KEXEC
-+	depends on TCG_TPM && HAVE_IMA_KEXEC
- 	default n
- 	help
- 	   TPM PCRs are only reset on a hard reboot.  In order to validate
-@@ -43,7 +45,6 @@ config IMA_KEXEC
+ 		if (pkts >= icsk->icsk_ack.quick) {
+ 			icsk->icsk_ack.quick = 0;
+ 			/* Leaving quickack mode we deflate ATO. */
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 6ac84b273ffbb..4c90a61148da4 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -179,8 +179,7 @@ static void tcp_event_data_sent(struct tcp_sock *tp,
+ }
  
- config IMA_MEASURE_PCR_IDX
- 	int
--	depends on IMA
- 	range 8 14
- 	default 10
- 	help
-@@ -53,7 +54,7 @@ config IMA_MEASURE_PCR_IDX
+ /* Account for an ACK we sent. */
+-static inline void tcp_event_ack_sent(struct sock *sk, unsigned int pkts,
+-				      u32 rcv_nxt)
++static inline void tcp_event_ack_sent(struct sock *sk, u32 rcv_nxt)
+ {
+ 	struct tcp_sock *tp = tcp_sk(sk);
  
- config IMA_LSM_RULES
- 	bool
--	depends on IMA && AUDIT && (SECURITY_SELINUX || SECURITY_SMACK || SECURITY_APPARMOR)
-+	depends on AUDIT && (SECURITY_SELINUX || SECURITY_SMACK || SECURITY_APPARMOR)
- 	default y
- 	help
- 	  Disabling this option will disregard LSM based policy rules.
-@@ -61,7 +62,6 @@ config IMA_LSM_RULES
- choice
- 	prompt "Default template"
- 	default IMA_NG_TEMPLATE
--	depends on IMA
- 	help
- 	  Select the default IMA measurement template.
+@@ -194,7 +193,7 @@ static inline void tcp_event_ack_sent(struct sock *sk, unsigned int pkts,
  
-@@ -80,14 +80,12 @@ endchoice
+ 	if (unlikely(rcv_nxt != tp->rcv_nxt))
+ 		return;  /* Special ACK sent by DCTCP to reflect ECN */
+-	tcp_dec_quickack_mode(sk, pkts);
++	tcp_dec_quickack_mode(sk);
+ 	inet_csk_clear_xmit_timer(sk, ICSK_TIME_DACK);
+ }
  
- config IMA_DEFAULT_TEMPLATE
- 	string
--	depends on IMA
- 	default "ima-ng" if IMA_NG_TEMPLATE
- 	default "ima-sig" if IMA_SIG_TEMPLATE
+@@ -1152,7 +1151,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
+ 	icsk->icsk_af_ops->send_check(sk, skb);
  
- choice
- 	prompt "Default integrity hash algorithm"
- 	default IMA_DEFAULT_HASH_SHA1
--	depends on IMA
- 	help
- 	   Select the default hash algorithm used for the measurement
- 	   list, integrity appraisal and audit log.  The compiled default
-@@ -117,7 +115,6 @@ endchoice
+ 	if (likely(tcb->tcp_flags & TCPHDR_ACK))
+-		tcp_event_ack_sent(sk, tcp_skb_pcount(skb), rcv_nxt);
++		tcp_event_ack_sent(sk, rcv_nxt);
  
- config IMA_DEFAULT_HASH
- 	string
--	depends on IMA
- 	default "sha1" if IMA_DEFAULT_HASH_SHA1
- 	default "sha256" if IMA_DEFAULT_HASH_SHA256
- 	default "sha512" if IMA_DEFAULT_HASH_SHA512
-@@ -126,7 +123,6 @@ config IMA_DEFAULT_HASH
- 
- config IMA_WRITE_POLICY
- 	bool "Enable multiple writes to the IMA policy"
--	depends on IMA
- 	default n
- 	help
- 	  IMA policy can now be updated multiple times.  The new rules get
-@@ -137,7 +133,6 @@ config IMA_WRITE_POLICY
- 
- config IMA_READ_POLICY
- 	bool "Enable reading back the current IMA policy"
--	depends on IMA
- 	default y if IMA_WRITE_POLICY
- 	default n if !IMA_WRITE_POLICY
- 	help
-@@ -147,7 +142,6 @@ config IMA_READ_POLICY
- 
- config IMA_APPRAISE
- 	bool "Appraise integrity measurements"
--	depends on IMA
- 	default n
- 	help
- 	  This option enables local measurement integrity appraisal.
-@@ -303,7 +297,6 @@ config IMA_APPRAISE_SIGNED_INIT
- 
- config IMA_MEASURE_ASYMMETRIC_KEYS
- 	bool
--	depends on IMA
- 	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE=y
- 	default y
- 
-@@ -319,3 +312,5 @@ config IMA_SECURE_AND_OR_TRUSTED_BOOT
-        help
-           This option is selected by architectures to enable secure and/or
-           trusted boot based on IMA runtime policies.
-+
-+endif
+ 	if (skb->len != tcp_header_size) {
+ 		tcp_event_data_sent(tp, sk);
 -- 
 2.40.1
 
