@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BA357BDF23
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3FB7BDED0
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376491AbjJIN0n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:26:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36984 "EHLO
+        id S1376439AbjJINX1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:23:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376490AbjJIN0m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:42 -0400
+        with ESMTP id S1376427AbjJINX0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FBE594
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB36C433C9;
-        Mon,  9 Oct 2023 13:26:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AAB391
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F343C433C8;
+        Mon,  9 Oct 2023 13:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858001;
-        bh=Zw/BF71tm3PSYOBxdwVe+lcOgJftJt+YkMkt8NiVS5s=;
+        s=korg; t=1696857804;
+        bh=2mkJnHOay9bIMjGTS5vC0nDQUyInVmUq+wD5am0rc/0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I1eJoehtil6ZWF9tOSfwT0wYoSZzwi/uo2GMoI3Rknc4tfiWECBSJaQD/GUK2FTa8
-         G9eEio3SiRiGA8rbvwkh7rgLcdUCdXAi3/704+E5WH7dYgpHvU1cvichvRrIxZg1EP
-         Eluh7RG8MfT9+oOwV8p3vSI9hsGVIb6BbGyRpLqA=
+        b=2ZbJ0QcM1IXLzaLaz7saRbzfwb9VgC7Mkhxz3Q28sL/jL5NG0uBlKTNWFfckDMBqk
+         X13pf4I1CYhgYaTQXlLpv+TkOvWRNUYoXMx9iC1+09dpqAL7fmTn6GVjRhSQEEnsx0
+         sk7wX+eQ7/OHVpqEHWNm8Pkf5Nz5ftnrJwqXXMdg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Leon Hwang <hffilwlqm@gmail.com>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 34/75] bpf: Fix tr dereferencing
+        patches@lists.linux.dev,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 135/162] HID: intel-ish-hid: ipc: Disable and reenable ACPI GPE bit
 Date:   Mon,  9 Oct 2023 15:01:56 +0200
-Message-ID: <20231009130112.426919408@linuxfoundation.org>
+Message-ID: <20231009130126.637772070@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +50,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Hwang <hffilwlqm@gmail.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit b724a6418f1f853bcb39c8923bf14a50c7bdbd07 ]
+[ Upstream commit 8f02139ad9a7e6e5c05712f8c1501eebed8eacfd ]
 
-Fix 'tr' dereferencing bug when CONFIG_BPF_JIT is turned off.
+The EHL (Elkhart Lake) based platforms provide a OOB (Out of band)
+service, which allows to wakup device when the system is in S5 (Soft-Off
+state). This OOB service can be enabled/disabled from BIOS settings. When
+enabled, the ISH device gets PME wake capability. To enable PME wakeup,
+driver also needs to enable ACPI GPE bit.
 
-When CONFIG_BPF_JIT is turned off, 'bpf_trampoline_get()' returns NULL,
-which is same as the cases when CONFIG_BPF_JIT is turned on.
+On resume, BIOS will clear the wakeup bit. So driver need to re-enable it
+in resume function to keep the next wakeup capability. But this BIOS
+clearing of wakeup bit doesn't decrement internal OS GPE reference count,
+so this reenabling on every resume will cause reference count to overflow.
 
-Closes: https://lore.kernel.org/r/202309131936.5Nc8eUD0-lkp@intel.com/
-Fixes: f7b12b6fea00 ("bpf: verifier: refactor check_attach_btf_id()")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Leon Hwang <hffilwlqm@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20230917153846.88732-1-hffilwlqm@gmail.com
+So first disable and reenable ACPI GPE bit using acpi_disable_gpe().
+
+Fixes: 2e23a70edabe ("HID: intel-ish-hid: ipc: finish power flow for EHL OOB")
+Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Closes: https://lore.kernel.org/lkml/CAAd53p4=oLYiH2YbVSmrPNj1zpMcfp=Wxbasb5vhMXOWCArLCg@mail.gmail.com/T/
+Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 84efd8dd139d9..9ab087d73ab34 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -840,7 +840,7 @@ static inline int bpf_trampoline_unlink_prog(struct bpf_prog *prog,
- static inline struct bpf_trampoline *bpf_trampoline_get(u64 key,
- 							struct bpf_attach_target_info *tgt_info)
- {
--	return ERR_PTR(-EOPNOTSUPP);
-+	return NULL;
- }
- static inline void bpf_trampoline_put(struct bpf_trampoline *tr) {}
- #define DEFINE_BPF_DISPATCHER(name)
+diff --git a/drivers/hid/intel-ish-hid/ipc/pci-ish.c b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+index 55cb25038e632..710fda5f19e1c 100644
+--- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
++++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+@@ -133,6 +133,14 @@ static int enable_gpe(struct device *dev)
+ 	}
+ 	wakeup = &adev->wakeup;
+ 
++	/*
++	 * Call acpi_disable_gpe(), so that reference count
++	 * gpe_event_info->runtime_count doesn't overflow.
++	 * When gpe_event_info->runtime_count = 0, the call
++	 * to acpi_disable_gpe() simply return.
++	 */
++	acpi_disable_gpe(wakeup->gpe_device, wakeup->gpe_number);
++
+ 	acpi_sts = acpi_enable_gpe(wakeup->gpe_device, wakeup->gpe_number);
+ 	if (ACPI_FAILURE(acpi_sts)) {
+ 		dev_err(dev, "enable ose_gpe failed\n");
 -- 
 2.40.1
 
