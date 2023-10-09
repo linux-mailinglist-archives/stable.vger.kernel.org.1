@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F07B07BDE5F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AD177BE03E
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377026AbjJINTN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:19:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42050 "EHLO
+        id S1377246AbjJINiO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:38:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377086AbjJINS5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:57 -0400
+        with ESMTP id S1377254AbjJINiM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E072A91
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC42C433C7;
-        Mon,  9 Oct 2023 13:18:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF2D791
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C0AC433C9;
+        Mon,  9 Oct 2023 13:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857534;
-        bh=C7yM5o69/xxrFDbNbTCbfdjl4vX4Owf/faeL9kjUBRM=;
+        s=korg; t=1696858690;
+        bh=DwuVS5GNmPtB1WLKGhg5jPWvK4o8Xp42ra0XBic3lGg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XU0YFG1P+aNw+yVuWBZ6yXzYVokmc/7EIpO327d6jaRVtlYTnFlVzr1BE35oulhNj
-         YQh+GXOgg8chhghutnzx/RXV/0Pbfwlc5cis8MwWVRe6fQj7ikM5JSl1x+DXPSD8dL
-         vWKfYlllgmlYquM9g98dCBMvwvGOI1t2W+vVgdIo=
+        b=MTWVmma0th3nTvyRmJeR6R51plGwZyu5DrtLrx/G0Sn1wVegBl7cbLZJ2bh1bpb7F
+         flGcucmKTVko85iFkCgK8rXQ8tm5xX3WNYBK46BzF/rhV0oeIs5UBXh1Wv2OJTcI0k
+         P0rLSgvpCQf3TdSmdup0qGvlaOjJqb3zeZmDqOjs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Zhang Wensheng <zhangwensheng@huaweicloud.com>,
-        Zhong Jinghua <zhongjinghua@huawei.com>,
-        Hillf Danton <hdanton@sina.com>, Yu Kuai <yukuai3@huawei.com>,
-        Dennis Zhou <dennis@kernel.org>,
-        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-        Saranya Muruganandam <saranyamohan@google.com>
-Subject: [PATCH 6.1 050/162] block: fix use-after-free of q->q_usage_counter
+        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 070/226] media: venus: core: Add io base variables for each block
 Date:   Mon,  9 Oct 2023 15:00:31 +0200
-Message-ID: <20231009130124.320135372@linuxfoundation.org>
+Message-ID: <20231009130128.613948711@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,58 +51,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit d36a9ea5e7766961e753ee38d4c331bbe6ef659b upstream.
+[ Upstream commit b4053a2097ec2f8ea622e817ae5a46a83b23aefe ]
 
-For blk-mq, queue release handler is usually called after
-blk_mq_freeze_queue_wait() returns. However, the
-q_usage_counter->release() handler may not be run yet at that time, so
-this can cause a use-after-free.
+New silicon means that the pre-determined offsets we have been using
+in this driver no longer hold. Existing blocks of registers can exist at
+different offsets relative to the IO base address.
 
-Fix the issue by moving percpu_ref_exit() into blk_free_queue_rcu().
-Since ->release() is called with rcu read lock held, it is agreed that
-the race should be covered in caller per discussion from the two links.
+This commit adds a routine to assign the IO base hooks a subsequent commit
+will convert from absolute to relative addressing.
 
-Reported-by: Zhang Wensheng <zhangwensheng@huaweicloud.com>
-Reported-by: Zhong Jinghua <zhongjinghua@huawei.com>
-Link: https://lore.kernel.org/linux-block/Y5prfOjyyjQKUrtH@T590/T/#u
-Link: https://lore.kernel.org/lkml/Y4%2FmzMd4evRg9yDi@fedora/
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20221215021629.74870-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Saranya Muruganandam <saranyamohan@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: d74e48160980 ("media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-sysfs.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/core.c | 12 ++++++++++++
+ drivers/media/platform/qcom/venus/core.h | 10 ++++++++++
+ 2 files changed, 22 insertions(+)
 
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -737,6 +737,7 @@ static void blk_free_queue_rcu(struct rc
- 	struct request_queue *q = container_of(rcu_head, struct request_queue,
- 					       rcu_head);
+diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
+index 62d11c6e41d60..5f7ac2807e5f4 100644
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -21,6 +21,7 @@
+ #include "core.h"
+ #include "firmware.h"
+ #include "pm_helpers.h"
++#include "hfi_venus_io.h"
  
-+	percpu_ref_exit(&q->q_usage_counter);
- 	kmem_cache_free(blk_get_queue_kmem_cache(blk_queue_has_srcu(q)), q);
+ static void venus_event_notify(struct venus_core *core, u32 event)
+ {
+@@ -210,6 +211,15 @@ static int venus_enumerate_codecs(struct venus_core *core, u32 type)
+ 	return ret;
  }
  
-@@ -762,8 +763,6 @@ static void blk_release_queue(struct kob
++static void venus_assign_register_offsets(struct venus_core *core)
++{
++	core->vbif_base = core->base + VBIF_BASE;
++	core->cpu_base = core->base + CPU_BASE;
++	core->cpu_cs_base = core->base + CPU_CS_BASE;
++	core->cpu_ic_base = core->base + CPU_IC_BASE;
++	core->wrapper_base = core->base + WRAPPER_BASE;
++}
++
+ static int venus_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -276,6 +286,8 @@ static int venus_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_core_put;
  
- 	might_sleep();
- 
--	percpu_ref_exit(&q->q_usage_counter);
--
- 	if (q->poll_stat)
- 		blk_stat_remove_callback(q, q->poll_cb);
- 	blk_stat_free_callback(q->poll_cb);
++	venus_assign_register_offsets(core);
++
+ 	ret = v4l2_device_register(dev, &core->v4l2_dev);
+ 	if (ret)
+ 		goto err_core_deinit;
+diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
+index aebd4c664bfa1..50eb0a9fb1347 100644
+--- a/drivers/media/platform/qcom/venus/core.h
++++ b/drivers/media/platform/qcom/venus/core.h
+@@ -119,6 +119,11 @@ struct venus_caps {
+  * struct venus_core - holds core parameters valid for all instances
+  *
+  * @base:	IO memory base address
++ * @vbif_base	IO memory vbif base address
++ * @cpu_base	IO memory cpu base address
++ * @cpu_cs_base	IO memory cpu_cs base address
++ * @cpu_ic_base	IO memory cpu_ic base address
++ * @wrapper_base	IO memory wrapper base address
+  * @irq:		Venus irq
+  * @clks:	an array of struct clk pointers
+  * @vcodec0_clks: an array of vcodec0 struct clk pointers
+@@ -152,6 +157,11 @@ struct venus_caps {
+  */
+ struct venus_core {
+ 	void __iomem *base;
++	void __iomem *vbif_base;
++	void __iomem *cpu_base;
++	void __iomem *cpu_cs_base;
++	void __iomem *cpu_ic_base;
++	void __iomem *wrapper_base;
+ 	int irq;
+ 	struct clk *clks[VIDC_CLKS_NUM_MAX];
+ 	struct clk *vcodec0_clks[VIDC_VCODEC_CLKS_NUM_MAX];
+-- 
+2.40.1
+
 
 
