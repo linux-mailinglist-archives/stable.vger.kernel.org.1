@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50CC57BDF00
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94F5B7BDF96
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376628AbjJINZW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:25:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41418 "EHLO
+        id S1377082AbjJINbj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:31:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376736AbjJINZV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:21 -0400
+        with ESMTP id S1377077AbjJINbi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E278E4
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A77AC433C8;
-        Mon,  9 Oct 2023 13:25:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D513999
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2201FC433C8;
+        Mon,  9 Oct 2023 13:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857918;
-        bh=xsSG+IJfNctiGXWHB3p6BMIMMzNbcFJD7Qw0e2upHvM=;
+        s=korg; t=1696858296;
+        bh=ASYy5/Afb3lGEr/wW856HTVH4Snfr4UxTLS2ImTi1Cw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ua8M8Sof/epltwrGhZMJ/M8vRylpT96g3ZHT1C++RpIiUfmtFM3tgzmbNL5QGVqii
-         uBkiuCLHPp2cvoioTp2hrFCpjh7EAtdkXqHgcVEfZP3u4baU2cXhyh8A+jKaPz+XBX
-         +2M84fmldgpvEy2419cxdfqzOG/bL3SyVb8o4P5w=
+        b=rE3OOzqye9rfsJ7pBX1vnGyJNsSS0/ktxKjV+TND1ZPp2zLTB39dbXAkxoXozT1De
+         700AbFnVl1d4Q/fi4vNdWXND4m14CiB1a1Qza0E4x3QoQdIhaUXxpgIUYWWJ3Zkf3y
+         1ofm9SphH8oBtKrkLek6fzH+0XIt2Y3gKj3fWBuQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Ingo Molnar <mingo@elte.hu>,
-        Mike Rapoport <mike.rapoport@gmail.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Mukesh Ojha <quic_mojha@quicinc.com>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 08/75] ring-buffer: remove obsolete comment for free_buffer_page()
+Subject: [PATCH 5.4 050/131] xtensa: boot/lib: fix function prototypes
 Date:   Mon,  9 Oct 2023 15:01:30 +0200
-Message-ID: <20231009130111.505926156@linuxfoundation.org>
+Message-ID: <20231009130117.835801488@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +49,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlastimil Babka <vbabka@suse.cz>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit a98151ad53b53f010ee364ec2fd06445b328578b ]
+[ Upstream commit f54d02c8f2cc4b46ba2a3bd8252a6750453b6f2b ]
 
-The comment refers to mm/slob.c which is being removed. It comes from
-commit ed56829cb319 ("ring_buffer: reset buffer page when freeing") and
-according to Steven the borrowed code was a page mapcount and mapping
-reset, which was later removed by commit e4c2ce82ca27 ("ring_buffer:
-allocate buffer page pointer"). Thus the comment is not accurate anyway,
-remove it.
+Add function prototype for gunzip() to the boot library code and make
+exit() and zalloc() static.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20230315142446.27040-1-vbabka@suse.cz
+arch/xtensa/boot/lib/zmem.c:8:6: warning: no previous prototype for 'exit' [-Wmissing-prototypes]
+    8 | void exit (void)
+arch/xtensa/boot/lib/zmem.c:13:7: warning: no previous prototype for 'zalloc' [-Wmissing-prototypes]
+   13 | void *zalloc(unsigned size)
+arch/xtensa/boot/lib/zmem.c:35:6: warning: no previous prototype for 'gunzip' [-Wmissing-prototypes]
+   35 | void gunzip (void *dst, int dstlen, unsigned char *src, int *lenp)
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Ingo Molnar <mingo@elte.hu>
-Reported-by: Mike Rapoport <mike.rapoport@gmail.com>
-Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Fixes: e4c2ce82ca27 ("ring_buffer: allocate buffer page pointer")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 45d99ea451d0 ("ring-buffer: Fix bytes info in per_cpu buffer stats")
+Fixes: 4bedea945451 ("xtensa: Architecture support for Tensilica Xtensa Part 2")
+Fixes: e7d163f76665 ("xtensa: Removed local copy of zlib and fixed O= support")
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/xtensa/boot/lib/zmem.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 2e5f3de7bfb09..352a7de4fc458 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -346,10 +346,6 @@ static void rb_init_page(struct buffer_data_page *bpage)
- 	local_set(&bpage->commit, 0);
+diff --git a/arch/xtensa/boot/lib/zmem.c b/arch/xtensa/boot/lib/zmem.c
+index e3ecd743c5153..b89189355122a 100644
+--- a/arch/xtensa/boot/lib/zmem.c
++++ b/arch/xtensa/boot/lib/zmem.c
+@@ -4,13 +4,14 @@
+ /* bits taken from ppc */
+ 
+ extern void *avail_ram, *end_avail;
++void gunzip(void *dst, int dstlen, unsigned char *src, int *lenp);
+ 
+-void exit (void)
++static void exit(void)
+ {
+   for (;;);
  }
  
--/*
-- * Also stolen from mm/slob.c. Thanks to Mathieu Desnoyers for pointing
-- * this issue out.
-- */
- static void free_buffer_page(struct buffer_page *bpage)
+-void *zalloc(unsigned size)
++static void *zalloc(unsigned int size)
  {
- 	free_page((unsigned long)bpage->page);
+         void *p = avail_ram;
+ 
 -- 
 2.40.1
 
