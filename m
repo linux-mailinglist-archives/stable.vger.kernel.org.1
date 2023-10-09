@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBCF07BE156
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82FFA7BE1DD
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377499AbjJINtf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:49:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40938 "EHLO
+        id S1377584AbjJINyr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:54:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377463AbjJINte (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:49:34 -0400
+        with ESMTP id S1377580AbjJINyq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:54:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4ECB9D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:49:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA470C433C7;
-        Mon,  9 Oct 2023 13:49:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9082691
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:54:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFECAC433C7;
+        Mon,  9 Oct 2023 13:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859372;
-        bh=1yMazPC8eVhKIwktMCEPDGt2zC7aQeF39krbfVTLys4=;
+        s=korg; t=1696859684;
+        bh=cTEX8UXMPj921bxGHtygSE0RMFGWOJOtsm3P1KNjiH0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IJgL19dqfxXUL1VZipQLw0CAi9uiVxhJIqg6IVAO9euDW1yRp1uxCRHKnTUyePFFH
-         MXyxuC1ieQ7Uea9haSFvXndXygdpvHnZiaUGrNXJm60eg6V8IjOzHSJT6CQunCUYGR
-         04POcgqDp8ENkgyJ0YeGNei3ib7pXeZ2ZsS2SxVw=
+        b=YkdxUz0bLtdthUZiSQN0IuiYXwEC/sZPOCQpfTJp9I8BkW7P0mslG3E55dWaJFzYE
+         Qhg3nYtUWEEfPFQQAt6/y2ihepQKcJ7vMl8kFYWEloMC0wYHmzftVBPpJm1AqloniA
+         QSd+zPncwlofOwlCdkUigHbhVBZbC+mSOujg4hAQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+6966546b78d050bb0b5d@syzkaller.appspotmail.com
-Subject: [PATCH 4.14 46/55] net: usb: smsc75xx: Fix uninit-value access in __smsc75xx_read_reg
+        patches@lists.linux.dev,
+        Alexandra Diupina <adiupina@astralinux.ru>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 73/91] drivers/net: process the result of hdlc_open() and add call of hdlc_close() in uhdlc_close()
 Date:   Mon,  9 Oct 2023 15:06:45 +0200
-Message-ID: <20231009130109.463932233@linuxfoundation.org>
+Message-ID: <20231009130114.059869324@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,101 +51,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-[ Upstream commit e9c65989920f7c28775ec4e0c11b483910fb67b8 ]
+[ Upstream commit a59addacf899b1b21a7b7449a1c52c98704c2472 ]
 
-syzbot reported the following uninit-value access issue:
+Process the result of hdlc_open() and call uhdlc_close()
+in case of an error. It is necessary to pass the error
+code up the control flow, similar to a possible
+error in request_irq().
+Also add a hdlc_close() call to the uhdlc_close()
+because the comment to hdlc_close() says it must be called
+by the hardware driver when the HDLC device is being closed
 
-=====================================================
-BUG: KMSAN: uninit-value in smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:975 [inline]
-BUG: KMSAN: uninit-value in smsc75xx_bind+0x5c9/0x11e0 drivers/net/usb/smsc75xx.c:1482
-CPU: 0 PID: 8696 Comm: kworker/0:3 Not tainted 5.8.0-rc5-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
-Workqueue: usb_hub_wq hub_event
-Call Trace:
- __dump_stack lib/dump_stack.c:77 [inline]
- dump_stack+0x21c/0x280 lib/dump_stack.c:118
- kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:121
- __msan_warning+0x58/0xa0 mm/kmsan/kmsan_instr.c:215
- smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:975 [inline]
- smsc75xx_bind+0x5c9/0x11e0 drivers/net/usb/smsc75xx.c:1482
- usbnet_probe+0x1152/0x3f90 drivers/net/usb/usbnet.c:1737
- usb_probe_interface+0xece/0x1550 drivers/usb/core/driver.c:374
- really_probe+0xf20/0x20b0 drivers/base/dd.c:529
- driver_probe_device+0x293/0x390 drivers/base/dd.c:701
- __device_attach_driver+0x63f/0x830 drivers/base/dd.c:807
- bus_for_each_drv+0x2ca/0x3f0 drivers/base/bus.c:431
- __device_attach+0x4e2/0x7f0 drivers/base/dd.c:873
- device_initial_probe+0x4a/0x60 drivers/base/dd.c:920
- bus_probe_device+0x177/0x3d0 drivers/base/bus.c:491
- device_add+0x3b0e/0x40d0 drivers/base/core.c:2680
- usb_set_configuration+0x380f/0x3f10 drivers/usb/core/message.c:2032
- usb_generic_driver_probe+0x138/0x300 drivers/usb/core/generic.c:241
- usb_probe_device+0x311/0x490 drivers/usb/core/driver.c:272
- really_probe+0xf20/0x20b0 drivers/base/dd.c:529
- driver_probe_device+0x293/0x390 drivers/base/dd.c:701
- __device_attach_driver+0x63f/0x830 drivers/base/dd.c:807
- bus_for_each_drv+0x2ca/0x3f0 drivers/base/bus.c:431
- __device_attach+0x4e2/0x7f0 drivers/base/dd.c:873
- device_initial_probe+0x4a/0x60 drivers/base/dd.c:920
- bus_probe_device+0x177/0x3d0 drivers/base/bus.c:491
- device_add+0x3b0e/0x40d0 drivers/base/core.c:2680
- usb_new_device+0x1bd4/0x2a30 drivers/usb/core/hub.c:2554
- hub_port_connect drivers/usb/core/hub.c:5208 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5348 [inline]
- port_event drivers/usb/core/hub.c:5494 [inline]
- hub_event+0x5e7b/0x8a70 drivers/usb/core/hub.c:5576
- process_one_work+0x1688/0x2140 kernel/workqueue.c:2269
- worker_thread+0x10bc/0x2730 kernel/workqueue.c:2415
- kthread+0x551/0x590 kernel/kthread.c:292
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:293
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Local variable ----buf.i87@smsc75xx_bind created at:
- __smsc75xx_read_reg drivers/net/usb/smsc75xx.c:83 [inline]
- smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:968 [inline]
- smsc75xx_bind+0x485/0x11e0 drivers/net/usb/smsc75xx.c:1482
- __smsc75xx_read_reg drivers/net/usb/smsc75xx.c:83 [inline]
- smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:968 [inline]
- smsc75xx_bind+0x485/0x11e0 drivers/net/usb/smsc75xx.c:1482
-
-This issue is caused because usbnet_read_cmd() reads less bytes than requested
-(zero byte in the reproducer). In this case, 'buf' is not properly filled.
-
-This patch fixes the issue by returning -ENODATA if usbnet_read_cmd() reads
-less bytes than requested.
-
-Fixes: d0cad871703b ("smsc75xx: SMSC LAN75xx USB gigabit ethernet adapter driver")
-Reported-and-tested-by: syzbot+6966546b78d050bb0b5d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6966546b78d050bb0b5d
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230923173549.3284502-1-syoshida@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/smsc75xx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wan/fsl_ucc_hdlc.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/smsc75xx.c b/drivers/net/usb/smsc75xx.c
-index 313a4b0edc6b3..573d7ad2e7082 100644
---- a/drivers/net/usb/smsc75xx.c
-+++ b/drivers/net/usb/smsc75xx.c
-@@ -102,7 +102,9 @@ static int __must_check __smsc75xx_read_reg(struct usbnet *dev, u32 index,
- 	ret = fn(dev, USB_VENDOR_REQUEST_READ_REGISTER, USB_DIR_IN
- 		 | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
- 		 0, index, &buf, 4);
--	if (unlikely(ret < 0)) {
-+	if (unlikely(ret < 4)) {
-+		ret = ret < 0 ? ret : -ENODATA;
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+index 5df6e85e7ccb7..c8cff000a931f 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -37,6 +37,8 @@
+ 
+ #define TDM_PPPOHT_SLIC_MAXIN
+ 
++static int uhdlc_close(struct net_device *dev);
 +
- 		netdev_warn(dev->net, "Failed to read reg index 0x%08x: %d\n",
- 			    index, ret);
- 		return ret;
+ static struct ucc_tdm_info utdm_primary_info = {
+ 	.uf_info = {
+ 		.tsa = 0,
+@@ -661,6 +663,7 @@ static int uhdlc_open(struct net_device *dev)
+ 	hdlc_device *hdlc = dev_to_hdlc(dev);
+ 	struct ucc_hdlc_private *priv = hdlc->priv;
+ 	struct ucc_tdm *utdm = priv->utdm;
++	int rc = 0;
+ 
+ 	if (priv->hdlc_busy != 1) {
+ 		if (request_irq(priv->ut_info->uf_info.irq,
+@@ -683,10 +686,13 @@ static int uhdlc_open(struct net_device *dev)
+ 		netif_device_attach(priv->ndev);
+ 		napi_enable(&priv->napi);
+ 		netif_start_queue(dev);
+-		hdlc_open(dev);
++
++		rc = hdlc_open(dev);
++		if (rc)
++			uhdlc_close(dev);
+ 	}
+ 
+-	return 0;
++	return rc;
+ }
+ 
+ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
+@@ -775,6 +781,8 @@ static int uhdlc_close(struct net_device *dev)
+ 	netif_stop_queue(dev);
+ 	priv->hdlc_busy = 0;
+ 
++	hdlc_close(dev);
++
+ 	return 0;
+ }
+ 
 -- 
 2.40.1
 
