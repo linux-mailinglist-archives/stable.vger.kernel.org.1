@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8573A7BE04D
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 224777BDE46
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377320AbjJINig (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:38:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50952 "EHLO
+        id S1376732AbjJINRu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:17:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377326AbjJINic (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:32 -0400
+        with ESMTP id S1376997AbjJINRu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63CD791
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E63C433C7;
-        Mon,  9 Oct 2023 13:38:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE555B4
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:17:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353F9C433C7;
+        Mon,  9 Oct 2023 13:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858709;
-        bh=8HO/c+nYKiWo/XCqtiyV3VxPwj5kzKqsnkpvnXs4VNY=;
+        s=korg; t=1696857468;
+        bh=BYbLfJfa9JcPgIWdUiuNEPGv5l6J7omBo8RetnhpkxA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J5u0gNpIopAwg+h1HEPh0HyqIQt315YtcIMdHa7BD/8q0PBoUFnyqjeHbV6gSBF1S
-         GQnyQINlg7XGCc1IDU3KACmBD5hax0w9U+hHlWw6uI6q2T9X0xaXDF7uU83XG4AMZD
-         QoUOLD7pP3ZwRiVmrBEdI0tMND8hl8mTKRu1GJRc=
+        b=fGZMiHxJNRmjELdDj1Vjl/woeo/HjNtVnf6CELxiiGKoKpu1BeZDV/vg5EfX6t3cT
+         bbRQRyys5Z6YQkYLCoYwK8nzFtap15KNR5ai9D1nDAdICJ6Xj0So8eq71W74yAcm7Z
+         X9zGWSGWOBnJGjJTf71Gaw0nnVB8tnNtDGvOn9v4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/226] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts
-Date:   Mon,  9 Oct 2023 15:00:36 +0200
-Message-ID: <20231009130128.744526984@linuxfoundation.org>
+        patches@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 056/162] vringh: dont use vringh_kiov_advance() in vringh_iov_xfer()
+Date:   Mon,  9 Oct 2023 15:00:37 +0200
+Message-ID: <20231009130124.480686451@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +49,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit d74e481609808330b4625b3691cf01e1f56e255e ]
+commit 7aed44babc7f97e82b38e9a68515e699692cc100 upstream.
 
-The startup procedure shouldn't be started with interrupts masked, as that
-may entail silent failures.
+In the while loop of vringh_iov_xfer(), `partlen` could be 0 if one of
+the `iov` has 0 lenght.
+In this case, we should skip the iov and go to the next one.
+But calling vringh_kiov_advance() with 0 lenght does not cause the
+advancement, since it returns immediately if asked to advance by 0 bytes.
 
-Kick off initialization only after the interrupts are unmasked.
+Let's restore the code that was there before commit b8c06ad4d67d
+("vringh: implement vringh_kiov_advance()"), avoiding using
+vringh_kiov_advance().
 
-Cc: stable@vger.kernel.org # v4.12+
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b8c06ad4d67d ("vringh: implement vringh_kiov_advance()")
+Cc: stable@vger.kernel.org
+Reported-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vhost/vringh.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
-index 97d36cafd8cb2..9d939f63d16f4 100644
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -437,7 +437,6 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
- 	void __iomem *wrapper_base = hdev->core->wrapper_base;
- 	int ret = 0;
+--- a/drivers/vhost/vringh.c
++++ b/drivers/vhost/vringh.c
+@@ -123,8 +123,18 @@ static inline ssize_t vringh_iov_xfer(st
+ 		done += partlen;
+ 		len -= partlen;
+ 		ptr += partlen;
++		iov->consumed += partlen;
++		iov->iov[iov->i].iov_len -= partlen;
++		iov->iov[iov->i].iov_base += partlen;
  
--	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
- 	if (IS_V6(hdev->core)) {
- 		mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
- 		mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
-@@ -448,6 +447,7 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
- 	writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
- 	writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
- 
-+	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
- 	while (!ctrl_status && count < max_tries) {
- 		ctrl_status = readl(cpu_cs_base + CPU_CS_SCIACMDARG0);
- 		if ((ctrl_status & CPU_CS_SCIACMDARG0_ERROR_STATUS_MASK) == 4) {
--- 
-2.40.1
-
+-		vringh_kiov_advance(iov, partlen);
++		if (!iov->iov[iov->i].iov_len) {
++			/* Fix up old iov element then increment. */
++			iov->iov[iov->i].iov_len = iov->consumed;
++			iov->iov[iov->i].iov_base -= iov->consumed;
++
++			iov->consumed = 0;
++			iov->i++;
++		}
+ 	}
+ 	return done;
+ }
 
 
