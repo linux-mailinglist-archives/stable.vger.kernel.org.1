@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E5B57BDF21
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F5B57BE0CE
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376757AbjJIN0i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:26:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46802 "EHLO
+        id S1377414AbjJINoY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:44:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376479AbjJIN0h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:37 -0400
+        with ESMTP id S1377560AbjJINoK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37493100
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672F9C433C7;
-        Mon,  9 Oct 2023 13:26:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F10B6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218A8C433C7;
+        Mon,  9 Oct 2023 13:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857994;
-        bh=nJQc2Pn7MIuB7R067MA4zwqMnUlEs3eQDPmFgp8DtOY=;
+        s=korg; t=1696859048;
+        bh=3h8ERZ/VYULHA5vUmJa8xEcwzlJMIR9dwLSLcbjs0Tk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eohbwcXAzXAe4Prw8KvltfPObrKAr/mkkrQt7/zaamjdgViWvuNoNSmaYk2Tzeo2Q
-         mS88hZsmWyMh96TPNpWnO6ZwX2k3/nmKu/ZSVWGClL1/rUM7dZssfJnBaVD7BVcACI
-         x2TQ5Urgw2QnkWnoNZWXdfj5mcData7V6AzOvsok=
+        b=zd752rXpXp7Et5yZeO4dhVOIxv5dTL305UGlmMKyXR2esdDYkNGig7C51eofUGOty
+         BL5A1feyy/zAX2qSlXrsMBdqfo2sIJIAsuSvFWoF0OPlNJQjBCN9K5CaNKAlvRDUii
+         LTQgFinoWR5yzvzraHrI0PHdUCeA3QhhPz3gtykc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 32/75] wifi: iwlwifi: mvm: Fix a memory corruption issue
-Date:   Mon,  9 Oct 2023 15:01:54 +0200
-Message-ID: <20231009130112.359963070@linuxfoundation.org>
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Julia Lawall <julia.lawall@inria.fr>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 154/226] ring-buffer: Update "shortest_full" in polling
+Date:   Mon,  9 Oct 2023 15:01:55 +0200
+Message-ID: <20231009130130.723624152@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +50,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 8ba438ef3cacc4808a63ed0ce24d4f0942cfe55d ]
+commit 1e0cb399c7653462d9dadf8ab9425337c355d358 upstream.
 
-A few lines above, space is kzalloc()'ed for:
-	sizeof(struct iwl_nvm_data) +
-	sizeof(struct ieee80211_channel) +
-	sizeof(struct ieee80211_rate)
+It was discovered that the ring buffer polling was incorrectly stating
+that read would not block, but that's because polling did not take into
+account that reads will block if the "buffer-percent" was set. Instead,
+the ring buffer polling would say reads would not block if there was any
+data in the ring buffer. This was incorrect behavior from a user space
+point of view. This was fixed by commit 42fb0a1e84ff by having the polling
+code check if the ring buffer had more data than what the user specified
+"buffer percent" had.
 
-'mvm->nvm_data' is a 'struct iwl_nvm_data', so it is fine.
+The problem now is that the polling code did not register itself to the
+writer that it wanted to wait for a specific "full" value of the ring
+buffer. The result was that the writer would wake the polling waiter
+whenever there was a new event. The polling waiter would then wake up, see
+that there's not enough data in the ring buffer to notify user space and
+then go back to sleep. The next event would wake it up again.
 
-At the end of this structure, there is the 'channels' flex array.
-Each element is of type 'struct ieee80211_channel'.
-So only 1 element is allocated in this array.
+Before the polling fix was added, the code would wake up around 100 times
+for a hackbench 30 benchmark. After the "fix", due to the constant waking
+of the writer, it would wake up over 11,0000 times! It would never leave
+the kernel, so the user space behavior was still "correct", but this
+definitely is not the desired effect.
 
-When doing:
-  mvm->nvm_data->bands[0].channels = mvm->nvm_data->channels;
-We point at the first element of the 'channels' flex array.
-So this is fine.
+To fix this, have the polling code add what it's waiting for to the
+"shortest_full" variable, to tell the writer not to wake it up if the
+buffer is not as full as it expects to be.
 
-However, when doing:
-  mvm->nvm_data->bands[0].bitrates =
-			(void *)((u8 *)mvm->nvm_data->channels + 1);
-because of the "(u8 *)" cast, we add only 1 to the address of the beginning
-of the flex array.
+Note, after this fix, it appears that the waiter is now woken up around 2x
+the times it was before (~200). This is a tremendous improvement from the
+11,000 times, but I will need to spend some time to see why polling is
+more aggressive in its wakeups than the read blocking code.
 
-It is likely that we want point at the 'struct ieee80211_rate' allocated
-just after.
+Link: https://lore.kernel.org/linux-trace-kernel/20230929180113.01c2cae3@rorschach.local.home
 
-Remove the spurious casting so that the pointer arithmetic works as
-expected.
-
-Fixes: 8ca151b568b6 ("iwlwifi: add the MVM driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/23f0ec986ef1529055f4f93dcb3940a6cf8d9a94.1690143750.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Fixes: 42fb0a1e84ff ("tracing/ring-buffer: Have polling block on watermark")
+Reported-by: Julia Lawall <julia.lawall@inria.fr>
+Tested-by: Julia Lawall <julia.lawall@inria.fr>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index f347723092eee..d22a5628f9e0d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -686,7 +686,7 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm)
- 		mvm->nvm_data->bands[0].n_channels = 1;
- 		mvm->nvm_data->bands[0].n_bitrates = 1;
- 		mvm->nvm_data->bands[0].bitrates =
--			(void *)((u8 *)mvm->nvm_data->channels + 1);
-+			(void *)(mvm->nvm_data->channels + 1);
- 		mvm->nvm_data->bands[0].bitrates->hw_value = 10;
- 	}
- 
--- 
-2.40.1
-
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -1008,6 +1008,9 @@ __poll_t ring_buffer_poll_wait(struct tr
+ 	if (full) {
+ 		poll_wait(filp, &work->full_waiters, poll_table);
+ 		work->full_waiters_pending = true;
++		if (!cpu_buffer->shortest_full ||
++		    cpu_buffer->shortest_full > full)
++			cpu_buffer->shortest_full = full;
+ 	} else {
+ 		poll_wait(filp, &work->waiters, poll_table);
+ 		work->waiters_pending = true;
 
 
