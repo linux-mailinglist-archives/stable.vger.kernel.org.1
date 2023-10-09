@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 814007BE069
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:39:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5D0E7BDF6F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:30:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377328AbjJINjv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:39:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54010 "EHLO
+        id S1377004AbjJINaE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:30:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377331AbjJINjt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:39:49 -0400
+        with ESMTP id S1377015AbjJINaD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:30:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE39CF
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:39:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6B6C433B7;
-        Mon,  9 Oct 2023 13:39:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C3DB6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:30:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B526C433C7;
+        Mon,  9 Oct 2023 13:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858785;
-        bh=i04vgsjDH+JatnqxBrVbzVKb3swo5tEml8CjahMrnOE=;
+        s=korg; t=1696858201;
+        bh=oTfduTifHlBwFzZAkw2B/ZYIms1NhV0gqgyxRNAOzT0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DIvynnKWo+lgQA+OmbTuYoMkRRfanJ98/W1ZB5n+PGT6Y5blwzaxs1IGbuM5pJA/+
-         q6H0GZH6RKx2usLaq2w+IqCECToKc5eqd+0JuxfJzLmVyZ1aOmUtlUN1OqOzCI9SzQ
-         NF8nEra/P8GvDydDx2WlAczgDO06rvONtfGbKcEU=
+        b=vx0s6zBULzrxxvHG0RF+yQi4expui7PXtvQXtkSt7ruhItyxAK9nqZRwR0qyDNO72
+         /gwNHRkSmdDA0rFd7CcEoL5PryLgZSrbKsy9QPcAsjgQpYisk+MC26bxuhm+fe/xaG
+         6Ii4rHqQgT1UZa6UMIcZ7sv1RkJBny6A+2wyQ1oA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dhruva Gole <d-gole@ti.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev,
+        Grzegorz Szczurek <grzegorzx.szczurek@intel.com>,
+        Karen Sornek <karen.sornek@intel.com>,
+        Tony Brelinski <tony.brelinski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/226] bus: ti-sysc: Fix SYSC_QUIRK_SWSUP_SIDLE_ACT handling for uart wake-up
+Subject: [PATCH 5.4 021/131] i40e: Fix warning message and call stack during rmmod i40e driver
 Date:   Mon,  9 Oct 2023 15:01:01 +0200
-Message-ID: <20231009130129.390397418@linuxfoundation.org>
+Message-ID: <20231009130116.961176550@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,86 +52,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Karen Sornek <karen.sornek@intel.com>
 
-[ Upstream commit e5deb8f76e64d94ccef715e75ebafffd0c312d80 ]
+[ Upstream commit 3a3b311e3881172fc8e019b6508f04bc40c92d9d ]
 
-The uarts should be tagged with SYSC_QUIRK_SWSUP_SIDLE instead of
-SYSC_QUIRK_SWSUP_SIDLE_ACT. The difference is that SYSC_QUIRK_SWSUP_SIDLE
-is used to force idle target modules rather than block idle during usage.
+Restore part of reset functionality used when reset is called
+from the VF to reset itself. Without this fix warning message
+is displayed when VF is being removed via sysfs.
 
-The SYSC_QUIRK_SWSUP_SIDLE_ACT should disable autoidle and wake-up when
-a target module is active, and configure autoidle and wake-up when a
-target module is inactive. We are missing configuring the target module
-on sysc_disable_module(), and missing toggling of the wake-up bit.
+Fix the crash of the VF during reset by ensuring
+that the PF receives the reset message successfully.
+Refactor code to use one function instead of two.
 
-Let's fix the issue to allow uart wake-up to work.
-
-Fixes: fb685f1c190e ("bus: ti-sysc: Handle swsup idle mode quirks")
-Tested-by: Dhruva Gole <d-gole@ti.com>
-Tested-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
+Signed-off-by: Grzegorz Szczurek <grzegorzx.szczurek@intel.com>
+Signed-off-by: Karen Sornek <karen.sornek@intel.com>
+Tested-by: Tony Brelinski <tony.brelinski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: d0d362ffa33d ("i40e: Fix VF VLAN offloading when port VLAN is configured")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 53 ++++++++-----------
+ 1 file changed, 21 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 5dba06ed61bf8..ef8c7bfd79a8f 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1114,6 +1114,11 @@ static int sysc_enable_module(struct device *dev)
- 	if (ddata->cfg.quirks & (SYSC_QUIRK_SWSUP_SIDLE |
- 				 SYSC_QUIRK_SWSUP_SIDLE_ACT)) {
- 		best_mode = SYSC_IDLE_NO;
-+
-+		/* Clear WAKEUP */
-+		if (regbits->enwkup_shift >= 0 &&
-+		    ddata->cfg.sysc_val & BIT(regbits->enwkup_shift))
-+			reg &= ~BIT(regbits->enwkup_shift);
- 	} else {
- 		best_mode = fls(ddata->cfg.sidlemodes) - 1;
- 		if (best_mode > SYSC_IDLE_MASK) {
-@@ -1234,6 +1239,13 @@ static int sysc_disable_module(struct device *dev)
- 		}
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 590469c4a1b00..7a52be82d05a2 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -130,17 +130,18 @@ void i40e_vc_notify_vf_reset(struct i40e_vf *vf)
+ /***********************misc routines*****************************/
+ 
+ /**
+- * i40e_vc_disable_vf
++ * i40e_vc_reset_vf
+  * @vf: pointer to the VF info
+- *
+- * Disable the VF through a SW reset.
++ * @notify_vf: notify vf about reset or not
++ * Reset VF handler.
+  **/
+-static inline void i40e_vc_disable_vf(struct i40e_vf *vf)
++static void i40e_vc_reset_vf(struct i40e_vf *vf, bool notify_vf)
+ {
+ 	struct i40e_pf *pf = vf->pf;
+ 	int i;
+ 
+-	i40e_vc_notify_vf_reset(vf);
++	if (notify_vf)
++		i40e_vc_notify_vf_reset(vf);
+ 
+ 	/* We want to ensure that an actual reset occurs initiated after this
+ 	 * function was called. However, we do not want to wait forever, so
+@@ -158,9 +159,14 @@ static inline void i40e_vc_disable_vf(struct i40e_vf *vf)
+ 		usleep_range(10000, 20000);
  	}
  
-+	if (ddata->cfg.quirks & SYSC_QUIRK_SWSUP_SIDLE_ACT) {
-+		/* Set WAKEUP */
-+		if (regbits->enwkup_shift >= 0 &&
-+		    ddata->cfg.sysc_val & BIT(regbits->enwkup_shift))
-+			reg |= BIT(regbits->enwkup_shift);
-+	}
-+
- 	reg &= ~(SYSC_IDLE_MASK << regbits->sidle_shift);
- 	reg |= best_mode << regbits->sidle_shift;
- 	if (regbits->autoidle_shift >= 0 &&
-@@ -1497,16 +1509,16 @@ static const struct sysc_revision_quirk sysc_revision_quirks[] = {
- 	SYSC_QUIRK("smartreflex", 0, -ENODEV, 0x38, -ENODEV, 0x00000000, 0xffffffff,
- 		   SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x00000046, 0xffffffff,
--		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x00000052, 0xffffffff,
--		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
- 	/* Uarts on omap4 and later */
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x50411e03, 0xffff00ff,
--		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x47422e03, 0xffffffff,
--		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
- 	SYSC_QUIRK("uart", 0, 0x50, 0x54, 0x58, 0x47424e03, 0xffffffff,
--		   SYSC_QUIRK_SWSUP_SIDLE | SYSC_QUIRK_LEGACY_IDLE),
-+		   SYSC_QUIRK_SWSUP_SIDLE_ACT | SYSC_QUIRK_LEGACY_IDLE),
+-	dev_warn(&vf->pf->pdev->dev,
+-		 "Failed to initiate reset for VF %d after 200 milliseconds\n",
+-		 vf->vf_id);
++	if (notify_vf)
++		dev_warn(&vf->pf->pdev->dev,
++			 "Failed to initiate reset for VF %d after 200 milliseconds\n",
++			 vf->vf_id);
++	else
++		dev_dbg(&vf->pf->pdev->dev,
++			"Failed to initiate reset for VF %d after 200 milliseconds\n",
++			vf->vf_id);
+ }
  
- 	/* Quirks that need to be set based on the module address */
- 	SYSC_QUIRK("mcpdm", 0x40132000, 0, 0x10, -ENODEV, 0x50000800, 0xffffffff,
+ /**
+@@ -2097,20 +2103,6 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
+ 	return ret;
+ }
+ 
+-/**
+- * i40e_vc_reset_vf_msg
+- * @vf: pointer to the VF info
+- *
+- * called from the VF to reset itself,
+- * unlike other virtchnl messages, PF driver
+- * doesn't send the response back to the VF
+- **/
+-static void i40e_vc_reset_vf_msg(struct i40e_vf *vf)
+-{
+-	if (test_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states))
+-		i40e_reset_vf(vf, false);
+-}
+-
+ /**
+  * i40e_vc_config_promiscuous_mode_msg
+  * @vf: pointer to the VF info
+@@ -2664,8 +2656,7 @@ static int i40e_vc_request_queues_msg(struct i40e_vf *vf, u8 *msg)
+ 	} else {
+ 		/* successful request */
+ 		vf->num_req_queues = req_pairs;
+-		i40e_vc_notify_vf_reset(vf);
+-		i40e_reset_vf(vf, false);
++		i40e_vc_reset_vf(vf, true);
+ 		return 0;
+ 	}
+ 
+@@ -3857,8 +3848,7 @@ static int i40e_vc_add_qch_msg(struct i40e_vf *vf, u8 *msg)
+ 	vf->adq_enabled = true;
+ 
+ 	/* reset the VF in order to allocate resources */
+-	i40e_vc_notify_vf_reset(vf);
+-	i40e_reset_vf(vf, false);
++	i40e_vc_reset_vf(vf, true);
+ 
+ 	return I40E_SUCCESS;
+ 
+@@ -3898,8 +3888,7 @@ static int i40e_vc_del_qch_msg(struct i40e_vf *vf, u8 *msg)
+ 	}
+ 
+ 	/* reset the VF in order to allocate resources */
+-	i40e_vc_notify_vf_reset(vf);
+-	i40e_reset_vf(vf, false);
++	i40e_vc_reset_vf(vf, true);
+ 
+ 	return I40E_SUCCESS;
+ 
+@@ -3961,7 +3950,7 @@ int i40e_vc_process_vf_msg(struct i40e_pf *pf, s16 vf_id, u32 v_opcode,
+ 		i40e_vc_notify_vf_link_state(vf);
+ 		break;
+ 	case VIRTCHNL_OP_RESET_VF:
+-		i40e_vc_reset_vf_msg(vf);
++		i40e_vc_reset_vf(vf, false);
+ 		ret = 0;
+ 		break;
+ 	case VIRTCHNL_OP_CONFIG_PROMISCUOUS_MODE:
+@@ -4215,7 +4204,7 @@ int i40e_ndo_set_vf_mac(struct net_device *netdev, int vf_id, u8 *mac)
+ 	/* Force the VF interface down so it has to bring up with new MAC
+ 	 * address
+ 	 */
+-	i40e_vc_disable_vf(vf);
++	i40e_vc_reset_vf(vf, true);
+ 	dev_info(&pf->pdev->dev, "Bring down and up the VF interface to make this change effective.\n");
+ 
+ error_param:
+@@ -4279,7 +4268,7 @@ int i40e_ndo_set_vf_port_vlan(struct net_device *netdev, int vf_id,
+ 		/* duplicate request, so just return success */
+ 		goto error_pvid;
+ 
+-	i40e_vc_disable_vf(vf);
++	i40e_vc_reset_vf(vf, true);
+ 	/* During reset the VF got a new VSI, so refresh a pointer. */
+ 	vsi = pf->vsi[vf->lan_vsi_idx];
+ 	/* Locked once because multiple functions below iterate list */
+@@ -4662,7 +4651,7 @@ int i40e_ndo_set_vf_trust(struct net_device *netdev, int vf_id, bool setting)
+ 		goto out;
+ 
+ 	vf->trusted = setting;
+-	i40e_vc_disable_vf(vf);
++	i40e_vc_reset_vf(vf, true);
+ 	dev_info(&pf->pdev->dev, "VF %u is now %strusted\n",
+ 		 vf_id, setting ? "" : "un");
+ 
 -- 
 2.40.1
 
