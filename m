@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84A167BDDAB
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 493457BE058
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:39:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377002AbjJINMK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:12:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54426 "EHLO
+        id S1377229AbjJINjc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:39:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376969AbjJINLu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:11:50 -0400
+        with ESMTP id S1377458AbjJINjC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:39:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34D5E1732
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDC2C433C7;
-        Mon,  9 Oct 2023 13:10:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A526184
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A566C433C9;
+        Mon,  9 Oct 2023 13:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857051;
-        bh=bhXhqjoBVwFDrHMkzvP5Rg9HWCpvbkMhUWs0pkRJXVs=;
+        s=korg; t=1696858735;
+        bh=nkTPl+hnGLyjBp1HPDuxaCVkhoOJfUJ+rTO/RwnXvbs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x2yqASs9mhjW3ebyrX2IYc/4V+oS7jyW5uWH105gQqsbwRuTRAJwB7JN/MOLZYqQn
-         d2SyOKqG4Uii7/JkZ970j4rbOYmgs9CDICoRn8UjorRU9sihpbP57k5cRboViBXsJz
-         Ztje3raEshQX2W1vjxxvAcdVjkE91qa56k+eJS5U=
+        b=eXQhK++XTr2ZhQdruKiA0kOfOrtkkCfdCCuSHDr4v3th5CGX8g3aCLMAOlC95fFk/
+         ZPaziDdvG7FDl7geI24Th2bK09m0kIpHvQNZLInWrkjKsbCYat+S41iXJKvQvSr/46
+         H7CbTy5MnoonfM1CuPNKyBujYErKLzx6uxY1LXzw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Paul Menzel <pmenzel@molgen.mpg.de>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 080/163] Bluetooth: ISO: Fix handling of listen for unicast
+Subject: [PATCH 5.10 083/226] ata: libata: Rename link flag ATA_LFLAG_NO_DB_DELAY
 Date:   Mon,  9 Oct 2023 15:00:44 +0200
-Message-ID: <20231009130126.260436977@linuxfoundation.org>
+Message-ID: <20231009130128.958280106@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,59 +49,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-[ Upstream commit e0275ea52169412b8faccb4e2f4fed8a057844c6 ]
+[ Upstream commit b9ba367c513dbc165dd6c01266a59db4be2a3564 ]
 
-iso_listen_cis shall only return -EADDRINUSE if the listening socket has
-the destination set to BDADDR_ANY otherwise if the destination is set to
-a specific address it is for broadcast which shall be ignored.
+Rename the link flag ATA_LFLAG_NO_DB_DELAY to
+ATA_LFLAG_NO_DEBOUNCE_DELAY. The new name is longer, but clearer.
 
-Fixes: f764a6c2c1e4 ("Bluetooth: ISO: Add broadcast support")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Stable-dep-of: 2a2df98ec592 ("ata: ahci: Add Elkhart Lake AHCI controller")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/ata/ahci_brcm.c   | 2 +-
+ drivers/ata/libata-sata.c | 2 +-
+ include/linux/libata.h    | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 9b6a7eb2015f0..42f7b257bdfbc 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -499,7 +499,7 @@ static void iso_recv_frame(struct iso_conn *conn, struct sk_buff *skb)
- }
+diff --git a/drivers/ata/ahci_brcm.c b/drivers/ata/ahci_brcm.c
+index 5b32df5d33adc..2e4252545fd27 100644
+--- a/drivers/ata/ahci_brcm.c
++++ b/drivers/ata/ahci_brcm.c
+@@ -332,7 +332,7 @@ static struct ata_port_operations ahci_brcm_platform_ops = {
  
- /* -------- Socket interface ---------- */
--static struct sock *__iso_get_sock_listen_by_addr(bdaddr_t *ba)
-+static struct sock *__iso_get_sock_listen_by_addr(bdaddr_t *src, bdaddr_t *dst)
- {
- 	struct sock *sk;
+ static const struct ata_port_info ahci_brcm_port_info = {
+ 	.flags		= AHCI_FLAG_COMMON | ATA_FLAG_NO_DIPM,
+-	.link_flags	= ATA_LFLAG_NO_DB_DELAY,
++	.link_flags	= ATA_LFLAG_NO_DEBOUNCE_DELAY,
+ 	.pio_mask	= ATA_PIO4,
+ 	.udma_mask	= ATA_UDMA6,
+ 	.port_ops	= &ahci_brcm_platform_ops,
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index 4fd9a107fe7f8..45656067c547a 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -317,7 +317,7 @@ int sata_link_resume(struct ata_link *link, const unsigned long *params,
+ 		 * immediately after resuming.  Delay 200ms before
+ 		 * debouncing.
+ 		 */
+-		if (!(link->flags & ATA_LFLAG_NO_DB_DELAY))
++		if (!(link->flags & ATA_LFLAG_NO_DEBOUNCE_DELAY))
+ 			ata_msleep(link->ap, 200);
  
-@@ -507,7 +507,10 @@ static struct sock *__iso_get_sock_listen_by_addr(bdaddr_t *ba)
- 		if (sk->sk_state != BT_LISTEN)
- 			continue;
+ 		/* is SControl restored correctly? */
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index 5ca9347bd8ef9..2de6b4a613944 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -187,7 +187,7 @@ enum {
+ 	ATA_LFLAG_NO_LPM	= (1 << 8), /* disable LPM on this link */
+ 	ATA_LFLAG_RST_ONCE	= (1 << 9), /* limit recovery to one reset */
+ 	ATA_LFLAG_CHANGED	= (1 << 10), /* LPM state changed on this link */
+-	ATA_LFLAG_NO_DB_DELAY	= (1 << 11), /* no debounce delay on link resume */
++	ATA_LFLAG_NO_DEBOUNCE_DELAY = (1 << 11), /* no debounce delay on link resume */
  
--		if (!bacmp(&iso_pi(sk)->src, ba))
-+		if (bacmp(&iso_pi(sk)->dst, dst))
-+			continue;
-+
-+		if (!bacmp(&iso_pi(sk)->src, src))
- 			return sk;
- 	}
- 
-@@ -965,7 +968,7 @@ static int iso_listen_cis(struct sock *sk)
- 
- 	write_lock(&iso_sk_list.lock);
- 
--	if (__iso_get_sock_listen_by_addr(&iso_pi(sk)->src))
-+	if (__iso_get_sock_listen_by_addr(&iso_pi(sk)->src, &iso_pi(sk)->dst))
- 		err = -EADDRINUSE;
- 
- 	write_unlock(&iso_sk_list.lock);
+ 	/* struct ata_port flags */
+ 	ATA_FLAG_SLAVE_POSS	= (1 << 0), /* host supports slave dev */
 -- 
 2.40.1
 
