@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A73727BDF24
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 040857BDE0B
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376479AbjJIN0r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37702 "EHLO
+        id S1376844AbjJINPN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:15:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376490AbjJIN0q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:46 -0400
+        with ESMTP id S1376892AbjJINPM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B8E9D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34E1C433C8;
-        Mon,  9 Oct 2023 13:26:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46B9693
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A57DC433C7;
+        Mon,  9 Oct 2023 13:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858004;
-        bh=HbtMn3yX1qOtPtIxlWyo1uGtnOlaS3UAWYZkrp/qS/M=;
+        s=korg; t=1696857310;
+        bh=TnnRsfeTLgvnsVduAIKD3nY9sjzoePA7VuLCGbvzAnU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aMcTHmPyS/dtmY7BptveC/2tKXjWhuxfDKo8kMN9FBsnndAtm3HF2qJb0EpSGdPFi
-         Zx4OZs66j7FQnXl4psZoUEY5tq+26IKzWko3XDMCKrBFk9C5VGf72dfQD2WxQrekz0
-         6lg2HQ6lJL7r5px6/LFTTPCdVX0Snf6VF/YhqNFI=
+        b=yhB0HRotgdbH0f954GhQGJ9TFIKsJx01mWrJ297V/PbTIQkNsheoav0LgfVRlAZ2g
+         VGFhp/mjy/ay6wIjkodowTRqrWHMGvrMrEiNyxjA40iXmITezMLRwwcb845ht1dWqZ
+         wbLanw3BTPfgW1O3/0t3xMJ41qOzi9F1xbqCWJ9Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alexandra Diupina <adiupina@astralinux.ru>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/75] drivers/net: process the result of hdlc_open() and add call of hdlc_close() in uhdlc_close()
+        patches@lists.linux.dev, Edward Srouji <edwards@nvidia.com>,
+        Michael Guralnik <michaelgur@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.5 153/163] RDMA/mlx5: Fix assigning access flags to cache mkeys
 Date:   Mon,  9 Oct 2023 15:01:57 +0200
-Message-ID: <20231009130112.463319075@linuxfoundation.org>
+Message-ID: <20231009130128.246135893@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,81 +49,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit a59addacf899b1b21a7b7449a1c52c98704c2472 ]
+commit 4f14c6c0213e1def48f0f887d35f44095416c67d upstream.
 
-Process the result of hdlc_open() and call uhdlc_close()
-in case of an error. It is necessary to pass the error
-code up the control flow, similar to a possible
-error in request_irq().
-Also add a hdlc_close() call to the uhdlc_close()
-because the comment to hdlc_close() says it must be called
-by the hardware driver when the HDLC device is being closed
+After the change to use dynamic cache structure, new cache entries
+can be added and the mkey allocation can no longer assume that all
+mkeys created for the cache have access_flags equal to zero.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Example of a flow that exposes the issue:
+A user registers MR with RO on a HCA that cannot UMR RO and the mkey is
+created outside of the cache. When the user deregisters the MR, a new
+cache entry is created to store mkeys with RO.
 
-Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Later, the user registers 2 MRs with RO. The first MR is reused from the
+new cache entry. When we try to get the second mkey from the cache we see
+the entry is empty so we go to the MR cache mkey allocation flow which
+would have allocated a mkey with no access flags, resulting the user getting
+a MR without RO.
+
+Fixes: dd1b913fb0d0 ("RDMA/mlx5: Cache all user cacheable mkeys on dereg MR flow")
+Reviewed-by: Edward Srouji <edwards@nvidia.com>
+Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://lore.kernel.org/r/8a802700b82def3ace3f77cd7a9ad9d734af87e7.1695203958.git.leonro@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wan/fsl_ucc_hdlc.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/mr.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index 8305df1a3008a..44348e2dd95ea 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -34,6 +34,8 @@
- #define TDM_PPPOHT_SLIC_MAXIN
- #define RX_BD_ERRORS (R_CD_S | R_OV_S | R_CR_S | R_AB_S | R_NO_S | R_LG_S)
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -301,7 +301,8 @@ static int get_mkc_octo_size(unsigned in
  
-+static int uhdlc_close(struct net_device *dev);
-+
- static struct ucc_tdm_info utdm_primary_info = {
- 	.uf_info = {
- 		.tsa = 0,
-@@ -705,6 +707,7 @@ static int uhdlc_open(struct net_device *dev)
- 	hdlc_device *hdlc = dev_to_hdlc(dev);
- 	struct ucc_hdlc_private *priv = hdlc->priv;
- 	struct ucc_tdm *utdm = priv->utdm;
-+	int rc = 0;
- 
- 	if (priv->hdlc_busy != 1) {
- 		if (request_irq(priv->ut_info->uf_info.irq,
-@@ -728,10 +731,13 @@ static int uhdlc_open(struct net_device *dev)
- 		napi_enable(&priv->napi);
- 		netdev_reset_queue(dev);
- 		netif_start_queue(dev);
--		hdlc_open(dev);
-+
-+		rc = hdlc_open(dev);
-+		if (rc)
-+			uhdlc_close(dev);
- 	}
- 
--	return 0;
-+	return rc;
- }
- 
- static void uhdlc_memclean(struct ucc_hdlc_private *priv)
-@@ -821,6 +827,8 @@ static int uhdlc_close(struct net_device *dev)
- 	netdev_reset_queue(dev);
- 	priv->hdlc_busy = 0;
- 
-+	hdlc_close(dev);
-+
- 	return 0;
- }
- 
--- 
-2.40.1
-
+ static void set_cache_mkc(struct mlx5_cache_ent *ent, void *mkc)
+ {
+-	set_mkc_access_pd_addr_fields(mkc, 0, 0, ent->dev->umrc.pd);
++	set_mkc_access_pd_addr_fields(mkc, ent->rb_key.access_flags, 0,
++				      ent->dev->umrc.pd);
+ 	MLX5_SET(mkc, mkc, free, 1);
+ 	MLX5_SET(mkc, mkc, umr_en, 1);
+ 	MLX5_SET(mkc, mkc, access_mode_1_0, ent->rb_key.access_mode & 0x3);
 
 
