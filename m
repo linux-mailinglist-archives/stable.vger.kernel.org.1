@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D0DD7BDFD5
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61CEB7BDF38
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377147AbjJINeh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:34:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49406 "EHLO
+        id S1376815AbjJIN1u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:27:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377146AbjJINef (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:34:35 -0400
+        with ESMTP id S1376813AbjJIN1u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:27:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAB1A94
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:34:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC29C433C9;
-        Mon,  9 Oct 2023 13:34:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1F0A99
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:27:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2230C433C7;
+        Mon,  9 Oct 2023 13:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858474;
-        bh=f4kJrmKlKx5l56xo3CUWOFcRNa2HGRYb2n+6wtFYJws=;
+        s=korg; t=1696858068;
+        bh=O0JuPoJp7wvbu7ZQNU6HHlKMNmhFDiH+dnPCfqheCMI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FB+EpSXuA3qZKY4o54S2ZjKo42m1wTMSJ5mdcxekr95ubop6K+tCzkck4Jxyp9iMW
-         ZXvQPKfuTWa7o3JYcPC8HDAVaEEEKmKVqtXXQ/oj5QS7EtyGAJ4vx2VP2VN8X3Pa6z
-         vlClX2w1Rjvhtj5NbnN/jdCJB+4saYN85XOfzLW8=
+        b=hjivJKLLcHFWuXicG/Te6qPzSSvR6HDgsojfJqKN+toPGyJhA5Pd3pqfMtCmqRUdM
+         1GgD1UPsyqjeU8zxUmdECSZ+L+e8NMMqUZ2hgER8vm5+moXaLWNBAwRH6DHXBm93UT
+         vKhIzgkhqJAX/DBrLzPoXYvzH57oWEcyil/Y10Dc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 107/131] NFSv4: Fix a nfs4_state_manager() race
-Date:   Mon,  9 Oct 2023 15:02:27 +0200
-Message-ID: <20231009130119.693462275@linuxfoundation.org>
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 5.15 66/75] IB/mlx4: Fix the size of a buffer in add_port_entries()
+Date:   Mon,  9 Oct 2023 15:02:28 +0200
+Message-ID: <20231009130113.569771382@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,47 +50,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit ed1cc05aa1f7fe8197d300e914afc28ab9818f89 ]
+commit d7f393430a17c2bfcdf805462a5aa80be4285b27 upstream.
 
-If the NFS4CLNT_RUN_MANAGER flag got set just before we cleared
-NFS4CLNT_MANAGER_RUNNING, then we might have won the race against
-nfs4_schedule_state_manager(), and are responsible for handling the
-recovery situation.
+In order to be sure that 'buff' is never truncated, its size should be
+12, not 11.
 
-Fixes: aeabb3c96186 ("NFSv4: Fix a NFSv4 state manager deadlock")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When building with W=1, this fixes the following warnings:
+
+  drivers/infiniband/hw/mlx4/sysfs.c: In function ‘add_port_entries’:
+  drivers/infiniband/hw/mlx4/sysfs.c:268:34: error: ‘sprintf’ may write a terminating nul past the end of the destination [-Werror=format-overflow=]
+    268 |                 sprintf(buff, "%d", i);
+        |                                  ^
+  drivers/infiniband/hw/mlx4/sysfs.c:268:17: note: ‘sprintf’ output between 2 and 12 bytes into a destination of size 11
+    268 |                 sprintf(buff, "%d", i);
+        |                 ^~~~~~~~~~~~~~~~~~~~~~
+  drivers/infiniband/hw/mlx4/sysfs.c:286:34: error: ‘sprintf’ may write a terminating nul past the end of the destination [-Werror=format-overflow=]
+    286 |                 sprintf(buff, "%d", i);
+        |                                  ^
+  drivers/infiniband/hw/mlx4/sysfs.c:286:17: note: ‘sprintf’ output between 2 and 12 bytes into a destination of size 11
+    286 |                 sprintf(buff, "%d", i);
+        |                 ^~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: c1e7e466120b ("IB/mlx4: Add iov directory in sysfs under the ib device")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/0bb1443eb47308bc9be30232cc23004c4d4cf43e.1695448530.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4state.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/infiniband/hw/mlx4/sysfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index 04aa8e34d1129..1aacb0aa07f0c 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -2623,6 +2623,13 @@ static void nfs4_state_manager(struct nfs_client *clp)
- 		nfs4_end_drain_session(clp);
- 		nfs4_clear_state_manager_bit(clp);
- 
-+		if (test_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state) &&
-+		    !test_and_set_bit(NFS4CLNT_MANAGER_RUNNING,
-+				      &clp->cl_state)) {
-+			memflags = memalloc_nofs_save();
-+			continue;
-+		}
-+
- 		if (!test_and_set_bit(NFS4CLNT_DELEGRETURN_RUNNING, &clp->cl_state)) {
- 			if (test_and_clear_bit(NFS4CLNT_DELEGRETURN, &clp->cl_state)) {
- 				nfs_client_return_marked_delegations(clp);
--- 
-2.40.1
-
+--- a/drivers/infiniband/hw/mlx4/sysfs.c
++++ b/drivers/infiniband/hw/mlx4/sysfs.c
+@@ -223,7 +223,7 @@ void del_sysfs_port_mcg_attr(struct mlx4
+ static int add_port_entries(struct mlx4_ib_dev *device, int port_num)
+ {
+ 	int i;
+-	char buff[11];
++	char buff[12];
+ 	struct mlx4_ib_iov_port *port = NULL;
+ 	int ret = 0 ;
+ 	struct ib_port_attr attr;
 
 
