@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2480C7BE0C3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B5437BDFAB
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377402AbjJINnn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:43:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39904 "EHLO
+        id S1377108AbjJINcc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377397AbjJINnm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:42 -0400
+        with ESMTP id S1377123AbjJINcb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78F7E91
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7264C433C9;
-        Mon,  9 Oct 2023 13:43:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 853DBCA
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13B3C433B6;
+        Mon,  9 Oct 2023 13:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859020;
-        bh=9UpSvmEDyCAo7FMu+27V17mQDWUxZY9PkllDiWU7b64=;
+        s=korg; t=1696858350;
+        bh=/kXvwMcK6PVP+l8c7yRciTPLAsJ4iqsMMaxhyuUQzQw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XdV7UcGiWmjkMn+SMd60jf03fuIDrbefv3rEhUQsJ8JNjglvYIYlgb5cJ6FysIFNo
-         FvB0A0mn7ol3ycRZPfECzQULgQKDrfPob3kX5jNYjOvtbmKVFF2q3F5bR1b+cicFjX
-         MAHZZ1vhZ0Lmi3NkqlktrTjhJqQF95KoGsJawGXA=
+        b=HglZyerEuyk68pkeqQaL+sSTJ6aNYEJYBpeUzu5aQ8oYtTLXW7Qn1URvGcqGReUrw
+         xE5YcoShX4o1RZCqLc8PTwbG7etvYjz8z5ZNdJcnhAUg4Q8I8gjlEft5tx69qVBfyD
+         UgIlFUL1m9ejl5wUDFYAFDnnncBrqajxzIRT2LhE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 173/226] rbd: decouple header read-in from updating rbd_dev->header
+        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
+        Jordan Rife <jrife@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 094/131] net: replace calls to sock->ops->connect() with kernel_connect()
 Date:   Mon,  9 Oct 2023 15:02:14 +0200
-Message-ID: <20231009130131.170581990@linuxfoundation.org>
+Message-ID: <20231009130119.269556167@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,456 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Jordan Rife <jrife@google.com>
 
-commit 510a7330c82a7754d5df0117a8589e8a539067c7 upstream.
+commit 26297b4ce1ce4ea40bc9a48ec99f45da3f64d2e2 upstream.
 
-Make rbd_dev_header_info() populate a passed struct rbd_image_header
-instead of rbd_dev->header and introduce rbd_dev_update_header() for
-updating mutable fields in rbd_dev->header upon refresh.  The initial
-read-in of both mutable and immutable fields in rbd_dev_image_probe()
-passes in rbd_dev->header so no update step is required there.
+commit 0bdf399342c5 ("net: Avoid address overwrite in kernel_connect")
+ensured that kernel_connect() will not overwrite the address parameter
+in cases where BPF connect hooks perform an address rewrite. This change
+replaces direct calls to sock->ops->connect() in net with kernel_connect()
+to make these call safe.
 
-rbd_init_layout() is now called directly from rbd_dev_image_probe()
-instead of individually in format 1 and format 2 implementations.
-
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
+Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c | 206 ++++++++++++++++++++++++--------------------
- 1 file changed, 114 insertions(+), 92 deletions(-)
+ net/netfilter/ipvs/ip_vs_sync.c |    4 ++--
+ net/rds/tcp_connect.c           |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 82cf9be4badc5..73f917a429f38 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -632,7 +632,8 @@ void rbd_warn(struct rbd_device *rbd_dev, const char *fmt, ...)
- static void rbd_dev_remove_parent(struct rbd_device *rbd_dev);
- 
- static int rbd_dev_refresh(struct rbd_device *rbd_dev);
--static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev);
-+static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev,
-+				     struct rbd_image_header *header);
- static const char *rbd_dev_v2_snap_name(struct rbd_device *rbd_dev,
- 					u64 snap_id);
- static int _rbd_dev_v2_snap_size(struct rbd_device *rbd_dev, u64 snap_id,
-@@ -1045,15 +1046,24 @@ static void rbd_init_layout(struct rbd_device *rbd_dev)
- 	RCU_INIT_POINTER(rbd_dev->layout.pool_ns, NULL);
- }
- 
-+static void rbd_image_header_cleanup(struct rbd_image_header *header)
-+{
-+	kfree(header->object_prefix);
-+	ceph_put_snap_context(header->snapc);
-+	kfree(header->snap_sizes);
-+	kfree(header->snap_names);
-+
-+	memset(header, 0, sizeof(*header));
-+}
-+
- /*
-  * Fill an rbd image header with information from the given format 1
-  * on-disk header.
-  */
--static int rbd_header_from_disk(struct rbd_device *rbd_dev,
--				 struct rbd_image_header_ondisk *ondisk)
-+static int rbd_header_from_disk(struct rbd_image_header *header,
-+				struct rbd_image_header_ondisk *ondisk,
-+				bool first_time)
- {
--	struct rbd_image_header *header = &rbd_dev->header;
--	bool first_time = header->object_prefix == NULL;
- 	struct ceph_snap_context *snapc;
- 	char *object_prefix = NULL;
- 	char *snap_names = NULL;
-@@ -1120,11 +1130,6 @@ static int rbd_header_from_disk(struct rbd_device *rbd_dev,
- 	if (first_time) {
- 		header->object_prefix = object_prefix;
- 		header->obj_order = ondisk->options.order;
--		rbd_init_layout(rbd_dev);
--	} else {
--		ceph_put_snap_context(header->snapc);
--		kfree(header->snap_names);
--		kfree(header->snap_sizes);
+--- a/net/netfilter/ipvs/ip_vs_sync.c
++++ b/net/netfilter/ipvs/ip_vs_sync.c
+@@ -1510,8 +1510,8 @@ static int make_send_sock(struct netns_i
  	}
  
- 	/* The remaining fields always get updated (when we refresh) */
-@@ -4914,7 +4919,9 @@ static int rbd_obj_read_sync(struct rbd_device *rbd_dev,
-  * return, the rbd_dev->header field will contain up-to-date
-  * information about the image.
-  */
--static int rbd_dev_v1_header_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_v1_header_info(struct rbd_device *rbd_dev,
-+				  struct rbd_image_header *header,
-+				  bool first_time)
- {
- 	struct rbd_image_header_ondisk *ondisk = NULL;
- 	u32 snap_count = 0;
-@@ -4962,7 +4969,7 @@ static int rbd_dev_v1_header_info(struct rbd_device *rbd_dev)
- 		snap_count = le32_to_cpu(ondisk->snap_count);
- 	} while (snap_count != want_count);
- 
--	ret = rbd_header_from_disk(rbd_dev, ondisk);
-+	ret = rbd_header_from_disk(header, ondisk, first_time);
- out:
- 	kfree(ondisk);
- 
-@@ -5541,17 +5548,12 @@ static int _rbd_dev_v2_snap_size(struct rbd_device *rbd_dev, u64 snap_id,
- 	return 0;
- }
- 
--static int rbd_dev_v2_image_size(struct rbd_device *rbd_dev)
--{
--	return _rbd_dev_v2_snap_size(rbd_dev, CEPH_NOSNAP,
--					&rbd_dev->header.obj_order,
--					&rbd_dev->header.image_size);
--}
--
--static int rbd_dev_v2_object_prefix(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_object_prefix(struct rbd_device *rbd_dev,
-+				    char **pobject_prefix)
- {
- 	size_t size;
- 	void *reply_buf;
-+	char *object_prefix;
- 	int ret;
- 	void *p;
- 
-@@ -5569,16 +5571,16 @@ static int rbd_dev_v2_object_prefix(struct rbd_device *rbd_dev)
- 		goto out;
- 
- 	p = reply_buf;
--	rbd_dev->header.object_prefix = ceph_extract_encoded_string(&p,
--						p + ret, NULL, GFP_NOIO);
-+	object_prefix = ceph_extract_encoded_string(&p, p + ret, NULL,
-+						    GFP_NOIO);
-+	if (IS_ERR(object_prefix)) {
-+		ret = PTR_ERR(object_prefix);
-+		goto out;
-+	}
- 	ret = 0;
- 
--	if (IS_ERR(rbd_dev->header.object_prefix)) {
--		ret = PTR_ERR(rbd_dev->header.object_prefix);
--		rbd_dev->header.object_prefix = NULL;
--	} else {
--		dout("  object_prefix = %s\n", rbd_dev->header.object_prefix);
--	}
-+	*pobject_prefix = object_prefix;
-+	dout("  object_prefix = %s\n", object_prefix);
- out:
- 	kfree(reply_buf);
- 
-@@ -5629,13 +5631,6 @@ static int _rbd_dev_v2_snap_features(struct rbd_device *rbd_dev, u64 snap_id,
- 	return 0;
- }
- 
--static int rbd_dev_v2_features(struct rbd_device *rbd_dev)
--{
--	return _rbd_dev_v2_snap_features(rbd_dev, CEPH_NOSNAP,
--					 rbd_is_ro(rbd_dev),
--					 &rbd_dev->header.features);
--}
--
- /*
-  * These are generic image flags, but since they are used only for
-  * object map, store them in rbd_dev->object_map_flags.
-@@ -5910,14 +5905,14 @@ static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev)
- 	return ret;
- }
- 
--static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev,
-+				    u64 *stripe_unit, u64 *stripe_count)
- {
- 	struct {
- 		__le64 stripe_unit;
- 		__le64 stripe_count;
- 	} __attribute__ ((packed)) striping_info_buf = { 0 };
- 	size_t size = sizeof (striping_info_buf);
--	void *p;
- 	int ret;
- 
- 	ret = rbd_obj_method_sync(rbd_dev, &rbd_dev->header_oid,
-@@ -5929,27 +5924,33 @@ static int rbd_dev_v2_striping_info(struct rbd_device *rbd_dev)
- 	if (ret < size)
- 		return -ERANGE;
- 
--	p = &striping_info_buf;
--	rbd_dev->header.stripe_unit = ceph_decode_64(&p);
--	rbd_dev->header.stripe_count = ceph_decode_64(&p);
-+	*stripe_unit = le64_to_cpu(striping_info_buf.stripe_unit);
-+	*stripe_count = le64_to_cpu(striping_info_buf.stripe_count);
-+	dout("  stripe_unit = %llu stripe_count = %llu\n", *stripe_unit,
-+	     *stripe_count);
-+
- 	return 0;
- }
- 
--static int rbd_dev_v2_data_pool(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_data_pool(struct rbd_device *rbd_dev, s64 *data_pool_id)
- {
--	__le64 data_pool_id;
-+	__le64 data_pool_buf;
- 	int ret;
- 
- 	ret = rbd_obj_method_sync(rbd_dev, &rbd_dev->header_oid,
- 				  &rbd_dev->header_oloc, "get_data_pool",
--				  NULL, 0, &data_pool_id, sizeof(data_pool_id));
-+				  NULL, 0, &data_pool_buf,
-+				  sizeof(data_pool_buf));
-+	dout("%s: rbd_obj_method_sync returned %d\n", __func__, ret);
- 	if (ret < 0)
- 		return ret;
--	if (ret < sizeof(data_pool_id))
-+	if (ret < sizeof(data_pool_buf))
- 		return -EBADMSG;
- 
--	rbd_dev->header.data_pool_id = le64_to_cpu(data_pool_id);
--	WARN_ON(rbd_dev->header.data_pool_id == CEPH_NOPOOL);
-+	*data_pool_id = le64_to_cpu(data_pool_buf);
-+	dout("  data_pool_id = %lld\n", *data_pool_id);
-+	WARN_ON(*data_pool_id == CEPH_NOPOOL);
-+
- 	return 0;
- }
- 
-@@ -6141,7 +6142,8 @@ static int rbd_spec_fill_names(struct rbd_device *rbd_dev)
- 	return ret;
- }
- 
--static int rbd_dev_v2_snap_context(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_snap_context(struct rbd_device *rbd_dev,
-+				   struct ceph_snap_context **psnapc)
- {
- 	size_t size;
- 	int ret;
-@@ -6202,9 +6204,7 @@ static int rbd_dev_v2_snap_context(struct rbd_device *rbd_dev)
- 	for (i = 0; i < snap_count; i++)
- 		snapc->snaps[i] = ceph_decode_64(&p);
- 
--	ceph_put_snap_context(rbd_dev->header.snapc);
--	rbd_dev->header.snapc = snapc;
--
-+	*psnapc = snapc;
- 	dout("  snap context seq = %llu, snap_count = %u\n",
- 		(unsigned long long)seq, (unsigned int)snap_count);
- out:
-@@ -6253,38 +6253,42 @@ static const char *rbd_dev_v2_snap_name(struct rbd_device *rbd_dev,
- 	return snap_name;
- }
- 
--static int rbd_dev_v2_header_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_header_info(struct rbd_device *rbd_dev,
-+				  struct rbd_image_header *header,
-+				  bool first_time)
- {
--	bool first_time = rbd_dev->header.object_prefix == NULL;
- 	int ret;
- 
--	ret = rbd_dev_v2_image_size(rbd_dev);
-+	ret = _rbd_dev_v2_snap_size(rbd_dev, CEPH_NOSNAP,
-+				    first_time ? &header->obj_order : NULL,
-+				    &header->image_size);
- 	if (ret)
- 		return ret;
- 
- 	if (first_time) {
--		ret = rbd_dev_v2_header_onetime(rbd_dev);
-+		ret = rbd_dev_v2_header_onetime(rbd_dev, header);
- 		if (ret)
- 			return ret;
- 	}
- 
--	ret = rbd_dev_v2_snap_context(rbd_dev);
--	if (ret && first_time) {
--		kfree(rbd_dev->header.object_prefix);
--		rbd_dev->header.object_prefix = NULL;
--	}
-+	ret = rbd_dev_v2_snap_context(rbd_dev, &header->snapc);
-+	if (ret)
-+		return ret;
- 
--	return ret;
-+	return 0;
- }
- 
--static int rbd_dev_header_info(struct rbd_device *rbd_dev)
-+static int rbd_dev_header_info(struct rbd_device *rbd_dev,
-+			       struct rbd_image_header *header,
-+			       bool first_time)
- {
- 	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
-+	rbd_assert(!header->object_prefix && !header->snapc);
- 
- 	if (rbd_dev->image_format == 1)
--		return rbd_dev_v1_header_info(rbd_dev);
-+		return rbd_dev_v1_header_info(rbd_dev, header, first_time);
- 
--	return rbd_dev_v2_header_info(rbd_dev);
-+	return rbd_dev_v2_header_info(rbd_dev, header, first_time);
- }
- 
- /*
-@@ -6771,60 +6775,49 @@ static int rbd_dev_image_id(struct rbd_device *rbd_dev)
-  */
- static void rbd_dev_unprobe(struct rbd_device *rbd_dev)
- {
--	struct rbd_image_header	*header;
--
- 	rbd_dev_parent_put(rbd_dev);
- 	rbd_object_map_free(rbd_dev);
- 	rbd_dev_mapping_clear(rbd_dev);
- 
- 	/* Free dynamic fields from the header, then zero it out */
- 
--	header = &rbd_dev->header;
--	ceph_put_snap_context(header->snapc);
--	kfree(header->snap_sizes);
--	kfree(header->snap_names);
--	kfree(header->object_prefix);
--	memset(header, 0, sizeof (*header));
-+	rbd_image_header_cleanup(&rbd_dev->header);
- }
- 
--static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev)
-+static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev,
-+				     struct rbd_image_header *header)
- {
- 	int ret;
- 
--	ret = rbd_dev_v2_object_prefix(rbd_dev);
-+	ret = rbd_dev_v2_object_prefix(rbd_dev, &header->object_prefix);
- 	if (ret)
--		goto out_err;
-+		return ret;
- 
- 	/*
- 	 * Get the and check features for the image.  Currently the
- 	 * features are assumed to never change.
+ 	get_mcast_sockaddr(&mcast_addr, &salen, &ipvs->mcfg, id);
+-	result = sock->ops->connect(sock, (struct sockaddr *) &mcast_addr,
+-				    salen, 0);
++	result = kernel_connect(sock, (struct sockaddr *)&mcast_addr,
++				salen, 0);
+ 	if (result < 0) {
+ 		pr_err("Error connecting to the multicast addr\n");
+ 		goto error;
+--- a/net/rds/tcp_connect.c
++++ b/net/rds/tcp_connect.c
+@@ -169,7 +169,7 @@ int rds_tcp_conn_path_connect(struct rds
+ 	 * own the socket
  	 */
--	ret = rbd_dev_v2_features(rbd_dev);
-+	ret = _rbd_dev_v2_snap_features(rbd_dev, CEPH_NOSNAP,
-+					rbd_is_ro(rbd_dev), &header->features);
- 	if (ret)
--		goto out_err;
-+		return ret;
+ 	rds_tcp_set_callbacks(sock, cp);
+-	ret = sock->ops->connect(sock, addr, addrlen, O_NONBLOCK);
++	ret = kernel_connect(sock, addr, addrlen, O_NONBLOCK);
  
- 	/* If the image supports fancy striping, get its parameters */
- 
--	if (rbd_dev->header.features & RBD_FEATURE_STRIPINGV2) {
--		ret = rbd_dev_v2_striping_info(rbd_dev);
--		if (ret < 0)
--			goto out_err;
-+	if (header->features & RBD_FEATURE_STRIPINGV2) {
-+		ret = rbd_dev_v2_striping_info(rbd_dev, &header->stripe_unit,
-+					       &header->stripe_count);
-+		if (ret)
-+			return ret;
- 	}
- 
--	if (rbd_dev->header.features & RBD_FEATURE_DATA_POOL) {
--		ret = rbd_dev_v2_data_pool(rbd_dev);
-+	if (header->features & RBD_FEATURE_DATA_POOL) {
-+		ret = rbd_dev_v2_data_pool(rbd_dev, &header->data_pool_id);
- 		if (ret)
--			goto out_err;
-+			return ret;
- 	}
- 
--	rbd_init_layout(rbd_dev);
- 	return 0;
--
--out_err:
--	rbd_dev->header.features = 0;
--	kfree(rbd_dev->header.object_prefix);
--	rbd_dev->header.object_prefix = NULL;
--	return ret;
- }
- 
- /*
-@@ -7019,13 +7012,15 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
- 	if (!depth)
- 		down_write(&rbd_dev->header_rwsem);
- 
--	ret = rbd_dev_header_info(rbd_dev);
-+	ret = rbd_dev_header_info(rbd_dev, &rbd_dev->header, true);
- 	if (ret) {
- 		if (ret == -ENOENT && !need_watch)
- 			rbd_print_dne(rbd_dev, false);
- 		goto err_out_probe;
- 	}
- 
-+	rbd_init_layout(rbd_dev);
-+
- 	/*
- 	 * If this image is the one being mapped, we have pool name and
- 	 * id, image name and id, and snap name - need to fill snap id.
-@@ -7080,15 +7075,39 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
- 	return ret;
- }
- 
-+static void rbd_dev_update_header(struct rbd_device *rbd_dev,
-+				  struct rbd_image_header *header)
-+{
-+	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
-+	rbd_assert(rbd_dev->header.object_prefix); /* !first_time */
-+
-+	rbd_dev->header.image_size = header->image_size;
-+
-+	ceph_put_snap_context(rbd_dev->header.snapc);
-+	rbd_dev->header.snapc = header->snapc;
-+	header->snapc = NULL;
-+
-+	if (rbd_dev->image_format == 1) {
-+		kfree(rbd_dev->header.snap_names);
-+		rbd_dev->header.snap_names = header->snap_names;
-+		header->snap_names = NULL;
-+
-+		kfree(rbd_dev->header.snap_sizes);
-+		rbd_dev->header.snap_sizes = header->snap_sizes;
-+		header->snap_sizes = NULL;
-+	}
-+}
-+
- static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- {
-+	struct rbd_image_header	header = { 0 };
- 	u64 mapping_size;
- 	int ret;
- 
- 	down_write(&rbd_dev->header_rwsem);
- 	mapping_size = rbd_dev->mapping.size;
- 
--	ret = rbd_dev_header_info(rbd_dev);
-+	ret = rbd_dev_header_info(rbd_dev, &header, false);
- 	if (ret)
- 		goto out;
- 
-@@ -7102,6 +7121,8 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 			goto out;
- 	}
- 
-+	rbd_dev_update_header(rbd_dev, &header);
-+
- 	rbd_assert(!rbd_is_snap(rbd_dev));
- 	rbd_dev->mapping.size = rbd_dev->header.image_size;
- 
-@@ -7110,6 +7131,7 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 	if (!ret && mapping_size != rbd_dev->mapping.size)
- 		rbd_dev_update_size(rbd_dev);
- 
-+	rbd_image_header_cleanup(&header);
- 	return ret;
- }
- 
--- 
-2.40.1
-
+ 	rdsdebug("connect to address %pI6c returned %d\n", &conn->c_faddr, ret);
+ 	if (ret == -EINPROGRESS)
 
 
