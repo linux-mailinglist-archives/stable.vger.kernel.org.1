@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1A477BE089
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:41:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1905F7BDEAF
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377337AbjJINlQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:41:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51090 "EHLO
+        id S1376339AbjJINV7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377349AbjJINlP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:41:15 -0400
+        with ESMTP id S1376364AbjJINV6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDC7691
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4068AC433C8;
-        Mon,  9 Oct 2023 13:41:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3AE094
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF1DC433C7;
+        Mon,  9 Oct 2023 13:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858870;
-        bh=icx2lQLsusO2W46SyOr9oNtSrpRdOBNY5hVZaLCpMsY=;
+        s=korg; t=1696857716;
+        bh=SfZt6r2Ec1vFuCLyGLooShNr2tnvzgdU7kt9bwMPe14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O1DDlgeSOrr0AcskC9jJe4/tVF0uuWa/5jLJ2UAfWHqZLGH6OmwcF0o53OnkbnPoL
-         g5WiEXxKrMQ6GY0KNemfJ6nUDGspO6Qvm2h+/GbdbjUB5OO6VrXT7DiOMV2cS4Xn3f
-         xUjaZugVBpTR/IsVD0rb1R3PveHACw8Tl++4NEMo=
+        b=xEbL7Xt3ufgJUMnBYK+9NRts9Sq0t08zprA5CNn0ZzD4RSeMG8E3tf+o7QrrezgBc
+         G7RVWRqp1yy27/PwPf2HlUIBUuYg4hySbTlDFKPu8VIgJ1pSJzABPUmFm77pUcuhLM
+         0hZVOdofWkcZ1SS4D/sy4h+EK69zp9ppUEHLGNeg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        patches@lists.linux.dev, Martin KaFai Lau <martin.lau@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 127/226] fbdev/sh7760fb: Depend on FB=y
+Subject: [PATCH 6.1 107/162] bpf: Add BPF_FIB_LOOKUP_SKIP_NEIGH for bpf_fib_lookup
 Date:   Mon,  9 Oct 2023 15:01:28 +0200
-Message-ID: <20231009130130.091951579@linuxfoundation.org>
+Message-ID: <20231009130125.876616171@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +49,186 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit f75f71b2c418a27a7c05139bb27a0c83adf88d19 ]
+[ Upstream commit 31de4105f00d64570139bc5494a201b0bd57349f ]
 
-Fix linker error if FB=m about missing fb_io_read and fb_io_write. The
-linker's error message suggests that this config setting has already
-been broken for other symbols.
+The bpf_fib_lookup() also looks up the neigh table.
+This was done before bpf_redirect_neigh() was added.
 
-  All errors (new ones prefixed by >>):
+In the use case that does not manage the neigh table
+and requires bpf_fib_lookup() to lookup a fib to
+decide if it needs to redirect or not, the bpf prog can
+depend only on using bpf_redirect_neigh() to lookup the
+neigh. It also keeps the neigh entries fresh and connected.
 
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_probe':
-     sh7760fb.c:(.text+0x374): undefined reference to `framebuffer_alloc'
-     sh4-linux-ld: sh7760fb.c:(.text+0x394): undefined reference to `fb_videomode_to_var'
-     sh4-linux-ld: sh7760fb.c:(.text+0x39c): undefined reference to `fb_alloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x3a4): undefined reference to `register_framebuffer'
-     sh4-linux-ld: sh7760fb.c:(.text+0x3ac): undefined reference to `fb_dealloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x434): undefined reference to `framebuffer_release'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_remove':
-     sh7760fb.c:(.text+0x800): undefined reference to `unregister_framebuffer'
-     sh4-linux-ld: sh7760fb.c:(.text+0x804): undefined reference to `fb_dealloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x814): undefined reference to `framebuffer_release'
-  >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0xc): undefined reference to `fb_io_read'
-  >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x10): undefined reference to `fb_io_write'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x2c): undefined reference to `cfb_fillrect'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x30): undefined reference to `cfb_copyarea'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x34): undefined reference to `cfb_imageblit'
+This patch adds a bpf_fib_lookup flag, SKIP_NEIGH, to avoid
+the double neigh lookup when the bpf prog always call
+bpf_redirect_neigh() to do the neigh lookup. The params->smac
+output is skipped together when SKIP_NEIGH is set because
+bpf_redirect_neigh() will figure out the smac also.
 
-Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309130632.LS04CPWu-lkp@intel.com/
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230918090400.13264-1-tzimmermann@suse.de
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230217205515.3583372-1-martin.lau@linux.dev
+Stable-dep-of: 5baa0433a15e ("neighbour: fix data-races around n->output")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/linux/bpf.h       |  6 ++++++
+ net/core/filter.c              | 39 ++++++++++++++++++++++------------
+ tools/include/uapi/linux/bpf.h |  6 ++++++
+ 3 files changed, 38 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index 3ac78db17e466..dd59584630979 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -2014,7 +2014,7 @@ config FB_COBALT
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 53bc487947197..92dbe89dafbf5 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -3112,6 +3112,11 @@ union bpf_attr {
+  *		**BPF_FIB_LOOKUP_OUTPUT**
+  *			Perform lookup from an egress perspective (default is
+  *			ingress).
++ *		**BPF_FIB_LOOKUP_SKIP_NEIGH**
++ *			Skip the neighbour table lookup. *params*->dmac
++ *			and *params*->smac will not be set as output. A common
++ *			use case is to call **bpf_redirect_neigh**\ () after
++ *			doing **bpf_fib_lookup**\ ().
+  *
+  *		*ctx* is either **struct xdp_md** for XDP programs or
+  *		**struct sk_buff** tc cls_act programs.
+@@ -6678,6 +6683,7 @@ struct bpf_raw_tracepoint_args {
+ enum {
+ 	BPF_FIB_LOOKUP_DIRECT  = (1U << 0),
+ 	BPF_FIB_LOOKUP_OUTPUT  = (1U << 1),
++	BPF_FIB_LOOKUP_SKIP_NEIGH = (1U << 2),
+ };
  
- config FB_SH7760
- 	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
--	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
-+	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
- 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
+ enum {
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 9fd7c88b5db4e..6ef62d84dcac5 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -5674,12 +5674,8 @@ static const struct bpf_func_proto bpf_skb_get_xfrm_state_proto = {
+ #endif
+ 
+ #if IS_ENABLED(CONFIG_INET) || IS_ENABLED(CONFIG_IPV6)
+-static int bpf_fib_set_fwd_params(struct bpf_fib_lookup *params,
+-				  const struct neighbour *neigh,
+-				  const struct net_device *dev, u32 mtu)
++static int bpf_fib_set_fwd_params(struct bpf_fib_lookup *params, u32 mtu)
+ {
+-	memcpy(params->dmac, neigh->ha, ETH_ALEN);
+-	memcpy(params->smac, dev->dev_addr, ETH_ALEN);
+ 	params->h_vlan_TCI = 0;
+ 	params->h_vlan_proto = 0;
+ 	if (mtu)
+@@ -5790,21 +5786,29 @@ static int bpf_ipv4_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
+ 	if (likely(nhc->nhc_gw_family != AF_INET6)) {
+ 		if (nhc->nhc_gw_family)
+ 			params->ipv4_dst = nhc->nhc_gw.ipv4;
+-
+-		neigh = __ipv4_neigh_lookup_noref(dev,
+-						 (__force u32)params->ipv4_dst);
+ 	} else {
+ 		struct in6_addr *dst = (struct in6_addr *)params->ipv6_dst;
+ 
+ 		params->family = AF_INET6;
+ 		*dst = nhc->nhc_gw.ipv6;
+-		neigh = __ipv6_neigh_lookup_noref_stub(dev, dst);
+ 	}
+ 
++	if (flags & BPF_FIB_LOOKUP_SKIP_NEIGH)
++		goto set_fwd_params;
++
++	if (likely(nhc->nhc_gw_family != AF_INET6))
++		neigh = __ipv4_neigh_lookup_noref(dev,
++						  (__force u32)params->ipv4_dst);
++	else
++		neigh = __ipv6_neigh_lookup_noref_stub(dev, params->ipv6_dst);
++
+ 	if (!neigh || !(neigh->nud_state & NUD_VALID))
+ 		return BPF_FIB_LKUP_RET_NO_NEIGH;
++	memcpy(params->dmac, neigh->ha, ETH_ALEN);
++	memcpy(params->smac, dev->dev_addr, ETH_ALEN);
+ 
+-	return bpf_fib_set_fwd_params(params, neigh, dev, mtu);
++set_fwd_params:
++	return bpf_fib_set_fwd_params(params, mtu);
+ }
+ #endif
+ 
+@@ -5912,24 +5916,33 @@ static int bpf_ipv6_fib_lookup(struct net *net, struct bpf_fib_lookup *params,
+ 	params->rt_metric = res.f6i->fib6_metric;
+ 	params->ifindex = dev->ifindex;
+ 
++	if (flags & BPF_FIB_LOOKUP_SKIP_NEIGH)
++		goto set_fwd_params;
++
+ 	/* xdp and cls_bpf programs are run in RCU-bh so rcu_read_lock_bh is
+ 	 * not needed here.
+ 	 */
+ 	neigh = __ipv6_neigh_lookup_noref_stub(dev, dst);
+ 	if (!neigh || !(neigh->nud_state & NUD_VALID))
+ 		return BPF_FIB_LKUP_RET_NO_NEIGH;
++	memcpy(params->dmac, neigh->ha, ETH_ALEN);
++	memcpy(params->smac, dev->dev_addr, ETH_ALEN);
+ 
+-	return bpf_fib_set_fwd_params(params, neigh, dev, mtu);
++set_fwd_params:
++	return bpf_fib_set_fwd_params(params, mtu);
+ }
+ #endif
+ 
++#define BPF_FIB_LOOKUP_MASK (BPF_FIB_LOOKUP_DIRECT | BPF_FIB_LOOKUP_OUTPUT | \
++			     BPF_FIB_LOOKUP_SKIP_NEIGH)
++
+ BPF_CALL_4(bpf_xdp_fib_lookup, struct xdp_buff *, ctx,
+ 	   struct bpf_fib_lookup *, params, int, plen, u32, flags)
+ {
+ 	if (plen < sizeof(*params))
+ 		return -EINVAL;
+ 
+-	if (flags & ~(BPF_FIB_LOOKUP_DIRECT | BPF_FIB_LOOKUP_OUTPUT))
++	if (flags & ~BPF_FIB_LOOKUP_MASK)
+ 		return -EINVAL;
+ 
+ 	switch (params->family) {
+@@ -5967,7 +5980,7 @@ BPF_CALL_4(bpf_skb_fib_lookup, struct sk_buff *, skb,
+ 	if (plen < sizeof(*params))
+ 		return -EINVAL;
+ 
+-	if (flags & ~(BPF_FIB_LOOKUP_DIRECT | BPF_FIB_LOOKUP_OUTPUT))
++	if (flags & ~BPF_FIB_LOOKUP_MASK)
+ 		return -EINVAL;
+ 
+ 	if (params->tot_len)
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 53bc487947197..92dbe89dafbf5 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -3112,6 +3112,11 @@ union bpf_attr {
+  *		**BPF_FIB_LOOKUP_OUTPUT**
+  *			Perform lookup from an egress perspective (default is
+  *			ingress).
++ *		**BPF_FIB_LOOKUP_SKIP_NEIGH**
++ *			Skip the neighbour table lookup. *params*->dmac
++ *			and *params*->smac will not be set as output. A common
++ *			use case is to call **bpf_redirect_neigh**\ () after
++ *			doing **bpf_fib_lookup**\ ().
+  *
+  *		*ctx* is either **struct xdp_md** for XDP programs or
+  *		**struct sk_buff** tc cls_act programs.
+@@ -6678,6 +6683,7 @@ struct bpf_raw_tracepoint_args {
+ enum {
+ 	BPF_FIB_LOOKUP_DIRECT  = (1U << 0),
+ 	BPF_FIB_LOOKUP_OUTPUT  = (1U << 1),
++	BPF_FIB_LOOKUP_SKIP_NEIGH = (1U << 2),
+ };
+ 
+ enum {
 -- 
 2.40.1
 
