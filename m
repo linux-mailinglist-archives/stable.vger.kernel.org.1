@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FFD57BDDF6
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D00AA7BDEB1
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376782AbjJINO3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42688 "EHLO
+        id S1376364AbjJINWG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376792AbjJINO3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:29 -0400
+        with ESMTP id S1376381AbjJINWF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20EC2AF
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDFAC433CA;
-        Mon,  9 Oct 2023 13:14:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBC528F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB3BC433C9;
+        Mon,  9 Oct 2023 13:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857266;
-        bh=elLYcWdYGPdS2B+iatyVgWvbNklbZ8RI5QnzDJWiNEo=;
+        s=korg; t=1696857722;
+        bh=RYerCG3xofqq3EGaPu8chQXRXXpYPR0cBb9lwZXewOI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IvCO3YQDpf7fZN8BkDbzn+dqFgAAqfZyPDbkyq0nRzboMwLiBhfBrgftv/n+l0LQv
-         kdBCEk0SYYpf2zCIOTfh47F8C/2ZocU4P3I9w/ufAbyLu2EXpKgYqB7bib5wA7JVa8
-         xIvgebc7tNaF39vqzd1yNxnQloCSDWW7Rl4myHsw=
+        b=X+0GKLulGCM4p7QDxiI2pr+Ha9v4gByeCiyhoxsJzq38OdVVyMlfWGSGHsDYBr+DV
+         t9RbfVxQnm9Mrxec9tLd1fq1QUJJOLQow1IGhJd4LBTbJCMxr9lxI7eJ09rJN3ZNwx
+         vhHUsi76/U4Vah/qup52xp2hu1k2ojCI+38CbkC8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Neal Cardwell <ncardwell@google.com>,
-        Yuchung Cheng <ycheng@google.com>,
-        Eric Dumazet <edumazet@google.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 126/163] tcp: fix quick-ack counting to count actual ACKs of new data
+Subject: [PATCH 6.1 109/162] neighbour: switch to standard rcu, instead of rcu_bh
 Date:   Mon,  9 Oct 2023 15:01:30 +0200
-Message-ID: <20231009130127.524257590@linuxfoundation.org>
+Message-ID: <20231009130125.936303131@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -44,111 +42,700 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 059217c18be6757b95bfd77ba53fb50b48b8a816 ]
+[ Upstream commit 09eed1192cec1755967f2af8394207acdde579a1 ]
 
-This commit fixes quick-ack counting so that it only considers that a
-quick-ack has been provided if we are sending an ACK that newly
-acknowledges data.
+rcu_bh is no longer a win, especially for objects freed
+with standard call_rcu().
 
-The code was erroneously using the number of data segments in outgoing
-skbs when deciding how many quick-ack credits to remove. This logic
-does not make sense, and could cause poor performance in
-request-response workloads, like RPC traffic, where requests or
-responses can be multi-segment skbs.
+Switch neighbour code to no longer disable BH when not necessary.
 
-When a TCP connection decides to send N quick-acks, that is to
-accelerate the cwnd growth of the congestion control module
-controlling the remote endpoint of the TCP connection. That quick-ack
-decision is purely about the incoming data and outgoing ACKs. It has
-nothing to do with the outgoing data or the size of outgoing data.
-
-And in particular, an ACK only serves the intended purpose of allowing
-the remote congestion control to grow the congestion window quickly if
-the ACK is ACKing or SACKing new data.
-
-The fix is simple: only count packets as serving the goal of the
-quickack mechanism if they are ACKing/SACKing new data. We can tell
-whether this is the case by checking inet_csk_ack_scheduled(), since
-we schedule an ACK exactly when we are ACKing/SACKing new data.
-
-Fixes: fc6415bcb0f5 ("[TCP]: Fix quick-ack decrementing with TSO.")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Yuchung Cheng <ycheng@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231001151239.1866845-1-ncardwell.sw@gmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 5baa0433a15e ("neighbour: fix data-races around n->output")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h     | 6 ++++--
- net/ipv4/tcp_output.c | 7 +++----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ include/net/arp.h        |  8 ++---
+ include/net/ndisc.h      | 12 ++++----
+ include/net/neighbour.h  |  6 ++--
+ include/net/nexthop.h    |  6 ++--
+ net/core/filter.c        | 16 ++++++----
+ net/core/neighbour.c     | 64 ++++++++++++++++++++--------------------
+ net/ipv4/fib_semantics.c |  4 +--
+ net/ipv4/ip_output.c     |  6 ++--
+ net/ipv4/nexthop.c       |  8 ++---
+ net/ipv4/route.c         |  4 +--
+ net/ipv6/addrconf.c      | 14 ++++-----
+ net/ipv6/ip6_output.c    | 10 +++----
+ net/ipv6/route.c         | 12 ++++----
+ 13 files changed, 87 insertions(+), 83 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 10fc5c5928f71..b1b1e01c69839 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -350,12 +350,14 @@ ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
- struct sk_buff *tcp_stream_alloc_skb(struct sock *sk, gfp_t gfp,
- 				     bool force_schedule);
- 
--static inline void tcp_dec_quickack_mode(struct sock *sk,
--					 const unsigned int pkts)
-+static inline void tcp_dec_quickack_mode(struct sock *sk)
+diff --git a/include/net/arp.h b/include/net/arp.h
+index d7ef4ec71dfeb..e8747e0713c79 100644
+--- a/include/net/arp.h
++++ b/include/net/arp.h
+@@ -38,11 +38,11 @@ static inline struct neighbour *__ipv4_neigh_lookup(struct net_device *dev, u32
  {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	struct neighbour *n;
  
- 	if (icsk->icsk_ack.quick) {
-+		/* How many ACKs S/ACKing new data have we sent? */
-+		const unsigned int pkts = inet_csk_ack_scheduled(sk) ? 1 : 0;
-+
- 		if (pkts >= icsk->icsk_ack.quick) {
- 			icsk->icsk_ack.quick = 0;
- 			/* Leaving quickack mode we deflate ATO. */
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 9f9ca68c47026..37fd9537423f1 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -177,8 +177,7 @@ static void tcp_event_data_sent(struct tcp_sock *tp,
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	n = __ipv4_neigh_lookup_noref(dev, key);
+ 	if (n && !refcount_inc_not_zero(&n->refcnt))
+ 		n = NULL;
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 
+ 	return n;
+ }
+@@ -51,10 +51,10 @@ static inline void __ipv4_confirm_neigh(struct net_device *dev, u32 key)
+ {
+ 	struct neighbour *n;
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	n = __ipv4_neigh_lookup_noref(dev, key);
+ 	neigh_confirm(n);
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
  }
  
- /* Account for an ACK we sent. */
--static inline void tcp_event_ack_sent(struct sock *sk, unsigned int pkts,
--				      u32 rcv_nxt)
-+static inline void tcp_event_ack_sent(struct sock *sk, u32 rcv_nxt)
+ void arp_init(void);
+diff --git a/include/net/ndisc.h b/include/net/ndisc.h
+index da7eec8669ec4..325a6fb65c896 100644
+--- a/include/net/ndisc.h
++++ b/include/net/ndisc.h
+@@ -395,11 +395,11 @@ static inline struct neighbour *__ipv6_neigh_lookup(struct net_device *dev, cons
  {
- 	struct tcp_sock *tp = tcp_sk(sk);
+ 	struct neighbour *n;
  
-@@ -192,7 +191,7 @@ static inline void tcp_event_ack_sent(struct sock *sk, unsigned int pkts,
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	n = __ipv6_neigh_lookup_noref(dev, pkey);
+ 	if (n && !refcount_inc_not_zero(&n->refcnt))
+ 		n = NULL;
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
  
- 	if (unlikely(rcv_nxt != tp->rcv_nxt))
- 		return;  /* Special ACK sent by DCTCP to reflect ECN */
--	tcp_dec_quickack_mode(sk, pkts);
-+	tcp_dec_quickack_mode(sk);
- 	inet_csk_clear_xmit_timer(sk, ICSK_TIME_DACK);
+ 	return n;
+ }
+@@ -409,10 +409,10 @@ static inline void __ipv6_confirm_neigh(struct net_device *dev,
+ {
+ 	struct neighbour *n;
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	n = __ipv6_neigh_lookup_noref(dev, pkey);
+ 	neigh_confirm(n);
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
  }
  
-@@ -1372,7 +1371,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
- 			   sk, skb);
+ static inline void __ipv6_confirm_neigh_stub(struct net_device *dev,
+@@ -420,10 +420,10 @@ static inline void __ipv6_confirm_neigh_stub(struct net_device *dev,
+ {
+ 	struct neighbour *n;
  
- 	if (likely(tcb->tcp_flags & TCPHDR_ACK))
--		tcp_event_ack_sent(sk, tcp_skb_pcount(skb), rcv_nxt);
-+		tcp_event_ack_sent(sk, rcv_nxt);
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	n = __ipv6_neigh_lookup_noref_stub(dev, pkey);
+ 	neigh_confirm(n);
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ }
  
- 	if (skb->len != tcp_header_size) {
- 		tcp_event_data_sent(tp, sk);
+ /* uses ipv6_stub and is meant for use outside of IPv6 core */
+diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+index cd30aac9ec835..f6a8ecc6b1fa7 100644
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -299,14 +299,14 @@ static inline struct neighbour *___neigh_lookup_noref(
+ 	const void *pkey,
+ 	struct net_device *dev)
+ {
+-	struct neigh_hash_table *nht = rcu_dereference_bh(tbl->nht);
++	struct neigh_hash_table *nht = rcu_dereference(tbl->nht);
+ 	struct neighbour *n;
+ 	u32 hash_val;
+ 
+ 	hash_val = hash(pkey, dev, nht->hash_rnd) >> (32 - nht->hash_shift);
+-	for (n = rcu_dereference_bh(nht->hash_buckets[hash_val]);
++	for (n = rcu_dereference(nht->hash_buckets[hash_val]);
+ 	     n != NULL;
+-	     n = rcu_dereference_bh(n->next)) {
++	     n = rcu_dereference(n->next)) {
+ 		if (n->dev == dev && key_eq(n, pkey))
+ 			return n;
+ 	}
+diff --git a/include/net/nexthop.h b/include/net/nexthop.h
+index 28085b995ddcf..9fa291a046211 100644
+--- a/include/net/nexthop.h
++++ b/include/net/nexthop.h
+@@ -498,7 +498,7 @@ static inline struct fib6_nh *nexthop_fib6_nh(struct nexthop *nh)
+ }
+ 
+ /* Variant of nexthop_fib6_nh().
+- * Caller should either hold rcu_read_lock_bh(), or RTNL.
++ * Caller should either hold rcu_read_lock(), or RTNL.
+  */
+ static inline struct fib6_nh *nexthop_fib6_nh_bh(struct nexthop *nh)
+ {
+@@ -507,13 +507,13 @@ static inline struct fib6_nh *nexthop_fib6_nh_bh(struct nexthop *nh)
+ 	if (nh->is_group) {
+ 		struct nh_group *nh_grp;
+ 
+-		nh_grp = rcu_dereference_bh_rtnl(nh->nh_grp);
++		nh_grp = rcu_dereference_rtnl(nh->nh_grp);
+ 		nh = nexthop_mpath_select(nh_grp, 0);
+ 		if (!nh)
+ 			return NULL;
+ 	}
+ 
+-	nhi = rcu_dereference_bh_rtnl(nh->nh_info);
++	nhi = rcu_dereference_rtnl(nh->nh_info);
+ 	if (nhi->family == AF_INET6)
+ 		return &nhi->fib6_nh;
+ 
+diff --git a/net/core/filter.c b/net/core/filter.c
+index d32c6bd4d579a..adc327f4af1e9 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2197,7 +2197,7 @@ static int bpf_out_neigh_v6(struct net *net, struct sk_buff *skb,
+ 			return -ENOMEM;
+ 	}
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	if (!nh) {
+ 		dst = skb_dst(skb);
+ 		nexthop = rt6_nexthop(container_of(dst, struct rt6_info, dst),
+@@ -2210,10 +2210,12 @@ static int bpf_out_neigh_v6(struct net *net, struct sk_buff *skb,
+ 		int ret;
+ 
+ 		sock_confirm_neigh(skb, neigh);
++		local_bh_disable();
+ 		dev_xmit_recursion_inc();
+ 		ret = neigh_output(neigh, skb, false);
+ 		dev_xmit_recursion_dec();
+-		rcu_read_unlock_bh();
++		local_bh_enable();
++		rcu_read_unlock();
+ 		return ret;
+ 	}
+ 	rcu_read_unlock_bh();
+@@ -2295,7 +2297,7 @@ static int bpf_out_neigh_v4(struct net *net, struct sk_buff *skb,
+ 			return -ENOMEM;
+ 	}
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	if (!nh) {
+ 		struct dst_entry *dst = skb_dst(skb);
+ 		struct rtable *rt = container_of(dst, struct rtable, dst);
+@@ -2307,7 +2309,7 @@ static int bpf_out_neigh_v4(struct net *net, struct sk_buff *skb,
+ 	} else if (nh->nh_family == AF_INET) {
+ 		neigh = ip_neigh_gw4(dev, nh->ipv4_nh);
+ 	} else {
+-		rcu_read_unlock_bh();
++		rcu_read_unlock();
+ 		goto out_drop;
+ 	}
+ 
+@@ -2315,13 +2317,15 @@ static int bpf_out_neigh_v4(struct net *net, struct sk_buff *skb,
+ 		int ret;
+ 
+ 		sock_confirm_neigh(skb, neigh);
++		local_bh_disable();
+ 		dev_xmit_recursion_inc();
+ 		ret = neigh_output(neigh, skb, is_v6gw);
+ 		dev_xmit_recursion_dec();
+-		rcu_read_unlock_bh();
++		local_bh_enable();
++		rcu_read_unlock();
+ 		return ret;
+ 	}
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ out_drop:
+ 	kfree_skb(skb);
+ 	return -ENETDOWN;
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 51393079487ae..bafd72e5f5886 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -614,7 +614,7 @@ struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
+ 
+ 	NEIGH_CACHE_STAT_INC(tbl, lookups);
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	n = __neigh_lookup_noref(tbl, pkey, dev);
+ 	if (n) {
+ 		if (!refcount_inc_not_zero(&n->refcnt))
+@@ -622,7 +622,7 @@ struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
+ 		NEIGH_CACHE_STAT_INC(tbl, hits);
+ 	}
+ 
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 	return n;
+ }
+ EXPORT_SYMBOL(neigh_lookup);
+@@ -2176,11 +2176,11 @@ static int neightbl_fill_info(struct sk_buff *skb, struct neigh_table *tbl,
+ 			.ndtc_proxy_qlen	= tbl->proxy_queue.qlen,
+ 		};
+ 
+-		rcu_read_lock_bh();
+-		nht = rcu_dereference_bh(tbl->nht);
++		rcu_read_lock();
++		nht = rcu_dereference(tbl->nht);
+ 		ndc.ndtc_hash_rnd = nht->hash_rnd[0];
+ 		ndc.ndtc_hash_mask = ((1 << nht->hash_shift) - 1);
+-		rcu_read_unlock_bh();
++		rcu_read_unlock();
+ 
+ 		if (nla_put(skb, NDTA_CONFIG, sizeof(ndc), &ndc))
+ 			goto nla_put_failure;
+@@ -2695,15 +2695,15 @@ static int neigh_dump_table(struct neigh_table *tbl, struct sk_buff *skb,
+ 	if (filter->dev_idx || filter->master_idx)
+ 		flags |= NLM_F_DUMP_FILTERED;
+ 
+-	rcu_read_lock_bh();
+-	nht = rcu_dereference_bh(tbl->nht);
++	rcu_read_lock();
++	nht = rcu_dereference(tbl->nht);
+ 
+ 	for (h = s_h; h < (1 << nht->hash_shift); h++) {
+ 		if (h > s_h)
+ 			s_idx = 0;
+-		for (n = rcu_dereference_bh(nht->hash_buckets[h]), idx = 0;
++		for (n = rcu_dereference(nht->hash_buckets[h]), idx = 0;
+ 		     n != NULL;
+-		     n = rcu_dereference_bh(n->next)) {
++		     n = rcu_dereference(n->next)) {
+ 			if (idx < s_idx || !net_eq(dev_net(n->dev), net))
+ 				goto next;
+ 			if (neigh_ifindex_filtered(n->dev, filter->dev_idx) ||
+@@ -2722,7 +2722,7 @@ static int neigh_dump_table(struct neigh_table *tbl, struct sk_buff *skb,
+ 	}
+ 	rc = skb->len;
+ out:
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 	cb->args[1] = h;
+ 	cb->args[2] = idx;
+ 	return rc;
+@@ -3067,20 +3067,20 @@ void neigh_for_each(struct neigh_table *tbl, void (*cb)(struct neighbour *, void
+ 	int chain;
+ 	struct neigh_hash_table *nht;
+ 
+-	rcu_read_lock_bh();
+-	nht = rcu_dereference_bh(tbl->nht);
++	rcu_read_lock();
++	nht = rcu_dereference(tbl->nht);
+ 
+-	read_lock(&tbl->lock); /* avoid resizes */
++	read_lock_bh(&tbl->lock); /* avoid resizes */
+ 	for (chain = 0; chain < (1 << nht->hash_shift); chain++) {
+ 		struct neighbour *n;
+ 
+-		for (n = rcu_dereference_bh(nht->hash_buckets[chain]);
++		for (n = rcu_dereference(nht->hash_buckets[chain]);
+ 		     n != NULL;
+-		     n = rcu_dereference_bh(n->next))
++		     n = rcu_dereference(n->next))
+ 			cb(n, cookie);
+ 	}
+-	read_unlock(&tbl->lock);
+-	rcu_read_unlock_bh();
++	read_unlock_bh(&tbl->lock);
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL(neigh_for_each);
+ 
+@@ -3130,7 +3130,7 @@ int neigh_xmit(int index, struct net_device *dev,
+ 		tbl = neigh_tables[index];
+ 		if (!tbl)
+ 			goto out;
+-		rcu_read_lock_bh();
++		rcu_read_lock();
+ 		if (index == NEIGH_ARP_TABLE) {
+ 			u32 key = *((u32 *)addr);
+ 
+@@ -3142,11 +3142,11 @@ int neigh_xmit(int index, struct net_device *dev,
+ 			neigh = __neigh_create(tbl, addr, dev, false);
+ 		err = PTR_ERR(neigh);
+ 		if (IS_ERR(neigh)) {
+-			rcu_read_unlock_bh();
++			rcu_read_unlock();
+ 			goto out_kfree_skb;
+ 		}
+ 		err = neigh->output(neigh, skb);
+-		rcu_read_unlock_bh();
++		rcu_read_unlock();
+ 	}
+ 	else if (index == NEIGH_LINK_TABLE) {
+ 		err = dev_hard_header(skb, dev, ntohs(skb->protocol),
+@@ -3175,7 +3175,7 @@ static struct neighbour *neigh_get_first(struct seq_file *seq)
+ 
+ 	state->flags &= ~NEIGH_SEQ_IS_PNEIGH;
+ 	for (bucket = 0; bucket < (1 << nht->hash_shift); bucket++) {
+-		n = rcu_dereference_bh(nht->hash_buckets[bucket]);
++		n = rcu_dereference(nht->hash_buckets[bucket]);
+ 
+ 		while (n) {
+ 			if (!net_eq(dev_net(n->dev), net))
+@@ -3193,7 +3193,7 @@ static struct neighbour *neigh_get_first(struct seq_file *seq)
+ 			if (READ_ONCE(n->nud_state) & ~NUD_NOARP)
+ 				break;
+ next:
+-			n = rcu_dereference_bh(n->next);
++			n = rcu_dereference(n->next);
+ 		}
+ 
+ 		if (n)
+@@ -3217,7 +3217,7 @@ static struct neighbour *neigh_get_next(struct seq_file *seq,
+ 		if (v)
+ 			return n;
+ 	}
+-	n = rcu_dereference_bh(n->next);
++	n = rcu_dereference(n->next);
+ 
+ 	while (1) {
+ 		while (n) {
+@@ -3235,7 +3235,7 @@ static struct neighbour *neigh_get_next(struct seq_file *seq,
+ 			if (READ_ONCE(n->nud_state) & ~NUD_NOARP)
+ 				break;
+ next:
+-			n = rcu_dereference_bh(n->next);
++			n = rcu_dereference(n->next);
+ 		}
+ 
+ 		if (n)
+@@ -3244,7 +3244,7 @@ static struct neighbour *neigh_get_next(struct seq_file *seq,
+ 		if (++state->bucket >= (1 << nht->hash_shift))
+ 			break;
+ 
+-		n = rcu_dereference_bh(nht->hash_buckets[state->bucket]);
++		n = rcu_dereference(nht->hash_buckets[state->bucket]);
+ 	}
+ 
+ 	if (n && pos)
+@@ -3346,7 +3346,7 @@ static void *neigh_get_idx_any(struct seq_file *seq, loff_t *pos)
+ 
+ void *neigh_seq_start(struct seq_file *seq, loff_t *pos, struct neigh_table *tbl, unsigned int neigh_seq_flags)
+ 	__acquires(tbl->lock)
+-	__acquires(rcu_bh)
++	__acquires(rcu)
+ {
+ 	struct neigh_seq_state *state = seq->private;
+ 
+@@ -3354,9 +3354,9 @@ void *neigh_seq_start(struct seq_file *seq, loff_t *pos, struct neigh_table *tbl
+ 	state->bucket = 0;
+ 	state->flags = (neigh_seq_flags & ~NEIGH_SEQ_IS_PNEIGH);
+ 
+-	rcu_read_lock_bh();
+-	state->nht = rcu_dereference_bh(tbl->nht);
+-	read_lock(&tbl->lock);
++	rcu_read_lock();
++	state->nht = rcu_dereference(tbl->nht);
++	read_lock_bh(&tbl->lock);
+ 
+ 	return *pos ? neigh_get_idx_any(seq, pos) : SEQ_START_TOKEN;
+ }
+@@ -3391,13 +3391,13 @@ EXPORT_SYMBOL(neigh_seq_next);
+ 
+ void neigh_seq_stop(struct seq_file *seq, void *v)
+ 	__releases(tbl->lock)
+-	__releases(rcu_bh)
++	__releases(rcu)
+ {
+ 	struct neigh_seq_state *state = seq->private;
+ 	struct neigh_table *tbl = state->tbl;
+ 
+-	read_unlock(&tbl->lock);
+-	rcu_read_unlock_bh();
++	read_unlock_bh(&tbl->lock);
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL(neigh_seq_stop);
+ 
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 158ad3c2662f5..eafa4a0335157 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -2194,7 +2194,7 @@ static bool fib_good_nh(const struct fib_nh *nh)
+ 	if (nh->fib_nh_scope == RT_SCOPE_LINK) {
+ 		struct neighbour *n;
+ 
+-		rcu_read_lock_bh();
++		rcu_read_lock();
+ 
+ 		if (likely(nh->fib_nh_gw_family == AF_INET))
+ 			n = __ipv4_neigh_lookup_noref(nh->fib_nh_dev,
+@@ -2207,7 +2207,7 @@ static bool fib_good_nh(const struct fib_nh *nh)
+ 		if (n)
+ 			state = READ_ONCE(n->nud_state);
+ 
+-		rcu_read_unlock_bh();
++		rcu_read_unlock();
+ 	}
+ 
+ 	return !!(state & NUD_VALID);
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 66908ce2dd116..493c679ea54f3 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -218,7 +218,7 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
+ 			return res;
+ 	}
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	neigh = ip_neigh_for_gw(rt, skb, &is_v6gw);
+ 	if (!IS_ERR(neigh)) {
+ 		int res;
+@@ -226,10 +226,10 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
+ 		sock_confirm_neigh(skb, neigh);
+ 		/* if crossing protocols, can not use the cached header */
+ 		res = neigh_output(neigh, skb, is_v6gw);
+-		rcu_read_unlock_bh();
++		rcu_read_unlock();
+ 		return res;
+ 	}
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 
+ 	net_dbg_ratelimited("%s: No header cache and no neighbour!\n",
+ 			    __func__);
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index d699a41c9d955..be5498f5dd319 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -1124,13 +1124,13 @@ static bool ipv6_good_nh(const struct fib6_nh *nh)
+ 	int state = NUD_REACHABLE;
+ 	struct neighbour *n;
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 
+ 	n = __ipv6_neigh_lookup_noref_stub(nh->fib_nh_dev, &nh->fib_nh_gw6);
+ 	if (n)
+ 		state = READ_ONCE(n->nud_state);
+ 
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 
+ 	return !!(state & NUD_VALID);
+ }
+@@ -1140,14 +1140,14 @@ static bool ipv4_good_nh(const struct fib_nh *nh)
+ 	int state = NUD_REACHABLE;
+ 	struct neighbour *n;
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 
+ 	n = __ipv4_neigh_lookup_noref(nh->fib_nh_dev,
+ 				      (__force u32)nh->fib_nh_gw4);
+ 	if (n)
+ 		state = READ_ONCE(n->nud_state);
+ 
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 
+ 	return !!(state & NUD_VALID);
+ }
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 8d838b0046900..608bd9f8dbc86 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -408,7 +408,7 @@ static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
+ 	struct net_device *dev = dst->dev;
+ 	struct neighbour *n;
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 
+ 	if (likely(rt->rt_gw_family == AF_INET)) {
+ 		n = ip_neigh_gw4(dev, rt->rt_gw4);
+@@ -424,7 +424,7 @@ static struct neighbour *ipv4_neigh_lookup(const struct dst_entry *dst,
+ 	if (!IS_ERR(n) && !refcount_inc_not_zero(&n->refcnt))
+ 		n = NULL;
+ 
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 
+ 	return n;
+ }
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 96f4351b55a6f..c63ccd39fc552 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1035,7 +1035,7 @@ static int ipv6_add_addr_hash(struct net_device *dev, struct inet6_ifaddr *ifa)
+ 	unsigned int hash = inet6_addr_hash(net, &ifa->addr);
+ 	int err = 0;
+ 
+-	spin_lock(&net->ipv6.addrconf_hash_lock);
++	spin_lock_bh(&net->ipv6.addrconf_hash_lock);
+ 
+ 	/* Ignore adding duplicate addresses on an interface */
+ 	if (ipv6_chk_same_addr(net, &ifa->addr, dev, hash)) {
+@@ -1045,7 +1045,7 @@ static int ipv6_add_addr_hash(struct net_device *dev, struct inet6_ifaddr *ifa)
+ 		hlist_add_head_rcu(&ifa->addr_lst, &net->ipv6.inet6_addr_lst[hash]);
+ 	}
+ 
+-	spin_unlock(&net->ipv6.addrconf_hash_lock);
++	spin_unlock_bh(&net->ipv6.addrconf_hash_lock);
+ 
+ 	return err;
+ }
+@@ -1140,15 +1140,15 @@ ipv6_add_addr(struct inet6_dev *idev, struct ifa6_config *cfg,
+ 	/* For caller */
+ 	refcount_set(&ifa->refcnt, 1);
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 
+ 	err = ipv6_add_addr_hash(idev->dev, ifa);
+ 	if (err < 0) {
+-		rcu_read_unlock_bh();
++		rcu_read_unlock();
+ 		goto out;
+ 	}
+ 
+-	write_lock(&idev->lock);
++	write_lock_bh(&idev->lock);
+ 
+ 	/* Add to inet6_dev unicast addr list. */
+ 	ipv6_link_dev_addr(idev, ifa);
+@@ -1159,9 +1159,9 @@ ipv6_add_addr(struct inet6_dev *idev, struct ifa6_config *cfg,
+ 	}
+ 
+ 	in6_ifa_hold(ifa);
+-	write_unlock(&idev->lock);
++	write_unlock_bh(&idev->lock);
+ 
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 
+ 	inet6addr_notifier_call_chain(NETDEV_UP, ifa);
+ out:
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 5bf15a530fe73..ce2c5e728745f 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -116,7 +116,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 			return res;
+ 	}
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	nexthop = rt6_nexthop((struct rt6_info *)dst, daddr);
+ 	neigh = __ipv6_neigh_lookup_noref(dev, nexthop);
+ 
+@@ -124,7 +124,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 		if (unlikely(!neigh))
+ 			neigh = __neigh_create(&nd_tbl, nexthop, dev, false);
+ 		if (IS_ERR(neigh)) {
+-			rcu_read_unlock_bh();
++			rcu_read_unlock();
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTNOROUTES);
+ 			kfree_skb_reason(skb, SKB_DROP_REASON_NEIGH_CREATEFAIL);
+ 			return -EINVAL;
+@@ -132,7 +132,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 	}
+ 	sock_confirm_neigh(skb, neigh);
+ 	ret = neigh_output(neigh, skb, false);
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 	return ret;
+ }
+ 
+@@ -1150,11 +1150,11 @@ static int ip6_dst_lookup_tail(struct net *net, const struct sock *sk,
+ 	 * dst entry of the nexthop router
+ 	 */
+ 	rt = (struct rt6_info *) *dst;
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	n = __ipv6_neigh_lookup_noref(rt->dst.dev,
+ 				      rt6_nexthop(rt, &fl6->daddr));
+ 	err = n && !(READ_ONCE(n->nud_state) & NUD_VALID) ? -EINVAL : 0;
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 
+ 	if (err) {
+ 		struct inet6_ifaddr *ifp;
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 4f103e7c4ea25..0a9f854bfa50c 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -636,7 +636,7 @@ static void rt6_probe(struct fib6_nh *fib6_nh)
+ 
+ 	nh_gw = &fib6_nh->fib_nh_gw6;
+ 	dev = fib6_nh->fib_nh_dev;
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	last_probe = READ_ONCE(fib6_nh->last_probe);
+ 	idev = __in6_dev_get(dev);
+ 	neigh = __ipv6_neigh_lookup_noref(dev, nh_gw);
+@@ -644,7 +644,7 @@ static void rt6_probe(struct fib6_nh *fib6_nh)
+ 		if (READ_ONCE(neigh->nud_state) & NUD_VALID)
+ 			goto out;
+ 
+-		write_lock(&neigh->lock);
++		write_lock_bh(&neigh->lock);
+ 		if (!(neigh->nud_state & NUD_VALID) &&
+ 		    time_after(jiffies,
+ 			       neigh->updated + idev->cnf.rtr_probe_interval)) {
+@@ -652,7 +652,7 @@ static void rt6_probe(struct fib6_nh *fib6_nh)
+ 			if (work)
+ 				__neigh_set_probe_once(neigh);
+ 		}
+-		write_unlock(&neigh->lock);
++		write_unlock_bh(&neigh->lock);
+ 	} else if (time_after(jiffies, last_probe +
+ 				       idev->cnf.rtr_probe_interval)) {
+ 		work = kmalloc(sizeof(*work), GFP_ATOMIC);
+@@ -670,7 +670,7 @@ static void rt6_probe(struct fib6_nh *fib6_nh)
+ 	}
+ 
+ out:
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ }
+ #else
+ static inline void rt6_probe(struct fib6_nh *fib6_nh)
+@@ -686,7 +686,7 @@ static enum rt6_nud_state rt6_check_neigh(const struct fib6_nh *fib6_nh)
+ 	enum rt6_nud_state ret = RT6_NUD_FAIL_HARD;
+ 	struct neighbour *neigh;
+ 
+-	rcu_read_lock_bh();
++	rcu_read_lock();
+ 	neigh = __ipv6_neigh_lookup_noref(fib6_nh->fib_nh_dev,
+ 					  &fib6_nh->fib_nh_gw6);
+ 	if (neigh) {
+@@ -704,7 +704,7 @@ static enum rt6_nud_state rt6_check_neigh(const struct fib6_nh *fib6_nh)
+ 		ret = IS_ENABLED(CONFIG_IPV6_ROUTER_PREF) ?
+ 		      RT6_NUD_SUCCEED : RT6_NUD_FAIL_DO_RR;
+ 	}
+-	rcu_read_unlock_bh();
++	rcu_read_unlock();
+ 
+ 	return ret;
+ }
 -- 
 2.40.1
 
