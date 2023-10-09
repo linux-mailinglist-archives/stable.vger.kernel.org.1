@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 369F67BE0CD
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 732027BDE06
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377412AbjJINoY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:44:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57140 "EHLO
+        id S1376787AbjJINPG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:15:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377531AbjJINoH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:07 -0400
+        with ESMTP id S1376889AbjJINPE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE679D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BECC433C7;
-        Mon,  9 Oct 2023 13:44:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A417994
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B0AC433C7;
+        Mon,  9 Oct 2023 13:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859045;
-        bh=i6GSJHMGWSNr3uVC4MqQhX1BNSo0321HDQ7mNgCEbYo=;
+        s=korg; t=1696857302;
+        bh=6qmK9lOESacOKDexiKtWi+8nR9xdRgeYnYgabbF4Nf4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qcA01uEaQROj+Phz+xe84BwJ0dHjS0gjdFEsJSgKIxsFe+0hFRSjcUCvyrQEuSVEd
-         MJkWYC6nCmQbZHC1zBUyWy9+N7YOGHg3/8Eebt0izL8XXMAotTnJgeP4WIqUCns8Ql
-         Kb1bZLQcz+/lAk9V0sCQV6YbNvrqn4oNglp2er7s=
+        b=TiF/hkvgkqXKzpMSOTcRwAW2jloqshhlStK3yKtsNzEKBdR1Uxqp9lAiFH0BYL7J1
+         Ltwl5n+b0kE3MJ7lTFmic9JhIiG8HI6LLWLi5vbfiJkQ7r9D6rsnXEbL8s3vHg3FGC
+         XRCZdBCy83q1eqkmLASyo49rpc9mlEXam0N4ptQg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Giulio Benetti <giulio.benetti@benettiengineering.com>,
-        Greg Ungerer <gerg@uclinux.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 153/226] proc: nommu: /proc/<pid>/maps: release mmap read lock
+        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
+        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.5 150/163] RDMA/srp: Do not call scsi_done() from srp_abort()
 Date:   Mon,  9 Oct 2023 15:01:54 +0200
-Message-ID: <20231009130130.700707170@linuxfoundation.org>
+Message-ID: <20231009130128.169833448@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,117 +50,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <Ben.Wolsieffer@hefring.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 578d7699e5c2add8c2e9549d9d75dfb56c460cb3 upstream.
+commit e193b7955dfad68035b983a0011f4ef3590c85eb upstream.
 
-The no-MMU implementation of /proc/<pid>/map doesn't normally release
-the mmap read lock, because it uses !IS_ERR_OR_NULL(_vml) to determine
-whether to release the lock.  Since _vml is NULL when the end of the
-mappings is reached, the lock is not released.
+After scmd_eh_abort_handler() has called the SCSI LLD eh_abort_handler
+callback, it performs one of the following actions:
+* Call scsi_queue_insert().
+* Call scsi_finish_command().
+* Call scsi_eh_scmd_add().
+Hence, SCSI abort handlers must not call scsi_done(). Otherwise all
+the above actions would trigger a use-after-free. Hence remove the
+scsi_done() call from srp_abort(). Keep the srp_free_req() call
+before returning SUCCESS because we may not see the command again if
+SUCCESS is returned.
 
-Reading /proc/1/maps twice doesn't cause a hang because it only
-takes the read lock, which can be taken multiple times and therefore
-doesn't show any problem if the lock isn't released. Instead, you need
-to perform some operation that attempts to take the write lock after
-reading /proc/<pid>/maps. To actually reproduce the bug, compile the
-following code as 'proc_maps_bug':
-
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/mman.h>
-
-int main(int argc, char *argv[]) {
-        void *buf;
-        sleep(1);
-        buf = mmap(NULL, 4096, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-        puts("mmap returned");
-        return 0;
-}
-
-Then, run:
-
-  ./proc_maps_bug &; cat /proc/$!/maps; fg
-
-Without this patch, mmap() will hang and the command will never
-complete.
-
-This code was incorrectly adapted from the MMU implementation, which at
-the time released the lock in m_next() before returning the last entry.
-
-The MMU implementation has diverged further from the no-MMU version since
-then, so this patch brings their locking and error handling into sync,
-fixing the bug and hopefully avoiding similar issues in the future.
-
-Link: https://lkml.kernel.org/r/20230914163019.4050530-2-ben.wolsieffer@hefring.com
-Fixes: 47fecca15c09 ("fs/proc/task_nommu.c: don't use priv->task->mm")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Cc: Giulio Benetti <giulio.benetti@benettiengineering.com>
-Cc: Greg Ungerer <gerg@uclinux.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Bob Pearson <rpearsonhpe@gmail.com>
+Cc: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Fixes: d8536670916a ("IB/srp: Avoid having aborted requests hang")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20230823205727.505681-1-bvanassche@acm.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/task_nommu.c |   27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/infiniband/ulp/srp/ib_srp.c |   16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
---- a/fs/proc/task_nommu.c
-+++ b/fs/proc/task_nommu.c
-@@ -208,11 +208,16 @@ static void *m_start(struct seq_file *m,
- 		return ERR_PTR(-ESRCH);
+--- a/drivers/infiniband/ulp/srp/ib_srp.c
++++ b/drivers/infiniband/ulp/srp/ib_srp.c
+@@ -2784,7 +2784,6 @@ static int srp_abort(struct scsi_cmnd *s
+ 	u32 tag;
+ 	u16 ch_idx;
+ 	struct srp_rdma_ch *ch;
+-	int ret;
  
- 	mm = priv->mm;
--	if (!mm || !mmget_not_zero(mm))
-+	if (!mm || !mmget_not_zero(mm)) {
-+		put_task_struct(priv->task);
-+		priv->task = NULL;
- 		return NULL;
-+	}
+ 	shost_printk(KERN_ERR, target->scsi_host, "SRP abort called\n");
  
- 	if (mmap_read_lock_killable(mm)) {
- 		mmput(mm);
-+		put_task_struct(priv->task);
-+		priv->task = NULL;
- 		return ERR_PTR(-EINTR);
+@@ -2798,19 +2797,14 @@ static int srp_abort(struct scsi_cmnd *s
+ 	shost_printk(KERN_ERR, target->scsi_host,
+ 		     "Sending SRP abort for tag %#x\n", tag);
+ 	if (srp_send_tsk_mgmt(ch, tag, scmnd->device->lun,
+-			      SRP_TSK_ABORT_TASK, NULL) == 0)
+-		ret = SUCCESS;
+-	else if (target->rport->state == SRP_RPORT_LOST)
+-		ret = FAST_IO_FAIL;
+-	else
+-		ret = FAILED;
+-	if (ret == SUCCESS) {
++			      SRP_TSK_ABORT_TASK, NULL) == 0) {
+ 		srp_free_req(ch, req, scmnd, 0);
+-		scmnd->result = DID_ABORT << 16;
+-		scsi_done(scmnd);
++		return SUCCESS;
  	}
++	if (target->rport->state == SRP_RPORT_LOST)
++		return FAST_IO_FAIL;
  
-@@ -221,23 +226,21 @@ static void *m_start(struct seq_file *m,
- 		if (n-- == 0)
- 			return p;
- 
--	mmap_read_unlock(mm);
--	mmput(mm);
- 	return NULL;
+-	return ret;
++	return FAILED;
  }
  
--static void m_stop(struct seq_file *m, void *_vml)
-+static void m_stop(struct seq_file *m, void *v)
- {
- 	struct proc_maps_private *priv = m->private;
-+	struct mm_struct *mm = priv->mm;
- 
--	if (!IS_ERR_OR_NULL(_vml)) {
--		mmap_read_unlock(priv->mm);
--		mmput(priv->mm);
--	}
--	if (priv->task) {
--		put_task_struct(priv->task);
--		priv->task = NULL;
--	}
-+	if (!priv->task)
-+		return;
-+
-+	mmap_read_unlock(mm);
-+	mmput(mm);
-+	put_task_struct(priv->task);
-+	priv->task = NULL;
- }
- 
- static void *m_next(struct seq_file *m, void *_p, loff_t *pos)
+ static int srp_reset_device(struct scsi_cmnd *scmnd)
 
 
