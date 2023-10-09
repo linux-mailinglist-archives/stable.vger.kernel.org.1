@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A69057BDD24
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B51017BDE16
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376690AbjJINHw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:07:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36500 "EHLO
+        id S1376889AbjJINPn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:15:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376706AbjJINHv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:07:51 -0400
+        with ESMTP id S1376915AbjJINPm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2CA3B9
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:07:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC5BC433CB;
-        Mon,  9 Oct 2023 13:07:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B35ACAC
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCADC433CC;
+        Mon,  9 Oct 2023 13:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856868;
-        bh=Q7luXdGpRBvMUUAHfmt6dsX9udfWCMsI12cbNGfpItU=;
+        s=korg; t=1696857340;
+        bh=iLtleW1emisw7Mm19aTH4XBPaeLHDDxj5zoLd+t6TkU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k4zEerOfJ6YggiRZLyqMrwWU7CHeRB9do44LleoboKZZ5HIYeTtcXKD8+t2+5+VUU
-         yUQcS4WSQZhACjTbkG+exETV9K8qOUCu3TMeyvT/9p9ow4eBFyEL8br4H3jUMMJ6qA
-         oLT55RSFyVco0WL2xl78pcVVlFrPZL5qiI8rBDho=
+        b=hAJXXdB74Oae/WGzye826q+uICyS2HrWxGjNgB8TExVewSKzX0GKbIo5y/FyGPF6Y
+         C5bApJJL3g35krhZ/ErTuVUO1i6WKLSqroPefyZEy5UKhOOY1ix6FpR/rKnA+V1f8l
+         2veAjuDwFBn0WiNKc5acZ+Mt4y2GD1BT+axHQNiY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joey Gouly <joey.gouly@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 018/163] arm64: add HWCAP for FEAT_HBC (hinted conditional branches)
-Date:   Mon,  9 Oct 2023 14:59:42 +0200
-Message-ID: <20231009130124.516946674@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>,
+        Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 002/162] spi: zynqmp-gqspi: fix clock imbalance on probe failure
+Date:   Mon,  9 Oct 2023 14:59:43 +0200
+Message-ID: <20231009130123.016249038@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,87 +52,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joey Gouly <joey.gouly@arm.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 7f86d128e437990fd08d9e66ae7c1571666cff8a ]
+[ Upstream commit 1527b076ae2cb6a9c590a02725ed39399fcad1cf ]
 
-Add a HWCAP for FEAT_HBC, so that userspace can make a decision on using
-this feature.
+Make sure that the device is not runtime suspended before explicitly
+disabling the clocks on probe failure and on driver unbind to avoid a
+clock enable-count imbalance.
 
-Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20230804143746.3900803-2-joey.gouly@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Stable-dep-of: 479965a2b7ec ("arm64: cpufeature: Fix CLRBHB and BC detection")
+Fixes: 9e3a000362ae ("spi: zynqmp: Add pm runtime support")
+Cc: stable@vger.kernel.org	# 4.19
+Cc: Naga Sureshkumar Relli <naga.sureshkumar.relli@xilinx.com>
+Cc: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/Message-Id: <20230622082435.7873-1-johan+linaro@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/hwcap.h      | 1 +
- arch/arm64/include/uapi/asm/hwcap.h | 1 +
- arch/arm64/kernel/cpufeature.c      | 3 ++-
- arch/arm64/kernel/cpuinfo.c         | 1 +
- 4 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/spi/spi-zynqmp-gqspi.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/hwcap.h b/arch/arm64/include/asm/hwcap.h
-index 692b1ec663b27..521267478d187 100644
---- a/arch/arm64/include/asm/hwcap.h
-+++ b/arch/arm64/include/asm/hwcap.h
-@@ -138,6 +138,7 @@
- #define KERNEL_HWCAP_SME_B16B16		__khwcap2_feature(SME_B16B16)
- #define KERNEL_HWCAP_SME_F16F16		__khwcap2_feature(SME_F16F16)
- #define KERNEL_HWCAP_MOPS		__khwcap2_feature(MOPS)
-+#define KERNEL_HWCAP_HBC		__khwcap2_feature(HBC)
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 876a41c5d1664..f2dcd1ae77c7d 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -1218,9 +1218,9 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 	return 0;
  
- /*
-  * This yields a mask that user programs can use to figure out what
-diff --git a/arch/arm64/include/uapi/asm/hwcap.h b/arch/arm64/include/uapi/asm/hwcap.h
-index a2cac4305b1e0..53026f45a5092 100644
---- a/arch/arm64/include/uapi/asm/hwcap.h
-+++ b/arch/arm64/include/uapi/asm/hwcap.h
-@@ -103,5 +103,6 @@
- #define HWCAP2_SME_B16B16	(1UL << 41)
- #define HWCAP2_SME_F16F16	(1UL << 42)
- #define HWCAP2_MOPS		(1UL << 43)
-+#define HWCAP2_HBC		(1UL << 44)
+ clk_dis_all:
+-	pm_runtime_put_sync(&pdev->dev);
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
+ 	clk_disable_unprepare(xqspi->refclk);
+ clk_dis_pclk:
+ 	clk_disable_unprepare(xqspi->pclk);
+@@ -1244,11 +1244,15 @@ static void zynqmp_qspi_remove(struct platform_device *pdev)
+ {
+ 	struct zynqmp_qspi *xqspi = platform_get_drvdata(pdev);
  
- #endif /* _UAPI__ASM_HWCAP_H */
-diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-index f9d456fe132d8..ac764c1dac363 100644
---- a/arch/arm64/kernel/cpufeature.c
-+++ b/arch/arm64/kernel/cpufeature.c
-@@ -222,7 +222,7 @@ static const struct arm64_ftr_bits ftr_id_aa64isar1[] = {
- static const struct arm64_ftr_bits ftr_id_aa64isar2[] = {
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64ISAR2_EL1_CSSC_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_NONSTRICT, FTR_LOWER_SAFE, ID_AA64ISAR2_EL1_RPRFM_SHIFT, 4, 0),
--	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_HIGHER_SAFE, ID_AA64ISAR2_EL1_BC_SHIFT, 4, 0),
-+	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_HIGHER_SAFE, ID_AA64ISAR2_EL1_BC_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64ISAR2_EL1_MOPS_SHIFT, 4, 0),
- 	ARM64_FTR_BITS(FTR_VISIBLE_IF_IS_ENABLED(CONFIG_ARM64_PTR_AUTH),
- 		       FTR_STRICT, FTR_EXACT, ID_AA64ISAR2_EL1_APA3_SHIFT, 4, 0),
-@@ -2844,6 +2844,7 @@ static const struct arm64_cpu_capabilities arm64_elf_hwcaps[] = {
- 	HWCAP_CAP(ID_AA64ISAR2_EL1, RPRES, IMP, CAP_HWCAP, KERNEL_HWCAP_RPRES),
- 	HWCAP_CAP(ID_AA64ISAR2_EL1, WFxT, IMP, CAP_HWCAP, KERNEL_HWCAP_WFXT),
- 	HWCAP_CAP(ID_AA64ISAR2_EL1, MOPS, IMP, CAP_HWCAP, KERNEL_HWCAP_MOPS),
-+	HWCAP_CAP(ID_AA64ISAR2_EL1, BC, IMP, CAP_HWCAP, KERNEL_HWCAP_HBC),
- #ifdef CONFIG_ARM64_SME
- 	HWCAP_CAP(ID_AA64PFR1_EL1, SME, IMP, CAP_HWCAP, KERNEL_HWCAP_SME),
- 	HWCAP_CAP(ID_AA64SMFR0_EL1, FA64, IMP, CAP_HWCAP, KERNEL_HWCAP_SME_FA64),
-diff --git a/arch/arm64/kernel/cpuinfo.c b/arch/arm64/kernel/cpuinfo.c
-index 58622dc859177..98fda85005353 100644
---- a/arch/arm64/kernel/cpuinfo.c
-+++ b/arch/arm64/kernel/cpuinfo.c
-@@ -126,6 +126,7 @@ static const char *const hwcap_str[] = {
- 	[KERNEL_HWCAP_SME_B16B16]	= "smeb16b16",
- 	[KERNEL_HWCAP_SME_F16F16]	= "smef16f16",
- 	[KERNEL_HWCAP_MOPS]		= "mops",
-+	[KERNEL_HWCAP_HBC]		= "hbc",
- };
++	pm_runtime_get_sync(&pdev->dev);
++
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
++
++	pm_runtime_disable(&pdev->dev);
++	pm_runtime_put_noidle(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
+ 	clk_disable_unprepare(xqspi->refclk);
+ 	clk_disable_unprepare(xqspi->pclk);
+-	pm_runtime_set_suspended(&pdev->dev);
+-	pm_runtime_disable(&pdev->dev);
+ }
  
- #ifdef CONFIG_COMPAT
+ static const struct of_device_id zynqmp_qspi_of_match[] = {
 -- 
 2.40.1
 
