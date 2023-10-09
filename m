@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12FC37BDEA4
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 725047BDEF0
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376379AbjJINVb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:21:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49486 "EHLO
+        id S1376541AbjJINYo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:24:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376429AbjJINV1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:27 -0400
+        with ESMTP id S1376556AbjJINYn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CADFA9E
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED069C433C8;
-        Mon,  9 Oct 2023 13:21:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 429B2B7
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FA3C433C7;
+        Mon,  9 Oct 2023 13:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857684;
-        bh=78jERhu4FuaiLsxdycvARjYBPz595TgiktUWxNjQRmQ=;
+        s=korg; t=1696857880;
+        bh=7fjHKeBMBBf54XjUf/Pfniq+snHMZHVjFRGGiLNUSQs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=spWB38af9tDemF1sH4UHGkaVSM7E+ceTmBqOijNCQ2saUf2i3q+RTlj4skR0x/5y+
-         SJmvn+IpTaPj+JIfVP5ffY5xaDiW6in2w4FPnupzS5s3uzoPfGRnqRehlIbZFNwMlb
-         uiVg68F5jE7Le/VtuuLDXr6MAnMF5hUB+l1ypras=
+        b=qE82CefjWUFw8enaiKq+TLNSjFhuiVOIzL0vXUH3Y2WDvrY02alIx7iq/BQDJJPjm
+         fhfKjTIl2xsbkHecbYZunW4X1NovLIazEwsP6+Ed4AxP3oxOGlRJwYg8m0EifXEhUU
+         dJHkgyZyW91VGAv90J0xKeonq3y9snjheh54w9gA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/162] netfilter: nf_tables: nft_set_rbtree: fix spurious insertion failure
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 5.15 22/75] wifi: mwifiex: Fix tlv_buf_left calculation
 Date:   Mon,  9 Oct 2023 15:01:44 +0200
-Message-ID: <20231009130126.322368418@linuxfoundation.org>
+Message-ID: <20231009130112.013480363@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,185 +50,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 087388278e0f301f4c61ddffb1911d3a180f84b8 ]
+commit eec679e4ac5f47507774956fb3479c206e761af7 upstream.
 
-nft_rbtree_gc_elem() walks back and removes the end interval element that
-comes before the expired element.
+In a TLV encoding scheme, the Length part represents the length after
+the header containing the values for type and length. In this case,
+`tlv_len` should be:
 
-There is a small chance that we've cached this element as 'rbe_ge'.
-If this happens, we hold and test a pointer that has been queued for
-freeing.
+tlv_len == (sizeof(*tlv_rxba) - 1) - sizeof(tlv_rxba->header) + tlv_bitmap_len
 
-It also causes spurious insertion failures:
+Notice that the `- 1` accounts for the one-element array `bitmap`, which
+1-byte size is already included in `sizeof(*tlv_rxba)`.
 
-$ cat test-testcases-sets-0044interval_overlap_0.1/testout.log
-Error: Could not process rule: File exists
-add element t s {  0 -  2 }
-                   ^^^^^^
-Failed to insert  0 -  2 given:
-table ip t {
-        set s {
-                type inet_service
-                flags interval,timeout
-                timeout 2s
-                gc-interval 2s
-        }
-}
+So, if the above is correct, there is a double-counting of some members
+in `struct mwifiex_ie_types_rxba_sync`, when `tlv_buf_left` and `tmp`
+are calculated:
 
-The set (rbtree) is empty. The 'failure' doesn't happen on next attempt.
+968                 tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+969                 tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
 
-Reason is that when we try to insert, the tree may hold an expired
-element that collides with the range we're adding.
-While we do evict/erase this element, we can trip over this check:
+in specific, members:
 
-if (rbe_ge && nft_rbtree_interval_end(rbe_ge) && nft_rbtree_interval_end(new))
-      return -ENOTEMPTY;
+drivers/net/wireless/marvell/mwifiex/fw.h:777
+ 777         u8 mac[ETH_ALEN];
+ 778         u8 tid;
+ 779         u8 reserved;
+ 780         __le16 seq_num;
+ 781         __le16 bitmap_len;
 
-rbe_ge was erased by the synchronous gc, we should not have done this
-check.  Next attempt won't find it, so retry results in successful
-insertion.
+This is clearly wrong, and affects the subsequent decoding of data in
+`event_buf` through `tlv_rxba`:
 
-Restart in-kernel to avoid such spurious errors.
+970                 tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
 
-Such restart are rare, unless userspace intentionally adds very large
-numbers of elements with very short timeouts while setting a huge
-gc interval.
+Fix this by using `sizeof(tlv_rxba->header)` instead of `sizeof(*tlv_rxba)`
+in the calculation of `tlv_buf_left` and `tmp`.
 
-Even in this case, this cannot loop forever, on each retry an existing
-element has been removed.
+This results in the following binary differences before/after changes:
 
-As the caller is holding the transaction mutex, its impossible
-for a second entity to add more expiring elements to the tree.
+| drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
+| @@ -4698,11 +4698,11 @@
+|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:968
+|                 tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
+| -    1da7:      lea    -0x11(%rbx),%edx
+| +    1da7:      lea    -0x4(%rbx),%edx
+|      1daa:      movzwl %bp,%eax
+|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:969
+|                 tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
+| -    1dad:      lea    0x11(%r15,%rbp,1),%r15
+| +    1dad:      lea    0x4(%r15,%rbp,1),%r15
 
-After this it also becomes feasible to remove the async gc worker
-and perform all garbage collection from the commit path.
+The above reflects the desired change: avoid counting 13 too many bytes;
+which is the total size of the double-counted members in
+`struct mwifiex_ie_types_rxba_sync`:
 
-Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+$ pahole -C mwifiex_ie_types_rxba_sync drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
+struct mwifiex_ie_types_rxba_sync {
+	struct mwifiex_ie_types_header header;           /*     0     4 */
+
+     |-----------------------------------------------------------------------
+     |  u8                         mac[6];               /*     4     6 */  |
+     |	u8                         tid;                  /*    10     1 */  |
+     |  u8                         reserved;             /*    11     1 */  |
+     | 	__le16                     seq_num;              /*    12     2 */  |
+     | 	__le16                     bitmap_len;           /*    14     2 */  |
+     |  u8                         bitmap[1];            /*    16     1 */  |
+     |----------------------------------------------------------------------|
+								  | 13 bytes|
+								  -----------
+
+	/* size: 17, cachelines: 1, members: 7 */
+	/* last cacheline: 17 bytes */
+} __attribute__((__packed__));
+
+Fixes: 99ffe72cdae4 ("mwifiex: process rxba_sync event")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/06668edd68e7a26bbfeebd1201ae077a2a7a8bce.1692931954.git.gustavoars@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_rbtree.c | 46 +++++++++++++++++++++-------------
- 1 file changed, 29 insertions(+), 17 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 487572dcd6144..2660ceab3759d 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -233,10 +233,9 @@ static void nft_rbtree_gc_remove(struct net *net, struct nft_set *set,
- 	rb_erase(&rbe->node, &priv->root);
- }
- 
--static int nft_rbtree_gc_elem(const struct nft_set *__set,
--			      struct nft_rbtree *priv,
--			      struct nft_rbtree_elem *rbe,
--			      u8 genmask)
-+static const struct nft_rbtree_elem *
-+nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
-+		   struct nft_rbtree_elem *rbe, u8 genmask)
- {
- 	struct nft_set *set = (struct nft_set *)__set;
- 	struct rb_node *prev = rb_prev(&rbe->node);
-@@ -246,7 +245,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
- 
- 	gc = nft_trans_gc_alloc(set, 0, GFP_ATOMIC);
- 	if (!gc)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
- 
- 	/* search for end interval coming before this element.
- 	 * end intervals don't carry a timeout extension, they
-@@ -261,6 +260,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
- 		prev = rb_prev(prev);
- 	}
- 
-+	rbe_prev = NULL;
- 	if (prev) {
- 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
- 		nft_rbtree_gc_remove(net, set, priv, rbe_prev);
-@@ -272,7 +272,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
- 		 */
- 		gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
- 		if (WARN_ON_ONCE(!gc))
--			return -ENOMEM;
-+			return ERR_PTR(-ENOMEM);
- 
- 		nft_trans_gc_elem_add(gc, rbe_prev);
- 	}
-@@ -280,13 +280,13 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
- 	nft_rbtree_gc_remove(net, set, priv, rbe);
- 	gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
- 	if (WARN_ON_ONCE(!gc))
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
- 
- 	nft_trans_gc_elem_add(gc, rbe);
- 
- 	nft_trans_gc_queue_sync_done(gc);
- 
--	return 0;
-+	return rbe_prev;
- }
- 
- static bool nft_rbtree_update_first(const struct nft_set *set,
-@@ -314,7 +314,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	u8 cur_genmask = nft_genmask_cur(net);
- 	u8 genmask = nft_genmask_next(net);
--	int d, err;
-+	int d;
- 
- 	/* Descend the tree to search for an existing element greater than the
- 	 * key value to insert that is greater than the new element. This is the
-@@ -363,9 +363,14 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 		 */
- 		if (nft_set_elem_expired(&rbe->ext) &&
- 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
--			err = nft_rbtree_gc_elem(set, priv, rbe, genmask);
--			if (err < 0)
--				return err;
-+			const struct nft_rbtree_elem *removed_end;
-+
-+			removed_end = nft_rbtree_gc_elem(set, priv, rbe, genmask);
-+			if (IS_ERR(removed_end))
-+				return PTR_ERR(removed_end);
-+
-+			if (removed_end == rbe_le || removed_end == rbe_ge)
-+				return -EAGAIN;
- 
- 			continue;
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -977,8 +977,8 @@ void mwifiex_11n_rxba_sync_event(struct
+ 			}
  		}
-@@ -486,11 +491,18 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	struct nft_rbtree_elem *rbe = elem->priv;
- 	int err;
  
--	write_lock_bh(&priv->lock);
--	write_seqcount_begin(&priv->count);
--	err = __nft_rbtree_insert(net, set, rbe, ext);
--	write_seqcount_end(&priv->count);
--	write_unlock_bh(&priv->lock);
-+	do {
-+		if (fatal_signal_pending(current))
-+			return -EINTR;
-+
-+		cond_resched();
-+
-+		write_lock_bh(&priv->lock);
-+		write_seqcount_begin(&priv->count);
-+		err = __nft_rbtree_insert(net, set, rbe, ext);
-+		write_seqcount_end(&priv->count);
-+		write_unlock_bh(&priv->lock);
-+	} while (err == -EAGAIN);
- 
- 	return err;
+-		tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+-		tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
++		tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
++		tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
+ 		tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
+ 	}
  }
--- 
-2.40.1
-
 
 
