@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 493887BDFD1
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BAD27BE119
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377142AbjJINeY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:34:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33632 "EHLO
+        id S1377425AbjJINrF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:47:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377145AbjJINeX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:34:23 -0400
+        with ESMTP id S1377549AbjJINqy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:46:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4956091
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:34:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D1C3C433C7;
-        Mon,  9 Oct 2023 13:34:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8D07F1
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:46:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EAAC433C8;
+        Mon,  9 Oct 2023 13:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858461;
-        bh=n/n0T+Cc93h4WkP76ooo35ULjeo44zIa8rhFoMgL41A=;
+        s=korg; t=1696859213;
+        bh=IPOk+3I9dnn1ljO2KZv+f1sAneNksVQC1hkM97nhdFY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x2Fkc57W+m2lfJQcvjpe3mwYOytC/2/b8pNnuIGAk/+2Zz9KHEAhaM6jpcEE+afsq
-         kgbjWO0FivvRlpIO8ZVTYNIRPKFS73AA+BhmnL8MCv5GxdFIINYXaP77jORZPyUhnT
-         tcbn9Zjlz8umZy40s2GaR7rfnOUvPVh50+qLKmOU=
+        b=u3Idf5ir8aeQadGIFXCPm991E4I0FdRRBjFR/u6cbW1kPvGnji9qkwzJTsCjelcdp
+         HRr6IG/Q1HE2neG//drX3K5DcjLj7YH3b7xEDvN1Zbsb69KCmkMOyLCUHPXlp9tPjZ
+         BqEikK5fh0hcWNBo+RPAKUd1Nssy7aISrfsTK98Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.4 129/131] parisc: Restore __ldcw_align for PA-RISC 2.0 processors
+        patches@lists.linux.dev, Neal Cardwell <ncardwell@google.com>,
+        Yuchung Cheng <ycheng@google.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 208/226] tcp: fix quick-ack counting to count actual ACKs of new data
 Date:   Mon,  9 Oct 2023 15:02:49 +0200
-Message-ID: <20231009130120.367458466@linuxfoundation.org>
+Message-ID: <20231009130131.996830271@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,118 +51,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave@parisc-linux.org>
+From: Neal Cardwell <ncardwell@google.com>
 
-commit 914988e099fc658436fbd7b8f240160c352b6552 upstream.
+[ Upstream commit 059217c18be6757b95bfd77ba53fb50b48b8a816 ]
 
-Back in 2005, Kyle McMartin removed the 16-byte alignment for
-ldcw semaphores on PA 2.0 machines (CONFIG_PA20). This broke
-spinlocks on pre PA8800 processors. The main symptom was random
-faults in mmap'd memory (e.g., gcc compilations, etc).
+This commit fixes quick-ack counting so that it only considers that a
+quick-ack has been provided if we are sending an ACK that newly
+acknowledges data.
 
-Unfortunately, the errata for this ldcw change is lost.
+The code was erroneously using the number of data segments in outgoing
+skbs when deciding how many quick-ack credits to remove. This logic
+does not make sense, and could cause poor performance in
+request-response workloads, like RPC traffic, where requests or
+responses can be multi-segment skbs.
 
-The issue is the 16-byte alignment required for ldcw semaphore
-instructions can only be reduced to natural alignment when the
-ldcw operation can be handled coherently in cache. Only PA8800
-and PA8900 processors actually support doing the operation in
-cache.
+When a TCP connection decides to send N quick-acks, that is to
+accelerate the cwnd growth of the congestion control module
+controlling the remote endpoint of the TCP connection. That quick-ack
+decision is purely about the incoming data and outgoing ACKs. It has
+nothing to do with the outgoing data or the size of outgoing data.
 
-Aligning the spinlock dynamically adds two integer instructions
-to each spinlock.
+And in particular, an ACK only serves the intended purpose of allowing
+the remote congestion control to grow the congestion window quickly if
+the ACK is ACKing or SACKing new data.
 
-Tested on rp3440, c8000 and a500.
+The fix is simple: only count packets as serving the goal of the
+quickack mechanism if they are ACKing/SACKing new data. We can tell
+whether this is the case by checking inet_csk_ack_scheduled(), since
+we schedule an ACK exactly when we are ACKing/SACKing new data.
 
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Link: https://lore.kernel.org/linux-parisc/6b332788-2227-127f-ba6d-55e99ecf4ed8@bell.net/T/#t
-Link: https://lore.kernel.org/linux-parisc/20050609050702.GB4641@roadwarrior.mcmartin.ca/
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fc6415bcb0f5 ("[TCP]: Fix quick-ack decrementing with TSO.")
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Yuchung Cheng <ycheng@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20231001151239.1866845-1-ncardwell.sw@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/ldcw.h           |   36 +++++++++++++++++--------------
- arch/parisc/include/asm/spinlock_types.h |    5 ----
- 2 files changed, 20 insertions(+), 21 deletions(-)
+ include/net/tcp.h     | 6 ++++--
+ net/ipv4/tcp_output.c | 7 +++----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
---- a/arch/parisc/include/asm/ldcw.h
-+++ b/arch/parisc/include/asm/ldcw.h
-@@ -2,14 +2,28 @@
- #ifndef __PARISC_LDCW_H
- #define __PARISC_LDCW_H
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index b56f346020351..cb4b2fddd9eb3 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -337,12 +337,14 @@ ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
+ 			struct pipe_inode_info *pipe, size_t len,
+ 			unsigned int flags);
  
--#ifndef CONFIG_PA20
- /* Because kmalloc only guarantees 8-byte alignment for kmalloc'd data,
-    and GCC only guarantees 8-byte alignment for stack locals, we can't
-    be assured of 16-byte alignment for atomic lock data even if we
-    specify "__attribute ((aligned(16)))" in the type declaration.  So,
-    we use a struct containing an array of four ints for the atomic lock
-    type and dynamically select the 16-byte aligned int from the array
--   for the semaphore.  */
-+   for the semaphore. */
+-static inline void tcp_dec_quickack_mode(struct sock *sk,
+-					 const unsigned int pkts)
++static inline void tcp_dec_quickack_mode(struct sock *sk)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 
+ 	if (icsk->icsk_ack.quick) {
++		/* How many ACKs S/ACKing new data have we sent? */
++		const unsigned int pkts = inet_csk_ack_scheduled(sk) ? 1 : 0;
 +
-+/* From: "Jim Hull" <jim.hull of hp.com>
-+   I've attached a summary of the change, but basically, for PA 2.0, as
-+   long as the ",CO" (coherent operation) completer is implemented, then the
-+   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
-+   they only require "natural" alignment (4-byte for ldcw, 8-byte for
-+   ldcd).
-+
-+   Although the cache control hint is accepted by all PA 2.0 processors,
-+   it is only implemented on PA8800/PA8900 CPUs. Prior PA8X00 CPUs still
-+   require 16-byte alignment. If the address is unaligned, the operation
-+   of the instruction is undefined. The ldcw instruction does not generate
-+   unaligned data reference traps so misaligned accesses are not detected.
-+   This hid the problem for years. So, restore the 16-byte alignment dropped
-+   by Kyle McMartin in "Remove __ldcw_align for PA-RISC 2.0 processors". */
+ 		if (pkts >= icsk->icsk_ack.quick) {
+ 			icsk->icsk_ack.quick = 0;
+ 			/* Leaving quickack mode we deflate ATO. */
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 86e896351364e..6c14d67715d15 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -177,8 +177,7 @@ static void tcp_event_data_sent(struct tcp_sock *tp,
+ }
  
- #define __PA_LDCW_ALIGNMENT	16
- #define __PA_LDCW_ALIGN_ORDER	4
-@@ -19,22 +33,12 @@
- 		& ~(__PA_LDCW_ALIGNMENT - 1);			\
- 	(volatile unsigned int *) __ret;			\
- })
--#define __LDCW	"ldcw"
+ /* Account for an ACK we sent. */
+-static inline void tcp_event_ack_sent(struct sock *sk, unsigned int pkts,
+-				      u32 rcv_nxt)
++static inline void tcp_event_ack_sent(struct sock *sk, u32 rcv_nxt)
+ {
+ 	struct tcp_sock *tp = tcp_sk(sk);
  
--#else /*CONFIG_PA20*/
--/* From: "Jim Hull" <jim.hull of hp.com>
--   I've attached a summary of the change, but basically, for PA 2.0, as
--   long as the ",CO" (coherent operation) completer is specified, then the
--   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
--   they only require "natural" alignment (4-byte for ldcw, 8-byte for
--   ldcd). */
--
--#define __PA_LDCW_ALIGNMENT	4
--#define __PA_LDCW_ALIGN_ORDER	2
--#define __ldcw_align(a) (&(a)->slock)
-+#ifdef CONFIG_PA20
- #define __LDCW	"ldcw,co"
--
--#endif /*!CONFIG_PA20*/
-+#else
-+#define __LDCW	"ldcw"
-+#endif
+@@ -192,7 +191,7 @@ static inline void tcp_event_ack_sent(struct sock *sk, unsigned int pkts,
  
- /* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.
-    We don't explicitly expose that "*a" may be written as reload
---- a/arch/parisc/include/asm/spinlock_types.h
-+++ b/arch/parisc/include/asm/spinlock_types.h
-@@ -3,13 +3,8 @@
- #define __ASM_SPINLOCK_TYPES_H
+ 	if (unlikely(rcv_nxt != tp->rcv_nxt))
+ 		return;  /* Special ACK sent by DCTCP to reflect ECN */
+-	tcp_dec_quickack_mode(sk, pkts);
++	tcp_dec_quickack_mode(sk);
+ 	inet_csk_clear_xmit_timer(sk, ICSK_TIME_DACK);
+ }
  
- typedef struct {
--#ifdef CONFIG_PA20
--	volatile unsigned int slock;
--# define __ARCH_SPIN_LOCK_UNLOCKED { 1 }
--#else
- 	volatile unsigned int lock[4];
- # define __ARCH_SPIN_LOCK_UNLOCKED	{ { 1, 1, 1, 1 } }
--#endif
- } arch_spinlock_t;
+@@ -1374,7 +1373,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
+ 			   sk, skb);
  
- typedef struct {
+ 	if (likely(tcb->tcp_flags & TCPHDR_ACK))
+-		tcp_event_ack_sent(sk, tcp_skb_pcount(skb), rcv_nxt);
++		tcp_event_ack_sent(sk, rcv_nxt);
+ 
+ 	if (skb->len != tcp_header_size) {
+ 		tcp_event_data_sent(tp, sk);
+-- 
+2.40.1
+
 
 
