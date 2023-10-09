@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42FCF7BDFB9
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01E1E7BDF05
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377143AbjJINdL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:33:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59042 "EHLO
+        id S1376599AbjJINZe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377135AbjJINdK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:33:10 -0400
+        with ESMTP id S1376540AbjJINZd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4D22D6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:33:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40EBC433C8;
-        Mon,  9 Oct 2023 13:33:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE5E88F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC56C433C7;
+        Mon,  9 Oct 2023 13:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858388;
-        bh=SxrtH2GtL8T7Rk2abQvUe4LUUoi+OVe6btftPlYoVoc=;
+        s=korg; t=1696857931;
+        bh=twZfIK/qZfcRn4eNiogHNJxrAg8on6Vzx1M0qRgKPg0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jb3czG0Az2BMFQPLUdcy5/1cJ0p1FW4f/NZopYicAzGYFPXik5xoucIQ3SJKNWap9
-         OEEn9glyksJUyONOs2cShZyxB5eUJom/z7WyrvglUm0EVzKyeokBZEHFMVwdphSxSs
-         dIAHN5cczg7YrKJzQDN748nPf2rfoQ+6YofNclHs=
+        b=KK4oYtd8XCGZIn/c8OIetEwkAjG6CcfjaAsDzle1HdHPujNPr50/c7diPiS+5+lyc
+         sWmC+ZVFzlyqaSRZ5I7jpvfc8dfuERyo1fXorsAg9IZCDHbJdfbWTcIa4nssOg9ntP
+         6WH6ahVCqeGSuFDoi30ma3CKQRmrbadntPLhaZ+Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Balcanquall <alex@alexbal.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 080/131] net: thunderbolt: Fix TCPv6 GSO checksum calculation
-Date:   Mon,  9 Oct 2023 15:02:00 +0200
-Message-ID: <20231009130118.790279560@linuxfoundation.org>
+        patches@lists.linux.dev, Junxiao Bi <junxiao.bi@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 39/75] scsi: target: core: Fix deadlock due to recursive locking
+Date:   Mon,  9 Oct 2023 15:02:01 +0200
+Message-ID: <20231009130112.600931608@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +50,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-commit e0b65f9b81fef180cf5f103adecbe5505c961153 upstream.
+[ Upstream commit a154f5f643c6ecddd44847217a7a3845b4350003 ]
 
-Alex reported that running ssh over IPv6 does not work with
-Thunderbolt/USB4 networking driver. The reason for that is that driver
-should call skb_is_gso() before calling skb_is_gso_v6(), and it should
-not return false after calculates the checksum successfully. This probably
-was a copy paste error from the original driver where it was done properly.
+The following call trace shows a deadlock issue due to recursive locking of
+mutex "device_mutex". First lock acquire is in target_for_each_device() and
+second in target_free_device().
 
-Reported-by: Alex Balcanquall <alex@alexbal.com>
-Fixes: e69b6c02b4c3 ("net: Add support for networking over Thunderbolt cable")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ PID: 148266   TASK: ffff8be21ffb5d00  CPU: 10   COMMAND: "iscsi_ttx"
+  #0 [ffffa2bfc9ec3b18] __schedule at ffffffffa8060e7f
+  #1 [ffffa2bfc9ec3ba0] schedule at ffffffffa8061224
+  #2 [ffffa2bfc9ec3bb8] schedule_preempt_disabled at ffffffffa80615ee
+  #3 [ffffa2bfc9ec3bc8] __mutex_lock at ffffffffa8062fd7
+  #4 [ffffa2bfc9ec3c40] __mutex_lock_slowpath at ffffffffa80631d3
+  #5 [ffffa2bfc9ec3c50] mutex_lock at ffffffffa806320c
+  #6 [ffffa2bfc9ec3c68] target_free_device at ffffffffc0935998 [target_core_mod]
+  #7 [ffffa2bfc9ec3c90] target_core_dev_release at ffffffffc092f975 [target_core_mod]
+  #8 [ffffa2bfc9ec3ca0] config_item_put at ffffffffa79d250f
+  #9 [ffffa2bfc9ec3cd0] config_item_put at ffffffffa79d2583
+ #10 [ffffa2bfc9ec3ce0] target_devices_idr_iter at ffffffffc0933f3a [target_core_mod]
+ #11 [ffffa2bfc9ec3d00] idr_for_each at ffffffffa803f6fc
+ #12 [ffffa2bfc9ec3d60] target_for_each_device at ffffffffc0935670 [target_core_mod]
+ #13 [ffffa2bfc9ec3d98] transport_deregister_session at ffffffffc0946408 [target_core_mod]
+ #14 [ffffa2bfc9ec3dc8] iscsit_close_session at ffffffffc09a44a6 [iscsi_target_mod]
+ #15 [ffffa2bfc9ec3df0] iscsit_close_connection at ffffffffc09a4a88 [iscsi_target_mod]
+ #16 [ffffa2bfc9ec3df8] finish_task_switch at ffffffffa76e5d07
+ #17 [ffffa2bfc9ec3e78] iscsit_take_action_for_connection_exit at ffffffffc0991c23 [iscsi_target_mod]
+ #18 [ffffa2bfc9ec3ea0] iscsi_target_tx_thread at ffffffffc09a403b [iscsi_target_mod]
+ #19 [ffffa2bfc9ec3f08] kthread at ffffffffa76d8080
+ #20 [ffffa2bfc9ec3f50] ret_from_fork at ffffffffa8200364
+
+Fixes: 36d4cb460bcb ("scsi: target: Avoid that EXTENDED COPY commands trigger lock inversion")
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Link: https://lore.kernel.org/r/20230918225848.66463-1-junxiao.bi@oracle.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/thunderbolt.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/target/target_core_device.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/drivers/net/thunderbolt.c
-+++ b/drivers/net/thunderbolt.c
-@@ -958,12 +958,11 @@ static bool tbnet_xmit_csum_and_map(stru
- 		*tucso = ~csum_tcpudp_magic(ip_hdr(skb)->saddr,
- 					    ip_hdr(skb)->daddr, 0,
- 					    ip_hdr(skb)->protocol, 0);
--	} else if (skb_is_gso_v6(skb)) {
-+	} else if (skb_is_gso(skb) && skb_is_gso_v6(skb)) {
- 		tucso = dest + ((void *)&(tcp_hdr(skb)->check) - data);
- 		*tucso = ~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
- 					  &ipv6_hdr(skb)->daddr, 0,
- 					  IPPROTO_TCP, 0);
--		return false;
- 	} else if (protocol == htons(ETH_P_IPV6)) {
- 		tucso = dest + skb_checksum_start_offset(skb) + skb->csum_offset;
- 		*tucso = ~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index e18617371a9b2..813de805f815a 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -875,7 +875,6 @@ sector_t target_to_linux_sector(struct se_device *dev, sector_t lb)
+ EXPORT_SYMBOL(target_to_linux_sector);
+ 
+ struct devices_idr_iter {
+-	struct config_item *prev_item;
+ 	int (*fn)(struct se_device *dev, void *data);
+ 	void *data;
+ };
+@@ -885,11 +884,9 @@ static int target_devices_idr_iter(int id, void *p, void *data)
+ {
+ 	struct devices_idr_iter *iter = data;
+ 	struct se_device *dev = p;
++	struct config_item *item;
+ 	int ret;
+ 
+-	config_item_put(iter->prev_item);
+-	iter->prev_item = NULL;
+-
+ 	/*
+ 	 * We add the device early to the idr, so it can be used
+ 	 * by backend modules during configuration. We do not want
+@@ -899,12 +896,13 @@ static int target_devices_idr_iter(int id, void *p, void *data)
+ 	if (!target_dev_configured(dev))
+ 		return 0;
+ 
+-	iter->prev_item = config_item_get_unless_zero(&dev->dev_group.cg_item);
+-	if (!iter->prev_item)
++	item = config_item_get_unless_zero(&dev->dev_group.cg_item);
++	if (!item)
+ 		return 0;
+ 	mutex_unlock(&device_mutex);
+ 
+ 	ret = iter->fn(dev, iter->data);
++	config_item_put(item);
+ 
+ 	mutex_lock(&device_mutex);
+ 	return ret;
+@@ -927,7 +925,6 @@ int target_for_each_device(int (*fn)(struct se_device *dev, void *data),
+ 	mutex_lock(&device_mutex);
+ 	ret = idr_for_each(&devices_idr, target_devices_idr_iter, &iter);
+ 	mutex_unlock(&device_mutex);
+-	config_item_put(iter.prev_item);
+ 	return ret;
+ }
+ 
+-- 
+2.40.1
+
 
 
