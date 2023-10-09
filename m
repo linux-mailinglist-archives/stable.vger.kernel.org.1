@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2337BDFE3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 916A77BDD3E
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377159AbjJINfM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:35:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48540 "EHLO
+        id S1376734AbjJINIv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:08:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377162AbjJINfM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:35:12 -0400
+        with ESMTP id S1376748AbjJINIt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01F849D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:35:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42825C433C8;
-        Mon,  9 Oct 2023 13:35:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 946D79D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD25C433C8;
+        Mon,  9 Oct 2023 13:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858509;
-        bh=9+aLS8RgSF3xQJ2cKvTp7XZCIY/zDCtSK5wp5b0AclA=;
+        s=korg; t=1696856925;
+        bh=12eWUA1S8vmKDS2isfhP9Rjt6edTUaGMIHV8fV7wknc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tE3TsBQuY5Tt1fy5gDXf1b6llZtB9hAAXqe9Va4hHkvHs/1PPfPDcKdz1bm5D6z0x
-         zSbLoj5EiImvSzpIuYDiwfFxeGVZxXG95JwaOTuF5Me6FSM+wqznSzG+06HDPJwVvn
-         bNkrJ+IcXf3NEo4chMRNOJLtlkP3kzmT1xPtBvLw=
+        b=dTp+zK8ukL/A/hSRfzf70ie4Vd+xsar2sWhnp0TLdwWBqz6yBvPMZRvakScwqO7Ee
+         SqUnQKtPk/jo6m5TrSExBf/8hWHJNyIvojUFpRgjXyK7/zG7uoNbCQN8Ci+6DtSeFy
+         ueB6eiPEGNad3HVIdDS+lsq2BHdeIoW3UWaxZwNM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Mat Martineau <martineau@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/226] ext4: move setting of trimmed bit into ext4_try_to_trim_range()
+Subject: [PATCH 6.5 010/163] mptcp: rename timer related helper to less confusing names
 Date:   Mon,  9 Oct 2023 14:59:34 +0200
-Message-ID: <20231009130127.074165742@linuxfoundation.org>
+Message-ID: <20231009130124.303404878@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,170 +51,212 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 45e4ab320c9b5fa67b1fc3b6a9b381cfcc0c8488 ]
+[ Upstream commit f6909dc1c1f4452879278128012da6c76bc186a5 ]
 
-Currently we set the group's trimmed bit in ext4_trim_all_free() based
-on return value of ext4_try_to_trim_range(). However when we will want
-to abort trimming because of suspend attempt, we want to return success
-from ext4_try_to_trim_range() but not set the trimmed bit. Instead
-implementing awkward propagation of this information, just move setting
-of trimmed bit into ext4_try_to_trim_range() when the whole group is
-trimmed.
+The msk socket uses to different timeout to track close related
+events and retransmissions. The existing helpers do not indicate
+clearly which timer they actually touch, making the related code
+quite confusing.
 
-Cc: stable@kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230913150504.9054-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Change the existing helpers name to avoid such confusion. No
+functional change intended.
+
+This patch is linked to the next one ("mptcp: fix dangling connection
+hang-up"). The two patches are supposed to be backported together.
+
+Cc: stable@vger.kernel.org # v5.11+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 27e5ccc2d5a5 ("mptcp: fix dangling connection hang-up")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 46 +++++++++++++++++++++++++---------------------
- 1 file changed, 25 insertions(+), 21 deletions(-)
+ net/mptcp/protocol.c | 42 +++++++++++++++++++++---------------------
+ net/mptcp/protocol.h |  2 +-
+ net/mptcp/subflow.c  |  2 +-
+ 3 files changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index c06f304f38edf..2907bf57744a8 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5894,14 +5894,27 @@ __acquires(bitlock)
- 	return ret;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 0aae76f1465b8..3c85b4c107b2a 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -407,7 +407,7 @@ static bool __mptcp_move_skb(struct mptcp_sock *msk, struct sock *ssk,
+ 	return false;
  }
  
-+static ext4_grpblk_t ext4_last_grp_cluster(struct super_block *sb,
-+					   ext4_group_t grp)
-+{
-+	if (grp < ext4_get_groups_count(sb))
-+		return EXT4_CLUSTERS_PER_GROUP(sb) - 1;
-+	return (ext4_blocks_count(EXT4_SB(sb)->s_es) -
-+		ext4_group_first_block_no(sb, grp) - 1) >>
-+					EXT4_CLUSTER_BITS(sb);
-+}
-+
- static int ext4_try_to_trim_range(struct super_block *sb,
- 		struct ext4_buddy *e4b, ext4_grpblk_t start,
- 		ext4_grpblk_t max, ext4_grpblk_t minblocks)
+-static void mptcp_stop_timer(struct sock *sk)
++static void mptcp_stop_rtx_timer(struct sock *sk)
  {
- 	ext4_grpblk_t next, count, free_count;
-+	bool set_trimmed = false;
- 	void *bitmap;
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
  
- 	bitmap = e4b->bd_bitmap;
-+	if (start == 0 && max >= ext4_last_grp_cluster(sb, e4b->bd_group))
-+		set_trimmed = true;
- 	start = max(e4b->bd_info->bb_first_free, start);
- 	count = 0;
- 	free_count = 0;
-@@ -5916,16 +5929,14 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- 			int ret = ext4_trim_extent(sb, start, next - start, e4b);
+@@ -913,12 +913,12 @@ static void __mptcp_flush_join_list(struct sock *sk, struct list_head *join_list
+ 	}
+ }
  
- 			if (ret && ret != -EOPNOTSUPP)
--				break;
-+				return count;
- 			count += next - start;
+-static bool mptcp_timer_pending(struct sock *sk)
++static bool mptcp_rtx_timer_pending(struct sock *sk)
+ {
+ 	return timer_pending(&inet_csk(sk)->icsk_retransmit_timer);
+ }
+ 
+-static void mptcp_reset_timer(struct sock *sk)
++static void mptcp_reset_rtx_timer(struct sock *sk)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	unsigned long tout;
+@@ -1052,10 +1052,10 @@ static void __mptcp_clean_una(struct sock *sk)
+ out:
+ 	if (snd_una == READ_ONCE(msk->snd_nxt) &&
+ 	    snd_una == READ_ONCE(msk->write_seq)) {
+-		if (mptcp_timer_pending(sk) && !mptcp_data_fin_enabled(msk))
+-			mptcp_stop_timer(sk);
++		if (mptcp_rtx_timer_pending(sk) && !mptcp_data_fin_enabled(msk))
++			mptcp_stop_rtx_timer(sk);
+ 	} else {
+-		mptcp_reset_timer(sk);
++		mptcp_reset_rtx_timer(sk);
+ 	}
+ }
+ 
+@@ -1606,8 +1606,8 @@ void __mptcp_push_pending(struct sock *sk, unsigned int flags)
+ 
+ out:
+ 	/* ensure the rtx timer is running */
+-	if (!mptcp_timer_pending(sk))
+-		mptcp_reset_timer(sk);
++	if (!mptcp_rtx_timer_pending(sk))
++		mptcp_reset_rtx_timer(sk);
+ 	if (do_check_data_fin)
+ 		mptcp_check_send_data_fin(sk);
+ }
+@@ -1663,8 +1663,8 @@ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool
+ 	if (copied) {
+ 		tcp_push(ssk, 0, info.mss_now, tcp_sk(ssk)->nonagle,
+ 			 info.size_goal);
+-		if (!mptcp_timer_pending(sk))
+-			mptcp_reset_timer(sk);
++		if (!mptcp_rtx_timer_pending(sk))
++			mptcp_reset_rtx_timer(sk);
+ 
+ 		if (msk->snd_data_fin_enable &&
+ 		    msk->snd_nxt + 1 == msk->write_seq)
+@@ -2235,7 +2235,7 @@ static void mptcp_retransmit_timer(struct timer_list *t)
+ 	sock_put(sk);
+ }
+ 
+-static void mptcp_timeout_timer(struct timer_list *t)
++static void mptcp_tout_timer(struct timer_list *t)
+ {
+ 	struct sock *sk = from_timer(sk, t, sk_timer);
+ 
+@@ -2607,14 +2607,14 @@ static void __mptcp_retrans(struct sock *sk)
+ reset_timer:
+ 	mptcp_check_and_set_pending(sk);
+ 
+-	if (!mptcp_timer_pending(sk))
+-		mptcp_reset_timer(sk);
++	if (!mptcp_rtx_timer_pending(sk))
++		mptcp_reset_rtx_timer(sk);
+ }
+ 
+ /* schedule the timeout timer for the relevant event: either close timeout
+  * or mp_fail timeout. The close timeout takes precedence on the mp_fail one
+  */
+-void mptcp_reset_timeout(struct mptcp_sock *msk, unsigned long fail_tout)
++void mptcp_reset_tout_timer(struct mptcp_sock *msk, unsigned long fail_tout)
+ {
+ 	struct sock *sk = (struct sock *)msk;
+ 	unsigned long timeout, close_timeout;
+@@ -2647,7 +2647,7 @@ static void mptcp_mp_fail_no_response(struct mptcp_sock *msk)
+ 	WRITE_ONCE(mptcp_subflow_ctx(ssk)->fail_tout, 0);
+ 	unlock_sock_fast(ssk, slow);
+ 
+-	mptcp_reset_timeout(msk, 0);
++	mptcp_reset_tout_timer(msk, 0);
+ }
+ 
+ static void mptcp_do_fastclose(struct sock *sk)
+@@ -2736,7 +2736,7 @@ static void __mptcp_init_sock(struct sock *sk)
+ 
+ 	/* re-use the csk retrans timer for MPTCP-level retrans */
+ 	timer_setup(&msk->sk.icsk_retransmit_timer, mptcp_retransmit_timer, 0);
+-	timer_setup(&sk->sk_timer, mptcp_timeout_timer, 0);
++	timer_setup(&sk->sk_timer, mptcp_tout_timer, 0);
+ }
+ 
+ static void mptcp_ca_reset(struct sock *sk)
+@@ -2821,8 +2821,8 @@ void mptcp_subflow_shutdown(struct sock *sk, struct sock *ssk, int how)
+ 		} else {
+ 			pr_debug("Sending DATA_FIN on subflow %p", ssk);
+ 			tcp_send_ack(ssk);
+-			if (!mptcp_timer_pending(sk))
+-				mptcp_reset_timer(sk);
++			if (!mptcp_rtx_timer_pending(sk))
++				mptcp_reset_rtx_timer(sk);
  		}
- 		free_count += next - start;
- 		start = next + 1;
+ 		break;
+ 	}
+@@ -2905,7 +2905,7 @@ static void __mptcp_destroy_sock(struct sock *sk)
  
--		if (fatal_signal_pending(current)) {
--			count = -ERESTARTSYS;
--			break;
--		}
-+		if (fatal_signal_pending(current))
-+			return -ERESTARTSYS;
+ 	might_sleep();
  
- 		if (need_resched()) {
- 			ext4_unlock_group(sb, e4b->bd_group);
-@@ -5937,6 +5948,9 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- 			break;
+-	mptcp_stop_timer(sk);
++	mptcp_stop_rtx_timer(sk);
+ 	sk_stop_timer(sk, &sk->sk_timer);
+ 	msk->pm.status = 0;
+ 
+@@ -3024,7 +3024,7 @@ bool __mptcp_close(struct sock *sk, long timeout)
+ 		__mptcp_destroy_sock(sk);
+ 		do_cancel_work = true;
+ 	} else {
+-		mptcp_reset_timeout(msk, 0);
++		mptcp_reset_tout_timer(msk, 0);
  	}
  
-+	if (set_trimmed)
-+		EXT4_MB_GRP_SET_TRIMMED(e4b->bd_info);
-+
- 	return count;
+ 	return do_cancel_work;
+@@ -3087,7 +3087,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 	mptcp_check_listen_stop(sk);
+ 	inet_sk_state_store(sk, TCP_CLOSE);
+ 
+-	mptcp_stop_timer(sk);
++	mptcp_stop_rtx_timer(sk);
+ 	sk_stop_timer(sk, &sk->sk_timer);
+ 
+ 	if (msk->token)
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index ba2a873a4d2e6..4e31b5cf48299 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -699,7 +699,7 @@ void mptcp_get_options(const struct sk_buff *skb,
+ 
+ void mptcp_finish_connect(struct sock *sk);
+ void __mptcp_set_connected(struct sock *sk);
+-void mptcp_reset_timeout(struct mptcp_sock *msk, unsigned long fail_tout);
++void mptcp_reset_tout_timer(struct mptcp_sock *msk, unsigned long fail_tout);
+ static inline bool mptcp_is_fully_established(struct sock *sk)
+ {
+ 	return inet_sk_state_load(sk) == TCP_ESTABLISHED &&
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index c7bd99b8e7b7a..0506d33177f3d 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1226,7 +1226,7 @@ static void mptcp_subflow_fail(struct mptcp_sock *msk, struct sock *ssk)
+ 	WRITE_ONCE(subflow->fail_tout, fail_tout);
+ 	tcp_send_ack(ssk);
+ 
+-	mptcp_reset_timeout(msk, subflow->fail_tout);
++	mptcp_reset_tout_timer(msk, subflow->fail_tout);
  }
  
-@@ -5947,7 +5961,6 @@ static int ext4_try_to_trim_range(struct super_block *sb,
-  * @start:		first group block to examine
-  * @max:		last group block to examine
-  * @minblocks:		minimum extent block count
-- * @set_trimmed:	set the trimmed flag if at least one block is trimmed
-  *
-  * ext4_trim_all_free walks through group's buddy bitmap searching for free
-  * extents. When the free block is found, ext4_trim_extent is called to TRIM
-@@ -5962,7 +5975,7 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- static ext4_grpblk_t
- ext4_trim_all_free(struct super_block *sb, ext4_group_t group,
- 		   ext4_grpblk_t start, ext4_grpblk_t max,
--		   ext4_grpblk_t minblocks, bool set_trimmed)
-+		   ext4_grpblk_t minblocks)
- {
- 	struct ext4_buddy e4b;
- 	int ret;
-@@ -5979,13 +5992,10 @@ ext4_trim_all_free(struct super_block *sb, ext4_group_t group,
- 	ext4_lock_group(sb, group);
- 
- 	if (!EXT4_MB_GRP_WAS_TRIMMED(e4b.bd_info) ||
--	    minblocks < EXT4_SB(sb)->s_last_trim_minblks) {
-+	    minblocks < EXT4_SB(sb)->s_last_trim_minblks)
- 		ret = ext4_try_to_trim_range(sb, &e4b, start, max, minblocks);
--		if (ret >= 0 && set_trimmed)
--			EXT4_MB_GRP_SET_TRIMMED(e4b.bd_info);
--	} else {
-+	else
- 		ret = 0;
--	}
- 
- 	ext4_unlock_group(sb, group);
- 	ext4_mb_unload_buddy(&e4b);
-@@ -6018,7 +6028,6 @@ int ext4_trim_fs(struct super_block *sb, struct fstrim_range *range)
- 	ext4_fsblk_t first_data_blk =
- 			le32_to_cpu(EXT4_SB(sb)->s_es->s_first_data_block);
- 	ext4_fsblk_t max_blks = ext4_blocks_count(EXT4_SB(sb)->s_es);
--	bool whole_group, eof = false;
- 	int ret = 0;
- 
- 	start = range->start >> sb->s_blocksize_bits;
-@@ -6037,10 +6046,8 @@ int ext4_trim_fs(struct super_block *sb, struct fstrim_range *range)
- 		if (minlen > EXT4_CLUSTERS_PER_GROUP(sb))
- 			goto out;
- 	}
--	if (end >= max_blks - 1) {
-+	if (end >= max_blks - 1)
- 		end = max_blks - 1;
--		eof = true;
--	}
- 	if (end <= first_data_blk)
- 		goto out;
- 	if (start < first_data_blk)
-@@ -6054,7 +6061,6 @@ int ext4_trim_fs(struct super_block *sb, struct fstrim_range *range)
- 
- 	/* end now represents the last cluster to discard in this group */
- 	end = EXT4_CLUSTERS_PER_GROUP(sb) - 1;
--	whole_group = true;
- 
- 	for (group = first_group; group <= last_group; group++) {
- 		grp = ext4_get_group_info(sb, group);
-@@ -6073,13 +6079,11 @@ int ext4_trim_fs(struct super_block *sb, struct fstrim_range *range)
- 		 * change it for the last group, note that last_cluster is
- 		 * already computed earlier by ext4_get_group_no_and_offset()
- 		 */
--		if (group == last_group) {
-+		if (group == last_group)
- 			end = last_cluster;
--			whole_group = eof ? true : end == EXT4_CLUSTERS_PER_GROUP(sb) - 1;
--		}
- 		if (grp->bb_free >= minlen) {
- 			cnt = ext4_trim_all_free(sb, group, first_cluster,
--						 end, minlen, whole_group);
-+						 end, minlen);
- 			if (cnt < 0) {
- 				ret = cnt;
- 				break;
+ static bool subflow_check_data_avail(struct sock *ssk)
 -- 
 2.40.1
 
