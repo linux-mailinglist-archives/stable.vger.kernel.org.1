@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 185117BDE78
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37FFB7BDEEC
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346545AbjJINTy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:19:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58880 "EHLO
+        id S1376605AbjJINYc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:24:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376859AbjJINNq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:46 -0400
+        with ESMTP id S1376653AbjJINYb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2724EDA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B81C433C8;
-        Mon,  9 Oct 2023 13:13:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3358A3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119F8C433C7;
+        Mon,  9 Oct 2023 13:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857219;
-        bh=+RnOo12wrl1I0feDyrsJ1jQTrrpwpWverXEySU6V90A=;
+        s=korg; t=1696857868;
+        bh=Vq4i7G52bOZ2sde8rfuv6QuQDNt8s7Uf5EkwS0qgVNc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E7NCdOOk1U7WVzR1wpGU8c4BnqcZ4SmAyeFrHQbXZzO2eFFS3lxwj53tMJTYisdLP
-         FFkwZFf4MBQiopsjXZPqvyQLSr7BioW57E9J9vuy2k/mR97k2nM+wvj9LtLb0pgP03
-         Bgk0qtzP66LYBzqP2F6r4/8yL5VC3hhg46oxeKRE=
+        b=aXAhVuKxganoj+sXWy7uWlbrWlBzZxi/O2IsgEaoY1ri28CepSPgkBaq4jjUt91GN
+         w8EcwRY+tJQD0bX2hOEWxA0nYOXxlYLRpiu+/xoB/h4ZqlzSM5UjauxwOxFuuKfMSe
+         hInW4/XqFZrpMxaNMXhG8zz4DaIxg1A12iniKXSw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.5 137/163] parisc: Restore __ldcw_align for PA-RISC 2.0 processors
+        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Benjamin Block <bblock@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 19/75] scsi: zfcp: Fix a double put in zfcp_port_enqueue()
 Date:   Mon,  9 Oct 2023 15:01:41 +0200
-Message-ID: <20231009130127.830600934@linuxfoundation.org>
+Message-ID: <20231009130111.906499457@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,122 +49,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave@parisc-linux.org>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit 914988e099fc658436fbd7b8f240160c352b6552 upstream.
+commit b481f644d9174670b385c3a699617052cd2a79d3 upstream.
 
-Back in 2005, Kyle McMartin removed the 16-byte alignment for
-ldcw semaphores on PA 2.0 machines (CONFIG_PA20). This broke
-spinlocks on pre PA8800 processors. The main symptom was random
-faults in mmap'd memory (e.g., gcc compilations, etc).
+When device_register() fails, zfcp_port_release() will be called after
+put_device(). As a result, zfcp_ccw_adapter_put() will be called twice: one
+in zfcp_port_release() and one in the error path after device_register().
+So the reference on the adapter object is doubly put, which may lead to a
+premature free. Fix this by adjusting the error tag after
+device_register().
 
-Unfortunately, the errata for this ldcw change is lost.
-
-The issue is the 16-byte alignment required for ldcw semaphore
-instructions can only be reduced to natural alignment when the
-ldcw operation can be handled coherently in cache. Only PA8800
-and PA8900 processors actually support doing the operation in
-cache.
-
-Aligning the spinlock dynamically adds two integer instructions
-to each spinlock.
-
-Tested on rp3440, c8000 and a500.
-
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Link: https://lore.kernel.org/linux-parisc/6b332788-2227-127f-ba6d-55e99ecf4ed8@bell.net/T/#t
-Link: https://lore.kernel.org/linux-parisc/20050609050702.GB4641@roadwarrior.mcmartin.ca/
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: f3450c7b9172 ("[SCSI] zfcp: Replace local reference counting with common kref")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230923103723.10320-1-dinghao.liu@zju.edu.cn
+Acked-by: Benjamin Block <bblock@linux.ibm.com>
+Cc: stable@vger.kernel.org # v2.6.33+
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/include/asm/ldcw.h           |   37 ++++++++++++++++---------------
- arch/parisc/include/asm/spinlock_types.h |    5 ----
- 2 files changed, 20 insertions(+), 22 deletions(-)
+ drivers/s390/scsi/zfcp_aux.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/arch/parisc/include/asm/ldcw.h
-+++ b/arch/parisc/include/asm/ldcw.h
-@@ -2,39 +2,42 @@
- #ifndef __PARISC_LDCW_H
- #define __PARISC_LDCW_H
+--- a/drivers/s390/scsi/zfcp_aux.c
++++ b/drivers/s390/scsi/zfcp_aux.c
+@@ -518,12 +518,12 @@ struct zfcp_port *zfcp_port_enqueue(stru
+ 	if (port) {
+ 		put_device(&port->dev);
+ 		retval = -EEXIST;
+-		goto err_out;
++		goto err_put;
+ 	}
  
--#ifndef CONFIG_PA20
- /* Because kmalloc only guarantees 8-byte alignment for kmalloc'd data,
-    and GCC only guarantees 8-byte alignment for stack locals, we can't
-    be assured of 16-byte alignment for atomic lock data even if we
-    specify "__attribute ((aligned(16)))" in the type declaration.  So,
-    we use a struct containing an array of four ints for the atomic lock
-    type and dynamically select the 16-byte aligned int from the array
--   for the semaphore.  */
-+   for the semaphore. */
-+
-+/* From: "Jim Hull" <jim.hull of hp.com>
-+   I've attached a summary of the change, but basically, for PA 2.0, as
-+   long as the ",CO" (coherent operation) completer is implemented, then the
-+   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
-+   they only require "natural" alignment (4-byte for ldcw, 8-byte for
-+   ldcd).
-+
-+   Although the cache control hint is accepted by all PA 2.0 processors,
-+   it is only implemented on PA8800/PA8900 CPUs. Prior PA8X00 CPUs still
-+   require 16-byte alignment. If the address is unaligned, the operation
-+   of the instruction is undefined. The ldcw instruction does not generate
-+   unaligned data reference traps so misaligned accesses are not detected.
-+   This hid the problem for years. So, restore the 16-byte alignment dropped
-+   by Kyle McMartin in "Remove __ldcw_align for PA-RISC 2.0 processors". */
+ 	port = kzalloc(sizeof(struct zfcp_port), GFP_KERNEL);
+ 	if (!port)
+-		goto err_out;
++		goto err_put;
  
- #define __PA_LDCW_ALIGNMENT	16
--#define __PA_LDCW_ALIGN_ORDER	4
- #define __ldcw_align(a) ({					\
- 	unsigned long __ret = (unsigned long) &(a)->lock[0];	\
- 	__ret = (__ret + __PA_LDCW_ALIGNMENT - 1)		\
- 		& ~(__PA_LDCW_ALIGNMENT - 1);			\
- 	(volatile unsigned int *) __ret;			\
- })
--#define __LDCW	"ldcw"
+ 	rwlock_init(&port->unit_list_lock);
+ 	INIT_LIST_HEAD(&port->unit_list);
+@@ -546,7 +546,7 @@ struct zfcp_port *zfcp_port_enqueue(stru
  
--#else /*CONFIG_PA20*/
--/* From: "Jim Hull" <jim.hull of hp.com>
--   I've attached a summary of the change, but basically, for PA 2.0, as
--   long as the ",CO" (coherent operation) completer is specified, then the
--   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
--   they only require "natural" alignment (4-byte for ldcw, 8-byte for
--   ldcd). */
--
--#define __PA_LDCW_ALIGNMENT	4
--#define __PA_LDCW_ALIGN_ORDER	2
--#define __ldcw_align(a) (&(a)->slock)
-+#ifdef CONFIG_PA20
- #define __LDCW	"ldcw,co"
--
--#endif /*!CONFIG_PA20*/
-+#else
-+#define __LDCW	"ldcw"
-+#endif
+ 	if (dev_set_name(&port->dev, "0x%016llx", (unsigned long long)wwpn)) {
+ 		kfree(port);
+-		goto err_out;
++		goto err_put;
+ 	}
+ 	retval = -EINVAL;
  
- /* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.
-    We don't explicitly expose that "*a" may be written as reload
---- a/arch/parisc/include/asm/spinlock_types.h
-+++ b/arch/parisc/include/asm/spinlock_types.h
-@@ -9,15 +9,10 @@
- #ifndef __ASSEMBLY__
+@@ -563,7 +563,8 @@ struct zfcp_port *zfcp_port_enqueue(stru
  
- typedef struct {
--#ifdef CONFIG_PA20
--	volatile unsigned int slock;
--# define __ARCH_SPIN_LOCK_UNLOCKED { __ARCH_SPIN_LOCK_UNLOCKED_VAL }
--#else
- 	volatile unsigned int lock[4];
- # define __ARCH_SPIN_LOCK_UNLOCKED	\
- 	{ { __ARCH_SPIN_LOCK_UNLOCKED_VAL, __ARCH_SPIN_LOCK_UNLOCKED_VAL, \
- 	    __ARCH_SPIN_LOCK_UNLOCKED_VAL, __ARCH_SPIN_LOCK_UNLOCKED_VAL } }
--#endif
- } arch_spinlock_t;
+ 	return port;
  
- 
+-err_out:
++err_put:
+ 	zfcp_ccw_adapter_put(adapter);
++err_out:
+ 	return ERR_PTR(retval);
+ }
 
 
