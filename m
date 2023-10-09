@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78D147BDF4C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EEB07BDE56
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376896AbjJIN2b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:28:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53606 "EHLO
+        id S1377013AbjJINSa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:18:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376916AbjJIN2b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:28:31 -0400
+        with ESMTP id S1377011AbjJINS3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD792D6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:28:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250B1C433C8;
-        Mon,  9 Oct 2023 13:28:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 927E29F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5118C433C7;
+        Mon,  9 Oct 2023 13:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858109;
-        bh=NzqwHzh+m1t8hTOWLBdObDd5H1QAsaLzfGAK6E8sFPM=;
+        s=korg; t=1696857506;
+        bh=Cke7oSTpq6XnqI9HEMiRn5zKyKns24vAPDore4gjvSc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VXU6o30Ky7cd1qyQ2abEOIFzv45dgSUZVoVttTvHjvnApEw91ImVfPGwqszOOO5PX
-         v7044t4PyFadBCClRuCwQYwg6EmCYQ+gG4GpCXWW6YwzAwqXNlU5Q4DqNvlrtPSynC
-         E8klfAaT28soFW1NNBp/JSspKNSS94AA7PMFmofw=
+        b=iaJ+8DhH6HC2GAIbkfE6IL5UIamHz1a1VF7Xh7S/e6gZS8mF+YL2ZWTWMkNsFJ/J4
+         RULzNmA1uFvkK6BeiXvRx7UDhWJhu6aq7Tc7b4bGMTVLIVvmhE3/KtphxyYfKhouok
+         DoNTjiyJ6lhSXzsPAbQrvUUcsmBi6vPSpUFDYskw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Czerner <lczerner@redhat.com>,
-        Andreas Dilger <adilger@dilger.ca>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 008/131] ext4: change s_last_trim_minblks type to unsigned long
+        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
+        Jordan Rife <jrife@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 067/162] net: prevent rewrite of msg_name in sock_sendmsg()
 Date:   Mon,  9 Oct 2023 15:00:48 +0200
-Message-ID: <20231009130116.582212080@linuxfoundation.org>
+Message-ID: <20231009130124.776987225@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,68 +50,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Czerner <lczerner@redhat.com>
+From: Jordan Rife <jrife@google.com>
 
-[ Upstream commit 2327fb2e23416cfb2795ccca2f77d4d65925be99 ]
+commit 86a7e0b69bd5b812e48a20c66c2161744f3caa16 upstream.
 
-There is no good reason for the s_last_trim_minblks to be atomic. There is
-no data integrity needed and there is no real danger in setting and
-reading it in a racy manner. Change it to be unsigned long, the same type
-as s_clusters_per_group which is the maximum that's allowed.
+Callers of sock_sendmsg(), and similarly kernel_sendmsg(), in kernel
+space may observe their value of msg_name change in cases where BPF
+sendmsg hooks rewrite the send address. This has been confirmed to break
+NFS mounts running in UDP mode and has the potential to break other
+systems.
 
-Signed-off-by: Lukas Czerner <lczerner@redhat.com>
-Suggested-by: Andreas Dilger <adilger@dilger.ca>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Link: https://lore.kernel.org/r/20211103145122.17338-1-lczerner@redhat.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch:
+
+1) Creates a new function called __sock_sendmsg() with same logic as the
+   old sock_sendmsg() function.
+2) Replaces calls to sock_sendmsg() made by __sys_sendto() and
+   __sys_sendmsg() with __sock_sendmsg() to avoid an unnecessary copy,
+   as these system calls are already protected.
+3) Modifies sock_sendmsg() so that it makes a copy of msg_name if
+   present before passing it down the stack to insulate callers from
+   changes to the send address.
+
+Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
+Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h    | 2 +-
- fs/ext4/mballoc.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/socket.c |   29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 604fef3b2ddf4..4d02116193de8 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1529,7 +1529,7 @@ struct ext4_sb_info {
- 	struct task_struct *s_mmp_tsk;
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -720,6 +720,14 @@ static inline int sock_sendmsg_nosec(str
+ 	return ret;
+ }
  
- 	/* record the last minlen when FITRIM is called. */
--	atomic_t s_last_trim_minblks;
-+	unsigned long s_last_trim_minblks;
++static int __sock_sendmsg(struct socket *sock, struct msghdr *msg)
++{
++	int err = security_socket_sendmsg(sock, msg,
++					  msg_data_left(msg));
++
++	return err ?: sock_sendmsg_nosec(sock, msg);
++}
++
+ /**
+  *	sock_sendmsg - send a message through @sock
+  *	@sock: socket
+@@ -730,10 +738,19 @@ static inline int sock_sendmsg_nosec(str
+  */
+ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
+ {
+-	int err = security_socket_sendmsg(sock, msg,
+-					  msg_data_left(msg));
++	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
++	struct sockaddr_storage address;
++	int ret;
  
- 	/* Reference to checksum algorithm driver via cryptoapi */
- 	struct crypto_shash *s_chksum_driver;
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index e1b487acb843b..db6bc24936479 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5279,7 +5279,7 @@ ext4_trim_all_free(struct super_block *sb, ext4_group_t group,
- 	ext4_lock_group(sb, group);
+-	return err ?: sock_sendmsg_nosec(sock, msg);
++	if (msg->msg_name) {
++		memcpy(&address, msg->msg_name, msg->msg_namelen);
++		msg->msg_name = &address;
++	}
++
++	ret = __sock_sendmsg(sock, msg);
++	msg->msg_name = save_addr;
++
++	return ret;
+ }
+ EXPORT_SYMBOL(sock_sendmsg);
  
- 	if (!EXT4_MB_GRP_WAS_TRIMMED(e4b.bd_info) ||
--	    minblocks < atomic_read(&EXT4_SB(sb)->s_last_trim_minblks)) {
-+	    minblocks < EXT4_SB(sb)->s_last_trim_minblks) {
- 		ret = ext4_try_to_trim_range(sb, &e4b, start, max, minblocks);
- 		if (ret >= 0)
- 			EXT4_MB_GRP_SET_TRIMMED(e4b.bd_info);
-@@ -5388,7 +5388,7 @@ int ext4_trim_fs(struct super_block *sb, struct fstrim_range *range)
+@@ -1110,7 +1127,7 @@ static ssize_t sock_write_iter(struct ki
+ 	if (sock->type == SOCK_SEQPACKET)
+ 		msg.msg_flags |= MSG_EOR;
+ 
+-	res = sock_sendmsg(sock, &msg);
++	res = __sock_sendmsg(sock, &msg);
+ 	*from = msg.msg_iter;
+ 	return res;
+ }
+@@ -2114,7 +2131,7 @@ int __sys_sendto(int fd, void __user *bu
+ 	if (sock->file->f_flags & O_NONBLOCK)
+ 		flags |= MSG_DONTWAIT;
+ 	msg.msg_flags = flags;
+-	err = sock_sendmsg(sock, &msg);
++	err = __sock_sendmsg(sock, &msg);
+ 
+ out_put:
+ 	fput_light(sock->file, fput_needed);
+@@ -2479,7 +2496,7 @@ static int ____sys_sendmsg(struct socket
+ 		err = sock_sendmsg_nosec(sock, msg_sys);
+ 		goto out_freectl;
  	}
- 
- 	if (!ret)
--		atomic_set(&EXT4_SB(sb)->s_last_trim_minblks, minlen);
-+		EXT4_SB(sb)->s_last_trim_minblks = minlen;
- 
- out:
- 	range->len = EXT4_C2B(EXT4_SB(sb), trimmed) << sb->s_blocksize_bits;
--- 
-2.40.1
-
+-	err = sock_sendmsg(sock, msg_sys);
++	err = __sock_sendmsg(sock, msg_sys);
+ 	/*
+ 	 * If this is sendmmsg() and sending to current destination address was
+ 	 * successful, remember it.
 
 
