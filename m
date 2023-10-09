@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18E507BE04A
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 734857BDD9B
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377293AbjJINib (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:38:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50952 "EHLO
+        id S1376779AbjJINLN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:11:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377291AbjJINi2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:28 -0400
+        with ESMTP id S1376893AbjJINKz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:10:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72EAEC6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE756C433C8;
-        Mon,  9 Oct 2023 13:38:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7EE812A;
+        Mon,  9 Oct 2023 06:10:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A62C433D9;
+        Mon,  9 Oct 2023 13:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858700;
-        bh=n+YoQ36tRVY9MsCE7qGRukuL4WRM/cITRQfEP0zD2MA=;
+        s=korg; t=1696857025;
+        bh=jkvDx5+K2+lo0MKcZcWTC3ju5DS25KUe+EoX2cGlxqs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d9x9vfqy1gih1MzaHCnU+QDhZE9Dc5OOant9KjxHiZa363kV9DUB2Kt3KIYG9VuUc
-         mwBa/fMjVKGKAe+2nPWjCM1IqChIHOc5nGD4GYYBplGTwnVKzCGTEMEvGtj/C1B7zj
-         5NfhIJ2LtkdPwYDwIToIamIsYwsCo7SpIFHxZtMg=
+        b=bLW5cSqete2/vtrTJGUJcnxgPokb825xOFhuL/F67+CUh4zpw1PxkvLTtJyjbsTHX
+         jpSo0Og8w/DzLfGHhkXMKSoC2l+vnsVobNRGZp1qCj2vYB+8JFmFPtrmHSHtOJzBI+
+         OFqDhszMzuR5VJoy/FoNrcjOu5Piej6gL6J4Ci3M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 073/226] media: venus: core: Add differentiator IS_V6(core)
-Date:   Mon,  9 Oct 2023 15:00:34 +0200
-Message-ID: <20231009130128.692603916@linuxfoundation.org>
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+        Jiri Kosina <jkosina@suse.cz>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 071/163] HID: nvidia-shield: add LEDS_CLASS dependency
+Date:   Mon,  9 Oct 2023 15:00:35 +0200
+Message-ID: <20231009130126.010931258@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,38 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit ff027906308fcda1661e05beac6abdcbe2b93f6d ]
+[ Upstream commit 058574879853260a22bbec1f94221dfc5149d85c ]
 
-This commit adds the macro helper IS_V6() which will be used to
-differentiate iris2/v6 silicon from previous versions.
+The hid-nvidia-shield driver uses functions that are built
+only when LEDS_CLASS is set, so make the driver depend on that
+symbol to prevent build errors.
 
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: d74e48160980 ("media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts")
+riscv32-linux-ld: drivers/hid/hid-nvidia-shield.o: in function `.L11':
+hid-nvidia-shield.c:(.text+0x192): undefined reference to `led_classdev_unregister'
+riscv32-linux-ld: drivers/hid/hid-nvidia-shield.o: in function `.L113':
+hid-nvidia-shield.c:(.text+0xfa4): undefined reference to `led_classdev_register_ext'
+
+Fixes: 09308562d4af ("HID: nvidia-shield: Initial driver implementation with Thunderstrike support")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Cc: Jiri Kosina <jkosina@suse.cz>
+Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: linux-input@vger.kernel.org
+Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.h | 1 +
+ drivers/hid/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
-index 50eb0a9fb1347..75d0068033276 100644
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -426,6 +426,7 @@ struct venus_inst {
- #define IS_V1(core)	((core)->res->hfi_version == HFI_VERSION_1XX)
- #define IS_V3(core)	((core)->res->hfi_version == HFI_VERSION_3XX)
- #define IS_V4(core)	((core)->res->hfi_version == HFI_VERSION_4XX)
-+#define IS_V6(core)	((core)->res->hfi_version == HFI_VERSION_6XX)
+diff --git a/drivers/hid/Kconfig b/drivers/hid/Kconfig
+index e11c1c8036769..dc456c86e9569 100644
+--- a/drivers/hid/Kconfig
++++ b/drivers/hid/Kconfig
+@@ -792,6 +792,7 @@ config HID_NVIDIA_SHIELD
+ 	tristate "NVIDIA SHIELD devices"
+ 	depends on USB_HID
+ 	depends on BT_HIDP
++	depends on LEDS_CLASS
+ 	help
+ 	  Support for NVIDIA SHIELD accessories.
  
- #define ctrl_to_inst(ctrl)	\
- 	container_of((ctrl)->handler, struct venus_inst, ctrl_handler)
 -- 
 2.40.1
 
