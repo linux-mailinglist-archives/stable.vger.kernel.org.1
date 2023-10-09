@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF1B67BDF09
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B29B17BDEBE
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376731AbjJINZu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45708 "EHLO
+        id S1376389AbjJINWd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:22:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376770AbjJINZr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:47 -0400
+        with ESMTP id S1376396AbjJINWc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C8C8FB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C06C433C7;
-        Mon,  9 Oct 2023 13:25:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 546A29D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9469AC433C8;
+        Mon,  9 Oct 2023 13:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857944;
-        bh=10q0OLJq49Zspt/0GQBudOTwjHLz+wjgVQuFfLO7obs=;
+        s=korg; t=1696857751;
+        bh=BYOz6QiK+1I28ivMrwiVYGK3pIPlkeq/2O57MKAyK9g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nbYvtDI7nb74MOVmfoUwXBHIr49IRKwR7CMxfprWsnUHkafEY5p3QmH8UZu6JGqLm
-         q5Y81xBX8mM/N95Dz7nwrvHE0WZT/cRPOS5OTxM+uGQS+ifcsFgJXzQJSS3oXGV8Ft
-         rMhGfY+bT3otQ9BDArZa8Ussavd6n66ziOcGDThw=
+        b=jlhch4GI90BhjnQD/nOpAWuuaz0pwbOBlju7K4qrcJ1pW0u5S76yJdboVvdkrM+gs
+         tnU6+LyCm63OzOdzdLsUoTC3I8drEnWunhS+8SdQoNUtH3UM7Ten0TJhv8EDAb3/cJ
+         qdkbQ2uTkX7695FVCo98YA+xlIF2fAFC0rdXkFaQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mauricio Faria de Oliveira <mfo@canonical.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 43/75] modpost: add missing else to the "of" check
-Date:   Mon,  9 Oct 2023 15:02:05 +0200
-Message-ID: <20231009130112.741365066@linuxfoundation.org>
+        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.1 145/162] RDMA/cma: Initialize ib_sa_multicast structure to 0 when join
+Date:   Mon,  9 Oct 2023 15:02:06 +0200
+Message-ID: <20231009130126.912493876@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,58 +48,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauricio Faria de Oliveira <mfo@canonical.com>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit cbc3d00cf88fda95dbcafee3b38655b7a8f2650a ]
+commit e0fe97efdb00f0f32b038a4836406a82886aec9c upstream.
 
-Without this 'else' statement, an "usb" name goes into two handlers:
-the first/previous 'if' statement _AND_ the for-loop over 'devtable',
-but the latter is useless as it has no 'usb' device_id entry anyway.
+Initialize the structure to 0 so that it's fields won't have random
+values. For example fields like rec.traffic_class (as well as
+rec.flow_label and rec.sl) is used to generate the user AH through:
+  cma_iboe_join_multicast
+    cma_make_mc_event
+      ib_init_ah_from_mcmember
 
-Tested with allmodconfig before/after patch; no changes to *.mod.c:
+And a random traffic_class causes a random IP DSCP in RoCEv2.
 
-    git checkout v6.6-rc3
-    make -j$(nproc) allmodconfig
-    make -j$(nproc) olddefconfig
-
-    make -j$(nproc)
-    find . -name '*.mod.c' | cpio -pd /tmp/before
-
-    # apply patch
-
-    make -j$(nproc)
-    find . -name '*.mod.c' | cpio -pd /tmp/after
-
-    diff -r /tmp/before/ /tmp/after/
-    # no difference
-
-Fixes: acbef7b76629 ("modpost: fix module autoloading for OF devices with generic compatible property")
-Signed-off-by: Mauricio Faria de Oliveira <mfo@canonical.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b5de0c60cc30 ("RDMA/cma: Fix use after free race in roce multicast join")
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://lore.kernel.org/r/20230927090511.603595-1-markzhang@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/mod/file2alias.c | 2 +-
+ drivers/infiniband/core/cma.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 49aba862073e0..05089ef5cc0ec 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -1547,7 +1547,7 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
- 	/* First handle the "special" cases */
- 	if (sym_is(name, namelen, "usb"))
- 		do_usb_table(symval, sym->st_size, mod);
--	if (sym_is(name, namelen, "of"))
-+	else if (sym_is(name, namelen, "of"))
- 		do_of_table(symval, sym->st_size, mod);
- 	else if (sym_is(name, namelen, "pnp"))
- 		do_pnp_device_entry(symval, sym->st_size, mod);
--- 
-2.40.1
-
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -4936,7 +4936,7 @@ static int cma_iboe_join_multicast(struc
+ 	int err = 0;
+ 	struct sockaddr *addr = (struct sockaddr *)&mc->addr;
+ 	struct net_device *ndev = NULL;
+-	struct ib_sa_multicast ib;
++	struct ib_sa_multicast ib = {};
+ 	enum ib_gid_type gid_type;
+ 	bool send_only;
+ 
 
 
