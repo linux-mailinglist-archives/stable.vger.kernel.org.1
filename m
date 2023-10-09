@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 545F67BE076
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9379E7BDDC9
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376970AbjJINk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:40:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40248 "EHLO
+        id S1376811AbjJINNV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:13:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377376AbjJINkW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:22 -0400
+        with ESMTP id S1376774AbjJINNJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFCA7100
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:40:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C297C433CB;
-        Mon,  9 Oct 2023 13:40:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66AA51733
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:12:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B32C433C9;
+        Mon,  9 Oct 2023 13:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858819;
-        bh=KOX4WuBrPc8qaK1pa/xd7qkdyIytgPHaxDZE3BrRPAY=;
+        s=korg; t=1696857131;
+        bh=l/bRcSSg57C8EjWpl/jE7rdkEkLtJOJO5q1haSwjhGE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XHbOe4Nql9E6usKywWKtS4Cf4xL4guQp3h5Qcunh8+F7Ooqf8Gjka7x4WiNKSLsTn
-         Zvnxk0pcroJXD16tWO/OJCuTq4d263bTDyWUD2+QWzK0rd1oB9SMyGhs6zYCNbWiUH
-         XL1gM4B045meYaEj2ufEureMLcqpQqQyirmWTb5U=
+        b=zvdm4iVTBbdaIvjmzK+Egi8fGh/dgxJHF/D/el9lFYqreA0OsKnpENyJRgthCl0Ak
+         oTl3uXxqr5GvI5vGE4C26odJI1rJl89nAwZeVmOnchhKrvrCcrFUaqoxpFyh49ooES
+         MFS3lBUHqgmZr0bVh4gdgmJWdHeBoTphXrhYwPVE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        patches@lists.linux.dev, Al Viro <viro@zeniv.linux.org.uk>,
+        Amir Goldstein <amir73il@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 110/226] parisc: iosapic.c: Fix sparse warnings
+Subject: [PATCH 6.5 107/163] ovl: move freeing ovl_entry past rcu delay
 Date:   Mon,  9 Oct 2023 15:01:11 +0200
-Message-ID: <20231009130129.655961657@linuxfoundation.org>
+Message-ID: <20231009130126.980225511@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,52 +49,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 927c6c8aa27c284a799b8c18784e37d3373af908 ]
+[ Upstream commit d9e8319a6e3538b430f692b5625a76ffa0758adc ]
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+... into ->free_inode(), that is.
+
+Fixes: 0af950f57fef "ovl: move ovl_entry into ovl_inode"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parisc/iosapic.c         | 4 ++--
- drivers/parisc/iosapic_private.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ fs/overlayfs/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/parisc/iosapic.c b/drivers/parisc/iosapic.c
-index fd99735dca3e6..6ef663bbcdb01 100644
---- a/drivers/parisc/iosapic.c
-+++ b/drivers/parisc/iosapic.c
-@@ -202,9 +202,9 @@ static inline void iosapic_write(void __iomem *iosapic, unsigned int reg, u32 va
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index cc8977498c483..8e9c1cf83df24 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -164,6 +164,7 @@ static void ovl_free_inode(struct inode *inode)
+ 	struct ovl_inode *oi = OVL_I(inode);
  
- static DEFINE_SPINLOCK(iosapic_lock);
- 
--static inline void iosapic_eoi(void __iomem *addr, unsigned int data)
-+static inline void iosapic_eoi(__le32 __iomem *addr, __le32 data)
- {
--	__raw_writel(data, addr);
-+	__raw_writel((__force u32)data, addr);
+ 	kfree(oi->redirect);
++	kfree(oi->oe);
+ 	mutex_destroy(&oi->lock);
+ 	kmem_cache_free(ovl_inode_cachep, oi);
  }
+@@ -173,7 +174,7 @@ static void ovl_destroy_inode(struct inode *inode)
+ 	struct ovl_inode *oi = OVL_I(inode);
  
- /*
-diff --git a/drivers/parisc/iosapic_private.h b/drivers/parisc/iosapic_private.h
-index 73ecc657ad954..bd8ff40162b4b 100644
---- a/drivers/parisc/iosapic_private.h
-+++ b/drivers/parisc/iosapic_private.h
-@@ -118,8 +118,8 @@ struct iosapic_irt {
- struct vector_info {
- 	struct iosapic_info *iosapic;	/* I/O SAPIC this vector is on */
- 	struct irt_entry *irte;		/* IRT entry */
--	u32 __iomem *eoi_addr;		/* precalculate EOI reg address */
--	u32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
-+	__le32 __iomem *eoi_addr;	/* precalculate EOI reg address */
-+	__le32	eoi_data;		/* IA64: ?       PA: swapped txn_data */
- 	int	txn_irq;		/* virtual IRQ number for processor */
- 	ulong	txn_addr;		/* IA64: id_eid  PA: partial HPA */
- 	u32	txn_data;		/* CPU interrupt bit */
+ 	dput(oi->__upperdentry);
+-	ovl_free_entry(oi->oe);
++	ovl_stack_put(ovl_lowerstack(oi->oe), ovl_numlower(oi->oe));
+ 	if (S_ISDIR(inode->i_mode))
+ 		ovl_dir_cache_free(inode);
+ 	else
 -- 
 2.40.1
 
