@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 823ED7BE12A
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1F277BE1B7
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377437AbjJINrh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:47:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39608 "EHLO
+        id S1377103AbjJINxV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:53:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377436AbjJINrg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:47:36 -0400
+        with ESMTP id S1377532AbjJINxU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD7FBA3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:47:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83C3C433C7;
-        Mon,  9 Oct 2023 13:47:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6680FA3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87904C433C9;
+        Mon,  9 Oct 2023 13:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859254;
-        bh=IMBAMm+yw8UB3P4sPk8q7ojXe3NURnKw2d5hXysDYz8=;
+        s=korg; t=1696859598;
+        bh=ZvFescG9jvqfdGZE6jmiKjUjP4SpB1pd6Q1FuV/oBMA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mxErX0HBssHabMdEptichQrg29jjqxt9PGCPhPMUANy+SOzyOspM+9TLalPZ+owBF
-         /5fXpfmpzDFFvtu+WclyXtBg67tQZubaWrE45oN7Ruin2RXyoKPeYBDIhvpYnvuxMg
-         SKgca4zNlsUDxhSkSKV8yEU8SmM95KASkwMt3c1Y=
+        b=QYsTLQCQJMW6tXqgRu0df5tKcpKcJSsg6RCJ7ldyi/zKXjZ/TDN2X1ujSP3CRd30y
+         l9+0LqgAuy5cuaF7S+pRVtNa2bBIlIHWXfoGc7Km2HTSiRKCHD3082zzkVfCVM8it0
+         O8xWl98E1lpLlpS9gyC5Wstd1su0N78OvCCL39Q0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Timo Alho <talho@nvidia.com>,
-        Mikko Perttunen <mperttunen@nvidia.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 08/55] clk: tegra: fix error return case for recalc_rate
+Subject: [PATCH 4.19 35/91] parisc: irq: Make irq_stack_union static to avoid sparse warning
 Date:   Mon,  9 Oct 2023 15:06:07 +0200
-Message-ID: <20231009130108.033322841@linuxfoundation.org>
+Message-ID: <20231009130112.750713728@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +48,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timo Alho <talho@nvidia.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit a47b44fbb13f5e7a981b4515dcddc93a321ae89c ]
+[ Upstream commit b1bef1388c427cdad7331a9c8eb4ebbbe5b954b0 ]
 
-tegra-bpmp clocks driver makes implicit conversion of signed error
-code to unsigned value in recalc_rate operation. The behavior for
-recalc_rate, according to it's specification, should be that "If the
-driver cannot figure out a rate for this clock, it must return 0."
-
-Fixes: ca6f2796eef7 ("clk: tegra: Add BPMP clock driver")
-Signed-off-by: Timo Alho <talho@nvidia.com>
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Link: https://lore.kernel.org/r/20230912112951.2330497-1-cyndis@kapsi.fi
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/tegra/clk-bpmp.c | 2 +-
+ arch/parisc/kernel/irq.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/tegra/clk-bpmp.c b/drivers/clk/tegra/clk-bpmp.c
-index 6c933b0e29a3b..fcb7c599583b3 100644
---- a/drivers/clk/tegra/clk-bpmp.c
-+++ b/drivers/clk/tegra/clk-bpmp.c
-@@ -154,7 +154,7 @@ static unsigned long tegra_bpmp_clk_recalc_rate(struct clk_hw *hw,
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index c152c30c2d06d..11c1505775f87 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -392,7 +392,7 @@ union irq_stack_union {
+ 	volatile unsigned int lock[1];
+ };
  
- 	err = tegra_bpmp_clk_transfer(clk->bpmp, &msg);
- 	if (err < 0)
--		return err;
-+		return 0;
- 
- 	return response.rate;
- }
+-DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
++static DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
+ 		.slock = { 1,1,1,1 },
+ 	};
+ #endif
 -- 
 2.40.1
 
