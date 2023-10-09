@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD97A7BDE64
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 017B17BDF58
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:29:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377037AbjJINTP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52170 "EHLO
+        id S1376953AbjJIN2v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:28:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377031AbjJINTP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:19:15 -0400
+        with ESMTP id S1377004AbjJIN2u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:28:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EED948F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:19:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377A4C433C7;
-        Mon,  9 Oct 2023 13:19:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFC71DB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:28:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E724C433CB;
+        Mon,  9 Oct 2023 13:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857553;
-        bh=T6H3Jvz0xIel/CMhLRkphXxfGzCGjKIaIWN+vC7YdmM=;
+        s=korg; t=1696858125;
+        bh=balH0JraqUVaR7i+UT72d1ERFLDLsKdWMlvfhZR5vq4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CTJacJWT/aH75950rnn4Jk/m1371ZfBM291aSUJxSyWI/sCM1gCsJPPktxBiejeLT
-         mZsN6WN7MRTTfFlLl1u0V2/8w5lWpqnN4EZ/4CK/nyWhdNVf8EaxQ0luU+SkFzbbVv
-         HG7kd0MxPIUPZC+0U1yIr1KVPqhCnM7xIabh10Eo=
+        b=vcaEVFDs2DD52znqJZEWMh4tXm4uc/ZJ46OXR1FDGX4FhZD4OHoQyvQbMqpbBSOqK
+         nuwDBXJMCnCpjKfs8WrIll4PAoE2Wi6clS3aIkvTxnnZSDbHyged7N8IAZQiubrNI5
+         pdDvI+2zJhjPxeC9G6/rcHG1ivqNBqB1QzEaln6o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Da Xue <da@libre.computer>,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/162] leds: Drop BUG_ON check for LED_COLOR_ID_MULTI
+        patches@lists.linux.dev,
+        Krishan Gopal Sarawast <krishang@linux.vnet.ibm.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Disha Goel <disgoel@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 024/131] powerpc/perf/hv-24x7: Update domain value check
 Date:   Mon,  9 Oct 2023 15:01:04 +0200
-Message-ID: <20231009130125.209013374@linuxfoundation.org>
+Message-ID: <20231009130117.048058684@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,47 +52,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit 9dc1664fab2246bc2c3e9bf2cf21518a857f9b5b ]
+[ Upstream commit 4ff3ba4db5943cac1045e3e4a3c0463ea10f6930 ]
 
-Commit c3f853184bed ("leds: Fix BUG_ON check for LED_COLOR_ID_MULTI that
-is always false") fixed a no-op BUG_ON. This turned out to cause a
-regression, since some in-tree device-tree files already use
-LED_COLOR_ID_MULTI.
+Valid domain value is in range 1 to HV_PERF_DOMAIN_MAX. Current code has
+check for domain value greater than or equal to HV_PERF_DOMAIN_MAX. But
+the check for domain value 0 is missing.
 
-Drop the BUG_ON altogether.
+Fix this issue by adding check for domain value 0.
 
-Fixes: c3f853184bed ("leds: Fix BUG_ON check for LED_COLOR_ID_MULTI that is always false")
-Reported-by: Da Xue <da@libre.computer>
-Closes: https://lore.kernel.org/linux-leds/ZQLelWcNjjp2xndY@duo.ucw.cz/T/
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Link: https://lore.kernel.org/r/20230918140724.18634-1-kabel@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Before:
+  # ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
+  Using CPUID 00800200
+  Control descriptor is not initialized
+  Error:
+  The sys_perf_event_open() syscall returned with 5 (Input/output error) for
+  event (hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/).
+  /bin/dmesg | grep -i perf may provide additional information.
+
+  Result from dmesg:
+  [   37.819387] hv-24x7: hcall failed: [0 0x60040000 0x100 0] => ret
+  0xfffffffffffffffc (-4) detail=0x2000000 failing ix=0
+
+After:
+  # ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
+  Using CPUID 00800200
+  Control descriptor is not initialized
+  Warning:
+  hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ event is not supported by the kernel.
+  failed to read counter hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
+
+Fixes: ebd4a5a3ebd9 ("powerpc/perf/hv-24x7: Minor improvements")
+Reported-by: Krishan Gopal Sarawast <krishang@linux.vnet.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Tested-by: Disha Goel <disgoel@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230825055601.360083-1-kjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-core.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/powerpc/perf/hv-24x7.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/led-core.c b/drivers/leds/led-core.c
-index aad8bc44459fe..d94d60b526461 100644
---- a/drivers/leds/led-core.c
-+++ b/drivers/leds/led-core.c
-@@ -424,10 +424,6 @@ int led_compose_name(struct device *dev, struct led_init_data *init_data,
+diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+index 48e8f4b17b91b..c5c7a30bd0fd4 100644
+--- a/arch/powerpc/perf/hv-24x7.c
++++ b/arch/powerpc/perf/hv-24x7.c
+@@ -1313,7 +1313,7 @@ static int h_24x7_event_init(struct perf_event *event)
+ 	}
  
- 	led_parse_fwnode_props(dev, fwnode, &props);
- 
--	/* We want to label LEDs that can produce full range of colors
--	 * as RGB, not multicolor */
--	BUG_ON(props.color == LED_COLOR_ID_MULTI);
--
- 	if (props.label) {
- 		/*
- 		 * If init_data.devicename is NULL, then it indicates that
+ 	domain = event_get_domain(event);
+-	if (domain >= HV_PERF_DOMAIN_MAX) {
++	if (domain  == 0 || domain >= HV_PERF_DOMAIN_MAX) {
+ 		pr_devel("invalid domain %d\n", domain);
+ 		return -EINVAL;
+ 	}
 -- 
 2.40.1
 
