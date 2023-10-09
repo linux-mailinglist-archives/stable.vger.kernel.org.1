@@ -2,140 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3337BD619
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 11:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CA0B7BD861
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 12:19:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345690AbjJIJCv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 05:02:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55072 "EHLO
+        id S1346050AbjJIKTM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 06:19:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345682AbjJIJCv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 05:02:51 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC9EFDE;
-        Mon,  9 Oct 2023 02:02:42 -0700 (PDT)
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3997kBj8016515;
-        Mon, 9 Oct 2023 11:02:20 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:content-transfer-encoding:in-reply-to; s=
-        selector1; bh=G45xnPIUX9Ez29Qgnji13Rx5Rf0f5sWrQjcrxGxi2dI=; b=z3
-        Bvtq2jdON1aVCMbQCY3h/qaVoQmvOeYcE46qodM8z0atcV2aqWKIOtEre8sEFx42
-        2tsVZvqLIgZh86AzjZBZytYNTCwQGtG+PqYrWflFBWrJGBpLv7Ltvlbof+N1xoub
-        bYreB6WtLnSuLDda9OysxNMUwqAsQarrf97cEpWBk8Tdp1bIrqfK3po3Kf+8iu2s
-        Od/HYR8ColJa0HYl/jUeEe07lCt6eIEY5wV/B6mW+Ow7bdwsFHKafHgMTvr8pw3u
-        G5NFg7GKQWB5Fn7ly55XrRTvgf0q3X0ZsR4DBFwtvx1DNCTKCCwH0dD99mUiaWzY
-        kLFWvaxZa1roOwcw55gw==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3tkhfdv8d5-1
+        with ESMTP id S1346048AbjJIKTL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 06:19:11 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC882A3;
+        Mon,  9 Oct 2023 03:19:09 -0700 (PDT)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 399ABsY2005081;
+        Mon, 9 Oct 2023 10:18:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=u/wEYaoVMDSRX5EwZsNkzHNREQGGUju3+A/F6dL5KMQ=;
+ b=C+BuRSuezti4S6hCz2X9YkHiC9ez+BZmSsExhmFM0NzC6cdINcfKDvEHGHt2e7AI3Ru2
+ rkBzKTbYmBL2W3CQfRgsEwM9wMu+U/UggxheZmQihLFBZQOTFs/wQzy3wvilh+3CPDY9
+ NpUWgqkmaKqzLN1TkTSX1zSy+u8y0aARpuSFjCS6U3R2XX79mfow2E89aZPieI2xqM28
+ /n0v8Ja+ntOAqAu/cm+fhVRSkHb1tfJ112vbPu5v3Ubp/5ulYrJG0bg4jmGjTQ8yP+ws
+ lOA7ljx/uB/yPd6zW3xhj9QTEXZit9VfUB9OAtzkB8ZHvbk82F+DVwNeqfz0ikDmCqem 7w== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tkh5e24re-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 09 Oct 2023 11:02:20 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 5425E100063;
-        Mon,  9 Oct 2023 11:02:20 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4C01621ADB2;
-        Mon,  9 Oct 2023 11:02:20 +0200 (CEST)
-Received: from gnbcxd0016.gnb.st.com (10.129.178.213) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 9 Oct
- 2023 11:02:19 +0200
-Date:   Mon, 9 Oct 2023 11:02:13 +0200
-From:   Alain Volmat <alain.volmat@foss.st.com>
-To:     Amelie Delaunay <amelie.delaunay@foss.st.com>
-CC:     Vinod Koul <vkoul@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        M'boumba Cedric Madianga <cedric.madianga@gmail.com>,
-        Pierre-Yves MORDRET <pierre-yves.mordret@st.com>,
-        <stable@vger.kernel.org>, <dmaengine@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] dmaengine: stm32-mdma: correct desc prep when channel
- running
-Message-ID: <20231009090213.GA1547647@gnbcxd0016.gnb.st.com>
-Mail-Followup-To: Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        M'boumba Cedric Madianga <cedric.madianga@gmail.com>,
-        Pierre-Yves MORDRET <pierre-yves.mordret@st.com>,
-        stable@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20231009082450.452877-1-amelie.delaunay@foss.st.com>
+        Mon, 09 Oct 2023 10:18:32 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 399AIVE7017102
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 9 Oct 2023 10:18:31 GMT
+Received: from [10.217.219.52] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.36; Mon, 9 Oct
+ 2023 03:18:28 -0700
+Message-ID: <2145b2d5-cade-eda0-8325-edf09b6f534c@quicinc.com>
+Date:   Mon, 9 Oct 2023 15:48:25 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231009082450.452877-1-amelie.delaunay@foss.st.com>
-X-Disclaimer: ce message est personnel / this message is private
-X-Originating-IP: [10.129.178.213]
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH RESEND] xhci: Keep interrupt disabled in initialization
+ until host is running.
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <linux-kernel@vger.kernel.org>, Hongyu Xie <xy521521@gmail.com>,
+        Mathias Nyman <mathias.nyman@intel.com>, <stable@kernel.org>,
+        Hongyu Xie <xiehongyu1@kylinos.cn>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        "# 5 . 15" <stable@vger.kernel.org>
+References: <1695379724-28628-1-git-send-email-quic_prashk@quicinc.com>
+ <2023100753-jargon-resolute-0e55@gregkh>
+From:   Prashanth K <quic_prashk@quicinc.com>
+In-Reply-To: <2023100753-jargon-resolute-0e55@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: nfCD0h4TulTXiaq5B-V2Ue80ZbNZWIbO
+X-Proofpoint-ORIG-GUID: nfCD0h4TulTXiaq5B-V2Ue80ZbNZWIbO
 X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-09_07,2023-10-06_01,2023-05-22_02
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-09_08,2023-10-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ priorityscore=1501 spamscore=0 suspectscore=0 phishscore=0 malwarescore=0
+ lowpriorityscore=0 mlxlogscore=399 mlxscore=0 adultscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310090084
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Amélie,
 
-thanks a lot.
 
-Tested-by: Alain Volmat <alain.volmat@foss.st.com>
+On 07-10-23 04:50 pm, Greg Kroah-Hartman wrote:
+> On Fri, Sep 22, 2023 at 04:18:44PM +0530, Prashanth K wrote:
+>> From: Hongyu Xie <xy521521@gmail.com>
+>>
+>> [ Upstream commit 808925075fb750804a60ff0710614466c396db4 ]
+> 
+> This is not a valid git commit id in Linus's tree, where is it from?
+> 
+> confused,
+> 
+> greg k-h
 
-Regards,
-Alain
+The commit ID is a808925075fb750804a60ff0710614466c396db4. Missed the 
+first letter. Sorry fir the confusion. Will Resend the patch with 
+updated commit text.
 
-On Mon, Oct 09, 2023 at 10:24:50AM +0200, Amelie Delaunay wrote:
-> From: Alain Volmat <alain.volmat@foss.st.com>
-> 
-> In case of the prep descriptor while the channel is already running, the
-> CCR register value stored into the channel could already have its EN bit
-> set.  This would lead to a bad transfer since, at start transfer time,
-> enabling the channel while other registers aren't yet properly set.
-> To avoid this, ensure to mask the CCR_EN bit when storing the ccr value
-> into the mdma channel structure.
-> 
-> Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
-> Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-> Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/dma/stm32-mdma.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/dma/stm32-mdma.c b/drivers/dma/stm32-mdma.c
-> index bae08b3f55c7..f414efdbd809 100644
-> --- a/drivers/dma/stm32-mdma.c
-> +++ b/drivers/dma/stm32-mdma.c
-> @@ -489,7 +489,7 @@ static int stm32_mdma_set_xfer_param(struct stm32_mdma_chan *chan,
->  	src_maxburst = chan->dma_config.src_maxburst;
->  	dst_maxburst = chan->dma_config.dst_maxburst;
->  
-> -	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
-> +	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
->  	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
->  	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
->  
-> @@ -965,7 +965,7 @@ stm32_mdma_prep_dma_memcpy(struct dma_chan *c, dma_addr_t dest, dma_addr_t src,
->  	if (!desc)
->  		return NULL;
->  
-> -	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
-> +	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
->  	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
->  	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
->  	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
-> -- 
-> 2.25.1
-> 
+- Prashanth K
