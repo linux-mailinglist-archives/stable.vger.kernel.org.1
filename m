@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AD6A7BDF9F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94B987BE0B3
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:43:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377086AbjJINcB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:32:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52850 "EHLO
+        id S1346505AbjJINnL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377092AbjJINcB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:01 -0400
+        with ESMTP id S1346443AbjJINnK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45306B7
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E550C433C8;
-        Mon,  9 Oct 2023 13:31:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 067B19D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4665AC433C8;
+        Mon,  9 Oct 2023 13:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858318;
-        bh=VoCoHa4mLFB9DNY+BeURM0gzyYGtHx4gB7Btg+Eka40=;
+        s=korg; t=1696858988;
+        bh=K+ffzTyNcnb+xea8TclQM5gI2ZkdJSnE1cgmrCYM9YU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xsuCYcuQc4I4uJk0hBYYA07gVj34CPgPZF/T42ttln1KHOkn1RbJcngMIBvqkjCOW
-         0pYO6rp0NvffHTmsNH9CsfCDJKCMeWx8RBnZBKjcxVTZcUZTqBdB9lCLUMBWVIGwgU
-         u76pbHWSr5sSPT03igQjMQNePMcIxiCzZC8v9xrk=
+        b=fxTpau99uJ4Z2z1eF99EUHq/MpQ8/qrcIsOC+M/gG8O4kTE1W7YusdHyTiNBSjfjT
+         frBlTszeh53vik8vESYNm5kX2PPkIb1ThcwrLLBJxx4PLb4Yb6Oj7NU2UB8l4Xu7sV
+         CbbBEZ3zP4mtjSW1Jlc3wB5Tmb++gLMZPvNjn1mE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Greg Ungerer <gerg@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Kees Cook <keescook@chromium.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 085/131] fs: binfmt_elf_efpic: fix personality for ELF-FDPIC
+        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 164/226] spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in zynqmp_qspi_probe
 Date:   Mon,  9 Oct 2023 15:02:05 +0200
-Message-ID: <20231009130118.954813344@linuxfoundation.org>
+Message-ID: <20231009130130.959156677@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,67 +49,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Ungerer <gerg@kernel.org>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit 7c3151585730b7095287be8162b846d31e6eee61 upstream.
+[ Upstream commit a21fbc42807b15b74b0891bd557063e6acf4fcae ]
 
-The elf-fdpic loader hard sets the process personality to either
-PER_LINUX_FDPIC for true elf-fdpic binaries or to PER_LINUX for normal ELF
-binaries (in this case they would be constant displacement compiled with
--pie for example).  The problem with that is that it will lose any other
-bits that may be in the ELF header personality (such as the "bug
-emulation" bits).
+When platform_get_irq() fails, a pairing PM usage counter
+increment is needed to keep the counter balanced. It's the
+same for the following error paths.
 
-On the ARM architecture the ADDR_LIMIT_32BIT flag is used to signify a
-normal 32bit binary - as opposed to a legacy 26bit address binary.  This
-matters since start_thread() will set the ARM CPSR register as required
-based on this flag.  If the elf-fdpic loader loses this bit the process
-will be mis-configured and crash out pretty quickly.
-
-Modify elf-fdpic loader personality setting so that it preserves the upper
-three bytes by using the SET_PERSONALITY macro to set it.  This macro in
-the generic case sets PER_LINUX and preserves the upper bytes.
-Architectures can override this for their specific use case, and ARM does
-exactly this.
-
-The problem shows up quite easily running under qemu using the ARM
-architecture, but not necessarily on all types of real ARM hardware.  If
-the underlying ARM processor does not support the legacy 26-bit addressing
-mode then everything will work as expected.
-
-Link: https://lkml.kernel.org/r/20230907011808.2985083-1-gerg@kernel.org
-Fixes: 1bde925d23547 ("fs/binfmt_elf_fdpic.c: provide NOMMU loader for regular ELF binaries")
-Signed-off-by: Greg Ungerer <gerg@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: Greg Ungerer <gerg@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20210408092559.3824-1-dinghao.liu@zju.edu.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 1527b076ae2c ("spi: zynqmp-gqspi: fix clock imbalance on probe failure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf_fdpic.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/spi/spi-zynqmp-gqspi.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -345,10 +345,9 @@ static int load_elf_fdpic_binary(struct
- 	/* there's now no turning back... the old userspace image is dead,
- 	 * defunct, deceased, etc.
- 	 */
-+	SET_PERSONALITY(exec_params.hdr);
- 	if (elf_check_fdpic(&exec_params.hdr))
--		set_personality(PER_LINUX_FDPIC);
--	else
--		set_personality(PER_LINUX);
-+		current->personality |= PER_LINUX_FDPIC;
- 	if (elf_read_implies_exec(&exec_params.hdr, executable_stack))
- 		current->personality |= READ_IMPLIES_EXEC;
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index 3d3ac48243ebd..ed68e237314fb 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -1147,11 +1147,16 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
++
++	ret = pm_runtime_get_sync(&pdev->dev);
++	if (ret < 0) {
++		dev_err(&pdev->dev, "Failed to pm_runtime_get_sync: %d\n", ret);
++		goto clk_dis_all;
++	}
++
+ 	/* QSPI controller initializations */
+ 	zynqmp_qspi_init_hw(xqspi);
  
+-	pm_runtime_mark_last_busy(&pdev->dev);
+-	pm_runtime_put_autosuspend(&pdev->dev);
+ 	xqspi->irq = platform_get_irq(pdev, 0);
+ 	if (xqspi->irq <= 0) {
+ 		ret = -ENXIO;
+@@ -1178,6 +1183,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
+ 			    SPI_TX_DUAL | SPI_TX_QUAD;
+ 	ctlr->dev.of_node = np;
++	ctlr->auto_runtime_pm = true;
+ 
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+ 	if (ret) {
+@@ -1185,9 +1191,13 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
+ 		goto clk_dis_all;
+ 	}
+ 
++	pm_runtime_mark_last_busy(&pdev->dev);
++	pm_runtime_put_autosuspend(&pdev->dev);
++
+ 	return 0;
+ 
+ clk_dis_all:
++	pm_runtime_put_sync(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	clk_disable_unprepare(xqspi->refclk);
+-- 
+2.40.1
+
 
 
