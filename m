@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11CF37BDDC2
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B29F7BE06E
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376854AbjJINNJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:13:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58866 "EHLO
+        id S1377324AbjJINkF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:40:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376856AbjJINM6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:58 -0400
+        with ESMTP id S1377334AbjJINkE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0D6110C2
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8C8C433CB;
-        Mon,  9 Oct 2023 13:11:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6778810B
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:39:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92747C433C7;
+        Mon,  9 Oct 2023 13:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857113;
-        bh=xyYj8aQhQj27LvL6jDPqTv2i1tZLCMXTQmRN/PWwyJM=;
+        s=korg; t=1696858798;
+        bh=UfsklXKyzvcKWqh8eK+DPDFQOKxSovt08HF1yNKrkvc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xl30b69wtHg0GNBNVIeNqsJ2rKIXQLiI9ZJCqaeV6kzZ70VTByoyfc0CWxv0zC/Jy
-         4aZVEaFz1F+wLDZqGHVnPCbfqF+6eJ1J2XqVAUYCbiyNbxJtv3wSWx077DGZqOdSTz
-         GYqe2L0k/iEqI85fShkT9mM/Vesm9gCg4rHcGFgc=
+        b=YuF5cOkXS5YOyhhb90lGH75R5ox3ac1dO+92LIiE9+7dzrLjFPcmC5fN5+7ddkbCw
+         +xcyPTB9bv0Rpct4ndiHCGzi1XyX6kirZI/usn4ocyY6ddcfQorwRQdfFfQianBgPE
+         ubCR+HDH//7PtToOObsWJZUjfW/kEIYE9TyT0aX4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Clark Wang <xiaoning.wang@nxp.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 101/163] net: stmmac: platform: fix the incorrect parameter
+Subject: [PATCH 5.10 104/226] xtensa: boot: dont add include-dirs
 Date:   Mon,  9 Oct 2023 15:01:05 +0200
-Message-ID: <20231009130126.820249043@linuxfoundation.org>
+Message-ID: <20231009130129.496062804@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,85 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 6b09edc1b31762af58d3d95754354ca6a92d39c0 ]
+[ Upstream commit 54d3d7d363823782c3444ddc41bb8cf1edc80514 ]
 
-The second parameter of stmmac_pltfr_init() needs the pointer of
-"struct plat_stmmacenet_data". So, correct the parameter typo when calling the
-function.
+Drop the -I<include-dir> options to prevent build warnings since there
+is not boot/include directory:
 
-Otherwise, it may cause this alignment exception when doing suspend/resume.
-[   49.067201] CPU1 is up
-[   49.135258] Internal error: SP/PC alignment exception: 000000008a000000 [#1] PREEMPT SMP
-[   49.143346] Modules linked in: soc_imx9 crct10dif_ce polyval_ce nvmem_imx_ocotp_fsb_s400 polyval_generic layerscape_edac_mod snd_soc_fsl_asoc_card snd_soc_imx_audmux snd_soc_imx_card snd_soc_wm8962 el_enclave snd_soc_fsl_micfil rtc_pcf2127 rtc_pcf2131 flexcan can_dev snd_soc_fsl_xcvr snd_soc_fsl_sai imx8_media_dev(C) snd_soc_fsl_utils fuse
-[   49.173393] CPU: 0 PID: 565 Comm: sh Tainted: G         C         6.5.0-rc4-next-20230804-05047-g5781a6249dae #677
-[   49.183721] Hardware name: NXP i.MX93 11X11 EVK board (DT)
-[   49.189190] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   49.196140] pc : 0x80800052
-[   49.198931] lr : stmmac_pltfr_resume+0x34/0x50
-[   49.203368] sp : ffff800082f8bab0
-[   49.206670] x29: ffff800082f8bab0 x28: ffff0000047d0ec0 x27: ffff80008186c170
-[   49.213794] x26: 0000000b5e4ff1ba x25: ffff800081e5fa74 x24: 0000000000000010
-[   49.220918] x23: ffff800081fe0000 x22: 0000000000000000 x21: 0000000000000000
-[   49.228042] x20: ffff0000001b4010 x19: ffff0000001b4010 x18: 0000000000000006
-[   49.235166] x17: ffff7ffffe007000 x16: ffff800080000000 x15: 0000000000000000
-[   49.242290] x14: 00000000000000fc x13: 0000000000000000 x12: 0000000000000000
-[   49.249414] x11: 0000000000000001 x10: 0000000000000a60 x9 : ffff800082f8b8c0
-[   49.256538] x8 : 0000000000000008 x7 : 0000000000000001 x6 : 000000005f54a200
-[   49.263662] x5 : 0000000001000000 x4 : ffff800081b93680 x3 : ffff800081519be0
-[   49.270786] x2 : 0000000080800052 x1 : 0000000000000000 x0 : ffff0000001b4000
-[   49.277911] Call trace:
-[   49.280346]  0x80800052
-[   49.282781]  platform_pm_resume+0x2c/0x68
-[   49.286785]  dpm_run_callback.constprop.0+0x74/0x134
-[   49.291742]  device_resume+0x88/0x194
-[   49.295391]  dpm_resume+0x10c/0x230
-[   49.298866]  dpm_resume_end+0x18/0x30
-[   49.302515]  suspend_devices_and_enter+0x2b8/0x624
-[   49.307299]  pm_suspend+0x1fc/0x348
-[   49.310774]  state_store+0x80/0x104
-[   49.314258]  kobj_attr_store+0x18/0x2c
-[   49.318002]  sysfs_kf_write+0x44/0x54
-[   49.321659]  kernfs_fop_write_iter+0x120/0x1ec
-[   49.326088]  vfs_write+0x1bc/0x300
-[   49.329485]  ksys_write+0x70/0x104
-[   49.332874]  __arm64_sys_write+0x1c/0x28
-[   49.336783]  invoke_syscall+0x48/0x114
-[   49.340527]  el0_svc_common.constprop.0+0xc4/0xe4
-[   49.345224]  do_el0_svc+0x38/0x98
-[   49.348526]  el0_svc+0x2c/0x84
-[   49.351568]  el0t_64_sync_handler+0x100/0x12c
-[   49.355910]  el0t_64_sync+0x190/0x194
-[   49.359567] Code: ???????? ???????? ???????? ???????? (????????)
-[   49.365644] ---[ end trace 0000000000000000 ]---
+cc1: warning: arch/xtensa/boot/include: No such file or directory [-Wmissing-include-dirs]
 
-Fixes: 97117eb51ec8 ("net: stmmac: platform: provide stmmac_pltfr_init()")
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 437374e9a950 ("restore arch/{ppc/xtensa}/boot cflags")
+Fixes: 4bedea945451 ("xtensa: Architecture support for Tensilica Xtensa Part 2")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Message-Id: <20230920052139.10570-15-rdunlap@infradead.org>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/xtensa/boot/Makefile | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index 231152ee5a323..5a3bd30d6c220 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -901,7 +901,7 @@ static int __maybe_unused stmmac_pltfr_resume(struct device *dev)
- 	struct platform_device *pdev = to_platform_device(dev);
- 	int ret;
+diff --git a/arch/xtensa/boot/Makefile b/arch/xtensa/boot/Makefile
+index f6bb352f94b43..c8fd705d08b2c 100644
+--- a/arch/xtensa/boot/Makefile
++++ b/arch/xtensa/boot/Makefile
+@@ -9,8 +9,7 @@
  
--	ret = stmmac_pltfr_init(pdev, priv->plat->bsp_priv);
-+	ret = stmmac_pltfr_init(pdev, priv->plat);
- 	if (ret)
- 		return ret;
+ 
+ # KBUILD_CFLAGS used when building rest of boot (takes effect recursively)
+-KBUILD_CFLAGS	+= -fno-builtin -Iarch/$(ARCH)/boot/include
+-HOSTFLAGS	+= -Iarch/$(ARCH)/boot/include
++KBUILD_CFLAGS	+= -fno-builtin
+ 
+ BIG_ENDIAN	:= $(shell echo __XTENSA_EB__ | $(CC) -E - | grep -v "\#")
  
 -- 
 2.40.1
