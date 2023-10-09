@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 220AA7BDF99
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DDC77BE0CC
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377085AbjJINbs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:31:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47576 "EHLO
+        id S1377403AbjJINoX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:44:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377090AbjJINbs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:48 -0400
+        with ESMTP id S1377501AbjJINoD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85E229C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C2CC433C7;
-        Mon,  9 Oct 2023 13:31:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93014C6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF091C433C8;
+        Mon,  9 Oct 2023 13:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858306;
-        bh=u4Zl/J3Xh1v2Y3jrwyqy8rGqj7d/tUcnIhQ2TdyJNuo=;
+        s=korg; t=1696859042;
+        bh=/xq3RiYsriZPf5HSigLpB3QGTPR2YKQ4xk8YxV1/a+k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CKlwYImAbCZhSKGbOJYcTyfHbo6hsB3CUh9p/7t8xp/fbjPRjyWIr4v5HollNwgkV
-         R/3iHd7kc1YuU4HFSqBLhlfF23PHnpuT/qGyYcvIWw5XLrstNfmyryBnKuD2QIbTdG
-         zEkweFSJ7JaLeKwKGXU6ckKSkwOBbOteaXE56mAE=
+        b=bBhmvV4Y+fKkcSviPJDQfanIqhYx8al3CY+JxuS3dwhNHQzeFNAb43zbG1qGo5psV
+         E4z+cI/aX/ZqrJoXQBOR3192T07xKAhiZR56ro7IFOoNJnI7JF9U/3gr4ydJdj6RzG
+         w15gipj1OWVPf+Litk1runsB1EexUcCOxbdiEEIs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 5.4 073/131] serial: 8250_port: Check IRQ data before use
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 5.10 152/226] Revert "SUNRPC dont update timeout value on connection reset"
 Date:   Mon,  9 Oct 2023 15:01:53 +0200
-Message-ID: <20231009130118.547988471@linuxfoundation.org>
+Message-ID: <20231009130130.677528089@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,53 +49,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit cce7fc8b29961b64fadb1ce398dc5ff32a79643b upstream.
+commit a275ab62606bcd894ddff09460f7d253828313dc upstream.
 
-In case the leaf driver wants to use IRQ polling (irq = 0) and
-IIR register shows that an interrupt happened in the 8250 hardware
-the IRQ data can be NULL. In such a case we need to skip the wake
-event as we came to this path from the timer interrupt and quite
-likely system is already awake.
+This reverts commit 88428cc4ae7abcc879295fbb19373dd76aad2bdd.
 
-Without this fix we have got an Oops:
+The problem this commit is intended to fix was comprehensively fixed
+in commit 7de62bc09fe6 ("SUNRPC dont update timeout value on connection
+reset").
+Since then, this commit has been preventing the correct timeout of soft
+mounted requests.
 
-    serial8250: ttyS0 at I/O 0x3f8 (irq = 0, base_baud = 115200) is a 16550A
-    ...
-    BUG: kernel NULL pointer dereference, address: 0000000000000010
-    RIP: 0010:serial8250_handle_irq+0x7c/0x240
-    Call Trace:
-     ? serial8250_handle_irq+0x7c/0x240
-     ? __pfx_serial8250_timeout+0x10/0x10
-
-Fixes: 0ba9e3a13c6a ("serial: 8250: Add missing wakeup event reporting")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20230831222555.614426-1-andriy.shevchenko@linux.intel.com
+Cc: stable@vger.kernel.org # 5.9.x: 09252177d5f9: SUNRPC: Handle major timeout in xprt_adjust_timeout()
+Cc: stable@vger.kernel.org # 5.9.x: 7de62bc09fe6: SUNRPC dont update timeout value on connection reset
+Cc: stable@vger.kernel.org # 5.9.x
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_port.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/sunrpc/clnt.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1865,7 +1865,10 @@ int serial8250_handle_irq(struct uart_po
- 		skip_rx = true;
- 
- 	if (status & (UART_LSR_DR | UART_LSR_BI) && !skip_rx) {
--		if (irqd_is_wakeup_set(irq_get_irq_data(port->irq)))
-+		struct irq_data *d;
-+
-+		d = irq_get_irq_data(port->irq);
-+		if (d && irqd_is_wakeup_set(d))
- 			pm_wakeup_event(tport->tty->dev, 0);
- 		if (!up->dma || handle_rx_dma(up, iir))
- 			status = serial8250_rx_chars(up, status);
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2354,8 +2354,7 @@ call_status(struct rpc_task *task)
+ 		goto out_exit;
+ 	}
+ 	task->tk_action = call_encode;
+-	if (status != -ECONNRESET && status != -ECONNABORTED)
+-		rpc_check_timeout(task);
++	rpc_check_timeout(task);
+ 	return;
+ out_exit:
+ 	rpc_call_rpcerror(task, status);
 
 
