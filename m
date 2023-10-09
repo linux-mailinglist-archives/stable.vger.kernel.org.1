@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1E6B7BE0C2
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 484737BDFA9
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377401AbjJINnj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:43:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39862 "EHLO
+        id S1377113AbjJINcc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:32:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377397AbjJINni (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:38 -0400
+        with ESMTP id S1377117AbjJINcb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5278791
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9189EC433C9;
-        Mon,  9 Oct 2023 13:43:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE11B7
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FD5C433CA;
+        Mon,  9 Oct 2023 13:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859017;
-        bh=0JQ+xVcnqIv2YqQDF37BF87Y0GAcWsAVQO3dZVBUKlg=;
+        s=korg; t=1696858347;
+        bh=uA4Ii6thaw1RKyKoG7hU5wA4BgxApKPt9F5KZtqsNJg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R1SXTMuHwAJFCdAJ97JyukfKYEN0NAFo/JMV4klCTKYz8gXm3qCNJGj+oD5k8qvw6
-         +cLsJO3b+YPCGP8f/GiIJ963lQT3k/kXzP9HvUi7CsTWlzg1kyCdRu50Ycv/ZMtIe/
-         hATkBtivLeLwPFCX2kKXERE0Q097geLw9Ei+/4aE=
+        b=IervZeCo4cwciXNgHKmdjFJfjuBTul0vYArh1LgbjKi/dhXksHNUIvZv0g+DYMzku
+         NH5BJQX9yqMtvxhImSDzQZ0eebr9IlplBsRxAWY0HVqYpnDMJ1JCaQxQb01ze5g6wi
+         hnF6gVT3gmj0i9M+PgQjzIHpv9wKTq4trcQanzhw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 172/226] rbd: move rbd_dev_refresh() definition
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 5.4 093/131] wifi: mwifiex: Fix tlv_buf_left calculation
 Date:   Mon,  9 Oct 2023 15:02:13 +0200
-Message-ID: <20231009130131.147693874@linuxfoundation.org>
+Message-ID: <20231009130119.233415785@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,121 +50,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-commit 0b035401c57021fc6c300272cbb1c5a889d4fe45 upstream.
+commit eec679e4ac5f47507774956fb3479c206e761af7 upstream.
 
-Move rbd_dev_refresh() definition further down to avoid having to
-move struct parent_image_info definition in the next commit.  This
-spares some forward declarations too.
+In a TLV encoding scheme, the Length part represents the length after
+the header containing the values for type and length. In this case,
+`tlv_len` should be:
 
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-[idryomov@gmail.com: backport to 5.10-6.1: context]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+tlv_len == (sizeof(*tlv_rxba) - 1) - sizeof(tlv_rxba->header) + tlv_bitmap_len
+
+Notice that the `- 1` accounts for the one-element array `bitmap`, which
+1-byte size is already included in `sizeof(*tlv_rxba)`.
+
+So, if the above is correct, there is a double-counting of some members
+in `struct mwifiex_ie_types_rxba_sync`, when `tlv_buf_left` and `tmp`
+are calculated:
+
+968                 tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+969                 tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
+
+in specific, members:
+
+drivers/net/wireless/marvell/mwifiex/fw.h:777
+ 777         u8 mac[ETH_ALEN];
+ 778         u8 tid;
+ 779         u8 reserved;
+ 780         __le16 seq_num;
+ 781         __le16 bitmap_len;
+
+This is clearly wrong, and affects the subsequent decoding of data in
+`event_buf` through `tlv_rxba`:
+
+970                 tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
+
+Fix this by using `sizeof(tlv_rxba->header)` instead of `sizeof(*tlv_rxba)`
+in the calculation of `tlv_buf_left` and `tmp`.
+
+This results in the following binary differences before/after changes:
+
+| drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
+| @@ -4698,11 +4698,11 @@
+|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:968
+|                 tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
+| -    1da7:      lea    -0x11(%rbx),%edx
+| +    1da7:      lea    -0x4(%rbx),%edx
+|      1daa:      movzwl %bp,%eax
+|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:969
+|                 tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
+| -    1dad:      lea    0x11(%r15,%rbp,1),%r15
+| +    1dad:      lea    0x4(%r15,%rbp,1),%r15
+
+The above reflects the desired change: avoid counting 13 too many bytes;
+which is the total size of the double-counted members in
+`struct mwifiex_ie_types_rxba_sync`:
+
+$ pahole -C mwifiex_ie_types_rxba_sync drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
+struct mwifiex_ie_types_rxba_sync {
+	struct mwifiex_ie_types_header header;           /*     0     4 */
+
+     |-----------------------------------------------------------------------
+     |  u8                         mac[6];               /*     4     6 */  |
+     |	u8                         tid;                  /*    10     1 */  |
+     |  u8                         reserved;             /*    11     1 */  |
+     | 	__le16                     seq_num;              /*    12     2 */  |
+     | 	__le16                     bitmap_len;           /*    14     2 */  |
+     |  u8                         bitmap[1];            /*    16     1 */  |
+     |----------------------------------------------------------------------|
+								  | 13 bytes|
+								  -----------
+
+	/* size: 17, cachelines: 1, members: 7 */
+	/* last cacheline: 17 bytes */
+} __attribute__((__packed__));
+
+Fixes: 99ffe72cdae4 ("mwifiex: process rxba_sync event")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/06668edd68e7a26bbfeebd1201ae077a2a7a8bce.1692931954.git.gustavoars@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c | 68 ++++++++++++++++++++++-----------------------
- 1 file changed, 33 insertions(+), 35 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 95cbd5790ed60..82cf9be4badc5 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -633,8 +633,6 @@ static void rbd_dev_remove_parent(struct rbd_device *rbd_dev);
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -977,8 +977,8 @@ void mwifiex_11n_rxba_sync_event(struct
+ 			}
+ 		}
  
- static int rbd_dev_refresh(struct rbd_device *rbd_dev);
- static int rbd_dev_v2_header_onetime(struct rbd_device *rbd_dev);
--static int rbd_dev_header_info(struct rbd_device *rbd_dev);
--static int rbd_dev_v2_parent_info(struct rbd_device *rbd_dev);
- static const char *rbd_dev_v2_snap_name(struct rbd_device *rbd_dev,
- 					u64 snap_id);
- static int _rbd_dev_v2_snap_size(struct rbd_device *rbd_dev, u64 snap_id,
-@@ -4989,39 +4987,6 @@ static void rbd_dev_update_size(struct rbd_device *rbd_dev)
+-		tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+-		tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
++		tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
++		tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
+ 		tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
  	}
  }
- 
--static int rbd_dev_refresh(struct rbd_device *rbd_dev)
--{
--	u64 mapping_size;
--	int ret;
--
--	down_write(&rbd_dev->header_rwsem);
--	mapping_size = rbd_dev->mapping.size;
--
--	ret = rbd_dev_header_info(rbd_dev);
--	if (ret)
--		goto out;
--
--	/*
--	 * If there is a parent, see if it has disappeared due to the
--	 * mapped image getting flattened.
--	 */
--	if (rbd_dev->parent) {
--		ret = rbd_dev_v2_parent_info(rbd_dev);
--		if (ret)
--			goto out;
--	}
--
--	rbd_assert(!rbd_is_snap(rbd_dev));
--	rbd_dev->mapping.size = rbd_dev->header.image_size;
--
--out:
--	up_write(&rbd_dev->header_rwsem);
--	if (!ret && mapping_size != rbd_dev->mapping.size)
--		rbd_dev_update_size(rbd_dev);
--
--	return ret;
--}
--
- static const struct blk_mq_ops rbd_mq_ops = {
- 	.queue_rq	= rbd_queue_rq,
- };
-@@ -7115,6 +7080,39 @@ static int rbd_dev_image_probe(struct rbd_device *rbd_dev, int depth)
- 	return ret;
- }
- 
-+static int rbd_dev_refresh(struct rbd_device *rbd_dev)
-+{
-+	u64 mapping_size;
-+	int ret;
-+
-+	down_write(&rbd_dev->header_rwsem);
-+	mapping_size = rbd_dev->mapping.size;
-+
-+	ret = rbd_dev_header_info(rbd_dev);
-+	if (ret)
-+		goto out;
-+
-+	/*
-+	 * If there is a parent, see if it has disappeared due to the
-+	 * mapped image getting flattened.
-+	 */
-+	if (rbd_dev->parent) {
-+		ret = rbd_dev_v2_parent_info(rbd_dev);
-+		if (ret)
-+			goto out;
-+	}
-+
-+	rbd_assert(!rbd_is_snap(rbd_dev));
-+	rbd_dev->mapping.size = rbd_dev->header.image_size;
-+
-+out:
-+	up_write(&rbd_dev->header_rwsem);
-+	if (!ret && mapping_size != rbd_dev->mapping.size)
-+		rbd_dev_update_size(rbd_dev);
-+
-+	return ret;
-+}
-+
- static ssize_t do_rbd_add(struct bus_type *bus,
- 			  const char *buf,
- 			  size_t count)
--- 
-2.40.1
-
 
 
