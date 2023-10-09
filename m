@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 511167BE065
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 319F07BDE88
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377308AbjJINjp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:39:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38608 "EHLO
+        id S234543AbjJINUX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:20:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377316AbjJINji (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:39:38 -0400
+        with ESMTP id S234542AbjJINUW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6365B9C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:39:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E90C433C8;
-        Mon,  9 Oct 2023 13:39:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6892AF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3DBC433C7;
+        Mon,  9 Oct 2023 13:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858776;
-        bh=nqXVHuRomkD6GtiHTupAYEnOPhhxOHYLj2BzBDePmmo=;
+        s=korg; t=1696857620;
+        bh=pkIEYF9r9Gs8SE9jyoQmxqpdrYUss1k5oiS3p1HpkFs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d5E9HkdGG7MdW/VIdCrSW1huqbeRCxYVaGxtEm1JlV0W+EeQDnQDP7n5eIwvPFrXS
-         OqIpRFXzdz01d0K+CGtxHo1y+PeMzcSM+PVfMLMbBsZpjgfqLTgkA79NaPNqMlRgUP
-         F2O8H4ZycEC5rHYNwW7epW08wKUxCcxYFatO8E0I=
+        b=h4SO3UAKhrK7PjKnENcbEpG2Harj1fdvuGog7IjGsXBSJpk7AW5QouiqgO+JIWh13
+         ZfvJz5UUEw7fJgrCXFCRg8MKaRM/qp4GeaTnPpgQj8Rm9fIF1L/8E0OHUeL5tHwS30
+         RGMkrVnlW1OgH91I6NlOUXmQOLawPf6tXfaL8QZw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/226] ARM: dts: am335x: Guardian: Update beeper label
+Subject: [PATCH 6.1 077/162] wifi: cfg80211: hold wiphy lock in auto-disconnect
 Date:   Mon,  9 Oct 2023 15:00:58 +0200
-Message-ID: <20231009130129.311248905@linuxfoundation.org>
+Message-ID: <20231009130125.042777516@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +48,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit b5bf6b434575d32aeaa70c82ec84b3cec92e2973 ]
+[ Upstream commit e9da6df7492a981b071bafd169fb4c35b45f5ebf ]
 
- * Update lable pwm to guardian beeper
+Most code paths in cfg80211 already hold the wiphy lock,
+mostly by virtue of being called from nl80211, so make
+the auto-disconnect worker also hold it, aligning the
+locking promises between different parts of cfg80211.
 
-Signed-off-by: Gireesh Hiremath <Gireesh.Hiremath@in.bosch.com>
-Message-Id: <20220325100613.1494-8-Gireesh.Hiremath@in.bosch.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Stable-dep-of: ac08bda1569b ("ARM: dts: ti: omap: motorola-mapphone: Fix abe_clkctrl warning on boot")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/am335x-guardian.dts | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/wireless/core.c | 6 ++----
+ net/wireless/sme.c  | 4 +++-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/am335x-guardian.dts b/arch/arm/boot/dts/am335x-guardian.dts
-index 1918766c1f809..b113edab76955 100644
---- a/arch/arm/boot/dts/am335x-guardian.dts
-+++ b/arch/arm/boot/dts/am335x-guardian.dts
-@@ -100,11 +100,11 @@
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 609b79fe4a748..9ac7c54379cf3 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1162,10 +1162,6 @@ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
+ 	kfree_sensitive(wdev->wext.keys);
+ 	wdev->wext.keys = NULL;
+ #endif
+-	/* only initialized if we have a netdev */
+-	if (wdev->netdev)
+-		flush_work(&wdev->disconnect_wk);
+-
+ 	cfg80211_cqm_config_free(wdev);
  
- 	};
+ 	/*
+@@ -1439,6 +1435,8 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
+ 		cfg80211_leave(rdev, wdev);
+ 		cfg80211_remove_links(wdev);
+ 		wiphy_unlock(&rdev->wiphy);
++		/* since we just did cfg80211_leave() nothing to do there */
++		cancel_work_sync(&wdev->disconnect_wk);
+ 		break;
+ 	case NETDEV_DOWN:
+ 		wiphy_lock(&rdev->wiphy);
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 6e87d2cd83456..b97834284baef 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -5,7 +5,7 @@
+  * (for nl80211's connect() and wext)
+  *
+  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2009, 2020, 2022 Intel Corporation. All rights reserved.
++ * Copyright (C) 2009, 2020, 2022-2023 Intel Corporation. All rights reserved.
+  * Copyright 2017	Intel Deutschland GmbH
+  */
  
--	pwm7: dmtimer-pwm {
-+	guardian_beeper: dmtimer-pwm@7 {
- 		compatible = "ti,omap-dmtimer-pwm";
- 		ti,timers = <&timer7>;
- 		pinctrl-names = "default";
--		pinctrl-0 = <&dmtimer7_pins>;
-+		pinctrl-0 = <&guardian_beeper_pins>;
- 		ti,clock-source = <0x01>;
- 	};
+@@ -1555,6 +1555,7 @@ void cfg80211_autodisconnect_wk(struct work_struct *work)
+ 		container_of(work, struct wireless_dev, disconnect_wk);
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
  
-@@ -343,9 +343,9 @@
- 		>;
- 	};
++	wiphy_lock(wdev->wiphy);
+ 	wdev_lock(wdev);
  
--	dmtimer7_pins: pinmux_dmtimer7_pins {
-+	guardian_beeper_pins: pinmux_dmtimer7_pins {
- 		pinctrl-single,pins = <
--			AM33XX_IOPAD(0x968, PIN_OUTPUT | MUX_MODE5)
-+			AM33XX_IOPAD(0x968, PIN_OUTPUT | MUX_MODE5) /* (E18) timer7 */
- 		>;
- 	};
+ 	if (wdev->conn_owner_nlportid) {
+@@ -1593,4 +1594,5 @@ void cfg80211_autodisconnect_wk(struct work_struct *work)
+ 	}
  
+ 	wdev_unlock(wdev);
++	wiphy_unlock(wdev->wiphy);
+ }
 -- 
 2.40.1
 
