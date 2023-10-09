@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B1FF7BE1AC
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D51417BE13B
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:48:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377507AbjJINwr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:52:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38626 "EHLO
+        id S234542AbjJINsY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:48:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377454AbjJINwp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:52:45 -0400
+        with ESMTP id S232860AbjJINsY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:48:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E34D3DE
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:52:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240BFC433C7;
-        Mon,  9 Oct 2023 13:52:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D068994
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:48:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4CBC433C9;
+        Mon,  9 Oct 2023 13:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859563;
-        bh=Et1BOmMG+rczCAtOmBdwBghCzeRLxgaxkPjbwayInpQ=;
+        s=korg; t=1696859302;
+        bh=IHO2gGPJrUePJTk6V8kSOgjZJSZgyrzD8IzRGSX6d/E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BfRC8+f3lIMz2+4U9wFdTXEDN2TvAS1BKz2jx/KFJxIHycDiExtY4hM9vS1A+iKnx
-         AuYD1SmLIAek+6rkMC5197OF/BFh/WUbRV2Kkr6YCblOc6ezUGBYyyLGdw5/zfG+s7
-         a3MW2dU1yCKlkSMnA/6RKiXlBU46ojS24RzDPVts=
+        b=prJPZ3U6DePBV930jfqpt6AswtKdEhAYFZfRCQ4nN2Hs5tJQaxX2pPCvVdC5zK2Nu
+         u5o7JBuXhyKUF8i1hu8cwfTSZ+wfIbFrB6bfAU2iH3SS8VT7nYK9Hb2AYgZK8VUHxv
+         mK78YoqqymnCgJywlQ41m2shnLwdVprSmLI2y9+c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Greg Ungerer <gerg@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Kees Cook <keescook@chromium.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 60/91] fs: binfmt_elf_efpic: fix personality for ELF-FDPIC
-Date:   Mon,  9 Oct 2023 15:06:32 +0200
-Message-ID: <20231009130113.589732054@linuxfoundation.org>
+        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 4.14 34/55] ata: libata: disallow dev-initiated LPM transitions to unsupported states
+Date:   Mon,  9 Oct 2023 15:06:33 +0200
+Message-ID: <20231009130108.996470435@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,67 +49,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Ungerer <gerg@kernel.org>
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-commit 7c3151585730b7095287be8162b846d31e6eee61 upstream.
+commit 24e0e61db3cb86a66824531989f1df80e0939f26 upstream.
 
-The elf-fdpic loader hard sets the process personality to either
-PER_LINUX_FDPIC for true elf-fdpic binaries or to PER_LINUX for normal ELF
-binaries (in this case they would be constant displacement compiled with
--pie for example).  The problem with that is that it will lose any other
-bits that may be in the ELF header personality (such as the "bug
-emulation" bits).
+In AHCI 1.3.1, the register description for CAP.SSC:
+"When cleared to ‘0’, software must not allow the HBA to initiate
+transitions to the Slumber state via agressive link power management nor
+the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+must be programmed to disallow device initiated Slumber requests."
 
-On the ARM architecture the ADDR_LIMIT_32BIT flag is used to signify a
-normal 32bit binary - as opposed to a legacy 26bit address binary.  This
-matters since start_thread() will set the ARM CPSR register as required
-based on this flag.  If the elf-fdpic loader loses this bit the process
-will be mis-configured and crash out pretty quickly.
+In AHCI 1.3.1, the register description for CAP.PSC:
+"When cleared to ‘0’, software must not allow the HBA to initiate
+transitions to the Partial state via agressive link power management nor
+the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+must be programmed to disallow device initiated Partial requests."
 
-Modify elf-fdpic loader personality setting so that it preserves the upper
-three bytes by using the SET_PERSONALITY macro to set it.  This macro in
-the generic case sets PER_LINUX and preserves the upper bytes.
-Architectures can override this for their specific use case, and ARM does
-exactly this.
+Ensure that we always set the corresponding bits in PxSCTL.IPM, such that
+a device is not allowed to initiate transitions to power states which are
+unsupported by the HBA.
 
-The problem shows up quite easily running under qemu using the ARM
-architecture, but not necessarily on all types of real ARM hardware.  If
-the underlying ARM processor does not support the legacy 26-bit addressing
-mode then everything will work as expected.
+DevSleep is always initiated by the HBA, however, for completeness, set the
+corresponding bit in PxSCTL.IPM such that agressive link power management
+cannot transition to DevSleep if DevSleep is not supported.
 
-Link: https://lkml.kernel.org/r/20230907011808.2985083-1-gerg@kernel.org
-Fixes: 1bde925d23547 ("fs/binfmt_elf_fdpic.c: provide NOMMU loader for regular ELF binaries")
-Signed-off-by: Greg Ungerer <gerg@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: Greg Ungerer <gerg@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+sata_link_scr_lpm() is used by libahci, ata_piix and libata-pmp.
+However, only libahci has the ability to read the CAP/CAP2 register to see
+if these features are supported. Therefore, in order to not introduce any
+regressions on ata_piix or libata-pmp, create flags that indicate that the
+respective feature is NOT supported. This way, the behavior for ata_piix
+and libata-pmp should remain unchanged.
+
+This change is based on a patch originally submitted by Runa Guo-oc.
+
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Fixes: 1152b2617a6e ("libata: implement sata_link_scr_lpm() and make ata_dev_set_feature() global")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/binfmt_elf_fdpic.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/ata/ahci.c        |    9 +++++++++
+ drivers/ata/libata-core.c |   19 ++++++++++++++++---
+ include/linux/libata.h    |    4 ++++
+ 3 files changed, 29 insertions(+), 3 deletions(-)
 
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -349,10 +349,9 @@ static int load_elf_fdpic_binary(struct
- 	/* there's now no turning back... the old userspace image is dead,
- 	 * defunct, deceased, etc.
- 	 */
-+	SET_PERSONALITY(exec_params.hdr);
- 	if (elf_check_fdpic(&exec_params.hdr))
--		set_personality(PER_LINUX_FDPIC);
--	else
--		set_personality(PER_LINUX);
-+		current->personality |= PER_LINUX_FDPIC;
- 	if (elf_read_implies_exec(&exec_params.hdr, executable_stack))
- 		current->personality |= READ_IMPLIES_EXEC;
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1775,6 +1775,15 @@ static int ahci_init_one(struct pci_dev
+ 	else
+ 		dev_info(&pdev->dev, "SSS flag set, parallel bus scan disabled\n");
  
++	if (!(hpriv->cap & HOST_CAP_PART))
++		host->flags |= ATA_HOST_NO_PART;
++
++	if (!(hpriv->cap & HOST_CAP_SSC))
++		host->flags |= ATA_HOST_NO_SSC;
++
++	if (!(hpriv->cap2 & HOST_CAP2_SDS))
++		host->flags |= ATA_HOST_NO_DEVSLP;
++
+ 	if (pi.flags & ATA_FLAG_EM)
+ 		ahci_reset_em(host);
+ 
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -3993,10 +3993,23 @@ int sata_link_scr_lpm(struct ata_link *l
+ 		scontrol |= (0x6 << 8);
+ 		break;
+ 	case ATA_LPM_MIN_POWER:
+-		if (ata_link_nr_enabled(link) > 0)
+-			/* no restrictions on LPM transitions */
++		if (ata_link_nr_enabled(link) > 0) {
++			/* assume no restrictions on LPM transitions */
+ 			scontrol &= ~(0x7 << 8);
+-		else {
++
++			/*
++			 * If the controller does not support partial, slumber,
++			 * or devsleep, then disallow these transitions.
++			 */
++			if (link->ap->host->flags & ATA_HOST_NO_PART)
++				scontrol |= (0x1 << 8);
++
++			if (link->ap->host->flags & ATA_HOST_NO_SSC)
++				scontrol |= (0x2 << 8);
++
++			if (link->ap->host->flags & ATA_HOST_NO_DEVSLP)
++				scontrol |= (0x4 << 8);
++		} else {
+ 			/* empty port, power off */
+ 			scontrol &= ~0xf;
+ 			scontrol |= (0x1 << 2);
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -279,6 +279,10 @@ enum {
+ 	ATA_HOST_PARALLEL_SCAN	= (1 << 2),	/* Ports on this host can be scanned in parallel */
+ 	ATA_HOST_IGNORE_ATA	= (1 << 3),	/* Ignore ATA devices on this host. */
+ 
++	ATA_HOST_NO_PART	= (1 << 4), /* Host does not support partial */
++	ATA_HOST_NO_SSC		= (1 << 5), /* Host does not support slumber */
++	ATA_HOST_NO_DEVSLP	= (1 << 6), /* Host does not support devslp */
++
+ 	/* bits 24:31 of host->flags are reserved for LLD specific flags */
+ 
+ 	/* various lengths of time */
 
 
