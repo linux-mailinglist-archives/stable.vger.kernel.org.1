@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 582E87BDE83
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0516A7BDF68
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346463AbjJINUL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:20:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40020 "EHLO
+        id S1376806AbjJIN3m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:29:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346459AbjJINUK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:10 -0400
+        with ESMTP id S1377008AbjJIN3l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:29:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC15CA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84815C433C8;
-        Mon,  9 Oct 2023 13:20:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0222A3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:29:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A821C433C9;
+        Mon,  9 Oct 2023 13:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857607;
-        bh=KhnhA6R9Zw8E7NFnCu3a8gOmPEC8CUmvyiwsVzYqLRs=;
+        s=korg; t=1696858179;
+        bh=bnU9je6qHZo3oa0v+9ztG8cJ7teill9WWhhh/wLN9XA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mk+HXDAGKsdVgkK1YdiihqcDnqSA1vlwVGHhopfBkXQF1TpObuUj8LWV3ct7Da+zc
-         D8vdc15iexKu4GfiTLUA3ZduTwpUYuRmAMSaRZgONX/glJA08ni8ywvFArjmnACsq9
-         qAasbZaZdNfqvh/esYBDZWT89Vx7rGruMhdKTeeY=
+        b=FdFCs1k3A4Opo+HUFwNyV3WLeaNEYQYry/3YSoYWBb6eWyo54lVqeIAsENgSQXsa0
+         JX5KSlIr8fntH5ZqOmUAnebdzqVLZKLiwfLEqBrvS2tDMP4YIhJG6XsHaWUjcfzWem
+         nM9YW7abaNl8MszXQFM2AMxvovsi3VBrLEN5wdXU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Junxiao Bi <junxiao.bi@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Anthony Koo <Anthony.Koo@amd.com>,
+        Aric Cyr <Aric.Cyr@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/162] scsi: target: core: Fix deadlock due to recursive locking
+Subject: [PATCH 5.4 040/131] drm/amd/display: Fix LFC multiplier changing erratically
 Date:   Mon,  9 Oct 2023 15:01:20 +0200
-Message-ID: <20231009130125.655025154@linuxfoundation.org>
+Message-ID: <20231009130117.536360898@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,100 +51,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxiao Bi <junxiao.bi@oracle.com>
+From: Anthony Koo <Anthony.Koo@amd.com>
 
-[ Upstream commit a154f5f643c6ecddd44847217a7a3845b4350003 ]
+[ Upstream commit 575da8db31572d1d8de572d0b6ffb113624c2f8f ]
 
-The following call trace shows a deadlock issue due to recursive locking of
-mutex "device_mutex". First lock acquire is in target_for_each_device() and
-second in target_free_device().
+[Why]
+1. There is a calculation that is using frame_time_in_us instead of
+last_render_time_in_us to calculate whether choosing an LFC multiplier
+would cause the inserted frame duration to be outside of range.
 
- PID: 148266   TASK: ffff8be21ffb5d00  CPU: 10   COMMAND: "iscsi_ttx"
-  #0 [ffffa2bfc9ec3b18] __schedule at ffffffffa8060e7f
-  #1 [ffffa2bfc9ec3ba0] schedule at ffffffffa8061224
-  #2 [ffffa2bfc9ec3bb8] schedule_preempt_disabled at ffffffffa80615ee
-  #3 [ffffa2bfc9ec3bc8] __mutex_lock at ffffffffa8062fd7
-  #4 [ffffa2bfc9ec3c40] __mutex_lock_slowpath at ffffffffa80631d3
-  #5 [ffffa2bfc9ec3c50] mutex_lock at ffffffffa806320c
-  #6 [ffffa2bfc9ec3c68] target_free_device at ffffffffc0935998 [target_core_mod]
-  #7 [ffffa2bfc9ec3c90] target_core_dev_release at ffffffffc092f975 [target_core_mod]
-  #8 [ffffa2bfc9ec3ca0] config_item_put at ffffffffa79d250f
-  #9 [ffffa2bfc9ec3cd0] config_item_put at ffffffffa79d2583
- #10 [ffffa2bfc9ec3ce0] target_devices_idr_iter at ffffffffc0933f3a [target_core_mod]
- #11 [ffffa2bfc9ec3d00] idr_for_each at ffffffffa803f6fc
- #12 [ffffa2bfc9ec3d60] target_for_each_device at ffffffffc0935670 [target_core_mod]
- #13 [ffffa2bfc9ec3d98] transport_deregister_session at ffffffffc0946408 [target_core_mod]
- #14 [ffffa2bfc9ec3dc8] iscsit_close_session at ffffffffc09a44a6 [iscsi_target_mod]
- #15 [ffffa2bfc9ec3df0] iscsit_close_connection at ffffffffc09a4a88 [iscsi_target_mod]
- #16 [ffffa2bfc9ec3df8] finish_task_switch at ffffffffa76e5d07
- #17 [ffffa2bfc9ec3e78] iscsit_take_action_for_connection_exit at ffffffffc0991c23 [iscsi_target_mod]
- #18 [ffffa2bfc9ec3ea0] iscsi_target_tx_thread at ffffffffc09a403b [iscsi_target_mod]
- #19 [ffffa2bfc9ec3f08] kthread at ffffffffa76d8080
- #20 [ffffa2bfc9ec3f50] ret_from_fork at ffffffffa8200364
+2. We do not handle unsigned integer subtraction correctly and it underflows
+to a really large value, which causes some logic errors.
 
-Fixes: 36d4cb460bcb ("scsi: target: Avoid that EXTENDED COPY commands trigger lock inversion")
-Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
-Link: https://lore.kernel.org/r/20230918225848.66463-1-junxiao.bi@oracle.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[How]
+1. Fix logic to calculate 'within range' using last_render_time_in_us
+2. Split out delta_from_mid_point_delta_in_us calculation to ensure
+we don't underflow and wrap around
+
+Signed-off-by: Anthony Koo <Anthony.Koo@amd.com>
+Reviewed-by: Aric Cyr <Aric.Cyr@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 07e388aab042 ("drm/amd/display: prevent potential division by zero errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_device.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ .../amd/display/modules/freesync/freesync.c   | 36 +++++++++++++++----
+ 1 file changed, 29 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index d21f88de197c7..301fe376a1206 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -883,7 +883,6 @@ sector_t target_to_linux_sector(struct se_device *dev, sector_t lb)
- EXPORT_SYMBOL(target_to_linux_sector);
+diff --git a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
+index dbbd7d2765ea5..5835b968cac5d 100644
+--- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
++++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
+@@ -320,22 +320,44 @@ static void apply_below_the_range(struct core_freesync *core_freesync,
  
- struct devices_idr_iter {
--	struct config_item *prev_item;
- 	int (*fn)(struct se_device *dev, void *data);
- 	void *data;
- };
-@@ -893,11 +892,9 @@ static int target_devices_idr_iter(int id, void *p, void *data)
- {
- 	struct devices_idr_iter *iter = data;
- 	struct se_device *dev = p;
-+	struct config_item *item;
- 	int ret;
+ 		/* Choose number of frames to insert based on how close it
+ 		 * can get to the mid point of the variable range.
++		 *  - Delta for CEIL: delta_from_mid_point_in_us_1
++		 *  - Delta for FLOOR: delta_from_mid_point_in_us_2
+ 		 */
+-		if ((frame_time_in_us / mid_point_frames_ceil) > in_out_vrr->min_duration_in_us &&
+-				(delta_from_mid_point_in_us_1 < delta_from_mid_point_in_us_2 ||
+-						mid_point_frames_floor < 2)) {
++		if ((last_render_time_in_us / mid_point_frames_ceil) < in_out_vrr->min_duration_in_us) {
++			/* Check for out of range.
++			 * If using CEIL produces a value that is out of range,
++			 * then we are forced to use FLOOR.
++			 */
++			frames_to_insert = mid_point_frames_floor;
++		} else if (mid_point_frames_floor < 2) {
++			/* Check if FLOOR would result in non-LFC. In this case
++			 * choose to use CEIL
++			 */
++			frames_to_insert = mid_point_frames_ceil;
++		} else if (delta_from_mid_point_in_us_1 < delta_from_mid_point_in_us_2) {
++			/* If choosing CEIL results in a frame duration that is
++			 * closer to the mid point of the range.
++			 * Choose CEIL
++			 */
+ 			frames_to_insert = mid_point_frames_ceil;
+-			delta_from_mid_point_delta_in_us = delta_from_mid_point_in_us_2 -
+-					delta_from_mid_point_in_us_1;
+ 		} else {
++			/* If choosing FLOOR results in a frame duration that is
++			 * closer to the mid point of the range.
++			 * Choose FLOOR
++			 */
+ 			frames_to_insert = mid_point_frames_floor;
+-			delta_from_mid_point_delta_in_us = delta_from_mid_point_in_us_1 -
+-					delta_from_mid_point_in_us_2;
+ 		}
  
--	config_item_put(iter->prev_item);
--	iter->prev_item = NULL;
--
- 	/*
- 	 * We add the device early to the idr, so it can be used
- 	 * by backend modules during configuration. We do not want
-@@ -907,12 +904,13 @@ static int target_devices_idr_iter(int id, void *p, void *data)
- 	if (!target_dev_configured(dev))
- 		return 0;
- 
--	iter->prev_item = config_item_get_unless_zero(&dev->dev_group.cg_item);
--	if (!iter->prev_item)
-+	item = config_item_get_unless_zero(&dev->dev_group.cg_item);
-+	if (!item)
- 		return 0;
- 	mutex_unlock(&device_mutex);
- 
- 	ret = iter->fn(dev, iter->data);
-+	config_item_put(item);
- 
- 	mutex_lock(&device_mutex);
- 	return ret;
-@@ -935,7 +933,6 @@ int target_for_each_device(int (*fn)(struct se_device *dev, void *data),
- 	mutex_lock(&device_mutex);
- 	ret = idr_for_each(&devices_idr, target_devices_idr_iter, &iter);
- 	mutex_unlock(&device_mutex);
--	config_item_put(iter.prev_item);
- 	return ret;
- }
- 
+ 		/* Prefer current frame multiplier when BTR is enabled unless it drifts
+ 		 * too far from the midpoint
+ 		 */
++		if (delta_from_mid_point_in_us_1 < delta_from_mid_point_in_us_2) {
++			delta_from_mid_point_delta_in_us = delta_from_mid_point_in_us_2 -
++					delta_from_mid_point_in_us_1;
++		} else {
++			delta_from_mid_point_delta_in_us = delta_from_mid_point_in_us_1 -
++					delta_from_mid_point_in_us_2;
++		}
+ 		if (in_out_vrr->btr.frames_to_insert != 0 &&
+ 				delta_from_mid_point_delta_in_us < BTR_DRIFT_MARGIN) {
+ 			if (((last_render_time_in_us / in_out_vrr->btr.frames_to_insert) <
 -- 
 2.40.1
 
