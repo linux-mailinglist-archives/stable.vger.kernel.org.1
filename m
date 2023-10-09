@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE7547BDFB4
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BA357BDF23
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377120AbjJINdA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:33:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
+        id S1376491AbjJIN0n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377110AbjJINc7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:59 -0400
+        with ESMTP id S1376490AbjJIN0m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DFFF99
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93414C433C8;
-        Mon,  9 Oct 2023 13:32:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FBE594
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB36C433C9;
+        Mon,  9 Oct 2023 13:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858376;
-        bh=98WYEotrShHKQDF3YJ6QVtOwQ/SKMYg+s7UPKoQutWo=;
+        s=korg; t=1696858001;
+        bh=Zw/BF71tm3PSYOBxdwVe+lcOgJftJt+YkMkt8NiVS5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fTSAyMcDmu6k9ie64TxbtR5CfTlnzEvcoddMUTGRSOnPKFlyB2Hqq1J8Kj/2k6smc
-         /wzgqdhDZdEC/dOO404R1fhIhPaDuHzPUkMSsNTaIPNjqnSnlklWjTGAiA20syhtye
-         x8AJOh45qJilI6iu/IagdEPayWUfcMak0T+6trxU=
+        b=I1eJoehtil6ZWF9tOSfwT0wYoSZzwi/uo2GMoI3Rknc4tfiWECBSJaQD/GUK2FTa8
+         G9eEio3SiRiGA8rbvwkh7rgLcdUCdXAi3/704+E5WH7dYgpHvU1cvichvRrIxZg1EP
+         Eluh7RG8MfT9+oOwV8p3vSI9hsGVIb6BbGyRpLqA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.4 076/131] ata: libata-scsi: ignore reserved bits for REPORT SUPPORTED OPERATION CODES
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Leon Hwang <hffilwlqm@gmail.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 34/75] bpf: Fix tr dereferencing
 Date:   Mon,  9 Oct 2023 15:01:56 +0200
-Message-ID: <20231009130118.646899094@linuxfoundation.org>
+Message-ID: <20231009130112.426919408@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,44 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+From: Leon Hwang <hffilwlqm@gmail.com>
 
-commit 3ef600923521616ebe192c893468ad0424de2afb upstream.
+[ Upstream commit b724a6418f1f853bcb39c8923bf14a50c7bdbd07 ]
 
-For REPORT SUPPORTED OPERATION CODES command, the service action field is
-defined as bits 0-4 in the second byte in the CDB. Bits 5-7 in the second
-byte are reserved.
+Fix 'tr' dereferencing bug when CONFIG_BPF_JIT is turned off.
 
-Only look at the service action field in the second byte when determining
-if the MAINTENANCE IN opcode is a REPORT SUPPORTED OPERATION CODES command.
+When CONFIG_BPF_JIT is turned off, 'bpf_trampoline_get()' returns NULL,
+which is same as the cases when CONFIG_BPF_JIT is turned on.
 
-This matches how we only look at the service action field in the second
-byte when determining if the SERVICE ACTION IN(16) opcode is a READ
-CAPACITY(16) command (reserved bits 5-7 in the second byte are ignored).
-
-Fixes: 7b2030942859 ("libata: Add support for SCT Write Same")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://lore.kernel.org/r/202309131936.5Nc8eUD0-lkp@intel.com/
+Fixes: f7b12b6fea00 ("bpf: verifier: refactor check_attach_btf_id()")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Leon Hwang <hffilwlqm@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230917153846.88732-1-hffilwlqm@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |    2 +-
+ include/linux/bpf.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4544,7 +4544,7 @@ void ata_scsi_simulate(struct ata_device
- 		break;
- 
- 	case MAINTENANCE_IN:
--		if (scsicmd[1] == MI_REPORT_SUPPORTED_OPERATION_CODES)
-+		if ((scsicmd[1] & 0x1f) == MI_REPORT_SUPPORTED_OPERATION_CODES)
- 			ata_scsi_rbuf_fill(&args, ata_scsiop_maint_in);
- 		else
- 			ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 84efd8dd139d9..9ab087d73ab34 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -840,7 +840,7 @@ static inline int bpf_trampoline_unlink_prog(struct bpf_prog *prog,
+ static inline struct bpf_trampoline *bpf_trampoline_get(u64 key,
+ 							struct bpf_attach_target_info *tgt_info)
+ {
+-	return ERR_PTR(-EOPNOTSUPP);
++	return NULL;
+ }
+ static inline void bpf_trampoline_put(struct bpf_trampoline *tr) {}
+ #define DEFINE_BPF_DISPATCHER(name)
+-- 
+2.40.1
+
 
 
