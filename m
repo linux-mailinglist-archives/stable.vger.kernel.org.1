@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E86E7BE1BB
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30BA47BE159
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377534AbjJINxe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:53:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49428 "EHLO
+        id S1377463AbjJINto (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:49:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377535AbjJINxd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:33 -0400
+        with ESMTP id S1377502AbjJINtn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:49:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC55694
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB03C433C9;
-        Mon,  9 Oct 2023 13:53:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3551D91
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:49:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFF3C433CA;
+        Mon,  9 Oct 2023 13:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859611;
-        bh=9GsW5K2PD/0Xk0plOhzHJXY++YZT1b1nWbkcPYLa2NE=;
+        s=korg; t=1696859381;
+        bh=JMGS+8ACQDkPX7HdnWs5wS7CY1GgcU4y5CVh9xdAKNo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q0QDkb1SFDNzhRoWunLeqzKghy88L1t3eVVDofWBNTR36sAhE997wWzObN9mdcvEB
-         nZwjF5C7xd0vF7n+CS63N9XphKPBXWabGgMG9XQ8f/7074YR9tTAXGYt+KIteTD12E
-         sETDTcs73hvrJorTH2WZHEaKqLXTMVXLMe9W76uM=
+        b=VJaxNCorGSdY17V59S9+0MQmwrkbZdbXst5K22SFeFIwKZMDLpCDutx0Rp387Es/W
+         WopmEZ9z25lZfcRyFahC9xR4pjVUKs9CJ6/bS4sgHM1bW+hHk/wkkpynSE0WOJDJe3
+         2V7FdV30QmY85mM2NeVSjO8Vhl5PCBMZ00rkZkQ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mauricio Faria de Oliveira <mfo@canonical.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
+        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 76/91] modpost: add missing else to the "of" check
+Subject: [PATCH 4.14 49/55] sctp: update hb timer immediately after users change hb_interval
 Date:   Mon,  9 Oct 2023 15:06:48 +0200
-Message-ID: <20231009130114.181526240@linuxfoundation.org>
+Message-ID: <20231009130109.576925975@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauricio Faria de Oliveira <mfo@canonical.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit cbc3d00cf88fda95dbcafee3b38655b7a8f2650a ]
+[ Upstream commit 1f4e803cd9c9166eb8b6c8b0b8e4124f7499fc07 ]
 
-Without this 'else' statement, an "usb" name goes into two handlers:
-the first/previous 'if' statement _AND_ the for-loop over 'devtable',
-but the latter is useless as it has no 'usb' device_id entry anyway.
+Currently, when hb_interval is changed by users, it won't take effect
+until the next expiry of hb timer. As the default value is 30s, users
+have to wait up to 30s to wait its hb_interval update to work.
 
-Tested with allmodconfig before/after patch; no changes to *.mod.c:
+This becomes pretty bad in containers where a much smaller value is
+usually set on hb_interval. This patch improves it by resetting the
+hb timer immediately once the value of hb_interval is updated by users.
 
-    git checkout v6.6-rc3
-    make -j$(nproc) allmodconfig
-    make -j$(nproc) olddefconfig
+Note that we don't address the already existing 'problem' when sending
+a heartbeat 'on demand' if one hb has just been sent(from the timer)
+mentioned in:
 
-    make -j$(nproc)
-    find . -name '*.mod.c' | cpio -pd /tmp/before
+  https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg590224.html
 
-    # apply patch
-
-    make -j$(nproc)
-    find . -name '*.mod.c' | cpio -pd /tmp/after
-
-    diff -r /tmp/before/ /tmp/after/
-    # no difference
-
-Fixes: acbef7b76629 ("modpost: fix module autoloading for OF devices with generic compatible property")
-Signed-off-by: Mauricio Faria de Oliveira <mfo@canonical.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/r/75465785f8ee5df2fb3acdca9b8fafdc18984098.1696172660.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/file2alias.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sctp/socket.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 7f40b6aab689b..90868df7865e3 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -1395,7 +1395,7 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
- 	/* First handle the "special" cases */
- 	if (sym_is(name, namelen, "usb"))
- 		do_usb_table(symval, sym->st_size, mod);
--	if (sym_is(name, namelen, "of"))
-+	else if (sym_is(name, namelen, "of"))
- 		do_of_table(symval, sym->st_size, mod);
- 	else if (sym_is(name, namelen, "pnp"))
- 		do_pnp_device_entry(symval, sym->st_size, mod);
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index e5c3c37108e4e..fe26395690f33 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -2479,6 +2479,7 @@ static int sctp_apply_peer_addr_params(struct sctp_paddrparams *params,
+ 			if (trans) {
+ 				trans->hbinterval =
+ 				    msecs_to_jiffies(params->spp_hbinterval);
++				sctp_transport_reset_hb_timer(trans);
+ 			} else if (asoc) {
+ 				asoc->hbinterval =
+ 				    msecs_to_jiffies(params->spp_hbinterval);
 -- 
 2.40.1
 
