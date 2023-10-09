@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CADA67BDEC2
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A4777BDF12
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376413AbjJINWq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:22:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50844 "EHLO
+        id S1376654AbjJIN0C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:26:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376375AbjJINWp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:45 -0400
+        with ESMTP id S1376543AbjJIN0C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C038F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E434C433C7;
-        Mon,  9 Oct 2023 13:22:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78612B7
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9053DC433C7;
+        Mon,  9 Oct 2023 13:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857763;
-        bh=UBoTJLUpImzBSaOgriT7I0qFA66b4joLyP5706voYro=;
+        s=korg; t=1696857960;
+        bh=sj8wmKqVNhAarFrzCQQThhuFN2r7+cPg7crc8c1Bs28=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GoRpNSGidH7BRBtVKbkeoZmyXi05dHokWgnr19CQ7BO0zO86Lm2A/efV6ZXg3gh2a
-         G4lYGsAvvGQwRfeFF6T0xhR7JUA6j6zqKQlDaQVIToZk6DXWJvn7PlG3tKSQgbTXJG
-         kJbvIje+GWXSP0zCkeV+CVvjqpY/rEex7t7RZpss=
+        b=f3gZJS/Q/jdwyuaEmVZ/6oYDBWjKKDqf11wsqd/LdGNTNvnOcqFIE/XuwTYa3bTv8
+         6MAVcF0KKNKFAK6Q2MaKhEu7pPPD3/tzqKSHhgN7l22fyEE0y6EDvuJQxcjAfEtMPT
+         NK1JgD/Sha5M2Nv7wK0wVR3FOfk/2Z5n70BrHcBQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bernard Metzler <bmt@zurich.ibm.com>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.1 149/162] RDMA/siw: Fix connection failure handling
+        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+6966546b78d050bb0b5d@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 48/75] net: usb: smsc75xx: Fix uninit-value access in __smsc75xx_read_reg
 Date:   Mon,  9 Oct 2023 15:02:10 +0200
-Message-ID: <20231009130127.026231190@linuxfoundation.org>
+Message-ID: <20231009130112.915201323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,75 +51,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Metzler <bmt@zurich.ibm.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-commit 53a3f777049771496f791504e7dc8ef017cba590 upstream.
+[ Upstream commit e9c65989920f7c28775ec4e0c11b483910fb67b8 ]
 
-In case immediate MPA request processing fails, the newly
-created endpoint unlinks the listening endpoint and is
-ready to be dropped. This special case was not handled
-correctly by the code handling the later TCP socket close,
-causing a NULL dereference crash in siw_cm_work_handler()
-when dereferencing a NULL listener. We now also cancel
-the useless MPA timeout, if immediate MPA request
-processing fails.
+syzbot reported the following uninit-value access issue:
 
-This patch furthermore simplifies MPA processing in general:
-Scheduling a useless TCP socket read in sk_data_ready() upcall
-is now surpressed, if the socket is already moved out of
-TCP_ESTABLISHED state.
+=====================================================
+BUG: KMSAN: uninit-value in smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:975 [inline]
+BUG: KMSAN: uninit-value in smsc75xx_bind+0x5c9/0x11e0 drivers/net/usb/smsc75xx.c:1482
+CPU: 0 PID: 8696 Comm: kworker/0:3 Not tainted 5.8.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: usb_hub_wq hub_event
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x21c/0x280 lib/dump_stack.c:118
+ kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:121
+ __msan_warning+0x58/0xa0 mm/kmsan/kmsan_instr.c:215
+ smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:975 [inline]
+ smsc75xx_bind+0x5c9/0x11e0 drivers/net/usb/smsc75xx.c:1482
+ usbnet_probe+0x1152/0x3f90 drivers/net/usb/usbnet.c:1737
+ usb_probe_interface+0xece/0x1550 drivers/usb/core/driver.c:374
+ really_probe+0xf20/0x20b0 drivers/base/dd.c:529
+ driver_probe_device+0x293/0x390 drivers/base/dd.c:701
+ __device_attach_driver+0x63f/0x830 drivers/base/dd.c:807
+ bus_for_each_drv+0x2ca/0x3f0 drivers/base/bus.c:431
+ __device_attach+0x4e2/0x7f0 drivers/base/dd.c:873
+ device_initial_probe+0x4a/0x60 drivers/base/dd.c:920
+ bus_probe_device+0x177/0x3d0 drivers/base/bus.c:491
+ device_add+0x3b0e/0x40d0 drivers/base/core.c:2680
+ usb_set_configuration+0x380f/0x3f10 drivers/usb/core/message.c:2032
+ usb_generic_driver_probe+0x138/0x300 drivers/usb/core/generic.c:241
+ usb_probe_device+0x311/0x490 drivers/usb/core/driver.c:272
+ really_probe+0xf20/0x20b0 drivers/base/dd.c:529
+ driver_probe_device+0x293/0x390 drivers/base/dd.c:701
+ __device_attach_driver+0x63f/0x830 drivers/base/dd.c:807
+ bus_for_each_drv+0x2ca/0x3f0 drivers/base/bus.c:431
+ __device_attach+0x4e2/0x7f0 drivers/base/dd.c:873
+ device_initial_probe+0x4a/0x60 drivers/base/dd.c:920
+ bus_probe_device+0x177/0x3d0 drivers/base/bus.c:491
+ device_add+0x3b0e/0x40d0 drivers/base/core.c:2680
+ usb_new_device+0x1bd4/0x2a30 drivers/usb/core/hub.c:2554
+ hub_port_connect drivers/usb/core/hub.c:5208 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5348 [inline]
+ port_event drivers/usb/core/hub.c:5494 [inline]
+ hub_event+0x5e7b/0x8a70 drivers/usb/core/hub.c:5576
+ process_one_work+0x1688/0x2140 kernel/workqueue.c:2269
+ worker_thread+0x10bc/0x2730 kernel/workqueue.c:2415
+ kthread+0x551/0x590 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:293
 
-Fixes: 6c52fdc244b5 ("rdma/siw: connection management")
-Signed-off-by: Bernard Metzler <bmt@zurich.ibm.com>
-Link: https://lore.kernel.org/r/20230905145822.446263-1-bmt@zurich.ibm.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Local variable ----buf.i87@smsc75xx_bind created at:
+ __smsc75xx_read_reg drivers/net/usb/smsc75xx.c:83 [inline]
+ smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:968 [inline]
+ smsc75xx_bind+0x485/0x11e0 drivers/net/usb/smsc75xx.c:1482
+ __smsc75xx_read_reg drivers/net/usb/smsc75xx.c:83 [inline]
+ smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:968 [inline]
+ smsc75xx_bind+0x485/0x11e0 drivers/net/usb/smsc75xx.c:1482
+
+This issue is caused because usbnet_read_cmd() reads less bytes than requested
+(zero byte in the reproducer). In this case, 'buf' is not properly filled.
+
+This patch fixes the issue by returning -ENODATA if usbnet_read_cmd() reads
+less bytes than requested.
+
+Fixes: d0cad871703b ("smsc75xx: SMSC LAN75xx USB gigabit ethernet adapter driver")
+Reported-and-tested-by: syzbot+6966546b78d050bb0b5d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6966546b78d050bb0b5d
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230923173549.3284502-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_cm.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/usb/smsc75xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/infiniband/sw/siw/siw_cm.c
-+++ b/drivers/infiniband/sw/siw/siw_cm.c
-@@ -973,6 +973,7 @@ static void siw_accept_newconn(struct si
- 			siw_cep_put(cep);
- 			new_cep->listen_cep = NULL;
- 			if (rv) {
-+				siw_cancel_mpatimer(new_cep);
- 				siw_cep_set_free(new_cep);
- 				goto error;
- 			}
-@@ -1097,9 +1098,12 @@ static void siw_cm_work_handler(struct w
- 				/*
- 				 * Socket close before MPA request received.
- 				 */
--				siw_dbg_cep(cep, "no mpareq: drop listener\n");
--				siw_cep_put(cep->listen_cep);
--				cep->listen_cep = NULL;
-+				if (cep->listen_cep) {
-+					siw_dbg_cep(cep,
-+						"no mpareq: drop listener\n");
-+					siw_cep_put(cep->listen_cep);
-+					cep->listen_cep = NULL;
-+				}
- 			}
- 		}
- 		release_cep = 1;
-@@ -1222,7 +1226,11 @@ static void siw_cm_llp_data_ready(struct
- 	if (!cep)
- 		goto out;
- 
--	siw_dbg_cep(cep, "state: %d\n", cep->state);
-+	siw_dbg_cep(cep, "cep state: %d, socket state %d\n",
-+		    cep->state, sk->sk_state);
+diff --git a/drivers/net/usb/smsc75xx.c b/drivers/net/usb/smsc75xx.c
+index 7c3e866514199..301d979d0d08c 100644
+--- a/drivers/net/usb/smsc75xx.c
++++ b/drivers/net/usb/smsc75xx.c
+@@ -90,7 +90,9 @@ static int __must_check __smsc75xx_read_reg(struct usbnet *dev, u32 index,
+ 	ret = fn(dev, USB_VENDOR_REQUEST_READ_REGISTER, USB_DIR_IN
+ 		 | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+ 		 0, index, &buf, 4);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < 4)) {
++		ret = ret < 0 ? ret : -ENODATA;
 +
-+	if (sk->sk_state != TCP_ESTABLISHED)
-+		goto out;
- 
- 	switch (cep->state) {
- 	case SIW_EPSTATE_RDMA_MODE:
+ 		netdev_warn(dev->net, "Failed to read reg index 0x%08x: %d\n",
+ 			    index, ret);
+ 		return ret;
+-- 
+2.40.1
+
 
 
