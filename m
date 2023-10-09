@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 952CA7BE0B7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 253E87BDE03
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377307AbjJINnR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:43:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58072 "EHLO
+        id S1376871AbjJINPA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:15:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346443AbjJINnQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:16 -0400
+        with ESMTP id S1376665AbjJINO7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AEEBB6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 984F2C433C8;
-        Mon,  9 Oct 2023 13:43:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 551BB9C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF91C433C8;
+        Mon,  9 Oct 2023 13:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858995;
-        bh=41uqaong4k6+E57StNdecvUQydfrUVATMX2m0S23Q8I=;
+        s=korg; t=1696857296;
+        bh=o4YYDbdsCFB80Cfbl/SLpuJC8oDbvHkypZjXWM46joQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BoaGRGEhN1faxr+9VZSLp2jD504AoD46lHq7U9b8g1SXxab3g5Gw/92QEW88X6RAo
-         9MEjbkxB410kFtri/7a6vgpGNajcI2NypmUPi/Cjc3obgHg4ijtlbyfPreuqHuUy7o
-         M5tTeUAV3NfsebeNsTVU8GfTcZXIRhqF8rTycFuo=
+        b=2D6AZygbMTvCpLtBNONo4zRJarq3Go97CcjAy+gJMjitYpu1AqXPVyn8tYnv90qLB
+         o+fzM1M4ZhpSytc0VVDw3q8unUIyUaqTGEWJu6ghV1OeDbrQtw3EdfxWuhbKH6+XyV
+         dj6N2cAQSxq0eh5h2TodMzegOPR5O5SQAigBqMSg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Coddington <bcodding@redhat.com>,
-        NeilBrown <neilb@suse.de>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 166/226] NFS: Cleanup unused rpc_clnt variable
+        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>
+Subject: [PATCH 6.5 163/163] RDMA/mlx5: Remove not-used cache disable flag
 Date:   Mon,  9 Oct 2023 15:02:07 +0200
-Message-ID: <20231009130131.006341816@linuxfoundation.org>
+Message-ID: <20231009130128.500047722@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +47,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit e025f0a73f6acb920d86549b2177a5883535421d ]
+commit c99a7457e5bb873914a74307ba2df85f6799203b upstream.
 
-The root rpc_clnt is not used here, clean it up.
+During execution of mlx5_mkey_cache_cleanup(), there is a guarantee
+that MR are not registered and/or destroyed. It means that we don't
+need newly introduced cache disable flag.
 
-Fixes: 4dc73c679114 ("NFSv4: keep state manager thread active if swap is enabled")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Stable-dep-of: 956fd46f97d2 ("NFSv4: Fix a state manager thread deadlock regression")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 374012b00457 ("RDMA/mlx5: Fix mkey cache possible deadlock on cleanup")
+Link: https://lore.kernel.org/r/c7e9c9f98c8ae4a7413d97d9349b29f5b0a23dbe.1695921626.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4state.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/infiniband/hw/mlx5/mlx5_ib.h |    1 -
+ drivers/infiniband/hw/mlx5/mr.c      |    5 -----
+ 2 files changed, 6 deletions(-)
 
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index ff6ca05a9d441..3fcef19e91984 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -1212,10 +1212,6 @@ void nfs4_schedule_state_manager(struct nfs_client *clp)
- {
- 	struct task_struct *task;
- 	char buf[INET6_ADDRSTRLEN + sizeof("-manager") + 1];
--	struct rpc_clnt *cl = clp->cl_rpcclient;
--
--	while (cl != cl->cl_parent)
--		cl = cl->cl_parent;
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -797,7 +797,6 @@ struct mlx5_mkey_cache {
+ 	struct dentry		*fs_root;
+ 	unsigned long		last_add;
+ 	struct delayed_work	remove_ent_dwork;
+-	u8			disable: 1;
+ };
  
- 	set_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state);
- 	if (test_and_set_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state) != 0) {
--- 
-2.40.1
-
+ struct mlx5_ib_port_resources {
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -1026,7 +1026,6 @@ void mlx5_mkey_cache_cleanup(struct mlx5
+ 		return;
+ 
+ 	mutex_lock(&dev->cache.rb_lock);
+-	dev->cache.disable = true;
+ 	for (node = rb_first(root); node; node = rb_next(node)) {
+ 		ent = rb_entry(node, struct mlx5_cache_ent, node);
+ 		xa_lock_irq(&ent->mkeys);
+@@ -1824,10 +1823,6 @@ static int cache_ent_find_and_store(stru
+ 	}
+ 
+ 	mutex_lock(&cache->rb_lock);
+-	if (cache->disable) {
+-		mutex_unlock(&cache->rb_lock);
+-		return 0;
+-	}
+ 	ent = mkey_cache_ent_from_rb_key(dev, mr->mmkey.rb_key);
+ 	if (ent) {
+ 		if (ent->rb_key.ndescs == mr->mmkey.rb_key.ndescs) {
 
 
