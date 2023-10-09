@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 048D37BDDBE
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18E507BE04A
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376932AbjJINNB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:13:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58974 "EHLO
+        id S1377293AbjJINib (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:38:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376938AbjJINMt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:49 -0400
+        with ESMTP id S1377291AbjJINi2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F142326B5
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 312CDC433C7;
-        Mon,  9 Oct 2023 13:11:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72EAEC6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE756C433C8;
+        Mon,  9 Oct 2023 13:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857101;
-        bh=rEkXxamPqvkpTucq175ADuTguaCehTFvmmkHLgv04cI=;
+        s=korg; t=1696858700;
+        bh=n+YoQ36tRVY9MsCE7qGRukuL4WRM/cITRQfEP0zD2MA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mb2GzfqsanGZf08CQN1eXZmUtdbsUEq19FZ3QfCYCUb0fCLZS9oGvR6QqeJNos6Cu
-         jiguEmXOecM7E/aks/AYqKLIuV4EhIdP1c2m2S39crRcDA8O2CAUYK206S/Mg+S8Ed
-         uOWs79QfUIrVYq5/0mF8ts/blFCNbkQW6hjQuhco=
+        b=d9x9vfqy1gih1MzaHCnU+QDhZE9Dc5OOant9KjxHiZa363kV9DUB2Kt3KIYG9VuUc
+         mwBa/fMjVKGKAe+2nPWjCM1IqChIHOc5nGD4GYYBplGTwnVKzCGTEMEvGtj/C1B7zj
+         5NfhIJ2LtkdPwYDwIToIamIsYwsCo7SpIFHxZtMg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pin-yen Lin <treapking@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Matthew Wang <matthewmwang@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 070/163] wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet
+        patches@lists.linux.dev,
+        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 073/226] media: venus: core: Add differentiator IS_V6(core)
 Date:   Mon,  9 Oct 2023 15:00:34 +0200
-Message-ID: <20231009130125.983417905@linuxfoundation.org>
+Message-ID: <20231009130128.692603916@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,63 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit aef7a0300047e7b4707ea0411dc9597cba108fc8 ]
+[ Upstream commit ff027906308fcda1661e05beac6abdcbe2b93f6d ]
 
-Only skip the code path trying to access the rfc1042 headers when the
-buffer is too small, so the driver can still process packets without
-rfc1042 headers.
+This commit adds the macro helper IS_V6() which will be used to
+differentiate iris2/v6 silicon from previous versions.
 
-Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when rx packets")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230908104308.1546501-1-treapking@chromium.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: d74e48160980 ("media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sta_rx.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/media/platform/qcom/venus/core.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index 65420ad674167..257737137cd70 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -86,7 +86,8 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
+diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
+index 50eb0a9fb1347..75d0068033276 100644
+--- a/drivers/media/platform/qcom/venus/core.h
++++ b/drivers/media/platform/qcom/venus/core.h
+@@ -426,6 +426,7 @@ struct venus_inst {
+ #define IS_V1(core)	((core)->res->hfi_version == HFI_VERSION_1XX)
+ #define IS_V3(core)	((core)->res->hfi_version == HFI_VERSION_3XX)
+ #define IS_V4(core)	((core)->res->hfi_version == HFI_VERSION_4XX)
++#define IS_V6(core)	((core)->res->hfi_version == HFI_VERSION_6XX)
  
--	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
-+	if (sizeof(rx_pkt_hdr->eth803_hdr) + sizeof(rfc1042_header) +
-+	    rx_pkt_off > skb->len) {
- 		mwifiex_dbg(priv->adapter, ERROR,
- 			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
- 			    skb->len, rx_pkt_off);
-@@ -95,12 +96,13 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 		return -1;
- 	}
- 
--	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
--		     sizeof(bridge_tunnel_header))) ||
--	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
--		     sizeof(rfc1042_header)) &&
--	     ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_AARP &&
--	     ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_IPX)) {
-+	if (sizeof(*rx_pkt_hdr) + rx_pkt_off <= skb->len &&
-+	    ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-+		      sizeof(bridge_tunnel_header))) ||
-+	     (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-+		      sizeof(rfc1042_header)) &&
-+	      ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_AARP &&
-+	      ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_IPX))) {
- 		/*
- 		 *  Replace the 803 header and rfc1042 header (llc/snap) with an
- 		 *    EthernetII header, keep the src/dst and snap_type
+ #define ctrl_to_inst(ctrl)	\
+ 	container_of((ctrl)->handler, struct venus_inst, ctrl_handler)
 -- 
 2.40.1
 
