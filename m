@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEB457BE007
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B78C77BDD44
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:09:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377196AbjJINgv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:36:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60540 "EHLO
+        id S1376731AbjJINJG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:09:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377206AbjJINgv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:51 -0400
+        with ESMTP id S1376831AbjJINJD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:09:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0FE99
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F4FC433C7;
-        Mon,  9 Oct 2023 13:36:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E2E5B6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:09:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F15C433C9;
+        Mon,  9 Oct 2023 13:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858608;
-        bh=+iFhSFM6paddAXr3xH6LaBVSFFywpXPkodnbf4rgKJw=;
+        s=korg; t=1696856940;
+        bh=1rR7IWpq5wrNO1SoApJ0zJbyQ+FUa8PIiGaP6NS7O7c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vT3byc0lV/lW24/QYvDZi4kwAp0d0Tqoi0eEYP+3/vokl6dQuHr4+GEJnUIAngpMz
-         Fr0o74nijP/KNfhrq4aqO30NoNmorZozvv+PndYzjAeZKdVPMVbTQ32q3nofaKTSjT
-         la6KZTtzTS5W0S5t21LeICXxKXpyiIvGR5v2khpk=
+        b=YwdaW47y9MZg9tEYqZpBNodhOQ7HFiK1/XljykBL/Q5O3dlNV156QVdFopOkdjVQl
+         LVehJrie+Q7xEOeZz+VYME64u5B9lZcIIQ3k0cYr2Cn8b5ldBm8GFEOZv0Qq/c2cX3
+         pFvpZ4qIipD/sKS5RCpPkEE5AHpwEKtaTh2F+1aM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Prashant Malani <pmalani@chromium.org>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        patches@lists.linux.dev,
+        Mark Blakeney <mark.blakeney@bullet-systems.net>,
         Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/226] platform/x86: intel_scu_ipc: Check status upon timeout in ipc_wait_for_interrupt()
-Date:   Mon,  9 Oct 2023 15:00:05 +0200
-Message-ID: <20231009130127.948383919@linuxfoundation.org>
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH 6.5 042/163] PCI/PM: Mark devices disconnected if upstream PCIe link is down on resume
+Date:   Mon,  9 Oct 2023 15:00:06 +0200
+Message-ID: <20231009130125.179194885@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,67 +51,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 427fada620733e6474d783ae6037a66eae42bf8c ]
+commit c82458101d5490230d735caecce14c9c27b1010c upstream.
 
-It's possible for the completion in ipc_wait_for_interrupt() to timeout,
-simply because the interrupt was delayed in being processed. A timeout
-in itself is not an error. This driver should check the status register
-upon a timeout to ensure that scheduling or interrupt processing delays
-don't affect the outcome of the IPC return value.
+Mark Blakeney reported that when suspending system with a Thunderbolt
+dock connected and then unplugging the dock before resume (which is
+pretty normal flow with laptops), resuming takes long time.
 
- CPU0                                                   SCU
- ----                                                   ---
- ipc_wait_for_interrupt()
-  wait_for_completion_timeout(&scu->cmd_complete)
-  [TIMEOUT]                                             status[IPC_STATUS_BUSY]=0
+What happens is that the PCIe link from the root port to the PCIe switch
+inside the Thunderbolt device does not train (as expected, the link is
+unplugged):
 
-Fix this problem by reading the status bit in all cases, regardless of
-the timeout. If the completion times out, we'll assume the problem was
-that the IPC_STATUS_BUSY bit was still set, but if the status bit is
-cleared in the meantime we know that we hit some scheduling delay and we
-should just check the error bit.
+  pcieport 0000:00:07.2: restoring config space at offset 0x24 (was 0x3bf12001, writing 0x3bf12001)
+  pcieport 0000:00:07.0: waiting 100 ms for downstream link
+  pcieport 0000:01:00.0: not ready 1023ms after resume; giving up
 
-Cc: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Fixes: ed12f295bfd5 ("ipc: Added support for IPC interrupt mode")
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20230913212723.3055315-3-swboyd@chromium.org
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, at this point we still try to resume the devices below that
+unplugged link:
+
+  pcieport 0000:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
+  ...
+  pcieport 0000:01:00.0: restoring config space at offset 0x38 (was 0xffffffff, writing 0x0)
+  ...
+  pcieport 0000:02:02.0: waiting 100 ms for downstream link, after activation
+
+And this is the link from PCIe switch downstream port to the xHCI on the
+dock:
+
+  xhci_hcd 0000:03:00.0: not ready 65535ms after resume; giving up
+  xhci_hcd 0000:03:00.0: Unable to change power state from D3cold to D0, device inaccessible
+  xhci_hcd 0000:03:00.0: restoring config space at offset 0x3c (was 0xffffffff, writing 0x1ff)
+
+This ends up slowing down the resume time considerably. For this reason
+mark these devices as disconnected if the link above them did not train
+properly.
+
+Fixes: e8b908146d44 ("PCI/PM: Increase wait time after resume")
+Link: https://lore.kernel.org/r/20230918053041.1018876-1-mika.westerberg@linux.intel.com
+Reported-by: Mark Blakeney <mark.blakeney@bullet-systems.net>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217915
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org	# v6.4+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel_scu_ipc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pci/pci-driver.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel_scu_ipc.c b/drivers/platform/x86/intel_scu_ipc.c
-index 0b5029bca4a45..4c053c715cde0 100644
---- a/drivers/platform/x86/intel_scu_ipc.c
-+++ b/drivers/platform/x86/intel_scu_ipc.c
-@@ -249,10 +249,12 @@ static inline int ipc_wait_for_interrupt(struct intel_scu_ipc_dev *scu)
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index a79c110c7e51..51ec9e7e784f 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -572,7 +572,19 @@ static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
+ 
+ static void pci_pm_bridge_power_up_actions(struct pci_dev *pci_dev)
  {
- 	int status;
- 
--	if (!wait_for_completion_timeout(&scu->cmd_complete, IPC_TIMEOUT))
--		return -ETIMEDOUT;
-+	wait_for_completion_timeout(&scu->cmd_complete, IPC_TIMEOUT);
- 
- 	status = ipc_read_status(scu);
-+	if (status & IPC_STATUS_BUSY)
-+		return -ETIMEDOUT;
+-	pci_bridge_wait_for_secondary_bus(pci_dev, "resume");
++	int ret;
 +
- 	if (status & IPC_STATUS_ERR)
- 		return -EIO;
++	ret = pci_bridge_wait_for_secondary_bus(pci_dev, "resume");
++	if (ret) {
++		/*
++		 * The downstream link failed to come up, so mark the
++		 * devices below as disconnected to make sure we don't
++		 * attempt to resume them.
++		 */
++		pci_walk_bus(pci_dev->subordinate, pci_dev_set_disconnected,
++			     NULL);
++		return;
++	}
  
+ 	/*
+ 	 * When powering on a bridge from D3cold, the whole hierarchy may be
 -- 
-2.40.1
+2.42.0
 
 
 
