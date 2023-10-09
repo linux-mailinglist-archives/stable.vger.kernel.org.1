@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C31627BDF95
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 473207BE08B
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:41:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377083AbjJINbf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:31:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60402 "EHLO
+        id S1377348AbjJINlV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377077AbjJINbf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:35 -0400
+        with ESMTP id S1377359AbjJINlT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:41:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7968A3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C10C433C8;
-        Mon,  9 Oct 2023 13:31:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 824A899
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B77C433C8;
+        Mon,  9 Oct 2023 13:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858293;
-        bh=Ym8ySzhyt+ZoHrdZQNSbU4MfQHT4zCfodEpPPEVBPFM=;
+        s=korg; t=1696858877;
+        bh=psKwbz4SHNf0L7aHN14NfUzQZTvWoRNYn0uRGiV0/Zk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cp0XA98dZitdF8oIsjTV96cwzdpyg4L/7L4Vmy5t75edVc1OotI3ZU7dqRppRAixd
-         G5rWGB1ZtwkN6IdjUncUnhqwIlLVIH+I7QyiBn0uymKHuHyS+vgVvYabJEkeO4R0Vh
-         UKIEdbEkxXoYXUu3re3OklgM92hPCu/NduQOCm94=
+        b=qaQmvQMlsVeRy4Kh21JGL8i7Gy9jRUiLteVr4PV7WmwWI4mkutBYZO6cq4bmYVFPx
+         GeV2rwD1Maik812OI9SCMXuCxoV636T65Xmosb7Uv1NRmpwUV6bKQA/tb02jRxr9P7
+         y0Dl4Bm3QMXodLJhWSBX/Op4ckyf+6j/8B3mIrx8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
+        patches@lists.linux.dev, Andrey Ryabinin <arbn@yandex-team.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Daniel Jordan <daniel.m.jordan@oracle.com>,
+        Tejun Heo <tj@kernel.org>,
+        Ovidiu Panait <ovidiu.panait@windriver.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 049/131] xtensa: boot: dont add include-dirs
-Date:   Mon,  9 Oct 2023 15:01:29 +0200
-Message-ID: <20231009130117.807528055@linuxfoundation.org>
+Subject: [PATCH 5.10 129/226] sched/cpuacct: Fix user/system in shown cpuacct.usage*
+Date:   Mon,  9 Oct 2023 15:01:30 +0200
+Message-ID: <20231009130130.139499179@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +52,221 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Andrey Ryabinin <arbn@yandex-team.com>
 
-[ Upstream commit 54d3d7d363823782c3444ddc41bb8cf1edc80514 ]
+commit dd02d4234c9a2214a81c57a16484304a1a51872a upstream.
 
-Drop the -I<include-dir> options to prevent build warnings since there
-is not boot/include directory:
+cpuacct has 2 different ways of accounting and showing user
+and system times.
 
-cc1: warning: arch/xtensa/boot/include: No such file or directory [-Wmissing-include-dirs]
+The first one uses cpuacct_account_field() to account times
+and cpuacct.stat file to expose them. And this one seems to work ok.
 
-Fixes: 437374e9a950 ("restore arch/{ppc/xtensa}/boot cflags")
-Fixes: 4bedea945451 ("xtensa: Architecture support for Tensilica Xtensa Part 2")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Message-Id: <20230920052139.10570-15-rdunlap@infradead.org>
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+The second one is uses cpuacct_charge() function for accounting and
+set of cpuacct.usage* files to show times. Despite some attempts to
+fix it in the past it still doesn't work. Sometimes while running KVM
+guest the cpuacct_charge() accounts most of the guest time as
+system time. This doesn't match with user&system times shown in
+cpuacct.stat or proc/<pid>/stat.
+
+Demonstration:
+ # git clone https://github.com/aryabinin/kvmsample
+ # make
+ # mkdir /sys/fs/cgroup/cpuacct/test
+ # echo $$ > /sys/fs/cgroup/cpuacct/test/tasks
+ # ./kvmsample &
+ # for i in {1..5}; do cat /sys/fs/cgroup/cpuacct/test/cpuacct.usage_sys; sleep 1; done
+ 1976535645
+ 2979839428
+ 3979832704
+ 4983603153
+ 5983604157
+
+Use cpustats accounted in cpuacct_account_field() as the source
+of user/sys times for cpuacct.usage* files. Make cpuacct_charge()
+to account only summary execution time.
+
+Fixes: d740037fac70 ("sched/cpuacct: Split usage accounting into user_usage and sys_usage")
+Signed-off-by: Andrey Ryabinin <arbn@yandex-team.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20211115164607.23784-3-arbn@yandex-team.com
+[OP: adjusted context for v5.10]
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/xtensa/boot/Makefile | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/sched/cpuacct.c | 79 +++++++++++++++++-------------------------
+ 1 file changed, 32 insertions(+), 47 deletions(-)
 
-diff --git a/arch/xtensa/boot/Makefile b/arch/xtensa/boot/Makefile
-index 294846117fc2c..41ad60bb0fbc7 100644
---- a/arch/xtensa/boot/Makefile
-+++ b/arch/xtensa/boot/Makefile
-@@ -9,8 +9,7 @@
+diff --git a/kernel/sched/cpuacct.c b/kernel/sched/cpuacct.c
+index 941c28cf97384..8a260115a137b 100644
+--- a/kernel/sched/cpuacct.c
++++ b/kernel/sched/cpuacct.c
+@@ -21,15 +21,11 @@ static const char * const cpuacct_stat_desc[] = {
+ 	[CPUACCT_STAT_SYSTEM] = "system",
+ };
  
+-struct cpuacct_usage {
+-	u64	usages[CPUACCT_STAT_NSTATS];
+-};
+-
+ /* track CPU usage of a group of tasks and its child groups */
+ struct cpuacct {
+ 	struct cgroup_subsys_state	css;
+ 	/* cpuusage holds pointer to a u64-type object on every CPU */
+-	struct cpuacct_usage __percpu	*cpuusage;
++	u64 __percpu	*cpuusage;
+ 	struct kernel_cpustat __percpu	*cpustat;
+ };
  
- # KBUILD_CFLAGS used when building rest of boot (takes effect recursively)
--KBUILD_CFLAGS	+= -fno-builtin -Iarch/$(ARCH)/boot/include
--HOSTFLAGS	+= -Iarch/$(ARCH)/boot/include
-+KBUILD_CFLAGS	+= -fno-builtin
+@@ -49,7 +45,7 @@ static inline struct cpuacct *parent_ca(struct cpuacct *ca)
+ 	return css_ca(ca->css.parent);
+ }
  
- BIG_ENDIAN	:= $(shell echo __XTENSA_EB__ | $(CC) -E - | grep -v "\#")
+-static DEFINE_PER_CPU(struct cpuacct_usage, root_cpuacct_cpuusage);
++static DEFINE_PER_CPU(u64, root_cpuacct_cpuusage);
+ static struct cpuacct root_cpuacct = {
+ 	.cpustat	= &kernel_cpustat,
+ 	.cpuusage	= &root_cpuacct_cpuusage,
+@@ -68,7 +64,7 @@ cpuacct_css_alloc(struct cgroup_subsys_state *parent_css)
+ 	if (!ca)
+ 		goto out;
  
+-	ca->cpuusage = alloc_percpu(struct cpuacct_usage);
++	ca->cpuusage = alloc_percpu(u64);
+ 	if (!ca->cpuusage)
+ 		goto out_free_ca;
+ 
+@@ -99,7 +95,8 @@ static void cpuacct_css_free(struct cgroup_subsys_state *css)
+ static u64 cpuacct_cpuusage_read(struct cpuacct *ca, int cpu,
+ 				 enum cpuacct_stat_index index)
+ {
+-	struct cpuacct_usage *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
++	u64 *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
++	u64 *cpustat = per_cpu_ptr(ca->cpustat, cpu)->cpustat;
+ 	u64 data;
+ 
+ 	/*
+@@ -115,14 +112,17 @@ static u64 cpuacct_cpuusage_read(struct cpuacct *ca, int cpu,
+ 	raw_spin_lock_irq(&cpu_rq(cpu)->lock);
+ #endif
+ 
+-	if (index == CPUACCT_STAT_NSTATS) {
+-		int i = 0;
+-
+-		data = 0;
+-		for (i = 0; i < CPUACCT_STAT_NSTATS; i++)
+-			data += cpuusage->usages[i];
+-	} else {
+-		data = cpuusage->usages[index];
++	switch (index) {
++	case CPUACCT_STAT_USER:
++		data = cpustat[CPUTIME_USER] + cpustat[CPUTIME_NICE];
++		break;
++	case CPUACCT_STAT_SYSTEM:
++		data = cpustat[CPUTIME_SYSTEM] + cpustat[CPUTIME_IRQ] +
++			cpustat[CPUTIME_SOFTIRQ];
++		break;
++	case CPUACCT_STAT_NSTATS:
++		data = *cpuusage;
++		break;
+ 	}
+ 
+ #ifndef CONFIG_64BIT
+@@ -132,10 +132,14 @@ static u64 cpuacct_cpuusage_read(struct cpuacct *ca, int cpu,
+ 	return data;
+ }
+ 
+-static void cpuacct_cpuusage_write(struct cpuacct *ca, int cpu, u64 val)
++static void cpuacct_cpuusage_write(struct cpuacct *ca, int cpu)
+ {
+-	struct cpuacct_usage *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
+-	int i;
++	u64 *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
++	u64 *cpustat = per_cpu_ptr(ca->cpustat, cpu)->cpustat;
++
++	/* Don't allow to reset global kernel_cpustat */
++	if (ca == &root_cpuacct)
++		return;
+ 
+ #ifndef CONFIG_64BIT
+ 	/*
+@@ -143,9 +147,10 @@ static void cpuacct_cpuusage_write(struct cpuacct *ca, int cpu, u64 val)
+ 	 */
+ 	raw_spin_lock_irq(&cpu_rq(cpu)->lock);
+ #endif
+-
+-	for (i = 0; i < CPUACCT_STAT_NSTATS; i++)
+-		cpuusage->usages[i] = val;
++	*cpuusage = 0;
++	cpustat[CPUTIME_USER] = cpustat[CPUTIME_NICE] = 0;
++	cpustat[CPUTIME_SYSTEM] = cpustat[CPUTIME_IRQ] = 0;
++	cpustat[CPUTIME_SOFTIRQ] = 0;
+ 
+ #ifndef CONFIG_64BIT
+ 	raw_spin_unlock_irq(&cpu_rq(cpu)->lock);
+@@ -196,7 +201,7 @@ static int cpuusage_write(struct cgroup_subsys_state *css, struct cftype *cft,
+ 		return -EINVAL;
+ 
+ 	for_each_possible_cpu(cpu)
+-		cpuacct_cpuusage_write(ca, cpu, 0);
++		cpuacct_cpuusage_write(ca, cpu);
+ 
+ 	return 0;
+ }
+@@ -243,25 +248,10 @@ static int cpuacct_all_seq_show(struct seq_file *m, void *V)
+ 	seq_puts(m, "\n");
+ 
+ 	for_each_possible_cpu(cpu) {
+-		struct cpuacct_usage *cpuusage = per_cpu_ptr(ca->cpuusage, cpu);
+-
+ 		seq_printf(m, "%d", cpu);
+-
+-		for (index = 0; index < CPUACCT_STAT_NSTATS; index++) {
+-#ifndef CONFIG_64BIT
+-			/*
+-			 * Take rq->lock to make 64-bit read safe on 32-bit
+-			 * platforms.
+-			 */
+-			raw_spin_lock_irq(&cpu_rq(cpu)->lock);
+-#endif
+-
+-			seq_printf(m, " %llu", cpuusage->usages[index]);
+-
+-#ifndef CONFIG_64BIT
+-			raw_spin_unlock_irq(&cpu_rq(cpu)->lock);
+-#endif
+-		}
++		for (index = 0; index < CPUACCT_STAT_NSTATS; index++)
++			seq_printf(m, " %llu",
++				   cpuacct_cpuusage_read(ca, cpu, index));
+ 		seq_puts(m, "\n");
+ 	}
+ 	return 0;
+@@ -339,16 +329,11 @@ static struct cftype files[] = {
+ void cpuacct_charge(struct task_struct *tsk, u64 cputime)
+ {
+ 	struct cpuacct *ca;
+-	int index = CPUACCT_STAT_SYSTEM;
+-	struct pt_regs *regs = get_irq_regs() ? : task_pt_regs(tsk);
+-
+-	if (regs && user_mode(regs))
+-		index = CPUACCT_STAT_USER;
+ 
+ 	rcu_read_lock();
+ 
+ 	for (ca = task_ca(tsk); ca; ca = parent_ca(ca))
+-		__this_cpu_add(ca->cpuusage->usages[index], cputime);
++		__this_cpu_add(*ca->cpuusage, cputime);
+ 
+ 	rcu_read_unlock();
+ }
 -- 
 2.40.1
 
