@@ -2,156 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0CA17BE55B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 17:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAD197BE5BF
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 18:01:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377001AbjJIPty (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 11:49:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36922 "EHLO
+        id S1377095AbjJIQBo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 12:01:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376524AbjJIPtx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 11:49:53 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0DD8AF
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 08:49:51 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qpsVy-0008QE-BH; Mon, 09 Oct 2023 17:49:50 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qpsVx-000S0Z-PT; Mon, 09 Oct 2023 17:49:49 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1qpsVx-00CO8J-GD; Mon, 09 Oct 2023 17:49:49 +0200
-Date:   Mon, 9 Oct 2023 17:49:49 +0200
-From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, kernel@pengutronix.de
-Subject: Re: [PATCH 6.1 001/162] spi: zynqmp-gqspi: Convert to platform
- remove callback returning void
-Message-ID: <20231009154949.33tpn4fsbacllhme@pengutronix.de>
-References: <20231009130122.946357448@linuxfoundation.org>
- <20231009130122.990256512@linuxfoundation.org>
+        with ESMTP id S230326AbjJIQBo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 12:01:44 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3383591;
+        Mon,  9 Oct 2023 09:01:42 -0700 (PDT)
+Received: from [192.168.100.7] (unknown [39.34.187.171])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: usama.anjum)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id A44B2660716E;
+        Mon,  9 Oct 2023 17:01:36 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1696867300;
+        bh=JyCJjEdKDLAlTbnUu+YzmviHWlf4l4V/ZaDd4AoNfZ8=;
+        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+        b=arLoE8vSMK/pwr6KnXQ+vQrYtq9qdcjIYiv7IEBKOikws56wuAIQVlTpi6EtrzhWu
+         vRT33AmD8Cu+60weu9K6XF8Yro/M1RfKLQYWcPEH8sVUo4h5jUbZK98Ra5j1Kk/gAj
+         +gWiNC6i7E+a6tfbo6+cCNAfNXq9OhPm6M3/1gwKayAfPBYAjoBtXuRYJftPOcq4TW
+         o0flrKM6W11fUTtaKtOEhN8L8D2fMJIB3jUeuzWyRUFFd+T/7Q5NKdpSZzV6Q2WiJN
+         WFhUYgyCq2y7c5CKsVlOpi14BRUJdgNuOy68ho6nJj8LT8vyGfw96J+jn0gSfymVEn
+         89Id3+cpBkw1w==
+Message-ID: <c3835e0a-97ef-4c95-9e2b-abb3092d3ef3@collabora.com>
+Date:   Mon, 9 Oct 2023 21:01:33 +0500
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="c2qh7h5mmh3kzvla"
-Content-Disposition: inline
-In-Reply-To: <20231009130122.990256512@linuxfoundation.org>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        Ingo Molnar <mingo@elte.hu>, kernel@collabora.com,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-serial@vger.kernel.org
+Subject: Re: [PATCH v3] tty/sysrq: replace smp_processor_id() with get_cpu()
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>
+References: <20230822102606.2821311-1-usama.anjum@collabora.com>
+ <2023091835-quill-congress-b691@gregkh>
+ <d0406751-829d-4892-9939-0e8873be3318@kernel.org>
+ <2023091957-roundish-epilepsy-9686@gregkh>
+Content-Language: en-US
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <2023091957-roundish-epilepsy-9686@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 9/19/23 12:13 PM, Greg Kroah-Hartman wrote:
+> On Tue, Sep 19, 2023 at 07:52:42AM +0200, Jiri Slaby wrote:
+>> On 18. 09. 23, 10:10, Greg Kroah-Hartman wrote:
+>>> On Tue, Aug 22, 2023 at 03:26:06PM +0500, Muhammad Usama Anjum wrote:
+>>>> The smp_processor_id() shouldn't be called from preemptible code.
+>>>> Instead use get_cpu() and put_cpu() which disables preemption in
+>>>> addition to getting the processor id. This fixes the following bug:
+>>>>
+>>>> [  119.143590] sysrq: Show backtrace of all active CPUs
+>>>> [  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
+>>>> [  119.144586] caller is debug_smp_processor_id+0x20/0x30
+>>>> [  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
+>>>> [  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
+>>>> [  119.145053] Call trace:
+>>>> [  119.145093]  dump_backtrace+0x0/0x1a0
+>>>> [  119.145122]  show_stack+0x18/0x70
+>>>> [  119.145141]  dump_stack+0xc4/0x11c
+>>>> [  119.145159]  check_preemption_disabled+0x100/0x110
+>>>> [  119.145175]  debug_smp_processor_id+0x20/0x30
+>>>> [  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
+>>>> [  119.145211]  __handle_sysrq+0x8c/0x1a0
+>>>> [  119.145227]  write_sysrq_trigger+0x94/0x12c
+>>>> [  119.145247]  proc_reg_write+0xa8/0xe4
+>>>> [  119.145266]  vfs_write+0xec/0x280
+>>>> [  119.145282]  ksys_write+0x6c/0x100
+>>>> [  119.145298]  __arm64_sys_write+0x20/0x30
+>>>> [  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
+>>>> [  119.145332]  do_el0_svc+0x24/0x8c
+>>>> [  119.145348]  el0_svc+0x10/0x20
+>>>> [  119.145364]  el0_sync_handler+0x134/0x140
+>>>> [  119.145381]  el0_sync+0x180/0x1c0
+>>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
+>>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>>>> ---
+>>>> Changes since v2:
+>>>> - Add changelog and resend
+>>>>
+>>>> Changes since v1:
+>>>> - Add "Cc: stable@vger.kernel.org" tag
+>>>> ---
+>>>>   drivers/tty/sysrq.c | 3 ++-
+>>>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
+>>>> index 23198e3f1461a..6b4a28bcf2f5f 100644
+>>>> --- a/drivers/tty/sysrq.c
+>>>> +++ b/drivers/tty/sysrq.c
+>>>> @@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8 key)
+>>>>   		if (in_hardirq())
+>>>>   			regs = get_irq_regs();
+>>>> -		pr_info("CPU%d:\n", smp_processor_id());
+>>>> +		pr_info("CPU%d:\n", get_cpu());
+>>>
+>>> Why not call put_cpu() right here?
+>>>
+>>>>   		if (regs)
+>>>>   			show_regs(regs);
+>>>>   		else
+>>>>   			show_stack(NULL, NULL, KERN_INFO);
+>>>>   		schedule_work(&sysrq_showallcpus);
+>>>> +		put_cpu();
+>>>
+>>> Why wait so long here after you have scheduled work?  Please drop the
+>>> cpu reference right away, you don't need to hold it for this length of
+>>> time, right?
+>>
+>> As I understand it, this way, schedule_work() will queue the work on the
+>> "gotten" (current) CPU. So sysrq_showregs_othercpus() will really dump other
+>> than the "gotten" cpu.
+> 
+> Ok, that makes a bit more sense, but that's not what the code does
+> today, have people seen the regs dumped from the wrong cpu in the past?
+> 
+>> If that is the case, it indeed should have been described in the commit log.
+Thanks for review. I'll add the explanation in the commit log and send again.
 
---c2qh7h5mmh3kzvla
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> 
+> Agreed.
+> 
+> thanks for the review,
+> 
+> greg k-h
 
-Hello,
-
-On Mon, Oct 09, 2023 at 02:59:42PM +0200, Greg Kroah-Hartman wrote:
-> 6.1-stable review patch.  If anyone has any objections, please let me kno=
-w.
->=20
-> ------------------
->=20
-> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
->=20
-> [ Upstream commit 3ffefa1d9c9eba60c7f8b4a9ce2df3e4c7f4a88e ]
->=20
-> The .remove() callback for a platform driver returns an int which makes
-> many driver authors wrongly assume it's possible to do error handling by
-> returning an error code. However the value returned is (mostly) ignored
-> and this typically results in resource leaks. To improve here there is a
-> quest to make the remove callback return void. In the first step of this
-> quest all drivers are converted to .remove_new() which already returns
-> void.
->=20
-> Trivially convert this driver from always returning zero in the remove
-> callback to the void returning variant.
->=20
-> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> Link: https://lore.kernel.org/r/20230303172041.2103336-88-u.kleine-koenig=
-@pengutronix.de
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Stable-dep-of: 1527b076ae2c ("spi: zynqmp-gqspi: fix clock imbalance on p=
-robe failure")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-
-While I don't think this patch is dangerous to backport, the more
-conservative option of directly applying 1527b076ae2c would have been
-the one I'd chosen.
-
-The simple(?) conflict resolution for picking 1527b076ae2c on top of
-v6.1.56 looks as follows:
-
-diff --cc drivers/spi/spi-zynqmp-gqspi.c
-index c760aac070e5,c309dedfd602..000000000000
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@@ -1244,20 -1368,17 +1244,24 @@@ static int zynqmp_qspi_remove(struct pl
-  {
-  	struct zynqmp_qspi *xqspi =3D platform_get_drvdata(pdev);
- =20
-+ 	pm_runtime_get_sync(&pdev->dev);
-+=20
-  	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
-+=20
-+ 	pm_runtime_disable(&pdev->dev);
-+ 	pm_runtime_put_noidle(&pdev->dev);
-+ 	pm_runtime_set_suspended(&pdev->dev);
-  	clk_disable_unprepare(xqspi->refclk);
-  	clk_disable_unprepare(xqspi->pclk);
-- 	pm_runtime_set_suspended(&pdev->dev);
-- 	pm_runtime_disable(&pdev->dev);
- +
- +	return 0;
-  }
- =20
- +static const struct of_device_id zynqmp_qspi_of_match[] =3D {
- +	{ .compatible =3D "xlnx,zynqmp-qspi-1.0", },
- +	{ /* End of table */ }
- +};
- +
-  MODULE_DEVICE_TABLE(of, zynqmp_qspi_of_match);
- =20
-  static struct platform_driver zynqmp_qspi_driver =3D {
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---c2qh7h5mmh3kzvla
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmUkIRwACgkQj4D7WH0S
-/k6ZoAf+J5Ks/FEz56QUy2KWUuBj1HOmD2SlzwXqKNcXPrDK5m/rmyt67+TPkTgL
-kO3rYuByLUjtoM0hSRAuhgomQQ4h3ZrNpxn2W3fOKTtVzNGQZF526zjy3gvCY78E
-aUKf9oFiPF8XCbCAJjUkg9qfyNd99SofzzXkbZxFmRpKSRvmcz9cAJ5Peso6DPu7
-ECXC0Yudkerjaziav6mkFXqJrVfyI3YcZ0kFd5B42bBA4RXSKUF/R+eLtQLatrA6
-JtCcmCP8w3+HY+fsXJUesh79nuPEJwT3vOqX9akIHJJV5mzbXdlIKZkymE6ty7NN
-eUp9aRWhDeGCtchw2kIGXcQSnVgWrg==
-=GO02
------END PGP SIGNATURE-----
-
---c2qh7h5mmh3kzvla--
+-- 
+BR,
+Muhammad Usama Anjum
