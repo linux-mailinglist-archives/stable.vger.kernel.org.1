@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B24E47BDEBB
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F09A7BDE00
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376387AbjJINWY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:22:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
+        id S1376852AbjJINOv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:14:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376396AbjJINWY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:24 -0400
+        with ESMTP id S1376889AbjJINOu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE715B6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA21C433C8;
-        Mon,  9 Oct 2023 13:22:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 400F8B7
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E4AC433C7;
+        Mon,  9 Oct 2023 13:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857741;
-        bh=uRMEnUY/gl7jFaAjbSZmH6GoJ5UmGkjJNAzJYuMEAgg=;
+        s=korg; t=1696857287;
+        bh=O2p7EoJh3RHgelDbB6eO4GV6jFkOeQQK1vLjezNtaLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cSbXuMK+4LnBQyHPW/3e2eRcKyLm00p67wzWb82jkQ+oGA4C3qkQ5We80fHQ3SAci
-         ob2Fvm9mtw1nVPrDWVsVAIObfkW5B88G9XPgtktjP4Fd6RczaxzEHDBfUwxHeAMt47
-         f6MT4vWoScbguwNKDmak6Wgl9v8lxPMO1NuhcpEk=
+        b=brcLlctQXHSbkquwVT84IqtjzhM9rWckFYBkA39t8qgOVePFtHo3EYE5QaIAMilKv
+         LLgTgrysQM8R08759wbtLDxXTUXbwVqVFNyleNEyDjIpy7pFif3Njap0T78iXLXkTa
+         NbUdrqRbJpIcvXFu2dXXEPO7/xt3X0YctCZDIKP0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.1 142/162] IB/mlx4: Fix the size of a buffer in add_port_entries()
-Date:   Mon,  9 Oct 2023 15:02:03 +0200
-Message-ID: <20231009130126.826482345@linuxfoundation.org>
+        patches@lists.linux.dev, luosili <rootlab@huawei.com>,
+        Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.5 160/163] ksmbd: fix race condition between session lookup and expire
+Date:   Mon,  9 Oct 2023 15:02:04 +0200
+Message-ID: <20231009130128.423921294@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,52 +49,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit d7f393430a17c2bfcdf805462a5aa80be4285b27 upstream.
+commit 53ff5cf89142b978b1a5ca8dc4d4425e6a09745f upstream.
 
-In order to be sure that 'buff' is never truncated, its size should be
-12, not 11.
+ Thread A                        +  Thread B
+ ksmbd_session_lookup            |  smb2_sess_setup
+   sess = xa_load                |
+                                 |
+                                 |    xa_erase(&conn->sessions, sess->id);
+                                 |
+                                 |    ksmbd_session_destroy(sess) --> kfree(sess)
+                                 |
+   // UAF!                       |
+   sess->last_active = jiffies   |
+                                 +
 
-When building with W=1, this fixes the following warnings:
+This patch add rwsem to fix race condition between ksmbd_session_lookup
+and ksmbd_expire_session.
 
-  drivers/infiniband/hw/mlx4/sysfs.c: In function ‘add_port_entries’:
-  drivers/infiniband/hw/mlx4/sysfs.c:268:34: error: ‘sprintf’ may write a terminating nul past the end of the destination [-Werror=format-overflow=]
-    268 |                 sprintf(buff, "%d", i);
-        |                                  ^
-  drivers/infiniband/hw/mlx4/sysfs.c:268:17: note: ‘sprintf’ output between 2 and 12 bytes into a destination of size 11
-    268 |                 sprintf(buff, "%d", i);
-        |                 ^~~~~~~~~~~~~~~~~~~~~~
-  drivers/infiniband/hw/mlx4/sysfs.c:286:34: error: ‘sprintf’ may write a terminating nul past the end of the destination [-Werror=format-overflow=]
-    286 |                 sprintf(buff, "%d", i);
-        |                                  ^
-  drivers/infiniband/hw/mlx4/sysfs.c:286:17: note: ‘sprintf’ output between 2 and 12 bytes into a destination of size 11
-    286 |                 sprintf(buff, "%d", i);
-        |                 ^~~~~~~~~~~~~~~~~~~~~~
-
-Fixes: c1e7e466120b ("IB/mlx4: Add iov directory in sysfs under the ib device")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/0bb1443eb47308bc9be30232cc23004c4d4cf43e.1695448530.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reported-by: luosili <rootlab@huawei.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx4/sysfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/connection.c        |    2 ++
+ fs/smb/server/connection.h        |    1 +
+ fs/smb/server/mgmt/user_session.c |   10 +++++++---
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/infiniband/hw/mlx4/sysfs.c
-+++ b/drivers/infiniband/hw/mlx4/sysfs.c
-@@ -223,7 +223,7 @@ void del_sysfs_port_mcg_attr(struct mlx4
- static int add_port_entries(struct mlx4_ib_dev *device, int port_num)
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -84,6 +84,8 @@ struct ksmbd_conn *ksmbd_conn_alloc(void
+ 	spin_lock_init(&conn->llist_lock);
+ 	INIT_LIST_HEAD(&conn->lock_list);
+ 
++	init_rwsem(&conn->session_lock);
++
+ 	down_write(&conn_list_lock);
+ 	list_add(&conn->conns_list, &conn_list);
+ 	up_write(&conn_list_lock);
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -50,6 +50,7 @@ struct ksmbd_conn {
+ 	struct nls_table		*local_nls;
+ 	struct unicode_map		*um;
+ 	struct list_head		conns_list;
++	struct rw_semaphore		session_lock;
+ 	/* smb session 1 per user */
+ 	struct xarray			sessions;
+ 	unsigned long			last_active;
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -174,7 +174,7 @@ static void ksmbd_expire_session(struct
+ 	unsigned long id;
+ 	struct ksmbd_session *sess;
+ 
+-	down_write(&sessions_table_lock);
++	down_write(&conn->session_lock);
+ 	xa_for_each(&conn->sessions, id, sess) {
+ 		if (sess->state != SMB2_SESSION_VALID ||
+ 		    time_after(jiffies,
+@@ -185,7 +185,7 @@ static void ksmbd_expire_session(struct
+ 			continue;
+ 		}
+ 	}
+-	up_write(&sessions_table_lock);
++	up_write(&conn->session_lock);
+ }
+ 
+ int ksmbd_session_register(struct ksmbd_conn *conn,
+@@ -227,7 +227,9 @@ void ksmbd_sessions_deregister(struct ks
+ 			}
+ 		}
+ 	}
++	up_write(&sessions_table_lock);
+ 
++	down_write(&conn->session_lock);
+ 	xa_for_each(&conn->sessions, id, sess) {
+ 		unsigned long chann_id;
+ 		struct channel *chann;
+@@ -244,7 +246,7 @@ void ksmbd_sessions_deregister(struct ks
+ 			ksmbd_session_destroy(sess);
+ 		}
+ 	}
+-	up_write(&sessions_table_lock);
++	up_write(&conn->session_lock);
+ }
+ 
+ struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
+@@ -252,9 +254,11 @@ struct ksmbd_session *ksmbd_session_look
  {
- 	int i;
--	char buff[11];
-+	char buff[12];
- 	struct mlx4_ib_iov_port *port = NULL;
- 	int ret = 0 ;
- 	struct ib_port_attr attr;
+ 	struct ksmbd_session *sess;
+ 
++	down_read(&conn->session_lock);
+ 	sess = xa_load(&conn->sessions, id);
+ 	if (sess)
+ 		sess->last_active = jiffies;
++	up_read(&conn->session_lock);
+ 	return sess;
+ }
+ 
 
 
