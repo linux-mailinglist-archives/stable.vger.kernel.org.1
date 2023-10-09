@@ -2,43 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACBEC7BE0A3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E52D47BDF02
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376958AbjJINm1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:42:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48542 "EHLO
+        id S1376466AbjJINZ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377381AbjJINm0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:26 -0400
+        with ESMTP id S1376491AbjJINZ1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00269CA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9EEC433C8;
-        Mon,  9 Oct 2023 13:42:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F9294;
+        Mon,  9 Oct 2023 06:25:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841DFC433C8;
+        Mon,  9 Oct 2023 13:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858943;
-        bh=2Qy0OOLit82FUJoLn/6My+PwoTju05oX8fiRV9/w048=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tQuXWhngM14aX2rCRBZAtfQpYPDWcjQxvJWLZkQBjdf9MoywLgHbQDTUcl327QMfe
-         mBUI/ZJcZKDPCPNAUdoTUztSfTMLsebpFIMVXHbGtyPWRWTNNOX3Z+MrnhajCsc8z9
-         +JcE5jtXAplG4ra3b+2greQmHQ5FN/Btt4uSTDSY=
+        s=korg; t=1696857925;
+        bh=73fBPGRNZoL475Ceb3S2rbdjPZA+FslAA6Hl6Q5Y0dk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=W3+v7s2+fJenLFBgb5QsD0D1vd42q/raqJphg4fBTEnzmhEzoICOCiZ4y7XKsaoyH
+         3QG7lNqpG4AvXDQYLeuxeXXoD3IpD8/Ofkn3Ohf3ESjcpOyPNEMl2si4qqyMw0jw7l
+         RdA0vkrQjkjDs/LhCDhwaxJsccgdeElXS1ScWh7U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/226] ata: libata-eh: do not clear ATA_PFLAG_EH_PENDING in ata_eh_reset()
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: [PATCH 5.15 00/75] 5.15.135-rc1 review
 Date:   Mon,  9 Oct 2023 15:01:22 +0200
-Message-ID: <20231009130129.939414672@linuxfoundation.org>
+Message-ID: <20231009130111.200710898@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+MIME-Version: 1.0
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
-MIME-Version: 1.0
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.135-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.15.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.15.135-rc1
+X-KernelTest-Deadline: 2023-10-11T13:01+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,127 +57,348 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 5.15.135 release.
+There are 75 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Wed, 11 Oct 2023 13:00:55 +0000.
+Anything received after that time might be too late.
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.135-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+and the diffstat can be found below.
 
-[ Upstream commit 80cc944eca4f0baa9c381d0706f3160e491437f2 ]
+thanks,
 
-ata_scsi_port_error_handler() starts off by clearing ATA_PFLAG_EH_PENDING,
-before calling ap->ops->error_handler() (without holding the ap->lock).
+greg k-h
 
-If an error IRQ is received while ap->ops->error_handler() is running,
-the irq handler will set ATA_PFLAG_EH_PENDING.
+-------------
+Pseudo-Shortlog of commits:
 
-Once ap->ops->error_handler() returns, ata_scsi_port_error_handler()
-checks if ATA_PFLAG_EH_PENDING is set, and if it is, another iteration
-of ATA EH is performed.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.15.135-rc1
 
-The problem is that ATA_PFLAG_EH_PENDING is not only cleared by
-ata_scsi_port_error_handler(), it is also cleared by ata_eh_reset().
+John David Anglin <dave@parisc-linux.org>
+    parisc: Restore __ldcw_align for PA-RISC 2.0 processors
 
-ata_eh_reset() is called by ap->ops->error_handler(). This additional
-clearing done by ata_eh_reset() breaks the whole retry logic in
-ata_scsi_port_error_handler(). Thus, if an error IRQ is received while
-ap->ops->error_handler() is running, the port will currently remain
-frozen and will never get re-enabled.
+luosili <rootlab@huawei.com>
+    ksmbd: fix uaf in smb20_oplock_break_ack
 
-The additional clearing in ata_eh_reset() was introduced in commit
-1e641060c4b5 ("libata: clear eh_info on reset completion").
+Shay Drory <shayd@nvidia.com>
+    RDMA/mlx5: Fix NULL string error
 
-Looking at the original error report:
-https://marc.info/?l=linux-ide&m=124765325828495&w=2
+Bernard Metzler <bmt@zurich.ibm.com>
+    RDMA/siw: Fix connection failure handling
 
-We can see the following happening:
-[    1.074659] ata3: XXX port freeze
-[    1.074700] ata3: XXX hardresetting link, stopping engine
-[    1.074746] ata3: XXX flipping SControl
+Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+    RDMA/uverbs: Fix typo of sizeof argument
 
-[    1.411471] ata3: XXX irq_stat=400040 CONN|PHY
-[    1.411475] ata3: XXX port freeze
+Leon Romanovsky <leon@kernel.org>
+    RDMA/cma: Fix truncation compilation warning in make_cma_ports
 
-[    1.420049] ata3: XXX starting engine
-[    1.420096] ata3: XXX rc=0, class=1
-[    1.420142] ata3: XXX clearing IRQs for thawing
-[    1.420188] ata3: XXX port thawed
-[    1.420234] ata3: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+Mark Zhang <markzhang@nvidia.com>
+    RDMA/cma: Initialize ib_sa_multicast structure to 0 when join
 
-We are not supposed to be able to receive an error IRQ while the port is
-frozen (PxIE is set to 0, i.e. all IRQs for the port are disabled).
+Duje Mihanović <duje.mihanovic@skole.hr>
+    gpio: pxa: disable pinctrl calls for MMP_GPIO
 
-AHCI 1.3.1 section 10.7.1.1 First Tier (IS Register) states:
-"Each bit location can be thought of as reporting a '1' if the virtual
-"interrupt line" for that port is indicating it wishes to generate an
-interrupt. That is, if a port has one or more interrupt status bit set,
-and the enables for those status bits are set, then this bit shall be set."
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+    gpio: aspeed: fix the GPIO number passed to pinctrl_gpio_set_config()
 
-Additionally, AHCI state P:ComInit clearly shows that the state machine
-will only jump to P:ComInitSetIS (which sets IS.IPS(x) to '1'), if PxIE.PCE
-is set to '1'. In our case, PxIE is set to 0, so IS.IPS(x) won't get set.
+Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+    IB/mlx4: Fix the size of a buffer in add_port_entries()
 
-So IS.IPS(x) only gets set if PxIS and PxIE is set.
+Dan Carpenter <dan.carpenter@linaro.org>
+    of: dynamic: Fix potential memory leak in of_changeset_action()
 
-AHCI 1.3.1 section 10.7.1.1 First Tier (IS Register) also states:
-"The bits in this register are read/write clear. It is set by the level of
-the virtual interrupt line being a set, and cleared by a write of '1' from
-the software."
+Leon Romanovsky <leon@kernel.org>
+    RDMA/core: Require admin capabilities to set system parameters
 
-So if IS.IPS(x) is set, you need to explicitly clear it by writing a 1 to
-IS.IPS(x) for that port.
+Fedor Pchelkin <pchelkin@ispras.ru>
+    dm zoned: free dmz->ddev array in dmz_put_zoned_devices
 
-Since PxIE is cleared, the only way to get an interrupt while the port is
-frozen, is if IS.IPS(x) is set, and the only way IS.IPS(x) can be set when
-the port is frozen, is if it was set before the port was frozen.
+Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+    HID: intel-ish-hid: ipc: Disable and reenable ACPI GPE bit
 
-However, since commit 737dd811a3db ("ata: libahci: clear pending interrupt
-status"), we clear both PxIS and IS.IPS(x) after freezing the port, but
-before the COMRESET, so the problem that commit 1e641060c4b5 ("libata:
-clear eh_info on reset completion") fixed can no longer happen.
+Jiri Kosina <jkosina@suse.cz>
+    HID: sony: remove duplicate NULL check before calling usb_free_urb()
 
-Thus, revert commit 1e641060c4b5 ("libata: clear eh_info on reset
-completion"), so that the retry logic in ata_scsi_port_error_handler()
-works once again. (The retry logic is still needed, since we can still
-get an error IRQ _after_ the port has been thawed, but before
-ata_scsi_port_error_handler() takes the ap->lock in order to check
-if ATA_PFLAG_EH_PENDING is set.)
+Xin Long <lucien.xin@gmail.com>
+    sctp: update hb timer immediately after users change hb_interval
 
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/ata/libata-eh.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+Xin Long <lucien.xin@gmail.com>
+    sctp: update transport state when processing a dupcook packet
 
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 973f4d34d7cda..5fb3eda0a280b 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -2703,18 +2703,11 @@ int ata_eh_reset(struct ata_link *link, int classify,
- 			postreset(slave, classes);
- 	}
- 
--	/*
--	 * Some controllers can't be frozen very well and may set spurious
--	 * error conditions during reset.  Clear accumulated error
--	 * information and re-thaw the port if frozen.  As reset is the
--	 * final recovery action and we cross check link onlineness against
--	 * device classification later, no hotplug event is lost by this.
--	 */
-+	/* clear cached SError */
- 	spin_lock_irqsave(link->ap->lock, flags);
--	memset(&link->eh_info, 0, sizeof(link->eh_info));
-+	link->eh_info.serror = 0;
- 	if (slave)
--		memset(&slave->eh_info, 0, sizeof(link->eh_info));
--	ap->pflags &= ~ATA_PFLAG_EH_PENDING;
-+		slave->eh_info.serror = 0;
- 	spin_unlock_irqrestore(link->ap->lock, flags);
- 
- 	if (ap->pflags & ATA_PFLAG_FROZEN)
--- 
-2.40.1
+Neal Cardwell <ncardwell@google.com>
+    tcp: fix delayed ACKs for MSS boundary condition
 
+Neal Cardwell <ncardwell@google.com>
+    tcp: fix quick-ack counting to count actual ACKs of new data
+
+Chengfeng Ye <dg573847474@gmail.com>
+    tipc: fix a potential deadlock on &tx->lock
+
+Ben Wolsieffer <ben.wolsieffer@hefring.com>
+    net: stmmac: dwmac-stm32: fix resume on STM32 MCU
+
+Benjamin Poirier <bpoirier@nvidia.com>
+    ipv4: Set offload_failed flag in fibmatch results
+
+Florian Westphal <fw@strlen.de>
+    netfilter: nf_tables: nft_set_rbtree: fix spurious insertion failure
+
+Xin Long <lucien.xin@gmail.com>
+    netfilter: handle the connecting collision properly in nf_conntrack_proto_sctp
+
+David Wilder <dwilder@us.ibm.com>
+    ibmveth: Remove condition to recompute TCP header checksum.
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    net: ethernet: ti: am65-cpsw: Fix error code in am65_cpsw_nuss_init_tx_chns()
+
+Jeremy Cline <jeremy@jcline.org>
+    net: nfc: llcp: Add lock when modifying device list
+
+Shigeru Yoshida <syoshida@redhat.com>
+    net: usb: smsc75xx: Fix uninit-value access in __smsc75xx_read_reg
+
+Fabio Estevam <festevam@denx.de>
+    net: dsa: mv88e6xxx: Avoid EEPROM timeout when EEPROM is absent
+
+Dinghao Liu <dinghao.liu@zju.edu.cn>
+    ptp: ocp: Fix error handling in ptp_ocp_device_init
+
+David Howells <dhowells@redhat.com>
+    ipv4, ipv6: Fix handling of transhdrlen in __ip{,6}_append_data()
+
+Eric Dumazet <edumazet@google.com>
+    net: fix possible store tearing in neigh_periodic_work()
+
+Mauricio Faria de Oliveira <mfo@canonical.com>
+    modpost: add missing else to the "of" check
+
+Jakub Sitnicki <jakub@cloudflare.com>
+    bpf, sockmap: Reject sk_msg egress redirects to non-TCP sockets
+
+Trond Myklebust <trond.myklebust@hammerspace.com>
+    NFSv4: Fix a nfs4_state_manager() race
+
+Arnd Bergmann <arnd@arndb.de>
+    ima: rework CONFIG_IMA dependency block
+
+Junxiao Bi <junxiao.bi@oracle.com>
+    scsi: target: core: Fix deadlock due to recursive locking
+
+Oleksandr Tymoshenko <ovt@google.com>
+    ima: Finish deprecation of IMA_TRUSTED_KEYRING Kconfig
+
+Richard Fitzgerald <rf@opensource.cirrus.com>
+    regmap: rbtree: Fix wrong register marked as in-cache when creating new node
+
+Felix Fietkau <nbd@nbd.name>
+    wifi: mt76: mt76x02: fix MT76x0 external LNA gain handling
+
+Alexandra Diupina <adiupina@astralinux.ru>
+    drivers/net: process the result of hdlc_open() and add call of hdlc_close() in uhdlc_close()
+
+Leon Hwang <hffilwlqm@gmail.com>
+    bpf: Fix tr dereferencing
+
+Pin-yen Lin <treapking@chromium.org>
+    wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet
+
+Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+    wifi: iwlwifi: mvm: Fix a memory corruption issue
+
+Johannes Berg <johannes.berg@intel.com>
+    iwlwifi: avoid void pointer arithmetic
+
+Arnd Bergmann <arnd@arndb.de>
+    wifi: iwlwifi: dbg_ini: fix structure packing
+
+Zhihao Cheng <chengzhihao1@huawei.com>
+    ubi: Refuse attaching if mtd's erasesize is 0
+
+Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+    HID: sony: Fix a potential memory leak in sony_probe()
+
+Rob Herring <robh@kernel.org>
+    arm64: Add Cortex-A520 CPU part definition
+
+Mario Limonciello <mario.limonciello@amd.com>
+    drm/amd: Fix detection of _PR3 on the PCIe root port
+
+Jordan Rife <jrife@google.com>
+    net: prevent rewrite of msg_name in sock_sendmsg()
+
+Qu Wenruo <wqu@suse.com>
+    btrfs: reject unknown mount options early
+
+Jordan Rife <jrife@google.com>
+    net: replace calls to sock->ops->connect() with kernel_connect()
+
+Gustavo A. R. Silva <gustavoars@kernel.org>
+    wifi: mwifiex: Fix tlv_buf_left calculation
+
+Gustavo A. R. Silva <gustavoars@kernel.org>
+    qed/red_ll2: Fix undefined behavior bug in struct qed_ll2_info
+
+Stefano Garzarella <sgarzare@redhat.com>
+    vringh: don't use vringh_kiov_advance() in vringh_iov_xfer()
+
+Dinghao Liu <dinghao.liu@zju.edu.cn>
+    scsi: zfcp: Fix a double put in zfcp_port_enqueue()
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Revert "clk: imx: pll14xx: dynamically configure PLL for 393216000/361267200Hz"
+
+Ming Lei <ming.lei@redhat.com>
+    block: fix use-after-free of q->q_usage_counter
+
+Ilya Dryomov <idryomov@gmail.com>
+    rbd: take header_rwsem in rbd_dev_refresh() only when updating
+
+Ilya Dryomov <idryomov@gmail.com>
+    rbd: decouple parent info read-in from updating rbd_dev
+
+Ilya Dryomov <idryomov@gmail.com>
+    rbd: decouple header read-in from updating rbd_dev->header
+
+Ilya Dryomov <idryomov@gmail.com>
+    rbd: move rbd_dev_refresh() definition
+
+Robin Murphy <robin.murphy@arm.com>
+    iommu/arm-smmu-v3: Avoid constructing invalid range commands
+
+Robin Murphy <robin.murphy@arm.com>
+    iommu/arm-smmu-v3: Set TTL invalidation hint better
+
+Gabriel Krisman Bertazi <krisman@suse.de>
+    arm64: Avoid repeated AA64MMFR1_EL1 register read on pagefault path
+
+Zheng Yejian <zhengyejian1@huawei.com>
+    ring-buffer: Fix bytes info in per_cpu buffer stats
+
+Vlastimil Babka <vbabka@suse.cz>
+    ring-buffer: remove obsolete comment for free_buffer_page()
+
+Trond Myklebust <trond.myklebust@hammerspace.com>
+    NFSv4: Fix a state manager thread deadlock regression
+
+Benjamin Coddington <bcodding@redhat.com>
+    NFS: rename nfs_client_kset to nfs_kset
+
+Benjamin Coddington <bcodding@redhat.com>
+    NFS: Cleanup unused rpc_clnt variable
+
+Sameer Pujar <spujar@nvidia.com>
+    ASoC: tegra: Fix redundant PLLA and PLLA_OUT0 updates
+
+Sameer Pujar <spujar@nvidia.com>
+    ASoC: soc-utils: Export snd_soc_dai_is_dummy() symbol
+
+Johan Hovold <johan+linaro@kernel.org>
+    spi: zynqmp-gqspi: fix clock imbalance on probe failure
+
+Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+    spi: zynqmp-gqspi: Convert to platform remove callback returning void
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |   4 +-
+ arch/arm64/include/asm/cpufeature.h                |   6 +-
+ arch/arm64/include/asm/cputype.h                   |   2 +
+ arch/parisc/include/asm/ldcw.h                     |  36 +-
+ arch/parisc/include/asm/spinlock_types.h           |   5 -
+ block/blk-core.c                                   |   2 -
+ block/blk-sysfs.c                                  |   2 +
+ drivers/base/regmap/regcache-rbtree.c              |   3 +-
+ drivers/block/rbd.c                                | 412 +++++++++++----------
+ drivers/clk/imx/clk-pll14xx.c                      |   2 +
+ drivers/gpio/gpio-aspeed.c                         |   2 +-
+ drivers/gpio/gpio-pxa.c                            |   1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c         |   2 +-
+ drivers/hid/hid-sony.c                             |   2 +
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c            |   8 +
+ drivers/infiniband/core/cma.c                      |   2 +-
+ drivers/infiniband/core/cma_configfs.c             |   2 +-
+ drivers/infiniband/core/nldev.c                    |   1 +
+ drivers/infiniband/core/uverbs_main.c              |   2 +-
+ drivers/infiniband/hw/mlx4/sysfs.c                 |   2 +-
+ drivers/infiniband/hw/mlx5/main.c                  |   2 +-
+ drivers/infiniband/sw/siw/siw_cm.c                 |  16 +-
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c        |  18 +-
+ drivers/md/dm-zoned-target.c                       |  15 +-
+ drivers/mtd/ubi/build.c                            |   7 +
+ drivers/net/dsa/mv88e6xxx/chip.c                   |   6 +-
+ drivers/net/dsa/mv88e6xxx/global1.c                |  31 --
+ drivers/net/dsa/mv88e6xxx/global1.h                |   1 -
+ drivers/net/dsa/mv88e6xxx/global2.c                |   2 +-
+ drivers/net/dsa/mv88e6xxx/global2.h                |   1 +
+ drivers/net/ethernet/ibm/ibmveth.c                 |  25 +-
+ drivers/net/ethernet/qlogic/qed/qed_ll2.h          |   2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c  |   7 +-
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c           |   1 +
+ drivers/net/usb/smsc75xx.c                         |   4 +-
+ drivers/net/wan/fsl_ucc_hdlc.c                     |  12 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |   2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/error-dump.h |   6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c   |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c        |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c        |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c      |   4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |   2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/internal.h |   2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c       |   2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c    |   2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c       |   2 +-
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c      |   6 +-
+ drivers/net/wireless/intel/iwlwifi/queue/tx.h      |   2 +-
+ .../net/wireless/marvell/mwifiex/11n_rxreorder.c   |   4 +-
+ drivers/net/wireless/marvell/mwifiex/sta_rx.c      |  16 +-
+ .../net/wireless/mediatek/mt76/mt76x02_eeprom.c    |   7 -
+ drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c |  13 +-
+ drivers/of/dynamic.c                               |   6 +-
+ drivers/ptp/ptp_ocp.c                              |   1 -
+ drivers/s390/scsi/zfcp_aux.c                       |   9 +-
+ drivers/spi/spi-zynqmp-gqspi.c                     |  18 +-
+ drivers/target/target_core_device.c                |  11 +-
+ drivers/vhost/vringh.c                             |  12 +-
+ fs/btrfs/super.c                                   |   4 +
+ fs/ksmbd/smb2pdu.c                                 |   4 +-
+ fs/nfs/nfs4proc.c                                  |   4 +-
+ fs/nfs/nfs4state.c                                 |  47 ++-
+ fs/nfs/sysfs.c                                     |  16 +-
+ include/linux/bpf.h                                |   2 +-
+ include/linux/netfilter/nf_conntrack_sctp.h        |   1 +
+ include/net/tcp.h                                  |   6 +-
+ kernel/trace/ring_buffer.c                         |  32 +-
+ net/core/neighbour.c                               |   4 +-
+ net/core/sock_map.c                                |   4 +
+ net/ipv4/route.c                                   |   2 +
+ net/ipv4/tcp_input.c                               |  13 +
+ net/ipv4/tcp_output.c                              |   7 +-
+ net/l2tp/l2tp_ip6.c                                |   2 +-
+ net/netfilter/ipvs/ip_vs_sync.c                    |   4 +-
+ net/netfilter/nf_conntrack_proto_sctp.c            |  43 ++-
+ net/netfilter/nft_set_rbtree.c                     |  46 ++-
+ net/nfc/llcp_core.c                                |   2 +
+ net/rds/tcp_connect.c                              |   2 +-
+ net/sctp/associola.c                               |   3 +-
+ net/sctp/socket.c                                  |   1 +
+ net/socket.c                                       |  29 +-
+ net/tipc/crypto.c                                  |   4 +-
+ scripts/mod/file2alias.c                           |   2 +-
+ security/integrity/ima/Kconfig                     |  22 +-
+ sound/soc/soc-utils.c                              |   1 +
+ sound/soc/tegra/tegra_audio_graph_card.c           |  30 +-
+ 88 files changed, 649 insertions(+), 473 deletions(-)
 
 
