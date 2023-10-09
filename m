@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87C177BE0C9
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46EF47BDF28
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:27:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376772AbjJINoW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:44:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56666 "EHLO
+        id S1376708AbjJIN07 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:26:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377425AbjJINnz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:55 -0400
+        with ESMTP id S1376720AbjJIN06 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 330B7D3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1C5C433CA;
-        Mon,  9 Oct 2023 13:43:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72C71AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EACC433C8;
+        Mon,  9 Oct 2023 13:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859032;
-        bh=FOopOw4l7wjrzbMPqH7etrh+VN9UYGxwGzAumLWHr1Q=;
+        s=korg; t=1696858017;
+        bh=m45SfE3lhIJCid1eImSrej8a5GV12LAwUfRiHj6+QJA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tstgynn7QhSHzRsOW/R+7j3rB5rW5FrGFV59k3ycPa+g1MJvB80kcLVFoNYqyNr+n
-         AWrVX0h8r5+Ti/KofcsiCimtya7u4FhiVJloOnfA8BZwniQZtYhsxcjfyei3kkAO1C
-         OccrAUmBEZMumG53DbcRXgmPzWQdo3yZicEnkj9o=
+        b=KNn+rlwkRafg48xNfS42GCnurDD3CmDvDpgI3A6fFFVzBCduAO14KE0Irm96BJ+TA
+         GwRlbgxqStL2hj2QSCwo4+thRaaDSF8zT1eBdV4t46rf0ho2/7CXuVuLxKTn6rgQBV
+         /6jp2LYfu44xrW9VJ8PROR9wjDesmmuzfqtRHTFU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.10 150/226] ata: libata-scsi: ignore reserved bits for REPORT SUPPORTED OPERATION CODES
+        patches@lists.linux.dev, Yu Hao <yhao016@ucr.edu>,
+        Zhihao Cheng <chengzhihao1@huawei.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 29/75] ubi: Refuse attaching if mtds erasesize is 0
 Date:   Mon,  9 Oct 2023 15:01:51 +0200
-Message-ID: <20231009130130.631488520@linuxfoundation.org>
+Message-ID: <20231009130112.247558710@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,44 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit 3ef600923521616ebe192c893468ad0424de2afb upstream.
+[ Upstream commit 017c73a34a661a861712f7cc1393a123e5b2208c ]
 
-For REPORT SUPPORTED OPERATION CODES command, the service action field is
-defined as bits 0-4 in the second byte in the CDB. Bits 5-7 in the second
-byte are reserved.
+There exists mtd devices with zero erasesize, which will trigger a
+divide-by-zero exception while attaching ubi device.
+Fix it by refusing attaching if mtd's erasesize is 0.
 
-Only look at the service action field in the second byte when determining
-if the MAINTENANCE IN opcode is a REPORT SUPPORTED OPERATION CODES command.
-
-This matches how we only look at the service action field in the second
-byte when determining if the SERVICE ACTION IN(16) opcode is a READ
-CAPACITY(16) command (reserved bits 5-7 in the second byte are ignored).
-
-Fixes: 7b2030942859 ("libata: Add support for SCT Write Same")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 801c135ce73d ("UBI: Unsorted Block Images")
+Reported-by: Yu Hao <yhao016@ucr.edu>
+Link: https://lore.kernel.org/lkml/977347543.226888.1682011999468.JavaMail.zimbra@nod.at/T/
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/ubi/build.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4259,7 +4259,7 @@ void ata_scsi_simulate(struct ata_device
- 		break;
+diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
+index 762dc14aef742..8b247ce73bb6e 100644
+--- a/drivers/mtd/ubi/build.c
++++ b/drivers/mtd/ubi/build.c
+@@ -888,6 +888,13 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
+ 		return -EINVAL;
+ 	}
  
- 	case MAINTENANCE_IN:
--		if (scsicmd[1] == MI_REPORT_SUPPORTED_OPERATION_CODES)
-+		if ((scsicmd[1] & 0x1f) == MI_REPORT_SUPPORTED_OPERATION_CODES)
- 			ata_scsi_rbuf_fill(&args, ata_scsiop_maint_in);
- 		else
- 			ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
++	/* UBI cannot work on flashes with zero erasesize. */
++	if (!mtd->erasesize) {
++		pr_err("ubi: refuse attaching mtd%d - zero erasesize flash is not supported\n",
++			mtd->index);
++		return -EINVAL;
++	}
++
+ 	if (ubi_num == UBI_DEV_NUM_AUTO) {
+ 		/* Search for an empty slot in the @ubi_devices array */
+ 		for (ubi_num = 0; ubi_num < UBI_MAX_DEVICES; ubi_num++)
+-- 
+2.40.1
+
 
 
