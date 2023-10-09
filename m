@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D0467BDED8
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87C177BE0C9
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376456AbjJINXn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:23:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60158 "EHLO
+        id S1376772AbjJINoW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:44:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376443AbjJINXm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:42 -0400
+        with ESMTP id S1377425AbjJINnz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD358F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509C6C433C7;
-        Mon,  9 Oct 2023 13:23:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 330B7D3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1C5C433CA;
+        Mon,  9 Oct 2023 13:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857820;
-        bh=WegpTihH3BhS88QABTC2mWfihMuEsGwhRqy1eo9kneM=;
+        s=korg; t=1696859032;
+        bh=FOopOw4l7wjrzbMPqH7etrh+VN9UYGxwGzAumLWHr1Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Oa51P5L5Hot/YkpIijs3uHc0aHI/uL2JjIz8Jrd+k4/BDJ6bLLr6MdHWI3j4u4W+O
-         W/xNQyvlLhgmzI6X1U6+jYB66eCNPzvFiLkfmFcclnnJHSwyjxHrf0g+r2o+zVav5z
-         OVGIur1Te09etqvAiHSQpqwv3PcXNcUVVeBY8Obc=
+        b=Tstgynn7QhSHzRsOW/R+7j3rB5rW5FrGFV59k3ycPa+g1MJvB80kcLVFoNYqyNr+n
+         AWrVX0h8r5+Ti/KofcsiCimtya7u4FhiVJloOnfA8BZwniQZtYhsxcjfyei3kkAO1C
+         OccrAUmBEZMumG53DbcRXgmPzWQdo3yZicEnkj9o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/162] sctp: update hb timer immediately after users change hb_interval
+        patches@lists.linux.dev, Niklas Cassel <niklas.cassel@wdc.com>,
+        Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 5.10 150/226] ata: libata-scsi: ignore reserved bits for REPORT SUPPORTED OPERATION CODES
 Date:   Mon,  9 Oct 2023 15:01:51 +0200
-Message-ID: <20231009130126.506099253@linuxfoundation.org>
+Message-ID: <20231009130130.631488520@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +48,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-[ Upstream commit 1f4e803cd9c9166eb8b6c8b0b8e4124f7499fc07 ]
+commit 3ef600923521616ebe192c893468ad0424de2afb upstream.
 
-Currently, when hb_interval is changed by users, it won't take effect
-until the next expiry of hb timer. As the default value is 30s, users
-have to wait up to 30s to wait its hb_interval update to work.
+For REPORT SUPPORTED OPERATION CODES command, the service action field is
+defined as bits 0-4 in the second byte in the CDB. Bits 5-7 in the second
+byte are reserved.
 
-This becomes pretty bad in containers where a much smaller value is
-usually set on hb_interval. This patch improves it by resetting the
-hb timer immediately once the value of hb_interval is updated by users.
+Only look at the service action field in the second byte when determining
+if the MAINTENANCE IN opcode is a REPORT SUPPORTED OPERATION CODES command.
 
-Note that we don't address the already existing 'problem' when sending
-a heartbeat 'on demand' if one hb has just been sent(from the timer)
-mentioned in:
+This matches how we only look at the service action field in the second
+byte when determining if the SERVICE ACTION IN(16) opcode is a READ
+CAPACITY(16) command (reserved bits 5-7 in the second byte are ignored).
 
-  https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg590224.html
-
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://lore.kernel.org/r/75465785f8ee5df2fb3acdca9b8fafdc18984098.1696172660.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7b2030942859 ("libata: Add support for SCT Write Same")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/socket.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ata/libata-scsi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 32e3669adf146..e25dc17091311 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -2449,6 +2449,7 @@ static int sctp_apply_peer_addr_params(struct sctp_paddrparams *params,
- 			if (trans) {
- 				trans->hbinterval =
- 				    msecs_to_jiffies(params->spp_hbinterval);
-+				sctp_transport_reset_hb_timer(trans);
- 			} else if (asoc) {
- 				asoc->hbinterval =
- 				    msecs_to_jiffies(params->spp_hbinterval);
--- 
-2.40.1
-
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -4259,7 +4259,7 @@ void ata_scsi_simulate(struct ata_device
+ 		break;
+ 
+ 	case MAINTENANCE_IN:
+-		if (scsicmd[1] == MI_REPORT_SUPPORTED_OPERATION_CODES)
++		if ((scsicmd[1] & 0x1f) == MI_REPORT_SUPPORTED_OPERATION_CODES)
+ 			ata_scsi_rbuf_fill(&args, ata_scsiop_maint_in);
+ 		else
+ 			ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
 
 
