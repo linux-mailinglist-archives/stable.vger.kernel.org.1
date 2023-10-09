@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FAA97BE050
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3E87BDE47
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377299AbjJINiq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:38:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51744 "EHLO
+        id S1376997AbjJINRz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:17:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377240AbjJINih (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:37 -0400
+        with ESMTP id S1376680AbjJINRz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62F17F1
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82440C433C8;
-        Mon,  9 Oct 2023 13:38:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13DF3A6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:17:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C12C433C7;
+        Mon,  9 Oct 2023 13:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858712;
-        bh=pJGpqQ/VJkguZPoj3pNYLHAd35OTS99ZxLK3cLP1Brg=;
+        s=korg; t=1696857471;
+        bh=6vWJF65uzLn7wZi3dZ+JH+HggDxbz5cuvrXXOm61la4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z3C5QahXXOnwLtrFeGJqnqbQ9cQgXLWrB4u+KIFA6p4y3NnC3WTIHB865dbqa8Bgk
-         5BqDc5GEyILfcTLwws5veLwHo9+OW+VAXWGCTScaMPbMJJUqefjg1SbjvSx1KQ3amz
-         5tcJ1ku8smwLT8/Dbvvc73PxuaIRnYvLPxqQEqn4=
+        b=mexEI5Z70TWWBf3QTqe6V4u95m9RGRVuCaerF55Caw7MJXEF6fvmy2cGJzsy3WAE9
+         m4GLzx9Cr8vwcnSI+HsDGGqNJtMpxSjPsLF0/fqZvrr504EFG9HjBvEyYBRFELJdc/
+         2hyVe2vGthIQT4ql6thedKxx4m3jZherQjafSxIk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Minqiang Chen <ptpt52@gmail.com>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Jan Engelhardt <jengelh@inai.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 076/226] netfilter: use actual socket sk for REJECT action
-Date:   Mon,  9 Oct 2023 15:00:37 +0200
-Message-ID: <20231009130128.773063301@linuxfoundation.org>
+        patches@lists.linux.dev, Christian Marangi <ansuelsmth@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 057/162] net: ethernet: mediatek: disable irq before schedule napi
+Date:   Mon,  9 Oct 2023 15:00:38 +0200
+Message-ID: <20231009130124.506591969@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,195 +48,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Engelhardt <jengelh@inai.de>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 04295878beac396dae47ba93141cae0d9386e7ef ]
+commit fcdfc462881d8acf9db77f483b2c821e286ca97b upstream.
 
-True to the message of commit v5.10-rc1-105-g46d6c5ae953c, _do_
-actually make use of state->sk when possible, such as in the REJECT
-modules.
+While searching for possible refactor of napi_schedule_prep and
+__napi_schedule it was notice that the mtk eth driver disable the
+interrupt for rx and tx AFTER napi is scheduled.
 
-Reported-by: Minqiang Chen <ptpt52@gmail.com>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Jan Engelhardt <jengelh@inai.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 28427f368f0e ("netfilter: nft_exthdr: Fix non-linear header modification")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While this is a very hard to repro case it might happen to have
+situation where the interrupt is disabled and never enabled again as the
+napi completes and the interrupt is enabled before.
+
+This is caused by the fact that a napi driven by interrupt expect a
+logic with:
+1. interrupt received. napi prepared -> interrupt disabled -> napi
+   scheduled
+2. napi triggered. ring cleared -> interrupt enabled -> wait for new
+   interrupt
+
+To prevent this case, disable the interrupt BEFORE the napi is
+scheduled.
+
+Fixes: 656e705243fd ("net-next: mediatek: add support for MT7623 ethernet")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Link: https://lore.kernel.org/r/20231002140805.568-1-ansuelsmth@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/ipv4/nf_reject.h | 4 ++--
- include/net/netfilter/ipv6/nf_reject.h | 5 ++---
- net/ipv4/netfilter/ipt_REJECT.c        | 3 ++-
- net/ipv4/netfilter/nf_reject_ipv4.c    | 6 +++---
- net/ipv4/netfilter/nft_reject_ipv4.c   | 3 ++-
- net/ipv6/netfilter/ip6t_REJECT.c       | 2 +-
- net/ipv6/netfilter/nf_reject_ipv6.c    | 5 +++--
- net/ipv6/netfilter/nft_reject_ipv6.c   | 3 ++-
- net/netfilter/nft_reject_inet.c        | 6 ++++--
- 9 files changed, 21 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/netfilter/ipv4/nf_reject.h b/include/net/netfilter/ipv4/nf_reject.h
-index 40e0e0623f461..d8207a82d761a 100644
---- a/include/net/netfilter/ipv4/nf_reject.h
-+++ b/include/net/netfilter/ipv4/nf_reject.h
-@@ -8,8 +8,8 @@
- #include <net/netfilter/nf_reject.h>
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -2862,8 +2862,8 @@ static irqreturn_t mtk_handle_irq_rx(int
  
- void nf_send_unreach(struct sk_buff *skb_in, int code, int hook);
--void nf_send_reset(struct net *net, struct sk_buff *oldskb, int hook);
--
-+void nf_send_reset(struct net *net, struct sock *, struct sk_buff *oldskb,
-+		   int hook);
- const struct tcphdr *nf_reject_ip_tcphdr_get(struct sk_buff *oldskb,
- 					     struct tcphdr *_oth, int hook);
- struct iphdr *nf_reject_iphdr_put(struct sk_buff *nskb,
-diff --git a/include/net/netfilter/ipv6/nf_reject.h b/include/net/netfilter/ipv6/nf_reject.h
-index 4a3ef9ebdf6f6..86e87bc2c5167 100644
---- a/include/net/netfilter/ipv6/nf_reject.h
-+++ b/include/net/netfilter/ipv6/nf_reject.h
-@@ -7,9 +7,8 @@
+ 	eth->rx_events++;
+ 	if (likely(napi_schedule_prep(&eth->rx_napi))) {
+-		__napi_schedule(&eth->rx_napi);
+ 		mtk_rx_irq_disable(eth, eth->soc->txrx.rx_irq_done_mask);
++		__napi_schedule(&eth->rx_napi);
+ 	}
  
- void nf_send_unreach6(struct net *net, struct sk_buff *skb_in, unsigned char code,
- 		      unsigned int hooknum);
--
--void nf_send_reset6(struct net *net, struct sk_buff *oldskb, int hook);
--
-+void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
-+		    int hook);
- const struct tcphdr *nf_reject_ip6_tcphdr_get(struct sk_buff *oldskb,
- 					      struct tcphdr *otcph,
- 					      unsigned int *otcplen, int hook);
-diff --git a/net/ipv4/netfilter/ipt_REJECT.c b/net/ipv4/netfilter/ipt_REJECT.c
-index e16b98ee6266e..4b88407347629 100644
---- a/net/ipv4/netfilter/ipt_REJECT.c
-+++ b/net/ipv4/netfilter/ipt_REJECT.c
-@@ -56,7 +56,8 @@ reject_tg(struct sk_buff *skb, const struct xt_action_param *par)
- 		nf_send_unreach(skb, ICMP_PKT_FILTERED, hook);
- 		break;
- 	case IPT_TCP_RESET:
--		nf_send_reset(xt_net(par), skb, hook);
-+		nf_send_reset(xt_net(par), par->state->sk, skb, hook);
-+		break;
- 	case IPT_ICMP_ECHOREPLY:
- 		/* Doesn't happen. */
- 		break;
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index 93b07739807b2..efe14a6a5d9b8 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -112,7 +112,8 @@ static int nf_reject_fill_skb_dst(struct sk_buff *skb_in)
- }
+ 	return IRQ_HANDLED;
+@@ -2875,8 +2875,8 @@ static irqreturn_t mtk_handle_irq_tx(int
  
- /* Send RST reply */
--void nf_send_reset(struct net *net, struct sk_buff *oldskb, int hook)
-+void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
-+		   int hook)
- {
- 	struct net_device *br_indev __maybe_unused;
- 	struct sk_buff *nskb;
-@@ -144,8 +145,7 @@ void nf_send_reset(struct net *net, struct sk_buff *oldskb, int hook)
- 	niph = nf_reject_iphdr_put(nskb, oldskb, IPPROTO_TCP,
- 				   ip4_dst_hoplimit(skb_dst(nskb)));
- 	nf_reject_ip_tcphdr_put(nskb, oldskb, oth);
--
--	if (ip_route_me_harder(net, nskb->sk, nskb, RTN_UNSPEC))
-+	if (ip_route_me_harder(net, sk, nskb, RTN_UNSPEC))
- 		goto free_nskb;
+ 	eth->tx_events++;
+ 	if (likely(napi_schedule_prep(&eth->tx_napi))) {
+-		__napi_schedule(&eth->tx_napi);
+ 		mtk_tx_irq_disable(eth, MTK_TX_DONE_INT);
++		__napi_schedule(&eth->tx_napi);
+ 	}
  
- 	niph = ip_hdr(nskb);
-diff --git a/net/ipv4/netfilter/nft_reject_ipv4.c b/net/ipv4/netfilter/nft_reject_ipv4.c
-index e408f813f5d80..ff437e4ed6db0 100644
---- a/net/ipv4/netfilter/nft_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nft_reject_ipv4.c
-@@ -27,7 +27,8 @@ static void nft_reject_ipv4_eval(const struct nft_expr *expr,
- 		nf_send_unreach(pkt->skb, priv->icmp_code, nft_hook(pkt));
- 		break;
- 	case NFT_REJECT_TCP_RST:
--		nf_send_reset(nft_net(pkt), pkt->skb, nft_hook(pkt));
-+		nf_send_reset(nft_net(pkt), pkt->xt.state->sk, pkt->skb,
-+			      nft_hook(pkt));
- 		break;
- 	default:
- 		break;
-diff --git a/net/ipv6/netfilter/ip6t_REJECT.c b/net/ipv6/netfilter/ip6t_REJECT.c
-index 3ac5485049f09..a35019d2e480c 100644
---- a/net/ipv6/netfilter/ip6t_REJECT.c
-+++ b/net/ipv6/netfilter/ip6t_REJECT.c
-@@ -61,7 +61,7 @@ reject_tg6(struct sk_buff *skb, const struct xt_action_param *par)
- 		/* Do nothing */
- 		break;
- 	case IP6T_TCP_RESET:
--		nf_send_reset6(net, skb, xt_hooknum(par));
-+		nf_send_reset6(net, par->state->sk, skb, xt_hooknum(par));
- 		break;
- 	case IP6T_ICMP6_POLICY_FAIL:
- 		nf_send_unreach6(net, skb, ICMPV6_POLICY_FAIL, xt_hooknum(par));
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index bf95513736c92..832d9f9cd10ad 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -141,7 +141,8 @@ static int nf_reject6_fill_skb_dst(struct sk_buff *skb_in)
- 	return 0;
- }
- 
--void nf_send_reset6(struct net *net, struct sk_buff *oldskb, int hook)
-+void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
-+		    int hook)
- {
- 	struct net_device *br_indev __maybe_unused;
- 	struct sk_buff *nskb;
-@@ -233,7 +234,7 @@ void nf_send_reset6(struct net *net, struct sk_buff *oldskb, int hook)
- 		dev_queue_xmit(nskb);
- 	} else
- #endif
--		ip6_local_out(net, nskb->sk, nskb);
-+		ip6_local_out(net, sk, nskb);
- }
- EXPORT_SYMBOL_GPL(nf_send_reset6);
- 
-diff --git a/net/ipv6/netfilter/nft_reject_ipv6.c b/net/ipv6/netfilter/nft_reject_ipv6.c
-index c1098a1968e1e..7969d1f3018dc 100644
---- a/net/ipv6/netfilter/nft_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nft_reject_ipv6.c
-@@ -28,7 +28,8 @@ static void nft_reject_ipv6_eval(const struct nft_expr *expr,
- 				 nft_hook(pkt));
- 		break;
- 	case NFT_REJECT_TCP_RST:
--		nf_send_reset6(nft_net(pkt), pkt->skb, nft_hook(pkt));
-+		nf_send_reset6(nft_net(pkt), pkt->xt.state->sk, pkt->skb,
-+			       nft_hook(pkt));
- 		break;
- 	default:
- 		break;
-diff --git a/net/netfilter/nft_reject_inet.c b/net/netfilter/nft_reject_inet.c
-index cf8f2646e93c6..36b219e2e896c 100644
---- a/net/netfilter/nft_reject_inet.c
-+++ b/net/netfilter/nft_reject_inet.c
-@@ -28,7 +28,8 @@ static void nft_reject_inet_eval(const struct nft_expr *expr,
- 					nft_hook(pkt));
- 			break;
- 		case NFT_REJECT_TCP_RST:
--			nf_send_reset(nft_net(pkt), pkt->skb, nft_hook(pkt));
-+			nf_send_reset(nft_net(pkt), pkt->xt.state->sk,
-+				      pkt->skb, nft_hook(pkt));
- 			break;
- 		case NFT_REJECT_ICMPX_UNREACH:
- 			nf_send_unreach(pkt->skb,
-@@ -44,7 +45,8 @@ static void nft_reject_inet_eval(const struct nft_expr *expr,
- 					 priv->icmp_code, nft_hook(pkt));
- 			break;
- 		case NFT_REJECT_TCP_RST:
--			nf_send_reset6(nft_net(pkt), pkt->skb, nft_hook(pkt));
-+			nf_send_reset6(nft_net(pkt), pkt->xt.state->sk,
-+				       pkt->skb, nft_hook(pkt));
- 			break;
- 		case NFT_REJECT_ICMPX_UNREACH:
- 			nf_send_unreach6(nft_net(pkt), pkt->skb,
--- 
-2.40.1
-
+ 	return IRQ_HANDLED;
 
 
