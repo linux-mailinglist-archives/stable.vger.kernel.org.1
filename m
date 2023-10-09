@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F78C7BE157
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECD747BE1B9
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377506AbjJINti (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:49:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33962 "EHLO
+        id S1377537AbjJINx1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:53:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377463AbjJINti (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:49:38 -0400
+        with ESMTP id S1377536AbjJINx0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEE37B9
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:49:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F458C433C7;
-        Mon,  9 Oct 2023 13:49:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C3F8AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F1AC433C8;
+        Mon,  9 Oct 2023 13:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859375;
-        bh=ragBUxza1GiAVa0LxyGIUCDZyL8zKSVRBtZl1hQYPE4=;
+        s=korg; t=1696859605;
+        bh=9sJFPhhssbi6pvcmooWEZboUKGE2AHEI97vHUt4uFCk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u4qu8iy7NJdMRgA6j838Qpm8pVPt47yDyoWcLBP+lvcEd38Qz/JyTOXXt55hxIsIF
-         Uv7wWj4ll/xlI+P80UxuQ/yWO+QivNg2uIkMB5syIHPAy/lLHoqIKZUecWFhD21WIf
-         ANVdxevLcOtXtIySgQZUnop0X6yKPIdN5sD6Z5NE=
+        b=S3jcnfXwEItex2qy3yuPQ/iOzX/74tGo0NnvN/psO8wtilYAFOo78uugfP6Ji83X6
+         QcfTRGt+cvmsTe5eP1aSh2ZW4yoLjf8puzxycVUApuuSWn5yCTOoMjFTIOCR3uMOcG
+         DHYTgKZyWJ4bQ4gdOU+6jVynztuuQZYnAbdbb9Pg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Neal Cardwell <ncardwell@google.com>,
-        Yuchung Cheng <ycheng@google.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Xin Guo <guoxin0309@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 47/55] tcp: fix delayed ACKs for MSS boundary condition
+Subject: [PATCH 4.19 74/91] regmap: rbtree: Fix wrong register marked as in-cache when creating new node
 Date:   Mon,  9 Oct 2023 15:06:46 +0200
-Message-ID: <20231009130109.501654888@linuxfoundation.org>
+Message-ID: <20231009130114.097966682@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,101 +50,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 4720852ed9afb1c5ab84e96135cb5b73d5afde6f ]
+[ Upstream commit 7a795ac8d49e2433e1b97caf5e99129daf8e1b08 ]
 
-This commit fixes poor delayed ACK behavior that can cause poor TCP
-latency in a particular boundary condition: when an application makes
-a TCP socket write that is an exact multiple of the MSS size.
+When regcache_rbtree_write() creates a new rbtree_node it was passing the
+wrong bit number to regcache_rbtree_set_register(). The bit number is the
+offset __in number of registers__, but in the case of creating a new block
+regcache_rbtree_write() was not dividing by the address stride to get the
+number of registers.
 
-The problem is that there is painful boundary discontinuity in the
-current delayed ACK behavior. With the current delayed ACK behavior,
-we have:
+Fix this by dividing by map->reg_stride.
+Compare with regcache_rbtree_read() where the bit is checked.
 
-(1) If an app reads data when > 1*MSS is unacknowledged, then
-    tcp_cleanup_rbuf() ACKs immediately because of:
+This bug meant that the wrong register was marked as present. The register
+that was written to the cache could not be read from the cache because it
+was not marked as cached. But a nearby register could be marked as having
+a cached value even if it was never written to the cache.
 
-     tp->rcv_nxt - tp->rcv_wup > icsk->icsk_ack.rcv_mss ||
-
-(2) If an app reads all received data, and the packets were < 1*MSS,
-    and either (a) the app is not ping-pong or (b) we received two
-    packets < 1*MSS, then tcp_cleanup_rbuf() ACKs immediately beecause
-    of:
-
-     ((icsk->icsk_ack.pending & ICSK_ACK_PUSHED2) ||
-      ((icsk->icsk_ack.pending & ICSK_ACK_PUSHED) &&
-       !inet_csk_in_pingpong_mode(sk))) &&
-
-(3) *However*: if an app reads exactly 1*MSS of data,
-    tcp_cleanup_rbuf() does not send an immediate ACK. This is true
-    even if the app is not ping-pong and the 1*MSS of data had the PSH
-    bit set, suggesting the sending application completed an
-    application write.
-
-Thus if the app is not ping-pong, we have this painful case where
->1*MSS gets an immediate ACK, and <1*MSS gets an immediate ACK, but a
-write whose last skb is an exact multiple of 1*MSS can get a 40ms
-delayed ACK. This means that any app that transfers data in one
-direction and takes care to align write size or packet size with MSS
-can suffer this problem. With receive zero copy making 4KB MSS values
-more common, it is becoming more common to have application writes
-naturally align with MSS, and more applications are likely to
-encounter this delayed ACK problem.
-
-The fix in this commit is to refine the delayed ACK heuristics with a
-simple check: immediately ACK a received 1*MSS skb with PSH bit set if
-the app reads all data. Why? If an skb has a len of exactly 1*MSS and
-has the PSH bit set then it is likely the end of an application
-write. So more data may not be arriving soon, and yet the data sender
-may be waiting for an ACK if cwnd-bound or using TX zero copy. Thus we
-set ICSK_ACK_PUSHED in this case so that tcp_cleanup_rbuf() will send
-an ACK immediately if the app reads all of the data and is not
-ping-pong. Note that this logic is also executed for the case where
-len > MSS, but in that case this logic does not matter (and does not
-hurt) because tcp_cleanup_rbuf() will always ACK immediately if the
-app reads data and there is more than an MSS of unACKed data.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Yuchung Cheng <ycheng@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Cc: Xin Guo <guoxin0309@gmail.com>
-Link: https://lore.kernel.org/r/20231001151239.1866845-2-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 3f4ff561bc88 ("regmap: rbtree: Make cache_present bitmap per node")
+Link: https://lore.kernel.org/r/20230922153711.28103-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/base/regmap/regcache-rbtree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 444ad17289277..491c16d8e9ddc 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -166,6 +166,19 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
- 		if (unlikely(len > icsk->icsk_ack.rcv_mss +
- 				   MAX_TCP_OPTION_SPACE))
- 			tcp_gro_dev_warn(sk, skb, len);
-+		/* If the skb has a len of exactly 1*MSS and has the PSH bit
-+		 * set then it is likely the end of an application write. So
-+		 * more data may not be arriving soon, and yet the data sender
-+		 * may be waiting for an ACK if cwnd-bound or using TX zero
-+		 * copy. So we set ICSK_ACK_PUSHED here so that
-+		 * tcp_cleanup_rbuf() will send an ACK immediately if the app
-+		 * reads all of the data and is not ping-pong. If len > MSS
-+		 * then this logic does not matter (and does not hurt) because
-+		 * tcp_cleanup_rbuf() will always ACK immediately if the app
-+		 * reads data and there is more than an MSS of unACKed data.
-+		 */
-+		if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_PSH)
-+			icsk->icsk_ack.pending |= ICSK_ACK_PUSHED;
- 	} else {
- 		/* Otherwise, we make more careful check taking into account,
- 		 * that SACKs block is variable.
+diff --git a/drivers/base/regmap/regcache-rbtree.c b/drivers/base/regmap/regcache-rbtree.c
+index 7353c55270874..b6f8f4059e255 100644
+--- a/drivers/base/regmap/regcache-rbtree.c
++++ b/drivers/base/regmap/regcache-rbtree.c
+@@ -467,7 +467,8 @@ static int regcache_rbtree_write(struct regmap *map, unsigned int reg,
+ 		if (!rbnode)
+ 			return -ENOMEM;
+ 		regcache_rbtree_set_register(map, rbnode,
+-					     reg - rbnode->base_reg, value);
++					     (reg - rbnode->base_reg) / map->reg_stride,
++					     value);
+ 		regcache_rbtree_insert(map, &rbtree_ctx->root, rbnode);
+ 		rbtree_ctx->cached_rbnode = rbnode;
+ 	}
 -- 
 2.40.1
 
