@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A00B87BE0AA
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 123027BDDD0
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377339AbjJINmm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:42:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49870 "EHLO
+        id S1377009AbjJINNh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:13:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377390AbjJINml (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:41 -0400
+        with ESMTP id S1376848AbjJINNW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047BDCA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B67EC433C9;
-        Mon,  9 Oct 2023 13:42:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DA93131
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:12:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FFDC433CC;
+        Mon,  9 Oct 2023 13:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858959;
-        bh=CWzsC9lJcB50J1KiKL0ARlBnnbfERfFD2MrwCj4GfVI=;
+        s=korg; t=1696857152;
+        bh=xPJCrio6RI6HNyR/LwL/pI+fq3p1DLjsNRu5wWcs0/k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H3POc8So91zvyXm8vlpuEdfBalXgAbfHRYs0I5YDk5Lf5iNZ1SsN/+OM2hgtWZw87
-         smaWNEIDGZ9pKe7XjFb/4iQCqnb6WC3Y511ahl41rroOEu2JFO+FwCDWFOOheqMe45
-         +MzrMWODSylj3lav953q9DkXcr9FpES63nT5DIQU=
+        b=RL8zhqyfC/zbGi0QAeWQlaRYoGLr/kenHGf17QphrkkRvizbObKbfvZ9xqnUoORDJ
+         zBgSHHWj6g7z5sWjko2yxrh87iAxzcmN5fKP1ruxF3v8pyAU1tHqPWhElVoQTzHb+e
+         YMFZxSjZ4s8c4/VIfGZDyRJhpt5fJlc9nim8cHF4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Ricardo B. Marliere" <rbmarliere@gmail.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 116/226] selftests: fix dependency checker script
+Subject: [PATCH 6.5 113/163] net: renesas: rswitch: Add spin lock protection for irq {un}mask
 Date:   Mon,  9 Oct 2023 15:01:17 +0200
-Message-ID: <20231009130129.808510331@linuxfoundation.org>
+Message-ID: <20231009130127.146993330@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,180 +51,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marliere <rbmarliere@gmail.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit 5f9dd2e896a91bfca90f8463eb6808c03d535d8a ]
+[ Upstream commit c4f922e86c8e0f7c5fe94e0547e9835fc9711f08 ]
 
-This patch fixes inconsistencies in the parsing rules of the levels 1
-and 2 of the kselftest_deps.sh.  It was added the levels 4 and 5 to
-account for a few edge cases that are present in some tests, also some
-minor identation styling have been fixed (s/    /\t/g).
+Add spin lock protection for irq {un}mask registers' control.
 
-Signed-off-by: Ricardo B. Marliere <rbmarliere@gmail.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+After napi_complete_done() and this protection were applied,
+a lot of redundant interrupts no longer occur.
+
+For example: when "iperf3 -c <ipaddr> -R" on R-Car S4-8 Spider
+ Before the patches are applied: about 800,000 times happened
+ After the patches were applied: about 100,000 times happened
+
+Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: a0c55bba0d0d ("rswitch: Fix PHY station management clock setting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/kselftest_deps.sh | 77 +++++++++++++++++++----
- 1 file changed, 65 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/renesas/rswitch.c | 12 ++++++++++++
+ drivers/net/ethernet/renesas/rswitch.h |  2 ++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/tools/testing/selftests/kselftest_deps.sh b/tools/testing/selftests/kselftest_deps.sh
-index bbc04646346b2..e6010de678200 100755
---- a/tools/testing/selftests/kselftest_deps.sh
-+++ b/tools/testing/selftests/kselftest_deps.sh
-@@ -46,11 +46,11 @@ fi
- print_targets=0
+diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
+index 449ed1f5624c9..215854812f80a 100644
+--- a/drivers/net/ethernet/renesas/rswitch.c
++++ b/drivers/net/ethernet/renesas/rswitch.c
+@@ -799,6 +799,7 @@ static int rswitch_poll(struct napi_struct *napi, int budget)
+ 	struct net_device *ndev = napi->dev;
+ 	struct rswitch_private *priv;
+ 	struct rswitch_device *rdev;
++	unsigned long flags;
+ 	int quota = budget;
  
- while getopts "p" arg; do
--    case $arg in
--        p)
-+	case $arg in
-+		p)
- 		print_targets=1
- 	shift;;
--    esac
-+	esac
- done
+ 	rdev = netdev_priv(ndev);
+@@ -817,8 +818,10 @@ static int rswitch_poll(struct napi_struct *napi, int budget)
+ 	netif_wake_subqueue(ndev, 0);
  
- if [ $# -eq 0 ]
-@@ -92,6 +92,10 @@ pass_cnt=0
- # Get all TARGETS from selftests Makefile
- targets=$(egrep "^TARGETS +|^TARGETS =" Makefile | cut -d "=" -f2)
+ 	if (napi_complete_done(napi, budget - quota)) {
++		spin_lock_irqsave(&priv->lock, flags);
+ 		rswitch_enadis_data_irq(priv, rdev->tx_queue->index, true);
+ 		rswitch_enadis_data_irq(priv, rdev->rx_queue->index, true);
++		spin_unlock_irqrestore(&priv->lock, flags);
+ 	}
  
-+# Initially, in LDLIBS related lines, the dep checker needs
-+# to ignore lines containing the following strings:
-+filter="\$(VAR_LDLIBS)\|pkg-config\|PKG_CONFIG\|IOURING_EXTRA_LIBS"
-+
- # Single test case
- if [ $# -eq 2 ]
- then
-@@ -100,6 +104,8 @@ then
- 	l1_test $test
- 	l2_test $test
- 	l3_test $test
-+	l4_test $test
-+	l5_test $test
+ out:
+@@ -835,8 +838,10 @@ static void rswitch_queue_interrupt(struct net_device *ndev)
+ 	struct rswitch_device *rdev = netdev_priv(ndev);
  
- 	print_results $1 $2
- 	exit $?
-@@ -113,7 +119,7 @@ fi
- # Append space at the end of the list to append more tests.
- 
- l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
--		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
-+		grep -v "$filter" | awk -F: '{print $1}' | uniq)
- 
- # Level 2: LDLIBS set dynamically.
- #
-@@ -126,7 +132,7 @@ l1_tests=$(grep -r --include=Makefile "^LDLIBS" | \
- # Append space at the end of the list to append more tests.
- 
- l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
--		grep -v "VAR_LDLIBS" | awk -F: '{print $1}')
-+		grep -v "$filter" | awk -F: '{print $1}' | uniq)
- 
- # Level 3
- # gpio,  memfd and others use pkg-config to find mount and fuse libs
-@@ -140,11 +146,32 @@ l2_tests=$(grep -r --include=Makefile ": LDLIBS" | \
- #	VAR_LDLIBS := $(shell pkg-config fuse --libs 2>/dev/null)
- 
- l3_tests=$(grep -r --include=Makefile "^VAR_LDLIBS" | \
--		grep -v "pkg-config" | awk -F: '{print $1}')
-+		grep -v "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
- 
--#echo $l1_tests
--#echo $l2_1_tests
--#echo $l3_tests
-+# Level 4
-+# some tests may fall back to default using `|| echo -l<libname>`
-+# if pkg-config doesn't find the libs, instead of using VAR_LDLIBS
-+# as per level 3 checks.
-+# e.g:
-+# netfilter/Makefile
-+#	LDLIBS += $(shell $(HOSTPKG_CONFIG) --libs libmnl 2>/dev/null || echo -lmnl)
-+l4_tests=$(grep -r --include=Makefile "^LDLIBS" | \
-+		grep "pkg-config\|PKG_CONFIG" | awk -F: '{print $1}' | uniq)
-+
-+# Level 5
-+# some tests may use IOURING_EXTRA_LIBS to add extra libs to LDLIBS,
-+# which in turn may be defined in a sub-Makefile
-+# e.g.:
-+# mm/Makefile
-+#	$(OUTPUT)/gup_longterm: LDLIBS += $(IOURING_EXTRA_LIBS)
-+l5_tests=$(grep -r --include=Makefile "LDLIBS +=.*\$(IOURING_EXTRA_LIBS)" | \
-+	awk -F: '{print $1}' | uniq)
-+
-+#echo l1_tests $l1_tests
-+#echo l2_tests $l2_tests
-+#echo l3_tests $l3_tests
-+#echo l4_tests $l4_tests
-+#echo l5_tests $l5_tests
- 
- all_tests
- print_results $1 $2
-@@ -166,24 +193,32 @@ all_tests()
- 	for test in $l3_tests; do
- 		l3_test $test
- 	done
-+
-+	for test in $l4_tests; do
-+		l4_test $test
-+	done
-+
-+	for test in $l5_tests; do
-+		l5_test $test
-+	done
+ 	if (napi_schedule_prep(&rdev->napi)) {
++		spin_lock(&rdev->priv->lock);
+ 		rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
+ 		rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
++		spin_unlock(&rdev->priv->lock);
+ 		__napi_schedule(&rdev->napi);
+ 	}
  }
- 
- # Use same parsing used for l1_tests and pick libraries this time.
- l1_test()
+@@ -1430,14 +1435,17 @@ static void rswitch_ether_port_deinit_all(struct rswitch_private *priv)
+ static int rswitch_open(struct net_device *ndev)
  {
- 	test_libs=$(grep --include=Makefile "^LDLIBS" $test | \
--			grep -v "VAR_LDLIBS" | \
-+			grep -v "$filter" | \
- 			sed -e 's/\:/ /' | \
- 			sed -e 's/+/ /' | cut -d "=" -f 2)
+ 	struct rswitch_device *rdev = netdev_priv(ndev);
++	unsigned long flags;
  
- 	check_libs $test $test_libs
- }
+ 	phy_start(ndev->phydev);
  
--# Use same parsing used for l2__tests and pick libraries this time.
-+# Use same parsing used for l2_tests and pick libraries this time.
- l2_test()
+ 	napi_enable(&rdev->napi);
+ 	netif_start_queue(ndev);
+ 
++	spin_lock_irqsave(&rdev->priv->lock, flags);
+ 	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, true);
+ 	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, true);
++	spin_unlock_irqrestore(&rdev->priv->lock, flags);
+ 
+ 	if (bitmap_empty(rdev->priv->opened_ports, RSWITCH_NUM_PORTS))
+ 		iowrite32(GWCA_TS_IRQ_BIT, rdev->priv->addr + GWTSDIE);
+@@ -1451,6 +1459,7 @@ static int rswitch_stop(struct net_device *ndev)
  {
- 	test_libs=$(grep --include=Makefile ": LDLIBS" $test | \
--			grep -v "VAR_LDLIBS" | \
-+			grep -v "$filter" | \
- 			sed -e 's/\:/ /' | sed -e 's/+/ /' | \
- 			cut -d "=" -f 2)
+ 	struct rswitch_device *rdev = netdev_priv(ndev);
+ 	struct rswitch_gwca_ts_info *ts_info, *ts_info2;
++	unsigned long flags;
  
-@@ -199,6 +234,24 @@ l3_test()
- 	check_libs $test $test_libs
- }
+ 	netif_tx_stop_all_queues(ndev);
+ 	bitmap_clear(rdev->priv->opened_ports, rdev->port, 1);
+@@ -1466,8 +1475,10 @@ static int rswitch_stop(struct net_device *ndev)
+ 		kfree(ts_info);
+ 	}
  
-+l4_test()
-+{
-+	test_libs=$(grep --include=Makefile "^VAR_LDLIBS\|^LDLIBS" $test | \
-+			grep "\(pkg-config\|PKG_CONFIG\).*|| echo " | \
-+			sed -e 's/.*|| echo //' | sed -e 's/)$//')
++	spin_lock_irqsave(&rdev->priv->lock, flags);
+ 	rswitch_enadis_data_irq(rdev->priv, rdev->tx_queue->index, false);
+ 	rswitch_enadis_data_irq(rdev->priv, rdev->rx_queue->index, false);
++	spin_unlock_irqrestore(&rdev->priv->lock, flags);
+ 
+ 	phy_stop(ndev->phydev);
+ 	napi_disable(&rdev->napi);
+@@ -1869,6 +1880,7 @@ static int renesas_eth_sw_probe(struct platform_device *pdev)
+ 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
++	spin_lock_init(&priv->lock);
+ 
+ 	priv->ptp_priv = rcar_gen4_ptp_alloc(pdev);
+ 	if (!priv->ptp_priv)
+diff --git a/drivers/net/ethernet/renesas/rswitch.h b/drivers/net/ethernet/renesas/rswitch.h
+index bb9ed971a97ca..9740398067140 100644
+--- a/drivers/net/ethernet/renesas/rswitch.h
++++ b/drivers/net/ethernet/renesas/rswitch.h
+@@ -1011,6 +1011,8 @@ struct rswitch_private {
+ 	struct rswitch_etha etha[RSWITCH_NUM_PORTS];
+ 	struct rswitch_mfwd mfwd;
+ 
++	spinlock_t lock;	/* lock interrupt registers' control */
 +
-+	check_libs $test $test_libs
-+}
-+
-+l5_test()
-+{
-+	tests=$(find $(dirname "$test") -type f -name "*.mk")
-+	test_libs=$(grep "^IOURING_EXTRA_LIBS +\?=" $tests | \
-+			cut -d "=" -f 2)
-+
-+	check_libs $test $test_libs
-+}
-+
- check_libs()
- {
+ 	bool gwca_halt;
+ };
  
 -- 
 2.40.1
