@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B98197BDDDE
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8264D7BE06C
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376774AbjJINNv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:13:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59020 "EHLO
+        id S1377295AbjJINj7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:39:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376871AbjJINNi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:38 -0400
+        with ESMTP id S1377336AbjJINj5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:39:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10CAEC6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456F1C433C7;
-        Mon,  9 Oct 2023 13:13:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17CD8AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:39:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45458C433CC;
+        Mon,  9 Oct 2023 13:39:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857184;
-        bh=kiOrly07R7hwjiY6ADBoh2x4R82L50yeUBKfbHr91UI=;
+        s=korg; t=1696858791;
+        bh=bfk1ViRSdsv5MBH0JjIB1wgm/XlQ3cZcLRSW4BZwptQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J5qXpSiNUqHrEUx1zLuR6/QrkOFVZD08qJcwW3Y6XQIpFOzGcrJNAyDxxRHPy2S8A
-         P7AHTEXjYWfinJKcdbF2Y7xECxOM7VxhY3xxd+0HzmiBaEmT4EHGJHStoWZ3zOUGh1
-         1d3p1b+oU0N5sYnNGDi29ZKTaT8hsWOs9V5reFNk=
+        b=YK0pBWvlTfGONU84fepGsgCIybIlOEnhcrvwIvygLesf+Flu+kTHqO2Oq1zfEC9uK
+         2FJiLlNoH36A4xFTUvx62THDPs6EavRCtHxY7SmNPCrr3h66mG2jibZavLXXnQvmE/
+         eIkfkeN/hdazji/rspQvVhyk3xsPdAoaU4wzYZco=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Sitnicki <jakub@cloudflare.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        John Fastabend <john.fastabend@gmail.com>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        kernel test robot <lkp@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 099/163] bpf, sockmap: Reject sk_msg egress redirects to non-TCP sockets
+Subject: [PATCH 5.10 102/226] xtensa: add default definition for XCHAL_HAVE_DIV32
 Date:   Mon,  9 Oct 2023 15:01:03 +0200
-Message-ID: <20231009130126.766436956@linuxfoundation.org>
+Message-ID: <20231009130129.443063777@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,104 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Sitnicki <jakub@cloudflare.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit b80e31baa43614e086a9d29dc1151932b1bd7fc5 ]
+[ Upstream commit 494e87ffa0159b3f879694a9231089707792a44d ]
 
-With a SOCKMAP/SOCKHASH map and an sk_msg program user can steer messages
-sent from one TCP socket (s1) to actually egress from another TCP
-socket (s2):
+When variant FSF is set, XCHAL_HAVE_DIV32 is not defined. Add default
+definition for that macro to prevent build warnings:
 
-tcp_bpf_sendmsg(s1)		// = sk_prot->sendmsg
-  tcp_bpf_send_verdict(s1)	// __SK_REDIRECT case
-    tcp_bpf_sendmsg_redir(s2)
-      tcp_bpf_push_locked(s2)
-	tcp_bpf_push(s2)
-	  tcp_rate_check_app_limited(s2) // expects tcp_sock
-	  tcp_sendmsg_locked(s2)	 // ditto
+arch/xtensa/lib/divsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
+    9 | #if XCHAL_HAVE_DIV32
+arch/xtensa/lib/modsi3.S:9:5: warning: "XCHAL_HAVE_DIV32" is not defined, evaluates to 0 [-Wundef]
+    9 | #if XCHAL_HAVE_DIV32
 
-There is a hard-coded assumption in the call-chain, that the egress
-socket (s2) is a TCP socket.
-
-However in commit 122e6c79efe1 ("sock_map: Update sock type checks for
-UDP") we have enabled redirects to non-TCP sockets. This was done for the
-sake of BPF sk_skb programs. There was no indention to support sk_msg
-send-to-egress use case.
-
-As a result, attempts to send-to-egress through a non-TCP socket lead to a
-crash due to invalid downcast from sock to tcp_sock:
-
- BUG: kernel NULL pointer dereference, address: 000000000000002f
- ...
- Call Trace:
-  <TASK>
-  ? show_regs+0x60/0x70
-  ? __die+0x1f/0x70
-  ? page_fault_oops+0x80/0x160
-  ? do_user_addr_fault+0x2d7/0x800
-  ? rcu_is_watching+0x11/0x50
-  ? exc_page_fault+0x70/0x1c0
-  ? asm_exc_page_fault+0x27/0x30
-  ? tcp_tso_segs+0x14/0xa0
-  tcp_write_xmit+0x67/0xce0
-  __tcp_push_pending_frames+0x32/0xf0
-  tcp_push+0x107/0x140
-  tcp_sendmsg_locked+0x99f/0xbb0
-  tcp_bpf_push+0x19d/0x3a0
-  tcp_bpf_sendmsg_redir+0x55/0xd0
-  tcp_bpf_send_verdict+0x407/0x550
-  tcp_bpf_sendmsg+0x1a1/0x390
-  inet_sendmsg+0x6a/0x70
-  sock_sendmsg+0x9d/0xc0
-  ? sockfd_lookup_light+0x12/0x80
-  __sys_sendto+0x10e/0x160
-  ? syscall_enter_from_user_mode+0x20/0x60
-  ? __this_cpu_preempt_check+0x13/0x20
-  ? lockdep_hardirqs_on+0x82/0x110
-  __x64_sys_sendto+0x1f/0x30
-  do_syscall_64+0x38/0x90
-  entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Reject selecting a non-TCP sockets as redirect target from a BPF sk_msg
-program to prevent the crash. When attempted, user will receive an EACCES
-error from send/sendto/sendmsg() syscall.
-
-Fixes: 122e6c79efe1 ("sock_map: Update sock type checks for UDP")
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/bpf/20230920102055.42662-1-jakub@cloudflare.com
+Fixes: 173d6681380a ("xtensa: remove extra header files")
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: lore.kernel.org/r/202309150556.t0yCdv3g-lkp@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock_map.c | 4 ++++
+ arch/xtensa/include/asm/core.h | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index 8f07fea39d9ea..3fc4086a414ea 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -668,6 +668,8 @@ BPF_CALL_4(bpf_msg_redirect_map, struct sk_msg *, msg,
- 	sk = __sock_map_lookup_elem(map, key);
- 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
- 		return SK_DROP;
-+	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
-+		return SK_DROP;
+diff --git a/arch/xtensa/include/asm/core.h b/arch/xtensa/include/asm/core.h
+index a4e40166ff4bb..0fa3649649e98 100644
+--- a/arch/xtensa/include/asm/core.h
++++ b/arch/xtensa/include/asm/core.h
+@@ -6,6 +6,10 @@
  
- 	msg->flags = flags;
- 	msg->sk_redir = sk;
-@@ -1267,6 +1269,8 @@ BPF_CALL_4(bpf_msg_redirect_hash, struct sk_msg *, msg,
- 	sk = __sock_hash_lookup_elem(map, key);
- 	if (unlikely(!sk || !sock_map_redirect_allowed(sk)))
- 		return SK_DROP;
-+	if (!(flags & BPF_F_INGRESS) && !sk_is_tcp(sk))
-+		return SK_DROP;
+ #include <variant/core.h>
  
- 	msg->flags = flags;
- 	msg->sk_redir = sk;
++#ifndef XCHAL_HAVE_DIV32
++#define XCHAL_HAVE_DIV32 0
++#endif
++
+ #ifndef XCHAL_HAVE_EXCLUSIVE
+ #define XCHAL_HAVE_EXCLUSIVE 0
+ #endif
 -- 
 2.40.1
 
