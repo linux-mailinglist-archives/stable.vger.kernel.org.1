@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AACE27BDDCF
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F409A7BDE7F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376801AbjJINNc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:13:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59346 "EHLO
+        id S1376318AbjJINT7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:19:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376892AbjJINNU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:20 -0400
+        with ESMTP id S1346568AbjJINT5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:19:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DDF2ED
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:12:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A15C433CD;
-        Mon,  9 Oct 2023 13:12:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82DEAD8
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:19:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2F6C433C8;
+        Mon,  9 Oct 2023 13:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857148;
-        bh=rmz9639pLz6J7OoDi5pRgxBouRmokiUZmWcLjzSJvbM=;
+        s=korg; t=1696857595;
+        bh=YqVAxk9zR8aKFjotHD+cbMwpx7tcg7bp8jT66VgufUI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PlXE5BP7Gt4b+MC4lIKYV4r4YDPYzn22Y5WrlRsfpOpxHnoZ3jtxzwSxT+jZtDL9w
-         YV5Utm0MXcN3UvW77OaeZm9oDQVxw7NVHMU8mtSZgGo6/0XzJjpU6p8sHdAtLI6uTH
-         hCluxOAXBoLTsA5aZ6uYYghmcTVbGlB7ZkoBY0yM=
+        b=OIWl24JACpC4fLicmdEm2X1vFZ7w5Nc92sLb/u+S4I29RPRIAzPRJSUVs5txmeX6M
+         mHA37S/vutfAFxowW7Ug8V89XNT+0hjcKB3g5Ca6mrowpCtTUEA0Fn7R3WzhaMFe9W
+         dIEm8y9c94mKX3vZ952e2fI+4ahGggEpwl1BpRXY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+c1d0a03d305972dbbe14@syzkaller.appspotmail.com
-Subject: [PATCH 6.5 112/163] net: nfc: llcp: Add lock when modifying device list
+        patches@lists.linux.dev, Jirka Hladky <jhladky@redhat.com>,
+        Breno Leitao <leitao@debian.org>,
+        Sandipan Das <sandipan.das@amd.com>,
+        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/162] perf/x86/amd: Do not WARN() on every IRQ
 Date:   Mon,  9 Oct 2023 15:01:16 +0200
-Message-ID: <20231009130127.120244529@linuxfoundation.org>
+Message-ID: <20231009130125.545854002@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,43 +51,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Cline <jeremy@jcline.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit dfc7f7a988dad34c3bf4c053124fb26aa6c5f916 ]
+[ Upstream commit 599522d9d2e19d6240e4312577f1c5f3ffca22f6 ]
 
-The device list needs its associated lock held when modifying it, or the
-list could become corrupted, as syzbot discovered.
+Zen 4 systems running buggy microcode can hit a WARN_ON() in the PMI
+handler, as shown below, several times while perf runs. A simple
+`perf top` run is enough to render the system unusable:
 
-Reported-and-tested-by: syzbot+c1d0a03d305972dbbe14@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c1d0a03d305972dbbe14
-Signed-off-by: Jeremy Cline <jeremy@jcline.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by nfc_llcp_find_local")
-Link: https://lore.kernel.org/r/20230908235853.1319596-1-jeremy@jcline.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  WARNING: CPU: 18 PID: 20608 at arch/x86/events/amd/core.c:944 amd_pmu_v2_handle_irq+0x1be/0x2b0
+
+This happens because the Performance Counter Global Status Register
+(PerfCntGlobalStatus) has one or more bits set which are considered
+reserved according to the "AMD64 Architecture Programmer’s Manual,
+Volume 2: System Programming, 24593":
+
+  https://www.amd.com/system/files/TechDocs/24593.pdf
+
+To make this less intrusive, warn just once if any reserved bit is set
+and prompt the user to update the microcode. Also sanitize the value to
+what the code is handling, so that the overflow events continue to be
+handled for the number of counters that are known to be sane.
+
+Going forward, the following microcode patch levels are recommended
+for Zen 4 processors in order to avoid such issues with reserved bits:
+
+  Family=0x19 Model=0x11 Stepping=0x01: Patch=0x0a10113e
+  Family=0x19 Model=0x11 Stepping=0x02: Patch=0x0a10123e
+  Family=0x19 Model=0xa0 Stepping=0x01: Patch=0x0aa00116
+  Family=0x19 Model=0xa0 Stepping=0x02: Patch=0x0aa00212
+
+Commit f2eb058afc57 ("linux-firmware: Update AMD cpu microcode") from
+the linux-firmware tree has binaries that meet the minimum required
+patch levels.
+
+  [ sandipan: - add message to prompt users to update microcode
+              - rework commit message and call out required microcode levels ]
+
+Fixes: 7685665c390d ("perf/x86/amd/core: Add PerfMonV2 overflow handling")
+Reported-by: Jirka Hladky <jhladky@redhat.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/all/3540f985652f41041e54ee82aa53e7dbd55739ae.1694696888.git.sandipan.das@amd.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/llcp_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/events/amd/core.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index f60e424e06076..6705bb895e239 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1636,7 +1636,9 @@ int nfc_llcp_register_device(struct nfc_dev *ndev)
- 	timer_setup(&local->sdreq_timer, nfc_llcp_sdreq_timer, 0);
- 	INIT_WORK(&local->sdreq_timeout_work, nfc_llcp_sdreq_timeout_work);
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index bb9d99b45a459..04f4b96dec6df 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -886,7 +886,7 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
+ 	struct hw_perf_event *hwc;
+ 	struct perf_event *event;
+ 	int handled = 0, idx;
+-	u64 status, mask;
++	u64 reserved, status, mask;
+ 	bool pmu_enabled;
  
-+	spin_lock(&llcp_devices_lock);
- 	list_add(&local->list, &llcp_devices);
-+	spin_unlock(&llcp_devices_lock);
+ 	/*
+@@ -911,6 +911,14 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
+ 		status &= ~GLOBAL_STATUS_LBRS_FROZEN;
+ 	}
  
- 	return 0;
- }
++	reserved = status & ~amd_pmu_global_cntr_mask;
++	if (reserved)
++		pr_warn_once("Reserved PerfCntrGlobalStatus bits are set (0x%llx), please consider updating microcode\n",
++			     reserved);
++
++	/* Clear any reserved bits set by buggy microcode */
++	status &= amd_pmu_global_cntr_mask;
++
+ 	for (idx = 0; idx < x86_pmu.num_counters; idx++) {
+ 		if (!test_bit(idx, cpuc->active_mask))
+ 			continue;
 -- 
 2.40.1
 
