@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF107BDDB4
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AE507BE07F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376927AbjJINMi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:12:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58836 "EHLO
+        id S1376845AbjJINkt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:40:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376944AbjJINMY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:24 -0400
+        with ESMTP id S1377330AbjJINkr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EEC41FC6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902D9C433C7;
-        Mon,  9 Oct 2023 13:11:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BBA89D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:40:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0207C433C8;
+        Mon,  9 Oct 2023 13:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857075;
-        bh=6I2ba+ZWWF+qt2sHG6tbUwz1JletcucrD1cgH2mSpVE=;
+        s=korg; t=1696858845;
+        bh=sEwV8bRreVXLFUFcxanyqA0FvWQzyfyu0//M4BghbrM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MOO4QyOPzyUEKIUJ53wRbBJzQPsZfBlKcdqCFn/2Grkgpm4U9rBCt3UsYRFvLQ1Zu
-         CpXIHaMGracrxNcl8Nre9S+LcvViNjmlqVAfiuHG5LMgSAJcLJwdTeV3FLZKqGXI09
-         oaVowTinbiNPgeQcXxuvsLz/4LibpsYaP2J9/9T0=
+        b=b48StawnHeWwovgFV1IPdHeg2wSzHF8BLi9fqjcFjdl78lWbnB/36eSYDbdyZwUQu
+         4V2pms7qXyduBLxXhUUzQFYGbFjnAR72JzcfL8by6BlGqBYBcQekBkTD/mPcJsY64/
+         HW6KaZQYIUL5v+OmAbI+CsWrgv7onx/L5BWbniOk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jirka Hladky <jhladky@redhat.com>,
-        Breno Leitao <leitao@debian.org>,
-        Sandipan Das <sandipan.das@amd.com>,
-        Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 087/163] perf/x86/amd: Do not WARN() on every IRQ
+        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 090/226] bus: ti-sysc: Fix missing AM35xx SoC matching
 Date:   Mon,  9 Oct 2023 15:00:51 +0200
-Message-ID: <20231009130126.443949375@linuxfoundation.org>
+Message-ID: <20231009130129.123437449@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,86 +49,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 599522d9d2e19d6240e4312577f1c5f3ffca22f6 ]
+[ Upstream commit 11729caa520950e17cd81bc43ffc477c46cf791e ]
 
-Zen 4 systems running buggy microcode can hit a WARN_ON() in the PMI
-handler, as shown below, several times while perf runs. A simple
-`perf top` run is enough to render the system unusable:
+Commit feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
+created a list of SoC types searching for strings based on names
+and wildcards which associates the SoC to different families.
 
-  WARNING: CPU: 18 PID: 20608 at arch/x86/events/amd/core.c:944 amd_pmu_v2_handle_irq+0x1be/0x2b0
+The OMAP34xx and OMAP35xx are treated as SOC_3430 while
+OMAP36xx and OMAP37xx are treated as SOC_3630, but the AM35xx
+isn't listed.
 
-This happens because the Performance Counter Global Status Register
-(PerfCntGlobalStatus) has one or more bits set which are considered
-reserved according to the "AMD64 Architecture Programmer’s Manual,
-Volume 2: System Programming, 24593":
+The AM35xx is mostly an OMAP3430, and a later commit a12315d6d270
+("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC specific") looks
+for the SOC type and behaves in a certain way if it's SOC_3430.
 
-  https://www.amd.com/system/files/TechDocs/24593.pdf
+This caused a regression on the AM3517 causing it to return two
+errors:
 
-To make this less intrusive, warn just once if any reserved bit is set
-and prompt the user to update the microcode. Also sanitize the value to
-what the code is handling, so that the overflow events continue to be
-handled for the number of counters that are known to be sane.
+ ti-sysc: probe of 48318000.target-module failed with error -16
+ ti-sysc: probe of 49032000.target-module failed with error -16
 
-Going forward, the following microcode patch levels are recommended
-for Zen 4 processors in order to avoid such issues with reserved bits:
+Fix this by treating the creating SOC_AM35 and inserting it between
+the SOC_3430 and SOC_3630.  If it is treaed the same way as the
+SOC_3430 when checking the status of sysc_check_active_timer,
+the error conditions will disappear.
 
-  Family=0x19 Model=0x11 Stepping=0x01: Patch=0x0a10113e
-  Family=0x19 Model=0x11 Stepping=0x02: Patch=0x0a10123e
-  Family=0x19 Model=0xa0 Stepping=0x01: Patch=0x0aa00116
-  Family=0x19 Model=0xa0 Stepping=0x02: Patch=0x0aa00212
-
-Commit f2eb058afc57 ("linux-firmware: Update AMD cpu microcode") from
-the linux-firmware tree has binaries that meet the minimum required
-patch levels.
-
-  [ sandipan: - add message to prompt users to update microcode
-              - rework commit message and call out required microcode levels ]
-
-Fixes: 7685665c390d ("perf/x86/amd/core: Add PerfMonV2 overflow handling")
-Reported-by: Jirka Hladky <jhladky@redhat.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/all/3540f985652f41041e54ee82aa53e7dbd55739ae.1694696888.git.sandipan.das@amd.com/
+Fixes: a12315d6d270 ("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC specific")
+Fixes: feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Message-ID: <20230906233442.270835-1-aford173@gmail.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/amd/core.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/bus/ti-sysc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index ed626bfa1eedb..e24976593a298 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -886,7 +886,7 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- 	struct hw_perf_event *hwc;
- 	struct perf_event *event;
- 	int handled = 0, idx;
--	u64 status, mask;
-+	u64 reserved, status, mask;
- 	bool pmu_enabled;
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 24d589b43dfe7..5dba06ed61bf8 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -38,6 +38,7 @@ enum sysc_soc {
+ 	SOC_2420,
+ 	SOC_2430,
+ 	SOC_3430,
++	SOC_AM35,
+ 	SOC_3630,
+ 	SOC_4430,
+ 	SOC_4460,
+@@ -1818,7 +1819,7 @@ static void sysc_pre_reset_quirk_dss(struct sysc *ddata)
+ 		dev_warn(ddata->dev, "%s: timed out %08x !+ %08x\n",
+ 			 __func__, val, irq_mask);
  
- 	/*
-@@ -911,6 +911,14 @@ static int amd_pmu_v2_handle_irq(struct pt_regs *regs)
- 		status &= ~GLOBAL_STATUS_LBRS_FROZEN;
- 	}
+-	if (sysc_soc->soc == SOC_3430) {
++	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35) {
+ 		/* Clear DSS_SDI_CONTROL */
+ 		sysc_write(ddata, 0x44, 0);
  
-+	reserved = status & ~amd_pmu_global_cntr_mask;
-+	if (reserved)
-+		pr_warn_once("Reserved PerfCntrGlobalStatus bits are set (0x%llx), please consider updating microcode\n",
-+			     reserved);
-+
-+	/* Clear any reserved bits set by buggy microcode */
-+	status &= amd_pmu_global_cntr_mask;
-+
- 	for (idx = 0; idx < x86_pmu.num_counters; idx++) {
- 		if (!test_bit(idx, cpuc->active_mask))
- 			continue;
+@@ -2959,6 +2960,7 @@ static void ti_sysc_idle(struct work_struct *work)
+ static const struct soc_device_attribute sysc_soc_match[] = {
+ 	SOC_FLAG("OMAP242*", SOC_2420),
+ 	SOC_FLAG("OMAP243*", SOC_2430),
++	SOC_FLAG("AM35*", SOC_AM35),
+ 	SOC_FLAG("OMAP3[45]*", SOC_3430),
+ 	SOC_FLAG("OMAP3[67]*", SOC_3630),
+ 	SOC_FLAG("OMAP443*", SOC_4430),
+@@ -3146,7 +3148,7 @@ static int sysc_check_active_timer(struct sysc *ddata)
+ 	 * can be dropped if we stop supporting old beagleboard revisions
+ 	 * A to B4 at some point.
+ 	 */
+-	if (sysc_soc->soc == SOC_3430)
++	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35)
+ 		error = -ENXIO;
+ 	else
+ 		error = -EBUSY;
 -- 
 2.40.1
 
