@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F5B57BE0CE
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA72C7BDE07
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377414AbjJINoY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:44:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57188 "EHLO
+        id S1376850AbjJINPI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:15:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377560AbjJINoK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:10 -0400
+        with ESMTP id S1376665AbjJINPH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F10B6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218A8C433C7;
-        Mon,  9 Oct 2023 13:44:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0CA9F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5671C433C7;
+        Mon,  9 Oct 2023 13:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859048;
-        bh=3h8ERZ/VYULHA5vUmJa8xEcwzlJMIR9dwLSLcbjs0Tk=;
+        s=korg; t=1696857305;
+        bh=fZnyv+SPyLFgboDLlFM7k/TvApdmPYdh6z2arn7GDDw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zd752rXpXp7Et5yZeO4dhVOIxv5dTL305UGlmMKyXR2esdDYkNGig7C51eofUGOty
-         BL5A1feyy/zAX2qSlXrsMBdqfo2sIJIAsuSvFWoF0OPlNJQjBCN9K5CaNKAlvRDUii
-         LTQgFinoWR5yzvzraHrI0PHdUCeA3QhhPz3gtykc=
+        b=z91ZQUD9vRZ4lTJFWW0uexpFNu9qI9yvQkLvnISWLzhLnU/ONHuBaRCoC2yvsjDN0
+         Fjotuc3LTklSluxt5STOKrSlhTLdHdX7ZlT1lVKA339DpCP27SoC1973k7br5nkKXD
+         NLC/Kr8TpWgnfHAVYYrKVrhgeVaBPQTzMJchBwzI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Julia Lawall <julia.lawall@inria.fr>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 154/226] ring-buffer: Update "shortest_full" in polling
+        patches@lists.linux.dev, Bernard Metzler <bmt@zurich.ibm.com>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.5 151/163] RDMA/siw: Fix connection failure handling
 Date:   Mon,  9 Oct 2023 15:01:55 +0200
-Message-ID: <20231009130130.723624152@linuxfoundation.org>
+Message-ID: <20231009130128.195355426@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,70 +48,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Bernard Metzler <bmt@zurich.ibm.com>
 
-commit 1e0cb399c7653462d9dadf8ab9425337c355d358 upstream.
+commit 53a3f777049771496f791504e7dc8ef017cba590 upstream.
 
-It was discovered that the ring buffer polling was incorrectly stating
-that read would not block, but that's because polling did not take into
-account that reads will block if the "buffer-percent" was set. Instead,
-the ring buffer polling would say reads would not block if there was any
-data in the ring buffer. This was incorrect behavior from a user space
-point of view. This was fixed by commit 42fb0a1e84ff by having the polling
-code check if the ring buffer had more data than what the user specified
-"buffer percent" had.
+In case immediate MPA request processing fails, the newly
+created endpoint unlinks the listening endpoint and is
+ready to be dropped. This special case was not handled
+correctly by the code handling the later TCP socket close,
+causing a NULL dereference crash in siw_cm_work_handler()
+when dereferencing a NULL listener. We now also cancel
+the useless MPA timeout, if immediate MPA request
+processing fails.
 
-The problem now is that the polling code did not register itself to the
-writer that it wanted to wait for a specific "full" value of the ring
-buffer. The result was that the writer would wake the polling waiter
-whenever there was a new event. The polling waiter would then wake up, see
-that there's not enough data in the ring buffer to notify user space and
-then go back to sleep. The next event would wake it up again.
+This patch furthermore simplifies MPA processing in general:
+Scheduling a useless TCP socket read in sk_data_ready() upcall
+is now surpressed, if the socket is already moved out of
+TCP_ESTABLISHED state.
 
-Before the polling fix was added, the code would wake up around 100 times
-for a hackbench 30 benchmark. After the "fix", due to the constant waking
-of the writer, it would wake up over 11,0000 times! It would never leave
-the kernel, so the user space behavior was still "correct", but this
-definitely is not the desired effect.
-
-To fix this, have the polling code add what it's waiting for to the
-"shortest_full" variable, to tell the writer not to wake it up if the
-buffer is not as full as it expects to be.
-
-Note, after this fix, it appears that the waiter is now woken up around 2x
-the times it was before (~200). This is a tremendous improvement from the
-11,000 times, but I will need to spend some time to see why polling is
-more aggressive in its wakeups than the read blocking code.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230929180113.01c2cae3@rorschach.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: 42fb0a1e84ff ("tracing/ring-buffer: Have polling block on watermark")
-Reported-by: Julia Lawall <julia.lawall@inria.fr>
-Tested-by: Julia Lawall <julia.lawall@inria.fr>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 6c52fdc244b5 ("rdma/siw: connection management")
+Signed-off-by: Bernard Metzler <bmt@zurich.ibm.com>
+Link: https://lore.kernel.org/r/20230905145822.446263-1-bmt@zurich.ibm.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/sw/siw/siw_cm.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1008,6 +1008,9 @@ __poll_t ring_buffer_poll_wait(struct tr
- 	if (full) {
- 		poll_wait(filp, &work->full_waiters, poll_table);
- 		work->full_waiters_pending = true;
-+		if (!cpu_buffer->shortest_full ||
-+		    cpu_buffer->shortest_full > full)
-+			cpu_buffer->shortest_full = full;
- 	} else {
- 		poll_wait(filp, &work->waiters, poll_table);
- 		work->waiters_pending = true;
+--- a/drivers/infiniband/sw/siw/siw_cm.c
++++ b/drivers/infiniband/sw/siw/siw_cm.c
+@@ -976,6 +976,7 @@ static void siw_accept_newconn(struct si
+ 			siw_cep_put(cep);
+ 			new_cep->listen_cep = NULL;
+ 			if (rv) {
++				siw_cancel_mpatimer(new_cep);
+ 				siw_cep_set_free(new_cep);
+ 				goto error;
+ 			}
+@@ -1100,9 +1101,12 @@ static void siw_cm_work_handler(struct w
+ 				/*
+ 				 * Socket close before MPA request received.
+ 				 */
+-				siw_dbg_cep(cep, "no mpareq: drop listener\n");
+-				siw_cep_put(cep->listen_cep);
+-				cep->listen_cep = NULL;
++				if (cep->listen_cep) {
++					siw_dbg_cep(cep,
++						"no mpareq: drop listener\n");
++					siw_cep_put(cep->listen_cep);
++					cep->listen_cep = NULL;
++				}
+ 			}
+ 		}
+ 		release_cep = 1;
+@@ -1227,7 +1231,11 @@ static void siw_cm_llp_data_ready(struct
+ 	if (!cep)
+ 		goto out;
+ 
+-	siw_dbg_cep(cep, "state: %d\n", cep->state);
++	siw_dbg_cep(cep, "cep state: %d, socket state %d\n",
++		    cep->state, sk->sk_state);
++
++	if (sk->sk_state != TCP_ESTABLISHED)
++		goto out;
+ 
+ 	switch (cep->state) {
+ 	case SIW_EPSTATE_RDMA_MODE:
 
 
