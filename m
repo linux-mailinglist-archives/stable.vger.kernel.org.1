@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 050AD7BDD42
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D17897BDFF4
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376728AbjJINJF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:09:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41012 "EHLO
+        id S1377187AbjJINgE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:36:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376774AbjJINI4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:56 -0400
+        with ESMTP id S1377180AbjJINgC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9527BB7
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB69FC433C9;
-        Mon,  9 Oct 2023 13:08:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE92191
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27A2C433C8;
+        Mon,  9 Oct 2023 13:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856934;
-        bh=iQngd4J7yINUWxaNiWC0m1RX2lchhpP/glpuAJ2YQwY=;
+        s=korg; t=1696858560;
+        bh=Wl3omxexecg9zLXI1hO+BqdoU9vDugduYhA+2Gv+VBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HuSIiA5QKrpXGXc5B0OgkMdJhsn2k4pJqeemjenMLmqV9TuXzdKMSi0iRfniScaSJ
-         UvDQDjC+eVTDFb+JtxVVhYkzGcQrYdiEZ+8Hd1aPUv/dobOzr8upf7DCNvO/4w0SZb
-         Ve54M7m2xkISAwOxxnC4y1lhvxNBTJmM9hedIIBY=
+        b=1T0PTWCk2baXl8oZjJhAdZn7nGUNjSq8BbUzIt5RVZs3h+vhBKvQvJ5Uec4KQby1s
+         vJOk5MxoqJBcQDHzw0gdiCpTbUybBzYzhBBVK5GyyGwTMsp/gVJ6bRwjzdPbCqYvdf
+         uviO/VFGeOX86Gxp8jz2K+FDvEYTe8U2mHSTBUzc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fabian Vogt <fabian@ritter-vogt.de>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 003/163] ALSA: hda/realtek: Add quirk for mute LEDs on HP ENVY x360 15-eu0xxx
+        patches@lists.linux.dev, Szuying Chen <Chloe_Chen@asmedia.com.tw>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 006/226] ata: libahci: clear pending interrupt status
 Date:   Mon,  9 Oct 2023 14:59:27 +0200
-Message-ID: <20231009130124.118004625@linuxfoundation.org>
+Message-ID: <20231009130126.881666674@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,60 +50,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Vogt <fabian@ritter-vogt.de>
+From: Szuying Chen <chensiying21@gmail.com>
 
-[ Upstream commit c99c26b16c1544534ebd6a5f27a034f3e44d2597 ]
+[ Upstream commit 737dd811a3dbfd7edd4ad2ba5152e93d99074f83 ]
 
-The LED for the mic mute button is controlled by GPIO2.
-The mute button LED is slightly more complex, it's controlled by two bits
-in coeff 0x0b.
+When a CRC error occurs, the HBA asserts an interrupt to indicate an
+interface fatal error (PxIS.IFS). The ISR clears PxIE and PxIS, then
+does error recovery. If the adapter receives another SDB FIS
+with an error (PxIS.TFES) from the device before the start of the EH
+recovery process, the interrupt signaling the new SDB cannot be
+serviced as PxIE was cleared already. This in turn results in the HBA
+inability to issue any command during the error recovery process after
+setting PxCMD.ST to 1 because PxIS.TFES is still set.
 
-Signed-off-by: Fabian Vogt <fabian@ritter-vogt.de>
-Link: https://lore.kernel.org/r/2693091.mvXUDI8C0e@fabians-envy
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 41b07476da38 ("ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support")
+According to AHCI 1.3.1 specifications section 6.2.2, fatal errors
+notified by setting PxIS.HBFS, PxIS.HBDS, PxIS.IFS or PxIS.TFES will
+cause the HBA to enter the ERR:Fatal state. In this state, the HBA
+shall not issue any new commands.
+
+To avoid this situation, introduce the function
+ahci_port_clear_pending_irq() to clear pending interrupts before
+executing a COMRESET. This follows the AHCI 1.3.1 - section 6.2.2.2
+specification.
+
+Signed-off-by: Szuying Chen <Chloe_Chen@asmedia.com.tw>
+Fixes: e0bfd149973d ("[PATCH] ahci: stop engine during hard reset")
+Cc: stable@vger.kernel.org
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/ata/libahci.c | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 00051c14e263a..57bd11c6057d5 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7310,6 +7310,7 @@ enum {
- 	ALC287_FIXUP_CS35L41_I2C_2_THINKPAD_ACPI,
- 	ALC287_FIXUP_TAS2781_I2C,
- 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
-+	ALC245_FIXUP_HP_X360_MUTE_LEDS,
- };
+diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
+index 08c4b641691b1..e188850f65ff2 100644
+--- a/drivers/ata/libahci.c
++++ b/drivers/ata/libahci.c
+@@ -1199,6 +1199,26 @@ static ssize_t ahci_activity_show(struct ata_device *dev, char *buf)
+ 	return sprintf(buf, "%d\n", emp->blink_policy);
+ }
  
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -9398,6 +9399,12 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc245_fixup_hp_mute_led_coefbit,
- 	},
-+	[ALC245_FIXUP_HP_X360_MUTE_LEDS] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc245_fixup_hp_mute_led_coefbit,
-+		.chained = true,
-+		.chain_id = ALC245_FIXUP_HP_GPIO_LED
-+	},
- };
++static void ahci_port_clear_pending_irq(struct ata_port *ap)
++{
++	struct ahci_host_priv *hpriv = ap->host->private_data;
++	void __iomem *port_mmio = ahci_port_base(ap);
++	u32 tmp;
++
++	/* clear SError */
++	tmp = readl(port_mmio + PORT_SCR_ERR);
++	dev_dbg(ap->host->dev, "PORT_SCR_ERR 0x%x\n", tmp);
++	writel(tmp, port_mmio + PORT_SCR_ERR);
++
++	/* clear port IRQ */
++	tmp = readl(port_mmio + PORT_IRQ_STAT);
++	dev_dbg(ap->host->dev, "PORT_IRQ_STAT 0x%x\n", tmp);
++	if (tmp)
++		writel(tmp, port_mmio + PORT_IRQ_STAT);
++
++	writel(1 << ap->port_no, hpriv->mmio + HOST_IRQ_STAT);
++}
++
+ static void ahci_port_init(struct device *dev, struct ata_port *ap,
+ 			   int port_no, void __iomem *mmio,
+ 			   void __iomem *port_mmio)
+@@ -1213,18 +1233,7 @@ static void ahci_port_init(struct device *dev, struct ata_port *ap,
+ 	if (rc)
+ 		dev_warn(dev, "%s (%d)\n", emsg, rc);
  
- static const struct snd_pci_quirk alc269_fixup_tbl[] = {
-@@ -9640,6 +9647,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8870, "HP ZBook Fury 15.6 Inch G8 Mobile Workstation PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x8873, "HP ZBook Studio 15.6 Inch G8 Mobile Workstation PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x887a, "HP Laptop 15s-eq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
-+	SND_PCI_QUIRK(0x103c, 0x888a, "HP ENVY x360 Convertible 15-eu0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
- 	SND_PCI_QUIRK(0x103c, 0x888d, "HP ZBook Power 15.6 inch G8 Mobile Workstation PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8895, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_SPEAKERS_MICMUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
+-	/* clear SError */
+-	tmp = readl(port_mmio + PORT_SCR_ERR);
+-	dev_dbg(dev, "PORT_SCR_ERR 0x%x\n", tmp);
+-	writel(tmp, port_mmio + PORT_SCR_ERR);
+-
+-	/* clear port IRQ */
+-	tmp = readl(port_mmio + PORT_IRQ_STAT);
+-	dev_dbg(dev, "PORT_IRQ_STAT 0x%x\n", tmp);
+-	if (tmp)
+-		writel(tmp, port_mmio + PORT_IRQ_STAT);
+-
+-	writel(1 << port_no, mmio + HOST_IRQ_STAT);
++	ahci_port_clear_pending_irq(ap);
+ 
+ 	/* mark esata ports */
+ 	tmp = readl(port_mmio + PORT_CMD);
+@@ -1554,6 +1563,8 @@ int ahci_do_hardreset(struct ata_link *link, unsigned int *class,
+ 	tf.command = ATA_BUSY;
+ 	ata_tf_to_fis(&tf, 0, 0, d2h_fis);
+ 
++	ahci_port_clear_pending_irq(ap);
++
+ 	rc = sata_link_hardreset(link, timing, deadline, online,
+ 				 ahci_check_ready);
+ 
 -- 
 2.40.1
 
