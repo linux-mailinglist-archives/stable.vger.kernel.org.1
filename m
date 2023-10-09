@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 725047BDEF0
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65FB77BDE79
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376541AbjJINYo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:24:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58584 "EHLO
+        id S1346564AbjJINTz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:19:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376556AbjJINYn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:43 -0400
+        with ESMTP id S1376853AbjJINNx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 429B2B7
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FA3C433C7;
-        Mon,  9 Oct 2023 13:24:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D70F59F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D34C433C9;
+        Mon,  9 Oct 2023 13:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857880;
-        bh=7fjHKeBMBBf54XjUf/Pfniq+snHMZHVjFRGGiLNUSQs=;
+        s=korg; t=1696857231;
+        bh=CyCch0Z7qxRekDi+Ho9q9smmS2i6KfrAXQIzYa+AfRs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qE82CefjWUFw8enaiKq+TLNSjFhuiVOIzL0vXUH3Y2WDvrY02alIx7iq/BQDJJPjm
-         fhfKjTIl2xsbkHecbYZunW4X1NovLIazEwsP6+Ed4AxP3oxOGlRJwYg8m0EifXEhUU
-         dJHkgyZyW91VGAv90J0xKeonq3y9snjheh54w9gA=
+        b=JjFCxhmxUgGuxsQFWTelVp+EEq8a/ld9GvZ8hS15wifBSKb0isOSs7lxICn0O7ruL
+         6kCe9n9wIXmNBW2YGBLTN47LKxjRvDFAMtbJmyPdYLzQC/2aXXRBhnuwaCh69Adrn6
+         SyqYs8B3sQS0r5O8PIdVKDxJiw+cq24oRvaVVwvU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.15 22/75] wifi: mwifiex: Fix tlv_buf_left calculation
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.5 140/163] dm zoned: free dmz->ddev array in dmz_put_zoned_devices
 Date:   Mon,  9 Oct 2023 15:01:44 +0200
-Message-ID: <20231009130112.013480363@linuxfoundation.org>
+Message-ID: <20231009130127.911849066@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,107 +48,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit eec679e4ac5f47507774956fb3479c206e761af7 upstream.
+commit 9850ccd5dd88075b2b7fd28d96299d5535f58cc5 upstream.
 
-In a TLV encoding scheme, the Length part represents the length after
-the header containing the values for type and length. In this case,
-`tlv_len` should be:
+Commit 4dba12881f88 ("dm zoned: support arbitrary number of devices")
+made the pointers to additional zoned devices to be stored in a
+dynamically allocated dmz->ddev array. However, this array is not freed.
 
-tlv_len == (sizeof(*tlv_rxba) - 1) - sizeof(tlv_rxba->header) + tlv_bitmap_len
+Rename dmz_put_zoned_device to dmz_put_zoned_devices and fix it to
+free the dmz->ddev array when cleaning up zoned device information.
+Remove NULL assignment for all dmz->ddev elements and just free the
+dmz->ddev array instead.
 
-Notice that the `- 1` accounts for the one-element array `bitmap`, which
-1-byte size is already included in `sizeof(*tlv_rxba)`.
+Found by Linux Verification Center (linuxtesting.org).
 
-So, if the above is correct, there is a double-counting of some members
-in `struct mwifiex_ie_types_rxba_sync`, when `tlv_buf_left` and `tmp`
-are calculated:
-
-968                 tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
-969                 tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
-
-in specific, members:
-
-drivers/net/wireless/marvell/mwifiex/fw.h:777
- 777         u8 mac[ETH_ALEN];
- 778         u8 tid;
- 779         u8 reserved;
- 780         __le16 seq_num;
- 781         __le16 bitmap_len;
-
-This is clearly wrong, and affects the subsequent decoding of data in
-`event_buf` through `tlv_rxba`:
-
-970                 tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
-
-Fix this by using `sizeof(tlv_rxba->header)` instead of `sizeof(*tlv_rxba)`
-in the calculation of `tlv_buf_left` and `tmp`.
-
-This results in the following binary differences before/after changes:
-
-| drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
-| @@ -4698,11 +4698,11 @@
-|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:968
-|                 tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
-| -    1da7:      lea    -0x11(%rbx),%edx
-| +    1da7:      lea    -0x4(%rbx),%edx
-|      1daa:      movzwl %bp,%eax
-|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:969
-|                 tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
-| -    1dad:      lea    0x11(%r15,%rbp,1),%r15
-| +    1dad:      lea    0x4(%r15,%rbp,1),%r15
-
-The above reflects the desired change: avoid counting 13 too many bytes;
-which is the total size of the double-counted members in
-`struct mwifiex_ie_types_rxba_sync`:
-
-$ pahole -C mwifiex_ie_types_rxba_sync drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
-struct mwifiex_ie_types_rxba_sync {
-	struct mwifiex_ie_types_header header;           /*     0     4 */
-
-     |-----------------------------------------------------------------------
-     |  u8                         mac[6];               /*     4     6 */  |
-     |	u8                         tid;                  /*    10     1 */  |
-     |  u8                         reserved;             /*    11     1 */  |
-     | 	__le16                     seq_num;              /*    12     2 */  |
-     | 	__le16                     bitmap_len;           /*    14     2 */  |
-     |  u8                         bitmap[1];            /*    16     1 */  |
-     |----------------------------------------------------------------------|
-								  | 13 bytes|
-								  -----------
-
-	/* size: 17, cachelines: 1, members: 7 */
-	/* last cacheline: 17 bytes */
-} __attribute__((__packed__));
-
-Fixes: 99ffe72cdae4 ("mwifiex: process rxba_sync event")
+Fixes: 4dba12881f88 ("dm zoned: support arbitrary number of devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/06668edd68e7a26bbfeebd1201ae077a2a7a8bce.1692931954.git.gustavoars@kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-zoned-target.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-+++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-@@ -977,8 +977,8 @@ void mwifiex_11n_rxba_sync_event(struct
- 			}
- 		}
+--- a/drivers/md/dm-zoned-target.c
++++ b/drivers/md/dm-zoned-target.c
+@@ -748,17 +748,16 @@ err:
+ /*
+  * Cleanup zoned device information.
+  */
+-static void dmz_put_zoned_device(struct dm_target *ti)
++static void dmz_put_zoned_devices(struct dm_target *ti)
+ {
+ 	struct dmz_target *dmz = ti->private;
+ 	int i;
  
--		tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
--		tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
-+		tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
-+		tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
- 		tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
- 	}
+-	for (i = 0; i < dmz->nr_ddevs; i++) {
+-		if (dmz->ddev[i]) {
++	for (i = 0; i < dmz->nr_ddevs; i++)
++		if (dmz->ddev[i])
+ 			dm_put_device(ti, dmz->ddev[i]);
+-			dmz->ddev[i] = NULL;
+-		}
+-	}
++
++	kfree(dmz->ddev);
  }
+ 
+ static int dmz_fixup_devices(struct dm_target *ti)
+@@ -948,7 +947,7 @@ err_bio:
+ err_meta:
+ 	dmz_dtr_metadata(dmz->metadata);
+ err_dev:
+-	dmz_put_zoned_device(ti);
++	dmz_put_zoned_devices(ti);
+ err:
+ 	kfree(dmz->dev);
+ 	kfree(dmz);
+@@ -978,7 +977,7 @@ static void dmz_dtr(struct dm_target *ti
+ 
+ 	bioset_exit(&dmz->bio_set);
+ 
+-	dmz_put_zoned_device(ti);
++	dmz_put_zoned_devices(ti);
+ 
+ 	mutex_destroy(&dmz->chunk_lock);
+ 
 
 
