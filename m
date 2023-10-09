@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB5587BDDE3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18BFC7BDEE5
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376848AbjJINOH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52330 "EHLO
+        id S1376461AbjJINYU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:24:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376941AbjJINNn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:43 -0400
+        with ESMTP id S1376916AbjJINYH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1F3D1BE
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E140AC433C9;
-        Mon,  9 Oct 2023 13:13:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFC28F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF54EC433C8;
+        Mon,  9 Oct 2023 13:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857199;
-        bh=iqyQ3fthpqtzIKss3Iqo5j2P/1Q9N0wAAFIB2fN18eg=;
+        s=korg; t=1696857846;
+        bh=YW9u96L2VP/EAWFvtNbWz70bjN7XwxUGejt5430Ruo4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dnrBWyonTC3gGHQxqDHqQ4FicmS1tve0R45b3ksAZ/WTdM9CNQ3bgbAzDzxOgAvS+
-         xWTgtNv1QQxTtKeV03XnmBeAkeFwjPRcq2FvIYDS11gXTnD/sI9H4VRFQj7WkK1bme
-         A3CCM67MVPdBKpObnIPa3+jV+S4BG1y8kDd2An+0=
+        b=dyxh2wa65buCY8gDY0ndXbXOnoNwKUY9VVepX00yvRoAFMP9qw4qx4z0Lf9QoPSBO
+         6458gu3RZWo/1HJztbgo8+bqehmnL32Oyn57MXtD5zciRP5nQDLcMjr7qOWMwVHomT
+         NtzM1fxeTaoH21SObHf7DmAK4Wj9ZeC4NAgDiFU8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        syzbot <syzkaller@googlegroups.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 130/163] netlink: annotate data-races around sk->sk_err
+        patches@lists.linux.dev, Rui Zhu <zhurui3@huawei.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 12/75] iommu/arm-smmu-v3: Avoid constructing invalid range commands
 Date:   Mon,  9 Oct 2023 15:01:34 +0200
-Message-ID: <20231009130127.632807236@linuxfoundation.org>
+Message-ID: <20231009130111.666072912@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,102 +49,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit d0f95894fda7d4f895b29c1097f92d7fee278cb2 ]
+[ Upstream commit eb6c97647be227822c7ce23655482b05e348fba5 ]
 
-syzbot caught another data-race in netlink when
-setting sk->sk_err.
+Although io-pgtable's non-leaf invalidations are always for full tables,
+I missed that SVA also uses non-leaf invalidations, while being at the
+mercy of whatever range the MMU notifier throws at it. This means it
+definitely wants the previous TTL fix as well, since it also doesn't
+know exactly which leaf level(s) may need invalidating, but it can also
+give us less-aligned ranges wherein certain corners may lead to building
+an invalid command where TTL, Num and Scale are all 0. It should be fine
+to handle this by over-invalidating an extra page, since falling back to
+a non-range command opens up a whole can of errata-flavoured worms.
 
-Annotate all of them for good measure.
-
-BUG: KCSAN: data-race in netlink_recvmsg / netlink_recvmsg
-
-write to 0xffff8881613bb220 of 4 bytes by task 28147 on cpu 0:
-netlink_recvmsg+0x448/0x780 net/netlink/af_netlink.c:1994
-sock_recvmsg_nosec net/socket.c:1027 [inline]
-sock_recvmsg net/socket.c:1049 [inline]
-__sys_recvfrom+0x1f4/0x2e0 net/socket.c:2229
-__do_sys_recvfrom net/socket.c:2247 [inline]
-__se_sys_recvfrom net/socket.c:2243 [inline]
-__x64_sys_recvfrom+0x78/0x90 net/socket.c:2243
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-write to 0xffff8881613bb220 of 4 bytes by task 28146 on cpu 1:
-netlink_recvmsg+0x448/0x780 net/netlink/af_netlink.c:1994
-sock_recvmsg_nosec net/socket.c:1027 [inline]
-sock_recvmsg net/socket.c:1049 [inline]
-__sys_recvfrom+0x1f4/0x2e0 net/socket.c:2229
-__do_sys_recvfrom net/socket.c:2247 [inline]
-__se_sys_recvfrom net/socket.c:2243 [inline]
-__x64_sys_recvfrom+0x78/0x90 net/socket.c:2243
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0x00000000 -> 0x00000016
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 28146 Comm: syz-executor.0 Not tainted 6.6.0-rc3-syzkaller-00055-g9ed22ae6be81 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231003183455.3410550-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6833b8f2e199 ("iommu/arm-smmu-v3: Set TTL invalidation hint better")
+Reported-by: Rui Zhu <zhurui3@huawei.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/b99cfe71af2bd93a8a2930f20967fb2a4f7748dd.1694432734.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 20082171f24a3..9c6bc47bc7f7b 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -352,7 +352,7 @@ static void netlink_overrun(struct sock *sk)
- 	if (!nlk_test_bit(RECV_NO_ENOBUFS, sk)) {
- 		if (!test_and_set_bit(NETLINK_S_CONGESTED,
- 				      &nlk_sk(sk)->state)) {
--			sk->sk_err = ENOBUFS;
-+			WRITE_ONCE(sk->sk_err, ENOBUFS);
- 			sk_error_report(sk);
- 		}
- 	}
-@@ -1577,7 +1577,7 @@ static int do_one_set_err(struct sock *sk, struct netlink_set_err_data *p)
- 		goto out;
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 67845f8e1df9f..761cb657f2561 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -1881,18 +1881,23 @@ static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
+ 		/* Get the leaf page size */
+ 		tg = __ffs(smmu_domain->domain.pgsize_bitmap);
+ 
++		num_pages = size >> tg;
++
+ 		/* Convert page size of 12,14,16 (log2) to 1,2,3 */
+ 		cmd->tlbi.tg = (tg - 10) / 2;
+ 
+ 		/*
+-		 * Determine what level the granule is at. For non-leaf, io-pgtable
+-		 * assumes .tlb_flush_walk can invalidate multiple levels at once,
+-		 * so ignore the nominal last-level granule and leave TTL=0.
++		 * Determine what level the granule is at. For non-leaf, both
++		 * io-pgtable and SVA pass a nominal last-level granule because
++		 * they don't know what level(s) actually apply, so ignore that
++		 * and leave TTL=0. However for various errata reasons we still
++		 * want to use a range command, so avoid the SVA corner case
++		 * where both scale and num could be 0 as well.
+ 		 */
+ 		if (cmd->tlbi.leaf)
+ 			cmd->tlbi.ttl = 4 - ((ilog2(granule) - 3) / (tg - 3));
+-
+-		num_pages = size >> tg;
++		else if ((num_pages & CMDQ_TLBI_RANGE_NUM_MAX) == 1)
++			num_pages++;
  	}
  
--	sk->sk_err = p->code;
-+	WRITE_ONCE(sk->sk_err, p->code);
- 	sk_error_report(sk);
- out:
- 	return ret;
-@@ -1966,7 +1966,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
- 		ret = netlink_dump(sk);
- 		if (ret) {
--			sk->sk_err = -ret;
-+			WRITE_ONCE(sk->sk_err, -ret);
- 			sk_error_report(sk);
- 		}
- 	}
-@@ -2485,7 +2485,7 @@ void netlink_ack(struct sk_buff *in_skb, struct nlmsghdr *nlh, int err,
- err_bad_put:
- 	nlmsg_free(skb);
- err_skb:
--	NETLINK_CB(in_skb).sk->sk_err = ENOBUFS;
-+	WRITE_ONCE(NETLINK_CB(in_skb).sk->sk_err, ENOBUFS);
- 	sk_error_report(NETLINK_CB(in_skb).sk);
- }
- EXPORT_SYMBOL(netlink_ack);
+ 	cmds.num = 0;
 -- 
 2.40.1
 
