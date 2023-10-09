@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED0D7BDFA4
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CADA67BDEC2
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377095AbjJINcS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:32:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38030 "EHLO
+        id S1376413AbjJINWq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:22:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377109AbjJINcR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:17 -0400
+        with ESMTP id S1376375AbjJINWp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:22:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E02AAB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26EEC433C8;
-        Mon,  9 Oct 2023 13:32:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C038F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:22:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E434C433C7;
+        Mon,  9 Oct 2023 13:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858334;
-        bh=AgldSrLe5ULYV04+GjlSJQWk0g3iD2iNG2MREOnGFrw=;
+        s=korg; t=1696857763;
+        bh=UBoTJLUpImzBSaOgriT7I0qFA66b4joLyP5706voYro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IADgf4tq7vesqnF2SoyhbjKWDD4vRZB7fnJYgZ0aqljqBDOQQe8q0cDUjy7s9rKvl
-         0WmHy1MHK424fgN1dSRgfTD/HeO6RlyceZtbDDdZZXkb27rfeW8kXLLsZpppwfufXE
-         oLOm66uEkbEwaT8xx9Rx4CohOMlaf+Kd7zL6rQeY=
+        b=GoRpNSGidH7BRBtVKbkeoZmyXi05dHokWgnr19CQ7BO0zO86Lm2A/efV6ZXg3gh2a
+         G4lYGsAvvGQwRfeFF6T0xhR7JUA6j6zqKQlDaQVIToZk6DXWJvn7PlG3tKSQgbTXJG
+         kJbvIje+GWXSP0zCkeV+CVvjqpY/rEex7t7RZpss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>
-Subject: [PATCH 5.4 090/131] Revert "PCI: qcom: Disable write access to read only registers for IP v2.3.3"
+        patches@lists.linux.dev, Bernard Metzler <bmt@zurich.ibm.com>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.1 149/162] RDMA/siw: Fix connection failure handling
 Date:   Mon,  9 Oct 2023 15:02:10 +0200
-Message-ID: <20231009130119.127189930@linuxfoundation.org>
+Message-ID: <20231009130127.026231190@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -47,35 +48,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Bernard Metzler <bmt@zurich.ibm.com>
 
-This reverts commit 35c95eda7b6d9883d1cc9bb1f89d454baa140ebc which is
-commit a33d700e8eea76c62120cb3dbf5e01328f18319a upstream.
+commit 53a3f777049771496f791504e7dc8ef017cba590 upstream.
 
-It was applied to the incorrect function as the original function the
-commit changed is not in this kernel branch.
+In case immediate MPA request processing fails, the newly
+created endpoint unlinks the listening endpoint and is
+ready to be dropped. This special case was not handled
+correctly by the code handling the later TCP socket close,
+causing a NULL dereference crash in siw_cm_work_handler()
+when dereferencing a NULL listener. We now also cancel
+the useless MPA timeout, if immediate MPA request
+processing fails.
 
-Reported-by: Ben Hutchings <ben@decadent.org.uk>
-Link: https://lore.kernel.org/r/f23affddab4d8b3cc07508f2d8735d88d823821d.camel@decadent.org.uk
+This patch furthermore simplifies MPA processing in general:
+Scheduling a useless TCP socket read in sk_data_ready() upcall
+is now surpressed, if the socket is already moved out of
+TCP_ESTABLISHED state.
+
+Fixes: 6c52fdc244b5 ("rdma/siw: connection management")
+Signed-off-by: Bernard Metzler <bmt@zurich.ibm.com>
+Link: https://lore.kernel.org/r/20230905145822.446263-1-bmt@zurich.ibm.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/infiniband/sw/siw/siw_cm.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -807,8 +807,6 @@ static int qcom_pcie_get_resources_2_4_0
- 			return PTR_ERR(res->phy_ahb_reset);
- 	}
+--- a/drivers/infiniband/sw/siw/siw_cm.c
++++ b/drivers/infiniband/sw/siw/siw_cm.c
+@@ -973,6 +973,7 @@ static void siw_accept_newconn(struct si
+ 			siw_cep_put(cep);
+ 			new_cep->listen_cep = NULL;
+ 			if (rv) {
++				siw_cancel_mpatimer(new_cep);
+ 				siw_cep_set_free(new_cep);
+ 				goto error;
+ 			}
+@@ -1097,9 +1098,12 @@ static void siw_cm_work_handler(struct w
+ 				/*
+ 				 * Socket close before MPA request received.
+ 				 */
+-				siw_dbg_cep(cep, "no mpareq: drop listener\n");
+-				siw_cep_put(cep->listen_cep);
+-				cep->listen_cep = NULL;
++				if (cep->listen_cep) {
++					siw_dbg_cep(cep,
++						"no mpareq: drop listener\n");
++					siw_cep_put(cep->listen_cep);
++					cep->listen_cep = NULL;
++				}
+ 			}
+ 		}
+ 		release_cep = 1;
+@@ -1222,7 +1226,11 @@ static void siw_cm_llp_data_ready(struct
+ 	if (!cep)
+ 		goto out;
  
--	dw_pcie_dbi_ro_wr_dis(pci);
--
- 	return 0;
- }
+-	siw_dbg_cep(cep, "state: %d\n", cep->state);
++	siw_dbg_cep(cep, "cep state: %d, socket state %d\n",
++		    cep->state, sk->sk_state);
++
++	if (sk->sk_state != TCP_ESTABLISHED)
++		goto out;
  
+ 	switch (cep->state) {
+ 	case SIW_EPSTATE_RDMA_MODE:
 
 
