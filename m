@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FC697BDEF3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 960F47BDEA8
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376489AbjJINYw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:24:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47730 "EHLO
+        id S1376373AbjJINVh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:21:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376495AbjJINYw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:52 -0400
+        with ESMTP id S1376385AbjJINVg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFBDA3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADF4C433C8;
-        Mon,  9 Oct 2023 13:24:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C12E68F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF9E1C433C8;
+        Mon,  9 Oct 2023 13:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857890;
-        bh=G0VZqjTOvUDk6v1ZChkno4uOQ3GwLI8aKj+QfJ1wtkY=;
+        s=korg; t=1696857694;
+        bh=vuEFjmhmT1udZho6pIEj2ut+x/7mhUz1AVu4W2laBeM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V9IMX1HB/lDy8ts0PCblCGXqHfZuI6x/5/BbAVW8kLEJz1pzD0JdC4LmHx6oc/TMG
-         +qfQsDpuCJ+UKzdZmnWoteC4EwufpnAefiO42deo9pxyXz543z9FmiIPn31EiPOjWZ
-         kS3/erQoyo/37B2KiyIwBi+OAqi5I/IVDQJ7ppa8=
+        b=cPnNXExZxScFhKa2vW3AiPVWPu90IDRpFNsm1kdFgv1UipyF3Cp63IMB2fD/6QLvh
+         SLzTZIiebP/MF48X/7BsFNytlqrWA50+rw83MKcphuevgGfUkAZGizMa42+DAC6LsL
+         eUhkDQZ7lnYdW+m4KN14VmyGfsRB0ZBHQQcfmrDE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
-        Jordan Rife <jrife@google.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 25/75] net: prevent rewrite of msg_name in sock_sendmsg()
+        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jon Maloy <jmaloy@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 126/162] tipc: fix a potential deadlock on &tx->lock
 Date:   Mon,  9 Oct 2023 15:01:47 +0200
-Message-ID: <20231009130112.114785526@linuxfoundation.org>
+Message-ID: <20231009130126.401097043@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,109 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-commit 86a7e0b69bd5b812e48a20c66c2161744f3caa16 upstream.
+[ Upstream commit 08e50cf071847323414df0835109b6f3560d44f5 ]
 
-Callers of sock_sendmsg(), and similarly kernel_sendmsg(), in kernel
-space may observe their value of msg_name change in cases where BPF
-sendmsg hooks rewrite the send address. This has been confirmed to break
-NFS mounts running in UDP mode and has the potential to break other
-systems.
+It seems that tipc_crypto_key_revoke() could be be invoked by
+wokequeue tipc_crypto_work_rx() under process context and
+timer/rx callback under softirq context, thus the lock acquisition
+on &tx->lock seems better use spin_lock_bh() to prevent possible
+deadlock.
 
-This patch:
+This flaw was found by an experimental static analysis tool I am
+developing for irq-related deadlock.
 
-1) Creates a new function called __sock_sendmsg() with same logic as the
-   old sock_sendmsg() function.
-2) Replaces calls to sock_sendmsg() made by __sys_sendto() and
-   __sys_sendmsg() with __sock_sendmsg() to avoid an unnecessary copy,
-   as these system calls are already protected.
-3) Modifies sock_sendmsg() so that it makes a copy of msg_name if
-   present before passing it down the stack to insulate callers from
-   changes to the send address.
+tipc_crypto_work_rx() <workqueue>
+--> tipc_crypto_key_distr()
+--> tipc_bcast_xmit()
+--> tipc_bcbase_xmit()
+--> tipc_bearer_bc_xmit()
+--> tipc_crypto_xmit()
+--> tipc_ehdr_build()
+--> tipc_crypto_key_revoke()
+--> spin_lock(&tx->lock)
+<timer interrupt>
+   --> tipc_disc_timeout()
+   --> tipc_bearer_xmit_skb()
+   --> tipc_crypto_xmit()
+   --> tipc_ehdr_build()
+   --> tipc_crypto_key_revoke()
+   --> spin_lock(&tx->lock) <deadlock here>
 
-Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
-Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
-Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Acked-by: Jon Maloy <jmaloy@redhat.com>
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Link: https://lore.kernel.org/r/20230927181414.59928-1-dg573847474@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/socket.c |   29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+ net/tipc/crypto.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -708,6 +708,14 @@ static inline int sock_sendmsg_nosec(str
- 	return ret;
- }
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 2b236d95a6469..65f59739a041a 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -1441,14 +1441,14 @@ static int tipc_crypto_key_revoke(struct net *net, u8 tx_key)
+ 	struct tipc_crypto *tx = tipc_net(net)->crypto_tx;
+ 	struct tipc_key key;
  
-+static int __sock_sendmsg(struct socket *sock, struct msghdr *msg)
-+{
-+	int err = security_socket_sendmsg(sock, msg,
-+					  msg_data_left(msg));
-+
-+	return err ?: sock_sendmsg_nosec(sock, msg);
-+}
-+
- /**
-  *	sock_sendmsg - send a message through @sock
-  *	@sock: socket
-@@ -718,10 +726,19 @@ static inline int sock_sendmsg_nosec(str
-  */
- int sock_sendmsg(struct socket *sock, struct msghdr *msg)
- {
--	int err = security_socket_sendmsg(sock, msg,
--					  msg_data_left(msg));
-+	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
-+	struct sockaddr_storage address;
-+	int ret;
+-	spin_lock(&tx->lock);
++	spin_lock_bh(&tx->lock);
+ 	key = tx->key;
+ 	WARN_ON(!key.active || tx_key != key.active);
  
--	return err ?: sock_sendmsg_nosec(sock, msg);
-+	if (msg->msg_name) {
-+		memcpy(&address, msg->msg_name, msg->msg_namelen);
-+		msg->msg_name = &address;
-+	}
-+
-+	ret = __sock_sendmsg(sock, msg);
-+	msg->msg_name = save_addr;
-+
-+	return ret;
- }
- EXPORT_SYMBOL(sock_sendmsg);
+ 	/* Free the active key */
+ 	tipc_crypto_key_set_state(tx, key.passive, 0, key.pending);
+ 	tipc_crypto_key_detach(tx->aead[key.active], &tx->lock);
+-	spin_unlock(&tx->lock);
++	spin_unlock_bh(&tx->lock);
  
-@@ -1057,7 +1074,7 @@ static ssize_t sock_write_iter(struct ki
- 	if (sock->type == SOCK_SEQPACKET)
- 		msg.msg_flags |= MSG_EOR;
- 
--	res = sock_sendmsg(sock, &msg);
-+	res = __sock_sendmsg(sock, &msg);
- 	*from = msg.msg_iter;
- 	return res;
- }
-@@ -2036,7 +2053,7 @@ int __sys_sendto(int fd, void __user *bu
- 	if (sock->file->f_flags & O_NONBLOCK)
- 		flags |= MSG_DONTWAIT;
- 	msg.msg_flags = flags;
--	err = sock_sendmsg(sock, &msg);
-+	err = __sock_sendmsg(sock, &msg);
- 
- out_put:
- 	fput_light(sock->file, fput_needed);
-@@ -2409,7 +2426,7 @@ static int ____sys_sendmsg(struct socket
- 		err = sock_sendmsg_nosec(sock, msg_sys);
- 		goto out_freectl;
- 	}
--	err = sock_sendmsg(sock, msg_sys);
-+	err = __sock_sendmsg(sock, msg_sys);
- 	/*
- 	 * If this is sendmmsg() and sending to current destination address was
- 	 * successful, remember it.
+ 	pr_warn("%s: key is revoked\n", tx->name);
+ 	return -EKEYREVOKED;
+-- 
+2.40.1
+
 
 
