@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B01547BDFF6
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3596C7BDD29
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377200AbjJINgK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:36:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53708 "EHLO
+        id S1376698AbjJINIH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:08:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377180AbjJINgI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:08 -0400
+        with ESMTP id S1376680AbjJINIG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DA8BAB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573B6C433CC;
-        Mon,  9 Oct 2023 13:36:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A0B89C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02861C433C8;
+        Mon,  9 Oct 2023 13:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858566;
-        bh=ISCTTLa+jL2QkDp0d72HEooQhDzDnDkI+oAI7Lc5RoA=;
+        s=korg; t=1696856883;
+        bh=CSmQ22dwdebQAPUTT2Dls9dsW5YbssuU61b0fZPMX1A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G4+wtIw3WUUTyOpqJGLSiQvElzVB/mvEC88nk+aomwM/uoST4hqDCGiM901nEI6Uy
-         PShnehP17SzJ8QNWHn8a03jl3al0Vjwq296OZ9RjWeSWezce7zvC2aNa4aeS5butvg
-         ONqJAKJvYZ9bvz6VTuEzuHrr6AbfPZ7Xj2Q81h04=
+        b=N0sqyc/PwAxsfSMAVa5k8TPBQv9qByYQkEDUkv0g6D0XXk+ZzT97L1PiIcx5nDalu
+         39RxMM0B2mpD4o3L3STZI0X5G+fac4kbkKwRL6ELfr9I5io9ICpZUGmKmPYqKca1DM
+         d5rFKDFXj/LtlnssrCnEU9emojN+mrusbYbU2+Dk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Dilger <adilger@dilger.ca>,
-        Wang Jianchao <wangjianchao@kuaishou.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 008/226] ext4: add new helper interface ext4_try_to_trim_range()
+        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 005/163] ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support
 Date:   Mon,  9 Oct 2023 14:59:29 +0200
-Message-ID: <20231009130126.936681834@linuxfoundation.org>
+Message-ID: <20231009130124.171728708@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,167 +48,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jianchao <wangjianchao@kuaishou.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 6920b3913235f517728bb69abe9b39047a987113 ]
+[ Upstream commit 41b07476da38ac2878a14e5b8fe0312c41ea36e3 ]
 
-There is no functional change in this patch but just split the
-codes, which serachs free block and does trim, into a new function
-ext4_try_to_trim_range. This is preparing for the following async
-backgroup discard.
+New platform SSID:0x231f.
 
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Signed-off-by: Wang Jianchao <wangjianchao@kuaishou.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20210724074124.25731-3-jianchao.wan9@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
+0x17 was only speaker pin, DAC assigned will be 0x03. Headphone
+assigned to 0x02.
+Playback via headphone will get EQ filter processing.
+So, it needs to swap DAC.
+
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/8d63c6e360124e3ea2523753050e6f05@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 102 ++++++++++++++++++++++++++--------------------
- 1 file changed, 57 insertions(+), 45 deletions(-)
+ sound/pci/hda/patch_realtek.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 342225c1cf332..54c718d471978 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5894,6 +5894,54 @@ __acquires(bitlock)
- 	return ret;
- }
- 
-+static int ext4_try_to_trim_range(struct super_block *sb,
-+		struct ext4_buddy *e4b, ext4_grpblk_t start,
-+		ext4_grpblk_t max, ext4_grpblk_t minblocks)
-+{
-+	ext4_grpblk_t next, count, free_count;
-+	void *bitmap;
-+	int ret = 0;
-+
-+	bitmap = e4b->bd_bitmap;
-+	start = (e4b->bd_info->bb_first_free > start) ?
-+		e4b->bd_info->bb_first_free : start;
-+	count = 0;
-+	free_count = 0;
-+
-+	while (start <= max) {
-+		start = mb_find_next_zero_bit(bitmap, max + 1, start);
-+		if (start > max)
-+			break;
-+		next = mb_find_next_bit(bitmap, max + 1, start);
-+
-+		if ((next - start) >= minblocks) {
-+			ret = ext4_trim_extent(sb, start, next - start, e4b);
-+			if (ret && ret != -EOPNOTSUPP)
-+				break;
-+			ret = 0;
-+			count += next - start;
-+		}
-+		free_count += next - start;
-+		start = next + 1;
-+
-+		if (fatal_signal_pending(current)) {
-+			count = -ERESTARTSYS;
-+			break;
-+		}
-+
-+		if (need_resched()) {
-+			ext4_unlock_group(sb, e4b->bd_group);
-+			cond_resched();
-+			ext4_lock_group(sb, e4b->bd_group);
-+		}
-+
-+		if ((e4b->bd_info->bb_free - free_count) < minblocks)
-+			break;
-+	}
-+
-+	return count;
-+}
-+
- /**
-  * ext4_trim_all_free -- function to trim all free space in alloc. group
-  * @sb:			super block for file system
-@@ -5917,10 +5965,8 @@ ext4_trim_all_free(struct super_block *sb, ext4_group_t group,
- 		   ext4_grpblk_t start, ext4_grpblk_t max,
- 		   ext4_grpblk_t minblocks)
- {
--	void *bitmap;
--	ext4_grpblk_t next, count = 0, free_count = 0;
- 	struct ext4_buddy e4b;
--	int ret = 0;
-+	int ret;
- 
- 	trace_ext4_trim_all_free(sb, group, start, max);
- 
-@@ -5930,57 +5976,23 @@ ext4_trim_all_free(struct super_block *sb, ext4_group_t group,
- 			     ret, group);
- 		return ret;
- 	}
--	bitmap = e4b.bd_bitmap;
- 
- 	ext4_lock_group(sb, group);
--	if (EXT4_MB_GRP_WAS_TRIMMED(e4b.bd_info) &&
--	    minblocks >= atomic_read(&EXT4_SB(sb)->s_last_trim_minblks))
--		goto out;
--
--	start = (e4b.bd_info->bb_first_free > start) ?
--		e4b.bd_info->bb_first_free : start;
- 
--	while (start <= max) {
--		start = mb_find_next_zero_bit(bitmap, max + 1, start);
--		if (start > max)
--			break;
--		next = mb_find_next_bit(bitmap, max + 1, start);
--
--		if ((next - start) >= minblocks) {
--			ret = ext4_trim_extent(sb, start, next - start, &e4b);
--			if (ret && ret != -EOPNOTSUPP)
--				break;
--			ret = 0;
--			count += next - start;
--		}
--		free_count += next - start;
--		start = next + 1;
--
--		if (fatal_signal_pending(current)) {
--			count = -ERESTARTSYS;
--			break;
--		}
--
--		if (need_resched()) {
--			ext4_unlock_group(sb, group);
--			cond_resched();
--			ext4_lock_group(sb, group);
--		}
--
--		if ((e4b.bd_info->bb_free - free_count) < minblocks)
--			break;
-+	if (!EXT4_MB_GRP_WAS_TRIMMED(e4b.bd_info) ||
-+	    minblocks < atomic_read(&EXT4_SB(sb)->s_last_trim_minblks)) {
-+		ret = ext4_try_to_trim_range(sb, &e4b, start, max, minblocks);
-+		if (ret >= 0)
-+			EXT4_MB_GRP_SET_TRIMMED(e4b.bd_info);
-+	} else {
-+		ret = 0;
- 	}
- 
--	if (!ret) {
--		ret = count;
--		EXT4_MB_GRP_SET_TRIMMED(e4b.bd_info);
--	}
--out:
- 	ext4_unlock_group(sb, group);
- 	ext4_mb_unload_buddy(&e4b);
- 
- 	ext4_debug("trimmed %d blocks in the group %d\n",
--		count, group);
-+		ret, group);
- 
- 	return ret;
- }
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index b040889b22880..45fa102060cef 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10567,6 +10567,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
+ 		{0x17, 0x90170110},
+ 		{0x19, 0x03a11030},
+ 		{0x21, 0x03211020}),
++	SND_HDA_PIN_QUIRK(0x10ec0287, 0x17aa, "Lenovo", ALC287_FIXUP_THINKPAD_I2S_SPK,
++		{0x17, 0x90170110}, /* 0x231f with RTK I2S AMP */
++		{0x19, 0x04a11040},
++		{0x21, 0x04211020}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0286, 0x1025, "Acer", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE,
+ 		{0x12, 0x90a60130},
+ 		{0x17, 0x90170110},
 -- 
 2.40.1
 
