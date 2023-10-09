@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68EAE7BDF20
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3FC7BDFB1
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376540AbjJIN0h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35416 "EHLO
+        id S1377121AbjJINct (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:32:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376750AbjJIN0g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:36 -0400
+        with ESMTP id S1377122AbjJINct (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA66D8
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3DBC433CA;
-        Mon,  9 Oct 2023 13:26:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF16EBA
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09934C433C7;
+        Mon,  9 Oct 2023 13:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857991;
-        bh=Mjks07ezbF9BP4BpwrLGTAYMv7n3sL2v+h6NyzFQcBA=;
+        s=korg; t=1696858366;
+        bh=FhoOhc/scPsGNMHMqOROHJ0c3FZ8QXvDjLfShkbFKMg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e4iYjqlELfUGLH299/37LdapLwHfB1yLylCKt5YhN5n79S/7v22l0j/AJq03vMBwv
-         WntNvGaGyuxSYroyXBx+Tj9LYZ+VZq4KyT7Fo0ER59eN+J6NZTnzXfM7w/1rLwFdlp
-         MUTGd+twtxC3HZC96z/qJTREuZE8mfSki3uIwIJA=
+        b=FIDO2+04nDrutcXjVsw8Nn2QfM/6ziBqyIWFq/V21cICYT1zXzIcJxv9S0MEUXaS9
+         7uQ+KxYMCSU7vO5kWvsx75HZ9qXveerPdOUbpgoCcfEIqJO+0c+uW2oeRp5ucsVvsD
+         FP85aT+lhtPZlclHqAGpXaxAWYiAtpqeoxH+32y4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Neal Cardwell <ncardwell@google.com>,
-        Yuchung Cheng <ycheng@google.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 57/75] tcp: fix quick-ack counting to count actual ACKs of new data
+        patches@lists.linux.dev, Pin-yen Lin <treapking@chromium.org>,
+        Brian Norris <briannorris@chromium.org>,
+        Matthew Wang <matthewmwang@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 099/131] wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet
 Date:   Mon,  9 Oct 2023 15:02:19 +0200
-Message-ID: <20231009130113.242223184@linuxfoundation.org>
+Message-ID: <20231009130119.441446526@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,104 +50,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit 059217c18be6757b95bfd77ba53fb50b48b8a816 ]
+[ Upstream commit aef7a0300047e7b4707ea0411dc9597cba108fc8 ]
 
-This commit fixes quick-ack counting so that it only considers that a
-quick-ack has been provided if we are sending an ACK that newly
-acknowledges data.
+Only skip the code path trying to access the rfc1042 headers when the
+buffer is too small, so the driver can still process packets without
+rfc1042 headers.
 
-The code was erroneously using the number of data segments in outgoing
-skbs when deciding how many quick-ack credits to remove. This logic
-does not make sense, and could cause poor performance in
-request-response workloads, like RPC traffic, where requests or
-responses can be multi-segment skbs.
-
-When a TCP connection decides to send N quick-acks, that is to
-accelerate the cwnd growth of the congestion control module
-controlling the remote endpoint of the TCP connection. That quick-ack
-decision is purely about the incoming data and outgoing ACKs. It has
-nothing to do with the outgoing data or the size of outgoing data.
-
-And in particular, an ACK only serves the intended purpose of allowing
-the remote congestion control to grow the congestion window quickly if
-the ACK is ACKing or SACKing new data.
-
-The fix is simple: only count packets as serving the goal of the
-quickack mechanism if they are ACKing/SACKing new data. We can tell
-whether this is the case by checking inet_csk_ack_scheduled(), since
-we schedule an ACK exactly when we are ACKing/SACKing new data.
-
-Fixes: fc6415bcb0f5 ("[TCP]: Fix quick-ack decrementing with TSO.")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Yuchung Cheng <ycheng@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231001151239.1866845-1-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when rx packets")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230908104308.1546501-1-treapking@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h     | 6 ++++--
- net/ipv4/tcp_output.c | 7 +++----
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/sta_rx.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 4aafda05a6466..4d8c915a7bfac 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -340,12 +340,14 @@ ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
- 			struct pipe_inode_info *pipe, size_t len,
- 			unsigned int flags);
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+index a42b8ff33b23f..98157fd245f7f 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
+@@ -98,7 +98,8 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
+ 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
+ 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
  
--static inline void tcp_dec_quickack_mode(struct sock *sk,
--					 const unsigned int pkts)
-+static inline void tcp_dec_quickack_mode(struct sock *sk)
- {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
+-	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
++	if (sizeof(rx_pkt_hdr->eth803_hdr) + sizeof(rfc1042_header) +
++	    rx_pkt_off > skb->len) {
+ 		mwifiex_dbg(priv->adapter, ERROR,
+ 			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
+ 			    skb->len, rx_pkt_off);
+@@ -107,12 +108,13 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
+ 		return -1;
+ 	}
  
- 	if (icsk->icsk_ack.quick) {
-+		/* How many ACKs S/ACKing new data have we sent? */
-+		const unsigned int pkts = inet_csk_ack_scheduled(sk) ? 1 : 0;
-+
- 		if (pkts >= icsk->icsk_ack.quick) {
- 			icsk->icsk_ack.quick = 0;
- 			/* Leaving quickack mode we deflate ATO. */
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index d46fb6d7057bd..880b53bb6b64d 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -177,8 +177,7 @@ static void tcp_event_data_sent(struct tcp_sock *tp,
- }
- 
- /* Account for an ACK we sent. */
--static inline void tcp_event_ack_sent(struct sock *sk, unsigned int pkts,
--				      u32 rcv_nxt)
-+static inline void tcp_event_ack_sent(struct sock *sk, u32 rcv_nxt)
- {
- 	struct tcp_sock *tp = tcp_sk(sk);
- 
-@@ -192,7 +191,7 @@ static inline void tcp_event_ack_sent(struct sock *sk, unsigned int pkts,
- 
- 	if (unlikely(rcv_nxt != tp->rcv_nxt))
- 		return;  /* Special ACK sent by DCTCP to reflect ECN */
--	tcp_dec_quickack_mode(sk, pkts);
-+	tcp_dec_quickack_mode(sk);
- 	inet_csk_clear_xmit_timer(sk, ICSK_TIME_DACK);
- }
- 
-@@ -1374,7 +1373,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
- 			   sk, skb);
- 
- 	if (likely(tcb->tcp_flags & TCPHDR_ACK))
--		tcp_event_ack_sent(sk, tcp_skb_pcount(skb), rcv_nxt);
-+		tcp_event_ack_sent(sk, rcv_nxt);
- 
- 	if (skb->len != tcp_header_size) {
- 		tcp_event_data_sent(tp, sk);
+-	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+-		     sizeof(bridge_tunnel_header))) ||
+-	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
+-		     sizeof(rfc1042_header)) &&
+-	     ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_AARP &&
+-	     ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_IPX)) {
++	if (sizeof(*rx_pkt_hdr) + rx_pkt_off <= skb->len &&
++	    ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
++		      sizeof(bridge_tunnel_header))) ||
++	     (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
++		      sizeof(rfc1042_header)) &&
++	      ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_AARP &&
++	      ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_IPX))) {
+ 		/*
+ 		 *  Replace the 803 header and rfc1042 header (llc/snap) with an
+ 		 *    EthernetII header, keep the src/dst and snap_type
 -- 
 2.40.1
 
