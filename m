@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CE4F7BDD67
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:10:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 875867BE001
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376796AbjJINKG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:10:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43636 "EHLO
+        id S1377198AbjJINgj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:36:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376772AbjJINKE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:10:04 -0400
+        with ESMTP id S1377210AbjJINgh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55067B9
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C58BC433C7;
-        Mon,  9 Oct 2023 13:10:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F8B410A
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059A6C433C7;
+        Mon,  9 Oct 2023 13:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857002;
-        bh=9ndXYrCyP123GQ4fUv5MPwRXJJGQvhW1tO6Hn3yp50k=;
+        s=korg; t=1696858592;
+        bh=uwduOR496cqupJIA2kCGxx3G7/GKODdo60vJlOm0hSY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hSfh+N+lRksGkF4lY5PhFpeNu7znFClyTKOLv128LjEHquzf8jXDTy1ujEB1ijddR
-         cfbJe4ttc49uLeWkn1fGZIhlqtlDFHmByxjDvkyG8gA+gH3xPSBSNpw9f2ZimuqJBc
-         SJnth2ZOKZeNe5ssaggC7PHRgK4ZNY/zBss9JNrM=
+        b=e5MqXiLiKnHSSNVjZNz5FBQsuW8hJNseDSF+qgj5Ta4JtlzI2IH5vZNsoKNfoiVG3
+         hUjz74Rfp4D2GzqIxU2QYNA2ojQ8hcwEhU6o74pHdJpPDFT14HiyBkOmrLMWTBkZuJ
+         NkiIneE3UzSEyllvM/VKsBKcGwGDv+c2fEIQLUzE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Juerg Haefliger <juerg.haefliger@canonical.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.5 036/163] wifi: brcmfmac: Replace 1-element arrays with flexible arrays
+        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 039/226] i40e: Fix VF VLAN offloading when port VLAN is configured
 Date:   Mon,  9 Oct 2023 15:00:00 +0200
-Message-ID: <20231009130124.998919832@linuxfoundation.org>
+Message-ID: <20231009130127.814755880@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,73 +51,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juerg Haefliger <juerg.haefliger@canonical.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-commit 4fed494abcd4fde5c24de19160e93814f912fdb3 upstream.
+[ Upstream commit d0d362ffa33da4acdcf7aee2116ceef8c8fef658 ]
 
-Since commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC"),
-UBSAN_BOUNDS no longer pretends 1-element arrays are unbounded. Walking
-'element' and 'channel_list' will trigger warnings, so make them proper
-flexible arrays.
+If port VLAN is configured on a VF then any other VLANs on top of this VF
+are broken.
 
-False positive warnings were:
+During i40e_ndo_set_vf_port_vlan() call the i40e driver reset the VF and
+iavf driver asks PF (using VIRTCHNL_OP_GET_VF_RESOURCES) for VF capabilities
+but this reset occurs too early, prior setting of vf->info.pvid field
+and because this field can be zero during i40e_vc_get_vf_resources_msg()
+then VIRTCHNL_VF_OFFLOAD_VLAN capability is reported to iavf driver.
 
-  UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:6984:20
-  index 1 is out of range for type '__le32 [1]'
+This is wrong because iavf driver should not report VLAN offloading
+capability when port VLAN is configured as i40e does not support QinQ
+offloading.
 
-  UBSAN: array-index-out-of-bounds in drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1126:27
-  index 1 is out of range for type '__le16 [1]'
+Fix the issue by moving VF reset after setting of vf->port_vlan_id
+field.
 
-for these lines of code:
+Without this patch:
+$ echo 1 > /sys/class/net/enp2s0f0/device/sriov_numvfs
+$ ip link set enp2s0f0 vf 0 vlan 3
+$ ip link set enp2s0f0v0 up
+$ ip link add link enp2s0f0v0 name vlan4 type vlan id 4
+$ ip link set vlan4 up
+...
+$ ethtool -k enp2s0f0v0 | grep vlan-offload
+rx-vlan-offload: on
+tx-vlan-offload: on
+$ dmesg -l err | grep iavf
+[1292500.742914] iavf 0000:02:02.0: Failed to add VLAN filter, error IAVF_ERR_INVALID_QP_ID
 
-  6884  ch.chspec = (u16)le32_to_cpu(list->element[i]);
+With this patch:
+$ echo 1 > /sys/class/net/enp2s0f0/device/sriov_numvfs
+$ ip link set enp2s0f0 vf 0 vlan 3
+$ ip link set enp2s0f0v0 up
+$ ip link add link enp2s0f0v0 name vlan4 type vlan id 4
+$ ip link set vlan4 up
+...
+$ ethtool -k enp2s0f0v0 | grep vlan-offload
+rx-vlan-offload: off [requested on]
+tx-vlan-offload: off [requested on]
+$ dmesg -l err | grep iavf
 
-  1126  params_le->channel_list[i] = cpu_to_le16(chanspec);
-
-Cc: stable@vger.kernel.org # 6.5+
-Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230914070227.12028-1-juerg.haefliger@canonical.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f9b4b6278d51 ("i40e: Reset the VF upon conflicting VLAN configuration")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/broadcom/brcm80211/brcmfmac/fwil_types.h    | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-index bece26741d3a..611d1a6aabb9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
-@@ -442,7 +442,12 @@ struct brcmf_scan_params_v2_le {
- 				 * fixed parameter portion is assumed, otherwise
- 				 * ssid in the fixed portion is ignored
- 				 */
--	__le16 channel_list[1];	/* list of chanspecs */
-+	union {
-+		__le16 padding;	/* Reserve space for at least 1 entry for abort
-+				 * which uses an on stack brcmf_scan_params_v2_le
-+				 */
-+		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
-+	};
- };
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index bb2a79b70c3ae..dfaa34f2473ab 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -4332,9 +4332,6 @@ int i40e_ndo_set_vf_port_vlan(struct net_device *netdev, int vf_id,
+ 		/* duplicate request, so just return success */
+ 		goto error_pvid;
  
- struct brcmf_scan_results {
-@@ -702,7 +707,7 @@ struct brcmf_sta_info_le {
+-	i40e_vc_reset_vf(vf, true);
+-	/* During reset the VF got a new VSI, so refresh a pointer. */
+-	vsi = pf->vsi[vf->lan_vsi_idx];
+ 	/* Locked once because multiple functions below iterate list */
+ 	spin_lock_bh(&vsi->mac_filter_hash_lock);
  
- struct brcmf_chanspec_list {
- 	__le32	count;		/* # of entries */
--	__le32	element[1];	/* variable length uint32 list */
-+	__le32  element[];	/* variable length uint32 list */
- };
+@@ -4420,6 +4417,10 @@ int i40e_ndo_set_vf_port_vlan(struct net_device *netdev, int vf_id,
+ 	 */
+ 	vf->port_vlan_id = le16_to_cpu(vsi->info.pvid);
  
- /*
++	i40e_vc_reset_vf(vf, true);
++	/* During reset the VF got a new VSI, so refresh a pointer. */
++	vsi = pf->vsi[vf->lan_vsi_idx];
++
+ 	ret = i40e_config_vf_promiscuous_mode(vf, vsi->id, allmulti, alluni);
+ 	if (ret) {
+ 		dev_err(&pf->pdev->dev, "Unable to config vf promiscuous mode\n");
 -- 
-2.42.0
+2.40.1
 
 
 
