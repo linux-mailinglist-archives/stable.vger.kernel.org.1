@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B37897BDFB3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8C3B7BE0CF
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377122AbjJINcz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:32:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53750 "EHLO
+        id S1377415AbjJINoY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:44:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377126AbjJINcy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:54 -0400
+        with ESMTP id S1377586AbjJINoM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 225CDB6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DF2C433C8;
-        Mon,  9 Oct 2023 13:32:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05269A3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE31C433C8;
+        Mon,  9 Oct 2023 13:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858372;
-        bh=D5I8x2Bvys/JX6BIh32HafwNtRLkSsGXjyVcxQwWkRI=;
+        s=korg; t=1696859051;
+        bh=IZ6zEEekmX68d110TEJlgoWLgoIV+0c1DIZYGazZL74=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iiJkVRYhYMWQR8Ci1olOG9IHsyVnwjVUJjE5KDCPa7ZRDFdvn/kde2ca/b83hTXZ2
-         dDP4ziaCEg6tHQpgWpv8DXKyc62Qszbh+bgJMYVd+dnKqu/yuFKT8mTANmInenGiyR
-         gxiez3hspphplDGtg0+ezI+z2tKhQzNixqgGg3Xw=
+        b=Eu5ubwe6Qd7H2Z2AAAbiReWyaC8ntjD+vUjg5pTmxAU0zfflSIwsSBYuLkr+yYwQo
+         3DCmEewioNcKHucYZ/Scsoz2xnG2LHwZX9I7O5Fti3tQHiEAOqsvhItD/QKsDqj0vp
+         aUFLxGskgZ4Qzn1jvLdw5zGixyW0rHB7yXlxxtZc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 075/131] ALSA: hda: Disable power save for solving pop issue on Lenovo ThinkCentre M70q
-Date:   Mon,  9 Oct 2023 15:01:55 +0200
-Message-ID: <20231009130118.615329970@linuxfoundation.org>
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 155/226] btrfs: properly report 0 avail for very full file systems
+Date:   Mon,  9 Oct 2023 15:01:56 +0200
+Message-ID: <20231009130130.746858616@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,35 +48,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 057a28ef93bdbe84326d34cdb5543afdaab49fe1 upstream.
+commit 58bfe2ccec5f9f137b41dd38f335290dcc13cd5c upstream.
 
-Lenovo ThinkCentre M70q had boot up pop noise.
-Disable power save will solve pop issue.
+A user reported some issues with smaller file systems that get very
+full.  While investigating this issue I noticed that df wasn't showing
+100% full, despite having 0 chunk space and having < 1MiB of available
+metadata space.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/315900e2efef42fd9855eacfeb443abd@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This turns out to be an overflow issue, we're doing:
+
+  total_available_metadata_space - SZ_4M < global_block_rsv_size
+
+to determine if there's not enough space to make metadata allocations,
+which overflows if total_available_metadata_space is < 4M.  Fix this by
+checking to see if our available space is greater than the 4M threshold.
+This makes df properly report 100% usage on the file system.
+
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_intel.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/super.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2237,6 +2237,7 @@ static struct snd_pci_quirk power_save_b
- 	SND_PCI_QUIRK(0x8086, 0x2068, "Intel NUC7i3BNB", 0),
- 	/* https://bugzilla.kernel.org/show_bug.cgi?id=198611 */
- 	SND_PCI_QUIRK(0x17aa, 0x2227, "Lenovo X1 Carbon 3rd Gen", 0),
-+	SND_PCI_QUIRK(0x17aa, 0x316e, "Lenovo ThinkCentre M70q", 0),
- 	/* https://bugzilla.redhat.com/show_bug.cgi?id=1689623 */
- 	SND_PCI_QUIRK(0x17aa, 0x367b, "Lenovo IdeaCentre B550", 0),
- 	/* https://bugzilla.redhat.com/show_bug.cgi?id=1572975 */
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -2267,7 +2267,7 @@ static int btrfs_statfs(struct dentry *d
+ 	 * calculated f_bavail.
+ 	 */
+ 	if (!mixed && block_rsv->space_info->full &&
+-	    total_free_meta - thresh < block_rsv->size)
++	    (total_free_meta < thresh || total_free_meta - thresh < block_rsv->size))
+ 		buf->f_bavail = 0;
+ 
+ 	buf->f_type = BTRFS_SUPER_MAGIC;
 
 
