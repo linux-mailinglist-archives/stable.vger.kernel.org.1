@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 935DB7BE1C0
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:53:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 077827BE162
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377535AbjJINxn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:53:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41350 "EHLO
+        id S1377041AbjJINt4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:49:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377536AbjJINxm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:42 -0400
+        with ESMTP id S1377096AbjJINty (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:49:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A3CF99
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9BAC433C8;
-        Mon,  9 Oct 2023 13:53:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCCBACF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:49:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA19AC433C7;
+        Mon,  9 Oct 2023 13:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859621;
-        bh=BZvpAjNCV1H+5VEtX0EzYddGsZ5x0zdFtWNx/7DfczE=;
+        s=korg; t=1696859391;
+        bh=VAM/Q+6ZdtUhU07tM3fgr+nXuQLTvHRgZXFAh9mRxWc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XqwEMg9vtTaNMUHWhqif6SO4+RIeM1FQoK6NDCWsZsvYrZYAL61nVzzuCSriln3iy
-         lJXss6vFku3NKWnb4DQjNRUahzLTLrSmh/dL5MVFGTIdold2ta0Dj90dVGOrFpwysr
-         1f3eaUvzh0oQnKGhnRiXp9XwBo5wyBghZuyEe6Zg=
+        b=RW0Zzo8hywcItwV76hkokoiPt/I0kaC5Vwn4UnOWRq6kwuCgWv36FowI2iYeTgG+H
+         sibugOgCBiBaY71KA06Df5qfHCoMq1Uob87rcmu9qoJlUGwnS/2sFLcDRLMxrSeSJw
+         HaPlBVQ+Kr/TMZhC33nnM1pPHQBvi1huWJRuszns=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 79/91] net: stmmac: dwmac-stm32: fix resume on STM32 MCU
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Andy Shevchenko <andy@kernel.org>,
+        Andrew Jeffery <andrew@codeconstruct.com.au>
+Subject: [PATCH 4.14 52/55] gpio: aspeed: fix the GPIO number passed to pinctrl_gpio_set_config()
 Date:   Mon,  9 Oct 2023 15:06:51 +0200
-Message-ID: <20231009130114.287431567@linuxfoundation.org>
+Message-ID: <20231009130109.682799960@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +50,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 6f195d6b0da3b689922ba9e302af2f49592fa9fc ]
+commit f9315f17bf778cb8079a29639419fcc8a41a3c84 upstream.
 
-The STM32MP1 keeps clk_rx enabled during suspend, and therefore the
-driver does not enable the clock in stm32_dwmac_init() if the device was
-suspended. The problem is that this same code runs on STM32 MCUs, which
-do disable clk_rx during suspend, causing the clock to never be
-re-enabled on resume.
+pinctrl_gpio_set_config() expects the GPIO number from the global GPIO
+numberspace, not the controller-relative offset, which needs to be added
+to the chip base.
 
-This patch adds a variant flag to indicate that clk_rx remains enabled
-during suspend, and uses this to decide whether to enable the clock in
-stm32_dwmac_init() if the device was suspended.
-
-This approach fixes this specific bug with limited opportunity for
-unintended side-effects, but I have a follow up patch that will refactor
-the clock configuration and hopefully make it less error prone.
-
-Fixes: 6528e02cc9ff ("net: ethernet: stmmac: add adaptation for stm32mp157c.")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20230927175749.1419774-1-ben.wolsieffer@hefring.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5ae4cb94b313 ("gpio: aspeed: Add debounce support")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-aspeed.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-index 7e2e79dedebf2..df7fc6b675a53 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-@@ -57,6 +57,7 @@ struct stm32_ops {
- 	int (*parse_data)(struct stm32_dwmac *dwmac,
- 			  struct device *dev);
- 	u32 syscfg_eth_mask;
-+	bool clk_rx_enable_in_suspend;
- };
- 
- static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
-@@ -74,7 +75,8 @@ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
- 	if (ret)
- 		return ret;
- 
--	if (!dwmac->dev->power.is_suspended) {
-+	if (!dwmac->ops->clk_rx_enable_in_suspend ||
-+	    !dwmac->dev->power.is_suspended) {
- 		ret = clk_prepare_enable(dwmac->clk_rx);
- 		if (ret) {
- 			clk_disable_unprepare(dwmac->clk_tx);
-@@ -413,7 +415,8 @@ static struct stm32_ops stm32mp1_dwmac_data = {
- 	.suspend = stm32mp1_suspend,
- 	.resume = stm32mp1_resume,
- 	.parse_data = stm32mp1_parse_data,
--	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK
-+	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK,
-+	.clk_rx_enable_in_suspend = true
- };
- 
- static const struct of_device_id stm32_dwmac_match[] = {
--- 
-2.40.1
-
+--- a/drivers/gpio/gpio-aspeed.c
++++ b/drivers/gpio/gpio-aspeed.c
+@@ -763,7 +763,7 @@ static int aspeed_gpio_set_config(struct
+ 	else if (param == PIN_CONFIG_BIAS_DISABLE ||
+ 			param == PIN_CONFIG_BIAS_PULL_DOWN ||
+ 			param == PIN_CONFIG_DRIVE_STRENGTH)
+-		return pinctrl_gpio_set_config(offset, config);
++		return pinctrl_gpio_set_config(chip->base + offset, config);
+ 	else if (param == PIN_CONFIG_DRIVE_OPEN_DRAIN ||
+ 			param == PIN_CONFIG_DRIVE_OPEN_SOURCE)
+ 		/* Return -ENOTSUPP to trigger emulation, as per datasheet */
 
 
