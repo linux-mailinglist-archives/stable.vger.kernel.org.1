@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F127E7BDD26
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7D797BDE17
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376683AbjJINH6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:07:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51200 "EHLO
+        id S1376619AbjJINPq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:15:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376698AbjJINH4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:07:56 -0400
+        with ESMTP id S1376880AbjJINPp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F12DDB7
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:07:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EB1C433C9;
-        Mon,  9 Oct 2023 13:07:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D046F9D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADDBC433C8;
+        Mon,  9 Oct 2023 13:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856874;
-        bh=bEFI+kSnOaH+wFjMUVKyAbdfHD3fqGbJH7CdsFbuGSI=;
+        s=korg; t=1696857343;
+        bh=Xqeoz7WTXEnKcS64cnKVixPdGKPgRz1MfSolAXjBHPs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mkM/0hSxyJh6iQczKfj/YijUJgSdhWcyeMOloaRAwHgdS2T4u5aSSpNVWcWYslW+b
-         4Q+eAnOrgyiy1wulHQOtz/oBKj+obKi7v2BT8va/iFl+/sqMeCrJAracnaPx6BzLzm
-         KoEMCGe1ncq7aWGr8zM0XO0RNwjOjcw859ZfnUqU=
+        b=2nUllZkvEBv8iNevOqce2wOFOvp1ZMItiCmEayPeKt2W7VDobQqwkgARf+Y1knszM
+         RVBML//kR8R9d1n/w9gMR1iPx8zk8IU3OzR1r7JVc8Foa9XxCLk8yBbkjQvQO5YSlg
+         /GUS/ZNI2J0UA+4KSXAfJFnC/gOvv0mkfyXbyVAI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Patrick Rohr <prohr@google.com>,
-        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-        Lorenzo Colitti <lorenzo@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.5 020/163] net: add sysctl accept_ra_min_rtr_lft
+        patches@lists.linux.dev, Shenghao Ding <shenghao-ding@ti.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 003/162] ALSA: hda/tas2781: Add tas2781 HDA driver
 Date:   Mon,  9 Oct 2023 14:59:44 +0200
-Message-ID: <20231009130124.569973450@linuxfoundation.org>
+Message-ID: <20231009130123.043880540@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,160 +48,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrick Rohr <prohr@google.com>
+From: Shenghao Ding <shenghao-ding@ti.com>
 
-commit 1671bcfd76fdc0b9e65153cf759153083755fe4c upstream.
+[ Upstream commit 3babae915f4c15d76a5134e55806a1c1588e2865 ]
 
-This change adds a new sysctl accept_ra_min_rtr_lft to specify the
-minimum acceptable router lifetime in an RA. If the received RA router
-lifetime is less than the configured value (and not 0), the RA is
-ignored.
-This is useful for mobile devices, whose battery life can be impacted
-by networks that configure RAs with a short lifetime. On such networks,
-the device should never gain IPv6 provisioning and should attempt to
-drop RAs via hardware offload, if available.
+Integrate tas2781 configs for Lenovo Laptops. All of the tas2781s in the
+laptop will be aggregated as one audio device. The code support realtek
+as the primary codec. Rename "struct cs35l41_dev_name" to
+"struct scodec_dev_name" for all other side codecs instead of the certain
+one.
 
-Signed-off-by: Patrick Rohr <prohr@google.com>
-Cc: Maciej Żenczykowski <maze@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
+Link: https://lore.kernel.org/r/20230818085836.1442-1-shenghao-ding@ti.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 41b07476da38 ("ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/ip-sysctl.rst |    8 ++++++++
- include/linux/ipv6.h                   |    1 +
- include/uapi/linux/ipv6.h              |    1 +
- net/ipv6/addrconf.c                    |   10 ++++++++++
- net/ipv6/ndisc.c                       |   18 ++++++++++++++++--
- 5 files changed, 36 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 88 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 85 insertions(+), 3 deletions(-)
 
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -2287,6 +2287,14 @@ accept_ra_min_hop_limit - INTEGER
- 
- 	Default: 1
- 
-+accept_ra_min_rtr_lft - INTEGER
-+	Minimum acceptable router lifetime in Router Advertisement.
-+
-+	RAs with a router lifetime less than this value shall be
-+	ignored. RAs with a router lifetime of 0 are unaffected.
-+
-+	Default: 0
-+
- accept_ra_pinfo - BOOLEAN
- 	Learn Prefix Information in Router Advertisement.
- 
---- a/include/linux/ipv6.h
-+++ b/include/linux/ipv6.h
-@@ -33,6 +33,7 @@ struct ipv6_devconf {
- 	__s32		accept_ra_defrtr;
- 	__u32		ra_defrtr_metric;
- 	__s32		accept_ra_min_hop_limit;
-+	__s32		accept_ra_min_rtr_lft;
- 	__s32		accept_ra_pinfo;
- 	__s32		ignore_routes_with_linkdown;
- #ifdef CONFIG_IPV6_ROUTER_PREF
---- a/include/uapi/linux/ipv6.h
-+++ b/include/uapi/linux/ipv6.h
-@@ -198,6 +198,7 @@ enum {
- 	DEVCONF_IOAM6_ID_WIDE,
- 	DEVCONF_NDISC_EVICT_NOCARRIER,
- 	DEVCONF_ACCEPT_UNTRACKED_NA,
-+	DEVCONF_ACCEPT_RA_MIN_RTR_LFT,
- 	DEVCONF_MAX
- };
- 
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -202,6 +202,7 @@ static struct ipv6_devconf ipv6_devconf
- 	.ra_defrtr_metric	= IP6_RT_PRIO_USER,
- 	.accept_ra_from_local	= 0,
- 	.accept_ra_min_hop_limit= 1,
-+	.accept_ra_min_rtr_lft	= 0,
- 	.accept_ra_pinfo	= 1,
- #ifdef CONFIG_IPV6_ROUTER_PREF
- 	.accept_ra_rtr_pref	= 1,
-@@ -262,6 +263,7 @@ static struct ipv6_devconf ipv6_devconf_
- 	.ra_defrtr_metric	= IP6_RT_PRIO_USER,
- 	.accept_ra_from_local	= 0,
- 	.accept_ra_min_hop_limit= 1,
-+	.accept_ra_min_rtr_lft	= 0,
- 	.accept_ra_pinfo	= 1,
- #ifdef CONFIG_IPV6_ROUTER_PREF
- 	.accept_ra_rtr_pref	= 1,
-@@ -5602,6 +5604,7 @@ static inline void ipv6_store_devconf(st
- 	array[DEVCONF_IOAM6_ID_WIDE] = cnf->ioam6_id_wide;
- 	array[DEVCONF_NDISC_EVICT_NOCARRIER] = cnf->ndisc_evict_nocarrier;
- 	array[DEVCONF_ACCEPT_UNTRACKED_NA] = cnf->accept_untracked_na;
-+	array[DEVCONF_ACCEPT_RA_MIN_RTR_LFT] = cnf->accept_ra_min_rtr_lft;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 57e07aa4e136c..7d549229d0b95 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6721,7 +6721,7 @@ static void comp_generic_playback_hook(struct hda_pcm_stream *hinfo, struct hda_
+ 	}
  }
  
- static inline size_t inet6_ifla6_size(void)
-@@ -6794,6 +6797,13 @@ static const struct ctl_table addrconf_s
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
- 		.proc_handler	= proc_dointvec,
-+	},
-+	{
-+		.procname	= "accept_ra_min_rtr_lft",
-+		.data		= &ipv6_devconf.accept_ra_min_rtr_lft,
-+		.maxlen		= sizeof(int),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dointvec,
+-struct cs35l41_dev_name {
++struct scodec_dev_name {
+ 	const char *bus;
+ 	const char *hid;
+ 	int index;
+@@ -6730,7 +6730,7 @@ struct cs35l41_dev_name {
+ /* match the device name in a slightly relaxed manner */
+ static int comp_match_cs35l41_dev_name(struct device *dev, void *data)
+ {
+-	struct cs35l41_dev_name *p = data;
++	struct scodec_dev_name *p = data;
+ 	const char *d = dev_name(dev);
+ 	int n = strlen(p->bus);
+ 	char tmp[32];
+@@ -6746,12 +6746,32 @@ static int comp_match_cs35l41_dev_name(struct device *dev, void *data)
+ 	return !strcmp(d + n, tmp);
+ }
+ 
++static int comp_match_tas2781_dev_name(struct device *dev,
++	void *data)
++{
++	struct scodec_dev_name *p = data;
++	const char *d = dev_name(dev);
++	int n = strlen(p->bus);
++	char tmp[32];
++
++	/* check the bus name */
++	if (strncmp(d, p->bus, n))
++		return 0;
++	/* skip the bus number */
++	if (isdigit(d[n]))
++		n++;
++	/* the rest must be exact matching */
++	snprintf(tmp, sizeof(tmp), "-%s:00", p->hid);
++
++	return !strcmp(d + n, tmp);
++}
++
+ static void cs35l41_generic_fixup(struct hda_codec *cdc, int action, const char *bus,
+ 				  const char *hid, int count)
+ {
+ 	struct device *dev = hda_codec_dev(cdc);
+ 	struct alc_spec *spec = cdc->spec;
+-	struct cs35l41_dev_name *rec;
++	struct scodec_dev_name *rec;
+ 	int ret, i;
+ 
+ 	switch (action) {
+@@ -6776,6 +6796,41 @@ static void cs35l41_generic_fixup(struct hda_codec *cdc, int action, const char
+ 	}
+ }
+ 
++static void tas2781_generic_fixup(struct hda_codec *cdc, int action,
++	const char *bus, const char *hid)
++{
++	struct device *dev = hda_codec_dev(cdc);
++	struct alc_spec *spec = cdc->spec;
++	struct scodec_dev_name *rec;
++	int ret;
++
++	switch (action) {
++	case HDA_FIXUP_ACT_PRE_PROBE:
++		rec = devm_kmalloc(dev, sizeof(*rec), GFP_KERNEL);
++		if (!rec)
++			return;
++		rec->bus = bus;
++		rec->hid = hid;
++		rec->index = 0;
++		spec->comps[0].codec = cdc;
++		component_match_add(dev, &spec->match,
++			comp_match_tas2781_dev_name, rec);
++		ret = component_master_add_with_match(dev, &comp_master_ops,
++			spec->match);
++		if (ret)
++			codec_err(cdc,
++				"Fail to register component aggregator %d\n",
++				ret);
++		else
++			spec->gen.pcm_playback_hook =
++				comp_generic_playback_hook;
++		break;
++	case HDA_FIXUP_ACT_FREE:
++		component_master_del(dev, &comp_master_ops);
++		break;
++	}
++}
++
+ static void cs35l41_fixup_i2c_two(struct hda_codec *cdc, const struct hda_fixup *fix, int action)
+ {
+ 	cs35l41_generic_fixup(cdc, action, "i2c", "CSC3551", 2);
+@@ -6803,6 +6858,12 @@ static void alc287_fixup_legion_16ithg6_speakers(struct hda_codec *cdc, const st
+ 	cs35l41_generic_fixup(cdc, action, "i2c", "CLSA0101", 2);
+ }
+ 
++static void tas2781_fixup_i2c(struct hda_codec *cdc,
++	const struct hda_fixup *fix, int action)
++{
++	 tas2781_generic_fixup(cdc, action, "i2c", "TIAS2781");
++}
++
+ /* for alc295_fixup_hp_top_speakers */
+ #include "hp_x360_helper.c"
+ 
+@@ -7227,6 +7288,7 @@ enum {
+ 	ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS,
+ 	ALC236_FIXUP_DELL_DUAL_CODECS,
+ 	ALC287_FIXUP_CS35L41_I2C_2_THINKPAD_ACPI,
++	ALC287_FIXUP_TAS2781_I2C,
+ };
+ 
+ /* A special fixup for Lenovo C940 and Yoga Duet 7;
+@@ -9296,6 +9358,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC269_FIXUP_THINKPAD_ACPI,
  	},
- 	{
- 		.procname	= "accept_ra_pinfo",
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -1281,6 +1281,8 @@ static enum skb_drop_reason ndisc_router
- 	if (!ndisc_parse_options(skb->dev, opt, optlen, &ndopts))
- 		return SKB_DROP_REASON_IPV6_NDISC_BAD_OPTIONS;
++	[ALC287_FIXUP_TAS2781_I2C] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = tas2781_fixup_i2c,
++		.chained = true,
++		.chain_id = ALC269_FIXUP_THINKPAD_ACPI,
++	},
+ };
  
-+	lifetime = ntohs(ra_msg->icmph.icmp6_rt_lifetime);
-+
- 	if (!ipv6_accept_ra(in6_dev)) {
- 		ND_PRINTK(2, info,
- 			  "RA: %s, did not accept ra for dev: %s\n",
-@@ -1288,6 +1290,13 @@ static enum skb_drop_reason ndisc_router
- 		goto skip_linkparms;
- 	}
- 
-+	if (lifetime != 0 && lifetime < in6_dev->cnf.accept_ra_min_rtr_lft) {
-+		ND_PRINTK(2, info,
-+			  "RA: router lifetime (%ds) is too short: %s\n",
-+			  lifetime, skb->dev->name);
-+		goto skip_linkparms;
-+	}
-+
- #ifdef CONFIG_IPV6_NDISC_NODETYPE
- 	/* skip link-specific parameters from interior routers */
- 	if (skb->ndisc_nodetype == NDISC_NODETYPE_NODEFAULT) {
-@@ -1340,8 +1349,6 @@ static enum skb_drop_reason ndisc_router
- 		goto skip_defrtr;
- 	}
- 
--	lifetime = ntohs(ra_msg->icmph.icmp6_rt_lifetime);
--
- #ifdef CONFIG_IPV6_ROUTER_PREF
- 	pref = ra_msg->icmph.icmp6_router_pref;
- 	/* 10b is handled as if it were 00b (medium) */
-@@ -1493,6 +1500,13 @@ skip_linkparms:
- 		goto out;
- 	}
- 
-+	if (lifetime != 0 && lifetime < in6_dev->cnf.accept_ra_min_rtr_lft) {
-+		ND_PRINTK(2, info,
-+			  "RA: router lifetime (%ds) is too short: %s\n",
-+			  lifetime, skb->dev->name);
-+		goto out;
-+	}
-+
- #ifdef CONFIG_IPV6_ROUTE_INFO
- 	if (!in6_dev->cnf.accept_ra_from_local &&
- 	    ipv6_chk_addr(dev_net(in6_dev->dev), &ipv6_hdr(skb)->saddr,
+ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+@@ -9867,6 +9935,20 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6", ALC287_FIXUP_LEGION_16ITHG6),
+ 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
++	SND_PCI_QUIRK(0x17aa, 0x387d, "Yoga S780-16 pro Quad AAC", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x387e, "Yoga S780-16 pro Quad YC", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual powe mode2 YC", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x3884, "Y780 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x3886, "Y780 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x38a7, "Y780P AMD YG dual", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x38a8, "Y780P AMD VECO dual", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x38ba, "Yoga S780-14.5 Air AMD quad YC", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x38bb, "Yoga S780-14.5 Air AMD quad AAC", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x38be, "Yoga S980-14.5 proX YC Dual", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x38bf, "Yoga S980-14.5 proX LX Dual", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x38c3, "Y980 DUAL", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x38cb, "Y790 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
++	SND_PCI_QUIRK(0x17aa, 0x38cd, "Y790 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x17aa, 0x3977, "IdeaPad S210", ALC283_FIXUP_INT_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3978, "Lenovo B50-70", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+-- 
+2.40.1
+
 
 
