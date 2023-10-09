@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 015D07BE0F3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB0AA7BDFCF
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377563AbjJINpw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:45:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50546 "EHLO
+        id S1377091AbjJINeS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:34:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377593AbjJINph (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:45:37 -0400
+        with ESMTP id S1377146AbjJINeR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:34:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D17A31B4
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:45:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EF9C433C8;
-        Mon,  9 Oct 2023 13:45:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E985B9C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:34:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36002C433CA;
+        Mon,  9 Oct 2023 13:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859124;
-        bh=6o+U/MSsRNgDL7X0ZSpOHQgpAAHTwEZPEMoXzeIrV/E=;
+        s=korg; t=1696858455;
+        bh=wVs9kkjnTTvQrDrjmZk2Ol8gsgTnSfUtlyZwICv5hE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u5n4g635BejzCPz4fj8VHpZwj21n9gkkNa8U7sDgOg8okBLjycf86d9ThNCGbe7vE
-         ozKnghps97HW4/CCjqn2eMXmEF7StLgfrb/sPkFGzYZtuSpszhL3tUr/msuApBPlbw
-         6RX0BLoQEP0h5PqcDTnZkuaIb+xUFHXiOeROamGY=
+        b=maZMXcjlhUnR2pfYZrAHFwNBd7XQYv7cCAaHhxURqN2cbE/m6ihQdz8GB7CBzaaC7
+         PsRs/gaWsq20Bw52gmOHpBxxMR5febgWM7mM3JnqlfO4HsIv8pmzjWEti2AiV9cYdv
+         ptJx7M2ul5rVGVvx9u20qSNaMZ7xT5JHPD3vE6nM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 206/226] net: stmmac: dwmac-stm32: fix resume on STM32 MCU
+        patches@lists.linux.dev, Bernard Metzler <bmt@zurich.ibm.com>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 5.4 127/131] RDMA/siw: Fix connection failure handling
 Date:   Mon,  9 Oct 2023 15:02:47 +0200
-Message-ID: <20231009130131.949612482@linuxfoundation.org>
+Message-ID: <20231009130120.307007624@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +48,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Bernard Metzler <bmt@zurich.ibm.com>
 
-[ Upstream commit 6f195d6b0da3b689922ba9e302af2f49592fa9fc ]
+commit 53a3f777049771496f791504e7dc8ef017cba590 upstream.
 
-The STM32MP1 keeps clk_rx enabled during suspend, and therefore the
-driver does not enable the clock in stm32_dwmac_init() if the device was
-suspended. The problem is that this same code runs on STM32 MCUs, which
-do disable clk_rx during suspend, causing the clock to never be
-re-enabled on resume.
+In case immediate MPA request processing fails, the newly
+created endpoint unlinks the listening endpoint and is
+ready to be dropped. This special case was not handled
+correctly by the code handling the later TCP socket close,
+causing a NULL dereference crash in siw_cm_work_handler()
+when dereferencing a NULL listener. We now also cancel
+the useless MPA timeout, if immediate MPA request
+processing fails.
 
-This patch adds a variant flag to indicate that clk_rx remains enabled
-during suspend, and uses this to decide whether to enable the clock in
-stm32_dwmac_init() if the device was suspended.
+This patch furthermore simplifies MPA processing in general:
+Scheduling a useless TCP socket read in sk_data_ready() upcall
+is now surpressed, if the socket is already moved out of
+TCP_ESTABLISHED state.
 
-This approach fixes this specific bug with limited opportunity for
-unintended side-effects, but I have a follow up patch that will refactor
-the clock configuration and hopefully make it less error prone.
-
-Fixes: 6528e02cc9ff ("net: ethernet: stmmac: add adaptation for stm32mp157c.")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20230927175749.1419774-1-ben.wolsieffer@hefring.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6c52fdc244b5 ("rdma/siw: connection management")
+Signed-off-by: Bernard Metzler <bmt@zurich.ibm.com>
+Link: https://lore.kernel.org/r/20230905145822.446263-1-bmt@zurich.ibm.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/siw/siw_cm.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-index 5d4df4c5254ed..6623f5a079275 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-@@ -105,6 +105,7 @@ struct stm32_ops {
- 	int (*parse_data)(struct stm32_dwmac *dwmac,
- 			  struct device *dev);
- 	u32 syscfg_eth_mask;
-+	bool clk_rx_enable_in_suspend;
- };
+--- a/drivers/infiniband/sw/siw/siw_cm.c
++++ b/drivers/infiniband/sw/siw/siw_cm.c
+@@ -981,6 +981,7 @@ static void siw_accept_newconn(struct si
+ 			siw_cep_put(cep);
+ 			new_cep->listen_cep = NULL;
+ 			if (rv) {
++				siw_cancel_mpatimer(new_cep);
+ 				siw_cep_set_free(new_cep);
+ 				goto error;
+ 			}
+@@ -1105,9 +1106,12 @@ static void siw_cm_work_handler(struct w
+ 				/*
+ 				 * Socket close before MPA request received.
+ 				 */
+-				siw_dbg_cep(cep, "no mpareq: drop listener\n");
+-				siw_cep_put(cep->listen_cep);
+-				cep->listen_cep = NULL;
++				if (cep->listen_cep) {
++					siw_dbg_cep(cep,
++						"no mpareq: drop listener\n");
++					siw_cep_put(cep->listen_cep);
++					cep->listen_cep = NULL;
++				}
+ 			}
+ 		}
+ 		release_cep = 1;
+@@ -1230,7 +1234,11 @@ static void siw_cm_llp_data_ready(struct
+ 	if (!cep)
+ 		goto out;
  
- static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
-@@ -122,7 +123,8 @@ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
- 	if (ret)
- 		return ret;
+-	siw_dbg_cep(cep, "state: %d\n", cep->state);
++	siw_dbg_cep(cep, "cep state: %d, socket state %d\n",
++		    cep->state, sk->sk_state);
++
++	if (sk->sk_state != TCP_ESTABLISHED)
++		goto out;
  
--	if (!dwmac->dev->power.is_suspended) {
-+	if (!dwmac->ops->clk_rx_enable_in_suspend ||
-+	    !dwmac->dev->power.is_suspended) {
- 		ret = clk_prepare_enable(dwmac->clk_rx);
- 		if (ret) {
- 			clk_disable_unprepare(dwmac->clk_tx);
-@@ -515,7 +517,8 @@ static struct stm32_ops stm32mp1_dwmac_data = {
- 	.suspend = stm32mp1_suspend,
- 	.resume = stm32mp1_resume,
- 	.parse_data = stm32mp1_parse_data,
--	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK
-+	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK,
-+	.clk_rx_enable_in_suspend = true
- };
- 
- static const struct of_device_id stm32_dwmac_match[] = {
--- 
-2.40.1
-
+ 	switch (cep->state) {
+ 	case SIW_EPSTATE_RDMA_MODE:
 
 
