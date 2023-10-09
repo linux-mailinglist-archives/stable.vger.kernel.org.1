@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE5FA7BDECE
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E5B57BDF21
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376435AbjJINXV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:23:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47914 "EHLO
+        id S1376757AbjJIN0i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:26:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376439AbjJINXU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:20 -0400
+        with ESMTP id S1376479AbjJIN0h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0EB29D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A82C433C7;
-        Mon,  9 Oct 2023 13:23:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37493100
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672F9C433C7;
+        Mon,  9 Oct 2023 13:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857798;
-        bh=KwZMJzdIOz+sopvzsBCRA62zDuyxYxXbUvt8Z/4Mkkk=;
+        s=korg; t=1696857994;
+        bh=nJQc2Pn7MIuB7R067MA4zwqMnUlEs3eQDPmFgp8DtOY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rhhbago1rYQG1DYc0ZwbFzNv7x8eY9IOWkenv3DpgIaZa+blDThMHhVuVJXzM8nn5
-         ngfHSVioDOJCyl8O35qABUduVX/Q4O0guJAfwj9TpvIwsl+wplxEyUW2YI6zJvLT3R
-         hXdRNO3J5Hva7YG/20RrYtf4H5S+YV+D4V2ZWlII=
+        b=eohbwcXAzXAe4Prw8KvltfPObrKAr/mkkrQt7/zaamjdgViWvuNoNSmaYk2Tzeo2Q
+         mS88hZsmWyMh96TPNpWnO6ZwX2k3/nmKu/ZSVWGClL1/rUM7dZssfJnBaVD7BVcACI
+         x2TQ5Urgw2QnkWnoNZWXdfj5mcData7V6AzOvsok=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        syzbot <syzkaller@googlegroups.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/162] netlink: annotate data-races around sk->sk_err
+Subject: [PATCH 5.15 32/75] wifi: iwlwifi: mvm: Fix a memory corruption issue
 Date:   Mon,  9 Oct 2023 15:01:54 +0200
-Message-ID: <20231009130126.585707577@linuxfoundation.org>
+Message-ID: <20231009130112.359963070@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,102 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit d0f95894fda7d4f895b29c1097f92d7fee278cb2 ]
+[ Upstream commit 8ba438ef3cacc4808a63ed0ce24d4f0942cfe55d ]
 
-syzbot caught another data-race in netlink when
-setting sk->sk_err.
+A few lines above, space is kzalloc()'ed for:
+	sizeof(struct iwl_nvm_data) +
+	sizeof(struct ieee80211_channel) +
+	sizeof(struct ieee80211_rate)
 
-Annotate all of them for good measure.
+'mvm->nvm_data' is a 'struct iwl_nvm_data', so it is fine.
 
-BUG: KCSAN: data-race in netlink_recvmsg / netlink_recvmsg
+At the end of this structure, there is the 'channels' flex array.
+Each element is of type 'struct ieee80211_channel'.
+So only 1 element is allocated in this array.
 
-write to 0xffff8881613bb220 of 4 bytes by task 28147 on cpu 0:
-netlink_recvmsg+0x448/0x780 net/netlink/af_netlink.c:1994
-sock_recvmsg_nosec net/socket.c:1027 [inline]
-sock_recvmsg net/socket.c:1049 [inline]
-__sys_recvfrom+0x1f4/0x2e0 net/socket.c:2229
-__do_sys_recvfrom net/socket.c:2247 [inline]
-__se_sys_recvfrom net/socket.c:2243 [inline]
-__x64_sys_recvfrom+0x78/0x90 net/socket.c:2243
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+When doing:
+  mvm->nvm_data->bands[0].channels = mvm->nvm_data->channels;
+We point at the first element of the 'channels' flex array.
+So this is fine.
 
-write to 0xffff8881613bb220 of 4 bytes by task 28146 on cpu 1:
-netlink_recvmsg+0x448/0x780 net/netlink/af_netlink.c:1994
-sock_recvmsg_nosec net/socket.c:1027 [inline]
-sock_recvmsg net/socket.c:1049 [inline]
-__sys_recvfrom+0x1f4/0x2e0 net/socket.c:2229
-__do_sys_recvfrom net/socket.c:2247 [inline]
-__se_sys_recvfrom net/socket.c:2243 [inline]
-__x64_sys_recvfrom+0x78/0x90 net/socket.c:2243
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+However, when doing:
+  mvm->nvm_data->bands[0].bitrates =
+			(void *)((u8 *)mvm->nvm_data->channels + 1);
+because of the "(u8 *)" cast, we add only 1 to the address of the beginning
+of the flex array.
 
-value changed: 0x00000000 -> 0x00000016
+It is likely that we want point at the 'struct ieee80211_rate' allocated
+just after.
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 28146 Comm: syz-executor.0 Not tainted 6.6.0-rc3-syzkaller-00055-g9ed22ae6be81 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
+Remove the spurious casting so that the pointer arithmetic works as
+expected.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231003183455.3410550-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8ca151b568b6 ("iwlwifi: add the MVM driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/23f0ec986ef1529055f4f93dcb3940a6cf8d9a94.1690143750.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 845ac56a3ac2e..a572a30dfd98d 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -352,7 +352,7 @@ static void netlink_overrun(struct sock *sk)
- 	if (!nlk_test_bit(RECV_NO_ENOBUFS, sk)) {
- 		if (!test_and_set_bit(NETLINK_S_CONGESTED,
- 				      &nlk_sk(sk)->state)) {
--			sk->sk_err = ENOBUFS;
-+			WRITE_ONCE(sk->sk_err, ENOBUFS);
- 			sk_error_report(sk);
- 		}
- 	}
-@@ -1566,7 +1566,7 @@ static int do_one_set_err(struct sock *sk, struct netlink_set_err_data *p)
- 		goto out;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index f347723092eee..d22a5628f9e0d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -686,7 +686,7 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm)
+ 		mvm->nvm_data->bands[0].n_channels = 1;
+ 		mvm->nvm_data->bands[0].n_bitrates = 1;
+ 		mvm->nvm_data->bands[0].bitrates =
+-			(void *)((u8 *)mvm->nvm_data->channels + 1);
++			(void *)(mvm->nvm_data->channels + 1);
+ 		mvm->nvm_data->bands[0].bitrates->hw_value = 10;
  	}
  
--	sk->sk_err = p->code;
-+	WRITE_ONCE(sk->sk_err, p->code);
- 	sk_error_report(sk);
- out:
- 	return ret;
-@@ -1955,7 +1955,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
- 		ret = netlink_dump(sk);
- 		if (ret) {
--			sk->sk_err = -ret;
-+			WRITE_ONCE(sk->sk_err, -ret);
- 			sk_error_report(sk);
- 		}
- 	}
-@@ -2474,7 +2474,7 @@ void netlink_ack(struct sk_buff *in_skb, struct nlmsghdr *nlh, int err,
- err_bad_put:
- 	nlmsg_free(skb);
- err_skb:
--	NETLINK_CB(in_skb).sk->sk_err = ENOBUFS;
-+	WRITE_ONCE(NETLINK_CB(in_skb).sk->sk_err, ENOBUFS);
- 	sk_error_report(NETLINK_CB(in_skb).sk);
- }
- EXPORT_SYMBOL(netlink_ack);
 -- 
 2.40.1
 
