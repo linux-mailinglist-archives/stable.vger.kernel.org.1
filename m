@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECD857BE145
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:48:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09B617BE1D5
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377471AbjJINsr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:48:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53426 "EHLO
+        id S1377567AbjJINyb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:54:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377490AbjJINso (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:48:44 -0400
+        with ESMTP id S1377558AbjJINya (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:54:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F3FAB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:48:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F83DC433B9;
-        Mon,  9 Oct 2023 13:48:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9126091
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:54:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C9BC433C8;
+        Mon,  9 Oct 2023 13:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859321;
-        bh=p0AqrE7ew5Z1ZCus4se5+9HK9BQ4y5pTPSRXM1kjjEs=;
+        s=korg; t=1696859668;
+        bh=odELUQSFguGwj1wthO8M8nKEH5KgfAhtChkVlRdHQJA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CE1q+gDKZNUl+dPM2L/QFfLkKe2ms3xyJaPfcrRkkNBrvQUKzg6zjkYh5bCn2nQYo
-         KmNAyhXUnIpRpFrm7Fy5V+NJuNQ0uHJ6+ork8Tk5mHmhYpetg516xU3KuaSUn2B8dp
-         K/xjQlE6p6ZJ2B4kqMUYuNLGFgav66JuP55z9Crc=
+        b=oKkKELLM4aGmHyzPzV4wSNxikELDdzAWdVP4iZv1shtr851NRbr3/o7nv/DOaNaPx
+         pMMeYuylMmuIZ9M1wQIcyKHm5CIladIeRusEe4JIUOMuo1oyWAqf35rk3i6pzWUW8Q
+         jI0gV8GWILRdiLpILvzejmCFijR0KHE8GkVWEQOc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pin-yen Lin <treapking@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Matthew Wang <matthewmwang@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 40/55] wifi: mwifiex: Fix oob check condition in mwifiex_process_rx_packet
-Date:   Mon,  9 Oct 2023 15:06:39 +0200
-Message-ID: <20231009130109.229758529@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 4.19 68/91] wifi: mwifiex: Fix tlv_buf_left calculation
+Date:   Mon,  9 Oct 2023 15:06:40 +0200
+Message-ID: <20231009130113.864836155@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,65 +50,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit aef7a0300047e7b4707ea0411dc9597cba108fc8 ]
+commit eec679e4ac5f47507774956fb3479c206e761af7 upstream.
 
-Only skip the code path trying to access the rfc1042 headers when the
-buffer is too small, so the driver can still process packets without
-rfc1042 headers.
+In a TLV encoding scheme, the Length part represents the length after
+the header containing the values for type and length. In this case,
+`tlv_len` should be:
 
-Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when rx packets")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
+tlv_len == (sizeof(*tlv_rxba) - 1) - sizeof(tlv_rxba->header) + tlv_bitmap_len
+
+Notice that the `- 1` accounts for the one-element array `bitmap`, which
+1-byte size is already included in `sizeof(*tlv_rxba)`.
+
+So, if the above is correct, there is a double-counting of some members
+in `struct mwifiex_ie_types_rxba_sync`, when `tlv_buf_left` and `tmp`
+are calculated:
+
+968                 tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+969                 tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
+
+in specific, members:
+
+drivers/net/wireless/marvell/mwifiex/fw.h:777
+ 777         u8 mac[ETH_ALEN];
+ 778         u8 tid;
+ 779         u8 reserved;
+ 780         __le16 seq_num;
+ 781         __le16 bitmap_len;
+
+This is clearly wrong, and affects the subsequent decoding of data in
+`event_buf` through `tlv_rxba`:
+
+970                 tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
+
+Fix this by using `sizeof(tlv_rxba->header)` instead of `sizeof(*tlv_rxba)`
+in the calculation of `tlv_buf_left` and `tmp`.
+
+This results in the following binary differences before/after changes:
+
+| drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
+| @@ -4698,11 +4698,11 @@
+|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:968
+|                 tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
+| -    1da7:      lea    -0x11(%rbx),%edx
+| +    1da7:      lea    -0x4(%rbx),%edx
+|      1daa:      movzwl %bp,%eax
+|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:969
+|                 tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
+| -    1dad:      lea    0x11(%r15,%rbp,1),%r15
+| +    1dad:      lea    0x4(%r15,%rbp,1),%r15
+
+The above reflects the desired change: avoid counting 13 too many bytes;
+which is the total size of the double-counted members in
+`struct mwifiex_ie_types_rxba_sync`:
+
+$ pahole -C mwifiex_ie_types_rxba_sync drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
+struct mwifiex_ie_types_rxba_sync {
+	struct mwifiex_ie_types_header header;           /*     0     4 */
+
+     |-----------------------------------------------------------------------
+     |  u8                         mac[6];               /*     4     6 */  |
+     |	u8                         tid;                  /*    10     1 */  |
+     |  u8                         reserved;             /*    11     1 */  |
+     | 	__le16                     seq_num;              /*    12     2 */  |
+     | 	__le16                     bitmap_len;           /*    14     2 */  |
+     |  u8                         bitmap[1];            /*    16     1 */  |
+     |----------------------------------------------------------------------|
+								  | 13 bytes|
+								  -----------
+
+	/* size: 17, cachelines: 1, members: 7 */
+	/* last cacheline: 17 bytes */
+} __attribute__((__packed__));
+
+Fixes: 99ffe72cdae4 ("mwifiex: process rxba_sync event")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230908104308.1546501-1-treapking@chromium.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/06668edd68e7a26bbfeebd1201ae077a2a7a8bce.1692931954.git.gustavoars@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sta_rx.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index f3c6daeba1b85..346e91b9f2ad7 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -98,7 +98,8 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -986,8 +986,8 @@ void mwifiex_11n_rxba_sync_event(struct
+ 			}
+ 		}
  
--	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
-+	if (sizeof(rx_pkt_hdr->eth803_hdr) + sizeof(rfc1042_header) +
-+	    rx_pkt_off > skb->len) {
- 		mwifiex_dbg(priv->adapter, ERROR,
- 			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
- 			    skb->len, rx_pkt_off);
-@@ -107,12 +108,13 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 		return -1;
+-		tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+-		tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
++		tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
++		tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
+ 		tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
  	}
- 
--	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
--		     sizeof(bridge_tunnel_header))) ||
--	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
--		     sizeof(rfc1042_header)) &&
--	     ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_AARP &&
--	     ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_IPX)) {
-+	if (sizeof(*rx_pkt_hdr) + rx_pkt_off <= skb->len &&
-+	    ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-+		      sizeof(bridge_tunnel_header))) ||
-+	     (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-+		      sizeof(rfc1042_header)) &&
-+	      ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_AARP &&
-+	      ntohs(rx_pkt_hdr->rfc1042_hdr.snap_type) != ETH_P_IPX))) {
- 		/*
- 		 *  Replace the 803 header and rfc1042 header (llc/snap) with an
- 		 *    EthernetII header, keep the src/dst and snap_type
--- 
-2.40.1
-
+ }
 
 
