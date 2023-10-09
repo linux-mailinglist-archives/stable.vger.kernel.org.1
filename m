@@ -2,128 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A32FC7BE636
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 18:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BB157BE6C1
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 18:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346633AbjJIQUm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 12:20:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39640 "EHLO
+        id S1376990AbjJIQoA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 12:44:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346619AbjJIQUl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 12:20:41 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BBE6A6;
-        Mon,  9 Oct 2023 09:20:37 -0700 (PDT)
-Received: from localhost.localdomain (unknown [116.71.10.238])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: usama.anjum)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 028206607038;
-        Mon,  9 Oct 2023 17:20:32 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1696868436;
-        bh=KAhhKO4g/GCRCekMIhf+cXHcdkyda+W3DvR4reXU71Q=;
-        h=From:To:Cc:Subject:Date:From;
-        b=a0xU1lr7jX1hDVGJIPpbK+z/xLeaBa5BctJgH0/H9L9DDq3NqBjL2VPpkeUu1QTdj
-         JXUOdxSX4SsLLYZaO1ggNwlUOGkVIrHjLk924CjzPhqhEyXM0JE/cvlWFi/FDqbPOR
-         3OePQjYqNv1wOTrw/tJ3rjFqKqQXR6y6qL+KJqvzL/Z1AeuKOsZyBvtNoHgcJf8G0i
-         n7Wsb/tpkvCxaaFaSWQdyBO7EAB+Xccws80sKknJyI4ZX4x/Zaf5BK8oa3nZvLT0yd
-         HMUeepbvH9gOi9/BCrdOmO/bFAaF/h6Uq154ezlE7XfnL34HoEWVjOk6SBb50VjpyT
-         U36WuxfVjevWg==
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, Ingo Molnar <mingo@elte.hu>
-Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        kernel@collabora.com, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Subject: [PATCH v4] tty/sysrq: replace smp_processor_id() with get_cpu()
-Date:   Mon,  9 Oct 2023 21:20:20 +0500
-Message-Id: <20231009162021.3607632-1-usama.anjum@collabora.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S1377815AbjJIQn6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 12:43:58 -0400
+Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DACDA6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 09:43:56 -0700 (PDT)
+Received: by mail-vk1-xa35.google.com with SMTP id 71dfb90a1353d-49e035bdca7so1125283e0c.2
+        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 09:43:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696869835; x=1697474635; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h74o2AZcTC7GyQaZvo8+es5i4OkJLBnswUlj7gMbv2U=;
+        b=hgyFnpAWsJpN7F0W7spdSAao0D1Fh8p55b2VjSkcyyxpOPa1YXwJJXhof/z/XpVf9+
+         RZFwlUGH2mrkYhA6AuIyT5xN8j4jiE3mfTab9D+6MueuLE9dLeKJFLyIlEIcUgiJdVi3
+         EGS1hJYliShtFphZYvgt3a4q1si8CcevvwqWPybfJa78Zq2Z8XwLhAG+/r8M5nAHnm9y
+         vVhS6YlhLA+EBi3jAQeDQrZy5SJqTu4liDvaiRVEsx99vWaEmv8rkeyWPHPYQc8HyvH+
+         ANd8IOqy4q5wfOgOq0GqmxLjaq5Z7HWgE6zr+I3I9KDDkmF6FiIJeSDSVhbuB1sjLxjP
+         rbiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696869835; x=1697474635;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h74o2AZcTC7GyQaZvo8+es5i4OkJLBnswUlj7gMbv2U=;
+        b=VKcNajDa75ixPzIt302Yve1ex5fJdMxw4DiCT3/PVIjGVAu+BeHQEJyQAwdX8XKDpl
+         TlzojVH0e5v0RttX9J8+LFxYOItvP3t/ODJPZ3a1XdmNM6FwofMcjyDQT//1ZdoXLZ8v
+         7Nsja4+7eoeW/1pMdIYoEH7m5KlVLj02oTNIZlL3dde19gfzkXKKokl10Z+3pQzAUcpf
+         EcdIvORJGXDGQ47ZqGXB0gMxTW+M3mQnAGYdRvRTD8AWdC3SYgNCfV8RZ/ZPJTASyQwd
+         WLbGBIgBdYe2RvxkAIFhMw5SJ0xijltMe30NcpZ+5fFP7lGc3YJd7ZY07bHojaHBC/y1
+         pR+w==
+X-Gm-Message-State: AOJu0YzsDcLBvPAnB4bc5zU+5qdMaP5Az48lnIWctFVS8ixlprsmY/qv
+        4duAqHlENj9nvCKLOfc9/6SI52jhnVKicMTwhkiL0w==
+X-Google-Smtp-Source: AGHT+IEkXqZBLHppN9aD1rPab7CXnRnbSPIio7BIWqrTQXvtR6190yK7ITH0FWBWUzGCmJoQh0UXep8/jjC65cWusQM=
+X-Received: by 2002:a1f:d686:0:b0:49d:a52a:441f with SMTP id
+ n128-20020a1fd686000000b0049da52a441fmr12470392vkg.7.1696869835132; Mon, 09
+ Oct 2023 09:43:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20231004175217.404851126@linuxfoundation.org> <CA+G9fYsqbZhSQnEi-qSc7n+4d7nPap8HWcdbZGWLfo3mTH-L7A@mail.gmail.com>
+ <CAEUSe78O-Ho=22nTeioT4eqPRoDNfcWCpc=5O=B59eaMvOkzpg@mail.gmail.com> <2023100755-livestock-barcode-fe41@gregkh>
+In-Reply-To: <2023100755-livestock-barcode-fe41@gregkh>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Mon, 9 Oct 2023 22:13:42 +0530
+Message-ID: <CA+G9fYvzV03=-LTmburzzwRpw0xuxoAXBKo0n1muYwOOiVG_bw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/259] 6.1.56-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>,
+        linux-nfs@vger.kernel.org, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        Olga Kornievskaia <kolga@netapp.com>,
+        Benjamin Coddington <bcodding@redhat.com>,
+        Anna Schumaker <Anna.Schumaker@netapp.com>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        LTP List <ltp@lists.linux.it>, Petr Vorel <pvorel@suse.cz>,
+        Richard Palethorpe <rpalethorpe@suse.com>,
+        Eryu Guan <eguan@redhat.com>, chrubis <chrubis@suse.cz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The smp_processor_id() shouldn't be called from preemptible code.
-Instead use get_cpu() and put_cpu() which disables preemption in
-addition to getting the processor id. Enable preemption back after
-calling schedule_work() to make sure that the work gets scheduled on all
-cores other than the current core. We want to avoid a scenario where
-current core's stack trace is printed multiple times and one core's
-stack trace isn't printed because of scheduling of current task.
+On Sat, 7 Oct 2023 at 14:28, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Fri, Oct 06, 2023 at 12:42:04PM -0600, Daniel D=C3=ADaz wrote:
+> > Hello!
+> >
+> > On Thu, 5 Oct 2023 at 10:40, Naresh Kamboju <naresh.kamboju@linaro.org>=
+ wrote:
+> > > On Wed, 4 Oct 2023 at 23:41, Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > This is the start of the stable review cycle for the 6.1.56 release=
+.
+> > > > There are 259 patches in this series, all will be posted as a respo=
+nse
+> > > > to this one.  If anyone has any issues with these being applied, pl=
+ease
+> > > > let me know.
+> > > >
+> > > > Responses should be made by Fri, 06 Oct 2023 17:51:12 +0000.
+> > > > Anything received after that time might be too late.
+> > > >
+> > > > The whole patch series can be found in one patch at:
+> > > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/=
+patch-6.1.56-rc1.gz
+> > > > or in the git tree and branch at:
+> > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-=
+stable-rc.git linux-6.1.y
+> > > > and the diffstat can be found below.
+> > > >
+> > > > thanks,
+> > > >
+> > > > greg k-h
+> > >
+> > > Results from Linaro=E2=80=99s test farm.
+> > > Regressions on arm64 bcm2711-rpi-4-b device running LTP dio tests on
+> > > NFS mounted rootfs.
+> > > and LTP hugetlb hugemmap11 test case failed on x86 and arm64 bcm2711-=
+rpi-4-b.
+> > >
+> > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> > >
+> > > LTP hugetlb tests failed log
+> > >   tst_hugepage.c:83: TINFO: 1 hugepage(s) reserved
+> > >   tst_test.c:1558: TINFO: Timeout per run is 0h 05m 00s
+> > >   hugemmap11.c:47: TFAIL: Memory mismatch after Direct-IO write
+> > >
+> > > LTP dio tests failed log
+> > >   compare_file: char mismatch: infile offset 4096: 0x01 .   outfile
+> > > offset 4096: 0x00 .
+> > >   diotest01    1  TFAIL  :  diotest1.c:158: file compare failed for
+> > > infile and outfile
+> >
+> > Bisection led to "NFS: Fix O_DIRECT locking issues" (upstream commit
+> > 7c6339322ce0c6128acbe36aacc1eeb986dd7bf1). Reverting that patch and
+> > "NFS: Fix error handling for O_DIRECT write scheduling" (upstream
+> > commit 954998b60caa8f2a3bf3abe490de6f08d283687a) (not a clean revert
+> > this one) made ltp-dio pass again.
+>
+> So this is also an issue in Linus's tree?  Or is it only on the 6.1.y
 
-This fixes the following bug:
+ It is only on the 6.1.y branch.
 
-[  119.143590] sysrq: Show backtrace of all active CPUs
-[  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
-[  119.144586] caller is debug_smp_processor_id+0x20/0x30
-[  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
-[  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
-[  119.145053] Call trace:
-[  119.145093]  dump_backtrace+0x0/0x1a0
-[  119.145122]  show_stack+0x18/0x70
-[  119.145141]  dump_stack+0xc4/0x11c
-[  119.145159]  check_preemption_disabled+0x100/0x110
-[  119.145175]  debug_smp_processor_id+0x20/0x30
-[  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
-[  119.145211]  __handle_sysrq+0x8c/0x1a0
-[  119.145227]  write_sysrq_trigger+0x94/0x12c
-[  119.145247]  proc_reg_write+0xa8/0xe4
-[  119.145266]  vfs_write+0xec/0x280
-[  119.145282]  ksys_write+0x6c/0x100
-[  119.145298]  __arm64_sys_write+0x20/0x30
-[  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
-[  119.145332]  do_el0_svc+0x24/0x8c
-[  119.145348]  el0_svc+0x10/0x20
-[  119.145364]  el0_sync_handler+0x134/0x140
-[  119.145381]  el0_sync+0x180/0x1c0
-
-Cc: jirislaby@kernel.org
-Cc: stable@vger.kernel.org
-Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
-Changes since v3:
-- Update commit message to explain why preemption reenabling must happen
-  after calling schedule_work()
-
-Changes since v2:
-- Add changelog and resend
-
-Changes since v1:
-- Add "Cc: stable@vger.kernel.org" tag
----
- drivers/tty/sysrq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
-index 23198e3f1461a..6b4a28bcf2f5f 100644
---- a/drivers/tty/sysrq.c
-+++ b/drivers/tty/sysrq.c
-@@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8 key)
- 		if (in_hardirq())
- 			regs = get_irq_regs();
- 
--		pr_info("CPU%d:\n", smp_processor_id());
-+		pr_info("CPU%d:\n", get_cpu());
- 		if (regs)
- 			show_regs(regs);
- 		else
- 			show_stack(NULL, NULL, KERN_INFO);
- 
- 		schedule_work(&sysrq_showallcpus);
-+		put_cpu();
- 	}
- }
- 
--- 
-2.40.1
-
+- Naresh
