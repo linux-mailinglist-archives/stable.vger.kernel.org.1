@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 239287BE00B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44AD37BDE25
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377214AbjJINg6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:36:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52472 "EHLO
+        id S1376983AbjJINQ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:16:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377225AbjJINg5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:57 -0400
+        with ESMTP id S1376743AbjJINQY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:16:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B055999
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4B4C433CB;
-        Mon,  9 Oct 2023 13:36:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8068AF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:16:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16CADC433CC;
+        Mon,  9 Oct 2023 13:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858614;
-        bh=SvJOSD1cZJ+7iezcHIx5SOYH3dlicc+ls9nTZQ58dxQ=;
+        s=korg; t=1696857375;
+        bh=E1EE3gLV+GgDFYLBQJmzKj7Sqqiq8nulcGZD42YNvno=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SVyNbbTTYmY6Cue5eDm+ITg2bjSC6RaUoS6FZl1yCGq7N0/jxH8pBAuoIO788HvWu
-         V7bY++pGZgpV1WH7ZuBgWFJyFJe22Sm8Uad6ZFBiEXF4IG9Bp65oOS+VWkGeroFHtn
-         CdLDEou9JQ5egLVVud2FRrm1Anq6ogXgjD+YmRiY=
+        b=JluD7le7GgenPexyvrYqT8YWc/gd1slmYXhVZuT5mTGKpz4Aebc7uaeM0Dh0vxZQA
+         dqGZ1XwORSwHXaLhg6PlRSj+G9DOojeY1zsttudxupQyZjp2oiPU78T3OO7DLtEN/q
+         3rKUDgccU4z9RrHAkpr0K13qxo1LebwhzuObqrUg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Prashant Malani <pmalani@chromium.org>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+        David Hildenbrand <david@redhat.com>,
+        Jane Chu <jane.chu@oracle.com>,
+        "Yin, Fengwei" <fengwei.yin@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 045/226] platform/x86: intel_scu_ipc: Dont override scu in intel_scu_ipc_dev_simple_command()
-Date:   Mon,  9 Oct 2023 15:00:06 +0200
-Message-ID: <20231009130127.974004987@linuxfoundation.org>
+Subject: [PATCH 6.1 026/162] mm/mempolicy: convert queue_pages_pte_range() to queue_folios_pte_range()
+Date:   Mon,  9 Oct 2023 15:00:07 +0200
+Message-ID: <20231009130123.666544471@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -55,50 +53,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
-[ Upstream commit efce78584e583226e9a1f6cb2fb555d6ff47c3e7 ]
+[ Upstream commit 3dae02bbd07f40e37bbfec2d77119628db461eaa ]
 
-Andy discovered this bug during patch review. The 'scu' argument to this
-function shouldn't be overridden by the function itself. It doesn't make
-any sense. Looking at the commit history, we see that commit
-f57fa18583f5 ("platform/x86: intel_scu_ipc: Introduce new SCU IPC API")
-removed the setting of the scu to ipcdev in other functions, but not
-this one. That was an oversight. Remove this line so that we stop
-overriding the scu instance that is used by this function.
+This function now operates on folios associated with ptes instead of
+pages.
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/r/ZPjdZ3xNmBEBvNiS@smile.fi.intel.com
-Cc: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Fixes: f57fa18583f5 ("platform/x86: intel_scu_ipc: Introduce new SCU IPC API")
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20230913212723.3055315-4-swboyd@chromium.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+This change is in preparation for the conversion of queue_pages_required()
+to queue_folio_required() and migrate_page_add() to migrate_folio_add().
+
+Link: https://lkml.kernel.org/r/20230130201833.27042-4-vishal.moola@gmail.com
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: "Yin, Fengwei" <fengwei.yin@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 24526268f4e3 ("mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and MPOL_MF_MOVE are specified")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel_scu_ipc.c | 1 -
- 1 file changed, 1 deletion(-)
+ mm/mempolicy.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/platform/x86/intel_scu_ipc.c b/drivers/platform/x86/intel_scu_ipc.c
-index 4c053c715cde0..60e7f95bc5554 100644
---- a/drivers/platform/x86/intel_scu_ipc.c
-+++ b/drivers/platform/x86/intel_scu_ipc.c
-@@ -444,7 +444,6 @@ int intel_scu_ipc_dev_simple_command(struct intel_scu_ipc_dev *scu, int cmd,
- 		mutex_unlock(&ipclock);
- 		return -ENODEV;
- 	}
--	scu = ipcdev;
- 	cmdval = sub << 12 | cmd;
- 	ipc_command(scu, cmdval);
- 	err = intel_scu_ipc_check_status(scu);
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 3a291026e1896..2ae6c8f18aba1 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -491,19 +491,19 @@ static int queue_folios_pmd(pmd_t *pmd, spinlock_t *ptl, unsigned long addr,
+  * Scan through pages checking if pages follow certain conditions,
+  * and move them to the pagelist if they do.
+  *
+- * queue_pages_pte_range() has three possible return values:
+- * 0 - pages are placed on the right node or queued successfully, or
++ * queue_folios_pte_range() has three possible return values:
++ * 0 - folios are placed on the right node or queued successfully, or
+  *     special page is met, i.e. zero page.
+- * 1 - there is unmovable page, and MPOL_MF_MOVE* & MPOL_MF_STRICT were
++ * 1 - there is unmovable folio, and MPOL_MF_MOVE* & MPOL_MF_STRICT were
+  *     specified.
+- * -EIO - only MPOL_MF_STRICT was specified and an existing page was already
++ * -EIO - only MPOL_MF_STRICT was specified and an existing folio was already
+  *        on a node that does not follow the policy.
+  */
+-static int queue_pages_pte_range(pmd_t *pmd, unsigned long addr,
++static int queue_folios_pte_range(pmd_t *pmd, unsigned long addr,
+ 			unsigned long end, struct mm_walk *walk)
+ {
+ 	struct vm_area_struct *vma = walk->vma;
+-	struct page *page;
++	struct folio *folio;
+ 	struct queue_pages *qp = walk->private;
+ 	unsigned long flags = qp->flags;
+ 	bool has_unmovable = false;
+@@ -521,16 +521,16 @@ static int queue_pages_pte_range(pmd_t *pmd, unsigned long addr,
+ 	for (; addr != end; pte++, addr += PAGE_SIZE) {
+ 		if (!pte_present(*pte))
+ 			continue;
+-		page = vm_normal_page(vma, addr, *pte);
+-		if (!page || is_zone_device_page(page))
++		folio = vm_normal_folio(vma, addr, *pte);
++		if (!folio || folio_is_zone_device(folio))
+ 			continue;
+ 		/*
+-		 * vm_normal_page() filters out zero pages, but there might
+-		 * still be PageReserved pages to skip, perhaps in a VDSO.
++		 * vm_normal_folio() filters out zero pages, but there might
++		 * still be reserved folios to skip, perhaps in a VDSO.
+ 		 */
+-		if (PageReserved(page))
++		if (folio_test_reserved(folio))
+ 			continue;
+-		if (!queue_pages_required(page, qp))
++		if (!queue_pages_required(&folio->page, qp))
+ 			continue;
+ 		if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)) {
+ 			/* MPOL_MF_STRICT must be specified if we get here */
+@@ -544,7 +544,7 @@ static int queue_pages_pte_range(pmd_t *pmd, unsigned long addr,
+ 			 * temporary off LRU pages in the range.  Still
+ 			 * need migrate other LRU pages.
+ 			 */
+-			if (migrate_page_add(page, qp->pagelist, flags))
++			if (migrate_page_add(&folio->page, qp->pagelist, flags))
+ 				has_unmovable = true;
+ 		} else
+ 			break;
+@@ -705,7 +705,7 @@ static int queue_pages_test_walk(unsigned long start, unsigned long end,
+ 
+ static const struct mm_walk_ops queue_pages_walk_ops = {
+ 	.hugetlb_entry		= queue_pages_hugetlb,
+-	.pmd_entry		= queue_pages_pte_range,
++	.pmd_entry		= queue_folios_pte_range,
+ 	.test_walk		= queue_pages_test_walk,
+ };
+ 
 -- 
 2.40.1
 
