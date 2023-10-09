@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CADCF7BDD99
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19EBF7BDE4F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:18:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376806AbjJINLG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:11:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53256 "EHLO
+        id S1377007AbjJINSM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376841AbjJINKl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:10:41 -0400
+        with ESMTP id S1377013AbjJINSM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC302113
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB01C433C8;
-        Mon,  9 Oct 2023 13:10:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F40219F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCD4C433C9;
+        Mon,  9 Oct 2023 13:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857022;
-        bh=8w/o176i7s7SQ5JcxR+9Ef4d1zPMIEfN0MUlWDDJ1yM=;
+        s=korg; t=1696857490;
+        bh=yJ4eunqdONS0u3+n1Q+Ygy2BQw0Ap3qm2zNc8p4wdmM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AJHTJBhFyioOkxsuq0HG1PAzSkvGJ9GAT+wxnV006mU6ZMggX20mVflgH15mepZpT
-         SHHmJ9ONynBARm70RIxRN1zHN+VtJY3s6sFQCSuFYh6b+J8/1B8FxMUbmYElCShK9w
-         Q+NOuKbsNr18lvSzurb5iZPWJ5oVG2LKkoP6fDZw=
+        b=kz2ouCGc6CifISRSaq99lDN+WoCtuK+tDTinxxSS6q9aqxFw7+4aSZNQ24g9fnVK1
+         BFGce0JQWR71BttMswEz8xZ2eyzNnHCYnN6micjw4ppdtfm+xdaZfHIPekX1xRc90b
+         uiA+5U0NUh25/69XavywCHFvBc9Z2BK2R6R9WIF0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 062/163] wifi: iwlwifi: dbg_ini: fix structure packing
+        patches@lists.linux.dev, Rui Zhu <zhurui3@huawei.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 045/162] iommu/arm-smmu-v3: Avoid constructing invalid range commands
 Date:   Mon,  9 Oct 2023 15:00:26 +0200
-Message-ID: <20231009130125.751217510@linuxfoundation.org>
+Message-ID: <20231009130124.184025651@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +49,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 424c82e8ad56756bb98b08268ffcf68d12d183eb ]
+[ Upstream commit eb6c97647be227822c7ce23655482b05e348fba5 ]
 
-The iwl_fw_ini_error_dump_range structure has conflicting alignment
-requirements for the inner union and the outer struct:
+Although io-pgtable's non-leaf invalidations are always for full tables,
+I missed that SVA also uses non-leaf invalidations, while being at the
+mercy of whatever range the MMU notifier throws at it. This means it
+definitely wants the previous TTL fix as well, since it also doesn't
+know exactly which leaf level(s) may need invalidating, but it can also
+give us less-aligned ranges wherein certain corners may lead to building
+an invalid command where TTL, Num and Scale are all 0. It should be fine
+to handle this by over-invalidating an extra page, since falling back to
+a non-range command opens up a whole can of errata-flavoured worms.
 
-In file included from drivers/net/wireless/intel/iwlwifi/fw/dbg.c:9:
-drivers/net/wireless/intel/iwlwifi/fw/error-dump.h:312:2: error: field  within 'struct iwl_fw_ini_error_dump_range' is less aligned than 'union iwl_fw_ini_error_dump_range::(anonymous at drivers/net/wireless/intel/iwlwifi/fw/error-dump.h:312:2)' and is usually due to 'struct iwl_fw_ini_error_dump_range' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
-        union {
-
-As the original intention was apparently to make the entire structure
-unaligned, mark the innermost members the same way so the union
-becomes packed as well.
-
-Fixes: 973193554cae6 ("iwlwifi: dbg_ini: dump headers cleanup")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230616090343.2454061-1-arnd@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 6833b8f2e199 ("iommu/arm-smmu-v3: Set TTL invalidation hint better")
+Reported-by: Rui Zhu <zhurui3@huawei.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/b99cfe71af2bd93a8a2930f20967fb2a4f7748dd.1694432734.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/error-dump.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-index f5e08988dc7bf..06d6f7f664308 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-@@ -310,9 +310,9 @@ struct iwl_fw_ini_fifo_hdr {
- struct iwl_fw_ini_error_dump_range {
- 	__le32 range_data_size;
- 	union {
--		__le32 internal_base_addr;
--		__le64 dram_base_addr;
--		__le32 page_num;
-+		__le32 internal_base_addr __packed;
-+		__le64 dram_base_addr __packed;
-+		__le32 page_num __packed;
- 		struct iwl_fw_ini_fifo_hdr fifo_hdr;
- 		struct iwl_cmd_header fw_pkt_hdr;
- 	};
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index becf37c088772..8966f7d5aab61 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -1886,18 +1886,23 @@ static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
+ 		/* Get the leaf page size */
+ 		tg = __ffs(smmu_domain->domain.pgsize_bitmap);
+ 
++		num_pages = size >> tg;
++
+ 		/* Convert page size of 12,14,16 (log2) to 1,2,3 */
+ 		cmd->tlbi.tg = (tg - 10) / 2;
+ 
+ 		/*
+-		 * Determine what level the granule is at. For non-leaf, io-pgtable
+-		 * assumes .tlb_flush_walk can invalidate multiple levels at once,
+-		 * so ignore the nominal last-level granule and leave TTL=0.
++		 * Determine what level the granule is at. For non-leaf, both
++		 * io-pgtable and SVA pass a nominal last-level granule because
++		 * they don't know what level(s) actually apply, so ignore that
++		 * and leave TTL=0. However for various errata reasons we still
++		 * want to use a range command, so avoid the SVA corner case
++		 * where both scale and num could be 0 as well.
+ 		 */
+ 		if (cmd->tlbi.leaf)
+ 			cmd->tlbi.ttl = 4 - ((ilog2(granule) - 3) / (tg - 3));
+-
+-		num_pages = size >> tg;
++		else if ((num_pages & CMDQ_TLBI_RANGE_NUM_MAX) == 1)
++			num_pages++;
+ 	}
+ 
+ 	cmds.num = 0;
 -- 
 2.40.1
 
