@@ -2,38 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AA577BDE8A
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD2A37BE067
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:39:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234545AbjJINUa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:20:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47048 "EHLO
+        id S1377303AbjJINjq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:39:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234536AbjJINU3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:29 -0400
+        with ESMTP id S1377321AbjJINjo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:39:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2CC1AF
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7CCC433C7;
-        Mon,  9 Oct 2023 13:20:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B94F2
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:39:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD7EBC433C8;
+        Mon,  9 Oct 2023 13:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857626;
-        bh=ISsf59YGUw7OH9NnyPZv1Ae8m52esH1OU02efy8ktbU=;
+        s=korg; t=1696858782;
+        bh=sgoIWQm6XXLPF+TKqQRc7lOqclpqFGBFDw69kLY9Mtc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QkmqbuUYJ/6x6A4PrMQwDzSPxvAm64fPmWWHHY+bQMl2fwvt1+Fh6PnnVUEsRCrnu
-         FyA0KqKsTCGH4k+HMxdBIo1cmVInKe0M3WGY9xTQ53ayiaYVc6daV1kzeJLsQDfd58
-         xnaKN/8PVXLSvn3kxW377lEKlWUzkVnoCj8Ao/7M=
+        b=qwV2ZmM7RNVIRCGHKn1YOgG4iRJyTRG/itTqukTJuo3KQEWumKKqRa4xkhocmYold
+         eCIGZ4qxVe1qtceWep95D5J95vlcgTGMZbMKQNdWX1oykh61+qBg1A5uo3Kj0pv0pz
+         fP17OK0AUcbNq2oRnXdhq3YFdywTL5OOIwOo/35w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/162] wifi: cfg80211: add a work abstraction with special semantics
+Subject: [PATCH 5.10 099/226] ARM: dts: ti: omap: motorola-mapphone: Fix abe_clkctrl warning on boot
 Date:   Mon,  9 Oct 2023 15:01:00 +0200
-Message-ID: <20231009130125.095867606@linuxfoundation.org>
+Message-ID: <20231009130129.364772113@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,379 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit a3ee4dc84c4e9d14cb34dad095fd678127aca5b6 ]
+[ Upstream commit ac08bda1569b06b7a62c7b4dd00d4c3b28ceaaec ]
 
-Add a work abstraction at the cfg80211 level that will always
-hold the wiphy_lock() for any work executed and therefore also
-can be canceled safely (without waiting) while holding that.
-This improves on what we do now as with the new wiphy works we
-don't have to worry about locking while cancelling them safely.
+Commit 0840242e8875 ("ARM: dts: Configure clock parent for pwm vibra")
+attempted to fix the PWM settings but ended up causin an additional clock
+reparenting error:
 
-Also, don't let such works run while the device is suspended,
-since they'll likely need to interact with the device. Flush
-them before suspend though.
+clk: failed to reparent abe-clkctrl:0060:24 to sys_clkin_ck: -22
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
+Only timer9 is in the PER domain and can use the sys_clkin_ck clock source.
+For timer8, the there is no sys_clkin_ck available as it's in the ABE
+domain, instead it should use syc_clk_div_ck. However, for power
+management, we want to use the always on sys_32k_ck instead.
+
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Carl Philipp Klemm <philipp@uvos.xyz>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 0840242e8875 ("ARM: dts: Configure clock parent for pwm vibra")
+Depends-on: 61978617e905 ("ARM: dts: Add minimal support for Droid Bionic xt875")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/cfg80211.h |  95 ++++++++++++++++++++++++++++++--
- net/wireless/core.c    | 122 +++++++++++++++++++++++++++++++++++++++++
- net/wireless/core.h    |   7 +++
- net/wireless/sysfs.c   |   8 ++-
- 4 files changed, 227 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/motorola-mapphone-common.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 5976545aa26b9..f2144db89183c 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -5621,12 +5621,17 @@ struct cfg80211_cqm_config;
-  * wiphy_lock - lock the wiphy
-  * @wiphy: the wiphy to lock
-  *
-- * This is mostly exposed so it can be done around registering and
-- * unregistering netdevs that aren't created through cfg80211 calls,
-- * since that requires locking in cfg80211 when the notifiers is
-- * called, but that cannot differentiate which way it's called.
-+ * This is needed around registering and unregistering netdevs that
-+ * aren't created through cfg80211 calls, since that requires locking
-+ * in cfg80211 when the notifiers is called, but that cannot
-+ * differentiate which way it's called.
-+ *
-+ * It can also be used by drivers for their own purposes.
-  *
-  * When cfg80211 ops are called, the wiphy is already locked.
-+ *
-+ * Note that this makes sure that no workers that have been queued
-+ * with wiphy_queue_work() are running.
-  */
- static inline void wiphy_lock(struct wiphy *wiphy)
- 	__acquires(&wiphy->mtx)
-@@ -5646,6 +5651,88 @@ static inline void wiphy_unlock(struct wiphy *wiphy)
- 	mutex_unlock(&wiphy->mtx);
- }
- 
-+struct wiphy_work;
-+typedef void (*wiphy_work_func_t)(struct wiphy *, struct wiphy_work *);
-+
-+struct wiphy_work {
-+	struct list_head entry;
-+	wiphy_work_func_t func;
-+};
-+
-+static inline void wiphy_work_init(struct wiphy_work *work,
-+				   wiphy_work_func_t func)
-+{
-+	INIT_LIST_HEAD(&work->entry);
-+	work->func = func;
-+}
-+
-+/**
-+ * wiphy_work_queue - queue work for the wiphy
-+ * @wiphy: the wiphy to queue for
-+ * @work: the work item
-+ *
-+ * This is useful for work that must be done asynchronously, and work
-+ * queued here has the special property that the wiphy mutex will be
-+ * held as if wiphy_lock() was called, and that it cannot be running
-+ * after wiphy_lock() was called. Therefore, wiphy_cancel_work() can
-+ * use just cancel_work() instead of cancel_work_sync(), it requires
-+ * being in a section protected by wiphy_lock().
-+ */
-+void wiphy_work_queue(struct wiphy *wiphy, struct wiphy_work *work);
-+
-+/**
-+ * wiphy_work_cancel - cancel previously queued work
-+ * @wiphy: the wiphy, for debug purposes
-+ * @work: the work to cancel
-+ *
-+ * Cancel the work *without* waiting for it, this assumes being
-+ * called under the wiphy mutex acquired by wiphy_lock().
-+ */
-+void wiphy_work_cancel(struct wiphy *wiphy, struct wiphy_work *work);
-+
-+struct wiphy_delayed_work {
-+	struct wiphy_work work;
-+	struct wiphy *wiphy;
-+	struct timer_list timer;
-+};
-+
-+void wiphy_delayed_work_timer(struct timer_list *t);
-+
-+static inline void wiphy_delayed_work_init(struct wiphy_delayed_work *dwork,
-+					   wiphy_work_func_t func)
-+{
-+	timer_setup(&dwork->timer, wiphy_delayed_work_timer, 0);
-+	wiphy_work_init(&dwork->work, func);
-+}
-+
-+/**
-+ * wiphy_delayed_work_queue - queue delayed work for the wiphy
-+ * @wiphy: the wiphy to queue for
-+ * @dwork: the delayable worker
-+ * @delay: number of jiffies to wait before queueing
-+ *
-+ * This is useful for work that must be done asynchronously, and work
-+ * queued here has the special property that the wiphy mutex will be
-+ * held as if wiphy_lock() was called, and that it cannot be running
-+ * after wiphy_lock() was called. Therefore, wiphy_cancel_work() can
-+ * use just cancel_work() instead of cancel_work_sync(), it requires
-+ * being in a section protected by wiphy_lock().
-+ */
-+void wiphy_delayed_work_queue(struct wiphy *wiphy,
-+			      struct wiphy_delayed_work *dwork,
-+			      unsigned long delay);
-+
-+/**
-+ * wiphy_delayed_work_cancel - cancel previously queued delayed work
-+ * @wiphy: the wiphy, for debug purposes
-+ * @dwork: the delayed work to cancel
-+ *
-+ * Cancel the work *without* waiting for it, this assumes being
-+ * called under the wiphy mutex acquired by wiphy_lock().
-+ */
-+void wiphy_delayed_work_cancel(struct wiphy *wiphy,
-+			       struct wiphy_delayed_work *dwork);
-+
- /**
-  * struct wireless_dev - wireless device state
-  *
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 28ae86c62f805..8a1f34e95c4f0 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -408,6 +408,34 @@ static void cfg80211_propagate_cac_done_wk(struct work_struct *work)
- 	rtnl_unlock();
- }
- 
-+static void cfg80211_wiphy_work(struct work_struct *work)
-+{
-+	struct cfg80211_registered_device *rdev;
-+	struct wiphy_work *wk;
-+
-+	rdev = container_of(work, struct cfg80211_registered_device, wiphy_work);
-+
-+	wiphy_lock(&rdev->wiphy);
-+	if (rdev->suspended)
-+		goto out;
-+
-+	spin_lock_irq(&rdev->wiphy_work_lock);
-+	wk = list_first_entry_or_null(&rdev->wiphy_work_list,
-+				      struct wiphy_work, entry);
-+	if (wk) {
-+		list_del_init(&wk->entry);
-+		if (!list_empty(&rdev->wiphy_work_list))
-+			schedule_work(work);
-+		spin_unlock_irq(&rdev->wiphy_work_lock);
-+
-+		wk->func(&rdev->wiphy, wk);
-+	} else {
-+		spin_unlock_irq(&rdev->wiphy_work_lock);
-+	}
-+out:
-+	wiphy_unlock(&rdev->wiphy);
-+}
-+
- /* exported functions */
- 
- struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
-@@ -533,6 +561,9 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
- 		return NULL;
- 	}
- 
-+	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
-+	INIT_LIST_HEAD(&rdev->wiphy_work_list);
-+	spin_lock_init(&rdev->wiphy_work_lock);
- 	INIT_WORK(&rdev->rfkill_block, cfg80211_rfkill_block_work);
- 	INIT_WORK(&rdev->conn_work, cfg80211_conn_work);
- 	INIT_WORK(&rdev->event_work, cfg80211_event_work);
-@@ -1011,6 +1042,31 @@ void wiphy_rfkill_start_polling(struct wiphy *wiphy)
- }
- EXPORT_SYMBOL(wiphy_rfkill_start_polling);
- 
-+void cfg80211_process_wiphy_works(struct cfg80211_registered_device *rdev)
-+{
-+	unsigned int runaway_limit = 100;
-+	unsigned long flags;
-+
-+	lockdep_assert_held(&rdev->wiphy.mtx);
-+
-+	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+	while (!list_empty(&rdev->wiphy_work_list)) {
-+		struct wiphy_work *wk;
-+
-+		wk = list_first_entry(&rdev->wiphy_work_list,
-+				      struct wiphy_work, entry);
-+		list_del_init(&wk->entry);
-+		spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+
-+		wk->func(&rdev->wiphy, wk);
-+
-+		spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+		if (WARN_ON(--runaway_limit == 0))
-+			INIT_LIST_HEAD(&rdev->wiphy_work_list);
-+	}
-+	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+}
-+
- void wiphy_unregister(struct wiphy *wiphy)
- {
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-@@ -1053,9 +1109,15 @@ void wiphy_unregister(struct wiphy *wiphy)
- 	if (rdev->wiphy.wowlan_config && rdev->ops->set_wakeup)
- 		rdev_set_wakeup(rdev, false);
- #endif
-+
-+	/* surely nothing is reachable now, clean up work */
-+	cfg80211_process_wiphy_works(rdev);
- 	wiphy_unlock(&rdev->wiphy);
- 	rtnl_unlock();
- 
-+	/* this has nothing to do now but make sure it's gone */
-+	cancel_work_sync(&rdev->wiphy_work);
-+
- 	flush_work(&rdev->scan_done_wk);
- 	cancel_work_sync(&rdev->conn_work);
- 	flush_work(&rdev->event_work);
-@@ -1546,6 +1608,66 @@ static struct pernet_operations cfg80211_pernet_ops = {
- 	.exit = cfg80211_pernet_exit,
+diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+index 2b9ae5242cdf0..8cb26b924d3ca 100644
+--- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
++++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+@@ -739,12 +739,12 @@
+ /* Configure pwm clock source for timers 8 & 9 */
+ &timer8 {
+ 	assigned-clocks = <&abe_clkctrl OMAP4_TIMER8_CLKCTRL 24>;
+-	assigned-clock-parents = <&sys_clkin_ck>;
++	assigned-clock-parents = <&sys_32k_ck>;
  };
  
-+void wiphy_work_queue(struct wiphy *wiphy, struct wiphy_work *work)
-+{
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+	if (list_empty(&work->entry))
-+		list_add_tail(&work->entry, &rdev->wiphy_work_list);
-+	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+
-+	schedule_work(&rdev->wiphy_work);
-+}
-+EXPORT_SYMBOL_GPL(wiphy_work_queue);
-+
-+void wiphy_work_cancel(struct wiphy *wiphy, struct wiphy_work *work)
-+{
-+	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-+	unsigned long flags;
-+
-+	lockdep_assert_held(&wiphy->mtx);
-+
-+	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
-+	if (!list_empty(&work->entry))
-+		list_del_init(&work->entry);
-+	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
-+}
-+EXPORT_SYMBOL_GPL(wiphy_work_cancel);
-+
-+void wiphy_delayed_work_timer(struct timer_list *t)
-+{
-+	struct wiphy_delayed_work *dwork = from_timer(dwork, t, timer);
-+
-+	wiphy_work_queue(dwork->wiphy, &dwork->work);
-+}
-+EXPORT_SYMBOL(wiphy_delayed_work_timer);
-+
-+void wiphy_delayed_work_queue(struct wiphy *wiphy,
-+			      struct wiphy_delayed_work *dwork,
-+			      unsigned long delay)
-+{
-+	if (!delay) {
-+		wiphy_work_queue(wiphy, &dwork->work);
-+		return;
-+	}
-+
-+	dwork->wiphy = wiphy;
-+	mod_timer(&dwork->timer, jiffies + delay);
-+}
-+EXPORT_SYMBOL_GPL(wiphy_delayed_work_queue);
-+
-+void wiphy_delayed_work_cancel(struct wiphy *wiphy,
-+			       struct wiphy_delayed_work *dwork)
-+{
-+	lockdep_assert_held(&wiphy->mtx);
-+
-+	del_timer_sync(&dwork->timer);
-+	wiphy_work_cancel(wiphy, &dwork->work);
-+}
-+EXPORT_SYMBOL_GPL(wiphy_delayed_work_cancel);
-+
- static int __init cfg80211_init(void)
- {
- 	int err;
-diff --git a/net/wireless/core.h b/net/wireless/core.h
-index 775e16cb99eda..0481a8a539d5d 100644
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -108,6 +108,12 @@ struct cfg80211_registered_device {
- 	/* lock for all wdev lists */
- 	spinlock_t mgmt_registrations_lock;
+ &timer9 {
+ 	assigned-clocks = <&l4_per_clkctrl OMAP4_TIMER9_CLKCTRL 24>;
+-	assigned-clock-parents = <&sys_clkin_ck>;
++	assigned-clock-parents = <&sys_32k_ck>;
+ };
  
-+	struct work_struct wiphy_work;
-+	struct list_head wiphy_work_list;
-+	/* protects the list above */
-+	spinlock_t wiphy_work_lock;
-+	bool suspended;
-+
- 	/* must be last because of the way we do wiphy_priv(),
- 	 * and it should at least be aligned to NETDEV_ALIGN */
- 	struct wiphy wiphy __aligned(NETDEV_ALIGN);
-@@ -450,6 +456,7 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
- 			  struct net_device *dev, enum nl80211_iftype ntype,
- 			  struct vif_params *params);
- void cfg80211_process_rdev_events(struct cfg80211_registered_device *rdev);
-+void cfg80211_process_wiphy_works(struct cfg80211_registered_device *rdev);
- void cfg80211_process_wdev_events(struct wireless_dev *wdev);
- 
- bool cfg80211_does_bw_fit_range(const struct ieee80211_freq_range *freq_range,
-diff --git a/net/wireless/sysfs.c b/net/wireless/sysfs.c
-index 0c3f05c9be27a..4d3b658030105 100644
---- a/net/wireless/sysfs.c
-+++ b/net/wireless/sysfs.c
-@@ -5,7 +5,7 @@
-  *
-  * Copyright 2005-2006	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2006	Johannes Berg <johannes@sipsolutions.net>
-- * Copyright (C) 2020-2021 Intel Corporation
-+ * Copyright (C) 2020-2021, 2023 Intel Corporation
-  */
- 
- #include <linux/device.h>
-@@ -105,14 +105,18 @@ static int wiphy_suspend(struct device *dev)
- 			cfg80211_leave_all(rdev);
- 			cfg80211_process_rdev_events(rdev);
- 		}
-+		cfg80211_process_wiphy_works(rdev);
- 		if (rdev->ops->suspend)
- 			ret = rdev_suspend(rdev, rdev->wiphy.wowlan_config);
- 		if (ret == 1) {
- 			/* Driver refuse to configure wowlan */
- 			cfg80211_leave_all(rdev);
- 			cfg80211_process_rdev_events(rdev);
-+			cfg80211_process_wiphy_works(rdev);
- 			ret = rdev_suspend(rdev, NULL);
- 		}
-+		if (ret == 0)
-+			rdev->suspended = true;
- 	}
- 	wiphy_unlock(&rdev->wiphy);
- 	rtnl_unlock();
-@@ -132,6 +136,8 @@ static int wiphy_resume(struct device *dev)
- 	wiphy_lock(&rdev->wiphy);
- 	if (rdev->wiphy.registered && rdev->ops->resume)
- 		ret = rdev_resume(rdev);
-+	rdev->suspended = false;
-+	schedule_work(&rdev->wiphy_work);
- 	wiphy_unlock(&rdev->wiphy);
- 
- 	if (ret)
+ /*
 -- 
 2.40.1
 
