@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A3C37BDFC4
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 347DC7BDF31
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376971AbjJINdm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:33:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38220 "EHLO
+        id S1376769AbjJIN12 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:27:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377132AbjJINdl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:33:41 -0400
+        with ESMTP id S1376776AbjJIN11 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:27:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66DE191
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:33:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB456C433C8;
-        Mon,  9 Oct 2023 13:33:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05F8D99
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:27:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47572C433C8;
+        Mon,  9 Oct 2023 13:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858420;
-        bh=zlxXxlR5ce9aWaQtPZvCHEL1m3dxSVUCIuOVC78nBDQ=;
+        s=korg; t=1696858045;
+        bh=tjJS2ZfdDm/fB4IKb+zcBU4XpxeoQ1HWKqnV5iqrr8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S+Vffbm3Y4IOOgUzr6hnxofoIWxbnnUD/CQmhHoAfui3yaGI9C+tpljCivBEGqMPU
-         fpP03kH1w8aLErKGlXT7VHhXhzz3bk8YMuDqv4XJ+/XdZ7hK4AbYcyAOyC6XINpcP+
-         COqAdsL1WrLFKiHh55r7w2hvYzCQumhjuPpTwhTs=
+        b=QfNZeOHD5B8VNknGqqwCa4OwibWhbsxlU3aD8+OmykkH1pQNgp0hk0eMlqPWEA0Hh
+         PAAnBi7c7M0TouN/V4FtRqiH2neqCRMc+ZM2DSoj7kL39EbhlVWQcC8N799iDioAh4
+         6eqsOLyRy/jpZKFZFvIgvcJzCGl9ThaVuHPGogHU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Neal Cardwell <ncardwell@google.com>,
-        Yuchung Cheng <ycheng@google.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Xin Guo <guoxin0309@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 117/131] tcp: fix delayed ACKs for MSS boundary condition
+        patches@lists.linux.dev, John David Anglin <dave.anglin@bell.net>,
+        Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 75/75] parisc: Restore __ldcw_align for PA-RISC 2.0 processors
 Date:   Mon,  9 Oct 2023 15:02:37 +0200
-Message-ID: <20231009130120.011431831@linuxfoundation.org>
+Message-ID: <20231009130113.917593405@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,103 +48,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: John David Anglin <dave@parisc-linux.org>
 
-[ Upstream commit 4720852ed9afb1c5ab84e96135cb5b73d5afde6f ]
+commit 914988e099fc658436fbd7b8f240160c352b6552 upstream.
 
-This commit fixes poor delayed ACK behavior that can cause poor TCP
-latency in a particular boundary condition: when an application makes
-a TCP socket write that is an exact multiple of the MSS size.
+Back in 2005, Kyle McMartin removed the 16-byte alignment for
+ldcw semaphores on PA 2.0 machines (CONFIG_PA20). This broke
+spinlocks on pre PA8800 processors. The main symptom was random
+faults in mmap'd memory (e.g., gcc compilations, etc).
 
-The problem is that there is painful boundary discontinuity in the
-current delayed ACK behavior. With the current delayed ACK behavior,
-we have:
+Unfortunately, the errata for this ldcw change is lost.
 
-(1) If an app reads data when > 1*MSS is unacknowledged, then
-    tcp_cleanup_rbuf() ACKs immediately because of:
+The issue is the 16-byte alignment required for ldcw semaphore
+instructions can only be reduced to natural alignment when the
+ldcw operation can be handled coherently in cache. Only PA8800
+and PA8900 processors actually support doing the operation in
+cache.
 
-     tp->rcv_nxt - tp->rcv_wup > icsk->icsk_ack.rcv_mss ||
+Aligning the spinlock dynamically adds two integer instructions
+to each spinlock.
 
-(2) If an app reads all received data, and the packets were < 1*MSS,
-    and either (a) the app is not ping-pong or (b) we received two
-    packets < 1*MSS, then tcp_cleanup_rbuf() ACKs immediately beecause
-    of:
+Tested on rp3440, c8000 and a500.
 
-     ((icsk->icsk_ack.pending & ICSK_ACK_PUSHED2) ||
-      ((icsk->icsk_ack.pending & ICSK_ACK_PUSHED) &&
-       !inet_csk_in_pingpong_mode(sk))) &&
-
-(3) *However*: if an app reads exactly 1*MSS of data,
-    tcp_cleanup_rbuf() does not send an immediate ACK. This is true
-    even if the app is not ping-pong and the 1*MSS of data had the PSH
-    bit set, suggesting the sending application completed an
-    application write.
-
-Thus if the app is not ping-pong, we have this painful case where
->1*MSS gets an immediate ACK, and <1*MSS gets an immediate ACK, but a
-write whose last skb is an exact multiple of 1*MSS can get a 40ms
-delayed ACK. This means that any app that transfers data in one
-direction and takes care to align write size or packet size with MSS
-can suffer this problem. With receive zero copy making 4KB MSS values
-more common, it is becoming more common to have application writes
-naturally align with MSS, and more applications are likely to
-encounter this delayed ACK problem.
-
-The fix in this commit is to refine the delayed ACK heuristics with a
-simple check: immediately ACK a received 1*MSS skb with PSH bit set if
-the app reads all data. Why? If an skb has a len of exactly 1*MSS and
-has the PSH bit set then it is likely the end of an application
-write. So more data may not be arriving soon, and yet the data sender
-may be waiting for an ACK if cwnd-bound or using TX zero copy. Thus we
-set ICSK_ACK_PUSHED in this case so that tcp_cleanup_rbuf() will send
-an ACK immediately if the app reads all of the data and is not
-ping-pong. Note that this logic is also executed for the case where
-len > MSS, but in that case this logic does not matter (and does not
-hurt) because tcp_cleanup_rbuf() will always ACK immediately if the
-app reads data and there is more than an MSS of unACKed data.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Yuchung Cheng <ycheng@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Cc: Xin Guo <guoxin0309@gmail.com>
-Link: https://lore.kernel.org/r/20231001151239.1866845-2-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Link: https://lore.kernel.org/linux-parisc/6b332788-2227-127f-ba6d-55e99ecf4ed8@bell.net/T/#t
+Link: https://lore.kernel.org/linux-parisc/20050609050702.GB4641@roadwarrior.mcmartin.ca/
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/parisc/include/asm/ldcw.h           |   36 +++++++++++++++++--------------
+ arch/parisc/include/asm/spinlock_types.h |    5 ----
+ 2 files changed, 20 insertions(+), 21 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 1dfc1a5c21cd3..ec3c23adbab44 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -178,6 +178,19 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
- 		if (unlikely(len > icsk->icsk_ack.rcv_mss +
- 				   MAX_TCP_OPTION_SPACE))
- 			tcp_gro_dev_warn(sk, skb, len);
-+		/* If the skb has a len of exactly 1*MSS and has the PSH bit
-+		 * set then it is likely the end of an application write. So
-+		 * more data may not be arriving soon, and yet the data sender
-+		 * may be waiting for an ACK if cwnd-bound or using TX zero
-+		 * copy. So we set ICSK_ACK_PUSHED here so that
-+		 * tcp_cleanup_rbuf() will send an ACK immediately if the app
-+		 * reads all of the data and is not ping-pong. If len > MSS
-+		 * then this logic does not matter (and does not hurt) because
-+		 * tcp_cleanup_rbuf() will always ACK immediately if the app
-+		 * reads data and there is more than an MSS of unACKed data.
-+		 */
-+		if (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_PSH)
-+			icsk->icsk_ack.pending |= ICSK_ACK_PUSHED;
- 	} else {
- 		/* Otherwise, we make more careful check taking into account,
- 		 * that SACKs block is variable.
--- 
-2.40.1
-
+--- a/arch/parisc/include/asm/ldcw.h
++++ b/arch/parisc/include/asm/ldcw.h
+@@ -2,14 +2,28 @@
+ #ifndef __PARISC_LDCW_H
+ #define __PARISC_LDCW_H
+ 
+-#ifndef CONFIG_PA20
+ /* Because kmalloc only guarantees 8-byte alignment for kmalloc'd data,
+    and GCC only guarantees 8-byte alignment for stack locals, we can't
+    be assured of 16-byte alignment for atomic lock data even if we
+    specify "__attribute ((aligned(16)))" in the type declaration.  So,
+    we use a struct containing an array of four ints for the atomic lock
+    type and dynamically select the 16-byte aligned int from the array
+-   for the semaphore.  */
++   for the semaphore. */
++
++/* From: "Jim Hull" <jim.hull of hp.com>
++   I've attached a summary of the change, but basically, for PA 2.0, as
++   long as the ",CO" (coherent operation) completer is implemented, then the
++   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
++   they only require "natural" alignment (4-byte for ldcw, 8-byte for
++   ldcd).
++
++   Although the cache control hint is accepted by all PA 2.0 processors,
++   it is only implemented on PA8800/PA8900 CPUs. Prior PA8X00 CPUs still
++   require 16-byte alignment. If the address is unaligned, the operation
++   of the instruction is undefined. The ldcw instruction does not generate
++   unaligned data reference traps so misaligned accesses are not detected.
++   This hid the problem for years. So, restore the 16-byte alignment dropped
++   by Kyle McMartin in "Remove __ldcw_align for PA-RISC 2.0 processors". */
+ 
+ #define __PA_LDCW_ALIGNMENT	16
+ #define __PA_LDCW_ALIGN_ORDER	4
+@@ -19,22 +33,12 @@
+ 		& ~(__PA_LDCW_ALIGNMENT - 1);			\
+ 	(volatile unsigned int *) __ret;			\
+ })
+-#define __LDCW	"ldcw"
+ 
+-#else /*CONFIG_PA20*/
+-/* From: "Jim Hull" <jim.hull of hp.com>
+-   I've attached a summary of the change, but basically, for PA 2.0, as
+-   long as the ",CO" (coherent operation) completer is specified, then the
+-   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
+-   they only require "natural" alignment (4-byte for ldcw, 8-byte for
+-   ldcd). */
+-
+-#define __PA_LDCW_ALIGNMENT	4
+-#define __PA_LDCW_ALIGN_ORDER	2
+-#define __ldcw_align(a) (&(a)->slock)
++#ifdef CONFIG_PA20
+ #define __LDCW	"ldcw,co"
+-
+-#endif /*!CONFIG_PA20*/
++#else
++#define __LDCW	"ldcw"
++#endif
+ 
+ /* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.
+    We don't explicitly expose that "*a" may be written as reload
+--- a/arch/parisc/include/asm/spinlock_types.h
++++ b/arch/parisc/include/asm/spinlock_types.h
+@@ -3,13 +3,8 @@
+ #define __ASM_SPINLOCK_TYPES_H
+ 
+ typedef struct {
+-#ifdef CONFIG_PA20
+-	volatile unsigned int slock;
+-# define __ARCH_SPIN_LOCK_UNLOCKED { 1 }
+-#else
+ 	volatile unsigned int lock[4];
+ # define __ARCH_SPIN_LOCK_UNLOCKED	{ { 1, 1, 1, 1 } }
+-#endif
+ } arch_spinlock_t;
+ 
+ 
 
 
