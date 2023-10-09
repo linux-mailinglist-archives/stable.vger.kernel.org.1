@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E5E77BE1B2
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38D587BE121
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377525AbjJINxG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:53:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35728 "EHLO
+        id S1377435AbjJINrP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:47:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377501AbjJINxE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:04 -0400
+        with ESMTP id S1377436AbjJINrO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:47:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16A9F91
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DB1C433C8;
-        Mon,  9 Oct 2023 13:53:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEA159D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:47:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B7EDC433C8;
+        Mon,  9 Oct 2023 13:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859582;
-        bh=Li/NMcO3IFAecjF+ouIUwWldQIWvi+4XaaHBBhS1ULk=;
+        s=korg; t=1696859232;
+        bh=XmNoFINW5GtZxfdVrExjEomE4qyjB+C/uGpGm5c2plk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P6TR8JX/XLEoTeVf2KnV7W3frItSx14j6LVOSI8hDBm9M7p1kZK28Qy4DUcGBHky2
-         KChhLWKMQ9MmRZcKIiMr9ho9zYn/DIhS4PMKqPmf08amDAliRd3kFfGsRWGtited+2
-         Ck/R1yfWKLjBbtIC2MTLvcn63chUz+oQUaWmljrw=
+        b=HRiMBKCZKV6Y7bqHYaYwW0KQPXCz12fiSfLCO4igthHmGdB8ZqY1SG9Mn/sCr+7xU
+         d8lN7g/zuUK1FXKhbcPRB2GI1eIOQWCAQFMylRMg6bduZBWzJzUndJvn/krS+YbjRK
+         z+8gZ6tYmoxt2Rb5ERZhQ+0HVeW96etrq/fCDU9Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 40/91] fbdev/sh7760fb: Depend on FB=y
+Subject: [PATCH 4.14 13/55] parisc: irq: Make irq_stack_union static to avoid sparse warning
 Date:   Mon,  9 Oct 2023 15:06:12 +0200
-Message-ID: <20231009130112.909755401@linuxfoundation.org>
+Message-ID: <20231009130108.226629318@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +48,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit f75f71b2c418a27a7c05139bb27a0c83adf88d19 ]
+[ Upstream commit b1bef1388c427cdad7331a9c8eb4ebbbe5b954b0 ]
 
-Fix linker error if FB=m about missing fb_io_read and fb_io_write. The
-linker's error message suggests that this config setting has already
-been broken for other symbols.
-
-  All errors (new ones prefixed by >>):
-
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_probe':
-     sh7760fb.c:(.text+0x374): undefined reference to `framebuffer_alloc'
-     sh4-linux-ld: sh7760fb.c:(.text+0x394): undefined reference to `fb_videomode_to_var'
-     sh4-linux-ld: sh7760fb.c:(.text+0x39c): undefined reference to `fb_alloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x3a4): undefined reference to `register_framebuffer'
-     sh4-linux-ld: sh7760fb.c:(.text+0x3ac): undefined reference to `fb_dealloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x434): undefined reference to `framebuffer_release'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o: in function `sh7760fb_remove':
-     sh7760fb.c:(.text+0x800): undefined reference to `unregister_framebuffer'
-     sh4-linux-ld: sh7760fb.c:(.text+0x804): undefined reference to `fb_dealloc_cmap'
-     sh4-linux-ld: sh7760fb.c:(.text+0x814): undefined reference to `framebuffer_release'
-  >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0xc): undefined reference to `fb_io_read'
-  >> sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x10): undefined reference to `fb_io_write'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x2c): undefined reference to `cfb_fillrect'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x30): undefined reference to `cfb_copyarea'
-     sh4-linux-ld: drivers/video/fbdev/sh7760fb.o:(.rodata+0x34): undefined reference to `cfb_imageblit'
-
-Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309130632.LS04CPWu-lkp@intel.com/
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230918090400.13264-1-tzimmermann@suse.de
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/Kconfig | 2 +-
+ arch/parisc/kernel/irq.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-index afb0c9e4d7382..8e224ee27ade9 100644
---- a/drivers/video/fbdev/Kconfig
-+++ b/drivers/video/fbdev/Kconfig
-@@ -2085,7 +2085,7 @@ config FB_COBALT
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index c152c30c2d06d..11c1505775f87 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -392,7 +392,7 @@ union irq_stack_union {
+ 	volatile unsigned int lock[1];
+ };
  
- config FB_SH7760
- 	bool "SH7760/SH7763/SH7720/SH7721 LCDC support"
--	depends on FB && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
-+	depends on FB=y && (CPU_SUBTYPE_SH7760 || CPU_SUBTYPE_SH7763 \
- 		|| CPU_SUBTYPE_SH7720 || CPU_SUBTYPE_SH7721)
- 	select FB_CFB_FILLRECT
- 	select FB_CFB_COPYAREA
+-DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
++static DEFINE_PER_CPU(union irq_stack_union, irq_stack_union) = {
+ 		.slock = { 1,1,1,1 },
+ 	};
+ #endif
 -- 
 2.40.1
 
