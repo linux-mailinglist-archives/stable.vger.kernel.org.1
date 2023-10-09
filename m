@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B78C77BDD44
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DECB37BDE24
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376731AbjJINJG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:09:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41250 "EHLO
+        id S1377000AbjJINQ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:16:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376831AbjJINJD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:09:03 -0400
+        with ESMTP id S1376431AbjJINQO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:16:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E2E5B6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:09:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F15C433C9;
-        Mon,  9 Oct 2023 13:08:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D11EA91
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:16:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC66C433C9;
+        Mon,  9 Oct 2023 13:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856940;
-        bh=1rR7IWpq5wrNO1SoApJ0zJbyQ+FUa8PIiGaP6NS7O7c=;
+        s=korg; t=1696857372;
+        bh=78pO4vFjxdXA+zadLLG3QzRnCP8LjGF308X9a8X0dMA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YwdaW47y9MZg9tEYqZpBNodhOQ7HFiK1/XljykBL/Q5O3dlNV156QVdFopOkdjVQl
-         LVehJrie+Q7xEOeZz+VYME64u5B9lZcIIQ3k0cYr2Cn8b5ldBm8GFEOZv0Qq/c2cX3
-         pFvpZ4qIipD/sKS5RCpPkEE5AHpwEKtaTh2F+1aM=
+        b=oyYNK893jXR/1RpWgsyNfr5DwUlks9bzmvxi1jAhigu1kq6K97JSeM5IIuRQygQYZ
+         mnAqPe8ArpGL+pdQdoyDYdHPGyhzVOMZFX6bJEUoO8cDRwWwRQKB17OL0DO7gOXOYg
+         u3lTDsWU62OTukbqghPS1JkTT8U6D5ID1abg7wP0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mark Blakeney <mark.blakeney@bullet-systems.net>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 6.5 042/163] PCI/PM: Mark devices disconnected if upstream PCIe link is down on resume
+        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+        David Hildenbrand <david@redhat.com>,
+        Jane Chu <jane.chu@oracle.com>,
+        "Yin, Fengwei" <fengwei.yin@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 025/162] mm/mempolicy: convert queue_pages_pmd() to queue_folios_pmd()
 Date:   Mon,  9 Oct 2023 15:00:06 +0200
-Message-ID: <20231009130125.179194885@linuxfoundation.org>
+Message-ID: <20231009130123.640602223@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,86 +53,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
-commit c82458101d5490230d735caecce14c9c27b1010c upstream.
+[ Upstream commit de1f5055523e9a035b38533f25a56df03d45034a ]
 
-Mark Blakeney reported that when suspending system with a Thunderbolt
-dock connected and then unplugging the dock before resume (which is
-pretty normal flow with laptops), resuming takes long time.
+The function now operates on a folio instead of the page associated with a
+pmd.
 
-What happens is that the PCIe link from the root port to the PCIe switch
-inside the Thunderbolt device does not train (as expected, the link is
-unplugged):
+This change is in preparation for the conversion of queue_pages_required()
+to queue_folio_required() and migrate_page_add() to migrate_folio_add().
 
-  pcieport 0000:00:07.2: restoring config space at offset 0x24 (was 0x3bf12001, writing 0x3bf12001)
-  pcieport 0000:00:07.0: waiting 100 ms for downstream link
-  pcieport 0000:01:00.0: not ready 1023ms after resume; giving up
-
-However, at this point we still try to resume the devices below that
-unplugged link:
-
-  pcieport 0000:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
-  ...
-  pcieport 0000:01:00.0: restoring config space at offset 0x38 (was 0xffffffff, writing 0x0)
-  ...
-  pcieport 0000:02:02.0: waiting 100 ms for downstream link, after activation
-
-And this is the link from PCIe switch downstream port to the xHCI on the
-dock:
-
-  xhci_hcd 0000:03:00.0: not ready 65535ms after resume; giving up
-  xhci_hcd 0000:03:00.0: Unable to change power state from D3cold to D0, device inaccessible
-  xhci_hcd 0000:03:00.0: restoring config space at offset 0x3c (was 0xffffffff, writing 0x1ff)
-
-This ends up slowing down the resume time considerably. For this reason
-mark these devices as disconnected if the link above them did not train
-properly.
-
-Fixes: e8b908146d44 ("PCI/PM: Increase wait time after resume")
-Link: https://lore.kernel.org/r/20230918053041.1018876-1-mika.westerberg@linux.intel.com
-Reported-by: Mark Blakeney <mark.blakeney@bullet-systems.net>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217915
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org	# v6.4+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20230130201833.27042-3-vishal.moola@gmail.com
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: "Yin, Fengwei" <fengwei.yin@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 24526268f4e3 ("mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and MPOL_MF_MOVE are specified")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-driver.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ mm/mempolicy.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index a79c110c7e51..51ec9e7e784f 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -572,7 +572,19 @@ static void pci_pm_default_resume_early(struct pci_dev *pci_dev)
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 7d36dd95d1fff..3a291026e1896 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -442,21 +442,21 @@ static inline bool queue_pages_required(struct page *page,
+ }
  
- static void pci_pm_bridge_power_up_actions(struct pci_dev *pci_dev)
+ /*
+- * queue_pages_pmd() has three possible return values:
+- * 0 - pages are placed on the right node or queued successfully, or
++ * queue_folios_pmd() has three possible return values:
++ * 0 - folios are placed on the right node or queued successfully, or
+  *     special page is met, i.e. huge zero page.
+- * 1 - there is unmovable page, and MPOL_MF_MOVE* & MPOL_MF_STRICT were
++ * 1 - there is unmovable folio, and MPOL_MF_MOVE* & MPOL_MF_STRICT were
+  *     specified.
+  * -EIO - is migration entry or only MPOL_MF_STRICT was specified and an
+- *        existing page was already on a node that does not follow the
++ *        existing folio was already on a node that does not follow the
+  *        policy.
+  */
+-static int queue_pages_pmd(pmd_t *pmd, spinlock_t *ptl, unsigned long addr,
++static int queue_folios_pmd(pmd_t *pmd, spinlock_t *ptl, unsigned long addr,
+ 				unsigned long end, struct mm_walk *walk)
+ 	__releases(ptl)
  {
--	pci_bridge_wait_for_secondary_bus(pci_dev, "resume");
-+	int ret;
-+
-+	ret = pci_bridge_wait_for_secondary_bus(pci_dev, "resume");
-+	if (ret) {
-+		/*
-+		 * The downstream link failed to come up, so mark the
-+		 * devices below as disconnected to make sure we don't
-+		 * attempt to resume them.
-+		 */
-+		pci_walk_bus(pci_dev->subordinate, pci_dev_set_disconnected,
-+			     NULL);
-+		return;
-+	}
+ 	int ret = 0;
+-	struct page *page;
++	struct folio *folio;
+ 	struct queue_pages *qp = walk->private;
+ 	unsigned long flags;
  
- 	/*
- 	 * When powering on a bridge from D3cold, the whole hierarchy may be
+@@ -464,19 +464,19 @@ static int queue_pages_pmd(pmd_t *pmd, spinlock_t *ptl, unsigned long addr,
+ 		ret = -EIO;
+ 		goto unlock;
+ 	}
+-	page = pmd_page(*pmd);
+-	if (is_huge_zero_page(page)) {
++	folio = pfn_folio(pmd_pfn(*pmd));
++	if (is_huge_zero_page(&folio->page)) {
+ 		walk->action = ACTION_CONTINUE;
+ 		goto unlock;
+ 	}
+-	if (!queue_pages_required(page, qp))
++	if (!queue_pages_required(&folio->page, qp))
+ 		goto unlock;
+ 
+ 	flags = qp->flags;
+-	/* go to thp migration */
++	/* go to folio migration */
+ 	if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)) {
+ 		if (!vma_migratable(walk->vma) ||
+-		    migrate_page_add(page, qp->pagelist, flags)) {
++		    migrate_page_add(&folio->page, qp->pagelist, flags)) {
+ 			ret = 1;
+ 			goto unlock;
+ 		}
+@@ -512,7 +512,7 @@ static int queue_pages_pte_range(pmd_t *pmd, unsigned long addr,
+ 
+ 	ptl = pmd_trans_huge_lock(pmd, vma);
+ 	if (ptl)
+-		return queue_pages_pmd(pmd, ptl, addr, end, walk);
++		return queue_folios_pmd(pmd, ptl, addr, end, walk);
+ 
+ 	if (pmd_trans_unstable(pmd))
+ 		return 0;
 -- 
-2.42.0
+2.40.1
 
 
 
