@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01E1E7BDF05
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E92A37BE0AF
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376599AbjJINZe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:25:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
+        id S1346590AbjJINm6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:42:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376540AbjJINZd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:33 -0400
+        with ESMTP id S1346584AbjJINm6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE5E88F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC56C433C7;
-        Mon,  9 Oct 2023 13:25:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62D4ECA
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:42:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2C9C433C8;
+        Mon,  9 Oct 2023 13:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857931;
-        bh=twZfIK/qZfcRn4eNiogHNJxrAg8on6Vzx1M0qRgKPg0=;
+        s=korg; t=1696858976;
+        bh=lAMLuawBFpP9s10I75F5tkuLLfq5E5b28IViQOthvQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KK4oYtd8XCGZIn/c8OIetEwkAjG6CcfjaAsDzle1HdHPujNPr50/c7diPiS+5+lyc
-         sWmC+ZVFzlyqaSRZ5I7jpvfc8dfuERyo1fXorsAg9IZCDHbJdfbWTcIa4nssOg9ntP
-         6WH6ahVCqeGSuFDoi30ma3CKQRmrbadntPLhaZ+Y=
+        b=putd1VjWb/CMbNxRz2oIj/n876VARA89JH9ZDO+t9ZZGE/4duqAtXIbJpKqrjuuW/
+         kgeB0yffJolVqam0rHA5+44XV+4XUtmci7ABsG58oPdtpMgjHEz7YpXhhSnOpf1N80
+         yELlwPz+C6zXmjUu+Q8nwYZvP9Mj+m7l5oDq6c1I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Junxiao Bi <junxiao.bi@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 39/75] scsi: target: core: Fix deadlock due to recursive locking
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 160/226] ata: libata-core: Fix port and device removal
 Date:   Mon,  9 Oct 2023 15:02:01 +0200
-Message-ID: <20231009130112.600931608@linuxfoundation.org>
+Message-ID: <20231009130130.864900781@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,102 +52,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxiao Bi <junxiao.bi@oracle.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit a154f5f643c6ecddd44847217a7a3845b4350003 ]
+commit 84d76529c650f887f1e18caee72d6f0589e1baf9 upstream.
 
-The following call trace shows a deadlock issue due to recursive locking of
-mutex "device_mutex". First lock acquire is in target_for_each_device() and
-second in target_free_device().
+Whenever an ATA adapter driver is removed (e.g. rmmod),
+ata_port_detach() is called repeatedly for all the adapter ports to
+remove (unload) the devices attached to the port and delete the port
+device itself. Removing of devices is done using libata EH with the
+ATA_PFLAG_UNLOADING port flag set. This causes libata EH to execute
+ata_eh_unload() which disables all devices attached to the port.
 
- PID: 148266   TASK: ffff8be21ffb5d00  CPU: 10   COMMAND: "iscsi_ttx"
-  #0 [ffffa2bfc9ec3b18] __schedule at ffffffffa8060e7f
-  #1 [ffffa2bfc9ec3ba0] schedule at ffffffffa8061224
-  #2 [ffffa2bfc9ec3bb8] schedule_preempt_disabled at ffffffffa80615ee
-  #3 [ffffa2bfc9ec3bc8] __mutex_lock at ffffffffa8062fd7
-  #4 [ffffa2bfc9ec3c40] __mutex_lock_slowpath at ffffffffa80631d3
-  #5 [ffffa2bfc9ec3c50] mutex_lock at ffffffffa806320c
-  #6 [ffffa2bfc9ec3c68] target_free_device at ffffffffc0935998 [target_core_mod]
-  #7 [ffffa2bfc9ec3c90] target_core_dev_release at ffffffffc092f975 [target_core_mod]
-  #8 [ffffa2bfc9ec3ca0] config_item_put at ffffffffa79d250f
-  #9 [ffffa2bfc9ec3cd0] config_item_put at ffffffffa79d2583
- #10 [ffffa2bfc9ec3ce0] target_devices_idr_iter at ffffffffc0933f3a [target_core_mod]
- #11 [ffffa2bfc9ec3d00] idr_for_each at ffffffffa803f6fc
- #12 [ffffa2bfc9ec3d60] target_for_each_device at ffffffffc0935670 [target_core_mod]
- #13 [ffffa2bfc9ec3d98] transport_deregister_session at ffffffffc0946408 [target_core_mod]
- #14 [ffffa2bfc9ec3dc8] iscsit_close_session at ffffffffc09a44a6 [iscsi_target_mod]
- #15 [ffffa2bfc9ec3df0] iscsit_close_connection at ffffffffc09a4a88 [iscsi_target_mod]
- #16 [ffffa2bfc9ec3df8] finish_task_switch at ffffffffa76e5d07
- #17 [ffffa2bfc9ec3e78] iscsit_take_action_for_connection_exit at ffffffffc0991c23 [iscsi_target_mod]
- #18 [ffffa2bfc9ec3ea0] iscsi_target_tx_thread at ffffffffc09a403b [iscsi_target_mod]
- #19 [ffffa2bfc9ec3f08] kthread at ffffffffa76d8080
- #20 [ffffa2bfc9ec3f50] ret_from_fork at ffffffffa8200364
+ata_port_detach() finishes by calling scsi_remove_host() to remove the
+scsi host associated with the port. This function will trigger the
+removal of all scsi devices attached to the host and in the case of
+disks, calls to sd_shutdown() which will flush the device write cache
+and stop the device. However, given that the devices were already
+disabled by ata_eh_unload(), the synchronize write cache command and
+start stop unit commands fail. E.g. running "rmmod ahci" with first
+removing sd_mod results in error messages like:
 
-Fixes: 36d4cb460bcb ("scsi: target: Avoid that EXTENDED COPY commands trigger lock inversion")
-Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
-Link: https://lore.kernel.org/r/20230918225848.66463-1-junxiao.bi@oracle.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ata13.00: disable device
+sd 0:0:0:0: [sda] Synchronizing SCSI cache
+sd 0:0:0:0: [sda] Synchronize Cache(10) failed: Result: hostbyte=DID_BAD_TARGET driverbyte=DRIVER_OK
+sd 0:0:0:0: [sda] Stopping disk
+sd 0:0:0:0: [sda] Start/Stop Unit failed: Result: hostbyte=DID_BAD_TARGET driverbyte=DRIVER_OK
+
+Fix this by removing all scsi devices of the ata devices connected to
+the port before scheduling libata EH to disable the ATA devices.
+
+Fixes: 720ba12620ee ("[PATCH] libata-hp: update unload-unplug")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_device.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/ata/libata-core.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index e18617371a9b2..813de805f815a 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -875,7 +875,6 @@ sector_t target_to_linux_sector(struct se_device *dev, sector_t lb)
- EXPORT_SYMBOL(target_to_linux_sector);
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5915,11 +5915,30 @@ static void ata_port_detach(struct ata_p
+ 	if (!ap->ops->error_handler)
+ 		goto skip_eh;
  
- struct devices_idr_iter {
--	struct config_item *prev_item;
- 	int (*fn)(struct se_device *dev, void *data);
- 	void *data;
- };
-@@ -885,11 +884,9 @@ static int target_devices_idr_iter(int id, void *p, void *data)
- {
- 	struct devices_idr_iter *iter = data;
- 	struct se_device *dev = p;
-+	struct config_item *item;
- 	int ret;
+-	/* tell EH we're leaving & flush EH */
++	/* Wait for any ongoing EH */
++	ata_port_wait_eh(ap);
++
++	mutex_lock(&ap->scsi_scan_mutex);
+ 	spin_lock_irqsave(ap->lock, flags);
++
++	/* Remove scsi devices */
++	ata_for_each_link(link, ap, HOST_FIRST) {
++		ata_for_each_dev(dev, link, ALL) {
++			if (dev->sdev) {
++				spin_unlock_irqrestore(ap->lock, flags);
++				scsi_remove_device(dev->sdev);
++				spin_lock_irqsave(ap->lock, flags);
++				dev->sdev = NULL;
++			}
++		}
++	}
++
++	/* Tell EH to disable all devices */
+ 	ap->pflags |= ATA_PFLAG_UNLOADING;
+ 	ata_port_schedule_eh(ap);
++
+ 	spin_unlock_irqrestore(ap->lock, flags);
++	mutex_unlock(&ap->scsi_scan_mutex);
  
--	config_item_put(iter->prev_item);
--	iter->prev_item = NULL;
--
- 	/*
- 	 * We add the device early to the idr, so it can be used
- 	 * by backend modules during configuration. We do not want
-@@ -899,12 +896,13 @@ static int target_devices_idr_iter(int id, void *p, void *data)
- 	if (!target_dev_configured(dev))
- 		return 0;
- 
--	iter->prev_item = config_item_get_unless_zero(&dev->dev_group.cg_item);
--	if (!iter->prev_item)
-+	item = config_item_get_unless_zero(&dev->dev_group.cg_item);
-+	if (!item)
- 		return 0;
- 	mutex_unlock(&device_mutex);
- 
- 	ret = iter->fn(dev, iter->data);
-+	config_item_put(item);
- 
- 	mutex_lock(&device_mutex);
- 	return ret;
-@@ -927,7 +925,6 @@ int target_for_each_device(int (*fn)(struct se_device *dev, void *data),
- 	mutex_lock(&device_mutex);
- 	ret = idr_for_each(&devices_idr, target_devices_idr_iter, &iter);
- 	mutex_unlock(&device_mutex);
--	config_item_put(iter.prev_item);
- 	return ret;
- }
- 
--- 
-2.40.1
-
+ 	/* wait till EH commits suicide */
+ 	ata_port_wait_eh(ap);
 
 
