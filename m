@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 834937BDF8D
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F1FE7BE0D1
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377074AbjJINbK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:31:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32802 "EHLO
+        id S1377418AbjJINoZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:44:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376789AbjJINbJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:09 -0400
+        with ESMTP id S1377653AbjJINoT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 073099C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBC5C433C8;
-        Mon,  9 Oct 2023 13:31:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 509F1A3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CF0C433C7;
+        Mon,  9 Oct 2023 13:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858267;
-        bh=PztRB6Qt8CfrbkN0UB+i6selUxTbrTbCERQ1LyclbnU=;
+        s=korg; t=1696859058;
+        bh=m0FsOJVNfhxrRh+axhQpzPvhHgLViamXPA3Lcxzw0mo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MsFjnJF6Ms/lTZihW3ogZfcLwso2htUiYrK0alvh3BGHZpzErU/K3k1VqfQk6nsmV
-         O274k9rqLNYz3EHGm0I85MIrfQEznG8wghHQYU0vaouJLmsFA/62rK1lJxDUjTwpap
-         vnvDmh1ZoQpoMKHVL7TFKZz4dD/d2sco/3F/m7a8=
+        b=IcZiy5TTJNlsUxZ/TsdoR7lHMDMyxae+o5A+UkqFO4/ez7+SWzXwHC0qUiq3mxCS8
+         N3rkL8uP7QkAVJFq/NH/QuLAjq9YSqeHiXVv+sNqD49IfcI4PmncSTham9Nwn+4bV7
+         qB1T8Pzk+U/ZI0BG244WFJjqnqvfrukRh+FhIXZg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Stefan Assmann <sassmann@kpanic.de>,
-        Aaron Brown <aaron.f.brown@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 068/131] i40e: always propagate error value in i40e_set_vsi_promisc()
+        patches@lists.linux.dev, Pan Bian <bianpan2016@163.com>,
+        Ferry Meng <mengferry@linux.alibaba.com>,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 147/226] nilfs2: fix potential use after free in nilfs_gccache_submit_read_data()
 Date:   Mon,  9 Oct 2023 15:01:48 +0200
-Message-ID: <20231009130118.381089637@linuxfoundation.org>
+Message-ID: <20231009130130.561282299@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,78 +50,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Assmann <sassmann@kpanic.de>
+From: Pan Bian <bianpan2016@163.com>
 
-[ Upstream commit b6f23d3817b965bcd6d72aab1f438ff6d16a0691 ]
+commit 7ee29facd8a9c5a26079148e36bcf07141b3a6bc upstream.
 
-The for loop in i40e_set_vsi_promisc() reports errors via dev_err() but
-does not propagate the error up the call chain. Instead it continues the
-loop and potentially overwrites the reported error value.
-This results in the error being recorded in the log buffer, but the
-caller might never know anything went the wrong way.
+In nilfs_gccache_submit_read_data(), brelse(bh) is called to drop the
+reference count of bh when the call to nilfs_dat_translate() fails.  If
+the reference count hits 0 and its owner page gets unlocked, bh may be
+freed.  However, bh->b_page is dereferenced to put the page after that,
+which may result in a use-after-free bug.  This patch moves the release
+operation after unlocking and putting the page.
 
-To avoid this situation i40e_set_vsi_promisc() needs to temporarily store
-the error after reporting it. This is still not optimal as multiple
-different errors may occur, so store the first error and hope that's
-the main issue.
+NOTE: The function in question is only called in GC, and in combination
+with current userland tools, address translation using DAT does not occur
+in that function, so the code path that causes this issue will not be
+executed.  However, it is possible to run that code path by intentionally
+modifying the userland GC library or by calling the GC ioctl directly.
 
-Fixes: 37d318d7805f (i40e: Remove scheduling while atomic possibility)
-Reported-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Stefan Assmann <sassmann@kpanic.de>
-Tested-by: Aaron Brown <aaron.f.brown@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[konishi.ryusuke@gmail.com: NOTE added to the commit log]
+Link: https://lkml.kernel.org/r/1543201709-53191-1-git-send-email-bianpan2016@163.com
+Link: https://lkml.kernel.org/r/20230921141731.10073-1-konishi.ryusuke@gmail.com
+Fixes: a3d93f709e89 ("nilfs2: block cache for garbage collection")
+Signed-off-by: Pan Bian <bianpan2016@163.com>
+Reported-by: Ferry Meng <mengferry@linux.alibaba.com>
+Closes: https://lkml.kernel.org/r/20230818092022.111054-1-mengferry@linux.alibaba.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ fs/nilfs2/gcinode.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 291ee55b125f8..30abaf939a76f 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -1198,9 +1198,9 @@ static i40e_status
- i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
- 		     bool unicast_enable, s16 *vl, int num_vlans)
- {
-+	i40e_status aq_ret, aq_tmp = 0;
- 	struct i40e_pf *pf = vf->pf;
- 	struct i40e_hw *hw = &pf->hw;
--	i40e_status aq_ret;
- 	int i;
+--- a/fs/nilfs2/gcinode.c
++++ b/fs/nilfs2/gcinode.c
+@@ -73,10 +73,8 @@ int nilfs_gccache_submit_read_data(struc
+ 		struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
  
- 	/* No VLAN to set promisc on, set on VSI */
-@@ -1249,6 +1249,9 @@ i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
- 				vf->vf_id,
- 				i40e_stat_str(&pf->hw, aq_ret),
- 				i40e_aq_str(&pf->hw, aq_err));
-+
-+			if (!aq_tmp)
-+				aq_tmp = aq_ret;
- 		}
- 
- 		aq_ret = i40e_aq_set_vsi_uc_promisc_on_vlan(hw, seid,
-@@ -1262,8 +1265,15 @@ i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
- 				vf->vf_id,
- 				i40e_stat_str(&pf->hw, aq_ret),
- 				i40e_aq_str(&pf->hw, aq_err));
-+
-+			if (!aq_tmp)
-+				aq_tmp = aq_ret;
- 		}
+ 		err = nilfs_dat_translate(nilfs->ns_dat, vbn, &pbn);
+-		if (unlikely(err)) { /* -EIO, -ENOMEM, -ENOENT */
+-			brelse(bh);
++		if (unlikely(err)) /* -EIO, -ENOMEM, -ENOENT */
+ 			goto failed;
+-		}
  	}
-+
-+	if (aq_tmp)
-+		aq_ret = aq_tmp;
-+
- 	return aq_ret;
+ 
+ 	lock_buffer(bh);
+@@ -102,6 +100,8 @@ int nilfs_gccache_submit_read_data(struc
+  failed:
+ 	unlock_page(bh->b_page);
+ 	put_page(bh->b_page);
++	if (unlikely(err))
++		brelse(bh);
+ 	return err;
  }
  
--- 
-2.40.1
-
 
 
