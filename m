@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4E197BDF61
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 095C47BDDCD
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376988AbjJIN3Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:29:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54642 "EHLO
+        id S1376975AbjJINN3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:13:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377272AbjJIN3U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:29:20 -0400
+        with ESMTP id S1376908AbjJINNQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DDC59C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:29:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF58C433C8;
-        Mon,  9 Oct 2023 13:29:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B35D19AA
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:12:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FFD3C433CB;
+        Mon,  9 Oct 2023 13:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858156;
-        bh=MSp2tRqjM8EbMGEQ+Z/3vc2u2ZIfw/ualgzC7VkNIts=;
+        s=korg; t=1696857142;
+        bh=jmi0tig+iXmdmPIBrxoiwz/GSVYsAHcQM8FWjlPhFeA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JBt0MYktCwyWpJFslX/oeUOU2TimxcX4ZnO3aZ5kr3Hwz1xAZ7CEtGyOq1ymyjOrS
-         1wYFt5f96Ok5Y0krx36sRk8juqOJJNPxr5Zl1n5S764IAAdBSm+Nb5gvTMqLyQkNPf
-         /Qy5r9KDBLeMJc7r64/UWqcQ/VGeEhwKtXJg4qMU=
+        b=YZhgZ6pGBSMHhgVdfd8XoKgoC4kBltxr9XbFyy6JO49rr98I1f4Mh8J3h4I8d9h+/
+         Tu7dBilaE8SDsNDhljpt7ieGqJ90+Eiqqj0QfT6AJuJxbSy2O1TItbajMPGRTyAiDf
+         W5bL3QjSLxxRe9cGEJlHJQvq6X0fAkKIvXNpJINk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 033/131] Input: i8042 - add quirk for TUXEDO Gemini 17 Gen1/Clevo PD70PN
-Date:   Mon,  9 Oct 2023 15:01:13 +0200
-Message-ID: <20231009130117.325657910@linuxfoundation.org>
+        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+6966546b78d050bb0b5d@syzkaller.appspotmail.com
+Subject: [PATCH 6.5 110/163] net: usb: smsc75xx: Fix uninit-value access in __smsc75xx_read_reg
+Date:   Mon,  9 Oct 2023 15:01:14 +0200
+Message-ID: <20231009130127.061478768@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,52 +51,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit eb09074bdb05ffd6bfe77f8b4a41b76ef78c997b ]
+[ Upstream commit e9c65989920f7c28775ec4e0c11b483910fb67b8 ]
 
-The touchpad of this device is both connected via PS/2 and i2c. This causes
-strange behavior when both driver fight for control. The easy fix is to
-prevent the PS/2 driver from accessing the mouse port as the full feature
-set of the touchpad is only supported in the i2c interface anyway.
+syzbot reported the following uninit-value access issue:
 
-The strange behavior in this case is, that when an external screen is
-connected and the notebook is closed, the pointer on the external screen is
-moving to the lower right corner. When the notebook is opened again, this
-movement stops, but the touchpad clicks are unresponsive afterwards until
-reboot.
+=====================================================
+BUG: KMSAN: uninit-value in smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:975 [inline]
+BUG: KMSAN: uninit-value in smsc75xx_bind+0x5c9/0x11e0 drivers/net/usb/smsc75xx.c:1482
+CPU: 0 PID: 8696 Comm: kworker/0:3 Not tainted 5.8.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: usb_hub_wq hub_event
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x21c/0x280 lib/dump_stack.c:118
+ kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:121
+ __msan_warning+0x58/0xa0 mm/kmsan/kmsan_instr.c:215
+ smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:975 [inline]
+ smsc75xx_bind+0x5c9/0x11e0 drivers/net/usb/smsc75xx.c:1482
+ usbnet_probe+0x1152/0x3f90 drivers/net/usb/usbnet.c:1737
+ usb_probe_interface+0xece/0x1550 drivers/usb/core/driver.c:374
+ really_probe+0xf20/0x20b0 drivers/base/dd.c:529
+ driver_probe_device+0x293/0x390 drivers/base/dd.c:701
+ __device_attach_driver+0x63f/0x830 drivers/base/dd.c:807
+ bus_for_each_drv+0x2ca/0x3f0 drivers/base/bus.c:431
+ __device_attach+0x4e2/0x7f0 drivers/base/dd.c:873
+ device_initial_probe+0x4a/0x60 drivers/base/dd.c:920
+ bus_probe_device+0x177/0x3d0 drivers/base/bus.c:491
+ device_add+0x3b0e/0x40d0 drivers/base/core.c:2680
+ usb_set_configuration+0x380f/0x3f10 drivers/usb/core/message.c:2032
+ usb_generic_driver_probe+0x138/0x300 drivers/usb/core/generic.c:241
+ usb_probe_device+0x311/0x490 drivers/usb/core/driver.c:272
+ really_probe+0xf20/0x20b0 drivers/base/dd.c:529
+ driver_probe_device+0x293/0x390 drivers/base/dd.c:701
+ __device_attach_driver+0x63f/0x830 drivers/base/dd.c:807
+ bus_for_each_drv+0x2ca/0x3f0 drivers/base/bus.c:431
+ __device_attach+0x4e2/0x7f0 drivers/base/dd.c:873
+ device_initial_probe+0x4a/0x60 drivers/base/dd.c:920
+ bus_probe_device+0x177/0x3d0 drivers/base/bus.c:491
+ device_add+0x3b0e/0x40d0 drivers/base/core.c:2680
+ usb_new_device+0x1bd4/0x2a30 drivers/usb/core/hub.c:2554
+ hub_port_connect drivers/usb/core/hub.c:5208 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5348 [inline]
+ port_event drivers/usb/core/hub.c:5494 [inline]
+ hub_event+0x5e7b/0x8a70 drivers/usb/core/hub.c:5576
+ process_one_work+0x1688/0x2140 kernel/workqueue.c:2269
+ worker_thread+0x10bc/0x2730 kernel/workqueue.c:2415
+ kthread+0x551/0x590 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:293
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230607173331.851192-1-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Local variable ----buf.i87@smsc75xx_bind created at:
+ __smsc75xx_read_reg drivers/net/usb/smsc75xx.c:83 [inline]
+ smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:968 [inline]
+ smsc75xx_bind+0x485/0x11e0 drivers/net/usb/smsc75xx.c:1482
+ __smsc75xx_read_reg drivers/net/usb/smsc75xx.c:83 [inline]
+ smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:968 [inline]
+ smsc75xx_bind+0x485/0x11e0 drivers/net/usb/smsc75xx.c:1482
+
+This issue is caused because usbnet_read_cmd() reads less bytes than requested
+(zero byte in the reproducer). In this case, 'buf' is not properly filled.
+
+This patch fixes the issue by returning -ENODATA if usbnet_read_cmd() reads
+less bytes than requested.
+
+Fixes: d0cad871703b ("smsc75xx: SMSC LAN75xx USB gigabit ethernet adapter driver")
+Reported-and-tested-by: syzbot+6966546b78d050bb0b5d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6966546b78d050bb0b5d
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230923173549.3284502-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-x86ia64io.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/usb/smsc75xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/serio/i8042-x86ia64io.h b/drivers/input/serio/i8042-x86ia64io.h
-index 92fb2f72511e8..700655741bf28 100644
---- a/drivers/input/serio/i8042-x86ia64io.h
-+++ b/drivers/input/serio/i8042-x86ia64io.h
-@@ -1184,6 +1184,13 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	/* See comment on TUXEDO InfinityBook S17 Gen6 / Clevo NS70MU above */
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "PD5x_7xPNP_PNR_PNN_PNT"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
+diff --git a/drivers/net/usb/smsc75xx.c b/drivers/net/usb/smsc75xx.c
+index 5d6454fedb3f1..78ad2da3ee29b 100644
+--- a/drivers/net/usb/smsc75xx.c
++++ b/drivers/net/usb/smsc75xx.c
+@@ -90,7 +90,9 @@ static int __must_check __smsc75xx_read_reg(struct usbnet *dev, u32 index,
+ 	ret = fn(dev, USB_VENDOR_REQUEST_READ_REGISTER, USB_DIR_IN
+ 		 | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+ 		 0, index, &buf, 4);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < 4)) {
++		ret = ret < 0 ? ret : -ENODATA;
++
+ 		netdev_warn(dev->net, "Failed to read reg index 0x%08x: %d\n",
+ 			    index, ret);
+ 		return ret;
 -- 
 2.40.1
 
