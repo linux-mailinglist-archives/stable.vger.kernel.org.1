@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 294617BDD20
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 359DF7BDFE8
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:35:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376693AbjJINHp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:07:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54294 "EHLO
+        id S1377173AbjJINfY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:35:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376684AbjJINHj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:07:39 -0400
+        with ESMTP id S1377169AbjJINfX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:35:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C669E
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:07:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D59C433C9;
-        Mon,  9 Oct 2023 13:07:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99FC9A3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:35:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AA7C433C8;
+        Mon,  9 Oct 2023 13:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856856;
-        bh=v4G/Ea6XyNvJV5KlSeRteDCOECioiJI+nulTMjzDLHQ=;
+        s=korg; t=1696858522;
+        bh=w62nlUvXblvJXKRWyk1kW730cXErN2Yx2dPFlow11yE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m9n1zbhej6cC1Nn1dTLJGOxr6C1hmx1D8XYTgXVjZ0dOvD8jThwjLhvOXX8U9O+Ah
-         a0jgJQD4ycuqzDHX/8HjREd5gwKlccA5s1PeScxPNzae7mcijswInTomfI0CYYQZ0r
-         4PEjpDtT/M1BZmm11HhK49uXN6w7vABfkCYHYSMU=
+        b=bbEGQ2EfKmabkjLySprhKsdw/lFSuv3eFI+iXa/zOTHq+oCWfXPejNXfB+GTmZMEz
+         x++GDIa41e5rahXtqgOH7tauvk1O6hxkDwKRsv5baC9nmz9tfKIYJ/ii0ghdPv8KYN
+         BD3JrceL+Xege0ID98jlCRbkzAfq8WNf+crdQqeE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Hannes Reinecke <hare@suse.de>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 014/163] ata: libata-scsi: Fix delayed scsi_rescan_device() execution
+Subject: [PATCH 5.10 017/226] netfilter: nf_tables: dont skip expired elements during walk
 Date:   Mon,  9 Oct 2023 14:59:38 +0200
-Message-ID: <20231009130124.410214613@linuxfoundation.org>
+Message-ID: <20231009130127.184362535@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,154 +49,142 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 8b4d9469d0b0e553208ee6f62f2807111fde18b9 ]
+commit 24138933b97b055d486e8064b4a1721702442a9b upstream.
 
-Commit 6aa0365a3c85 ("ata: libata-scsi: Avoid deadlock on rescan after
-device resume") modified ata_scsi_dev_rescan() to check the scsi device
-"is_suspended" power field to ensure that the scsi device associated
-with an ATA device is fully resumed when scsi_rescan_device() is
-executed. However, this fix is problematic as:
-1) It relies on a PM internal field that should not be used without PM
-   device locking protection.
-2) The check for is_suspended and the call to scsi_rescan_device() are
-   not atomic and a suspend PM event may be triggered between them,
-   casuing scsi_rescan_device() to be called on a suspended device and
-   in that function blocking while holding the scsi device lock. This
-   would deadlock a following resume operation.
-These problems can trigger PM deadlocks on resume, especially with
-resume operations triggered quickly after or during suspend operations.
-E.g., a simple bash script like:
+There is an asymmetry between commit/abort and preparation phase if the
+following conditions are met:
 
-for (( i=0; i<10; i++ )); do
-	echo "+2 > /sys/class/rtc/rtc0/wakealarm
-	echo mem > /sys/power/state
-done
+1. set is a verdict map ("1.2.3.4 : jump foo")
+2. timeouts are enabled
 
-that triggers a resume 2 seconds after starting suspending a system can
-quickly lead to a PM deadlock preventing the system from correctly
-resuming.
+In this case, following sequence is problematic:
 
-Fix this by replacing the check on is_suspended with a check on the
-return value given by scsi_rescan_device() as that function will fail if
-called against a suspended device. Also make sure rescan tasks already
-scheduled are first cancelled before suspending an ata port.
+1. element E in set S refers to chain C
+2. userspace requests removal of set S
+3. kernel does a set walk to decrement chain->use count for all elements
+   from preparation phase
+4. kernel does another set walk to remove elements from the commit phase
+   (or another walk to do a chain->use increment for all elements from
+    abort phase)
 
-Fixes: 6aa0365a3c85 ("ata: libata-scsi: Avoid deadlock on rescan after device resume")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+If E has already expired in 1), it will be ignored during list walk, so its use count
+won't have been changed.
+
+Then, when set is culled, ->destroy callback will zap the element via
+nf_tables_set_elem_destroy(), but this function is only safe for
+elements that have been deactivated earlier from the preparation phase:
+lack of earlier deactivate removes the element but leaks the chain use
+count, which results in a WARN splat when the chain gets removed later,
+plus a leak of the nft_chain structure.
+
+Update pipapo_get() not to skip expired elements, otherwise flush
+command reports bogus ENOENT errors.
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Fixes: 8d8540c4f5e0 ("netfilter: nft_set_rbtree: add timeout support")
+Fixes: 9d0982927e79 ("netfilter: nft_hash: add support for timeouts")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c | 16 ++++++++++++++++
- drivers/ata/libata-scsi.c | 33 +++++++++++++++------------------
- 2 files changed, 31 insertions(+), 18 deletions(-)
+ net/netfilter/nf_tables_api.c  |  4 ++++
+ net/netfilter/nft_set_hash.c   |  2 --
+ net/netfilter/nft_set_pipapo.c | 18 ++++++++++++------
+ net/netfilter/nft_set_rbtree.c |  2 --
+ 4 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 76bf185a73c65..6ae9cff6b50c5 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5245,11 +5245,27 @@ static const unsigned int ata_port_suspend_ehi = ATA_EHI_QUIET
- 
- static void ata_port_suspend(struct ata_port *ap, pm_message_t mesg)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 430dcd0f6c3b2..5eef671578a25 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4929,8 +4929,12 @@ static int nf_tables_dump_setelem(const struct nft_ctx *ctx,
+ 				  const struct nft_set_iter *iter,
+ 				  struct nft_set_elem *elem)
  {
-+	/*
-+	 * We are about to suspend the port, so we do not care about
-+	 * scsi_rescan_device() calls scheduled by previous resume operations.
-+	 * The next resume will schedule the rescan again. So cancel any rescan
-+	 * that is not done yet.
-+	 */
-+	cancel_delayed_work_sync(&ap->scsi_rescan_task);
-+
- 	ata_port_request_pm(ap, mesg, 0, ata_port_suspend_ehi, false);
- }
++	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	struct nft_set_dump_args *args;
  
- static void ata_port_suspend_async(struct ata_port *ap, pm_message_t mesg)
++	if (nft_set_elem_expired(ext))
++		return 0;
++
+ 	args = container_of(iter, struct nft_set_dump_args, iter);
+ 	return nf_tables_fill_setelem(args->skb, set, elem);
+ }
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 51d3e6f0934a9..ea7bd8549bea8 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -277,8 +277,6 @@ static void nft_rhash_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (nft_set_elem_expired(&he->ext))
+-			goto cont;
+ 		if (!nft_set_elem_active(&he->ext, iter->genmask))
+ 			goto cont;
+ 
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index ce6c07ea7244b..89fa1fedadf7c 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -566,8 +566,7 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ 			goto out;
+ 
+ 		if (last) {
+-			if (nft_set_elem_expired(&f->mt[b].e->ext) ||
+-			    (genmask &&
++			if ((genmask &&
+ 			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
+ 				goto next_match;
+ 
+@@ -601,8 +600,17 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
+ static void *nft_pipapo_get(const struct net *net, const struct nft_set *set,
+ 			    const struct nft_set_elem *elem, unsigned int flags)
  {
-+	/*
-+	 * We are about to suspend the port, so we do not care about
-+	 * scsi_rescan_device() calls scheduled by previous resume operations.
-+	 * The next resume will schedule the rescan again. So cancel any rescan
-+	 * that is not done yet.
-+	 */
-+	cancel_delayed_work_sync(&ap->scsi_rescan_task);
+-	return pipapo_get(net, set, (const u8 *)elem->key.val.data,
+-			  nft_genmask_cur(net));
++	struct nft_pipapo_elem *ret;
 +
- 	ata_port_request_pm(ap, mesg, 0, ata_port_suspend_ehi, true);
++	ret = pipapo_get(net, set, (const u8 *)elem->key.val.data,
++			 nft_genmask_cur(net));
++	if (IS_ERR(ret))
++		return ret;
++
++	if (nft_set_elem_expired(&ret->ext))
++		return ERR_PTR(-ENOENT);
++
++	return ret;
  }
  
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 22d7c26297889..ed3146c460910 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4900,7 +4900,7 @@ void ata_scsi_dev_rescan(struct work_struct *work)
- 	struct ata_link *link;
- 	struct ata_device *dev;
- 	unsigned long flags;
--	bool delay_rescan = false;
-+	int ret = 0;
+ /**
+@@ -2009,8 +2017,6 @@ static void nft_pipapo_walk(const struct nft_ctx *ctx, struct nft_set *set,
+ 			goto cont;
  
- 	mutex_lock(&ap->scsi_scan_mutex);
- 	spin_lock_irqsave(ap->lock, flags);
-@@ -4909,37 +4909,34 @@ void ata_scsi_dev_rescan(struct work_struct *work)
- 		ata_for_each_dev(dev, link, ENABLED) {
- 			struct scsi_device *sdev = dev->sdev;
+ 		e = f->mt[r].e;
+-		if (nft_set_elem_expired(&e->ext))
+-			goto cont;
  
-+			/*
-+			 * If the port was suspended before this was scheduled,
-+			 * bail out.
-+			 */
-+			if (ap->pflags & ATA_PFLAG_SUSPENDED)
-+				goto unlock;
-+
- 			if (!sdev)
- 				continue;
- 			if (scsi_device_get(sdev))
- 				continue;
+ 		elem.priv = e;
  
--			/*
--			 * If the rescan work was scheduled because of a resume
--			 * event, the port is already fully resumed, but the
--			 * SCSI device may not yet be fully resumed. In such
--			 * case, executing scsi_rescan_device() may cause a
--			 * deadlock with the PM code on device_lock(). Prevent
--			 * this by giving up and retrying rescan after a short
--			 * delay.
--			 */
--			delay_rescan = sdev->sdev_gendev.power.is_suspended;
--			if (delay_rescan) {
--				scsi_device_put(sdev);
--				break;
--			}
--
- 			spin_unlock_irqrestore(ap->lock, flags);
--			scsi_rescan_device(sdev);
-+			ret = scsi_rescan_device(sdev);
- 			scsi_device_put(sdev);
- 			spin_lock_irqsave(ap->lock, flags);
-+
-+			if (ret)
-+				goto unlock;
- 		}
- 	}
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index eae760adae4d5..2aa3776c5fbb7 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -551,8 +551,6 @@ static void nft_rbtree_walk(const struct nft_ctx *ctx,
  
-+unlock:
- 	spin_unlock_irqrestore(ap->lock, flags);
- 	mutex_unlock(&ap->scsi_scan_mutex);
+ 		if (iter->count < iter->skip)
+ 			goto cont;
+-		if (nft_set_elem_expired(&rbe->ext))
+-			goto cont;
+ 		if (!nft_set_elem_active(&rbe->ext, iter->genmask))
+ 			goto cont;
  
--	if (delay_rescan)
-+	/* Reschedule with a delay if scsi_rescan_device() returned an error */
-+	if (ret)
- 		schedule_delayed_work(&ap->scsi_rescan_task,
- 				      msecs_to_jiffies(5));
- }
 -- 
 2.40.1
 
