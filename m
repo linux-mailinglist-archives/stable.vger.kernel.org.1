@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDDC77BDE86
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4E517BDDD6
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234534AbjJINUV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:20:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47444 "EHLO
+        id S1376943AbjJINNo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:13:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234544AbjJINUT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:19 -0400
+        with ESMTP id S1376966AbjJINN1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85915C5
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B8AC433C7;
-        Mon,  9 Oct 2023 13:20:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDED1BC3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:12:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E821C433CA;
+        Mon,  9 Oct 2023 13:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857617;
-        bh=2/CxekGXP6LjhXHqMgpcdUQxYmoV2Ph8Op1/bWzyUUs=;
+        s=korg; t=1696857166;
+        bh=moJnbGEqXwxvlWXDDwfa3G5JQhfuj5lpjG8+u/3mBWY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gw2gkFerQBymdFxusY87hLexUWgrhDdOUH/Q3UEdhbwLuVaGln9JOI0AWSKHzw0uO
-         XrZQmvILpUacPvLjRFJUOnw6xJEBDsQ6KP5dJobJ/EzcN5fjhV8h6n/2Ma+rzk2Ksm
-         guDryx3v3aaDm4x3fQgvMIhiZ9NxI5aFQM/TiY84=
+        b=z8I7+iRZumsDclVU9MFTTBPSqmYWBbEpcTPnNCoGBrCkijgtbDaIr2QFx36KFQafh
+         Z3LK7o2JXLmh/2kZ6OR6sMRgFIr5DAJIXu8JseTPxk5VTwPG14oN5lGYSeAFBAsoe6
+         fIxouKx3lYOrmDuDhKHGfnqmuopuZ556euZ7+0Gk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Junxiao Bi <junxiao.bi@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/162] wifi: iwlwifi: mvm: Fix a memory corruption issue
+Subject: [PATCH 6.5 093/163] scsi: target: core: Fix deadlock due to recursive locking
 Date:   Mon,  9 Oct 2023 15:00:57 +0200
-Message-ID: <20231009130125.015356558@linuxfoundation.org>
+Message-ID: <20231009130126.601369628@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,64 +50,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-[ Upstream commit 8ba438ef3cacc4808a63ed0ce24d4f0942cfe55d ]
+[ Upstream commit a154f5f643c6ecddd44847217a7a3845b4350003 ]
 
-A few lines above, space is kzalloc()'ed for:
-	sizeof(struct iwl_nvm_data) +
-	sizeof(struct ieee80211_channel) +
-	sizeof(struct ieee80211_rate)
+The following call trace shows a deadlock issue due to recursive locking of
+mutex "device_mutex". First lock acquire is in target_for_each_device() and
+second in target_free_device().
 
-'mvm->nvm_data' is a 'struct iwl_nvm_data', so it is fine.
+ PID: 148266   TASK: ffff8be21ffb5d00  CPU: 10   COMMAND: "iscsi_ttx"
+  #0 [ffffa2bfc9ec3b18] __schedule at ffffffffa8060e7f
+  #1 [ffffa2bfc9ec3ba0] schedule at ffffffffa8061224
+  #2 [ffffa2bfc9ec3bb8] schedule_preempt_disabled at ffffffffa80615ee
+  #3 [ffffa2bfc9ec3bc8] __mutex_lock at ffffffffa8062fd7
+  #4 [ffffa2bfc9ec3c40] __mutex_lock_slowpath at ffffffffa80631d3
+  #5 [ffffa2bfc9ec3c50] mutex_lock at ffffffffa806320c
+  #6 [ffffa2bfc9ec3c68] target_free_device at ffffffffc0935998 [target_core_mod]
+  #7 [ffffa2bfc9ec3c90] target_core_dev_release at ffffffffc092f975 [target_core_mod]
+  #8 [ffffa2bfc9ec3ca0] config_item_put at ffffffffa79d250f
+  #9 [ffffa2bfc9ec3cd0] config_item_put at ffffffffa79d2583
+ #10 [ffffa2bfc9ec3ce0] target_devices_idr_iter at ffffffffc0933f3a [target_core_mod]
+ #11 [ffffa2bfc9ec3d00] idr_for_each at ffffffffa803f6fc
+ #12 [ffffa2bfc9ec3d60] target_for_each_device at ffffffffc0935670 [target_core_mod]
+ #13 [ffffa2bfc9ec3d98] transport_deregister_session at ffffffffc0946408 [target_core_mod]
+ #14 [ffffa2bfc9ec3dc8] iscsit_close_session at ffffffffc09a44a6 [iscsi_target_mod]
+ #15 [ffffa2bfc9ec3df0] iscsit_close_connection at ffffffffc09a4a88 [iscsi_target_mod]
+ #16 [ffffa2bfc9ec3df8] finish_task_switch at ffffffffa76e5d07
+ #17 [ffffa2bfc9ec3e78] iscsit_take_action_for_connection_exit at ffffffffc0991c23 [iscsi_target_mod]
+ #18 [ffffa2bfc9ec3ea0] iscsi_target_tx_thread at ffffffffc09a403b [iscsi_target_mod]
+ #19 [ffffa2bfc9ec3f08] kthread at ffffffffa76d8080
+ #20 [ffffa2bfc9ec3f50] ret_from_fork at ffffffffa8200364
 
-At the end of this structure, there is the 'channels' flex array.
-Each element is of type 'struct ieee80211_channel'.
-So only 1 element is allocated in this array.
-
-When doing:
-  mvm->nvm_data->bands[0].channels = mvm->nvm_data->channels;
-We point at the first element of the 'channels' flex array.
-So this is fine.
-
-However, when doing:
-  mvm->nvm_data->bands[0].bitrates =
-			(void *)((u8 *)mvm->nvm_data->channels + 1);
-because of the "(u8 *)" cast, we add only 1 to the address of the beginning
-of the flex array.
-
-It is likely that we want point at the 'struct ieee80211_rate' allocated
-just after.
-
-Remove the spurious casting so that the pointer arithmetic works as
-expected.
-
-Fixes: 8ca151b568b6 ("iwlwifi: add the MVM driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/23f0ec986ef1529055f4f93dcb3940a6cf8d9a94.1690143750.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 36d4cb460bcb ("scsi: target: Avoid that EXTENDED COPY commands trigger lock inversion")
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Link: https://lore.kernel.org/r/20230918225848.66463-1-junxiao.bi@oracle.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/target/target_core_device.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 887d0789c96c3..2e3c98eaa400c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -796,7 +796,7 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm)
- 		mvm->nvm_data->bands[0].n_channels = 1;
- 		mvm->nvm_data->bands[0].n_bitrates = 1;
- 		mvm->nvm_data->bands[0].bitrates =
--			(void *)((u8 *)mvm->nvm_data->channels + 1);
-+			(void *)(mvm->nvm_data->channels + 1);
- 		mvm->nvm_data->bands[0].bitrates->hw_value = 10;
- 	}
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index b7ac60f4a2194..b6523d4b9259e 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -843,7 +843,6 @@ sector_t target_to_linux_sector(struct se_device *dev, sector_t lb)
+ EXPORT_SYMBOL(target_to_linux_sector);
+ 
+ struct devices_idr_iter {
+-	struct config_item *prev_item;
+ 	int (*fn)(struct se_device *dev, void *data);
+ 	void *data;
+ };
+@@ -853,11 +852,9 @@ static int target_devices_idr_iter(int id, void *p, void *data)
+ {
+ 	struct devices_idr_iter *iter = data;
+ 	struct se_device *dev = p;
++	struct config_item *item;
+ 	int ret;
+ 
+-	config_item_put(iter->prev_item);
+-	iter->prev_item = NULL;
+-
+ 	/*
+ 	 * We add the device early to the idr, so it can be used
+ 	 * by backend modules during configuration. We do not want
+@@ -867,12 +864,13 @@ static int target_devices_idr_iter(int id, void *p, void *data)
+ 	if (!target_dev_configured(dev))
+ 		return 0;
+ 
+-	iter->prev_item = config_item_get_unless_zero(&dev->dev_group.cg_item);
+-	if (!iter->prev_item)
++	item = config_item_get_unless_zero(&dev->dev_group.cg_item);
++	if (!item)
+ 		return 0;
+ 	mutex_unlock(&device_mutex);
+ 
+ 	ret = iter->fn(dev, iter->data);
++	config_item_put(item);
+ 
+ 	mutex_lock(&device_mutex);
+ 	return ret;
+@@ -895,7 +893,6 @@ int target_for_each_device(int (*fn)(struct se_device *dev, void *data),
+ 	mutex_lock(&device_mutex);
+ 	ret = idr_for_each(&devices_idr, target_devices_idr_iter, &iter);
+ 	mutex_unlock(&device_mutex);
+-	config_item_put(iter.prev_item);
+ 	return ret;
+ }
  
 -- 
 2.40.1
