@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86DB37BDDBD
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 274A97BDE43
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376875AbjJINM7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:12:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42196 "EHLO
+        id S1376981AbjJINRm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:17:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376899AbjJINMs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:48 -0400
+        with ESMTP id S1376986AbjJINRl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A46226AB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD43C433D9;
-        Mon,  9 Oct 2023 13:11:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B266991
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:17:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91CFC433C7;
+        Mon,  9 Oct 2023 13:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857098;
-        bh=29+J4yeKJgHbt9jWocVrtge4slbNkv3Uusrcds9+1ks=;
+        s=korg; t=1696857459;
+        bh=Q/U5fLrR6w9ER1LNqbdTr91noNQ83AyAgj6MM0UCiVs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H5m2aDEblflbDylooWFQ+79X5bmcRCMFd3rH7/B8iQqx0Oou5OVM6EhrrOKSLhfW4
-         /+LXufYB24Y2R7xrl5xumqttH8U7UxNrqPpn8MWjRiPidLuCtZtHATxyH49Y+493eO
-         wWkjGKgL/FUlwcjgXVhggwVuKKnwbmy55OJ5h0QE=
+        b=NXEFgXwcwzMHwa/fJZzQFVhh47qPk6EjdnvnjbUho1Hazi0eLtgiPA/TGceMlAFnh
+         32GzZgRlBznH9qItes4fJPOmavlWvkZYtN4iCqP//V3kyALkyj+CmlASqs8tNodz6Y
+         geG/5B35A9FEUvGMZmFH7+1JIlsbElmnLB//gIZ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Thomas=20H=C3=BChn?= <thomas.huehn@hs-nordhausen.de>,
-        Felix Fietkau <nbd@nbd.name>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 069/163] wifi: mac80211: fix mesh id corruption on 32 bit systems
-Date:   Mon,  9 Oct 2023 15:00:33 +0200
-Message-ID: <20231009130125.955644247@linuxfoundation.org>
+        "netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Yajun Deng" <yajun.deng@linux.dev>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Yajun Deng <yajun.deng@linux.dev>
+Subject: [PATCH 6.1 053/162] i40e: fix the wrong PTP frequency calculation
+Date:   Mon,  9 Oct 2023 15:00:34 +0200
+Message-ID: <20231009130124.398550576@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,81 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Yajun Deng <yajun.deng@linux.dev>
 
-[ Upstream commit 6e48ebffc2db5419b3a51cfc509bde442252b356 ]
+The new adjustment should be based on the base frequency, not the
+I40E_PTP_40GB_INCVAL in i40e_ptp_adjfine().
 
-Since the changed field size was increased to u64, mesh_bss_info_changed
-pulls invalid bits from the first 3 bytes of the mesh id, clears them, and
-passes them on to ieee80211_link_info_change_notify, because
-ifmsh->mbss_changed was not updated to match its size.
-Fix this by turning into ifmsh->mbss_changed into an unsigned long array with
-64 bit size.
+This issue was introduced in commit 3626a690b717 ("i40e: use
+mul_u64_u64_div_u64 for PTP frequency calculation"), frequency is left
+just as base I40E_PTP_40GB_INCVAL before the commit. After the commit,
+frequency is the I40E_PTP_40GB_INCVAL times the ptp_adj_mult value.
+But then the diff is applied on the wrong value, and no multiplication
+is done afterwards.
 
-Fixes: 15ddba5f4311 ("wifi: mac80211: consistently use u64 for BSS changes")
-Reported-by: Thomas Hühn <thomas.huehn@hs-nordhausen.de>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://lore.kernel.org/r/20230913050134.53536-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It was accidentally fixed in commit 1060707e3809 ("ptp: introduce helpers
+to adjust by scaled parts per million"). It uses adjust_by_scaled_ppm
+correctly performs the calculation and uses the base adjustment, so
+there's no error here. But it is a new feature and doesn't need to
+backported to the stable releases.
+
+This issue affects both v6.0 and v6.1, and the v6.1 version is an LTS
+release. Therefore, the patch only needs to be applied to v6.1 stable.
+
+Fixes: 3626a690b717 ("i40e: use mul_u64_u64_div_u64 for PTP frequency calculation")
+Cc: <stable@vger.kernel.org> # 6.1
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/ieee80211_i.h | 2 +-
- net/mac80211/mesh.c        | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_ptp.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 91633a0b723e0..f8cd94ba55ccc 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -676,7 +676,7 @@ struct ieee80211_if_mesh {
- 	struct timer_list mesh_path_root_timer;
+--- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+@@ -361,9 +361,9 @@ static int i40e_ptp_adjfine(struct ptp_c
+ 				   1000000ULL << 16);
  
- 	unsigned long wrkq_flags;
--	unsigned long mbss_changed;
-+	unsigned long mbss_changed[64 / BITS_PER_LONG];
+ 	if (neg_adj)
+-		adj = I40E_PTP_40GB_INCVAL - diff;
++		adj = freq - diff;
+ 	else
+-		adj = I40E_PTP_40GB_INCVAL + diff;
++		adj = freq + diff;
  
- 	bool userspace_handles_dfs;
- 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index af8c5fc2db149..e31c312c124a1 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1175,7 +1175,7 @@ void ieee80211_mbss_info_change_notify(struct ieee80211_sub_if_data *sdata,
- 
- 	/* if we race with running work, worst case this work becomes a noop */
- 	for_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_BYTE)
--		set_bit(bit, &ifmsh->mbss_changed);
-+		set_bit(bit, ifmsh->mbss_changed);
- 	set_bit(MESH_WORK_MBSS_CHANGED, &ifmsh->wrkq_flags);
- 	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
- }
-@@ -1257,7 +1257,7 @@ void ieee80211_stop_mesh(struct ieee80211_sub_if_data *sdata)
- 
- 	/* clear any mesh work (for next join) we may have accrued */
- 	ifmsh->wrkq_flags = 0;
--	ifmsh->mbss_changed = 0;
-+	memset(ifmsh->mbss_changed, 0, sizeof(ifmsh->mbss_changed));
- 
- 	local->fif_other_bss--;
- 	atomic_dec(&local->iff_allmultis);
-@@ -1724,9 +1724,9 @@ static void mesh_bss_info_changed(struct ieee80211_sub_if_data *sdata)
- 	u32 bit;
- 	u64 changed = 0;
- 
--	for_each_set_bit(bit, &ifmsh->mbss_changed,
-+	for_each_set_bit(bit, ifmsh->mbss_changed,
- 			 sizeof(changed) * BITS_PER_BYTE) {
--		clear_bit(bit, &ifmsh->mbss_changed);
-+		clear_bit(bit, ifmsh->mbss_changed);
- 		changed |= BIT(bit);
- 	}
- 
--- 
-2.40.1
-
+ 	wr32(hw, I40E_PRTTSYN_INC_L, adj & 0xFFFFFFFF);
+ 	wr32(hw, I40E_PRTTSYN_INC_H, adj >> 32);
 
 
