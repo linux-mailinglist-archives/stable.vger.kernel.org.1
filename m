@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19EBF7BDE4F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D24A7BDDAC
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:12:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377007AbjJINSM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:18:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50908 "EHLO
+        id S1376920AbjJINML (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:12:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377013AbjJINSM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:18:12 -0400
+        with ESMTP id S1376929AbjJINLx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:11:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F40219F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:18:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCD4C433C9;
-        Mon,  9 Oct 2023 13:18:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 714CE198B
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32276C433CB;
+        Mon,  9 Oct 2023 13:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857490;
-        bh=yJ4eunqdONS0u3+n1Q+Ygy2BQw0Ap3qm2zNc8p4wdmM=;
+        s=korg; t=1696857054;
+        bh=AePw2ssX9FW6ZAGFkr1DetSDajdfdshOLHcNjzQaMVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kz2ouCGc6CifISRSaq99lDN+WoCtuK+tDTinxxSS6q9aqxFw7+4aSZNQ24g9fnVK1
-         BFGce0JQWR71BttMswEz8xZ2eyzNnHCYnN6micjw4ppdtfm+xdaZfHIPekX1xRc90b
-         uiA+5U0NUh25/69XavywCHFvBc9Z2BK2R6R9WIF0=
+        b=V0l8AEu0Jv15BYcd7I2LDgVGMsvI3fkom6TTyAgDPAqQ+tZhItPDgI3Tqav6YpvDF
+         0fuYSbB550Yc8m2NXOw91J9ueCvBufCKeHbzrwY0q/4IN/x3Ucq+TilVJUpVtfXQH7
+         ++KQ6JgYP4/HtdXJlOQQzVdUO7EbU6e7QXEArrRA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rui Zhu <zhurui3@huawei.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/162] iommu/arm-smmu-v3: Avoid constructing invalid range commands
-Date:   Mon,  9 Oct 2023 15:00:26 +0200
-Message-ID: <20231009130124.184025651@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 063/163] wifi: iwlwifi: mvm: Fix a memory corruption issue
+Date:   Mon,  9 Oct 2023 15:00:27 +0200
+Message-ID: <20231009130125.781043521@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,67 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit eb6c97647be227822c7ce23655482b05e348fba5 ]
+[ Upstream commit 8ba438ef3cacc4808a63ed0ce24d4f0942cfe55d ]
 
-Although io-pgtable's non-leaf invalidations are always for full tables,
-I missed that SVA also uses non-leaf invalidations, while being at the
-mercy of whatever range the MMU notifier throws at it. This means it
-definitely wants the previous TTL fix as well, since it also doesn't
-know exactly which leaf level(s) may need invalidating, but it can also
-give us less-aligned ranges wherein certain corners may lead to building
-an invalid command where TTL, Num and Scale are all 0. It should be fine
-to handle this by over-invalidating an extra page, since falling back to
-a non-range command opens up a whole can of errata-flavoured worms.
+A few lines above, space is kzalloc()'ed for:
+	sizeof(struct iwl_nvm_data) +
+	sizeof(struct ieee80211_channel) +
+	sizeof(struct ieee80211_rate)
 
-Fixes: 6833b8f2e199 ("iommu/arm-smmu-v3: Set TTL invalidation hint better")
-Reported-by: Rui Zhu <zhurui3@huawei.com>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/b99cfe71af2bd93a8a2930f20967fb2a4f7748dd.1694432734.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+'mvm->nvm_data' is a 'struct iwl_nvm_data', so it is fine.
+
+At the end of this structure, there is the 'channels' flex array.
+Each element is of type 'struct ieee80211_channel'.
+So only 1 element is allocated in this array.
+
+When doing:
+  mvm->nvm_data->bands[0].channels = mvm->nvm_data->channels;
+We point at the first element of the 'channels' flex array.
+So this is fine.
+
+However, when doing:
+  mvm->nvm_data->bands[0].bitrates =
+			(void *)((u8 *)mvm->nvm_data->channels + 1);
+because of the "(u8 *)" cast, we add only 1 to the address of the beginning
+of the flex array.
+
+It is likely that we want point at the 'struct ieee80211_rate' allocated
+just after.
+
+Remove the spurious casting so that the pointer arithmetic works as
+expected.
+
+Fixes: 8ca151b568b6 ("iwlwifi: add the MVM driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/23f0ec986ef1529055f4f93dcb3940a6cf8d9a94.1690143750.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index becf37c088772..8966f7d5aab61 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -1886,18 +1886,23 @@ static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
- 		/* Get the leaf page size */
- 		tg = __ffs(smmu_domain->domain.pgsize_bitmap);
- 
-+		num_pages = size >> tg;
-+
- 		/* Convert page size of 12,14,16 (log2) to 1,2,3 */
- 		cmd->tlbi.tg = (tg - 10) / 2;
- 
- 		/*
--		 * Determine what level the granule is at. For non-leaf, io-pgtable
--		 * assumes .tlb_flush_walk can invalidate multiple levels at once,
--		 * so ignore the nominal last-level granule and leave TTL=0.
-+		 * Determine what level the granule is at. For non-leaf, both
-+		 * io-pgtable and SVA pass a nominal last-level granule because
-+		 * they don't know what level(s) actually apply, so ignore that
-+		 * and leave TTL=0. However for various errata reasons we still
-+		 * want to use a range command, so avoid the SVA corner case
-+		 * where both scale and num could be 0 as well.
- 		 */
- 		if (cmd->tlbi.leaf)
- 			cmd->tlbi.ttl = 4 - ((ilog2(granule) - 3) / (tg - 3));
--
--		num_pages = size >> tg;
-+		else if ((num_pages & CMDQ_TLBI_RANGE_NUM_MAX) == 1)
-+			num_pages++;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 1f5db65a088d3..1d5ee4330f29f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -802,7 +802,7 @@ int iwl_run_init_mvm_ucode(struct iwl_mvm *mvm)
+ 		mvm->nvm_data->bands[0].n_channels = 1;
+ 		mvm->nvm_data->bands[0].n_bitrates = 1;
+ 		mvm->nvm_data->bands[0].bitrates =
+-			(void *)((u8 *)mvm->nvm_data->channels + 1);
++			(void *)(mvm->nvm_data->channels + 1);
+ 		mvm->nvm_data->bands[0].bitrates->hw_value = 10;
  	}
  
- 	cmds.num = 0;
 -- 
 2.40.1
 
