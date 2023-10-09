@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCCAD7BDE3F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 631687BDD81
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376993AbjJINRb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:17:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36344 "EHLO
+        id S1376847AbjJINKS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:10:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376966AbjJINR2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:28 -0400
+        with ESMTP id S1376823AbjJINKM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:10:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC7994
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:17:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C985C433C8;
-        Mon,  9 Oct 2023 13:17:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F32FC8F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D73C433C7;
+        Mon,  9 Oct 2023 13:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857446;
-        bh=tPLu6nM3piiVI7GEqDqVF/TURvS71zUm6lQalD0V8W4=;
+        s=korg; t=1696857010;
+        bh=3/0nhwg9qMpNJRYqBDSIfTplR/m7vrxnVVrQ2Nn8s18=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TC0iTxQBztya8gVwlb3c+d4SqGg926+9amRO8cYyrMDJ0qaKc1JJziAoLoC2rEHtS
-         YHqeNXf4J8tpxgyPata5r43LgsZi0D7o7uMRkEiIn6mJk4qQwYDTFinMsakN93SkN4
-         hqHvy4oQ5AG76VlBWsG/yVqSTmGgigNqrz6rROLQ=
+        b=MytGULXhnQYNRUZ4i8jCd5ZnMDRw1HilId8olbeL3YUZdyjxSxZbdFfXo/czpRs2h
+         UVekp3O6iX8UgXCRJ2mcZ50mMaLIqVwnefeo3UYKGsFLmXrLmRg2kRAqg/jiLJYrmP
+         RNEErlrNENarhouxPqtq69hh2o6z+GIGs/lFVkT0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Coddington <bcodding@redhat.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/162] NFS: rename nfs_client_kset to nfs_kset
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.5 039/163] wifi: mwifiex: Fix tlv_buf_left calculation
 Date:   Mon,  9 Oct 2023 15:00:03 +0200
-Message-ID: <20231009130123.561800030@linuxfoundation.org>
+Message-ID: <20231009130125.086105932@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,77 +50,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 8b18a2edecc0741b0eecf8b18fdb356a0f8682de ]
+commit eec679e4ac5f47507774956fb3479c206e761af7 upstream.
 
-Be brief and match the subsystem name.  There's no need to distinguish this
-kset variable from the server.
+In a TLV encoding scheme, the Length part represents the length after
+the header containing the values for type and length. In this case,
+`tlv_len` should be:
 
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 956fd46f97d2 ("NFSv4: Fix a state manager thread deadlock regression")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+tlv_len == (sizeof(*tlv_rxba) - 1) - sizeof(tlv_rxba->header) + tlv_bitmap_len
+
+Notice that the `- 1` accounts for the one-element array `bitmap`, which
+1-byte size is already included in `sizeof(*tlv_rxba)`.
+
+So, if the above is correct, there is a double-counting of some members
+in `struct mwifiex_ie_types_rxba_sync`, when `tlv_buf_left` and `tmp`
+are calculated:
+
+968                 tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+969                 tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
+
+in specific, members:
+
+drivers/net/wireless/marvell/mwifiex/fw.h:777
+ 777         u8 mac[ETH_ALEN];
+ 778         u8 tid;
+ 779         u8 reserved;
+ 780         __le16 seq_num;
+ 781         __le16 bitmap_len;
+
+This is clearly wrong, and affects the subsequent decoding of data in
+`event_buf` through `tlv_rxba`:
+
+970                 tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
+
+Fix this by using `sizeof(tlv_rxba->header)` instead of `sizeof(*tlv_rxba)`
+in the calculation of `tlv_buf_left` and `tmp`.
+
+This results in the following binary differences before/after changes:
+
+| drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
+| @@ -4698,11 +4698,11 @@
+|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:968
+|                 tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
+| -    1da7:      lea    -0x11(%rbx),%edx
+| +    1da7:      lea    -0x4(%rbx),%edx
+|      1daa:      movzwl %bp,%eax
+|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:969
+|                 tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
+| -    1dad:      lea    0x11(%r15,%rbp,1),%r15
+| +    1dad:      lea    0x4(%r15,%rbp,1),%r15
+
+The above reflects the desired change: avoid counting 13 too many bytes;
+which is the total size of the double-counted members in
+`struct mwifiex_ie_types_rxba_sync`:
+
+$ pahole -C mwifiex_ie_types_rxba_sync drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
+struct mwifiex_ie_types_rxba_sync {
+	struct mwifiex_ie_types_header header;           /*     0     4 */
+
+     |-----------------------------------------------------------------------
+     |  u8                         mac[6];               /*     4     6 */  |
+     |	u8                         tid;                  /*    10     1 */  |
+     |  u8                         reserved;             /*    11     1 */  |
+     | 	__le16                     seq_num;              /*    12     2 */  |
+     | 	__le16                     bitmap_len;           /*    14     2 */  |
+     |  u8                         bitmap[1];            /*    16     1 */  |
+     |----------------------------------------------------------------------|
+								  | 13 bytes|
+								  -----------
+
+	/* size: 17, cachelines: 1, members: 7 */
+	/* last cacheline: 17 bytes */
+} __attribute__((__packed__));
+
+Fixes: 99ffe72cdae4 ("mwifiex: process rxba_sync event")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/06668edd68e7a26bbfeebd1201ae077a2a7a8bce.1692931954.git.gustavoars@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/sysfs.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/sysfs.c b/fs/nfs/sysfs.c
-index a6f7403669631..edb535a0ff973 100644
---- a/fs/nfs/sysfs.c
-+++ b/fs/nfs/sysfs.c
-@@ -18,7 +18,7 @@
- #include "sysfs.h"
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -965,8 +965,8 @@ void mwifiex_11n_rxba_sync_event(struct
+ 			}
+ 		}
  
- struct kobject *nfs_client_kobj;
--static struct kset *nfs_client_kset;
-+static struct kset *nfs_kset;
- 
- static void nfs_netns_object_release(struct kobject *kobj)
- {
-@@ -55,13 +55,13 @@ static struct kobject *nfs_netns_object_alloc(const char *name,
- 
- int nfs_sysfs_init(void)
- {
--	nfs_client_kset = kset_create_and_add("nfs", NULL, fs_kobj);
--	if (!nfs_client_kset)
-+	nfs_kset = kset_create_and_add("nfs", NULL, fs_kobj);
-+	if (!nfs_kset)
- 		return -ENOMEM;
--	nfs_client_kobj = nfs_netns_object_alloc("net", nfs_client_kset, NULL);
-+	nfs_client_kobj = nfs_netns_object_alloc("net", nfs_kset, NULL);
- 	if  (!nfs_client_kobj) {
--		kset_unregister(nfs_client_kset);
--		nfs_client_kset = NULL;
-+		kset_unregister(nfs_kset);
-+		nfs_kset = NULL;
- 		return -ENOMEM;
+-		tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
+-		tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
++		tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
++		tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
+ 		tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
  	}
- 	return 0;
-@@ -70,7 +70,7 @@ int nfs_sysfs_init(void)
- void nfs_sysfs_exit(void)
- {
- 	kobject_put(nfs_client_kobj);
--	kset_unregister(nfs_client_kset);
-+	kset_unregister(nfs_kset);
  }
- 
- static ssize_t nfs_netns_identifier_show(struct kobject *kobj,
-@@ -159,7 +159,7 @@ static struct nfs_netns_client *nfs_netns_client_alloc(struct kobject *parent,
- 	p = kzalloc(sizeof(*p), GFP_KERNEL);
- 	if (p) {
- 		p->net = net;
--		p->kobject.kset = nfs_client_kset;
-+		p->kobject.kset = nfs_kset;
- 		if (kobject_init_and_add(&p->kobject, &nfs_netns_client_type,
- 					parent, "nfs_client") == 0)
- 			return p;
--- 
-2.40.1
-
 
 
