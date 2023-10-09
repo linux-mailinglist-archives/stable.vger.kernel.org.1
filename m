@@ -2,47 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84E9E7BE1D1
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 858797BDE23
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:16:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377565AbjJINy1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:54:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55264 "EHLO
+        id S1376996AbjJINQ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:16:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377558AbjJINyX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:54:23 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E50394
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:54:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BC2C433CD;
-        Mon,  9 Oct 2023 13:54:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859662;
-        bh=4KFQTdTb3O/ww/t1IfSFoWPsvQIEliZOEcX5w11BncY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CPzS8bymDH57uJ/5YsqR6KhXmnOwCfqmldmfQ6HnTBLjc2W0xkWUKraH+qw9OuKCn
-         VFnVXybOmN0ruyGtEc8031iYoxS3C/bnr6plLitC2Z8zuRul827JeYgbApRx9vR3cb
-         afL0IJ7+Uk0bF9UZSsPGsYPXt1L3EQn3tq+Ui9II=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jann Horn <jannh@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 4.19 91/91] dccp: fix dccp_v4_err()/dccp_v6_err() again
-Date:   Mon,  9 Oct 2023 15:07:03 +0200
-Message-ID: <20231009130114.706367075@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        with ESMTP id S1376959AbjJINQO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:16:14 -0400
+Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F11B6;
+        Mon,  9 Oct 2023 06:16:10 -0700 (PDT)
+Content-Type: text/plain;
+        charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
+        s=mail; t=1696857365;
+        bh=LM+eM7modYOnqrVh/3dhXyW83yRoxFdZ9tfpmyW8ugk=;
+        h=Subject:From:In-Reply-To:Date:Cc:References:To;
+        b=MVEFcIZdfqdBw2CTs80FmBM5+kruiOb2zT9RBE/uUo01DSUTspQfTDwOYLBuXxc8v
+         ShItfhs2wPOlM2nJQGAvUmPUv6LlhRUDLCA+nxMmPzxP3a3kyOAGXm0k1mccSrZbzq
+         t+46LIg1WWloKeUTRWfhvH2vozIj2OFO3oKAlEns=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC
+ requirement
+From:   Christian Theune <ct@flyingcircus.io>
+In-Reply-To: <31b59df2-d668-478e-a546-c3805f74c3a3@gmail.com>
+Date:   Mon, 9 Oct 2023 15:15:44 +0200
+Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4220ECCB-4B99-43AD-BE6B-36AE86B72871@flyingcircus.io>
+References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
+ <207a8e5d-5f2a-4b33-9fc1-86811ad9f48a@leemhuis.info>
+ <879EA0B7-F334-4A17-92D5-166F627BEE6F@flyingcircus.io>
+ <740b0d7e-c789-47b5-b419-377014a99f22@leemhuis.info>
+ <BBEA77E4-D376-45CE-9A93-415F2E0703D7@flyingcircus.io>
+ <982dc76d-0832-4c8a-a486-5e6a2f5fb49a@gmail.com>
+ <0AAB089F-A296-472B-8E6F-0D60B9ACCB95@flyingcircus.io>
+ <31b59df2-d668-478e-a546-c3805f74c3a3@gmail.com>
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -50,129 +53,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+Hi,
 
-------------------
+> On 6. Oct 2023, at 16:13, Bagas Sanjaya <bagasdotme@gmail.com> wrote:
+>>=20
+>>> You need to have testing system, unfortunately. It should mimic your
+>>> production setup as much as possible. Your organization may have one
+>>> already, but if not, you have to arrange for it.
+>>=20
+>> I=E2=80=99m able to do that, I just didn=E2=80=99t have one at hand =
+at this very moment and no time to prepare one within a few minutes. =
+I=E2=80=99ll try to reproduce with a 6.6rc in the next days.
+>>=20
+>=20
+> OK, thanks!
 
-From: Eric Dumazet <edumazet@google.com>
+So, I got around running this with 6.6-rc5 today and yes, it=E2=80=99s =
+broken there as well:
 
-commit 6af289746a636f71f4c0535a9801774118486c7a upstream.
+Here=E2=80=99s the output from my testing environment:
 
-dh->dccph_x is the 9th byte (offset 8) in "struct dccp_hdr",
-not in the "byte 7" as Jann claimed.
+#### snip
+subtest: try hfsc
+machine: must succeed: uname -a
+(finished: must succeed: uname -a, in 0.02 seconds)
+Linux machine 6.6.0-rc5 #1-NixOS SMP PREEMPT_DYNAMIC Tue Jan  1 00:00:00 =
+UTC 1980 x86_64 GNU/Linux
 
-We need to make sure the ICMP messages are big enough,
-using more standard ways (no more assumptions).
+machine: must succeed: modprobe ifb
+(finished: must succeed: modprobe ifb, in 0.02 seconds)
+machine: must succeed: modprobe act_mirred
+machine # [    9.187251] (udev-worker)[851]: ifb0: Could not set Alias=3D,=
+ MACAddress=3D/MACAddressPolicy=3D, TransmitQueues=3D, ReceiveQueues=3D, =
+TransmitQueueLength=3D, MTUBytes=3D, GenericSegmentOffloadMaxBytes=3D or =
+GenericSegmentOffloadMaxSegments=3D, ignoring: Operation not supported
+machine # [    9.190616] (udev-worker)[851]: Network interface =
+NamePolicy=3D disabled on kernel command line.
+machine # [    9.192605] (udev-worker)[928]: ifb1: Could not set Alias=3D,=
+ MACAddress=3D/MACAddressPolicy=3D, TransmitQueues=3D, ReceiveQueues=3D, =
+TransmitQueueLength=3D, MTUBytes=3D, GenericSegmentOffloadMaxBytes=3D or =
+GenericSegmentOffloadMaxSegments=3D, ignoring: Operation not supported
+machine # [    9.197607] (udev-worker)[928]: Network interface =
+NamePolicy=3D disabled on kernel command line.
+machine # [    9.292073] Mirror/redirect action on
+(finished: must succeed: modprobe act_mirred, in 0.04 seconds)
+machine: must succeed: tc qdisc add dev eth0 handle ffff: ingress
+(finished: must succeed: tc qdisc add dev eth0 handle ffff: ingress, in =
+0.05 seconds)
+machine: must succeed: ifconfig ifb0 up
+machine # [    9.276585] dhcpcd[672]: ifb0: waiting for carrier
+machine # [    9.278532] dhcpcd[672]: ifb0: carrier acquired
+machine # [    9.287692] dhcpcd[672]: ifb0: IAID df:2e:ad:2b
+machine # [    9.288225] dhcpcd[672]: ifb0: adding address =
+fe80::40d2:dfff:fe2e:ad2b
+(finished: must succeed: ifconfig ifb0 up, in 0.02 seconds)
+machine: must succeed: tc filter add dev eth0 parent ffff: protocol all =
+u32 match u32 0 0 action mirred egress redirect dev ifb0
+machine # [    9.396408] u32 classifier
+machine # [    9.396613]     Performance counters on
+machine # [    9.396895]     input device check on
+machine # [    9.397148]     Actions configured
+(finished: must succeed: tc filter add dev eth0 parent ffff: protocol =
+all u32 match u32 0 0 action mirred egress redirect dev ifb0, in 0.04 =
+seconds)
+machine: must succeed: tc qdisc add dev ifb0 root handle 1: hfsc default =
+1
+machine # [    9.330784] dhcpcd[672]: ifb1: waiting for carrier
+machine # [    9.332246] dhcpcd[672]: ifb1: carrier acquired
+machine # [    9.343280] dhcpcd[672]: ifb1: IAID ab:f5:e8:5d
+machine # [    9.343868] dhcpcd[672]: ifb1: adding address =
+fe80::2c7f:abff:fef5:e85d
+(finished: must succeed: tc qdisc add dev ifb0 root handle 1: hfsc =
+default 1, in 0.03 seconds)
+machine: must succeed: tc class add dev ifb0 parent 1: classid 1:999 =
+hfsc rt m2 2.5gbit
+(finished: must succeed: tc class add dev ifb0 parent 1: classid 1:999 =
+hfsc rt m2 2.5gbit, in 0.01 seconds)
+machine: must succeed: tc class add dev ifb0 parent 1:999 classid 1:1 =
+hfsc sc rate 50mbit
+machine # Error: Invalid parent - parent class must have FSC.
+machine: output:
+Test "try hfsc" failed with error: "command `tc class add dev ifb0 =
+parent 1:999 classid 1:1 hfsc sc rate 50mbit` failed (exit code 2)"
+cleanup
+kill machine (pid 6)
+#### snap
 
-syzbot reported:
-BUG: KMSAN: uninit-value in pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
-BUG: KMSAN: uninit-value in pskb_may_pull include/linux/skbuff.h:2681 [inline]
-BUG: KMSAN: uninit-value in dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
-pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
-pskb_may_pull include/linux/skbuff.h:2681 [inline]
-dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
-icmpv6_notify+0x4c7/0x880 net/ipv6/icmp.c:867
-icmpv6_rcv+0x19d5/0x30d0
-ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
-ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
-NF_HOOK include/linux/netfilter.h:304 [inline]
-ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
-ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
-dst_input include/net/dst.h:468 [inline]
-ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
-NF_HOOK include/linux/netfilter.h:304 [inline]
-ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
-__netif_receive_skb_one_core net/core/dev.c:5523 [inline]
-__netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5637
-netif_receive_skb_internal net/core/dev.c:5723 [inline]
-netif_receive_skb+0x58/0x660 net/core/dev.c:5782
-tun_rx_batched+0x83b/0x920
-tun_get_user+0x564c/0x6940 drivers/net/tun.c:2002
-tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-call_write_iter include/linux/fs.h:1985 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x8ef/0x15c0 fs/read_write.c:584
-ksys_write+0x20f/0x4c0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x93/0xd0 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Liebe Gr=C3=BC=C3=9Fe,
+Christian Theune
 
-Uninit was created at:
-slab_post_alloc_hook+0x12f/0xb70 mm/slab.h:767
-slab_alloc_node mm/slub.c:3478 [inline]
-kmem_cache_alloc_node+0x577/0xa80 mm/slub.c:3523
-kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:559
-__alloc_skb+0x318/0x740 net/core/skbuff.c:650
-alloc_skb include/linux/skbuff.h:1286 [inline]
-alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6313
-sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2795
-tun_alloc_skb drivers/net/tun.c:1531 [inline]
-tun_get_user+0x23cf/0x6940 drivers/net/tun.c:1846
-tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-call_write_iter include/linux/fs.h:1985 [inline]
-new_sync_write fs/read_write.c:491 [inline]
-vfs_write+0x8ef/0x15c0 fs/read_write.c:584
-ksys_write+0x20f/0x4c0 fs/read_write.c:637
-__do_sys_write fs/read_write.c:649 [inline]
-__se_sys_write fs/read_write.c:646 [inline]
-__x64_sys_write+0x93/0xd0 fs/read_write.c:646
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-CPU: 0 PID: 4995 Comm: syz-executor153 Not tainted 6.6.0-rc1-syzkaller-00014-ga747acc0b752 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
-
-Fixes: 977ad86c2a1b ("dccp: Fix out of bounds access in DCCP error handler")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jann Horn <jannh@google.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/dccp/ipv4.c |    9 ++-------
- net/dccp/ipv6.c |    9 ++-------
- 2 files changed, 4 insertions(+), 14 deletions(-)
-
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -247,13 +247,8 @@ static void dccp_v4_err(struct sk_buff *
- 	int err;
- 	struct net *net = dev_net(skb->dev);
- 
--	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
--	 * which is in byte 7 of the dccp header.
--	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
--	 *
--	 * Later on, we want to access the sequence number fields, which are
--	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
--	 */
-+	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
-+		return;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
- 		return;
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -80,13 +80,8 @@ static void dccp_v6_err(struct sk_buff *
- 	__u64 seq;
- 	struct net *net = dev_net(skb->dev);
- 
--	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
--	 * which is in byte 7 of the dccp header.
--	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
--	 *
--	 * Later on, we want to access the sequence number fields, which are
--	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
--	 */
-+	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
-+		return;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
- 		return;
-
+--=20
+Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
+Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
+Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
+HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
+Christian Zagrodnick
 
