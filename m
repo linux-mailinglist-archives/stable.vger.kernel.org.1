@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54FB07BDE02
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2BBF7BDF0A
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376895AbjJINO5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58952 "EHLO
+        id S1376657AbjJINZw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376866AbjJINO4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:56 -0400
+        with ESMTP id S1376695AbjJINZt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50526DA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09EAC433C8;
-        Mon,  9 Oct 2023 13:14:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD78EB7
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF43C433C8;
+        Mon,  9 Oct 2023 13:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857293;
-        bh=0UDTGHjVIIkEyzudL1RfBtRtHfsQd28mx4BP/tNn/JE=;
+        s=korg; t=1696857947;
+        bh=8z5aoFy8KZs50C2xj5vZNISch83ILo9gInVlERHCFnw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tXTaR1UwNoBhvG17/t+Q6A44HI3pXt03RNlxNfVdzOtLZC5GmT5WJVc/HAFboJL8N
-         hXYDOU8+Yo5oMM6RNyeIWtBI7PjLZGm0A9et348QncwRDjSuS2O7PaSCiHq1Zfszvm
-         MEQcxWV1u9YY9jAUlaQItvXUuKDCyCV5MxzMcrxY=
+        b=1o1tCtp/wK+3n/Bw71g+iuKbN/3qXdfqohzvbL9EJXqw0RA9oBS8Q7HC95bC1QaGM
+         VUqiOxyDNIZjd0268B7wsnSUTOscpNXGHL1IvLWokCRzGZyS6IL7T8qu2W9EjXe5Wp
+         PKVVmAzkXkmIPBPspIojvR+yidirl3Zv+x5dhwgE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, luosili <rootlab@huawei.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.5 162/163] ksmbd: fix race condition from parallel smb2 lock requests
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 44/75] net: fix possible store tearing in neigh_periodic_work()
 Date:   Mon,  9 Oct 2023 15:02:06 +0200
-Message-ID: <20231009130128.474689115@linuxfoundation.org>
+Message-ID: <20231009130112.777837316@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,84 +51,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 75ac9a3dd65f7eab4d12b0a0f744234b5300a491 upstream.
+[ Upstream commit 25563b581ba3a1f263a00e8c9a97f5e7363be6fd ]
 
-There is a race condition issue between parallel smb2 lock request.
+While looking at a related syzbot report involving neigh_periodic_work(),
+I found that I forgot to add an annotation when deleting an
+RCU protected item from a list.
 
-                                            Time
-                                             +
-Thread A                                     | Thread A
-smb2_lock                                    | smb2_lock
-                                             |
- insert smb_lock to lock_list                |
- spin_unlock(&work->conn->llist_lock)        |
-                                             |
-                                             |   spin_lock(&conn->llist_lock);
-                                             |   kfree(cmp_lock);
-                                             |
- // UAF!                                     |
- list_add(&smb_lock->llist, &rollback_list)  +
+Readers use rcu_deference(*np), we need to use either
+rcu_assign_pointer() or WRITE_ONCE() on writer side
+to prevent store tearing.
 
-This patch swaps the line for adding the smb lock to the rollback list and
-adding the lock list of connection to fix the race issue.
+I use rcu_assign_pointer() to have lockdep support,
+this was the choice made in neigh_flush_dev().
 
-Reported-by: luosili <rootlab@huawei.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 767e97e1e0db ("neigh: RCU conversion of struct neighbour")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ net/core/neighbour.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -7029,10 +7029,6 @@ skip:
- 
- 				ksmbd_debug(SMB,
- 					    "would have to wait for getting lock\n");
--				spin_lock(&work->conn->llist_lock);
--				list_add_tail(&smb_lock->clist,
--					      &work->conn->lock_list);
--				spin_unlock(&work->conn->llist_lock);
- 				list_add(&smb_lock->llist, &rollback_list);
- 
- 				argv = kmalloc(sizeof(void *), GFP_KERNEL);
-@@ -7063,9 +7059,6 @@ skip:
- 
- 				if (work->state != KSMBD_WORK_ACTIVE) {
- 					list_del(&smb_lock->llist);
--					spin_lock(&work->conn->llist_lock);
--					list_del(&smb_lock->clist);
--					spin_unlock(&work->conn->llist_lock);
- 					locks_free_lock(flock);
- 
- 					if (work->state == KSMBD_WORK_CANCELLED) {
-@@ -7087,19 +7080,16 @@ skip:
- 				}
- 
- 				list_del(&smb_lock->llist);
--				spin_lock(&work->conn->llist_lock);
--				list_del(&smb_lock->clist);
--				spin_unlock(&work->conn->llist_lock);
- 				release_async_work(work);
- 				goto retry;
- 			} else if (!rc) {
-+				list_add(&smb_lock->llist, &rollback_list);
- 				spin_lock(&work->conn->llist_lock);
- 				list_add_tail(&smb_lock->clist,
- 					      &work->conn->lock_list);
- 				list_add_tail(&smb_lock->flist,
- 					      &fp->lock_list);
- 				spin_unlock(&work->conn->llist_lock);
--				list_add(&smb_lock->llist, &rollback_list);
- 				ksmbd_debug(SMB, "successful in taking lock\n");
- 			} else {
- 				goto out;
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index af022db48b7a9..a385086091fd3 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -930,7 +930,9 @@ static void neigh_periodic_work(struct work_struct *work)
+ 			    (state == NUD_FAILED ||
+ 			     !time_in_range_open(jiffies, n->used,
+ 						 n->used + NEIGH_VAR(n->parms, GC_STALETIME)))) {
+-				*np = n->next;
++				rcu_assign_pointer(*np,
++					rcu_dereference_protected(n->next,
++						lockdep_is_held(&tbl->lock)));
+ 				neigh_mark_dead(n);
+ 				write_unlock(&n->lock);
+ 				neigh_cleanup_and_release(n);
+-- 
+2.40.1
+
 
 
