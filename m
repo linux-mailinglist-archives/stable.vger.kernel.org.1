@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF7D17BDFC8
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3AB7BDFD2
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376718AbjJINeM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:34:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37408 "EHLO
+        id S1377145AbjJINe2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:34:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377155AbjJINdy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:33:54 -0400
+        with ESMTP id S1377146AbjJINe1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:34:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B4DDAB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:33:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CFFC433C7;
-        Mon,  9 Oct 2023 13:33:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6924594
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:34:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD25DC433C7;
+        Mon,  9 Oct 2023 13:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858433;
-        bh=ZJ1YkOzQJEmc1JwRDOvKzd2QQ6dN5KsHFajMYvYzL7Y=;
+        s=korg; t=1696858465;
+        bh=RtbrMGkIgsVOGsTrpPZ3QyoxvdDNF6ZeeGZ+M0QS5PY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ogh2zxWmkgdp2M1KEY8Su/Ss438gFQrbnKvy0C/QkqRCoFzTpZK/qY3RIn9B1jhRV
-         CsNahU1sDLBn3ahn3IPCNjpBACVLEsZlG6G+dMti7/2YU01YqgX8BZVECbn8yQPC6l
-         y3yxpNeYyeQ7ZdkTiQMjIKZ40MkGNbSx5VyKiPq8=
+        b=Y8ff15DiDAvQhiTVL66mOJHSD9VqfOB6ROMNl/GOnwpLrUasSIi1L/5gYKKlq1Tr/
+         A3oUUKoFbU7xm+jlWDefUnrRJiR8YUnau1z+B1mblYM24z9B7hi8foNOhIJQWDlCOC
+         M2TlLiF8G3Xonymt8cvGS/+Q+1QERJxtjlw6dKNY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oleksandr Tymoshenko <ovt@google.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
+        patches@lists.linux.dev, Junxiao Bi <junxiao.bi@oracle.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 103/131] ima: Finish deprecation of IMA_TRUSTED_KEYRING Kconfig
-Date:   Mon,  9 Oct 2023 15:02:23 +0200
-Message-ID: <20231009130119.568586587@linuxfoundation.org>
+Subject: [PATCH 5.4 104/131] scsi: target: core: Fix deadlock due to recursive locking
+Date:   Mon,  9 Oct 2023 15:02:24 +0200
+Message-ID: <20231009130119.601393073@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
 References: <20231009130116.329529591@linuxfoundation.org>
@@ -54,48 +54,96 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Oleksandr Tymoshenko <ovt@google.com>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-[ Upstream commit be210c6d3597faf330cb9af33b9f1591d7b2a983 ]
+[ Upstream commit a154f5f643c6ecddd44847217a7a3845b4350003 ]
 
-The removal of IMA_TRUSTED_KEYRING made IMA_LOAD_X509
-and IMA_BLACKLIST_KEYRING unavailable because the latter
-two depend on the former. Since IMA_TRUSTED_KEYRING was
-deprecated in favor of INTEGRITY_TRUSTED_KEYRING use it
-as a dependency for the two Kconfigs affected by the
-deprecation.
+The following call trace shows a deadlock issue due to recursive locking of
+mutex "device_mutex". First lock acquire is in target_for_each_device() and
+second in target_free_device().
 
-Fixes: 5087fd9e80e5 ("ima: Remove deprecated IMA_TRUSTED_KEYRING Kconfig")
-Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
-Reviewed-by: Nayna Jain <nayna@linux.ibm.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+ PID: 148266   TASK: ffff8be21ffb5d00  CPU: 10   COMMAND: "iscsi_ttx"
+  #0 [ffffa2bfc9ec3b18] __schedule at ffffffffa8060e7f
+  #1 [ffffa2bfc9ec3ba0] schedule at ffffffffa8061224
+  #2 [ffffa2bfc9ec3bb8] schedule_preempt_disabled at ffffffffa80615ee
+  #3 [ffffa2bfc9ec3bc8] __mutex_lock at ffffffffa8062fd7
+  #4 [ffffa2bfc9ec3c40] __mutex_lock_slowpath at ffffffffa80631d3
+  #5 [ffffa2bfc9ec3c50] mutex_lock at ffffffffa806320c
+  #6 [ffffa2bfc9ec3c68] target_free_device at ffffffffc0935998 [target_core_mod]
+  #7 [ffffa2bfc9ec3c90] target_core_dev_release at ffffffffc092f975 [target_core_mod]
+  #8 [ffffa2bfc9ec3ca0] config_item_put at ffffffffa79d250f
+  #9 [ffffa2bfc9ec3cd0] config_item_put at ffffffffa79d2583
+ #10 [ffffa2bfc9ec3ce0] target_devices_idr_iter at ffffffffc0933f3a [target_core_mod]
+ #11 [ffffa2bfc9ec3d00] idr_for_each at ffffffffa803f6fc
+ #12 [ffffa2bfc9ec3d60] target_for_each_device at ffffffffc0935670 [target_core_mod]
+ #13 [ffffa2bfc9ec3d98] transport_deregister_session at ffffffffc0946408 [target_core_mod]
+ #14 [ffffa2bfc9ec3dc8] iscsit_close_session at ffffffffc09a44a6 [iscsi_target_mod]
+ #15 [ffffa2bfc9ec3df0] iscsit_close_connection at ffffffffc09a4a88 [iscsi_target_mod]
+ #16 [ffffa2bfc9ec3df8] finish_task_switch at ffffffffa76e5d07
+ #17 [ffffa2bfc9ec3e78] iscsit_take_action_for_connection_exit at ffffffffc0991c23 [iscsi_target_mod]
+ #18 [ffffa2bfc9ec3ea0] iscsi_target_tx_thread at ffffffffc09a403b [iscsi_target_mod]
+ #19 [ffffa2bfc9ec3f08] kthread at ffffffffa76d8080
+ #20 [ffffa2bfc9ec3f50] ret_from_fork at ffffffffa8200364
+
+Fixes: 36d4cb460bcb ("scsi: target: Avoid that EXTENDED COPY commands trigger lock inversion")
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Link: https://lore.kernel.org/r/20230918225848.66463-1-junxiao.bi@oracle.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/target/target_core_device.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index c97ce6265fc6b..a7e38d72fb4ba 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -263,7 +263,7 @@ config IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY
- config IMA_BLACKLIST_KEYRING
- 	bool "Create IMA machine owner blacklist keyrings (EXPERIMENTAL)"
- 	depends on SYSTEM_TRUSTED_KEYRING
--	depends on IMA_TRUSTED_KEYRING
-+	depends on INTEGRITY_TRUSTED_KEYRING
- 	default n
- 	help
- 	   This option creates an IMA blacklist keyring, which contains all
-@@ -273,7 +273,7 @@ config IMA_BLACKLIST_KEYRING
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index 20fe287039857..8ba134ccd3b9c 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -856,7 +856,6 @@ sector_t target_to_linux_sector(struct se_device *dev, sector_t lb)
+ EXPORT_SYMBOL(target_to_linux_sector);
  
- config IMA_LOAD_X509
- 	bool "Load X509 certificate onto the '.ima' trusted keyring"
--	depends on IMA_TRUSTED_KEYRING
-+	depends on INTEGRITY_TRUSTED_KEYRING
- 	default n
- 	help
- 	   File signature verification is based on the public keys
+ struct devices_idr_iter {
+-	struct config_item *prev_item;
+ 	int (*fn)(struct se_device *dev, void *data);
+ 	void *data;
+ };
+@@ -866,11 +865,9 @@ static int target_devices_idr_iter(int id, void *p, void *data)
+ {
+ 	struct devices_idr_iter *iter = data;
+ 	struct se_device *dev = p;
++	struct config_item *item;
+ 	int ret;
+ 
+-	config_item_put(iter->prev_item);
+-	iter->prev_item = NULL;
+-
+ 	/*
+ 	 * We add the device early to the idr, so it can be used
+ 	 * by backend modules during configuration. We do not want
+@@ -880,12 +877,13 @@ static int target_devices_idr_iter(int id, void *p, void *data)
+ 	if (!target_dev_configured(dev))
+ 		return 0;
+ 
+-	iter->prev_item = config_item_get_unless_zero(&dev->dev_group.cg_item);
+-	if (!iter->prev_item)
++	item = config_item_get_unless_zero(&dev->dev_group.cg_item);
++	if (!item)
+ 		return 0;
+ 	mutex_unlock(&device_mutex);
+ 
+ 	ret = iter->fn(dev, iter->data);
++	config_item_put(item);
+ 
+ 	mutex_lock(&device_mutex);
+ 	return ret;
+@@ -908,7 +906,6 @@ int target_for_each_device(int (*fn)(struct se_device *dev, void *data),
+ 	mutex_lock(&device_mutex);
+ 	ret = idr_for_each(&devices_idr, target_devices_idr_iter, &iter);
+ 	mutex_unlock(&device_mutex);
+-	config_item_put(iter.prev_item);
+ 	return ret;
+ }
+ 
 -- 
 2.40.1
 
