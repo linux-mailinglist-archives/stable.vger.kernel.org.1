@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D900C7BE06D
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C30F7BDDC1
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376990AbjJINkC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52158 "EHLO
+        id S1376561AbjJINNH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377324AbjJINkA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:00 -0400
+        with ESMTP id S1376917AbjJINMz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:12:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BDBC119
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:39:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6212CC433CD;
-        Mon,  9 Oct 2023 13:39:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BE5FD7D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:11:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C078C433C9;
+        Mon,  9 Oct 2023 13:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858794;
-        bh=lBPj89wI9rODdSfP1bGlqRdUWNj1pgZwbuUkiWuvFxo=;
+        s=korg; t=1696857110;
+        bh=jvc2TY9kWX5ivxJ5A8Eg5Zq7BgMZMfBRhGObfoBIcqw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AuMqhckh33rZL8m93Q+JCTRXgBK++0lPdWD9EEVNflWKYeZHosFdiOOY+B7/RyU0W
-         TcJF9GTiRjhzeXaQY6SvlIvB3Mrz3dqON0grU1ZCKAGW7GuODsA1np7+IMVrqjV3sn
-         9RZkez6eNhNbFroQdCjn1ldJfX5DfBT+jfWWD6FE=
+        b=J0r3+cSeOHNokoig+bah8qPWR/AWfDdCNGHj4Y7uEKxGL/NfRkaS4j07GOnHBe+rW
+         R8xuBIGlB8o+kmezbYM+5WE+IPcjAzB9SCiVrnqQ+Xjq8T9IauM3QpU97xgXS6ftfq
+         hvXdxuoy76aSvNjJlKNnEZO8f+ROYpMaJauD0mII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
+        patches@lists.linux.dev,
+        Mauricio Faria de Oliveira <mfo@canonical.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 103/226] xtensa: iss/network: make functions static
+Subject: [PATCH 6.5 100/163] modpost: add missing else to the "of" check
 Date:   Mon,  9 Oct 2023 15:01:04 +0200
-Message-ID: <20231009130129.469187375@linuxfoundation.org>
+Message-ID: <20231009130126.793512810@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Mauricio Faria de Oliveira <mfo@canonical.com>
 
-[ Upstream commit 1b59efeb59851277266318f4e0132aa61ce3455e ]
+[ Upstream commit cbc3d00cf88fda95dbcafee3b38655b7a8f2650a ]
 
-Make 2 functions static to prevent build warnings:
+Without this 'else' statement, an "usb" name goes into two handlers:
+the first/previous 'if' statement _AND_ the for-loop over 'devtable',
+but the latter is useless as it has no 'usb' device_id entry anyway.
 
-arch/xtensa/platforms/iss/network.c:204:16: warning: no previous prototype for 'tuntap_protocol' [-Wmissing-prototypes]
-  204 | unsigned short tuntap_protocol(struct sk_buff *skb)
-arch/xtensa/platforms/iss/network.c:444:6: warning: no previous prototype for 'iss_net_user_timer_expire' [-Wmissing-prototypes]
-  444 | void iss_net_user_timer_expire(struct timer_list *unused)
+Tested with allmodconfig before/after patch; no changes to *.mod.c:
 
-Fixes: 7282bee78798 ("xtensa: Architecture support for Tensilica Xtensa Part 8")
-Fixes: d8479a21a98b ("xtensa: Convert timers to use timer_setup()")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Message-Id: <20230920052139.10570-14-rdunlap@infradead.org>
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+    git checkout v6.6-rc3
+    make -j$(nproc) allmodconfig
+    make -j$(nproc) olddefconfig
+
+    make -j$(nproc)
+    find . -name '*.mod.c' | cpio -pd /tmp/before
+
+    # apply patch
+
+    make -j$(nproc)
+    find . -name '*.mod.c' | cpio -pd /tmp/after
+
+    diff -r /tmp/before/ /tmp/after/
+    # no difference
+
+Fixes: acbef7b76629 ("modpost: fix module autoloading for OF devices with generic compatible property")
+Signed-off-by: Mauricio Faria de Oliveira <mfo@canonical.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/xtensa/platforms/iss/network.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/mod/file2alias.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/xtensa/platforms/iss/network.c b/arch/xtensa/platforms/iss/network.c
-index 1270de83435eb..e8491ac0d5b93 100644
---- a/arch/xtensa/platforms/iss/network.c
-+++ b/arch/xtensa/platforms/iss/network.c
-@@ -204,7 +204,7 @@ static int tuntap_write(struct iss_net_private *lp, struct sk_buff **skb)
- 	return simc_write(lp->tp.info.tuntap.fd, (*skb)->data, (*skb)->len);
- }
- 
--unsigned short tuntap_protocol(struct sk_buff *skb)
-+static unsigned short tuntap_protocol(struct sk_buff *skb)
- {
- 	return eth_type_trans(skb, skb->dev);
- }
-@@ -477,7 +477,7 @@ static int iss_net_change_mtu(struct net_device *dev, int new_mtu)
- 	return -EINVAL;
- }
- 
--void iss_net_user_timer_expire(struct timer_list *unused)
-+static void iss_net_user_timer_expire(struct timer_list *unused)
- {
- }
- 
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 38120f932b0dc..7056751c29b1f 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -1604,7 +1604,7 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
+ 	/* First handle the "special" cases */
+ 	if (sym_is(name, namelen, "usb"))
+ 		do_usb_table(symval, sym->st_size, mod);
+-	if (sym_is(name, namelen, "of"))
++	else if (sym_is(name, namelen, "of"))
+ 		do_of_table(symval, sym->st_size, mod);
+ 	else if (sym_is(name, namelen, "pnp"))
+ 		do_pnp_device_entry(symval, sym->st_size, mod);
 -- 
 2.40.1
 
