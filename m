@@ -2,265 +2,244 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74F217BD275
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 05:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8BC7BD248
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 05:02:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345049AbjJID6J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 8 Oct 2023 23:58:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57206 "EHLO
+        id S232350AbjJIDCZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 8 Oct 2023 23:02:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344883AbjJID6I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 23:58:08 -0400
-Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB85A3
-        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 20:58:06 -0700 (PDT)
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20231009035802epoutp04f62925871d98b96f566ae07e1cdb676f~MVFSq7wDB2322423224epoutp04u
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 03:58:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20231009035802epoutp04f62925871d98b96f566ae07e1cdb676f~MVFSq7wDB2322423224epoutp04u
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1696823882;
-        bh=66RnzGW075jp+6jf5N9yCQS6VbcfbkyM8+NJckzV1XU=;
-        h=From:To:Cc:Subject:Date:References:From;
-        b=uP9hs+7+369RgeZMxGsyuiywTHPTJDLqnrXPAJlcYoQAysECrHAaAzUNRvvNhP6Ep
-         tB1xIbdpN9w8f/qE13+2jSE1tmG54ztVdsFbw+THfOn85dnwpuii15DH8P9X4m14BT
-         hyOOUqfoRNWjce+1ePK6GqQ0sDJ0/BnrEg/clENc=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-        epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-        20231009035801epcas5p401f28b9ac90606cea5f12dcb11d5de1f~MVFSFSqO30118601186epcas5p4R;
-        Mon,  9 Oct 2023 03:58:01 +0000 (GMT)
-Received: from epcpadp4 (unknown [182.195.40.18]) by epsnrtp2.localdomain
-        (Postfix) with ESMTP id 4S3lcT40pTz4x9Pt; Mon,  9 Oct 2023 03:58:01 +0000
-        (GMT)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-        20231006135322epcas5p1c9acf38b04f35017181c715c706281dc~LiRPEIHz11084510845epcas5p1x;
-        Fri,  6 Oct 2023 13:53:22 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20231006135322epsmtrp22c420b2d1fc904f8488b40101ff4d97f~LiRPDafSS3163131631epsmtrp2a;
-        Fri,  6 Oct 2023 13:53:22 +0000 (GMT)
-X-AuditID: b6c32a28-001ff700000021c9-e1-652011527c3e
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        1C.FA.08649.25110256; Fri,  6 Oct 2023 22:53:22 +0900 (KST)
-Received: from localhost.localdomain (unknown [107.99.41.245]) by
-        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20231006135320epsmtip2301b167209b42d8b4e6a5a713580c630~LiRNOFpKt1516815168epsmtip26;
-        Fri,  6 Oct 2023 13:53:20 +0000 (GMT)
-From:   Kanchan Joshi <joshi.k@samsung.com>
-To:     hch@lst.de, kbusch@kernel.org, axboe@kernel.dk, sagi@grimberg.me
-Cc:     linux-nvme@lists.infradead.org, vincentfu@gmail.com,
-        ankit.kumar@samsung.com, joshiiitr@gmail.com, cpgs@samsung.com,
-        Kanchan Joshi <joshi.k@samsung.com>, stable@vger.kernel.org,
-        Vincent Fu <vincent.fu@samsung.com>
-Subject: [PATCH v3] nvme: fix memory corruption for passthrough metadata
-Date:   Fri,  6 Oct 2023 19:17:06 +0530
-Message-Id: <1891546521.01696823881551.JavaMail.epsvc@epcpadp4>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S232267AbjJIDCZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 8 Oct 2023 23:02:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 825119E
+        for <stable@vger.kernel.org>; Sun,  8 Oct 2023 20:01:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1696820501;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HfPpj/NYnLhR9rt7gcQcCsZvzAr7nC8MCFto+fdVExs=;
+        b=SxSVbgTwnJ9efB5SQhRtIzf06tnbarvWjfd8dLs6GqK4D8/WPTNdYVETyVPT6WfVIwAqpo
+        cf/YjX21QuixmtQGGefhQdavnVSRJ40VA+glhBReg4quYKjAlhfXvMRO8xE5kbif38tf0+
+        qLpcWP0PKmnK1/vz4TLMBAqEZMhY2gQ=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-350-gCttNOvcMiauv4JGi8SGaQ-1; Sun, 08 Oct 2023 23:01:40 -0400
+X-MC-Unique: gCttNOvcMiauv4JGi8SGaQ-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-9ae57d8b502so328607866b.2
+        for <stable@vger.kernel.org>; Sun, 08 Oct 2023 20:01:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696820499; x=1697425299;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HfPpj/NYnLhR9rt7gcQcCsZvzAr7nC8MCFto+fdVExs=;
+        b=n+GFsUa3d2VrbeorU/FWUHbyihsbo2nVXqb/WGmxaGbXMsqa22V/tAQBo7LRJGMycx
+         aC01Z+DvtE+skMKlRHCPGixwqpajqsoBeMGIv1e3h0Ezheu9AWZ2WO3Gjqrlgl/+NcZZ
+         blmssw51YqJej/ekKnKHW49eJ2GiN22J8T5S/pdkXB/oEaFxgMn0qUK/GW0cMVMuj2WN
+         Efin5P6+4YxrpWva2tqvNQunc1i3YhzUcUuNNsEOrTknbGeMaZNmaqyDVKQWk5c8KNpT
+         Y2ibUzzdgRhOV+rGe53oV1ZS6POmjcct8MpoLAGI9LQsF8DRZsxDzBlhdBs3kjC4oCw1
+         jZkw==
+X-Gm-Message-State: AOJu0YzxhyVhi6xn/T290Sb5ZUXt8hbs4b9y6TUvYMhIq4EIW/G5dvQx
+        Gcf6JEVy7+O4AEUQ2cYdhF8A1cPM6e8DNSu9seZDW+FR/rl9Cz3JOf/8w7vBxLEdPJKSZryYrzg
+        qFgh1PNUKlUqq+HlrtxV/ZR+p4HFdXFwn
+X-Received: by 2002:aa7:da83:0:b0:533:d81b:36d5 with SMTP id q3-20020aa7da83000000b00533d81b36d5mr11984917eds.15.1696820498954;
+        Sun, 08 Oct 2023 20:01:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHg4sPgUHGxpJD5KhVuPwe4H/WIDtwx1mSl/00KPjO0l64EypHEQ5kVl/x8SOlNYipG4eXQiG5yboehI1B3TtU=
+X-Received: by 2002:aa7:da83:0:b0:533:d81b:36d5 with SMTP id
+ q3-20020aa7da83000000b00533d81b36d5mr11984907eds.15.1696820498625; Sun, 08
+ Oct 2023 20:01:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrALMWRmVeSWpSXmKPExsWy7bCSvG6QoEKqwecGRYs1V36zW6y+289m
-        8fKQpsXK1UeZLI7+f8tmcf7tYSaLSYeuMVrMX/aU3WLd6/csFgs2PmK0eNzdwWixoU3Qgcdj
-        56y77B7n721k8bh8ttRj06pONo/NS+o9dt9sYPPo27KK0ePzJrkAjigum5TUnMyy1CJ9uwSu
-        jP+9agV/DSvWv3nL1sDYpNnFyMkhIWAiMW3eWuYuRi4OIYHdjBI/dz9nhUiISzRf+8EOYQtL
-        rPz3HMwWEvjIKHH7v3gXIwcHm4CmxIXJpSBhEQEviXmzF7CA2MwCzxkl9uznALGFBTwk1s3t
-        YASxWQRUJU7NOQxm8wpYSNxe0csCMV5eYual7+wQcUGJkzOfQM2Rl2jeOpt5AiPfLCSpWUhS
-        CxiZVjFKphYU56bnJhsWGOallusVJ+YWl+al6yXn525iBAe6lsYOxnvz/+kdYmTiYDzEKMHB
-        rCTCm94gkyrEm5JYWZValB9fVJqTWnyIUZqDRUmc13DG7BQhgfTEktTs1NSC1CKYLBMHp1QD
-        08a75x5otOa0zV683zUwNUc59HnCvd/SIRkWfcyhEZzrX+que3dpwc8lXW4ry2YqahXyTZxW
-        HbHt01SlPcKpfLvnGt1Nb4qOfKZypVf8ns6HbebzD3EvCtqds/HkGefVP7Muv3GqVW1aX9H7
-        suBU4ilP4yW1zz5/mTlT4mPLuxVbVp8WXe3gfDK3PIlDRZbB+o2dqEX2ayHTbu1/KwXuLuNv
-        2c92a9uX53eOnH5SyW9548vBsvOHVCx0yj8nVZ6aZSqYmXfv8q2efZy1TvKiptWe0572Pw87
-        ZVl/R2fLrg3n+iaWc7peZmkP2SzP+Pq7Xde8uJN/6p9zvrQXrH2pnMfycUXogev9k9Y81Mmf
-        8EWJpTgj0VCLuag4EQC9YqOA4wIAAA==
-X-CMS-MailID: 20231006135322epcas5p1c9acf38b04f35017181c715c706281dc
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-X-CPGSPASS: Y
-X-Hop-Count: 3
-X-CMS-RootMailID: 20231006135322epcas5p1c9acf38b04f35017181c715c706281dc
-References: <CGME20231006135322epcas5p1c9acf38b04f35017181c715c706281dc@epcas5p1.samsung.com>
+References: <20230912030008.3599514-1-lulu@redhat.com> <20230912030008.3599514-5-lulu@redhat.com>
+ <CACGkMEtCYG8-Pt+V-OOwUV7fYFp_cnxU68Moisfxju9veJ-=qw@mail.gmail.com>
+ <CACLfguW3NS_4+YhqTtGqvQb70mVazGVfheryHx4aCBn+=Skf9w@mail.gmail.com>
+ <CACGkMEt-m9bOh9YnqLw0So5wqbZ69D0XRVBbfG73Oh7Q8qTJsQ@mail.gmail.com> <6c4cd924-0d44-582e-13a4-791f38d10fe8@redhat.com>
+In-Reply-To: <6c4cd924-0d44-582e-13a4-791f38d10fe8@redhat.com>
+From:   Cindy Lu <lulu@redhat.com>
+Date:   Mon, 9 Oct 2023 11:00:30 +0800
+Message-ID: <CACLfguVTxZR2U-CFhkFWYFcgvB-6TLcQjUaEvtm+oka2XstVqw@mail.gmail.com>
+Subject: Re: [RFC v2 4/4] vduse: Add new ioctl VDUSE_GET_RECONNECT_INFO
+To:     Maxime Coquelin <maxime.coquelin@redhat.com>
+Cc:     Jason Wang <jasowang@redhat.com>, mst@redhat.com,
+        xieyongji@bytedance.com, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-User can specify a smaller meta buffer than what the device is
-wired to update/access. Kernel makes a copy of the meta buffer into
-which the device does DMA.
-As a result, the device overwrites the unrelated kernel memory, causing
-random kernel crashes.
-
-Same issue is possible for extended-lba case also. When user specifies a
-short unaligned buffer, the kernel makes a copy and uses that for DMA.
-
-Detect these situations for sync/uring passthrough, and bail out.
-
-Fixes: 456cba386e94 ("nvme: wire-up uring-cmd support for io-passthru on char-device")
-Cc: stable@vger.kernel.org
-
-Reported-by: Vincent Fu <vincent.fu@samsung.com>
-Signed-off-by: Kanchan Joshi <joshi.k@samsung.com>
----
-
-Changes since v2:
-- Handle extended-lba case: short unaligned buffer IO
-- Reduce the scope of check to only well-known commands
-- Do not check early. Move it deeper so that check gets executed less
-  often
-- Combine two patches into one.
-
-Changes since v1:
-- Revise the check to exclude PRACT=1 case
-
-Random crash example:
-
-[ 6815.014478] general protection fault, probably for non-canonical address 0x70e3cdbe9133b7a6: 0000 [#1] PREEMPT SMP PTI
-[ 6815.014505] CPU: 1 PID: 434 Comm: systemd-timesyn Tainted: G           OE      6.4.0-rc3+ #5
-[ 6815.014516] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-[ 6815.014522] RIP: 0010:__kmem_cache_alloc_node+0x100/0x440
-[ 6815.014551] Code: 48 85 c0 0f 84 fb 02 00 00 41 83 ff ff 74 10 48 8b 00 48 c1 e8 36 41 39 c7 0f 85 e5 02 00 00 41 8b 45 28 49 8b 7d 00 4c 01 e0 <48> 8b 18 48 89 c1 49 33 9d b8 00 00 00 4c 89 e0 48 0f c9 48 31 cb
-[ 6815.014559] RSP: 0018:ffffb510c0577d18 EFLAGS: 00010216
-[ 6815.014569] RAX: 70e3cdbe9133b7a6 RBX: ffff8a9ec1042300 RCX: 0000000000000010
-[ 6815.014575] RDX: 00000000048b0001 RSI: 0000000000000dc0 RDI: 0000000000037060
-[ 6815.014581] RBP: ffffb510c0577d58 R08: ffffffffb9ffa280 R09: 0000000000000000
-[ 6815.014586] R10: ffff8a9ecbcab1f0 R11: 0000000000000000 R12: 70e3cdbe9133b79e
-[ 6815.014591] R13: ffff8a9ec1042300 R14: 0000000000000dc0 R15: 00000000ffffffff
-[ 6815.014597] FS:  00007fce590d6940(0000) GS:ffff8a9f3dd00000(0000) knlGS:0000000000000000
-[ 6815.014604] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 6815.014609] CR2: 00005579abbb6498 CR3: 000000000d9b0000 CR4: 00000000000006e0
-[ 6815.014622] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 6815.014627] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 6815.014632] Call Trace:
-[ 6815.014650]  <TASK>
-[ 6815.014655]  ? apparmor_sk_alloc_security+0x40/0x80
-[ 6815.014673]  kmalloc_trace+0x2a/0xa0
-[ 6815.014684]  apparmor_sk_alloc_security+0x40/0x80
-[ 6815.014694]  security_sk_alloc+0x3f/0x60
-[ 6815.014703]  sk_prot_alloc+0x75/0x110
-[ 6815.014712]  sk_alloc+0x31/0x200
-[ 6815.014721]  inet_create+0xd8/0x3a0
-[ 6815.014734]  __sock_create+0x11b/0x220
-[ 6815.014749]  __sys_socket_create.part.0+0x49/0x70
-[ 6815.014756]  ? __secure_computing+0x94/0xf0
-[ 6815.014768]  __sys_socket+0x3c/0xc0
-[ 6815.014776]  __x64_sys_socket+0x1a/0x30
-[ 6815.014783]  do_syscall_64+0x3b/0x90
-[ 6815.014794]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[ 6815.014804] RIP: 0033:0x7fce59aa795b
-
- drivers/nvme/host/ioctl.c | 76 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
-
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index d8ff796fd5f2..8147750beff4 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -158,6 +158,67 @@ static struct request *nvme_alloc_user_request(struct request_queue *q,
- 	return req;
- }
- 
-+static inline bool nvme_nlb_in_cdw12(u8 opcode)
-+{
-+	switch (opcode) {
-+	case nvme_cmd_read:
-+	case nvme_cmd_write:
-+	case nvme_cmd_compare:
-+	case nvme_cmd_zone_append:
-+		return true;
-+	}
-+	return false;
-+}
-+
-+static bool nvme_validate_passthru_meta(struct nvme_ns *ns,
-+					struct nvme_command *c,
-+					__u32 meta_len,
-+					unsigned data_len)
-+{
-+	/*
-+	 * User may specify smaller meta-buffer with a larger data-buffer.
-+	 * Driver allocated meta buffer will also be small.
-+	 * Device can do larger dma into that, overwriting unrelated kernel
-+	 * memory.
-+	 * For extended lba case, if user provides a short unaligned buffer,
-+	 * the device will corrupt kernel memory.
-+	 * Avoid running into corruption in both situations.
-+	 */
-+	bool ext_lba = ns->features & NVME_NS_EXT_LBAS;
-+	u16 nlb, control;
-+	unsigned dlen, mlen;
-+
-+	/* Exclude commands that do not have nlb in cdw12 */
-+	if (!nvme_nlb_in_cdw12(c->common.opcode))
-+		return true;
-+
-+	control = upper_16_bits(le32_to_cpu(c->common.cdw12));
-+	/* Exclude when meta transfer from/to host is not done */
-+	if (control & NVME_RW_PRINFO_PRACT && ns->ms == ns->pi_size)
-+		return true;
-+
-+	nlb = lower_16_bits(le32_to_cpu(c->common.cdw12));
-+	mlen = (nlb + 1) * ns->ms;
-+
-+	/* sanity for interleaved buffer */
-+	if (ext_lba) {
-+		dlen = (nlb + 1) << ns->lba_shift;
-+		if (data_len < (dlen + mlen))
-+			goto out_false;
-+		return true;
-+	}
-+	/* sanity for separate meta buffer */
-+	if (meta_len < mlen)
-+		goto out_false;
-+
-+	return true;
-+
-+out_false:
-+	dev_err(ns->ctrl->device,
-+		"%s: metadata length is small!\n", current->comm);
-+	return false;
-+}
-+
- static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 		unsigned bufflen, void __user *meta_buffer, unsigned meta_len,
- 		u32 meta_seed, void **metap, struct io_uring_cmd *ioucmd,
-@@ -194,6 +255,12 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 		bio_set_dev(bio, bdev);
- 
- 	if (bdev && meta_buffer && meta_len) {
-+		if (!nvme_validate_passthru_meta(ns, nvme_req(req)->cmd,
-+					meta_len, bufflen)) {
-+			ret = -EINVAL;
-+			goto out_unmap;
-+		}
-+
- 		meta = nvme_add_user_metadata(req, meta_buffer, meta_len,
- 				meta_seed);
- 		if (IS_ERR(meta)) {
-@@ -203,6 +270,15 @@ static int nvme_map_user_request(struct request *req, u64 ubuffer,
- 		*metap = meta;
- 	}
- 
-+	/* guard another case when kernel memory is being used */
-+	if (bio->bi_private && ns && ns->features & NVME_NS_EXT_LBAS) {
-+		if (!nvme_validate_passthru_meta(ns, nvme_req(req)->cmd,
-+					meta_len, bufflen)) {
-+			ret = -EINVAL;
-+			goto out_unmap;
-+		}
-+	}
-+
- 	return ret;
- 
- out_unmap:
--- 
-2.25.1
-
+On Fri, Sep 29, 2023 at 5:08=E2=80=AFPM Maxime Coquelin
+<maxime.coquelin@redhat.com> wrote:
+>
+>
+>
+> On 9/25/23 04:57, Jason Wang wrote:
+> > On Thu, Sep 21, 2023 at 10:07=E2=80=AFPM Cindy Lu <lulu@redhat.com> wro=
+te:
+> >>
+> >> On Mon, Sep 18, 2023 at 4:49=E2=80=AFPM Jason Wang <jasowang@redhat.co=
+m> wrote:
+> >>>
+> >>> On Tue, Sep 12, 2023 at 11:01=E2=80=AFAM Cindy Lu <lulu@redhat.com> w=
+rote:
+> >>>>
+> >>>> In VDUSE_GET_RECONNECT_INFO, the Userspace App can get the map size
+> >>>> and The number of mapping memory pages from the kernel. The userspac=
+e
+> >>>> App can use this information to map the pages.
+> >>>>
+> >>>> Signed-off-by: Cindy Lu <lulu@redhat.com>
+> >>>> ---
+> >>>>   drivers/vdpa/vdpa_user/vduse_dev.c | 15 +++++++++++++++
+> >>>>   include/uapi/linux/vduse.h         | 15 +++++++++++++++
+> >>>>   2 files changed, 30 insertions(+)
+> >>>>
+> >>>> diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_=
+user/vduse_dev.c
+> >>>> index 680b23dbdde2..c99f99892b5c 100644
+> >>>> --- a/drivers/vdpa/vdpa_user/vduse_dev.c
+> >>>> +++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+> >>>> @@ -1368,6 +1368,21 @@ static long vduse_dev_ioctl(struct file *file=
+, unsigned int cmd,
+> >>>>                  ret =3D 0;
+> >>>>                  break;
+> >>>>          }
+> >>>> +       case VDUSE_GET_RECONNECT_INFO: {
+> >>>> +               struct vduse_reconnect_mmap_info info;
+> >>>> +
+> >>>> +               ret =3D -EFAULT;
+> >>>> +               if (copy_from_user(&info, argp, sizeof(info)))
+> >>>> +                       break;
+> >>>> +
+> >>>> +               info.size =3D PAGE_SIZE;
+> >>>> +               info.max_index =3D dev->vq_num + 1;
+> >>>> +
+> >>>> +               if (copy_to_user(argp, &info, sizeof(info)))
+> >>>> +                       break;
+> >>>> +               ret =3D 0;
+> >>>> +               break;
+> >>>> +       }
+> >>>>          default:
+> >>>>                  ret =3D -ENOIOCTLCMD;
+> >>>>                  break;
+> >>>> diff --git a/include/uapi/linux/vduse.h b/include/uapi/linux/vduse.h
+> >>>> index d585425803fd..ce55e34f63d7 100644
+> >>>> --- a/include/uapi/linux/vduse.h
+> >>>> +++ b/include/uapi/linux/vduse.h
+> >>>> @@ -356,4 +356,19 @@ struct vhost_reconnect_vring {
+> >>>>          _Bool avail_wrap_counter;
+> >>>>   };
+> >>>>
+> >>>> +/**
+> >>>> + * struct vduse_reconnect_mmap_info
+> >>>> + * @size: mapping memory size, always page_size here
+> >>>> + * @max_index: the number of pages allocated in kernel,just
+> >>>> + * use for check
+> >>>> + */
+> >>>> +
+> >>>> +struct vduse_reconnect_mmap_info {
+> >>>> +       __u32 size;
+> >>>> +       __u32 max_index;
+> >>>> +};
+> >>>
+> >>> One thing I didn't understand is that, aren't the things we used to
+> >>> store connection info belong to uAPI? If not, how can we make sure th=
+e
+> >>> connections work across different vendors/implementations. If yes,
+> >>> where?
+> >>>
+> >>> Thanks
+> >>>
+> >> The process for this reconnecttion  is
+> >> A.The first-time connection
+> >> 1> The userland app checks if the device exists
+> >> 2>  use the ioctl to create the vduse device
+> >> 3> Mapping the kernel page to userland and save the
+> >> App-version/features/other information to this page
+> >> 4>  if the Userland app needs to exit, then the Userland app will only
+> >> unmap the page and then exit
+> >>
+> >> B, the re-connection
+> >> 1> the userland app finds the device is existing
+> >> 2> Mapping the kernel page to userland
+> >> 3> check if the information in shared memory is satisfied to
+> >> reconnect,if ok then continue to reconnect
+> >> 4> continue working
+> >>
+> >>   For now these information are all from userland,So here the page wil=
+l
+> >> be maintained by the userland App
+> >> in the previous code we only saved the api-version by uAPI .  if  we
+> >> need to support reconnection maybe we need to add 2 new uAPI for this,
+> >> one of the uAPI is to save the reconnect  information and another is
+> >> to get the information
+> >>
+> >> maybe something like
+> >>
+> >> struct vhost_reconnect_data {
+> >> uint32_t version;
+> >> uint64_t features;
+> >> uint8_t status;
+> >> struct virtio_net_config config;
+> >> uint32_t nr_vrings;
+> >> };
+> >
+> > Probably, then we can make sure the re-connection works across
+> > different vduse-daemon implementations.
+>
+> +1, we need to have this defined in the uAPI to support interoperability
+> across different VDUSE userspace implementations.
+>
+> >
+> >>
+> >> #define VDUSE_GET_RECONNECT_INFO _IOR (VDUSE_BASE, 0x1c, struct
+> >> vhost_reconnect_data)
+> >>
+> >> #define VDUSE_SET_RECONNECT_INFO  _IOWR(VDUSE_BASE, 0x1d, struct
+> >> vhost_reconnect_data)
+> >
+> > Not sure I get this, but the idea is to map those pages to user space,
+> > any reason we need this uAPI?
+>
+> It should not be necessary if the mmapped layout is properly defined.
+>
+> Thanks,
+> Maxime
+>
+Sure , I will use mmap to sync the reconnect status
+Thanks
+cindy
+> > Thanks
+> >
+> >>
+> >> Thanks
+> >> Cindy
+> >>
+> >>
+> >>
+> >>
+> >>>> +
+> >>>> +#define VDUSE_GET_RECONNECT_INFO \
+> >>>> +       _IOWR(VDUSE_BASE, 0x1b, struct vduse_reconnect_mmap_info)
+> >>>> +
+> >>>>   #endif /* _UAPI_VDUSE_H_ */
+> >>>> --
+> >>>> 2.34.3
+> >>>>
+> >>>
+> >>
+> >
+>
 
