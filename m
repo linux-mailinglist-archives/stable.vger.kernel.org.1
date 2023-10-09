@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C19467BE0F7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:45:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D77E7BDFCC
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376935AbjJINpz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54478 "EHLO
+        id S1377136AbjJINeO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:34:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377289AbjJINpN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:45:13 -0400
+        with ESMTP id S1377261AbjJINeH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:34:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A8899C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:45:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F94C433C7;
-        Mon,  9 Oct 2023 13:45:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3879094
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:34:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C323C433C8;
+        Mon,  9 Oct 2023 13:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859112;
-        bh=tQ3q1Clx9msE8mJWX+Qf6jXYjg7IQZSVW6T/4LPvnvE=;
+        s=korg; t=1696858445;
+        bh=Hp65oHDNoHvI892PUtBacF079klZMV39eyQSqpiyBzs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eHf1lr9wVRfEGcD1V+9zhDaQ/AFEz4m0Nd/pJlyjCXB4mFHDl3rQtt3swekUS0Eyz
-         2OosVq2XMcbuuTJTZ/nQmmx6qq5ERZFXMqlWdAkDCI5zEYgypzkM+g9mDLOkXmbMlD
-         l7++ucKY8phzB1nPPiFgF80a5g6kgqe8V7E03RCI=
+        b=HBbBftVMmV1eXHdVg9gbweXagLn7pUiBIcH15seDnM2fbeYO4m2gD7AffBnJSXG6x
+         278uYblDd0QXgp5Gj1MHagPmublp+hpUIG4h2Ii1sgDz5Xc8XkToodXS2kiQYt/sAh
+         dNMUhnnbv0mk6RWoH0HW39fAHDaG4Cy2dvvfQofs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+c1d0a03d305972dbbe14@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 202/226] net: nfc: llcp: Add lock when modifying device list
-Date:   Mon,  9 Oct 2023 15:02:43 +0200
-Message-ID: <20231009130131.856346835@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>,
+        Andy Shevchenko <andy@kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 5.4 124/131] gpio: pxa: disable pinctrl calls for MMP_GPIO
+Date:   Mon,  9 Oct 2023 15:02:44 +0200
+Message-ID: <20231009130120.217462367@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,45 +51,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Cline <jeremy@jcline.org>
+From: Duje Mihanović <duje.mihanovic@skole.hr>
 
-[ Upstream commit dfc7f7a988dad34c3bf4c053124fb26aa6c5f916 ]
+commit f0575116507b981e6a810e78ce3c9040395b958b upstream.
 
-The device list needs its associated lock held when modifying it, or the
-list could become corrupted, as syzbot discovered.
+Similarly to PXA3xx and MMP2, pinctrl-single isn't capable of setting
+pin direction on MMP either.
 
-Reported-and-tested-by: syzbot+c1d0a03d305972dbbe14@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c1d0a03d305972dbbe14
-Signed-off-by: Jeremy Cline <jeremy@jcline.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by nfc_llcp_find_local")
-Link: https://lore.kernel.org/r/20230908235853.1319596-1-jeremy@jcline.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a770d946371e ("gpio: pxa: add pin control gpio direction and request")
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/llcp_core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpio-pxa.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index ddfd159f64e13..b1107570eaee8 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1646,7 +1646,9 @@ int nfc_llcp_register_device(struct nfc_dev *ndev)
- 	timer_setup(&local->sdreq_timer, nfc_llcp_sdreq_timer, 0);
- 	INIT_WORK(&local->sdreq_timeout_work, nfc_llcp_sdreq_timeout_work);
+--- a/drivers/gpio/gpio-pxa.c
++++ b/drivers/gpio/gpio-pxa.c
+@@ -243,6 +243,7 @@ static bool pxa_gpio_has_pinctrl(void)
+ 	switch (gpio_type) {
+ 	case PXA3XX_GPIO:
+ 	case MMP2_GPIO:
++	case MMP_GPIO:
+ 		return false;
  
-+	spin_lock(&llcp_devices_lock);
- 	list_add(&local->list, &llcp_devices);
-+	spin_unlock(&llcp_devices_lock);
- 
- 	return 0;
- }
--- 
-2.40.1
-
+ 	default:
 
 
