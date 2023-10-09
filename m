@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B0787BDFA3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC6687BDF0F
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377098AbjJINcN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:32:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57282 "EHLO
+        id S1376641AbjJINZ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377095AbjJINcN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:13 -0400
+        with ESMTP id S1376537AbjJINZ6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB900B7
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3ECC433C8;
-        Mon,  9 Oct 2023 13:32:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18EAC94
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA06C433C7;
+        Mon,  9 Oct 2023 13:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858331;
-        bh=xw0IGzGzlV7P4kiDcCPM37TgPMUbwBI5dWYn3K/tUyo=;
+        s=korg; t=1696857956;
+        bh=VYQFFW/+nypePnZyZVrnsJY7L3Zt1pGIuVCock4kr/Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D60f6bKGVGR5gbn3sx5oMzcpEkACZInwGVGUZoBLwwbrbi8siqolLp9uB4Oth5sth
-         rvvyVEsdEpVMPYIJWPB6YUCg+FPXCr15DsmXwLJI5TCdr0zssjM4eSmQx07jkoNVIj
-         TPr65Gh53DeBeX1zpdcWuVEzcRBLITgF+DzvMo1s=
+        b=X4dY2K6MBFX8WCM/Y/r7ynEu/fYR2+KgzRX+EPEVEu128RgknhPSRjbQ/TuKQE0Oe
+         ZYj5Uai00vHNsq0gEyd5rB0Y4kVKTR3HfkxTGuEBpmxcQlYug1U1ACNvUdVpJAPBJ2
+         34h6T6Y7KvOxMefDlPPY1BlryfqeN53mW67Hu5SE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
+        patches@lists.linux.dev, Andrew Lunn <andrew@lunn.ch>,
+        Fabio Estevam <festevam@denx.de>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 089/131] rbd: take header_rwsem in rbd_dev_refresh() only when updating
+Subject: [PATCH 5.15 47/75] net: dsa: mv88e6xxx: Avoid EEPROM timeout when EEPROM is absent
 Date:   Mon,  9 Oct 2023 15:02:09 +0200
-Message-ID: <20231009130119.091333815@linuxfoundation.org>
+Message-ID: <20231009130112.878467796@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,122 +51,177 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Fabio Estevam <festevam@denx.de>
 
-commit 0b207d02bd9ab8dcc31b262ca9f60dbc1822500d upstream.
+[ Upstream commit 6ccf50d4d4741e064ba35511a95402c63bbe21a8 ]
 
-rbd_dev_refresh() has been holding header_rwsem across header and
-parent info read-in unnecessarily for ages.  With commit 870611e4877e
-("rbd: get snapshot context after exclusive lock is ensured to be
-held"), the potential for deadlocks became much more real owning to
-a) header_rwsem now nesting inside lock_rwsem and b) rw_semaphores
-not allowing new readers after a writer is registered.
+Since commit 23d775f12dcd ("net: dsa: mv88e6xxx: Wait for EEPROM done
+before HW reset") the following error is seen on a imx8mn board with
+a 88E6320 switch:
 
-For example, assuming that I/O request 1, I/O request 2 and header
-read-in request all target the same OSD:
+mv88e6085 30be0000.ethernet-1:00: Timeout waiting for EEPROM done
 
-1. I/O request 1 comes in and gets submitted
-2. watch error occurs
-3. rbd_watch_errcb() takes lock_rwsem for write, clears owner_cid and
-   releases lock_rwsem
-4. after reestablishing the watch, rbd_reregister_watch() calls
-   rbd_dev_refresh() which takes header_rwsem for write and submits
-   a header read-in request
-5. I/O request 2 comes in: after taking lock_rwsem for read in
-   __rbd_img_handle_request(), it blocks trying to take header_rwsem
-   for read in rbd_img_object_requests()
-6. another watch error occurs
-7. rbd_watch_errcb() blocks trying to take lock_rwsem for write
-8. I/O request 1 completion is received by the messenger but can't be
-   processed because lock_rwsem won't be granted anymore
-9. header read-in request completion can't be received, let alone
-   processed, because the messenger is stranded
+This board does not have an EEPROM attached to the switch though.
 
-Change rbd_dev_refresh() to take header_rwsem only for actually
-updating rbd_dev->header.  Header and parent info read-in don't need
-any locking.
+This problem is well explained by Andrew Lunn:
 
-Cc: stable@vger.kernel.org # 0b035401c570: rbd: move rbd_dev_refresh() definition
-Cc: stable@vger.kernel.org # 510a7330c82a: rbd: decouple header read-in from updating rbd_dev->header
-Cc: stable@vger.kernel.org # c10311776f0a: rbd: decouple parent info read-in from updating rbd_dev
-Cc: stable@vger.kernel.org
-Fixes: 870611e4877e ("rbd: get snapshot context after exclusive lock is ensured to be held")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-[idryomov@gmail.com: backport to 5.4: open-code rbd_is_snap(), preserve
- rbd_exists_validate() call]
+"If there is an EEPROM, and the EEPROM contains a lot of data, it could
+be that when we perform a hardware reset towards the end of probe, it
+interrupts an I2C bus transaction, leaving the I2C bus in a bad state,
+and future reads of the EEPROM do not work.
+
+The work around for this was to poll the EEInt status and wait for it
+to go true before performing the hardware reset.
+
+However, we have discovered that for some boards which do not have an
+EEPROM, EEInt never indicates complete. As a result,
+mv88e6xxx_g1_wait_eeprom_done() spins for a second and then prints a
+warning.
+
+We probably need a different solution than calling
+mv88e6xxx_g1_wait_eeprom_done(). The datasheet for 6352 documents the
+EEPROM Command register:
+
+bit 15 is:
+
+  EEPROM Unit Busy. This bit must be set to a one to start an EEPROM
+  operation (see EEOp below). Only one EEPROM operation can be
+  executing at one time so this bit must be zero before setting it to
+  a one.  When the requested EEPROM operation completes this bit will
+  automatically be cleared to a zero. The transition of this bit from
+  a one to a zero can be used to generate an interrupt (the EEInt in
+  Global 1, offset 0x00).
+
+and more interesting is bit 11:
+
+  Register Loader Running. This bit is set to one whenever the
+  register loader is busy executing instructions contained in the
+  EEPROM."
+
+Change to using mv88e6xxx_g2_eeprom_wait() to fix the timeout error
+when the EEPROM chip is not present.
+
+Fixes: 23d775f12dcd ("net: dsa: mv88e6xxx: Wait for EEPROM done before HW reset")
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c    |  6 ++++--
+ drivers/net/dsa/mv88e6xxx/global1.c | 31 -----------------------------
+ drivers/net/dsa/mv88e6xxx/global1.h |  1 -
+ drivers/net/dsa/mv88e6xxx/global2.c |  2 +-
+ drivers/net/dsa/mv88e6xxx/global2.h |  1 +
+ 5 files changed, 6 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index e86dca49fae71..7117fa4902435 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -7001,7 +7001,19 @@ static void rbd_dev_update_header(struct rbd_device *rbd_dev,
- 	rbd_assert(rbd_image_format_valid(rbd_dev->image_format));
- 	rbd_assert(rbd_dev->header.object_prefix); /* !first_time */
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 7e93b72f9b541..30fba1ea933e3 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -2594,14 +2594,16 @@ static void mv88e6xxx_hardware_reset(struct mv88e6xxx_chip *chip)
+ 		 * from the wrong location resulting in the switch booting
+ 		 * to wrong mode and inoperable.
+ 		 */
+-		mv88e6xxx_g1_wait_eeprom_done(chip);
++		if (chip->info->ops->get_eeprom)
++			mv88e6xxx_g2_eeprom_wait(chip);
  
--	rbd_dev->header.image_size = header->image_size;
-+	if (rbd_dev->header.image_size != header->image_size) {
-+		rbd_dev->header.image_size = header->image_size;
-+
-+		if (rbd_dev->spec->snap_id == CEPH_NOSNAP) {
-+			rbd_dev->mapping.size = header->image_size;
-+			rbd_dev_update_size(rbd_dev);
-+		}
-+	}
-+
-+	if (rbd_dev->spec->snap_id != CEPH_NOSNAP) {
-+		/* validate mapped snapshot's EXISTS flag */
-+		rbd_exists_validate(rbd_dev);
-+	}
+ 		gpiod_set_value_cansleep(gpiod, 1);
+ 		usleep_range(10000, 20000);
+ 		gpiod_set_value_cansleep(gpiod, 0);
+ 		usleep_range(10000, 20000);
  
- 	ceph_put_snap_context(rbd_dev->header.snapc);
- 	rbd_dev->header.snapc = header->snapc;
-@@ -7059,11 +7071,9 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- {
- 	struct rbd_image_header	header = { 0 };
- 	struct parent_image_info pii = { 0 };
--	u64 mapping_size;
- 	int ret;
- 
--	down_write(&rbd_dev->header_rwsem);
--	mapping_size = rbd_dev->mapping.size;
-+	dout("%s rbd_dev %p\n", __func__, rbd_dev);
- 
- 	ret = rbd_dev_header_info(rbd_dev, &header, false);
- 	if (ret)
-@@ -7079,22 +7089,13 @@ static int rbd_dev_refresh(struct rbd_device *rbd_dev)
- 			goto out;
+-		mv88e6xxx_g1_wait_eeprom_done(chip);
++		if (chip->info->ops->get_eeprom)
++			mv88e6xxx_g2_eeprom_wait(chip);
  	}
+ }
  
-+	down_write(&rbd_dev->header_rwsem);
- 	rbd_dev_update_header(rbd_dev, &header);
- 	if (rbd_dev->parent)
- 		rbd_dev_update_parent(rbd_dev, &pii);
+diff --git a/drivers/net/dsa/mv88e6xxx/global1.c b/drivers/net/dsa/mv88e6xxx/global1.c
+index 5848112036b08..964928285782c 100644
+--- a/drivers/net/dsa/mv88e6xxx/global1.c
++++ b/drivers/net/dsa/mv88e6xxx/global1.c
+@@ -75,37 +75,6 @@ static int mv88e6xxx_g1_wait_init_ready(struct mv88e6xxx_chip *chip)
+ 	return mv88e6xxx_g1_wait_bit(chip, MV88E6XXX_G1_STS, bit, 1);
+ }
+ 
+-void mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip)
+-{
+-	const unsigned long timeout = jiffies + 1 * HZ;
+-	u16 val;
+-	int err;
 -
--	if (rbd_dev->spec->snap_id == CEPH_NOSNAP) {
--		rbd_dev->mapping.size = rbd_dev->header.image_size;
--	} else {
--		/* validate mapped snapshot's EXISTS flag */
--		rbd_exists_validate(rbd_dev);
+-	/* Wait up to 1 second for the switch to finish reading the
+-	 * EEPROM.
+-	 */
+-	while (time_before(jiffies, timeout)) {
+-		err = mv88e6xxx_g1_read(chip, MV88E6XXX_G1_STS, &val);
+-		if (err) {
+-			dev_err(chip->dev, "Error reading status");
+-			return;
+-		}
+-
+-		/* If the switch is still resetting, it may not
+-		 * respond on the bus, and so MDIO read returns
+-		 * 0xffff. Differentiate between that, and waiting for
+-		 * the EEPROM to be done by bit 0 being set.
+-		 */
+-		if (val != 0xffff &&
+-		    val & BIT(MV88E6XXX_G1_STS_IRQ_EEPROM_DONE))
+-			return;
+-
+-		usleep_range(1000, 2000);
 -	}
 -
--out:
- 	up_write(&rbd_dev->header_rwsem);
--	if (!ret && mapping_size != rbd_dev->mapping.size)
--		rbd_dev_update_size(rbd_dev);
+-	dev_err(chip->dev, "Timeout waiting for EEPROM done");
+-}
+-
+ /* Offset 0x01: Switch MAC Address Register Bytes 0 & 1
+  * Offset 0x02: Switch MAC Address Register Bytes 2 & 3
+  * Offset 0x03: Switch MAC Address Register Bytes 4 & 5
+diff --git a/drivers/net/dsa/mv88e6xxx/global1.h b/drivers/net/dsa/mv88e6xxx/global1.h
+index 4f3dbb015f77b..6f41762eff3e6 100644
+--- a/drivers/net/dsa/mv88e6xxx/global1.h
++++ b/drivers/net/dsa/mv88e6xxx/global1.h
+@@ -280,7 +280,6 @@ int mv88e6xxx_g1_set_switch_mac(struct mv88e6xxx_chip *chip, u8 *addr);
+ int mv88e6185_g1_reset(struct mv88e6xxx_chip *chip);
+ int mv88e6352_g1_reset(struct mv88e6xxx_chip *chip);
+ int mv88e6250_g1_reset(struct mv88e6xxx_chip *chip);
+-void mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip);
  
-+out:
- 	rbd_parent_info_cleanup(&pii);
- 	rbd_image_header_cleanup(&header);
- 	return ret;
+ int mv88e6185_g1_ppu_enable(struct mv88e6xxx_chip *chip);
+ int mv88e6185_g1_ppu_disable(struct mv88e6xxx_chip *chip);
+diff --git a/drivers/net/dsa/mv88e6xxx/global2.c b/drivers/net/dsa/mv88e6xxx/global2.c
+index ec49939968fac..ac302a935ce69 100644
+--- a/drivers/net/dsa/mv88e6xxx/global2.c
++++ b/drivers/net/dsa/mv88e6xxx/global2.c
+@@ -340,7 +340,7 @@ int mv88e6xxx_g2_pot_clear(struct mv88e6xxx_chip *chip)
+  * Offset 0x15: EEPROM Addr (for 8-bit data access)
+  */
+ 
+-static int mv88e6xxx_g2_eeprom_wait(struct mv88e6xxx_chip *chip)
++int mv88e6xxx_g2_eeprom_wait(struct mv88e6xxx_chip *chip)
+ {
+ 	int bit = __bf_shf(MV88E6XXX_G2_EEPROM_CMD_BUSY);
+ 	int err;
+diff --git a/drivers/net/dsa/mv88e6xxx/global2.h b/drivers/net/dsa/mv88e6xxx/global2.h
+index 89ba09b663a26..f492048db0c13 100644
+--- a/drivers/net/dsa/mv88e6xxx/global2.h
++++ b/drivers/net/dsa/mv88e6xxx/global2.h
+@@ -357,6 +357,7 @@ int mv88e6xxx_g2_trunk_clear(struct mv88e6xxx_chip *chip);
+ 
+ int mv88e6xxx_g2_device_mapping_write(struct mv88e6xxx_chip *chip, int target,
+ 				      int port);
++int mv88e6xxx_g2_eeprom_wait(struct mv88e6xxx_chip *chip);
+ 
+ extern const struct mv88e6xxx_irq_ops mv88e6097_watchdog_ops;
+ extern const struct mv88e6xxx_irq_ops mv88e6250_watchdog_ops;
 -- 
 2.40.1
 
