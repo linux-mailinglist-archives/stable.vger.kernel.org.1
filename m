@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 499C47BE1A3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B13FA7BE11C
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377482AbjJINw1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:52:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48324 "EHLO
+        id S1377342AbjJINrL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:47:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377453AbjJINw0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:52:26 -0400
+        with ESMTP id S1377441AbjJINrH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:47:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF241B9
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:52:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5EBC433C8;
-        Mon,  9 Oct 2023 13:52:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A90AC5
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:47:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CF4C433C7;
+        Mon,  9 Oct 2023 13:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859544;
-        bh=xkBv8x1uVWv5XW3CGAbQT0MF/FyjjN+CBj/D54XZiFE=;
+        s=korg; t=1696859222;
+        bh=l43bXtebmDb0hFgiAPv0N8yRYgZJb3wEZxmL6pL531M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b2rxO3OP57krjrFuarHc0UQnDnIjiJpA6m+ZenYCx6LkU5VHMY63VTW01nue/f33j
-         qVmrXCoAPlLN6BdkJMVmG2wYQ6NdMAJlyD9rSMp8P8hIU+pRNkNPXY4wlOvSl8m6cC
-         hmC3DbJdSgDmPfVGUZsJr8k9LeCOrhlhToWNl8bs=
+        b=1WofG+CvKMgkHadoW6VR8GfTL/DZUOr5yhLzvTNLJRYZNbTljDKd/F5B5WntXbV/u
+         0dRmO9A87cVYL0GPxnm60QQqTKAoqWh9R3v1Y6Z33iUSzM2078LxO3X8m0+acn1XFL
+         DXDj8gIh6aFWJvj2JnsWEKO49yOqDxZj8bDlGaxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, mhiramat@kernel.org,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 37/91] ring-buffer: Avoid softlockup in ring_buffer_resize()
+Subject: [PATCH 4.14 10/55] xtensa: boot/lib: fix function prototypes
 Date:   Mon,  9 Oct 2023 15:06:09 +0200
-Message-ID: <20231009130112.816856260@linuxfoundation.org>
+Message-ID: <20231009130108.102818529@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,47 +49,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
 
-[ Upstream commit f6bd2c92488c30ef53b5bd80c52f0a7eee9d545a ]
+[ Upstream commit f54d02c8f2cc4b46ba2a3bd8252a6750453b6f2b ]
 
-When user resize all trace ring buffer through file 'buffer_size_kb',
-then in ring_buffer_resize(), kernel allocates buffer pages for each
-cpu in a loop.
+Add function prototype for gunzip() to the boot library code and make
+exit() and zalloc() static.
 
-If the kernel preemption model is PREEMPT_NONE and there are many cpus
-and there are many buffer pages to be allocated, it may not give up cpu
-for a long time and finally cause a softlockup.
+arch/xtensa/boot/lib/zmem.c:8:6: warning: no previous prototype for 'exit' [-Wmissing-prototypes]
+    8 | void exit (void)
+arch/xtensa/boot/lib/zmem.c:13:7: warning: no previous prototype for 'zalloc' [-Wmissing-prototypes]
+   13 | void *zalloc(unsigned size)
+arch/xtensa/boot/lib/zmem.c:35:6: warning: no previous prototype for 'gunzip' [-Wmissing-prototypes]
+   35 | void gunzip (void *dst, int dstlen, unsigned char *src, int *lenp)
 
-To avoid it, call cond_resched() after each cpu buffer allocation.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230906081930.3939106-1-zhengyejian1@huawei.com
-
-Cc: <mhiramat@kernel.org>
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 4bedea945451 ("xtensa: Architecture support for Tensilica Xtensa Part 2")
+Fixes: e7d163f76665 ("xtensa: Removed local copy of zlib and fixed O= support")
+Suggested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/xtensa/boot/lib/zmem.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index c8a7de7a1d635..320aa60664dc9 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1753,6 +1753,8 @@ int ring_buffer_resize(struct ring_buffer *buffer, unsigned long size,
- 				err = -ENOMEM;
- 				goto out_err;
- 			}
-+
-+			cond_resched();
- 		}
+diff --git a/arch/xtensa/boot/lib/zmem.c b/arch/xtensa/boot/lib/zmem.c
+index e3ecd743c5153..b89189355122a 100644
+--- a/arch/xtensa/boot/lib/zmem.c
++++ b/arch/xtensa/boot/lib/zmem.c
+@@ -4,13 +4,14 @@
+ /* bits taken from ppc */
  
- 		get_online_cpus();
+ extern void *avail_ram, *end_avail;
++void gunzip(void *dst, int dstlen, unsigned char *src, int *lenp);
+ 
+-void exit (void)
++static void exit(void)
+ {
+   for (;;);
+ }
+ 
+-void *zalloc(unsigned size)
++static void *zalloc(unsigned int size)
+ {
+         void *p = avail_ram;
+ 
 -- 
 2.40.1
 
