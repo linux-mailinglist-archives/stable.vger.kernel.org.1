@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74D457BE01A
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34A867BDE1D
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:16:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377215AbjJINha (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:37:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46804 "EHLO
+        id S1376914AbjJINQE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:16:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377213AbjJINh2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:37:28 -0400
+        with ESMTP id S1376929AbjJINQD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:16:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78932A3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:37:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E726C433C8;
-        Mon,  9 Oct 2023 13:37:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 162619D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:16:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C62C433C8;
+        Mon,  9 Oct 2023 13:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858646;
-        bh=HWef5KBdnZsGhroqY8B0s9f1fNlJ3gjv9zeboL9XnpA=;
+        s=korg; t=1696857360;
+        bh=I9DDwXpS6VNGHvn5zBwSFuvkwmxr3muJWfGwsW/4I48=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Us8pl45DWcqFMc0KAbbGcJHYXrcpTOMbg+rdz4jiMl402di6LEfDbej/KJOZCk4KF
-         U/TfGH6Un58Qq49pbTpxHn+WUBaVxF+EUWHzTBtgeCwvpYclMpxL1zoXdxPWzU1Kif
-         c0UWljG8r/jGFyFNh7WjdHn8r8gBb3aiFgI6d7CQ=
+        b=EbXV/DIrNgBvzv4tGYZOom53OIK6kEMBceyu4ndx+FFVz4BYwU4tj8TW0wYGz7EbQ
+         LK3XYmDdEwXe8gq0SOgpnFjXVZIqB0CKMocv+NJDEUQUG8uYkvfT4GeUKyueNCtSab
+         4cVTcv6wkFEBHjI831EAaMgVxvCHAcqlK0SQy6Bw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Sameer Pujar <spujar@nvidia.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 028/226] netfilter: nft_set_rbtree: skip sync GC for new elements in this transaction
-Date:   Mon,  9 Oct 2023 14:59:49 +0200
-Message-ID: <20231009130127.499570294@linuxfoundation.org>
+Subject: [PATCH 6.1 009/162] ASoC: tegra: Fix redundant PLLA and PLLA_OUT0 updates
+Date:   Mon,  9 Oct 2023 14:59:50 +0200
+Message-ID: <20231009130123.207558832@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +49,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sameer Pujar <spujar@nvidia.com>
 
-commit 2ee52ae94baabf7ee09cf2a8d854b990dac5d0e4 upstream.
+[ Upstream commit e765886249c533e1bb5cbc3cd741bad677417312 ]
 
-New elements in this transaction might expired before such transaction
-ends. Skip sync GC for such elements otherwise commit path might walk
-over an already released object. Once transaction is finished, async GC
-will collect such expired element.
+Tegra audio graph card has many DAI links which connects internal
+AHUB modules and external audio codecs. Since these are DPCM links,
+hw_params() call in the machine driver happens for each connected
+BE link and PLLA is updated every time. This is not really needed
+for all links as only I/O link DAIs derive respective clocks from
+PLLA_OUT0 and thus from PLLA. Hence add checks to limit the clock
+updates to DAIs over I/O links.
 
-Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+This found to be fixing a DMIC clock discrepancy which is suspected
+to happen because of back to back quick PLLA and PLLA_OUT0 rate
+updates. This was observed on Jetson TX2 platform where DMIC clock
+ended up with unexpected value.
+
+Fixes: 202e2f774543 ("ASoC: tegra: Add audio graph based card driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://lore.kernel.org/r/1694098945-32760-3-git-send-email-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ sound/soc/tegra/tegra_audio_graph_card.c | 30 ++++++++++++++----------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 9b0bdd4216152..535076b4de53d 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -314,6 +314,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	struct nft_rbtree_elem *rbe, *rbe_le = NULL, *rbe_ge = NULL;
- 	struct rb_node *node, *next, *parent, **p, *first = NULL;
- 	struct nft_rbtree *priv = nft_set_priv(set);
-+	u8 cur_genmask = nft_genmask_cur(net);
- 	u8 genmask = nft_genmask_next(net);
- 	int d, err;
+diff --git a/sound/soc/tegra/tegra_audio_graph_card.c b/sound/soc/tegra/tegra_audio_graph_card.c
+index 1f2c5018bf5ac..4737e776d3837 100644
+--- a/sound/soc/tegra/tegra_audio_graph_card.c
++++ b/sound/soc/tegra/tegra_audio_graph_card.c
+@@ -10,6 +10,7 @@
+ #include <linux/platform_device.h>
+ #include <sound/graph_card.h>
+ #include <sound/pcm_params.h>
++#include <sound/soc-dai.h>
  
-@@ -359,8 +360,11 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 		if (!nft_set_elem_active(&rbe->ext, genmask))
- 			continue;
+ #define MAX_PLLA_OUT0_DIV 128
  
--		/* perform garbage collection to avoid bogus overlap reports. */
--		if (nft_set_elem_expired(&rbe->ext)) {
-+		/* perform garbage collection to avoid bogus overlap reports
-+		 * but skip new elements in this transaction.
-+		 */
-+		if (nft_set_elem_expired(&rbe->ext) &&
-+		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
- 			err = nft_rbtree_gc_elem(set, priv, rbe, genmask);
- 			if (err < 0)
- 				return err;
+@@ -44,6 +45,21 @@ struct tegra_audio_cdata {
+ 	unsigned int plla_out0_rates[NUM_RATE_TYPE];
+ };
+ 
++static bool need_clk_update(struct snd_soc_dai *dai)
++{
++	if (snd_soc_dai_is_dummy(dai) ||
++	    !dai->driver->ops ||
++	    !dai->driver->name)
++		return false;
++
++	if (strstr(dai->driver->name, "I2S") ||
++	    strstr(dai->driver->name, "DMIC") ||
++	    strstr(dai->driver->name, "DSPK"))
++		return true;
++
++	return false;
++}
++
+ /* Setup PLL clock as per the given sample rate */
+ static int tegra_audio_graph_update_pll(struct snd_pcm_substream *substream,
+ 					struct snd_pcm_hw_params *params)
+@@ -140,19 +156,7 @@ static int tegra_audio_graph_hw_params(struct snd_pcm_substream *substream,
+ 	struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
+ 	int err;
+ 
+-	/*
+-	 * This gets called for each DAI link (FE or BE) when DPCM is used.
+-	 * We may not want to update PLLA rate for each call. So PLLA update
+-	 * must be restricted to external I/O links (I2S, DMIC or DSPK) since
+-	 * they actually depend on it. I/O modules update their clocks in
+-	 * hw_param() of their respective component driver and PLLA rate
+-	 * update here helps them to derive appropriate rates.
+-	 *
+-	 * TODO: When more HW accelerators get added (like sample rate
+-	 * converter, volume gain controller etc., which don't really
+-	 * depend on PLLA) we need a better way to filter here.
+-	 */
+-	if (cpu_dai->driver->ops && rtd->dai_link->no_pcm) {
++	if (need_clk_update(cpu_dai)) {
+ 		err = tegra_audio_graph_update_pll(substream, params);
+ 		if (err)
+ 			return err;
 -- 
 2.40.1
 
