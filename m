@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94B987BE0B3
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:43:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF1B67BDF09
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346505AbjJINnL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:43:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
+        id S1376731AbjJINZu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346443AbjJINnK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:10 -0400
+        with ESMTP id S1376770AbjJINZr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 067B19D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4665AC433C8;
-        Mon,  9 Oct 2023 13:43:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C8C8FB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C06C433C7;
+        Mon,  9 Oct 2023 13:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858988;
-        bh=K+ffzTyNcnb+xea8TclQM5gI2ZkdJSnE1cgmrCYM9YU=;
+        s=korg; t=1696857944;
+        bh=10q0OLJq49Zspt/0GQBudOTwjHLz+wjgVQuFfLO7obs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fxTpau99uJ4Z2z1eF99EUHq/MpQ8/qrcIsOC+M/gG8O4kTE1W7YusdHyTiNBSjfjT
-         frBlTszeh53vik8vESYNm5kX2PPkIb1ThcwrLLBJxx4PLb4Yb6Oj7NU2UB8l4Xu7sV
-         CbbBEZ3zP4mtjSW1Jlc3wB5Tmb++gLMZPvNjn1mE=
+        b=nbYvtDI7nb74MOVmfoUwXBHIr49IRKwR7CMxfprWsnUHkafEY5p3QmH8UZu6JGqLm
+         q5Y81xBX8mM/N95Dz7nwrvHE0WZT/cRPOS5OTxM+uGQS+ifcsFgJXzQJSS3oXGV8Ft
+         rMhGfY+bT3otQ9BDArZa8Ussavd6n66ziOcGDThw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        Mauricio Faria de Oliveira <mfo@canonical.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 164/226] spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in zynqmp_qspi_probe
+Subject: [PATCH 5.15 43/75] modpost: add missing else to the "of" check
 Date:   Mon,  9 Oct 2023 15:02:05 +0200
-Message-ID: <20231009130130.959156677@linuxfoundation.org>
+Message-ID: <20231009130112.741365066@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,72 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Mauricio Faria de Oliveira <mfo@canonical.com>
 
-[ Upstream commit a21fbc42807b15b74b0891bd557063e6acf4fcae ]
+[ Upstream commit cbc3d00cf88fda95dbcafee3b38655b7a8f2650a ]
 
-When platform_get_irq() fails, a pairing PM usage counter
-increment is needed to keep the counter balanced. It's the
-same for the following error paths.
+Without this 'else' statement, an "usb" name goes into two handlers:
+the first/previous 'if' statement _AND_ the for-loop over 'devtable',
+but the latter is useless as it has no 'usb' device_id entry anyway.
 
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/r/20210408092559.3824-1-dinghao.liu@zju.edu.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 1527b076ae2c ("spi: zynqmp-gqspi: fix clock imbalance on probe failure")
+Tested with allmodconfig before/after patch; no changes to *.mod.c:
+
+    git checkout v6.6-rc3
+    make -j$(nproc) allmodconfig
+    make -j$(nproc) olddefconfig
+
+    make -j$(nproc)
+    find . -name '*.mod.c' | cpio -pd /tmp/before
+
+    # apply patch
+
+    make -j$(nproc)
+    find . -name '*.mod.c' | cpio -pd /tmp/after
+
+    diff -r /tmp/before/ /tmp/after/
+    # no difference
+
+Fixes: acbef7b76629 ("modpost: fix module autoloading for OF devices with generic compatible property")
+Signed-off-by: Mauricio Faria de Oliveira <mfo@canonical.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ scripts/mod/file2alias.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 3d3ac48243ebd..ed68e237314fb 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -1147,11 +1147,16 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
-+
-+	ret = pm_runtime_get_sync(&pdev->dev);
-+	if (ret < 0) {
-+		dev_err(&pdev->dev, "Failed to pm_runtime_get_sync: %d\n", ret);
-+		goto clk_dis_all;
-+	}
-+
- 	/* QSPI controller initializations */
- 	zynqmp_qspi_init_hw(xqspi);
- 
--	pm_runtime_mark_last_busy(&pdev->dev);
--	pm_runtime_put_autosuspend(&pdev->dev);
- 	xqspi->irq = platform_get_irq(pdev, 0);
- 	if (xqspi->irq <= 0) {
- 		ret = -ENXIO;
-@@ -1178,6 +1183,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
- 			    SPI_TX_DUAL | SPI_TX_QUAD;
- 	ctlr->dev.of_node = np;
-+	ctlr->auto_runtime_pm = true;
- 
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret) {
-@@ -1185,9 +1191,13 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 		goto clk_dis_all;
- 	}
- 
-+	pm_runtime_mark_last_busy(&pdev->dev);
-+	pm_runtime_put_autosuspend(&pdev->dev);
-+
- 	return 0;
- 
- clk_dis_all:
-+	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	clk_disable_unprepare(xqspi->refclk);
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 49aba862073e0..05089ef5cc0ec 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -1547,7 +1547,7 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
+ 	/* First handle the "special" cases */
+ 	if (sym_is(name, namelen, "usb"))
+ 		do_usb_table(symval, sym->st_size, mod);
+-	if (sym_is(name, namelen, "of"))
++	else if (sym_is(name, namelen, "of"))
+ 		do_of_table(symval, sym->st_size, mod);
+ 	else if (sym_is(name, namelen, "pnp"))
+ 		do_pnp_device_entry(symval, sym->st_size, mod);
 -- 
 2.40.1
 
