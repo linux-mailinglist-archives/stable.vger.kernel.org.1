@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA72C7BDE07
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B71607BDECF
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376850AbjJINPI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:15:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55828 "EHLO
+        id S1376442AbjJINXZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:23:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376665AbjJINPH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:07 -0400
+        with ESMTP id S1376439AbjJINXZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0CA9F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5671C433C7;
-        Mon,  9 Oct 2023 13:15:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 189FC8F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5814AC433C7;
+        Mon,  9 Oct 2023 13:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857305;
-        bh=fZnyv+SPyLFgboDLlFM7k/TvApdmPYdh6z2arn7GDDw=;
+        s=korg; t=1696857801;
+        bh=coihKcqwiyuGHtuTu4BlHycKWS8vg/P5F13kDCThYnA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z91ZQUD9vRZ4lTJFWW0uexpFNu9qI9yvQkLvnISWLzhLnU/ONHuBaRCoC2yvsjDN0
-         Fjotuc3LTklSluxt5STOKrSlhTLdHdX7ZlT1lVKA339DpCP27SoC1973k7br5nkKXD
-         NLC/Kr8TpWgnfHAVYYrKVrhgeVaBPQTzMJchBwzI=
+        b=nxXQmo+CB/Ja0te+CgdcVOsnjQNIZLwjMQpBOm7r8V/MYyggdUDLIPOuD2MQ9PSTA
+         df5Y7RcgDSwHLBrjnZFMEgZ5ol1tVppmt9Skx+oODTWNU27fKeN+JuRWFck1Cy2w5Y
+         lwi0WD8M8g9T1b7ZPj5Nhgp89xHvi46zSN/JogDo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bernard Metzler <bmt@zurich.ibm.com>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.5 151/163] RDMA/siw: Fix connection failure handling
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 134/162] HID: sony: remove duplicate NULL check before calling usb_free_urb()
 Date:   Mon,  9 Oct 2023 15:01:55 +0200
-Message-ID: <20231009130128.195355426@linuxfoundation.org>
+Message-ID: <20231009130126.611625239@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,75 +48,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernard Metzler <bmt@zurich.ibm.com>
+From: Jiri Kosina <jkosina@suse.cz>
 
-commit 53a3f777049771496f791504e7dc8ef017cba590 upstream.
+[ Upstream commit b328dd02e19cb9d3b35de4322f5363516a20ac8c ]
 
-In case immediate MPA request processing fails, the newly
-created endpoint unlinks the listening endpoint and is
-ready to be dropped. This special case was not handled
-correctly by the code handling the later TCP socket close,
-causing a NULL dereference crash in siw_cm_work_handler()
-when dereferencing a NULL listener. We now also cancel
-the useless MPA timeout, if immediate MPA request
-processing fails.
+usb_free_urb() does the NULL check itself, so there is no need to duplicate
+it prior to calling.
 
-This patch furthermore simplifies MPA processing in general:
-Scheduling a useless TCP socket read in sk_data_ready() upcall
-is now surpressed, if the socket is already moved out of
-TCP_ESTABLISHED state.
-
-Fixes: 6c52fdc244b5 ("rdma/siw: connection management")
-Signed-off-by: Bernard Metzler <bmt@zurich.ibm.com>
-Link: https://lore.kernel.org/r/20230905145822.446263-1-bmt@zurich.ibm.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Fixes: e1cd4004cde7c9 ("HID: sony: Fix a potential memory leak in sony_probe()")
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_cm.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/hid/hid-sony.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/infiniband/sw/siw/siw_cm.c
-+++ b/drivers/infiniband/sw/siw/siw_cm.c
-@@ -976,6 +976,7 @@ static void siw_accept_newconn(struct si
- 			siw_cep_put(cep);
- 			new_cep->listen_cep = NULL;
- 			if (rv) {
-+				siw_cancel_mpatimer(new_cep);
- 				siw_cep_set_free(new_cep);
- 				goto error;
- 			}
-@@ -1100,9 +1101,12 @@ static void siw_cm_work_handler(struct w
- 				/*
- 				 * Socket close before MPA request received.
- 				 */
--				siw_dbg_cep(cep, "no mpareq: drop listener\n");
--				siw_cep_put(cep->listen_cep);
--				cep->listen_cep = NULL;
-+				if (cep->listen_cep) {
-+					siw_dbg_cep(cep,
-+						"no mpareq: drop listener\n");
-+					siw_cep_put(cep->listen_cep);
-+					cep->listen_cep = NULL;
-+				}
- 			}
- 		}
- 		release_cep = 1;
-@@ -1227,7 +1231,11 @@ static void siw_cm_llp_data_ready(struct
- 	if (!cep)
- 		goto out;
+diff --git a/drivers/hid/hid-sony.c b/drivers/hid/hid-sony.c
+index 5b3f58e068807..f7f7252d839ee 100644
+--- a/drivers/hid/hid-sony.c
++++ b/drivers/hid/hid-sony.c
+@@ -3074,8 +3074,7 @@ static int sony_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	return ret;
  
--	siw_dbg_cep(cep, "state: %d\n", cep->state);
-+	siw_dbg_cep(cep, "cep state: %d, socket state %d\n",
-+		    cep->state, sk->sk_state);
-+
-+	if (sk->sk_state != TCP_ESTABLISHED)
-+		goto out;
+ err:
+-	if (sc->ghl_urb)
+-		usb_free_urb(sc->ghl_urb);
++	usb_free_urb(sc->ghl_urb);
  
- 	switch (cep->state) {
- 	case SIW_EPSTATE_RDMA_MODE:
+ 	hid_hw_stop(hdev);
+ 	return ret;
+-- 
+2.40.1
+
 
 
