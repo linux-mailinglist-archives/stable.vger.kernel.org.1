@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B92537BDD5D
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3C07BDE34
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376762AbjJINJr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:09:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42076 "EHLO
+        id S1376945AbjJINRD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:17:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376779AbjJINJq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:09:46 -0400
+        with ESMTP id S1376737AbjJINRC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66155DB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:09:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7563C433C7;
-        Mon,  9 Oct 2023 13:09:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74AAC99
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:16:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC2FC433CB;
+        Mon,  9 Oct 2023 13:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856984;
-        bh=390FwvnZ6P+HCdSv7O2wglk9zLMMEQsoy0V9yvvy2dE=;
+        s=korg; t=1696857419;
+        bh=Yw5qR7W9jqDMMOdF1dEtxd3j0q117gzvdB1oMpg0c3I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TAQ8RZ9RXEUXm9doBjRFUBdrlGgKEwAxUiz1ND2kwMPmFZagGbwpT3rGrcJQUF+Wg
-         1LBO7mU47tOljX96/OvqnRfS6bL+L27IqT2agGPqYS59DMadPTb+xz9AUI1swee0Vg
-         6McchE3lgQvdSbWJ8UQhnD69wWF/9w1L8k3qpZHc=
+        b=nrVg513AAFxQtzISOj/UrjtAWHlVRctSbUOLysdOkd1z90u3eT56Jp10cheLsb1+O
+         NOilnoEZ+0/ahOT7VDMek1+FUxiS4tmMfa/qxGnP3AQNOkXXlGTlEnLTHlMjPiZb8i
+         8y8XD/dwiK7PcMLCbk7H4DWtduEowFeVdFUFQtiA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 056/163] HID: sony: Fix a potential memory leak in sony_probe()
+        patches@lists.linux.dev, Patrick Rohr <prohr@google.com>,
+        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+        Lorenzo Colitti <lorenzo@google.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 039/162] net: add sysctl accept_ra_min_rtr_lft
 Date:   Mon,  9 Oct 2023 15:00:20 +0200
-Message-ID: <20231009130125.583645752@linuxfoundation.org>
+Message-ID: <20231009130124.018558487@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,41 +51,160 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Patrick Rohr <prohr@google.com>
 
-[ Upstream commit e1cd4004cde7c9b694bbdd8def0e02288ee58c74 ]
+commit 1671bcfd76fdc0b9e65153cf759153083755fe4c upstream.
 
-If an error occurs after a successful usb_alloc_urb() call, usb_free_urb()
-should be called.
+This change adds a new sysctl accept_ra_min_rtr_lft to specify the
+minimum acceptable router lifetime in an RA. If the received RA router
+lifetime is less than the configured value (and not 0), the RA is
+ignored.
+This is useful for mobile devices, whose battery life can be impacted
+by networks that configure RAs with a short lifetime. On such networks,
+the device should never gain IPv6 provisioning and should attempt to
+drop RAs via hardware offload, if available.
 
-Fixes: fb1a79a6b6e1 ("HID: sony: fix freeze when inserting ghlive ps3/wii dongles")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Patrick Rohr <prohr@google.com>
+Cc: Maciej Żenczykowski <maze@google.com>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-sony.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/networking/ip-sysctl.rst |    8 ++++++++
+ include/linux/ipv6.h                   |    1 +
+ include/uapi/linux/ipv6.h              |    1 +
+ net/ipv6/addrconf.c                    |   10 ++++++++++
+ net/ipv6/ndisc.c                       |   18 ++++++++++++++++--
+ 5 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-sony.c b/drivers/hid/hid-sony.c
-index dd942061fd775..a02046a78b2da 100644
---- a/drivers/hid/hid-sony.c
-+++ b/drivers/hid/hid-sony.c
-@@ -2155,6 +2155,9 @@ static int sony_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	return ret;
+--- a/Documentation/networking/ip-sysctl.rst
++++ b/Documentation/networking/ip-sysctl.rst
+@@ -2148,6 +2148,14 @@ accept_ra_min_hop_limit - INTEGER
  
- err:
-+	if (sc->ghl_urb)
-+		usb_free_urb(sc->ghl_urb);
+ 	Default: 1
+ 
++accept_ra_min_rtr_lft - INTEGER
++	Minimum acceptable router lifetime in Router Advertisement.
 +
- 	hid_hw_stop(hdev);
- 	return ret;
++	RAs with a router lifetime less than this value shall be
++	ignored. RAs with a router lifetime of 0 are unaffected.
++
++	Default: 0
++
+ accept_ra_pinfo - BOOLEAN
+ 	Learn Prefix Information in Router Advertisement.
+ 
+--- a/include/linux/ipv6.h
++++ b/include/linux/ipv6.h
+@@ -33,6 +33,7 @@ struct ipv6_devconf {
+ 	__s32		accept_ra_defrtr;
+ 	__u32		ra_defrtr_metric;
+ 	__s32		accept_ra_min_hop_limit;
++	__s32		accept_ra_min_rtr_lft;
+ 	__s32		accept_ra_pinfo;
+ 	__s32		ignore_routes_with_linkdown;
+ #ifdef CONFIG_IPV6_ROUTER_PREF
+--- a/include/uapi/linux/ipv6.h
++++ b/include/uapi/linux/ipv6.h
+@@ -198,6 +198,7 @@ enum {
+ 	DEVCONF_IOAM6_ID_WIDE,
+ 	DEVCONF_NDISC_EVICT_NOCARRIER,
+ 	DEVCONF_ACCEPT_UNTRACKED_NA,
++	DEVCONF_ACCEPT_RA_MIN_RTR_LFT,
+ 	DEVCONF_MAX
+ };
+ 
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -202,6 +202,7 @@ static struct ipv6_devconf ipv6_devconf
+ 	.ra_defrtr_metric	= IP6_RT_PRIO_USER,
+ 	.accept_ra_from_local	= 0,
+ 	.accept_ra_min_hop_limit= 1,
++	.accept_ra_min_rtr_lft	= 0,
+ 	.accept_ra_pinfo	= 1,
+ #ifdef CONFIG_IPV6_ROUTER_PREF
+ 	.accept_ra_rtr_pref	= 1,
+@@ -262,6 +263,7 @@ static struct ipv6_devconf ipv6_devconf_
+ 	.ra_defrtr_metric	= IP6_RT_PRIO_USER,
+ 	.accept_ra_from_local	= 0,
+ 	.accept_ra_min_hop_limit= 1,
++	.accept_ra_min_rtr_lft	= 0,
+ 	.accept_ra_pinfo	= 1,
+ #ifdef CONFIG_IPV6_ROUTER_PREF
+ 	.accept_ra_rtr_pref	= 1,
+@@ -5601,6 +5603,7 @@ static inline void ipv6_store_devconf(st
+ 	array[DEVCONF_IOAM6_ID_WIDE] = cnf->ioam6_id_wide;
+ 	array[DEVCONF_NDISC_EVICT_NOCARRIER] = cnf->ndisc_evict_nocarrier;
+ 	array[DEVCONF_ACCEPT_UNTRACKED_NA] = cnf->accept_untracked_na;
++	array[DEVCONF_ACCEPT_RA_MIN_RTR_LFT] = cnf->accept_ra_min_rtr_lft;
  }
--- 
-2.40.1
-
+ 
+ static inline size_t inet6_ifla6_size(void)
+@@ -6793,6 +6796,13 @@ static const struct ctl_table addrconf_s
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec,
++	},
++	{
++		.procname	= "accept_ra_min_rtr_lft",
++		.data		= &ipv6_devconf.accept_ra_min_rtr_lft,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec,
+ 	},
+ 	{
+ 		.procname	= "accept_ra_pinfo",
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1284,6 +1284,8 @@ static void ndisc_router_discovery(struc
+ 		return;
+ 	}
+ 
++	lifetime = ntohs(ra_msg->icmph.icmp6_rt_lifetime);
++
+ 	if (!ipv6_accept_ra(in6_dev)) {
+ 		ND_PRINTK(2, info,
+ 			  "RA: %s, did not accept ra for dev: %s\n",
+@@ -1291,6 +1293,13 @@ static void ndisc_router_discovery(struc
+ 		goto skip_linkparms;
+ 	}
+ 
++	if (lifetime != 0 && lifetime < in6_dev->cnf.accept_ra_min_rtr_lft) {
++		ND_PRINTK(2, info,
++			  "RA: router lifetime (%ds) is too short: %s\n",
++			  lifetime, skb->dev->name);
++		goto skip_linkparms;
++	}
++
+ #ifdef CONFIG_IPV6_NDISC_NODETYPE
+ 	/* skip link-specific parameters from interior routers */
+ 	if (skb->ndisc_nodetype == NDISC_NODETYPE_NODEFAULT) {
+@@ -1343,8 +1352,6 @@ static void ndisc_router_discovery(struc
+ 		goto skip_defrtr;
+ 	}
+ 
+-	lifetime = ntohs(ra_msg->icmph.icmp6_rt_lifetime);
+-
+ #ifdef CONFIG_IPV6_ROUTER_PREF
+ 	pref = ra_msg->icmph.icmp6_router_pref;
+ 	/* 10b is handled as if it were 00b (medium) */
+@@ -1495,6 +1502,13 @@ skip_linkparms:
+ 		goto out;
+ 	}
+ 
++	if (lifetime != 0 && lifetime < in6_dev->cnf.accept_ra_min_rtr_lft) {
++		ND_PRINTK(2, info,
++			  "RA: router lifetime (%ds) is too short: %s\n",
++			  lifetime, skb->dev->name);
++		goto out;
++	}
++
+ #ifdef CONFIG_IPV6_ROUTE_INFO
+ 	if (!in6_dev->cnf.accept_ra_from_local &&
+ 	    ipv6_chk_addr(dev_net(in6_dev->dev), &ipv6_hdr(skb)->saddr,
 
 
