@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 110DD7BDFDA
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:34:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7099E7BDF29
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:27:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377153AbjJINet (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:34:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38930 "EHLO
+        id S1376741AbjJIN1C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:27:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377152AbjJINes (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:34:48 -0400
+        with ESMTP id S1376720AbjJIN1C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:27:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA64091
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:34:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016DDC433C8;
-        Mon,  9 Oct 2023 13:34:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95A0A8F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:27:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3F8C433C8;
+        Mon,  9 Oct 2023 13:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858487;
-        bh=kfXmAORfbMLIlpM163DOqiP3mtJYReik7WZWuJBDYLw=;
+        s=korg; t=1696858020;
+        bh=P/Se2nwMY7NXCLE2JS6FmkEj+fmoVnitE0Bmo6BpoJ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nNaHQJ93BhdN95ltR8CTiQWjkj+D//o8d5qEa9bmcUVCIb0EpuNdLDrDYDtUo9n8e
-         F1qYXgw7AxVaneeszS3/pLSRdICSoaFT5Lr5Oo/I6csB3zLDJ/VA5MXNlEBitBPrXR
-         pgBAIqbwqyIvYD8T4QTFuRc75w0BP7h3+6b6XhiI=
+        b=LixwqBvmdAsfyfUnBOA4QszHnaqzkcvEXL6NSF3vX3hcCPTCzgrBbUhsbPBlA5+Js
+         9zM48WL4TC6hEkijthzlyjWb6ifvtzs0ft0h8pPxDxPJLAd2jQGlkHB9oDXRoM2jVT
+         gO6T8TTjh1HWQrN+uC3zXKogNF7hhSaSPfSin2Lg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shiji Yang <yangshiji66@outlook.com>,
-        Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>,
+        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 101/131] wifi: mt76: mt76x02: fix MT76x0 external LNA gain handling
+Subject: [PATCH 5.15 59/75] sctp: update transport state when processing a dupcook packet
 Date:   Mon,  9 Oct 2023 15:02:21 +0200
-Message-ID: <20231009130119.509757215@linuxfoundation.org>
+Message-ID: <20231009130113.316385020@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,80 +50,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 684e45e120b82deccaf8b85633905304a3bbf56d ]
+[ Upstream commit 2222a78075f0c19ca18db53fd6623afb4aff602d ]
 
-On MT76x0, LNA gain should be applied for both external and internal LNA.
-On MT76x2, LNA gain should be treated as 0 for external LNA.
-Move the LNA type based logic to mt76x2 in order to fix mt76x0.
+During the 4-way handshake, the transport's state is set to ACTIVE in
+sctp_process_init() when processing INIT_ACK chunk on client or
+COOKIE_ECHO chunk on server.
 
-Fixes: 2daa67588f34 ("mt76x0: unify lna_gain parsing")
-Reported-by: Shiji Yang <yangshiji66@outlook.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230919194747.31647-1-nbd@nbd.name
+In the collision scenario below:
+
+  192.168.1.2 > 192.168.1.1: sctp (1) [INIT] [init tag: 3922216408]
+    192.168.1.1 > 192.168.1.2: sctp (1) [INIT] [init tag: 144230885]
+    192.168.1.2 > 192.168.1.1: sctp (1) [INIT ACK] [init tag: 3922216408]
+    192.168.1.1 > 192.168.1.2: sctp (1) [COOKIE ECHO]
+    192.168.1.2 > 192.168.1.1: sctp (1) [COOKIE ACK]
+  192.168.1.1 > 192.168.1.2: sctp (1) [INIT ACK] [init tag: 3914796021]
+
+when processing COOKIE_ECHO on 192.168.1.2, as it's in COOKIE_WAIT state,
+sctp_sf_do_dupcook_b() is called by sctp_sf_do_5_2_4_dupcook() where it
+creates a new association and sets its transport to ACTIVE then updates
+to the old association in sctp_assoc_update().
+
+However, in sctp_assoc_update(), it will skip the transport update if it
+finds a transport with the same ipaddr already existing in the old asoc,
+and this causes the old asoc's transport state not to move to ACTIVE
+after the handshake.
+
+This means if DATA retransmission happens at this moment, it won't be able
+to enter PF state because of the check 'transport->state == SCTP_ACTIVE'
+in sctp_do_8_2_transport_strike().
+
+This patch fixes it by updating the transport in sctp_assoc_update() with
+sctp_assoc_add_peer() where it updates the transport state if there is
+already a transport with the same ipaddr exists in the old asoc.
+
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/r/fd17356abe49713ded425250cc1ae51e9f5846c6.1696172325.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c |  7 -------
- drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c  | 13 +++++++++++--
- 2 files changed, 11 insertions(+), 9 deletions(-)
+ net/sctp/associola.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
-index c54c50fd639a9..c0227b20b6a31 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x02_eeprom.c
-@@ -131,15 +131,8 @@ u8 mt76x02_get_lna_gain(struct mt76x02_dev *dev,
- 			s8 *lna_2g, s8 *lna_5g,
- 			struct ieee80211_channel *chan)
- {
--	u16 val;
- 	u8 lna;
+diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+index 3460abceba443..2965a12fe8aa2 100644
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -1161,8 +1161,7 @@ int sctp_assoc_update(struct sctp_association *asoc,
+ 		/* Add any peer addresses from the new association. */
+ 		list_for_each_entry(trans, &new->peer.transport_addr_list,
+ 				    transports)
+-			if (!sctp_assoc_lookup_paddr(asoc, &trans->ipaddr) &&
+-			    !sctp_assoc_add_peer(asoc, &trans->ipaddr,
++			if (!sctp_assoc_add_peer(asoc, &trans->ipaddr,
+ 						 GFP_ATOMIC, trans->state))
+ 				return -ENOMEM;
  
--	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
--	if (val & MT_EE_NIC_CONF_1_LNA_EXT_2G)
--		*lna_2g = 0;
--	if (val & MT_EE_NIC_CONF_1_LNA_EXT_5G)
--		memset(lna_5g, 0, sizeof(s8) * 3);
--
- 	if (chan->band == NL80211_BAND_2GHZ)
- 		lna = *lna_2g;
- 	else if (chan->hw_value <= 64)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
-index 9f91556c7f38d..3ee945eafa4d4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x2/eeprom.c
-@@ -251,7 +251,8 @@ void mt76x2_read_rx_gain(struct mt76x02_dev *dev)
- 	struct ieee80211_channel *chan = dev->mt76.chandef.chan;
- 	int channel = chan->hw_value;
- 	s8 lna_5g[3], lna_2g;
--	u8 lna;
-+	bool use_lna;
-+	u8 lna = 0;
- 	u16 val;
- 
- 	if (chan->band == NL80211_BAND_2GHZ)
-@@ -270,7 +271,15 @@ void mt76x2_read_rx_gain(struct mt76x02_dev *dev)
- 	dev->cal.rx.mcu_gain |= (lna_5g[1] & 0xff) << 16;
- 	dev->cal.rx.mcu_gain |= (lna_5g[2] & 0xff) << 24;
- 
--	lna = mt76x02_get_lna_gain(dev, &lna_2g, lna_5g, chan);
-+	val = mt76x02_eeprom_get(dev, MT_EE_NIC_CONF_1);
-+	if (chan->band == NL80211_BAND_2GHZ)
-+		use_lna = !(val & MT_EE_NIC_CONF_1_LNA_EXT_2G);
-+	else
-+		use_lna = !(val & MT_EE_NIC_CONF_1_LNA_EXT_5G);
-+
-+	if (use_lna)
-+		lna = mt76x02_get_lna_gain(dev, &lna_2g, lna_5g, chan);
-+
- 	dev->cal.rx.lna_gain = mt76x02_sign_extend(lna, 8);
- }
- EXPORT_SYMBOL_GPL(mt76x2_read_rx_gain);
 -- 
 2.40.1
 
