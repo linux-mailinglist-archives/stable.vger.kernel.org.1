@@ -2,110 +2,382 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 016727BEC2D
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 23:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19B647BEC42
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 23:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377082AbjJIVBI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 17:01:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53480 "EHLO
+        id S1378136AbjJIVEo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 17:04:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234553AbjJIVBH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 17:01:07 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E8B49E
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 14:01:03 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a7af53bde4so9052597b3.0
-        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 14:01:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696885263; x=1697490063; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qyOEdilfHw6B6k4i/Hrpjck7dAiRB3VXEglYZeWU0vY=;
-        b=RDqhhdTFJzDEWkrgAFSXv2TAkzjlNIv0utTHzAf1vat4jLqL467f1eyWhCms0hrpuU
-         XeEDnmllu4x+r0VCYVazUpQToTfOagFhQ2g8pPIlNkW0clkiws5TjjVYWFy8mr4gGAUv
-         gjRPZTJedhMwI12slCQP7JwNwLTHqalGIfkJtm0eSwLTEvJsIfSpJ36R60m+AWeeH3Vq
-         1wEEd5dlMghdsNwAMjhpG55/sE2VptzL0BOHG1fbk9f+TYVR6/JUpw148RAzCYGdr0L7
-         SHb2p5N2sg+JzUMVZZwRvIO1Rj2/shaTkqPbgeW2JoXyD4+htb4qoMnd/0OLaQRUDcNW
-         bW1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696885263; x=1697490063;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qyOEdilfHw6B6k4i/Hrpjck7dAiRB3VXEglYZeWU0vY=;
-        b=DpkUvG+eFOy2w+lJJ9gdswOboOyBAzPmaAodDW5wmZe/ZrKcl0Dh/7yQI+92c+Q9uv
-         NNEYXsTrN/Cb1Ra4Ko+O11cDIcu3e/BhAF/sgyXJqflWibUSf7MbC/x/x63EeHqmVVyE
-         qqzHvTq86v/yZ/XWiwaRC9RzHYQuEPhlXWk5c6jp4ufyjXc4WR0y0B797TCg7OzZIpis
-         kKm15E26MQobupz9enn3p/zkhAxkbEbUBwhJfJJOOnXhaepJg+HD02pS6ewEwuUm8xAG
-         l4eseuyd+eccLZhVBUZ58BE/tGBYVBJ4T4DH2dRZ8WE51GbzK7eS0N7O5U3q/uiXYGL7
-         hu4Q==
-X-Gm-Message-State: AOJu0Yws/FdXFuvJWKZNAuQ8bLzIOpMIhfmNcOPxFemZF/AHcPBDV79W
-        3j3/M0RJ+zPpEP4W+Yb7J8F07zH8WBJZ2Q0=
-X-Google-Smtp-Source: AGHT+IEDyvZJwdqY9Oc+PsWnDK52oMqUDJXq0wl9ww7b4zK4S7kU9Z8dwTPjMN33xEoBDyZKGPNLrxqnaLEgeN4=
-X-Received: from rdbabiera.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:18a8])
- (user=rdbabiera job=sendgmr) by 2002:a81:c14a:0:b0:5a7:aab1:96a9 with SMTP id
- e10-20020a81c14a000000b005a7aab196a9mr37078ywl.6.1696885262787; Mon, 09 Oct
- 2023 14:01:02 -0700 (PDT)
-Date:   Mon,  9 Oct 2023 21:00:58 +0000
-Mime-Version: 1.0
-X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1373; i=rdbabiera@google.com;
- h=from:subject; bh=naOIDwmSOXGmB0NeKgkfBkGNyY1AcsJZAkoLxfJAvY4=;
- b=owGbwMvMwCFW0bfok0KS4TbG02pJDKkqWZyV4e0cCiJFf8M0b/3MzIv2XfV/aa2ZucelhMbUB
- WwzXh/qKGVhEONgkBVTZNH1zzO4cSV1yxzOGmOYOaxMIEMYuDgFYCIcnAx/ZSSaD5g46di9/9R0
- r/b1VJ44i2ydZaw3Ezd4Scww9pqqzvBP80lb4eKKcJsTypG9fPO5bv/dMcWJ/2LbyudhXJz6PSb cAA==
-X-Mailer: git-send-email 2.42.0.609.gbb76f46606-goog
-Message-ID: <20231009210057.3773877-2-rdbabiera@google.com>
-Subject: [PATCH v1] usb: typec: altmodes/displayport: Signal hpd low when
- exiting mode
-From:   RD Babiera <rdbabiera@google.com>
-To:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org
-Cc:     badhri@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, RD Babiera <rdbabiera@google.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S1378144AbjJIVEn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 17:04:43 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4E2AC;
+        Mon,  9 Oct 2023 14:04:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=pV2vO5314ghs1+5B0S4wyhRSc2XzWZFqjOwqRnCj9Ww=; b=kOhH5W9K7DfUPfvZ1kiaZCo2pW
+        5pM+bb2DbS7T3vTF6W745IcC8RIOmsOLD3crHZCtsPYjIB+6O1ScFMVhGIgjNbsXAwU2rotr1de/W
+        xKwHdBKwhkemDi4P/CUTKKcmfo0wF1lmkGfFWvG+EfITrr/0ecJpFTGR/zOz5g5u5ke/k6BdQ9kpW
+        OUGKb7n941wa8Db5dFFEov+WPmaVxzww6X5ju8li6+mx+FzMqOb6B5HVJLYvRmsttsW+0U4fEGkkR
+        xwwJFHOJQVBmYEe6FVb5+1ZWYu4lKBpEVrT6aWfRasoAa/zqoaoMrMKi2/iDySx/U6tYUjxVHYOHF
+        3L2m/UXA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qpxQO-00G8XD-0O;
+        Mon, 09 Oct 2023 21:04:26 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 33C89300454; Mon,  9 Oct 2023 23:04:25 +0200 (CEST)
+Date:   Mon, 9 Oct 2023 23:04:25 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Namhyung Kim <namhyung@kernel.org>
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Ravi Bangoria <ravi.bangoria@amd.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] perf/core: Introduce cpuctx->cgrp_ctx_list
+Message-ID: <20231009210425.GC6307@noisy.programming.kicks-ass.net>
+References: <20231004040844.797044-1-namhyung@kernel.org>
+ <20231004160224.GB6307@noisy.programming.kicks-ass.net>
+ <CAM9d7cizC0J85ByuF5fBmc_Bqi=wpNJpiVsw+3F1Avusn2aQog@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAM9d7cizC0J85ByuF5fBmc_Bqi=wpNJpiVsw+3F1Avusn2aQog@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Upon receiving an ACK for a sent EXIT_MODE message, the DisplayPort
-driver currently resets the status and configuration of the port partner.
-The hpd signal is not updated despite being part of the status, so the
-Display stack can still transmit video despite typec_altmode_exit placing
-the lanes in a Safe State.
+On Wed, Oct 04, 2023 at 09:32:24AM -0700, Namhyung Kim wrote:
 
-Set hpd to low when a sent EXIT_MODE message is ACK'ed.
+> Yeah, I know.. but I couldn't come up with a better solution.
 
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
+Not been near a compiler, and haven't fully thought it through, but
+could something like the work work?
+
+
 ---
- drivers/usb/typec/altmodes/displayport.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/perf_event.h |   1 +
+ kernel/events/core.c       | 115 +++++++++++++++++++++++----------------------
+ 2 files changed, 61 insertions(+), 55 deletions(-)
 
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index f503cb4cd721..718da02036d8 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -307,6 +307,11 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
- 			typec_altmode_update_active(alt, false);
- 			dp->data.status = 0;
- 			dp->data.conf = 0;
-+			if (dp->hpd) {
-+				drm_connector_oob_hotplug_event(dp->connector_fwnode);
-+				dp->hpd = false;
-+				sysfs_notify(&dp->alt->dev.kobj, "displayport", "hpd");
-+			}
- 			break;
- 		case DP_CMD_STATUS_UPDATE:
- 			dp->data.status = *vdo;
-
-base-commit: 1053c4a4b8fcbd28386e80347e7c82d4d617e352
--- 
-2.42.0.609.gbb76f46606-goog
-
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index f31f962a6445..0367d748fae0 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -878,6 +878,7 @@ struct perf_event_pmu_context {
+ 	unsigned int			embedded : 1;
+ 
+ 	unsigned int			nr_events;
++	unsigned int			nr_cgroups;
+ 
+ 	atomic_t			refcount; /* event <-> epc */
+ 	struct rcu_head			rcu_head;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 708d474c2ede..f3d5d47ecdfc 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -375,6 +375,7 @@ enum event_type_t {
+ 	EVENT_TIME = 0x4,
+ 	/* see ctx_resched() for details */
+ 	EVENT_CPU = 0x8,
++	EVENT_CGROUP = 0x10,
+ 	EVENT_ALL = EVENT_FLEXIBLE | EVENT_PINNED,
+ };
+ 
+@@ -684,20 +685,26 @@ do {									\
+ 	___p;								\
+ })
+ 
+-static void perf_ctx_disable(struct perf_event_context *ctx)
++static void perf_ctx_disable(struct perf_event_context *ctx, bool cgroup)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx;
+ 
+-	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
+ 		perf_pmu_disable(pmu_ctx->pmu);
++	}
+ }
+ 
+-static void perf_ctx_enable(struct perf_event_context *ctx)
++static void perf_ctx_enable(struct perf_event_context *ctx. bool cgroup)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx;
+ 
+-	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
+ 		perf_pmu_enable(pmu_ctx->pmu);
++	}
+ }
+ 
+ static void ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type);
+@@ -856,9 +863,9 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 		return;
+ 
+ 	perf_ctx_lock(cpuctx, cpuctx->task_ctx);
+-	perf_ctx_disable(&cpuctx->ctx);
++	perf_ctx_disable(&cpuctx->ctx, true);
+ 
+-	ctx_sched_out(&cpuctx->ctx, EVENT_ALL);
++	ctx_sched_out(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
+ 	/*
+ 	 * must not be done before ctxswout due
+ 	 * to update_cgrp_time_from_cpuctx() in
+@@ -870,9 +877,9 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 	 * perf_cgroup_set_timestamp() in ctx_sched_in()
+ 	 * to not have to pass task around
+ 	 */
+-	ctx_sched_in(&cpuctx->ctx, EVENT_ALL);
++	ctx_sched_in(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
+ 
+-	perf_ctx_enable(&cpuctx->ctx);
++	perf_ctx_enable(&cpuctx->ctx, true);
+ 	perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
+ }
+ 
+@@ -965,6 +972,8 @@ perf_cgroup_event_enable(struct perf_event *event, struct perf_event_context *ct
+ 	if (!is_cgroup_event(event))
+ 		return;
+ 
++	event->pmu_ctx->nr_cgroups++;
++
+ 	/*
+ 	 * Because cgroup events are always per-cpu events,
+ 	 * @ctx == &cpuctx->ctx.
+@@ -985,6 +994,8 @@ perf_cgroup_event_disable(struct perf_event *event, struct perf_event_context *c
+ 	if (!is_cgroup_event(event))
+ 		return;
+ 
++	event->pmu_ctx->nr_cgroups--;
++
+ 	/*
+ 	 * Because cgroup events are always per-cpu events,
+ 	 * @ctx == &cpuctx->ctx.
+@@ -2677,9 +2688,9 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
+ 
+ 	event_type &= EVENT_ALL;
+ 
+-	perf_ctx_disable(&cpuctx->ctx);
++	perf_ctx_disable(&cpuctx->ctx, false);
+ 	if (task_ctx) {
+-		perf_ctx_disable(task_ctx);
++		perf_ctx_disable(task_ctx, false);
+ 		task_ctx_sched_out(task_ctx, event_type);
+ 	}
+ 
+@@ -2697,9 +2708,9 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
+ 
+ 	perf_event_sched_in(cpuctx, task_ctx);
+ 
+-	perf_ctx_enable(&cpuctx->ctx);
++	perf_ctx_enable(&cpuctx->ctx, false);
+ 	if (task_ctx)
+-		perf_ctx_enable(task_ctx);
++		perf_ctx_enable(task_ctx, false);
+ }
+ 
+ void perf_pmu_resched(struct pmu *pmu)
+@@ -3244,6 +3255,9 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
+ 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	struct perf_event_pmu_context *pmu_ctx;
+ 	int is_active = ctx->is_active;
++	bool cgroup = event_type & EVENT_CGROUP;
++
++	event_type &= ~EVENT_CGROUP;
+ 
+ 	lockdep_assert_held(&ctx->lock);
+ 
+@@ -3290,8 +3304,11 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
+ 
+ 	is_active ^= ctx->is_active; /* changed bits */
+ 
+-	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
+ 		__pmu_ctx_sched_out(pmu_ctx, is_active);
++	}
+ }
+ 
+ /*
+@@ -3482,7 +3499,7 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
+ 		raw_spin_lock_nested(&next_ctx->lock, SINGLE_DEPTH_NESTING);
+ 		if (context_equiv(ctx, next_ctx)) {
+ 
+-			perf_ctx_disable(ctx);
++			perf_ctx_disable(ctx, false);
+ 
+ 			/* PMIs are disabled; ctx->nr_pending is stable. */
+ 			if (local_read(&ctx->nr_pending) ||
+@@ -3502,7 +3519,7 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
+ 			perf_ctx_sched_task_cb(ctx, false);
+ 			perf_event_swap_task_ctx_data(ctx, next_ctx);
+ 
+-			perf_ctx_enable(ctx);
++			perf_ctx_enable(ctx, false);
+ 
+ 			/*
+ 			 * RCU_INIT_POINTER here is safe because we've not
+@@ -3526,13 +3543,13 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
+ 
+ 	if (do_switch) {
+ 		raw_spin_lock(&ctx->lock);
+-		perf_ctx_disable(ctx);
++		perf_ctx_disable(ctx, false);
+ 
+ inside_switch:
+ 		perf_ctx_sched_task_cb(ctx, false);
+ 		task_ctx_sched_out(ctx, EVENT_ALL);
+ 
+-		perf_ctx_enable(ctx);
++		perf_ctx_enable(ctx, false);
+ 		raw_spin_unlock(&ctx->lock);
+ 	}
+ }
+@@ -3818,47 +3835,32 @@ static int merge_sched_in(struct perf_event *event, void *data)
+ 	return 0;
+ }
+ 
+-static void ctx_pinned_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
++static void pmu_groups_sched_in(struct perf_event_context *ctx,
++				struct perf_event_groups *groups,
++				struct pmu *pmu)
+ {
+-	struct perf_event_pmu_context *pmu_ctx;
+ 	int can_add_hw = 1;
+-
+-	if (pmu) {
+-		visit_groups_merge(ctx, &ctx->pinned_groups,
+-				   smp_processor_id(), pmu,
+-				   merge_sched_in, &can_add_hw);
+-	} else {
+-		list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
+-			can_add_hw = 1;
+-			visit_groups_merge(ctx, &ctx->pinned_groups,
+-					   smp_processor_id(), pmu_ctx->pmu,
+-					   merge_sched_in, &can_add_hw);
+-		}
+-	}
++	visit_groups_merge(ctx, groups, smp_processor_id(), pmu,
++			   merge_sched_in, &can_add_hw);
+ }
+ 
+-static void ctx_flexible_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
++static void ctx_groups_sched_in(struct perf_event_context *ctx,
++				struct perf_event_groups *groups,
++				bool cgroup)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx;
+-	int can_add_hw = 1;
+ 
+-	if (pmu) {
+-		visit_groups_merge(ctx, &ctx->flexible_groups,
+-				   smp_processor_id(), pmu,
+-				   merge_sched_in, &can_add_hw);
+-	} else {
+-		list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
+-			can_add_hw = 1;
+-			visit_groups_merge(ctx, &ctx->flexible_groups,
+-					   smp_processor_id(), pmu_ctx->pmu,
+-					   merge_sched_in, &can_add_hw);
+-		}
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
++		pmu_groups_sched_in(ctx, groups, pmu_ctx->pmu);
+ 	}
+ }
+ 
+-static void __pmu_ctx_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
++static void __pmu_ctx_sched_in(struct perf_event_context *ctx,
++			       struct pmu *pmu)
+ {
+-	ctx_flexible_sched_in(ctx, pmu);
++	pmu_groups_sched_in(ctx, &ctx->flexible_groups, pmu);
+ }
+ 
+ static void
+@@ -3866,6 +3868,9 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
+ {
+ 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	int is_active = ctx->is_active;
++	bool cgroup = event_type & EVENT_CGROUP;
++
++	event_type &= ~EVENT_CGROUP;
+ 
+ 	lockdep_assert_held(&ctx->lock);
+ 
+@@ -3898,11 +3903,11 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
+ 	 * in order to give them the best chance of going on.
+ 	 */
+ 	if (is_active & EVENT_PINNED)
+-		ctx_pinned_sched_in(ctx, NULL);
++		ctx_groups_sched_in(ctx, &ctx->pinned_groups, cgroup);
+ 
+ 	/* Then walk through the lower prio flexible groups */
+ 	if (is_active & EVENT_FLEXIBLE)
+-		ctx_flexible_sched_in(ctx, NULL);
++		ctx_groups_sched_in(ctx, &ctx->flexible_groups, cgroup);
+ }
+ 
+ static void perf_event_context_sched_in(struct task_struct *task)
+@@ -3917,11 +3922,11 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 
+ 	if (cpuctx->task_ctx == ctx) {
+ 		perf_ctx_lock(cpuctx, ctx);
+-		perf_ctx_disable(ctx);
++		perf_ctx_disable(ctx, false);
+ 
+ 		perf_ctx_sched_task_cb(ctx, true);
+ 
+-		perf_ctx_enable(ctx);
++		perf_ctx_enable(ctx, false);
+ 		perf_ctx_unlock(cpuctx, ctx);
+ 		goto rcu_unlock;
+ 	}
+@@ -3934,7 +3939,7 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 	if (!ctx->nr_events)
+ 		goto unlock;
+ 
+-	perf_ctx_disable(ctx);
++	perf_ctx_disable(ctx, false);
+ 	/*
+ 	 * We want to keep the following priority order:
+ 	 * cpu pinned (that don't need to move), task pinned,
+@@ -3944,7 +3949,7 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 	 * events, no need to flip the cpuctx's events around.
+ 	 */
+ 	if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree)) {
+-		perf_ctx_disable(&cpuctx->ctx);
++		perf_ctx_disable(&cpuctx->ctx, false);
+ 		ctx_sched_out(&cpuctx->ctx, EVENT_FLEXIBLE);
+ 	}
+ 
+@@ -3953,9 +3958,9 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 	perf_ctx_sched_task_cb(cpuctx->task_ctx, true);
+ 
+ 	if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree))
+-		perf_ctx_enable(&cpuctx->ctx);
++		perf_ctx_enable(&cpuctx->ctx, false);
+ 
+-	perf_ctx_enable(ctx);
++	perf_ctx_enable(ctx, false);
+ 
+ unlock:
+ 	perf_ctx_unlock(cpuctx, ctx);
