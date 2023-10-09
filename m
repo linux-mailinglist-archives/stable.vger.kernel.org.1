@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C9757BDD2C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC0737BDE1A
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376704AbjJINIL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:08:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41444 "EHLO
+        id S1376905AbjJINPz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:15:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376707AbjJINIK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:10 -0400
+        with ESMTP id S1376940AbjJINPx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A25538F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2925C433C9;
-        Mon,  9 Oct 2023 13:08:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 569F3AC
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D40C433C8;
+        Mon,  9 Oct 2023 13:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856886;
-        bh=YfDhM6iMnY0xzzhZps3W+qIyAzMj8ZLuUKW40U9FG4g=;
+        s=korg; t=1696857352;
+        bh=eUJaKB49y+ZFnh3V60kTH1vOeSeq9EjHWOk3WaTZFXc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B5UHCfis30XJrHH7RfzfVJiVOvY/ZKYucKCQqq3EESpYjgrOAtnK0Q46POMDLdVjS
-         sfNNs0BIW34esunHFnPDpM7wEyHeIVSqUNE5u032WrK/etxSCwS5K1b9WAEbjikBsm
-         BN058yhPVyd0FIL1RtcanJVekLCWdjO+2P8+YPSM=
+        b=HIIHdOloJIY7KaTFrI45EiacCjtzd+c1CyyktS++fJLTsPrL+46UtWSPKMisganSx
+         8uxamvvp6zxuL1MbZa/K4ZJ3QYTPOpp7ICpFjxNZG3+Iht6s6J/IO3J+iKc6HQL10u
+         NoTL046rF0K1v87LaLAx6qJk/4EPFsR52OlYifPo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rui Zhu <zhurui3@huawei.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 023/163] iommu/arm-smmu-v3: Avoid constructing invalid range commands
+        patches@lists.linux.dev, Mark Pearson <mpearson@lenovo.com>,
+        Kailang Yang <kailang@realtek.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 006/162] ALSA: hda/realtek - ALC287 I2S speaker platform support
 Date:   Mon,  9 Oct 2023 14:59:47 +0200
-Message-ID: <20231009130124.649720603@linuxfoundation.org>
+Message-ID: <20231009130123.126919823@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,67 +49,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit eb6c97647be227822c7ce23655482b05e348fba5 ]
+[ Upstream commit e43252db7e207a2e194e6a4883a43a31a776a968 ]
 
-Although io-pgtable's non-leaf invalidations are always for full tables,
-I missed that SVA also uses non-leaf invalidations, while being at the
-mercy of whatever range the MMU notifier throws at it. This means it
-definitely wants the previous TTL fix as well, since it also doesn't
-know exactly which leaf level(s) may need invalidating, but it can also
-give us less-aligned ranges wherein certain corners may lead to building
-an invalid command where TTL, Num and Scale are all 0. It should be fine
-to handle this by over-invalidating an extra page, since falling back to
-a non-range command opens up a whole can of errata-flavoured worms.
+0x17 was only speaker pin, DAC assigned will be 0x03. Headphone
+assigned to 0x02.
+Playback via headphone will get EQ filter processing. So,it needs to
+swap DAC.
 
-Fixes: 6833b8f2e199 ("iommu/arm-smmu-v3: Set TTL invalidation hint better")
-Reported-by: Rui Zhu <zhurui3@huawei.com>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/b99cfe71af2bd93a8a2930f20967fb2a4f7748dd.1694432734.git.robin.murphy@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Tested-by: Mark Pearson <mpearson@lenovo.com>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/r/4e4cfa1b3b4c46838aecafc6e8b6f876@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 41b07476da38 ("ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index 9b0dc35056019..6ccbae9b93a14 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -1895,18 +1895,23 @@ static void __arm_smmu_tlb_inv_range(struct arm_smmu_cmdq_ent *cmd,
- 		/* Get the leaf page size */
- 		tg = __ffs(smmu_domain->domain.pgsize_bitmap);
- 
-+		num_pages = size >> tg;
-+
- 		/* Convert page size of 12,14,16 (log2) to 1,2,3 */
- 		cmd->tlbi.tg = (tg - 10) / 2;
- 
- 		/*
--		 * Determine what level the granule is at. For non-leaf, io-pgtable
--		 * assumes .tlb_flush_walk can invalidate multiple levels at once,
--		 * so ignore the nominal last-level granule and leave TTL=0.
-+		 * Determine what level the granule is at. For non-leaf, both
-+		 * io-pgtable and SVA pass a nominal last-level granule because
-+		 * they don't know what level(s) actually apply, so ignore that
-+		 * and leave TTL=0. However for various errata reasons we still
-+		 * want to use a range command, so avoid the SVA corner case
-+		 * where both scale and num could be 0 as well.
- 		 */
- 		if (cmd->tlbi.leaf)
- 			cmd->tlbi.ttl = 4 - ((ilog2(granule) - 3) / (tg - 3));
--
--		num_pages = size >> tg;
-+		else if ((num_pages & CMDQ_TLBI_RANGE_NUM_MAX) == 1)
-+			num_pages++;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index e01af481e0d0d..62476b6fd248c 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7046,6 +7046,27 @@ static void alc295_fixup_dell_inspiron_top_speakers(struct hda_codec *codec,
  	}
+ }
  
- 	cmds.num = 0;
++/* Forcibly assign NID 0x03 to HP while NID 0x02 to SPK */
++static void alc287_fixup_bind_dacs(struct hda_codec *codec,
++				    const struct hda_fixup *fix, int action)
++{
++	struct alc_spec *spec = codec->spec;
++	static const hda_nid_t conn[] = { 0x02, 0x03 }; /* exclude 0x06 */
++	static const hda_nid_t preferred_pairs[] = {
++		0x17, 0x02, 0x21, 0x03, 0
++	};
++
++	if (action != HDA_FIXUP_ACT_PRE_PROBE)
++		return;
++
++	snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
++	spec->gen.preferred_dacs = preferred_pairs;
++	spec->gen.auto_mute_via_amp = 1;
++	snd_hda_codec_write_cache(codec, 0x14, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
++			    0x0); /* Make sure 0x14 was disable */
++}
++
++
+ enum {
+ 	ALC269_FIXUP_GPIO2,
+ 	ALC269_FIXUP_SONY_VAIO,
+@@ -7307,6 +7328,7 @@ enum {
+ 	ALC287_FIXUP_TAS2781_I2C,
+ 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
+ 	ALC245_FIXUP_HP_X360_MUTE_LEDS,
++	ALC287_FIXUP_THINKPAD_I2S_SPK,
+ };
+ 
+ /* A special fixup for Lenovo C940 and Yoga Duet 7;
+@@ -9392,6 +9414,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC245_FIXUP_HP_GPIO_LED
+ 	},
++	[ALC287_FIXUP_THINKPAD_I2S_SPK] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc287_fixup_bind_dacs,
++	},
+ };
+ 
+ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+@@ -10514,6 +10540,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
+ 		{0x17, 0x90170111},
+ 		{0x19, 0x03a11030},
+ 		{0x21, 0x03211020}),
++	SND_HDA_PIN_QUIRK(0x10ec0287, 0x17aa, "Lenovo", ALC287_FIXUP_THINKPAD_I2S_SPK,
++		{0x17, 0x90170110},
++		{0x19, 0x03a11030},
++		{0x21, 0x03211020}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0286, 0x1025, "Acer", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE,
+ 		{0x12, 0x90a60130},
+ 		{0x17, 0x90170110},
 -- 
 2.40.1
 
