@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0219C7BDD61
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 420427BDE37
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376766AbjJINJy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:09:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52366 "EHLO
+        id S1376955AbjJINRK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:17:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376777AbjJINJv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:09:51 -0400
+        with ESMTP id S1376959AbjJINRK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BF54D6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:09:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F41C433CA;
-        Mon,  9 Oct 2023 13:09:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B753A8F
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:17:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013D3C433C8;
+        Mon,  9 Oct 2023 13:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856990;
-        bh=zUwyncZNnV2dl/Q5y9410g6hTkP/wzH5kB7T9oNTdaA=;
+        s=korg; t=1696857428;
+        bh=SCWfLcauwZYBHiQWvoVlmzZssnsihl+4rl21N6OFsxs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CV5ZGWMoaz2SkrXkteFAL9jHvluRcA5sBzDMxx36ZaOC/dWV+/CgAPqcg9BiRpHIj
-         Xf+0tCoTPHC+qrSkBYtrQa8Y8/TWrEF5huQhoPTo1KoMazgWt4PNsbto487yKcTnJd
-         ErgSFQVshjS9E6Wm/X0QIaaTOdb5b+Ib7z18NHgM=
+        b=jUCdOO1pjL922zRj66C7X7WkZPf1ylGZ9MoblQ+e2Y/smpCHDucb3wqpRC0fhv/fX
+         mOiUPe5UzaTX9YrY9GBZB7NN7o7BxWC8zqd2pHHZMQ3TTEOE53FPh916NHWQoxuRt6
+         5rXsSBXOQPYoWeoK92SjnbUOqK6Arkr0MD6AkNq8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Hao <yhao016@ucr.edu>,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 058/163] ubi: Refuse attaching if mtds erasesize is 0
-Date:   Mon,  9 Oct 2023 15:00:22 +0200
-Message-ID: <20231009130125.638018914@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Kristina Martsenko <kristina.martsenko@arm.com>,
+        Mark Brown <broonie@kernel.org>, Will Deacon <will@kernel.org>
+Subject: [PATCH 6.1 042/162] arm64: cpufeature: Fix CLRBHB and BC detection
+Date:   Mon,  9 Oct 2023 15:00:23 +0200
+Message-ID: <20231009130124.103268657@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +49,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Kristina Martsenko <kristina.martsenko@arm.com>
 
-[ Upstream commit 017c73a34a661a861712f7cc1393a123e5b2208c ]
+commit 479965a2b7ec481737df0cadf553331063b9c343 upstream.
 
-There exists mtd devices with zero erasesize, which will trigger a
-divide-by-zero exception while attaching ubi device.
-Fix it by refusing attaching if mtd's erasesize is 0.
+ClearBHB support is indicated by the CLRBHB field in ID_AA64ISAR2_EL1.
+Following some refactoring the kernel incorrectly checks the BC field
+instead. Fix the detection to use the right field.
 
-Fixes: 801c135ce73d ("UBI: Unsorted Block Images")
-Reported-by: Yu Hao <yhao016@ucr.edu>
-Link: https://lore.kernel.org/lkml/977347543.226888.1682011999468.JavaMail.zimbra@nod.at/T/
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+(Note: The original ClearBHB support had it as FTR_HIGHER_SAFE, but this
+patch uses FTR_LOWER_SAFE, which seems more correct.)
+
+Also fix the detection of BC (hinted conditional branches) to use
+FTR_LOWER_SAFE, so that it is not reported on mismatched systems.
+
+Fixes: 356137e68a9f ("arm64/sysreg: Make BHB clear feature defines match the architecture")
+Fixes: 8fcc8285c0e3 ("arm64/sysreg: Convert ID_AA64ISAR2_EL1 to automatic generation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kristina Martsenko <kristina.martsenko@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20230912133429.2606875-1-kristina.martsenko@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/ubi/build.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/include/asm/cpufeature.h |    2 +-
+ arch/arm64/kernel/cpufeature.c      |    3 ++-
+ arch/arm64/tools/sysreg             |    6 +++++-
+ 3 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mtd/ubi/build.c b/drivers/mtd/ubi/build.c
-index 8b91a55ec0d28..8ee51e49fced5 100644
---- a/drivers/mtd/ubi/build.c
-+++ b/drivers/mtd/ubi/build.c
-@@ -894,6 +894,13 @@ int ubi_attach_mtd_dev(struct mtd_info *mtd, int ubi_num,
- 		return -EINVAL;
- 	}
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -670,7 +670,7 @@ static inline bool supports_clearbhb(int
+ 		isar2 = read_sanitised_ftr_reg(SYS_ID_AA64ISAR2_EL1);
  
-+	/* UBI cannot work on flashes with zero erasesize. */
-+	if (!mtd->erasesize) {
-+		pr_err("ubi: refuse attaching mtd%d - zero erasesize flash is not supported\n",
-+			mtd->index);
-+		return -EINVAL;
-+	}
-+
- 	if (ubi_num == UBI_DEV_NUM_AUTO) {
- 		/* Search for an empty slot in the @ubi_devices array */
- 		for (ubi_num = 0; ubi_num < UBI_MAX_DEVICES; ubi_num++)
--- 
-2.40.1
-
+ 	return cpuid_feature_extract_unsigned_field(isar2,
+-						    ID_AA64ISAR2_EL1_BC_SHIFT);
++						    ID_AA64ISAR2_EL1_CLRBHB_SHIFT);
+ }
+ 
+ const struct cpumask *system_32bit_el0_cpumask(void);
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -212,7 +212,8 @@ static const struct arm64_ftr_bits ftr_i
+ };
+ 
+ static const struct arm64_ftr_bits ftr_id_aa64isar2[] = {
+-	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_HIGHER_SAFE, ID_AA64ISAR2_EL1_BC_SHIFT, 4, 0),
++	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64ISAR2_EL1_CLRBHB_SHIFT, 4, 0),
++	ARM64_FTR_BITS(FTR_HIDDEN, FTR_STRICT, FTR_LOWER_SAFE, ID_AA64ISAR2_EL1_BC_SHIFT, 4, 0),
+ 	ARM64_FTR_BITS(FTR_VISIBLE_IF_IS_ENABLED(CONFIG_ARM64_PTR_AUTH),
+ 		       FTR_STRICT, FTR_EXACT, ID_AA64ISAR2_EL1_APA3_SHIFT, 4, 0),
+ 	ARM64_FTR_BITS(FTR_VISIBLE_IF_IS_ENABLED(CONFIG_ARM64_PTR_AUTH),
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -484,7 +484,11 @@ EndEnum
+ EndSysreg
+ 
+ Sysreg	ID_AA64ISAR2_EL1	3	0	0	6	2
+-Res0	63:28
++Res0	63:32
++Enum	31:28	CLRBHB
++	0b0000	NI
++	0b0001	IMP
++EndEnum
+ Enum	27:24	PAC_frac
+ 	0b0000	NI
+ 	0b0001	IMP
 
 
