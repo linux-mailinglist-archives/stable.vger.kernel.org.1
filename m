@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A5FF7BE04F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E5397BDE44
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377279AbjJINik (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:38:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50952 "EHLO
+        id S1376986AbjJINRq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:17:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377300AbjJINi3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:29 -0400
+        with ESMTP id S1376732AbjJINRp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3FABF1
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E874EC433CB;
-        Mon,  9 Oct 2023 13:38:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C571291
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:17:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13034C433CB;
+        Mon,  9 Oct 2023 13:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858703;
-        bh=kA6TNG83qMNL4dWYkzUcmJujlbOZOx+VAkoDK4kRzZg=;
+        s=korg; t=1696857462;
+        bh=UDsaJAGuwMqkq62kEpZOAHrmGziAbqTd+syTz/uTJ4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QFY0aEV3yXQj5E9jjEXA/3KGVuzXp6Pz2HdmbjFIVYR7CSNQybazlcQz2wkpVt+2L
-         b2QLDcEP5nggmakilgyqGVscatS8Nxw0LEnazaDuGpsdSS0uTgsKdnA89I31lZgdII
-         W5YvBswuLItxypQ2KttXggHSh34dzlLVwLMW6t+Y=
+        b=T4ECau+RrfVXVBE+0CDJ1J+jUCeoujpBlYJ7apdZPK6ZCwUtH1XYtzvUqPpSJAkXo
+         KQm/jzWc8ut9IAXmjox9zNJDrjZLb0Knwl6KrlxRB5ZG1dnT50F7X1qQcXrMwe2jLu
+         NYVsz3aTfSELaceB1APV3No1TmIdzshFoElhNvGI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dikshita Agarwal <dikshita@codeaurora.org>,
-        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-        Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 074/226] media: venus: hfi: Add a 6xx boot logic
+        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Benjamin Block <bblock@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 054/162] scsi: zfcp: Fix a double put in zfcp_port_enqueue()
 Date:   Mon,  9 Oct 2023 15:00:35 +0200
-Message-ID: <20231009130128.718445837@linuxfoundation.org>
+Message-ID: <20231009130124.425927301@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,74 +49,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <dikshita@codeaurora.org>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 255385ca433ce5ff621732f26a759211a27c8f85 ]
+commit b481f644d9174670b385c3a699617052cd2a79d3 upstream.
 
-This patch adds a 6xx specific boot logic. The goal is to share as much
-code as possible between 3xx, 4xx and 6xx silicon.
+When device_register() fails, zfcp_port_release() will be called after
+put_device(). As a result, zfcp_ccw_adapter_put() will be called twice: one
+in zfcp_port_release() and one in the error path after device_register().
+So the reference on the adapter object is doubly put, which may lead to a
+premature free. Fix this by adjusting the error tag after
+device_register().
 
-We need to do a different write to WRAPPER_INTR_MASK with an additional
-write to CPU_CS_H2XSOFTINTEN_V6 and CPU_CS_X2RPMh_V6.
-
-The other writes are the same for 6xx and non-6xx silicon albeit at
-different absolute relative locations to the base of the venus address
-space.
-
-Signed-off-by: Dikshita Agarwal <dikshita@codeaurora.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: d74e48160980 ("media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f3450c7b9172 ("[SCSI] zfcp: Replace local reference counting with common kref")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230923103723.10320-1-dinghao.liu@zju.edu.cn
+Acked-by: Benjamin Block <bblock@linux.ibm.com>
+Cc: stable@vger.kernel.org # v2.6.33+
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/s390/scsi/zfcp_aux.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
-index 3d705fc5e1093..97d36cafd8cb2 100644
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -431,14 +431,21 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
- {
- 	struct device *dev = hdev->core->dev;
- 	static const unsigned int max_tries = 100;
--	u32 ctrl_status = 0;
-+	u32 ctrl_status = 0, mask_val;
- 	unsigned int count = 0;
- 	void __iomem *cpu_cs_base = hdev->core->cpu_cs_base;
- 	void __iomem *wrapper_base = hdev->core->wrapper_base;
- 	int ret = 0;
+--- a/drivers/s390/scsi/zfcp_aux.c
++++ b/drivers/s390/scsi/zfcp_aux.c
+@@ -518,12 +518,12 @@ struct zfcp_port *zfcp_port_enqueue(stru
+ 	if (port) {
+ 		put_device(&port->dev);
+ 		retval = -EEXIST;
+-		goto err_out;
++		goto err_put;
+ 	}
  
- 	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
--	writel(WRAPPER_INTR_MASK_A2HVCODEC_MASK, wrapper_base + WRAPPER_INTR_MASK);
-+	if (IS_V6(hdev->core)) {
-+		mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
-+		mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
-+			      WRAPPER_INTR_MASK_A2HCPU_MASK);
-+	} else {
-+		mask_val = WRAPPER_INTR_MASK_A2HVCODEC_MASK;
-+	}
-+	writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
- 	writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
+ 	port = kzalloc(sizeof(struct zfcp_port), GFP_KERNEL);
+ 	if (!port)
+-		goto err_out;
++		goto err_put;
  
- 	while (!ctrl_status && count < max_tries) {
-@@ -456,6 +463,9 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
- 	if (count >= max_tries)
- 		ret = -ETIMEDOUT;
+ 	rwlock_init(&port->unit_list_lock);
+ 	INIT_LIST_HEAD(&port->unit_list);
+@@ -546,7 +546,7 @@ struct zfcp_port *zfcp_port_enqueue(stru
  
-+	if (IS_V6(hdev->core))
-+		writel(0x0, cpu_cs_base + CPU_CS_X2RPMH_V6);
-+
- 	return ret;
+ 	if (dev_set_name(&port->dev, "0x%016llx", (unsigned long long)wwpn)) {
+ 		kfree(port);
+-		goto err_out;
++		goto err_put;
+ 	}
+ 	retval = -EINVAL;
+ 
+@@ -563,7 +563,8 @@ struct zfcp_port *zfcp_port_enqueue(stru
+ 
+ 	return port;
+ 
+-err_out:
++err_put:
+ 	zfcp_ccw_adapter_put(adapter);
++err_out:
+ 	return ERR_PTR(retval);
  }
- 
--- 
-2.40.1
-
 
 
