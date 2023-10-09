@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09B617BE1D5
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 121DD7BE147
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:49:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377567AbjJINyb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:54:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42064 "EHLO
+        id S1376774AbjJINtW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:49:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377558AbjJINya (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:54:30 -0400
+        with ESMTP id S1377488AbjJINss (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:48:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9126091
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:54:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C9BC433C8;
-        Mon,  9 Oct 2023 13:54:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 520AAE0
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:48:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563C2C433C7;
+        Mon,  9 Oct 2023 13:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859668;
-        bh=odELUQSFguGwj1wthO8M8nKEH5KgfAhtChkVlRdHQJA=;
+        s=korg; t=1696859324;
+        bh=V8rnOBwfeUqimfT+xKmOS4KHl5KjwyawWAc79BVPPPk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oKkKELLM4aGmHyzPzV4wSNxikELDdzAWdVP4iZv1shtr851NRbr3/o7nv/DOaNaPx
-         pMMeYuylMmuIZ9M1wQIcyKHm5CIladIeRusEe4JIUOMuo1oyWAqf35rk3i6pzWUW8Q
-         jI0gV8GWILRdiLpILvzejmCFijR0KHE8GkVWEQOc=
+        b=09b8+/uumKK13yKUqrUce5U1F8mKlvxml9zAw5ZJhbga2ICM2hzHpHASMr/pha4XM
+         5LfjrFkIQR5ckO7nPKyfiqizk1qhVFbO4iMo4gPH1SSa5zbhxxHeN6y9/T8qSDdUO/
+         AYKpPlHk8qxAQMT//MDdlpS96dy4wPlG30gWlwmM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 4.19 68/91] wifi: mwifiex: Fix tlv_buf_left calculation
+        Alexandra Diupina <adiupina@astralinux.ru>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 41/55] drivers/net: process the result of hdlc_open() and add call of hdlc_close() in uhdlc_close()
 Date:   Mon,  9 Oct 2023 15:06:40 +0200
-Message-ID: <20231009130113.864836155@linuxfoundation.org>
+Message-ID: <20231009130109.265036332@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,107 +51,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-commit eec679e4ac5f47507774956fb3479c206e761af7 upstream.
+[ Upstream commit a59addacf899b1b21a7b7449a1c52c98704c2472 ]
 
-In a TLV encoding scheme, the Length part represents the length after
-the header containing the values for type and length. In this case,
-`tlv_len` should be:
+Process the result of hdlc_open() and call uhdlc_close()
+in case of an error. It is necessary to pass the error
+code up the control flow, similar to a possible
+error in request_irq().
+Also add a hdlc_close() call to the uhdlc_close()
+because the comment to hdlc_close() says it must be called
+by the hardware driver when the HDLC device is being closed
 
-tlv_len == (sizeof(*tlv_rxba) - 1) - sizeof(tlv_rxba->header) + tlv_bitmap_len
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Notice that the `- 1` accounts for the one-element array `bitmap`, which
-1-byte size is already included in `sizeof(*tlv_rxba)`.
-
-So, if the above is correct, there is a double-counting of some members
-in `struct mwifiex_ie_types_rxba_sync`, when `tlv_buf_left` and `tmp`
-are calculated:
-
-968                 tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
-969                 tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
-
-in specific, members:
-
-drivers/net/wireless/marvell/mwifiex/fw.h:777
- 777         u8 mac[ETH_ALEN];
- 778         u8 tid;
- 779         u8 reserved;
- 780         __le16 seq_num;
- 781         __le16 bitmap_len;
-
-This is clearly wrong, and affects the subsequent decoding of data in
-`event_buf` through `tlv_rxba`:
-
-970                 tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
-
-Fix this by using `sizeof(tlv_rxba->header)` instead of `sizeof(*tlv_rxba)`
-in the calculation of `tlv_buf_left` and `tmp`.
-
-This results in the following binary differences before/after changes:
-
-| drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
-| @@ -4698,11 +4698,11 @@
-|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:968
-|                 tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
-| -    1da7:      lea    -0x11(%rbx),%edx
-| +    1da7:      lea    -0x4(%rbx),%edx
-|      1daa:      movzwl %bp,%eax
-|  drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c:969
-|                 tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
-| -    1dad:      lea    0x11(%r15,%rbp,1),%r15
-| +    1dad:      lea    0x4(%r15,%rbp,1),%r15
-
-The above reflects the desired change: avoid counting 13 too many bytes;
-which is the total size of the double-counted members in
-`struct mwifiex_ie_types_rxba_sync`:
-
-$ pahole -C mwifiex_ie_types_rxba_sync drivers/net/wireless/marvell/mwifiex/11n_rxreorder.o
-struct mwifiex_ie_types_rxba_sync {
-	struct mwifiex_ie_types_header header;           /*     0     4 */
-
-     |-----------------------------------------------------------------------
-     |  u8                         mac[6];               /*     4     6 */  |
-     |	u8                         tid;                  /*    10     1 */  |
-     |  u8                         reserved;             /*    11     1 */  |
-     | 	__le16                     seq_num;              /*    12     2 */  |
-     | 	__le16                     bitmap_len;           /*    14     2 */  |
-     |  u8                         bitmap[1];            /*    16     1 */  |
-     |----------------------------------------------------------------------|
-								  | 13 bytes|
-								  -----------
-
-	/* size: 17, cachelines: 1, members: 7 */
-	/* last cacheline: 17 bytes */
-} __attribute__((__packed__));
-
-Fixes: 99ffe72cdae4 ("mwifiex: process rxba_sync event")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/06668edd68e7a26bbfeebd1201ae077a2a7a8bce.1692931954.git.gustavoars@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wan/fsl_ucc_hdlc.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-+++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-@@ -986,8 +986,8 @@ void mwifiex_11n_rxba_sync_event(struct
- 			}
- 		}
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+index 978f642dacedd..00cc9b755a852 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -37,6 +37,8 @@
  
--		tlv_buf_left -= (sizeof(*tlv_rxba) + tlv_len);
--		tmp = (u8 *)tlv_rxba + tlv_len + sizeof(*tlv_rxba);
-+		tlv_buf_left -= (sizeof(tlv_rxba->header) + tlv_len);
-+		tmp = (u8 *)tlv_rxba  + sizeof(tlv_rxba->header) + tlv_len;
- 		tlv_rxba = (struct mwifiex_ie_types_rxba_sync *)tmp;
+ #define TDM_PPPOHT_SLIC_MAXIN
+ 
++static int uhdlc_close(struct net_device *dev);
++
+ static struct ucc_tdm_info utdm_primary_info = {
+ 	.uf_info = {
+ 		.tsa = 0,
+@@ -662,6 +664,7 @@ static int uhdlc_open(struct net_device *dev)
+ 	hdlc_device *hdlc = dev_to_hdlc(dev);
+ 	struct ucc_hdlc_private *priv = hdlc->priv;
+ 	struct ucc_tdm *utdm = priv->utdm;
++	int rc = 0;
+ 
+ 	if (priv->hdlc_busy != 1) {
+ 		if (request_irq(priv->ut_info->uf_info.irq,
+@@ -684,10 +687,13 @@ static int uhdlc_open(struct net_device *dev)
+ 		netif_device_attach(priv->ndev);
+ 		napi_enable(&priv->napi);
+ 		netif_start_queue(dev);
+-		hdlc_open(dev);
++
++		rc = hdlc_open(dev);
++		if (rc)
++			uhdlc_close(dev);
  	}
+ 
+-	return 0;
++	return rc;
  }
+ 
+ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
+@@ -776,6 +782,8 @@ static int uhdlc_close(struct net_device *dev)
+ 	netif_stop_queue(dev);
+ 	priv->hdlc_busy = 0;
+ 
++	hdlc_close(dev);
++
+ 	return 0;
+ }
+ 
+-- 
+2.40.1
+
 
 
