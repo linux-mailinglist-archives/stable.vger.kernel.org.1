@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC0737BDE1A
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 224607BDFFA
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376905AbjJINPz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:15:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45076 "EHLO
+        id S1377179AbjJINgU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:36:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376940AbjJINPx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:53 -0400
+        with ESMTP id S1377194AbjJINgS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 569F3AC
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D40C433C8;
-        Mon,  9 Oct 2023 13:15:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D781FC5
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2886CC433C9;
+        Mon,  9 Oct 2023 13:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857352;
-        bh=eUJaKB49y+ZFnh3V60kTH1vOeSeq9EjHWOk3WaTZFXc=;
+        s=korg; t=1696858576;
+        bh=Gd22lmOPcMffvT+ZOZpOSbo5timP7IMd15JAXrQWfrM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HIIHdOloJIY7KaTFrI45EiacCjtzd+c1CyyktS++fJLTsPrL+46UtWSPKMisganSx
-         8uxamvvp6zxuL1MbZa/K4ZJ3QYTPOpp7ICpFjxNZG3+Iht6s6J/IO3J+iKc6HQL10u
-         NoTL046rF0K1v87LaLAx6qJk/4EPFsR52OlYifPo=
+        b=tQnwpkttgMn20SsLPkD4IOO8zd9FwXcitxhluNiOSKvOyBN/s0d7eMaQ7GD4GC4PV
+         BoHwzgg/P72tcCiu5xbAFKsNO5SKwTaPKgnCZB1X55Zk2jaYg0ZHPFK0w+hUCPtDAq
+         tFwZjN4skMX1tRGWEHSVZ7rkSfCwDuCPAedNfUxU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Pearson <mpearson@lenovo.com>,
-        Kailang Yang <kailang@realtek.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/162] ALSA: hda/realtek - ALC287 I2S speaker platform support
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 026/226] netfilter: nf_tables: use correct lock to protect gc_list
 Date:   Mon,  9 Oct 2023 14:59:47 +0200
-Message-ID: <20231009130123.126919823@linuxfoundation.org>
+Message-ID: <20231009130127.439319313@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,91 +48,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit e43252db7e207a2e194e6a4883a43a31a776a968 ]
+commit 8357bc946a2abc2a10ca40e5a2105d2b4c57515e upstream.
 
-0x17 was only speaker pin, DAC assigned will be 0x03. Headphone
-assigned to 0x02.
-Playback via headphone will get EQ filter processing. So,it needs to
-swap DAC.
+Use nf_tables_gc_list_lock spinlock, not nf_tables_destroy_list_lock to
+protect the gc_list.
 
-Tested-by: Mark Pearson <mpearson@lenovo.com>
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/r/4e4cfa1b3b4c46838aecafc6e8b6f876@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 41b07476da38 ("ALSA: hda/realtek - ALC287 Realtek I2S speaker platform support")
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ net/netfilter/nf_tables_api.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index e01af481e0d0d..62476b6fd248c 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7046,6 +7046,27 @@ static void alc295_fixup_dell_inspiron_top_speakers(struct hda_codec *codec,
- 	}
- }
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 1f67931b86d8e..9fc302a6836ba 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -8065,9 +8065,9 @@ static void nft_trans_gc_work(struct work_struct *work)
+ 	struct nft_trans_gc *trans, *next;
+ 	LIST_HEAD(trans_gc_list);
  
-+/* Forcibly assign NID 0x03 to HP while NID 0x02 to SPK */
-+static void alc287_fixup_bind_dacs(struct hda_codec *codec,
-+				    const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	static const hda_nid_t conn[] = { 0x02, 0x03 }; /* exclude 0x06 */
-+	static const hda_nid_t preferred_pairs[] = {
-+		0x17, 0x02, 0x21, 0x03, 0
-+	};
-+
-+	if (action != HDA_FIXUP_ACT_PRE_PROBE)
-+		return;
-+
-+	snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
-+	spec->gen.preferred_dacs = preferred_pairs;
-+	spec->gen.auto_mute_via_amp = 1;
-+	snd_hda_codec_write_cache(codec, 0x14, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
-+			    0x0); /* Make sure 0x14 was disable */
-+}
-+
-+
- enum {
- 	ALC269_FIXUP_GPIO2,
- 	ALC269_FIXUP_SONY_VAIO,
-@@ -7307,6 +7328,7 @@ enum {
- 	ALC287_FIXUP_TAS2781_I2C,
- 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
- 	ALC245_FIXUP_HP_X360_MUTE_LEDS,
-+	ALC287_FIXUP_THINKPAD_I2S_SPK,
- };
+-	spin_lock(&nf_tables_destroy_list_lock);
++	spin_lock(&nf_tables_gc_list_lock);
+ 	list_splice_init(&nf_tables_gc_list, &trans_gc_list);
+-	spin_unlock(&nf_tables_destroy_list_lock);
++	spin_unlock(&nf_tables_gc_list_lock);
  
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -9392,6 +9414,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC245_FIXUP_HP_GPIO_LED
- 	},
-+	[ALC287_FIXUP_THINKPAD_I2S_SPK] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc287_fixup_bind_dacs,
-+	},
- };
- 
- static const struct snd_pci_quirk alc269_fixup_tbl[] = {
-@@ -10514,6 +10540,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
- 		{0x17, 0x90170111},
- 		{0x19, 0x03a11030},
- 		{0x21, 0x03211020}),
-+	SND_HDA_PIN_QUIRK(0x10ec0287, 0x17aa, "Lenovo", ALC287_FIXUP_THINKPAD_I2S_SPK,
-+		{0x17, 0x90170110},
-+		{0x19, 0x03a11030},
-+		{0x21, 0x03211020}),
- 	SND_HDA_PIN_QUIRK(0x10ec0286, 0x1025, "Acer", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE,
- 		{0x12, 0x90a60130},
- 		{0x17, 0x90170110},
+ 	list_for_each_entry_safe(trans, next, &trans_gc_list, list) {
+ 		list_del(&trans->list);
 -- 
 2.40.1
 
