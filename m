@@ -2,80 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CDB77BE53B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 17:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB9A07BE549
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 17:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377795AbjJIPoX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 11:44:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34354 "EHLO
+        id S1346618AbjJIPqz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 11:46:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377815AbjJIPoX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 11:44:23 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81BCE9C;
-        Mon,  9 Oct 2023 08:44:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
- t=1696866259; x=1697471059; i=rwarsow@gmx.de;
- bh=wU2sViw4lLhfaQMAPdCpZMbwFG7nuzOCnATMctATWtQ=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=nic1fbnNX39//ap6+37IiyxTXIqzeymW9t/PThNs0NMjV2YRL3tPI2oBSsp6ZYCwxf+zu1Ray7R
- sOQKZWm7StoyxEisUHvI1k+wtkIw+qXnWdpEnIRFsccVdd+TBIYBQP19n4Ui3UwVbqZVrOAUm5DE3
- L6TRMvtJJsGX1s52Sn+QOdHxLGrNoAkqAmlO6ZWuV/5CB9WUbjUkLMtQWXs9xoqboibQ6m4JUpqiG
- GNCUyGRWylQsx9fX90W6pNEblJ3t53tXI66trGL4+9Q1EsZEW3TPq7IbRJa0JhStVLwdHD9IcRGRm
- fIzv88VLOftwTyx/TOcIZVxDQqGTz8ikgs/Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.32.199]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MiacH-1rTJNU0zyR-00fkyb; Mon, 09
- Oct 2023 17:44:19 +0200
-Message-ID: <45a9f9ea-f828-41cd-8447-85e227457293@gmx.de>
-Date:   Mon, 9 Oct 2023 17:44:18 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.5 000/163] 6.5.7-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:36YCFZl/QmG8pGN7o9FReqEUBEqETwoS3yC0l0yG3VmfUa03hQS
- L35gYbreUpoGO/2U6tra2ZXIiC3EE+PbUTEPdsmEJ2ACgbml1tb78lNA0jPxHeNuZEu0Pa/
- DYJHj3v0CeyQkhNHW6bPvgaWqBEfIYNEZSGZtjl+7iYO9QGWOgffzC1WHbIoelC9fMqWwVQ
- PzROnzgfWCdGYOv6Rt5Tg==
-UI-OutboundReport: notjunk:1;M01:P0:CCEDjuKf85o=;MuyV9BX++sjvIsz4TUp3aIfFqe3
- K5+okWiQg5Bijr7gFQ9XDM+heEGfGHMhq2PzqnNrj+ue0KbmX/Paydq6Hwq2cMF0HupC8shik
- vzkP8QQQ/M8YkRllMbTIdLn4JtHCzWSLR/8/XmrqeJuLvfIEdV4UP/PoLdxPwnW7/mcanVzk5
- ZLauIHykQ550oWWmrHprYcN0nGMuk9E4F7QC6S8NyH5ov8A3IcTEzsxN7tFvisnipkF2iWo2x
- MbVB4R5/luZf71IWhmcyYPjEjD/yrgRY7WQpj6laKNv5iozrclgRkxJ9k4Ps7N0EbkYLHnTHZ
- DbcCrz05OleHGyGWW8UjKW6wrnxMknth0SwTpZ9K7Aj9cPGahJcT8wGP3RvT2DxFHKfWx7w/e
- LqPvawNdtCnDCEInFImbJxnWgqxzLt8FKTywsUGtYBBvLH7xfutYbL7qv/I3vHaPAroM0Ih1O
- SX2nt82bCu/3QW/b9N9FHebrVuoIZCR3zqXCX0AymGE+FTeayA23ciqvK3zEFXwhz+8LNk8pl
- bhNhosyBPxTAxT4T/MBeM6Ng0iGzEQ4iCPlvUtBNtqJFbVJoFaTKuoxp0t2kR27A5CcWhIi0k
- oOiDqPePNmXnIAg1w6cpgbMHre+71y/Hue6si5MckeHKL0uaHCvQyR5tLkkVherOgd5d4TUt8
- mornYKXBpM/o4EvL6JocghmZxYdPbaxBQNQxgRvWmbS3z1pB4PlLHjDfBbajuYRAMXVpKKl3Q
- gS8dK4L2vfxU8bXvRlo0Kp1fmRB9VmUsXKGPXL4ATaJN0J16tcGkeDkdgS6Pcn3cTZMBtHZ7j
- +gEjTKqH48hOBk3Vledfot1yOxjyM8THaKrrhDSwcmi+E5LG1uow3JZA9qbj/rjfRH5O5zpve
- biU+ZnsAS+EY5A2DKCAXMb14+HUHeUYepZMLSn/GAw3LSQiBmSvzIZ4x6orxeBIQVlyGhzrfR
- FAtKuayWfyeYBic4B/RnMNmkmRY=
+        with ESMTP id S1344542AbjJIPqy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 11:46:54 -0400
+Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2868E94;
+        Mon,  9 Oct 2023 08:46:53 -0700 (PDT)
+Content-Type: text/plain;
+        charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
+        s=mail; t=1696866410;
+        bh=HWvc+5ISlvs1/m94xDgJR6CaS7Jho5VmQgLxRGlMnBE=;
+        h=Subject:From:In-Reply-To:Date:Cc:References:To;
+        b=h7MdZNj8/PpoAybfSgEqYnD9SMa0tPslsFT2g9vJsE7UBimkf4fGkR/QC0nXox1lc
+         xbzZpCDFSJIlB3ZejV1M5aC8HZJvDSZeTQyKDllAQau0ZbVz225e7roKxEpppKTRAj
+         wSlh2Kd7F+vfIjBr+AYy+iN9GIExyqYUtHFBqjw0=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
+Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC
+ requirement
+From:   Christian Theune <ct@flyingcircus.io>
+In-Reply-To: <da08ba06-e24c-d2c3-b9a0-8415a83ae791@mojatatu.com>
+Date:   Mon, 9 Oct 2023 17:46:28 +0200
+Cc:     Jakub Kicinski <kuba@kernel.org>, markovicbudimir@gmail.com,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+        Jamal Hadi Salim <jhs@mojatatu.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2CBA18C8-51A4-443C-81D1-8D43B0F6AA76@flyingcircus.io>
+References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
+ <065a0dac-499f-7375-ddb4-1800e8ef61d1@mojatatu.com>
+ <0BC2C22C-F9AA-4B13-905D-FE32F41BDA8A@flyingcircus.io>
+ <20231009080646.60ce9920@kernel.org>
+ <da08ba06-e24c-d2c3-b9a0-8415a83ae791@mojatatu.com>
+To:     Pedro Tammela <pctammela@mojatatu.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+Hi,
 
-6.5.7-rc1
+> On 9. Oct 2023, at 17:31, Pedro Tammela <pctammela@mojatatu.com> =
+wrote:
+>=20
+> We had a UAF with a very straight forward way to trigger it.
+> Setting 'rt' as a parent is incorrect and the man page is explicit =
+about it as it doesn't make sense 'qdisc wise'. Being able to set it has =
+always been wrong unfortunately...
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake, i5-11400)
+Well - this is a complex thing and even though I took care when setting =
+it up I did not find this in the manpages sufficiently highlighted and =
+built such a system: this has been running for more than a year, it did =
+what I wanted AFAICT and upgrading a micro version broke it =
+catastrophically.
 
-Thanks
+The argument that this never should have been built, feels a bit like =
+=E2=80=9Cthis has been written for 50 years in the basement of the =
+office for planetary destruction on Alpha Centauri and earthlings had =
+more than enough time to come and complain=E2=80=9D =E2=80=A6 ;)
+=20
+Hugs,
+Christian
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+--=20
+Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
+Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
+Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
+HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
+Christian Zagrodnick
 
