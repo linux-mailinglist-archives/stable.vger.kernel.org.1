@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 717907BDD2D
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBB317BE008
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376707AbjJINIM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41466 "EHLO
+        id S1377188AbjJINgy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:36:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376709AbjJINIK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:10 -0400
+        with ESMTP id S1377204AbjJINgx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F0ED99
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3FAC433CB;
-        Mon,  9 Oct 2023 13:08:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACF9DE4
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC735C433C7;
+        Mon,  9 Oct 2023 13:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856889;
-        bh=Cs7d3LVPlcbt0hPGcT+XcGzNci5Vu+Lk9EIHUSxDSDU=;
+        s=korg; t=1696858611;
+        bh=p6YpV3aPeSpJoR7XI6efVO0l/+locQqNYOkM7W3paEI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fq8t/wlckvwXaMY89QKeiyqFlx8mblMRkgX9xm9cP+2yFVfXEIUpTpHj69cgSeiIs
-         0y8xWkaSdlhiwkCFnmB+tmSbFJSIOk579yvEFlVIULIHHDN2utPuwH4NEQaz0JCb2Q
-         NlTdAvY3DLSpxICD0Y+s2BpTVwgyslsgnzrwq1jA=
+        b=C/PqEi1L7e2An3vrxFF8tZHy/WNwVgyOObOowRc7nFp1JuxnCpiMm5/6PSfoCNp6Y
+         cIQ64Psjm12rBMTq9OLBR0vNnOCDfzek45afo/8JFnt/PLudjs1lPTPosX60e8IuHo
+         f52s/YR+0tTsc6QvsOjZ35a2kNRr64ld9Aau25wE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Peng Zhang <zhangpeng.00@bytedance.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 024/163] maple_tree: reduce resets during store setup
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 027/226] netfilter: nf_tables: defer gc run if previous batch is still pending
 Date:   Mon,  9 Oct 2023 14:59:48 +0200
-Message-ID: <20231009130124.677965844@linuxfoundation.org>
+Message-ID: <20231009130127.468285923@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,77 +48,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit fec29364348fec535c55708b1f4025b321aba572 upstream.
+commit 8e51830e29e12670b4c10df070a4ea4c9593e961 upstream.
 
-mas_prealloc() may walk partially down the tree before finding that a
-split or spanning store is needed.  When the write occurs, relax the
-logic on resetting the walk so that partial walks will not restart, but
-walks that have gone too far (a store that affects beyond the current
-node) should be restarted.
+Don't queue more gc work, else we may queue the same elements multiple
+times.
 
-Link: https://lkml.kernel.org/r/20230724183157.3939892-15-Liam.Howlett@oracle.com
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If an element is flagged as dead, this can mean that either the previous
+gc request was invalidated/discarded by a transaction or that the previous
+request is still pending in the system work queue.
+
+The latter will happen if the gc interval is set to a very low value,
+e.g. 1ms, and system work queue is backlogged.
+
+The sets refcount is 1 if no previous gc requeusts are queued, so add
+a helper for this and skip gc run if old requests are pending.
+
+Add a helper for this and skip the gc run in this case.
+
+Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c |   37 ++++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ include/net/netfilter/nf_tables.h | 5 +++++
+ net/netfilter/nft_set_hash.c      | 3 +++
+ net/netfilter/nft_set_rbtree.c    | 3 +++
+ 3 files changed, 11 insertions(+)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5439,19 +5439,34 @@ static inline void mte_destroy_walk(stru
- 
- static void mas_wr_store_setup(struct ma_wr_state *wr_mas)
- {
-+	if (mas_is_start(wr_mas->mas))
-+		return;
-+
- 	if (unlikely(mas_is_paused(wr_mas->mas)))
--		mas_reset(wr_mas->mas);
-+		goto reset;
-+
-+	if (unlikely(mas_is_none(wr_mas->mas)))
-+		goto reset;
-+
-+	/*
-+	 * A less strict version of mas_is_span_wr() where we allow spanning
-+	 * writes within this node.  This is to stop partial walks in
-+	 * mas_prealloc() from being reset.
-+	 */
-+	if (wr_mas->mas->last > wr_mas->mas->max)
-+		goto reset;
-+
-+	if (wr_mas->entry)
-+		return;
-+
-+	if (mte_is_leaf(wr_mas->mas->node) &&
-+	    wr_mas->mas->last == wr_mas->mas->max)
-+		goto reset;
-+
-+	return;
- 
--	if (!mas_is_start(wr_mas->mas)) {
--		if (mas_is_none(wr_mas->mas)) {
--			mas_reset(wr_mas->mas);
--		} else {
--			wr_mas->r_max = wr_mas->mas->max;
--			wr_mas->type = mte_node_type(wr_mas->mas->node);
--			if (mas_is_span_wr(wr_mas))
--				mas_reset(wr_mas->mas);
--		}
--	}
-+reset:
-+	mas_reset(wr_mas->mas);
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 9182b583d4297..bbe472c07d07e 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -479,6 +479,11 @@ static inline void *nft_set_priv(const struct nft_set *set)
+ 	return (void *)set->data;
  }
  
- /* Interface */
++static inline bool nft_set_gc_is_pending(const struct nft_set *s)
++{
++	return refcount_read(&s->refs) != 1;
++}
++
+ static inline struct nft_set *nft_set_container_of(const void *priv)
+ {
+ 	return (void *)priv - offsetof(struct nft_set, data);
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 9cdf348b048a4..68a16ee37b3d0 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -312,6 +312,9 @@ static void nft_rhash_gc(struct work_struct *work)
+ 	nft_net = net_generic(net, nf_tables_net_id);
+ 	gc_seq = READ_ONCE(nft_net->gc_seq);
+ 
++	if (nft_set_gc_is_pending(set))
++		goto done;
++
+ 	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
+ 	if (!gc)
+ 		goto done;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index ed14849aa47f4..9b0bdd4216152 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -613,6 +613,9 @@ static void nft_rbtree_gc(struct work_struct *work)
+ 	nft_net = net_generic(net, nf_tables_net_id);
+ 	gc_seq	= READ_ONCE(nft_net->gc_seq);
+ 
++	if (nft_set_gc_is_pending(set))
++		goto done;
++
+ 	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
+ 	if (!gc)
+ 		goto done;
+-- 
+2.40.1
+
 
 
