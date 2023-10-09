@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A95C57BE17F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9B547BE18C
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:51:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377267AbjJINu6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:50:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54502 "EHLO
+        id S1377373AbjJINv0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:51:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377417AbjJINuw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:50:52 -0400
+        with ESMTP id S1377251AbjJINv0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:51:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C83122
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:50:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1684C433C7;
-        Mon,  9 Oct 2023 13:50:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C3294
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:51:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B43C433C7;
+        Mon,  9 Oct 2023 13:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859449;
-        bh=bpL+cw7yswjDJTxFDybmlF3/JPt0sLk6XhxRYO6tZDc=;
+        s=korg; t=1696859484;
+        bh=5QMiAQdFl0PxNtmwo1geuhXI3BgzV7YqbIr21TTtuvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MAEGcMfzs+vwQfDwzR2BGLVpZqAmjdN9jfMjFg5a9s7EMLnSb92Rfrgy/q5wjvAnL
-         DbJFfxiuw4+MBGnQiqJU8XIEara8heLJGhOVf6ifl+WZ8k+SYwcDNf7niXQ05jA7oB
-         ep9dh3xgEJrUxRilYKgP0eycTIjaJwE5Z6xavLp0=
+        b=cd+noYFfR2dypDWZh68hT7XwxCjSH8kYr5M6LAsFp1Qno98xYUwS47S5BA10bBv5T
+         kROTaRN7fotTLfbj8zKiPvFiBr1ScHGVW79RXnZu3bexI0w6GEDqKvEYqzFeidhWx8
+         mD78GdF2VFDI1+FqIQh4PtXsxaEUQDqL9e0YgUFI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Ahern <dsahern@kernel.org>,
-        Kyle Zeng <zengyhkyle@gmail.com>,
-        Stephen Suryaputra <ssuryaextr@gmail.com>,
-        Vadim Fedorenko <vfedorenko@novek.ru>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Krishan Gopal Sarawast <krishang@linux.vnet.ibm.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Disha Goel <disgoel@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 07/91] ipv4: fix null-deref in ipv4_link_failure
-Date:   Mon,  9 Oct 2023 15:05:39 +0200
-Message-ID: <20231009130111.789358762@linuxfoundation.org>
+Subject: [PATCH 4.19 08/91] powerpc/perf/hv-24x7: Update domain value check
+Date:   Mon,  9 Oct 2023 15:05:40 +0200
+Message-ID: <20231009130111.826928091@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
 References: <20231009130111.518916887@linuxfoundation.org>
@@ -56,51 +56,61 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kyle Zeng <zengyhkyle@gmail.com>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit 0113d9c9d1ccc07f5a3710dac4aa24b6d711278c ]
+[ Upstream commit 4ff3ba4db5943cac1045e3e4a3c0463ea10f6930 ]
 
-Currently, we assume the skb is associated with a device before calling
-__ip_options_compile, which is not always the case if it is re-routed by
-ipvs.
-When skb->dev is NULL, dev_net(skb->dev) will become null-dereference.
-This patch adds a check for the edge case and switch to use the net_device
-from the rtable when skb->dev is NULL.
+Valid domain value is in range 1 to HV_PERF_DOMAIN_MAX. Current code has
+check for domain value greater than or equal to HV_PERF_DOMAIN_MAX. But
+the check for domain value 0 is missing.
 
-Fixes: ed0de45a1008 ("ipv4: recompile ip options in ipv4_link_failure")
-Suggested-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
-Cc: Stephen Suryaputra <ssuryaextr@gmail.com>
-Cc: Vadim Fedorenko <vfedorenko@novek.ru>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix this issue by adding check for domain value 0.
+
+Before:
+  # ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
+  Using CPUID 00800200
+  Control descriptor is not initialized
+  Error:
+  The sys_perf_event_open() syscall returned with 5 (Input/output error) for
+  event (hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/).
+  /bin/dmesg | grep -i perf may provide additional information.
+
+  Result from dmesg:
+  [   37.819387] hv-24x7: hcall failed: [0 0x60040000 0x100 0] => ret
+  0xfffffffffffffffc (-4) detail=0x2000000 failing ix=0
+
+After:
+  # ./perf stat -v -e hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ sleep 1
+  Using CPUID 00800200
+  Control descriptor is not initialized
+  Warning:
+  hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/ event is not supported by the kernel.
+  failed to read counter hv_24x7/CPM_ADJUNCT_INST,domain=0,core=1/
+
+Fixes: ebd4a5a3ebd9 ("powerpc/perf/hv-24x7: Minor improvements")
+Reported-by: Krishan Gopal Sarawast <krishang@linux.vnet.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Tested-by: Disha Goel <disgoel@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230825055601.360083-1-kjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/perf/hv-24x7.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 57e2316529d00..9753d07bfc0bf 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1215,6 +1215,7 @@ static struct dst_entry *ipv4_dst_check(struct dst_entry *dst, u32 cookie)
+diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+index 2bb798918483d..e6eb2b4cf97ea 100644
+--- a/arch/powerpc/perf/hv-24x7.c
++++ b/arch/powerpc/perf/hv-24x7.c
+@@ -1326,7 +1326,7 @@ static int h_24x7_event_init(struct perf_event *event)
+ 	}
  
- static void ipv4_send_dest_unreach(struct sk_buff *skb)
- {
-+	struct net_device *dev;
- 	struct ip_options opt;
- 	int res;
- 
-@@ -1232,7 +1233,8 @@ static void ipv4_send_dest_unreach(struct sk_buff *skb)
- 		opt.optlen = ip_hdr(skb)->ihl * 4 - sizeof(struct iphdr);
- 
- 		rcu_read_lock();
--		res = __ip_options_compile(dev_net(skb->dev), &opt, skb, NULL);
-+		dev = skb->dev ? skb->dev : skb_rtable(skb)->dst.dev;
-+		res = __ip_options_compile(dev_net(dev), &opt, skb, NULL);
- 		rcu_read_unlock();
- 
- 		if (res)
+ 	domain = event_get_domain(event);
+-	if (domain >= HV_PERF_DOMAIN_MAX) {
++	if (domain  == 0 || domain >= HV_PERF_DOMAIN_MAX) {
+ 		pr_devel("invalid domain %d\n", domain);
+ 		return -EINVAL;
+ 	}
 -- 
 2.40.1
 
