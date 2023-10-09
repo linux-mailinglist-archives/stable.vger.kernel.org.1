@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 083427BE143
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D1437BE1C8
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376760AbjJINsi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:48:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53302 "EHLO
+        id S1377550AbjJINyW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:54:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377470AbjJINsh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:48:37 -0400
+        with ESMTP id S1377569AbjJINx6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93100BA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:48:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4CC1C433C9;
-        Mon,  9 Oct 2023 13:48:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0DFE99
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3383BC433C8;
+        Mon,  9 Oct 2023 13:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859315;
-        bh=uka54SjBYlauVedB11gk2b/+8TtBocR0CAgZHo6RSPo=;
+        s=korg; t=1696859636;
+        bh=cwfoFimlSVDPjfREklN/6EQIMP5HBw0IklxnWH8i9aU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vTpDfKZkNyGFEOvsrXLCDvmIbtP7wwJwOxXTX4a8DBjoKNlIV16eug2QDnj+YoOp8
-         JWHRys77Uu4MQ3/n2QQrWoXESbwpoqd8w9uVT/zBVtxT+5GT7bXlBBtK/eCJiMFcb2
-         l7eDoaG0LiEevEDVNU7gDErlIBHVYydoifExYzOY=
+        b=JD710znOjEZDRmgmDEXi80AfUG7AhneiahgGNMXH+NyC/zW4KSWn0RsJri7lmxWh+
+         Y4hqJOjdU4/sXk6sNccT9m2wlRPteOAQ2Z6Lf8Q9OAM2a/5xs02Ks7mxr41tvma0l2
+         b46a1GeSDrlWb8CyxcL1YYc6MeR6HltmRjyGeIBY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
-        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>
-Subject: [PATCH 4.14 38/55] btrfs: reject unknown mount options early
-Date:   Mon,  9 Oct 2023 15:06:37 +0200
-Message-ID: <20231009130109.152850430@linuxfoundation.org>
+        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Benjamin Block <bblock@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 4.19 66/91] scsi: zfcp: Fix a double put in zfcp_port_enqueue()
+Date:   Mon,  9 Oct 2023 15:06:38 +0200
+Message-ID: <20231009130113.788984004@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
-References: <20231009130107.717692466@linuxfoundation.org>
+In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
+References: <20231009130111.518916887@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,59 +49,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit 5f521494cc73520ffac18ede0758883b9aedd018 upstream.
+commit b481f644d9174670b385c3a699617052cd2a79d3 upstream.
 
-[BUG]
-The following script would allow invalid mount options to be specified
-(although such invalid options would just be ignored):
+When device_register() fails, zfcp_port_release() will be called after
+put_device(). As a result, zfcp_ccw_adapter_put() will be called twice: one
+in zfcp_port_release() and one in the error path after device_register().
+So the reference on the adapter object is doubly put, which may lead to a
+premature free. Fix this by adjusting the error tag after
+device_register().
 
-  # mkfs.btrfs -f $dev
-  # mount $dev $mnt1		<<< Successful mount expected
-  # mount $dev $mnt2 -o junk	<<< Failed mount expected
-  # echo $?
-  0
-
-[CAUSE]
-For the 2nd mount, since the fs is already mounted, we won't go through
-open_ctree() thus no btrfs_parse_options(), but only through
-btrfs_parse_subvol_options().
-
-However we do not treat unrecognized options from valid but irrelevant
-options, thus those invalid options would just be ignored by
-btrfs_parse_subvol_options().
-
-[FIX]
-Add the handling for Opt_err to handle invalid options and error out,
-while still ignore other valid options inside btrfs_parse_subvol_options().
-
-Reported-by: Anand Jain <anand.jain@oracle.com>
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: f3450c7b9172 ("[SCSI] zfcp: Replace local reference counting with common kref")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230923103723.10320-1-dinghao.liu@zju.edu.cn
+Acked-by: Benjamin Block <bblock@linux.ibm.com>
+Cc: stable@vger.kernel.org # v2.6.33+
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/super.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/s390/scsi/zfcp_aux.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -929,6 +929,10 @@ static int btrfs_parse_early_options(con
- 			if (error)
- 				goto out;
- 			break;
-+		case Opt_err:
-+			btrfs_err(NULL, "unrecognized mount option '%s'", p);
-+			error = -EINVAL;
-+			goto out;
- 		default:
- 			break;
- 		}
+--- a/drivers/s390/scsi/zfcp_aux.c
++++ b/drivers/s390/scsi/zfcp_aux.c
+@@ -493,12 +493,12 @@ struct zfcp_port *zfcp_port_enqueue(stru
+ 	if (port) {
+ 		put_device(&port->dev);
+ 		retval = -EEXIST;
+-		goto err_out;
++		goto err_put;
+ 	}
+ 
+ 	port = kzalloc(sizeof(struct zfcp_port), GFP_KERNEL);
+ 	if (!port)
+-		goto err_out;
++		goto err_put;
+ 
+ 	rwlock_init(&port->unit_list_lock);
+ 	INIT_LIST_HEAD(&port->unit_list);
+@@ -521,7 +521,7 @@ struct zfcp_port *zfcp_port_enqueue(stru
+ 
+ 	if (dev_set_name(&port->dev, "0x%016llx", (unsigned long long)wwpn)) {
+ 		kfree(port);
+-		goto err_out;
++		goto err_put;
+ 	}
+ 	retval = -EINVAL;
+ 
+@@ -538,8 +538,9 @@ struct zfcp_port *zfcp_port_enqueue(stru
+ 
+ 	return port;
+ 
+-err_out:
++err_put:
+ 	zfcp_ccw_adapter_put(adapter);
++err_out:
+ 	return ERR_PTR(retval);
+ }
+ 
 
 
