@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E3537BE0C8
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16D387BDF1C
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377419AbjJINoV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:44:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56586 "EHLO
+        id S1376736AbjJIN03 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:26:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377412AbjJINnv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:43:51 -0400
+        with ESMTP id S1376556AbjJIN02 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E188A3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:43:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F0FC433C8;
-        Mon,  9 Oct 2023 13:43:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 743E6107
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9221CC433C8;
+        Mon,  9 Oct 2023 13:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859029;
-        bh=76CQ4L1HY/vwJfg1GGzxb2Qq9R1/nMfuSjRBro4VNk8=;
+        s=korg; t=1696857985;
+        bh=NCbmLQFJaXT0MD8rundzMslsGrAR4aIPtYAuPscwieM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t/Rfg1Lv2OBEgc6Wf8eAJRmS8+YqTeLMW/C37Is7miy9Obupmo8yzCpmTcVTfw2KN
-         vagDBL6XmBc/3PxPF/mxMwzlPux8RJjEPW1IXNrMGyqud10rBLX57C0o9aMNkubYQ8
-         CD3+r/yGzUjOll/jh13CmhHbkfwdZRAt7Ur3Vw6U=
+        b=HocRsudhJ06JprTuVhfbm7EZ3eZKYfkdQ2rupZCdtQzdLCBPO66rsPoB55uUeNWWx
+         ML6Zw1bTwRRxBvXjuniuj6AA+AZ5gNNWpGEAjKfE6N7Iymo+ScClWiTgX+uiXiC5/h
+         cBjbO/3SKZ5b5qR9fO0Yt69jIyX8L1PCPUM4IqMM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Zhang Wensheng <zhangwensheng@huaweicloud.com>,
-        Zhong Jinghua <zhongjinghua@huawei.com>,
-        Hillf Danton <hdanton@sina.com>, Yu Kuai <yukuai3@huawei.com>,
-        Dennis Zhou <dennis@kernel.org>,
-        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-        Saranya Muruganandam <saranyamohan@google.com>
-Subject: [PATCH 5.10 176/226] block: fix use-after-free of q->q_usage_counter
+        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 55/75] net: stmmac: dwmac-stm32: fix resume on STM32 MCU
 Date:   Mon,  9 Oct 2023 15:02:17 +0200
-Message-ID: <20231009130131.240377556@linuxfoundation.org>
+Message-ID: <20231009130113.174369353@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
 
-commit d36a9ea5e7766961e753ee38d4c331bbe6ef659b upstream.
+[ Upstream commit 6f195d6b0da3b689922ba9e302af2f49592fa9fc ]
 
-For blk-mq, queue release handler is usually called after
-blk_mq_freeze_queue_wait() returns. However, the
-q_usage_counter->release() handler may not be run yet at that time, so
-this can cause a use-after-free.
+The STM32MP1 keeps clk_rx enabled during suspend, and therefore the
+driver does not enable the clock in stm32_dwmac_init() if the device was
+suspended. The problem is that this same code runs on STM32 MCUs, which
+do disable clk_rx during suspend, causing the clock to never be
+re-enabled on resume.
 
-Fix the issue by moving percpu_ref_exit() into blk_free_queue_rcu().
-Since ->release() is called with rcu read lock held, it is agreed that
-the race should be covered in caller per discussion from the two links.
+This patch adds a variant flag to indicate that clk_rx remains enabled
+during suspend, and uses this to decide whether to enable the clock in
+stm32_dwmac_init() if the device was suspended.
 
-Reported-by: Zhang Wensheng <zhangwensheng@huaweicloud.com>
-Reported-by: Zhong Jinghua <zhongjinghua@huawei.com>
-Link: https://lore.kernel.org/linux-block/Y5prfOjyyjQKUrtH@T590/T/#u
-Link: https://lore.kernel.org/lkml/Y4%2FmzMd4evRg9yDi@fedora/
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Fixes: 2b0d3d3e4fcf ("percpu_ref: reduce memory footprint of percpu_ref in fast path")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20221215021629.74870-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Saranya Muruganandam <saranyamohan@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This approach fixes this specific bug with limited opportunity for
+unintended side-effects, but I have a follow up patch that will refactor
+the clock configuration and hopefully make it less error prone.
+
+Fixes: 6528e02cc9ff ("net: ethernet: stmmac: add adaptation for stm32mp157c.")
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20230927175749.1419774-1-ben.wolsieffer@hefring.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c  |    2 --
- block/blk-sysfs.c |    2 ++
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -414,8 +414,6 @@ void blk_cleanup_queue(struct request_qu
- 		blk_mq_sched_free_requests(q);
- 	mutex_unlock(&q->sysfs_lock);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
+index 2b38a499a4045..533f5245ad945 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
+@@ -105,6 +105,7 @@ struct stm32_ops {
+ 	int (*parse_data)(struct stm32_dwmac *dwmac,
+ 			  struct device *dev);
+ 	u32 syscfg_eth_mask;
++	bool clk_rx_enable_in_suspend;
+ };
  
--	percpu_ref_exit(&q->q_usage_counter);
--
- 	/* @q is and will stay empty, shutdown and put */
- 	blk_put_queue(q);
- }
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -726,6 +726,8 @@ static void blk_free_queue_rcu(struct rc
- {
- 	struct request_queue *q = container_of(rcu_head, struct request_queue,
- 					       rcu_head);
-+
-+	percpu_ref_exit(&q->q_usage_counter);
- 	kmem_cache_free(blk_requestq_cachep, q);
- }
+ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
+@@ -122,7 +123,8 @@ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
+ 	if (ret)
+ 		return ret;
  
+-	if (!dwmac->dev->power.is_suspended) {
++	if (!dwmac->ops->clk_rx_enable_in_suspend ||
++	    !dwmac->dev->power.is_suspended) {
+ 		ret = clk_prepare_enable(dwmac->clk_rx);
+ 		if (ret) {
+ 			clk_disable_unprepare(dwmac->clk_tx);
+@@ -515,7 +517,8 @@ static struct stm32_ops stm32mp1_dwmac_data = {
+ 	.suspend = stm32mp1_suspend,
+ 	.resume = stm32mp1_resume,
+ 	.parse_data = stm32mp1_parse_data,
+-	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK
++	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK,
++	.clk_rx_enable_in_suspend = true
+ };
+ 
+ static const struct of_device_id stm32_dwmac_match[] = {
+-- 
+2.40.1
+
 
 
