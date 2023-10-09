@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C7AD7BE052
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 748D97BDDA2
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:11:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377262AbjJINiv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:38:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51744 "EHLO
+        id S1376901AbjJINLq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:11:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377304AbjJINiq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:46 -0400
+        with ESMTP id S1376923AbjJINLY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:11:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C73DD12B
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE540C433C7;
-        Mon,  9 Oct 2023 13:38:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D55AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3F7C433CA;
+        Mon,  9 Oct 2023 13:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858719;
-        bh=ZTS7FeudJkuUbsKRCtLDEyM7tyyoNpPpnvu9xmR9CiU=;
+        s=korg; t=1696857037;
+        bh=ZrH3ERLeBqV9Q2mWIwGEssrxBfesbwkbUMK+B6yes4E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aSu/X8jmJc/3POVs1V7nWaSicsuRZBKk4WKHBHxTn5BYLxZGdd80dLJfNP58PapMl
-         p0b79qKwkknZHG0ExiwoEz1t2rGpx9uAfkdEM3sWtXlx17lwWL8ETW8lyYgfgTbEQH
-         zPNaCP19KRyMUFFIwlg7guIeGq5qD6Jp1XSPhduo=
+        b=r1TFcBWHegtKyEuwgbw4dmIsp5oUeoQGArYP5MA8o6vdFHYoXJvT4Vgzt27NFqUfU
+         7S0VZuxLwupKetUgoVera5n2yaI7LjhIWNL2sgbQIFw7pPJMumKLL6SgA62aUmUUmK
+         HWKWkn8TePZ49GexgueA4d6azf6f5CVxqzNc3AG4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Leon Hwang <hffilwlqm@gmail.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 078/226] netfilter: nf_tables: add and use nft_sk helper
+Subject: [PATCH 6.5 075/163] bpf: Fix tr dereferencing
 Date:   Mon,  9 Oct 2023 15:00:39 +0200
-Message-ID: <20231009130128.827076229@linuxfoundation.org>
+Message-ID: <20231009130126.128274599@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,91 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Leon Hwang <hffilwlqm@gmail.com>
 
-[ Upstream commit 85554eb981e5a8b0b8947611193aef1737081ef2 ]
+[ Upstream commit b724a6418f1f853bcb39c8923bf14a50c7bdbd07 ]
 
-This allows to change storage placement later on without changing readers.
+Fix 'tr' dereferencing bug when CONFIG_BPF_JIT is turned off.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 28427f368f0e ("netfilter: nft_exthdr: Fix non-linear header modification")
+When CONFIG_BPF_JIT is turned off, 'bpf_trampoline_get()' returns NULL,
+which is same as the cases when CONFIG_BPF_JIT is turned on.
+
+Closes: https://lore.kernel.org/r/202309131936.5Nc8eUD0-lkp@intel.com/
+Fixes: f7b12b6fea00 ("bpf: verifier: refactor check_attach_btf_id()")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Leon Hwang <hffilwlqm@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230917153846.88732-1-hffilwlqm@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h    | 5 +++++
- net/ipv4/netfilter/nft_reject_ipv4.c | 2 +-
- net/ipv6/netfilter/nft_reject_ipv6.c | 2 +-
- net/netfilter/nft_reject_inet.c      | 4 ++--
- 4 files changed, 9 insertions(+), 4 deletions(-)
+ include/linux/bpf.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 5619642b9ad47..013f11c9de85a 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -28,6 +28,11 @@ struct nft_pktinfo {
- 	struct xt_action_param		xt;
- };
- 
-+static inline struct sock *nft_sk(const struct nft_pktinfo *pkt)
-+{
-+	return pkt->xt.state->sk;
-+}
-+
- static inline struct net *nft_net(const struct nft_pktinfo *pkt)
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 477d91b926b35..6ba9d3ed8f0b0 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1294,7 +1294,7 @@ static inline int bpf_trampoline_unlink_prog(struct bpf_tramp_link *link,
+ static inline struct bpf_trampoline *bpf_trampoline_get(u64 key,
+ 							struct bpf_attach_target_info *tgt_info)
  {
- 	return pkt->xt.state->net;
-diff --git a/net/ipv4/netfilter/nft_reject_ipv4.c b/net/ipv4/netfilter/nft_reject_ipv4.c
-index ff437e4ed6db0..55fc23a8f7a70 100644
---- a/net/ipv4/netfilter/nft_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nft_reject_ipv4.c
-@@ -27,7 +27,7 @@ static void nft_reject_ipv4_eval(const struct nft_expr *expr,
- 		nf_send_unreach(pkt->skb, priv->icmp_code, nft_hook(pkt));
- 		break;
- 	case NFT_REJECT_TCP_RST:
--		nf_send_reset(nft_net(pkt), pkt->xt.state->sk, pkt->skb,
-+		nf_send_reset(nft_net(pkt), nft_sk(pkt), pkt->skb,
- 			      nft_hook(pkt));
- 		break;
- 	default:
-diff --git a/net/ipv6/netfilter/nft_reject_ipv6.c b/net/ipv6/netfilter/nft_reject_ipv6.c
-index 7969d1f3018dc..ed69c768797ec 100644
---- a/net/ipv6/netfilter/nft_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nft_reject_ipv6.c
-@@ -28,7 +28,7 @@ static void nft_reject_ipv6_eval(const struct nft_expr *expr,
- 				 nft_hook(pkt));
- 		break;
- 	case NFT_REJECT_TCP_RST:
--		nf_send_reset6(nft_net(pkt), pkt->xt.state->sk, pkt->skb,
-+		nf_send_reset6(nft_net(pkt), nft_sk(pkt), pkt->skb,
- 			       nft_hook(pkt));
- 		break;
- 	default:
-diff --git a/net/netfilter/nft_reject_inet.c b/net/netfilter/nft_reject_inet.c
-index 36b219e2e896c..c00b94a166824 100644
---- a/net/netfilter/nft_reject_inet.c
-+++ b/net/netfilter/nft_reject_inet.c
-@@ -28,7 +28,7 @@ static void nft_reject_inet_eval(const struct nft_expr *expr,
- 					nft_hook(pkt));
- 			break;
- 		case NFT_REJECT_TCP_RST:
--			nf_send_reset(nft_net(pkt), pkt->xt.state->sk,
-+			nf_send_reset(nft_net(pkt), nft_sk(pkt),
- 				      pkt->skb, nft_hook(pkt));
- 			break;
- 		case NFT_REJECT_ICMPX_UNREACH:
-@@ -45,7 +45,7 @@ static void nft_reject_inet_eval(const struct nft_expr *expr,
- 					 priv->icmp_code, nft_hook(pkt));
- 			break;
- 		case NFT_REJECT_TCP_RST:
--			nf_send_reset6(nft_net(pkt), pkt->xt.state->sk,
-+			nf_send_reset6(nft_net(pkt), nft_sk(pkt),
- 				       pkt->skb, nft_hook(pkt));
- 			break;
- 		case NFT_REJECT_ICMPX_UNREACH:
+-	return ERR_PTR(-EOPNOTSUPP);
++	return NULL;
+ }
+ static inline void bpf_trampoline_put(struct bpf_trampoline *tr) {}
+ #define DEFINE_BPF_DISPATCHER(name)
 -- 
 2.40.1
 
