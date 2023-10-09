@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1C997BE01E
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 328E17BDD35
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377209AbjJINhm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:37:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59160 "EHLO
+        id S1376715AbjJINI1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:08:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377230AbjJINhk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:37:40 -0400
+        with ESMTP id S1376725AbjJINI0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 559319C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:37:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55975C433C9;
-        Mon,  9 Oct 2023 13:37:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C68EA93
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D71C433C8;
+        Mon,  9 Oct 2023 13:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858658;
-        bh=jD1vH9+3WX+0A+gfjHqu2MB/jqLikYlc+/Ic3v3XpYU=;
+        s=korg; t=1696856904;
+        bh=Hden6CgiCaO+jFBUv3UltTHq8BRRwjEiSMs2wAFqDzg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Crpo3QfUrW6w4Y8mSNXxDEDJQWli4VZFHn/8a28gDydnBZTySQdOS4Q71481BWves
-         61kgw+ajt5hChqJ69G5zukBR9pY3Psglo+nRU5SzqD7kQbQq+xJvzK49BTICbmUmji
-         yxteATUBRlBC5xanUQUYubeuMcUVxsP+dDLvLjVY=
+        b=avuYYWWDtWbXnwuGthR/Mp0wONbZRG4umAaPAq/kLKO2+b6WvhE+SFmdiRNZ3o9nm
+         bHVQSE30qKyAyKhfGsanBUAEuwH7SLAnVkNgNLRUXNTj6puUPbBLyPls0F4+JRD1IS
+         5eHg9doygHC14k4iQbYspp6d5+Xfnzn+CfLvJSG4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/226] netfilter: nf_tables: fix memleak when more than 255 elements expired
+        patches@lists.linux.dev, Haiyang Zhang <haiyangz@microsoft.com>,
+        Simon Horman <horms@kernel.org>,
+        Shradha Gupta <shradhagupta@linux.microsoft.com>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.5 029/163] net: mana: Fix TX CQE error handling
 Date:   Mon,  9 Oct 2023 14:59:53 +0200
-Message-ID: <20231009130127.615913286@linuxfoundation.org>
+Message-ID: <20231009130124.809346249@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,91 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-commit cf5000a7787cbc10341091d37245a42c119d26c5 upstream.
+commit b2b000069a4c307b09548dc2243f31f3ca0eac9c upstream.
 
-When more than 255 elements expired we're supposed to switch to a new gc
-container structure.
+For an unknown TX CQE error type (probably from a newer hardware),
+still free the SKB, update the queue tail, etc., otherwise the
+accounting will be wrong.
 
-This never happens: u8 type will wrap before reaching the boundary
-and nft_trans_gc_space() always returns true.
+Also, TX errors can be triggered by injecting corrupted packets, so
+replace the WARN_ONCE to ratelimited error logging.
 
-This means we recycle the initial gc container structure and
-lose track of the elements that came before.
-
-While at it, don't deref 'gc' after we've passed it to call_rcu.
-
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |  2 +-
- net/netfilter/nf_tables_api.c     | 10 ++++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index bbe472c07d07e..5619642b9ad47 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1525,7 +1525,7 @@ struct nft_trans_gc {
- 	struct net		*net;
- 	struct nft_set		*set;
- 	u32			seq;
--	u8			count;
-+	u16			count;
- 	void			*priv[NFT_TRANS_GC_BATCHCOUNT];
- 	struct rcu_head		rcu;
- };
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 9fc302a6836ba..32c97cc87ddc2 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8124,12 +8124,15 @@ static int nft_trans_gc_space(struct nft_trans_gc *trans)
- struct nft_trans_gc *nft_trans_gc_queue_async(struct nft_trans_gc *gc,
- 					      unsigned int gc_seq, gfp_t gfp)
- {
-+	struct nft_set *set;
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1315,19 +1315,23 @@ static void mana_poll_tx_cq(struct mana_
+ 		case CQE_TX_VPORT_IDX_OUT_OF_RANGE:
+ 		case CQE_TX_VPORT_DISABLED:
+ 		case CQE_TX_VLAN_TAGGING_VIOLATION:
+-			WARN_ONCE(1, "TX: CQE error %d: ignored.\n",
+-				  cqe_oob->cqe_hdr.cqe_type);
++			if (net_ratelimit())
++				netdev_err(ndev, "TX: CQE error %d\n",
++					   cqe_oob->cqe_hdr.cqe_type);
 +
- 	if (nft_trans_gc_space(gc))
- 		return gc;
+ 			apc->eth_stats.tx_cqe_err++;
+ 			break;
  
-+	set = gc->set;
- 	nft_trans_gc_queue_work(gc);
- 
--	return nft_trans_gc_alloc(gc->set, gc_seq, gfp);
-+	return nft_trans_gc_alloc(set, gc_seq, gfp);
- }
- 
- void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
-@@ -8144,15 +8147,18 @@ void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
- 
- struct nft_trans_gc *nft_trans_gc_queue_sync(struct nft_trans_gc *gc, gfp_t gfp)
- {
-+	struct nft_set *set;
+ 		default:
+-			/* If the CQE type is unexpected, log an error, assert,
+-			 * and go through the error path.
++			/* If the CQE type is unknown, log an error,
++			 * and still free the SKB, update tail, etc.
+ 			 */
+-			WARN_ONCE(1, "TX: Unexpected CQE type %d: HW BUG?\n",
+-				  cqe_oob->cqe_hdr.cqe_type);
++			if (net_ratelimit())
++				netdev_err(ndev, "TX: unknown CQE type %d\n",
++					   cqe_oob->cqe_hdr.cqe_type);
 +
- 	if (WARN_ON_ONCE(!lockdep_commit_lock_is_held(gc->net)))
- 		return NULL;
+ 			apc->eth_stats.tx_cqe_unknown_type++;
+-			return;
++			break;
+ 		}
  
- 	if (nft_trans_gc_space(gc))
- 		return gc;
- 
-+	set = gc->set;
- 	call_rcu(&gc->rcu, nft_trans_gc_trans_free);
- 
--	return nft_trans_gc_alloc(gc->set, 0, gfp);
-+	return nft_trans_gc_alloc(set, 0, gfp);
- }
- 
- void nft_trans_gc_queue_sync_done(struct nft_trans_gc *trans)
--- 
-2.40.1
-
+ 		if (WARN_ON_ONCE(txq->gdma_txq_id != completions[i].wq_num))
 
 
