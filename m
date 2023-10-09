@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43C4D7BDD9D
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 388EB7BDE45
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376933AbjJINLZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:11:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37200 "EHLO
+        id S1376987AbjJINRs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:17:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376957AbjJINLD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:11:03 -0400
+        with ESMTP id S1377006AbjJINRr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9693D199
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24FEC433CC;
-        Mon,  9 Oct 2023 13:10:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B5C91
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:17:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB39C433CA;
+        Mon,  9 Oct 2023 13:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857028;
-        bh=BRZpQ5VuwgyCKninMK0XinWM21JE3RdLuzRcqsXvkhI=;
+        s=korg; t=1696857465;
+        bh=ia3KBb9IkwIwrU25K1lPUdjgvjDR4rqWdI6WxjmHg2c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I4BR8bzZJZYOrnZ7C2Exem4sMhDWNWSH4qxrn9vqAltAbBOq7iOJdH0R/TIjYnb5S
-         2nZWfBxYftsmxUUo30zH6FlEA6nJnB0JUuXKoZY7LvZixzhZONRWxtxPgvJNmUY+JQ
-         Zb44sIZwltjgkVYi5rg562TQsmZWEL8ySJc10198=
+        b=dcQHZMnRaqwCK1V2jEs2/hC5HKEcPjiIrjjf3Zs1FpSNLO+tr6MNbak3HG9ACFyHl
+         3m4YHH4YMJ6HeYOyDeubLjLF7fk29P0llZ9iNH6D7AXAZtVYoI2auaA4ktmDzAAjMW
+         KMuoee/OAwKj+RPmdfRo4BUdpL3Ra7e1lFyH5pY8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jingbo Xu <jefflexu@linux.alibaba.com>,
-        Jia Zhu <zhujia.zj@bytedance.com>,
-        Gao Xiang <hsiangkao@linux.alibaba.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 072/163] erofs: allow empty device tags in flatdev mode
+        patches@lists.linux.dev, stable@kernel.org,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Ooi, Chin Hao" <chin.hao.ooi@intel.com>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Joerg Roedel <jroedel@suse.de>, Ooi@vger.kernel.org
+Subject: [PATCH 6.1 055/162] iommu/vt-d: Avoid memory allocation in iommu_suspend()
 Date:   Mon,  9 Oct 2023 15:00:36 +0200
-Message-ID: <20231009130126.040033730@linuxfoundation.org>
+Message-ID: <20231009130124.453628276@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +51,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jingbo Xu <jefflexu@linux.alibaba.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit f939aeea7ab7d96cd321e7ac107f5a070836b66f ]
+commit 59df44bfb0ca4c3ee1f1c3c5d0ee8e314844799e upstream.
 
-Device tags aren't actually required in flatdev mode, thus fix mount
-failure due to empty device tags in flatdev mode.
+The iommu_suspend() syscore suspend callback is invoked with IRQ disabled.
+Allocating memory with the GFP_KERNEL flag may re-enable IRQs during
+the suspend callback, which can cause intermittent suspend/hibernation
+problems with the following kernel traces:
 
-Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Fixes: 8b465fecc35a ("erofs: support flattened block device for multi-blob images")
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230915082728.56588-1-jefflexu@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Calling iommu_suspend+0x0/0x1d0
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 15 at kernel/time/timekeeping.c:868 ktime_get+0x9b/0xb0
+...
+CPU: 0 PID: 15 Comm: rcu_preempt Tainted: G     U      E      6.3-intel #r1
+RIP: 0010:ktime_get+0x9b/0xb0
+...
+Call Trace:
+ <IRQ>
+ tick_sched_timer+0x22/0x90
+ ? __pfx_tick_sched_timer+0x10/0x10
+ __hrtimer_run_queues+0x111/0x2b0
+ hrtimer_interrupt+0xfa/0x230
+ __sysvec_apic_timer_interrupt+0x63/0x140
+ sysvec_apic_timer_interrupt+0x7b/0xa0
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1f/0x30
+...
+------------[ cut here ]------------
+Interrupts enabled after iommu_suspend+0x0/0x1d0
+WARNING: CPU: 0 PID: 27420 at drivers/base/syscore.c:68 syscore_suspend+0x147/0x270
+CPU: 0 PID: 27420 Comm: rtcwake Tainted: G     U  W   E      6.3-intel #r1
+RIP: 0010:syscore_suspend+0x147/0x270
+...
+Call Trace:
+ <TASK>
+ hibernation_snapshot+0x25b/0x670
+ hibernate+0xcd/0x390
+ state_store+0xcf/0xe0
+ kobj_attr_store+0x13/0x30
+ sysfs_kf_write+0x3f/0x50
+ kernfs_fop_write_iter+0x128/0x200
+ vfs_write+0x1fd/0x3c0
+ ksys_write+0x6f/0xf0
+ __x64_sys_write+0x1d/0x30
+ do_syscall_64+0x3b/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Given that only 4 words memory is needed, avoid the memory allocation in
+iommu_suspend().
+
+CC: stable@kernel.org
+Fixes: 33e07157105e ("iommu/vt-d: Avoid GFP_ATOMIC where it is not needed")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Tested-by: Ooi, Chin Hao <chin.hao.ooi@intel.com>
+Link: https://lore.kernel.org/r/20230921093956.234692-1-rui.zhang@intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20230925120417.55977-2-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/intel/iommu.c |   16 ----------------
+ drivers/iommu/intel/iommu.h |    2 +-
+ 2 files changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/fs/erofs/super.c b/fs/erofs/super.c
-index 566f68ddfa36e..31a103399412e 100644
---- a/fs/erofs/super.c
-+++ b/fs/erofs/super.c
-@@ -238,7 +238,7 @@ static int erofs_init_device(struct erofs_buf *buf, struct super_block *sb,
- 		return PTR_ERR(ptr);
- 	dis = ptr + erofs_blkoff(sb, *pos);
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -3163,13 +3163,6 @@ static int iommu_suspend(void)
+ 	struct intel_iommu *iommu = NULL;
+ 	unsigned long flag;
  
--	if (!dif->path) {
-+	if (!sbi->devs->flatdev && !dif->path) {
- 		if (!dis->tag[0]) {
- 			erofs_err(sb, "empty device tag @ pos %llu", *pos);
- 			return -EINVAL;
--- 
-2.40.1
-
+-	for_each_active_iommu(iommu, drhd) {
+-		iommu->iommu_state = kcalloc(MAX_SR_DMAR_REGS, sizeof(u32),
+-					     GFP_KERNEL);
+-		if (!iommu->iommu_state)
+-			goto nomem;
+-	}
+-
+ 	iommu_flush_all();
+ 
+ 	for_each_active_iommu(iommu, drhd) {
+@@ -3189,12 +3182,6 @@ static int iommu_suspend(void)
+ 		raw_spin_unlock_irqrestore(&iommu->register_lock, flag);
+ 	}
+ 	return 0;
+-
+-nomem:
+-	for_each_active_iommu(iommu, drhd)
+-		kfree(iommu->iommu_state);
+-
+-	return -ENOMEM;
+ }
+ 
+ static void iommu_resume(void)
+@@ -3226,9 +3213,6 @@ static void iommu_resume(void)
+ 
+ 		raw_spin_unlock_irqrestore(&iommu->register_lock, flag);
+ 	}
+-
+-	for_each_active_iommu(iommu, drhd)
+-		kfree(iommu->iommu_state);
+ }
+ 
+ static struct syscore_ops iommu_syscore_ops = {
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -595,7 +595,7 @@ struct intel_iommu {
+ 	struct iopf_queue *iopf_queue;
+ 	unsigned char iopfq_name[16];
+ 	struct q_inval  *qi;            /* Queued invalidation info */
+-	u32 *iommu_state; /* Store iommu states between suspend and resume.*/
++	u32 iommu_state[MAX_SR_DMAR_REGS]; /* Store iommu states between suspend and resume.*/
+ 
+ #ifdef CONFIG_IRQ_REMAP
+ 	struct ir_table *ir_table;	/* Interrupt remapping info */
 
 
