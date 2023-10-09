@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D8247BDDEC
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4817BDEA7
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376857AbjJINON (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37240 "EHLO
+        id S1376380AbjJINVg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:21:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377010AbjJINN7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:59 -0400
+        with ESMTP id S1376383AbjJINVc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A56EA
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F6BC433C8;
-        Mon,  9 Oct 2023 13:13:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 607D6A6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9B4C433C9;
+        Mon,  9 Oct 2023 13:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857237;
-        bh=Mozk1Mkd7jmKck3IZ1qOP30vxv9hdk+4sLmB6JX12HU=;
+        s=korg; t=1696857691;
+        bh=oSgug/i+4Xb9zIPLWQB5YQI7aPHA8qJWwMGUAvvXuPQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OoWXZOUQqww68viuDGUtaMyCE7123h255XmESHQ6Wpmz2NyaZ9koMYyLOLV64IQvo
-         +107p4wlAVZVG/TdYB8PjZquZWT3kqIkiag7+G1jsjUi+7M5WXb24bx+hIpG2NiHfC
-         uiJ7QX3tCDyHFt4PbMKPmFkn6dP95I8Kf8o8mkQc=
+        b=eQeseP908pODn7TFd8b+TwDhOhGZM8ARr1zxYjlHSTsLWPgqNf5HupG19Ny2oFV2I
+         /KuVlBrRkJCw7WFjqJTbpbqKL/8Wl8/ytbeRy8ceaK3mGQXohMGfIWChF9jNYiBVMT
+         B1QpfiKH6DZDnKQoYiWvFYeMEmKQgF6KRrc2rCFU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH 6.5 142/163] of: dynamic: Fix potential memory leak in of_changeset_action()
+        patches@lists.linux.dev,
+        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 125/162] net: stmmac: dwmac-stm32: fix resume on STM32 MCU
 Date:   Mon,  9 Oct 2023 15:01:46 +0200
-Message-ID: <20231009130127.963252606@linuxfoundation.org>
+Message-ID: <20231009130126.375075467@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
 
-commit 55e95bfccf6db8d26a66c46e1de50d53c59a6774 upstream.
+[ Upstream commit 6f195d6b0da3b689922ba9e302af2f49592fa9fc ]
 
-Smatch complains that the error path where "action" is invalid leaks
-the "ce" allocation:
-    drivers/of/dynamic.c:935 of_changeset_action()
-    warn: possible memory leak of 'ce'
+The STM32MP1 keeps clk_rx enabled during suspend, and therefore the
+driver does not enable the clock in stm32_dwmac_init() if the device was
+suspended. The problem is that this same code runs on STM32 MCUs, which
+do disable clk_rx during suspend, causing the clock to never be
+re-enabled on resume.
 
-Fix this by doing the validation before the allocation.
+This patch adds a variant flag to indicate that clk_rx remains enabled
+during suspend, and uses this to decide whether to enable the clock in
+stm32_dwmac_init() if the device was suspended.
 
-Note that there is not any actual problem with upstream kernels. All
-callers of of_changeset_action() are static inlines with fixed action
-values.
+This approach fixes this specific bug with limited opportunity for
+unintended side-effects, but I have a follow up patch that will refactor
+the clock configuration and hopefully make it less error prone.
 
-Fixes: 914d9d831e61 ("of: dynamic: Refactor action prints to not use "%pOF" inside devtree_lock")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202309011059.EOdr4im9-lkp@intel.com/
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/7dfaf999-30ad-491c-9615-fb1138db121c@moroto.mountain
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6528e02cc9ff ("net: ethernet: stmmac: add adaptation for stm32mp157c.")
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20230927175749.1419774-1-ben.wolsieffer@hefring.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/dynamic.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -927,13 +927,13 @@ int of_changeset_action(struct of_change
- {
- 	struct of_changeset_entry *ce;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
+index 2b38a499a4045..533f5245ad945 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
+@@ -105,6 +105,7 @@ struct stm32_ops {
+ 	int (*parse_data)(struct stm32_dwmac *dwmac,
+ 			  struct device *dev);
+ 	u32 syscfg_eth_mask;
++	bool clk_rx_enable_in_suspend;
+ };
  
-+	if (WARN_ON(action >= ARRAY_SIZE(action_names)))
-+		return -EINVAL;
-+
- 	ce = kzalloc(sizeof(*ce), GFP_KERNEL);
- 	if (!ce)
- 		return -ENOMEM;
+ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
+@@ -122,7 +123,8 @@ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
+ 	if (ret)
+ 		return ret;
  
--	if (WARN_ON(action >= ARRAY_SIZE(action_names)))
--		return -EINVAL;
--
- 	/* get a reference to the node */
- 	ce->action = action;
- 	ce->np = of_node_get(np);
+-	if (!dwmac->dev->power.is_suspended) {
++	if (!dwmac->ops->clk_rx_enable_in_suspend ||
++	    !dwmac->dev->power.is_suspended) {
+ 		ret = clk_prepare_enable(dwmac->clk_rx);
+ 		if (ret) {
+ 			clk_disable_unprepare(dwmac->clk_tx);
+@@ -515,7 +517,8 @@ static struct stm32_ops stm32mp1_dwmac_data = {
+ 	.suspend = stm32mp1_suspend,
+ 	.resume = stm32mp1_resume,
+ 	.parse_data = stm32mp1_parse_data,
+-	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK
++	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK,
++	.clk_rx_enable_in_suspend = true
+ };
+ 
+ static const struct of_device_id stm32_dwmac_match[] = {
+-- 
+2.40.1
+
 
 
