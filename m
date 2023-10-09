@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEFBA7BDD3B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEC6E7BDD3D
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376730AbjJINIl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:08:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43306 "EHLO
+        id S1376737AbjJINIo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:08:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376709AbjJINIk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:40 -0400
+        with ESMTP id S1376732AbjJINIn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E7628F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF248C433C7;
-        Mon,  9 Oct 2023 13:08:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 950819E
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB96DC433C9;
+        Mon,  9 Oct 2023 13:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856919;
-        bh=ZE6AxiR2xm5MfJdzgwoysHo7uXBPpgVPx7MPz3tE0TY=;
+        s=korg; t=1696856922;
+        bh=0UxndBLhQUyFwqfmebc67WESfsLSPqgFo1SyiDVVMIQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vlFlBXTPNst5LAs/p4ZP90zUsY90gnKSQ4pb0Ux8N94ErHdIW2XzCySeBAMuZNS1i
-         lyg1PWqNrozO9yXqCvRPLen/xaxHOA+VBedbcXqB5R/BkVY6DEzC94YWupU/Sj3My3
-         Ew0RZt3i4jVeh+hmf45FyqazsDjCBv243te5PbvY=
+        b=Yclg1+uFrZ6o4+5htVg7CivC+bDUj2n32NcbV4G0UB0+FldaLuBiFCqM2XbMuh8Hn
+         kO1Qu0WwXFA8XJVhfTdgb3PYcT4sgSnwPSGKJLV/yFzbOJ8VCmjuJIu4UYv2473tz2
+         cXQe7SuE31NuzKfVP1+Zx9B5goMT4P2J9I8t1pVE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Pedro Falcato <pedro.falcato@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 008/163] maple_tree: add mas_is_active() to detect in-tree walks
-Date:   Mon,  9 Oct 2023 14:59:32 +0200
-Message-ID: <20231009130124.250840174@linuxfoundation.org>
+Subject: [PATCH 6.5 009/163] mptcp: Remove unnecessary test for __mptcp_init_sock()
+Date:   Mon,  9 Oct 2023 14:59:33 +0200
+Message-ID: <20231009130124.277557269@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
 References: <20231009130124.021290599@linuxfoundation.org>
@@ -55,59 +54,64 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 5c590804b6b0ff933ed4e5cee5d76de3a5048d9f ]
+[ Upstream commit e263691773cd67d7c824eeee8b802f50c6e0c118 ]
 
-Patch series "maple_tree: Fix mas_prev() state regression".
+__mptcp_init_sock() always returns 0 because mptcp_init_sock() used
+to return the value directly.
 
-Pedro Falcato retported an mprotect regression [1] which was bisected back
-to the iterator changes for maple tree.  Root cause analysis showed the
-mas_prev() running off the end of the VMA space (previous from 0) followed
-by mas_find(), would skip the first value.
+But after commit 18b683bff89d ("mptcp: queue data for mptcp level
+retransmission"), __mptcp_init_sock() need not return value anymore.
 
-This patchset introduces maple state underflow/overflow so the sequence of
-calls on the maple state will return what the user expects.
+Let's remove the unnecessary test for __mptcp_init_sock() and make
+it return void.
 
-Users who encounter this bug may see mprotect(), userfaultfd_register(),
-and mlock() fail on VMAs mapped with address 0.
-
-This patch (of 2):
-
-Instead of constantly checking each possibility of the maple state,
-create a fast path that will skip over checking unlikely states.
-
-Link: https://lkml.kernel.org/r/20230921181236.509072-1-Liam.Howlett@oracle.com
-Link: https://lkml.kernel.org/r/20230921181236.509072-2-Liam.Howlett@oracle.com
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Pedro Falcato <pedro.falcato@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 27e5ccc2d5a5 ("mptcp: fix dangling connection hang-up")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/maple_tree.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/mptcp/protocol.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
-index 295548cca8b36..e1e5f38384b20 100644
---- a/include/linux/maple_tree.h
-+++ b/include/linux/maple_tree.h
-@@ -503,6 +503,15 @@ static inline bool mas_is_paused(const struct ma_state *mas)
- 	return mas->node == MAS_PAUSE;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 6947b4b2519c9..0aae76f1465b8 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2710,7 +2710,7 @@ static void mptcp_worker(struct work_struct *work)
+ 	sock_put(sk);
  }
  
-+/* Check if the mas is pointing to a node or not */
-+static inline bool mas_is_active(struct ma_state *mas)
-+{
-+	if ((unsigned long)mas->node >= MAPLE_RESERVED_RANGE)
-+		return true;
-+
-+	return false;
-+}
-+
- /**
-  * mas_reset() - Reset a Maple Tree operation state.
-  * @mas: Maple Tree operation state.
+-static int __mptcp_init_sock(struct sock *sk)
++static void __mptcp_init_sock(struct sock *sk)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 
+@@ -2737,8 +2737,6 @@ static int __mptcp_init_sock(struct sock *sk)
+ 	/* re-use the csk retrans timer for MPTCP-level retrans */
+ 	timer_setup(&msk->sk.icsk_retransmit_timer, mptcp_retransmit_timer, 0);
+ 	timer_setup(&sk->sk_timer, mptcp_timeout_timer, 0);
+-
+-	return 0;
+ }
+ 
+ static void mptcp_ca_reset(struct sock *sk)
+@@ -2756,11 +2754,8 @@ static void mptcp_ca_reset(struct sock *sk)
+ static int mptcp_init_sock(struct sock *sk)
+ {
+ 	struct net *net = sock_net(sk);
+-	int ret;
+ 
+-	ret = __mptcp_init_sock(sk);
+-	if (ret)
+-		return ret;
++	__mptcp_init_sock(sk);
+ 
+ 	if (!mptcp_is_enabled(net))
+ 		return -ENOPROTOOPT;
 -- 
 2.40.1
 
