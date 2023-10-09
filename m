@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CC297BDF1B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A72B7BDECA
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376270AbjJIN01 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:26:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49182 "EHLO
+        id S1376426AbjJINXI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:23:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376769AbjJIN00 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:26:26 -0400
+        with ESMTP id S1376435AbjJINXH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32364C5
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:26:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD44C433C9;
-        Mon,  9 Oct 2023 13:26:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35F6694
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79C07C433C8;
+        Mon,  9 Oct 2023 13:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857982;
-        bh=yzUPHzKXbBNSQEuqmpo+P4AZTLNOcBXZ0Qvm6J+44VQ=;
+        s=korg; t=1696857785;
+        bh=MA+fMjA9dDTUjI7SoZJlDDopUqnOiS4neuCA/r4y/m4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0fVZPeG/zndMHGtHPISTpYPN4KTRcoN2Nq1818svBLJhN3a/ABkkLmvzFkgcsmCGB
-         JQ6iH1ZimNm85SKJHvakw428B5yAueOeFqrlRZfMuEVwwm6P+2IZcD+E2F2tCph1wc
-         4dS1qA58+q7T5ZlkGj7oWWIUk5LvYzV9LzDIoyfc=
+        b=RwsS+6pc+59E/OApMasC/zgJhT2vos9GVFmiAhQ4qbUha2G5tZJ8KHPkJXikDD6UB
+         p0aDLelhEGk1sGLf0smYLeViV5AAM0MJIJFo4xfet1y3wFpgom0mfwHHZBq8X8VqR+
+         qtR6uDiYpIqTAsoSX0wUWSknFH9H74AWS9vuLyhU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Poirier <bpoirier@nvidia.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Simon Horman <horms@kernel.org>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 54/75] ipv4: Set offload_failed flag in fibmatch results
+        patches@lists.linux.dev, luosili <rootlab@huawei.com>,
+        Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 155/162] ksmbd: fix race condition between session lookup and expire
 Date:   Mon,  9 Oct 2023 15:02:16 +0200
-Message-ID: <20231009130113.131156286@linuxfoundation.org>
+Message-ID: <20231009130127.193700356@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,61 +49,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Poirier <bpoirier@nvidia.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 0add5c597f3253a9c6108a0a81d57f44ab0d9d30 ]
+commit 53ff5cf89142b978b1a5ca8dc4d4425e6a09745f upstream.
 
-Due to a small omission, the offload_failed flag is missing from ipv4
-fibmatch results. Make sure it is set correctly.
+ Thread A                        +  Thread B
+ ksmbd_session_lookup            |  smb2_sess_setup
+   sess = xa_load                |
+                                 |
+                                 |    xa_erase(&conn->sessions, sess->id);
+                                 |
+                                 |    ksmbd_session_destroy(sess) --> kfree(sess)
+                                 |
+   // UAF!                       |
+   sess->last_active = jiffies   |
+                                 +
 
-The issue can be witnessed using the following commands:
-echo "1 1" > /sys/bus/netdevsim/new_device
-ip link add dummy1 up type dummy
-ip route add 192.0.2.0/24 dev dummy1
-echo 1 > /sys/kernel/debug/netdevsim/netdevsim1/fib/fail_route_offload
-ip route add 198.51.100.0/24 dev dummy1
-ip route
-	# 192.168.15.0/24 has rt_trap
-	# 198.51.100.0/24 has rt_offload_failed
-ip route get 192.168.15.1 fibmatch
-	# Result has rt_trap
-ip route get 198.51.100.1 fibmatch
-	# Result differs from the route shown by `ip route`, it is missing
-	# rt_offload_failed
-ip link del dev dummy1
-echo 1 > /sys/bus/netdevsim/del_device
+This patch add rwsem to fix race condition between ksmbd_session_lookup
+and ksmbd_expire_session.
 
-Fixes: 36c5100e859d ("IPv4: Add "offload failed" indication to routes")
-Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230926182730.231208-1-bpoirier@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: luosili <rootlab@huawei.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/connection.c        |    2 ++
+ fs/smb/server/connection.h        |    1 +
+ fs/smb/server/mgmt/user_session.c |   10 +++++++---
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 968cc4aa6e96c..ea5329cb0fce2 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -3430,6 +3430,8 @@ static int inet_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 				    fa->fa_type == fri.type) {
- 					fri.offload = READ_ONCE(fa->offload);
- 					fri.trap = READ_ONCE(fa->trap);
-+					fri.offload_failed =
-+						READ_ONCE(fa->offload_failed);
- 					break;
- 				}
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -84,6 +84,8 @@ struct ksmbd_conn *ksmbd_conn_alloc(void
+ 	spin_lock_init(&conn->llist_lock);
+ 	INIT_LIST_HEAD(&conn->lock_list);
+ 
++	init_rwsem(&conn->session_lock);
++
+ 	down_write(&conn_list_lock);
+ 	list_add(&conn->conns_list, &conn_list);
+ 	up_write(&conn_list_lock);
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -50,6 +50,7 @@ struct ksmbd_conn {
+ 	struct nls_table		*local_nls;
+ 	struct unicode_map		*um;
+ 	struct list_head		conns_list;
++	struct rw_semaphore		session_lock;
+ 	/* smb session 1 per user */
+ 	struct xarray			sessions;
+ 	unsigned long			last_active;
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -183,7 +183,7 @@ static void ksmbd_expire_session(struct
+ 	unsigned long id;
+ 	struct ksmbd_session *sess;
+ 
+-	down_write(&sessions_table_lock);
++	down_write(&conn->session_lock);
+ 	xa_for_each(&conn->sessions, id, sess) {
+ 		if (sess->state != SMB2_SESSION_VALID ||
+ 		    time_after(jiffies,
+@@ -194,7 +194,7 @@ static void ksmbd_expire_session(struct
+ 			continue;
+ 		}
+ 	}
+-	up_write(&sessions_table_lock);
++	up_write(&conn->session_lock);
+ }
+ 
+ int ksmbd_session_register(struct ksmbd_conn *conn,
+@@ -236,7 +236,9 @@ void ksmbd_sessions_deregister(struct ks
  			}
--- 
-2.40.1
-
+ 		}
+ 	}
++	up_write(&sessions_table_lock);
+ 
++	down_write(&conn->session_lock);
+ 	xa_for_each(&conn->sessions, id, sess) {
+ 		unsigned long chann_id;
+ 		struct channel *chann;
+@@ -253,7 +255,7 @@ void ksmbd_sessions_deregister(struct ks
+ 			ksmbd_session_destroy(sess);
+ 		}
+ 	}
+-	up_write(&sessions_table_lock);
++	up_write(&conn->session_lock);
+ }
+ 
+ struct ksmbd_session *ksmbd_session_lookup(struct ksmbd_conn *conn,
+@@ -261,9 +263,11 @@ struct ksmbd_session *ksmbd_session_look
+ {
+ 	struct ksmbd_session *sess;
+ 
++	down_read(&conn->session_lock);
+ 	sess = xa_load(&conn->sessions, id);
+ 	if (sess)
+ 		sess->last_active = jiffies;
++	up_read(&conn->session_lock);
+ 	return sess;
+ }
+ 
 
 
