@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06D377BDDF5
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C31627BDF95
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376786AbjJINO2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47798 "EHLO
+        id S1377083AbjJINbf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:31:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376862AbjJINO1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:27 -0400
+        with ESMTP id S1377077AbjJINbf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59CA0DB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 639C9C433C8;
-        Mon,  9 Oct 2023 13:14:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7968A3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C10C433C8;
+        Mon,  9 Oct 2023 13:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857263;
-        bh=yiAAjAgtloVmgU2BPLVB1IcOc44nj+md0qIsWNd7uxs=;
+        s=korg; t=1696858293;
+        bh=Ym8ySzhyt+ZoHrdZQNSbU4MfQHT4zCfodEpPPEVBPFM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C/wFrlsldwINtwEu4BaQ1IBJNRUElhzj77yRgMVK1L5i6gyvlOkwf0bAhFHmnl8NV
-         yCe+WDxkeZok75nAKlq+2XBliNVhFaCyx+pmAddoQOut/bZtcsereSHT9HIzBXt1gu
-         SZ3TINJXL4N/IrKdtVyIZjkRd8lBVEPty+zO2Hgk=
+        b=cp0XA98dZitdF8oIsjTV96cwzdpyg4L/7L4Vmy5t75edVc1OotI3ZU7dqRppRAixd
+         G5rWGB1ZtwkN6IdjUncUnhqwIlLVIH+I7QyiBn0uymKHuHyS+vgVvYabJEkeO4R0Vh
+         UKIEdbEkxXoYXUu3re3OklgM92hPCu/NduQOCm94=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Jon Maloy <jmaloy@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 125/163] tipc: fix a potential deadlock on &tx->lock
+Subject: [PATCH 5.4 049/131] xtensa: boot: dont add include-dirs
 Date:   Mon,  9 Oct 2023 15:01:29 +0200
-Message-ID: <20231009130127.497070931@linuxfoundation.org>
+Message-ID: <20231009130117.807528055@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 08e50cf071847323414df0835109b6f3560d44f5 ]
+[ Upstream commit 54d3d7d363823782c3444ddc41bb8cf1edc80514 ]
 
-It seems that tipc_crypto_key_revoke() could be be invoked by
-wokequeue tipc_crypto_work_rx() under process context and
-timer/rx callback under softirq context, thus the lock acquisition
-on &tx->lock seems better use spin_lock_bh() to prevent possible
-deadlock.
+Drop the -I<include-dir> options to prevent build warnings since there
+is not boot/include directory:
 
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
+cc1: warning: arch/xtensa/boot/include: No such file or directory [-Wmissing-include-dirs]
 
-tipc_crypto_work_rx() <workqueue>
---> tipc_crypto_key_distr()
---> tipc_bcast_xmit()
---> tipc_bcbase_xmit()
---> tipc_bearer_bc_xmit()
---> tipc_crypto_xmit()
---> tipc_ehdr_build()
---> tipc_crypto_key_revoke()
---> spin_lock(&tx->lock)
-<timer interrupt>
-   --> tipc_disc_timeout()
-   --> tipc_bearer_xmit_skb()
-   --> tipc_crypto_xmit()
-   --> tipc_ehdr_build()
-   --> tipc_crypto_key_revoke()
-   --> spin_lock(&tx->lock) <deadlock here>
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Acked-by: Jon Maloy <jmaloy@redhat.com>
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Link: https://lore.kernel.org/r/20230927181414.59928-1-dg573847474@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 437374e9a950 ("restore arch/{ppc/xtensa}/boot cflags")
+Fixes: 4bedea945451 ("xtensa: Architecture support for Tensilica Xtensa Part 2")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Chris Zankel <chris@zankel.net>
+Cc: Max Filippov <jcmvbkbc@gmail.com>
+Message-Id: <20230920052139.10570-15-rdunlap@infradead.org>
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/crypto.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/xtensa/boot/Makefile | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 302fd749c4249..43c3f1c971b8f 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -1441,14 +1441,14 @@ static int tipc_crypto_key_revoke(struct net *net, u8 tx_key)
- 	struct tipc_crypto *tx = tipc_net(net)->crypto_tx;
- 	struct tipc_key key;
+diff --git a/arch/xtensa/boot/Makefile b/arch/xtensa/boot/Makefile
+index 294846117fc2c..41ad60bb0fbc7 100644
+--- a/arch/xtensa/boot/Makefile
++++ b/arch/xtensa/boot/Makefile
+@@ -9,8 +9,7 @@
  
--	spin_lock(&tx->lock);
-+	spin_lock_bh(&tx->lock);
- 	key = tx->key;
- 	WARN_ON(!key.active || tx_key != key.active);
  
- 	/* Free the active key */
- 	tipc_crypto_key_set_state(tx, key.passive, 0, key.pending);
- 	tipc_crypto_key_detach(tx->aead[key.active], &tx->lock);
--	spin_unlock(&tx->lock);
-+	spin_unlock_bh(&tx->lock);
+ # KBUILD_CFLAGS used when building rest of boot (takes effect recursively)
+-KBUILD_CFLAGS	+= -fno-builtin -Iarch/$(ARCH)/boot/include
+-HOSTFLAGS	+= -Iarch/$(ARCH)/boot/include
++KBUILD_CFLAGS	+= -fno-builtin
  
- 	pr_warn("%s: key is revoked\n", tx->name);
- 	return -EKEYREVOKED;
+ BIG_ENDIAN	:= $(shell echo __XTENSA_EB__ | $(CC) -E - | grep -v "\#")
+ 
 -- 
 2.40.1
 
