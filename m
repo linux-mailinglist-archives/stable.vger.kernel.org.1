@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 816517BDFA6
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE5FA7BDECE
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:23:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377105AbjJINcX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:32:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38130 "EHLO
+        id S1376435AbjJINXV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:23:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377102AbjJINcW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:32:22 -0400
+        with ESMTP id S1376439AbjJINXU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:23:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0678599
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:32:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470D5C433C9;
-        Mon,  9 Oct 2023 13:32:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0EB29D
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:23:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A82C433C7;
+        Mon,  9 Oct 2023 13:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858340;
-        bh=xTEMdIENcsn3t7MG2NvoLUMdLZqD+dsdAC5GyLtmL1k=;
+        s=korg; t=1696857798;
+        bh=KwZMJzdIOz+sopvzsBCRA62zDuyxYxXbUvt8Z/4Mkkk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MNB9+iF6Vd1aPXLtqS31BlgUOSjheDhzM4Sm59mdcnMAxe/zdtLh0s0j8OA6HLEy6
-         R7AHo8pMtblC6NNz/iT7V01ipqgqwasMz98wyKI9/vs+MLK+5zn957PTSC5UXTHc/z
-         I0x/zrbfol9+GeQFoQxx5iKLogOE9kLdUG2xQ4JQ=
+        b=rhhbago1rYQG1DYc0ZwbFzNv7x8eY9IOWkenv3DpgIaZa+blDThMHhVuVJXzM8nn5
+         ngfHSVioDOJCyl8O35qABUduVX/Q4O0guJAfwj9TpvIwsl+wplxEyUW2YI6zJvLT3R
+         hXdRNO3J5Hva7YG/20RrYtf4H5S+YV+D4V2ZWlII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pan Bian <bianpan2016@163.com>,
-        Ferry Meng <mengferry@linux.alibaba.com>,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 074/131] nilfs2: fix potential use after free in nilfs_gccache_submit_read_data()
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        syzbot <syzkaller@googlegroups.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 133/162] netlink: annotate data-races around sk->sk_err
 Date:   Mon,  9 Oct 2023 15:01:54 +0200
-Message-ID: <20231009130118.582853038@linuxfoundation.org>
+Message-ID: <20231009130126.585707577@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,65 +51,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pan Bian <bianpan2016@163.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 7ee29facd8a9c5a26079148e36bcf07141b3a6bc upstream.
+[ Upstream commit d0f95894fda7d4f895b29c1097f92d7fee278cb2 ]
 
-In nilfs_gccache_submit_read_data(), brelse(bh) is called to drop the
-reference count of bh when the call to nilfs_dat_translate() fails.  If
-the reference count hits 0 and its owner page gets unlocked, bh may be
-freed.  However, bh->b_page is dereferenced to put the page after that,
-which may result in a use-after-free bug.  This patch moves the release
-operation after unlocking and putting the page.
+syzbot caught another data-race in netlink when
+setting sk->sk_err.
 
-NOTE: The function in question is only called in GC, and in combination
-with current userland tools, address translation using DAT does not occur
-in that function, so the code path that causes this issue will not be
-executed.  However, it is possible to run that code path by intentionally
-modifying the userland GC library or by calling the GC ioctl directly.
+Annotate all of them for good measure.
 
-[konishi.ryusuke@gmail.com: NOTE added to the commit log]
-Link: https://lkml.kernel.org/r/1543201709-53191-1-git-send-email-bianpan2016@163.com
-Link: https://lkml.kernel.org/r/20230921141731.10073-1-konishi.ryusuke@gmail.com
-Fixes: a3d93f709e89 ("nilfs2: block cache for garbage collection")
-Signed-off-by: Pan Bian <bianpan2016@163.com>
-Reported-by: Ferry Meng <mengferry@linux.alibaba.com>
-Closes: https://lkml.kernel.org/r/20230818092022.111054-1-mengferry@linux.alibaba.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KCSAN: data-race in netlink_recvmsg / netlink_recvmsg
+
+write to 0xffff8881613bb220 of 4 bytes by task 28147 on cpu 0:
+netlink_recvmsg+0x448/0x780 net/netlink/af_netlink.c:1994
+sock_recvmsg_nosec net/socket.c:1027 [inline]
+sock_recvmsg net/socket.c:1049 [inline]
+__sys_recvfrom+0x1f4/0x2e0 net/socket.c:2229
+__do_sys_recvfrom net/socket.c:2247 [inline]
+__se_sys_recvfrom net/socket.c:2243 [inline]
+__x64_sys_recvfrom+0x78/0x90 net/socket.c:2243
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+write to 0xffff8881613bb220 of 4 bytes by task 28146 on cpu 1:
+netlink_recvmsg+0x448/0x780 net/netlink/af_netlink.c:1994
+sock_recvmsg_nosec net/socket.c:1027 [inline]
+sock_recvmsg net/socket.c:1049 [inline]
+__sys_recvfrom+0x1f4/0x2e0 net/socket.c:2229
+__do_sys_recvfrom net/socket.c:2247 [inline]
+__se_sys_recvfrom net/socket.c:2243 [inline]
+__x64_sys_recvfrom+0x78/0x90 net/socket.c:2243
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x00000000 -> 0x00000016
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 28146 Comm: syz-executor.0 Not tainted 6.6.0-rc3-syzkaller-00055-g9ed22ae6be81 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231003183455.3410550-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/gcinode.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netlink/af_netlink.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/nilfs2/gcinode.c
-+++ b/fs/nilfs2/gcinode.c
-@@ -73,10 +73,8 @@ int nilfs_gccache_submit_read_data(struc
- 		struct the_nilfs *nilfs = inode->i_sb->s_fs_info;
- 
- 		err = nilfs_dat_translate(nilfs->ns_dat, vbn, &pbn);
--		if (unlikely(err)) { /* -EIO, -ENOMEM, -ENOENT */
--			brelse(bh);
-+		if (unlikely(err)) /* -EIO, -ENOMEM, -ENOENT */
- 			goto failed;
--		}
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 845ac56a3ac2e..a572a30dfd98d 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -352,7 +352,7 @@ static void netlink_overrun(struct sock *sk)
+ 	if (!nlk_test_bit(RECV_NO_ENOBUFS, sk)) {
+ 		if (!test_and_set_bit(NETLINK_S_CONGESTED,
+ 				      &nlk_sk(sk)->state)) {
+-			sk->sk_err = ENOBUFS;
++			WRITE_ONCE(sk->sk_err, ENOBUFS);
+ 			sk_error_report(sk);
+ 		}
+ 	}
+@@ -1566,7 +1566,7 @@ static int do_one_set_err(struct sock *sk, struct netlink_set_err_data *p)
+ 		goto out;
  	}
  
- 	lock_buffer(bh);
-@@ -102,6 +100,8 @@ int nilfs_gccache_submit_read_data(struc
-  failed:
- 	unlock_page(bh->b_page);
- 	put_page(bh->b_page);
-+	if (unlikely(err))
-+		brelse(bh);
- 	return err;
+-	sk->sk_err = p->code;
++	WRITE_ONCE(sk->sk_err, p->code);
+ 	sk_error_report(sk);
+ out:
+ 	return ret;
+@@ -1955,7 +1955,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
+ 		ret = netlink_dump(sk);
+ 		if (ret) {
+-			sk->sk_err = -ret;
++			WRITE_ONCE(sk->sk_err, -ret);
+ 			sk_error_report(sk);
+ 		}
+ 	}
+@@ -2474,7 +2474,7 @@ void netlink_ack(struct sk_buff *in_skb, struct nlmsghdr *nlh, int err,
+ err_bad_put:
+ 	nlmsg_free(skb);
+ err_skb:
+-	NETLINK_CB(in_skb).sk->sk_err = ENOBUFS;
++	WRITE_ONCE(NETLINK_CB(in_skb).sk->sk_err, ENOBUFS);
+ 	sk_error_report(NETLINK_CB(in_skb).sk);
  }
- 
+ EXPORT_SYMBOL(netlink_ack);
+-- 
+2.40.1
+
 
 
