@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5D0E7BDF6F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E9897BDDDB
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377004AbjJINaE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:30:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32982 "EHLO
+        id S1376710AbjJINNt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:13:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377015AbjJINaD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:30:03 -0400
+        with ESMTP id S1377006AbjJINNg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C3DB6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:30:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B526C433C7;
-        Mon,  9 Oct 2023 13:30:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50FB019BA
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:12:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578F1C433C8;
+        Mon,  9 Oct 2023 13:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858201;
-        bh=oTfduTifHlBwFzZAkw2B/ZYIms1NhV0gqgyxRNAOzT0=;
+        s=korg; t=1696857178;
+        bh=rD37c8OTgOyEicguaV8zP5NpyN9wTxxpemuw3GuQ57E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vx0s6zBULzrxxvHG0RF+yQi4expui7PXtvQXtkSt7ruhItyxAK9nqZRwR0qyDNO72
-         /gwNHRkSmdDA0rFd7CcEoL5PryLgZSrbKsy9QPcAsjgQpYisk+MC26bxuhm+fe/xaG
-         6Ii4rHqQgT1UZa6UMIcZ7sv1RkJBny6A+2wyQ1oA=
+        b=F5RZ0T1T0SSSwRiZAyigFFbNnhitlfPvroWMnfUw7ysygWJTAye8sYuiGet7DyQS7
+         0YYKRC+MMTRhzJV0Q4OIkUO2HQzLPwmZBFAE5gMxc4MIa6iVf2ghqvbAGJpMT3y/xc
+         QL8OVD6u08fdibV1IfGVXLsYwgpxolRZpEBIZrCo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Grzegorz Szczurek <grzegorzx.szczurek@intel.com>,
-        Karen Sornek <karen.sornek@intel.com>,
-        Tony Brelinski <tony.brelinski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, John Fastabend <john.fastabend@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jakub Sitnicki <jakub@cloudflare.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 021/131] i40e: Fix warning message and call stack during rmmod i40e driver
+Subject: [PATCH 6.5 097/163] bpf: tcp_read_skb needs to pop skb regardless of seq
 Date:   Mon,  9 Oct 2023 15:01:01 +0200
-Message-ID: <20231009130116.961176550@linuxfoundation.org>
+Message-ID: <20231009130126.708524790@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,166 +50,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karen Sornek <karen.sornek@intel.com>
+From: John Fastabend <john.fastabend@gmail.com>
 
-[ Upstream commit 3a3b311e3881172fc8e019b6508f04bc40c92d9d ]
+[ Upstream commit 9b7177b1df64b8d7f85700027c324aadd6aded00 ]
 
-Restore part of reset functionality used when reset is called
-from the VF to reset itself. Without this fix warning message
-is displayed when VF is being removed via sysfs.
+Before fix e5c6de5fa0258 tcp_read_skb() would increment the tp->copied-seq
+value. This (as described in the commit) would cause an error for apps
+because once that is incremented the application might believe there is no
+data to be read. Then some apps would stall or abort believing no data is
+available.
 
-Fix the crash of the VF during reset by ensuring
-that the PF receives the reset message successfully.
-Refactor code to use one function instead of two.
+However, the fix is incomplete because it introduces another issue in
+the skb dequeue. The loop does tcp_recv_skb() in a while loop to consume
+as many skbs as possible. The problem is the call is ...
 
-Fixes: 5c3c48ac6bf5 ("i40e: implement virtual device interface")
-Signed-off-by: Grzegorz Szczurek <grzegorzx.szczurek@intel.com>
-Signed-off-by: Karen Sornek <karen.sornek@intel.com>
-Tested-by: Tony Brelinski <tony.brelinski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: d0d362ffa33d ("i40e: Fix VF VLAN offloading when port VLAN is configured")
+  tcp_recv_skb(sk, seq, &offset)
+
+... where 'seq' is:
+
+  u32 seq = tp->copied_seq;
+
+Now we can hit a case where we've yet incremented copied_seq from BPF side,
+but then tcp_recv_skb() fails this test ...
+
+ if (offset < skb->len || (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN))
+
+... so that instead of returning the skb we call tcp_eat_recv_skb() which
+frees the skb. This is because the routine believes the SKB has been collapsed
+per comment:
+
+ /* This looks weird, but this can happen if TCP collapsing
+  * splitted a fat GRO packet, while we released socket lock
+  * in skb_splice_bits()
+  */
+
+This can't happen here we've unlinked the full SKB and orphaned it. Anyways
+it would confuse any BPF programs if the data were suddenly moved underneath
+it.
+
+To fix this situation do simpler operation and just skb_peek() the data
+of the queue followed by the unlink. It shouldn't need to check this
+condition and tcp_read_skb() reads entire skbs so there is no need to
+handle the 'offset!=0' case as we would see in tcp_read_sock().
+
+Fixes: e5c6de5fa0258 ("bpf, sockmap: Incorrectly handling copied_seq")
+Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Link: https://lore.kernel.org/bpf/20230926035300.135096-2-john.fastabend@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 53 ++++++++-----------
- 1 file changed, 21 insertions(+), 32 deletions(-)
+ net/ipv4/tcp.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 590469c4a1b00..7a52be82d05a2 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -130,17 +130,18 @@ void i40e_vc_notify_vf_reset(struct i40e_vf *vf)
- /***********************misc routines*****************************/
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 75f24b931a185..9cfc07d1e4252 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1618,16 +1618,13 @@ EXPORT_SYMBOL(tcp_read_sock);
  
- /**
-- * i40e_vc_disable_vf
-+ * i40e_vc_reset_vf
-  * @vf: pointer to the VF info
-- *
-- * Disable the VF through a SW reset.
-+ * @notify_vf: notify vf about reset or not
-+ * Reset VF handler.
-  **/
--static inline void i40e_vc_disable_vf(struct i40e_vf *vf)
-+static void i40e_vc_reset_vf(struct i40e_vf *vf, bool notify_vf)
+ int tcp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
  {
- 	struct i40e_pf *pf = vf->pf;
- 	int i;
+-	struct tcp_sock *tp = tcp_sk(sk);
+-	u32 seq = tp->copied_seq;
+ 	struct sk_buff *skb;
+ 	int copied = 0;
+-	u32 offset;
  
--	i40e_vc_notify_vf_reset(vf);
-+	if (notify_vf)
-+		i40e_vc_notify_vf_reset(vf);
+ 	if (sk->sk_state == TCP_LISTEN)
+ 		return -ENOTCONN;
  
- 	/* We want to ensure that an actual reset occurs initiated after this
- 	 * function was called. However, we do not want to wait forever, so
-@@ -158,9 +159,14 @@ static inline void i40e_vc_disable_vf(struct i40e_vf *vf)
- 		usleep_range(10000, 20000);
+-	while ((skb = tcp_recv_skb(sk, seq, &offset)) != NULL) {
++	while ((skb = skb_peek(&sk->sk_receive_queue)) != NULL) {
+ 		u8 tcp_flags;
+ 		int used;
+ 
+@@ -1640,13 +1637,10 @@ int tcp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+ 				copied = used;
+ 			break;
+ 		}
+-		seq += used;
+ 		copied += used;
+ 
+-		if (tcp_flags & TCPHDR_FIN) {
+-			++seq;
++		if (tcp_flags & TCPHDR_FIN)
+ 			break;
+-		}
  	}
- 
--	dev_warn(&vf->pf->pdev->dev,
--		 "Failed to initiate reset for VF %d after 200 milliseconds\n",
--		 vf->vf_id);
-+	if (notify_vf)
-+		dev_warn(&vf->pf->pdev->dev,
-+			 "Failed to initiate reset for VF %d after 200 milliseconds\n",
-+			 vf->vf_id);
-+	else
-+		dev_dbg(&vf->pf->pdev->dev,
-+			"Failed to initiate reset for VF %d after 200 milliseconds\n",
-+			vf->vf_id);
+ 	return copied;
  }
- 
- /**
-@@ -2097,20 +2103,6 @@ static int i40e_vc_get_vf_resources_msg(struct i40e_vf *vf, u8 *msg)
- 	return ret;
- }
- 
--/**
-- * i40e_vc_reset_vf_msg
-- * @vf: pointer to the VF info
-- *
-- * called from the VF to reset itself,
-- * unlike other virtchnl messages, PF driver
-- * doesn't send the response back to the VF
-- **/
--static void i40e_vc_reset_vf_msg(struct i40e_vf *vf)
--{
--	if (test_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states))
--		i40e_reset_vf(vf, false);
--}
--
- /**
-  * i40e_vc_config_promiscuous_mode_msg
-  * @vf: pointer to the VF info
-@@ -2664,8 +2656,7 @@ static int i40e_vc_request_queues_msg(struct i40e_vf *vf, u8 *msg)
- 	} else {
- 		/* successful request */
- 		vf->num_req_queues = req_pairs;
--		i40e_vc_notify_vf_reset(vf);
--		i40e_reset_vf(vf, false);
-+		i40e_vc_reset_vf(vf, true);
- 		return 0;
- 	}
- 
-@@ -3857,8 +3848,7 @@ static int i40e_vc_add_qch_msg(struct i40e_vf *vf, u8 *msg)
- 	vf->adq_enabled = true;
- 
- 	/* reset the VF in order to allocate resources */
--	i40e_vc_notify_vf_reset(vf);
--	i40e_reset_vf(vf, false);
-+	i40e_vc_reset_vf(vf, true);
- 
- 	return I40E_SUCCESS;
- 
-@@ -3898,8 +3888,7 @@ static int i40e_vc_del_qch_msg(struct i40e_vf *vf, u8 *msg)
- 	}
- 
- 	/* reset the VF in order to allocate resources */
--	i40e_vc_notify_vf_reset(vf);
--	i40e_reset_vf(vf, false);
-+	i40e_vc_reset_vf(vf, true);
- 
- 	return I40E_SUCCESS;
- 
-@@ -3961,7 +3950,7 @@ int i40e_vc_process_vf_msg(struct i40e_pf *pf, s16 vf_id, u32 v_opcode,
- 		i40e_vc_notify_vf_link_state(vf);
- 		break;
- 	case VIRTCHNL_OP_RESET_VF:
--		i40e_vc_reset_vf_msg(vf);
-+		i40e_vc_reset_vf(vf, false);
- 		ret = 0;
- 		break;
- 	case VIRTCHNL_OP_CONFIG_PROMISCUOUS_MODE:
-@@ -4215,7 +4204,7 @@ int i40e_ndo_set_vf_mac(struct net_device *netdev, int vf_id, u8 *mac)
- 	/* Force the VF interface down so it has to bring up with new MAC
- 	 * address
- 	 */
--	i40e_vc_disable_vf(vf);
-+	i40e_vc_reset_vf(vf, true);
- 	dev_info(&pf->pdev->dev, "Bring down and up the VF interface to make this change effective.\n");
- 
- error_param:
-@@ -4279,7 +4268,7 @@ int i40e_ndo_set_vf_port_vlan(struct net_device *netdev, int vf_id,
- 		/* duplicate request, so just return success */
- 		goto error_pvid;
- 
--	i40e_vc_disable_vf(vf);
-+	i40e_vc_reset_vf(vf, true);
- 	/* During reset the VF got a new VSI, so refresh a pointer. */
- 	vsi = pf->vsi[vf->lan_vsi_idx];
- 	/* Locked once because multiple functions below iterate list */
-@@ -4662,7 +4651,7 @@ int i40e_ndo_set_vf_trust(struct net_device *netdev, int vf_id, bool setting)
- 		goto out;
- 
- 	vf->trusted = setting;
--	i40e_vc_disable_vf(vf);
-+	i40e_vc_reset_vf(vf, true);
- 	dev_info(&pf->pdev->dev, "VF %u is now %strusted\n",
- 		 vf_id, setting ? "" : "un");
- 
 -- 
 2.40.1
 
