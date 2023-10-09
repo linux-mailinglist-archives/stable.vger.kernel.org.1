@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D65947BDE40
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29D737BDD8C
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:10:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376966AbjJINRd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:17:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36414 "EHLO
+        id S1376885AbjJINKc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:10:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376994AbjJINRd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:33 -0400
+        with ESMTP id S1376832AbjJINKQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:10:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48DD891
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:17:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EC2C433C9;
-        Mon,  9 Oct 2023 13:17:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED28CB6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:10:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36983C433D9;
+        Mon,  9 Oct 2023 13:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857449;
-        bh=rystTE9DupvfIPn/prsMxhEkGOs57OMQiWTe8fhlBqg=;
+        s=korg; t=1696857013;
+        bh=U9wp2ydfRlmd5RmcTVGSjXOFug/S45Qn+x6dxwpQcIo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tgiz6zPRP2fg71lBgEs/jMc3GWH5ySnZ22YpMcPryJC/upTmz0uM2aOx7YHIRU1Ks
-         JPDTbtazjp3cwhrowD/bkoP99jYe+qUDVUgQWbBQuv0RsDhEyrUhktYTFV+TOgFX1M
-         c+bfLUWJAiyHtZBSdswDa9BWDjP/j/3glY72DKyQ=
+        b=oYwh+jl9hMkz3e/66XzqBay/c45mqDlw1KM0h52nm36dNYQkY4r4vLimHUb1MGxhB
+         khncGdNMTO4XsOd9Sjf8uD5xo2/qdT7HNwkHptV4pn7nUXdxqzoZ5JxxWfLEGqEcNh
+         gOuXlsucTVrmjodE8kvc8hpeYtlRyClWro6H1aXw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/162] NFSv4: Fix a state manager thread deadlock regression
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.5 040/163] io_uring: dont allow IORING_SETUP_NO_MMAP rings on highmem pages
 Date:   Mon,  9 Oct 2023 15:00:04 +0200
-Message-ID: <20231009130123.588112921@linuxfoundation.org>
+Message-ID: <20231009130125.112943803@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,121 +47,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 956fd46f97d238032cb5fa4771cdaccc6e760f9a ]
+commit 223ef474316466e9f61f6e0064f3a6fe4923a2c5 upstream.
 
-Commit 4dc73c679114 reintroduces the deadlock that was fixed by commit
-aeabb3c96186 ("NFSv4: Fix a NFSv4 state manager deadlock") because it
-prevents the setup of new threads to handle reboot recovery, while the
-older recovery thread is stuck returning delegations.
+On at least arm32, but presumably any arch with highmem, if the
+application passes in memory that resides in highmem for the rings,
+then we should fail that ring creation. We fail it with -EINVAL, which
+is what kernels that don't support IORING_SETUP_NO_MMAP will do as well.
 
-Fixes: 4dc73c679114 ("NFSv4: keep state manager thread active if swap is enabled")
 Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 03d89a2de25b ("io_uring: support for user allocated memory for rings/sqes")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c  |  4 +++-
- fs/nfs/nfs4state.c | 36 +++++++++++++++++++++++++-----------
- 2 files changed, 28 insertions(+), 12 deletions(-)
+ io_uring/io_uring.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index be570c65ae154..b927a7d1b46d4 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -10629,7 +10629,9 @@ static void nfs4_disable_swap(struct inode *inode)
- 	 */
- 	struct nfs_client *clp = NFS_SERVER(inode)->nfs_client;
- 
--	nfs4_schedule_state_manager(clp);
-+	set_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state);
-+	clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
-+	wake_up_var(&clp->cl_state);
- }
- 
- static const struct inode_operations nfs4_dir_inode_operations = {
-diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-index 1b707573fbf8d..ed789e0cb9431 100644
---- a/fs/nfs/nfs4state.c
-+++ b/fs/nfs/nfs4state.c
-@@ -1209,13 +1209,23 @@ void nfs4_schedule_state_manager(struct nfs_client *clp)
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2678,7 +2678,7 @@ static void *__io_uaddr_map(struct page
  {
- 	struct task_struct *task;
- 	char buf[INET6_ADDRSTRLEN + sizeof("-manager") + 1];
-+	struct rpc_clnt *clnt = clp->cl_rpcclient;
-+	bool swapon = false;
+ 	struct page **page_array;
+ 	unsigned int nr_pages;
+-	int ret;
++	int ret, i;
  
- 	set_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state);
--	if (test_and_set_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state) != 0) {
--		wake_up_var(&clp->cl_state);
--		return;
+ 	*npages = 0;
+ 
+@@ -2708,6 +2708,20 @@ err:
+ 	 */
+ 	if (page_array[0] != page_array[ret - 1])
+ 		goto err;
 +
-+	if (atomic_read(&clnt->cl_swapper)) {
-+		swapon = !test_and_set_bit(NFS4CLNT_MANAGER_AVAILABLE,
-+					   &clp->cl_state);
-+		if (!swapon) {
-+			wake_up_var(&clp->cl_state);
-+			return;
++	/*
++	 * Can't support mapping user allocated ring memory on 32-bit archs
++	 * where it could potentially reside in highmem. Just fail those with
++	 * -EINVAL, just like we did on kernels that didn't support this
++	 * feature.
++	 */
++	for (i = 0; i < nr_pages; i++) {
++		if (PageHighMem(page_array[i])) {
++			ret = -EINVAL;
++			goto err;
 +		}
- 	}
--	set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state);
++	}
 +
-+	if (test_and_set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state) != 0)
-+		return;
-+
- 	__module_get(THIS_MODULE);
- 	refcount_inc(&clp->cl_count);
- 
-@@ -1232,8 +1242,9 @@ void nfs4_schedule_state_manager(struct nfs_client *clp)
- 			__func__, PTR_ERR(task));
- 		if (!nfs_client_init_is_complete(clp))
- 			nfs_mark_client_ready(clp, PTR_ERR(task));
-+		if (swapon)
-+			clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
- 		nfs4_clear_state_manager_bit(clp);
--		clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
- 		nfs_put_client(clp);
- 		module_put(THIS_MODULE);
- 	}
-@@ -2737,22 +2748,25 @@ static int nfs4_run_state_manager(void *ptr)
- 
- 	allow_signal(SIGKILL);
- again:
--	set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state);
- 	nfs4_state_manager(clp);
--	if (atomic_read(&cl->cl_swapper)) {
-+
-+	if (test_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state) &&
-+	    !test_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state)) {
- 		wait_var_event_interruptible(&clp->cl_state,
- 					     test_bit(NFS4CLNT_RUN_MANAGER,
- 						      &clp->cl_state));
--		if (atomic_read(&cl->cl_swapper) &&
--		    test_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state))
-+		if (!atomic_read(&cl->cl_swapper))
-+			clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
-+		if (refcount_read(&clp->cl_count) > 1 && !signalled() &&
-+		    !test_and_set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state))
- 			goto again;
- 		/* Either no longer a swapper, or were signalled */
-+		clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
- 	}
--	clear_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state);
- 
- 	if (refcount_read(&clp->cl_count) > 1 && !signalled() &&
- 	    test_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state) &&
--	    !test_and_set_bit(NFS4CLNT_MANAGER_AVAILABLE, &clp->cl_state))
-+	    !test_and_set_bit(NFS4CLNT_MANAGER_RUNNING, &clp->cl_state))
- 		goto again;
- 
- 	nfs_put_client(clp);
--- 
-2.40.1
-
+ 	*pages = page_array;
+ 	*npages = nr_pages;
+ 	return page_to_virt(page_array[0]);
 
 
