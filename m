@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB4647BE07E
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFD4D7BDF3E
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:28:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377338AbjJINkp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:40:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43562 "EHLO
+        id S1376846AbjJIN2D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:28:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377312AbjJINkn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:40:43 -0400
+        with ESMTP id S1376839AbjJIN2C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:28:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 621749D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:40:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A3AC433C8;
-        Mon,  9 Oct 2023 13:40:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D379C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:28:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84909C433C9;
+        Mon,  9 Oct 2023 13:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858842;
-        bh=BrFQmTkptpam5NSMcrzTRbYDWTo4lzjbEftnjz9HvCQ=;
+        s=korg; t=1696858080;
+        bh=dgPrBnVZrcmULDQhhjZD7/KymPLHOpdKLfZfxcoIk1k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g+DnhvPgKKeicVSaOZfJQlfNY+gLeOR/9xR4kbkQmIjkSWZZf3V6LYewJ0vsTEbBB
-         2LlMO3Lt4RZ5BfZx1uhc7Tw4Rk8tS8Pf5XAL0tCfNYBhv1URMFKTgarx6HEypogMkG
-         H+cTMHCaeXMZHcNnyWsHt9eeIENR2D97MvG7xVUM=
+        b=GW4mAQuxOYop87kNUCGvEVn0ecDwJncV0O6Vu1aQskpmYxWDbpKmvs1jfTkG3E+dw
+         sxCkBhN6g0MCUGzhRUtFYYPLzouHSK4VLsuDJZOclCInq+rDSEYQ/kFqoyqH1zIUvk
+         FjxQlns47ZMfmfuHkeZs5G536a3AEwZI6x2TMIOU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Julien Panis <jpanis@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/226] bus: ti-sysc: Use fsleep() instead of usleep_range() in sysc_reset()
+        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 010/131] ext4: replace the traditional ternary conditional operator with with max()/min()
 Date:   Mon,  9 Oct 2023 15:00:50 +0200
-Message-ID: <20231009130129.099607892@linuxfoundation.org>
+Message-ID: <20231009130116.641654081@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,51 +49,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Panis <jpanis@baylibre.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit d929b2b7464f95ec01e47f560b1e687482ba8929 ]
+[ Upstream commit de8bf0e5ee7482585450357c6d4eddec8efc5cb7 ]
 
-The am335x-evm started producing boot errors because of subtle timing
-changes:
+Replace the traditional ternary conditional operator with with max()/min()
 
-Unhandled fault: external abort on non-linefetch (0x1008) at 0xf03c1010
-...
-sysc_reset from sysc_probe+0xf60/0x1514
-sysc_probe from platform_probe+0x5c/0xbc
-...
-
-The fix consists in using the appropriate sleep function in sysc reset.
-For flexible sleeping, fsleep is recommended. Here, sysc delay parameter
-can take any value in [0 - 255] us range. As a result, fsleep() should
-be used, calling udelay() for a sysc delay lower than 10 us.
-
-Signed-off-by: Julien Panis <jpanis@baylibre.com>
-Fixes: e709ed70d122 ("bus: ti-sysc: Fix missing reset delay handling")
-Message-ID: <20230821-fix-ti-sysc-reset-v1-1-5a0a5d8fae55@baylibre.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/20230801143204.2284343-7-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 5e8c078efd22a..24d589b43dfe7 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2085,8 +2085,7 @@ static int sysc_reset(struct sysc *ddata)
- 	}
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 7cd2f2c07858f..412d2f6a0b91c 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5202,8 +5202,7 @@ static int ext4_try_to_trim_range(struct super_block *sb,
+ 	void *bitmap;
  
- 	if (ddata->cfg.srst_udelay)
--		usleep_range(ddata->cfg.srst_udelay,
--			     ddata->cfg.srst_udelay * 2);
-+		fsleep(ddata->cfg.srst_udelay);
+ 	bitmap = e4b->bd_bitmap;
+-	start = (e4b->bd_info->bb_first_free > start) ?
+-		e4b->bd_info->bb_first_free : start;
++	start = max(e4b->bd_info->bb_first_free, start);
+ 	count = 0;
+ 	free_count = 0;
  
- 	if (ddata->post_reset_quirk)
- 		ddata->post_reset_quirk(ddata);
+@@ -5423,8 +5422,7 @@ ext4_mballoc_query_range(
+ 
+ 	ext4_lock_group(sb, group);
+ 
+-	start = (e4b.bd_info->bb_first_free > start) ?
+-		e4b.bd_info->bb_first_free : start;
++	start = max(e4b.bd_info->bb_first_free, start);
+ 	if (end >= EXT4_CLUSTERS_PER_GROUP(sb))
+ 		end = EXT4_CLUSTERS_PER_GROUP(sb) - 1;
+ 
 -- 
 2.40.1
 
