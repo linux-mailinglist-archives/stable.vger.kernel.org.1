@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4532C7BE0E9
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E001F7BE0EC
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:45:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377533AbjJINpD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:45:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38308 "EHLO
+        id S1346576AbjJINpO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:45:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377491AbjJINoz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:44:55 -0400
+        with ESMTP id S1377518AbjJINpB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:45:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15375F7
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEFCC433CB;
-        Mon,  9 Oct 2023 13:44:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63867E9
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:44:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68DBC433C7;
+        Mon,  9 Oct 2023 13:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859092;
-        bh=1Nbnkc1UY1BA04lenOCUskgTgtn/xqNXzV6Ui1E1fXc=;
+        s=korg; t=1696859099;
+        bh=W+/W1bCvXY9lEGIno6eU5xiQQhk/8itLepnECbD62Wc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ub4wE1k3f24enMEM3MAbkrLMaP6bLVtX2+KWzKtCggquKDUfmv36R6LjB3ysOgIYn
-         kyJO1UxD4lxhFCbDFfeuGlY3Y0yjN+RD1kneVHu6savnD5Qo29NGoHMGQA9xlNEahn
-         zdln0PyhJq9JHVZhuF+l2xjXIeB0jiwAttMSkpRY=
+        b=rSsC9N8Id/LBD3HYMKE4P+64AdOYKh85XmBCvCHFOG95grvOA0X6lYsJ5HAb9RY2n
+         +NckhRtNBK4Ct81wlxmMMRgxTsZkqSGJgaglMrUKgnS+Y9gSP5yoME7dZRJdJTgQQa
+         2/OoXE2T9RVmiwRBrjPPrS3t2YP8Myns99odeW4w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mauricio Faria de Oliveira <mfo@canonical.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 197/226] modpost: add missing else to the "of" check
-Date:   Mon,  9 Oct 2023 15:02:38 +0200
-Message-ID: <20231009130131.739453038@linuxfoundation.org>
+Subject: [PATCH 5.10 198/226] net: fix possible store tearing in neigh_periodic_work()
+Date:   Mon,  9 Oct 2023 15:02:39 +0200
+Message-ID: <20231009130131.762405444@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
 References: <20231009130126.697995596@linuxfoundation.org>
@@ -54,52 +55,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Mauricio Faria de Oliveira <mfo@canonical.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cbc3d00cf88fda95dbcafee3b38655b7a8f2650a ]
+[ Upstream commit 25563b581ba3a1f263a00e8c9a97f5e7363be6fd ]
 
-Without this 'else' statement, an "usb" name goes into two handlers:
-the first/previous 'if' statement _AND_ the for-loop over 'devtable',
-but the latter is useless as it has no 'usb' device_id entry anyway.
+While looking at a related syzbot report involving neigh_periodic_work(),
+I found that I forgot to add an annotation when deleting an
+RCU protected item from a list.
 
-Tested with allmodconfig before/after patch; no changes to *.mod.c:
+Readers use rcu_deference(*np), we need to use either
+rcu_assign_pointer() or WRITE_ONCE() on writer side
+to prevent store tearing.
 
-    git checkout v6.6-rc3
-    make -j$(nproc) allmodconfig
-    make -j$(nproc) olddefconfig
+I use rcu_assign_pointer() to have lockdep support,
+this was the choice made in neigh_flush_dev().
 
-    make -j$(nproc)
-    find . -name '*.mod.c' | cpio -pd /tmp/before
-
-    # apply patch
-
-    make -j$(nproc)
-    find . -name '*.mod.c' | cpio -pd /tmp/after
-
-    diff -r /tmp/before/ /tmp/after/
-    # no difference
-
-Fixes: acbef7b76629 ("modpost: fix module autoloading for OF devices with generic compatible property")
-Signed-off-by: Mauricio Faria de Oliveira <mfo@canonical.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 767e97e1e0db ("neigh: RCU conversion of struct neighbour")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/file2alias.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/neighbour.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 2417dd1dee33c..da4df53ee6955 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -1490,7 +1490,7 @@ void handle_moddevtable(struct module *mod, struct elf_info *info,
- 	/* First handle the "special" cases */
- 	if (sym_is(name, namelen, "usb"))
- 		do_usb_table(symval, sym->st_size, mod);
--	if (sym_is(name, namelen, "of"))
-+	else if (sym_is(name, namelen, "of"))
- 		do_of_table(symval, sym->st_size, mod);
- 	else if (sym_is(name, namelen, "pnp"))
- 		do_pnp_device_entry(symval, sym->st_size, mod);
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 3b642c412cf32..15267428c4f83 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -935,7 +935,9 @@ static void neigh_periodic_work(struct work_struct *work)
+ 			    (state == NUD_FAILED ||
+ 			     !time_in_range_open(jiffies, n->used,
+ 						 n->used + NEIGH_VAR(n->parms, GC_STALETIME)))) {
+-				*np = n->next;
++				rcu_assign_pointer(*np,
++					rcu_dereference_protected(n->next,
++						lockdep_is_held(&tbl->lock)));
+ 				neigh_mark_dead(n);
+ 				write_unlock(&n->lock);
+ 				neigh_cleanup_and_release(n);
 -- 
 2.40.1
 
