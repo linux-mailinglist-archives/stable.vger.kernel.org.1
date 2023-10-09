@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A5B97BDE7E
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D91677BDDCE
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376309AbjJINT6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:19:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44008 "EHLO
+        id S1376840AbjJINNa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:13:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376333AbjJINT4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:19:56 -0400
+        with ESMTP id S1377010AbjJINNS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32819A6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:19:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7407BC433C8;
-        Mon,  9 Oct 2023 13:19:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 041B1109
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:12:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A66C433C8;
+        Mon,  9 Oct 2023 13:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857591;
-        bh=iz31zE5nuX4PLMMgsA+mugbfuqhdyWaow5c9aM73xJc=;
+        s=korg; t=1696857145;
+        bh=o5aMP1GZMBlUE1/5MHBmY6ysB1cmnze47eUg4X8jfso=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mi1nQcE/qLNYfnI4cIDT9Sbt/FoocZ8RRgM4R+J9C2ChDMRbTnKDYXc2h9A9kiGOL
-         1HIc0lAm76XnDovsfL076TrxqAu3/MZ1wFDl2KVPMXuSm73UlYUWrhru309rnaZ7UW
-         qUUaUrY3n0SH1SoHCwoL3gzY6kvTruqOajaJbAIY=
+        b=I6hRXDVQYx3RDOZ4JSMJrkVjZTweNOCUI9rY9wBqmy+AxY6ngkTYogCDyEEVj5zVw
+         gRYA9JPJD1H0WTlMLBselgEwCFQZmNrxzjsOA30V7Nhe4FPnq0AbF/XmhFBDNue0C/
+         0sVlpYKQ0y2vVXWlF468pzrE3dLGrkfAwQlpwr2w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>,
+        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/162] wifi: mac80211: fix potential key use-after-free
+Subject: [PATCH 6.5 111/163] ethtool: plca: fix plca enable data type while parsing the value
 Date:   Mon,  9 Oct 2023 15:01:15 +0200
-Message-ID: <20231009130125.516519771@linuxfoundation.org>
+Message-ID: <20231009130127.089096435@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,60 +50,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
 
-[ Upstream commit 31db78a4923ef5e2008f2eed321811ca79e7f71b ]
+[ Upstream commit 8957261cd8149ed9d0738c01c0320bcbff989407 ]
 
-When ieee80211_key_link() is called by ieee80211_gtk_rekey_add()
-but returns 0 due to KRACK protection (identical key reinstall),
-ieee80211_gtk_rekey_add() will still return a pointer into the
-key, in a potential use-after-free. This normally doesn't happen
-since it's only called by iwlwifi in case of WoWLAN rekey offload
-which has its own KRACK protection, but still better to fix, do
-that by returning an error code and converting that to success on
-the cfg80211 boundary only, leaving the error for bad callers of
-ieee80211_gtk_rekey_add().
+The ETHTOOL_A_PLCA_ENABLED data type is u8. But while parsing the
+value from the attribute, nla_get_u32() is used in the plca_update_sint()
+function instead of nla_get_u8(). So plca_cfg.enabled variable is updated
+with some garbage value instead of 0 or 1 and always enables plca even
+though plca is disabled through ethtool application. This bug has been
+fixed by parsing the values based on the attributes type in the policy.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: fdf7cb4185b6 ("mac80211: accept key reinstall without changing anything")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 8580e16c28f3 ("net/ethtool: add netlink interface for the PLCA RS")
+Signed-off-by: Parthiban Veerasooran <Parthiban.Veerasooran@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20230908044548.5878-1-Parthiban.Veerasooran@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 3 +++
- net/mac80211/key.c | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ net/ethtool/plca.c | 45 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 16 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index cf3453b532d67..0167413d56972 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -566,6 +566,9 @@ static int ieee80211_add_key(struct wiphy *wiphy, struct net_device *dev,
- 	}
+diff --git a/net/ethtool/plca.c b/net/ethtool/plca.c
+index 5a8cab4df0c9c..a9334937ace26 100644
+--- a/net/ethtool/plca.c
++++ b/net/ethtool/plca.c
+@@ -21,16 +21,6 @@ struct plca_reply_data {
+ #define PLCA_REPDATA(__reply_base) \
+ 	container_of(__reply_base, struct plca_reply_data, base)
  
- 	err = ieee80211_key_link(key, link, sta);
-+	/* KRACK protection, shouldn't happen but just silently accept key */
-+	if (err == -EALREADY)
-+		err = 0;
+-static void plca_update_sint(int *dst, const struct nlattr *attr,
+-			     bool *mod)
+-{
+-	if (!attr)
+-		return;
+-
+-	*dst = nla_get_u32(attr);
+-	*mod = true;
+-}
+-
+ // PLCA get configuration message ------------------------------------------- //
  
-  out_unlock:
- 	mutex_unlock(&local->sta_mtx);
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index e8f6c1e5eabfc..23bb24243c6e9 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -901,7 +901,7 @@ int ieee80211_key_link(struct ieee80211_key *key,
- 	 */
- 	if (ieee80211_key_identical(sdata, old_key, key)) {
- 		ieee80211_key_free_unused(key);
--		ret = 0;
-+		ret = -EALREADY;
- 		goto out;
- 	}
+ const struct nla_policy ethnl_plca_get_cfg_policy[] = {
+@@ -38,6 +28,29 @@ const struct nla_policy ethnl_plca_get_cfg_policy[] = {
+ 		NLA_POLICY_NESTED(ethnl_header_policy),
+ };
  
++static void plca_update_sint(int *dst, struct nlattr **tb, u32 attrid,
++			     bool *mod)
++{
++	const struct nlattr *attr = tb[attrid];
++
++	if (!attr ||
++	    WARN_ON_ONCE(attrid >= ARRAY_SIZE(ethnl_plca_set_cfg_policy)))
++		return;
++
++	switch (ethnl_plca_set_cfg_policy[attrid].type) {
++	case NLA_U8:
++		*dst = nla_get_u8(attr);
++		break;
++	case NLA_U32:
++		*dst = nla_get_u32(attr);
++		break;
++	default:
++		WARN_ON_ONCE(1);
++	}
++
++	*mod = true;
++}
++
+ static int plca_get_cfg_prepare_data(const struct ethnl_req_info *req_base,
+ 				     struct ethnl_reply_data *reply_base,
+ 				     struct genl_info *info)
+@@ -144,13 +157,13 @@ ethnl_set_plca(struct ethnl_req_info *req_info, struct genl_info *info)
+ 		return -EOPNOTSUPP;
+ 
+ 	memset(&plca_cfg, 0xff, sizeof(plca_cfg));
+-	plca_update_sint(&plca_cfg.enabled, tb[ETHTOOL_A_PLCA_ENABLED], &mod);
+-	plca_update_sint(&plca_cfg.node_id, tb[ETHTOOL_A_PLCA_NODE_ID], &mod);
+-	plca_update_sint(&plca_cfg.node_cnt, tb[ETHTOOL_A_PLCA_NODE_CNT], &mod);
+-	plca_update_sint(&plca_cfg.to_tmr, tb[ETHTOOL_A_PLCA_TO_TMR], &mod);
+-	plca_update_sint(&plca_cfg.burst_cnt, tb[ETHTOOL_A_PLCA_BURST_CNT],
++	plca_update_sint(&plca_cfg.enabled, tb, ETHTOOL_A_PLCA_ENABLED, &mod);
++	plca_update_sint(&plca_cfg.node_id, tb, ETHTOOL_A_PLCA_NODE_ID, &mod);
++	plca_update_sint(&plca_cfg.node_cnt, tb, ETHTOOL_A_PLCA_NODE_CNT, &mod);
++	plca_update_sint(&plca_cfg.to_tmr, tb, ETHTOOL_A_PLCA_TO_TMR, &mod);
++	plca_update_sint(&plca_cfg.burst_cnt, tb, ETHTOOL_A_PLCA_BURST_CNT,
+ 			 &mod);
+-	plca_update_sint(&plca_cfg.burst_tmr, tb[ETHTOOL_A_PLCA_BURST_TMR],
++	plca_update_sint(&plca_cfg.burst_tmr, tb, ETHTOOL_A_PLCA_BURST_TMR,
+ 			 &mod);
+ 	if (!mod)
+ 		return 0;
 -- 
 2.40.1
 
