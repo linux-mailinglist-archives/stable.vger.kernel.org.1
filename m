@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C61607BDFFE
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DACB7BDD43
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:09:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377223AbjJINgc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:36:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45238 "EHLO
+        id S1376718AbjJINJF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:09:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377213AbjJINga (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:36:30 -0400
+        with ESMTP id S1376798AbjJINI7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C27791
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:36:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DE9C433C8;
-        Mon,  9 Oct 2023 13:36:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75406AC
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65BEC433C8;
+        Mon,  9 Oct 2023 13:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858582;
-        bh=B3uzr6nz3k4rrOiXcK8H3VnYeo46vleP4FP0xnfsE+I=;
+        s=korg; t=1696856937;
+        bh=V8k+XCkyYALXfFZIleB3o2ktVfhef9/bBfb4UVUUu7U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=inFdEdzpWzEVCL8qKAHITb23uzpNph6s6o8rq1nAAZY55VlNfhJpC875dLocmfxYb
-         OFIXUkk3kSNa1Ydr8RK6V/hMW35lrge5zA1/D8EANE/4JxJLsMXNanULiBv3PxhcaI
-         hxIO5ymrZcmtWWeXz64duX6wAVqmwzRkH3LSGhgI=
+        b=fubnozmtu4Djz7Ig++hvwhXpazHOn8/wV6UMGVFAe96irQlvifMdbL9XhgadQOVUr
+         jZCDTu3Tka7icv13eBnKgqCA5kTS18q43rUexoY2ManpnclMrBG1+QnAidu9QYvxt3
+         W3pFEy5OKY91FxJT2vlK+Bk3oyV1u450I8/2rMco=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@oracle.com>,
-        Kees Cook <keescook@chromium.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 036/226] selftests/tls: Add {} to avoid static checker warning
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Geliang Tang <geliang.tang@suse.com>,
+        Mat Martineau <martineau@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.5 033/163] mptcp: userspace pm allow creating id 0 subflow
 Date:   Mon,  9 Oct 2023 14:59:57 +0200
-Message-ID: <20231009130127.729142484@linuxfoundation.org>
+Message-ID: <20231009130124.918008449@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Geliang Tang <geliang.tang@suse.com>
 
-[ Upstream commit f50688b47c5858d2ff315d020332bf4cb6710837 ]
+commit e5ed101a602873d65d2d64edaba93e8c73ec1b0f upstream.
 
-This silences a static checker warning due to the unusual macro
-construction of EXPECT_*() by adding explicit {}s around the enclosing
-while loop.
+This patch drops id 0 limitation in mptcp_nl_cmd_sf_create() to allow
+creating additional subflows with the local addr ID 0.
 
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Fixes: 7f657d5bf507 ("selftests: tls: add selftests for TLS sockets")
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: c326ca98446e ("selftests: tls: swap the TX and RX sockets in some tests")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There is no reason not to allow additional subflows from this local
+address: we should be able to create new subflows from the initial
+endpoint. This limitation was breaking fullmesh support from userspace.
+
+Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/391
+Cc: stable@vger.kernel.org
+Suggested-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231004-send-net-20231004-v1-2-28de4ac663ae@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/tls.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/pm_userspace.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/tools/testing/selftests/net/tls.c b/tools/testing/selftests/net/tls.c
-index b599f1fa99b55..44984741bd41d 100644
---- a/tools/testing/selftests/net/tls.c
-+++ b/tools/testing/selftests/net/tls.c
-@@ -387,8 +387,9 @@ TEST_F(tls, sendmsg_large)
- 		EXPECT_EQ(sendmsg(self->cfd, &msg, 0), send_len);
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -307,12 +307,6 @@ int mptcp_nl_cmd_sf_create(struct sk_buf
+ 		goto create_err;
  	}
  
--	while (recvs++ < sends)
-+	while (recvs++ < sends) {
- 		EXPECT_NE(recv(self->fd, mem, send_len, 0), -1);
-+	}
- 
- 	free(mem);
- }
--- 
-2.40.1
-
+-	if (addr_l.id == 0) {
+-		NL_SET_ERR_MSG_ATTR(info->extack, laddr, "missing local addr id");
+-		err = -EINVAL;
+-		goto create_err;
+-	}
+-
+ 	err = mptcp_pm_parse_addr(raddr, info, &addr_r);
+ 	if (err < 0) {
+ 		NL_SET_ERR_MSG_ATTR(info->extack, raddr, "error parsing remote addr");
 
 
