@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEC6E7BDD3D
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3B97BDFE2
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:35:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376737AbjJINIo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:08:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43356 "EHLO
+        id S1377160AbjJINfJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:35:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376732AbjJINIn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:08:43 -0400
+        with ESMTP id S1377156AbjJINfI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:35:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 950819E
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:08:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB96DC433C9;
-        Mon,  9 Oct 2023 13:08:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D161F9C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:35:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2209EC433C8;
+        Mon,  9 Oct 2023 13:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696856922;
-        bh=0UxndBLhQUyFwqfmebc67WESfsLSPqgFo1SyiDVVMIQ=;
+        s=korg; t=1696858506;
+        bh=voLaP+EWwDCmzwHXKCV8+2TbDDQu1sUgZzujU9OX1k4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yclg1+uFrZ6o4+5htVg7CivC+bDUj2n32NcbV4G0UB0+FldaLuBiFCqM2XbMuh8Hn
-         kO1Qu0WwXFA8XJVhfTdgb3PYcT4sgSnwPSGKJLV/yFzbOJ8VCmjuJIu4UYv2473tz2
-         cXQe7SuE31NuzKfVP1+Zx9B5goMT4P2J9I8t1pVE=
+        b=SbyXRAJeMdk02U9zl82RMwiSAJT//UM5Ilbcjhkly/UIcnCVc4l1XhmSCwNMiEsFN
+         YKcoZlierKaAo6kgi0WsIMGCmalK5omIzzWSS3PIVdi+qDVGcPLNomw+aOX/pqGkHK
+         Zr3MQ38h4yVLfZEBUCDF6FS4plkQsec78weYGCvs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 009/163] mptcp: Remove unnecessary test for __mptcp_init_sock()
+        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 012/226] ext4: replace the traditional ternary conditional operator with with max()/min()
 Date:   Mon,  9 Oct 2023 14:59:33 +0200
-Message-ID: <20231009130124.277557269@linuxfoundation.org>
+Message-ID: <20231009130127.046528306@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,68 +49,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit e263691773cd67d7c824eeee8b802f50c6e0c118 ]
+[ Upstream commit de8bf0e5ee7482585450357c6d4eddec8efc5cb7 ]
 
-__mptcp_init_sock() always returns 0 because mptcp_init_sock() used
-to return the value directly.
+Replace the traditional ternary conditional operator with with max()/min()
 
-But after commit 18b683bff89d ("mptcp: queue data for mptcp level
-retransmission"), __mptcp_init_sock() need not return value anymore.
-
-Let's remove the unnecessary test for __mptcp_init_sock() and make
-it return void.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 27e5ccc2d5a5 ("mptcp: fix dangling connection hang-up")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/20230801143204.2284343-7-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ fs/ext4/mballoc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 6947b4b2519c9..0aae76f1465b8 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2710,7 +2710,7 @@ static void mptcp_worker(struct work_struct *work)
- 	sock_put(sk);
- }
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 5c650e28dcb6b..c06f304f38edf 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -5902,8 +5902,7 @@ static int ext4_try_to_trim_range(struct super_block *sb,
+ 	void *bitmap;
  
--static int __mptcp_init_sock(struct sock *sk)
-+static void __mptcp_init_sock(struct sock *sk)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	bitmap = e4b->bd_bitmap;
+-	start = (e4b->bd_info->bb_first_free > start) ?
+-		e4b->bd_info->bb_first_free : start;
++	start = max(e4b->bd_info->bb_first_free, start);
+ 	count = 0;
+ 	free_count = 0;
  
-@@ -2737,8 +2737,6 @@ static int __mptcp_init_sock(struct sock *sk)
- 	/* re-use the csk retrans timer for MPTCP-level retrans */
- 	timer_setup(&msk->sk.icsk_retransmit_timer, mptcp_retransmit_timer, 0);
- 	timer_setup(&sk->sk_timer, mptcp_timeout_timer, 0);
--
--	return 0;
- }
+@@ -6125,8 +6124,7 @@ ext4_mballoc_query_range(
  
- static void mptcp_ca_reset(struct sock *sk)
-@@ -2756,11 +2754,8 @@ static void mptcp_ca_reset(struct sock *sk)
- static int mptcp_init_sock(struct sock *sk)
- {
- 	struct net *net = sock_net(sk);
--	int ret;
+ 	ext4_lock_group(sb, group);
  
--	ret = __mptcp_init_sock(sk);
--	if (ret)
--		return ret;
-+	__mptcp_init_sock(sk);
+-	start = (e4b.bd_info->bb_first_free > start) ?
+-		e4b.bd_info->bb_first_free : start;
++	start = max(e4b.bd_info->bb_first_free, start);
+ 	if (end >= EXT4_CLUSTERS_PER_GROUP(sb))
+ 		end = EXT4_CLUSTERS_PER_GROUP(sb) - 1;
  
- 	if (!mptcp_is_enabled(net))
- 		return -ENOPROTOOPT;
 -- 
 2.40.1
 
