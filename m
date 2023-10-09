@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3415C7BDF2C
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9698E7BDFBF
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:33:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376755AbjJIN1L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:27:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60454 "EHLO
+        id S1377130AbjJINd0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:33:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376720AbjJIN1L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:27:11 -0400
+        with ESMTP id S1377132AbjJINdZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:33:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21B0CA3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:27:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62720C433C7;
-        Mon,  9 Oct 2023 13:27:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B06AB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:33:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5075C433C8;
+        Mon,  9 Oct 2023 13:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858029;
-        bh=BTJhGAndR0nRPcaxNztOGM2HyiO/CpnZJ7jMCdwesY8=;
+        s=korg; t=1696858404;
+        bh=oEk6Ff0hGBtNOCpXyuFmFgltCR9tXIosgZFVRybm/88=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u6159VEDSO4VQWaBt8MkZpdJVBUrrF8Bwk3yaDp26PPhJzy0nnCRQHHwXwDHjo9yo
-         QDoPKR8tTXNvvaHf/YThBC7cjnnAL5p/9YVln6Q3XTwCyURq6zEypl4CJuo+bFImCS
-         Ugz/VNAaet04SEQD56j9CHvsrstUq1OOBUuo4jrQ=
+        b=fThgMjTNwoza6q6IyVxWx43aPqDqaiQDjBD4xSmOblmCBy/jqBXF+lGXC0Ul6fkPA
+         2vZ8pygHdcXFOpye8Y4sSUQa2yAcGf3IkC991edHur7IAPOUNV091Ei9wDbCfQNfSN
+         ZAWjSRak37+yFqX28aOKrvd9YZ1DfrqZTkLg/TVs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>
-Subject: [PATCH 5.15 70/75] RDMA/cma: Fix truncation compilation warning in make_cma_ports
+        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+6966546b78d050bb0b5d@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 112/131] net: usb: smsc75xx: Fix uninit-value access in __smsc75xx_read_reg
 Date:   Mon,  9 Oct 2023 15:02:32 +0200
-Message-ID: <20231009130113.708212219@linuxfoundation.org>
+Message-ID: <20231009130119.862148267@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
-References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -48,45 +51,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-commit 18126c767658ae8a831257c6cb7776c5ba5e7249 upstream.
+[ Upstream commit e9c65989920f7c28775ec4e0c11b483910fb67b8 ]
 
-The following compilation error is false alarm as RDMA devices don't
-have such large amount of ports to actually cause to format truncation.
+syzbot reported the following uninit-value access issue:
 
-drivers/infiniband/core/cma_configfs.c: In function ‘make_cma_ports’:
-drivers/infiniband/core/cma_configfs.c:223:57: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-  223 |                 snprintf(port_str, sizeof(port_str), "%u", i + 1);
-      |                                                         ^
-drivers/infiniband/core/cma_configfs.c:223:17: note: ‘snprintf’ output between 2 and 11 bytes into a destination of size 10
-  223 |                 snprintf(port_str, sizeof(port_str), "%u", i + 1);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-make[5]: *** [scripts/Makefile.build:243: drivers/infiniband/core/cma_configfs.o] Error 1
+=====================================================
+BUG: KMSAN: uninit-value in smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:975 [inline]
+BUG: KMSAN: uninit-value in smsc75xx_bind+0x5c9/0x11e0 drivers/net/usb/smsc75xx.c:1482
+CPU: 0 PID: 8696 Comm: kworker/0:3 Not tainted 5.8.0-rc5-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Workqueue: usb_hub_wq hub_event
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x21c/0x280 lib/dump_stack.c:118
+ kmsan_report+0xf7/0x1e0 mm/kmsan/kmsan_report.c:121
+ __msan_warning+0x58/0xa0 mm/kmsan/kmsan_instr.c:215
+ smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:975 [inline]
+ smsc75xx_bind+0x5c9/0x11e0 drivers/net/usb/smsc75xx.c:1482
+ usbnet_probe+0x1152/0x3f90 drivers/net/usb/usbnet.c:1737
+ usb_probe_interface+0xece/0x1550 drivers/usb/core/driver.c:374
+ really_probe+0xf20/0x20b0 drivers/base/dd.c:529
+ driver_probe_device+0x293/0x390 drivers/base/dd.c:701
+ __device_attach_driver+0x63f/0x830 drivers/base/dd.c:807
+ bus_for_each_drv+0x2ca/0x3f0 drivers/base/bus.c:431
+ __device_attach+0x4e2/0x7f0 drivers/base/dd.c:873
+ device_initial_probe+0x4a/0x60 drivers/base/dd.c:920
+ bus_probe_device+0x177/0x3d0 drivers/base/bus.c:491
+ device_add+0x3b0e/0x40d0 drivers/base/core.c:2680
+ usb_set_configuration+0x380f/0x3f10 drivers/usb/core/message.c:2032
+ usb_generic_driver_probe+0x138/0x300 drivers/usb/core/generic.c:241
+ usb_probe_device+0x311/0x490 drivers/usb/core/driver.c:272
+ really_probe+0xf20/0x20b0 drivers/base/dd.c:529
+ driver_probe_device+0x293/0x390 drivers/base/dd.c:701
+ __device_attach_driver+0x63f/0x830 drivers/base/dd.c:807
+ bus_for_each_drv+0x2ca/0x3f0 drivers/base/bus.c:431
+ __device_attach+0x4e2/0x7f0 drivers/base/dd.c:873
+ device_initial_probe+0x4a/0x60 drivers/base/dd.c:920
+ bus_probe_device+0x177/0x3d0 drivers/base/bus.c:491
+ device_add+0x3b0e/0x40d0 drivers/base/core.c:2680
+ usb_new_device+0x1bd4/0x2a30 drivers/usb/core/hub.c:2554
+ hub_port_connect drivers/usb/core/hub.c:5208 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5348 [inline]
+ port_event drivers/usb/core/hub.c:5494 [inline]
+ hub_event+0x5e7b/0x8a70 drivers/usb/core/hub.c:5576
+ process_one_work+0x1688/0x2140 kernel/workqueue.c:2269
+ worker_thread+0x10bc/0x2730 kernel/workqueue.c:2415
+ kthread+0x551/0x590 kernel/kthread.c:292
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:293
 
-Fixes: 045959db65c6 ("IB/cma: Add configfs for rdma_cm")
-Link: https://lore.kernel.org/r/a7e3b347ee134167fa6a3787c56ef231a04bc8c2.1694434639.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Local variable ----buf.i87@smsc75xx_bind created at:
+ __smsc75xx_read_reg drivers/net/usb/smsc75xx.c:83 [inline]
+ smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:968 [inline]
+ smsc75xx_bind+0x485/0x11e0 drivers/net/usb/smsc75xx.c:1482
+ __smsc75xx_read_reg drivers/net/usb/smsc75xx.c:83 [inline]
+ smsc75xx_wait_ready drivers/net/usb/smsc75xx.c:968 [inline]
+ smsc75xx_bind+0x485/0x11e0 drivers/net/usb/smsc75xx.c:1482
+
+This issue is caused because usbnet_read_cmd() reads less bytes than requested
+(zero byte in the reproducer). In this case, 'buf' is not properly filled.
+
+This patch fixes the issue by returning -ENODATA if usbnet_read_cmd() reads
+less bytes than requested.
+
+Fixes: d0cad871703b ("smsc75xx: SMSC LAN75xx USB gigabit ethernet adapter driver")
+Reported-and-tested-by: syzbot+6966546b78d050bb0b5d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6966546b78d050bb0b5d
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230923173549.3284502-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cma_configfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/smsc75xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/infiniband/core/cma_configfs.c
-+++ b/drivers/infiniband/core/cma_configfs.c
-@@ -218,7 +218,7 @@ static int make_cma_ports(struct cma_dev
- 		return -ENOMEM;
- 
- 	for (i = 0; i < ports_num; i++) {
--		char port_str[10];
-+		char port_str[11];
- 
- 		ports[i].port_num = i + 1;
- 		snprintf(port_str, sizeof(port_str), "%u", i + 1);
+diff --git a/drivers/net/usb/smsc75xx.c b/drivers/net/usb/smsc75xx.c
+index bd533827af8b1..9656561fc77ff 100644
+--- a/drivers/net/usb/smsc75xx.c
++++ b/drivers/net/usb/smsc75xx.c
+@@ -90,7 +90,9 @@ static int __must_check __smsc75xx_read_reg(struct usbnet *dev, u32 index,
+ 	ret = fn(dev, USB_VENDOR_REQUEST_READ_REGISTER, USB_DIR_IN
+ 		 | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+ 		 0, index, &buf, 4);
+-	if (unlikely(ret < 0)) {
++	if (unlikely(ret < 4)) {
++		ret = ret < 0 ? ret : -ENODATA;
++
+ 		netdev_warn(dev->net, "Failed to read reg index 0x%08x: %d\n",
+ 			    index, ret);
+ 		return ret;
+-- 
+2.40.1
+
 
 
