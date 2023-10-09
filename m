@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32A617BDDFF
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8C517BDF06
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376890AbjJINOu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40692 "EHLO
+        id S1376785AbjJINZs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376665AbjJINOq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:46 -0400
+        with ESMTP id S1376708AbjJINZq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20276E1
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAEFC433C9;
-        Mon,  9 Oct 2023 13:14:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41686D3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FD1C433C8;
+        Mon,  9 Oct 2023 13:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857284;
-        bh=fNaBhPmXptWKvwByQ9ap0+FjW8TaZyq5S0ArUatop0Y=;
+        s=korg; t=1696857937;
+        bh=Oc7h8eGbnpiJJ+dk+KhcYNp94L/yoUbUVlq0lauEWxw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pggvU5dOl1oxYgH0dMwZVOYJFtgcj16URWUbU/dmNsCVFucTQtScf19HhTgCOLdhI
-         GnsX1K8yF8OFnbSwNDEvhLdhlx7vdoo17ZghwRwP1Uczm3gpm22LW6Btwf0mYUdvIC
-         Ai9Hyh+96csPkesv73Sy5mF0doSVT7zkUBJW5Rzg=
+        b=KlbS9XcL/CXPHL+BCl9L2rAQ0y5YTF79d51bVbHJUhkJOuN84jqv2NjqFNnSGwNV/
+         XxMVwXnbDF5hJO1O1e1LXSKNQPiRFanrdOQTQjL7leOoDRJ37ya6ASRZPb+5Vqbs5h
+         lnw8GtoC9t0E6DWEKlGO0BQQ+mAJ2Yt7ZHpRbQRU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Lendacky <thomas.lendacky@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
-Subject: [PATCH 6.5 159/163] x86/sev: Use the GHCB protocol when available for SNP CPUID requests
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 41/75] NFSv4: Fix a nfs4_state_manager() race
 Date:   Mon,  9 Oct 2023 15:02:03 +0200
-Message-ID: <20231009130128.398593797@linuxfoundation.org>
+Message-ID: <20231009130112.673817240@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,211 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 6bc6f7d9d7ac3cdbe9e8b0495538b4a0cc11f032 upstream.
+[ Upstream commit ed1cc05aa1f7fe8197d300e914afc28ab9818f89 ]
 
-SNP retrieves the majority of CPUID information from the SNP CPUID page.
-But there are times when that information needs to be supplemented by the
-hypervisor, for example, obtaining the initial APIC ID of the vCPU from
-leaf 1.
+If the NFS4CLNT_RUN_MANAGER flag got set just before we cleared
+NFS4CLNT_MANAGER_RUNNING, then we might have won the race against
+nfs4_schedule_state_manager(), and are responsible for handling the
+recovery situation.
 
-The current implementation uses the MSR protocol to retrieve the data from
-the hypervisor, even when a GHCB exists. The problem arises when an NMI
-arrives on return from the VMGEXIT. The NMI will be immediately serviced
-and may generate a #VC requiring communication with the hypervisor.
-
-Since a GHCB exists in this case, it will be used. As part of using the
-GHCB, the #VC handler will write the GHCB physical address into the GHCB
-MSR and the #VC will be handled.
-
-When the NMI completes, processing resumes at the site of the VMGEXIT
-which is expecting to read the GHCB MSR and find a CPUID MSR protocol
-response. Since the NMI handling overwrote the GHCB MSR response, the
-guest will see an invalid reply from the hypervisor and self-terminate.
-
-Fix this problem by using the GHCB when it is available. Any NMI
-received is properly handled because the GHCB contents are copied into
-a backup page and restored on NMI exit, thus preserving the active GHCB
-request or result.
-
-  [ bp: Touchups. ]
-
-Fixes: ee0bfa08a345 ("x86/compressed/64: Add support for SEV-SNP CPUID table in #VC handlers")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/a5856fa1ebe3879de91a8f6298b6bbd901c61881.1690578565.git.thomas.lendacky@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aeabb3c96186 ("NFSv4: Fix a NFSv4 state manager deadlock")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/sev-shared.c |   69 ++++++++++++++++++++++++++++++++++---------
- 1 file changed, 55 insertions(+), 14 deletions(-)
+ fs/nfs/nfs4state.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -256,7 +256,7 @@ static int __sev_cpuid_hv(u32 fn, int re
- 	return 0;
- }
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index 7590d059eb78e..258e6b167285c 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2699,6 +2699,13 @@ static void nfs4_state_manager(struct nfs_client *clp)
+ 		nfs4_end_drain_session(clp);
+ 		nfs4_clear_state_manager_bit(clp);
  
--static int sev_cpuid_hv(struct cpuid_leaf *leaf)
-+static int __sev_cpuid_hv_msr(struct cpuid_leaf *leaf)
- {
- 	int ret;
- 
-@@ -279,6 +279,45 @@ static int sev_cpuid_hv(struct cpuid_lea
- 	return ret;
- }
- 
-+static int __sev_cpuid_hv_ghcb(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
-+{
-+	u32 cr4 = native_read_cr4();
-+	int ret;
++		if (test_bit(NFS4CLNT_RUN_MANAGER, &clp->cl_state) &&
++		    !test_and_set_bit(NFS4CLNT_MANAGER_RUNNING,
++				      &clp->cl_state)) {
++			memflags = memalloc_nofs_save();
++			continue;
++		}
 +
-+	ghcb_set_rax(ghcb, leaf->fn);
-+	ghcb_set_rcx(ghcb, leaf->subfn);
-+
-+	if (cr4 & X86_CR4_OSXSAVE)
-+		/* Safe to read xcr0 */
-+		ghcb_set_xcr0(ghcb, xgetbv(XCR_XFEATURE_ENABLED_MASK));
-+	else
-+		/* xgetbv will cause #UD - use reset value for xcr0 */
-+		ghcb_set_xcr0(ghcb, 1);
-+
-+	ret = sev_es_ghcb_hv_call(ghcb, ctxt, SVM_EXIT_CPUID, 0, 0);
-+	if (ret != ES_OK)
-+		return ret;
-+
-+	if (!(ghcb_rax_is_valid(ghcb) &&
-+	      ghcb_rbx_is_valid(ghcb) &&
-+	      ghcb_rcx_is_valid(ghcb) &&
-+	      ghcb_rdx_is_valid(ghcb)))
-+		return ES_VMM_ERROR;
-+
-+	leaf->eax = ghcb->save.rax;
-+	leaf->ebx = ghcb->save.rbx;
-+	leaf->ecx = ghcb->save.rcx;
-+	leaf->edx = ghcb->save.rdx;
-+
-+	return ES_OK;
-+}
-+
-+static int sev_cpuid_hv(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
-+{
-+	return ghcb ? __sev_cpuid_hv_ghcb(ghcb, ctxt, leaf)
-+		    : __sev_cpuid_hv_msr(leaf);
-+}
-+
- /*
-  * This may be called early while still running on the initial identity
-  * mapping. Use RIP-relative addressing to obtain the correct address
-@@ -388,19 +427,20 @@ snp_cpuid_get_validated_func(struct cpui
- 	return false;
- }
- 
--static void snp_cpuid_hv(struct cpuid_leaf *leaf)
-+static void snp_cpuid_hv(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
- {
--	if (sev_cpuid_hv(leaf))
-+	if (sev_cpuid_hv(ghcb, ctxt, leaf))
- 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_CPUID_HV);
- }
- 
--static int snp_cpuid_postprocess(struct cpuid_leaf *leaf)
-+static int snp_cpuid_postprocess(struct ghcb *ghcb, struct es_em_ctxt *ctxt,
-+				 struct cpuid_leaf *leaf)
- {
- 	struct cpuid_leaf leaf_hv = *leaf;
- 
- 	switch (leaf->fn) {
- 	case 0x1:
--		snp_cpuid_hv(&leaf_hv);
-+		snp_cpuid_hv(ghcb, ctxt, &leaf_hv);
- 
- 		/* initial APIC ID */
- 		leaf->ebx = (leaf_hv.ebx & GENMASK(31, 24)) | (leaf->ebx & GENMASK(23, 0));
-@@ -419,7 +459,7 @@ static int snp_cpuid_postprocess(struct
- 		break;
- 	case 0xB:
- 		leaf_hv.subfn = 0;
--		snp_cpuid_hv(&leaf_hv);
-+		snp_cpuid_hv(ghcb, ctxt, &leaf_hv);
- 
- 		/* extended APIC ID */
- 		leaf->edx = leaf_hv.edx;
-@@ -467,7 +507,7 @@ static int snp_cpuid_postprocess(struct
- 		}
- 		break;
- 	case 0x8000001E:
--		snp_cpuid_hv(&leaf_hv);
-+		snp_cpuid_hv(ghcb, ctxt, &leaf_hv);
- 
- 		/* extended APIC ID */
- 		leaf->eax = leaf_hv.eax;
-@@ -488,7 +528,7 @@ static int snp_cpuid_postprocess(struct
-  * Returns -EOPNOTSUPP if feature not enabled. Any other non-zero return value
-  * should be treated as fatal by caller.
-  */
--static int snp_cpuid(struct cpuid_leaf *leaf)
-+static int snp_cpuid(struct ghcb *ghcb, struct es_em_ctxt *ctxt, struct cpuid_leaf *leaf)
- {
- 	const struct snp_cpuid_table *cpuid_table = snp_cpuid_get_table();
- 
-@@ -522,7 +562,7 @@ static int snp_cpuid(struct cpuid_leaf *
- 			return 0;
- 	}
- 
--	return snp_cpuid_postprocess(leaf);
-+	return snp_cpuid_postprocess(ghcb, ctxt, leaf);
- }
- 
- /*
-@@ -544,14 +584,14 @@ void __init do_vc_no_ghcb(struct pt_regs
- 	leaf.fn = fn;
- 	leaf.subfn = subfn;
- 
--	ret = snp_cpuid(&leaf);
-+	ret = snp_cpuid(NULL, NULL, &leaf);
- 	if (!ret)
- 		goto cpuid_done;
- 
- 	if (ret != -EOPNOTSUPP)
- 		goto fail;
- 
--	if (sev_cpuid_hv(&leaf))
-+	if (__sev_cpuid_hv_msr(&leaf))
- 		goto fail;
- 
- cpuid_done:
-@@ -848,14 +888,15 @@ static enum es_result vc_handle_ioio(str
- 	return ret;
- }
- 
--static int vc_handle_cpuid_snp(struct pt_regs *regs)
-+static int vc_handle_cpuid_snp(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
- {
-+	struct pt_regs *regs = ctxt->regs;
- 	struct cpuid_leaf leaf;
- 	int ret;
- 
- 	leaf.fn = regs->ax;
- 	leaf.subfn = regs->cx;
--	ret = snp_cpuid(&leaf);
-+	ret = snp_cpuid(ghcb, ctxt, &leaf);
- 	if (!ret) {
- 		regs->ax = leaf.eax;
- 		regs->bx = leaf.ebx;
-@@ -874,7 +915,7 @@ static enum es_result vc_handle_cpuid(st
- 	enum es_result ret;
- 	int snp_cpuid_ret;
- 
--	snp_cpuid_ret = vc_handle_cpuid_snp(regs);
-+	snp_cpuid_ret = vc_handle_cpuid_snp(ghcb, ctxt);
- 	if (!snp_cpuid_ret)
- 		return ES_OK;
- 	if (snp_cpuid_ret != -EOPNOTSUPP)
+ 		if (!test_and_set_bit(NFS4CLNT_RECALL_RUNNING, &clp->cl_state)) {
+ 			if (test_and_clear_bit(NFS4CLNT_DELEGRETURN, &clp->cl_state)) {
+ 				nfs_client_return_marked_delegations(clp);
+-- 
+2.40.1
+
 
 
