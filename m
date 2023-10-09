@@ -2,83 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB9A07BE549
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 17:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0CA17BE55B
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 17:49:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346618AbjJIPqz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 11:46:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
+        id S1377001AbjJIPty (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 11:49:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344542AbjJIPqy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 11:46:54 -0400
-Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2868E94;
-        Mon,  9 Oct 2023 08:46:53 -0700 (PDT)
-Content-Type: text/plain;
-        charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
-        s=mail; t=1696866410;
-        bh=HWvc+5ISlvs1/m94xDgJR6CaS7Jho5VmQgLxRGlMnBE=;
-        h=Subject:From:In-Reply-To:Date:Cc:References:To;
-        b=h7MdZNj8/PpoAybfSgEqYnD9SMa0tPslsFT2g9vJsE7UBimkf4fGkR/QC0nXox1lc
-         xbzZpCDFSJIlB3ZejV1M5aC8HZJvDSZeTQyKDllAQau0ZbVz225e7roKxEpppKTRAj
-         wSlh2Kd7F+vfIjBr+AYy+iN9GIExyqYUtHFBqjw0=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
-Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC
- requirement
-From:   Christian Theune <ct@flyingcircus.io>
-In-Reply-To: <da08ba06-e24c-d2c3-b9a0-8415a83ae791@mojatatu.com>
-Date:   Mon, 9 Oct 2023 17:46:28 +0200
-Cc:     Jakub Kicinski <kuba@kernel.org>, markovicbudimir@gmail.com,
-        stable@vger.kernel.org, netdev@vger.kernel.org,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-        Jamal Hadi Salim <jhs@mojatatu.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2CBA18C8-51A4-443C-81D1-8D43B0F6AA76@flyingcircus.io>
-References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
- <065a0dac-499f-7375-ddb4-1800e8ef61d1@mojatatu.com>
- <0BC2C22C-F9AA-4B13-905D-FE32F41BDA8A@flyingcircus.io>
- <20231009080646.60ce9920@kernel.org>
- <da08ba06-e24c-d2c3-b9a0-8415a83ae791@mojatatu.com>
-To:     Pedro Tammela <pctammela@mojatatu.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S1376524AbjJIPtx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 11:49:53 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0DD8AF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 08:49:51 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qpsVy-0008QE-BH; Mon, 09 Oct 2023 17:49:50 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qpsVx-000S0Z-PT; Mon, 09 Oct 2023 17:49:49 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qpsVx-00CO8J-GD; Mon, 09 Oct 2023 17:49:49 +0200
+Date:   Mon, 9 Oct 2023 17:49:49 +0200
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, kernel@pengutronix.de
+Subject: Re: [PATCH 6.1 001/162] spi: zynqmp-gqspi: Convert to platform
+ remove callback returning void
+Message-ID: <20231009154949.33tpn4fsbacllhme@pengutronix.de>
+References: <20231009130122.946357448@linuxfoundation.org>
+ <20231009130122.990256512@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="c2qh7h5mmh3kzvla"
+Content-Disposition: inline
+In-Reply-To: <20231009130122.990256512@linuxfoundation.org>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-> On 9. Oct 2023, at 17:31, Pedro Tammela <pctammela@mojatatu.com> =
-wrote:
+--c2qh7h5mmh3kzvla
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+On Mon, Oct 09, 2023 at 02:59:42PM +0200, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me kno=
+w.
 >=20
-> We had a UAF with a very straight forward way to trigger it.
-> Setting 'rt' as a parent is incorrect and the man page is explicit =
-about it as it doesn't make sense 'qdisc wise'. Being able to set it has =
-always been wrong unfortunately...
+> ------------------
+>=20
+> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+>=20
+> [ Upstream commit 3ffefa1d9c9eba60c7f8b4a9ce2df3e4c7f4a88e ]
+>=20
+> The .remove() callback for a platform driver returns an int which makes
+> many driver authors wrongly assume it's possible to do error handling by
+> returning an error code. However the value returned is (mostly) ignored
+> and this typically results in resource leaks. To improve here there is a
+> quest to make the remove callback return void. In the first step of this
+> quest all drivers are converted to .remove_new() which already returns
+> void.
+>=20
+> Trivially convert this driver from always returning zero in the remove
+> callback to the void returning variant.
+>=20
+> Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> Link: https://lore.kernel.org/r/20230303172041.2103336-88-u.kleine-koenig=
+@pengutronix.de
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Stable-dep-of: 1527b076ae2c ("spi: zynqmp-gqspi: fix clock imbalance on p=
+robe failure")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-Well - this is a complex thing and even though I took care when setting =
-it up I did not find this in the manpages sufficiently highlighted and =
-built such a system: this has been running for more than a year, it did =
-what I wanted AFAICT and upgrading a micro version broke it =
-catastrophically.
+While I don't think this patch is dangerous to backport, the more
+conservative option of directly applying 1527b076ae2c would have been
+the one I'd chosen.
 
-The argument that this never should have been built, feels a bit like =
-=E2=80=9Cthis has been written for 50 years in the basement of the =
-office for planetary destruction on Alpha Centauri and earthlings had =
-more than enough time to come and complain=E2=80=9D =E2=80=A6 ;)
-=20
-Hugs,
-Christian
+The simple(?) conflict resolution for picking 1527b076ae2c on top of
+v6.1.56 looks as follows:
+
+diff --cc drivers/spi/spi-zynqmp-gqspi.c
+index c760aac070e5,c309dedfd602..000000000000
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@@ -1244,20 -1368,17 +1244,24 @@@ static int zynqmp_qspi_remove(struct pl
+  {
+  	struct zynqmp_qspi *xqspi =3D platform_get_drvdata(pdev);
+ =20
++ 	pm_runtime_get_sync(&pdev->dev);
++=20
+  	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
++=20
++ 	pm_runtime_disable(&pdev->dev);
++ 	pm_runtime_put_noidle(&pdev->dev);
++ 	pm_runtime_set_suspended(&pdev->dev);
+  	clk_disable_unprepare(xqspi->refclk);
+  	clk_disable_unprepare(xqspi->pclk);
+- 	pm_runtime_set_suspended(&pdev->dev);
+- 	pm_runtime_disable(&pdev->dev);
+ +
+ +	return 0;
+  }
+ =20
+ +static const struct of_device_id zynqmp_qspi_of_match[] =3D {
+ +	{ .compatible =3D "xlnx,zynqmp-qspi-1.0", },
+ +	{ /* End of table */ }
+ +};
+ +
+  MODULE_DEVICE_TABLE(of, zynqmp_qspi_of_match);
+ =20
+  static struct platform_driver zynqmp_qspi_driver =3D {
+
+Best regards
+Uwe
 
 --=20
-Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
-Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
-Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
-HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
-Christian Zagrodnick
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
 
+--c2qh7h5mmh3kzvla
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmUkIRwACgkQj4D7WH0S
+/k6ZoAf+J5Ks/FEz56QUy2KWUuBj1HOmD2SlzwXqKNcXPrDK5m/rmyt67+TPkTgL
+kO3rYuByLUjtoM0hSRAuhgomQQ4h3ZrNpxn2W3fOKTtVzNGQZF526zjy3gvCY78E
+aUKf9oFiPF8XCbCAJjUkg9qfyNd99SofzzXkbZxFmRpKSRvmcz9cAJ5Peso6DPu7
+ECXC0Yudkerjaziav6mkFXqJrVfyI3YcZ0kFd5B42bBA4RXSKUF/R+eLtQLatrA6
+JtCcmCP8w3+HY+fsXJUesh79nuPEJwT3vOqX9akIHJJV5mzbXdlIKZkymE6ty7NN
+eUp9aRWhDeGCtchw2kIGXcQSnVgWrg==
+=GO02
+-----END PGP SIGNATURE-----
+
+--c2qh7h5mmh3kzvla--
