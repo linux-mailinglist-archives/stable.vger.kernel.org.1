@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0178B7BE188
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C27707BE125
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:47:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377362AbjJINvO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:51:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36672 "EHLO
+        id S1377407AbjJINrY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:47:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377241AbjJINvM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:51:12 -0400
+        with ESMTP id S1377457AbjJINrX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:47:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4996AB
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:51:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EF8C433C8;
-        Mon,  9 Oct 2023 13:51:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AD1C5
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:47:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC57C433D9;
+        Mon,  9 Oct 2023 13:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859471;
-        bh=IVKqACwMBuInVNeWMSFrl11Po/Q/ZsM5VG2XgTNdaos=;
+        s=korg; t=1696859241;
+        bh=1/yFd9v93/6ZQUA65cWKEmDUzLhjJGYQaxT3wnRHbj8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YRa3Vwm7haJbvYtQKdZbS72gEdpbajIIiLkWEs4lwDu9tC1C+p4/vp0hzvfFElx1N
-         wQgNfdp9xWDg4OMYwrh+TWi+AxzWHk5Ips1/DEmaTIWfJbh7A9TQ1vrKXq/al8lMJp
-         HYIYC5YSXjstGcvESnTlo+ff6Uv3bfKxUdLTe3Vo=
+        b=nE23zh/g/+/HHDZIRPlqzrFV18Uy/O1Gquvkxw/a0h0pA+IdRWjy2T3V3eJ7/RFfR
+         Nm4SG6zfwvF3PNidr12eWpDLbWmGLmb+VJxsB6FBfz2xbfkkbylkt6HvB1ZI4/hT19
+         WEQmFrY4DXhWpxbnB87a3Nd4SbeESNPT9lhZ1nWI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wenhua Lin <Wenhua.Lin@unisoc.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jann Horn <jannh@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 31/91] gpio: pmic-eic-sprd: Add can_sleep flag for PMIC EIC chip
+Subject: [PATCH 4.14 04/55] dccp: fix dccp_v4_err()/dccp_v6_err() again
 Date:   Mon,  9 Oct 2023 15:06:03 +0200
-Message-ID: <20231009130112.607159234@linuxfoundation.org>
+Message-ID: <20231009130107.874303424@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
-References: <20231009130111.518916887@linuxfoundation.org>
+In-Reply-To: <20231009130107.717692466@linuxfoundation.org>
+References: <20231009130107.717692466@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +51,129 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenhua Lin <Wenhua.Lin@unisoc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 26d9e5640d2130ee16df7b1fb6a908f460ab004c ]
+[ Upstream commit 6af289746a636f71f4c0535a9801774118486c7a ]
 
-The drivers uses a mutex and I2C bus access in its PMIC EIC chip
-get implementation. This means these functions can sleep and the PMIC EIC
-chip should set the can_sleep property to true.
+dh->dccph_x is the 9th byte (offset 8) in "struct dccp_hdr",
+not in the "byte 7" as Jann claimed.
 
-This will ensure that a warning is printed when trying to get the
-value from a context that potentially can't sleep.
+We need to make sure the ICMP messages are big enough,
+using more standard ways (no more assumptions).
 
-Fixes: 348f3cde84ab ("gpio: Add Spreadtrum PMIC EIC driver support")
-Signed-off-by: Wenhua Lin <Wenhua.Lin@unisoc.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+syzbot reported:
+BUG: KMSAN: uninit-value in pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
+BUG: KMSAN: uninit-value in pskb_may_pull include/linux/skbuff.h:2681 [inline]
+BUG: KMSAN: uninit-value in dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
+pskb_may_pull_reason include/linux/skbuff.h:2667 [inline]
+pskb_may_pull include/linux/skbuff.h:2681 [inline]
+dccp_v6_err+0x426/0x1aa0 net/dccp/ipv6.c:94
+icmpv6_notify+0x4c7/0x880 net/ipv6/icmp.c:867
+icmpv6_rcv+0x19d5/0x30d0
+ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
+ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
+NF_HOOK include/linux/netfilter.h:304 [inline]
+ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
+ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
+dst_input include/net/dst.h:468 [inline]
+ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
+NF_HOOK include/linux/netfilter.h:304 [inline]
+ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
+__netif_receive_skb_one_core net/core/dev.c:5523 [inline]
+__netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5637
+netif_receive_skb_internal net/core/dev.c:5723 [inline]
+netif_receive_skb+0x58/0x660 net/core/dev.c:5782
+tun_rx_batched+0x83b/0x920
+tun_get_user+0x564c/0x6940 drivers/net/tun.c:2002
+tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+call_write_iter include/linux/fs.h:1985 [inline]
+new_sync_write fs/read_write.c:491 [inline]
+vfs_write+0x8ef/0x15c0 fs/read_write.c:584
+ksys_write+0x20f/0x4c0 fs/read_write.c:637
+__do_sys_write fs/read_write.c:649 [inline]
+__se_sys_write fs/read_write.c:646 [inline]
+__x64_sys_write+0x93/0xd0 fs/read_write.c:646
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was created at:
+slab_post_alloc_hook+0x12f/0xb70 mm/slab.h:767
+slab_alloc_node mm/slub.c:3478 [inline]
+kmem_cache_alloc_node+0x577/0xa80 mm/slub.c:3523
+kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:559
+__alloc_skb+0x318/0x740 net/core/skbuff.c:650
+alloc_skb include/linux/skbuff.h:1286 [inline]
+alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6313
+sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2795
+tun_alloc_skb drivers/net/tun.c:1531 [inline]
+tun_get_user+0x23cf/0x6940 drivers/net/tun.c:1846
+tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+call_write_iter include/linux/fs.h:1985 [inline]
+new_sync_write fs/read_write.c:491 [inline]
+vfs_write+0x8ef/0x15c0 fs/read_write.c:584
+ksys_write+0x20f/0x4c0 fs/read_write.c:637
+__do_sys_write fs/read_write.c:649 [inline]
+__se_sys_write fs/read_write.c:646 [inline]
+__x64_sys_write+0x93/0xd0 fs/read_write.c:646
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+CPU: 0 PID: 4995 Comm: syz-executor153 Not tainted 6.6.0-rc1-syzkaller-00014-ga747acc0b752 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
+
+Fixes: 977ad86c2a1b ("dccp: Fix out of bounds access in DCCP error handler")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jann Horn <jannh@google.com>
+Reviewed-by: Jann Horn <jannh@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-pmic-eic-sprd.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/dccp/ipv4.c |    9 ++-------
+ net/dccp/ipv6.c |    9 ++-------
+ 2 files changed, 4 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpio/gpio-pmic-eic-sprd.c b/drivers/gpio/gpio-pmic-eic-sprd.c
-index 29e044ff4b17d..7697cb96bf36f 100644
---- a/drivers/gpio/gpio-pmic-eic-sprd.c
-+++ b/drivers/gpio/gpio-pmic-eic-sprd.c
-@@ -341,6 +341,7 @@ static int sprd_pmic_eic_probe(struct platform_device *pdev)
- 	pmic_eic->chip.set_config = sprd_pmic_eic_set_config;
- 	pmic_eic->chip.set = sprd_pmic_eic_set;
- 	pmic_eic->chip.get = sprd_pmic_eic_get;
-+	pmic_eic->chip.can_sleep = true;
+--- a/net/dccp/ipv4.c
++++ b/net/dccp/ipv4.c
+@@ -247,13 +247,8 @@ static void dccp_v4_err(struct sk_buff *
+ 	int err;
+ 	struct net *net = dev_net(skb->dev);
  
- 	pmic_eic->intc.name = dev_name(&pdev->dev);
- 	pmic_eic->intc.irq_mask = sprd_pmic_eic_irq_mask;
--- 
-2.40.1
-
+-	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
+-	 * which is in byte 7 of the dccp header.
+-	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
+-	 *
+-	 * Later on, we want to access the sequence number fields, which are
+-	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
+-	 */
++	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
++		return;
+ 	dh = (struct dccp_hdr *)(skb->data + offset);
+ 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
+ 		return;
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -80,13 +80,8 @@ static void dccp_v6_err(struct sk_buff *
+ 	__u64 seq;
+ 	struct net *net = dev_net(skb->dev);
+ 
+-	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
+-	 * which is in byte 7 of the dccp header.
+-	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
+-	 *
+-	 * Later on, we want to access the sequence number fields, which are
+-	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
+-	 */
++	if (!pskb_may_pull(skb, offset + sizeof(*dh)))
++		return;
+ 	dh = (struct dccp_hdr *)(skb->data + offset);
+ 	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
+ 		return;
 
 
