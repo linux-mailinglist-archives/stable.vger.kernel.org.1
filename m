@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DD127BE1C6
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91DF87BE1C9
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:54:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377546AbjJINyV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:54:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47296 "EHLO
+        id S1377554AbjJINyW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:54:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377557AbjJINxz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:53:55 -0400
+        with ESMTP id S1377605AbjJINyB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:54:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE24C91
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:53:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFC8C433C7;
-        Mon,  9 Oct 2023 13:53:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 206B999
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:54:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE30C433C8;
+        Mon,  9 Oct 2023 13:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696859633;
-        bh=RTQkYVQX0tPoEgYXRsuOwyIcCPjR6oPWmNFDPp0LDbk=;
+        s=korg; t=1696859639;
+        bh=cP160UISGuXzkJ0Oaoif7b7S2zZsjE25U2bLZiDVHss=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sgh/PkqLzPo9eCpt6fwaCBpCnWu2yTTpCxH51SDb49dkjF09JdnyWKF+Fy3F0zSXK
-         10/kqCnJk9Dq87Ps1qzCeVdtmPfvXrX3SbVTVP9XWxN9/GMiTk24NnINa/WzsrrrVJ
-         cCquDFz2SY/72daecsvkzgYOhRBhIHkBHFvGpOLc=
+        b=gurTJjtLBf8d2yDNG6WSb9dIZMrle70TbTa6pqCANrVp/Lkd7L/AxMpqLMhDd+qJe
+         qOGXccKCOyQz/mXqFSGIp+IoMBZZbCBF1sy4H8yIZPQmIjkjWrB86QHYQ5lXO52oAS
+         0VTL92FjdjcreyZ96rdm9Vru7rAwkSjI/pla1K20=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 83/91] sctp: update hb timer immediately after users change hb_interval
-Date:   Mon,  9 Oct 2023 15:06:55 +0200
-Message-ID: <20231009130114.427857385@linuxfoundation.org>
+        patches@lists.linux.dev, Ivan Babrou <ivan@cloudflare.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Hauke Mehrtens <hauke@hauke-m.de>
+Subject: [PATCH 4.19 84/91] cpupower: add Makefile dependencies for install targets
+Date:   Mon,  9 Oct 2023 15:06:56 +0200
+Message-ID: <20231009130114.458915055@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231009130111.518916887@linuxfoundation.org>
 References: <20231009130111.518916887@linuxfoundation.org>
@@ -54,48 +53,67 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Ivan Babrou <ivan@cloudflare.com>
 
-[ Upstream commit 1f4e803cd9c9166eb8b6c8b0b8e4124f7499fc07 ]
+commit fb7791e213a64495ec2336869b868fcd8af14346 upstream.
 
-Currently, when hb_interval is changed by users, it won't take effect
-until the next expiry of hb timer. As the default value is 30s, users
-have to wait up to 30s to wait its hb_interval update to work.
+This allows building cpupower in parallel rather than serially.
 
-This becomes pretty bad in containers where a much smaller value is
-usually set on hb_interval. This patch improves it by resetting the
-hb timer immediately once the value of hb_interval is updated by users.
-
-Note that we don't address the already existing 'problem' when sending
-a heartbeat 'on demand' if one hb has just been sent(from the timer)
-mentioned in:
-
-  https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg590224.html
-
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://lore.kernel.org/r/75465785f8ee5df2fb3acdca9b8fafdc18984098.1696172660.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ivan Babrou <ivan@cloudflare.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Hauke Mehrtens <hauke@hauke-m.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/socket.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/power/cpupower/Makefile       |    8 ++++----
+ tools/power/cpupower/bench/Makefile |    2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 432dccd375064..f954d3c8876db 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -2578,6 +2578,7 @@ static int sctp_apply_peer_addr_params(struct sctp_paddrparams *params,
- 			if (trans) {
- 				trans->hbinterval =
- 				    msecs_to_jiffies(params->spp_hbinterval);
-+				sctp_transport_reset_hb_timer(trans);
- 			} else if (asoc) {
- 				asoc->hbinterval =
- 				    msecs_to_jiffies(params->spp_hbinterval);
--- 
-2.40.1
-
+--- a/tools/power/cpupower/Makefile
++++ b/tools/power/cpupower/Makefile
+@@ -278,14 +278,14 @@ clean:
+ 	$(MAKE) -C bench O=$(OUTPUT) clean
+ 
+ 
+-install-lib:
++install-lib: libcpupower
+ 	$(INSTALL) -d $(DESTDIR)${libdir}
+ 	$(CP) $(OUTPUT)libcpupower.so* $(DESTDIR)${libdir}/
+ 	$(INSTALL) -d $(DESTDIR)${includedir}
+ 	$(INSTALL_DATA) lib/cpufreq.h $(DESTDIR)${includedir}/cpufreq.h
+ 	$(INSTALL_DATA) lib/cpuidle.h $(DESTDIR)${includedir}/cpuidle.h
+ 
+-install-tools:
++install-tools: $(OUTPUT)cpupower
+ 	$(INSTALL) -d $(DESTDIR)${bindir}
+ 	$(INSTALL_PROGRAM) $(OUTPUT)cpupower $(DESTDIR)${bindir}
+ 
+@@ -299,14 +299,14 @@ install-man:
+ 	$(INSTALL_DATA) -D man/cpupower-info.1 $(DESTDIR)${mandir}/man1/cpupower-info.1
+ 	$(INSTALL_DATA) -D man/cpupower-monitor.1 $(DESTDIR)${mandir}/man1/cpupower-monitor.1
+ 
+-install-gmo:
++install-gmo: create-gmo
+ 	$(INSTALL) -d $(DESTDIR)${localedir}
+ 	for HLANG in $(LANGUAGES); do \
+ 		echo '$(INSTALL_DATA) -D $(OUTPUT)po/$$HLANG.gmo $(DESTDIR)${localedir}/$$HLANG/LC_MESSAGES/cpupower.mo'; \
+ 		$(INSTALL_DATA) -D $(OUTPUT)po/$$HLANG.gmo $(DESTDIR)${localedir}/$$HLANG/LC_MESSAGES/cpupower.mo; \
+ 	done;
+ 
+-install-bench:
++install-bench: compile-bench
+ 	@#DESTDIR must be set from outside to survive
+ 	@sbindir=$(sbindir) bindir=$(bindir) docdir=$(docdir) confdir=$(confdir) $(MAKE) -C bench O=$(OUTPUT) install
+ 
+--- a/tools/power/cpupower/bench/Makefile
++++ b/tools/power/cpupower/bench/Makefile
+@@ -27,7 +27,7 @@ $(OUTPUT)cpufreq-bench: $(OBJS)
+ 
+ all: $(OUTPUT)cpufreq-bench
+ 
+-install:
++install: $(OUTPUT)cpufreq-bench
+ 	mkdir -p $(DESTDIR)/$(sbindir)
+ 	mkdir -p $(DESTDIR)/$(bindir)
+ 	mkdir -p $(DESTDIR)/$(docdir)
 
 
