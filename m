@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECB057BE09B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AE137BDEA5
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376910AbjJINmD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:42:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52702 "EHLO
+        id S1376359AbjJINVa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:21:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377386AbjJINmB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:42:01 -0400
+        with ESMTP id S1376380AbjJINVY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB287CF
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020CEC433C9;
-        Mon,  9 Oct 2023 13:41:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B00C5DB
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3EDC433C8;
+        Mon,  9 Oct 2023 13:21:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858918;
-        bh=L92vWIw7RMY336w4OqoWJsF7PpqF/1oPFTzm09x3dpo=;
+        s=korg; t=1696857681;
+        bh=gPyo8Ky/indgNQGiYz0jWUwyukQ/2FD2YrWePHsIbR4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h4IiIUTRcQhO14HcEAimG4o96Ka91BBklmLqLadeN+qTc1KMTNteEjxhh5sjAsyYY
-         6YecBsF2Vp5mgFuDSd4NkzhAi4H1PHLOvMiY08fmTQCzd2HtKJJ2EHChRGJkpC4AF1
-         pUX57e64Wsy8TBrwSqVy6IfTAfbE6Bzp0u17GI/E=
+        b=XDkyO+evcA2n4X397egKCNonkJ0uoWOrdGVn9tTa5lniFZaEY1hhpawuygMnSD4wJ
+         013L9nvVBQAgs4uXY5Wy+v3Ah2uYmkLw8YZErQjmFgREuDKpaOxHbyR3usDLlctJ9W
+         gJWgd35A6oR5o6P46k4bV5yWY37PGMZijn7fjSK4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Irvin Cote <irvin.cote@insa-lyon.fr>,
-        Keith Busch <kbusch@kernel.org>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 141/226] nvme-pci: always return an ERR_PTR from nvme_pci_alloc_dev
-Date:   Mon,  9 Oct 2023 15:01:42 +0200
-Message-ID: <20231009130130.420530709@linuxfoundation.org>
+        patches@lists.linux.dev, Phil Sutter <phil@nwl.cc>,
+        Richard Guy Briggs <rgb@redhat.com>,
+        Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>,
+        Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.1 122/162] netfilter: nf_tables: Deduplicate nft_register_obj audit logs
+Date:   Mon,  9 Oct 2023 15:01:43 +0200
+Message-ID: <20231009130126.295288998@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,49 +51,132 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Irvin Cote <irvin.cote@insa-lyon.fr>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit dc785d69d753a3894c93afc23b91404652382ead ]
+[ Upstream commit 0d880dc6f032e0b541520e9926f398a77d3d433c ]
 
-Don't mix NULL and ERR_PTR returns.
+When adding/updating an object, the transaction handler emits suitable
+audit log entries already, the one in nft_obj_notify() is redundant. To
+fix that (and retain the audit logging from objects' 'update' callback),
+Introduce an "audit log free" variant for internal use.
 
-Fixes: 2e87570be9d2 ("nvme-pci: factor out a nvme_pci_alloc_dev helper")
-Signed-off-by: Irvin Cote <irvin.cote@insa-lyon.fr>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: c520292f29b8 ("audit: log nftables configuration change events once per table")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Reviewed-by: Richard Guy Briggs <rgb@redhat.com>
+Acked-by: Paul Moore <paul@paul-moore.com> (Audit)
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c                 | 44 ++++++++++++-------
+ .../testing/selftests/netfilter/nft_audit.sh  | 20 +++++++++
+ 2 files changed, 48 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 7bb42d0e087af..9c67ebd4eac38 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2868,7 +2868,7 @@ static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 52b81dc1fcf5b..5e3dbe2652dbd 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7576,24 +7576,14 @@ static int nf_tables_delobj(struct sk_buff *skb, const struct nfnl_info *info,
+ 	return nft_delobj(&ctx, obj);
+ }
  
- 	dev = kzalloc_node(sizeof(*dev), GFP_KERNEL, node);
- 	if (!dev)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
- 	INIT_WORK(&dev->ctrl.reset_work, nvme_reset_work);
- 	INIT_WORK(&dev->remove_work, nvme_remove_dead_ctrl_work);
- 	mutex_init(&dev->shutdown_lock);
-@@ -2913,8 +2913,8 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	int result = -ENOMEM;
+-void nft_obj_notify(struct net *net, const struct nft_table *table,
+-		    struct nft_object *obj, u32 portid, u32 seq, int event,
+-		    u16 flags, int family, int report, gfp_t gfp)
++static void
++__nft_obj_notify(struct net *net, const struct nft_table *table,
++		 struct nft_object *obj, u32 portid, u32 seq, int event,
++		 u16 flags, int family, int report, gfp_t gfp)
+ {
+ 	struct nftables_pernet *nft_net = nft_pernet(net);
+ 	struct sk_buff *skb;
+ 	int err;
+-	char *buf = kasprintf(gfp, "%s:%u",
+-			      table->name, nft_net->base_seq);
+-
+-	audit_log_nfcfg(buf,
+-			family,
+-			obj->handle,
+-			event == NFT_MSG_NEWOBJ ?
+-				 AUDIT_NFT_OP_OBJ_REGISTER :
+-				 AUDIT_NFT_OP_OBJ_UNREGISTER,
+-			gfp);
+-	kfree(buf);
  
- 	dev = nvme_pci_alloc_dev(pdev, id);
--	if (!dev)
--		return -ENOMEM;
-+	if (IS_ERR(dev))
-+		return PTR_ERR(dev);
+ 	if (!report &&
+ 	    !nfnetlink_has_listeners(net, NFNLGRP_NFTABLES))
+@@ -7616,13 +7606,35 @@ void nft_obj_notify(struct net *net, const struct nft_table *table,
+ err:
+ 	nfnetlink_set_err(net, portid, NFNLGRP_NFTABLES, -ENOBUFS);
+ }
++
++void nft_obj_notify(struct net *net, const struct nft_table *table,
++		    struct nft_object *obj, u32 portid, u32 seq, int event,
++		    u16 flags, int family, int report, gfp_t gfp)
++{
++	struct nftables_pernet *nft_net = nft_pernet(net);
++	char *buf = kasprintf(gfp, "%s:%u",
++			      table->name, nft_net->base_seq);
++
++	audit_log_nfcfg(buf,
++			family,
++			obj->handle,
++			event == NFT_MSG_NEWOBJ ?
++				 AUDIT_NFT_OP_OBJ_REGISTER :
++				 AUDIT_NFT_OP_OBJ_UNREGISTER,
++			gfp);
++	kfree(buf);
++
++	__nft_obj_notify(net, table, obj, portid, seq, event,
++			 flags, family, report, gfp);
++}
+ EXPORT_SYMBOL_GPL(nft_obj_notify);
  
- 	result = nvme_dev_map(dev);
- 	if (result)
+ static void nf_tables_obj_notify(const struct nft_ctx *ctx,
+ 				 struct nft_object *obj, int event)
+ {
+-	nft_obj_notify(ctx->net, ctx->table, obj, ctx->portid, ctx->seq, event,
+-		       ctx->flags, ctx->family, ctx->report, GFP_KERNEL);
++	__nft_obj_notify(ctx->net, ctx->table, obj, ctx->portid,
++			 ctx->seq, event, ctx->flags, ctx->family,
++			 ctx->report, GFP_KERNEL);
+ }
+ 
+ /*
+diff --git a/tools/testing/selftests/netfilter/nft_audit.sh b/tools/testing/selftests/netfilter/nft_audit.sh
+index 0b3255e7b3538..bb34329e02a7f 100755
+--- a/tools/testing/selftests/netfilter/nft_audit.sh
++++ b/tools/testing/selftests/netfilter/nft_audit.sh
+@@ -85,6 +85,26 @@ do_test "nft add set t1 s2 $setblock; add set t1 s3 { $settype; }" \
+ do_test "nft add element t1 s3 $setelem" \
+ "table=t1 family=2 entries=3 op=nft_register_setelem"
+ 
++# adding counters
++
++do_test 'nft add counter t1 c1' \
++'table=t1 family=2 entries=1 op=nft_register_obj'
++
++do_test 'nft add counter t2 c1; add counter t2 c2' \
++'table=t2 family=2 entries=2 op=nft_register_obj'
++
++# adding/updating quotas
++
++do_test 'nft add quota t1 q1 { 10 bytes }' \
++'table=t1 family=2 entries=1 op=nft_register_obj'
++
++do_test 'nft add quota t2 q1 { 10 bytes }; add quota t2 q2 { 10 bytes }' \
++'table=t2 family=2 entries=2 op=nft_register_obj'
++
++# changing the quota value triggers obj update path
++do_test 'nft add quota t1 q1 { 20 bytes }' \
++'table=t1 family=2 entries=1 op=nft_register_obj'
++
+ # resetting rules
+ 
+ do_test 'nft reset rules t1 c2' \
 -- 
 2.40.1
 
