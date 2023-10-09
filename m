@@ -2,48 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBE207BDE27
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 371B97BDD48
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376431AbjJINQ3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:16:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38144 "EHLO
+        id S1376753AbjJINJP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:09:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377003AbjJINQ0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:16:26 -0400
+        with ESMTP id S1376741AbjJINJO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:09:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 537B410D
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:16:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3E8C433C8;
-        Mon,  9 Oct 2023 13:16:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 279B5AF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:09:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68421C433CB;
+        Mon,  9 Oct 2023 13:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857381;
-        bh=FCxVJvS/h+un1gTQyIl6GpAm8hsgQ7URAD7jOCodVcw=;
+        s=korg; t=1696856951;
+        bh=cB9MJt+msrAo2gbyobVUsX8KVxCteovgQ3jTg/b7BB0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EUSvA6n1n4I4L7LTA8JQVCSlJTWidEJxACs6t08r65pTSdMegNz1p4YMfSYg+nQa9
-         ClvTp9Z89ISI15rF5CtAoRmPDqYvyuq3Ih0/176gx1fSU6G8gLcUWbUDmF4F7G8q/F
-         kl8s8TMfRPygygj9Jj1HY6Pg/hav2siwbqaYsN8Q=
+        b=EPOad1g9K/aQ3Ek8BGTvVSfpPoKqeZtDSIVGWjqeteEyTjOtMyRZGIoEAAPwK3uFp
+         C+81nrGDLStPEFTCQCivABn/I0G091zRD0bWsIEngydM2sjj61d+HEIGiEvFqa7XYN
+         eKIMmFRP5yHz/dmMIawkqH3Oo0UtdYTwooKIX+40=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Shi <yang@os.amperecomputing.com>,
-        Hugh Dickins <hughd@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Oscar Salvador <osalvador@suse.de>,
-        Rafael Aquini <aquini@redhat.com>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>,
-        David Rientjes <rientjes@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/162] mm: mempolicy: keep VMA walk if both MPOL_MF_STRICT and MPOL_MF_MOVE are specified
-Date:   Mon,  9 Oct 2023 15:00:09 +0200
-Message-ID: <20231009130123.722749944@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+2113e61b8848fa7951d8@syzkaller.appspotmail.com,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.5 046/163] io_uring/kbuf: dont allow registered buffer rings on highmem pages
+Date:   Mon,  9 Oct 2023 15:00:10 +0200
+Message-ID: <20231009130125.298121019@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,192 +49,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shi <yang@os.amperecomputing.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 24526268f4e38c9ec0c4a30de4f37ad2a2a84e47 ]
+commit f8024f1f36a30a082b0457d5779c8847cea57f57 upstream.
 
-When calling mbind() with MPOL_MF_{MOVE|MOVEALL} | MPOL_MF_STRICT, kernel
-should attempt to migrate all existing pages, and return -EIO if there is
-misplaced or unmovable page.  Then commit 6f4576e3687b ("mempolicy: apply
-page table walker on queue_pages_range()") messed up the return value and
-didn't break VMA scan early ianymore when MPOL_MF_STRICT alone.  The
-return value problem was fixed by commit a7f40cfe3b7a ("mm: mempolicy:
-make mbind() return -EIO when MPOL_MF_STRICT is specified"), but it broke
-the VMA walk early if unmovable page is met, it may cause some pages are
-not migrated as expected.
+syzbot reports that registering a mapped buffer ring on arm32 can
+trigger an OOPS. Registered buffer rings have two modes, one of them
+is the application passing in the memory that the buffer ring should
+reside in. Once those pages are mapped, we use page_address() to get
+a virtual address. This will obviously fail on highmem pages, which
+aren't mapped.
 
-The code should conceptually do:
+Add a check if we have any highmem pages after mapping, and fail the
+attempt to register a provided buffer ring if we do. This will return
+the same error as kernels that don't support provided buffer rings to
+begin with.
 
- if (MPOL_MF_MOVE|MOVEALL)
-     scan all vmas
-     try to migrate the existing pages
-     return success
- else if (MPOL_MF_MOVE* | MPOL_MF_STRICT)
-     scan all vmas
-     try to migrate the existing pages
-     return -EIO if unmovable or migration failed
- else /* MPOL_MF_STRICT alone */
-     break early if meets unmovable and don't call mbind_range() at all
- else /* none of those flags */
-     check the ranges in test_walk, EFAULT without mbind_range() if discontig.
-
-Fixed the behavior.
-
-Link: https://lkml.kernel.org/r/20230920223242.3425775-1-yang@os.amperecomputing.com
-Fixes: a7f40cfe3b7a ("mm: mempolicy: make mbind() return -EIO when MPOL_MF_STRICT is specified")
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Rafael Aquini <aquini@redhat.com>
-Cc: Kirill A. Shutemov <kirill@shutemov.name>
-Cc: David Rientjes <rientjes@google.com>
-Cc: <stable@vger.kernel.org>	[4.9+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/io-uring/000000000000af635c0606bcb889@google.com/
+Fixes: c56e022c0a27 ("io_uring: add support for user mapped provided buffer ring")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+2113e61b8848fa7951d8@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mempolicy.c | 39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ io_uring/kbuf.c |   27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index 158b0bcd12fd7..bfe2d1d50fbee 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -424,6 +424,7 @@ struct queue_pages {
- 	unsigned long start;
- 	unsigned long end;
- 	struct vm_area_struct *first;
-+	bool has_unmovable;
- };
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -481,7 +481,7 @@ static int io_pin_pbuf_ring(struct io_ur
+ {
+ 	struct io_uring_buf_ring *br;
+ 	struct page **pages;
+-	int nr_pages;
++	int i, nr_pages;
  
- /*
-@@ -444,9 +445,8 @@ static inline bool queue_pages_required(struct page *page,
- /*
-  * queue_folios_pmd() has three possible return values:
-  * 0 - folios are placed on the right node or queued successfully, or
-- *     special page is met, i.e. huge zero page.
-- * 1 - there is unmovable folio, and MPOL_MF_MOVE* & MPOL_MF_STRICT were
-- *     specified.
-+ *     special page is met, i.e. zero page, or unmovable page is found
-+ *     but continue walking (indicated by queue_pages.has_unmovable).
-  * -EIO - is migration entry or only MPOL_MF_STRICT was specified and an
-  *        existing folio was already on a node that does not follow the
-  *        policy.
-@@ -477,7 +477,7 @@ static int queue_folios_pmd(pmd_t *pmd, spinlock_t *ptl, unsigned long addr,
- 	if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)) {
- 		if (!vma_migratable(walk->vma) ||
- 		    migrate_folio_add(folio, qp->pagelist, flags)) {
--			ret = 1;
-+			qp->has_unmovable = true;
- 			goto unlock;
- 		}
- 	} else
-@@ -493,9 +493,8 @@ static int queue_folios_pmd(pmd_t *pmd, spinlock_t *ptl, unsigned long addr,
-  *
-  * queue_folios_pte_range() has three possible return values:
-  * 0 - folios are placed on the right node or queued successfully, or
-- *     special page is met, i.e. zero page.
-- * 1 - there is unmovable folio, and MPOL_MF_MOVE* & MPOL_MF_STRICT were
-- *     specified.
-+ *     special page is met, i.e. zero page, or unmovable page is found
-+ *     but continue walking (indicated by queue_pages.has_unmovable).
-  * -EIO - only MPOL_MF_STRICT was specified and an existing folio was already
-  *        on a node that does not follow the policy.
-  */
-@@ -506,7 +505,6 @@ static int queue_folios_pte_range(pmd_t *pmd, unsigned long addr,
- 	struct folio *folio;
- 	struct queue_pages *qp = walk->private;
- 	unsigned long flags = qp->flags;
--	bool has_unmovable = false;
- 	pte_t *pte, *mapped_pte;
- 	spinlock_t *ptl;
+ 	pages = io_pin_pages(reg->ring_addr,
+ 			     flex_array_size(br, bufs, reg->ring_entries),
+@@ -489,6 +489,17 @@ static int io_pin_pbuf_ring(struct io_ur
+ 	if (IS_ERR(pages))
+ 		return PTR_ERR(pages);
  
-@@ -533,11 +531,12 @@ static int queue_folios_pte_range(pmd_t *pmd, unsigned long addr,
- 		if (!queue_pages_required(&folio->page, qp))
- 			continue;
- 		if (flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)) {
--			/* MPOL_MF_STRICT must be specified if we get here */
--			if (!vma_migratable(vma)) {
--				has_unmovable = true;
--				break;
--			}
-+			/*
-+			 * MPOL_MF_STRICT must be specified if we get here.
-+			 * Continue walking vmas due to MPOL_MF_MOVE* flags.
-+			 */
-+			if (!vma_migratable(vma))
-+				qp->has_unmovable = true;
- 
- 			/*
- 			 * Do not abort immediately since there may be
-@@ -545,16 +544,13 @@ static int queue_folios_pte_range(pmd_t *pmd, unsigned long addr,
- 			 * need migrate other LRU pages.
- 			 */
- 			if (migrate_folio_add(folio, qp->pagelist, flags))
--				has_unmovable = true;
-+				qp->has_unmovable = true;
- 		} else
- 			break;
- 	}
- 	pte_unmap_unlock(mapped_pte, ptl);
- 	cond_resched();
- 
--	if (has_unmovable)
--		return 1;
++	/*
++	 * Apparently some 32-bit boxes (ARM) will return highmem pages,
++	 * which then need to be mapped. We could support that, but it'd
++	 * complicate the code and slowdown the common cases quite a bit.
++	 * So just error out, returning -EINVAL just like we did on kernels
++	 * that didn't support mapped buffer rings.
++	 */
++	for (i = 0; i < nr_pages; i++)
++		if (PageHighMem(pages[i]))
++			goto error_unpin;
++
+ 	br = page_address(pages[0]);
+ #ifdef SHM_COLOUR
+ 	/*
+@@ -500,13 +511,8 @@ static int io_pin_pbuf_ring(struct io_ur
+ 	 * should use IOU_PBUF_RING_MMAP instead, and liburing will handle
+ 	 * this transparently.
+ 	 */
+-	if ((reg->ring_addr | (unsigned long) br) & (SHM_COLOUR - 1)) {
+-		int i;
 -
- 	return addr != end ? -EIO : 0;
+-		for (i = 0; i < nr_pages; i++)
+-			unpin_user_page(pages[i]);
+-		return -EINVAL;
+-	}
++	if ((reg->ring_addr | (unsigned long) br) & (SHM_COLOUR - 1))
++		goto error_unpin;
+ #endif
+ 	bl->buf_pages = pages;
+ 	bl->buf_nr_pages = nr_pages;
+@@ -514,6 +520,11 @@ static int io_pin_pbuf_ring(struct io_ur
+ 	bl->is_mapped = 1;
+ 	bl->is_mmap = 0;
+ 	return 0;
++error_unpin:
++	for (i = 0; i < nr_pages; i++)
++		unpin_user_page(pages[i]);
++	kvfree(pages);
++	return -EINVAL;
  }
  
-@@ -594,7 +590,7 @@ static int queue_pages_hugetlb(pte_t *pte, unsigned long hmask,
- 		 * Detecting misplaced page but allow migrating pages which
- 		 * have been queued.
- 		 */
--		ret = 1;
-+		qp->has_unmovable = true;
- 		goto unlock;
- 	}
- 
-@@ -608,7 +604,7 @@ static int queue_pages_hugetlb(pte_t *pte, unsigned long hmask,
- 			 * Failed to isolate page but allow migrating pages
- 			 * which have been queued.
- 			 */
--			ret = 1;
-+			qp->has_unmovable = true;
- 	}
- unlock:
- 	spin_unlock(ptl);
-@@ -737,10 +733,13 @@ queue_pages_range(struct mm_struct *mm, unsigned long start, unsigned long end,
- 		.start = start,
- 		.end = end,
- 		.first = NULL,
-+		.has_unmovable = false,
- 	};
- 
- 	err = walk_page_range(mm, start, end, &queue_pages_walk_ops, &qp);
- 
-+	if (qp.has_unmovable)
-+		err = 1;
- 	if (!qp.first)
- 		/* whole range in hole */
- 		err = -EFAULT;
-@@ -1338,7 +1337,7 @@ static long do_mbind(unsigned long start, unsigned long len,
- 				putback_movable_pages(&pagelist);
- 		}
- 
--		if ((ret > 0) || (nr_failed && (flags & MPOL_MF_STRICT)))
-+		if (((ret > 0) || nr_failed) && (flags & MPOL_MF_STRICT))
- 			err = -EIO;
- 	} else {
- up_out:
--- 
-2.40.1
-
+ static int io_alloc_pbuf_ring(struct io_uring_buf_reg *reg,
 
 
