@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE5367BE08F
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2ABA7BDE94
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:20:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377356AbjJINlc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:41:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51878 "EHLO
+        id S1346560AbjJINUw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:20:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377354AbjJINlb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:41:31 -0400
+        with ESMTP id S1346549AbjJINUv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:20:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 373C89C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:41:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A489C433C7;
-        Mon,  9 Oct 2023 13:41:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E0394
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:20:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA27C433C7;
+        Mon,  9 Oct 2023 13:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858889;
-        bh=bO+nvJHTMAxeiIv3+7W69+N4co15SDvqMfHC8XkvcFg=;
+        s=korg; t=1696857649;
+        bh=0aXlL9X8Y1DHqSnavf+G12kX5jVAXMANCjtMuRSo7Xs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cS7zkRHWMPaUt20PGDafDV0Cs2RU5i6WUsR+36wHb/9Yu1gkbbnGNsSj3CqATf/8x
-         99Pg2syoFQ18zQPFSBzvxWb1e84++SDCtR/GzhZ+6Pvnv4X6zjKe44VBXyThc/lOB1
-         th22kLC+s8+fr0OaRcVONXDM6S80JExRlgYD7svU=
+        b=htMsCxBnVtuAmPgKkbgtnUWOi2TTVZRtC3J8W+KtXXu4tTKsKHsEQbxVpINEhxW3D
+         A1fcokgt1jKPdrJcR8nbmh8T1J0LIxuYI56KPNeiwREibhLDnLEepACXZomjERVWtZ
+         yzCiDHemOC6m6f9qYz6r8dCLcyxW6tpo0nl6qW6s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Keith Busch <kbusch@kernel.org>,
-        Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>,
-        Alexander Deucher <Alexander.Deucher@amd.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Prike Liang <prike.liang@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 133/226] ACPI: Check StorageD3Enable _DSD property in ACPI code
+        patches@lists.linux.dev, Andrew Lunn <andrew@lunn.ch>,
+        Fabio Estevam <festevam@denx.de>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 113/162] net: dsa: mv88e6xxx: Avoid EEPROM timeout when EEPROM is absent
 Date:   Mon,  9 Oct 2023 15:01:34 +0200
-Message-ID: <20231009130130.233069496@linuxfoundation.org>
+Message-ID: <20231009130126.048490631@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
+References: <20231009130122.946357448@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,144 +51,177 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 2744d7a0733503931b71c00d156119ced002f22c ]
+[ Upstream commit 6ccf50d4d4741e064ba35511a95402c63bbe21a8 ]
 
-Although first implemented for NVME, this check may be usable by
-other drivers as well. Microsoft's specification explicitly mentions
-that is may be usable by SATA and AHCI devices.  Google also indicates
-that they have used this with SDHCI in a downstream kernel tree that
-a user can plug a storage device into.
+Since commit 23d775f12dcd ("net: dsa: mv88e6xxx: Wait for EEPROM done
+before HW reset") the following error is seen on a imx8mn board with
+a 88E6320 switch:
 
-Link: https://docs.microsoft.com/en-us/windows-hardware/design/component-guidelines/power-management-for-storage-hardware-devices-intro
-Suggested-by: Keith Busch <kbusch@kernel.org>
-CC: Shyam-sundar S-k <Shyam-sundar.S-k@amd.com>
-CC: Alexander Deucher <Alexander.Deucher@amd.com>
-CC: Rafael J. Wysocki <rjw@rjwysocki.net>
-CC: Prike Liang <prike.liang@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Stable-dep-of: dad651b2a44e ("nvme-pci: do not set the NUMA node of device if it has none")
+mv88e6085 30be0000.ethernet-1:00: Timeout waiting for EEPROM done
+
+This board does not have an EEPROM attached to the switch though.
+
+This problem is well explained by Andrew Lunn:
+
+"If there is an EEPROM, and the EEPROM contains a lot of data, it could
+be that when we perform a hardware reset towards the end of probe, it
+interrupts an I2C bus transaction, leaving the I2C bus in a bad state,
+and future reads of the EEPROM do not work.
+
+The work around for this was to poll the EEInt status and wait for it
+to go true before performing the hardware reset.
+
+However, we have discovered that for some boards which do not have an
+EEPROM, EEInt never indicates complete. As a result,
+mv88e6xxx_g1_wait_eeprom_done() spins for a second and then prints a
+warning.
+
+We probably need a different solution than calling
+mv88e6xxx_g1_wait_eeprom_done(). The datasheet for 6352 documents the
+EEPROM Command register:
+
+bit 15 is:
+
+  EEPROM Unit Busy. This bit must be set to a one to start an EEPROM
+  operation (see EEOp below). Only one EEPROM operation can be
+  executing at one time so this bit must be zero before setting it to
+  a one.  When the requested EEPROM operation completes this bit will
+  automatically be cleared to a zero. The transition of this bit from
+  a one to a zero can be used to generate an interrupt (the EEInt in
+  Global 1, offset 0x00).
+
+and more interesting is bit 11:
+
+  Register Loader Running. This bit is set to one whenever the
+  register loader is busy executing instructions contained in the
+  EEPROM."
+
+Change to using mv88e6xxx_g2_eeprom_wait() to fix the timeout error
+when the EEPROM chip is not present.
+
+Fixes: 23d775f12dcd ("net: dsa: mv88e6xxx: Wait for EEPROM done before HW reset")
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/device_pm.c | 29 +++++++++++++++++++++++++++++
- drivers/nvme/host/pci.c  | 28 +---------------------------
- include/linux/acpi.h     |  5 +++++
- 3 files changed, 35 insertions(+), 27 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c    |  6 ++++--
+ drivers/net/dsa/mv88e6xxx/global1.c | 31 -----------------------------
+ drivers/net/dsa/mv88e6xxx/global1.h |  1 -
+ drivers/net/dsa/mv88e6xxx/global2.c |  2 +-
+ drivers/net/dsa/mv88e6xxx/global2.h |  1 +
+ 5 files changed, 6 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/acpi/device_pm.c b/drivers/acpi/device_pm.c
-index ecd2ddc2215f5..66e53df758655 100644
---- a/drivers/acpi/device_pm.c
-+++ b/drivers/acpi/device_pm.c
-@@ -1326,4 +1326,33 @@ int acpi_dev_pm_attach(struct device *dev, bool power_on)
- 	return 1;
- }
- EXPORT_SYMBOL_GPL(acpi_dev_pm_attach);
-+
-+/**
-+ * acpi_storage_d3 - Check if D3 should be used in the suspend path
-+ * @dev: Device to check
-+ *
-+ * Return %true if the platform firmware wants @dev to be programmed
-+ * into D3hot or D3cold (if supported) in the suspend path, or %false
-+ * when there is no specific preference. On some platforms, if this
-+ * hint is ignored, @dev may remain unresponsive after suspending the
-+ * platform as a whole.
-+ *
-+ * Although the property has storage in the name it actually is
-+ * applied to the PCIe slot and plugging in a non-storage device the
-+ * same platform restrictions will likely apply.
-+ */
-+bool acpi_storage_d3(struct device *dev)
-+{
-+	struct acpi_device *adev = ACPI_COMPANION(dev);
-+	u8 val;
-+
-+	if (!adev)
-+		return false;
-+	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
-+			&val))
-+		return false;
-+	return val == 1;
-+}
-+EXPORT_SYMBOL_GPL(acpi_storage_d3);
-+
- #endif /* CONFIG_PM */
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 3aaead9b3a570..e384ade6c2cd2 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2840,32 +2840,6 @@ static unsigned long check_vendor_combination_bug(struct pci_dev *pdev)
- 	return 0;
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index a73008b9e0b3c..ba906dfab055c 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -3012,14 +3012,16 @@ static void mv88e6xxx_hardware_reset(struct mv88e6xxx_chip *chip)
+ 		 * from the wrong location resulting in the switch booting
+ 		 * to wrong mode and inoperable.
+ 		 */
+-		mv88e6xxx_g1_wait_eeprom_done(chip);
++		if (chip->info->ops->get_eeprom)
++			mv88e6xxx_g2_eeprom_wait(chip);
+ 
+ 		gpiod_set_value_cansleep(gpiod, 1);
+ 		usleep_range(10000, 20000);
+ 		gpiod_set_value_cansleep(gpiod, 0);
+ 		usleep_range(10000, 20000);
+ 
+-		mv88e6xxx_g1_wait_eeprom_done(chip);
++		if (chip->info->ops->get_eeprom)
++			mv88e6xxx_g2_eeprom_wait(chip);
+ 	}
  }
  
--#ifdef CONFIG_ACPI
--static bool nvme_acpi_storage_d3(struct pci_dev *dev)
+diff --git a/drivers/net/dsa/mv88e6xxx/global1.c b/drivers/net/dsa/mv88e6xxx/global1.c
+index 5848112036b08..964928285782c 100644
+--- a/drivers/net/dsa/mv88e6xxx/global1.c
++++ b/drivers/net/dsa/mv88e6xxx/global1.c
+@@ -75,37 +75,6 @@ static int mv88e6xxx_g1_wait_init_ready(struct mv88e6xxx_chip *chip)
+ 	return mv88e6xxx_g1_wait_bit(chip, MV88E6XXX_G1_STS, bit, 1);
+ }
+ 
+-void mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip)
 -{
--	struct acpi_device *adev = ACPI_COMPANION(&dev->dev);
--	u8 val;
+-	const unsigned long timeout = jiffies + 1 * HZ;
+-	u16 val;
+-	int err;
 -
--	/*
--	 * Look for _DSD property specifying that the storage device on the port
--	 * must use D3 to support deep platform power savings during
--	 * suspend-to-idle.
+-	/* Wait up to 1 second for the switch to finish reading the
+-	 * EEPROM.
 -	 */
+-	while (time_before(jiffies, timeout)) {
+-		err = mv88e6xxx_g1_read(chip, MV88E6XXX_G1_STS, &val);
+-		if (err) {
+-			dev_err(chip->dev, "Error reading status");
+-			return;
+-		}
 -
--	if (!adev)
--		return false;
--	if (fwnode_property_read_u8(acpi_fwnode_handle(adev), "StorageD3Enable",
--			&val))
--		return false;
--	return val == 1;
--}
--#else
--static inline bool nvme_acpi_storage_d3(struct pci_dev *dev)
--{
--	return false;
--}
--#endif /* CONFIG_ACPI */
+-		/* If the switch is still resetting, it may not
+-		 * respond on the bus, and so MDIO read returns
+-		 * 0xffff. Differentiate between that, and waiting for
+-		 * the EEPROM to be done by bit 0 being set.
+-		 */
+-		if (val != 0xffff &&
+-		    val & BIT(MV88E6XXX_G1_STS_IRQ_EEPROM_DONE))
+-			return;
 -
- static void nvme_async_probe(void *data, async_cookie_t cookie)
+-		usleep_range(1000, 2000);
+-	}
+-
+-	dev_err(chip->dev, "Timeout waiting for EEPROM done");
+-}
+-
+ /* Offset 0x01: Switch MAC Address Register Bytes 0 & 1
+  * Offset 0x02: Switch MAC Address Register Bytes 2 & 3
+  * Offset 0x03: Switch MAC Address Register Bytes 4 & 5
+diff --git a/drivers/net/dsa/mv88e6xxx/global1.h b/drivers/net/dsa/mv88e6xxx/global1.h
+index 65958b2a0d3a3..04b57a21f7868 100644
+--- a/drivers/net/dsa/mv88e6xxx/global1.h
++++ b/drivers/net/dsa/mv88e6xxx/global1.h
+@@ -281,7 +281,6 @@ int mv88e6xxx_g1_set_switch_mac(struct mv88e6xxx_chip *chip, u8 *addr);
+ int mv88e6185_g1_reset(struct mv88e6xxx_chip *chip);
+ int mv88e6352_g1_reset(struct mv88e6xxx_chip *chip);
+ int mv88e6250_g1_reset(struct mv88e6xxx_chip *chip);
+-void mv88e6xxx_g1_wait_eeprom_done(struct mv88e6xxx_chip *chip);
+ 
+ int mv88e6185_g1_ppu_enable(struct mv88e6xxx_chip *chip);
+ int mv88e6185_g1_ppu_disable(struct mv88e6xxx_chip *chip);
+diff --git a/drivers/net/dsa/mv88e6xxx/global2.c b/drivers/net/dsa/mv88e6xxx/global2.c
+index ec49939968fac..ac302a935ce69 100644
+--- a/drivers/net/dsa/mv88e6xxx/global2.c
++++ b/drivers/net/dsa/mv88e6xxx/global2.c
+@@ -340,7 +340,7 @@ int mv88e6xxx_g2_pot_clear(struct mv88e6xxx_chip *chip)
+  * Offset 0x15: EEPROM Addr (for 8-bit data access)
+  */
+ 
+-static int mv88e6xxx_g2_eeprom_wait(struct mv88e6xxx_chip *chip)
++int mv88e6xxx_g2_eeprom_wait(struct mv88e6xxx_chip *chip)
  {
- 	struct nvme_dev *dev = data;
-@@ -2915,7 +2889,7 @@ static int nvme_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	int bit = __bf_shf(MV88E6XXX_G2_EEPROM_CMD_BUSY);
+ 	int err;
+diff --git a/drivers/net/dsa/mv88e6xxx/global2.h b/drivers/net/dsa/mv88e6xxx/global2.h
+index c05fad5c9f19d..751a6c988de42 100644
+--- a/drivers/net/dsa/mv88e6xxx/global2.h
++++ b/drivers/net/dsa/mv88e6xxx/global2.h
+@@ -359,6 +359,7 @@ int mv88e6xxx_g2_trunk_clear(struct mv88e6xxx_chip *chip);
  
- 	quirks |= check_vendor_combination_bug(pdev);
+ int mv88e6xxx_g2_device_mapping_write(struct mv88e6xxx_chip *chip, int target,
+ 				      int port);
++int mv88e6xxx_g2_eeprom_wait(struct mv88e6xxx_chip *chip);
  
--	if (!noacpi && nvme_acpi_storage_d3(pdev)) {
-+	if (!noacpi && acpi_storage_d3(&pdev->dev)) {
- 		/*
- 		 * Some systems use a bios work around to ask for D3 on
- 		 * platforms that support kernel managed suspend.
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 96d69404a54ff..9c184dbceba47 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1001,6 +1001,7 @@ int acpi_dev_resume(struct device *dev);
- int acpi_subsys_runtime_suspend(struct device *dev);
- int acpi_subsys_runtime_resume(struct device *dev);
- int acpi_dev_pm_attach(struct device *dev, bool power_on);
-+bool acpi_storage_d3(struct device *dev);
- #else
- static inline int acpi_subsys_runtime_suspend(struct device *dev) { return 0; }
- static inline int acpi_subsys_runtime_resume(struct device *dev) { return 0; }
-@@ -1008,6 +1009,10 @@ static inline int acpi_dev_pm_attach(struct device *dev, bool power_on)
- {
- 	return 0;
- }
-+static inline bool acpi_storage_d3(struct device *dev)
-+{
-+	return false;
-+}
- #endif
- 
- #if defined(CONFIG_ACPI) && defined(CONFIG_PM_SLEEP)
+ extern const struct mv88e6xxx_irq_ops mv88e6097_watchdog_ops;
+ extern const struct mv88e6xxx_irq_ops mv88e6250_watchdog_ops;
 -- 
 2.40.1
 
