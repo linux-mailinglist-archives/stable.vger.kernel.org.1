@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1789B7BDF81
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 185117BDE78
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:19:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376677AbjJINao (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:30:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51860 "EHLO
+        id S1346545AbjJINTy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:19:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377072AbjJINam (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:30:42 -0400
+        with ESMTP id S1376859AbjJINNq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABCD69C
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:30:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E223AC433C7;
-        Mon,  9 Oct 2023 13:30:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2724EDA
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:13:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B81C433C8;
+        Mon,  9 Oct 2023 13:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858239;
-        bh=HDWamliAc6wjq6HXOOhNCR/YMhE3AsnPz4uxSV7h2uY=;
+        s=korg; t=1696857219;
+        bh=+RnOo12wrl1I0feDyrsJ1jQTrrpwpWverXEySU6V90A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1Spj3UZpMACK2LpzHC8pk1pppBwmJLM2fBFenau24XOzoQYOh49O3EgrDQ8W3CoLy
-         5y/fxHWc6NVXh3r5u7BdKEmeGlGAxul3/7RfkBJCwpASoQG5XUsKJke9H2pXfcStHQ
-         ILjP9OdHo7SIYW5cgpcyit0CGYuZLLr5jSGRcP9k=
+        b=E7NCdOOk1U7WVzR1wpGU8c4BnqcZ4SmAyeFrHQbXZzO2eFFS3lxwj53tMJTYisdLP
+         FFkwZFf4MBQiopsjXZPqvyQLSr7BioW57E9J9vuy2k/mR97k2nM+wvj9LtLb0pgP03
+         Bgk0qtzP66LYBzqP2F6r4/8yL5VC3hhg46oxeKRE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Borkmann <daniel@iogearbox.net>,
-        Stanislav Fomichev <sdf@google.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 060/131] bpf: Clarify error expectations from bpf_clone_redirect
-Date:   Mon,  9 Oct 2023 15:01:40 +0200
-Message-ID: <20231009130118.130831356@linuxfoundation.org>
+        patches@lists.linux.dev, John David Anglin <dave.anglin@bell.net>,
+        Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.5 137/163] parisc: Restore __ldcw_align for PA-RISC 2.0 processors
+Date:   Mon,  9 Oct 2023 15:01:41 +0200
+Message-ID: <20231009130127.830600934@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
-References: <20231009130116.329529591@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,67 +48,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@google.com>
+From: John David Anglin <dave@parisc-linux.org>
 
-[ Upstream commit 7cb779a6867fea00b4209bcf6de2f178a743247d ]
+commit 914988e099fc658436fbd7b8f240160c352b6552 upstream.
 
-Commit 151e887d8ff9 ("veth: Fixing transmit return status for dropped
-packets") exposed the fact that bpf_clone_redirect is capable of
-returning raw NET_XMIT_XXX return codes.
+Back in 2005, Kyle McMartin removed the 16-byte alignment for
+ldcw semaphores on PA 2.0 machines (CONFIG_PA20). This broke
+spinlocks on pre PA8800 processors. The main symptom was random
+faults in mmap'd memory (e.g., gcc compilations, etc).
 
-This is in the conflict with its UAPI doc which says the following:
-"0 on success, or a negative error in case of failure."
+Unfortunately, the errata for this ldcw change is lost.
 
-Update the UAPI to reflect the fact that bpf_clone_redirect can
-return positive error numbers, but don't explicitly define
-their meaning.
+The issue is the 16-byte alignment required for ldcw semaphore
+instructions can only be reduced to natural alignment when the
+ldcw operation can be handled coherently in cache. Only PA8800
+and PA8900 processors actually support doing the operation in
+cache.
 
-Reported-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230911194731.286342-1-sdf@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Aligning the spinlock dynamically adds two integer instructions
+to each spinlock.
+
+Tested on rp3440, c8000 and a500.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Link: https://lore.kernel.org/linux-parisc/6b332788-2227-127f-ba6d-55e99ecf4ed8@bell.net/T/#t
+Link: https://lore.kernel.org/linux-parisc/20050609050702.GB4641@roadwarrior.mcmartin.ca/
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/bpf.h       | 4 +++-
- tools/include/uapi/linux/bpf.h | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ arch/parisc/include/asm/ldcw.h           |   37 ++++++++++++++++---------------
+ arch/parisc/include/asm/spinlock_types.h |    5 ----
+ 2 files changed, 20 insertions(+), 22 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index cb0631098f918..e5250a9b813d6 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -780,7 +780,9 @@ union bpf_attr {
-  * 		performed again, if the helper is used in combination with
-  * 		direct packet access.
-  * 	Return
-- * 		0 on success, or a negative error in case of failure.
-+ * 		0 on success, or a negative error in case of failure. Positive
-+ * 		error indicates a potential drop or congestion in the target
-+ * 		device. The particular positive error codes are not defined.
-  *
-  * u64 bpf_get_current_pid_tgid(void)
-  * 	Return
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index cb0631098f918..e5250a9b813d6 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -780,7 +780,9 @@ union bpf_attr {
-  * 		performed again, if the helper is used in combination with
-  * 		direct packet access.
-  * 	Return
-- * 		0 on success, or a negative error in case of failure.
-+ * 		0 on success, or a negative error in case of failure. Positive
-+ * 		error indicates a potential drop or congestion in the target
-+ * 		device. The particular positive error codes are not defined.
-  *
-  * u64 bpf_get_current_pid_tgid(void)
-  * 	Return
--- 
-2.40.1
-
+--- a/arch/parisc/include/asm/ldcw.h
++++ b/arch/parisc/include/asm/ldcw.h
+@@ -2,39 +2,42 @@
+ #ifndef __PARISC_LDCW_H
+ #define __PARISC_LDCW_H
+ 
+-#ifndef CONFIG_PA20
+ /* Because kmalloc only guarantees 8-byte alignment for kmalloc'd data,
+    and GCC only guarantees 8-byte alignment for stack locals, we can't
+    be assured of 16-byte alignment for atomic lock data even if we
+    specify "__attribute ((aligned(16)))" in the type declaration.  So,
+    we use a struct containing an array of four ints for the atomic lock
+    type and dynamically select the 16-byte aligned int from the array
+-   for the semaphore.  */
++   for the semaphore. */
++
++/* From: "Jim Hull" <jim.hull of hp.com>
++   I've attached a summary of the change, but basically, for PA 2.0, as
++   long as the ",CO" (coherent operation) completer is implemented, then the
++   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
++   they only require "natural" alignment (4-byte for ldcw, 8-byte for
++   ldcd).
++
++   Although the cache control hint is accepted by all PA 2.0 processors,
++   it is only implemented on PA8800/PA8900 CPUs. Prior PA8X00 CPUs still
++   require 16-byte alignment. If the address is unaligned, the operation
++   of the instruction is undefined. The ldcw instruction does not generate
++   unaligned data reference traps so misaligned accesses are not detected.
++   This hid the problem for years. So, restore the 16-byte alignment dropped
++   by Kyle McMartin in "Remove __ldcw_align for PA-RISC 2.0 processors". */
+ 
+ #define __PA_LDCW_ALIGNMENT	16
+-#define __PA_LDCW_ALIGN_ORDER	4
+ #define __ldcw_align(a) ({					\
+ 	unsigned long __ret = (unsigned long) &(a)->lock[0];	\
+ 	__ret = (__ret + __PA_LDCW_ALIGNMENT - 1)		\
+ 		& ~(__PA_LDCW_ALIGNMENT - 1);			\
+ 	(volatile unsigned int *) __ret;			\
+ })
+-#define __LDCW	"ldcw"
+ 
+-#else /*CONFIG_PA20*/
+-/* From: "Jim Hull" <jim.hull of hp.com>
+-   I've attached a summary of the change, but basically, for PA 2.0, as
+-   long as the ",CO" (coherent operation) completer is specified, then the
+-   16-byte alignment requirement for ldcw and ldcd is relaxed, and instead
+-   they only require "natural" alignment (4-byte for ldcw, 8-byte for
+-   ldcd). */
+-
+-#define __PA_LDCW_ALIGNMENT	4
+-#define __PA_LDCW_ALIGN_ORDER	2
+-#define __ldcw_align(a) (&(a)->slock)
++#ifdef CONFIG_PA20
+ #define __LDCW	"ldcw,co"
+-
+-#endif /*!CONFIG_PA20*/
++#else
++#define __LDCW	"ldcw"
++#endif
+ 
+ /* LDCW, the only atomic read-write operation PA-RISC has. *sigh*.
+    We don't explicitly expose that "*a" may be written as reload
+--- a/arch/parisc/include/asm/spinlock_types.h
++++ b/arch/parisc/include/asm/spinlock_types.h
+@@ -9,15 +9,10 @@
+ #ifndef __ASSEMBLY__
+ 
+ typedef struct {
+-#ifdef CONFIG_PA20
+-	volatile unsigned int slock;
+-# define __ARCH_SPIN_LOCK_UNLOCKED { __ARCH_SPIN_LOCK_UNLOCKED_VAL }
+-#else
+ 	volatile unsigned int lock[4];
+ # define __ARCH_SPIN_LOCK_UNLOCKED	\
+ 	{ { __ARCH_SPIN_LOCK_UNLOCKED_VAL, __ARCH_SPIN_LOCK_UNLOCKED_VAL, \
+ 	    __ARCH_SPIN_LOCK_UNLOCKED_VAL, __ARCH_SPIN_LOCK_UNLOCKED_VAL } }
+-#endif
+ } arch_spinlock_t;
+ 
+ 
 
 
