@@ -2,71 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 640B57BD4E7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 10:10:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA6CB7BD51A
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 10:25:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345459AbjJIIKe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 04:10:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53018 "EHLO
+        id S234401AbjJIIZp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 04:25:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345456AbjJIIKd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 04:10:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD3558F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 01:09:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1696838985;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=AqPDhZB6/AeVtIYszpl2A9PEXcu7eSDjsahfk9WGBvY=;
-        b=AEqYA0d0Yq5uqSA8DsTzG6YNeZv/cIlyxrgszKvwkMuCk8gVY+85TU3ncAX4QsiN7TNWiB
-        ciQMXsXcUH3YLDbHMTlDBizysdPX79CB8AFE/Q5Ml/b5FCYFtBvMeP0z9u/9U2qfw0xi6U
-        vUjASAzppGxoc7Dl9gfNefd46/h5Fsg=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-bm3yI52EPcCaPWMBMmDCWw-1; Mon, 09 Oct 2023 04:09:33 -0400
-X-MC-Unique: bm3yI52EPcCaPWMBMmDCWw-1
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-9a9e12a3093so470535266b.0
-        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 01:09:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696838971; x=1697443771;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AqPDhZB6/AeVtIYszpl2A9PEXcu7eSDjsahfk9WGBvY=;
-        b=sDqvwQWp0tg1rHIJjWHZ5UQkD+bJH4gsVjwvLPrC85vKtUhXUKyNKlEuGi5CJC+vH1
-         sxo+HtDUQhGCQAKfud1VOdSEVRyibQ0fXa/d6nlF4Tz/LrEJb+rWml0o3gg6ml3/1arH
-         mK8y1JOVpDD1kqRTABisTMddGYM+VNo3zvoGCWutCF5aeJ+2nw2G4QF7oe4wUjQzMJwI
-         jZQ0U/FKYiGb0IwVJcre2O91/VXPJD0nfL3kWz/AN7cAPX9bENmT8avjY28c387zotM4
-         AtBqOBSpiGZd+of/Wm9j23iB3KHLBdFnJi940EtwY3fd/pg3wMuQV5MNuApDOrlxqj+/
-         sZZg==
-X-Gm-Message-State: AOJu0YzPI20v/shELA/DX0k3TNWEjLe70J1Nsa9ka45KEaMGdvW4mT0f
-        qEHtwq+audymMKArQlWPXU+S8gURodbSDNrI5R3Ga7QarqC9PVrxvAPDztLdp2lNXrHlth3dDfx
-        ZFqDV4gJrlSySzt4evC7pqVXqIALD+7iA
-X-Received: by 2002:a17:906:739c:b0:9a1:ca55:d0cb with SMTP id f28-20020a170906739c00b009a1ca55d0cbmr10743959ejl.23.1696838971768;
-        Mon, 09 Oct 2023 01:09:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFmlWzwg4gDqOfBiB3fQBb8xrlYRnlav6xsAYgYZnmAfFLAQTsEXYXh3I/cro0z8JHTx2pAY+ucplFtAtlXVwQ=
-X-Received: by 2002:a17:906:739c:b0:9a1:ca55:d0cb with SMTP id
- f28-20020a170906739c00b009a1ca55d0cbmr10743939ejl.23.1696838971440; Mon, 09
- Oct 2023 01:09:31 -0700 (PDT)
+        with ESMTP id S234375AbjJIIZn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 04:25:43 -0400
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DF1AA6;
+        Mon,  9 Oct 2023 01:25:41 -0700 (PDT)
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3997fCIn001364;
+        Mon, 9 Oct 2023 10:24:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding:content-type; s=selector1; bh=YAiMtH1
+        WN1ZSofJZ2d2JMLIB05s+WCXSQFpdn3fuvVU=; b=HzWTIyYjSLBMvi4XTl2KnnL
+        SmhhoBF3o9/3b+si7Ya8bSxPUjQkSutp57DRKO/OWwTSgSF87GFB9ZHwmTu6i44D
+        YPS9EUB8Ee6MJDRhPPGFNWoOs74MZHGngGbhFophPS3zh6TQuIR/mmIpevlFKglf
+        5LBP4+eb09nqSVGqhzyzJi9lAMpmyqiCAgmeK3MkS04JMPAP0mP1SNe0s90518XL
+        cmqZxiT+Y5dAFT/RZHtYH1ampsTebk11tteLKNu0RgJdHIDiQdfbRMJL+bUm5Ozm
+        +JoY5JIP3d1+30fv0eb5bZPblDMf/o3bpHPDuA60JbnB0A7WZGu+oZNNNnPRqIg=
+        =
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3tkhg5v22x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 09 Oct 2023 10:24:54 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id A60CC10006B;
+        Mon,  9 Oct 2023 10:24:51 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 9CE582194DE;
+        Mon,  9 Oct 2023 10:24:51 +0200 (CEST)
+Received: from localhost (10.201.20.208) by SHFDAG1NODE3.st.com (10.75.129.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 9 Oct
+ 2023 10:24:51 +0200
+From:   Amelie Delaunay <amelie.delaunay@foss.st.com>
+To:     Vinod Koul <vkoul@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        M'boumba Cedric Madianga <cedric.madianga@gmail.com>,
+        Pierre-Yves MORDRET <pierre-yves.mordret@st.com>
+CC:     Alain Volmat <alain.volmat@foss.st.com>,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        <stable@vger.kernel.org>, <dmaengine@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH] dmaengine: stm32-mdma: correct desc prep when channel running
+Date:   Mon, 9 Oct 2023 10:24:50 +0200
+Message-ID: <20231009082450.452877-1-amelie.delaunay@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20230907002211.633935-1-xiubli@redhat.com>
-In-Reply-To: <20230907002211.633935-1-xiubli@redhat.com>
-From:   Milind Changire <mchangir@redhat.com>
-Date:   Mon, 9 Oct 2023 13:38:55 +0530
-Message-ID: <CAED=hWCKc-pnMQUKmjwgyG5489c5OjUHt-ri2gL+Ps1hGdewrw@mail.gmail.com>
-Subject: Re: [PATCH v2] ceph: remove the incorrect caps check in _file_size()
-To:     xiubli@redhat.com
-Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.201.20.208]
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE3.st.com
+ (10.75.129.71)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-09_07,2023-10-06_01,2023-05-22_02
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,60 +75,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Looks good to me
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-Reviewed-by: Milind Changire <mchangir@redhat.com>
+In case of the prep descriptor while the channel is already running, the
+CCR register value stored into the channel could already have its EN bit
+set.  This would lead to a bad transfer since, at start transfer time,
+enabling the channel while other registers aren't yet properly set.
+To avoid this, ensure to mask the CCR_EN bit when storing the ccr value
+into the mdma channel structure.
 
-On Thu, Sep 7, 2023 at 5:54=E2=80=AFAM <xiubli@redhat.com> wrote:
->
-> From: Xiubo Li <xiubli@redhat.com>
->
-> When truncating the inode the MDS will acquire the xlock for the
-> ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
-> But when the client just releases and flushes the 'Fw' caps to MDS,
-> for exmaple, and once the MDS receives the caps flushing msg it
-> just thought the revocation has finished. Then the MDS will continue
-> truncating the inode and then issued the truncate notification to
-> all the clients. While just before the clients receives the cap
-> flushing ack they receive the truncation notification, the clients
-> will detecte that the 'issued | dirty' is still holding the 'Fw'
-> caps.
->
-> Fixes: b0d7c2231015 ("ceph: introduce i_truncate_mutex")
-> Cc: stable@vger.kernel.org
-> URL: https://tracker.ceph.com/issues/56693
-> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> ---
->
-> V2:
-> - Added the info about which commit it's fixing
->
->
->  fs/ceph/inode.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
-> index ea6f966dacd5..8017b9e5864f 100644
-> --- a/fs/ceph/inode.c
-> +++ b/fs/ceph/inode.c
-> @@ -769,9 +769,7 @@ int ceph_fill_file_size(struct inode *inode, int issu=
-ed,
->                         ci->i_truncate_seq =3D truncate_seq;
->
->                         /* the MDS should have revoked these caps */
-> -                       WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
-> -                                              CEPH_CAP_FILE_RD |
-> -                                              CEPH_CAP_FILE_WR |
-> +                       WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
->                                                CEPH_CAP_FILE_LAZYIO));
->                         /*
->                          * If we hold relevant caps, or in the case where=
- we're
-> --
-> 2.41.0
->
+Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/dma/stm32-mdma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-
---=20
-Milind
+diff --git a/drivers/dma/stm32-mdma.c b/drivers/dma/stm32-mdma.c
+index bae08b3f55c7..f414efdbd809 100644
+--- a/drivers/dma/stm32-mdma.c
++++ b/drivers/dma/stm32-mdma.c
+@@ -489,7 +489,7 @@ static int stm32_mdma_set_xfer_param(struct stm32_mdma_chan *chan,
+ 	src_maxburst = chan->dma_config.src_maxburst;
+ 	dst_maxburst = chan->dma_config.dst_maxburst;
+ 
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
+ 
+@@ -965,7 +965,7 @@ stm32_mdma_prep_dma_memcpy(struct dma_chan *c, dma_addr_t dest, dma_addr_t src,
+ 	if (!desc)
+ 		return NULL;
+ 
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
+ 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
+-- 
+2.25.1
 
