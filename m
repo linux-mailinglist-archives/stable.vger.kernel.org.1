@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4817BDEA7
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:21:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FC697BDEF3
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:24:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376380AbjJINVg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:21:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55774 "EHLO
+        id S1376489AbjJINYw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:24:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376383AbjJINVc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:21:32 -0400
+        with ESMTP id S1376495AbjJINYw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:24:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 607D6A6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:21:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9B4C433C9;
-        Mon,  9 Oct 2023 13:21:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFBDA3
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:24:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADF4C433C8;
+        Mon,  9 Oct 2023 13:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857691;
-        bh=oSgug/i+4Xb9zIPLWQB5YQI7aPHA8qJWwMGUAvvXuPQ=;
+        s=korg; t=1696857890;
+        bh=G0VZqjTOvUDk6v1ZChkno4uOQ3GwLI8aKj+QfJ1wtkY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eQeseP908pODn7TFd8b+TwDhOhGZM8ARr1zxYjlHSTsLWPgqNf5HupG19Ny2oFV2I
-         /KuVlBrRkJCw7WFjqJTbpbqKL/8Wl8/ytbeRy8ceaK3mGQXohMGfIWChF9jNYiBVMT
-         B1QpfiKH6DZDnKQoYiWvFYeMEmKQgF6KRrc2rCFU=
+        b=V9IMX1HB/lDy8ts0PCblCGXqHfZuI6x/5/BbAVW8kLEJz1pzD0JdC4LmHx6oc/TMG
+         +qfQsDpuCJ+UKzdZmnWoteC4EwufpnAefiO42deo9pxyXz543z9FmiIPn31EiPOjWZ
+         kS3/erQoyo/37B2KiyIwBi+OAqi5I/IVDQJ7ppa8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/162] net: stmmac: dwmac-stm32: fix resume on STM32 MCU
-Date:   Mon,  9 Oct 2023 15:01:46 +0200
-Message-ID: <20231009130126.375075467@linuxfoundation.org>
+        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
+        Jordan Rife <jrife@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 25/75] net: prevent rewrite of msg_name in sock_sendmsg()
+Date:   Mon,  9 Oct 2023 15:01:47 +0200
+Message-ID: <20231009130112.114785526@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +50,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Jordan Rife <jrife@google.com>
 
-[ Upstream commit 6f195d6b0da3b689922ba9e302af2f49592fa9fc ]
+commit 86a7e0b69bd5b812e48a20c66c2161744f3caa16 upstream.
 
-The STM32MP1 keeps clk_rx enabled during suspend, and therefore the
-driver does not enable the clock in stm32_dwmac_init() if the device was
-suspended. The problem is that this same code runs on STM32 MCUs, which
-do disable clk_rx during suspend, causing the clock to never be
-re-enabled on resume.
+Callers of sock_sendmsg(), and similarly kernel_sendmsg(), in kernel
+space may observe their value of msg_name change in cases where BPF
+sendmsg hooks rewrite the send address. This has been confirmed to break
+NFS mounts running in UDP mode and has the potential to break other
+systems.
 
-This patch adds a variant flag to indicate that clk_rx remains enabled
-during suspend, and uses this to decide whether to enable the clock in
-stm32_dwmac_init() if the device was suspended.
+This patch:
 
-This approach fixes this specific bug with limited opportunity for
-unintended side-effects, but I have a follow up patch that will refactor
-the clock configuration and hopefully make it less error prone.
+1) Creates a new function called __sock_sendmsg() with same logic as the
+   old sock_sendmsg() function.
+2) Replaces calls to sock_sendmsg() made by __sys_sendto() and
+   __sys_sendmsg() with __sock_sendmsg() to avoid an unnecessary copy,
+   as these system calls are already protected.
+3) Modifies sock_sendmsg() so that it makes a copy of msg_name if
+   present before passing it down the stack to insulate callers from
+   changes to the send address.
 
-Fixes: 6528e02cc9ff ("net: ethernet: stmmac: add adaptation for stm32mp157c.")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20230927175749.1419774-1-ben.wolsieffer@hefring.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
+Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/socket.c |   29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-index 2b38a499a4045..533f5245ad945 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-stm32.c
-@@ -105,6 +105,7 @@ struct stm32_ops {
- 	int (*parse_data)(struct stm32_dwmac *dwmac,
- 			  struct device *dev);
- 	u32 syscfg_eth_mask;
-+	bool clk_rx_enable_in_suspend;
- };
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -708,6 +708,14 @@ static inline int sock_sendmsg_nosec(str
+ 	return ret;
+ }
  
- static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
-@@ -122,7 +123,8 @@ static int stm32_dwmac_init(struct plat_stmmacenet_data *plat_dat)
- 	if (ret)
- 		return ret;
++static int __sock_sendmsg(struct socket *sock, struct msghdr *msg)
++{
++	int err = security_socket_sendmsg(sock, msg,
++					  msg_data_left(msg));
++
++	return err ?: sock_sendmsg_nosec(sock, msg);
++}
++
+ /**
+  *	sock_sendmsg - send a message through @sock
+  *	@sock: socket
+@@ -718,10 +726,19 @@ static inline int sock_sendmsg_nosec(str
+  */
+ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
+ {
+-	int err = security_socket_sendmsg(sock, msg,
+-					  msg_data_left(msg));
++	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
++	struct sockaddr_storage address;
++	int ret;
  
--	if (!dwmac->dev->power.is_suspended) {
-+	if (!dwmac->ops->clk_rx_enable_in_suspend ||
-+	    !dwmac->dev->power.is_suspended) {
- 		ret = clk_prepare_enable(dwmac->clk_rx);
- 		if (ret) {
- 			clk_disable_unprepare(dwmac->clk_tx);
-@@ -515,7 +517,8 @@ static struct stm32_ops stm32mp1_dwmac_data = {
- 	.suspend = stm32mp1_suspend,
- 	.resume = stm32mp1_resume,
- 	.parse_data = stm32mp1_parse_data,
--	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK
-+	.syscfg_eth_mask = SYSCFG_MP1_ETH_MASK,
-+	.clk_rx_enable_in_suspend = true
- };
+-	return err ?: sock_sendmsg_nosec(sock, msg);
++	if (msg->msg_name) {
++		memcpy(&address, msg->msg_name, msg->msg_namelen);
++		msg->msg_name = &address;
++	}
++
++	ret = __sock_sendmsg(sock, msg);
++	msg->msg_name = save_addr;
++
++	return ret;
+ }
+ EXPORT_SYMBOL(sock_sendmsg);
  
- static const struct of_device_id stm32_dwmac_match[] = {
--- 
-2.40.1
-
+@@ -1057,7 +1074,7 @@ static ssize_t sock_write_iter(struct ki
+ 	if (sock->type == SOCK_SEQPACKET)
+ 		msg.msg_flags |= MSG_EOR;
+ 
+-	res = sock_sendmsg(sock, &msg);
++	res = __sock_sendmsg(sock, &msg);
+ 	*from = msg.msg_iter;
+ 	return res;
+ }
+@@ -2036,7 +2053,7 @@ int __sys_sendto(int fd, void __user *bu
+ 	if (sock->file->f_flags & O_NONBLOCK)
+ 		flags |= MSG_DONTWAIT;
+ 	msg.msg_flags = flags;
+-	err = sock_sendmsg(sock, &msg);
++	err = __sock_sendmsg(sock, &msg);
+ 
+ out_put:
+ 	fput_light(sock->file, fput_needed);
+@@ -2409,7 +2426,7 @@ static int ____sys_sendmsg(struct socket
+ 		err = sock_sendmsg_nosec(sock, msg_sys);
+ 		goto out_freectl;
+ 	}
+-	err = sock_sendmsg(sock, msg_sys);
++	err = __sock_sendmsg(sock, msg_sys);
+ 	/*
+ 	 * If this is sendmmsg() and sending to current destination address was
+ 	 * successful, remember it.
 
 
