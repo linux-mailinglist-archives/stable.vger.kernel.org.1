@@ -2,68 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6FFD7BEA2B
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 20:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07B797BEA57
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 21:09:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377787AbjJISzF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 14:55:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57002 "EHLO
+        id S1346661AbjJITJN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 15:09:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377493AbjJISzE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 14:55:04 -0400
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA05CAC
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 11:55:02 -0700 (PDT)
-Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-6c4bf619b57so3319646a34.1
-        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 11:55:02 -0700 (PDT)
+        with ESMTP id S1346660AbjJITJM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 15:09:12 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99B259D;
+        Mon,  9 Oct 2023 12:09:11 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-693375d2028so4345554b3a.2;
+        Mon, 09 Oct 2023 12:09:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1696877701; x=1697482501; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=iJwkzFuyAdDYOqKvXthH475nhmBuMPEvyZ05xp9AozU=;
-        b=c7rVszI1mwOLLmwu/czfH0ouM/2ud6EQKOjE/0eqSv8ztQB6Q0d9uY6uGD264KDTOH
-         iRzBIWke5scyyI2+p9zvoIKQcT3s30jsVgZ7zbjwW02JlihZ1OWn77DrOUmp9c+e8YBc
-         6v5NxyeXZNMVBm0eHBfZPky6bU5Mk9NXcWyy+0C/jxkswmgjaxO6SJfD5WT9RAuybE/l
-         YCuctds14sCCV8k3gxRMq3+FfbLK1kecuzYzS0z6Hd1DByzfBuzCcDOb28eNGisc/lDS
-         WY00TF9fl7YmuMSLHmwuwaQ3QDeONATp5YTdiNi/GEkgnHPqG1t5sQURjief72lcncIE
-         dh7Q==
+        d=gmail.com; s=20230601; t=1696878551; x=1697483351; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2WB2O+ZBzB4ZMkeQ2reQ4/yBz+9uB3jIVkq0VzlaCUY=;
+        b=MZSHmExeSeBfbLThBj5mbMPFrCmIjRfqA6onajkf6lWvKZjzR2WFdEQyqqio7tUiXU
+         KJ62chzJ0T21JY1rSRLHMu9kJ5RLIiSnbBUsV6jhUhtOSNHEeVLiOcAer5i9QVsDaMdP
+         MOq4czUvlUxj7Q+2WxABdHjlrX8+d7y+cbz3oaZxer1lAg3fXa0sPavsFIsYj1CTXx2r
+         Zn26RAhn6yOWFS+sNaYuTU84xUKFXpxH4sc2Fguml6D7/mBVtkctCUjta2DYFE6u4PIB
+         qNCHOgcwu9idqaYbGTrdu3DEOkd8EHA2Gr69eLefQuJV3YijleXfwQuKYhlPKLHJq32N
+         Wj1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696877701; x=1697482501;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iJwkzFuyAdDYOqKvXthH475nhmBuMPEvyZ05xp9AozU=;
-        b=vDgtMH3HigoD3DM+SO70SY1JtbS8VCamsUK2nboM6ZvImiiejYxgXQwpRx+250mOEV
-         ucW+Vj8Eouwp1JZC0qh7k1FoKsyi8bz/mDAoTJ2PUG0xYVCTjU9WnJ6OdOOm8Nl+S1ma
-         YvDke286GiPnbCfX98eHMO+0tLQulRFbADYlIT+HrPBo8DaFxWhxoS2iFyZWBmUR0Mmg
-         EnkA9Fvyj80lEjS91i49n6E7M+QfdEvpjRjDkIFRYbENA/h+I+oqYcu0taSDMMXT4ahz
-         CbbOZtkNOoYQ89eHl4C0Re3bnGbOont4t0pOUoc+9oMtko4U8ifeqwdKZvzCr8eltoe5
-         vzcw==
-X-Gm-Message-State: AOJu0YzpS9Ou8XTw0OexYS6iqgkiQgYdxFCIMjV1Bdh7qYxWv+E957Jq
-        f9JXKhJJeynyRvR/PUsJuzPbcPi7Fx6siwNkadpeSg==
-X-Google-Smtp-Source: AGHT+IF/FU24/DUGaGdsfWsSWpARnpA0dtjTTAtwKzDljj0ay05WjEY07CLH3k9UJVpRIgNbte/Czw==
-X-Received: by 2002:a9d:6194:0:b0:6bd:844:69d5 with SMTP id g20-20020a9d6194000000b006bd084469d5mr17801638otk.4.1696877701367;
-        Mon, 09 Oct 2023 11:55:01 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id o1-20020a639a01000000b005781e026905sm8632234pge.56.2023.10.09.11.55.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Oct 2023 11:55:00 -0700 (PDT)
-Message-ID: <65244c84.630a0220.860a2.5a37@mx.google.com>
-Date:   Mon, 09 Oct 2023 11:55:00 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1696878551; x=1697483351;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2WB2O+ZBzB4ZMkeQ2reQ4/yBz+9uB3jIVkq0VzlaCUY=;
+        b=hxLcqF1UCB4UeP+2yylQCvb0fIYhzgyL01lc979F26JV8jJBL7uRarm41z+Aa7a4Sx
+         w+pSmzDF9AJuYV1tTj2F+pMCa/kRJqVc8yTZhr0ohdaoQIRn70RUO/StQD7yrbBhukaJ
+         dleJeJQ+mQd6sTKL98oxecqC4rYbb0vhBl8pM63yFejDf45j9H5jAJtWHdDWAzbCsBz7
+         6QWkCBdoZRDuxqAkKuAAGeXmADfpsUqNzcG0f4RcqU1l+K1NIFMlSyJoX7FYuYTUK9yD
+         EdEBRe6NrNRFM1OyhvHwHeAMIvV1x73niVhN565dGSTctRXPEJjSgcA61L+o7X6/f6RV
+         OOwg==
+X-Gm-Message-State: AOJu0Yz7HjAkiutXufN/yRTFIjxO568ecwP581trRhKkF2JuKkpjaosD
+        B3I+xPQ+PdFsyOULpReLpA8=
+X-Google-Smtp-Source: AGHT+IHqi/Arp5jO9UE8mGcTD2ZBtMrBThOiTbPkKB2cIKERsnzlL7P8eOjGCjenBXvVB4E+NMPaQQ==
+X-Received: by 2002:a05:6a00:2394:b0:690:2ad9:1454 with SMTP id f20-20020a056a00239400b006902ad91454mr20897163pfc.33.1696878551009;
+        Mon, 09 Oct 2023 12:09:11 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id gx9-20020a056a001e0900b00692b2a63cccsm6729012pfb.210.2023.10.09.12.09.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Oct 2023 12:09:10 -0700 (PDT)
+Message-ID: <cb16ada8-4c7a-4134-aca9-41983521e388@gmail.com>
+Date:   Mon, 9 Oct 2023 12:09:08 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v6.1.56
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable
-Subject: stable/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.56)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4 000/131] 5.4.258-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20231009130116.329529591@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,155 +78,29 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.5=
-6)
+On 10/9/23 06:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.258 release.
+> There are 131 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 11 Oct 2023 13:00:55 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.258-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.1.y/ke=
-rnel/v6.1.56/
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Tree: stable
-Branch: linux-6.1.y
-Git Describe: v6.1.56
-Git Commit: ecda77b46871007ab0e6c671fe9df5795dd8154a
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
-Built: 7 unique architectures
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
