@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F8657BDDF2
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6313F7BDEF9
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376903AbjJINOU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41476 "EHLO
+        id S1376553AbjJINZI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:25:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376706AbjJINOR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:17 -0400
+        with ESMTP id S1376538AbjJINZH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:25:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90EBF8F
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04CCC433CC;
-        Mon,  9 Oct 2023 13:14:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B550B6
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:25:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC009C433C7;
+        Mon,  9 Oct 2023 13:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857255;
-        bh=SzPcKmQg/Q0LO1WranIIcjecWz3GqGrw9/A0O3kZst0=;
+        s=korg; t=1696857906;
+        bh=2RtmlAmmM68utYKbW2nekhy/aigrmCRphBtDMcy4eiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tLNc3Hsv5parjGTVGn4Z+H73CIaHZz6VUm6jyH1hF74D8bNJVQN50Ysw+wrKU7NPx
-         yfd+x+B7cBXBmJmnMWYIyL0zqOuAIna3Bd6OyBUf4dqJtEUv1yVfYWNgJf14521WCI
-         lp5Wujd/K95ItEJBUK/fR56Bkh+CWjsNSoZTCwLA=
+        b=p6ZOPDdYkyfWTmAva/wSHazQl6OowRnkHFkER/+duovKR0fC5U46cky+StANcKphH
+         SsuJ8mzM5Z2Gdgw4pKi8AlOCX9hhB69A2mqJTZKL2z6MdJvmykvGSGA51M3k/o/sDx
+         CZij08sqYVkWHEnTBJiiW9bzgoXE53oWBbBC05L0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Sameer Pujar <spujar@nvidia.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 122/163] netfilter: nf_tables: nft_set_rbtree: fix spurious insertion failure
+Subject: [PATCH 5.15 04/75] ASoC: tegra: Fix redundant PLLA and PLLA_OUT0 updates
 Date:   Mon,  9 Oct 2023 15:01:26 +0200
-Message-ID: <20231009130127.406642271@linuxfoundation.org>
+Message-ID: <20231009130111.350245775@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+References: <20231009130111.200710898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,183 +49,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Sameer Pujar <spujar@nvidia.com>
 
-[ Upstream commit 087388278e0f301f4c61ddffb1911d3a180f84b8 ]
+[ Upstream commit e765886249c533e1bb5cbc3cd741bad677417312 ]
 
-nft_rbtree_gc_elem() walks back and removes the end interval element that
-comes before the expired element.
+Tegra audio graph card has many DAI links which connects internal
+AHUB modules and external audio codecs. Since these are DPCM links,
+hw_params() call in the machine driver happens for each connected
+BE link and PLLA is updated every time. This is not really needed
+for all links as only I/O link DAIs derive respective clocks from
+PLLA_OUT0 and thus from PLLA. Hence add checks to limit the clock
+updates to DAIs over I/O links.
 
-There is a small chance that we've cached this element as 'rbe_ge'.
-If this happens, we hold and test a pointer that has been queued for
-freeing.
+This found to be fixing a DMIC clock discrepancy which is suspected
+to happen because of back to back quick PLLA and PLLA_OUT0 rate
+updates. This was observed on Jetson TX2 platform where DMIC clock
+ended up with unexpected value.
 
-It also causes spurious insertion failures:
-
-$ cat test-testcases-sets-0044interval_overlap_0.1/testout.log
-Error: Could not process rule: File exists
-add element t s {  0 -  2 }
-                   ^^^^^^
-Failed to insert  0 -  2 given:
-table ip t {
-        set s {
-                type inet_service
-                flags interval,timeout
-                timeout 2s
-                gc-interval 2s
-        }
-}
-
-The set (rbtree) is empty. The 'failure' doesn't happen on next attempt.
-
-Reason is that when we try to insert, the tree may hold an expired
-element that collides with the range we're adding.
-While we do evict/erase this element, we can trip over this check:
-
-if (rbe_ge && nft_rbtree_interval_end(rbe_ge) && nft_rbtree_interval_end(new))
-      return -ENOTEMPTY;
-
-rbe_ge was erased by the synchronous gc, we should not have done this
-check.  Next attempt won't find it, so retry results in successful
-insertion.
-
-Restart in-kernel to avoid such spurious errors.
-
-Such restart are rare, unless userspace intentionally adds very large
-numbers of elements with very short timeouts while setting a huge
-gc interval.
-
-Even in this case, this cannot loop forever, on each retry an existing
-element has been removed.
-
-As the caller is holding the transaction mutex, its impossible
-for a second entity to add more expiring elements to the tree.
-
-After this it also becomes feasible to remove the async gc worker
-and perform all garbage collection from the commit path.
-
-Fixes: c9e6978e2725 ("netfilter: nft_set_rbtree: Switch to node list walk for overlap detection")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 202e2f774543 ("ASoC: tegra: Add audio graph based card driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://lore.kernel.org/r/1694098945-32760-3-git-send-email-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_rbtree.c | 46 +++++++++++++++++++++-------------
- 1 file changed, 29 insertions(+), 17 deletions(-)
+ sound/soc/tegra/tegra_audio_graph_card.c | 30 ++++++++++++++----------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index 487572dcd6144..2660ceab3759d 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -233,10 +233,9 @@ static void nft_rbtree_gc_remove(struct net *net, struct nft_set *set,
- 	rb_erase(&rbe->node, &priv->root);
- }
+diff --git a/sound/soc/tegra/tegra_audio_graph_card.c b/sound/soc/tegra/tegra_audio_graph_card.c
+index 1f2c5018bf5ac..4737e776d3837 100644
+--- a/sound/soc/tegra/tegra_audio_graph_card.c
++++ b/sound/soc/tegra/tegra_audio_graph_card.c
+@@ -10,6 +10,7 @@
+ #include <linux/platform_device.h>
+ #include <sound/graph_card.h>
+ #include <sound/pcm_params.h>
++#include <sound/soc-dai.h>
  
--static int nft_rbtree_gc_elem(const struct nft_set *__set,
--			      struct nft_rbtree *priv,
--			      struct nft_rbtree_elem *rbe,
--			      u8 genmask)
-+static const struct nft_rbtree_elem *
-+nft_rbtree_gc_elem(const struct nft_set *__set, struct nft_rbtree *priv,
-+		   struct nft_rbtree_elem *rbe, u8 genmask)
- {
- 	struct nft_set *set = (struct nft_set *)__set;
- 	struct rb_node *prev = rb_prev(&rbe->node);
-@@ -246,7 +245,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
+ #define MAX_PLLA_OUT0_DIV 128
  
- 	gc = nft_trans_gc_alloc(set, 0, GFP_ATOMIC);
- 	if (!gc)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
+@@ -44,6 +45,21 @@ struct tegra_audio_cdata {
+ 	unsigned int plla_out0_rates[NUM_RATE_TYPE];
+ };
  
- 	/* search for end interval coming before this element.
- 	 * end intervals don't carry a timeout extension, they
-@@ -261,6 +260,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
- 		prev = rb_prev(prev);
- 	}
- 
-+	rbe_prev = NULL;
- 	if (prev) {
- 		rbe_prev = rb_entry(prev, struct nft_rbtree_elem, node);
- 		nft_rbtree_gc_remove(net, set, priv, rbe_prev);
-@@ -272,7 +272,7 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
- 		 */
- 		gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
- 		if (WARN_ON_ONCE(!gc))
--			return -ENOMEM;
-+			return ERR_PTR(-ENOMEM);
- 
- 		nft_trans_gc_elem_add(gc, rbe_prev);
- 	}
-@@ -280,13 +280,13 @@ static int nft_rbtree_gc_elem(const struct nft_set *__set,
- 	nft_rbtree_gc_remove(net, set, priv, rbe);
- 	gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
- 	if (WARN_ON_ONCE(!gc))
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
- 
- 	nft_trans_gc_elem_add(gc, rbe);
- 
- 	nft_trans_gc_queue_sync_done(gc);
- 
--	return 0;
-+	return rbe_prev;
- }
- 
- static bool nft_rbtree_update_first(const struct nft_set *set,
-@@ -314,7 +314,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	u8 cur_genmask = nft_genmask_cur(net);
- 	u8 genmask = nft_genmask_next(net);
--	int d, err;
-+	int d;
- 
- 	/* Descend the tree to search for an existing element greater than the
- 	 * key value to insert that is greater than the new element. This is the
-@@ -363,9 +363,14 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 		 */
- 		if (nft_set_elem_expired(&rbe->ext) &&
- 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
--			err = nft_rbtree_gc_elem(set, priv, rbe, genmask);
--			if (err < 0)
--				return err;
-+			const struct nft_rbtree_elem *removed_end;
++static bool need_clk_update(struct snd_soc_dai *dai)
++{
++	if (snd_soc_dai_is_dummy(dai) ||
++	    !dai->driver->ops ||
++	    !dai->driver->name)
++		return false;
 +
-+			removed_end = nft_rbtree_gc_elem(set, priv, rbe, genmask);
-+			if (IS_ERR(removed_end))
-+				return PTR_ERR(removed_end);
++	if (strstr(dai->driver->name, "I2S") ||
++	    strstr(dai->driver->name, "DMIC") ||
++	    strstr(dai->driver->name, "DSPK"))
++		return true;
 +
-+			if (removed_end == rbe_le || removed_end == rbe_ge)
-+				return -EAGAIN;
- 
- 			continue;
- 		}
-@@ -486,11 +491,18 @@ static int nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	struct nft_rbtree_elem *rbe = elem->priv;
++	return false;
++}
++
+ /* Setup PLL clock as per the given sample rate */
+ static int tegra_audio_graph_update_pll(struct snd_pcm_substream *substream,
+ 					struct snd_pcm_hw_params *params)
+@@ -140,19 +156,7 @@ static int tegra_audio_graph_hw_params(struct snd_pcm_substream *substream,
+ 	struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
  	int err;
  
--	write_lock_bh(&priv->lock);
--	write_seqcount_begin(&priv->count);
--	err = __nft_rbtree_insert(net, set, rbe, ext);
--	write_seqcount_end(&priv->count);
--	write_unlock_bh(&priv->lock);
-+	do {
-+		if (fatal_signal_pending(current))
-+			return -EINTR;
-+
-+		cond_resched();
-+
-+		write_lock_bh(&priv->lock);
-+		write_seqcount_begin(&priv->count);
-+		err = __nft_rbtree_insert(net, set, rbe, ext);
-+		write_seqcount_end(&priv->count);
-+		write_unlock_bh(&priv->lock);
-+	} while (err == -EAGAIN);
- 
- 	return err;
- }
+-	/*
+-	 * This gets called for each DAI link (FE or BE) when DPCM is used.
+-	 * We may not want to update PLLA rate for each call. So PLLA update
+-	 * must be restricted to external I/O links (I2S, DMIC or DSPK) since
+-	 * they actually depend on it. I/O modules update their clocks in
+-	 * hw_param() of their respective component driver and PLLA rate
+-	 * update here helps them to derive appropriate rates.
+-	 *
+-	 * TODO: When more HW accelerators get added (like sample rate
+-	 * converter, volume gain controller etc., which don't really
+-	 * depend on PLLA) we need a better way to filter here.
+-	 */
+-	if (cpu_dai->driver->ops && rtd->dai_link->no_pcm) {
++	if (need_clk_update(cpu_dai)) {
+ 		err = tegra_audio_graph_update_pll(substream, params);
+ 		if (err)
+ 			return err;
 -- 
 2.40.1
 
