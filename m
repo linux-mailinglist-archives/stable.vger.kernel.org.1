@@ -2,78 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 839F47BEAD1
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 21:48:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F2297BEAFC
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 21:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346683AbjJITsU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 15:48:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44408 "EHLO
+        id S1377401AbjJITzH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 15:55:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346674AbjJITsU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 15:48:20 -0400
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED43A6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 12:48:19 -0700 (PDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-692a885f129so3666750b3a.0
-        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 12:48:19 -0700 (PDT)
+        with ESMTP id S1377185AbjJITzG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 15:55:06 -0400
+Received: from mail-oo1-xc29.google.com (mail-oo1-xc29.google.com [IPv6:2607:f8b0:4864:20::c29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713B5AF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 12:55:04 -0700 (PDT)
+Received: by mail-oo1-xc29.google.com with SMTP id 006d021491bc7-57ad95c555eso2642863eaf.3
+        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 12:55:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1696880899; x=1697485699; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YnnGBorqi/0sryABcLeiVXw4usVlXXVKQE9toG3inJM=;
-        b=e23yKq1wv/lY0x9LjebsVqZvLDC3yPdbjBtEyEgGrIxa5/qW5r8N3OKAZN6Fe4AI2C
-         iBYNB18joJFFK+/Of93yr1coecNoCqRoHQOzFzxtTQvgQzAVc+JKy3yXUm0PscC5TDD8
-         VyIz40oa3DURNPKhXQnNorxfjCrCgHOEwuaXU=
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1696881303; x=1697486103; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=PdjYDVUhRx0Pjaer8gHT06T2R5MySz7JksSiIKQ7YYk=;
+        b=zZ3075HUSCHY/AkhMyatZNHXMedHyyKhP677TxwTEyHMgYhKSfEaCUN9rh4HrnF/fb
+         09v8x6woFiXHGYttK3uXwlrarHzxcyC3PpNO6dRWRjBQ9/nclPYKBWHuptuAcTXanx8f
+         6T+cXQ1J1vYKxThnadd5GKzVDYY6MTW+DQqnAOMiYn711PuuB2UWBf6AahGSF4v5mWYO
+         S8QLQBuA5bwFLOoJn6gjsiwICFvtx6/GDVs1XhawtLS4VCwsWF6Yv56FduJst20KXc8b
+         d4E6lafCMRePgfgufQ8ODEy4F2nlfl0glCshz+l6f4kbx2skkUl86PKhVDga3WzIU8wm
+         8E/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696880899; x=1697485699;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YnnGBorqi/0sryABcLeiVXw4usVlXXVKQE9toG3inJM=;
-        b=amL5KCE2DnxTjrLlIXgvikGrsigIYFGRSlhTqHEAUZKWfw7048ZHL7rZQOak+8txTM
-         IIRh2E9PiF+2ktVCKma6BEheQCClWUKK3c4m5VzrKNczBe0fhY5GcERNGddts015jeh/
-         6ujOiXG0X3PJX35ZF5E05dEeKT1z3HWp7aG1lkfsCvLk/o2NAZsq0AL19bPnvzs7VyBp
-         mXLL3vy3AnH62/9ByAcififY9AEUABvSYQ8pbMepkh2pYVQMDiH/VkH5jMTIh0ItFcLg
-         FI3Z6sG83RuOG+abpDXX16TkicFLR/fCgb04XSTH7DBJ9DzCN2Ny2/p6iWtjSsgz9yxl
-         u5Hg==
-X-Gm-Message-State: AOJu0Yzso+TLh2YyhZpY2UqBfRaiHsVXzON0gr67v8FcpnCewMd4EkcB
-        1Z0kWPVVHmwUTmefYX3TsmAOcg==
-X-Google-Smtp-Source: AGHT+IH/EU8sCax66tncCUgtwE24oZqKUnAw5nHePbac/qTNhw0neUzqI+uVELgQYBYwoASCkEKRUQ==
-X-Received: by 2002:a05:6a00:1516:b0:691:da6:47b with SMTP id q22-20020a056a00151600b006910da6047bmr16111870pfu.10.1696880898803;
-        Mon, 09 Oct 2023 12:48:18 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id fn27-20020a056a002fdb00b00688435a9915sm6820661pfb.189.2023.10.09.12.48.18
+        d=1e100.net; s=20230601; t=1696881303; x=1697486103;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PdjYDVUhRx0Pjaer8gHT06T2R5MySz7JksSiIKQ7YYk=;
+        b=hoeolNDUAdVP51Xd+n7+aDAfXx+4n5lJlk99ml3a7AQwzWYUdZvegJW6jk8410L1D5
+         GFOXH50AOEPlkEcdkt5+DbR9MuXZ474WGoxROyj3WsPlnAvxF7avnEqNyTLiTtcpPvdt
+         dmX/flt93Lf/cvEbsZPmUNZVdQkVH/sDDOLvIaSP+b2It+LlsxnS6dL44zFgAKRJJ06O
+         yTUzuDPzcIg/dn4Lnc9VHcJn1P8UvG7n5ZMU5BNXBBcRtXqauIdltC1H7b76TBG6blYE
+         uzm6FwGeCpGQlgbgXABP2vWxf6FbUc3aX1+B109tZd5DBrjPjLbtBnlRwFcA3XFzIyRO
+         vOnw==
+X-Gm-Message-State: AOJu0Ywf9lg1hWFV/lDN7iI0SB4X5edkb/egtxIAbGgF8rVn9lCY4l5o
+        zGMh2wr5ZMtyWJaXRrxTPJrbg1lsuam8sCkLpqlPMQ==
+X-Google-Smtp-Source: AGHT+IEaHWDkJp/bxuMxXv5yGZw+3v2DSF7e2lIDDO44041CgfFAdPk44wMzDPKJ9JLNVhqHx7Bcvw==
+X-Received: by 2002:a05:6358:4406:b0:13a:a85b:a4dc with SMTP id z6-20020a056358440600b0013aa85ba4dcmr20188743rwc.29.1696881303178;
+        Mon, 09 Oct 2023 12:55:03 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id a20-20020a637f14000000b0058b056e76basm5591226pgd.70.2023.10.09.12.55.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Oct 2023 12:48:18 -0700 (PDT)
-Date:   Mon, 9 Oct 2023 12:48:15 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Arnd Bergmann <arnd@kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Chun-Yi Lee <jlee@suse.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        stable@vger.kernel.org, Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        linux-bluetooth@vger.kernel.org, Netdev <netdev@vger.kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Bluetooth: mark bacmp() and bacpy() as __always_inline
-Message-ID: <202310091246.ED5A2AFB21@keescook>
-References: <20231009134826.1063869-1-arnd@kernel.org>
- <2abaad09-b6e0-4dd5-9796-939f20804865@app.fastmail.com>
- <202310090902.10ED782652@keescook>
- <73f552a4-4ff5-441a-a624-ddc34365742f@app.fastmail.com>
+        Mon, 09 Oct 2023 12:55:02 -0700 (PDT)
+Message-ID: <65245a96.630a0220.ef86f.ce6a@mx.google.com>
+Date:   Mon, 09 Oct 2023 12:55:02 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <73f552a4-4ff5-441a-a624-ddc34365742f@app.fastmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v4.14.326-56-gbb6db074be99
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-4.14.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.326-56-gbb6db074be99)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,54 +71,202 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Oct 09, 2023 at 08:23:08PM +0200, Arnd Bergmann wrote:
-> On Mon, Oct 9, 2023, at 18:02, Kees Cook wrote:
-> > On Mon, Oct 09, 2023 at 05:36:55PM +0200, Arnd Bergmann wrote:
-> >> On Mon, Oct 9, 2023, at 15:48, Arnd Bergmann wrote:
-> >> 
-> >> Sorry, I have to retract this, something went wrong on my
-> >> testing and I now see the same problem in some configs regardless
-> >> of whether the patch is applied or not.
-> >
-> > Perhaps turn them into macros instead?
-> 
-> I just tried that and still see the problem even with the macro,
-> so whatever gcc is doing must be a different issue. Maybe it
-> has correctly found a codepath that triggers this?
-> 
-> If you are able to help debug the issue better,
-> see these defconfigs for examples:
-> 
-> https://pastebin.com/raw/pC8Lnrn2
-> https://pastebin.com/raw/yb965unC
+stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
+v4.14.326-56-gbb6db074be99)
 
-This seems like a GCC bug. It is complaining about &hdev->bdaddr for
-some reason. This silences it:
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
+y/kernel/v4.14.326-56-gbb6db074be99/
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 6f4409b4c364..509e86b36576 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3266,6 +3266,7 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
- 	int mask = hdev->link_mode;
- 	struct inquiry_entry *ie;
- 	struct hci_conn *conn;
-+	bdaddr_t a;
- 	__u8 flags = 0;
- 
- 	bt_dev_dbg(hdev, "bdaddr %pMR type 0x%x", &ev->bdaddr, ev->link_type);
-@@ -3273,7 +3274,8 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
- 	/* Reject incoming connection from device with same BD ADDR against
- 	 * CVE-2020-26555
- 	 */
--	if (!bacmp(&hdev->bdaddr, &ev->bdaddr)) {
-+	a = hdev->bdaddr;
-+	if (!bacmp(&a, &ev->bdaddr)) {
- 		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
- 			   &ev->bdaddr);
- 		hci_reject_conn(hdev, &ev->bdaddr);
+Tree: stable-rc
+Branch: linux-4.14.y
+Git Describe: v4.14.326-56-gbb6db074be99
+Git Commit: bb6db074be992e4cc085ef23dc81d00467ba2d29
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-:(
+Warnings Detected:
 
--- 
-Kees Cook
+arc:
+
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+3 warnings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
