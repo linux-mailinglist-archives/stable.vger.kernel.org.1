@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 388EB7BDE45
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8573A7BE04D
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:38:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376987AbjJINRs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:17:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42200 "EHLO
+        id S1377320AbjJINig (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:38:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377006AbjJINRr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:17:47 -0400
+        with ESMTP id S1377326AbjJINic (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:38:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B5C91
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:17:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB39C433CA;
-        Mon,  9 Oct 2023 13:17:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63CD791
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:38:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E63C433C7;
+        Mon,  9 Oct 2023 13:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857465;
-        bh=ia3KBb9IkwIwrU25K1lPUdjgvjDR4rqWdI6WxjmHg2c=;
+        s=korg; t=1696858709;
+        bh=8HO/c+nYKiWo/XCqtiyV3VxPwj5kzKqsnkpvnXs4VNY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dcQHZMnRaqwCK1V2jEs2/hC5HKEcPjiIrjjf3Zs1FpSNLO+tr6MNbak3HG9ACFyHl
-         3m4YHH4YMJ6HeYOyDeubLjLF7fk29P0llZ9iNH6D7AXAZtVYoI2auaA4ktmDzAAjMW
-         KMuoee/OAwKj+RPmdfRo4BUdpL3Ra7e1lFyH5pY8=
+        b=J5u0gNpIopAwg+h1HEPh0HyqIQt315YtcIMdHa7BD/8q0PBoUFnyqjeHbV6gSBF1S
+         GQnyQINlg7XGCc1IDU3KACmBD5hax0w9U+hHlWw6uI6q2T9X0xaXDF7uU83XG4AMZD
+         QoUOLD7pP3ZwRiVmrBEdI0tMND8hl8mTKRu1GJRc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Zhang Rui <rui.zhang@intel.com>,
-        "Ooi, Chin Hao" <chin.hao.ooi@intel.com>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Joerg Roedel <jroedel@suse.de>, Ooi@vger.kernel.org
-Subject: [PATCH 6.1 055/162] iommu/vt-d: Avoid memory allocation in iommu_suspend()
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 075/226] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts
 Date:   Mon,  9 Oct 2023 15:00:36 +0200
-Message-ID: <20231009130124.453628276@linuxfoundation.org>
+Message-ID: <20231009130128.744526984@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,124 +50,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-commit 59df44bfb0ca4c3ee1f1c3c5d0ee8e314844799e upstream.
+[ Upstream commit d74e481609808330b4625b3691cf01e1f56e255e ]
 
-The iommu_suspend() syscore suspend callback is invoked with IRQ disabled.
-Allocating memory with the GFP_KERNEL flag may re-enable IRQs during
-the suspend callback, which can cause intermittent suspend/hibernation
-problems with the following kernel traces:
+The startup procedure shouldn't be started with interrupts masked, as that
+may entail silent failures.
 
-Calling iommu_suspend+0x0/0x1d0
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 15 at kernel/time/timekeeping.c:868 ktime_get+0x9b/0xb0
-...
-CPU: 0 PID: 15 Comm: rcu_preempt Tainted: G     U      E      6.3-intel #r1
-RIP: 0010:ktime_get+0x9b/0xb0
-...
-Call Trace:
- <IRQ>
- tick_sched_timer+0x22/0x90
- ? __pfx_tick_sched_timer+0x10/0x10
- __hrtimer_run_queues+0x111/0x2b0
- hrtimer_interrupt+0xfa/0x230
- __sysvec_apic_timer_interrupt+0x63/0x140
- sysvec_apic_timer_interrupt+0x7b/0xa0
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1f/0x30
-...
-------------[ cut here ]------------
-Interrupts enabled after iommu_suspend+0x0/0x1d0
-WARNING: CPU: 0 PID: 27420 at drivers/base/syscore.c:68 syscore_suspend+0x147/0x270
-CPU: 0 PID: 27420 Comm: rtcwake Tainted: G     U  W   E      6.3-intel #r1
-RIP: 0010:syscore_suspend+0x147/0x270
-...
-Call Trace:
- <TASK>
- hibernation_snapshot+0x25b/0x670
- hibernate+0xcd/0x390
- state_store+0xcf/0xe0
- kobj_attr_store+0x13/0x30
- sysfs_kf_write+0x3f/0x50
- kernfs_fop_write_iter+0x128/0x200
- vfs_write+0x1fd/0x3c0
- ksys_write+0x6f/0xf0
- __x64_sys_write+0x1d/0x30
- do_syscall_64+0x3b/0x90
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+Kick off initialization only after the interrupts are unmasked.
 
-Given that only 4 words memory is needed, avoid the memory allocation in
-iommu_suspend().
-
-CC: stable@kernel.org
-Fixes: 33e07157105e ("iommu/vt-d: Avoid GFP_ATOMIC where it is not needed")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Tested-by: Ooi, Chin Hao <chin.hao.ooi@intel.com>
-Link: https://lore.kernel.org/r/20230921093956.234692-1-rui.zhang@intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20230925120417.55977-2-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org # v4.12+
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |   16 ----------------
- drivers/iommu/intel/iommu.h |    2 +-
- 2 files changed, 1 insertion(+), 17 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -3163,13 +3163,6 @@ static int iommu_suspend(void)
- 	struct intel_iommu *iommu = NULL;
- 	unsigned long flag;
+diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
+index 97d36cafd8cb2..9d939f63d16f4 100644
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -437,7 +437,6 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
+ 	void __iomem *wrapper_base = hdev->core->wrapper_base;
+ 	int ret = 0;
  
--	for_each_active_iommu(iommu, drhd) {
--		iommu->iommu_state = kcalloc(MAX_SR_DMAR_REGS, sizeof(u32),
--					     GFP_KERNEL);
--		if (!iommu->iommu_state)
--			goto nomem;
--	}
--
- 	iommu_flush_all();
+-	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+ 	if (IS_V6(hdev->core)) {
+ 		mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
+ 		mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
+@@ -448,6 +447,7 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
+ 	writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
+ 	writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
  
- 	for_each_active_iommu(iommu, drhd) {
-@@ -3189,12 +3182,6 @@ static int iommu_suspend(void)
- 		raw_spin_unlock_irqrestore(&iommu->register_lock, flag);
- 	}
- 	return 0;
--
--nomem:
--	for_each_active_iommu(iommu, drhd)
--		kfree(iommu->iommu_state);
--
--	return -ENOMEM;
- }
- 
- static void iommu_resume(void)
-@@ -3226,9 +3213,6 @@ static void iommu_resume(void)
- 
- 		raw_spin_unlock_irqrestore(&iommu->register_lock, flag);
- 	}
--
--	for_each_active_iommu(iommu, drhd)
--		kfree(iommu->iommu_state);
- }
- 
- static struct syscore_ops iommu_syscore_ops = {
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -595,7 +595,7 @@ struct intel_iommu {
- 	struct iopf_queue *iopf_queue;
- 	unsigned char iopfq_name[16];
- 	struct q_inval  *qi;            /* Queued invalidation info */
--	u32 *iommu_state; /* Store iommu states between suspend and resume.*/
-+	u32 iommu_state[MAX_SR_DMAR_REGS]; /* Store iommu states between suspend and resume.*/
- 
- #ifdef CONFIG_IRQ_REMAP
- 	struct ir_table *ir_table;	/* Interrupt remapping info */
++	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
+ 	while (!ctrl_status && count < max_tries) {
+ 		ctrl_status = readl(cpu_cs_base + CPU_CS_SCIACMDARG0);
+ 		if ((ctrl_status & CPU_CS_SCIACMDARG0_ERROR_STATUS_MASK) == 4) {
+-- 
+2.40.1
+
 
 
