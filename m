@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E86D87BDDFE
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBA087BDF9A
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:31:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376879AbjJINOr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:14:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40654 "EHLO
+        id S1377090AbjJINbv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:31:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376892AbjJINOp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:14:45 -0400
+        with ESMTP id S1377086AbjJINbu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:31:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04EA3A6
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:14:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F936C433C8;
-        Mon,  9 Oct 2023 13:14:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB4FB9C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:31:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED975C433C9;
+        Mon,  9 Oct 2023 13:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857281;
-        bh=02CzN25EKda+Ai9bSV/fylIHcfbMT78szjH++kmhHlo=;
+        s=korg; t=1696858309;
+        bh=oGa4bhPMHINuk0v1H+MeHTveowJUOa4iCvoVBhDTeKw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aWObOU63+mZ1/o7aOmtbQfJCcxfnF/X6RpKzj0Bzhmm4kI3ZGRNd+0w4aJPWuHzPQ
-         BKReCKbkyK+ACFheWDVj2q6lohg2mJmCM0dT1c0v0W/i85j+b/hL+2D4le+FZODeYu
-         GMDWi2tyfKpElKq343RVWy4pweXPqfWWShHY3/do=
+        b=n9h5TY6VlqcFk9uryf69E9H5OAcnCvw+HBWAwwacYgxOx87kn8KctUPT7c6VAG78H
+         CvsG4CvTpe9HlHWJ7ubgZJu946yXfMMK8B4VYxNpKY8N5vM8K/fEpNDgL77jEVIL/O
+         8gd7RB5diiymRvIIzijsF00x68gkbI+gWDZyDXoc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Lendacky <thomas.lendacky@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
-Subject: [PATCH 6.5 158/163] x86/sev: Change npages to unsigned long in snp_accept_memory()
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 082/131] ata: libata-core: Fix port and device removal
 Date:   Mon,  9 Oct 2023 15:02:02 +0200
-Message-ID: <20231009130128.373020057@linuxfoundation.org>
+Message-ID: <20231009130118.858117179@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130116.329529591@linuxfoundation.org>
+References: <20231009130116.329529591@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,45 +52,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 62d5e970d022ef4bde18948dd67247c3194384c1 upstream.
+commit 84d76529c650f887f1e18caee72d6f0589e1baf9 upstream.
 
-In snp_accept_memory(), the npages variables value is calculated from
-phys_addr_t variables but is an unsigned int. A very large range passed
-into snp_accept_memory() could lead to truncating npages to zero. This
-doesn't happen at the moment but let's be prepared.
+Whenever an ATA adapter driver is removed (e.g. rmmod),
+ata_port_detach() is called repeatedly for all the adapter ports to
+remove (unload) the devices attached to the port and delete the port
+device itself. Removing of devices is done using libata EH with the
+ATA_PFLAG_UNLOADING port flag set. This causes libata EH to execute
+ata_eh_unload() which disables all devices attached to the port.
 
-Fixes: 6c3211796326 ("x86/sev: Add SNP-specific unaccepted memory support")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/6d511c25576494f682063c9fb6c705b526a3757e.1687441505.git.thomas.lendacky@amd.com
+ata_port_detach() finishes by calling scsi_remove_host() to remove the
+scsi host associated with the port. This function will trigger the
+removal of all scsi devices attached to the host and in the case of
+disks, calls to sd_shutdown() which will flush the device write cache
+and stop the device. However, given that the devices were already
+disabled by ata_eh_unload(), the synchronize write cache command and
+start stop unit commands fail. E.g. running "rmmod ahci" with first
+removing sd_mod results in error messages like:
+
+ata13.00: disable device
+sd 0:0:0:0: [sda] Synchronizing SCSI cache
+sd 0:0:0:0: [sda] Synchronize Cache(10) failed: Result: hostbyte=DID_BAD_TARGET driverbyte=DRIVER_OK
+sd 0:0:0:0: [sda] Stopping disk
+sd 0:0:0:0: [sda] Start/Stop Unit failed: Result: hostbyte=DID_BAD_TARGET driverbyte=DRIVER_OK
+
+Fix this by removing all scsi devices of the ata devices connected to
+the port before scheduling libata EH to disable the ATA devices.
+
+Fixes: 720ba12620ee ("[PATCH] libata-hp: update unload-unplug")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/sev.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/ata/libata-core.c |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 2787826d9f60..d8c1e3be74c0 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -868,8 +868,7 @@ void snp_set_memory_private(unsigned long vaddr, unsigned long npages)
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -6745,11 +6745,30 @@ static void ata_port_detach(struct ata_p
+ 	if (!ap->ops->error_handler)
+ 		goto skip_eh;
  
- void snp_accept_memory(phys_addr_t start, phys_addr_t end)
- {
--	unsigned long vaddr;
--	unsigned int npages;
-+	unsigned long vaddr, npages;
+-	/* tell EH we're leaving & flush EH */
++	/* Wait for any ongoing EH */
++	ata_port_wait_eh(ap);
++
++	mutex_lock(&ap->scsi_scan_mutex);
+ 	spin_lock_irqsave(ap->lock, flags);
++
++	/* Remove scsi devices */
++	ata_for_each_link(link, ap, HOST_FIRST) {
++		ata_for_each_dev(dev, link, ALL) {
++			if (dev->sdev) {
++				spin_unlock_irqrestore(ap->lock, flags);
++				scsi_remove_device(dev->sdev);
++				spin_lock_irqsave(ap->lock, flags);
++				dev->sdev = NULL;
++			}
++		}
++	}
++
++	/* Tell EH to disable all devices */
+ 	ap->pflags |= ATA_PFLAG_UNLOADING;
+ 	ata_port_schedule_eh(ap);
++
+ 	spin_unlock_irqrestore(ap->lock, flags);
++	mutex_unlock(&ap->scsi_scan_mutex);
  
- 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
- 		return;
--- 
-2.42.0
-
+ 	/* wait till EH commits suicide */
+ 	ata_port_wait_eh(ap);
 
 
