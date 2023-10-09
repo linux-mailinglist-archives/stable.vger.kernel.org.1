@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4E517BDDD6
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB9637BE064
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:39:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376943AbjJINNo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:13:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59110 "EHLO
+        id S1376368AbjJINjl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:39:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376966AbjJINN1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:13:27 -0400
+        with ESMTP id S1376990AbjJINjf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:39:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDED1BC3
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:12:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E821C433CA;
-        Mon,  9 Oct 2023 13:12:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 450789C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:39:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81919C433CD;
+        Mon,  9 Oct 2023 13:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857166;
-        bh=moJnbGEqXwxvlWXDDwfa3G5JQhfuj5lpjG8+u/3mBWY=;
+        s=korg; t=1696858772;
+        bh=spuL/08/uHBJXeg3esvlqx1EoW0zmOHnTfOoUknmTJc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z8I7+iRZumsDclVU9MFTTBPSqmYWBbEpcTPnNCoGBrCkijgtbDaIr2QFx36KFQafh
-         Z3LK7o2JXLmh/2kZ6OR6sMRgFIr5DAJIXu8JseTPxk5VTwPG14oN5lGYSeAFBAsoe6
-         fIxouKx3lYOrmDuDhKHGfnqmuopuZ556euZ7+0Gk=
+        b=znFLn/OV1z+sAxoPDX5Fy1BDJJRfBSrvYxpYymF1X9NSLOev3CbYDkaS2w5o8+pkW
+         2E6oeGnrZsZ/4cZgJlgaRcKYFTwFxZaIjJi398iqoBzv19wHXTlv7ZekEotnxBkD3a
+         GytABYmY91OLyAxeByf6OW2socfeSg0pdi9oSVsg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Junxiao Bi <junxiao.bi@oracle.com>,
-        Mike Christie <michael.christie@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 093/163] scsi: target: core: Fix deadlock due to recursive locking
+Subject: [PATCH 5.10 096/226] ARM: dts: motorola-mapphone: Drop second ti,wlcore compatible value
 Date:   Mon,  9 Oct 2023 15:00:57 +0200
-Message-ID: <20231009130126.601369628@linuxfoundation.org>
+Message-ID: <20231009130129.277829080@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-References: <20231009130124.021290599@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,100 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxiao Bi <junxiao.bi@oracle.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit a154f5f643c6ecddd44847217a7a3845b4350003 ]
+[ Upstream commit 7ebe6e99f7702dad342486e5b30d989a0a6499af ]
 
-The following call trace shows a deadlock issue due to recursive locking of
-mutex "device_mutex". First lock acquire is in target_for_each_device() and
-second in target_free_device().
+The TI wlcore DT bindings specify using a single compatible value for
+each variant, and the Linux kernel driver matches against the first
+compatible value since commit 078b30da3f074f2e ("wlcore: add wl1285
+compatible") in v4.13.
 
- PID: 148266   TASK: ffff8be21ffb5d00  CPU: 10   COMMAND: "iscsi_ttx"
-  #0 [ffffa2bfc9ec3b18] __schedule at ffffffffa8060e7f
-  #1 [ffffa2bfc9ec3ba0] schedule at ffffffffa8061224
-  #2 [ffffa2bfc9ec3bb8] schedule_preempt_disabled at ffffffffa80615ee
-  #3 [ffffa2bfc9ec3bc8] __mutex_lock at ffffffffa8062fd7
-  #4 [ffffa2bfc9ec3c40] __mutex_lock_slowpath at ffffffffa80631d3
-  #5 [ffffa2bfc9ec3c50] mutex_lock at ffffffffa806320c
-  #6 [ffffa2bfc9ec3c68] target_free_device at ffffffffc0935998 [target_core_mod]
-  #7 [ffffa2bfc9ec3c90] target_core_dev_release at ffffffffc092f975 [target_core_mod]
-  #8 [ffffa2bfc9ec3ca0] config_item_put at ffffffffa79d250f
-  #9 [ffffa2bfc9ec3cd0] config_item_put at ffffffffa79d2583
- #10 [ffffa2bfc9ec3ce0] target_devices_idr_iter at ffffffffc0933f3a [target_core_mod]
- #11 [ffffa2bfc9ec3d00] idr_for_each at ffffffffa803f6fc
- #12 [ffffa2bfc9ec3d60] target_for_each_device at ffffffffc0935670 [target_core_mod]
- #13 [ffffa2bfc9ec3d98] transport_deregister_session at ffffffffc0946408 [target_core_mod]
- #14 [ffffa2bfc9ec3dc8] iscsit_close_session at ffffffffc09a44a6 [iscsi_target_mod]
- #15 [ffffa2bfc9ec3df0] iscsit_close_connection at ffffffffc09a4a88 [iscsi_target_mod]
- #16 [ffffa2bfc9ec3df8] finish_task_switch at ffffffffa76e5d07
- #17 [ffffa2bfc9ec3e78] iscsit_take_action_for_connection_exit at ffffffffc0991c23 [iscsi_target_mod]
- #18 [ffffa2bfc9ec3ea0] iscsi_target_tx_thread at ffffffffc09a403b [iscsi_target_mod]
- #19 [ffffa2bfc9ec3f08] kthread at ffffffffa76d8080
- #20 [ffffa2bfc9ec3f50] ret_from_fork at ffffffffa8200364
-
-Fixes: 36d4cb460bcb ("scsi: target: Avoid that EXTENDED COPY commands trigger lock inversion")
-Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
-Link: https://lore.kernel.org/r/20230918225848.66463-1-junxiao.bi@oracle.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Stable-dep-of: ac08bda1569b ("ARM: dts: ti: omap: motorola-mapphone: Fix abe_clkctrl warning on boot")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_device.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ arch/arm/boot/dts/motorola-mapphone-common.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index b7ac60f4a2194..b6523d4b9259e 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -843,7 +843,6 @@ sector_t target_to_linux_sector(struct se_device *dev, sector_t lb)
- EXPORT_SYMBOL(target_to_linux_sector);
- 
- struct devices_idr_iter {
--	struct config_item *prev_item;
- 	int (*fn)(struct se_device *dev, void *data);
- 	void *data;
- };
-@@ -853,11 +852,9 @@ static int target_devices_idr_iter(int id, void *p, void *data)
- {
- 	struct devices_idr_iter *iter = data;
- 	struct se_device *dev = p;
-+	struct config_item *item;
- 	int ret;
- 
--	config_item_put(iter->prev_item);
--	iter->prev_item = NULL;
--
- 	/*
- 	 * We add the device early to the idr, so it can be used
- 	 * by backend modules during configuration. We do not want
-@@ -867,12 +864,13 @@ static int target_devices_idr_iter(int id, void *p, void *data)
- 	if (!target_dev_configured(dev))
- 		return 0;
- 
--	iter->prev_item = config_item_get_unless_zero(&dev->dev_group.cg_item);
--	if (!iter->prev_item)
-+	item = config_item_get_unless_zero(&dev->dev_group.cg_item);
-+	if (!item)
- 		return 0;
- 	mutex_unlock(&device_mutex);
- 
- 	ret = iter->fn(dev, iter->data);
-+	config_item_put(item);
- 
- 	mutex_lock(&device_mutex);
- 	return ret;
-@@ -895,7 +893,6 @@ int target_for_each_device(int (*fn)(struct se_device *dev, void *data),
- 	mutex_lock(&device_mutex);
- 	ret = idr_for_each(&devices_idr, target_devices_idr_iter, &iter);
- 	mutex_unlock(&device_mutex);
--	config_item_put(iter.prev_item);
- 	return ret;
- }
- 
+diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+index ab0672131c212..4227b7f49e46c 100644
+--- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
++++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
+@@ -407,7 +407,7 @@
+ 	#address-cells = <1>;
+ 	#size-cells = <0>;
+ 	wlcore: wlcore@2 {
+-		compatible = "ti,wl1285", "ti,wl1283";
++		compatible = "ti,wl1285";
+ 		reg = <2>;
+ 		/* gpio_100 with gpmc_wait2 pad as wakeirq */
+ 		interrupts-extended = <&gpio4 4 IRQ_TYPE_LEVEL_HIGH>,
 -- 
 2.40.1
 
