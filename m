@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A002F7BDFEF
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F127E7BDD26
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:07:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377172AbjJINfr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:35:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40750 "EHLO
+        id S1376683AbjJINH6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:07:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377179AbjJINfq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:35:46 -0400
+        with ESMTP id S1376698AbjJINH4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:07:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF61C99
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:35:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26555C433C8;
-        Mon,  9 Oct 2023 13:35:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F12DDB7
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:07:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39EB1C433C9;
+        Mon,  9 Oct 2023 13:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696858544;
-        bh=79mUaHlqhpjkyDddBXbWgT+phgCK6zHzZYxvpiCHKPo=;
+        s=korg; t=1696856874;
+        bh=bEFI+kSnOaH+wFjMUVKyAbdfHD3fqGbJH7CdsFbuGSI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zGbwJOzmyN4ynpZrCIhzdqMtjXDTerqXLrtUAQPWss9fAHtIn74EX7cospStYhHZr
-         88ZYUI36N94oAlTLHgwlv3U6IencWDRe1+twitBreavXX7+xxeiQDTBdcYzaP1ixat
-         m/jOXcv3BUTSRYS7s8z9jZcoaoL6N3YK7Rb75n5I=
+        b=mkM/0hSxyJh6iQczKfj/YijUJgSdhWcyeMOloaRAwHgdS2T4u5aSSpNVWcWYslW+b
+         4Q+eAnOrgyiy1wulHQOtz/oBKj+obKi7v2BT8va/iFl+/sqMeCrJAracnaPx6BzLzm
+         KoEMCGe1ncq7aWGr8zM0XO0RNwjOjcw859ZfnUqU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 023/226] netfilter: nf_tables: fix GC transaction races with netns and netlink event exit path
+        patches@lists.linux.dev, Patrick Rohr <prohr@google.com>,
+        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+        Lorenzo Colitti <lorenzo@google.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.5 020/163] net: add sysctl accept_ra_min_rtr_lft
 Date:   Mon,  9 Oct 2023 14:59:44 +0200
-Message-ID: <20231009130127.352039452@linuxfoundation.org>
+Message-ID: <20231009130124.569973450@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
-References: <20231009130126.697995596@linuxfoundation.org>
+In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
+References: <20231009130124.021290599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,94 +51,160 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Patrick Rohr <prohr@google.com>
 
-commit 6a33d8b73dfac0a41f3877894b38082bd0c9a5bc upstream.
+commit 1671bcfd76fdc0b9e65153cf759153083755fe4c upstream.
 
-Netlink event path is missing a synchronization point with GC
-transactions. Add GC sequence number update to netns release path and
-netlink event path, any GC transaction losing race will be discarded.
+This change adds a new sysctl accept_ra_min_rtr_lft to specify the
+minimum acceptable router lifetime in an RA. If the received RA router
+lifetime is less than the configured value (and not 0), the RA is
+ignored.
+This is useful for mobile devices, whose battery life can be impacted
+by networks that configure RAs with a short lifetime. On such networks,
+the device should never gain IPv6 provisioning and should attempt to
+drop RAs via hardware offload, if available.
 
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Patrick Rohr <prohr@google.com>
+Cc: Maciej Żenczykowski <maze@google.com>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 29 +++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ Documentation/networking/ip-sysctl.rst |    8 ++++++++
+ include/linux/ipv6.h                   |    1 +
+ include/uapi/linux/ipv6.h              |    1 +
+ net/ipv6/addrconf.c                    |   10 ++++++++++
+ net/ipv6/ndisc.c                       |   18 ++++++++++++++++--
+ 5 files changed, 36 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 206755eb35f3a..43da2f0a52623 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8320,6 +8320,22 @@ static void nft_set_commit_update(struct list_head *set_update_list)
- 	}
+--- a/Documentation/networking/ip-sysctl.rst
++++ b/Documentation/networking/ip-sysctl.rst
+@@ -2287,6 +2287,14 @@ accept_ra_min_hop_limit - INTEGER
+ 
+ 	Default: 1
+ 
++accept_ra_min_rtr_lft - INTEGER
++	Minimum acceptable router lifetime in Router Advertisement.
++
++	RAs with a router lifetime less than this value shall be
++	ignored. RAs with a router lifetime of 0 are unaffected.
++
++	Default: 0
++
+ accept_ra_pinfo - BOOLEAN
+ 	Learn Prefix Information in Router Advertisement.
+ 
+--- a/include/linux/ipv6.h
++++ b/include/linux/ipv6.h
+@@ -33,6 +33,7 @@ struct ipv6_devconf {
+ 	__s32		accept_ra_defrtr;
+ 	__u32		ra_defrtr_metric;
+ 	__s32		accept_ra_min_hop_limit;
++	__s32		accept_ra_min_rtr_lft;
+ 	__s32		accept_ra_pinfo;
+ 	__s32		ignore_routes_with_linkdown;
+ #ifdef CONFIG_IPV6_ROUTER_PREF
+--- a/include/uapi/linux/ipv6.h
++++ b/include/uapi/linux/ipv6.h
+@@ -198,6 +198,7 @@ enum {
+ 	DEVCONF_IOAM6_ID_WIDE,
+ 	DEVCONF_NDISC_EVICT_NOCARRIER,
+ 	DEVCONF_ACCEPT_UNTRACKED_NA,
++	DEVCONF_ACCEPT_RA_MIN_RTR_LFT,
+ 	DEVCONF_MAX
+ };
+ 
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -202,6 +202,7 @@ static struct ipv6_devconf ipv6_devconf
+ 	.ra_defrtr_metric	= IP6_RT_PRIO_USER,
+ 	.accept_ra_from_local	= 0,
+ 	.accept_ra_min_hop_limit= 1,
++	.accept_ra_min_rtr_lft	= 0,
+ 	.accept_ra_pinfo	= 1,
+ #ifdef CONFIG_IPV6_ROUTER_PREF
+ 	.accept_ra_rtr_pref	= 1,
+@@ -262,6 +263,7 @@ static struct ipv6_devconf ipv6_devconf_
+ 	.ra_defrtr_metric	= IP6_RT_PRIO_USER,
+ 	.accept_ra_from_local	= 0,
+ 	.accept_ra_min_hop_limit= 1,
++	.accept_ra_min_rtr_lft	= 0,
+ 	.accept_ra_pinfo	= 1,
+ #ifdef CONFIG_IPV6_ROUTER_PREF
+ 	.accept_ra_rtr_pref	= 1,
+@@ -5602,6 +5604,7 @@ static inline void ipv6_store_devconf(st
+ 	array[DEVCONF_IOAM6_ID_WIDE] = cnf->ioam6_id_wide;
+ 	array[DEVCONF_NDISC_EVICT_NOCARRIER] = cnf->ndisc_evict_nocarrier;
+ 	array[DEVCONF_ACCEPT_UNTRACKED_NA] = cnf->accept_untracked_na;
++	array[DEVCONF_ACCEPT_RA_MIN_RTR_LFT] = cnf->accept_ra_min_rtr_lft;
  }
  
-+static unsigned int nft_gc_seq_begin(struct nftables_pernet *nft_net)
-+{
-+	unsigned int gc_seq;
-+
-+	/* Bump gc counter, it becomes odd, this is the busy mark. */
-+	gc_seq = READ_ONCE(nft_net->gc_seq);
-+	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+
-+	return gc_seq;
-+}
-+
-+static void nft_gc_seq_end(struct nftables_pernet *nft_net, unsigned int gc_seq)
-+{
-+	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+}
-+
- static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- {
- 	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
-@@ -8401,9 +8417,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 	while (++nft_net->base_seq == 0)
- 		;
+ static inline size_t inet6_ifla6_size(void)
+@@ -6794,6 +6797,13 @@ static const struct ctl_table addrconf_s
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec,
++	},
++	{
++		.procname	= "accept_ra_min_rtr_lft",
++		.data		= &ipv6_devconf.accept_ra_min_rtr_lft,
++		.maxlen		= sizeof(int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec,
+ 	},
+ 	{
+ 		.procname	= "accept_ra_pinfo",
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -1281,6 +1281,8 @@ static enum skb_drop_reason ndisc_router
+ 	if (!ndisc_parse_options(skb->dev, opt, optlen, &ndopts))
+ 		return SKB_DROP_REASON_IPV6_NDISC_BAD_OPTIONS;
  
--	/* Bump gc counter, it becomes odd, this is the busy mark. */
--	gc_seq = READ_ONCE(nft_net->gc_seq);
--	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+	gc_seq = nft_gc_seq_begin(nft_net);
- 
- 	/* step 3. Start new generation, rules_gen_X now in use. */
- 	net->nft.gencursor = nft_gencursor_next(net);
-@@ -8583,7 +8597,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 	nf_tables_gen_notify(net, skb, NFT_MSG_NEWGEN);
- 	nf_tables_commit_audit_log(&adl, nft_net->base_seq);
- 
--	WRITE_ONCE(nft_net->gc_seq, ++gc_seq);
-+	nft_gc_seq_end(nft_net, gc_seq);
- 	nf_tables_commit_release(net);
- 
- 	return 0;
-@@ -9538,11 +9552,18 @@ static void __net_exit nf_tables_pre_exit_net(struct net *net)
- static void __net_exit nf_tables_exit_net(struct net *net)
- {
- 	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
-+	unsigned int gc_seq;
- 
- 	mutex_lock(&nft_net->commit_mutex);
++	lifetime = ntohs(ra_msg->icmph.icmp6_rt_lifetime);
 +
-+	gc_seq = nft_gc_seq_begin(nft_net);
+ 	if (!ipv6_accept_ra(in6_dev)) {
+ 		ND_PRINTK(2, info,
+ 			  "RA: %s, did not accept ra for dev: %s\n",
+@@ -1288,6 +1290,13 @@ static enum skb_drop_reason ndisc_router
+ 		goto skip_linkparms;
+ 	}
+ 
++	if (lifetime != 0 && lifetime < in6_dev->cnf.accept_ra_min_rtr_lft) {
++		ND_PRINTK(2, info,
++			  "RA: router lifetime (%ds) is too short: %s\n",
++			  lifetime, skb->dev->name);
++		goto skip_linkparms;
++	}
 +
- 	if (!list_empty(&nft_net->commit_list))
- 		__nf_tables_abort(net, NFNL_ABORT_NONE);
- 	__nft_release_tables(net);
+ #ifdef CONFIG_IPV6_NDISC_NODETYPE
+ 	/* skip link-specific parameters from interior routers */
+ 	if (skb->ndisc_nodetype == NDISC_NODETYPE_NODEFAULT) {
+@@ -1340,8 +1349,6 @@ static enum skb_drop_reason ndisc_router
+ 		goto skip_defrtr;
+ 	}
+ 
+-	lifetime = ntohs(ra_msg->icmph.icmp6_rt_lifetime);
+-
+ #ifdef CONFIG_IPV6_ROUTER_PREF
+ 	pref = ra_msg->icmph.icmp6_router_pref;
+ 	/* 10b is handled as if it were 00b (medium) */
+@@ -1493,6 +1500,13 @@ skip_linkparms:
+ 		goto out;
+ 	}
+ 
++	if (lifetime != 0 && lifetime < in6_dev->cnf.accept_ra_min_rtr_lft) {
++		ND_PRINTK(2, info,
++			  "RA: router lifetime (%ds) is too short: %s\n",
++			  lifetime, skb->dev->name);
++		goto out;
++	}
 +
-+	nft_gc_seq_end(nft_net, gc_seq);
-+
- 	mutex_unlock(&nft_net->commit_mutex);
- 	WARN_ON_ONCE(!list_empty(&nft_net->tables));
- 	WARN_ON_ONCE(!list_empty(&nft_net->module_list));
--- 
-2.40.1
-
+ #ifdef CONFIG_IPV6_ROUTE_INFO
+ 	if (!in6_dev->cnf.accept_ra_from_local &&
+ 	    ipv6_chk_addr(dev_net(in6_dev->dev), &ipv6_hdr(skb)->saddr,
 
 
