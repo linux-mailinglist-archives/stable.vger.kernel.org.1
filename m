@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF5FD7BDE14
-	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:15:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C997BE01E
+	for <lists+stable@lfdr.de>; Mon,  9 Oct 2023 15:37:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376866AbjJINPi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 09:15:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59620 "EHLO
+        id S1377209AbjJINhm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 09:37:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376914AbjJINPh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:15:37 -0400
+        with ESMTP id S1377230AbjJINhk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 09:37:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCCEC91
-        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:15:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2970AC433C7;
-        Mon,  9 Oct 2023 13:15:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 559319C
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 06:37:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55975C433C9;
+        Mon,  9 Oct 2023 13:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1696857334;
-        bh=jBxDDrlaBkf3CcDTJupWd28Qrm7SgIOyNj1RZqkKkgY=;
+        s=korg; t=1696858658;
+        bh=jD1vH9+3WX+0A+gfjHqu2MB/jqLikYlc+/Ic3v3XpYU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rR1eSPiDscR3WtrVjc7dWkzr7PTFZpVKyqIOAAHdMyayyUWReBDB4RFd/gnlt+8xH
-         8gagUSv6SULv5YRzOT7CM5sMTK0cTsgs2i49slrrGpsLy66vOiD87aW9t17In5SJ27
-         +vOMRkKeBXWgbFbbPsDws8H7Nh5aCPqRRIWKhwzo=
+        b=Crpo3QfUrW6w4Y8mSNXxDEDJQWli4VZFHn/8a28gDydnBZTySQdOS4Q71481BWves
+         61kgw+ajt5hChqJ69G5zukBR9pY3Psglo+nRU5SzqD7kQbQq+xJvzK49BTICbmUmji
+         yxteATUBRlBC5xanUQUYubeuMcUVxsP+dDLvLjVY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/162] mptcp: annotate lockless accesses to sk->sk_err
+Subject: [PATCH 5.10 032/226] netfilter: nf_tables: fix memleak when more than 255 elements expired
 Date:   Mon,  9 Oct 2023 14:59:53 +0200
-Message-ID: <20231009130123.289550362@linuxfoundation.org>
+Message-ID: <20231009130127.615913286@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
+In-Reply-To: <20231009130126.697995596@linuxfoundation.org>
+References: <20231009130126.697995596@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,95 +49,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 9ae8e5ad99b8ebcd3d3dd46075f3825e6f08f063 ]
+commit cf5000a7787cbc10341091d37245a42c119d26c5 upstream.
 
-mptcp_poll() reads sk->sk_err without socket lock held/owned.
+When more than 255 elements expired we're supposed to switch to a new gc
+container structure.
 
-Add READ_ONCE() and WRITE_ONCE() to avoid load/store tearing.
+This never happens: u8 type will wrap before reaching the boundary
+and nft_trans_gc_space() always returns true.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: d5fbeff1ab81 ("mptcp: move __mptcp_error_report in protocol.c")
+This means we recycle the initial gc container structure and
+lose track of the elements that came before.
+
+While at it, don't deref 'gc' after we've passed it to call_rcu.
+
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c | 2 +-
- net/mptcp/protocol.c   | 8 ++++----
- net/mptcp/subflow.c    | 4 ++--
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ include/net/netfilter/nf_tables.h |  2 +-
+ net/netfilter/nf_tables_api.c     | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 9127a7fd5269c..5d845fcf3d09e 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -2047,7 +2047,7 @@ static int mptcp_event_put_token_and_ssk(struct sk_buff *skb,
- 	    nla_put_s32(skb, MPTCP_ATTR_IF_IDX, ssk->sk_bound_dev_if))
- 		return -EMSGSIZE;
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index bbe472c07d07e..5619642b9ad47 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1525,7 +1525,7 @@ struct nft_trans_gc {
+ 	struct net		*net;
+ 	struct nft_set		*set;
+ 	u32			seq;
+-	u8			count;
++	u16			count;
+ 	void			*priv[NFT_TRANS_GC_BATCHCOUNT];
+ 	struct rcu_head		rcu;
+ };
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 9fc302a6836ba..32c97cc87ddc2 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -8124,12 +8124,15 @@ static int nft_trans_gc_space(struct nft_trans_gc *trans)
+ struct nft_trans_gc *nft_trans_gc_queue_async(struct nft_trans_gc *gc,
+ 					      unsigned int gc_seq, gfp_t gfp)
+ {
++	struct nft_set *set;
++
+ 	if (nft_trans_gc_space(gc))
+ 		return gc;
  
--	sk_err = ssk->sk_err;
-+	sk_err = READ_ONCE(ssk->sk_err);
- 	if (sk_err && sk->sk_state == TCP_ESTABLISHED &&
- 	    nla_put_u8(skb, MPTCP_ATTR_ERROR, sk_err))
- 		return -EMSGSIZE;
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 60e65f6325c3c..84f107854eac9 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2517,15 +2517,15 @@ static void mptcp_check_fastclose(struct mptcp_sock *msk)
- 	/* Mirror the tcp_reset() error propagation */
- 	switch (sk->sk_state) {
- 	case TCP_SYN_SENT:
--		sk->sk_err = ECONNREFUSED;
-+		WRITE_ONCE(sk->sk_err, ECONNREFUSED);
- 		break;
- 	case TCP_CLOSE_WAIT:
--		sk->sk_err = EPIPE;
-+		WRITE_ONCE(sk->sk_err, EPIPE);
- 		break;
- 	case TCP_CLOSE:
- 		return;
- 	default:
--		sk->sk_err = ECONNRESET;
-+		WRITE_ONCE(sk->sk_err, ECONNRESET);
- 	}
++	set = gc->set;
+ 	nft_trans_gc_queue_work(gc);
  
- 	inet_sk_state_store(sk, TCP_CLOSE);
-@@ -3893,7 +3893,7 @@ static __poll_t mptcp_poll(struct file *file, struct socket *sock,
+-	return nft_trans_gc_alloc(gc->set, gc_seq, gfp);
++	return nft_trans_gc_alloc(set, gc_seq, gfp);
+ }
  
- 	/* This barrier is coupled with smp_wmb() in __mptcp_error_report() */
- 	smp_rmb();
--	if (sk->sk_err)
-+	if (READ_ONCE(sk->sk_err))
- 		mask |= EPOLLERR;
+ void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
+@@ -8144,15 +8147,18 @@ void nft_trans_gc_queue_async_done(struct nft_trans_gc *trans)
  
- 	return mask;
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 168dced2434b3..032661c8273f2 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1248,7 +1248,7 @@ static bool subflow_check_data_avail(struct sock *ssk)
- 			subflow->reset_reason = MPTCP_RST_EMPTCP;
+ struct nft_trans_gc *nft_trans_gc_queue_sync(struct nft_trans_gc *gc, gfp_t gfp)
+ {
++	struct nft_set *set;
++
+ 	if (WARN_ON_ONCE(!lockdep_commit_lock_is_held(gc->net)))
+ 		return NULL;
  
- reset:
--			ssk->sk_err = EBADMSG;
-+			WRITE_ONCE(ssk->sk_err, EBADMSG);
- 			tcp_set_state(ssk, TCP_CLOSE);
- 			while ((skb = skb_peek(&ssk->sk_receive_queue)))
- 				sk_eat_skb(ssk, skb);
-@@ -1332,7 +1332,7 @@ void __mptcp_error_report(struct sock *sk)
- 		ssk_state = inet_sk_state_load(ssk);
- 		if (ssk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DEAD))
- 			inet_sk_state_store(sk, ssk_state);
--		sk->sk_err = -err;
-+		WRITE_ONCE(sk->sk_err, -err);
+ 	if (nft_trans_gc_space(gc))
+ 		return gc;
  
- 		/* This barrier is coupled with smp_rmb() in mptcp_poll() */
- 		smp_wmb();
++	set = gc->set;
+ 	call_rcu(&gc->rcu, nft_trans_gc_trans_free);
+ 
+-	return nft_trans_gc_alloc(gc->set, 0, gfp);
++	return nft_trans_gc_alloc(set, 0, gfp);
+ }
+ 
+ void nft_trans_gc_queue_sync_done(struct nft_trans_gc *trans)
 -- 
 2.40.1
 
