@@ -2,74 +2,160 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71DDE7C027C
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 19:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C3FF7C0281
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 19:24:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233927AbjJJRXr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 13:23:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45502 "EHLO
+        id S233978AbjJJRY3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 13:24:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233897AbjJJRXr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 13:23:47 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD7BCDA;
-        Tue, 10 Oct 2023 10:23:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23293C433C7;
-        Tue, 10 Oct 2023 17:23:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696958623;
-        bh=9CAHu2Mk7utsjo1uVq4x7O3BUPyqg9XzzYVVLuRXWKI=;
-        h=Subject:From:To:Cc:Date:From;
-        b=svgTujZUqmjlwchBwyEiBzWxzE3mwZwworDwm/zfqHZRBzD4oExXWWm0LlMaTg39o
-         b9Ii4LG0FiaiI9w950IjMMly0vKh6oBB0xZQdkGwXtra2s9saunqK3Fv38LhNAHMlp
-         eu60hj+UsQXfRQrxy0c50AE94EubLQlRzctUYV0plCp0BO6u6j4iu/eQNtUYWlfJAm
-         6mtZACZk8TN2k3xF1yw2vcrxJSugTT5WWNRN2C3XRGC11j/u1L6iw05H6mY8o+u44x
-         Cg6HYoLyEY/BzD90CCplnRmfvB1X1ABVkq3nbdqQL6sznQ2LCINXLEiwTJLGyGQbyD
-         kk20+ldL2IJPA==
-Subject: [PATCH v1] svcrdma: Drop connection after an RDMA Read error
-From:   Chuck Lever <cel@kernel.org>
-To:     linux-nfs@vger.kernel.org
-Cc:     stable@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>
-Date:   Tue, 10 Oct 2023 13:23:41 -0400
-Message-ID: <169695862158.5083.6004887085023503434.stgit@oracle-102.nfsv4bat.org>
-User-Agent: StGit/1.5
+        with ESMTP id S233954AbjJJRY2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 13:24:28 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 386E1D7
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 10:24:24 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-4063bfc6c03so6655e9.0
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 10:24:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1696958662; x=1697563462; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xB5kNO31ptUSKutse3tWEXjsvhyF99RBWYVjwQ8AbvA=;
+        b=fwWO9mZACXUWMsPudmmRUitg6NtW4nwgl2/14aWMpNJL/wGIXc6xUY3iLwCYKZHi1m
+         svIfxjpMbN/b2gKIfa1RzsAO0HCQZpn4W0sEixY3Y/kBhbWG27atXdkvDdMOeHddoDMJ
+         ZOExHZiZyobwBrbA34W4L/M3qZyjABLOBxqtA6ieOl5UmEWDhUQUA2kFsafwVfXlNY3T
+         7PFHii3IsZa9A4pQ4D9oEkfqIaA5gHT+x0dEtGaU11kqjPYV1ROdYGDTzaWB5XYIeIVj
+         7pLj70EkkWGKROqNRlp29uL4Z5UNNFnn8y7xYuG9maHta+vR+/6f/kjPLLct8eYtdXxC
+         F/qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696958662; x=1697563462;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xB5kNO31ptUSKutse3tWEXjsvhyF99RBWYVjwQ8AbvA=;
+        b=d7vahKOwZV4bB/FTwMupWlGj4zVD3ugGaWfgC9RWruyLa9fqn5NezMH+YjzXcY68XU
+         V5EexDn/ZiaUVG7myXYdsDkMjFlfXpvJEwgPtyxLwoyoupvHuQVp8xyIlMsQmtB+g9OG
+         y4gUc+Z3J1aoKUfRidARVrJ3VMZEzcgCJOsOQGh+WwRnT1PRSEp/R2765r1Z/gRbAA8m
+         KITysY4U/SqTeSrOBJvZf476WereZ9Q+lX6TXgTXFEj1Lovppwhw68PT/wDauyeXlwF+
+         wYl3bR0IA/CwjpAFrBofAL4rYXcnA4Uax6FHd2BWD561xejMElyMNJYtaVLXS7qy0EF1
+         broA==
+X-Gm-Message-State: AOJu0YyqgYI+a3Bvz/k1iyDLUS3eYWm40E3S2KjRrmLYbsBbc96SgRKY
+        tUh5Aw09+iRQl4lHMxVPd7GXuyywKb1ixAfbdHhKRw==
+X-Google-Smtp-Source: AGHT+IHW65kerUr2q16h/XQsLBx5TUnAZCGf5RFeYJB83WXwTpqUq0HW6mE0I6kZv/CrMPkjVTR8X6392uJ6yuEKUpU=
+X-Received: by 2002:a05:600c:3c8f:b0:405:35bf:7362 with SMTP id
+ bg15-20020a05600c3c8f00b0040535bf7362mr11918wmb.0.1696958662190; Tue, 10 Oct
+ 2023 10:24:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20231009130122.946357448@linuxfoundation.org> <CA+G9fYvWCf4fYuQsVLu0NdN+=W73bW1hr1hiokajktNzPFyYtA@mail.gmail.com>
+ <6447b32f-abb9-4459-aca5-3d510a66b685@kernel.org>
+In-Reply-To: <6447b32f-abb9-4459-aca5-3d510a66b685@kernel.org>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Tue, 10 Oct 2023 19:24:08 +0200
+Message-ID: <CANn89iJ_KMA=dQWPhU8WQBc0_CvUztUBodAf-cW-2F=HMX3HJg@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/162] 6.1.57-rc1 review
+To:     Matthieu Baerts <matttbe@kernel.org>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, "David S. Miller" <davem@davemloft.net>,
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Netdev <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
+        MPTCP Upstream <mptcp@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chuck Lever <chuck.lever@oracle.com>
+On Tue, Oct 10, 2023 at 6:51=E2=80=AFPM Matthieu Baerts <matttbe@kernel.org=
+> wrote:
+>
+> Hi Naresh,
+>
+> On 09/10/2023 22:43, Naresh Kamboju wrote:
+> > On Mon, 9 Oct 2023 at 18:46, Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> >>
+> >> This is the start of the stable review cycle for the 6.1.57 release.
+> >> There are 162 patches in this series, all will be posted as a response
+> >> to this one.  If anyone has any issues with these being applied, pleas=
+e
+> >> let me know.
+> >>
+> >> Responses should be made by Wed, 11 Oct 2023 13:00:55 +0000.
+> >> Anything received after that time might be too late.
+> >>
+> >> The whole patch series can be found in one patch at:
+> >>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/pat=
+ch-6.1.57-rc1.gz
+> >> or in the git tree and branch at:
+> >>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-sta=
+ble-rc.git linux-6.1.y
+> >> and the diffstat can be found below.
+> >>
+> >> thanks,
+> >>
+> >> greg k-h
+> >
+> >
+> > The following kernel warnings were noticed several times on arm x15 dev=
+ices
+> > running stable-rc 6.1.57-rc1 while running  selftests: net: mptcp_conne=
+ct.sh
+> > and netfilter: nft_fib.sh.
+> >
+> > The possible unsafe locking scenario detected.
+> >
+> > FYI,
+> > Stable-rc/ linux.6.1.y kernel running stable/ linux.6.5.y selftest in t=
+his case.
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> >
+> > kselftest: Running tests in net/mptcp
+>
+> Thank you for having reported the issue and having added MPTCP ML in Cc!
+>
+> Just to avoid confusions: the "WARNING" you shared when running
+> 'mptcp_connect.sh' selftest appeared before creating the first MPTCP
+> connection. It looks like there is no reference to MPTCP in the
+> calltraces. Also, because you have the same issue with nft_fib.sh, I
+> would say that this issue is not linked to MPTCP but rather to a recent
+> modification in the IPv6 stack.
+>
+> By chance, did you start a "git bisect" to identify the commit causing
+> this issue?
+>
+>
 
-When an RPC Call message cannot be pulled from the client, that
-is a message loss, by definition. Close the connection to trigger
-the client to resend.
+I think stable teams missed to backport
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
----
- net/sunrpc/xprtrdma/svc_rdma_recvfrom.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+commit c486640aa710ddd06c13a7f7162126e1552e8842
+Author: Eric Dumazet <edumazet@google.com>
+Date:   Mon Mar 13 20:17:32 2023 +0000
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-index 85c8bcaebb80..3b05f90a3e50 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-@@ -852,7 +852,8 @@ int svc_rdma_recvfrom(struct svc_rqst *rqstp)
- 	if (ret == -EINVAL)
- 		svc_rdma_send_error(rdma_xprt, ctxt, ret);
- 	svc_rdma_recv_ctxt_put(rdma_xprt, ctxt);
--	return ret;
-+	svc_xprt_deferred_close(xprt);
-+	return -ENOTCONN;
- 
- out_backchannel:
- 	svc_rdma_handle_bc_reply(rqstp, ctxt);
+    ipv6: remove one read_lock()/read_unlock() pair in rt6_check_neigh()
 
+    rt6_check_neigh() uses read_lock() to protect n->nud_state reading.
 
+    This seems overkill and causes false sharing.
+
+    Signed-off-by: Eric Dumazet <edumazet@google.com>
+    Reviewed-by: David Ahern <dsahern@kernel.org>
+    Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
+    Signed-off-by: Jakub Kicinski <kuba@kernel.org>
