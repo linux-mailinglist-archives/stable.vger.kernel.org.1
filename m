@@ -2,153 +2,224 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E4517C41FD
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 23:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 716D57C42A9
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 23:35:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343823AbjJJVE5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 17:04:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50954 "EHLO
+        id S1344087AbjJJVfX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 17:35:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230388AbjJJVE4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 17:04:56 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B231794
-        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 14:04:54 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-d9a4c0d89f7so1699458276.1
-        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 14:04:54 -0700 (PDT)
+        with ESMTP id S1343936AbjJJVfX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 17:35:23 -0400
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A357194
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 14:35:21 -0700 (PDT)
+Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-5827f6d60aaso3927503a12.3
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 14:35:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1696971894; x=1697576694; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0JPdI81s1g1jD64Q6FcuAIQKwcDv5/ca0TQcTmOhurM=;
-        b=Os+bFrzjhKtV+ps1T390Qm8hpHMVq3LwUOgCgOVfUlkN3Q8TL8cVK0ReTu0o6Sq4JB
-         2/wAEYVjoN2plvvMndkzomzIMsYozdssEUPQx5b5NS0wz5W3noHvSJMeB3mvmwW4oFnu
-         FXMA4aVMjstZ4AvEWAcR736DnW62WaGhYP7aezjJK+/mPOITmfXCHoiGCLgiJlMl1pPv
-         4/VpSq3O+EYV7x7Hk2TI1Gcp0UGmYE/x2oMdl689WUHUHorp56k2jfmOnjliti+CfnJ1
-         Ck1dHaOiYmtG8dCclg7t2TwRqapvu4cr5BpQu4DHsSVTrUDDSJ6dPs0TqMpaY4VsTTmc
-         Dm2w==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1696973720; x=1697578520; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Zm9a1JeicOT6vQ9uNyFBzpHEK+/MDWFCoUnU+QzbqY=;
+        b=PMgFIAFM2/Te9E6jRXHytnHV4pxUAqzqYRIuHpUlGF+fpxxcxCrayIQTyA3SEToziV
+         G5Nv8Ey0ovLA3l41JmoRg5VKq3UBA3mWQD3gChUrdl7g+QRIER+hB+jW5QN0LqcbsOtK
+         xkjL9MRAOkesyG9Sh3Hsxr9zs+sj+BsPv0fqxKS+mSAUJ5nWJUaEupALW26TlafX8dcR
+         pEfs3kQrTUqfYcGoz0nwCluS26T+cSLZktUjSEkBS2UwikyYRj8i/qtsRvqqyXdtgdIS
+         yxz1G3v/WBVPxYXQ3nv0+s3s0o3IO+D3hOOZPN1dljOH/cANJLXozh1V0TVRuOag2b+c
+         /GHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696971894; x=1697576694;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1696973720; x=1697578520;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0JPdI81s1g1jD64Q6FcuAIQKwcDv5/ca0TQcTmOhurM=;
-        b=p9lRHlwTvKU/O2buPLT4gmMJbMtYuTZNA1v5WmnScvpe5E+HinLKbB8YI84jDZPr4m
-         ya1Q+9jxfX39LwwSsU1r/34xikl/JhKUw4c9FNORPm4g898MqHaWv7MqsXLRjh2YZatC
-         7EDa8MQwTUqo2NXePXVCv4IubXiSk1In33cBdjwT7uHMk9zQbW2ExsheazotMMXoy2bH
-         yCVSpL8nCqo+UxVoqqXJTG2NSfQqVBGkBgZSPN6vQ1K4rw/b+Y4p3yT6tmllN2Yhy8Sz
-         VkBFVcYSkACSyoRjoxapz3QOU7FOwS3G2HwMnj+00+EXFwy20gBwIbLbU6BR/EMmKsgb
-         nxPA==
-X-Gm-Message-State: AOJu0YxNilQBn7nDvMmFHzR1CGo1uXYzfwW2q1UE0SBb/HdG0ocLmwdL
-        LPsJLMNRn2iQRAtqn2fK0qoiuQi8F9DMCVnX7e0l1w==
-X-Google-Smtp-Source: AGHT+IHuv4B4I/7pSOoU5p4zYXXxB+UnuU5+plZrypxjr00y7A8QvxFJzcakHp6OBM059ut4sqv1nhHOkk4zB/QCxkI=
-X-Received: by 2002:a05:6902:707:b0:d84:afae:96a8 with SMTP id
- k7-20020a056902070700b00d84afae96a8mr23439973ybt.7.1696971893895; Tue, 10 Oct
- 2023 14:04:53 -0700 (PDT)
+        bh=8Zm9a1JeicOT6vQ9uNyFBzpHEK+/MDWFCoUnU+QzbqY=;
+        b=XYEursXKfMh1NGNsrf2HTXArPPrVNpXjueQoFR9UeqCrjy4LZ+hu/XcvlXVl2ZiiP4
+         r8xAsGTG0PAzG0h+nQ+WeQvQGqeZrW3RwqMDWS6rvV+W+5LWTuXdaBXTdPYF/2DLeeFS
+         qBDo0dFfDnDWeSPaO6XJ7/P42E46wXZuX97WO8EpnhHXDZClh/4ebldqcTwo5UnJsN7/
+         Oyy0jg9qhjA91RZ3A93UPS94OhsoRzJTrk4TjV5yvqAJekifJvq1G++x/Hr4qFKPcKvq
+         eiZmOL1UJlHf34FPYzmjrkaWmiTlhuZASWYwYcsHlSfa6TMZ9Ir/LAejvXTZB2SWh2Bt
+         MNtA==
+X-Gm-Message-State: AOJu0YykyfA14AhNfPY0jNBWlYxLP7fXwzodYb6P/UES2GYhJw0F2MDX
+        THi7PNSjQ/Gf9hh79DT7EHDh+LpM7lCHt56+BGxSIQ==
+X-Google-Smtp-Source: AGHT+IHHOSErTJMbFENkWg8vkmOBfZdgxp3OlB03SbOveN6OzbJI2uHIf1kUM3DVqX6QcazjDWkWfA==
+X-Received: by 2002:a05:6a20:5485:b0:161:25e5:8de9 with SMTP id i5-20020a056a20548500b0016125e58de9mr20679591pzk.48.1696973720427;
+        Tue, 10 Oct 2023 14:35:20 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id jj22-20020a170903049600b001bb97e51ab4sm12223527plb.98.2023.10.10.14.35.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Oct 2023 14:35:19 -0700 (PDT)
+Message-ID: <6525c397.170a0220.e993.14de@mx.google.com>
+Date:   Tue, 10 Oct 2023 14:35:19 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20231001194943.658299-1-beanhuo@iokpp.de> <CAPDyKFpgPEhVuTbxe5YhYQ0W6907SwJRxSQLB1F2FbVW3zKHxg@mail.gmail.com>
- <254df9b8ca7475ad9dbd3a303c60e1f99eca9c56.camel@iokpp.de>
-In-Reply-To: <254df9b8ca7475ad9dbd3a303c60e1f99eca9c56.camel@iokpp.de>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 10 Oct 2023 23:04:16 +0200
-Message-ID: <CAPDyKFofJR0xtpmjCQXM7=VzUeN5jQLD2AZYEWocuyCnYNObYw@mail.gmail.com>
-Subject: Re: [PATCH v4] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron
- eMMC Q2J54A
-To:     Bean Huo <beanhuo@iokpp.de>
-Cc:     adrian.hunter@intel.com, beanhuo@micron.com,
-        jakub.kwapisz@toradex.com, rafael.beims@toradex.com,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v6.1.57
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable
+Subject: stable/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.57)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 10 Oct 2023 at 17:33, Bean Huo <beanhuo@iokpp.de> wrote:
->
-> Hi Ulf,
->
-> thanks for your comments, I didn't quite get your points:
->
-> On Tue, 2023-10-10 at 16:20 +0200, Ulf Hansson wrote:
-> > > @@ -2381,8 +2381,11 @@ enum mmc_issued mmc_blk_mq_issue_rq(struct
-> > > mmc_queue *mq, struct request *req)
-> > >                          }
-> > >                          ret = mmc_blk_cqe_issue_flush(mq, req);
-> > >                          break;
-> > > -               case REQ_OP_READ:
-> > >                  case REQ_OP_WRITE:
-> > > +                       if (mmc_card_broken_cache_flush(card) &&
-> > > !card->written_flag)
-> >
-> > It looks superfluous to me to check mmc_card_broken_cache_flush() and
-> > !card->written_flag. Just set the card->written_flag unconditionally.
->
-> what did you mean "Just set the card->written_flag unconditionally."?
-> This means I just need to check card->written_flag and set card-
-> >written_flag to true and false in the case
-> MMC_QUIRK_BROKEN_CACHE_FLUSH? or don't need to call
-> mmc_card_broken_cache_flush()?
+stable/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.5=
+7)
 
-I mean skip the checks above and just do the assignment below.
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.1.y/ke=
+rnel/v6.1.57/
 
->
-> >
-> > > +                               card->written_flag = true;
-> > > +                       fallthrough;
-> > > +               case REQ_OP_READ:
-> > >                          if (host->cqe_enabled)
-> > >                                  ret = mmc_blk_cqe_issue_rw_rq(mq,
-> > > req);
-> > >                          else
-> > > diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
-> > > index 4edf9057fa79..b7754a1b8d97 100644
-> > > --- a/drivers/mmc/core/card.h
-> > > +++ b/drivers/mmc/core/card.h
-> > > @@ -280,4 +280,8 @@ static inline int
-> > > mmc_card_broken_sd_cache(const struct mmc_card *c)
-> > >          return c->quirks & MMC_QUIRK_BROKEN_SD_CACHE;
-> > >   }
-> > >
-> > > +static inline int mmc_card_broken_cache_flush(const struct
-> > > mmc_card *c)
-> > > +{
-> > > +       return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
-> > > +}
-> > >   #endif
-> > > diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-> > > index 89cd48fcec79..47896c32086e 100644
-> > > --- a/drivers/mmc/core/mmc.c
-> > > +++ b/drivers/mmc/core/mmc.c
-> > > @@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host
-> > > *host, u32 ocr,
-> > >          if (!oldcard)
-> > >                  host->card = card;
-> > >
-> > > +       card->written_flag = false;
-> > > +
-> >
-> > How about doing this after a successful flush operation instead? In
-> > other words in _mmc_flush_cache().
->
-> Here initializes flag and the patch is intenting to eliminate the cache
-> flush command before writing. what do you mean adding in
-> mmc_flush_cache()?
+Tree: stable
+Branch: linux-6.1.y
+Git Describe: v6.1.57
+Git Commit: 082280fe94a09462c727fb6e7b0c982efb36dede
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 7 unique architectures
 
-mmc_init_card() is called while initializing and re-initializing the
-card. So, it certainly works to reset the flag from here.
+Warnings Detected:
 
-However, _mmc_flush_cache() is called before powering off the card,
-which then would work similarly to the above, but also gets called for
-REQ_OP_FLUSH. Wouldn't that mean that we may be able to skip some
-unnecessary/troublesome cache flush requests if we would reset the
-flag from  mmc_flush_cache(), rather than from mmc_init_card()?
+arc:
 
-Kind regards
-Uffe
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+
+
+Warnings summary:
+
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
