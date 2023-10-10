@@ -2,139 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F19907BF65B
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 10:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E33147BF660
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 10:47:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229651AbjJJIps (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 04:45:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41624 "EHLO
+        id S229709AbjJJIrj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 04:47:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229525AbjJJIpr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 04:45:47 -0400
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BF0DA4;
-        Tue, 10 Oct 2023 01:45:46 -0700 (PDT)
-Received: from pps.filterd (m0046660.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39A8CLJo030787;
-        Tue, 10 Oct 2023 10:45:35 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        from:to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding:content-type; s=selector1; bh=WCYc/RI
-        9/IQKqdbx4Vx6AK1sToKJiRmvRA3d8JVp7Qw=; b=5IFLin8EWof5QceBowCG9xH
-        kXg9kRB2d8p9vCDeQZ7kQzdSeqW6yKD3Ko/YuaJ825POvawRWwysDOWWoBp9vlNW
-        aeoeZcUt105kuJGalCDU0d0s1q9CVeY+TdYd9EQgvRHrKVs2xS5rs0ef0MrqUDFu
-        5hbgE8HfOAqDRKAM5YKmN9QJhGH7J5rwZ7W9WRHbM3AnFZs79ChCwkh2rELmbMVn
-        wPxaoeIp23cVp80gkktzXjyiqa32be6NYiBtQKHm3YSEx60VIVAMulz8/191gSnY
-        75FI1s8xsG3X8xYMKRe5SEjvj6Eq8zTYPDxecvhdXBC3vfunYh51gdIgt7Gw8/g=
-        =
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3tkhfe110p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 10 Oct 2023 10:45:35 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id BFA4610005E;
-        Tue, 10 Oct 2023 10:45:34 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id AF6E321A902;
-        Tue, 10 Oct 2023 10:45:34 +0200 (CEST)
-Received: from localhost (10.129.178.213) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 10 Oct
- 2023 10:45:34 +0200
-From:   Alain Volmat <alain.volmat@foss.st.com>
-To:     Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-        Alain Volmat <alain.volmat@foss.st.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        M'boumba Cedric Madianga <cedric.madianga@gmail.com>,
-        Wolfram Sang <wsa@kernel.org>
-CC:     <stable@vger.kernel.org>,
-        Pierre-Yves MORDRET <pierre-yves.mordret@st.com>,
-        <linux-i2c@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] i2c: stm32f7: Fix PEC handling in case of SMBUS transfers
-Date:   Tue, 10 Oct 2023 10:44:54 +0200
-Message-ID: <20231010084455.1718830-1-alain.volmat@foss.st.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229525AbjJJIri (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 04:47:38 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5FC797
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 01:47:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696927656; x=1728463656;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=ymKPyXX+MMt0rsb9c5uaVXqZCv5g6sfDzydyxvk28dg=;
+  b=Reh5TxoO2y/E2w/IRXldsGr0KSlCd5LWbJahlXMKbW77kTHOtwR9+F0L
+   CDQOhLHGr4RBLwPwsBzak84jYLibINFgwVZ2+GsjqjUt0J8/MRs1l8wGy
+   T20Mhjfi1k5PUDeOPzuAjWjqsCVRXZNwWbHP39Q9h3e2zZ0cMRqqw5vpt
+   6NvF1xjM38Dz4gNOOrffzRMV8/txEuYdfNC6y+EPk8am17WLnZatQY3V9
+   8KnuSzkifjNcZLgXFV1Y650BfbQ1tqmAbn+nUTgNsgEe2L/fHnaMyYpCl
+   /cenX2xcpbLhgKbrlYzdNim7SWkUQcHmJPW2dmTK2eOTCUrYrrRd5vN6s
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="387179403"
+X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
+   d="scan'208";a="387179403"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:47:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="788506097"
+X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
+   d="scan'208";a="788506097"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 10 Oct 2023 01:47:35 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qq8Op-0000Cy-0s;
+        Tue, 10 Oct 2023 08:47:31 +0000
+Date:   Tue, 10 Oct 2023 16:47:21 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Alain Volmat <alain.volmat@foss.st.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] i2c: stm32f7: Fix PEC handling in case of SMBUS
+ transfers
+Message-ID: <ZSUPmZI4T8E8a/JF@7e1dc97a21a5>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.129.178.213]
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-10_04,2023-10-09_01,2023-05-22_02
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231010084455.1718830-1-alain.volmat@foss.st.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In case of SMBUS byte read with PEC enabled, the whole transfer
-is split into two commands.  A first write command, followed by
-a read command.  The write command does not have any PEC byte
-and a PEC byte is appended at the end of the read command.
-(cf Read byte protocol with PEC in SMBUS specification)
+Hi,
 
-Within the STM32 I2C controller, handling (either sending
-or receiving) of the PEC byte is done via the PECBYTE bit in
-register CR2.
+Thanks for your patch.
 
-Currently, the PECBYTE is set at the beginning of a transfer,
-which lead to sending a PEC byte at the end of the write command
-(hence losing the real last byte), and also does not check the
-PEC byte received during the read command.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-This patch corrects the function stm32f7_i2c_smbus_xfer_msg
-in order to only set the PECBYTE during the read command.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Fixes: 9e48155f6bfe ("i2c: i2c-stm32f7: Add initial SMBus protocols support")
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Reviewed-by: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
----
-v2:
-  - add more details about the issue within the commit log
-  - removal of blank line between Fixes and Signed-off-by
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] i2c: stm32f7: Fix PEC handling in case of SMBUS transfers
+Link: https://lore.kernel.org/stable/20231010084455.1718830-1-alain.volmat%40foss.st.com
 
- drivers/i2c/busses/i2c-stm32f7.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/i2c/busses/i2c-stm32f7.c b/drivers/i2c/busses/i2c-stm32f7.c
-index 579b30581725..0d3c9a041b56 100644
---- a/drivers/i2c/busses/i2c-stm32f7.c
-+++ b/drivers/i2c/busses/i2c-stm32f7.c
-@@ -1059,9 +1059,10 @@ static int stm32f7_i2c_smbus_xfer_msg(struct stm32f7_i2c_dev *i2c_dev,
- 	/* Configure PEC */
- 	if ((flags & I2C_CLIENT_PEC) && f7_msg->size != I2C_SMBUS_QUICK) {
- 		cr1 |= STM32F7_I2C_CR1_PECEN;
--		cr2 |= STM32F7_I2C_CR2_PECBYTE;
--		if (!f7_msg->read_write)
-+		if (!f7_msg->read_write) {
-+			cr2 |= STM32F7_I2C_CR2_PECBYTE;
- 			f7_msg->count++;
-+		}
- 	} else {
- 		cr1 &= ~STM32F7_I2C_CR1_PECEN;
- 		cr2 &= ~STM32F7_I2C_CR2_PECBYTE;
-@@ -1149,8 +1150,10 @@ static void stm32f7_i2c_smbus_rep_start(struct stm32f7_i2c_dev *i2c_dev)
- 	f7_msg->stop = true;
- 
- 	/* Add one byte for PEC if needed */
--	if (cr1 & STM32F7_I2C_CR1_PECEN)
-+	if (cr1 & STM32F7_I2C_CR1_PECEN) {
-+		cr2 |= STM32F7_I2C_CR2_PECBYTE;
- 		f7_msg->count++;
-+	}
- 
- 	/* Set number of bytes to be transferred */
- 	cr2 &= ~(STM32F7_I2C_CR2_NBYTES_MASK);
 -- 
-2.25.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
