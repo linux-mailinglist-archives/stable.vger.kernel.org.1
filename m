@@ -2,73 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B83127BFFE1
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 17:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B6187BFFE8
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 17:02:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233266AbjJJPAq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 11:00:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52856 "EHLO
+        id S232634AbjJJPCl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 11:02:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233237AbjJJPAo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 11:00:44 -0400
-Received: from m1383.mail.163.com (m1383.mail.163.com [220.181.13.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C2EEEAF
-        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 08:00:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
-        Message-ID; bh=Ksp/y2ZnPi6ieUph/Vuz6ex2at4304SeVYo01V5Rubc=; b=j
-        WS5ZfG9bmQJEw3cHssPmRsrL28snaJIcLN2cy5UGigy0CXX6NlZtLkwKOIVG7zTl
-        c/Hx8RcJ+AE6Y0UM0hElOo4dvAHrt9GF4dK5LzcUyWCR9TmFe8+MHdtNOdma/vm+
-        fcwn0sFeZlnC4DKKHdSf87xM2OguIMvAamfBKLJMmQ=
-Received: from zyytlz.wz$163.com ( [111.206.145.21] ) by
- ajax-webmail-wmsvr83 (Coremail) ; Tue, 10 Oct 2023 23:00:04 +0800 (CST)
-X-Originating-IP: [111.206.145.21]
-Date:   Tue, 10 Oct 2023 23:00:04 +0800 (CST)
-From:   =?GBK?B?zfXV9w==?= <zyytlz.wz@163.com>
-To:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        "Alexandre Mergnat" <amergnat@baylibre.com>,
-        "Chen-Yu Tsai" <wenst@chromium.org>,
-        "AngeloGioacchino Del Regno" 
-        <angelogioacchino.delregno@collabora.com>,
-        "Hans Verkuil" <hverkuil-cisco@xs4all.nl>,
-        "Sasha Levin" <sashal@kernel.org>
-Subject: Re:Re: [PATCH 6.1 407/600] media: mtk-jpeg: Fix use after free bug
- due to uncanceled work
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2023 www.mailtech.cn 163com
-In-Reply-To: <2023101047-pumice-diligent-a08d@gregkh>
-References: <20230911134633.619970489@linuxfoundation.org>
- <20230911134645.689607572@linuxfoundation.org>
- <5f19d638.6fa5.18b19f1d4fd.Coremail.zyytlz.wz@163.com>
- <2023101047-pumice-diligent-a08d@gregkh>
-X-NTES-SC: AL_QuySBPWev0gr4iifYOkXkksRj+o/X8G3uvgi2odeOJ80iirQ4SAKXlxtF0Xo8fyVGxu9kzuUUjhe5vxzb4t5U77frLvvCamdIhiGUKF0B135
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+        with ESMTP id S233089AbjJJPCk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 11:02:40 -0400
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93E66AF
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 08:02:38 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-d84d883c1b6so5954179276.0
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 08:02:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1696950158; x=1697554958; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m1yWK5hjBQ0wjkXfSMeS0ZutGUHPxAuWdRVh9wYUYN0=;
+        b=y1Ch3xacV9UYOYbtQF/ygG09JX7W2v2g6rPSFNfYFIah2logoECmUN8/9cutPaJuWV
+         kpk1ml99Eu6q6sQlYQWfOwuafIpjdptTUl80mqJvfPhRrJXa4XX+JoCiOLKTl3K3tdPW
+         UWs1pPGURmYjtZVW2Xs6crLKupC9acmSYU+/q4NuAiVyOtjGjqsDbfCD0EENkFwbRsCk
+         6aZzrbyvVp0wY9tDNxcgKuHtfety/Fq+EVi1b/mU2SLxAgj3bcKeXQvioqTGjGlXhb3B
+         gl865YXo/828WdNM8yUv5tv6xztHg2OMN7DJYecw8IsvBmcc9Xrtiftd0sj/zbh64+1W
+         JEAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696950158; x=1697554958;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=m1yWK5hjBQ0wjkXfSMeS0ZutGUHPxAuWdRVh9wYUYN0=;
+        b=fyud/A8ckIPED7ar6Dij5cVgrtscr5dd8xEWsAyCXBCIoh8nLrJI9dpmFxg0VPnCI0
+         RwFSX2m85XxV+87pGO/GAhnDN7fPzBtgnrejr08ftfoNg5t2dmCYEMTeROn7NOxFwPeX
+         Umlq4q/k7NfV+9MLixSUQINpVY5h7A0xFCQ1X4aGqH7/LrnqNxf64CL+SHLjVfcmBVCO
+         iMRS6QAN96bBEugH5noep0SigesoaBWvpZL4I+P1KrIvQj4pcjuKu739BmnQDwzUjCJ1
+         +lbegrpjU9a+xDdGzW6+65kAJ3goCZw+R7ae/GlQ2vT8RdxKGi/hPSb2rW5wQyKrjLsN
+         R6hA==
+X-Gm-Message-State: AOJu0YxNZSKEBnlt5rg4K1Mc8ZMQqyZ3SalRUK6IAuPKGxiz1OeLqxIU
+        REuC1A8ZhnZGjWbmMsIiyRjYQpnlhwQmoEmFwAq6MQ==
+X-Google-Smtp-Source: AGHT+IHYBpK+4fI/9nFvpGF+AWon1DhPZtC+/skjso/3+I7vMWj+ecsz05uAzVg4IRIY+AFlCmcCo7MX7O6oMEWIIdU=
+X-Received: by 2002:a25:8503:0:b0:d9a:4cc0:a90c with SMTP id
+ w3-20020a258503000000b00d9a4cc0a90cmr2065065ybk.15.1696950156384; Tue, 10 Oct
+ 2023 08:02:36 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <3356a38f.710e.18b1a1a2c8e.Coremail.zyytlz.wz@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID: U8GowACXH6P0ZiVleY0RAA--.46744W
-X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/1tbiXQgFU1WBqqXKWAABsL
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FROM,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
+ <065a0dac-499f-7375-ddb4-1800e8ef61d1@mojatatu.com> <0BC2C22C-F9AA-4B13-905D-FE32F41BDA8A@flyingcircus.io>
+ <20231009080646.60ce9920@kernel.org> <da08ba06-e24c-d2c3-b9a0-8415a83ae791@mojatatu.com>
+ <20231009172849.00f4a6c5@kernel.org>
+In-Reply-To: <20231009172849.00f4a6c5@kernel.org>
+From:   Jamal Hadi Salim <jhs@mojatatu.com>
+Date:   Tue, 10 Oct 2023 11:02:25 -0400
+Message-ID: <CAM0EoM=mnOdEgHPzbPxCAotoy4C54XyGiisrjwnO_raqVWPryw@mail.gmail.com>
+Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC requirement
+To:     Jakub Kicinski <kuba@kernel.org>
+Cc:     Pedro Tammela <pctammela@mojatatu.com>, markovicbudimir@gmail.com,
+        Christian Theune <ct@flyingcircus.io>, stable@vger.kernel.org,
+        netdev@vger.kernel.org,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-CgpBdCAyMDIzLTEwLTEwIDIxOjU0OjU0LCAiR3JlZyBLcm9haC1IYXJ0bWFuIiA8Z3JlZ2toQGxp
-bnV4Zm91bmRhdGlvbi5vcmc+IHdyb3RlOgo+T24gVHVlLCBPY3QgMTAsIDIwMjMgYXQgMTA6MTY6
-MDFQTSArMDgwMCwgzfXV9yB3cm90ZToKPj4gCj4+IEhpLAo+PiAKPj4gU29ycnkgdG8gYm90aGVy
-IHlvdSBmb3IgSSBkaWRuJ3Qga25vdyBob3cgdG8gc3VibWl0IHBhdGNoIHRvIGEgc3BlY2lmaWMg
-YnJhbmNoLgo+PiBDb3VsZCB5b3UgcGxlYXNlIHB1c2ggdGhpcyBwYXRjaCB0byA1LjEwIGJyYW5j
-aD8gVGhlIGNocm9tZS1vcyBpcyBhZmZjdGVkIGJ5IHRoaXMgaXNzdWUuCj4KPgo+Cj5UaGlzIGlz
-IG5vdCB0aGUgY29ycmVjdCB3YXkgdG8gc3VibWl0IHBhdGNoZXMgZm9yIGluY2x1c2lvbiBpbiB0
-aGUKPnN0YWJsZSBrZXJuZWwgdHJlZS4gIFBsZWFzZSByZWFkOgo+ICAgIGh0dHBzOi8vd3d3Lmtl
-cm5lbC5vcmcvZG9jL2h0bWwvbGF0ZXN0L3Byb2Nlc3Mvc3RhYmxlLWtlcm5lbC1ydWxlcy5odG1s
-Cj5mb3IgaG93IHRvIGRvIHRoaXMgcHJvcGVybHkuCj4KPgoKR2V0IGl0ISBUaGFua3MgdmVyeSBt
-dXNoOikKCkJlc3Qgd2lzaGVzLApaaGVuZyBXYW5nCg==
+On Mon, Oct 9, 2023 at 8:28=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wro=
+te:
+>
+> On Mon, 9 Oct 2023 12:31:57 -0300 Pedro Tammela wrote:
+> > > Herm, how did we get this far without CCing the author of the patch.
+> > > Adding Budimir.
+> > >
+> > > Pedro, Budimir, any idea what the original bug was? There isn't much
+> > > info in the commit message.
+> >
+> > We had a UAF with a very straight forward way to trigger it.
+>
+> Any details?
+
+As in you want the sequence of commands that caused the fault posted?
+Budimir, lets wait for Jakub's response before you do that. I have
+those details as well of course.
+
+> > Setting 'rt' as a parent is incorrect and the man page is explicit abou=
+t
+> > it as it doesn't make sense 'qdisc wise'. Being able to set it has
+> > always been wrong unfortunately...
+>
+> Sure but unfortunately "we don't break backward compat" means
+> we can't really argue. It will take us more time to debate this
+> than to fix it (assuming we understand the initial problem).
+>
+> Frankly one can even argue whether "exploitable by root / userns"
+> is more important than single user's init scripts breaking.
+> The "security" issues for root are dime a dozen.
+
+This is a tough one - as it stands right now we dont see a good way
+out. It's either "exploitable by root / userns" or break uapi.
+Christian - can you send your "working" scripts, simplified if
+possible, and we'll take a look.
+
+cheers,
+jamal
