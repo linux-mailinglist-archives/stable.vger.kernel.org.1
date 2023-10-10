@@ -2,148 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1CDA7BF81B
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 11:59:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DD1D7BF836
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 12:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230387AbjJJJ7x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 05:59:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57386 "EHLO
+        id S229516AbjJJKLW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 06:11:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230453AbjJJJ7v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 05:59:51 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159E5C6;
-        Tue, 10 Oct 2023 02:59:48 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BQd8WAJJbkqdyUR0e8Unrmn0DajMoGixGflk02YMsvhecHCeTyv11c6AbbTN6PMlhGWgjKo9iy507ZvMFzDKaBZfmpSmCaHaqzfXXuLJ47S36sFhEzKc4TS23VN3zgwCAaXqtzpfIkBMgdVGOJ5C+yOyG1j/3OlNiTATfZVTdNCifysCq2fiQdT5xLrgRlrYsVxhfGOt2uP19mGrnL+yn4Cz/JsbSXrhsEBI9yFlelYTzjsAVS9p/X9r6R6PNJeqc0Ceh0Wbh3Ow6mCAUSdCX4VjBFcwCaTlpYM5GYnhQqNvp2mkv2p9ZZNecfgC/6RxiqN4YwgqWUz7aT3oWJFckg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CByRsV9svRbDn0jxscZtlTcaXJOKxLVcVx4CaOXCRSU=;
- b=b89rbtlCoDxu3ndKEhIu5bjbdHHEMRBIuFItGVtk/oZhbyKBYFZvd6ok2b7uduBxjzWKzW9MHuWJkBELgE5f3TWZ8K4f+wexTNMh1IL2omA696esFI/oXYGM9fuKAoWLLKsJyfBSya+eCpaxc+jFdHjMkBXp2Sgn4EQf6S3RVBP7yXz4w1XQlsi7FrMoXK/sUASZB7kKw+el+72cjuRJa2nAxSZmuD1eSTv2GJ2aATadSoWY7lLC8fERH24tIHCnQQ6JHuHv2otK+DrN+rbOus4HOm4gEQUuTwtXiJm1NexWgx0mtoyFccc02iz78yrVSbqj4+D5rVmhO9bwqFg4vQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CByRsV9svRbDn0jxscZtlTcaXJOKxLVcVx4CaOXCRSU=;
- b=Qj5w0MyxCJtzTM2YNKekGHeEMyewyGeudUw9Cc5OInFyCXjbnEyOedIMEkXFDCQxpNRiYxMs8RSWpA5u0ui5xlZALy9OX7rcjLJ7s7Pk+fUebRtr1AU5TM84N6HPj961BY6H7rk1wWDFwhjNMAIE10lDsdsYbePdtYcFwIXSOCUpeC+bYB6DkdxMYmRC1AdjkQiEjSqzmMdbbKSJ7MpRdjZjqXCCEijoVTTuVoYiQ+7BbNHnY6Uvqe7p99SqEckji2VZ1lZwGTzCAgAjk35050ZRIO8kr55h8dya5lDEzcPdC9cRNwTjI7CqVb4L5W/wNZiTtn43jd0LaUHMdLqZhw==
-Received: from SN7PR04CA0074.namprd04.prod.outlook.com (2603:10b6:806:121::19)
- by PH0PR12MB7886.namprd12.prod.outlook.com (2603:10b6:510:26e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.37; Tue, 10 Oct
- 2023 09:59:45 +0000
-Received: from SA2PEPF00001509.namprd04.prod.outlook.com
- (2603:10b6:806:121:cafe::d2) by SN7PR04CA0074.outlook.office365.com
- (2603:10b6:806:121::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.38 via Frontend
- Transport; Tue, 10 Oct 2023 09:59:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SA2PEPF00001509.mail.protection.outlook.com (10.167.242.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6838.14 via Frontend Transport; Tue, 10 Oct 2023 09:59:45 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 10 Oct
- 2023 02:59:35 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 10 Oct
- 2023 02:59:35 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
- Transport; Tue, 10 Oct 2023 02:59:35 -0700
-From:   Jon Hunter <jonathanh@nvidia.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>,
-        <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.1 000/162] 6.1.57-rc1 review
-In-Reply-To: <20231009130122.946357448@linuxfoundation.org>
-References: <20231009130122.946357448@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+        with ESMTP id S229499AbjJJKLW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 06:11:22 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2052893;
+        Tue, 10 Oct 2023 03:11:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=oj1axhxOjginGEELIsLjRAtpZ1XYE8QEYtnImm9KFkM=; b=gYdO8iqarQxLHjF7YnORu/ND3n
+        P8Gxkb0rRc1yB37HNKOontKt/9J1jFpVLPPKbEh8Fo31wpLqgJgonUdDmliPmWek0TAKzExJy0pEF
+        5+BXZCjaTVlX/CwrnMr7nYJ2ZTe7pqq09H8khWEzMP1ob1y57ZotrnJWyYaH1haO5lesiBo95gcED
+        bLNR5ra69pGgy3tbU6IoomsDUHVQCIErONjFJRzX17lUk36DVty7sCzUjpdyjC7HkGE6zM2fVrOwY
+        sZvCBJPxkTQX8xY9qBpODLXVuEEkgcwwgiZfYVswiFF1UqaRAVEjrwt5jxYOLLQJCTz2Lz+wViC21
+        MGvlPphg==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qq9hY-0040qP-NX; Tue, 10 Oct 2023 10:10:57 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 63DD1300392; Tue, 10 Oct 2023 12:10:56 +0200 (CEST)
+Date:   Tue, 10 Oct 2023 12:10:56 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
+        Fei Yang <fei.yang@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/alternatives: Disable KASAN on text_poke_early() in
+ apply_alternatives()
+Message-ID: <20231010101056.GF377@noisy.programming.kicks-ass.net>
+References: <20231010053716.2481-1-kirill.shutemov@linux.intel.com>
+ <20231010081938.GBZSUJGlSvEkFIDnES@fat_crate.local>
 MIME-Version: 1.0
-Message-ID: <a1d4b53b-d68a-44dd-9de5-27bbcb909f3d@rnnvmail201.nvidia.com>
-Date:   Tue, 10 Oct 2023 02:59:35 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001509:EE_|PH0PR12MB7886:EE_
-X-MS-Office365-Filtering-Correlation-Id: 66090c0e-e09b-4353-3ce1-08dbc977a1cf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: MBeXa/IN0FPIFUJymtzqqqkA6R3EKmCGO9ewrNqTbpa4S9LnxveMoHYFGjJKvAJr4rvqp/w6G+maEKji8ALVdcO2g2YdgPmF94GCfxlN40jK8iLjn0v4oAW6F5lC1RVl+vGs8VZzGVzTbq8rd5mbUPe0J3drbzoGwmRxOWRt/ky2cbTJl/gPh/SvWgPQQ0RuO7Zl+vL+QsurwVP4DzpFaXOra6iKw4eKCVC56Csl/PKIpvx+n6sMM8Hz7Vlvp++A6eEXWyXpZQkmmLGEf8mIRHyMTylL7EoAxgZzgHG0bmnqqwCc8aVZmlxVeJuFaXEQaKKS+M/L/wtPDYd7RmyHHV+NBcpHmlITgrF+f5a59x8aatKizqKwA2ypW6joo9qmE6MYsvzXPkAF2WQGblf0wBWCGnVDpGZa4XNuR/TTbzpdxOeGODBKRfaqawSFXeIzihxHLri4lbGG9EQnRdYISfFeQjoFHlkHVnmQxzlZvaiYi0gWbmY89Xt0e71ERpo0D0lI6h8mkrD8Chtl03zWa/fiRH4tIQoern2Pm8uzZ/Zh1G/l6ALrgYlj+T4YPN+RSBCV0mprAJ1PRTD0l4bx9uBiUUZJxbplOxF/oWnxFhC78B6wHUx2Dzh6BqM0ajGcfNhYuc71gsOMyzS3XhPEZxS9sp7Yl2mnPE4FyWAx/AyAWpJ7rbjHJaVrE/GGJhA39oZPfEK4egTL8wlkC+U46YVRldOHqg9pIU0NURZT141tFASfCzr8b9IN7SRKLB5TeyezKESYHHPbo6Xab7aYIujhHHnfFYAOWWxa4X+TvAU=
-X-Forefront-Antispam-Report: CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(396003)(346002)(136003)(39860400002)(376002)(230922051799003)(186009)(64100799003)(1800799009)(451199024)(82310400011)(36840700001)(40470700004)(46966006)(31686004)(82740400003)(31696002)(40460700003)(7636003)(86362001)(40480700001)(36860700001)(356005)(336012)(7416002)(2906002)(966005)(47076005)(426003)(41300700001)(316002)(478600001)(8676002)(8936002)(70206006)(26005)(4326008)(5660300002)(70586007)(6916009)(54906003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2023 09:59:45.4655
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66090c0e-e09b-4353-3ce1-08dbc977a1cf
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00001509.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7886
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231010081938.GBZSUJGlSvEkFIDnES@fat_crate.local>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 09 Oct 2023 14:59:41 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.57 release.
-> There are 162 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Oct 10, 2023 at 10:19:38AM +0200, Borislav Petkov wrote:
+> On Tue, Oct 10, 2023 at 08:37:16AM +0300, Kirill A. Shutemov wrote:
+> > On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
+> > got patched. It includes KASAN code, where KASAN_SHADOW_START depends on
+> > __VIRTUAL_MASK_SHIFT, which is defined with the cpu_feature_enabled().
 > 
-> Responses should be made by Wed, 11 Oct 2023 13:00:55 +0000.
-> Anything received after that time might be too late.
+> So use boot_cpu_has(X86_FEATURE_LA57).
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.57-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+> > It seems that KASAN gets confused when apply_alternatives() patches the
 > 
-> thanks,
+> It seems?
 > 
-> greg k-h
+> > KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
+> > static, by replacing __VIRTUAL_MASK_SHIFT with 56, fixes the issue.
+> > 
+> > During text_poke_early() in apply_alternatives(), KASAN should be
+> > disabled. KASAN is already disabled in non-_early() text_poke().
+> > 
+> > It is unclear why the issue was not reported earlier. Bisecting does not
+> > help. Older kernels trigger the issue less frequently, but it still
+> > occurs. In the absence of any other clear offenders, the initial dynamic
+> > 5-level paging support is to blame.
+> 
+> This whole thing sounds like it is still not really clear what is
+> actually happening...
 
-All tests passing for Tegra ...
+somewhere along the line __asan_loadN() gets tripped, this then ends up
+in kasan_check_range() -> check_region_inline() -> addr_has_metadata().
 
-Test results for stable-v6.1:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+This latter has: kasan_shadow_to_mem() which is compared against
+KASAN_SHADOW_START, which includes, as Kirill says __VIRTUAL_MASK_SHIFT.
 
-Linux version:	6.1.57-rc1-g32856ae49e9f
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
+Now, obviously you really don't want boot_cpu_has() in
+__VIRTUAL_MASK_SHIFT, that would be really bad (Linus recently
+complained about how horrible the code-gen is around this already, must
+not make it far worse).
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-Jon
+Anyway, being half-way through patching X86_FEATURE_LA57 thing *are*
+inconsistent and I really can't blame things for going sideways.
+
+That said, I don't particularly like the patch, I think it should, at
+the veyr least, cover all of apply_alternatives, not just
+text_poke_early().
