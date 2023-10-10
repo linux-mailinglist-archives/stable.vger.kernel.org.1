@@ -2,77 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FA977BF9A2
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 13:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EA747BF9B0
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 13:27:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbjJJLYy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 07:24:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47666 "EHLO
+        id S230374AbjJJL1y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 07:27:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231228AbjJJLYx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 07:24:53 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADD4E94;
-        Tue, 10 Oct 2023 04:24:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=RHIty1r8jlpg4mbxrTX99MguDdmyNDYNfk7Z509OtEw=; b=AK/yhtwqX3jRAdiHHdyk4fqwYm
-        4LtzZ1cDNS8zXq+n2DDkrXyrY1swTguaEC1XcnfP3Xo7lqcvYvpsYay9lVCPGct8rJfX2bIt9QxS3
-        9eyjtchnrilqJ2j1VmM/XYgVJ04vaNaRaOLUpz6EWadnqkeEz1alsuYxGnioBz+i65//wBOp1Jukf
-        /JOyO36Tgak878AK8KiYQOQmP1FyyYaP7sM8z9ixJaRuS/a9rqnuoaM6uwpPGrI1U3Caz4llcugJc
-        UlyVh8gop7AUFH3aCD64gvwZcMN5j/cENwAPLfUnoAK7BZOApLF9XJgkTraYp5l0bEfoItnprootj
-        sFDJ0krA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qqAqf-004JVi-Mh; Tue, 10 Oct 2023 11:24:25 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 5F185300392; Tue, 10 Oct 2023 13:24:25 +0200 (CEST)
-Date:   Tue, 10 Oct 2023 13:24:25 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
-        Fei Yang <fei.yang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/alternatives: Disable KASAN on text_poke_early() in
- apply_alternatives()
-Message-ID: <20231010112425.GJ377@noisy.programming.kicks-ass.net>
-References: <20231010053716.2481-1-kirill.shutemov@linux.intel.com>
- <20231010081938.GBZSUJGlSvEkFIDnES@fat_crate.local>
- <20231010101056.GF377@noisy.programming.kicks-ass.net>
- <20231010102537.qkrfcna2fwfkzgir@box.shutemov.name>
+        with ESMTP id S229921AbjJJL1y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 07:27:54 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7502994
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 04:27:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C561C433CA;
+        Tue, 10 Oct 2023 11:27:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1696937271;
+        bh=5sE5gUILKS6QhHBpP8Exty2NmNy9zwTSLu679olXZiQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gVufBcV3Mw/7ZVyzPyO2D+YniZukJwDNmGRoa6dyxloIU2Z8yGeStTV3tAi5LQHL9
+         atlgy13UlB/oRXKmDuPfSdj3qpE5R5OCzcuW9uLUY2Z58rrYJmdoZ3501dOc54QhYO
+         Ey/qHW9OiWcBtVGYwZ0cfGbMEG6DgPUim59XUD6o=
+Date:   Tue, 10 Oct 2023 13:27:48 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Qu Wenruo <wqu@suse.com>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Anand Jain <anand.jain@oracle.com>,
+        David Sterba <dsterba@suse.com>
+Subject: Re: [PATCH 4.19 70/91] btrfs: reject unknown mount options early
+Message-ID: <2023101008-percolate-sterile-1391@gregkh>
+References: <20231009130111.518916887@linuxfoundation.org>
+ <20231009130113.943075052@linuxfoundation.org>
+ <c55ba96b-9058-42ac-817b-2d42b45ddf3a@suse.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231010102537.qkrfcna2fwfkzgir@box.shutemov.name>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <c55ba96b-9058-42ac-817b-2d42b45ddf3a@suse.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 10, 2023 at 01:25:37PM +0300, Kirill A. Shutemov wrote:
-
-> > That said, I don't particularly like the patch, I think it should, at
-> > the veyr least, cover all of apply_alternatives, not just
-> > text_poke_early().
+On Tue, Oct 10, 2023 at 07:23:15PM +1030, Qu Wenruo wrote:
 > 
-> I can do this, if it is the only stopper.
 > 
-> Do you want it disabled on caller side or inside apply_alternatives()?
+> On 2023/10/9 23:36, Greg Kroah-Hartman wrote:
+> > 4.19-stable review patch.  If anyone has any objections, please let me know.
+> 
+> Please reject the patch from all stable branches (if that's not yet too
+> late).
+> 
+> The rejection is too strict, especially the check is before the security
+> mount options, thus it would reject all security mount options.
 
-Inside probably, covering the whole for()-loop thingy. Ideally with a
-comment explaining how KASAN doesn't like partial LA57 patching.
+This is queued up in all stable -rc releases right now, is there a fix
+in Linus's tree for this as well or is it broken there too?
+
+thanks,
+
+greg k-h
