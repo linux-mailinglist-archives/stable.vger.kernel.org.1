@@ -2,110 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 631387BF637
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 10:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 844A17BF64D
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 10:44:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229514AbjJJIlD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 04:41:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57962 "EHLO
+        id S229709AbjJJIoM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 04:44:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229892AbjJJIkw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 04:40:52 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B03A4;
-        Tue, 10 Oct 2023 01:40:50 -0700 (PDT)
+        with ESMTP id S231588AbjJJIoI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 04:44:08 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31908B6;
+        Tue, 10 Oct 2023 01:44:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696927250; x=1728463250;
+  t=1696927446; x=1728463446;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Q/HQZfWfUh0bAp2HPigWMWS7Bdx/WkAzNBzfM90GuJU=;
-  b=aGywAkpnWqe7PtgnuIWmGgcKcmCupCpoWwg+SpWRIVIp6CH9+SbgUZej
-   R1Pc4iBygfltGOZGfIad5N2q/7K2NWSmFeBYA0v7v2yq38n8iGAFCrc7Q
-   Tpd600NMIVEUQgetQDtt/dqBzozpFHB47fdB2gV8Ycc+NLDdl63Tv7DMy
-   dkKEGnhNv7gPYw+c3oGQAl5Ixe4hvyfAQP7xQIiCLq0ParvdcNkSFeKzH
-   vK04NDivZbBjKzYqvke9P5HiVBCofla4utM/tZezcBbKIRSPoAYeGo7C4
-   udbDkmxyWzkCfo1AK2ddeiRjJ0+FCOBRXWKK4+/9YDKbv9G1dh4N9AKQW
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="383220527"
+  bh=P3e3h6rEHckwaYQiJNlFyKL2I8caGpDPVq6en05d0+U=;
+  b=byD3ycCCKNyYPr+40ZShJFG+Gm1T1djBfImnJdJKIjZHXJDhpcz5rXPz
+   zIia4+6FJySOhVDX2V/dP+YYllc9ga/VLqXuThFzFLBskqrBhoveVuSEf
+   aalN3IRddz0jW+/PaEuguRUWQVRTbEmmG0K2ohM8BqXpMIlqg8gxYxqBy
+   Vv4jmwJhfUQEybh8PTdlTjyrD+EHL80oowRpJ+kWmswuLFtgvDj4y5afg
+   tLV6y/99B7dnAr/Motcpo+L2hl1LyHt0vyKkUydDS1PY1TT1PLCm5xkfo
+   7eboU4R0keBrode+ronfR0bZB/iEYcGN43sG5+Nj/1brug2UA8CGel80n
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="387178842"
 X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="383220527"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:40:50 -0700
+   d="scan'208";a="387178842"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:44:05 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="927059933"
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="730003225"
 X-IronPort-AV: E=Sophos;i="6.03,212,1694761200"; 
-   d="scan'208";a="927059933"
-Received: from albertmo-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.251.208.38])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 01:40:45 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id CC6FC10A1A3; Tue, 10 Oct 2023 11:40:41 +0300 (+03)
-Date:   Tue, 10 Oct 2023 11:40:41 +0300
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
-        Fei Yang <fei.yang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/alternatives: Disable KASAN on text_poke_early() in
- apply_alternatives()
-Message-ID: <20231010084041.ut5sshyrofh27yyx@box.shutemov.name>
-References: <20231010053716.2481-1-kirill.shutemov@linux.intel.com>
- <20231010081938.GBZSUJGlSvEkFIDnES@fat_crate.local>
+   d="scan'208";a="730003225"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by orsmga006.jf.intel.com with SMTP; 10 Oct 2023 01:44:02 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 10 Oct 2023 11:44:02 +0300
+Date:   Tue, 10 Oct 2023 11:44:02 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     RD Babiera <rdbabiera@google.com>
+Cc:     gregkh@linuxfoundation.org, badhri@google.com,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: altmodes/displayport: Signal hpd low when
+ exiting mode
+Message-ID: <ZSUO0rkmTsRkV361@kuha.fi.intel.com>
+References: <20231009210057.3773877-2-rdbabiera@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231010081938.GBZSUJGlSvEkFIDnES@fat_crate.local>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20231009210057.3773877-2-rdbabiera@google.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 10, 2023 at 10:19:38AM +0200, Borislav Petkov wrote:
-> On Tue, Oct 10, 2023 at 08:37:16AM +0300, Kirill A. Shutemov wrote:
-> > On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
-> > got patched. It includes KASAN code, where KASAN_SHADOW_START depends on
-> > __VIRTUAL_MASK_SHIFT, which is defined with the cpu_feature_enabled().
+On Mon, Oct 09, 2023 at 09:00:58PM +0000, RD Babiera wrote:
+> Upon receiving an ACK for a sent EXIT_MODE message, the DisplayPort
+> driver currently resets the status and configuration of the port partner.
+> The hpd signal is not updated despite being part of the status, so the
+> Display stack can still transmit video despite typec_altmode_exit placing
+> the lanes in a Safe State.
 > 
-> So use boot_cpu_has(X86_FEATURE_LA57).
-
-__VIRTUAL_MASK_SHIFT used in many places. I don't think it is good idea to
-give up on patching completely.
-
-> > It seems that KASAN gets confused when apply_alternatives() patches the
+> Set hpd to low when a sent EXIT_MODE message is ACK'ed.
 > 
-> It seems?
+> Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
 
-Admittedly, I don't understand KASAN well enough. I confirmed my idea
-indirectly, by patching KASASN_SHADOW_START, as I mentioned.
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-> > KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
-> > static, by replacing __VIRTUAL_MASK_SHIFT with 56, fixes the issue.
-> > 
-> > During text_poke_early() in apply_alternatives(), KASAN should be
-> > disabled. KASAN is already disabled in non-_early() text_poke().
-> > 
-> > It is unclear why the issue was not reported earlier. Bisecting does not
-> > help. Older kernels trigger the issue less frequently, but it still
-> > occurs. In the absence of any other clear offenders, the initial dynamic
-> > 5-level paging support is to blame.
+> ---
+>  drivers/usb/typec/altmodes/displayport.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> This whole thing sounds like it is still not really clear what is
-> actually happening...
-
-Maybe KASAN folks can help to understand the situation.
+> diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+> index f503cb4cd721..718da02036d8 100644
+> --- a/drivers/usb/typec/altmodes/displayport.c
+> +++ b/drivers/usb/typec/altmodes/displayport.c
+> @@ -307,6 +307,11 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
+>  			typec_altmode_update_active(alt, false);
+>  			dp->data.status = 0;
+>  			dp->data.conf = 0;
+> +			if (dp->hpd) {
+> +				drm_connector_oob_hotplug_event(dp->connector_fwnode);
+> +				dp->hpd = false;
+> +				sysfs_notify(&dp->alt->dev.kobj, "displayport", "hpd");
+> +			}
+>  			break;
+>  		case DP_CMD_STATUS_UPDATE:
+>  			dp->data.status = *vdo;
+> 
+> base-commit: 1053c4a4b8fcbd28386e80347e7c82d4d617e352
+> -- 
+> 2.42.0.609.gbb76f46606-goog
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+heikki
