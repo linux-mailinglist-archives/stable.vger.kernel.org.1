@@ -2,160 +2,277 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C3FF7C0281
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 19:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC7367C028C
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 19:27:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233978AbjJJRY3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 13:24:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36640 "EHLO
+        id S231501AbjJJR1Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 13:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233954AbjJJRY2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 13:24:28 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 386E1D7
-        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 10:24:24 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-4063bfc6c03so6655e9.0
-        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 10:24:24 -0700 (PDT)
+        with ESMTP id S232417AbjJJR1Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 13:27:24 -0400
+Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FAD694
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 10:27:22 -0700 (PDT)
+Received: by mail-ua1-x92c.google.com with SMTP id a1e0cc1a2514c-7a8b839fc0aso1517800241.3
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 10:27:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1696958662; x=1697563462; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1696958841; x=1697563641; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xB5kNO31ptUSKutse3tWEXjsvhyF99RBWYVjwQ8AbvA=;
-        b=fwWO9mZACXUWMsPudmmRUitg6NtW4nwgl2/14aWMpNJL/wGIXc6xUY3iLwCYKZHi1m
-         svIfxjpMbN/b2gKIfa1RzsAO0HCQZpn4W0sEixY3Y/kBhbWG27atXdkvDdMOeHddoDMJ
-         ZOExHZiZyobwBrbA34W4L/M3qZyjABLOBxqtA6ieOl5UmEWDhUQUA2kFsafwVfXlNY3T
-         7PFHii3IsZa9A4pQ4D9oEkfqIaA5gHT+x0dEtGaU11kqjPYV1ROdYGDTzaWB5XYIeIVj
-         7pLj70EkkWGKROqNRlp29uL4Z5UNNFnn8y7xYuG9maHta+vR+/6f/kjPLLct8eYtdXxC
-         F/qQ==
+        bh=J/ryk5OUH4AM1D4cLx9s4u47FmouWQaJBw6IMdAQ1wA=;
+        b=mlJ3UDweYGp3kJO3/fORmgscGaeJNwjd49EFXEO5ohxi2ccb/sgAy5iO8MNQrqZVzb
+         h7p9IrJBnknH9NG9vsR31LmmXuxBs5K9gD6Jj5ss4Enj0z96CLsaj7nUsibEDRmGTJ1H
+         RGR/j5Zp6KlzPcPotgq1t+PWk+S8okmKArHp7BhfekCUp8L0HsDiVmnHgjXgSJr7UNfK
+         y/MI/4exwsPuCKjThsKGzlZer0bQZbzQ2ffgq/smslnVY8g6KufvDWCXs/m/tYoCyX63
+         xQh5mHHKbpqoj+y+jAbh3hrOY3SkDjD0mOv2rhSu/Nx+xKPIGA9iP3fRhSXKf/JG7Zjx
+         oA+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696958662; x=1697563462;
+        d=1e100.net; s=20230601; t=1696958841; x=1697563641;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xB5kNO31ptUSKutse3tWEXjsvhyF99RBWYVjwQ8AbvA=;
-        b=d7vahKOwZV4bB/FTwMupWlGj4zVD3ugGaWfgC9RWruyLa9fqn5NezMH+YjzXcY68XU
-         V5EexDn/ZiaUVG7myXYdsDkMjFlfXpvJEwgPtyxLwoyoupvHuQVp8xyIlMsQmtB+g9OG
-         y4gUc+Z3J1aoKUfRidARVrJ3VMZEzcgCJOsOQGh+WwRnT1PRSEp/R2765r1Z/gRbAA8m
-         KITysY4U/SqTeSrOBJvZf476WereZ9Q+lX6TXgTXFEj1Lovppwhw68PT/wDauyeXlwF+
-         wYl3bR0IA/CwjpAFrBofAL4rYXcnA4Uax6FHd2BWD561xejMElyMNJYtaVLXS7qy0EF1
-         broA==
-X-Gm-Message-State: AOJu0YyqgYI+a3Bvz/k1iyDLUS3eYWm40E3S2KjRrmLYbsBbc96SgRKY
-        tUh5Aw09+iRQl4lHMxVPd7GXuyywKb1ixAfbdHhKRw==
-X-Google-Smtp-Source: AGHT+IHW65kerUr2q16h/XQsLBx5TUnAZCGf5RFeYJB83WXwTpqUq0HW6mE0I6kZv/CrMPkjVTR8X6392uJ6yuEKUpU=
-X-Received: by 2002:a05:600c:3c8f:b0:405:35bf:7362 with SMTP id
- bg15-20020a05600c3c8f00b0040535bf7362mr11918wmb.0.1696958662190; Tue, 10 Oct
- 2023 10:24:22 -0700 (PDT)
+        bh=J/ryk5OUH4AM1D4cLx9s4u47FmouWQaJBw6IMdAQ1wA=;
+        b=kWqABQpXmim0yHXLzAU/XKHWcQgNQUGLUKYuzRRrKFWc826mn8EeCuC/o4pW/mG8qm
+         ZZGtTqLhurebSLPlSgPc/66obs9KZYsWcW7zN/jDWxhzDizvgjG33qUsP/E6f+1ecI3t
+         /qhUFuFKp0cHq9q9Ww1vzRVa1/BHSEAbvU3xrvVeX2+cUDcHfLa/kiCaPDl6HgJco7eX
+         /rETDVbSrn/+RMctoBiUjhc8iJFuXg2RAsyvz++jY2EqNc63gKWzZz110736nf2B6Sxp
+         2WG3aMdIymNva76FXJf2RgG3suDc/FUJmSIeTZXDfd2/tSwaDK3bYNOL+rWtWCLrrtrx
+         ZnrA==
+X-Gm-Message-State: AOJu0YzonqzLc9d3reRlsQx/UyeSc9wNypRy5YeKj1x4SXq8+hEt2gpU
+        7/jzVW9hTFiiJQbfaEik325lkfC6WJDizb0HqH18Ow==
+X-Google-Smtp-Source: AGHT+IGQ7+ge5xOlOu9T4VQAyXg18tRYbKAMUD/SkIviX/U8Fa2CPfi0xJtpJo6ZSd8ytKLK7Rrzn9AGSl3GYgq/wS4=
+X-Received: by 2002:a1f:4887:0:b0:493:3491:ce89 with SMTP id
+ v129-20020a1f4887000000b004933491ce89mr11750079vka.14.1696958841249; Tue, 10
+ Oct 2023 10:27:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231009130122.946357448@linuxfoundation.org> <CA+G9fYvWCf4fYuQsVLu0NdN+=W73bW1hr1hiokajktNzPFyYtA@mail.gmail.com>
- <6447b32f-abb9-4459-aca5-3d510a66b685@kernel.org>
-In-Reply-To: <6447b32f-abb9-4459-aca5-3d510a66b685@kernel.org>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Tue, 10 Oct 2023 19:24:08 +0200
-Message-ID: <CANn89iJ_KMA=dQWPhU8WQBc0_CvUztUBodAf-cW-2F=HMX3HJg@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/162] 6.1.57-rc1 review
-To:     Matthieu Baerts <matttbe@kernel.org>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
+References: <20231009130111.200710898@linuxfoundation.org>
+In-Reply-To: <20231009130111.200710898@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 10 Oct 2023 22:57:09 +0530
+Message-ID: <CA+G9fYuVxDoSZG=hqYR=Jd=7VYP=7KwbuinB86TLj5H7jy-1EQ@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/75] 5.15.135-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
         akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
         patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
         jonathanh@nvidia.com, f.fainelli@gmail.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, "David S. Miller" <davem@davemloft.net>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Netdev <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
-        MPTCP Upstream <mptcp@lists.linux.dev>
+        conor@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 10, 2023 at 6:51=E2=80=AFPM Matthieu Baerts <matttbe@kernel.org=
-> wrote:
+On Mon, 9 Oct 2023 at 18:55, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Hi Naresh,
+> This is the start of the stable review cycle for the 5.15.135 release.
+> There are 75 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> On 09/10/2023 22:43, Naresh Kamboju wrote:
-> > On Mon, 9 Oct 2023 at 18:46, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> >>
-> >> This is the start of the stable review cycle for the 6.1.57 release.
-> >> There are 162 patches in this series, all will be posted as a response
-> >> to this one.  If anyone has any issues with these being applied, pleas=
-e
-> >> let me know.
-> >>
-> >> Responses should be made by Wed, 11 Oct 2023 13:00:55 +0000.
-> >> Anything received after that time might be too late.
-> >>
-> >> The whole patch series can be found in one patch at:
-> >>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/pat=
-ch-6.1.57-rc1.gz
-> >> or in the git tree and branch at:
-> >>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-sta=
-ble-rc.git linux-6.1.y
-> >> and the diffstat can be found below.
-> >>
-> >> thanks,
-> >>
-> >> greg k-h
-> >
-> >
-> > The following kernel warnings were noticed several times on arm x15 dev=
-ices
-> > running stable-rc 6.1.57-rc1 while running  selftests: net: mptcp_conne=
-ct.sh
-> > and netfilter: nft_fib.sh.
-> >
-> > The possible unsafe locking scenario detected.
-> >
-> > FYI,
-> > Stable-rc/ linux.6.1.y kernel running stable/ linux.6.5.y selftest in t=
-his case.
-> >
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> >
-> > kselftest: Running tests in net/mptcp
+> Responses should be made by Wed, 11 Oct 2023 13:00:55 +0000.
+> Anything received after that time might be too late.
 >
-> Thank you for having reported the issue and having added MPTCP ML in Cc!
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.135-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
 >
-> Just to avoid confusions: the "WARNING" you shared when running
-> 'mptcp_connect.sh' selftest appeared before creating the first MPTCP
-> connection. It looks like there is no reference to MPTCP in the
-> calltraces. Also, because you have the same issue with nft_fib.sh, I
-> would say that this issue is not linked to MPTCP but rather to a recent
-> modification in the IPv6 stack.
+> thanks,
 >
-> By chance, did you start a "git bisect" to identify the commit causing
-> this issue?
->
->
+> greg k-h
 
-I think stable teams missed to backport
 
-commit c486640aa710ddd06c13a7f7162126e1552e8842
-Author: Eric Dumazet <edumazet@google.com>
-Date:   Mon Mar 13 20:17:32 2023 +0000
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-    ipv6: remove one read_lock()/read_unlock() pair in rt6_check_neigh()
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-    rt6_check_neigh() uses read_lock() to protect n->nud_state reading.
+NOTE:
+Following kernel warning noticed on qemu-arm64 with stable-rc 5.15.135-rc1.
+This is hard to reproduce.
 
-    This seems overkill and causes false sharing.
+Same issue was reported on 6.4.5-rc1 and discussed in the thread,
+ - https://lore.kernel.org/lkml/CA+G9fYvgy22wiY=3Dc3wLOrCM6o33636abhtEynXhJ=
+kqxJh4ca0A@mail.gmail.com/
 
-    Signed-off-by: Eric Dumazet <edumazet@google.com>
-    Reviewed-by: David Ahern <dsahern@kernel.org>
-    Reviewed-by: Martin KaFai Lau <martin.lau@kernel.org>
-    Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Warning log:
+<4>[   14.987937] ------------[ cut here ]------------
+<4>[   14.990732] WARNING: CPU: 1 PID: 195 at mm/kfence/core.c:936
+__kfence_free+0x84/0xb4
+<4>[   14.993264] Modules linked in: ip_tables x_tables
+<4>[   14.995667] CPU: 1 PID: 195 Comm: mount Not tainted 5.15.135-rc1 #1
+<4>[   14.996447] Hardware name: linux,dummy-virt (DT)
+<4>[   14.997262] pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT
+-SSBS BTYPE=3D--)
+<4>[   14.998008] pc : __kfence_free+0x84/0xb4
+<4>[   14.998410] lr : __slab_free+0x468/0x4a0
+
+Configs enabled:
+CONFIG_HAVE_ARCH_KFENCE=3Dy
+CONFIG_KFENCE=3Dy
+CONFIG_KFENCE_SAMPLE_INTERVAL=3D100
+CONFIG_KFENCE_NUM_OBJECTS=3D255
+CONFIG_KFENCE_STRESS_TEST_FAULTS=3D0
+
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5=
+.15.134-76-g6b29ebf84608/testrun/20386601/suite/log-parser-boot/test/check-=
+kernel-exception/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5=
+.15.134-76-g6b29ebf84608/testrun/20386601/suite/log-parser-boot/tests/
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2WWqfe5nx37NjiVzC=
+Xq7ZjKeOtF/config
+
+## Build
+* kernel: 5.15.135-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: 6b29ebf8460817018f98911286d0f8b8191d9c9c
+* git describe: v5.15.134-76-g6b29ebf84608
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.134-76-g6b29ebf84608
+
+## Test Regressions (compared to v5.15.134)
+
+## Metric Regressions (compared to v5.15.134)
+
+## Test Fixes (compared to v5.15.134)
+
+## Metric Fixes (compared to v5.15.134)
+
+## Test result summary
+total: 89616, pass: 71074, fail: 2530, skip: 15928, xfail: 84
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 116 total, 116 passed, 0 failed
+* arm64: 44 total, 44 passed, 0 failed
+* i386: 35 total, 34 passed, 1 failed
+* mips: 26 total, 25 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 26 total, 25 passed, 1 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 12 total, 11 passed, 1 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 7 total, 7 passed, 0 failed
+* x86_64: 37 total, 37 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
