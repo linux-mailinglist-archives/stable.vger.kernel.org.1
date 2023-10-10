@@ -2,126 +2,224 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A253A7BEFFD
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 02:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84C607BF008
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 03:06:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379264AbjJJAxA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 9 Oct 2023 20:53:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37286 "EHLO
+        id S1378608AbjJJBGT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 9 Oct 2023 21:06:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379217AbjJJAw7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 20:52:59 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7927E9E;
-        Mon,  9 Oct 2023 17:52:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9924CC433C8;
-        Tue, 10 Oct 2023 00:52:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1696899178;
-        bh=lWIJZFVAITmmAckP9ZBNoeV80iKH9hrKMtBD4bdfGUs=;
-        h=Date:To:From:Subject:From;
-        b=IjiilYUcVUzkpQs5VzMxaPgiJtWaPYTMefK56V9qshM+/oq/TQlraDG47fOlUknXo
-         3nOH6YLfleQOGd6ZPS9wSt39BiPlnnnqRAwiYIG8nhN6TZ/bcnaZnMODHUax+a51Cj
-         EMbpOg34HGPHNzwd55Jq3VnY+fE/A+5cwoge3TQU=
-Date:   Mon, 09 Oct 2023 17:52:39 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-check-damos-regions-update-progress-from-before_terminate.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231010005256.9924CC433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S1379287AbjJJBGT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 9 Oct 2023 21:06:19 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B50AF
+        for <stable@vger.kernel.org>; Mon,  9 Oct 2023 18:06:16 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6910ea9cca1so3723627b3a.1
+        for <stable@vger.kernel.org>; Mon, 09 Oct 2023 18:06:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1696899976; x=1697504776; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=f3rtML/YG+d/rUXh065siv/d4JmZWRQOPcQo/Xq06PI=;
+        b=mT+ga34M9cS8buUBl1gkRbDOmEbu1Rx+pjPJ9CToniMxSxhFkbLVsczZbBw75o6YKZ
+         jrlCFppjRaQp9XZ+kBS6zx3xJ0JLqiv7nXpSkN3TLOS8IGv84ylLunLXe3hjzJZYV3Og
+         5sZdIdRHaMBGzUaC3A1QcolhA9gm5ZfdsA4eUiGVJgkLL1T99h8D6sL1k6NfAJ/TUfxB
+         Z9ilwmlsCmCRoQfwlDmD9fjm/OKU+R9UDX37GrIpfoMDaiyCCwxtjfMFj3pCwIyrYftu
+         4PYF+/jhZ/qrMqpKxJhcXHn4rXmrMsKBEdqeMQNgjTWhSjVsXyi7hmpCjBNEQNmCHYWF
+         bVoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696899976; x=1697504776;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=f3rtML/YG+d/rUXh065siv/d4JmZWRQOPcQo/Xq06PI=;
+        b=FglRfuhMamSuwNgCXN5k9jSwKX2ij1+iDWGyvZbGzsgb7FKefHLChBOQ3oxoS7pkSd
+         YytmiJOewDqVlfXWYapKoAJTw2pT+ogFkNyX117g+9M3oRQtQ3mjh4ucQRGo3X1YYUXT
+         /MlYh7GsWBy9Jx3N0iXvHS2uK99/4uzrAInG/yhgj1CgvI3IoaInYMjlEMXJdJBPu3L4
+         G9WxtwNi5rPXsMaAlEt5Dgu1LCqaR7oejipoLudmEXSWm3+0ZqzlST8r5iq9P/1S1Kl/
+         E+s3TmUa5pf+xSOyhyjKcNZodR/1Mg0zoG061NHUzNZD4pEBpObQTqqSduqQQnLPikRL
+         xXtA==
+X-Gm-Message-State: AOJu0YxojLc6VWc390fA7x9OXsCxlA0ZGy+0qiiU/ibtyad38R0/v0TI
+        AkbbCIYOoywf48SrHz9TVb494GXHADaL0pau2MeaJQ==
+X-Google-Smtp-Source: AGHT+IEiY1MsSk/qPRpgf6U8WceU0JBk9RXEe5daM0E+jpK/D6Q5MgC32/fPnU48csbcov+amB1A/w==
+X-Received: by 2002:a05:6a20:dda6:b0:135:1af6:9a01 with SMTP id kw38-20020a056a20dda600b001351af69a01mr12812847pzb.8.1696899975683;
+        Mon, 09 Oct 2023 18:06:15 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id q25-20020a62e119000000b0069370f32688sm7035510pfh.194.2023.10.09.18.06.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Oct 2023 18:06:14 -0700 (PDT)
+Message-ID: <6524a386.620a0220.f8f98.1d78@mx.google.com>
+Date:   Mon, 09 Oct 2023 18:06:14 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v6.1.56-163-g282079f8e4074
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.56-163-g282079f8e4074)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
+1.56-163-g282079f8e4074)
 
-The patch titled
-     Subject: mm/damon/sysfs: check DAMOS regions update progress from before_terminate()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-sysfs-check-damos-regions-update-progress-from-before_terminate.patch
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
+/kernel/v6.1.56-163-g282079f8e4074/
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-check-damos-regions-update-progress-from-before_terminate.patch
+Tree: stable-rc
+Branch: linux-6.1.y
+Git Describe: v6.1.56-163-g282079f8e4074
+Git Commit: 282079f8e40746cc342a7dd12654e3af7de01823
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Warnings Detected:
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+arc:
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+arm64:
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+arm:
 
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs: check DAMOS regions update progress from before_terminate()
-Date: Sat, 7 Oct 2023 20:04:32 +0000
+i386:
 
-DAMON_SYSFS can receive DAMOS tried regions update request while kdamond
-is already out of the main loop and before_terminate callback
-(damon_sysfs_before_terminate() in this case) is not yet called.  And
-damon_sysfs_handle_cmd() can further be finished before the callback is
-invoked.  Then, damon_sysfs_before_terminate() unlocks damon_sysfs_lock,
-which is not locked by anyone.  This happens because the callback function
-assumes damon_sysfs_cmd_request_callback() should be called before it. 
-Check if the assumption was true before doing the unlock, to avoid this
-problem.
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-Link: https://lkml.kernel.org/r/20231007200432.3110-1-sj@kernel.org
-Fixes: f1d13cacabe1 ("mm/damon/sysfs: implement DAMOS tried regions update command")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.2.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+riscv:
+
+x86_64:
+
+
+Warnings summary:
+
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
 ---
-
- mm/damon/sysfs.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
---- a/mm/damon/sysfs.c~mm-damon-sysfs-check-damos-regions-update-progress-from-before_terminate
-+++ a/mm/damon/sysfs.c
-@@ -1208,6 +1208,8 @@ static int damon_sysfs_set_targets(struc
- 	return 0;
- }
- 
-+static bool damon_sysfs_schemes_regions_updating;
-+
- static void damon_sysfs_before_terminate(struct damon_ctx *ctx)
- {
- 	struct damon_target *t, *next;
-@@ -1219,8 +1221,10 @@ static void damon_sysfs_before_terminate
- 	cmd = damon_sysfs_cmd_request.cmd;
- 	if (kdamond && ctx == kdamond->damon_ctx &&
- 			(cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_REGIONS ||
--			 cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_BYTES)) {
-+			 cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_BYTES) &&
-+			damon_sysfs_schemes_regions_updating) {
- 		damon_sysfs_schemes_update_regions_stop(ctx);
-+		damon_sysfs_schemes_regions_updating = false;
- 		mutex_unlock(&damon_sysfs_lock);
- 	}
- 
-@@ -1340,7 +1344,6 @@ static int damon_sysfs_commit_input(stru
- static int damon_sysfs_cmd_request_callback(struct damon_ctx *c)
- {
- 	struct damon_sysfs_kdamond *kdamond;
--	static bool damon_sysfs_schemes_regions_updating;
- 	bool total_bytes_only = false;
- 	int err = 0;
- 
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-sysfs-check-damos-regions-update-progress-from-before_terminate.patch
-
+For more info write to <info@kernelci.org>
