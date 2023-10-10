@@ -2,397 +2,169 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8817C7BF209
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 06:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94E177BF24B
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 07:37:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234617AbjJJE5h convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Tue, 10 Oct 2023 00:57:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46776 "EHLO
+        id S1379099AbjJJFhe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 01:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229625AbjJJE5g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 00:57:36 -0400
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2CF2A3;
-        Mon,  9 Oct 2023 21:57:33 -0700 (PDT)
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6c6504c9ac5so3643470a34.0;
-        Mon, 09 Oct 2023 21:57:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696913853; x=1697518653;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+6Hkmwwj1BN1f8YdlOXAYNFmQHPhTv26KM+lR+59Rx4=;
-        b=ZL9i9xWuQFulMVUqmp4d2+xJfhhOgeb5XsgzuqGL9Gh2aVVStLQE4E6rwbBJVIPeUm
-         cuZmcvU0Snc7WCP0AbNORgQ2XOwcqP2hgfRxcxgyPG47vSpn+Gr2c8cPxHvs6zyIJpqK
-         FfZ4FZA1T0O9GzVeKrMYuT6gQ8OkSXoLC5C29xXQJo20vDFzKb+q/4kGQTcPZQdRYnWE
-         qNtlGjMjoqcuh+1WAiQw+/v3Ea2OaFLpQelM510G2ajmtI21iD9E3d7ZouFDmh0+nMwF
-         qIhYM1xCo/l8yI+Y6Q8xLp+3wOOF+oSZRD/LtuuR1Jtdl8FDxVnyh33FBIW+k0tqm5XG
-         z7MQ==
-X-Gm-Message-State: AOJu0YzU1Ia6BX6BMTR9ggUPoBKgJ2FUvNxiG8N08Qf+ClulJVSLgGGl
-        RIDOoSdmTn9GA+oJ2HpNi7lqghqu1qy9ztZK8dk=
-X-Google-Smtp-Source: AGHT+IH6QU9+RN0KpyFxRzjmch+AS+IL8ZWMrbamHSmj8Z/fcz7Ldv4xKXEFvdcwLsTRj12df6VIeYCLY8rKRr/oFBc=
-X-Received: by 2002:a05:6358:4298:b0:143:8af4:229e with SMTP id
- s24-20020a056358429800b001438af4229emr20375717rwc.9.1696913852851; Mon, 09
- Oct 2023 21:57:32 -0700 (PDT)
+        with ESMTP id S1378127AbjJJFhd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 01:37:33 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78374CA;
+        Mon,  9 Oct 2023 22:37:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696916252; x=1728452252;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=dLUiu1vUmGGjRAhl3by36f3kwZwaqqEeRED/KNxJ3vY=;
+  b=AwycXcAqHoRVsSiI8+8yK8Vn9A5hV7+J8Lwf/GqNPLvxSJmQE2QkqpzU
+   gBI+ISZ0ZmNWVM6iqxvZMZdyA/VYwhsYMeCy6P9Sv0Hmn4aP+zdSDCwrR
+   dQM5UN8ZcX/1vQSp1OPNEso9Iy2he7gPpJNEnd9blsEWWEEojsfuITnyo
+   r88zijvb/kW6Lj92vBncgQf8yzWU7/7RdU9j22WrkPtkgsAuerUPsW3Hi
+   WSlXBf4/HM12CmftW+BtsYOnkVg3yUQGIKb8zbfE8fz8Lglyn6Rx06DQJ
+   yP5aXf67VDMlyjUInO2reLFsi9auQ+1a/I6oKZWFb8GLCKFO3Izsj8e3M
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="5871658"
+X-IronPort-AV: E=Sophos;i="6.03,211,1694761200"; 
+   d="scan'208";a="5871658"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2023 22:37:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10858"; a="1000541347"
+X-IronPort-AV: E=Sophos;i="6.03,211,1694761200"; 
+   d="scan'208";a="1000541347"
+Received: from geigerri-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.41.165])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2023 22:37:26 -0700
+Received: by box.shutemov.name (Postfix, from userid 1000)
+        id D7AFB10A196; Tue, 10 Oct 2023 08:37:23 +0300 (+03)
+From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Fei Yang <fei.yang@intel.com>, stable@vger.kernel.org
+Subject: [PATCH] x86/alternatives: Disable KASAN on text_poke_early() in apply_alternatives()
+Date:   Tue, 10 Oct 2023 08:37:16 +0300
+Message-ID: <20231010053716.2481-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20231004040844.797044-1-namhyung@kernel.org> <20231004160224.GB6307@noisy.programming.kicks-ass.net>
- <CAM9d7cizC0J85ByuF5fBmc_Bqi=wpNJpiVsw+3F1Avusn2aQog@mail.gmail.com> <20231009210425.GC6307@noisy.programming.kicks-ass.net>
-In-Reply-To: <20231009210425.GC6307@noisy.programming.kicks-ass.net>
-From:   Namhyung Kim <namhyung@kernel.org>
-Date:   Mon, 9 Oct 2023 21:57:20 -0700
-Message-ID: <CAM9d7cigs9mWuYiE=MYNg-xVhXzDu5FF6GdMGJi=D_zP1zJoCQ@mail.gmail.com>
-Subject: Re: [PATCH] perf/core: Introduce cpuctx->cgrp_ctx_list
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Peter,
+Fei has reported that KASAN triggers during apply_alternatives() on
+5-level paging machine:
 
-On Mon, Oct 9, 2023 at 2:04 PM Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Wed, Oct 04, 2023 at 09:32:24AM -0700, Namhyung Kim wrote:
->
-> > Yeah, I know.. but I couldn't come up with a better solution.
->
-> Not been near a compiler, and haven't fully thought it through, but
-> could something like the work work?
+	BUG: KASAN: out-of-bounds in rcu_is_watching (./arch/x86/include/asm/atomic.h:23 ./include/linux/atomic/atomic-arch-fallback.h:444 ./include/linux/context_tracking.h:122 kernel/rcu/tree.c:699)
+	Read of size 4 at addr ff110003ee6419a0 by task swapper/0/0
 
-Thanks for the patch, I think it'd work.  Let me test it
-and get back to you.
+	CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.6.0-rc5 #12
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+	Call Trace:
+	<TASK>
+	dump_stack_lvl (lib/dump_stack.c:107)
+	print_report (mm/kasan/report.c:365 mm/kasan/report.c:475)
+	? __phys_addr (arch/x86/mm/physaddr.h:7 arch/x86/mm/physaddr.c:28)
+	? kasan_addr_to_slab (./include/linux/mm.h:1265 (discriminator 1) mm/kasan/../slab.h:213 (discriminator 1) mm/kasan/common.c:36 (discriminator 1))
+	kasan_report (mm/kasan/report.c:590)
+	? rcu_is_watching (./arch/x86/include/asm/atomic.h:23 ./include/linux/atomic/atomic-arch-fallback.h:444 ./include/linux/context_tracking.h:122 kernel/rcu/tree.c:699)
+	? rcu_is_watching (./arch/x86/include/asm/atomic.h:23 ./include/linux/atomic/atomic-arch-fallback.h:444 ./include/linux/context_tracking.h:122 kernel/rcu/tree.c:699)
+	? apply_alternatives (arch/x86/kernel/alternative.c:415 (discriminator 1))
+	__asan_load4 (mm/kasan/generic.c:259)
+	rcu_is_watching (./arch/x86/include/asm/atomic.h:23 ./include/linux/atomic/atomic-arch-fallback.h:444 ./include/linux/context_tracking.h:122 kernel/rcu/tree.c:699)
+	? text_poke_early (./arch/x86/include/asm/irqflags.h:42 ./arch/x86/include/asm/irqflags.h:77 ./arch/x86/include/asm/irqflags.h:135 arch/x86/kernel/alternative.c:1675)
+	trace_hardirqs_on (./include/trace/events/preemptirq.h:40 (discriminator 2) ./include/trace/events/preemptirq.h:40 (discriminator 2) kernel/trace/trace_preemptirq.c:56 (discriminator 2))
+	? __asan_load4 (./arch/x86/include/asm/cpufeature.h:171 mm/kasan/kasan.h:306 mm/kasan/generic.c:175 mm/kasan/generic.c:259)
+	text_poke_early (./arch/x86/include/asm/irqflags.h:42 ./arch/x86/include/asm/irqflags.h:77 ./arch/x86/include/asm/irqflags.h:135 arch/x86/kernel/alternative.c:1675)
+	apply_alternatives (arch/x86/kernel/alternative.c:415 (discriminator 1))
+	? __asan_load4 (./arch/x86/include/asm/cpufeature.h:171 mm/kasan/kasan.h:306 mm/kasan/generic.c:175 mm/kasan/generic.c:259)
+	? __pfx_apply_alternatives (arch/x86/kernel/alternative.c:400)
+	? __pfx_apply_returns (arch/x86/kernel/alternative.c:720)
+	? __this_cpu_preempt_check (lib/smp_processor_id.c:67)
+	? _sub_I_65535_1 (init/main.c:1573)
+	? int3_selftest_ip (arch/x86/kernel/alternative.c:1496)
+	? __pfx_int3_selftest (arch/x86/kernel/alternative.c:1496)
+	? lockdep_hardirqs_on (kernel/locking/lockdep.c:4422)
+	? fpu__init_cpu_generic (./arch/x86/include/asm/irqflags.h:42 ./arch/x86/include/asm/irqflags.h:77 ./arch/x86/include/asm/irqflags.h:135 ./arch/x86/include/asm/tlbflush.h:47 arch/x86/kernel/fpu/init.c:30)
+	alternative_instructions (arch/x86/kernel/alternative.c:1618)
+	arch_cpu_finalize_init (arch/x86/kernel/cpu/common.c:2404)
+	start_kernel (init/main.c:1037)
+	x86_64_start_reservations (arch/x86/kernel/head64.c:544)
+	x86_64_start_kernel (arch/x86/kernel/head64.c:486 (discriminator 5))
+	secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:433)
+	</TASK>
 
-Thanks,
-Namhyung
+	The buggy address belongs to the physical page:
+	page:(____ptrval____) refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3ee641
+	flags: 0x20000000004000(reserved|node=0|zone=2)
+	page_type: 0xffffffff()
+	raw: 0020000000004000 ffd400000fb99048 ffd400000fb99048 0000000000000000
+	raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+	page dumped because: kasan: bad access detected
 
->
->
-> ---
->  include/linux/perf_event.h |   1 +
->  kernel/events/core.c       | 115 +++++++++++++++++++++++----------------------
->  2 files changed, 61 insertions(+), 55 deletions(-)
->
-> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-> index f31f962a6445..0367d748fae0 100644
-> --- a/include/linux/perf_event.h
-> +++ b/include/linux/perf_event.h
-> @@ -878,6 +878,7 @@ struct perf_event_pmu_context {
->         unsigned int                    embedded : 1;
->
->         unsigned int                    nr_events;
-> +       unsigned int                    nr_cgroups;
->
->         atomic_t                        refcount; /* event <-> epc */
->         struct rcu_head                 rcu_head;
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index 708d474c2ede..f3d5d47ecdfc 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -375,6 +375,7 @@ enum event_type_t {
->         EVENT_TIME = 0x4,
->         /* see ctx_resched() for details */
->         EVENT_CPU = 0x8,
-> +       EVENT_CGROUP = 0x10,
->         EVENT_ALL = EVENT_FLEXIBLE | EVENT_PINNED,
->  };
->
-> @@ -684,20 +685,26 @@ do {                                                                      \
->         ___p;                                                           \
->  })
->
-> -static void perf_ctx_disable(struct perf_event_context *ctx)
-> +static void perf_ctx_disable(struct perf_event_context *ctx, bool cgroup)
->  {
->         struct perf_event_pmu_context *pmu_ctx;
->
-> -       list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
-> +       list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
-> +               if (cgroup && !pmu_ctx->nr_cgroups)
-> +                       continue;
->                 perf_pmu_disable(pmu_ctx->pmu);
-> +       }
->  }
->
-> -static void perf_ctx_enable(struct perf_event_context *ctx)
-> +static void perf_ctx_enable(struct perf_event_context *ctx. bool cgroup)
->  {
->         struct perf_event_pmu_context *pmu_ctx;
->
-> -       list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
-> +       list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
-> +               if (cgroup && !pmu_ctx->nr_cgroups)
-> +                       continue;
->                 perf_pmu_enable(pmu_ctx->pmu);
-> +       }
->  }
->
->  static void ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type);
-> @@ -856,9 +863,9 @@ static void perf_cgroup_switch(struct task_struct *task)
->                 return;
->
->         perf_ctx_lock(cpuctx, cpuctx->task_ctx);
-> -       perf_ctx_disable(&cpuctx->ctx);
-> +       perf_ctx_disable(&cpuctx->ctx, true);
->
-> -       ctx_sched_out(&cpuctx->ctx, EVENT_ALL);
-> +       ctx_sched_out(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
->         /*
->          * must not be done before ctxswout due
->          * to update_cgrp_time_from_cpuctx() in
-> @@ -870,9 +877,9 @@ static void perf_cgroup_switch(struct task_struct *task)
->          * perf_cgroup_set_timestamp() in ctx_sched_in()
->          * to not have to pass task around
->          */
-> -       ctx_sched_in(&cpuctx->ctx, EVENT_ALL);
-> +       ctx_sched_in(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
->
-> -       perf_ctx_enable(&cpuctx->ctx);
-> +       perf_ctx_enable(&cpuctx->ctx, true);
->         perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
->  }
->
-> @@ -965,6 +972,8 @@ perf_cgroup_event_enable(struct perf_event *event, struct perf_event_context *ct
->         if (!is_cgroup_event(event))
->                 return;
->
-> +       event->pmu_ctx->nr_cgroups++;
-> +
->         /*
->          * Because cgroup events are always per-cpu events,
->          * @ctx == &cpuctx->ctx.
-> @@ -985,6 +994,8 @@ perf_cgroup_event_disable(struct perf_event *event, struct perf_event_context *c
->         if (!is_cgroup_event(event))
->                 return;
->
-> +       event->pmu_ctx->nr_cgroups--;
-> +
->         /*
->          * Because cgroup events are always per-cpu events,
->          * @ctx == &cpuctx->ctx.
-> @@ -2677,9 +2688,9 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
->
->         event_type &= EVENT_ALL;
->
-> -       perf_ctx_disable(&cpuctx->ctx);
-> +       perf_ctx_disable(&cpuctx->ctx, false);
->         if (task_ctx) {
-> -               perf_ctx_disable(task_ctx);
-> +               perf_ctx_disable(task_ctx, false);
->                 task_ctx_sched_out(task_ctx, event_type);
->         }
->
-> @@ -2697,9 +2708,9 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
->
->         perf_event_sched_in(cpuctx, task_ctx);
->
-> -       perf_ctx_enable(&cpuctx->ctx);
-> +       perf_ctx_enable(&cpuctx->ctx, false);
->         if (task_ctx)
-> -               perf_ctx_enable(task_ctx);
-> +               perf_ctx_enable(task_ctx, false);
->  }
->
->  void perf_pmu_resched(struct pmu *pmu)
-> @@ -3244,6 +3255,9 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
->         struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
->         struct perf_event_pmu_context *pmu_ctx;
->         int is_active = ctx->is_active;
-> +       bool cgroup = event_type & EVENT_CGROUP;
-> +
-> +       event_type &= ~EVENT_CGROUP;
->
->         lockdep_assert_held(&ctx->lock);
->
-> @@ -3290,8 +3304,11 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
->
->         is_active ^= ctx->is_active; /* changed bits */
->
-> -       list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
-> +       list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
-> +               if (cgroup && !pmu_ctx->nr_cgroups)
-> +                       continue;
->                 __pmu_ctx_sched_out(pmu_ctx, is_active);
-> +       }
->  }
->
->  /*
-> @@ -3482,7 +3499,7 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
->                 raw_spin_lock_nested(&next_ctx->lock, SINGLE_DEPTH_NESTING);
->                 if (context_equiv(ctx, next_ctx)) {
->
-> -                       perf_ctx_disable(ctx);
-> +                       perf_ctx_disable(ctx, false);
->
->                         /* PMIs are disabled; ctx->nr_pending is stable. */
->                         if (local_read(&ctx->nr_pending) ||
-> @@ -3502,7 +3519,7 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
->                         perf_ctx_sched_task_cb(ctx, false);
->                         perf_event_swap_task_ctx_data(ctx, next_ctx);
->
-> -                       perf_ctx_enable(ctx);
-> +                       perf_ctx_enable(ctx, false);
->
->                         /*
->                          * RCU_INIT_POINTER here is safe because we've not
-> @@ -3526,13 +3543,13 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
->
->         if (do_switch) {
->                 raw_spin_lock(&ctx->lock);
-> -               perf_ctx_disable(ctx);
-> +               perf_ctx_disable(ctx, false);
->
->  inside_switch:
->                 perf_ctx_sched_task_cb(ctx, false);
->                 task_ctx_sched_out(ctx, EVENT_ALL);
->
-> -               perf_ctx_enable(ctx);
-> +               perf_ctx_enable(ctx, false);
->                 raw_spin_unlock(&ctx->lock);
->         }
->  }
-> @@ -3818,47 +3835,32 @@ static int merge_sched_in(struct perf_event *event, void *data)
->         return 0;
->  }
->
-> -static void ctx_pinned_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
-> +static void pmu_groups_sched_in(struct perf_event_context *ctx,
-> +                               struct perf_event_groups *groups,
-> +                               struct pmu *pmu)
->  {
-> -       struct perf_event_pmu_context *pmu_ctx;
->         int can_add_hw = 1;
-> -
-> -       if (pmu) {
-> -               visit_groups_merge(ctx, &ctx->pinned_groups,
-> -                                  smp_processor_id(), pmu,
-> -                                  merge_sched_in, &can_add_hw);
-> -       } else {
-> -               list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
-> -                       can_add_hw = 1;
-> -                       visit_groups_merge(ctx, &ctx->pinned_groups,
-> -                                          smp_processor_id(), pmu_ctx->pmu,
-> -                                          merge_sched_in, &can_add_hw);
-> -               }
-> -       }
-> +       visit_groups_merge(ctx, groups, smp_processor_id(), pmu,
-> +                          merge_sched_in, &can_add_hw);
->  }
->
-> -static void ctx_flexible_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
-> +static void ctx_groups_sched_in(struct perf_event_context *ctx,
-> +                               struct perf_event_groups *groups,
-> +                               bool cgroup)
->  {
->         struct perf_event_pmu_context *pmu_ctx;
-> -       int can_add_hw = 1;
->
-> -       if (pmu) {
-> -               visit_groups_merge(ctx, &ctx->flexible_groups,
-> -                                  smp_processor_id(), pmu,
-> -                                  merge_sched_in, &can_add_hw);
-> -       } else {
-> -               list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
-> -                       can_add_hw = 1;
-> -                       visit_groups_merge(ctx, &ctx->flexible_groups,
-> -                                          smp_processor_id(), pmu_ctx->pmu,
-> -                                          merge_sched_in, &can_add_hw);
-> -               }
-> +       list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
-> +               if (cgroup && !pmu_ctx->nr_cgroups)
-> +                       continue;
-> +               pmu_groups_sched_in(ctx, groups, pmu_ctx->pmu);
->         }
->  }
->
-> -static void __pmu_ctx_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
-> +static void __pmu_ctx_sched_in(struct perf_event_context *ctx,
-> +                              struct pmu *pmu)
->  {
-> -       ctx_flexible_sched_in(ctx, pmu);
-> +       pmu_groups_sched_in(ctx, &ctx->flexible_groups, pmu);
->  }
->
->  static void
-> @@ -3866,6 +3868,9 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
->  {
->         struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
->         int is_active = ctx->is_active;
-> +       bool cgroup = event_type & EVENT_CGROUP;
-> +
-> +       event_type &= ~EVENT_CGROUP;
->
->         lockdep_assert_held(&ctx->lock);
->
-> @@ -3898,11 +3903,11 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
->          * in order to give them the best chance of going on.
->          */
->         if (is_active & EVENT_PINNED)
-> -               ctx_pinned_sched_in(ctx, NULL);
-> +               ctx_groups_sched_in(ctx, &ctx->pinned_groups, cgroup);
->
->         /* Then walk through the lower prio flexible groups */
->         if (is_active & EVENT_FLEXIBLE)
-> -               ctx_flexible_sched_in(ctx, NULL);
-> +               ctx_groups_sched_in(ctx, &ctx->flexible_groups, cgroup);
->  }
->
->  static void perf_event_context_sched_in(struct task_struct *task)
-> @@ -3917,11 +3922,11 @@ static void perf_event_context_sched_in(struct task_struct *task)
->
->         if (cpuctx->task_ctx == ctx) {
->                 perf_ctx_lock(cpuctx, ctx);
-> -               perf_ctx_disable(ctx);
-> +               perf_ctx_disable(ctx, false);
->
->                 perf_ctx_sched_task_cb(ctx, true);
->
-> -               perf_ctx_enable(ctx);
-> +               perf_ctx_enable(ctx, false);
->                 perf_ctx_unlock(cpuctx, ctx);
->                 goto rcu_unlock;
->         }
-> @@ -3934,7 +3939,7 @@ static void perf_event_context_sched_in(struct task_struct *task)
->         if (!ctx->nr_events)
->                 goto unlock;
->
-> -       perf_ctx_disable(ctx);
-> +       perf_ctx_disable(ctx, false);
->         /*
->          * We want to keep the following priority order:
->          * cpu pinned (that don't need to move), task pinned,
-> @@ -3944,7 +3949,7 @@ static void perf_event_context_sched_in(struct task_struct *task)
->          * events, no need to flip the cpuctx's events around.
->          */
->         if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree)) {
-> -               perf_ctx_disable(&cpuctx->ctx);
-> +               perf_ctx_disable(&cpuctx->ctx, false);
->                 ctx_sched_out(&cpuctx->ctx, EVENT_FLEXIBLE);
->         }
->
-> @@ -3953,9 +3958,9 @@ static void perf_event_context_sched_in(struct task_struct *task)
->         perf_ctx_sched_task_cb(cpuctx->task_ctx, true);
->
->         if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree))
-> -               perf_ctx_enable(&cpuctx->ctx);
-> +               perf_ctx_enable(&cpuctx->ctx, false);
->
-> -       perf_ctx_enable(ctx);
-> +       perf_ctx_enable(ctx, false);
->
->  unlock:
->         perf_ctx_unlock(cpuctx, ctx);
+	Memory state around the buggy address:
+	ff110003ee641880: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	ff110003ee641900: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	>ff110003ee641980: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	^
+	ff110003ee641a00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+	ff110003ee641a80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
+got patched. It includes KASAN code, where KASAN_SHADOW_START depends on
+__VIRTUAL_MASK_SHIFT, which is defined with the cpu_feature_enabled().
+
+It seems that KASAN gets confused when apply_alternatives() patches the
+KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
+static, by replacing __VIRTUAL_MASK_SHIFT with 56, fixes the issue.
+
+During text_poke_early() in apply_alternatives(), KASAN should be
+disabled. KASAN is already disabled in non-_early() text_poke().
+
+It is unclear why the issue was not reported earlier. Bisecting does not
+help. Older kernels trigger the issue less frequently, but it still
+occurs. In the absence of any other clear offenders, the initial dynamic
+5-level paging support is to blame.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reported-by: Fei Yang <fei.yang@intel.com>
+Fixes: 6657fca06e3f ("x86/mm: Allow to boot without LA57 if CONFIG_X86_5LEVEL=y")
+Cc: stable@vger.kernel.org
+---
+ arch/x86/kernel/alternative.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 517ee01503be..56187fd8816e 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -450,7 +450,9 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
+ 		DUMP_BYTES(ALT, replacement, a->replacementlen, "%px:   rpl_insn: ", replacement);
+ 		DUMP_BYTES(ALT, insn_buff, insn_buff_sz, "%px: final_insn: ", instr);
+ 
++		kasan_disable_current();
+ 		text_poke_early(instr, insn_buff, insn_buff_sz);
++		kasan_enable_current();
+ 	}
+ }
+ 
+-- 
+2.41.0
+
