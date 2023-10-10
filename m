@@ -2,205 +2,207 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D4D7C02D3
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 19:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFD147C033C
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 20:17:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233041AbjJJRju (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 13:39:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34598 "EHLO
+        id S234001AbjJJSRe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 14:17:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233604AbjJJRjt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 13:39:49 -0400
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2AE5D7;
-        Tue, 10 Oct 2023 10:39:44 -0700 (PDT)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-d9a3d737d66so1838542276.2;
-        Tue, 10 Oct 2023 10:39:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696959584; x=1697564384; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=c/yA30J39p3R+cEj+Qw2hre1tLrE/L7D+ruLEDIk3qM=;
-        b=T94PRguXqoagegHpmYcscFOoHkxx4wbT6LHetq9sis4eEZf++zsRSKDk7cEgcdt9E8
-         +fakFTpQ8X2/XyN43a1L5JHrUHtcNtutcVvp8UPdelaQ96Jzwd6v6r7LiCmeCxy4Nhcf
-         dUIyG6awvbGV87RZ638aA81Li6/qoxWDYAZfmOtJrjT16b4mEV5JvSHwxzTyzbLBw89i
-         dywo2rsSnEOD76pxxGP46WOONHSqJ93WrBci7iHwp5uP5iDWMZpUA4Zs6fIXSSXR/2Lm
-         d0+KG3Dl6oNRM/S1CUkurE/TtJtO6y0iwjSB5z/1+EhGqA0gUjHwnmDeHkrNriw+r0C/
-         kl5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696959584; x=1697564384;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c/yA30J39p3R+cEj+Qw2hre1tLrE/L7D+ruLEDIk3qM=;
-        b=gZ1Rg9kUHSsl8hOwaPALaMH4yHAk1s3NKfBz51uF4eQq+sMX3E4jobKSw0hv/suj8/
-         4fz6n4U6jqdIi6HGEKDy2k/CnEwlo6ESebtaTUhJZlouMxyVQsgkB8PeCq4iuZ9slDr7
-         T04u42tUu84PQb2g7+reFmEbnThi3Ew5EhHlmfOl9dBmJdtTFsW/V8hWDj6vwreCIfpW
-         f4af0nF03pFAAmsk+qMGx2+QlpL+wBf6ej/thlhCVdEtBL/8ebm2KlfK/7164ct5hQeG
-         sGesF5wOz9N2I1bv4h+O4J5nh0RPFxrExkkGm2qmK9DXWfvnvlSutcrbIbCwAtzSTcvy
-         DjQg==
-X-Gm-Message-State: AOJu0Yywq7bTaqUcfEHb9UprgQsNZwZeZF2l5fqQkCybn3tdJUSgrQnx
-        nGF/Ev8P+3z10axG9zGH4m0=
-X-Google-Smtp-Source: AGHT+IH2Qw4C8iG+DuwqBgGLWMpC8w2kEty6i3xOSJxBWfFTL8DaOHH5TvMD6QyQeRt0Ruy2GjA4Ww==
-X-Received: by 2002:a5b:a50:0:b0:d97:213b:4775 with SMTP id z16-20020a5b0a50000000b00d97213b4775mr10865311ybq.34.1696959583666;
-        Tue, 10 Oct 2023 10:39:43 -0700 (PDT)
-Received: from pm2-ws13.praxislan02.com (207-172-141-204.s8906.c3-0.slvr-cbr1.lnh-slvr.md.cable.rcncustomer.com. [207.172.141.204])
-        by smtp.gmail.com with ESMTPSA id y8-20020a0cf148000000b00655d711180dsm4930073qvl.17.2023.10.10.10.39.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Oct 2023 10:39:43 -0700 (PDT)
-From:   Jason Andryuk <jandryuk@gmail.com>
-To:     Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc:     michal.wilczynski@intel.com,
-        Roger Pau Monne <roger.pau@citrix.com>,
-        stable@vger.kernel.org, Jason Andryuk <jandryuk@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: [PATCH v3] acpi/processor: sanitize _OSC/_PDC capabilities for Xen dom0
-Date:   Tue, 10 Oct 2023 13:39:22 -0400
-Message-ID: <20231010173924.44167-1-jandryuk@gmail.com>
-X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        with ESMTP id S233931AbjJJSRd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 14:17:33 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00FC194;
+        Tue, 10 Oct 2023 11:17:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E64C433C7;
+        Tue, 10 Oct 2023 18:17:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1696961851;
+        bh=n08KAtxs2MVTqYiW7dIJ3ZUqre1aDEV3KgtOiG/G9/U=;
+        h=Date:To:From:Subject:From;
+        b=ElivzVsA0XztGB7/9i+StEXAzUxIsoPs9IUZ8CBjIgL6B9cKYI4Ncml+9MNkXvG0K
+         fhu9QrxviwE2JSpph/OICxeFHoIpBw0YNEcHXPBKZMdklES1QKUc3xvR6Ockc8Wp4W
+         Q6AGfTuvfYoJ8MJvwER/Ab5zOBVMh8laxE7/5Zpw=
+Date:   Tue, 10 Oct 2023 11:17:18 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        jason.sim@samsung.com, Liam.Howlett@oracle.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + maple_tree-add-gfp_kernel-to-allocations-in-mas_expected_entries.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231010181729.49E64C433C7@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roger Pau Monne <roger.pau@citrix.com>
 
-The Processor capability bits notify ACPI of the OS capabilities, and
-so ACPI can adjust the return of other Processor methods taking the OS
-capabilities into account.
+The patch titled
+     Subject: maple_tree: add GFP_KERNEL to allocations in mas_expected_entries()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     maple_tree-add-gfp_kernel-to-allocations-in-mas_expected_entries.patch
 
-When Linux is running as a Xen dom0, the hypervisor is the entity
-in charge of processor power management, and hence Xen needs to make
-sure the capabilities reported by _OSC/_PDC match the capabilities of
-the driver in Xen.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/maple_tree-add-gfp_kernel-to-allocations-in-mas_expected_entries.patch
 
-Introduce a small helper to sanitize the buffer when running as Xen
-dom0.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-When Xen supports HWP, this serves as the equivalent of commit
-a21211672c9a ("ACPI / processor: Request native thermal interrupt
-handling via _OSC") to avoid SMM crashes.  Xen will set bit
-ACPI_PROC_CAP_COLLAB_PROC_PERF (bit 12) in the capability bits and the
-_OSC/_PDC call will apply it.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-[ jandryuk: Mention Xen HWP's need.  Support _OSC & _PDC ]
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: maple_tree: add GFP_KERNEL to allocations in mas_expected_entries()
+Date: Tue, 10 Oct 2023 10:17:37 -0400
+
+Users complained about OOM errors during fork without triggering
+compaction.  This can be fixed by modifying the flags used in
+mas_expected_entries() so that the compaction will be triggered in low
+memory situations.  Since mas_expected_entries() is only used during fork,
+the extra argument does not need to be passed through.
+
+Additionally, the testing in the maple tree fork testing needed to be
+altered to use the correct locking type so that allocations would not
+trigger sleeping and thus failures in the testing.  The additional locking
+change requires rwsem support additions to the tools/ directory through
+the use of pthreads pthread_rwlock_t.  With this change test_maple_tree
+works in userspace, as a module, and in-kernel.
+
+Users may notice that the system gave up early on attempting to start new
+processes instead of attempting to reclaim memory.
+
+Link: https://lkml.kernel.org/r/20230915093243epcms1p46fa00bbac1ab7b7dca94acb66c44c456@epcms1p4
+Link: https://lkml.kernel.org/r/20231010141737.1592866-1-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: <jason.sim@samsung.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-v3:
-Move xen_sanitize_pdc() call to arch_acpi_set_proc_cap_bits() to cover
-_OSC and _PDC.
-drivers/xen/pcpu.c is CONFIG_DOM0 && CONFIG_X86
 
-v2:
-Move local variables in acpi_processor_eval_pdc() to reuse in both conditions.
----
- arch/x86/include/asm/acpi.h           | 13 +++++++++++++
- arch/x86/include/asm/xen/hypervisor.h |  9 +++++++++
- drivers/xen/pcpu.c                    | 21 +++++++++++++++++++++
- 3 files changed, 43 insertions(+)
+ lib/maple_tree.c            |    2 -
+ lib/test_maple_tree.c       |   13 +++++++----
+ tools/include/linux/rwsem.h |   40 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 50 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-index c8a7fc23f63c..cc8d1669d6e8 100644
---- a/arch/x86/include/asm/acpi.h
-+++ b/arch/x86/include/asm/acpi.h
-@@ -16,6 +16,9 @@
- #include <asm/x86_init.h>
- #include <asm/cpufeature.h>
- #include <asm/irq_vectors.h>
-+#include <asm/xen/hypervisor.h>
-+
-+#include <xen/xen.h>
+--- a/lib/maple_tree.c~maple_tree-add-gfp_kernel-to-allocations-in-mas_expected_entries
++++ a/lib/maple_tree.c
+@@ -5627,7 +5627,7 @@ int mas_expected_entries(struct ma_state
+ 	/* Internal nodes */
+ 	nr_nodes += DIV_ROUND_UP(nr_nodes, nonleaf_cap);
+ 	/* Add working room for split (2 nodes) + new parents */
+-	mas_node_count(mas, nr_nodes + 3);
++	mas_node_count_gfp(mas, nr_nodes + 3, GFP_KERNEL);
  
- #ifdef CONFIG_ACPI_APEI
- # include <asm/pgtable_types.h>
-@@ -127,6 +130,16 @@ static inline void arch_acpi_set_proc_cap_bits(u32 *cap)
- 	if (!cpu_has(c, X86_FEATURE_MWAIT) ||
- 	    boot_option_idle_override == IDLE_NOMWAIT)
- 		*cap &= ~(ACPI_PROC_CAP_C_C1_FFH | ACPI_PROC_CAP_C_C2C3_FFH);
+ 	/* Detect if allocations run out */
+ 	mas->mas_flags |= MA_STATE_PREALLOC;
+--- a/lib/test_maple_tree.c~maple_tree-add-gfp_kernel-to-allocations-in-mas_expected_entries
++++ a/lib/test_maple_tree.c
+@@ -9,6 +9,7 @@
+ 
+ #include <linux/maple_tree.h>
+ #include <linux/module.h>
++#include <linux/rwsem.h>
+ 
+ #define MTREE_ALLOC_MAX 0x2000000000000Ul
+ #define CONFIG_MAPLE_SEARCH
+@@ -2616,6 +2617,10 @@ static noinline void __init check_dup_ga
+ 	void *tmp;
+ 	MA_STATE(mas, mt, 0, 0);
+ 	MA_STATE(newmas, &newmt, 0, 0);
++	struct rw_semaphore newmt_lock;
 +
-+	if (xen_initial_domain()) {
-+		/*
-+		 * When Linux is running as Xen dom0, the hypervisor is the
-+		 * entity in charge of the processor power management, and so
-+		 * Xen needs to check the OS capabilities reported in the _PDC
-+		 * buffer matches what the hypervisor driver supports.
-+		 */
-+		xen_sanitize_pdc(cap);
-+	}
++	init_rwsem(&newmt_lock);
++	mt_set_external_lock(&newmt, &newmt_lock);
+ 
+ 	if (!zero_start)
+ 		i = 1;
+@@ -2625,9 +2630,9 @@ static noinline void __init check_dup_ga
+ 		mtree_store_range(mt, i*10, (i+1)*10 - gap,
+ 				  xa_mk_value(i), GFP_KERNEL);
+ 
+-	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE);
++	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN);
+ 	mt_set_non_kernel(99999);
+-	mas_lock(&newmas);
++	down_write(&newmt_lock);
+ 	ret = mas_expected_entries(&newmas, nr_entries);
+ 	mt_set_non_kernel(0);
+ 	MT_BUG_ON(mt, ret != 0);
+@@ -2640,9 +2645,9 @@ static noinline void __init check_dup_ga
+ 	}
+ 	rcu_read_unlock();
+ 	mas_destroy(&newmas);
+-	mas_unlock(&newmas);
+ 
+-	mtree_destroy(&newmt);
++	__mt_destroy(&newmt);
++	up_write(&newmt_lock);
  }
  
- static inline bool acpi_has_cpu_in_madt(void)
-diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-index 7048dfacc04b..c6c2f174fa30 100644
---- a/arch/x86/include/asm/xen/hypervisor.h
-+++ b/arch/x86/include/asm/xen/hypervisor.h
-@@ -100,4 +100,13 @@ static inline void leave_lazy(enum xen_lazy_mode mode)
- 
- enum xen_lazy_mode xen_get_lazy_mode(void);
- 
-+#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI)
-+void xen_sanitize_pdc(uint32_t *buf);
-+#else
-+static inline void xen_sanitize_pdc(uint32_t *buf)
+ /* Duplicate many sizes of trees.  Mainly to test expected entry values */
+--- /dev/null
++++ a/tools/include/linux/rwsem.h
+@@ -0,0 +1,40 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++#ifndef _TOOLS__RWSEM_H
++#define _TOOLS__RWSEM_H
++
++#include <pthread.h>
++
++struct rw_semaphore {
++	pthread_rwlock_t lock;
++};
++
++static inline int init_rwsem(struct rw_semaphore *sem)
 +{
-+	BUG();
++	return pthread_rwlock_init(&sem->lock, NULL);
 +}
-+#endif
 +
- #endif /* _ASM_X86_XEN_HYPERVISOR_H */
-diff --git a/drivers/xen/pcpu.c b/drivers/xen/pcpu.c
-index b3e3d1bb37f3..859bb6027105 100644
---- a/drivers/xen/pcpu.c
-+++ b/drivers/xen/pcpu.c
-@@ -47,6 +47,9 @@
- #include <asm/xen/hypervisor.h>
- #include <asm/xen/hypercall.h>
- 
-+#ifdef CONFIG_ACPI
-+#include <acpi/processor.h>
-+#endif
- 
- /*
-  * @cpu_id: Xen physical cpu logic number
-@@ -400,4 +403,22 @@ bool __init xen_processor_present(uint32_t acpi_id)
- 
- 	return online;
- }
-+
-+void xen_sanitize_pdc(uint32_t *cap)
++static inline int exit_rwsem(struct rw_semaphore *sem)
 +{
-+	struct xen_platform_op op = {
-+		.cmd			= XENPF_set_processor_pminfo,
-+		.u.set_pminfo.id	= -1,
-+		.u.set_pminfo.type	= XEN_PM_PDC,
-+	};
-+	u32 buf[3] = { ACPI_PDC_REVISION_ID, 1, *cap };
-+	int ret;
-+
-+	set_xen_guest_handle(op.u.set_pminfo.pdc, buf);
-+	ret = HYPERVISOR_platform_op(&op);
-+	if (ret)
-+		pr_info("sanitize of _PDC buffer bits from Xen failed: %d\n",
-+			ret);
-+	*cap = buf[2];
++	return pthread_rwlock_destroy(&sem->lock);
 +}
- #endif
--- 
-2.41.0
++
++static inline int down_read(struct rw_semaphore *sem)
++{
++	return pthread_rwlock_rdlock(&sem->lock);
++}
++
++static inline int up_read(struct rw_semaphore *sem)
++{
++	return pthread_rwlock_unlock(&sem->lock);
++}
++
++static inline int down_write(struct rw_semaphore *sem)
++{
++	return pthread_rwlock_wrlock(&sem->lock);
++}
++
++static inline int up_write(struct rw_semaphore *sem)
++{
++	return pthread_rwlock_unlock(&sem->lock);
++}
++#endif /* _TOOLS_RWSEM_H */
+_
+
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
+
+maple_tree-add-gfp_kernel-to-allocations-in-mas_expected_entries.patch
+mmap-add-clarifying-comment-to-vma_merge-code.patch
+radix-tree-test-suite-fix-allocation-calculation-in-kmem_cache_alloc_bulk.patch
 
