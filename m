@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DD1D7BF836
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 12:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E88CE7BF854
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 12:16:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229516AbjJJKLW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 06:11:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54018 "EHLO
+        id S230462AbjJJKQv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 06:16:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbjJJKLW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 06:11:22 -0400
+        with ESMTP id S231160AbjJJKQq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 06:16:46 -0400
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2052893;
-        Tue, 10 Oct 2023 03:11:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 423F1116;
+        Tue, 10 Oct 2023 03:16:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=oj1axhxOjginGEELIsLjRAtpZ1XYE8QEYtnImm9KFkM=; b=gYdO8iqarQxLHjF7YnORu/ND3n
-        P8Gxkb0rRc1yB37HNKOontKt/9J1jFpVLPPKbEh8Fo31wpLqgJgonUdDmliPmWek0TAKzExJy0pEF
-        5+BXZCjaTVlX/CwrnMr7nYJ2ZTe7pqq09H8khWEzMP1ob1y57ZotrnJWyYaH1haO5lesiBo95gcED
-        bLNR5ra69pGgy3tbU6IoomsDUHVQCIErONjFJRzX17lUk36DVty7sCzUjpdyjC7HkGE6zM2fVrOwY
-        sZvCBJPxkTQX8xY9qBpODLXVuEEkgcwwgiZfYVswiFF1UqaRAVEjrwt5jxYOLLQJCTz2Lz+wViC21
-        MGvlPphg==;
+        bh=Zb6A2kfpJa7lPS8yNIr1mX5OvpeUAPwA3IcDR1IaKKc=; b=ueKzQLcnmzerXnYo62eevFkVL0
+        KreQh9Q1gUxYYHjpqpbTjp3oivGIICOfNTpJsJUVb7fbPeXYvxGghlyUqpUMTKfmKJoPJwwNEoquJ
+        8h03g2rYT14em69rgkufYtaf8BTgHY/b7IOchJm9iMQ0Lez6CKSrDRc9HBM/AG7UJe6tAzW/yqppG
+        Isa6IYCM58qFZnGUyiApip5VbPWJztRzWrgrqCEj8uSHvCihYTUQv/SXWoijuZ01bliAhmGHfU/Pr
+        mCcr+KCQEm3VK1Hdq7/chubA0yWFKc9MsuJjfYSmgYBHZf3S/slGtqLoWQjQMB62KnJ737HCbwLkB
+        SdpMivgg==;
 Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
         by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1qq9hY-0040qP-NX; Tue, 10 Oct 2023 10:10:57 +0000
+        id 1qq9mn-00417M-OM; Tue, 10 Oct 2023 10:16:21 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 63DD1300392; Tue, 10 Oct 2023 12:10:56 +0200 (CEST)
-Date:   Tue, 10 Oct 2023 12:10:56 +0200
+        id 68AF6300392; Tue, 10 Oct 2023 12:16:21 +0200 (CEST)
+Date:   Tue, 10 Oct 2023 12:16:21 +0200
 From:   Peter Zijlstra <peterz@infradead.org>
 To:     Borislav Petkov <bp@alien8.de>
 Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -46,13 +46,14 @@ Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Fei Yang <fei.yang@intel.com>, stable@vger.kernel.org
 Subject: Re: [PATCH] x86/alternatives: Disable KASAN on text_poke_early() in
  apply_alternatives()
-Message-ID: <20231010101056.GF377@noisy.programming.kicks-ass.net>
+Message-ID: <20231010101621.GG377@noisy.programming.kicks-ass.net>
 References: <20231010053716.2481-1-kirill.shutemov@linux.intel.com>
  <20231010081938.GBZSUJGlSvEkFIDnES@fat_crate.local>
+ <20231010101056.GF377@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231010081938.GBZSUJGlSvEkFIDnES@fat_crate.local>
+In-Reply-To: <20231010101056.GF377@noisy.programming.kicks-ass.net>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
@@ -62,47 +63,12 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 10, 2023 at 10:19:38AM +0200, Borislav Petkov wrote:
-> On Tue, Oct 10, 2023 at 08:37:16AM +0300, Kirill A. Shutemov wrote:
-> > On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
-> > got patched. It includes KASAN code, where KASAN_SHADOW_START depends on
-> > __VIRTUAL_MASK_SHIFT, which is defined with the cpu_feature_enabled().
-> 
-> So use boot_cpu_has(X86_FEATURE_LA57).
-> 
-> > It seems that KASAN gets confused when apply_alternatives() patches the
-> 
-> It seems?
-> 
-> > KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
-> > static, by replacing __VIRTUAL_MASK_SHIFT with 56, fixes the issue.
-> > 
-> > During text_poke_early() in apply_alternatives(), KASAN should be
-> > disabled. KASAN is already disabled in non-_early() text_poke().
-> > 
-> > It is unclear why the issue was not reported earlier. Bisecting does not
-> > help. Older kernels trigger the issue less frequently, but it still
-> > occurs. In the absence of any other clear offenders, the initial dynamic
-> > 5-level paging support is to blame.
-> 
-> This whole thing sounds like it is still not really clear what is
-> actually happening...
+On Tue, Oct 10, 2023 at 12:10:56PM +0200, Peter Zijlstra wrote:
 
-somewhere along the line __asan_loadN() gets tripped, this then ends up
-in kasan_check_range() -> check_region_inline() -> addr_has_metadata().
+> That said, I don't particularly like the patch, I think it should, at
+> the veyr least, cover all of apply_alternatives, not just
+> text_poke_early().
 
-This latter has: kasan_shadow_to_mem() which is compared against
-KASAN_SHADOW_START, which includes, as Kirill says __VIRTUAL_MASK_SHIFT.
-
-Now, obviously you really don't want boot_cpu_has() in
-__VIRTUAL_MASK_SHIFT, that would be really bad (Linus recently
-complained about how horrible the code-gen is around this already, must
-not make it far worse).
-
-
-Anyway, being half-way through patching X86_FEATURE_LA57 thing *are*
-inconsistent and I really can't blame things for going sideways.
-
-That said, I don't particularly like the patch, I think it should, at
-the veyr least, cover all of apply_alternatives, not just
-text_poke_early().
+kasan_arch_is_ready() is another option, x86 doesn't currently define
+that, but that would allow us to shut kasan down harder around patching.
+Not sure if it's worth the trouble though.
