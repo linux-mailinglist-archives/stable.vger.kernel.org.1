@@ -2,103 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07AFB7C4141
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 22:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E4517C41FD
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 23:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231201AbjJJUbN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 16:31:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51114 "EHLO
+        id S1343823AbjJJVE5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 17:04:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231150AbjJJUbM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 16:31:12 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BC1C8E;
-        Tue, 10 Oct 2023 13:31:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696969871; x=1728505871;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Q0gBOkzDsq/gQYzu51R39rST/HZysRsPFQA+3BD9Ztk=;
-  b=Er/HXTzCb+nemcU13NpA33/dERp29XIecWktvV3oTBbLtVawgr7CYt/X
-   dfYnaf2RBmAPJkhDH1Xg2puydJLpCDz6RGVfFPDTN11s31QIibyCYHFi6
-   HNEFj0GPFeJd2foezH/58qwxvxGRd5MzVLuVY5vmZRhgwmWQCZjSiK7+Y
-   bDRPlYrodKoKqL+c9wKyFzPRfddG3mEoaCouz6Beo4DBc5e9b4E6AYp1w
-   dF7zPQ9a1Cba3dzZKJpFFFYynf0PUSZ/pYwMeFHfn1s+qtfnmkmDKc4e4
-   UlsYxo92lVTeW+/RLhw7lu1x1KLHafAGNcCDrzH6ycKWrm0+qQqtxRet8
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="3088339"
-X-IronPort-AV: E=Sophos;i="6.03,213,1694761200"; 
-   d="scan'208";a="3088339"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 13:31:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="753533599"
-X-IronPort-AV: E=Sophos;i="6.03,213,1694761200"; 
-   d="scan'208";a="753533599"
-Received: from jekeller-desk.amr.corp.intel.com ([10.166.241.1])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 13:31:08 -0700
-From:   Jacob Keller <jacob.e.keller@intel.com>
-To:     netdev@vger.kernel.org, David Miller <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        stable@vger.kernel.org, Simon Horman <horms@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-        Jacob Keller <jacob.e.keller@intel.com>
-Subject: [PATCH net] ice: fix over-shifted variable
-Date:   Tue, 10 Oct 2023 13:30:59 -0700
-Message-ID: <20231010203101.406248-1-jacob.e.keller@intel.com>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S230388AbjJJVE4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 17:04:56 -0400
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B231794
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 14:04:54 -0700 (PDT)
+Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-d9a4c0d89f7so1699458276.1
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 14:04:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1696971894; x=1697576694; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0JPdI81s1g1jD64Q6FcuAIQKwcDv5/ca0TQcTmOhurM=;
+        b=Os+bFrzjhKtV+ps1T390Qm8hpHMVq3LwUOgCgOVfUlkN3Q8TL8cVK0ReTu0o6Sq4JB
+         2/wAEYVjoN2plvvMndkzomzIMsYozdssEUPQx5b5NS0wz5W3noHvSJMeB3mvmwW4oFnu
+         FXMA4aVMjstZ4AvEWAcR736DnW62WaGhYP7aezjJK+/mPOITmfXCHoiGCLgiJlMl1pPv
+         4/VpSq3O+EYV7x7Hk2TI1Gcp0UGmYE/x2oMdl689WUHUHorp56k2jfmOnjliti+CfnJ1
+         Ck1dHaOiYmtG8dCclg7t2TwRqapvu4cr5BpQu4DHsSVTrUDDSJ6dPs0TqMpaY4VsTTmc
+         Dm2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696971894; x=1697576694;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0JPdI81s1g1jD64Q6FcuAIQKwcDv5/ca0TQcTmOhurM=;
+        b=p9lRHlwTvKU/O2buPLT4gmMJbMtYuTZNA1v5WmnScvpe5E+HinLKbB8YI84jDZPr4m
+         ya1Q+9jxfX39LwwSsU1r/34xikl/JhKUw4c9FNORPm4g898MqHaWv7MqsXLRjh2YZatC
+         7EDa8MQwTUqo2NXePXVCv4IubXiSk1In33cBdjwT7uHMk9zQbW2ExsheazotMMXoy2bH
+         yCVSpL8nCqo+UxVoqqXJTG2NSfQqVBGkBgZSPN6vQ1K4rw/b+Y4p3yT6tmllN2Yhy8Sz
+         VkBFVcYSkACSyoRjoxapz3QOU7FOwS3G2HwMnj+00+EXFwy20gBwIbLbU6BR/EMmKsgb
+         nxPA==
+X-Gm-Message-State: AOJu0YxNilQBn7nDvMmFHzR1CGo1uXYzfwW2q1UE0SBb/HdG0ocLmwdL
+        LPsJLMNRn2iQRAtqn2fK0qoiuQi8F9DMCVnX7e0l1w==
+X-Google-Smtp-Source: AGHT+IHuv4B4I/7pSOoU5p4zYXXxB+UnuU5+plZrypxjr00y7A8QvxFJzcakHp6OBM059ut4sqv1nhHOkk4zB/QCxkI=
+X-Received: by 2002:a05:6902:707:b0:d84:afae:96a8 with SMTP id
+ k7-20020a056902070700b00d84afae96a8mr23439973ybt.7.1696971893895; Tue, 10 Oct
+ 2023 14:04:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20231001194943.658299-1-beanhuo@iokpp.de> <CAPDyKFpgPEhVuTbxe5YhYQ0W6907SwJRxSQLB1F2FbVW3zKHxg@mail.gmail.com>
+ <254df9b8ca7475ad9dbd3a303c60e1f99eca9c56.camel@iokpp.de>
+In-Reply-To: <254df9b8ca7475ad9dbd3a303c60e1f99eca9c56.camel@iokpp.de>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 10 Oct 2023 23:04:16 +0200
+Message-ID: <CAPDyKFofJR0xtpmjCQXM7=VzUeN5jQLD2AZYEWocuyCnYNObYw@mail.gmail.com>
+Subject: Re: [PATCH v4] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron
+ eMMC Q2J54A
+To:     Bean Huo <beanhuo@iokpp.de>
+Cc:     adrian.hunter@intel.com, beanhuo@micron.com,
+        jakub.kwapisz@toradex.com, rafael.beims@toradex.com,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jesse Brandeburg <jesse.brandeburg@intel.com>
+On Tue, 10 Oct 2023 at 17:33, Bean Huo <beanhuo@iokpp.de> wrote:
+>
+> Hi Ulf,
+>
+> thanks for your comments, I didn't quite get your points:
+>
+> On Tue, 2023-10-10 at 16:20 +0200, Ulf Hansson wrote:
+> > > @@ -2381,8 +2381,11 @@ enum mmc_issued mmc_blk_mq_issue_rq(struct
+> > > mmc_queue *mq, struct request *req)
+> > >                          }
+> > >                          ret = mmc_blk_cqe_issue_flush(mq, req);
+> > >                          break;
+> > > -               case REQ_OP_READ:
+> > >                  case REQ_OP_WRITE:
+> > > +                       if (mmc_card_broken_cache_flush(card) &&
+> > > !card->written_flag)
+> >
+> > It looks superfluous to me to check mmc_card_broken_cache_flush() and
+> > !card->written_flag. Just set the card->written_flag unconditionally.
+>
+> what did you mean "Just set the card->written_flag unconditionally."?
+> This means I just need to check card->written_flag and set card-
+> >written_flag to true and false in the case
+> MMC_QUIRK_BROKEN_CACHE_FLUSH? or don't need to call
+> mmc_card_broken_cache_flush()?
 
-Since the introduction of the ice driver the code has been
-double-shifting the RSS enabling field, because the define already has
-shifts in it and can't have the regular pattern of "a << shiftval &
-mask" applied.
+I mean skip the checks above and just do the assignment below.
 
-Most places in the code got it right, but one line was still wrong. Fix
-this one location for easy backports to stable. An in-progress patch
-fixes the defines to "standard" and will be applied as part of the
-regular -next process sometime after this one.
+>
+> >
+> > > +                               card->written_flag = true;
+> > > +                       fallthrough;
+> > > +               case REQ_OP_READ:
+> > >                          if (host->cqe_enabled)
+> > >                                  ret = mmc_blk_cqe_issue_rw_rq(mq,
+> > > req);
+> > >                          else
+> > > diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
+> > > index 4edf9057fa79..b7754a1b8d97 100644
+> > > --- a/drivers/mmc/core/card.h
+> > > +++ b/drivers/mmc/core/card.h
+> > > @@ -280,4 +280,8 @@ static inline int
+> > > mmc_card_broken_sd_cache(const struct mmc_card *c)
+> > >          return c->quirks & MMC_QUIRK_BROKEN_SD_CACHE;
+> > >   }
+> > >
+> > > +static inline int mmc_card_broken_cache_flush(const struct
+> > > mmc_card *c)
+> > > +{
+> > > +       return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
+> > > +}
+> > >   #endif
+> > > diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+> > > index 89cd48fcec79..47896c32086e 100644
+> > > --- a/drivers/mmc/core/mmc.c
+> > > +++ b/drivers/mmc/core/mmc.c
+> > > @@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host
+> > > *host, u32 ocr,
+> > >          if (!oldcard)
+> > >                  host->card = card;
+> > >
+> > > +       card->written_flag = false;
+> > > +
+> >
+> > How about doing this after a successful flush operation instead? In
+> > other words in _mmc_flush_cache().
+>
+> Here initializes flag and the patch is intenting to eliminate the cache
+> flush command before writing. what do you mean adding in
+> mmc_flush_cache()?
 
-Fixes: d76a60ba7afb ("ice: Add support for VLANs and offloads")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-CC: stable@vger.kernel.org
-Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_lib.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+mmc_init_card() is called while initializing and re-initializing the
+card. So, it certainly works to reset the flag from here.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 7bf9b7069754..73bbf06a76db 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -1201,8 +1201,7 @@ static void ice_set_rss_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
- 
- 	ctxt->info.q_opt_rss = ((lut_type << ICE_AQ_VSI_Q_OPT_RSS_LUT_S) &
- 				ICE_AQ_VSI_Q_OPT_RSS_LUT_M) |
--				((hash_type << ICE_AQ_VSI_Q_OPT_RSS_HASH_S) &
--				 ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
-+				(hash_type & ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
- }
- 
- static void
--- 
-2.41.0
+However, _mmc_flush_cache() is called before powering off the card,
+which then would work similarly to the above, but also gets called for
+REQ_OP_FLUSH. Wouldn't that mean that we may be able to skip some
+unnecessary/troublesome cache flush requests if we would reset the
+flag from  mmc_flush_cache(), rather than from mmc_init_card()?
 
+Kind regards
+Uffe
