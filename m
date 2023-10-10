@@ -2,118 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F89A7BF3FA
-	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 09:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 924F17BF411
+	for <lists+stable@lfdr.de>; Tue, 10 Oct 2023 09:23:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442394AbjJJHUt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 03:20:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34526 "EHLO
+        id S1442486AbjJJHXH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 03:23:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442438AbjJJHUs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 03:20:48 -0400
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F925C9
-        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 00:20:45 -0700 (PDT)
-Received: from eig-obgw-5002a.ext.cloudfilter.net ([10.0.29.215])
-        by cmsmtp with ESMTP
-        id q0ANqqJPOqBU3q72qqrbIP; Tue, 10 Oct 2023 07:20:44 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id q72pq8FjiVihtq72qqAYhp; Tue, 10 Oct 2023 07:20:44 +0000
-X-Authority-Analysis: v=2.4 cv=T+if8tGQ c=1 sm=1 tr=0 ts=6524fb4c
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=0qshdgB/R9zP+1e6Mf1kczdXW1Eciz/zqHIMnxxTi8c=; b=MZDIXZHRhImRkpsH46nKinGw4c
-        Rv7ukm+7LwWtQvQQj/z41vWKlLf/NoYI6+1Ua2iDvdXnv9D6e61yvOJdo8CFTma8ONI39XwGxY7c3
-        +8I523X7YbCkxl7ZFnKUkWNJD3BXeWUHcTZ4BNP7BfC9FHYJ0kxhq28N+gB9kHYEePOF1fVgl9GpE
-        64fRnjSvhGUQGV+rtFWopkgMZQTqQj748E1M3ZgNfoFwDOXAlIGimpuqnZM93Ls7FfZy+DNnlj0dw
-        hlM6cPrrXptqCmRTeOK6LiI9mKqKDC0O7Jim6zk40jxkn1QeLHAwq/JSZbpLLynq0OjYk1ERawndW
-        u+BMTEXg==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:50760 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96.1)
-        (envelope-from <re@w6rz.net>)
-        id 1qq72n-001M7F-1a;
-        Tue, 10 Oct 2023 01:20:41 -0600
-Subject: Re: [PATCH 6.5 000/163] 6.5.7-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231009130124.021290599@linuxfoundation.org>
-In-Reply-To: <20231009130124.021290599@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <41ae75b5-5a40-3db4-748c-fd7cc766742f@w6rz.net>
-Date:   Tue, 10 Oct 2023 00:20:39 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S1442492AbjJJHXE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 03:23:04 -0400
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D684BC4;
+        Tue, 10 Oct 2023 00:22:59 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 124271BF206;
+        Tue, 10 Oct 2023 07:22:55 +0000 (UTC)
+Received: from peko by dell.be.48ers.dk with local (Exim 4.94.2)
+        (envelope-from <peter@korsgaard.com>)
+        id 1qq74r-00GHj6-Tn; Tue, 10 Oct 2023 09:22:49 +0200
+From:   Peter Korsgaard <peter@korsgaard.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        syzbot+1f53a30781af65d2c955@syzkaller.appspotmail.com,
+        netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] net: usb: dm9601: fix uninitialized variable use in
+ dm9601_mdio_read
+References: <20231009-topic-dm9601_uninit_mdio_read-v2-1-f2fe39739b6c@gmail.com>
+        <2023101036-fleshy-dude-aec0@gregkh> <87v8bfc83f.fsf@48ers.dk>
+        <2023101018-venomous-uncured-47cf@gregkh>
+Date:   Tue, 10 Oct 2023 09:22:49 +0200
+In-Reply-To: <2023101018-venomous-uncured-47cf@gregkh> (Greg KH's message of
+        "Tue, 10 Oct 2023 08:33:35 +0200")
+Message-ID: <87r0m3c56e.fsf@48ers.dk>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1qq72n-001M7F-1a
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:50760
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfOtSmH0MSjBIaFTvRLyDyQnwawCacafzyMimn5vL4NuMzDU5Gqova6zp1XKIIRdbtkJ3YdeyevXwi/+38O7NKn/qUcL9zGw4ZkBkFFQnlUVX5Bf/SRxz
- P8f9w1Ofyv7T0G0buAG55X0TjSelmYpzYim23t8DGSHEABv7Vu7dTctncNtcCsrrIwM9eeNqexMr1g==
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-GND-Sasl: peter@korsgaard.com
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/9/23 5:59 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.7 release.
-> There are 163 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 11 Oct 2023 13:00:55 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.7-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+>>>>> "Greg" == Greg KH <gregkh@linuxfoundation.org> writes:
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+ > On Tue, Oct 10, 2023 at 08:19:48AM +0200, Peter Korsgaard wrote:
+ >> >>>>> "Greg" == Greg KH <gregkh@linuxfoundation.org> writes:
+ >> 
+ >> > On Tue, Oct 10, 2023 at 12:26:14AM +0200, Javier Carrasco wrote:
+ >> >> syzbot has found an uninit-value bug triggered by the dm9601 driver [1].
+ >> >> 
+ >> >> This error happens because the variable res is not updated if the call
+ >> >> to dm_read_shared_word returns an error. In this particular case -EPROTO
+ >> >> was returned and res stayed uninitialized.
+ >> >> 
+ >> >> This can be avoided by checking the return value of dm_read_shared_word
+ >> >> and propagating the error if the read operation failed.
+ >> >> 
+ >> >> [1] https://syzkaller.appspot.com/bug?extid=1f53a30781af65d2c955
+ >> >> 
+ >> >> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+ >> >> Reported-and-tested-by: syzbot+1f53a30781af65d2c955@syzkaller.appspotmail.com
+ >> >> ---
+ >> >> Changes in v2:
+ >> >> - Remove unnecessary 'err == 0' case
+ >> >> - Link to v1: https://lore.kernel.org/r/20231009-topic-dm9601_uninit_mdio_read-v1-1-d4d775e24e3b@gmail.com
+ >> >> ---
+ >> >> drivers/net/usb/dm9601.c | 7 ++++++-
+ >> >> 1 file changed, 6 insertions(+), 1 deletion(-)
+ >> 
+ >> > What commit id does this fix?
+ >> 
+ >> It has been there since the beginning, so:
+ >> 
+ >> Fixes: d0374f4f9c35cdfbee0 ("USB: Davicom DM9601 usbnet driver")
+ >> 
+ >> Acked-by: Peter Korsgaard <peter@korsgaard.com>
 
-Tested-by: Ron Economos <re@w6rz.net>
+ > Great, can someone add a cc: stable@ tag for this too please?
 
+Cc: stable@vger.kernel.org
+
+-- 
+Bye, Peter Korsgaard
