@@ -2,80 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4738B7C48FD
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 07:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D797C7C497F
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 07:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229571AbjJKFFJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 01:05:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45912 "EHLO
+        id S229989AbjJKF52 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 01:57:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjJKFFI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 01:05:08 -0400
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BE489B
-        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 22:05:06 -0700 (PDT)
-Received: by mail-io1-xd36.google.com with SMTP id ca18e2360f4ac-79fa5d9f3a2so249043939f.3
-        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 22:05:06 -0700 (PDT)
+        with ESMTP id S229953AbjJKF51 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 01:57:27 -0400
+Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 048408E
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 22:57:26 -0700 (PDT)
+Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-7b6043d0bbeso407647241.1
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 22:57:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1697000705; x=1697605505; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WxTb+tzaW80rCd53UmA2HdlmPdirZzFTdr3/d2GhRv0=;
-        b=NIvEbTzeRoUZGJ+s5QD52YqMFlgDbLKjEAv8AVBD6UHZNY9HeFXHuuSHKaYpCt91tq
-         g5K7asLLhH90l1V8aebrpjxZNyFXmCM4+FpcDTyrTnUtUwlouJwKakKakQjiADUDBVwE
-         6VfWPlivqeUv/xe3ddYE/qpbNxHeJhVpjpcdo=
+        d=linaro.org; s=google; t=1697003845; x=1697608645; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rpI7RMp4KwAd+fbis23QPkCG7JmUkdUenupCcGtFmrk=;
+        b=ndSZ8oZk789qSeZqXXNRYV/bDpUXTHfGWNb/ZPU19hgUtuXb1wrVQrsK67XlAlUF/6
+         6C25PevA51cFO28ll35RROt8tv6oYymJQpKsBTPwHjao27+P7BIU52ANT0s2JQt42Mv8
+         dQxJZ/zM4WuBL2FeV6gCbTIfNEBf+55WkmqspBCzlUqc8vUj3HTiUaqPLeJzy1RHCqa/
+         ANKKvex6usXgR8MzLlL+hLHXJnwogBJ/Sy+7cJsCKESCyOYNa2zn2a678C8jwvIbg+Ms
+         tJyHuGt8bXY/++eAUb/2OUGfnkGbI314PIFpLCc5JojoV4eBuGw7z6zEBabshNp5pkVx
+         XCNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697000705; x=1697605505;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WxTb+tzaW80rCd53UmA2HdlmPdirZzFTdr3/d2GhRv0=;
-        b=dlwaTIwCsqTU3BGkOSfKaU7pufVGbXxTpJWp/SzLx6PDtGPM5IQ2lTv66UKvCDUGZg
-         ber9/pUEqdD+c3g1j4QdTayuCpnoBettsuHm02Ij0O9b43ix0YLDSkcT/BxC8mtTSetD
-         jq+CfNTf/WCDIJD/AE4MF4d/iYTnW3c+6rUMe82/jEPmWfOwD2xU64UP7u2DrhR34/RL
-         ++DF8CRyFOzz1cC5pK+5jHHLk8ecSgkzdbnxOTBbV+sktw3PKqQxaqVVd6BkAK18yAuL
-         2oL2LPUe+vPE3vI7ewMYzn21DIJAdswlGd4KpKvXlSJmMRdkL3xg7KlHPcLE1W1xfD5H
-         Bc0A==
-X-Gm-Message-State: AOJu0YyQGp3X6PJUznCVckicCbloQLaeBIszpD5EPpRCNqJMSrG2IJKY
-        tk+e0fxqlnU0f3SiT4iIIsxtZ2uajsDHKkSLRsY=
-X-Google-Smtp-Source: AGHT+IFy03G2cJuFBIp6FGEixKXoqXrVTKJalXLWgyRWJ4CG+YpsKoYUI6z524T5aX5M2yqvkC+r0w==
-X-Received: by 2002:a5d:9954:0:b0:786:f4a0:d37e with SMTP id v20-20020a5d9954000000b00786f4a0d37emr19775042ios.4.1697000705583;
-        Tue, 10 Oct 2023 22:05:05 -0700 (PDT)
-Received: from localhost (161.74.123.34.bc.googleusercontent.com. [34.123.74.161])
-        by smtp.gmail.com with ESMTPSA id m11-20020a02c88b000000b0042b35e163besm3195221jao.88.2023.10.10.22.05.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Oct 2023 22:05:05 -0700 (PDT)
-Date:   Wed, 11 Oct 2023 05:05:04 +0000
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Chengming Zhou <zhouchengming@bytedance.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ovidiu Panait <ovidiu.panait@windriver.com>,
-        Ingo Molnar <mingo@kernel.org>, rcu <rcu@vger.kernel.org>
-Subject: Re: [PATCH 5.15 000/183] 5.15.134-rc1 review
-Message-ID: <20231011050504.GA201855@google.com>
-References: <20231004175203.943277832@linuxfoundation.org>
- <CA+G9fYunnEUT2evdabX1KOTiryP1heNHWDH4LWZCt2SVRmnKOA@mail.gmail.com>
- <20231006162038.d3q7sl34b4ouvjxf@revolver>
- <57c1ff4d-f138-4f89-8add-c96fb3ba6701@paulmck-laptop>
- <20231006175714.begtgj6wrs46ukmo@revolver>
- <7652477c-a37c-4509-9dc9-7f9d1dc08291@paulmck-laptop>
- <CAEXW_YS16NxPxg52T=3FcyZ2qocj36zKyhPnEQL3nBTbD-qJ-A@mail.gmail.com>
- <9470dab6-dee5-4505-95a2-f6782b648726@paulmck-laptop>
- <433f5823-059c-4b51-8d18-8b356a5a507f@paulmck-laptop>
+        d=1e100.net; s=20230601; t=1697003845; x=1697608645;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rpI7RMp4KwAd+fbis23QPkCG7JmUkdUenupCcGtFmrk=;
+        b=vbzEjAVrWbAYaUWfznXbWaXMzfomd+c3S7tBoAmZ46dwax/lyVs1PjEOC2DYSQHodD
+         VGaMWDQIIunNwkuTexNDV2l1mUUYcICYqQ6RNpKrcG7TrNmLm+jmhs/tZ1GHcfrfwipZ
+         RL+WsbMAxPbB1CNLXGfnO/KOXdGE0tR6CI9m/TJ6xQ4lWYgWjLIPjwPhjihh78wJQFEr
+         tUz6P5ThsKDaYCKKo1QQIR00SFYVZgqeVtGRzcTPeujVkWnIGXt0LCeu+OfI7Dndz2PS
+         y+1PuCUcq/oDyyo1yiB8jaQYW1na4dPsgQqFPuZ8eml2yRk6t18YShC0yCkhOsqcvET4
+         rbfA==
+X-Gm-Message-State: AOJu0YwQ+xKOCuzkPD1S4aFE8tjACOiXpP+8mwYkGRfdyQ4TDbmMPUTv
+        eSTXyJ0gonfQ0DLKFQqAKwotu8fVUfciuVH7smOZPA==
+X-Google-Smtp-Source: AGHT+IFhpaktORPpqlglbJLvqlvNhAWcwf5rY4eKbTFwOyBGvCqNgxhW1SFSwKbGlW143MY7iKOCGY2zxetWSUvbm9M=
+X-Received: by 2002:a67:ed83:0:b0:452:7c1b:d57c with SMTP id
+ d3-20020a67ed83000000b004527c1bd57cmr12788130vsp.28.1697003845032; Tue, 10
+ Oct 2023 22:57:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <433f5823-059c-4b51-8d18-8b356a5a507f@paulmck-laptop>
+References: <20231010231616.3122392-1-jarkko@kernel.org>
+In-Reply-To: <20231010231616.3122392-1-jarkko@kernel.org>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Wed, 11 Oct 2023 11:27:13 +0530
+Message-ID: <CAFA6WYMdrCfqMVExYBbhCK7vUSQffyUfSWpQO0=HeQc6Edz9OA@mail.gmail.com>
+Subject: Re: [PATCH] KEYS: trusted: Rollback init_trusted() consistently
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     keyrings@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        stable@vger.kernel.org, James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "open list:KEYS-TRUSTED" <linux-integrity@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -86,97 +76,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 10, 2023 at 06:34:35PM -0700, Paul E. McKenney wrote:
-[...]
-> > > > > > > It's also worth noting that the bug this fixes wasn't exposed until the
-> > > > > > > maple tree (added in v6.1) was used for the IRQ descriptors (added in
-> > > > > > > v6.5).
-> > > > > >
-> > > > > > Lots of latent bugs, to be sure, even with rcutorture.  :-/
-> > > > >
-> > > > > The Right Thing is to fix the bug all the way back to the introduction,
-> > > > > but what fallout makes the backport less desirable than living with the
-> > > > > unexposed bug?
-> > > >
-> > > > You are quite right that it is possible for the risk of a backport to
-> > > > exceed the risk of the original bug.
-> > > >
-> > > > I defer to Joel (CCed) on how best to resolve this in -stable.
-> > > 
-> > > Maybe I am missing something but this issue should also be happening
-> > > in mainline right?
-> > > 
-> > > Even though mainline has 897ba84dc5aa ("rcu-tasks: Handle idle tasks
-> > > for recently offlined CPUs") , the warning should still be happening
-> > > due to Liam's "kernel/sched: Modify initial boot task idle setup"
-> > > because the warning is just rearranged a bit but essentially the same.
-> > > 
-> > > IMHO, the right thing to do then is to drop Liam's patch from 5.15 and
-> > > fix it in mainline (using the ideas described in this thread), then
-> > > backport both that new fix and Liam's patch to 5.15.
-> > > 
-> > > Or is there a reason this warning does not show up on the mainline?
-> 
-> There is not a whole lot of commonality between the v5.15.134 version of
-> RCU Tasks Trace and that of mainline.  In theory, in mainline, CPU hotplug
-> is supposed to be disabled across all calls to trc_inspect_reader(),
-> which means that there would not be any CPU coming or going.
-> 
-> But there could potentially be some time between when a CPU was
-> marked as online and its idle task was marked PF_IDLE.  And in
-> fact x86 start_secondary() invokes set_cpu_online() before it calls
-> cpu_startup_entry(), and it is the latter than sets PF_IDLE.
-> 
-> The same is true of alpha, arc, arm, arm64, csky, ia64, loongarch, mips,
-> openrisc, parisc, powerpc, riscv, s390, sh, sparc32, sparc64, x86 xen,
-> and xtensa, which is everybody.
-> 
-> One reason why my testing did not reproduce this is because I was running
-> against v6.6-rc1, and cff9b2332ab7 ("kernel/sched: Modify initial boot
-> task idle setup") went into v6.6-rc3.  An initial run merging in current
-> mainline also failed to reproduce this, but I am running overnight.
-> If that doesn't reproduce, I will try inserting delays between the
-> set_cpu_online() and the cpu_startup_entry().
+On Wed, 11 Oct 2023 at 04:46, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>
+> Do bind neither static calls nor trusted_key_exit() before a successful
+> init, in order to maintain a consistent state. In addition, depart the
+> init_trusted() in the case of a real error (i.e. getting back something
+> else than -ENODEV).
+>
+> Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Closes: https://lore.kernel.org/linux-integrity/CAHk-=whOPoLaWM8S8GgoOPT7a2+nMH5h3TLKtn=R_3w4R1_Uvg@mail.gmail.com/
+> Cc: stable@vger.kernel.org # v5.13+
+> Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> ---
+>  security/keys/trusted-keys/trusted_core.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+> index 85fb5c22529a..fee1ab2c734d 100644
+> --- a/security/keys/trusted-keys/trusted_core.c
+> +++ b/security/keys/trusted-keys/trusted_core.c
+> @@ -358,17 +358,17 @@ static int __init init_trusted(void)
+>                 if (!get_random)
+>                         get_random = kernel_get_random;
+>
+> -               static_call_update(trusted_key_seal,
+> -                                  trusted_key_sources[i].ops->seal);
+> -               static_call_update(trusted_key_unseal,
+> -                                  trusted_key_sources[i].ops->unseal);
+> -               static_call_update(trusted_key_get_random,
+> -                                  get_random);
+> -               trusted_key_exit = trusted_key_sources[i].ops->exit;
+> -               migratable = trusted_key_sources[i].ops->migratable;
+> -
+>                 ret = trusted_key_sources[i].ops->init();
+> -               if (!ret)
+> +               if (!ret) {
+> +                       static_call_update(trusted_key_seal, trusted_key_sources[i].ops->seal);
+> +                       static_call_update(trusted_key_unseal, trusted_key_sources[i].ops->unseal);
+> +                       static_call_update(trusted_key_get_random, get_random);
+> +
+> +                       trusted_key_exit = trusted_key_sources[i].ops->exit;
+> +                       migratable = trusted_key_sources[i].ops->migratable;
+> +               }
+> +
+> +               if (!ret || ret != -ENODEV)
 
-I thought the warning happens before set_cpu_online() is even called, because
-under such situation, ofl == true and the task is not set to PF_IDLE yet:
+As mentioned in the other thread, we should allow other trust sources
+to be initialized if the primary one fails.
 
-                  WARN_ON_ONCE(ofl && task_curr(t) && !is_idle_task(t));
+-Sumit
 
-> If this problem is real, fixes include:
-> 
-> o	Revert Liam's patch and make Tiny RCU's call_rcu() deal with
-> 	the problem.  This is overhead and non-tinyness, but to Joel's
-> 	point, it might be best.
-> 
-> o	Go back to something more like Liam's original patch, which
-> 	cleared PF_IDLE only for the boot CPU.
-> 
-> o	Set PF_IDLE before calling set_cpu_online().  This would work,
-> 	but it would also be rather ugly, reaching into each and every
-> 	architecture.
-> 
-> o	Move the call to set_cpu_online() into cpu_startup_entry().
-> 	This would require some serious inspection to prove that it is
-> 	safe, assuming that it is in fact safe.
-> 
-> o	Drop the WARN_ON_ONCE() from trc_inspect_reader().  Not all
-> 	that excited by losing this diagnostic, but then again it
-> 	has been awhile since it has caught anything.
-> 
-> o	Make the WARN_ON_ONCE() condition in trc_inspect_reader() instead
-> 	to a "return false" to retry later.  Ditto, also not liking the
-> 	possibility of indefinite deferral with no warning.
-
-Just for completeness, 
-
- o      Since it just a warning, checking for task_struct::pid == 0 instead of is_idle_task()?
-        Though PF_IDLE is also set in play_idle_precise().
-
- o	Change warning to:
-                  WARN_ON_ONCE(ofl && task_curr(t) && (!is_idle_task(t) && t->pid != 0));
-
-thanks,
-
- - Joel
-
+>                         break;
+>         }
+>
+> --
+> 2.39.2
+>
