@@ -2,67 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 255367C4833
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 05:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA9D57C4861
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 05:19:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344939AbjJKDL5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 10 Oct 2023 23:11:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41348 "EHLO
+        id S1345038AbjJKDTT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 10 Oct 2023 23:19:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344935AbjJKDL4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 23:11:56 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3A4D91;
-        Tue, 10 Oct 2023 20:11:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48790C433C8;
-        Wed, 11 Oct 2023 03:11:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696993914;
-        bh=AXgUV+2CRn8Qf+Z1JZzAhV/nmd0AYybcOxTXzVIQ+Q8=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=DfX+YiubCin2Z/6XCWXmNTXfD0fuRPiIkKkthIYgQhgT4wgfbi6e3/YuwMoavWNGw
-         K6sQ8dMmjuhrjAtnZaajRx6PdW/kVb7LmWpW4YHVBMvZy6Gbb11s9H8hzBGCzquShg
-         nuxVFTi2lcOWTHRkLGEf8SgyjpY8IZD80Yfh1HsQ7n49yN4tB2LA7LjKCbVs+Ol31y
-         YhsChmKUR1ayf3BEZqPYDjNjebzENfZ0+HweDbB3bm5O/ovDtI8YCUUBd4SrmsbjIG
-         0dSkieVi8zpAaBGiDZd9J+rcqTqsndsJfOicq/sdn1tCpoql6tLg71Ngony2lfhVFk
-         SbDhEwHgsk/4g==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id D6290CE0D02; Tue, 10 Oct 2023 20:11:53 -0700 (PDT)
-Date:   Tue, 10 Oct 2023 20:11:53 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Chengming Zhou <zhouchengming@bytedance.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ovidiu Panait <ovidiu.panait@windriver.com>,
-        Ingo Molnar <mingo@kernel.org>, rcu <rcu@vger.kernel.org>
-Subject: Re: [PATCH 5.15 000/183] 5.15.134-rc1 review
-Message-ID: <74a31adc-7a14-414d-a2be-dfa893853d19@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20231004175203.943277832@linuxfoundation.org>
- <CA+G9fYunnEUT2evdabX1KOTiryP1heNHWDH4LWZCt2SVRmnKOA@mail.gmail.com>
- <20231006162038.d3q7sl34b4ouvjxf@revolver>
- <57c1ff4d-f138-4f89-8add-c96fb3ba6701@paulmck-laptop>
- <20231006175714.begtgj6wrs46ukmo@revolver>
- <7652477c-a37c-4509-9dc9-7f9d1dc08291@paulmck-laptop>
- <CAEXW_YS16NxPxg52T=3FcyZ2qocj36zKyhPnEQL3nBTbD-qJ-A@mail.gmail.com>
- <9470dab6-dee5-4505-95a2-f6782b648726@paulmck-laptop>
- <CAEXW_YTYzoAfOcgYA-N7VJYJoZTVX2=GtDrZc19RXoAXidbvyA@mail.gmail.com>
+        with ESMTP id S1344969AbjJKDTT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 10 Oct 2023 23:19:19 -0400
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DA6A0AF
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 20:19:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=I4fin
+        khRisjfR17hN8BUvmjnP70Y++1X3ZU5LXLJXWo=; b=jXSVAUem3CSGUkVPS3pIo
+        mEoizr+2KXMdZCmNI8cs46t5TjGswzcxbv4xWrqi4StKKaYsLi9vOpQ1VbFuY35e
+        paQEfGvtH3r/6sJiSMfy0v/03Dt87wXVb8eTHQfW5YG7kgJL/+pMmBvkFj5BTd9T
+        Vy/o4k/C8oeqTTpScDPuLY=
+Received: from leanderwang-LC4.localdomain (unknown [111.206.145.21])
+        by zwqz-smtp-mta-g5-1 (Coremail) with SMTP id _____wDnbxzkEyZlza3tAA--.56465S2;
+        Wed, 11 Oct 2023 11:17:56 +0800 (CST)
+From:   Zheng Wang <zyytlz.wz@163.com>
+To:     stable@vger.kernel.org
+Cc:     hackerzheng666@gmail.com, sashal@kernel.org,
+        gregkh@linuxfoundation.org, patches@lists.linux.dev,
+        amergnat@baylibre.com, wenst@chromium.org,
+        angelogioacchino.delregno@collabora.com, hverkuil-cisco@xs4all.nl,
+        Zheng Wang <zyytlz.wz@163.com>
+Subject: [RESEND PATCH v2] media: mtk-jpeg: Fix use after free bug due to uncanceled work
+Date:   Wed, 11 Oct 2023 11:17:40 +0800
+Message-Id: <20231011031740.982735-1-zyytlz.wz@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEXW_YTYzoAfOcgYA-N7VJYJoZTVX2=GtDrZc19RXoAXidbvyA@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-CM-TRANSID: _____wDnbxzkEyZlza3tAA--.56465S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr1UKr1rCw1ftw18WrW3Wrg_yoW8uFy5pr
+        WfK3yUC3yUGFsYqr1UJ3W7ZFyrGwnxKayIqry7uw4xZ39xJr4kJryFya40vFWIvF92kayf
+        Xr18Z34xGr4jvFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zi-eOJUUUUU=
+X-Originating-IP: [111.206.145.21]
+X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/1tbiXAsGU1Xl7rkVOgAAsK
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L4,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,66 +53,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 10, 2023 at 10:44:16PM -0400, Joel Fernandes wrote:
-> On Sun, Oct 8, 2023 at 9:20 PM Paul E. McKenney <paulmck@kernel.org> wrote:
-> [...]
-> > > > > How frequent is this function called?  We could check something for
-> > > > > early boot... or track down where the cpu is put online and restore idle
-> > > > > before that happens?
-> > > >
-> > > > Once per RCU Tasks Trace grace period per reader seen to be blocking
-> > > > that grace period.  Its performance is as issue, but not to anywhere
-> > > > near the same extent as (say) rcu_read_lock_trace().
-> > > >
-> > > > > > > It's also worth noting that the bug this fixes wasn't exposed until the
-> > > > > > > maple tree (added in v6.1) was used for the IRQ descriptors (added in
-> > > > > > > v6.5).
-> > > > > >
-> > > > > > Lots of latent bugs, to be sure, even with rcutorture.  :-/
-> > > > >
-> > > > > The Right Thing is to fix the bug all the way back to the introduction,
-> > > > > but what fallout makes the backport less desirable than living with the
-> > > > > unexposed bug?
-> > > >
-> > > > You are quite right that it is possible for the risk of a backport to
-> > > > exceed the risk of the original bug.
-> > > >
-> > > > I defer to Joel (CCed) on how best to resolve this in -stable.
-> > >
-> > > Maybe I am missing something but this issue should also be happening
-> > > in mainline right?
-> > >
-> > > Even though mainline has 897ba84dc5aa ("rcu-tasks: Handle idle tasks
-> > > for recently offlined CPUs") , the warning should still be happening
-> > > due to Liam's "kernel/sched: Modify initial boot task idle setup"
-> > > because the warning is just rearranged a bit but essentially the same.
-> > >
-> > > IMHO, the right thing to do then is to drop Liam's patch from 5.15 and
-> > > fix it in mainline (using the ideas described in this thread), then
-> > > backport both that new fix and Liam's patch to 5.15.
-> > >
-> > > Or is there a reason this warning does not show up on the mainline?
-> > >
-> > > My impression is that dropping Liam's patch for the stable release and
-> > > revisiting it later is a better approach since tiny RCU is used way
-> > > less in the wild than tree/tasks RCU. Thoughts?
-> >
-> > I think that this one is strange enough that we need to write down the
-> > situation in detail, make sure we have all the corner cases covered in
-> > both mainline and -stable, and decide what to do from there.
-> >
-> > Yes, I know, this email thread contains much of this information, but
-> > a little organizing of it would be good.
-> >
-> > Would you like to put that together, or should I?  If me, I will get
-> > a draft out by the end of this coming Tuesday, Pacific Time.
-> 
-> I apologize, I haven't been able to do any real work as I was OOO for
-> the most part due to dental issues. I am about 25% back now. I will
-> review your other email writeup and thanks for putting it together!
+This is a security bug that has been reported to google.
+It affected all platforms on chrome-os. Please apply this
+patch to 4.14 4.19 5.4 5.10 and 5.15.
 
-No need to apologize!  If anything, it is I who should apologize for
-not digging deeply into this to begin with.  As always, there were
-distraction.  ;-)
+[ Upstream commit c677d7ae83141d390d1253abebafa49c962afb52 ]
 
-							Thanx, Paul
+In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
+mtk_jpeg_job_timeout_work. Then mtk_jpeg_dec_device_run
+and mtk_jpeg_enc_device_run may be called to start the
+work.
+
+If we remove the module which will call mtk_jpeg_remove
+to make cleanup, there may be a unfinished work. The
+possible sequence is as follows, which will cause a
+typical UAF bug.
+
+Fix it by canceling the work before cleanup in the mtk_jpeg_remove
+
+CPU0                  CPU1
+
+                    |mtk_jpeg_job_timeout_work
+mtk_jpeg_remove     |
+  v4l2_m2m_release  |
+    kfree(m2m_dev); |
+                    |
+                    | v4l2_m2m_get_curr_priv
+                    |   m2m_dev->curr_ctx //use
+Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+- v2: use cancel_delayed_work_sync instead of cancel_delayed_work suggested by Kyrie.
+---
+ drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+index 0051f372a66c..6069ecf420b0 100644
+--- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
++++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+@@ -1816,6 +1816,7 @@ static void mtk_jpeg_remove(struct platform_device *pdev)
+ {
+ 	struct mtk_jpeg_dev *jpeg = platform_get_drvdata(pdev);
+ 
++	cancel_delayed_work_sync(&jpeg->job_timeout_work);
+ 	pm_runtime_disable(&pdev->dev);
+ 	video_unregister_device(jpeg->vdev);
+ 	v4l2_m2m_release(jpeg->m2m_dev);
+-- 
+2.25.1
+
