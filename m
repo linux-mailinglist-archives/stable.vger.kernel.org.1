@@ -2,65 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D3A27C5006
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 12:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20E6A7C5035
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 12:34:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231564AbjJKKZE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 06:25:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44042 "EHLO
+        id S231657AbjJKKef (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 06:34:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231207AbjJKKZD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 06:25:03 -0400
+        with ESMTP id S231387AbjJKKee (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 06:34:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F24792;
-        Wed, 11 Oct 2023 03:25:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9ABC433C8;
-        Wed, 11 Oct 2023 10:25:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47E292;
+        Wed, 11 Oct 2023 03:34:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2633C433C9;
+        Wed, 11 Oct 2023 10:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697019901;
-        bh=oT4bek1giU2pcDYjiPRXCUo2soNQg3dhKRIybePgP1E=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=KqLvHSipnPlMwzHGJdVAKj6HMQ5itgvrbriu3Kt0KYusl1WwnoCxEmexa4C66Shuk
-         OAd2y4iuoUrtppWRFxsVbMxUN7A9qD5qG0qIrxtFlJaGEMVOAp0NwbvHdFtvKBZvqu
-         1eVCHj0Y7XX/sFiYnQbWnTSW22A/n5kqDlA2quEh89NzNReAKos0HpLMgqBt052XmQ
-         /G0P8o/aMapojyFGLHyKrGGLRyJ8YKhRbSNkIbin+IYFG95F2EcZwQHqKydm01TzJX
-         m1lcvKQTmt91RpHA7Ctd82QOMwoD/8XLLWVhPW4vBRAkrVReOiDITtySe7FlpMq6Wk
-         dN3PIvbhO1cQQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id B5D56CE041E; Wed, 11 Oct 2023 03:25:00 -0700 (PDT)
-Date:   Wed, 11 Oct 2023 03:25:00 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Chengming Zhou <zhouchengming@bytedance.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ovidiu Panait <ovidiu.panait@windriver.com>,
-        Ingo Molnar <mingo@kernel.org>, rcu <rcu@vger.kernel.org>
-Subject: Re: [PATCH 5.15 000/183] 5.15.134-rc1 review
-Message-ID: <afe86f8d-e412-48e8-b2f6-a0879c832d4d@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20231004175203.943277832@linuxfoundation.org>
- <CA+G9fYunnEUT2evdabX1KOTiryP1heNHWDH4LWZCt2SVRmnKOA@mail.gmail.com>
- <20231006162038.d3q7sl34b4ouvjxf@revolver>
- <57c1ff4d-f138-4f89-8add-c96fb3ba6701@paulmck-laptop>
- <20231006175714.begtgj6wrs46ukmo@revolver>
- <7652477c-a37c-4509-9dc9-7f9d1dc08291@paulmck-laptop>
- <CAEXW_YS16NxPxg52T=3FcyZ2qocj36zKyhPnEQL3nBTbD-qJ-A@mail.gmail.com>
- <9470dab6-dee5-4505-95a2-f6782b648726@paulmck-laptop>
- <433f5823-059c-4b51-8d18-8b356a5a507f@paulmck-laptop>
- <20231011050504.GA201855@google.com>
+        s=k20201202; t=1697020471;
+        bh=woX3nAzbZTdgFyiPGo2Qva6o8So5SbxPp6WMWELScOQ=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=jLe9TQw1lcO96kxUQxZ19hVoRBeiPznOx6GgHnV4GMsbQKn40QG+/lef0alvzHiOd
+         l9pIvo7lD/Hiel+zGVzmiraMA31Pxyz4/QWGw7usOQlAdm1ccCIgxICzGvg5TavCmn
+         3aZ6rpja9xjWn8nfY0DvC7UI67SqKn02r9aMehe7jFVVYU0U5z8eWinfX5jd+5UUaE
+         rpnpjMGUmTa7I7Iay+i1G3pehAtpeF18AY8H8qq4wAvlikFN+MN1qeKe2ac3LXSDP7
+         Cbfoc5LR0LgYh69rwdNh960JNX/Pdmx9gTDY2+GoJmd6aME1LyDGtzxmMof8vRFIak
+         7r7cUQJEEjXJA==
+Message-ID: <0aeb4d88952aff53c5c1a40b547a9819ebd1947e.camel@kernel.org>
+Subject: Re: [PATCH] KEYS: trusted: Rollback init_trusted() consistently
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        stable@vger.kernel.org, James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "open list:KEYS-TRUSTED" <linux-integrity@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Date:   Wed, 11 Oct 2023 13:34:26 +0300
+In-Reply-To: <186a4b62517ead88df8c3c0e9e9585e88f9a6fd8.camel@kernel.org>
+References: <20231010231616.3122392-1-jarkko@kernel.org>
+         <CAFA6WYMdrCfqMVExYBbhCK7vUSQffyUfSWpQO0=HeQc6Edz9OA@mail.gmail.com>
+         <186a4b62517ead88df8c3c0e9e9585e88f9a6fd8.camel@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231011050504.GA201855@google.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -70,100 +60,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 11, 2023 at 05:05:04AM +0000, Joel Fernandes wrote:
-> On Tue, Oct 10, 2023 at 06:34:35PM -0700, Paul E. McKenney wrote:
-> [...]
-> > > > > > > > It's also worth noting that the bug this fixes wasn't exposed until the
-> > > > > > > > maple tree (added in v6.1) was used for the IRQ descriptors (added in
-> > > > > > > > v6.5).
-> > > > > > >
-> > > > > > > Lots of latent bugs, to be sure, even with rcutorture.  :-/
-> > > > > >
-> > > > > > The Right Thing is to fix the bug all the way back to the introduction,
-> > > > > > but what fallout makes the backport less desirable than living with the
-> > > > > > unexposed bug?
-> > > > >
-> > > > > You are quite right that it is possible for the risk of a backport to
-> > > > > exceed the risk of the original bug.
-> > > > >
-> > > > > I defer to Joel (CCed) on how best to resolve this in -stable.
-> > > > 
-> > > > Maybe I am missing something but this issue should also be happening
-> > > > in mainline right?
-> > > > 
-> > > > Even though mainline has 897ba84dc5aa ("rcu-tasks: Handle idle tasks
-> > > > for recently offlined CPUs") , the warning should still be happening
-> > > > due to Liam's "kernel/sched: Modify initial boot task idle setup"
-> > > > because the warning is just rearranged a bit but essentially the same.
-> > > > 
-> > > > IMHO, the right thing to do then is to drop Liam's patch from 5.15 and
-> > > > fix it in mainline (using the ideas described in this thread), then
-> > > > backport both that new fix and Liam's patch to 5.15.
-> > > > 
-> > > > Or is there a reason this warning does not show up on the mainline?
-> > 
-> > There is not a whole lot of commonality between the v5.15.134 version of
-> > RCU Tasks Trace and that of mainline.  In theory, in mainline, CPU hotplug
-> > is supposed to be disabled across all calls to trc_inspect_reader(),
-> > which means that there would not be any CPU coming or going.
-> > 
-> > But there could potentially be some time between when a CPU was
-> > marked as online and its idle task was marked PF_IDLE.  And in
-> > fact x86 start_secondary() invokes set_cpu_online() before it calls
-> > cpu_startup_entry(), and it is the latter than sets PF_IDLE.
-> > 
-> > The same is true of alpha, arc, arm, arm64, csky, ia64, loongarch, mips,
-> > openrisc, parisc, powerpc, riscv, s390, sh, sparc32, sparc64, x86 xen,
-> > and xtensa, which is everybody.
-> > 
-> > One reason why my testing did not reproduce this is because I was running
-> > against v6.6-rc1, and cff9b2332ab7 ("kernel/sched: Modify initial boot
-> > task idle setup") went into v6.6-rc3.  An initial run merging in current
-> > mainline also failed to reproduce this, but I am running overnight.
-> > If that doesn't reproduce, I will try inserting delays between the
-> > set_cpu_online() and the cpu_startup_entry().
-> 
-> I thought the warning happens before set_cpu_online() is even called, because
-> under such situation, ofl == true and the task is not set to PF_IDLE yet:
-> 
->                   WARN_ON_ONCE(ofl && task_curr(t) && !is_idle_task(t));
+T24gV2VkLCAyMDIzLTEwLTExIGF0IDEzOjEyICswMzAwLCBKYXJra28gU2Fra2luZW4gd3JvdGU6
+Cj4gT24gV2VkLCAyMDIzLTEwLTExIGF0IDExOjI3ICswNTMwLCBTdW1pdCBHYXJnIHdyb3RlOgo+
+ID4gT24gV2VkLCAxMSBPY3QgMjAyMyBhdCAwNDo0NiwgSmFya2tvIFNha2tpbmVuIDxqYXJra29A
+a2VybmVsLm9yZz4gd3JvdGU6Cj4gPiA+IAo+ID4gPiBEbyBiaW5kIG5laXRoZXIgc3RhdGljIGNh
+bGxzIG5vciB0cnVzdGVkX2tleV9leGl0KCkgYmVmb3JlIGEgc3VjY2Vzc2Z1bAo+ID4gPiBpbml0
+LCBpbiBvcmRlciB0byBtYWludGFpbiBhIGNvbnNpc3RlbnQgc3RhdGUuIEluIGFkZGl0aW9uLCBk
+ZXBhcnQgdGhlCj4gPiA+IGluaXRfdHJ1c3RlZCgpIGluIHRoZSBjYXNlIG9mIGEgcmVhbCBlcnJv
+ciAoaS5lLiBnZXR0aW5nIGJhY2sgc29tZXRoaW5nCj4gPiA+IGVsc2UgdGhhbiAtRU5PREVWKS4K
+PiA+ID4gCj4gPiA+IFJlcG9ydGVkLWJ5OiBMaW51cyBUb3J2YWxkcyA8dG9ydmFsZHNAbGludXgt
+Zm91bmRhdGlvbi5vcmc+Cj4gPiA+IENsb3NlczogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGlu
+dXgtaW50ZWdyaXR5L0NBSGstPXdoT1BvTGFXTThTOEdnb09QVDdhMituTUg1aDNUTEt0bj1SXzN3
+NFIxX1V2Z0BtYWlsLmdtYWlsLmNvbS8KPiA+ID4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmfC
+oCMgdjUuMTMrCj4gPiA+IEZpeGVzOiA1ZDA2ODJiZTMxODkgKCJLRVlTOiB0cnVzdGVkOiBBZGQg
+Z2VuZXJpYyB0cnVzdGVkIGtleXMgZnJhbWV3b3JrIikKPiA+ID4gU2lnbmVkLW9mZi1ieTogSmFy
+a2tvIFNha2tpbmVuIDxqYXJra29Aa2VybmVsLm9yZz4KPiA+ID4gLS0tCj4gPiA+IMKgc2VjdXJp
+dHkva2V5cy90cnVzdGVkLWtleXMvdHJ1c3RlZF9jb3JlLmMgfCAyMCArKysrKysrKysrLS0tLS0t
+LS0tLQo+ID4gPiDCoDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlv
+bnMoLSkKPiA+ID4gCj4gPiA+IGRpZmYgLS1naXQgYS9zZWN1cml0eS9rZXlzL3RydXN0ZWQta2V5
+cy90cnVzdGVkX2NvcmUuYyBiL3NlY3VyaXR5L2tleXMvdHJ1c3RlZC1rZXlzL3RydXN0ZWRfY29y
+ZS5jCj4gPiA+IGluZGV4IDg1ZmI1YzIyNTI5YS4uZmVlMWFiMmM3MzRkIDEwMDY0NAo+ID4gPiAt
+LS0gYS9zZWN1cml0eS9rZXlzL3RydXN0ZWQta2V5cy90cnVzdGVkX2NvcmUuYwo+ID4gPiArKysg
+Yi9zZWN1cml0eS9rZXlzL3RydXN0ZWQta2V5cy90cnVzdGVkX2NvcmUuYwo+ID4gPiBAQCAtMzU4
+LDE3ICszNTgsMTcgQEAgc3RhdGljIGludCBfX2luaXQgaW5pdF90cnVzdGVkKHZvaWQpCj4gPiA+
+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoIWdldF9yYW5kb20pCj4gPiA+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZ2V0X3JhbmRvbSA9
+IGtlcm5lbF9nZXRfcmFuZG9tOwo+ID4gPiAKPiA+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgc3RhdGljX2NhbGxfdXBkYXRlKHRydXN0ZWRfa2V5X3NlYWwsCj4gPiA+IC3CoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgdHJ1c3RlZF9rZXlfc291cmNlc1tpXS5vcHMtPnNlYWwpOwo+ID4gPiAtwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCBzdGF0aWNfY2FsbF91cGRhdGUodHJ1c3RlZF9rZXlfdW5zZWFsLAo+
+ID4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIHRydXN0ZWRfa2V5X3NvdXJjZXNbaV0ub3BzLT51bnNlYWwpOwo+ID4g
+PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzdGF0aWNfY2FsbF91cGRhdGUodHJ1c3Rl
+ZF9rZXlfZ2V0X3JhbmRvbSwKPiA+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBnZXRfcmFuZG9tKTsKPiA+ID4gLcKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdHJ1c3RlZF9rZXlfZXhpdCA9IHRydXN0ZWRfa2V5
+X3NvdXJjZXNbaV0ub3BzLT5leGl0Owo+ID4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCBtaWdyYXRhYmxlID0gdHJ1c3RlZF9rZXlfc291cmNlc1tpXS5vcHMtPm1pZ3JhdGFibGU7Cj4g
+PiA+IC0KPiA+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldCA9IHRydXN0ZWRf
+a2V5X3NvdXJjZXNbaV0ub3BzLT5pbml0KCk7Cj4gPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIGlmICghcmV0KQo+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAo
+IXJldCkgewo+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgc3RhdGljX2NhbGxfdXBkYXRlKHRydXN0ZWRfa2V5X3NlYWwsIHRydXN0ZWRfa2V5X3NvdXJj
+ZXNbaV0ub3BzLT5zZWFsKTsKPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIHN0YXRpY19jYWxsX3VwZGF0ZSh0cnVzdGVkX2tleV91bnNlYWwsIHRydXN0
+ZWRfa2V5X3NvdXJjZXNbaV0ub3BzLT51bnNlYWwpOwo+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3RhdGljX2NhbGxfdXBkYXRlKHRydXN0ZWRfa2V5
+X2dldF9yYW5kb20sIGdldF9yYW5kb20pOwo+ID4gPiArCj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB0cnVzdGVkX2tleV9leGl0ID0gdHJ1c3RlZF9r
+ZXlfc291cmNlc1tpXS5vcHMtPmV4aXQ7Cj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCBtaWdyYXRhYmxlID0gdHJ1c3RlZF9rZXlfc291cmNlc1tpXS5v
+cHMtPm1pZ3JhdGFibGU7Cj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH0KPiA+
+ID4gKwo+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoIXJldCB8fCByZXQg
+IT0gLUVOT0RFVikKPiA+IAo+ID4gQXMgbWVudGlvbmVkIGluIHRoZSBvdGhlciB0aHJlYWQsIHdl
+IHNob3VsZCBhbGxvdyBvdGhlciB0cnVzdCBzb3VyY2VzCj4gPiB0byBiZSBpbml0aWFsaXplZCBp
+ZiB0aGUgcHJpbWFyeSBvbmUgZmFpbHMuCj4gCj4gSSBzZW50IHRoZSBwYXRjaCBiZWZvcmUgSSBy
+ZWNlaXZlZCB0aGF0IHJlc3BvbnNlIGJ1dCBoZXJlJ3Mgd2hhdCB5b3UKPiB3cm90ZToKPiAKPiAi
+V2Ugc2hvdWxkIGdpdmUgb3RoZXIgdHJ1c3Qgc291cmNlcyBhIGNoYW5jZSB0byByZWdpc3RlciBm
+b3IgdHJ1c3RlZAo+IGtleXMgaWYgdGhlIHByaW1hcnkgb25lIGZhaWxzLiIKPiAKPiAxLiBUaGlz
+IGNvbmRpdGlvbiBpcyBsYWNraW5nIGFuIGlubGluZSBjb21tZW50Lgo+IDIuIE5laXRoZXIgdGhp
+cyByZXNwb25zZSBvciB0aGUgb25lIHRoYXQgeW91IHBvaW50ZWQgb3V0IGhhcyBhbnkKPiDCoMKg
+IGV4cGxhbmF0aW9uIHdoeSBmb3IgYW55IHN5c3RlbSBmYWlsdXJlIHRoZSBwcm9jZXNzIHNob3Vs
+ZAo+IMKgwqAgY29udGludWUuCj4gCj4gWW91IHNob3VsZCByZWFsbHkga25vdyB0aGUgc2l0dWF0
+aW9ucyAoZS5nLiBsaXN0IG9mIHBvc2l4IGVycm9yCj4gY29kZSkgd2hlbiB0aGUgcHJvY2VzcyBj
+YW4gY29udGludWUgYW5kICJhbGxvdyBsaXN0IiB0aG9zZS4gVGhpcwo+IHdheSB3YXkgdG9vIGFi
+c3RyYWN0LiBJdCBjYW5ub3QgYmUgbGV0IGFsbCBwb3NzaWJsZSBzeXN0ZW0gZmFpbHVyZXMKPiBw
+YXNzLgoKQW5kIGl0IHdvdWxkIG5pY2UgaWYgaXQgcHJpbnRlZCBvdXQgc29tZXRoaW5nIGZvciBs
+ZWdpdCBjYXNlcy4gTGlrZQoibm8gZGV2aWNlIGZvdW5kIiBldGMuIEFuZCBmb3IgcmVzdCBpdCBt
+dXN0IHJlYWxseSB3aXRoZHJhdyB0aGUgd2hvbGUKcHJvY2Vzcy4KCkJSLCBKYXJra28K
 
-That case is supposed to be excluded by the cpus_read_lock() calls.
-Yes, key phrase "supposed to be".  ;-)
-
-> > If this problem is real, fixes include:
-> > 
-> > o	Revert Liam's patch and make Tiny RCU's call_rcu() deal with
-> > 	the problem.  This is overhead and non-tinyness, but to Joel's
-> > 	point, it might be best.
-> > 
-> > o	Go back to something more like Liam's original patch, which
-> > 	cleared PF_IDLE only for the boot CPU.
-> > 
-> > o	Set PF_IDLE before calling set_cpu_online().  This would work,
-> > 	but it would also be rather ugly, reaching into each and every
-> > 	architecture.
-> > 
-> > o	Move the call to set_cpu_online() into cpu_startup_entry().
-> > 	This would require some serious inspection to prove that it is
-> > 	safe, assuming that it is in fact safe.
-> > 
-> > o	Drop the WARN_ON_ONCE() from trc_inspect_reader().  Not all
-> > 	that excited by losing this diagnostic, but then again it
-> > 	has been awhile since it has caught anything.
-> > 
-> > o	Make the WARN_ON_ONCE() condition in trc_inspect_reader() instead
-> > 	to a "return false" to retry later.  Ditto, also not liking the
-> > 	possibility of indefinite deferral with no warning.
-> 
-> Just for completeness, 
-> 
->  o      Since it just a warning, checking for task_struct::pid == 0 instead of is_idle_task()?
->         Though PF_IDLE is also set in play_idle_precise().
-> 
->  o	Change warning to:
->                   WARN_ON_ONCE(ofl && task_curr(t) && (!is_idle_task(t) && t->pid != 0));
-
-This change does look promising, thank you!
-
-							Thanx, Paul
