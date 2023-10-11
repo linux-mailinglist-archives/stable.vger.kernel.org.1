@@ -2,94 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC2657C4C6B
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 09:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 356C87C4C63
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 09:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229879AbjJKH6B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 03:58:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45738 "EHLO
+        id S229846AbjJKHvs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 03:51:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229743AbjJKH6A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 03:58:00 -0400
-X-Greylist: delayed 403 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 11 Oct 2023 00:57:55 PDT
-Received: from mail.venturelinkage.com (mail.venturelinkage.com [80.211.143.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3196391
-        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 00:57:54 -0700 (PDT)
-Received: by mail.venturelinkage.com (Postfix, from userid 1002)
-        id AEAE88297E; Wed, 11 Oct 2023 09:51:05 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkage.com;
-        s=mail; t=1697010667;
-        bh=7iowqdzve/IIiUUjcEwx8j3uMrVqqiE7R9zbOCKRV9Q=;
-        h=Date:From:To:Subject:From;
-        b=jgB5SgPBWujV05k6lpS4AWslH3DH+W4H62AUaOzTj1V/55jb3yRI2nO6OOqMTjGlv
-         Nw81loJuaHdGG70ewLN8p4pVqWUiZpkmFSmGO7s7uKUMybJXYQ1gfdM3hAVVZRka4j
-         T7e+QUiQrvGbpRcnxE5n4NE7NVCabn7J922udc/65bt27bG+0XLHBzVaoiaAP5XNus
-         NgCsGP1YP/DpXCegf2PksF7T4h/D35gFa4mp3eGDnwVdydZwpgEi8NnkyTIQPEl5yz
-         kj/kiEhTZGocSSfZVHt1XheYQ7C+1augirF4uVA80GdvO9yg/uLkiZpgFgrNoj5grl
-         6BIMbOFlLsYKQ==
-Received: by mail.venturelinkage.com for <stable@vger.kernel.org>; Wed, 11 Oct 2023 07:50:59 GMT
-Message-ID: <20231011084500-0.1.10.25cu.0.bkp3ni1z10@venturelinkage.com>
-Date:   Wed, 11 Oct 2023 07:50:59 GMT
-From:   "Lukas Varga" <lukas.varga@venturelinkage.com>
-To:     <stable@vger.kernel.org>
-Subject: =?UTF-8?Q?Popt=C3=A1vka?=
-X-Mailer: mail.venturelinkage.com
+        with ESMTP id S230090AbjJKHvr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 03:51:47 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81382AC;
+        Wed, 11 Oct 2023 00:51:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=eEZSBqQ9YE3ctS4Sdh5+G5TGt1bwrC3NMuUntiLTjDc=; b=U+D6mGCOtudlQUAgOIxYO06sJz
+        6B0x59BEEsecpZUeqv+G1JWrosSgqaKl2oG5sB0TJR2FIRlRqDP16whkJ3GWvdURPqeYPgEX7jJwm
+        41cu24VbG6F8HwNtwD++tolSUacaRiAvL5u8wzX11VbdRY3cGihDvXKpVaI8HKRJsfVvsdRBWSuC4
+        g5bmHnYNUX92dHsd2m1IDbwdch0TVveVbzdMwRr4eJPmos94dt/+fXkddeNFZmB3j3Ex94BcVNi39
+        QKNqlhPo4MKDGy3FdGcdV3ODF35gkrMt4NLKlCfuYDB5cYGCajGyIjxihDyJ8edDVoYRwACI7/qvW
+        ycaLzMfw==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qqU0F-0003xP-0c;
+        Wed, 11 Oct 2023 07:51:36 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 4F3E530026F; Wed, 11 Oct 2023 09:51:36 +0200 (CEST)
+Date:   Wed, 11 Oct 2023 09:51:36 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Namhyung Kim <namhyung@kernel.org>
+Cc:     Ingo Molnar <mingo@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Ravi Bangoria <ravi.bangoria@amd.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] perf/core: Introduce cpuctx->cgrp_ctx_list
+Message-ID: <20231011075136.GM14330@noisy.programming.kicks-ass.net>
+References: <20231004040844.797044-1-namhyung@kernel.org>
+ <20231004160224.GB6307@noisy.programming.kicks-ass.net>
+ <CAM9d7cizC0J85ByuF5fBmc_Bqi=wpNJpiVsw+3F1Avusn2aQog@mail.gmail.com>
+ <20231009210425.GC6307@noisy.programming.kicks-ass.net>
+ <CAM9d7cigs9mWuYiE=MYNg-xVhXzDu5FF6GdMGJi=D_zP1zJoCQ@mail.gmail.com>
+ <CAM9d7cjxSd9QJzTs1_s6Nh7c38FZ7_2FGPoCunvnmjX_y-+Dyg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_05,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,
-        URIBL_DBL_SPAM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
-        *      blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [URIs: venturelinkage.com]
-        *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [80.211.143.151 listed in list.dnswl.org]
-        * -0.5 BAYES_05 BODY: Bayes spam probability is 1 to 5%
-        *      [score: 0.0394]
-        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: venturelinkage.com]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [80.211.143.151 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: venturelinkage.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-X-Spam-Level: *****
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAM9d7cjxSd9QJzTs1_s6Nh7c38FZ7_2FGPoCunvnmjX_y-+Dyg@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dobr=C3=A9 r=C3=A1no,
+On Tue, Oct 10, 2023 at 08:45:03PM -0700, Namhyung Kim wrote:
+> On Mon, Oct 9, 2023 at 9:57 PM Namhyung Kim <namhyung@kernel.org> wrote:
+> >
+> > Hi Peter,
+> >
+> > On Mon, Oct 9, 2023 at 2:04 PM Peter Zijlstra <peterz@infradead.org> wrote:
+> > >
+> > > On Wed, Oct 04, 2023 at 09:32:24AM -0700, Namhyung Kim wrote:
+> > >
+> > > > Yeah, I know.. but I couldn't come up with a better solution.
+> > >
+> > > Not been near a compiler, and haven't fully thought it through, but
+> > > could something like the work work?
+> >
+> > Thanks for the patch, I think it'd work.  Let me test it
+> > and get back to you.
+> 
+> I worked well but contained a typo.  See below.
 
-Dovolil jsem si V=C3=A1s kontaktovat, proto=C5=BEe m=C3=A1m z=C3=A1jem ov=
-=C4=9B=C5=99it mo=C5=BEnost nav=C3=A1z=C3=A1n=C3=AD spolupr=C3=A1ce.
+Ha, typing hard ;-) I did say it hadn't been near a compiler ...
 
-Podporujeme firmy p=C5=99i z=C3=ADsk=C3=A1v=C3=A1n=C3=AD nov=C3=BDch obch=
-odn=C3=ADch z=C3=A1kazn=C3=ADk=C5=AF.
+> Which way do you want to process this change?  Do I send it again
+> with your S-o-b or will you apply it by yourself?  Either is fine, just
+> let me know.  In case of latter, you can add
 
-M=C5=AF=C5=BEeme si promluvit a poskytnout podrobnosti?
-
-V p=C5=99=C3=ADpad=C4=9B z=C3=A1jmu V=C3=A1s bude kontaktovat n=C3=A1=C5=A1=
- anglicky mluv=C3=ADc=C3=AD z=C3=A1stupce.
-
-
-Pozdravy
-Lukas Varga
+I'll go write me a Changelog and apply the thing, then we can forget
+about things.
