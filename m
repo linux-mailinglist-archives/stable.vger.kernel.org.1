@@ -2,82 +2,170 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45CC97C58C7
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 18:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A37FC7C5923
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 18:31:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235114AbjJKQDI convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 11 Oct 2023 12:03:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48992 "EHLO
+        id S230450AbjJKQbj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 12:31:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346959AbjJKQDF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 12:03:05 -0400
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25D00D9;
-        Wed, 11 Oct 2023 09:03:04 -0700 (PDT)
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5789ffc8ae0so4701588a12.0;
-        Wed, 11 Oct 2023 09:03:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697040183; x=1697644983;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4iWpEjqXSGgVGGjwEGjS564d40stRH2TrVc0ZOoChC0=;
-        b=Og3dJcMq4FeKSlG+kbe5ZfxCTM6XyumC5wTclpg69Vrdz9zGMa8ZOC6YddcVEoeqYa
-         WkyA/H3ous0hU71u2Nv3tSDR6ku9JGGkjn2fJWxw9aMpAajgPPTqhc7gZMH58a7rinwT
-         AdA8sbRPA6AGBXXXH6YADCmUq7HmWIj3GEFgy0bggd+EpQZc2RIw/iuwSZBezUHrh/B1
-         IzGPOs7oEDAOCZbJUC8jX3CBmlNmpMc63pAS52/4UeKFWipI8p6RfFo5IejErCWsjt9C
-         sWPqyztXjLmYAelLq9d5LKDzVlUh4g3MZJNLlAGqhHzDvv1SZ0IOM6g9YQgZl1TgEIwl
-         3bYg==
-X-Gm-Message-State: AOJu0YxS7GU87LdRFI02tV+cbfETIbmZEmE5nVrLFUHGDW8KvOl8HfQ+
-        CPoLj3kXTC4Neg6mXR6Cyl1Wj/kvVFu2+qBerYU=
-X-Google-Smtp-Source: AGHT+IFhXpVfK13xXF14nVLHcGscMHIBos0Pvg+4mfgk9pC3Cc0MCs29njbs8cFj2heJlBcnNAvupC06PbwNBFa2ky4=
-X-Received: by 2002:a17:90a:e7c3:b0:279:57d:f6fc with SMTP id
- kb3-20020a17090ae7c300b00279057df6fcmr17976089pjb.44.1697040183152; Wed, 11
- Oct 2023 09:03:03 -0700 (PDT)
+        with ESMTP id S230185AbjJKQbi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 12:31:38 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A583691;
+        Wed, 11 Oct 2023 09:31:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43952C433CA;
+        Wed, 11 Oct 2023 16:31:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697041896;
+        bh=FGA8gM4FeYE4IWyx429Dya7HEFgaNp50J+X1XqE49q8=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=VGLoGxYihF/YYfew9Ft1kVSjBHObtFNw5bKvSrYo98+Qn+61pehsVyPIUnOEwN0hS
+         EwAD2BQWoOzwjuwQGShhSeizFMKMyLNXFwxtwN6I9nPnMIR2wRxk83BoTTXHVUSv6e
+         AOhNH8xNcRKEoULOJe5HnJt+KvSLrBC0csomVujidH1b+6pfMVhsSGtY28Ll8PDjk1
+         ik33X3N0RSINRmps91GGkcxrcsJLizPNhDf7eTKMezNOnm0IrumVHabo7dd0BSph3O
+         RjeqEBIKaxn85DieIibabR+HwOndWQrXIgbu/aoi31pbuOPe/kwxSa+q6P0KCoedQW
+         r53uBsdnIY7SA==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+        id E681ECE0AD4; Wed, 11 Oct 2023 09:31:35 -0700 (PDT)
+Date:   Wed, 11 Oct 2023 09:31:35 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Frederic Weisbecker <frederic@kernel.org>
+Cc:     Joel Fernandes <joel@joelfernandes.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, Chengming Zhou <zhouchengming@bytedance.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ovidiu Panait <ovidiu.panait@windriver.com>,
+        Ingo Molnar <mingo@kernel.org>, rcu <rcu@vger.kernel.org>
+Subject: Re: [PATCH 5.15 000/183] 5.15.134-rc1 review
+Message-ID: <273869c3-ba4b-4173-a14e-bd201d900079@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20231004175203.943277832@linuxfoundation.org>
+ <CA+G9fYunnEUT2evdabX1KOTiryP1heNHWDH4LWZCt2SVRmnKOA@mail.gmail.com>
+ <20231006162038.d3q7sl34b4ouvjxf@revolver>
+ <57c1ff4d-f138-4f89-8add-c96fb3ba6701@paulmck-laptop>
+ <20231006175714.begtgj6wrs46ukmo@revolver>
+ <7652477c-a37c-4509-9dc9-7f9d1dc08291@paulmck-laptop>
+ <CAEXW_YS16NxPxg52T=3FcyZ2qocj36zKyhPnEQL3nBTbD-qJ-A@mail.gmail.com>
+ <9470dab6-dee5-4505-95a2-f6782b648726@paulmck-laptop>
+ <433f5823-059c-4b51-8d18-8b356a5a507f@paulmck-laptop>
+ <ZSana69n6RWgCnqi@localhost.localdomain>
 MIME-Version: 1.0
-References: <20231004040844.797044-1-namhyung@kernel.org> <20231004160224.GB6307@noisy.programming.kicks-ass.net>
- <CAM9d7cizC0J85ByuF5fBmc_Bqi=wpNJpiVsw+3F1Avusn2aQog@mail.gmail.com>
- <20231009210425.GC6307@noisy.programming.kicks-ass.net> <CAM9d7cigs9mWuYiE=MYNg-xVhXzDu5FF6GdMGJi=D_zP1zJoCQ@mail.gmail.com>
- <CAM9d7cjxSd9QJzTs1_s6Nh7c38FZ7_2FGPoCunvnmjX_y-+Dyg@mail.gmail.com>
- <20231011075136.GM14330@noisy.programming.kicks-ass.net> <20231011095004.GD6337@noisy.programming.kicks-ass.net>
-In-Reply-To: <20231011095004.GD6337@noisy.programming.kicks-ass.net>
-From:   Namhyung Kim <namhyung@kernel.org>
-Date:   Wed, 11 Oct 2023 09:02:51 -0700
-Message-ID: <CAM9d7cghWx+ds8rxFq7xrtoAc4wDrY=yyk=38v+xoY2SODUmtA@mail.gmail.com>
-Subject: Re: [PATCH] perf/core: Introduce cpuctx->cgrp_ctx_list
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Ingo Molnar <mingo@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Stephane Eranian <eranian@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZSana69n6RWgCnqi@localhost.localdomain>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 11, 2023 at 2:50â€¯AM Peter Zijlstra <peterz@infradead.org> wrote:
->
-> On Wed, Oct 11, 2023 at 09:51:36AM +0200, Peter Zijlstra wrote:
->
-> > I'll go write me a Changelog and apply the thing, then we can forget
-> > about things.
->
-> I pushed out:
->
->   https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/commit/?h=perf/core&id=52ecef05348dc97e3a5121f7cc0dd08e340b870c
->
-> for the robots to chew on, will push out to tip if nobody complains.
+On Wed, Oct 11, 2023 at 03:47:23PM +0200, Frederic Weisbecker wrote:
+> Le Tue, Oct 10, 2023 at 06:34:35PM -0700, Paul E. McKenney a écrit :
+> > If this problem is real, fixes include:
+> > 
+> > o	Revert Liam's patch and make Tiny RCU's call_rcu() deal with
+> > 	the problem.  This is overhead and non-tinyness, but to Joel's
+> > 	point, it might be best.
+> 
+> But what is calling call_rcu() or start_poll_synchronize_rcu() so
+> early that the CPU is not even online? (that's before boot_cpu_init() !)
+> 
+> Deferring PF_IDLE setting might pave the way for more issues like this one,
+> present or future. Though is_idle_task() returning true when the task is not
+> in the idle loop but is playing the init/0 role is debatable.
+> 
+> An alternative for tiny RCU is to force waking up ksoftirqd when call_rcu()
+> is in the idle task. Since rcu_qs() during the context switch raises a softirq
+> anyway. It's more overhead for start_poll_synchronize_rcu() though but do we
+> expect much RCU polling in idle?
 
-Thanks a lot!
-Namhyung
+Nice!!!
+
+This does solve the original problem with little or no additional overhead
+(perhaps even with decreased overhead), and avoids the other RCU Tasks
+issues.
+
+						Thanx, Paul
+
+> diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
+> index a92bce40b04b..6ab15233e2be 100644
+> --- a/include/linux/interrupt.h
+> +++ b/include/linux/interrupt.h
+> @@ -604,6 +604,7 @@ extern void __raise_softirq_irqoff(unsigned int nr);
+>  
+>  extern void raise_softirq_irqoff(unsigned int nr);
+>  extern void raise_softirq(unsigned int nr);
+> +extern void raise_ksoftirqd_irqsoff(unsigned int nr);
+>  
+>  DECLARE_PER_CPU(struct task_struct *, ksoftirqd);
+>  
+> diff --git a/kernel/rcu/tiny.c b/kernel/rcu/tiny.c
+> index 42f7589e51e0..872dab8b8b53 100644
+> --- a/kernel/rcu/tiny.c
+> +++ b/kernel/rcu/tiny.c
+> @@ -189,12 +189,12 @@ void call_rcu(struct rcu_head *head, rcu_callback_t func)
+>  	local_irq_save(flags);
+>  	*rcu_ctrlblk.curtail = head;
+>  	rcu_ctrlblk.curtail = &head->next;
+> -	local_irq_restore(flags);
+>  
+>  	if (unlikely(is_idle_task(current))) {
+>  		/* force scheduling for rcu_qs() */
+> -		resched_cpu(0);
+> +		raise_ksoftirqd_irqsoff(RCU_SOFTIRQ);
+>  	}
+> +	local_irq_restore(flags);
+>  }
+>  EXPORT_SYMBOL_GPL(call_rcu);
+>  
+> @@ -225,10 +225,13 @@ EXPORT_SYMBOL_GPL(get_state_synchronize_rcu);
+>  unsigned long start_poll_synchronize_rcu(void)
+>  {
+>  	unsigned long gp_seq = get_state_synchronize_rcu();
+> +	unsigned long flags;
+>  
+>  	if (unlikely(is_idle_task(current))) {
+> +		local_irq_save(flags);
+>  		/* force scheduling for rcu_qs() */
+> -		resched_cpu(0);
+> +		raise_ksoftirqd_irqsoff(RCU_SOFTIRQ);
+> +		local_irq_restore(flags);
+>  	}
+>  	return gp_seq;
+>  }
+> diff --git a/kernel/softirq.c b/kernel/softirq.c
+> index 210cf5f8d92c..ef105cbdc705 100644
+> --- a/kernel/softirq.c
+> +++ b/kernel/softirq.c
+> @@ -695,6 +695,14 @@ void __raise_softirq_irqoff(unsigned int nr)
+>  	or_softirq_pending(1UL << nr);
+>  }
+>  
+> +#ifdef CONFIG_RCU_TINY
+> +void raise_ksoftirqd(unsigned int nr)
+> +{
+> +	__raise_softirq_irqoff(nr);
+> +	wakeup_softirqd();
+> +}
+> +#endif
+> +
+>  void open_softirq(int nr, void (*action)(struct softirq_action *))
+>  {
+>  	softirq_vec[nr].action = action;
+> 
+> 
+> 
+> 
