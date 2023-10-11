@@ -2,142 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C59057C5EA2
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 22:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38D257C5EB6
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 22:51:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233481AbjJKUpk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 16:45:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44162 "EHLO
+        id S235233AbjJKUvU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 16:51:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231226AbjJKUpi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 16:45:38 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA0C90;
-        Wed, 11 Oct 2023 13:45:32 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-51e28cac164so2964548a12.1;
-        Wed, 11 Oct 2023 13:45:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697057131; x=1697661931; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vF57FMszPTH1ctRnfsdLQnAKN0gbFWDA+OoyuLf2Za4=;
-        b=QOl1XQCGqCDmVe+7+G2i/qpDo2eLxm8n+LB22qwIaIWmPbYqsHEfrfv9s7Efl3QL7D
-         rGgV7/mb/pnyRqaL8RtiLJzZiYyRJYvK/DbXE7q09rkwY+p9skReWcsyQydwWse5hTjg
-         A04XQaBgATYj9SqkN11/O1hlGW3Wz22BenYH6EmeoyJTydFC0w+NDtyIiJF5yawG/HeL
-         eReTkLrgkEGZI5DDxWA/Fa3CVFgZMKTlrZVuYTNVdMjqV0FrUaLinHBUANB64og8oTll
-         2r2F9GxpgIaqcQdeu7gdq6wOwM7u1itH/N1gplsFxVjJrYnpBgLUDIh52wE/UBmgIPJf
-         oUTQ==
+        with ESMTP id S233369AbjJKUvS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 16:51:18 -0400
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF65491
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 13:50:31 -0700 (PDT)
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-775751c35d4so17230185a.0
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 13:50:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697057131; x=1697661931;
+        d=1e100.net; s=20230601; t=1697057431; x=1697662231;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vF57FMszPTH1ctRnfsdLQnAKN0gbFWDA+OoyuLf2Za4=;
-        b=dJc7HHwKQr7xxmyHkRwudHi6O+hGLfFTOOojW5njB5mCBk7Y7TvcUIukywj7PYQH6X
-         2aNt7K0atiIGLU9N/mNGP1JqIb0UoM9sxkE96tm2pWcoE+aP9YRdaQeVO0PAwdVYNQty
-         eVoKQ8ERZNr71zLxQQxEuERAUYsyMukixgaT2LxmiXfQq86pNb7s6SgVrUmgsICf75vX
-         W2V2qLH/ovGG/1YPsildYd+ocwVbFnm1uJEQKJx9Jqs9O9ka5aZxj+ontbmom8sFFJne
-         PsRNpbCXHau6Wv/AvMaPSzA6EBe6wgWX3gqduXWT/YBUkTLtltzhGfAG0rbnEH8mKw7X
-         6NNg==
-X-Gm-Message-State: AOJu0Yyoegmk0wV0542mDOIwkHoFOHOaele2Kgr2rJaCG1rsFkv99UmV
-        JJOZGEcGVDyVLjmXCJFROoA=
-X-Google-Smtp-Source: AGHT+IFu/1J1GJc5CjpzfN0/U/wBjhVReW2ZSV11oOnQm2il+laGaU0uZhiHb43XjK7sapTmyFuPrQ==
-X-Received: by 2002:a17:907:7f86:b0:9ae:50ec:bd81 with SMTP id qk6-20020a1709077f8600b009ae50ecbd81mr16519816ejc.21.1697057130688;
-        Wed, 11 Oct 2023 13:45:30 -0700 (PDT)
-Received: from gmail.com (1F2EF405.nat.pool.telekom.hu. [31.46.244.5])
-        by smtp.gmail.com with ESMTPSA id j17-20020a170906831100b009a16975ee5asm10059245ejx.169.2023.10.11.13.45.29
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PxitJBHCJQdxtXEDgm6njCHvQtKMi09+y/v+pbWOwa8=;
+        b=alDVazI3R9OPoVilpKkdxdZIB7IsmJD/oqUMx+eeTMD2UMa8d1cX2f22Ulxq9v1Jz2
+         VoeIzhgL0/VNsTv/KtQXUnLyBBH68AsW+OHBGt8vgQswkursTU4Bf3zCyzYrvqtVoT/W
+         Ntm4A6rC0LqtbmtV3SD2pFYzaqmsoIafRYX5PwcBCWsPMLYGfgfq3HL7le8Ng7FiMyO7
+         C6aWUhxoNntPfuqPW0k9omA1P9FFzywlITABHPSC/QkLNpWeSzNPVrKQ0cQfPGMLu9Fy
+         OWw2akoDB1ad8gDmCRb9oweSrq/BvOJDch5IFc/y36zUzp4Q6fA/n02xC3ump+8aXJa7
+         5N0Q==
+X-Gm-Message-State: AOJu0YwTMlL9irj708xr5wxF0Yp6/Yfm3izsKCSQr83pm39AIfH2eviA
+        N711ucEdGSI4A2eg4108ZHX3
+X-Google-Smtp-Source: AGHT+IEPs1rkK6QoPv6JwQx1Izxget+/aeE937zAia+e+WpczjixBU7iH+92tXrTfK7ySbtA2Cgb4A==
+X-Received: by 2002:a05:6214:43ca:b0:64f:5261:55e9 with SMTP id oi10-20020a05621443ca00b0064f526155e9mr26910718qvb.41.1697057430888;
+        Wed, 11 Oct 2023 13:50:30 -0700 (PDT)
+Received: from localhost (pool-68-160-141-91.bstnma.fios.verizon.net. [68.160.141.91])
+        by smtp.gmail.com with ESMTPSA id 24-20020a05620a06d800b00774830b40d4sm5474922qky.47.2023.10.11.13.50.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Oct 2023 13:45:30 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Wed, 11 Oct 2023 22:45:27 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
-        Fei Yang <fei.yang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCHv2] x86/alternatives: Disable KASAN in apply_alternatives()
-Message-ID: <ZScJZ7Uc6aJNyvRg@gmail.com>
-References: <20231011065849.19075-1-kirill.shutemov@linux.intel.com>
- <20231011074616.GL14330@noisy.programming.kicks-ass.net>
- <20231011132703.3evo4ieradgyvgc2@box.shutemov.name>
+        Wed, 11 Oct 2023 13:50:30 -0700 (PDT)
+Date:   Wed, 11 Oct 2023 16:50:29 -0400
+From:   Mike Snitzer <snitzer@kernel.org>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Sarthak Kukreti <sarthakkukreti@chromium.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Darrick J. Wong" <darrick.wong@oracle.com>,
+        stable@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>,
+        Christoph Hellwig <hch@lst.de>
+Subject: Re: block: Don't invalidate pagecache for invalid falloc modes
+Message-ID: <ZScKlejOlxIXYmWI@redhat.com>
+References: <20231011201230.750105-1-sarthakkukreti@chromium.org>
+ <b068c2ef-5de3-44fb-a55d-2cbe5a7f1158@kernel.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231011132703.3evo4ieradgyvgc2@box.shutemov.name>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <b068c2ef-5de3-44fb-a55d-2cbe5a7f1158@kernel.dk>
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, Oct 11 2023 at  4:20P -0400,
+Jens Axboe <axboe@kernel.dk> wrote:
 
-* Kirill A. Shutemov <kirill.shutemov@linux.intel.com> wrote:
-
-> On Wed, Oct 11, 2023 at 09:46:16AM +0200, Peter Zijlstra wrote:
-> > On Wed, Oct 11, 2023 at 09:58:49AM +0300, Kirill A. Shutemov wrote:
-> > > Fei has reported that KASAN triggers during apply_alternatives() on
-> > > 5-level paging machine:
-> > > 
-> > 
-> > Urgh @ KASAN splat, can't we summarize that?
+> On 10/11/23 2:12 PM, Sarthak Kukreti wrote:
+> > Only call truncate_bdev_range() if the fallocate mode is
+> > supported. This fixes a bug where data in the pagecache
+> > could be invalidated if the fallocate() was called on the
+> > block device with an invalid mode.
 > 
-> What about this?
-> 
-> 	BUG: KASAN: out-of-bounds in rcu_is_watching
-> 	Read of size 4 at addr ff110003ee6419a0 by task swapper/0/0
-> 	...
-> 	__asan_load4
-> 	rcu_is_watching
-> 	? text_poke_early
-> 	trace_hardirqs_on
-> 	? __asan_load4
-> 	text_poke_early
-> 	apply_alternatives
-> 	...
-> 
-> Is it enough details or I overdid summarization?
+> Fix looks fine, but would be nicer if we didn't have to duplicate the
+> truncate_bdev_range() in each switch clause. Can we check this upfront
+> instead?
 
-No, that's perfect IMO. I'd even leave out the unreliable '?' entries:
+No, if you look at the function (rather than just the patch in
+isolation) we need to make the call for each case rather than collapse
+to a single call at the front (that's the reason for this fix, because
+otherwise the default: error case will invalidate the page cache too).
 
-> 	BUG: KASAN: out-of-bounds in rcu_is_watching
-> 	Read of size 4 at addr ff110003ee6419a0 by task swapper/0/0
-> 	...
-> 	__asan_load4
-> 	rcu_is_watching
-> 	trace_hardirqs_on
-> 	text_poke_early
-> 	apply_alternatives
-> 	...
+Just so you're aware, I also had this feedback that shaped the patch a
+bit back in April:
+https://listman.redhat.com/archives/dm-devel/2023-April/053986.html
 
-... or so.
+> Also, please wrap commit messages at 72-74 chars.
 
-> 	/*
-> 	 * In the case CONFIG_X86_5LEVEL=y, KASAN_SHADOW_START is defined using
-> 	 * cpu_feature_enabled(X86_FEATURE_LA57) and is therefore patched here.
-> 	 * During the process, KASAN becomes confused seeing partial LA57
-> 	 * conversion and triggers a false-positive out-of-bound report.
-> 	 *
-> 	 * Disable KASAN until the patching is complete.
-> 	 */
-> 
-> Looks good?
+Not seeing where the header should be wrapped.  You referring to the
+Fixes: line?  I've never seen those wrapped.
 
-LGTM.
-
-Thanks,
-
-	Ingo
+Mike
