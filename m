@@ -2,133 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DE717C5A15
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 19:12:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D8F27C5A32
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 19:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230158AbjJKRMk convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 11 Oct 2023 13:12:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51400 "EHLO
+        id S232387AbjJKR0i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 13:26:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230012AbjJKRMk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 13:12:40 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 982B598
-        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 10:12:38 -0700 (PDT)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <l.stach@pengutronix.de>)
-        id 1qqclB-0007QR-55; Wed, 11 Oct 2023 19:12:37 +0200
-Message-ID: <349ec9009f0e5c38c0e94b5c80e3134515373498.camel@pengutronix.de>
-Subject: Re: [PATCH 5.4] drm: etvnaviv: fix bad backport leading to warning
-From:   Lucas Stach <l.stach@pengutronix.de>
-To:     Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        etnaviv@lists.freedesktop.org
-Date:   Wed, 11 Oct 2023 19:12:36 +0200
-In-Reply-To: <20231010132030.1392238-1-martin.fuzzey@flowbird.group>
-References: <20231010132030.1392238-1-martin.fuzzey@flowbird.group>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S230012AbjJKR0h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 13:26:37 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5197FA4
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 10:26:35 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d9a4c0d89f7so53167276.1
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 10:26:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1697045194; x=1697649994; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QNew73H8cLV959XSqwiYY0ad0O2l97cOQFlYDKMA/zo=;
+        b=ssa6ntaV03yK5gboE4vEFZQHVARfhDbrwTHgdzVbJ8o2Z/LDA1HdaFSHGqjGNqFcve
+         vYzkbp5e0PigponDa4dKYClAe4YTosW7w0lrscXrShM5blfnvUC1LGETZ2HuzzyQe8FB
+         P7ifEiJFuQeEVuavU1aojtXkqXWQVILFG3NXfq7duVcmpsABWmpo7h+k0/F5LNxw+bdx
+         oQW5swGr5ci0u5pe6+A/Ld5MMSUwFXAzSkWHTYxkMo9awiJQr9oY8NfoesntYD9xd6a+
+         Gz6H8VVcr73tZvNnlvtv1/1jiFvl0TMDxVytV837ztm3khyQ7wlSUT6KSStaxioH1R0+
+         nYuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697045194; x=1697649994;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QNew73H8cLV959XSqwiYY0ad0O2l97cOQFlYDKMA/zo=;
+        b=Nrnqjz998JINf5D7Q3Kg4QXTE4ZG1R/z04z/fPMz3wU5beBBVCwNl2yiXsO2Llt1+n
+         6O9vJCB52Izi4mC7jAvXC7X288Rz3ZGNnnWdadcXhNUUeEf8PqscDesqOnHx4tQvSmyf
+         LxnV5hLOK1RDl9hNT7CTubtksRf7cX4q9KVQ5ed61OfOOE87V9zJkJ5LpRNoxl2Ee1LI
+         CAyYLEa+jNazak3rryoUzdddc6KhgN2tPV/mOwMIsLZBzMkOMt73HHmRBnEiavJRerd4
+         DuDPQfFWa+IF7+NA7se5viY3ulVjDopTFY/9MvoQkOYEwYfbPByHUzGXsJaI3MJIfV/f
+         YGdw==
+X-Gm-Message-State: AOJu0YxksFZ/RapHTCYEu68/nOrzI9XkfdTrXSdpjVMyv1xluH3HqcMW
+        aLYDZ890v58z1dXRC1pIICJicvklRVh9Wl9MQwLJ2Q==
+X-Google-Smtp-Source: AGHT+IEp5ojjWgF2jbZMwhTPCU3vssABraPBQDjt2Us+Xxi5NO6ntvquWBFk9mwc8p87fRKuk04zCdroPyd0DKql4c0=
+X-Received: by 2002:a25:9012:0:b0:d9a:5f25:d0df with SMTP id
+ s18-20020a259012000000b00d9a5f25d0dfmr5073058ybl.57.1697045194529; Wed, 11
+ Oct 2023 10:26:34 -0700 (PDT)
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <297D84E3-736E-4AB4-B825-264279E2043C@flyingcircus.io>
+ <065a0dac-499f-7375-ddb4-1800e8ef61d1@mojatatu.com> <0BC2C22C-F9AA-4B13-905D-FE32F41BDA8A@flyingcircus.io>
+ <20231009080646.60ce9920@kernel.org> <da08ba06-e24c-d2c3-b9a0-8415a83ae791@mojatatu.com>
+ <20231009172849.00f4a6c5@kernel.org> <CAM0EoM=mnOdEgHPzbPxCAotoy4C54XyGiisrjwnO_raqVWPryw@mail.gmail.com>
+ <7058E983-D543-4C5B-91ED-A8728775260A@flyingcircus.io>
+In-Reply-To: <7058E983-D543-4C5B-91ED-A8728775260A@flyingcircus.io>
+From:   Jamal Hadi Salim <jhs@mojatatu.com>
+Date:   Wed, 11 Oct 2023 13:26:23 -0400
+Message-ID: <CAM0EoM=jXYtbzo3W7eaVD5a=8DJde5Mu1wCQ7MvYigDT1k_Mkw@mail.gmail.com>
+Subject: Re: [REGRESSION] Userland interface breaks due to hard HFSC_FSC requirement
+To:     Christian Theune <ct@flyingcircus.io>
+Cc:     Jakub Kicinski <kuba@kernel.org>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        markovicbudimir@gmail.com, stable@vger.kernel.org,
+        netdev@vger.kernel.org,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        davem@davemloft.net, edumazet@google.com, pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Am Dienstag, dem 10.10.2023 um 15:19 +0200 schrieb Martin Fuzzey:
-> When updating from 5.4.219 -> 5.4.256 I started getting a runtime warning:
-> 
-> [   58.229857] ------------[ cut here ]------------
-> [   58.234599] WARNING: CPU: 1 PID: 565 at drivers/gpu/drm/drm_gem.c:1020 drm_gem_object_put+0x90/0x98
-> [   58.249935] Modules linked in: qmi_wwan cdc_wdm option usb_wwan smsc95xx rsi_usb rsi_91x btrsi ci_hdrc_imx ci_hdrc
-> [   58.260499] ueventd: modprobe usb:v2F8Fp7FFFd0200dc00dsc00dp00icFEisc01ip02in00 done
-> [   58.288877] CPU: 1 PID: 565 Comm: android.display Not tainted 5.4.256pkn-5.4-bsp-snapshot-svn-7423 #2195
-> [   58.288883] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-> [   58.288888] Backtrace:
-> [   58.288912] [<c010e784>] (dump_backtrace) from [<c010eaa4>] (show_stack+0x20/0x24)
-> [   58.288920]  r7:00000000 r6:60010013 r5:00000000 r4:c14cd224
-> [   58.328337] [<c010ea84>] (show_stack) from [<c0cf9ca4>] (dump_stack+0xe8/0x120)
-> [   58.335661] [<c0cf9bbc>] (dump_stack) from [<c012efd0>] (__warn+0xd4/0xe8)
-> [   58.342542]  r10:eda54000 r9:c06ca53c r8:000003fc r7:00000009 r6:c111ed54 r5:00000000
-> [   58.350374]  r4:00000000 r3:76cf564a
-> [   58.353957] [<c012eefc>] (__warn) from [<c012f094>] (warn_slowpath_fmt+0xb0/0xc0)
-> [   58.361445]  r9:00000009 r8:c06ca53c r7:000003fc r6:c111ed54 r5:c1406048 r4:00000000
-> [   58.369198] [<c012efe8>] (warn_slowpath_fmt) from [<c06ca53c>] (drm_gem_object_put+0x90/0x98)
-> [   58.377728]  r9:edda7e40 r8:edd39360 r7:ad16e000 r6:edda7eb0 r5:00000000 r4:edaa3200
-> [   58.385524] [<c06ca4ac>] (drm_gem_object_put) from [<bf0125a8>] (etnaviv_gem_prime_mmap_obj+0x34/0x3c [etnaviv])
-> [   58.395704]  r5:00000000 r4:edaa3200
-> [   58.399334] [<bf012574>] (etnaviv_gem_prime_mmap_obj [etnaviv]) from [<bf0143a0>] (etnaviv_gem_mmap+0x3c/0x60 [etnaviv])
-> [   58.410205]  r5:edd39360 r4:00000000
-> [   58.413816] [<bf014364>] (etnaviv_gem_mmap [etnaviv]) from [<c02c5e08>] (mmap_region+0x37c/0x67c)
-> [   58.422689]  r5:ad16d000 r4:edda7eb8
-> [   58.426272] [<c02c5a8c>] (mmap_region) from [<c02c6528>] (do_mmap+0x420/0x544)
-> [   58.433500]  r10:000000fb r9:000fffff r8:ffffffff r7:00000001 r6:00000003 r5:00000001
-> [   58.441330]  r4:00001000
-> [   58.443876] [<c02c6108>] (do_mmap) from [<c02a5b2c>] (vm_mmap_pgoff+0xd0/0x100)
-> [   58.451190]  r10:eda54040 r9:00001000 r8:00000000 r7:00000000 r6:00000003 r5:c1406048
-> [   58.459020]  r4:edb8ff24
-> [   58.461561] [<c02a5a5c>] (vm_mmap_pgoff) from [<c02c3ac8>] (ksys_mmap_pgoff+0xdc/0x10c)
-> [   58.469570]  r10:000000c0 r9:edb8e000 r8:ed650b40 r7:00000003 r6:00001000 r5:00000000
-> [   58.477400]  r4:00000001
-> [   58.479941] [<c02c39ec>] (ksys_mmap_pgoff) from [<c02c3b24>] (sys_mmap_pgoff+0x2c/0x34)
-> [   58.487949]  r8:c0101224 r7:000000c0 r6:951ece38 r5:00010001 r4:00000065
-> [   58.494658] [<c02c3af8>] (sys_mmap_pgoff) from [<c0101000>] (ret_fast_syscall+0x0/0x28)
-> 
-> It looks like this was a backporting error for the upstream patch
-> 963b2e8c428f "drm/etnaviv: fix reference leak when mmaping imported buffer"
-> 
-> In the 5.4 kernel there are 2 variants of the object put function:
-> 	drm_gem_object_put() [which requires lock to be held]
-> 	drm_gem_object_put_unlocked() [which requires lock to be NOT held]
-> 
-> In later kernels [5.14+] this has gone and there just drm_gem_object_put()
-> which requires lock to be NOT held.
-> 
-> So the memory leak pach, which added a call to drm_gem_object_put() was correct
-> on newer kernels but wrong on 5.4 and earlier ones.
-> 
-> So switch back to using the _unlocked variant for old kernels.
-> This should only be applied to the 5.4, 4.19 and 4.14 longterm branches;
-> mainline and more recent longterms already have the correct fix.
-> 
-The analysis and fix seem correct to me. Thanks for fixing this bad
-trap!
+On Tue, Oct 10, 2023 at 1:32=E2=80=AFPM Christian Theune <ct@flyingcircus.i=
+o> wrote:
+>
+> Hi,
+>
+> > On 10. Oct 2023, at 17:02, Jamal Hadi Salim <jhs@mojatatu.com> wrote:
+> >
+> > This is a tough one - as it stands right now we dont see a good way
+> > out. It's either "exploitable by root / userns" or break uapi.
+> > Christian - can you send your "working" scripts, simplified if
+> > possible, and we'll take a look.
+>
+> Sure, what kind of simplification are we talking about? Something like th=
+is?
+>
+> #### snip
+> #!/bin/bash
+> modprobe ifb
+> modprobe act_mirred
+>
+> uplink=3Deth0
+> uplink_ingress=3Difb0
+>
+> tc qdisc add dev $uplink handle ffff: ingress
+> ifconfig $uplink up
+>
+> tc filter add dev $uplink parent ffff: protocol all u32 match u32 0 0 act=
+ion mirred egress redirect dev $uplink_ingress
+>
+> tc qdisc add dev $uplink_ingress root handle 1: hfsc default 1
+> tc class add dev $uplink_ingress parent 1: classid 1:999 hfsc rt m2 2.5gb=
+it
+> tc class add dev $uplink_ingress parent 1:999 classid 1:1 hfsc sc rate 50=
+mbit
+> #### snap
+>
+> This should provoke the error reliably. You might need to point it at wha=
+tever network interface is available but need to be prepared to loose conne=
+ctivity.
+>
 
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+Ok - thanks, we'll look at this from the perspective of both ensuring
+UAF is gone and making your config happy. TBH, in my view UAF comes
+first but we can debate that later.
 
-> Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
-> Fixes: 0c6df5364798 "drm/etnaviv: fix reference leak when mmaping imported buffer" [5.4.y]
-> Fixes: 0838cb217a52 "drm/etnaviv: fix reference leak when mmaping imported buffer" [4.19.y]
-> Fixes: 1c9544fbc979 "drm/etnaviv: fix reference leak when mmaping imported buffer" [4.14.y]
-> 
-> ---
->  drivers/gpu/drm/etnaviv/etnaviv_gem_prime.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem_prime.c b/drivers/gpu/drm/etnaviv/etnaviv_gem_prime.c
-> index fe7817e4c0d1..4400f578685a 100644
-> --- a/drivers/gpu/drm/etnaviv/etnaviv_gem_prime.c
-> +++ b/drivers/gpu/drm/etnaviv/etnaviv_gem_prime.c
-> @@ -98,7 +98,7 @@ static int etnaviv_gem_prime_mmap_obj(struct etnaviv_gem_object *etnaviv_obj,
->  	ret = dma_buf_mmap(etnaviv_obj->base.dma_buf, vma, 0);
->  	if (!ret) {
->  		/* Drop the reference acquired by drm_gem_mmap_obj(). */
-> -		drm_gem_object_put(&etnaviv_obj->base);
-> +		drm_gem_object_put_unlocked(&etnaviv_obj->base);
->  	}
-> 
->  	return ret;
+cheers,
+jamal
+> Christian
+>
+>
+> Liebe Gr=C3=BC=C3=9Fe,
+> Christian Theune
+>
 > --
-> 2.25.1
-> 
-
+> Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
+> Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
+> Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
+> HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
+Christian Zagrodnick
+>
