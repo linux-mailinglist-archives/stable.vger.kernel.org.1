@@ -2,82 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 585097C48E7
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 06:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 440D37C48F5
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 07:03:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbjJKEwE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 00:52:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34306 "EHLO
+        id S229534AbjJKFDA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 01:03:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229534AbjJKEwD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 00:52:03 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 265C694
-        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 21:52:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696999921; x=1728535921;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=js7pF/+qKAwfI2zBJAjM2YED0nSvmfq4gb6xk5KIdYQ=;
-  b=YQvs+3AB3r4SD82rIod1JzzVrwugHaW0VKQR/K+sHQ15Zl6Piv7jszSP
-   8MwePMwNqOYiVxSHfTQL5o1IRIzKsyk9NXlnrWvMia8+YYBmkSXgAUP1D
-   DrMdhtDAuygXtLTvNDQfqcISGkmPjTyXLgBtlXvHQBeGNTPlD24iSU4mq
-   biBedDOTRIdJHhNGEhFwe1LmyGityCd9LB3OMY1IZaT7e0qgFe+EUJLJN
-   0ZfGjb4IwZbLID/6Zb5FyabMhqhotwqk2yn2fUCfJd8JQ5M9ah8zqVOkc
-   kt0yo+QQCe/OtZD93IEUhzPc4MChXSibJM2BCwQysFB+sF78Ek3WFNROJ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="374921375"
-X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="374921375"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2023 21:52:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10859"; a="877525059"
-X-IronPort-AV: E=Sophos;i="6.03,214,1694761200"; 
-   d="scan'208";a="877525059"
-Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
-  by orsmga004.jf.intel.com with ESMTP; 10 Oct 2023 21:52:00 -0700
-Received: from kbuild by f64821696465 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qqRCP-0001kP-2q;
-        Wed, 11 Oct 2023 04:51:57 +0000
-Date:   Wed, 11 Oct 2023 12:51:53 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Zheng Wang <zyytlz.wz@163.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [RESEND PATCH v2] media: mtk-jpeg: Fix use after free bug due to
- uncanceled work
-Message-ID: <ZSYp6Xw+y9i+/0pe@7e1dc97a21a5>
+        with ESMTP id S229549AbjJKFC7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 01:02:59 -0400
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88FCB9D
+        for <stable@vger.kernel.org>; Tue, 10 Oct 2023 22:02:58 -0700 (PDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 559456732A; Wed, 11 Oct 2023 07:02:54 +0200 (CEST)
+Date:   Wed, 11 Oct 2023 07:02:54 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Kanchan Joshi <joshiiitr@gmail.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Kanchan Joshi <joshi.k@samsung.com>, kbusch@kernel.org,
+        axboe@kernel.dk, sagi@grimberg.me, linux-nvme@lists.infradead.org,
+        vincentfu@gmail.com, ankit.kumar@samsung.com, cpgs@samsung.com,
+        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
+Subject: Re: [PATCH v3] nvme: fix memory corruption for passthrough metadata
+Message-ID: <20231011050254.GA32444@lst.de>
+References: <CGME20231006135322epcas5p1c9acf38b04f35017181c715c706281dc@epcas5p1.samsung.com> <1891546521.01696823881551.JavaMail.epsvc@epcpadp4> <20231010074634.GA6514@lst.de> <CA+1E3r+2Ce4BCZ2feJX37e1-dtvpZtY6ajiaO_orn8Airu2Bqg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231011031740.982735-1-zyytlz.wz@163.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CA+1E3r+2Ce4BCZ2feJX37e1-dtvpZtY6ajiaO_orn8Airu2Bqg@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Tue, Oct 10, 2023 at 07:09:54PM +0530, Kanchan Joshi wrote:
+> The case is for the single interleaved buffer with both data and
+> metadata. When the driver sends this buffer to blk_rq_map_user_iov(),
+> it may make a copy of it.
+> This kernel buffer will be used for DMA rather than user buffer. If
+> the user-buffer is short, the kernel buffer is also short.
 
-Thanks for your patch.
+Yes.  Note that we'll corrupt memory either way, so user vs kernel
+does not matter.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> Does this explanation help?
+> I can move the part to a separate patch.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Definitively separate function please, not sure if a separate
+patch is required.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [RESEND PATCH v2] media: mtk-jpeg: Fix use after free bug due to uncanceled work
-Link: https://lore.kernel.org/stable/20231011031740.982735-1-zyytlz.wz%40163.com
+> Yes, not io_uring specific.
+> Just that I was not sure on (i) whether to go back that far in
+> history, and (ii) what patch to tag.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I think the one that adds the original problem is:
+
+63263d60e0f9f37bfd5e6a1e83a62f0e62fc459f
+Author: Keith Busch <kbusch@kernel.org>
+Date:   Tue Aug 29 17:46:04 2017 -0400
+
+    nvme: Use metadata for passthrough commands
 
 
+> > > +     /* Exclude commands that do not have nlb in cdw12 */
+> > > +     if (!nvme_nlb_in_cdw12(c->common.opcode))
+> > > +             return true;
+> >
+> > So we can still get exactly the same corruption for all commands that
+> > are not known?  That's not a very safe way to deal with the issue..
+> 
+> Given the way things are in NVMe, I do not find a better way.
+> Maybe another day for commands that do (or can do) things very
+> differently for nlb and PI representation.
 
+Fixing just a subset of these problems is pointless.  If people want
+to use metadata on vendor specific commands they need to work with
+NVMe to figure out a generic way to pass the length.
