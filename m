@@ -2,95 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 591287C5EFE
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 23:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 449F87C5F97
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 23:54:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233519AbjJKVU3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 17:20:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59824 "EHLO
+        id S233743AbjJKVyT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 17:54:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233549AbjJKVUZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 17:20:25 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1D79B7
-        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 14:20:23 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-7a2874d2820so5011939f.1
-        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 14:20:23 -0700 (PDT)
+        with ESMTP id S233775AbjJKVyQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 17:54:16 -0400
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD44AB7
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 14:54:12 -0700 (PDT)
+Received: by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-7a24c86aae3so5701339f.0
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 14:54:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1697059223; x=1697664023; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1697061252; x=1697666052; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ou8Z46f8D4HFatkbCIXSPvYGp0xJZP5BFrXKyDUAkb8=;
-        b=UF0kV8pV6PLXJQZTfcAz8fMCCu95vvysIrVgLfw7KXN6b+rj1fvrGma2s95TnW+b4o
-         dTo/1+BaNzpFZQQfebrQlIVn7wv8cTzUa0Lq2kGNOmHMinMMhpTThQG2TQW++IuRBDQr
-         syji2/W3mWJgdaPef0BtqZhZuxyGfjDKlHAo+DbDFXRYhS+mMGswm64OTTnx7ZLk45gi
-         HYC5Gm/vpdwTLHyhZvbLFQTjHmf5a/ckf9F1fcoRJH/0mM8C0UlyveM0BkAThZaZVdmM
-         LU4H19B3lae3+MmmgCmTI4PeQsrxfkzqZenH43aFTuPii9wuPQ0GRmxjg5gVqnSlqezc
-         ttuA==
+        bh=S+WmDnmtn43/fhK77i3ikEqdFMWWB4Npron6CccFQK8=;
+        b=Fn5JL8VUgbigQjRLNEoBUKdCj/Si74J9WkW+2FDfb4gCVupynvnQgcX5B9B+vaoI8P
+         tLUn2urWu1Hz2ZHssxtt40bS44ByKOBWei/qqjjqG/cnH0wO8ls8DggQ+iXsljTR3Bk4
+         iYTGJtzY+EmFOP2qs2xQYCKmB+5HbD7C8We780UGaldipJjDWFN7kDCpQIBe6Srz1rRS
+         goNZHDjrhz1ShQv+LJpQm9oHIflpurrH4x/Y/Lr3BlwVIjCEOqR6YXVE22QzwIQBOxjK
+         +faZqXpy5hSMSzAAa9pUDziUXhqGdTbse6+Ayfra1VQnRz/k8iLQvG03apQ7LxRH8Gln
+         MAvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697059223; x=1697664023;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+        d=1e100.net; s=20230601; t=1697061252; x=1697666052;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ou8Z46f8D4HFatkbCIXSPvYGp0xJZP5BFrXKyDUAkb8=;
-        b=qc0vBF2LD8pNGpTEgBPMV3K6o3y3I3grHRS4EERi1iMkVfPcucIBgCfCNykRZ5BcN2
-         PkQ5+EkSgvaUCT4uXepddxDbAZ1KERFTP6MIooTeTPiM+ULlbDGYs3oAkSqMnd90Qrum
-         Gh9ELbpRgTbgYGCFElj505NGsU8ZJd9AsBhvzf4L5enYdXRSB863Tpzhb3Qkt4wMfk1y
-         CSpLsUNQ88YK86zot0PLwaSU7vaujG9csL6fO6Je8wDBjyJzowPJsG6BUQLdo0RLFTGv
-         VpV3B2MrbO7mu/6KH4M+AdV50zkxLhPWwGA0h9pMM1tiBQuE2BurQRG2lq20wtFXJ2eY
-         ACbg==
-X-Gm-Message-State: AOJu0Yw3jz/3OkKYvwAEefJhLQ3bGs65nEf8Trutrjt9YiUvkqswu19V
-        XSjdnQnhpUAlBJ1VRP2nGocA4Q==
-X-Google-Smtp-Source: AGHT+IFDYfOpCNUhep+7IgWh6NGfsroxNM+d8ImbLUEV1kcWszBBlrRw4fvIGqhVskXuEnZ7Ig6CRQ==
-X-Received: by 2002:a05:6602:3a11:b0:79f:922b:3809 with SMTP id by17-20020a0566023a1100b0079f922b3809mr23781388iob.1.1697059223057;
-        Wed, 11 Oct 2023 14:20:23 -0700 (PDT)
+        bh=S+WmDnmtn43/fhK77i3ikEqdFMWWB4Npron6CccFQK8=;
+        b=K9X0S8iurBXbmHJ/WiKhpWXYkkGLemnnDZurRd30Xnh4pHC/N7zCAsYtZWsr/LnRRl
+         cnVp75zwC71RUUF2/pnY5l25u6osMl5VMR2/1s99XBZLAxcm6PM/R0G/O412oqT+WNDl
+         rpVt/d/NnayOVz3cO2r1I1JO/w9COu/p/xmBC3yRE0tRRNQNh8mB55dLnUPnnQaU+qAd
+         b7uStoi+gFWq5JpiJGjYmn1C2leds4g3a+QqT2AGv+BHdrzB4I4RHHDdONwRzT4shvzn
+         pMXQ9nFGyRv6KlJu6R1DEWyqp3NNHwStRX6sovj6hodS3ew0fca0khuNqmnrY5RzOKAX
+         ZElg==
+X-Gm-Message-State: AOJu0Yyco+oTrCgvTFlzdNS2+Ez+OqBdt4ilIFpgK4D9wsxt3b6BwRsV
+        PT9qq39S/rRhB/nui4cvZA+vbg==
+X-Google-Smtp-Source: AGHT+IFOnwcS9Io13fTYmd4tFOslv8p8Ucz3NNFkLx5qrd1CxmroPKPHhrf2oeN9KXrFqSAY64/KPA==
+X-Received: by 2002:a05:6602:3a11:b0:79f:922b:3809 with SMTP id by17-20020a0566023a1100b0079f922b3809mr23849277iob.1.1697061252038;
+        Wed, 11 Oct 2023 14:54:12 -0700 (PDT)
 Received: from [192.168.1.94] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id c18-20020a02c9d2000000b0041fb2506011sm3547225jap.172.2023.10.11.14.20.22
+        by smtp.gmail.com with ESMTPSA id m11-20020a02c88b000000b0042b35e163besm3635311jao.88.2023.10.11.14.54.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Oct 2023 14:20:22 -0700 (PDT)
-Message-ID: <c337dd4f-e363-48d1-8ac0-a62da3e1a741@kernel.dk>
-Date:   Wed, 11 Oct 2023 15:20:21 -0600
+        Wed, 11 Oct 2023 14:54:11 -0700 (PDT)
+Message-ID: <8edda030-9394-4252-bf43-3cb1207cf640@kernel.dk>
+Date:   Wed, 11 Oct 2023 15:54:10 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: block: Don't invalidate pagecache for invalid falloc modes
+Subject: Re: [PATCH] block: Don't invalidate pagecache for invalid falloc
+ modes
 Content-Language: en-US
-To:     Mike Snitzer <snitzer@kernel.org>
-Cc:     Sarthak Kukreti <sarthakkukreti@chromium.org>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bart Van Assche <bvanassche@acm.org>,
+From:   Jens Axboe <axboe@kernel.dk>
+To:     Sarthak Kukreti <sarthakkukreti@chromium.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Bart Van Assche <bvanassche@acm.org>,
         "Darrick J. Wong" <darrick.wong@oracle.com>,
         stable@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>,
-        Christoph Hellwig <hch@lst.de>
+        Christoph Hellwig <hch@lst.de>,
+        Mike Snitzer <snitzer@kernel.org>
 References: <20231011201230.750105-1-sarthakkukreti@chromium.org>
  <b068c2ef-5de3-44fb-a55d-2cbe5a7f1158@kernel.dk>
- <ZScKlejOlxIXYmWI@redhat.com>
- <d5e95ca1-aa20-43da-92f8-3860e744337e@kernel.dk>
- <ZScOxR5p0Bhzy2Uk@redhat.com>
-From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <ZScOxR5p0Bhzy2Uk@redhat.com>
+In-Reply-To: <b068c2ef-5de3-44fb-a55d-2cbe5a7f1158@kernel.dk>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/11/23 3:08 PM, Mike Snitzer wrote:
->>>> Also, please wrap commit messages at 72-74 chars.
->>>
->>> Not seeing where the header should be wrapped.  You referring to the
->>> Fixes: line?  I've never seen those wrapped.
->>
->> I'm referring to the commit message itself.
+On 10/11/23 2:20 PM, Jens Axboe wrote:
+> On 10/11/23 2:12 PM, Sarthak Kukreti wrote:
+>> Only call truncate_bdev_range() if the fallocate mode is
+>> supported. This fixes a bug where data in the pagecache
+>> could be invalidated if the fallocate() was called on the
+>> block device with an invalid mode.
 > 
-> Ah, you'd like lines extended because they are too short.
+> Fix looks fine, but would be nicer if we didn't have to duplicate the
+> truncate_bdev_range() in each switch clause. Can we check this upfront
+> instead?
 
-Exactly, it's way too short.
+Don't see a good way to do it on my end, so let's just go with what is
+there now. I applied it with the commit message reformatted.
 
 -- 
 Jens Axboe
