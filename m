@@ -2,105 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E7547C5EE6
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 23:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 591287C5EFE
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 23:20:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233288AbjJKVJK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 17:09:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54180 "EHLO
+        id S233519AbjJKVU3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 17:20:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233278AbjJKVJJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 17:09:09 -0400
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9FF993
-        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 14:08:23 -0700 (PDT)
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-5a7b3d33663so4095387b3.3
-        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 14:08:23 -0700 (PDT)
+        with ESMTP id S233549AbjJKVUZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 17:20:25 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1D79B7
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 14:20:23 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-7a2874d2820so5011939f.1
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 14:20:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1697059223; x=1697664023; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ou8Z46f8D4HFatkbCIXSPvYGp0xJZP5BFrXKyDUAkb8=;
+        b=UF0kV8pV6PLXJQZTfcAz8fMCCu95vvysIrVgLfw7KXN6b+rj1fvrGma2s95TnW+b4o
+         dTo/1+BaNzpFZQQfebrQlIVn7wv8cTzUa0Lq2kGNOmHMinMMhpTThQG2TQW++IuRBDQr
+         syji2/W3mWJgdaPef0BtqZhZuxyGfjDKlHAo+DbDFXRYhS+mMGswm64OTTnx7ZLk45gi
+         HYC5Gm/vpdwTLHyhZvbLFQTjHmf5a/ckf9F1fcoRJH/0mM8C0UlyveM0BkAThZaZVdmM
+         LU4H19B3lae3+MmmgCmTI4PeQsrxfkzqZenH43aFTuPii9wuPQ0GRmxjg5gVqnSlqezc
+         ttuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697058503; x=1697663303;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6vFhMHCh6uUl8avUdhvw8MzdlyCHTFfcctmbku9CIHU=;
-        b=s2o4eQ/Iw4JdyeDJuDIT8cUhVB9dSGO7bYI3Pyv+b9pImJGEAJZz8KPc2PrkBMMyBG
-         rtZDYDjAoZjF2e6btmW/uYtTzSHPpbKv930Bzd0bRyfUNr+ZoZek2tjOfvokXQl+oZZf
-         BdyIGTxprX0f5iPBRy7pv8hvIFKI8UoW8CegirvkXc44mM3eVJDprkLfiNIwF2ySe5DJ
-         Aq+3AEE9K8HRDemSNM3KEOW9PHpPLeBCYqp6wNIVPGC6LKlRVrWLtFs2XtPVCcQ4Se9G
-         cfevP4jEel5lOZCJloidlWIVZo6QhAtfoWcst5apwMLwoAxG4GUDNW2/09k5f/crINFd
-         UYeQ==
-X-Gm-Message-State: AOJu0YxrAdRsVK1uRsDJj7Nsd/87pxCe9Lcn0qHVLAXLRT0+lfrivEoc
-        JRtaO0QqKjlBNFBx0GPxQA91
-X-Google-Smtp-Source: AGHT+IFqA6QGfUWZi1RXIloHbmN4XvJcpqvKaIcnLySXfbMdpQuScK+rDzGXX5QOE6SPYfejs9SWUg==
-X-Received: by 2002:a25:aaad:0:b0:d9a:526a:2514 with SMTP id t42-20020a25aaad000000b00d9a526a2514mr6479268ybi.62.1697058502868;
-        Wed, 11 Oct 2023 14:08:22 -0700 (PDT)
-Received: from localhost (pool-68-160-141-91.bstnma.fios.verizon.net. [68.160.141.91])
-        by smtp.gmail.com with ESMTPSA id d7-20020a0cb2c7000000b0064f5d70d072sm6049114qvf.37.2023.10.11.14.08.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Oct 2023 14:08:22 -0700 (PDT)
-Date:   Wed, 11 Oct 2023 17:08:21 -0400
-From:   Mike Snitzer <snitzer@kernel.org>
-To:     Jens Axboe <axboe@kernel.dk>
+        d=1e100.net; s=20230601; t=1697059223; x=1697664023;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ou8Z46f8D4HFatkbCIXSPvYGp0xJZP5BFrXKyDUAkb8=;
+        b=qc0vBF2LD8pNGpTEgBPMV3K6o3y3I3grHRS4EERi1iMkVfPcucIBgCfCNykRZ5BcN2
+         PkQ5+EkSgvaUCT4uXepddxDbAZ1KERFTP6MIooTeTPiM+ULlbDGYs3oAkSqMnd90Qrum
+         Gh9ELbpRgTbgYGCFElj505NGsU8ZJd9AsBhvzf4L5enYdXRSB863Tpzhb3Qkt4wMfk1y
+         CSpLsUNQ88YK86zot0PLwaSU7vaujG9csL6fO6Je8wDBjyJzowPJsG6BUQLdo0RLFTGv
+         VpV3B2MrbO7mu/6KH4M+AdV50zkxLhPWwGA0h9pMM1tiBQuE2BurQRG2lq20wtFXJ2eY
+         ACbg==
+X-Gm-Message-State: AOJu0Yw3jz/3OkKYvwAEefJhLQ3bGs65nEf8Trutrjt9YiUvkqswu19V
+        XSjdnQnhpUAlBJ1VRP2nGocA4Q==
+X-Google-Smtp-Source: AGHT+IFDYfOpCNUhep+7IgWh6NGfsroxNM+d8ImbLUEV1kcWszBBlrRw4fvIGqhVskXuEnZ7Ig6CRQ==
+X-Received: by 2002:a05:6602:3a11:b0:79f:922b:3809 with SMTP id by17-20020a0566023a1100b0079f922b3809mr23781388iob.1.1697059223057;
+        Wed, 11 Oct 2023 14:20:23 -0700 (PDT)
+Received: from [192.168.1.94] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id c18-20020a02c9d2000000b0041fb2506011sm3547225jap.172.2023.10.11.14.20.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Oct 2023 14:20:22 -0700 (PDT)
+Message-ID: <c337dd4f-e363-48d1-8ac0-a62da3e1a741@kernel.dk>
+Date:   Wed, 11 Oct 2023 15:20:21 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: block: Don't invalidate pagecache for invalid falloc modes
+Content-Language: en-US
+To:     Mike Snitzer <snitzer@kernel.org>
 Cc:     Sarthak Kukreti <sarthakkukreti@chromium.org>,
         linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
         Bart Van Assche <bvanassche@acm.org>,
         "Darrick J. Wong" <darrick.wong@oracle.com>,
         stable@vger.kernel.org, "Darrick J . Wong" <djwong@kernel.org>,
         Christoph Hellwig <hch@lst.de>
-Subject: Re: block: Don't invalidate pagecache for invalid falloc modes
-Message-ID: <ZScOxR5p0Bhzy2Uk@redhat.com>
 References: <20231011201230.750105-1-sarthakkukreti@chromium.org>
  <b068c2ef-5de3-44fb-a55d-2cbe5a7f1158@kernel.dk>
  <ZScKlejOlxIXYmWI@redhat.com>
  <d5e95ca1-aa20-43da-92f8-3860e744337e@kernel.dk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d5e95ca1-aa20-43da-92f8-3860e744337e@kernel.dk>
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+ <ZScOxR5p0Bhzy2Uk@redhat.com>
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <ZScOxR5p0Bhzy2Uk@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 11 2023 at  4:53P -0400,
-Jens Axboe <axboe@kernel.dk> wrote:
-
-> On 10/11/23 2:50 PM, Mike Snitzer wrote:
-> > On Wed, Oct 11 2023 at  4:20P -0400,
-> > Jens Axboe <axboe@kernel.dk> wrote:
-> > 
-> >> On 10/11/23 2:12 PM, Sarthak Kukreti wrote:
-> >>> Only call truncate_bdev_range() if the fallocate mode is
-> >>> supported. This fixes a bug where data in the pagecache
-> >>> could be invalidated if the fallocate() was called on the
-> >>> block device with an invalid mode.
-> >>
-> >> Fix looks fine, but would be nicer if we didn't have to duplicate the
-> >> truncate_bdev_range() in each switch clause. Can we check this upfront
-> >> instead?
-> > 
-> > No, if you look at the function (rather than just the patch in
-> > isolation) we need to make the call for each case rather than collapse
-> > to a single call at the front (that's the reason for this fix, because
-> > otherwise the default: error case will invalidate the page cache too).
+On 10/11/23 3:08 PM, Mike Snitzer wrote:
+>>>> Also, please wrap commit messages at 72-74 chars.
+>>>
+>>> Not seeing where the header should be wrapped.  You referring to the
+>>> Fixes: line?  I've never seen those wrapped.
+>>
+>> I'm referring to the commit message itself.
 > 
-> Yes that part is clear, but it might look cleaner to check a valid mask
-> first rather than have 3 duplicate calls.
+> Ah, you'd like lines extended because they are too short.
 
-OK.
- 
-> > Just so you're aware, I also had this feedback that shaped the patch a
-> > bit back in April:
-> > https://listman.redhat.com/archives/dm-devel/2023-April/053986.html
-> > 
-> >> Also, please wrap commit messages at 72-74 chars.
-> > 
-> > Not seeing where the header should be wrapped.  You referring to the
-> > Fixes: line?  I've never seen those wrapped.
-> 
-> I'm referring to the commit message itself.
+Exactly, it's way too short.
 
-Ah, you'd like lines extended because they are too short.
+-- 
+Jens Axboe
+
