@@ -2,128 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B32797C4C3D
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 09:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC2657C4C6B
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 09:58:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229743AbjJKHqs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 03:46:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43140 "EHLO
+        id S229879AbjJKH6B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 03:58:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229759AbjJKHqr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 03:46:47 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3493698;
-        Wed, 11 Oct 2023 00:46:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=61isM1aH9tWSRneo34EFdKetusAPfy8ZA6xHY6hutnw=; b=jwICPp03S1haGCDCXZYFoqMdLe
-        UZE55NvzirG/CnXpvK74lkt1+aTJ+Hpj6G1mvD78sldy+GA7sVz049I77lzzAcgQs23H9CbmlSB93
-        ponfAMWWkDcR9DhNf4HvWxIInj4lJ+fBuvqKGuUDEe3b62skraMBN9LMonbIKmBi3fG9CI0ryGGiO
-        aR87ynqpq7vCJX7c68nAxbdpMe/3IllqQt8qSbJJE5Yuuxg3hYS2pyjRqwhBK1MX+kzeGPecC47yK
-        VFrOqlCUvwsJI8dpDAytuOFO2qsYdM7MsI0m4j1VSCrAuDAOwQ0Gj9uQ5mDxss4V7D9DNd0iGgQ44
-        2SlbY4DA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qqTv5-0003uD-0t;
-        Wed, 11 Oct 2023 07:46:17 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 63E7530026F; Wed, 11 Oct 2023 09:46:16 +0200 (CEST)
-Date:   Wed, 11 Oct 2023 09:46:16 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
-        Fei Yang <fei.yang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCHv2] x86/alternatives: Disable KASAN in apply_alternatives()
-Message-ID: <20231011074616.GL14330@noisy.programming.kicks-ass.net>
-References: <20231011065849.19075-1-kirill.shutemov@linux.intel.com>
+        with ESMTP id S229743AbjJKH6A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 03:58:00 -0400
+X-Greylist: delayed 403 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 11 Oct 2023 00:57:55 PDT
+Received: from mail.venturelinkage.com (mail.venturelinkage.com [80.211.143.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3196391
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 00:57:54 -0700 (PDT)
+Received: by mail.venturelinkage.com (Postfix, from userid 1002)
+        id AEAE88297E; Wed, 11 Oct 2023 09:51:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkage.com;
+        s=mail; t=1697010667;
+        bh=7iowqdzve/IIiUUjcEwx8j3uMrVqqiE7R9zbOCKRV9Q=;
+        h=Date:From:To:Subject:From;
+        b=jgB5SgPBWujV05k6lpS4AWslH3DH+W4H62AUaOzTj1V/55jb3yRI2nO6OOqMTjGlv
+         Nw81loJuaHdGG70ewLN8p4pVqWUiZpkmFSmGO7s7uKUMybJXYQ1gfdM3hAVVZRka4j
+         T7e+QUiQrvGbpRcnxE5n4NE7NVCabn7J922udc/65bt27bG+0XLHBzVaoiaAP5XNus
+         NgCsGP1YP/DpXCegf2PksF7T4h/D35gFa4mp3eGDnwVdydZwpgEi8NnkyTIQPEl5yz
+         kj/kiEhTZGocSSfZVHt1XheYQ7C+1augirF4uVA80GdvO9yg/uLkiZpgFgrNoj5grl
+         6BIMbOFlLsYKQ==
+Received: by mail.venturelinkage.com for <stable@vger.kernel.org>; Wed, 11 Oct 2023 07:50:59 GMT
+Message-ID: <20231011084500-0.1.10.25cu.0.bkp3ni1z10@venturelinkage.com>
+Date:   Wed, 11 Oct 2023 07:50:59 GMT
+From:   "Lukas Varga" <lukas.varga@venturelinkage.com>
+To:     <stable@vger.kernel.org>
+Subject: =?UTF-8?Q?Popt=C3=A1vka?=
+X-Mailer: mail.venturelinkage.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231011065849.19075-1-kirill.shutemov@linux.intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_05,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,
+        URIBL_DBL_SPAM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: venturelinkage.com]
+        *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [80.211.143.151 listed in list.dnswl.org]
+        * -0.5 BAYES_05 BODY: Bayes spam probability is 1 to 5%
+        *      [score: 0.0394]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: venturelinkage.com]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [80.211.143.151 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: venturelinkage.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 11, 2023 at 09:58:49AM +0300, Kirill A. Shutemov wrote:
-> Fei has reported that KASAN triggers during apply_alternatives() on
-> 5-level paging machine:
-> 
+Dobr=C3=A9 r=C3=A1no,
 
-Urgh @ KASAN splat, can't we summarize that?
+Dovolil jsem si V=C3=A1s kontaktovat, proto=C5=BEe m=C3=A1m z=C3=A1jem ov=
+=C4=9B=C5=99it mo=C5=BEnost nav=C3=A1z=C3=A1n=C3=AD spolupr=C3=A1ce.
 
-> 
-> On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
-> got patched. It includes KASAN code, where KASAN_SHADOW_START depends on
-> __VIRTUAL_MASK_SHIFT, which is defined with the cpu_feature_enabled().
-> 
-> KASAN gets confused when apply_alternatives() patches the
-> KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
-> static, by replacing __VIRTUAL_MASK_SHIFT with 56, fixes the issue.
-> 
-> Disable KASAN while kernel patches alternatives.
-> 
-> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Reported-by: Fei Yang <fei.yang@intel.com>
-> Fixes: 6657fca06e3f ("x86/mm: Allow to boot without LA57 if CONFIG_X86_5LEVEL=y")
-> Cc: stable@vger.kernel.org
-> ---
-> 
->  v2:
->   - Move kasan_disable/_enable_current() to cover whole loop, not only
->     text_poke_early();
->   - Adjust commit message.
-> 
-> ---
->  arch/x86/kernel/alternative.c | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-> index 517ee01503be..b4cc4d7c0825 100644
-> --- a/arch/x86/kernel/alternative.c
-> +++ b/arch/x86/kernel/alternative.c
-> @@ -403,6 +403,17 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
->  	u8 insn_buff[MAX_PATCH_LEN];
->  
->  	DPRINTK(ALT, "alt table %px, -> %px", start, end);
-> +
-> +	/*
-> +	 * In the case CONFIG_X86_5LEVEL=y, KASAN_SHADOW_START is defined using
-> +	 * cpu_feature_enabled(X86_FEATURE_LA57) and is therefore patched here.
-> +	 * During the process, KASAN becomes confused and triggers
+Podporujeme firmy p=C5=99i z=C3=ADsk=C3=A1v=C3=A1n=C3=AD nov=C3=BDch obch=
+odn=C3=ADch z=C3=A1kazn=C3=ADk=C5=AF.
 
-	because of partial LA57 convertion ..
+M=C5=AF=C5=BEeme si promluvit a poskytnout podrobnosti?
 
-> +	 * a false-positive out-of-bound report.
-> +	 *
-> +	 * Disable KASAN until the patching is complete.
-> +	 */
-> +	kasan_disable_current();
-> +
->  	/*
->  	 * The scan order should be from start to end. A later scanned
->  	 * alternative code can overwrite previously scanned alternative code.
-> @@ -452,6 +463,8 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
->  
->  		text_poke_early(instr, insn_buff, insn_buff_sz);
->  	}
-> +
-> +	kasan_enable_current();
->  }
+V p=C5=99=C3=ADpad=C4=9B z=C3=A1jmu V=C3=A1s bude kontaktovat n=C3=A1=C5=A1=
+ anglicky mluv=C3=ADc=C3=AD z=C3=A1stupce.
 
-Other than that, ACK.
+
+Pozdravy
+Lukas Varga
