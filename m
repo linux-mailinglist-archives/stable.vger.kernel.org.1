@@ -2,63 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 596AE7C55D5
-	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 15:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBE027C55EF
+	for <lists+stable@lfdr.de>; Wed, 11 Oct 2023 15:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232402AbjJKNr3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 09:47:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43730 "EHLO
+        id S232075AbjJKNz2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 09:55:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231879AbjJKNr2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 09:47:28 -0400
+        with ESMTP id S232213AbjJKNz1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 09:55:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD9593;
-        Wed, 11 Oct 2023 06:47:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71568C433C7;
-        Wed, 11 Oct 2023 13:47:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3649090;
+        Wed, 11 Oct 2023 06:55:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FF4C433C8;
+        Wed, 11 Oct 2023 13:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697032047;
-        bh=A5R1N4i5dYgS9Mh45qtMqLkrTE+4rVvgMDrLUY39uGY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nldvgnAGE1XBHU47MQmkFhIYbuKjLtxqWSDmAz9Db1SUruTak3jLR44Dt8b38UFFd
-         DLzBZ0xQ5BH5ugmpLGKRBOtgaqw0/ecFVVeymMLJ1xXn9uOSsH6X3dgo2YNWdabfBj
-         KGEc6FdLkjVFpG3AMgqoTiJviziNMx3uE6itxSy/nTcQGCHxgFMElf2KyRpDJLnPW0
-         5KU3unsV3htIRbC9l04Ui4aw+QT/xUl9D+w/Fq4FADx0//cYciW8hcGx5Z/ROw217h
-         etDpJHKXJMKctkVvDION9l+5uv69ubxQDyhaJ6iFtUpB0vjyjHgtyRQKSPVjFx3u4a
-         L6rrUNWwik2Ag==
-Date:   Wed, 11 Oct 2023 15:47:23 +0200
-From:   Frederic Weisbecker <frederic@kernel.org>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     Joel Fernandes <joel@joelfernandes.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Chengming Zhou <zhouchengming@bytedance.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ovidiu Panait <ovidiu.panait@windriver.com>,
-        Ingo Molnar <mingo@kernel.org>, rcu <rcu@vger.kernel.org>
-Subject: Re: [PATCH 5.15 000/183] 5.15.134-rc1 review
-Message-ID: <ZSana69n6RWgCnqi@localhost.localdomain>
-References: <20231004175203.943277832@linuxfoundation.org>
- <CA+G9fYunnEUT2evdabX1KOTiryP1heNHWDH4LWZCt2SVRmnKOA@mail.gmail.com>
- <20231006162038.d3q7sl34b4ouvjxf@revolver>
- <57c1ff4d-f138-4f89-8add-c96fb3ba6701@paulmck-laptop>
- <20231006175714.begtgj6wrs46ukmo@revolver>
- <7652477c-a37c-4509-9dc9-7f9d1dc08291@paulmck-laptop>
- <CAEXW_YS16NxPxg52T=3FcyZ2qocj36zKyhPnEQL3nBTbD-qJ-A@mail.gmail.com>
- <9470dab6-dee5-4505-95a2-f6782b648726@paulmck-laptop>
- <433f5823-059c-4b51-8d18-8b356a5a507f@paulmck-laptop>
+        s=k20201202; t=1697032524;
+        bh=bu5eBhwhfULEbVLtjkQ7jS6kUjdaiRIyYPhtQbetQXo=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=FS7tOU0u1A8rdy6h19ItvoCmfY6Wqef/Pk0gdNru63VmCgZQEXWL00+sKwWOp2CiX
+         MdrE/LlN8WWS8ZE6pR3KvATGnY9Uaf0OjTQX1ltljTkkdOkKRrKoXSFS7LoJdfRWMt
+         K6+mzVFt+WD8Wxl8B9PQjHU2IP4b3slxic6OYH43NYiVdkslCfqMLFdGQ+pp/BaC8W
+         c+Ht7+pQ6gq8BwLy6LLsAglepPR395DWLKmSb2L81MpkkUJgt70Gs11Sv0udGWxYdP
+         5OYSTwr0ClnjlAbg/PZ7msx45LHeBdDo4LnMmiYANohtflIQDoUXgxmR0eDgGu0/lK
+         o20Cl8blsqjuA==
+Message-ID: <bdf8dbb2e1aeeb6396d7a03b8c00d0db729c602d.camel@kernel.org>
+Subject: Re: [PATCH] KEYS: trusted: Rollback init_trusted() consistently
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        stable@vger.kernel.org, James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "open list:KEYS-TRUSTED" <linux-integrity@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Date:   Wed, 11 Oct 2023 16:55:20 +0300
+In-Reply-To: <CAFA6WYN0vXWZveAkzOfV_6Kki77SxgX7C=Xqe9brZMX1Dj2iLg@mail.gmail.com>
+References: <20231010231616.3122392-1-jarkko@kernel.org>
+         <CAFA6WYMdrCfqMVExYBbhCK7vUSQffyUfSWpQO0=HeQc6Edz9OA@mail.gmail.com>
+         <186a4b62517ead88df8c3c0e9e9585e88f9a6fd8.camel@kernel.org>
+         <0aeb4d88952aff53c5c1a40b547a9819ebd1947e.camel@kernel.org>
+         <CAFA6WYObvJvQv=-JJ5gnmFqJKbT=4JnT+ErC=iB1KfnYfVn7Ag@mail.gmail.com>
+         <79fe0b97e2f5d1f02d08c9f633b7c0da13dc9127.camel@kernel.org>
+         <CAFA6WYMrg3VBYvdV8Or==YK_qATk22bL+_ryDC-oO4jVf7DCWg@mail.gmail.com>
+         <b70d6be5980185a4fb4205e71c56111183e1f160.camel@kernel.org>
+         <CAFA6WYN0vXWZveAkzOfV_6Kki77SxgX7C=Xqe9brZMX1Dj2iLg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <433f5823-059c-4b51-8d18-8b356a5a507f@paulmck-laptop>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -69,91 +67,191 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Le Tue, Oct 10, 2023 at 06:34:35PM -0700, Paul E. McKenney a écrit :
-> If this problem is real, fixes include:
-> 
-> o	Revert Liam's patch and make Tiny RCU's call_rcu() deal with
-> 	the problem.  This is overhead and non-tinyness, but to Joel's
-> 	point, it might be best.
+On Wed, 2023-10-11 at 19:12 +0530, Sumit Garg wrote:
+> On Wed, 11 Oct 2023 at 18:36, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >=20
+> > On Wed, 2023-10-11 at 18:25 +0530, Sumit Garg wrote:
+> > > On Wed, 11 Oct 2023 at 18:07, Jarkko Sakkinen <jarkko@kernel.org> wro=
+te:
+> > > >=20
+> > > > On Wed, 2023-10-11 at 17:47 +0530, Sumit Garg wrote:
+> > > > > On Wed, 11 Oct 2023 at 16:04, Jarkko Sakkinen <jarkko@kernel.org>=
+ wrote:
+> > > > > >=20
+> > > > > > On Wed, 2023-10-11 at 13:12 +0300, Jarkko Sakkinen wrote:
+> > > > > > > On Wed, 2023-10-11 at 11:27 +0530, Sumit Garg wrote:
+> > > > > > > > On Wed, 11 Oct 2023 at 04:46, Jarkko Sakkinen <jarkko@kerne=
+l.org> wrote:
+> > > > > > > > >=20
+> > > > > > > > > Do bind neither static calls nor trusted_key_exit() befor=
+e a successful
+> > > > > > > > > init, in order to maintain a consistent state. In additio=
+n, depart the
+> > > > > > > > > init_trusted() in the case of a real error (i.e. getting =
+back something
+> > > > > > > > > else than -ENODEV).
+> > > > > > > > >=20
+> > > > > > > > > Reported-by: Linus Torvalds <torvalds@linux-foundation.or=
+g>
+> > > > > > > > > Closes: https://lore.kernel.org/linux-integrity/CAHk-=3Dw=
+hOPoLaWM8S8GgoOPT7a2+nMH5h3TLKtn=3DR_3w4R1_Uvg@mail.gmail.com/
+> > > > > > > > > Cc: stable@vger.kernel.org=C2=A0# v5.13+
+> > > > > > > > > Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted =
+keys framework")
+> > > > > > > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > > > > > > > > ---
+> > > > > > > > > =C2=A0security/keys/trusted-keys/trusted_core.c | 20 ++++=
+++++++----------
+> > > > > > > > > =C2=A01 file changed, 10 insertions(+), 10 deletions(-)
+> > > > > > > > >=20
+> > > > > > > > > diff --git a/security/keys/trusted-keys/trusted_core.c b/=
+security/keys/trusted-keys/trusted_core.c
+> > > > > > > > > index 85fb5c22529a..fee1ab2c734d 100644
+> > > > > > > > > --- a/security/keys/trusted-keys/trusted_core.c
+> > > > > > > > > +++ b/security/keys/trusted-keys/trusted_core.c
+> > > > > > > > > @@ -358,17 +358,17 @@ static int __init init_trusted(void=
+)
+> > > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!get_random)
+> > > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 get_random =3D kernel_get_random;
+> > > > > > > > >=20
+> > > > > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 static_call_update(trusted_key_seal,
+> > > > > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 trust=
+ed_key_sources[i].ops->seal);
+> > > > > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 static_call_update(trusted_key_unseal,
+> > > > > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 trust=
+ed_key_sources[i].ops->unseal);
+> > > > > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 static_call_update(trusted_key_get_random,
+> > > > > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 get_r=
+andom);
+> > > > > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 trusted_key_exit =3D trusted_key_sources[i].=
+ops->exit;
+> > > > > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 migratable =3D trusted_key_sources[i].ops->m=
+igratable;
+> > > > > > > > > -
+> > > > > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D trusted_key_sources[i].ops->init(=
+);
+> > > > > > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!ret)
+> > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!ret) {
+> > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 static_call_update(trusted_key_seal, trusted_key_sources[i].ops->seal);
+> > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 static_call_update(trusted_key_unseal, trusted_key_sources[i].ops->unse=
+al);
+> > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 static_call_update(trusted_key_get_random, get_random);
+> > > > > > > > > +
+> > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 trusted_key_exit =3D trusted_key_sources[i].ops->exit;
+> > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 migratable =3D trusted_key_sources[i].ops->migratable;
+> > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+> > > > > > > > > +
+> > > > > > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!ret || ret !=3D -ENODEV)
+> > > > > > > >=20
+> > > > > > > > As mentioned in the other thread, we should allow other tru=
+st sources
+> > > > > > > > to be initialized if the primary one fails.
+> > > > > > >=20
+> > > > > > > I sent the patch before I received that response but here's w=
+hat you
+> > > > > > > wrote:
+> > > > > > >=20
+> > > > > > > "We should give other trust sources a chance to register for =
+trusted
+> > > > > > > keys if the primary one fails."
+> > > > > > >=20
+> > > > > > > 1. This condition is lacking an inline comment.
+> > > > > > > 2. Neither this response or the one that you pointed out has =
+any
+> > > > > > > =C2=A0=C2=A0 explanation why for any system failure the proce=
+ss should
+> > > > > > > =C2=A0=C2=A0 continue.
+> > > > > > >=20
+> > > > > > > You should really know the situations (e.g. list of posix err=
+or
+> > > > > > > code) when the process can continue and "allow list" those. T=
+his
+> > > > > > > way way too abstract. It cannot be let all possible system fa=
+ilures
+> > > > > > > pass.
+> > > > > >=20
+> > > > > > And it would nice if it printed out something for legit cases. =
+Like
+> > > > > > "no device found" etc. And for rest it must really withdraw the=
+ whole
+> > > > > > process.
+> > > > >=20
+> > > > > IMO, it would be quite tricky to come up with an allow list. Can =
+we
+> > > > > keep "EACCES", "EPERM", "ENOTSUPP" etc in that allow list? I thin=
+k
+> > > > > these are all debatable.
+> > > >=20
+> > > > Yes, that does sounds reasonable.
+> > > >=20
+> > > > About the debate. Well, it is better eagerly block and tree falls d=
+own
+> > > > somewhere we can consider extending the list through a fix.
+> > > >=20
+> > > > This all wide open is worse than a few glitches somewhere, which ar=
+e
+> > > > trivial to fix.
+> > > >=20
+> > >=20
+> > > Fair enough, I would suggest we document it appropriately such that i=
+t
+> > > is clear to the users or somebody looking at the code.
+> >=20
+> > I went throught the backends on how they implement init:
+> >=20
+> > 1. Returns -ENODEV when it does not exist.
+> > 2. Calls driver_register(). Something is wrong enough if that
+> > =C2=A0=C2=A0 fails to rollback the whole procedure.
+> > 3. TPM: -ENODEV
+> >=20
+> > Therefore, I would keep in the existing patch since there is no weird
+> > uapi visible legacy behavior to support in the first place. And for
+> > that reason there is no good reason to have all those four POSIX rc's
+> > in the list.
+>=20
+> Okay I can live with this patch as long as it doesn't break the
+> intended use-case.
 
-But what is calling call_rcu() or start_poll_synchronize_rcu() so
-early that the CPU is not even online? (that's before boot_cpu_init() !)
+Well this sort of policy has been already existing for some time:
 
-Deferring PF_IDLE setting might pave the way for more issues like this one,
-present or future. Though is_idle_task() returning true when the task is not
-in the idle loop but is playing the init/0 role is debatable.
+	/*
+	 * encrypted_keys.ko depends on successful load of this module even if
+	 * trusted key implementation is not found.
+	 */
+	if (ret =3D=3D -ENODEV)
+		return 0;
 
-An alternative for tiny RCU is to force waking up ksoftirqd when call_rcu()
-is in the idle task. Since rcu_qs() during the context switch raises a softirq
-anyway. It's more overhead for start_poll_synchronize_rcu() though but do we
-expect much RCU polling in idle?
+If we would need a list of error codes, then this is also incorrect
+implementation because the error codes that you listed should be
+also success cases.
 
-diff --git a/include/linux/interrupt.h b/include/linux/interrupt.h
-index a92bce40b04b..6ab15233e2be 100644
---- a/include/linux/interrupt.h
-+++ b/include/linux/interrupt.h
-@@ -604,6 +604,7 @@ extern void __raise_softirq_irqoff(unsigned int nr);
- 
- extern void raise_softirq_irqoff(unsigned int nr);
- extern void raise_softirq(unsigned int nr);
-+extern void raise_ksoftirqd_irqsoff(unsigned int nr);
- 
- DECLARE_PER_CPU(struct task_struct *, ksoftirqd);
- 
-diff --git a/kernel/rcu/tiny.c b/kernel/rcu/tiny.c
-index 42f7589e51e0..872dab8b8b53 100644
---- a/kernel/rcu/tiny.c
-+++ b/kernel/rcu/tiny.c
-@@ -189,12 +189,12 @@ void call_rcu(struct rcu_head *head, rcu_callback_t func)
- 	local_irq_save(flags);
- 	*rcu_ctrlblk.curtail = head;
- 	rcu_ctrlblk.curtail = &head->next;
--	local_irq_restore(flags);
- 
- 	if (unlikely(is_idle_task(current))) {
- 		/* force scheduling for rcu_qs() */
--		resched_cpu(0);
-+		raise_ksoftirqd_irqsoff(RCU_SOFTIRQ);
- 	}
-+	local_irq_restore(flags);
- }
- EXPORT_SYMBOL_GPL(call_rcu);
- 
-@@ -225,10 +225,13 @@ EXPORT_SYMBOL_GPL(get_state_synchronize_rcu);
- unsigned long start_poll_synchronize_rcu(void)
- {
- 	unsigned long gp_seq = get_state_synchronize_rcu();
-+	unsigned long flags;
- 
- 	if (unlikely(is_idle_task(current))) {
-+		local_irq_save(flags);
- 		/* force scheduling for rcu_qs() */
--		resched_cpu(0);
-+		raise_ksoftirqd_irqsoff(RCU_SOFTIRQ);
-+		local_irq_restore(flags);
- 	}
- 	return gp_seq;
- }
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 210cf5f8d92c..ef105cbdc705 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -695,6 +695,14 @@ void __raise_softirq_irqoff(unsigned int nr)
- 	or_softirq_pending(1UL << nr);
- }
- 
-+#ifdef CONFIG_RCU_TINY
-+void raise_ksoftirqd(unsigned int nr)
-+{
-+	__raise_softirq_irqoff(nr);
-+	wakeup_softirqd();
-+}
-+#endif
-+
- void open_softirq(int nr, void (*action)(struct softirq_action *))
- {
- 	softirq_vec[nr].action = action;
-
-
-
-
+BR, Jarkko
