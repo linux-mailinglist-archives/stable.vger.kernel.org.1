@@ -2,116 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F4B7C7AA8
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 01:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 438137C7B3A
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 03:38:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229446AbjJLXzk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 19:55:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58776 "EHLO
+        id S229437AbjJMBh6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 21:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233273AbjJLXzj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 19:55:39 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C38E6C9
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 16:55:36 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d9a3e5f1742so2215525276.0
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 16:55:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697154936; x=1697759736; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rRFpSfD3/S1f+51RBc1Q00/a6mrqX0qyLC0gAl0w7Ek=;
-        b=vHvxivvysSMXs0PuGpNx5Y32XaiS8gUMZ6sGslnvJpkYgOWNnc2fpTvV0jFeNL6Y1Y
-         auoBMD0uLQtA1vfApxsBApO3ZJ5Vii8mBYApULaHIG5LZcoGWgRv7bLnOn4emnGwXfZc
-         GhgpTQP+5UowzlJ7d2qrrHTbLlaUxmiznooTfkoL9DxtYdw7y2pLsd7SFgsiA2BXqmVy
-         11yY7UB3ycmInpD3VxyfwNKdeoxpr/hpwb8Hte/dpoiMXp3vTm3ESQ16ImEOafFMfR9p
-         wwCul0u4JVjjiujtVJAINdx0gjFzf2KKM17GmTHi2Hc41QBCzxjS0Yi66fCRpXZljhPD
-         itXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697154936; x=1697759736;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rRFpSfD3/S1f+51RBc1Q00/a6mrqX0qyLC0gAl0w7Ek=;
-        b=dsx3qhKWtF4rSdVH9FNQ31aMSd8gkSlP1v9RAr77SrRMqJA0vvnn6REyZ7V+Gg5zj/
-         awgiOJgmYALXOjriwtknR7V2oRFBz9Nf3ot6l6x1CJWLLWOV4vVWi5y+Vrk8sDRV4eXt
-         7rv4Q9r0odTwdUbPrLISRpygLC/bQulkRBLUW1Z4BFHvvoYwg+9QLVVrjY25yyER1Ik+
-         Bqn9qYB+r3pAKGoo1mmFMiKEL13o6zyEP/MIWWK/8tCbL3/1eDOtFYwrStBrzMGw6HG9
-         pYxkcDpDfv8x0pK41btxIiIx2nL1vvuzISArOuRGbi2vuh06AJ6KliQdV8qC0e8lfafE
-         lnmg==
-X-Gm-Message-State: AOJu0Yw6NBrAOQruouQk9jSN3PJFboAPS7hqXen4BTXIYzb8m4EYf7Mv
-        /i0cF1UO4zYSMIQIVupJhzUmrf5hBBErR09vZrktNKwmozAGn7sD9QYHp6Cva7E3hEJymrovomt
-        /zRNNqNuTxykBIJqJTwxcs/TTFPnQmrv//L+y7sy3fiL6cpHQ4nqmrjQ5XyM=
-X-Google-Smtp-Source: AGHT+IFYoAeYyYWutnORTCIAhN3C8C2d+l5q+z2VDeMrfVWQ95sft0PsLPOZNM4LMBSooslPDszo6fZoaw==
-X-Received: from prohr-desktop.mtv.corp.google.com ([2620:15c:211:200:b3aa:6851:9f24:c50a])
- (user=prohr job=sendgmr) by 2002:a25:b08f:0:b0:d9a:4a62:69e9 with SMTP id
- f15-20020a25b08f000000b00d9a4a6269e9mr203374ybj.13.1697154935837; Thu, 12 Oct
- 2023 16:55:35 -0700 (PDT)
-Date:   Thu, 12 Oct 2023 16:55:24 -0700
-In-Reply-To: <20231012235524.2741092-1-prohr@google.com>
-Mime-Version: 1.0
-References: <20231012235524.2741092-1-prohr@google.com>
-X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-Message-ID: <20231012235524.2741092-4-prohr@google.com>
-Subject: [PATCH 3/3] net: release reference to inet6_dev pointer
-From:   Patrick Rohr <prohr@google.com>
-To:     stable@vger.kernel.org
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>,
-        Lorenzo Colitti <lorenzo@google.com>,
-        Patrick Rohr <prohr@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Simon Horman <horms@kernel.org>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        "David S . Miller" <davem@davemloft.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229436AbjJMBh6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 21:37:58 -0400
+Received: from correo1.cdmx.gob.mx (mtax.cdmx.gob.mx [189.240.235.197])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1CFFBB
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 18:37:56 -0700 (PDT)
+Received: from cdmx.gob.mx ([10.250.108.150])
+        by correo1.cdmx.gob.mx  with ESMTP id 39D1atu2007762-39D1atu4007762
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Thu, 12 Oct 2023 19:36:55 -0600
+Received: from cdmx.gob.mx (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTPS id 13B1B24514B;
+        Thu, 12 Oct 2023 17:08:23 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+        by cdmx.gob.mx (Postfix) with ESMTP id E109324581C;
+        Thu, 12 Oct 2023 17:08:22 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx E109324581C
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=cdmx.gob.mx; s=DKIM1; c=relaxed/relaxed;
+ h=content-type:mime-version:subject:to:from:date:reply-to:message-id;
+ bh=OozyC4KqQCm5C8N0odjjqaX2ICa3aEoB5tfAYnISOwY=;
+ b=H/S0Qrrp3LpYaSRDjEf4v6KVj904PWBHFEz44T4pNk4THuGLfgVhlwZ78qmYqePDBLmKKwumo4Oc
+        ITjru4WMfOAXNZIRqA1Nq6p+sLkVGrrXk+XPFyZ7hyLf/djK9jdGcGSRhHse7ylrgS2tE4zSV/Bg
+        BYRGATclVuXVaw7NFVONE27av38SIzDb8FpaR3l6OGtWDLl3UL4WFCi0WTkPAPHcSQsip4v7VHZy
+        IZcQHRh2B3yU9IN8o/pee0BtfVfGV5tGeKzihDZ9matcrCB5GuVTJzPOujeIQ6UPmGY29ClWMROF
+        Z3z+H71vE424X1XqCaE8Q1/kIiWPXLNdH/l31A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
+        s=2020J4N146MXCTY; t=1697148502;
+        bh=S/oI4wigMfgrbDjKznV/x5TSg+j0lTDG1iO6v8g0zuI=;
+        h=Content-Type:MIME-Version:Subject:To:From:Date:Reply-To:
+         Message-Id;
+        b=jUivdx3Six2hBkMO1EipBOZq9NJiam0Wq7wm+/geMH4XwjElZzfQ8Qdek4aGUUFFA
+         Kbr6ed6vr+fpW8hqUgnmOhNNwMHMsr4q5uW/zzfvDokaDUlrDgiT9r8SKcfGWo73Xx
+         nXri/O+cOcHjjW3hxlvjvUK7Z29k33zAexDXRYdg=
+X-Virus-Scanned: amavisd-new at cdmx.gob.mx
+Received: from cdmx.gob.mx ([127.0.0.1])
+        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id aKEXVF0zt4tD; Thu, 12 Oct 2023 17:08:22 -0500 (CDT)
+Received: from [192.168.8.123] (unknown [179.61.245.12])
+        by cdmx.gob.mx (Postfix) with ESMTPSA id 885BD2450DF;
+        Thu, 12 Oct 2023 17:08:04 -0500 (CDT)
+Content-Type: multipart/alternative; boundary="===============1806728007=="
+MIME-Version: 1.0
+Subject: $4.8 million dollars.
+To:     Recipients <ctrinidad@cdmx.gob.mx>
+From:   "Mr. Dennis Banfield" <ctrinidad@cdmx.gob.mx>
+Date:   Thu, 12 Oct 2023 16:08:26 -0700
+Reply-To: dbanfielddonation@gmail.com
+Message-Id: <20231012220804.885BD2450DF@cdmx.gob.mx>
+X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_60,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        HK_NAME_MR_MRS,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,SPF_HELO_NONE,
+        SPF_PASS,SUBJ_DOLLARS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+        *      [score: 0.6064]
+        *  0.1 SUBJ_DOLLARS Subject starts with dollar amount
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  1.0 HK_NAME_MR_MRS No description available.
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  2.5 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 5cb249686e67dbef3ffe53887fa725eefc5a7144 upstream.
+You will not see this in a MIME-aware mail reader.
+--===============1806728007==
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
 
-addrconf_prefix_rcv returned early without releasing the inet6_dev
-pointer when the PIO lifetime is less than accept_ra_min_lft.
+I have a donation of $4,800,000.00 dollars for you, I won the UK lottery Po=
+werball jackpot and I donated a part of it to charities. kindly contact me =
+for your donation via (dbanfielddonation@gmail.com) for your claim.
+--===============1806728007==
+Content-Type: text/plain; charset=utf-8
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
 
-Fixes: 5027d54a9c30 ("net: change accept_ra_min_rtr_lft to affect all RA li=
-fetimes")
-Cc: Maciej =C5=BBenczykowski <maze@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: Simon Horman <horms@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Maciej =C5=BBenczykowski <maze@google.com>
-Signed-off-by: Patrick Rohr <prohr@google.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
----
- net/ipv6/addrconf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I have a donation of $4,800,000.00 dollars for you, I won the UK lottery =
+Powerball jackpot and I donated a part of it to charities. kindly contact=
+ me for your donation via (dbanfielddonation@gmail.com)) for your claim.
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 0929439f5ac1..af92575d04e6 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -2737,7 +2737,7 @@ void addrconf_prefix_rcv(struct net_device *dev, u8 *=
-opt, int len, bool sllao)
- 	}
-=20
- 	if (valid_lft !=3D 0 && valid_lft < in6_dev->cnf.accept_ra_min_lft)
--		return;
-+		goto put;
-=20
- 	/*
- 	 *	Two things going on here:
---=20
-2.42.0.655.g421f12c284-goog
-
+--===============1806728007==--
