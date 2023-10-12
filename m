@@ -2,50 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FC3E7C62D0
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 04:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B66017C6318
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 04:52:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233994AbjJLCgy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 22:36:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38560 "EHLO
+        id S234008AbjJLCw3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 22:52:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233946AbjJLCgy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 22:36:54 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 186F4A4
-        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 19:36:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100F5C433CD;
-        Thu, 12 Oct 2023 02:36:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697078212;
-        bh=g5KiW0qunq9HcVtFqYCVKP79dY5DVTJYKJe1r5endNs=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=VKCrJxUj0vX8xmEBJQgAlzsNBnG4IbLSukEAqAk/trvtaaPqvIiKAuFErBkYDkX93
-         JVmdzEjmMM9kyItZOZg/nD28w86ewasl7F2B1D0B1lZLH7H2CjVY4kfdaiLZ+D38gW
-         eVnR2jyBmfpCY1IUAE0ZSeWJeiy8lRCUELYcaaeVVm+YSqM6fAd+TtFiz48R8whUVf
-         7DX9uPUT4bcg+CqhxsFElCSq3sLEgJ/B3WbWhqccY4oJeHF0LykK4GPKFIoebRHs3O
-         kBaT3Lgz+qD8la1oKVeQTT8l4ycfm6wBMIvY52u37o2D7LIoyPrzdv1jc6kKHFetQc
-         ZJXJTnElxasJQ==
-Message-ID: <23034522-699b-425f-951c-292730a42f30@kernel.org>
-Date:   Thu, 12 Oct 2023 11:36:50 +0900
+        with ESMTP id S234092AbjJLCw3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 22:52:29 -0400
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 029B8B6
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 19:52:04 -0700 (PDT)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1c434c33ec0so4003595ad.3
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 19:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1697079124; x=1697683924; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sgvsnkzJDg833cgyFUp1z86vPxjfwxf/muQwdEgBqiQ=;
+        b=Z9WSql7bGHPZdAz6v/B29fn2K1Zt9Uty13uWbxxm/Yjhq+4xxK7AMyc7229z3yreua
+         k02YAzkcd3XV+zWwqyt8TdGVTfPvJrlFjntXJ+91xXNDCfD5xbcvKkf9irYNOpzu+sSA
+         4RPKiYSZakga3PnPBephvwB49V5PUnNYA0EoE82glu6kvJ19VV1Iyd8O8wXoZjNDcO/1
+         rK0YJy4xMIfdJPRtoJMcBVEE5xQcAv60zbyBjNPCt7cgzZrHVNaJZf3hKkF54ltjuOlf
+         emOMj2B6cqBdx8S746CVV1C53snktBZb05QzcO2z21SGojs+iXrbULXhaXHmVLELGWOD
+         40Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697079124; x=1697683924;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=sgvsnkzJDg833cgyFUp1z86vPxjfwxf/muQwdEgBqiQ=;
+        b=BMC0zVQnsJkEfddQD628QLMy0Vw++SlD2ynO5/ecqPos8jtXCVmZ8WFCWYqDWPsZ6b
+         77JvisTBpoN/GiZF8Z/6LCwHcqpRHBL5snAhP5+PujfDR8SPHp0i1FRVwatCJ3yNetDC
+         NB58K8jJ0jtyM1Lsnxxcft/e1+t7xcEZiDzMH+XA3IIeqrlc4SP2AaUX1oNjhVy/7wfH
+         cgPymyvcCsh5nbt/bXwN1W6OQLcoOz5wOW4jOf40D0bQ+yiyft1K9wOQ/YnmWvlQIoDG
+         CXw7mIH2hveSh0gl6EepnAGdbFBty9oImJx/Nk+e2jCHuZNTyvcvg9HQ+1TfPTDMMMR8
+         dJ9w==
+X-Gm-Message-State: AOJu0YxBi80SjNjFwGo8pMyJ4ANSVAYv69ZKIaiGLjpuQ0hcG9XPd8//
+        9BLpYgZ0/gu6Ujfl+9D1DqzBBYJrs66tR6kjUsg=
+X-Google-Smtp-Source: AGHT+IE3KCzPp1Sgb0WmF/euQZXp9MPXqgBd3ibxjoqdrYsQ/KvMgeyxAyVFoIqIRbHcd59EcyjcRw==
+X-Received: by 2002:a17:902:c952:b0:1c0:d17a:bfef with SMTP id i18-20020a170902c95200b001c0d17abfefmr23975582pla.30.1697079124416;
+        Wed, 11 Oct 2023 19:52:04 -0700 (PDT)
+Received: from [10.84.144.218] ([203.208.167.147])
+        by smtp.gmail.com with ESMTPSA id ji20-20020a170903325400b001bbc8d65de0sm635992plb.67.2023.10.11.19.52.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Oct 2023 19:52:04 -0700 (PDT)
+Message-ID: <14679c1d-463c-4dfb-8ccb-8b58c9e36c36@bytedance.com>
+Date:   Thu, 12 Oct 2023 10:51:58 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] ata: libata-scsi: Disable scsi device"
- failed to apply to 6.5-stable tree
-Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     geert+renesas@glider.be, hare@suse.de, martin.petersen@oracle.com,
-        stable@vger.kernel.org
-References: <2023100421-numbness-pulsate-f83d@gregkh>
- <b779686d-07e6-50fb-5d94-80ebd5c9b13c@kernel.org>
- <2023100726-puppy-gutter-23af@gregkh>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <2023100726-puppy-gutter-23af@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Subject: Re: [PATCH] maple_tree: Add GFP_KERNEL to allocations in
+ mas_expected_entries()
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc:     maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        jason.sim@samsung.com, Andrew Morton <akpm@linux-foundation.org>
+References: <20231010141737.1592866-1-Liam.Howlett@oracle.com>
+From:   Peng Zhang <zhangpeng.00@bytedance.com>
+In-Reply-To: <20231010141737.1592866-1-Liam.Howlett@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,47 +73,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/7/23 20:35, Greg KH wrote:
-> On Thu, Oct 05, 2023 at 08:50:27AM +0900, Damien Le Moal wrote:
->> On 10/4/23 23:58, gregkh@linuxfoundation.org wrote:
->>>
->>> The patch below does not apply to the 6.5-stable tree.
->>> If someone wants it applied there, or to any other stable or longterm
->>> tree, then please email the backport, including the original git commit
->>> id to <stable@vger.kernel.org>.
->>>
->>> To reproduce the conflict and resubmit, you may use the following commands:
->>>
->>> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
->>> git checkout FETCH_HEAD
->>> git cherry-pick -x aa3998dbeb3abce63653b7f6d4542e7dcd022590
->>> # <resolve conflicts, build, test, etc.>
->>> git commit -s
->>> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100421-numbness-pulsate-f83d@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
->>>
->>> Possible dependencies:
->>
->> commit 3cc2ffe5c16dc65dfac354bc5b5bc98d3b397567
+
+
+在 2023/10/10 22:17, Liam R. Howlett 写道:
+> Users complained about OOM errors during fork without triggering
+> compaction.  This can be fixed by modifying the flags used in
+> mas_expected_entries() so that the compaction will be triggered in low
+> memory situations.  Since mas_expected_entries() is only used during
+> fork, the extra argument does not need to be passed through.
 > 
-> Ok, but that commit does not apply to 6.5.y either :(
+> Additionally, the testing in the maple tree fork testing needed to be
+> altered to use the correct locking type so that allocations would not
+> trigger sleeping and thus failures in the testing.  The additional
+> locking change requires rwsem support additions to the tools/ directory
+> through the use of pthreads pthread_rwlock_t.  With this change
+> test_maple_tree works in userspace, as a module, and in-kernel.
 > 
-> Can you send a working set of backports for 6.5.y if you want to see
-> this change there?
+> Users may notice that the system gave up early on attempting to start
+> new processes instead of attempting to reclaim memory.
+You still haven't updated check_forking() and bench_forking().
+It will still produce the same error as [1].
 
-Hi Greg,
-
-It looks like all the needed dependencies are now backported and this is the
-last fix patch that was needed. I did the above "git send-email ..." to send
-you the backport for 6.5.y and did the same for 6.1.y.
-
-Thanks !
-
+[1] https://lore.kernel.org/oe-lkp/202309242123.7ebe65b5-oliver.sang@intel.com/
 > 
-> thanks,
+> Link: https://lkml.kernel.org/r/20230915093243epcms1p46fa00bbac1ab7b7dca94acb66c44c456@epcms1p4
+> Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+> Cc: <stable@vger.kernel.org>
+> Cc: jason.sim@samsung.com
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> ---
+>   lib/maple_tree.c            |  2 +-
+>   lib/test_maple_tree.c       | 13 ++++++++----
+>   tools/include/linux/rwsem.h | 40 +++++++++++++++++++++++++++++++++++++
+>   3 files changed, 50 insertions(+), 5 deletions(-)
+>   create mode 100644 tools/include/linux/rwsem.h
 > 
-> greg k-h
-
--- 
-Damien Le Moal
-Western Digital Research
-
+> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> index 0e00a84e8e8f..bb24d84a4922 100644
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -5627,7 +5627,7 @@ int mas_expected_entries(struct ma_state *mas, unsigned long nr_entries)
+>   	/* Internal nodes */
+>   	nr_nodes += DIV_ROUND_UP(nr_nodes, nonleaf_cap);
+>   	/* Add working room for split (2 nodes) + new parents */
+> -	mas_node_count(mas, nr_nodes + 3);
+> +	mas_node_count_gfp(mas, nr_nodes + 3, GFP_KERNEL);
+>   
+>   	/* Detect if allocations run out */
+>   	mas->mas_flags |= MA_STATE_PREALLOC;
+> diff --git a/lib/test_maple_tree.c b/lib/test_maple_tree.c
+> index 06959165e2f9..204743bc161c 100644
+> --- a/lib/test_maple_tree.c
+> +++ b/lib/test_maple_tree.c
+> @@ -9,6 +9,7 @@
+>   
+>   #include <linux/maple_tree.h>
+>   #include <linux/module.h>
+> +#include <linux/rwsem.h>
+>   
+>   #define MTREE_ALLOC_MAX 0x2000000000000Ul
+>   #define CONFIG_MAPLE_SEARCH
+> @@ -2616,6 +2617,10 @@ static noinline void __init check_dup_gaps(struct maple_tree *mt,
+>   	void *tmp;
+>   	MA_STATE(mas, mt, 0, 0);
+>   	MA_STATE(newmas, &newmt, 0, 0);
+> +	struct rw_semaphore newmt_lock;
+> +
+> +	init_rwsem(&newmt_lock);
+> +	mt_set_external_lock(&newmt, &newmt_lock);
+>   
+>   	if (!zero_start)
+>   		i = 1;
+> @@ -2625,9 +2630,9 @@ static noinline void __init check_dup_gaps(struct maple_tree *mt,
+>   		mtree_store_range(mt, i*10, (i+1)*10 - gap,
+>   				  xa_mk_value(i), GFP_KERNEL);
+>   
+> -	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE);
+> +	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN);
+>   	mt_set_non_kernel(99999);
+> -	mas_lock(&newmas);
+> +	down_write(&newmt_lock);
+>   	ret = mas_expected_entries(&newmas, nr_entries);
+>   	mt_set_non_kernel(0);
+>   	MT_BUG_ON(mt, ret != 0);
+> @@ -2640,9 +2645,9 @@ static noinline void __init check_dup_gaps(struct maple_tree *mt,
+>   	}
+>   	rcu_read_unlock();
+>   	mas_destroy(&newmas);
+> -	mas_unlock(&newmas);
+>   
+> -	mtree_destroy(&newmt);
+> +	__mt_destroy(&newmt);
+> +	up_write(&newmt_lock);
+>   }
+>   
+>   /* Duplicate many sizes of trees.  Mainly to test expected entry values */
+> diff --git a/tools/include/linux/rwsem.h b/tools/include/linux/rwsem.h
+> new file mode 100644
+> index 000000000000..83971b3cbfce
+> --- /dev/null
+> +++ b/tools/include/linux/rwsem.h
+> @@ -0,0 +1,40 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +#ifndef _TOOLS__RWSEM_H
+> +#define _TOOLS__RWSEM_H
+> +
+> +#include <pthread.h>
+> +
+> +struct rw_semaphore {
+> +	pthread_rwlock_t lock;
+> +};
+> +
+> +static inline int init_rwsem(struct rw_semaphore *sem)
+> +{
+> +	return pthread_rwlock_init(&sem->lock, NULL);
+> +}
+> +
+> +static inline int exit_rwsem(struct rw_semaphore *sem)
+> +{
+> +	return pthread_rwlock_destroy(&sem->lock);
+> +}
+> +
+> +static inline int down_read(struct rw_semaphore *sem)
+> +{
+> +	return pthread_rwlock_rdlock(&sem->lock);
+> +}
+> +
+> +static inline int up_read(struct rw_semaphore *sem)
+> +{
+> +	return pthread_rwlock_unlock(&sem->lock);
+> +}
+> +
+> +static inline int down_write(struct rw_semaphore *sem)
+> +{
+> +	return pthread_rwlock_wrlock(&sem->lock);
+> +}
+> +
+> +static inline int up_write(struct rw_semaphore *sem)
+> +{
+> +	return pthread_rwlock_unlock(&sem->lock);
+> +}
+> +#endif /* _TOOLS_RWSEM_H */
