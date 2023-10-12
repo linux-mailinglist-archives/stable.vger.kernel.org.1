@@ -2,59 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2487C7AA6
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 01:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB4497C7AA7
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 01:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229511AbjJLXzf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 19:55:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46514 "EHLO
+        id S231468AbjJLXzi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 19:55:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjJLXze (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 19:55:34 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AC50B8
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 16:55:33 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d84acda47aeso2077327276.3
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 16:55:33 -0700 (PDT)
+        with ESMTP id S229446AbjJLXzh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 19:55:37 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EB63B8
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 16:55:35 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-59f61a639b9so23883867b3.1
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 16:55:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697154932; x=1697759732; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1697154934; x=1697759734; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=o5ij0e2kIxKCsiGg5rDfH3cgm5jv4V/QaqDvCqj59E0=;
-        b=M/hQfTE1c5sZI3eCSWlIuXQNXi9rtuzwcMKu76yhLOPdXJrrYvBpl+AVAIPpN/a3E6
-         pO6IchVS39kn5rm/OhXuDztaD23cFNcekvNI/2Rugt/bMmEjeTxD5SNzw5lNW6CmajVT
-         Kd7D7O3Ljf9MuppRXykJEOPFlb8NVT7mMB/DKuckuPWnlGkolaLiqm7alUbSu2isiZH+
-         GYWu5zLVQZ38xRlKKmHgP8Vpnoh/3xSlZ+k5HeO4IKfkYYfZS4WGOBEm1bMKiDzMGcJs
-         15sktcxBbhbdvn5RoicDQy+I+SCtH4z0NNjaTdviP/Vki29FUeqxote1GTRZi9K632B/
-         g7gw==
+        bh=mxivSMIyTIFxwCNFKBpdrdE5uKU58IrFWvwZ/1Ih78g=;
+        b=izFiorGySzIdQWPaUqG33JSSbjv1Mq8e+cfijFwxhQsfIMzfdILxO1J6CHHyMnU3uf
+         bs6mGi+GhKAgTPSZkJ1tZBo5gLIGnPqrxXlvGE2/7BcOT25DWFxi+ZPvMKLI1QYXua8i
+         WkS05GpJiUxnok0ne+za4vGoHeLC6Oz6Twu3ERMsJZYTO82laeaZv8rUD+DJ1lXUeYGJ
+         NeU7nSY5YoVsCJom+X1fU9we42+naOs9EGKvnIllFN+U9gc0/ax0aYiM+Gujpjs7SIhs
+         CBlmIPJBC7A+BMWU57mryRgbrWw7dBeRfbdtC2bZ4Ib1L0vvwnKLiIIWpghSQgx2VTT+
+         RVyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697154932; x=1697759732;
+        d=1e100.net; s=20230601; t=1697154934; x=1697759734;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=o5ij0e2kIxKCsiGg5rDfH3cgm5jv4V/QaqDvCqj59E0=;
-        b=Txbho4cl7vBptiExqdP0EczrkzviX2uMLYxCq0EijZVrLZWPDeIasbscbBAXnfZ0a4
-         gQlE5SUHl7Rv57/NQS6iyl+Jlf+26vpC/txvgVNc55mejEGLss9Xtyf9WTmY6+VN5Yc6
-         mJMD33Por3d2dB/WF5x2owTAeqRUk05HFsLk4f/L+yvBl6qIp59B8r5u9M8R6txQDsbj
-         GqSRKorDmugMzSBDoXR8RNP15IU1BrKFtLqCxPhUTTy2qvMjcpktwcbpZ02bFGLtYzRB
-         mV12lCFYMzSXx6L7G9FqmDZKGnfsdjuB4aM3ju39D+SoDrCtvCqmd7bvn2PNqZ+lN5O3
-         c2Tg==
-X-Gm-Message-State: AOJu0YzUSpb0ngdq3C6+noLQk6DVzhTTrAO//ok/N7zTr0dtaVLb8Xgo
-        Z+OfeANp8UtN1//COSigqNd/hIDYbyhjz4WuReNmf5oSxqRWCEI7iImk6E51xHlRuFSSdTIhAcv
-        /mObSUFQwkBhX/FVlLTr2W3Q2kdm2NYFCG30HvbENwZjmqQXgPGRdJQHhc/M=
-X-Google-Smtp-Source: AGHT+IHWYTsChXAef22zs2vFfrCVKLX43MoT2i/KGTJtKspDEZBaDBAoqgJu5rjilo/5l4GFrDvxfvrE+w==
+        bh=mxivSMIyTIFxwCNFKBpdrdE5uKU58IrFWvwZ/1Ih78g=;
+        b=BBCxkpphQDc0LM+/STwfDigdtmUcZlG1q2+6ZPeLlLWet7nUlhw2VjafpJ5dwJCBDs
+         dV/3a5f/HzzZFC+Mx71HU9GX2HCYwcWc3w4/gf+/eF1MszeHdNrWdQe3HldsYTWpm1tc
+         wZBfOgMmuACn18PktPyNh3ujMtwAZ2FiRRlKlhvyaX/nd6EermPdG47oFW1BuVukvwlv
+         axcOYnMvJsqtCvnYArkKQVFbuWZhbJ8ihfzZPOEfv9R5gO7+jQqXRC8qUWOfRoxPAegt
+         csGvjTzS39ElAQG1YMtvPNnFxADTQDPwoOBUR02oE3A0bvXkj0GPunaix7sbdZ+o0KMk
+         B9Yw==
+X-Gm-Message-State: AOJu0Yw3s89E7jLNM6xFomy3rBcwjbiieuxYU3dTQIh2FEMPOyh8tizA
+        sHzzIRB7XBo8xaJ89BzdLuWQjl1BqxJseXXc9Cg2V63aLVTtBDIEQtrIP0MikM204WMq4sVyxEB
+        cs9pkF29Yi+RFe18XiD2yEc+2rrUTgwPtQMY2vFshSaQSdVu9SoGm7xMOiAw=
+X-Google-Smtp-Source: AGHT+IHpDp/MxeVn+Osv2YNTFCmWEJ/VVAIe87efTqsj0lx00k0ljxJ2qskQ/iraxs0Z4qg5YT6HqACgDg==
 X-Received: from prohr-desktop.mtv.corp.google.com ([2620:15c:211:200:b3aa:6851:9f24:c50a])
- (user=prohr job=sendgmr) by 2002:a25:4056:0:b0:d9a:4f4c:961b with SMTP id
- n83-20020a254056000000b00d9a4f4c961bmr200447yba.1.1697154932062; Thu, 12 Oct
- 2023 16:55:32 -0700 (PDT)
-Date:   Thu, 12 Oct 2023 16:55:22 -0700
+ (user=prohr job=sendgmr) by 2002:a81:bd08:0:b0:59b:c811:a702 with SMTP id
+ b8-20020a81bd08000000b0059bc811a702mr527642ywi.6.1697154934124; Thu, 12 Oct
+ 2023 16:55:34 -0700 (PDT)
+Date:   Thu, 12 Oct 2023 16:55:23 -0700
 In-Reply-To: <20231012235524.2741092-1-prohr@google.com>
 Mime-Version: 1.0
 References: <20231012235524.2741092-1-prohr@google.com>
 X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-Message-ID: <20231012235524.2741092-2-prohr@google.com>
-Subject: [PATCH 1/3] net: add sysctl accept_ra_min_rtr_lft
+Message-ID: <20231012235524.2741092-3-prohr@google.com>
+Subject: [PATCH 2/3] net: change accept_ra_min_rtr_lft to affect all RA lifetimes
 From:   Patrick Rohr <prohr@google.com>
 To:     stable@vger.kernel.org
 Cc:     Greg KH <gregkh@linuxfoundation.org>,
@@ -62,7 +62,8 @@ Cc:     Greg KH <gregkh@linuxfoundation.org>,
         "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>,
         Lorenzo Colitti <lorenzo@google.com>,
         Patrick Rohr <prohr@google.com>,
-        "David S . Miller" <davem@davemloft.net>
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
@@ -75,153 +76,202 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 1671bcfd76fdc0b9e65153cf759153083755fe4c upstream.
+commit 5027d54a9c30bc7ec808360378e2b4753f053f25 upstream.
 
 (Backported without unnecessary UAPI portion.)
 
-This change adds a new sysctl accept_ra_min_rtr_lft to specify the
-minimum acceptable router lifetime in an RA. If the received RA router
-lifetime is less than the configured value (and not 0), the RA is
-ignored.
-This is useful for mobile devices, whose battery life can be impacted
-by networks that configure RAs with a short lifetime. On such networks,
-the device should never gain IPv6 provisioning and should attempt to
-drop RAs via hardware offload, if available.
+accept_ra_min_rtr_lft only considered the lifetime of the default route
+and discarded entire RAs accordingly.
 
-Signed-off-by: Patrick Rohr <prohr@google.com>
-Cc: Maciej =C5=BBenczykowski <maze@google.com>
+This change renames accept_ra_min_rtr_lft to accept_ra_min_lft, and
+applies the value to individual RA sections; in particular, router
+lifetime, PIO preferred lifetime, and RIO lifetime. If any of those
+lifetimes are lower than the configured value, the specific RA section
+is ignored.
+
+In order for the sysctl to be useful to Android, it should really apply
+to all lifetimes in the RA, since that is what determines the minimum
+frequency at which RAs must be processed by the kernel. Android uses
+hardware offloads to drop RAs for a fraction of the minimum of all
+lifetimes present in the RA (some networks have very frequent RAs (5s)
+with high lifetimes (2h)). Despite this, we have encountered networks
+that set the router lifetime to 30s which results in very frequent CPU
+wakeups. Instead of disabling IPv6 (and dropping IPv6 ethertype in the
+WiFi firmware) entirely on such networks, it seems better to ignore the
+misconfigured routers while still processing RAs from other IPv6 routers
+on the same network (i.e. to support IoT applications).
+
+The previous implementation dropped the entire RA based on router
+lifetime. This turned out to be hard to expand to the other lifetimes
+present in the RA in a consistent manner; dropping the entire RA based
+on RIO/PIO lifetimes would essentially require parsing the whole thing
+twice.
+
+Fixes: 1671bcfd76fd ("net: add sysctl accept_ra_min_rtr_lft")
 Cc: Lorenzo Colitti <lorenzo@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Patrick Rohr <prohr@google.com>
+Reviewed-by: Maciej =C5=BBenczykowski <maze@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230726230701.919212-1-prohr@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- Documentation/networking/ip-sysctl.rst |  8 ++++++++
- include/linux/ipv6.h                   |  1 +
- net/ipv6/addrconf.c                    |  9 +++++++++
- net/ipv6/ndisc.c                       | 18 ++++++++++++++++--
- 4 files changed, 34 insertions(+), 2 deletions(-)
+ Documentation/networking/ip-sysctl.rst |  8 ++++----
+ include/linux/ipv6.h                   |  2 +-
+ net/ipv6/addrconf.c                    | 11 +++++++----
+ net/ipv6/ndisc.c                       | 27 +++++++++++---------------
+ 4 files changed, 23 insertions(+), 25 deletions(-)
 
 diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/network=
 ing/ip-sysctl.rst
-index 7890b395e629..f0e875938bb7 100644
+index f0e875938bb7..7f75767a24f1 100644
 --- a/Documentation/networking/ip-sysctl.rst
 +++ b/Documentation/networking/ip-sysctl.rst
-@@ -2070,6 +2070,14 @@ accept_ra_min_hop_limit - INTEGER
+@@ -2070,11 +2070,11 @@ accept_ra_min_hop_limit - INTEGER
 =20
  	Default: 1
 =20
-+accept_ra_min_rtr_lft - INTEGER
-+	Minimum acceptable router lifetime in Router Advertisement.
-+
-+	RAs with a router lifetime less than this value shall be
-+	ignored. RAs with a router lifetime of 0 are unaffected.
-+
-+	Default: 0
-+
- accept_ra_pinfo - BOOLEAN
- 	Learn Prefix Information in Router Advertisement.
+-accept_ra_min_rtr_lft - INTEGER
+-	Minimum acceptable router lifetime in Router Advertisement.
++accept_ra_min_lft - INTEGER
++	Minimum acceptable lifetime value in Router Advertisement.
+=20
+-	RAs with a router lifetime less than this value shall be
+-	ignored. RAs with a router lifetime of 0 are unaffected.
++	RA sections with a lifetime less than this value shall be
++	ignored. Zero lifetimes stay unaffected.
+=20
+ 	Default: 0
 =20
 diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index d1f386430795..0e085d712296 100644
+index 0e085d712296..b6fb76568b01 100644
 --- a/include/linux/ipv6.h
 +++ b/include/linux/ipv6.h
-@@ -33,6 +33,7 @@ struct ipv6_devconf {
+@@ -33,7 +33,7 @@ struct ipv6_devconf {
  	__s32		accept_ra_defrtr;
  	__u32		ra_defrtr_metric;
  	__s32		accept_ra_min_hop_limit;
-+	__s32		accept_ra_min_rtr_lft;
+-	__s32		accept_ra_min_rtr_lft;
++	__s32		accept_ra_min_lft;
  	__s32		accept_ra_pinfo;
  	__s32		ignore_routes_with_linkdown;
  #ifdef CONFIG_IPV6_ROUTER_PREF
 diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 6572174e2115..3f7a0bc5f631 100644
+index 3f7a0bc5f631..0929439f5ac1 100644
 --- a/net/ipv6/addrconf.c
 +++ b/net/ipv6/addrconf.c
-@@ -209,6 +209,7 @@ static struct ipv6_devconf ipv6_devconf __read_mostly =
+@@ -209,7 +209,7 @@ static struct ipv6_devconf ipv6_devconf __read_mostly =
 =3D {
  	.ra_defrtr_metric	=3D IP6_RT_PRIO_USER,
  	.accept_ra_from_local	=3D 0,
  	.accept_ra_min_hop_limit=3D 1,
-+	.accept_ra_min_rtr_lft	=3D 0,
+-	.accept_ra_min_rtr_lft	=3D 0,
++	.accept_ra_min_lft	=3D 0,
  	.accept_ra_pinfo	=3D 1,
  #ifdef CONFIG_IPV6_ROUTER_PREF
  	.accept_ra_rtr_pref	=3D 1,
-@@ -268,6 +269,7 @@ static struct ipv6_devconf ipv6_devconf_dflt __read_mos=
+@@ -269,7 +269,7 @@ static struct ipv6_devconf ipv6_devconf_dflt __read_mos=
 tly =3D {
  	.ra_defrtr_metric	=3D IP6_RT_PRIO_USER,
  	.accept_ra_from_local	=3D 0,
  	.accept_ra_min_hop_limit=3D 1,
-+	.accept_ra_min_rtr_lft	=3D 0,
+-	.accept_ra_min_rtr_lft	=3D 0,
++	.accept_ra_min_lft	=3D 0,
  	.accept_ra_pinfo	=3D 1,
  #ifdef CONFIG_IPV6_ROUTER_PREF
  	.accept_ra_rtr_pref	=3D 1,
-@@ -6782,6 +6784,13 @@ static const struct ctl_table addrconf_sysctl[] =3D =
-{
- 		.mode		=3D 0644,
+@@ -2736,6 +2736,9 @@ void addrconf_prefix_rcv(struct net_device *dev, u8 *=
+opt, int len, bool sllao)
+ 		return;
+ 	}
+=20
++	if (valid_lft !=3D 0 && valid_lft < in6_dev->cnf.accept_ra_min_lft)
++		return;
++
+ 	/*
+ 	 *	Two things going on here:
+ 	 *	1) Add routes for on-link prefixes
+@@ -6785,8 +6788,8 @@ static const struct ctl_table addrconf_sysctl[] =3D {
  		.proc_handler	=3D proc_dointvec,
  	},
-+	{
-+		.procname	=3D "accept_ra_min_rtr_lft",
-+		.data		=3D &ipv6_devconf.accept_ra_min_rtr_lft,
-+		.maxlen		=3D sizeof(int),
-+		.mode		=3D 0644,
-+		.proc_handler	=3D proc_dointvec,
-+	},
  	{
- 		.procname	=3D "accept_ra_pinfo",
- 		.data		=3D &ipv6_devconf.accept_ra_pinfo,
+-		.procname	=3D "accept_ra_min_rtr_lft",
+-		.data		=3D &ipv6_devconf.accept_ra_min_rtr_lft,
++		.procname	=3D "accept_ra_min_lft",
++		.data		=3D &ipv6_devconf.accept_ra_min_lft,
+ 		.maxlen		=3D sizeof(int),
+ 		.mode		=3D 0644,
+ 		.proc_handler	=3D proc_dointvec,
 diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 3ab903f7e0f8..f19079c1b774 100644
+index f19079c1b774..856edbe81e11 100644
 --- a/net/ipv6/ndisc.c
 +++ b/net/ipv6/ndisc.c
-@@ -1223,6 +1223,8 @@ static void ndisc_router_discovery(struct sk_buff *sk=
+@@ -1223,8 +1223,6 @@ static void ndisc_router_discovery(struct sk_buff *sk=
 b)
  		return;
  	}
 =20
-+	lifetime =3D ntohs(ra_msg->icmph.icmp6_rt_lifetime);
-+
+-	lifetime =3D ntohs(ra_msg->icmph.icmp6_rt_lifetime);
+-
  	if (!ipv6_accept_ra(in6_dev)) {
  		ND_PRINTK(2, info,
  			  "RA: %s, did not accept ra for dev: %s\n",
-@@ -1230,6 +1232,13 @@ static void ndisc_router_discovery(struct sk_buff *s=
+@@ -1232,13 +1230,6 @@ static void ndisc_router_discovery(struct sk_buff *s=
 kb)
  		goto skip_linkparms;
  	}
 =20
-+	if (lifetime !=3D 0 && lifetime < in6_dev->cnf.accept_ra_min_rtr_lft) {
-+		ND_PRINTK(2, info,
-+			  "RA: router lifetime (%ds) is too short: %s\n",
-+			  lifetime, skb->dev->name);
-+		goto skip_linkparms;
-+	}
-+
+-	if (lifetime !=3D 0 && lifetime < in6_dev->cnf.accept_ra_min_rtr_lft) {
+-		ND_PRINTK(2, info,
+-			  "RA: router lifetime (%ds) is too short: %s\n",
+-			  lifetime, skb->dev->name);
+-		goto skip_linkparms;
+-	}
+-
  #ifdef CONFIG_IPV6_NDISC_NODETYPE
  	/* skip link-specific parameters from interior routers */
  	if (skb->ndisc_nodetype =3D=3D NDISC_NODETYPE_NODEFAULT) {
-@@ -1282,8 +1291,6 @@ static void ndisc_router_discovery(struct sk_buff *sk=
-b)
+@@ -1279,6 +1270,14 @@ static void ndisc_router_discovery(struct sk_buff *s=
+kb)
  		goto skip_defrtr;
  	}
 =20
--	lifetime =3D ntohs(ra_msg->icmph.icmp6_rt_lifetime);
--
- #ifdef CONFIG_IPV6_ROUTER_PREF
- 	pref =3D ra_msg->icmph.icmp6_router_pref;
- 	/* 10b is handled as if it were 00b (medium) */
-@@ -1430,6 +1437,13 @@ static void ndisc_router_discovery(struct sk_buff *s=
++	lifetime =3D ntohs(ra_msg->icmph.icmp6_rt_lifetime);
++	if (lifetime !=3D 0 && lifetime < in6_dev->cnf.accept_ra_min_lft) {
++		ND_PRINTK(2, info,
++			  "RA: router lifetime (%ds) is too short: %s\n",
++			  lifetime, skb->dev->name);
++		goto skip_defrtr;
++	}
++
+ 	/* Do not accept RA with source-addr found on local machine unless
+ 	 * accept_ra_from_local is set to true.
+ 	 */
+@@ -1437,13 +1436,6 @@ static void ndisc_router_discovery(struct sk_buff *s=
 kb)
  		goto out;
  	}
 =20
-+	if (lifetime !=3D 0 && lifetime < in6_dev->cnf.accept_ra_min_rtr_lft) {
-+		ND_PRINTK(2, info,
-+			  "RA: router lifetime (%ds) is too short: %s\n",
-+			  lifetime, skb->dev->name);
-+		goto out;
-+	}
-+
+-	if (lifetime !=3D 0 && lifetime < in6_dev->cnf.accept_ra_min_rtr_lft) {
+-		ND_PRINTK(2, info,
+-			  "RA: router lifetime (%ds) is too short: %s\n",
+-			  lifetime, skb->dev->name);
+-		goto out;
+-	}
+-
  #ifdef CONFIG_IPV6_ROUTE_INFO
  	if (!in6_dev->cnf.accept_ra_from_local &&
  	    ipv6_chk_addr(dev_net(in6_dev->dev), &ipv6_hdr(skb)->saddr,
+@@ -1468,6 +1460,9 @@ static void ndisc_router_discovery(struct sk_buff *sk=
+b)
+ 			if (ri->prefix_len =3D=3D 0 &&
+ 			    !in6_dev->cnf.accept_ra_defrtr)
+ 				continue;
++			if (ri->lifetime !=3D 0 &&
++			    ntohl(ri->lifetime) < in6_dev->cnf.accept_ra_min_lft)
++				continue;
+ 			if (ri->prefix_len < in6_dev->cnf.accept_ra_rt_info_min_plen)
+ 				continue;
+ 			if (ri->prefix_len > in6_dev->cnf.accept_ra_rt_info_max_plen)
 --=20
 2.42.0.655.g421f12c284-goog
 
