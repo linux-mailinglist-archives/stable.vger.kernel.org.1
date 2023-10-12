@@ -2,140 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D11287C670D
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 09:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D90487C67F4
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 10:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347188AbjJLHve (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 03:51:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55898 "EHLO
+        id S1347230AbjJLIBp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 04:01:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378046AbjJLHvd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 03:51:33 -0400
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C0FC9
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 00:51:29 -0700 (PDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-        by mout02.posteo.de (Postfix) with ESMTPS id BDE2C240103
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 09:51:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-        t=1697097087; bh=IKxDqpYuWFgY+jUM6aKU1g9Q72AhrBRR9A6f3L+3nBY=;
-        h=Message-ID:Subject:From:To:Cc:Date:Content-Transfer-Encoding:
-         MIME-Version:From;
-        b=iXUhG+Pe8MVO/M9kKMgYMuasYm4yDYOPNPDa+YS/e3AlA/syrxqAKHBDbpEV2666Y
-         KfZGKRhWDVLrlq37Yujf0eMVGmFaaE198XZcnAfXngqSpqR22BvRXGZRtwRwPAKy5h
-         2jgUS+OCJNJyvnXFHw7znCXJtUAQGNI4x3x/LIpsz0S2M77itz5XWmS23wsAz6/hgY
-         ytW7MouXGvF0vdGW86WYeLaFc9XsH92cch+RiVxGsAaK5t4yiJuYBTtie/c5cbeEzG
-         lc0kgXA/QWP2SvXwczb8y2vQtxofFwQjl5QHLKVPctkxQxP78pRK+kuMloOGOV5s53
-         OC+FaPWKOm1jg==
-Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 4S5hfQ5yxJz6txR;
-        Thu, 12 Oct 2023 09:51:26 +0200 (CEST)
-Message-ID: <15fd0e0400e5edab7f86e2f51ba3cb4faa52ed79.camel@posteo.de>
-Subject: Re: [PATCH] hid: lenovo: Resend all settings on reset_resume for
- compact keyboards
-From:   Martin Kepplinger <martink@posteo.de>
-To:     jikos@kernel.org, benjamin.tissoires@redhat.com, jm@lentin.co.uk,
-        linux-kernel@vger.kernel.org
-Cc:     linux-input@vger.kernel.org, stable@vger.kernel.org
-Date:   Thu, 12 Oct 2023 07:51:26 +0000
-In-Reply-To: <20231002150914.22101-1-martink@posteo.de>
-References: <20231002150914.22101-1-martink@posteo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S1343704AbjJLIBo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 04:01:44 -0400
+Received: from vulcan.natalenko.name (vulcan.natalenko.name [104.207.131.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF2390
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 01:01:41 -0700 (PDT)
+Received: from spock.localnet (unknown [94.142.239.106])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vulcan.natalenko.name (Postfix) with ESMTPSA id 37FDE153CACD;
+        Thu, 12 Oct 2023 10:01:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
+        s=dkim-20170712; t=1697097698;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=ym8znVE/KNVZ2ABkurRPnWvCdBcwyMiA231koj0IzME=;
+        b=RHv5a8hfYSsjGosuqXiM5HN4jBVFx9JzxhfRYPkbwVRUiakAp/Hupi2vIYb+4UPZc3sKSd
+        9NUE2039F9zJvlRGh3tY8xURchgzAgNstbmNDKkqwtbEYng4RqvFmbNzyALxU+QbluM9tv
+        G7di96YOnIw3j0q3NyvORUekdJK7uvM=
+From:   Oleksandr Natalenko <oleksandr@natalenko.name>
+To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+Subject: Re: [PATCH] drm: Do not overrun array in drm_gem_get_pages()
+Date:   Thu, 12 Oct 2023 10:01:23 +0200
+Message-ID: <2703014.mvXUDI8C0e@natalenko.name>
+In-Reply-To: <20231005135648.2317298-1-willy@infradead.org>
+References: <20231005135648.2317298-1-willy@infradead.org>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: multipart/signed; boundary="nextPart12302735.O9o76ZdvQC";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-QW0gTW9udGFnLCBkZW0gMDIuMTAuMjAyMyB1bSAxNTowOSArMDAwMCBzY2hyaWViIE1hcnRpbiBL
-ZXBwbGluZ2VyOgo+IEZyb206IEphbWllIExlbnRpbiA8am1AbGVudGluLmNvLnVrPgo+IAo+IFRo
-ZSBVU0IgQ29tcGFjdCBLZXlib2FyZCB2YXJpYW50IHJlcXVpcmVzIGEgcmVzZXRfcmVzdW1lIGZ1
-bmN0aW9uIHRvCj4gcmVzdG9yZSBrZXlib2FyZCBjb25maWd1cmF0aW9uIGFmdGVyIGEgc3VzcGVu
-ZCBpbiBzb21lIHNpdHVhdGlvbnMuCj4gTW92ZQo+IGNvbmZpZ3VyYXRpb24gbm9ybWFsbHkgZG9u
-ZSBvbiBwcm9iZSB0byBsZW5vdm9fZmVhdHVyZXNfc2V0X2NwdGtiZCgpLAo+IHRoZW4KPiByZWN5
-Y2xlIHRoaXMgZm9yIHVzZSBvbiByZXNldF9yZXN1bWUuCj4gCj4gV2l0aG91dCwgdGhlIGtleWJv
-YXJkIGFuZCBkcml2ZXIgd291bGQgZW5kIHVwIGluIGFuIGluY29uc2lzdGVudAo+IHN0YXRlLAo+
-IGJyZWFraW5nIG1pZGRsZS1idXR0b24gc2Nyb2xsaW5nIGFtb25nc3Qgb3RoZXIgcHJvYmxlbXMs
-IGFuZAo+IHR3aWRkbGluZwo+IHN5c2ZzIHZhbHVlcyB3b3VsZG4ndCBoZWxwIGFzIHRoZSBtaWRk
-bGUtYnV0dG9uIG1vZGUgd29uJ3QgYmUgc2V0Cj4gdW50aWwKPiB0aGUgZHJpdmVyIGlzIHJlbG9h
-ZGVkLgo+IAo+IFRlc3RlZCBvbiBhIFVTQiBhbmQgQmx1ZXRvb3RoIFRoaW5rcGFkIENvbXBhY3Qg
-S2V5Ym9hcmQuCj4gCj4gQ0M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPiBGaXhlczogOTRlZWZh
-MjcxMzIzICgiSElEOiBsZW5vdm86IFVzZSBuYXRpdmUgbWlkZGxlLWJ1dHRvbiBtb2RlIGZvcgo+
-IGNvbXBhY3Qga2V5Ym9hcmRzIikKPiBTaWduZWQtb2ZmLWJ5OiBKYW1pZSBMZW50aW4gPGptQGxl
-bnRpbi5jby51az4KPiBTaWduZWQtb2ZmLWJ5OiBNYXJ0aW4gS2VwcGxpbmdlciA8bWFydGlua0Bw
-b3N0ZW8uZGU+Cj4gLS0tCgpvayB3aG8gY291bGQgcmV2aWV3IGFuZCBwb3NzaWJseSBxdWV1ZSB0
-aGlzPyBUaGlzIGZpeGVzIGEgcHJldHR5CmFubm95aW5nIGJ1ZyBhbmQgbWFrZXMgdGhlIEtleWJv
-YXJkIHVzYWJsZSBhZnRlciByZXN1bWluZyBmcm9tIHN5c3RlbQpzdXNwZW5kLiBKaXJpIG9yIEJl
-bmphbWluPyBTaG91bGQgSSBhZGQgRG1pdHJ5PwoKdGhhbmtzIGEgbG90LAoKICAgICAgICAgICAg
-ICAgICAgICAgICAgIG1hcnRpbgoKCj4gwqBkcml2ZXJzL2hpZC9oaWQtbGVub3ZvLmMgfCA1MCAr
-KysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLQo+IC0tCj4gwqAxIGZpbGUgY2hh
-bmdlZCwgMzQgaW5zZXJ0aW9ucygrKSwgMTYgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBh
-L2RyaXZlcnMvaGlkL2hpZC1sZW5vdm8uYyBiL2RyaXZlcnMvaGlkL2hpZC1sZW5vdm8uYwo+IGlu
-ZGV4IDQ0NzYzYzBkYTQ0NC4uNjE0MzIwYmZmMzlmIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvaGlk
-L2hpZC1sZW5vdm8uYwo+ICsrKyBiL2RyaXZlcnMvaGlkL2hpZC1sZW5vdm8uYwo+IEBAIC01MjEs
-NiArNTIxLDE5IEBAIHN0YXRpYyB2b2lkIGxlbm92b19mZWF0dXJlc19zZXRfY3B0a2JkKHN0cnVj
-dAo+IGhpZF9kZXZpY2UgKmhkZXYpCj4gwqDCoMKgwqDCoMKgwqDCoGludCByZXQ7Cj4gwqDCoMKg
-wqDCoMKgwqDCoHN0cnVjdCBsZW5vdm9fZHJ2ZGF0YSAqY3B0a2JkX2RhdGEgPSBoaWRfZ2V0X2Ry
-dmRhdGEoaGRldik7Cj4gwqAKPiArwqDCoMKgwqDCoMKgwqAvKgo+ICvCoMKgwqDCoMKgwqDCoCAq
-IFRlbGwgdGhlIGtleWJvYXJkIGEgZHJpdmVyIHVuZGVyc3RhbmRzIGl0LCBhbmQgdHVybiBGNywK
-PiBGOSwgRjExIGludG8KPiArwqDCoMKgwqDCoMKgwqAgKiByZWd1bGFyIGtleXMKPiArwqDCoMKg
-wqDCoMKgwqAgKi8KPiArwqDCoMKgwqDCoMKgwqByZXQgPSBsZW5vdm9fc2VuZF9jbWRfY3B0a2Jk
-KGhkZXYsIDB4MDEsIDB4MDMpOwo+ICvCoMKgwqDCoMKgwqDCoGlmIChyZXQpCj4gK8KgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoGhpZF93YXJuKGhkZXYsICJGYWlsZWQgdG8gc3dpdGNoIEY3
-LzkvMTEgbW9kZTogJWRcbiIsCj4gcmV0KTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgLyogU3dpdGNo
-IG1pZGRsZSBidXR0b24gdG8gbmF0aXZlIG1vZGUgKi8KPiArwqDCoMKgwqDCoMKgwqByZXQgPSBs
-ZW5vdm9fc2VuZF9jbWRfY3B0a2JkKGhkZXYsIDB4MDksIDB4MDEpOwo+ICvCoMKgwqDCoMKgwqDC
-oGlmIChyZXQpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGhpZF93YXJuKGhkZXYs
-ICJGYWlsZWQgdG8gc3dpdGNoIG1pZGRsZSBidXR0b246Cj4gJWRcbiIsIHJldCk7Cj4gKwo+IMKg
-wqDCoMKgwqDCoMKgwqByZXQgPSBsZW5vdm9fc2VuZF9jbWRfY3B0a2JkKGhkZXYsIDB4MDUsIGNw
-dGtiZF9kYXRhLQo+ID5mbl9sb2NrKTsKPiDCoMKgwqDCoMKgwqDCoMKgaWYgKHJldCkKPiDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGhpZF9lcnIoaGRldiwgIkZuLWxvY2sgc2V0dGlu
-ZyBmYWlsZWQ6ICVkXG4iLCByZXQpOwo+IEBAIC0xMTI2LDIyICsxMTM5LDYgQEAgc3RhdGljIGlu
-dCBsZW5vdm9fcHJvYmVfY3B0a2JkKHN0cnVjdAo+IGhpZF9kZXZpY2UgKmhkZXYpCj4gwqDCoMKg
-wqDCoMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgaGlkX3NldF9kcnZkYXRhKGhkZXYsIGNwdGti
-ZF9kYXRhKTsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoC8qCj4gLcKgwqDCoMKgwqDCoMKgICogVGVs
-bCB0aGUga2V5Ym9hcmQgYSBkcml2ZXIgdW5kZXJzdGFuZHMgaXQsIGFuZCB0dXJuIEY3LAo+IEY5
-LCBGMTEgaW50bwo+IC3CoMKgwqDCoMKgwqDCoCAqIHJlZ3VsYXIga2V5cyAoQ29tcGFjdCBvbmx5
-KQo+IC3CoMKgwqDCoMKgwqDCoCAqLwo+IC3CoMKgwqDCoMKgwqDCoGlmIChoZGV2LT5wcm9kdWN0
-ID09IFVTQl9ERVZJQ0VfSURfTEVOT1ZPX0NVU0JLQkQgfHwKPiAtwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgaGRldi0+cHJvZHVjdCA9PSBVU0JfREVWSUNFX0lEX0xFTk9WT19DQlRLQkQpIHsKPiAtwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gbGVub3ZvX3NlbmRfY21kX2NwdGtiZCho
-ZGV2LCAweDAxLCAweDAzKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKHJl
-dCkKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGhpZF93
-YXJuKGhkZXYsICJGYWlsZWQgdG8gc3dpdGNoIEY3LzkvMTEKPiBtb2RlOiAlZFxuIiwgcmV0KTsK
-PiAtwqDCoMKgwqDCoMKgwqB9Cj4gLQo+IC3CoMKgwqDCoMKgwqDCoC8qIFN3aXRjaCBtaWRkbGUg
-YnV0dG9uIHRvIG5hdGl2ZSBtb2RlICovCj4gLcKgwqDCoMKgwqDCoMKgcmV0ID0gbGVub3ZvX3Nl
-bmRfY21kX2NwdGtiZChoZGV2LCAweDA5LCAweDAxKTsKPiAtwqDCoMKgwqDCoMKgwqBpZiAocmV0
-KQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBoaWRfd2FybihoZGV2LCAiRmFpbGVk
-IHRvIHN3aXRjaCBtaWRkbGUgYnV0dG9uOgo+ICVkXG4iLCByZXQpOwo+IC0KPiDCoMKgwqDCoMKg
-wqDCoMKgLyogU2V0IGtleWJvYXJkIHNldHRpbmdzIHRvIGtub3duIHN0YXRlICovCj4gwqDCoMKg
-wqDCoMKgwqDCoGNwdGtiZF9kYXRhLT5taWRkbGVidXR0b25fc3RhdGUgPSAwOwo+IMKgwqDCoMKg
-wqDCoMKgwqBjcHRrYmRfZGF0YS0+Zm5fbG9jayA9IHRydWU7Cj4gQEAgLTEyNjQsNiArMTI2MSwy
-NCBAQCBzdGF0aWMgaW50IGxlbm92b19wcm9iZShzdHJ1Y3QgaGlkX2RldmljZQo+ICpoZGV2LAo+
-IMKgwqDCoMKgwqDCoMKgwqByZXR1cm4gcmV0Owo+IMKgfQo+IMKgCj4gKyNpZmRlZiBDT05GSUdf
-UE0KPiArc3RhdGljIGludCBsZW5vdm9fcmVzZXRfcmVzdW1lKHN0cnVjdCBoaWRfZGV2aWNlICpo
-ZGV2KQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgc3dpdGNoIChoZGV2LT5wcm9kdWN0KSB7Cj4gK8Kg
-wqDCoMKgwqDCoMKgY2FzZSBVU0JfREVWSUNFX0lEX0xFTk9WT19DVVNCS0JEOgo+ICvCoMKgwqDC
-oMKgwqDCoGNhc2UgVVNCX0RFVklDRV9JRF9MRU5PVk9fVFBJSVVTQktCRDoKPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKGhkZXYtPnR5cGUgPT0gSElEX1RZUEVfVVNCTU9VU0Up
-Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBsZW5vdm9f
-ZmVhdHVyZXNfc2V0X2NwdGtiZChoZGV2KTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoGJyZWFrOwo+ICvCoMKgwqDCoMKgwqDCoGRlZmF1bHQ6Cj4gK8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoGJyZWFrOwo+ICvCoMKgwqDCoMKgwqDCoH0KPiArCj4gK8KgwqDCoMKg
-wqDCoMKgcmV0dXJuIDA7Cj4gK30KPiArI2VuZGlmCj4gKwo+IMKgc3RhdGljIHZvaWQgbGVub3Zv
-X3JlbW92ZV90cGtiZChzdHJ1Y3QgaGlkX2RldmljZSAqaGRldikKPiDCoHsKPiDCoMKgwqDCoMKg
-wqDCoMKgc3RydWN0IGxlbm92b19kcnZkYXRhICpkYXRhX3BvaW50ZXIgPSBoaWRfZ2V0X2RydmRh
-dGEoaGRldik7Cj4gQEAgLTEzODAsNiArMTM5NSw5IEBAIHN0YXRpYyBzdHJ1Y3QgaGlkX2RyaXZl
-ciBsZW5vdm9fZHJpdmVyID0gewo+IMKgwqDCoMKgwqDCoMKgwqAucmF3X2V2ZW50ID0gbGVub3Zv
-X3Jhd19ldmVudCwKPiDCoMKgwqDCoMKgwqDCoMKgLmV2ZW50ID0gbGVub3ZvX2V2ZW50LAo+IMKg
-wqDCoMKgwqDCoMKgwqAucmVwb3J0X2ZpeHVwID0gbGVub3ZvX3JlcG9ydF9maXh1cCwKPiArI2lm
-ZGVmIENPTkZJR19QTQo+ICvCoMKgwqDCoMKgwqDCoC5yZXNldF9yZXN1bWUgPSBsZW5vdm9fcmVz
-ZXRfcmVzdW1lLAo+ICsjZW5kaWYKPiDCoH07Cj4gwqBtb2R1bGVfaGlkX2RyaXZlcihsZW5vdm9f
-ZHJpdmVyKTsKPiDCoAoK
+--nextPart12302735.O9o76ZdvQC
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
+From: Oleksandr Natalenko <oleksandr@natalenko.name>
+Subject: Re: [PATCH] drm: Do not overrun array in drm_gem_get_pages()
+Date: Thu, 12 Oct 2023 10:01:23 +0200
+Message-ID: <2703014.mvXUDI8C0e@natalenko.name>
+In-Reply-To: <20231005135648.2317298-1-willy@infradead.org>
+References: <20231005135648.2317298-1-willy@infradead.org>
+MIME-Version: 1.0
+
+On =C4=8Dtvrtek 5. =C5=99=C3=ADjna 2023 15:56:47 CEST Matthew Wilcox (Oracl=
+e) wrote:
+> If the shared memory object is larger than the DRM object that it backs,
+> we can overrun the page array.  Limit the number of pages we install
+> from each folio to prevent this.
+>=20
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+> Link: https://lore.kernel.org/lkml/13360591.uLZWGnKmhe@natalenko.name/
+> Fixes: 3291e09a4638 ("drm: convert drm_gem_put_pages() to use a folio_bat=
+ch")
+> Cc: stable@vger.kernel.org # 6.5.x
+> ---
+>  drivers/gpu/drm/drm_gem.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+> index 6129b89bb366..44a948b80ee1 100644
+> --- a/drivers/gpu/drm/drm_gem.c
+> +++ b/drivers/gpu/drm/drm_gem.c
+> @@ -540,7 +540,7 @@ struct page **drm_gem_get_pages(struct drm_gem_object=
+ *obj)
+>  	struct page **pages;
+>  	struct folio *folio;
+>  	struct folio_batch fbatch;
+> -	int i, j, npages;
+> +	long i, j, npages;
+> =20
+>  	if (WARN_ON(!obj->filp))
+>  		return ERR_PTR(-EINVAL);
+> @@ -564,11 +564,13 @@ struct page **drm_gem_get_pages(struct drm_gem_obje=
+ct *obj)
+> =20
+>  	i =3D 0;
+>  	while (i < npages) {
+> +		long nr;
+>  		folio =3D shmem_read_folio_gfp(mapping, i,
+>  				mapping_gfp_mask(mapping));
+>  		if (IS_ERR(folio))
+>  			goto fail;
+> -		for (j =3D 0; j < folio_nr_pages(folio); j++, i++)
+> +		nr =3D min(npages - i, folio_nr_pages(folio));
+> +		for (j =3D 0; j < nr; j++, i++)
+>  			pages[i] =3D folio_file_page(folio, i);
+> =20
+>  		/* Make sure shmem keeps __GFP_DMA32 allocated pages in the
+>=20
+
+Gentle ping. It would be nice to have this picked so that it gets into the =
+stable kernel rather sooner than later.
+
+Thanks.
+
+=2D-=20
+Oleksandr Natalenko (post-factum)
+--nextPart12302735.O9o76ZdvQC
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmUnp9MACgkQil/iNcg8
+M0syoA//dDht5ZzqbjFSuWQmAUIPSUFsvQJN++9JIZ3meMgB/R8u8l0+hvQgo5pa
+SSOW/C6YPgDJn40fjQy/D+Z7WlbfpLdfm2SfE2TIvG2D87b1ve8iY2/Opk2LA9l5
+ezOWkm+M1Pq2Hrht7xiUGH4Y1WPuj4GRNl6ZAVQ0iLHUuFcNfcmio0lLY/z+1RN+
+6ODQv9nXMEhmsAWXQHNQ7PpJz0lyzYM8pe/CJM+gn1jtTBlIE9bN7AktIVR1XOvC
+7XMRiMbBKe7q/osmyDJ1VBgSn1EEWzupLnCwIjuLY0v9Hm7hTS030lbd0zUsiUe3
+PvtR96R+3udApMH0ch6bBBCuKjXSBoDlbtFrEgJy9UFlJsqvNyEipsYFRDe2qKJ7
+tNBOWQJCkTucQnn5e81XzzE429nqUYjUlR5qfYQF/sPXO7NewC1km/xO3bhePH3B
+vGOQAvpGrJ1llN8HQr3PNgDuviJIXqVSIGLvXLf/FdKlN6NmxOgQdeq0+BQq91dN
+s3J6ZxcGyoPt7y2WfY3ruExAl3lbpebYmK9Ti1O7mNpsIxdIl1gOkT3EtFICAIvJ
+rTz3ie7SKhie3FudN5ceC6s2/Di2k5ute1a2gVsKrbSMsAwxJczb2r/7H/EwGExw
+xMnCWyJ/SFIaxNcBIFTU7hQQcfbofJ7+Bf1mdhD6sCjfWfj0BwI=
+=Gk16
+-----END PGP SIGNATURE-----
+
+--nextPart12302735.O9o76ZdvQC--
+
+
 
