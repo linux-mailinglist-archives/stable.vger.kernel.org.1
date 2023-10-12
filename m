@@ -2,164 +2,210 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21F647C7836
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 22:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E48087C784A
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 23:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347412AbjJLUzi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 16:55:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51322 "EHLO
+        id S1347407AbjJLVBL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 17:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442825AbjJLUzf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 16:55:35 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2087.outbound.protection.outlook.com [40.107.237.87])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B145BA9;
-        Thu, 12 Oct 2023 13:55:33 -0700 (PDT)
+        with ESMTP id S1344156AbjJLVBJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 17:01:09 -0400
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2056.outbound.protection.outlook.com [40.107.241.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A13CE9D;
+        Thu, 12 Oct 2023 14:01:07 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aRZ7IjLiCH5DscXs0TT7+CrNK/CkSlHD1AtKb0xqdPRMIfF+slVI9rhGJXwVj/qo4Qe/1ZzEk4ZnClpZ/wrcsa0gYk4ZClxDbJrkufglprrvAlGKSqQMnZWZRORxgahBkWpQW+P15QnWzMghuTjO+zOXcLeiMYOeZjDPvrT17jpIf7Zv2gnT0jfGjjmK4uGNRk1G+OMZ2aYKf8WtQAKqjzLzjn1uHmgMMoALcFP00+2J42oWJyA9+ocAMdqo46kX1lmEWeBRFW8mkVHidpRID8wbOzaQWMRnBMHC1lnXZdWSaQGjQfrxNOxF9mUgCXA4hlsopfpPOpUEXu7cIeDaVA==
+ b=lLdPoUbrnWof0Hcr4oRYB3pHZaG/37gJq2ngrwv0x+PvKUZsPRTG26e43u+x5gB4jnMCOIuXMKEzbobEvjv+DWpbCsYvno4xOzIgWpMQkzJIuM28dVQYhMgKlYWLiYV9ku9k9i4S6YQpvErrugT4Nsc7zmVFTjuvQVnUhRkEd0cjfVQXX1RV1q1HEJ5sPiPhIl62lG0Lmv9Nszni48iWBb5GH+oMLv6lQLXTRBLRCVrRKn8bpJvb306n8mgduQcKpBp5wtSlhWgjxwz6hyF4sq2TEKMJdJn9SzzPClQSuDEFw5Hb6GbT9IBIwTmieiUrlPbvDu2ZrtwYOAEhU72glw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TyfoL0iPlA8kM6po6qheBTyPjy6eELp2BQtX+hf99II=;
- b=ZW4laYztgGuzq0r07VqWuLHBLPnOgXB8Yo+nNskAHH6W3aFLHg1XwmAeFWHsJFyox9a59mtWO9Laos34TJsCVl/E9nXmSk0o1pVW5mwm5dzFAHftb3wPiHGC3W/zR3DwvTTvPN/dD1zLTYiKkSqrF0xDK4svoVnu6aj4iaB2/ANdRkyNxoCFqsq25Co+i2ggNpR891Ee7Q1Zieghoz+9Bb3zJSvTjXxay9DCvUOGg/BlhQhuKb7CFxe6aNlRcC+0TXS1276icWpzDFUBbM6jpbOG37/Jcx7gJjKQeaJmejAQSCmAzrbHDO+tldGfQKkZkGOaAt0dqVHJ9fCyjDPzNw==
+ bh=SeBSR2Lk8RN0AqudQz9fzJa5uFU0XcIb1aME/+sZBqg=;
+ b=R3NjJFFWL8f+j6rvmhw6qAxUlIQUJ6P1TGBCqAevUL50RqSFOrh//Q+Z72pugZQ0Sl6wjkCPD16TgaxxVddGqBTWAFb60ayUy5EGr2BErhQt4ACEM7tCbzmveDRUx380xFn51XGox4hZFGFb4y2odCFAJ06im/eM1UcPhOr7YGNljY95BK7dNAuPXQN76R2magzLoQdMIO0FoPrpHahNW1X+8vBW1LjBNZLdR3g5JxE494Oh5mrvf9yEPr8I4qIuv9oTo2wFbkknTD1Zo4dqAj1dH5t2QCBFiFTUIFC1upvDx0j4ZtQFpMFsJZK+f/axUEY/1ej7Oc0uEz8ivb2HnA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ smtp.mailfrom=kunbus.com; dmarc=pass action=none header.from=kunbus.com;
+ dkim=pass header.d=kunbus.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kunbus.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TyfoL0iPlA8kM6po6qheBTyPjy6eELp2BQtX+hf99II=;
- b=fY2n+jky9vnlSQp1C0DBiOejQpzpAW0/87kVEYa8x58/1Geca5unHCK26OYd9F2ZU14YoDoerdGq/SA3PDE7q/t5Yx1/esoZDeIYPLJMh4Re4O2/dHU826dDbHqDYWR4h1cJvuN7fwqGaifspZ0ifVKttar8RCAJ7BnGnwrlEOQ=
+ bh=SeBSR2Lk8RN0AqudQz9fzJa5uFU0XcIb1aME/+sZBqg=;
+ b=SkG9y3pT1PaqBKEThvUGpGBQFhXTm6m/7f9uAFm9iTUAckMM0fyMXB87+9IMo7o8sE31o74VxhZMsUlkNchJHXTV0qN/bkt5dnncr+bLhRCfAVNPFchrwWqijIvlf82vJJsRvfiG4ifM7lHMCtkvZ2JwwPdMEY2h+lOmRk3fWYQ=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CO6PR12MB5427.namprd12.prod.outlook.com (2603:10b6:5:358::13)
- by BL1PR12MB5779.namprd12.prod.outlook.com (2603:10b6:208:392::9) with
+ header.d=none;dmarc=none action=none header.from=kunbus.com;
+Received: from VI1P193MB0413.EURP193.PROD.OUTLOOK.COM (2603:10a6:803:4e::14)
+ by AM9P193MB1619.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:30d::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.43; Thu, 12 Oct
- 2023 20:55:29 +0000
-Received: from CO6PR12MB5427.namprd12.prod.outlook.com
- ([fe80::121e:5e68:c78a:1f2f]) by CO6PR12MB5427.namprd12.prod.outlook.com
- ([fe80::121e:5e68:c78a:1f2f%3]) with mapi id 15.20.6863.043; Thu, 12 Oct 2023
- 20:55:29 +0000
-Message-ID: <e8a7daf5-3205-4103-a02e-59fe415e0be6@amd.com>
-Date:   Thu, 12 Oct 2023 16:55:24 -0400
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.45; Thu, 12 Oct
+ 2023 21:01:04 +0000
+Received: from VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
+ ([fe80::550d:2425:c0ed:3e59]) by VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
+ ([fe80::550d:2425:c0ed:3e59%3]) with mapi id 15.20.6863.032; Thu, 12 Oct 2023
+ 21:01:04 +0000
+Message-ID: <da9a9d10-2568-4960-b9f8-9d43cbc1b295@kunbus.com>
+Date:   Thu, 12 Oct 2023 23:01:01 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/edid: add 8 bpc quirk to the BenQ GW2765
+Subject: Re: [PATCH v3 3/6] serial: core: fix sanitizing check for RTS
+ settings
 Content-Language: en-US
-To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        dri-devel@lists.freedesktop.org
-Cc:     amd-gfx@lists.freedesktop.org,
-        Alex Deucher <alexander.deucher@amd.com>,
-        stable@vger.kernel.org,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>, linux-kernel@vger.kernel.org
-References: <20231012184927.133137-1-hamza.mahfooz@amd.com>
-From:   Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <20231012184927.133137-1-hamza.mahfooz@amd.com>
+To:     =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-serial <linux-serial@vger.kernel.org>,
+        LinoSanfilippo@gmx.de, Lukas Wunner <lukas@wunner.de>,
+        p.rosenberger@kunbus.com, stable@vger.kernel.org
+References: <20231011181544.7893-1-l.sanfilippo@kunbus.com>
+ <20231011181544.7893-4-l.sanfilippo@kunbus.com>
+ <40e4c6b1-e217-2926-a351-bf685a5b775f@linux.intel.com>
+From:   Lino Sanfilippo <l.sanfilippo@kunbus.com>
+In-Reply-To: <40e4c6b1-e217-2926-a351-bf685a5b775f@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBPR0101CA0272.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:68::13) To CO6PR12MB5427.namprd12.prod.outlook.com
- (2603:10b6:5:358::13)
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR4P281CA0095.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cb::6) To VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
+ (2603:10a6:803:4e::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO6PR12MB5427:EE_|BL1PR12MB5779:EE_
-X-MS-Office365-Filtering-Correlation-Id: d6d89916-7f27-47f6-d0ad-08dbcb65912f
+X-MS-TrafficTypeDiagnostic: VI1P193MB0413:EE_|AM9P193MB1619:EE_
+X-MS-Office365-Filtering-Correlation-Id: 31727f27-e1e7-4286-7ad9-08dbcb6658b3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ocyDXaRBjSAtntAXm/F/IshA6bq3KIymvKLBn/ATvXRGUns+wq5atkbVTarwc/Jl7fwQ7S20zNRRR0mszdbuZWk8Ynvh3gqQlVPv7BR/nC2AVN7iO7hmdSjPcTwsnXRjBrPVbvJGhVI2NNKJ4HhqpgFAw37zyH48/Zxid2lEmW9wwJdj1RA+Unkj90YxIOoveeXg2aUSd76v9wrr6oI3+ruzmOJKcc4jYX7SXYYV9q/+SL7O+0bemTQfimzyXzixwUL4zVzjjLDaxS0S7+gU/JEoQTnaprjdSrKbXAP16v9GisFrOD9d3uUnrZDWxh4JH5sZppmbW65aLDb+csjJm7z2UiRWwTNEf0yribhdtA/U8pxNYO8FTBBUJde/wFUqO7x48Am2UMOnnXB+QNS+AjxlyPA/dkNL9Y3hJs9wXjhB/FeOghrHJf3mkN98eZXXm0yw7xvkCXNdKCfKa89jVcL2TcvpW+mFSqDgiLPGCB9/0o4p4HwlL4WIaHnvRKEVKswp0aH3xvAynEZCSiXC1inoPMPijOhIGlhRVQsmifYCNpBseDIVXVv45aLpHdXIohN80L8+5kZhAoqaMFOUbxoobXFft71bhmZQY1ZssJAhxvW1NcOTle0wHyEF1lBn
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5427.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(346002)(396003)(366004)(39860400002)(230922051799003)(64100799003)(451199024)(186009)(1800799009)(31686004)(6512007)(53546011)(6506007)(6666004)(966005)(478600001)(6486002)(38100700002)(31696002)(36756003)(86362001)(4001150100001)(2906002)(5660300002)(316002)(83380400001)(2616005)(26005)(44832011)(54906003)(66556008)(66476007)(66946007)(8936002)(4326008)(8676002)(41300700001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 47VqCUhLefPOhWKR8EEGOC94/o4TSlgSOQTEfpa01rmqjfOSRlyVCD/OsP/k+03srFY8GMwY3I6Zk527PRRXb8QtgLnd8OqCb5gSqVRPQev6qudK+b9Unug3N8ePU7puBrgcD8M1eI0Ac43h+lM38ixoz7Q8EViFf2ziCYLH3Eivg2UN6iMf1DX76VRolEGd8d3rEaPgryELV6GKOI0aERYEt+DC8IORMQloZYNlS/Faa3kbQwtQUDCIDgSr7tgub4t8gTbe3GZpVks3AuBTp8ttdcGJ7ynUhyvetJYaKuK/bEC57NawxZgooEAJhjtiYqvmTHDniWGkccyaVqS3B8cyyKIQcZoq6Ncx97u7PkMnNr73UE8s4ZBnXo9xO3Awo10hB4JGHntSKacgrqdquCAyRnG3hyl6KQTIOb+q4Bv+clr9S002XnJ+iYDKej8dmSK2cKisIJfXu4zDlCNZxVRJsmxexDyINUbDRJfGgMeMcIw63vZJ+hNRZm7fctXW2xpuystgq72i8cawbYCPwWDzcwdoedRkX+B57ORJd6AA3bPUIFRKJaJReBx9By+4PewuktbXoZnrhtkNZWozEZD7NGyVpPr6djrUR7O67jT4+NOAiHmxdd4j53vAIoamg1AWxl01W4WhdLmoUs5M1w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1P193MB0413.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(396003)(346002)(39840400004)(136003)(366004)(376002)(230922051799003)(186009)(451199024)(64100799003)(1800799009)(7416002)(2906002)(86362001)(36756003)(31696002)(53546011)(38100700002)(316002)(2616005)(6916009)(41300700001)(54906003)(66476007)(66946007)(66556008)(31686004)(6666004)(6486002)(6506007)(478600001)(6512007)(5660300002)(83380400001)(52116002)(8936002)(8676002)(66574015)(4326008)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T3BqbXA5b0dmNVlIMU93MkdNcCt6QnV2WFh2NFdub29Xa0pHNXpiZTJtMEw0?=
- =?utf-8?B?MmZCejR5SjBoVkh6a2ovUVg0cXIyRmdubXVOSzRUOHJOcGQ5dE02RTZyWDNH?=
- =?utf-8?B?UGNmZHRNUXJoZE52d3BwcVc5RDNFRk5qT2V1Z0liNm03ZUV5ZWcybWhjekZV?=
- =?utf-8?B?bThEY1lFMlNjRU11Nm8yYkV0SVJBa01hZzhKSE44ZGhFMDZRNjk1VEFyWkRS?=
- =?utf-8?B?Wko0ajZyWGhsZlJpRjNoYUltUzVvWFZZS20rZkNYc1dRcEJjSmNveHdQaTNV?=
- =?utf-8?B?eDUwc0h0T2V0bXp4R0d2T2pQU1N0Qkg5WjdPU2R5V2VuOXNXaHEvbVZkdDZl?=
- =?utf-8?B?NjZkTmhLY054Yysxd1V3Z2ZTYXhLb1RmQXdRUVFQQ0srREFvbU1CWWJKdGk0?=
- =?utf-8?B?dDJNQ0k0MlVHRWRWTjZTQ3lWSVZtYTR0bElkeHhHZ0dKRDd6Rko2NFk0K25l?=
- =?utf-8?B?ZDM0Yjd3MTREWURGZUtheWJHeE5Tc01nakZTTWlYcHphWStmaE41MVlFelJM?=
- =?utf-8?B?K3ZoVzlDSklhUjRnS2dJOHFEMjVxbFpMVm9CdjVHMDFvZkV1TWxyWTBkaDg0?=
- =?utf-8?B?dzZpUDZXR2c2cENGalJnWk9NSkdPQTIyOTJrTHJwcU9DM0tEV2ZPR1g2UURX?=
- =?utf-8?B?TzdpMndGLzRwK29nQkRUQjRRd01aZnBPaWJWek9RbGxRYlJtWm56VXBoS1l3?=
- =?utf-8?B?dGU2cVNpend6ellkTnlLSWlLYTljQStXZkR4bmoxYVB0MkZWaTNGaGdkd2Jl?=
- =?utf-8?B?bmowM3FqZ1JaSFFNOWxQVFlrQ3ZIQmlHd2Z2SFpMYkNTck91bUFadzF3NzZk?=
- =?utf-8?B?cW04Qkg5dGxsZE1JN1REVEQvRG1JaTQ4c3ZUVW5FaXErSXVWN3Voc3lCcDZG?=
- =?utf-8?B?ZjR3VzVPY1B2Zk5ENDVMcFUyWWpWN2VTSVFJamFDSFdDbG9pWDZ3ejBjbDFI?=
- =?utf-8?B?cmswK0I1RVZzMkY2aGN3blBSUHFoS09HM1NTSmJQbkpqaGpZVWg0QXROWWhu?=
- =?utf-8?B?MXNzNmdTUHN0ajdxc1I3eUdrbm9hSURNN2FXdUNUZUNyN213VlVOVW82N1dQ?=
- =?utf-8?B?eExlR3Q1NCt4cjFpc2ZtQkcwR24yMG05ZEovTndEYnRsWTgvdGtaT0RrR0FH?=
- =?utf-8?B?cit5M0lOVDQvdVh6RUF4MjFjMTMrVjFtZ2RjcC9Ta3FDMGExQVhobGJnSHVr?=
- =?utf-8?B?ZWFTdTU4L3c4OTMzSFpSWk8xZFQyS1VEVkxVbmoyMlJ4dDJCQU9mOEM0d3c0?=
- =?utf-8?B?ZGViT3VuUGdWWTF5ODVpMTBJdkdZR2hFZG9WYnV5amRUZXZhTFBodytmcTZG?=
- =?utf-8?B?MEtsa1VucGJoQWM5VmdkQUZ5aWk2b1lrRUNYR0ZraVk3RHZnUVJrNzdHZDNT?=
- =?utf-8?B?R3JnNWZJaE9XWVlTQ3dKVng5UTRCd3FjZ21jQ24zZXVmODhkY2J0eTBndkJZ?=
- =?utf-8?B?bmk2bzJlRDFLbDJzSEFoamJKWGhBSGNBZ1ozVjhZenlSM2MzRjFYczlSTXJP?=
- =?utf-8?B?aEtBNFc1aVluZkZQcmppNloxalNyNDVRTThGamhPVm1RaStxRnl3ZDNBdkJF?=
- =?utf-8?B?QytYTWgramxGbzRYcmdmRFMzYjNhdDhMZmN3QmhxQncyTEFHZVpzYkU2dVBS?=
- =?utf-8?B?bjZBRFBobTMwNWIxRDlIS240SS9WaXBkb2JnbUpWY3ozTTlLWDNpQ1VuSUZZ?=
- =?utf-8?B?NXBjT3hwd3BnUmQ3eXVOU0RTZkl2NkRaUmVGNHhJdnBWWXdwcXdJTUIzbUJk?=
- =?utf-8?B?a0k3cldVanhzUTFoVS8xTVAwNDU4M3RrU3BZZG9rL2syam96aU1GSHBPeUxM?=
- =?utf-8?B?MWdNdGprSjVUN0t2cHJkbUhwdWVYN3VGeWRDdmtuSnRrbEJGS0tiQ0kxY0p0?=
- =?utf-8?B?VW9nK1B5cjN3SXNrT3Bqa0w3bCtEd01kMU43RkZGUnRndWlCUm0vY1FLYTJ1?=
- =?utf-8?B?Mjk2MXB5WXBDZVNvVDdZNnR2bGdhcFhQSkZKc3ViVUVxRzdJMkJNT29PSTlH?=
- =?utf-8?B?cmFHeVRsdTYxZWQrTjlRMzlqSHBWV3d2a1M4Zks5THdIR0NwNzQ0TmZxWmlW?=
- =?utf-8?B?OHZ5aDRsN1VYbWdXNmh0Z1Zqamx0TXJJK1VFV3huZTU4Qmx2c29PUThYV2JC?=
- =?utf-8?Q?wTaR5Pk/NuxGwJ1QmLDqCp/yK?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d6d89916-7f27-47f6-d0ad-08dbcb65912f
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5427.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MEJ5WHBuRTZDd1pNQnRLMnZKYjE3WmExM01aYWZSWDVvSEwrZEJvdEg1SWJH?=
+ =?utf-8?B?c0NkYUZDSWxsT2NNZmRkVEdYYzIvZ01KMEF5dm9VM0p1OXcxLyt2a0U2R3d5?=
+ =?utf-8?B?VnZoNEUreFI2MDcxZ2tzdlFVRkh3Y2JxemphMWhJTkJlZzhYb29oZGJVTC9l?=
+ =?utf-8?B?Nk9WUVVKRHUvay85b0d2cUlSRzdhTEowanRjWVBBejlJcWNOSXJqcWVhVXJl?=
+ =?utf-8?B?ckh0akpZUHhlemk2UWE2UkxUam5PNCtuVTlzZUxmU3ZjOG42NnRzYlM1OUpL?=
+ =?utf-8?B?SDAwL0lRQlVLVDZhL1hSeExZK05sOFNIc3dpU3VyMFV6VCt5SHBYVVQ4Z2FY?=
+ =?utf-8?B?NEJjQ3FkT3lEYlVWWGszN053WERmVmxFWUkwMjIxNDd5QWVaNmhkdE5GNlZV?=
+ =?utf-8?B?SEFQUDBLWTZoNGM5WGVydGE5YnRpalIxVkFkSVA0VlBJVkg1ck9OY1Bici9J?=
+ =?utf-8?B?bnFtTElSZXJSWEJKU2s5UFg4QnV4ZGJHbkEvOTJ3THlLNXhDZHkzd1dyTWIx?=
+ =?utf-8?B?OVJxTnFYeVhzUVFoNm9qQWRwaVo4bWFwTGhZVG9HaHJzVFo1OXVYV2p1bUsz?=
+ =?utf-8?B?UmhoQ01PTWpVU0hXR0ZqWU9aT1BlczZuTGVVYUYzM1h5b0c2bzZhZzZ1UndM?=
+ =?utf-8?B?UGVFZGRyUWtGWVV3L0xZb3I0WUlDdVZUM2pydnpNS3F4L3A4UTZMMDNSVTh5?=
+ =?utf-8?B?cU93RG5pL2tKZGM2a0p6aFRyekpyR2YzV1pIZUVINmUwSmlwVVRVQnVaWnVu?=
+ =?utf-8?B?YUZQbzRQRlVWZ25CUm1aZ0dtU0lJajdZZkhRbnorRmFqRjVlSkdPTXptc2lY?=
+ =?utf-8?B?Y1VMVktDZWM1RmRYVjZhN2g1UUpOUFRRZzM3OEdmdi9JZzlRNFpKQ25tbEZs?=
+ =?utf-8?B?WnJHMVM2VlJWeXYyamRBc3E3d1doWVFmbm1yc3VEVzA4UjU2UHVVdGVOa2I4?=
+ =?utf-8?B?N1A5ajYzZjRxSlIvUlJnR2VEWUx6U0RsSnNPZk9ob2N6TUV1WnkzelJRTXdn?=
+ =?utf-8?B?MFdJeWtXZGZtSkNQSkdmUmhtak0rK1QwUkdibXFSWUJlZ0tkc1pWZStyL00w?=
+ =?utf-8?B?QWloZzFZblNSRFBHTDB1TzVRSE5vQWxwZzZmZmZYQlBzR1NKS3QreFdRbm1p?=
+ =?utf-8?B?SkRMZmZ3SXhZMHJRSWR4bGFTRUJFNjFHNkdRMGVSZnNPVkZlM1BZbURxTSs3?=
+ =?utf-8?B?TFJFSCttbmZXVzVqaUd0czNpd0xRUEJScjV5RkdaZWRmbGsvL2d1MDF2NlRV?=
+ =?utf-8?B?UVdRclZBWnRaVVowbThtV3AraVFQMmNWUzZGQzVCakJveFpMUlRQUEhnVURa?=
+ =?utf-8?B?S0NOQTkvUzVyYUJjZkZiSUdWZFJOWlNRM2RBOUl0aHh0OWR6R09RSlMzRy85?=
+ =?utf-8?B?YngrK21YbmJpdmtxTCtEN1dxSjNzVExiWmxTbGNnMUNxdmdlYXFBenZvWHk2?=
+ =?utf-8?B?OGlOMVllZjdmRGhhRzJobEVJWlMvblRteGptSDNVZXhLemNGSWJBVU9ibjZC?=
+ =?utf-8?B?VnZ0T3RKZzNZOWU0TFhBR3pRNEh4MzlUTGpPYlZLZjVpWEZWcGRnNmFsSUNK?=
+ =?utf-8?B?T1BtelMzcFNHRU9mWWlSL3BpZEUvR1EwZ2hUaERGd3hINzdQNTNmM3o4anRp?=
+ =?utf-8?B?OEpITDFXV0NpbWhqeUFnd2dDNjVxbkwzdkdGQ1lCMzByVHNURGVjbkxveHdl?=
+ =?utf-8?B?QkxMNDhiU3J2dFhlY0YrQStuTzNkbDQ4cm1RTnhiV21qcFoxSkdDSUpQWFYz?=
+ =?utf-8?B?TkQrVUFtSTdmdk1xZU4yRGZiZFd4RDd6T1VxdE9JZW4zcUM4bElNQzk3aEVZ?=
+ =?utf-8?B?MEdsT0xMUTN2R1hINWNKQTVLV2dUL1Rpd0VFMEdtQmt0a0VlQnFTdEpWNlQ1?=
+ =?utf-8?B?TW9SRDNha1IycnFkc3lybHpnYjJEQmdTQ1hOL3NKTFY1Nmx5TVQ0YmJCV0Nt?=
+ =?utf-8?B?aldyYjNvWThuVEhnL25XdHM0eFFSQ0dnZC9FY2pCQVZiTG1vMTRjQnNudnF6?=
+ =?utf-8?B?VlFHaWZrWmUwVzNwVkI3TG11aCtSRjNybW1iZ0Z6N3BQdjhMVkg5Zmxtdk95?=
+ =?utf-8?B?U3RMT1lGUzgxOERHNnRFRjJQWlE3TjVDNUpqSjNyN3hVc2UzZGE3UjNkMkxO?=
+ =?utf-8?B?N1R2ZllWSXFtRm42aWJjYXFJenBoQVN6UGEwRVo2SlZzY3hxTFpyU0FhTzZW?=
+ =?utf-8?Q?b/KvMdvj6H9idurxVY0kzKcqIwP/sB2Qpw185JJlo8ba?=
+X-OriginatorOrg: kunbus.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31727f27-e1e7-4286-7ad9-08dbcb6658b3
+X-MS-Exchange-CrossTenant-AuthSource: VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2023 20:55:29.2922
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2023 21:01:04.2456
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: aaa4d814-e659-4b0a-9698-1c671f11520b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lZtzub8KISD5NFHbuo98oJl0i5QsHFrTPFM4cksWvGmXYiiHWyfoOSbew4n9ulLWtdt5Xo5t71CBIaIjp/NcgA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5779
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2mGoSCzxgoR32XVim/730bpdUa7uOJxjcHIVub49fUHY9ynd9hYQN54p9QtTyGJSp2xcmT0R2hqUYRScgY0J6Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9P193MB1619
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi,
 
+On 12.10.23 15:10, Ilpo Järvinen wrote:
 
-On 2023-10-12 14:49, Hamza Mahfooz wrote:
-> The BenQ GW2765 reports that it supports higher (> 8) bpc modes, but
-> when trying to set them we end up with a black screen. So, limit it to 8
-> bpc modes.
 > 
-> Cc: stable@vger.kernel.org # 6.5+
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2610
-> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-
-Harry
-
-> ---
->  drivers/gpu/drm/drm_edid.c | 3 +++
->  1 file changed, 3 insertions(+)
 > 
-> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-> index 0454da505687..bca2af4fe1fc 100644
-> --- a/drivers/gpu/drm/drm_edid.c
-> +++ b/drivers/gpu/drm/drm_edid.c
-> @@ -123,6 +123,9 @@ static const struct edid_quirk {
->  	/* AEO model 0 reports 8 bpc, but is a 6 bpc panel */
->  	EDID_QUIRK('A', 'E', 'O', 0, EDID_QUIRK_FORCE_6BPC),
->  
-> +	/* BenQ GW2765 */
-> +	EDID_QUIRK('B', 'N', 'Q', 0x78d6, EDID_QUIRK_FORCE_8BPC),
-> +
->  	/* BOE model on HP Pavilion 15-n233sl reports 8 bpc, but is a 6 bpc panel */
->  	EDID_QUIRK('B', 'O', 'E', 0x78b, EDID_QUIRK_FORCE_6BPC),
->  
+> On Wed, 11 Oct 2023, Lino Sanfilippo wrote:
+> 
+>> Among other things uart_sanitize_serial_rs485() tests the sanity of the RTS
+>> settings in a RS485 configuration that has been passed by userspace.
+>> If RTS-on-send and RTS-after-send are both set or unset the configuration
+>> is adjusted and RTS-after-send is disabled and RTS-on-send enabled.
+>>
+>> This however makes only sense if both RTS modes are actually supported by
+>> the driver.
+>>
+>> With commit be2e2cb1d281 ("serial: Sanitize rs485_struct") the code does
+>> take the driver support into account but only checks if one of both RTS
+>> modes are supported. This may lead to the errorneous result of RTS-on-send
+>> being set even if only RTS-after-send is supported.
+>>
+>> Fix this by changing the implemented logic: First clear all unsupported
+>> flags in the RS485 configuration, then adjust an invalid RTS setting by
+>> taking into account which RTS mode is supported.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: be2e2cb1d281 ("serial: Sanitize rs485_struct")
+>> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+>> ---
+>>  drivers/tty/serial/serial_core.c | 28 ++++++++++++++++++----------
+>>  1 file changed, 18 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+>> index 697c36dc7ec8..f4feebf8200f 100644
+>> --- a/drivers/tty/serial/serial_core.c
+>> +++ b/drivers/tty/serial/serial_core.c
+>> @@ -1370,19 +1370,27 @@ static void uart_sanitize_serial_rs485(struct uart_port *port, struct serial_rs4
+>>               return;
+>>       }
+>>
+>> +     rs485->flags &= supported_flags;
+>> +
+>>       /* Pick sane settings if the user hasn't */
+>> -     if ((supported_flags & (SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND)) &&
+>> -         !(rs485->flags & SER_RS485_RTS_ON_SEND) ==
+>> +     if (!(rs485->flags & SER_RS485_RTS_ON_SEND) ==
+>>           !(rs485->flags & SER_RS485_RTS_AFTER_SEND)) {
+>> -             dev_warn_ratelimited(port->dev,
+>> -                     "%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
+>> -                     port->name, port->line);
+>> -             rs485->flags |= SER_RS485_RTS_ON_SEND;
+>> -             rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+>> -             supported_flags |= SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND;
+>> -     }
+>> +             if (supported_flags & SER_RS485_RTS_ON_SEND) {
+>> +                     rs485->flags |= SER_RS485_RTS_ON_SEND;
+>> +                     rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+>>
+>> -     rs485->flags &= supported_flags;
+>> +                     dev_warn_ratelimited(port->dev,
+>> +                             "%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
+>> +                             port->name, port->line);
+>> +             } else {
+>> +                     rs485->flags |= SER_RS485_RTS_AFTER_SEND;
+>> +                     rs485->flags &= ~SER_RS485_RTS_ON_SEND;
+> 
+> So if neither of the flags is supported, what will happen? You might want
+> add if after that else?
+>
 
+I would consider this a bug in the driver, as at least one of both modes 
+has to be supported. If the driver does not have at least one of both flags
+set in rs485_supported.flags we could print a warning though. Would you prefer that?
+
+Regards,
+Lino
