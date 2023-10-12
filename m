@@ -2,144 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB8D57C6A63
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 12:04:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79C3A7C6AE4
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 12:22:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235611AbjJLKEj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 06:04:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43556 "EHLO
+        id S235644AbjJLKWw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 06:22:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235618AbjJLKEi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 06:04:38 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F951A9;
-        Thu, 12 Oct 2023 03:04:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697105076; x=1728641076;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=MYvAKDdK1BbhX247ponvSXkbWwL0F8DFfz3s+y5S/6A=;
-  b=HFpV/+3CBDf04+aVkrABphGBAWZjNx8q25IMzStybLeiNreelx7+n+Gq
-   jZR50QQEIM20CpK9+OfTaz6YB/k7zn4u/lsy0/hGI+y4CFD9RFUdPjv5/
-   nunh/62XYe/LsxFVSy/TYQzQDOLopsCRF5rEndkql02dOfKKK5y0ouggP
-   upXryH1GyKTxIn3K3XqGcBQMYD/M6i3Z+29j5P9/jOqpsgsFX2sJVUJpV
-   zntzp93yySzH4eLw8c7lRY3smu/VHTLD5uABXFQG9K2PcBqVMJEKY7qKk
-   9SAGin9aKdnAAUppCSC0zbQloq7J5oGKI9+SgmoEzXWNbEoUT0gx6aRTf
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="388744141"
-X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
-   d="scan'208";a="388744141"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 03:04:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10860"; a="789338995"
-X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
-   d="scan'208";a="789338995"
-Received: from nmalinin-mobl.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.58.130])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 03:04:31 -0700
-Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 3466E10A1B1; Thu, 12 Oct 2023 13:04:28 +0300 (+03)
-From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Fei Yang <fei.yang@intel.com>, stable@vger.kernel.org
-Subject: [PATCHv3] x86/alternatives: Disable KASAN in apply_alternatives()
-Date:   Thu, 12 Oct 2023 13:04:24 +0300
-Message-ID: <20231012100424.1456-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S234185AbjJLKWv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 06:22:51 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9136BA;
+        Thu, 12 Oct 2023 03:22:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3F0C433C7;
+        Thu, 12 Oct 2023 10:22:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697106168;
+        bh=jkOf6zlY3dtr1U4Md02h/jP/g3KZE/yyKcHPQfjlK0s=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=PK339P2K3E9NTHi9ntN7LB8zDL2x6BFpQ1YBKfS8tf3ZHOXhUbhgIZGcM2oH4BUIc
+         /WdG8pTlVKjRSppRGO4qtheNOjjUxHW5zfagcn6GZfqZIi+RCjyEmO/Kq6ilca7Y8E
+         AaFRljZJsQ3GTN9T1AG8lpSvOh6QNKb0qpZJGqzxy7o/O6dSx5uqGCkneqopWt26J5
+         idsRi3Zj+kD1MgoVDVZ7ya3CcnkOxUzbV9a8DzuYKMvBoBQXozZaUG3a5db/errAv6
+         AKj9HxBJkmGwU4L5MBh4xq01NvQuoHygWU2nkEeTLMXPU+3A6m1AON6/dfEBQbQqqW
+         TiCmpkyaNcfdw==
+From:   Lee Jones <lee@kernel.org>
+To:     Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Li Zetao <lizetao1@huawei.com>, linux-leds@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Christian Marangi <ansuelsmth@gmail.com>
+Cc:     stable@vger.kernel.org, kernel test robot <lkp@intel.com>
+In-Reply-To: <20231007131042.15032-1-ansuelsmth@gmail.com>
+References: <20231007131042.15032-1-ansuelsmth@gmail.com>
+Subject: Re: (subset) [net PATCH] leds: trigger: netdev: move size check in
+ set_device_name
+Message-Id: <169710616600.1174986.4498192566234857598.b4-ty@kernel.org>
+Date:   Thu, 12 Oct 2023 11:22:46 +0100
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Mailer: b4 0.12.2
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Fei has reported that KASAN triggers during apply_alternatives() on
-5-level paging machine:
+On Sat, 07 Oct 2023 15:10:42 +0200, Christian Marangi wrote:
+> GCC 13.2 complains about array subscript 17 is above array bounds of
+> 'char[16]' with IFNAMSIZ set to 16.
+> 
+> The warning is correct but this scenario is impossible.
+> set_device_name is called by device_name_store (store sysfs entry) and
+> netdev_trig_activate.
+> 
+> [...]
 
-	BUG: KASAN: out-of-bounds in rcu_is_watching
-	Read of size 4 at addr ff110003ee6419a0 by task swapper/0/0
-	...
-	__asan_load4
-	rcu_is_watching
-	trace_hardirqs_on
-	text_poke_early
-	apply_alternatives
-	...
+Applied, thanks!
 
-On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
-got patched. It includes KASAN code, where KASAN_SHADOW_START depends on
-__VIRTUAL_MASK_SHIFT, which is defined with the cpu_feature_enabled().
+[1/1] leds: trigger: netdev: move size check in set_device_name
+      commit: e0e29e434cdca9705eb420b3f26928444fa559f6
 
-KASAN gets confused when apply_alternatives() patches the
-KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
-static, by replacing __VIRTUAL_MASK_SHIFT with 56, fixes the issue.
-
-Disable KASAN while kernel patches alternatives.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reported-by: Fei Yang <fei.yang@intel.com>
-Fixes: 6657fca06e3f ("x86/mm: Allow to boot without LA57 if CONFIG_X86_5LEVEL=y")
-Cc: stable@vger.kernel.org
----
- v3:
-  - Summarize KASAN splat;
-  - Update comment in apply_alternatives();
-
- v2:
-  - Move kasan_disable/_enable_current() to cover whole loop, not only
-    text_poke_early();
-  - Adjust commit message.
----
- arch/x86/kernel/alternative.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 517ee01503be..73be3931e4f0 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -403,6 +403,17 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
- 	u8 insn_buff[MAX_PATCH_LEN];
- 
- 	DPRINTK(ALT, "alt table %px, -> %px", start, end);
-+
-+	/*
-+	 * In the case CONFIG_X86_5LEVEL=y, KASAN_SHADOW_START is defined using
-+	 * cpu_feature_enabled(X86_FEATURE_LA57) and is therefore patched here.
-+	 * During the process, KASAN becomes confused seeing partial LA57
-+	 * conversion and triggers a false-positive out-of-bound report.
-+	 *
-+	 * Disable KASAN until the patching is complete.
-+	 */
-+	kasan_disable_current();
-+
- 	/*
- 	 * The scan order should be from start to end. A later scanned
- 	 * alternative code can overwrite previously scanned alternative code.
-@@ -452,6 +463,8 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
- 
- 		text_poke_early(instr, insn_buff, insn_buff_sz);
- 	}
-+
-+	kasan_enable_current();
- }
- 
- static inline bool is_jcc32(struct insn *insn)
--- 
-2.41.0
+--
+Lee Jones [李琼斯]
 
