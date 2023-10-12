@@ -2,60 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FD507C6E08
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 14:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49C907C6E17
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 14:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233496AbjJLMZs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 08:25:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48046 "EHLO
+        id S233818AbjJLM1u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 08:27:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235709AbjJLMZr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 08:25:47 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871CFC4
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 05:25:45 -0700 (PDT)
+        with ESMTP id S235703AbjJLM1t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 08:27:49 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872FEBA
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 05:27:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697113545; x=1728649545;
+  t=1697113667; x=1728649667;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
   bh=12YDlU452yWeHUxH3GS+JkSXQ/N2pXQ+o9mGN91CCEE=;
-  b=GkIjBWP6h0eU5UbHZGAX/SEfC1qYKTKpKWYETTLejHBnfCnpgptm8d/z
-   x68/lQ1Bc5fgJojwYraiarghKd0je+Wcyj12bZOL6XAJkkn0J2QjusU8s
-   D1G6eB7MH/Li1231RBfSytmvpxt5OOO2jFB+98/Pu571GsDXfIru34ZJ2
-   siQwc8LW3t9C9p2dHKRz9CujBEgbYLrmahXJNm9KMv47KAfqQa3hjucKS
-   52HXYh042se/9iRaCCQ7jkIny74zwIDoJSDWpWGAuDHHXchd7gaNz2M7P
-   CZ4YJYD7t6ASHdk2G5kuQjQVZJM/NoLKP39k8L7ts9uD3T97w6uH7wbX9
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="364272736"
+  b=FYWv0tNxEdfTcRdfDnJfyRpCWblgcrK3nzVDaP2QJ1RFt96/52H0JYpI
+   C56nJp4381g/L9FPYPaglWj3m8UJESP0IYxnQoOJ/HcsuaaR5xpt0CF6S
+   EZffFA7xukRoehf1dcMiGBCi6nUlEdr76+qsapKrrfOwwnE2VD/4KfbPq
+   eS8m6w5jFNtqPxNsUtIF8PfXpmT+XQQ3sDCkQkXb1Vz2A56c8VokNFpM6
+   66fUZDXXbsBosaYnu/s/eL0VQZ+89BcS4FYLhHdV2fhYEBYwa2eNRGdSx
+   QjaLs9aCybT7HXyM3nZUafv5AqhCLVNXAFBIF3XWFOl2wmX9r0/9ntt3i
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="449094874"
 X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
-   d="scan'208";a="364272736"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 05:25:45 -0700
+   d="scan'208";a="449094874"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 05:27:47 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="824580583"
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="878082645"
 X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
-   d="scan'208";a="824580583"
+   d="scan'208";a="878082645"
 Received: from linux.intel.com ([10.54.29.200])
-  by fmsmga004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 05:25:44 -0700
+  by orsmga004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 05:27:46 -0700
 Received: from zlukwins-pc-neo.igk.intel.com (zlukwins-pc-neo.igk.intel.com [10.237.129.138])
-        by linux.intel.com (Postfix) with ESMTP id 3FB785807A3;
-        Thu, 12 Oct 2023 05:25:43 -0700 (PDT)
+        by linux.intel.com (Postfix) with ESMTP id B8A3F5807A3;
+        Thu, 12 Oct 2023 05:27:45 -0700 (PDT)
 From:   Zbigniew Lukwinski <zbigniew.lukwinski@linux.intel.com>
 To:     zbigelpl@gmail.com
 Cc:     Jan Kara <jack@suse.cz>, Eric Whitney <enwlinux@gmail.com>,
         stable@vger.kernel.org
 Subject: [PATCH 1/1] quota: Fix slow quotaoff
-Date:   Thu, 12 Oct 2023 14:25:33 +0200
-Message-Id: <20231012122533.1281864-2-zbigniew.lukwinski@linux.intel.com>
+Date:   Thu, 12 Oct 2023 14:27:40 +0200
+Message-Id: <20231012122740.1281902-2-zbigniew.lukwinski@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231012122533.1281864-1-zbigniew.lukwinski@linux.intel.com>
-References: <20231012122533.1281864-1-zbigniew.lukwinski@linux.intel.com>
+In-Reply-To: <20231012122740.1281902-1-zbigniew.lukwinski@linux.intel.com>
+References: <20231012122740.1281902-1-zbigniew.lukwinski@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
