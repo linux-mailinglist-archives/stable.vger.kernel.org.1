@@ -2,147 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4CA7C7606
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 20:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8F457C7614
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 20:43:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379690AbjJLSgz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 14:36:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50800 "EHLO
+        id S1441868AbjJLSnS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 14:43:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379714AbjJLSgu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 14:36:50 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2A53E8;
-        Thu, 12 Oct 2023 11:36:48 -0700 (PDT)
-Date:   Thu, 12 Oct 2023 18:36:46 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1697135807;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Pw7es2hh7qvHHY9PDbdAV77XkoPYW54NCoEKygSaPGA=;
-        b=obEgyN14FSYqYZ4k/o0BZYWyv892Xc8mH1ru52uWXOufIYANZm4Khh9yQ/PAwXKg1LW99v
-        JQHhxR74Um9OVmAzGQ7/S9ejMMjKb9/OTotrMYynzQs+DRx6jqwQGJoWmh3S3/klWAKbBI
-        usf9u2ZS7sAqr1+phY0ngH1HcE4kllUd8lFybyXcnnIwztvhEbvFOKg/68oGc1p5X9ByJR
-        InHWHJv7WS+w5tZuqj5e4BK+LZM8XDrgch1oiWIvYGJZGemMZklNQwr3sp6klKSVZB6Uhy
-        nPBd0h0QfLfMyxLU59Jn4dILqZlnpw1dnUoWsaEKMWxtoeIexGPcxjm6UmgI3g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1697135807;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Pw7es2hh7qvHHY9PDbdAV77XkoPYW54NCoEKygSaPGA=;
-        b=BK9Fm3pbkZP3Z70AdYJks9gghRogBj730FV1St1XIfoS3wM5MmF9E0CxWFujwqnltexNdV
-        CVxUzeY+odCHAyAA==
-From:   "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/alternatives: Disable KASAN in apply_alternatives()
-Cc:     Fei Yang <fei.yang@intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <20231012100424.1456-1-kirill.shutemov@linux.intel.com>
-References: <20231012100424.1456-1-kirill.shutemov@linux.intel.com>
+        with ESMTP id S1441821AbjJLSnR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 14:43:17 -0400
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1731DB7;
+        Thu, 12 Oct 2023 11:43:16 -0700 (PDT)
+Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-773ac11de71so83385385a.2;
+        Thu, 12 Oct 2023 11:43:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697136195; x=1697740995; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=G5vgE2fYXgKlfq4nH2TUkTSW1zkdBwLIEnXGe5BmWog=;
+        b=kkvrf9WxpDnYZVM9X1Ai3kCVyW2LzDsJU/Pw2yYXgIFa5NIJdInlUKmKYCQU5R9KO+
+         XJfeCGPYsbEiPn9+nH6HSas751dbK/5Ku+B17zgjTfvHjmN7jhCOFTHndVJw4EDarbh5
+         fg7mC+BGYvK2DctwJdgWL7KPkhZWaoC9BkfATDk4G9AFDU+8gKhfvQQtDHlWN2c20kKW
+         RIUbaBR4rhFEf6LVOb4huLpQrOOlys/MS4GcX6et5DxQCKOwc+cTR6wL0J3rYCc5sbMp
+         ae9cB91DJMsNXSJ/7xKFbthtQiCazsgzHERGJCQbzti/v/dkAzufZcp8lYkyErZT1aAi
+         FIEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697136195; x=1697740995;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=G5vgE2fYXgKlfq4nH2TUkTSW1zkdBwLIEnXGe5BmWog=;
+        b=P5FatIre245pFiehYJaK+qXyubCVOKboSWyvy8I9ouu4udKbA16lunrZ8BwUf1/yUQ
+         WHiEp3cn7/GWqoPGGhjYRvk++lYxOC7M2TU34RXdIdmvS8Kalcl7QNbZWXiLjSvVkm0W
+         O/tBkvOdYMUNdlcfNEZkKQfa+NNZiDklo4dqKWJrXcxPFlnRtxETXCRmsdgQCV+fbXoK
+         xidhjFYRLsIox4DR09VztJ9lO2WuOq811HqKbZcSV0rafETs7jma65yskgJSQhjox+Er
+         AOJqP6NxTOaHmBMgmUVKKpUrLvrQD8wbBLGFEyDIGZySApy60RKpGN2BX6K3ZMqhOqWY
+         A12g==
+X-Gm-Message-State: AOJu0YwQj7PZABKl6x9G0Cnpv3PpO722rQdM+ZO8n8uB9YpaoYIukLFq
+        r615b87TnDfLqXIYJZz2qAo=
+X-Google-Smtp-Source: AGHT+IGNXM1JbRwqsGrTfGInKbc4JVqtJUbsW3aoOcuBfbXiDeKITiAf0Ac6PH0/oHGa+6LYWwyvLQ==
+X-Received: by 2002:a05:620a:4106:b0:76f:1614:576b with SMTP id j6-20020a05620a410600b0076f1614576bmr29725754qko.1.1697136195052;
+        Thu, 12 Oct 2023 11:43:15 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id pa25-20020a05620a831900b00772662b7804sm6205838qkn.100.2023.10.12.11.43.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Oct 2023 11:43:14 -0700 (PDT)
+Message-ID: <1638385d-a5b3-40ab-ae0c-25b53d761336@gmail.com>
+Date:   Thu, 12 Oct 2023 11:43:09 -0700
 MIME-Version: 1.0
-Message-ID: <169713580687.3135.7724105544670888547.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 0/6] 6.1.58-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20231012180030.112560642@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20231012180030.112560642@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+On 10/12/23 11:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.58 release.
+> There are 6 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 14 Oct 2023 18:00:23 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.58-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Commit-ID:     d35652a5fc9944784f6f50a5c979518ff8dacf61
-Gitweb:        https://git.kernel.org/tip/d35652a5fc9944784f6f50a5c979518ff8dacf61
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Thu, 12 Oct 2023 13:04:24 +03:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 12 Oct 2023 20:27:16 +02:00
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-x86/alternatives: Disable KASAN in apply_alternatives()
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-Fei has reported that KASAN triggers during apply_alternatives() on
-a 5-level paging machine:
-
-	BUG: KASAN: out-of-bounds in rcu_is_watching()
-	Read of size 4 at addr ff110003ee6419a0 by task swapper/0/0
-	...
-	__asan_load4()
-	rcu_is_watching()
-	trace_hardirqs_on()
-	text_poke_early()
-	apply_alternatives()
-	...
-
-On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
-gets patched. It includes KASAN code, where KASAN_SHADOW_START depends on
-__VIRTUAL_MASK_SHIFT, which is defined with cpu_feature_enabled().
-
-KASAN gets confused when apply_alternatives() patches the
-KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
-static, by replacing __VIRTUAL_MASK_SHIFT with 56, works around the issue.
-
-Fix it for real by disabling KASAN while the kernel is patching alternatives.
-
-[ mingo: updated the changelog ]
-
-Fixes: 6657fca06e3f ("x86/mm: Allow to boot without LA57 if CONFIG_X86_5LEVEL=y")
-Reported-by: Fei Yang <fei.yang@intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231012100424.1456-1-kirill.shutemov@linux.intel.com
----
- arch/x86/kernel/alternative.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 517ee01..73be393 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -403,6 +403,17 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
- 	u8 insn_buff[MAX_PATCH_LEN];
- 
- 	DPRINTK(ALT, "alt table %px, -> %px", start, end);
-+
-+	/*
-+	 * In the case CONFIG_X86_5LEVEL=y, KASAN_SHADOW_START is defined using
-+	 * cpu_feature_enabled(X86_FEATURE_LA57) and is therefore patched here.
-+	 * During the process, KASAN becomes confused seeing partial LA57
-+	 * conversion and triggers a false-positive out-of-bound report.
-+	 *
-+	 * Disable KASAN until the patching is complete.
-+	 */
-+	kasan_disable_current();
-+
- 	/*
- 	 * The scan order should be from start to end. A later scanned
- 	 * alternative code can overwrite previously scanned alternative code.
-@@ -452,6 +463,8 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
- 
- 		text_poke_early(instr, insn_buff, insn_buff_sz);
- 	}
-+
-+	kasan_enable_current();
- }
- 
- static inline bool is_jcc32(struct insn *insn)
