@@ -2,241 +2,272 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D2E17C6D72
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 13:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FD507C6E08
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 14:25:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379381AbjJLLz7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 07:55:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44022 "EHLO
+        id S233496AbjJLMZs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 08:25:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378908AbjJLLza (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 07:55:30 -0400
-Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 941F74EE3
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 04:53:36 -0700 (PDT)
-Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-7a8b839fc0aso362091241.3
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 04:53:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697111615; x=1697716415; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uv9vHkm6rlhqB3eHJ86eScSsXZykNgvtMNnhRbSwb6o=;
-        b=KNq3aLG5WU0RhR6RsZSEMyJ+nn2EiEQUps29WZauwyyaRn+1LtLBb3eCn0cEpdvfag
-         zqG279FbV3tjptLTH6BubdsyhDKaoYxOl89XXsqUPkTt3I1jrt0pYw57OObu8OGIOQkg
-         rL3rb4JuWO/MW9JLBv0k3La5x/ZvauMn/WMKEhPRZclYDVfILOoCIE+x3PMvLJGUvS2J
-         GKwQoBOSckWhWQCUg9IKlJxJdOL0blt10tO9MgB4suQk5ceUbNtd2AzgGjMvwss09wYP
-         26IByvGd8e6TPNDg5UBHU73htQihdchOOo2fJixR9xWSAbc2P7JVGxFYmhLWOJN/1IU5
-         dQ2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697111615; x=1697716415;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uv9vHkm6rlhqB3eHJ86eScSsXZykNgvtMNnhRbSwb6o=;
-        b=ZCrOgcAq118MtlX0tFBonDly1y7bEcF+TiUpiHDFc7ZhOPOgDk5YdMu2VxOwxSCqZD
-         izc5qQXPzjfrqLarntuIMKX8Wf6lDPPpXA9mtG1jkmOjHBTIosoNjUMhHboJgJvbHnMT
-         lWVX0J6lE6ekWrJa8fob65jPmUsIvpczIHvkacip3iIbrLyAlkobQac/vZ2L6oNpi/UM
-         8bdVXyi0Hw5ZD1AvaveGK7AmARpfkDNlGNrzgaQhfxCow2uQLKv8rrmWFRiWAyTfcY3u
-         V304nCFs/ID3NQ+cwhgBBs6H7Mc6/JkwCUfAxQIyk64SOTIuMzl+sqN0Fb7Olr8T0vtQ
-         NkDA==
-X-Gm-Message-State: AOJu0YwKdFEuOm8dfbNaRcRVMEtDerf4hz/omf2swPTs9ETW43uue6A4
-        sWR8z+spT1sYr37syJG87XlulYLUgNnWfm2unAREZw==
-X-Google-Smtp-Source: AGHT+IE4+mLf1JSjcXv5Ud8DXgBA8a5MsJy7HXzQtqp53gl0Z3tCSOjgWaBGlr7tOrGVn8mXv33WJyYCoTo2fOmevZw=
-X-Received: by 2002:a05:6102:534:b0:44e:a18a:2507 with SMTP id
- m20-20020a056102053400b0044ea18a2507mr18640066vsa.0.1697111614902; Thu, 12
- Oct 2023 04:53:34 -0700 (PDT)
+        with ESMTP id S235709AbjJLMZr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 08:25:47 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871CFC4
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 05:25:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697113545; x=1728649545;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=12YDlU452yWeHUxH3GS+JkSXQ/N2pXQ+o9mGN91CCEE=;
+  b=GkIjBWP6h0eU5UbHZGAX/SEfC1qYKTKpKWYETTLejHBnfCnpgptm8d/z
+   x68/lQ1Bc5fgJojwYraiarghKd0je+Wcyj12bZOL6XAJkkn0J2QjusU8s
+   D1G6eB7MH/Li1231RBfSytmvpxt5OOO2jFB+98/Pu571GsDXfIru34ZJ2
+   siQwc8LW3t9C9p2dHKRz9CujBEgbYLrmahXJNm9KMv47KAfqQa3hjucKS
+   52HXYh042se/9iRaCCQ7jkIny74zwIDoJSDWpWGAuDHHXchd7gaNz2M7P
+   CZ4YJYD7t6ASHdk2G5kuQjQVZJM/NoLKP39k8L7ts9uD3T97w6uH7wbX9
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="364272736"
+X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
+   d="scan'208";a="364272736"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 05:25:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="824580583"
+X-IronPort-AV: E=Sophos;i="6.03,218,1694761200"; 
+   d="scan'208";a="824580583"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmsmga004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Oct 2023 05:25:44 -0700
+Received: from zlukwins-pc-neo.igk.intel.com (zlukwins-pc-neo.igk.intel.com [10.237.129.138])
+        by linux.intel.com (Postfix) with ESMTP id 3FB785807A3;
+        Thu, 12 Oct 2023 05:25:43 -0700 (PDT)
+From:   Zbigniew Lukwinski <zbigniew.lukwinski@linux.intel.com>
+To:     zbigelpl@gmail.com
+Cc:     Jan Kara <jack@suse.cz>, Eric Whitney <enwlinux@gmail.com>,
+        stable@vger.kernel.org
+Subject: [PATCH 1/1] quota: Fix slow quotaoff
+Date:   Thu, 12 Oct 2023 14:25:33 +0200
+Message-Id: <20231012122533.1281864-2-zbigniew.lukwinski@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231012122533.1281864-1-zbigniew.lukwinski@linux.intel.com>
+References: <20231012122533.1281864-1-zbigniew.lukwinski@linux.intel.com>
 MIME-Version: 1.0
-References: <20230424131121.155649464@linuxfoundation.org> <CA+G9fYstB_fROK9LHYuQ8dc2ArieGGAW_x69eEX-eAi5xMeE3Q@mail.gmail.com>
- <20230426170945.0ec0f1ef@gandalf.local.home> <20230426181415.17c893f5@gandalf.local.home>
- <CA+G9fYtd=dJEM=+xOHA9Egs88r+gEfrnW_gFnTFm4of5uTQ7mA@mail.gmail.com>
- <CA+G9fYt518bg10DVo=ag=iGB8dj_NQZEmEty1CdkU3Cj+gtW0w@mail.gmail.com>
- <2023101132-playable-flagstick-1abf@gregkh> <2023101125-subpanel-enviably-28cd@gregkh>
- <20231011104529.75f53d4b@gandalf.local.home>
-In-Reply-To: <20231011104529.75f53d4b@gandalf.local.home>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 12 Oct 2023 17:23:23 +0530
-Message-ID: <CA+G9fYuvtzQxL=RQ=zQB_Bn+-dcGwvXVnfHPqMaQHA-L5ydj4w@mail.gmail.com>
-Subject: Re: [PATCH 4.19 00/29] 4.19.282-rc1 review
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 11 Oct 2023 at 20:14, Steven Rostedt <rostedt@goodmis.org> wrote:
->
-> On Wed, 11 Oct 2023 11:05:48 +0200
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->
-> > > Ok, I'll queue it up now, I didn't realize it needed to be there, sorry.
-> >
-> > Nope, I can't, it doesn't apply there, so I need a backported, and
-> > TESTED version, for 5.4.y and 4.19.y if anyone wants to see it there.
->
-> This is a quick backport for 4.19 as the conflict seemed to be due to added
-> code that is unrelated to this change. I built and booted it, but it should
-> have more testing.
->
-> Naresh, if you want this in 4.19, please run it through your tests and give
-> your tested by.
->
-> Greg, please do not take it until Naresh has tested it.
+From: Jan Kara <jack@suse.cz>
 
-Below patch applied and tested on top of stable rc branches
- - v4.19.296
- - v5.4.258
+Eric has reported that commit dabc8b207566 ("quota: fix dqput() to
+follow the guarantees dquot_srcu should provide") heavily increases
+runtime of generic/270 xfstest for ext4 in nojournal mode. The reason
+for this is that ext4 in nojournal mode leaves dquots dirty until the last
+dqput() and thus the cleanup done in quota_release_workfn() has to write
+them all. Due to the way quota_release_workfn() is written this results
+in synchronize_srcu() call for each dirty dquot which makes the dquot
+cleanup when turning quotas off extremely slow.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+To be able to avoid synchronize_srcu() for each dirty dquot we need to
+rework how we track dquots to be cleaned up. Instead of keeping the last
+dquot reference while it is on releasing_dquots list, we drop it right
+away and mark the dquot with new DQ_RELEASING_B bit instead. This way we
+can we can remove dquot from releasing_dquots list when new reference to
+it is acquired and thus there's no need to call synchronize_srcu() each
+time we drop dq_list_lock.
 
-> diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-> index 2d182dc1b49e..01bde6dec13a 100644
-> --- a/drivers/cpuidle/cpuidle.c
-> +++ b/drivers/cpuidle/cpuidle.c
-> @@ -140,13 +140,14 @@ static void enter_s2idle_proper(struct cpuidle_driver *drv,
->          * executing it contains RCU usage regarded as invalid in the idle
->          * context, so tell RCU about that.
->          */
-> -       RCU_NONIDLE(tick_freeze());
-> +       tick_freeze();
->         /*
->          * The state used here cannot be a "coupled" one, because the "coupled"
->          * cpuidle mechanism enables interrupts and doing that with timekeeping
->          * suspended is generally unsafe.
->          */
->         stop_critical_timings();
-> +       rcu_idle_enter();
->         drv->states[index].enter_s2idle(dev, drv, index);
->         if (WARN_ON_ONCE(!irqs_disabled()))
->                 local_irq_disable();
-> @@ -155,7 +156,8 @@ static void enter_s2idle_proper(struct cpuidle_driver *drv,
->          * first CPU executing it calls functions containing RCU read-side
->          * critical sections, so tell RCU about that.
->          */
-> -       RCU_NONIDLE(tick_unfreeze());
-> +       rcu_idle_exit();
-> +       tick_unfreeze();
->         start_critical_timings();
->
->         time_end = ns_to_ktime(local_clock());
-> @@ -224,16 +226,18 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
->         /* Take note of the planned idle state. */
->         sched_idle_set_state(target_state);
->
-> -       trace_cpu_idle_rcuidle(index, dev->cpu);
-> +       trace_cpu_idle(index, dev->cpu);
->         time_start = ns_to_ktime(local_clock());
->
->         stop_critical_timings();
-> +       rcu_idle_enter();
->         entered_state = target_state->enter(dev, drv, index);
-> +       rcu_idle_exit();
->         start_critical_timings();
->
->         sched_clock_idle_wakeup_event();
->         time_end = ns_to_ktime(local_clock());
-> -       trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, dev->cpu);
-> +       trace_cpu_idle(PWR_EVENT_EXIT, dev->cpu);
->
->         /* The cpu is no longer idle or about to enter idle. */
->         sched_idle_set_state(NULL);
-> diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-> index 44a17366c8ec..4e3d149d64ad 100644
-> --- a/kernel/sched/idle.c
-> +++ b/kernel/sched/idle.c
-> @@ -53,17 +53,18 @@ __setup("hlt", cpu_idle_nopoll_setup);
->
->  static noinline int __cpuidle cpu_idle_poll(void)
->  {
-> +       trace_cpu_idle(0, smp_processor_id());
-> +       stop_critical_timings();
->         rcu_idle_enter();
-> -       trace_cpu_idle_rcuidle(0, smp_processor_id());
->         local_irq_enable();
-> -       stop_critical_timings();
->
->         while (!tif_need_resched() &&
-> -               (cpu_idle_force_poll || tick_check_broadcast_expired()))
-> +              (cpu_idle_force_poll || tick_check_broadcast_expired()))
->                 cpu_relax();
-> -       start_critical_timings();
-> -       trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, smp_processor_id());
-> +
->         rcu_idle_exit();
-> +       start_critical_timings();
-> +       trace_cpu_idle(PWR_EVENT_EXIT, smp_processor_id());
->
->         return 1;
->  }
-> @@ -90,7 +91,9 @@ void __cpuidle default_idle_call(void)
->                 local_irq_enable();
->         } else {
->                 stop_critical_timings();
-> +               rcu_idle_enter();
->                 arch_cpu_idle();
-> +               rcu_idle_exit();
->                 start_critical_timings();
->         }
->  }
-> @@ -148,7 +151,6 @@ static void cpuidle_idle_call(void)
->
->         if (cpuidle_not_available(drv, dev)) {
->                 tick_nohz_idle_stop_tick();
-> -               rcu_idle_enter();
->
->                 default_idle_call();
->                 goto exit_idle;
-> @@ -166,19 +168,15 @@ static void cpuidle_idle_call(void)
->
->         if (idle_should_enter_s2idle() || dev->use_deepest_state) {
->                 if (idle_should_enter_s2idle()) {
-> -                       rcu_idle_enter();
->
->                         entered_state = cpuidle_enter_s2idle(drv, dev);
->                         if (entered_state > 0) {
->                                 local_irq_enable();
->                                 goto exit_idle;
->                         }
-> -
-> -                       rcu_idle_exit();
->                 }
->
->                 tick_nohz_idle_stop_tick();
-> -               rcu_idle_enter();
->
->                 next_state = cpuidle_find_deepest_state(drv, dev);
->                 call_cpuidle(drv, dev, next_state);
-> @@ -195,8 +193,6 @@ static void cpuidle_idle_call(void)
->                 else
->                         tick_nohz_idle_retain_tick();
->
-> -               rcu_idle_enter();
-> -
->                 entered_state = call_cpuidle(drv, dev, next_state);
->                 /*
->                  * Give the governor an opportunity to reflect on the outcome
-> @@ -212,8 +208,6 @@ static void cpuidle_idle_call(void)
->          */
->         if (WARN_ON_ONCE(irqs_disabled()))
->                 local_irq_enable();
-> -
-> -       rcu_idle_exit();
->  }
->
->  /*
+References: https://lore.kernel.org/all/ZRytn6CxFK2oECUt@debian-BULLSEYE-live-builder-AMD64
+Reported-by: Eric Whitney <enwlinux@gmail.com>
+Fixes: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ fs/quota/dquot.c         | 66 ++++++++++++++++++++++++----------------
+ include/linux/quota.h    |  4 ++-
+ include/linux/quotaops.h |  2 +-
+ 3 files changed, 43 insertions(+), 29 deletions(-)
+
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 9e72bfe8bbad..31e897ad5e6a 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -233,19 +233,18 @@ static void put_quota_format(struct quota_format_type *fmt)
+  * All dquots are placed to the end of inuse_list when first created, and this
+  * list is used for invalidate operation, which must look at every dquot.
+  *
+- * When the last reference of a dquot will be dropped, the dquot will be
+- * added to releasing_dquots. We'd then queue work item which would call
++ * When the last reference of a dquot is dropped, the dquot is added to
++ * releasing_dquots. We'll then queue work item which will call
+  * synchronize_srcu() and after that perform the final cleanup of all the
+- * dquots on the list. Both releasing_dquots and free_dquots use the
+- * dq_free list_head in the dquot struct. When a dquot is removed from
+- * releasing_dquots, a reference count is always subtracted, and if
+- * dq_count == 0 at that point, the dquot will be added to the free_dquots.
++ * dquots on the list. Each cleaned up dquot is moved to free_dquots list.
++ * Both releasing_dquots and free_dquots use the dq_free list_head in the dquot
++ * struct.
+  *
+- * Unused dquots (dq_count == 0) are added to the free_dquots list when freed,
+- * and this list is searched whenever we need an available dquot.  Dquots are
+- * removed from the list as soon as they are used again, and
+- * dqstats.free_dquots gives the number of dquots on the list. When
+- * dquot is invalidated it's completely released from memory.
++ * Unused and cleaned up dquots are in the free_dquots list and this list is
++ * searched whenever we need an available dquot. Dquots are removed from the
++ * list as soon as they are used again and dqstats.free_dquots gives the number
++ * of dquots on the list. When dquot is invalidated it's completely released
++ * from memory.
+  *
+  * Dirty dquots are added to the dqi_dirty_list of quota_info when mark
+  * dirtied, and this list is searched when writing dirty dquots back to
+@@ -321,6 +320,7 @@ static inline void put_dquot_last(struct dquot *dquot)
+ static inline void put_releasing_dquots(struct dquot *dquot)
+ {
+ 	list_add_tail(&dquot->dq_free, &releasing_dquots);
++	set_bit(DQ_RELEASING_B, &dquot->dq_flags);
+ }
+ 
+ static inline void remove_free_dquot(struct dquot *dquot)
+@@ -328,8 +328,10 @@ static inline void remove_free_dquot(struct dquot *dquot)
+ 	if (list_empty(&dquot->dq_free))
+ 		return;
+ 	list_del_init(&dquot->dq_free);
+-	if (!atomic_read(&dquot->dq_count))
++	if (!test_bit(DQ_RELEASING_B, &dquot->dq_flags))
+ 		dqstats_dec(DQST_FREE_DQUOTS);
++	else
++		clear_bit(DQ_RELEASING_B, &dquot->dq_flags);
+ }
+ 
+ static inline void put_inuse(struct dquot *dquot)
+@@ -581,12 +583,6 @@ static void invalidate_dquots(struct super_block *sb, int type)
+ 			continue;
+ 		/* Wait for dquot users */
+ 		if (atomic_read(&dquot->dq_count)) {
+-			/* dquot in releasing_dquots, flush and retry */
+-			if (!list_empty(&dquot->dq_free)) {
+-				spin_unlock(&dq_list_lock);
+-				goto restart;
+-			}
+-
+ 			atomic_inc(&dquot->dq_count);
+ 			spin_unlock(&dq_list_lock);
+ 			/*
+@@ -605,6 +601,15 @@ static void invalidate_dquots(struct super_block *sb, int type)
+ 			 * restart. */
+ 			goto restart;
+ 		}
++		/*
++		 * The last user already dropped its reference but dquot didn't
++		 * get fully cleaned up yet. Restart the scan which flushes the
++		 * work cleaning up released dquots.
++		 */
++		if (test_bit(DQ_RELEASING_B, &dquot->dq_flags)) {
++			spin_unlock(&dq_list_lock);
++			goto restart;
++		}
+ 		/*
+ 		 * Quota now has no users and it has been written on last
+ 		 * dqput()
+@@ -696,6 +701,13 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+ 						 dq_dirty);
+ 
+ 			WARN_ON(!dquot_active(dquot));
++			/* If the dquot is releasing we should not touch it */
++			if (test_bit(DQ_RELEASING_B, &dquot->dq_flags)) {
++				spin_unlock(&dq_list_lock);
++				flush_delayed_work(&quota_release_work);
++				spin_lock(&dq_list_lock);
++				continue;
++			}
+ 
+ 			/* Now we have active dquot from which someone is
+  			 * holding reference so we can safely just increase
+@@ -809,18 +821,18 @@ static void quota_release_workfn(struct work_struct *work)
+ 	/* Exchange the list head to avoid livelock. */
+ 	list_replace_init(&releasing_dquots, &rls_head);
+ 	spin_unlock(&dq_list_lock);
++	synchronize_srcu(&dquot_srcu);
+ 
+ restart:
+-	synchronize_srcu(&dquot_srcu);
+ 	spin_lock(&dq_list_lock);
+ 	while (!list_empty(&rls_head)) {
+ 		dquot = list_first_entry(&rls_head, struct dquot, dq_free);
+-		/* Dquot got used again? */
+-		if (atomic_read(&dquot->dq_count) > 1) {
+-			remove_free_dquot(dquot);
+-			atomic_dec(&dquot->dq_count);
+-			continue;
+-		}
++		WARN_ON_ONCE(atomic_read(&dquot->dq_count));
++		/*
++		 * Note that DQ_RELEASING_B protects us from racing with
++		 * invalidate_dquots() calls so we are safe to work with the
++		 * dquot even after we drop dq_list_lock.
++		 */
+ 		if (dquot_dirty(dquot)) {
+ 			spin_unlock(&dq_list_lock);
+ 			/* Commit dquot before releasing */
+@@ -834,7 +846,6 @@ static void quota_release_workfn(struct work_struct *work)
+ 		}
+ 		/* Dquot is inactive and clean, now move it to free list */
+ 		remove_free_dquot(dquot);
+-		atomic_dec(&dquot->dq_count);
+ 		put_dquot_last(dquot);
+ 	}
+ 	spin_unlock(&dq_list_lock);
+@@ -875,6 +886,7 @@ void dqput(struct dquot *dquot)
+ 	BUG_ON(!list_empty(&dquot->dq_free));
+ #endif
+ 	put_releasing_dquots(dquot);
++	atomic_dec(&dquot->dq_count);
+ 	spin_unlock(&dq_list_lock);
+ 	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
+ }
+@@ -963,7 +975,7 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
+ 		dqstats_inc(DQST_LOOKUPS);
+ 	}
+ 	/* Wait for dq_lock - after this we know that either dquot_release() is
+-	 * already finished or it will be canceled due to dq_count > 1 test */
++	 * already finished or it will be canceled due to dq_count > 0 test */
+ 	wait_on_dquot(dquot);
+ 	/* Read the dquot / allocate space in quota file */
+ 	if (!dquot_active(dquot)) {
+diff --git a/include/linux/quota.h b/include/linux/quota.h
+index fd692b4a41d5..07071e64abf3 100644
+--- a/include/linux/quota.h
++++ b/include/linux/quota.h
+@@ -285,7 +285,9 @@ static inline void dqstats_dec(unsigned int type)
+ #define DQ_FAKE_B	3	/* no limits only usage */
+ #define DQ_READ_B	4	/* dquot was read into memory */
+ #define DQ_ACTIVE_B	5	/* dquot is active (dquot_release not called) */
+-#define DQ_LASTSET_B	6	/* Following 6 bits (see QIF_) are reserved\
++#define DQ_RELEASING_B	6	/* dquot is in releasing_dquots list waiting
++				 * to be cleaned up */
++#define DQ_LASTSET_B	7	/* Following 6 bits (see QIF_) are reserved\
+ 				 * for the mask of entries set via SETQUOTA\
+ 				 * quotactl. They are set under dq_data_lock\
+ 				 * and the quota format handling dquot can\
+diff --git a/include/linux/quotaops.h b/include/linux/quotaops.h
+index 11a4becff3a9..4fa4ef0a173a 100644
+--- a/include/linux/quotaops.h
++++ b/include/linux/quotaops.h
+@@ -57,7 +57,7 @@ static inline bool dquot_is_busy(struct dquot *dquot)
+ {
+ 	if (test_bit(DQ_MOD_B, &dquot->dq_flags))
+ 		return true;
+-	if (atomic_read(&dquot->dq_count) > 1)
++	if (atomic_read(&dquot->dq_count) > 0)
+ 		return true;
+ 	return false;
+ }
+-- 
+2.34.1
+
