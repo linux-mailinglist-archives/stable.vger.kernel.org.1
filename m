@@ -2,110 +2,235 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFAB47C64B0
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 07:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CDAF7C6739
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 09:57:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235289AbjJLFnl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 01:43:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46544 "EHLO
+        id S1347241AbjJLHmG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 03:42:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234119AbjJLFnk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 01:43:40 -0400
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01olkn2099.outbound.protection.outlook.com [40.92.99.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B5559D
-        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 22:43:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oXywbMR+1fdpHVJjxY72deJLzUjCak4PlrGzTbkkox/xV9lYXKvKwzSV8ui4Kul1I2qZ8qf3H/Mb7Y96SlV4dFC3DrwZQdFb1I0/RNvLQTwGw6wR01agX/6LN6GUL5Qrn4BeO9bOTTcyaW+8tX2901IM6sbJWBbgKNbocG4tjRW8Y4pREAIQ+OlZjb9JBeEvTpKou+y89P93XSq7AbXuZCqAyF5CEM4dIjzenfe25GzJYaZ0KpqqlU4ya/26TiRYtz7TiUsoK/dCoCZjJ+clg9GeRT8jfbUmKTCSljkzMDa+wJ47vXnbsiWpf+UOOBIvZZ0WzBirqWKenmNNuLkNPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tj6+RhINqI2G4almNAEtBxni6Rx6HEckJh1OmuAPXbo=;
- b=R8zygRvUmHYR1btSaNW9+YzM/MA/5pf2SuT0Ju3V9LUyBbyux3mM2+l14uyDfhukfk57/8N0atlBs2vYM96d92bMIgJMYY1B2Pp2GBN+XQak2nb/3cfYo+jMrT3Ae655OzVrkvyuJ/YDPIBX8S2KsSpPXDfMC44zkV8XK7th5vhPwTqA3oo23hqOzm5H/Lu/lJQe1Rp8N4qEAg8a8BKLQMWNx3Dr2apxeqdZJBfFkg+qCVkDiB/vETlwZQWeLKM+f7zV8kdq/+j3ZH/ha7ZFkZv45IecqOj897PMRYEOoiSlFPZeGuYe39MK0shzZ7dKBkWPIbdWc6K93LRBrhpPaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tj6+RhINqI2G4almNAEtBxni6Rx6HEckJh1OmuAPXbo=;
- b=fG1eLpz3+SPv6k4/ywMSlmTjjkRxHimz6HA2DPFOHT0jFFHz7IcZIaBUImBPWP6qVEtkOQE/f8tTNZTLYB/g4wF0wovf5wl5BX2vrch9rV4O/Rdf3PbwE1oPbSh/2noKwuWk7SZ+DMBH4nR5Fl5X97S0hgEY1xB8Z6Op0LVowDaKLbj4JtfOKtVU/mvfaa3H1PjvtAeDOvFHHB5eSHWfLpAhzKpzGimKztOH0qTaLj1zpmsAlfYS1zq9u4dvP/+CJ/VjKrFL/ZxWi/sjdMNtZxZ9UPTdoaVsWyn76dN9tGrzr0wp45e5Gauo0yoFvRbtQra18C7e2ngtiEU79jg47Q==
-Received: from TYCPR01MB9507.jpnprd01.prod.outlook.com (2603:1096:400:195::9)
- by OS3PR01MB10359.jpnprd01.prod.outlook.com (2603:1096:604:1fb::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.45; Thu, 12 Oct
- 2023 05:43:33 +0000
-Received: from TYCPR01MB9507.jpnprd01.prod.outlook.com
- ([fe80::3e75:99d4:dac4:beb]) by TYCPR01MB9507.jpnprd01.prod.outlook.com
- ([fe80::3e75:99d4:dac4:beb%6]) with mapi id 15.20.6863.043; Thu, 12 Oct 2023
- 05:43:33 +0000
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Re: Empowerment Grant
-To:     Recipients <bigfootdelivery@outlook.com>
-From:   "IN FO" <bigfootdelivery@outlook.com>
-Date:   Thu, 12 Oct 2023 11:13:11 +0530
-Reply-To: info@imf-grant.org
-X-TMN:  [IrXIZmPskRS4ZHRY+nXpu0frp5QONIvb]
-X-ClientProxiedBy: VI1P191CA0011.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:800:1ba::19) To TYCPR01MB9507.jpnprd01.prod.outlook.com
- (2603:1096:400:195::9)
-Message-ID: <TYCPR01MB9507C03B95D7CC7886436E2EBED3A@TYCPR01MB9507.jpnprd01.prod.outlook.com>
+        with ESMTP id S1347256AbjJLHlk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 03:41:40 -0400
+Received: from mail-vs1-xe2f.google.com (mail-vs1-xe2f.google.com [IPv6:2607:f8b0:4864:20::e2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA3CAD56
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 00:41:15 -0700 (PDT)
+Received: by mail-vs1-xe2f.google.com with SMTP id ada2fe7eead31-4528cba7892so308008137.0
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 00:41:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697096475; x=1697701275; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=HuTzVVpWdQXfIbCNcLDHhiGj4g2lhIgP95vVCMWnKu8=;
+        b=FjmhU7F58fXYqrpfekItfgbA6ig+1Po/mOShaCO2Bj7DIGV+zEBaohsxFI7BNins50
+         tgAoQBwq2fTy7QHeWtdlveyQpqSrbbSXspe0k1WN6s80VHRC4VFSIJuz8vkTAe2IvlT8
+         qyIno3wNoMRN8JOeFG4ZpSZL9T68KSuI5ykkvn3bTOdQcYK5JFSJAB+zeXGvYr1qwML/
+         B6t8fy+Jb8xu4rf412CCSPGWDQDSRDGMnEjHzqx+5lnSn5sW22NMQ3IE+HXG02p4dzhU
+         /yM1YwsrUsehl3XlSkZdgZBb7Vq7KbVM84a/QqoVe/Zb/V4tRpRioC4KwVPP16ey3yOl
+         AD7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697096475; x=1697701275;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HuTzVVpWdQXfIbCNcLDHhiGj4g2lhIgP95vVCMWnKu8=;
+        b=NkFCwksEs2QXykLr52zziPNZFKfudmnSYMEwAkubEAMv545IqmXonaxmRZw/m6fOJI
+         bhFq6bta9rZPxvnL3YYWN8cQkWIWyy36wChUQoHgOcJYUb2uIcZ5MZDVPSSVIEUW3USi
+         RQAPTTjz4h2GGsDNSVWDSmw5CoGGG6EqZxtZDsH/9JQhuYVxo9HZzKvPZ7I4a0bgDL2K
+         CL1NxFBX6nsqTCsHXRXmqc8fUcqBiEXirxsxf9Ap9n6tP8OfEweQfeeLQYS3HJTJclDr
+         AQaD1TAZEtoVC2vYX1eIgzKwWqfNJw02Ji3qU1zj5UfCktsDGmFx8EqUeFDHCBBBMx0s
+         w9Ag==
+X-Gm-Message-State: AOJu0YyTJO/5wEiUXW4moDIox1DJJNjTOh/uGojrW2FE9Yg0ItBq4dtA
+        wcZTtay5M0esgHtBKf7d8hMi5f9elKmp/IOCRo5w6r5Nxvu6Kx5a
+X-Google-Smtp-Source: AGHT+IFIoyyfZlTvB8S/gl1Hw8oygtouPPoDfVj32Vyph4N5NM7wLZ+d5sx0lnWhPESWJqsWmh24Zi0Fkzqqw/HJY6k=
+X-Received: by 2002:a67:fc43:0:b0:450:f9eb:f412 with SMTP id
+ p3-20020a67fc43000000b00450f9ebf412mr23274386vsq.5.1697096474893; Thu, 12 Oct
+ 2023 00:41:14 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB9507:EE_|OS3PR01MB10359:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0e8b5d5b-a516-4c23-b844-08dbcae62b97
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: I1dszHOQYnd5j3zz5iVno4WnIKj7Pygrf+JuVOZIO0/nKMh/MFcLH6IvRBfV4EuZXPly3Le6NP8y1XaO9usW9Z5HttVW++smqfRPiUpnR5Gk35JosQi/IKuI6/6biRuNp2cgEsyRYMgjW1nTdDYNgV4UWqLTF+vgQLSRDbbHJmo2g+bUx6mDSM/9aZHR4rV+FX5izn+HaQtUMF91W6xohvv+SyjQTVtxUQuftEYeiyPIsq96Vre04U8U2J8g2qMmp2oz+qjro8NUFpEPEaha3XXFN0/JaoAcB4cHSzrQTSYYRzAL8FKkGkam05OdMXtsWGzwJW4c3r6K8/TVMTCtgmHTR5H22jYApiJaT7jWvVLD1gan23EUq1rLvRGv6ri4PfJaKsMaeLdnXBNlseLhgpvPrfy+71uwPid17xF4dzAfvDxV9ZW314pgdH9iqC//Ug2JlcbHtkCz8sQKTqY7fKO8/IBvJECHnSp0wbvACpVM1/mjpK3g8cQtD8ihoQ8bsee1fB2VpGGAzloUHHoEEC16VULx4ANc1hv/P9zX4htxUcYV+9lcatxeC4b+AN/kptydHX/VnkAZPbWFkdu/mgSJafhj09+MsjF/b3TqHLFHMGYPdK91zlY0mMscClCL
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?fFl9h5gng6vOztEgawyJqK+OywTZq2JyA44xmGy+leUljVqS0yPPGEW5Yp?=
- =?iso-8859-1?Q?ehEu+HTXyeAkW5JaOqXVLU/mzyRZGWVmKjM56sRh590dQPaf6zkTQxZZ7b?=
- =?iso-8859-1?Q?TughsgrkvuV+8FfDOsfbDQykNqLfW04GVGZ8VEBncTeLKDUJHT9SGhknZT?=
- =?iso-8859-1?Q?j+N+/dFvMKQjQyp6Yiaf2pX/7Lc8KYGMKA5FQfXNRKLjn/WiCyI+he7J/r?=
- =?iso-8859-1?Q?MHv2RL9Assccc0acWhlZJ9jXdB5WKgWDHmldOOHK4NMG1/eUHE18IRicti?=
- =?iso-8859-1?Q?qREgIfMCq4lqKssajDYDUM8QxnNAxP7wr1YY3ctq9gqEQJKxi4vwJ5kqUg?=
- =?iso-8859-1?Q?gA6YnvKi4S4qCegcB3dOvWm2hTGv6dlnWRvXs77YCGfI0WQ0QHk+QPYTrs?=
- =?iso-8859-1?Q?uWBoNsqpV4ZpKVJrjlv38K4YpSxtJsjP3JcHunEqrkHUFEZEgOOavx8zdZ?=
- =?iso-8859-1?Q?0tlowlXBQTvix3P1ppwUIcKOl0QXSkAzsKHlT5GfyYRsmBwGN/hgIZ/xTz?=
- =?iso-8859-1?Q?sNNZ6qQq1h31hTi36dSKx+NJ/PVPtz4RghBQ2bLar3+99zYovqBrJXW1zl?=
- =?iso-8859-1?Q?+PWihvxsHRNkcmREKgxE7+XZ5NWLEtJeutPYifmhVryzmpzJCVDWRyU+57?=
- =?iso-8859-1?Q?UQekgwGXbYUyNQXpv8xW6RNfN3fjhak6THBDWtoAS6JeiP1oyNkSH6XKJe?=
- =?iso-8859-1?Q?ON/KjG5i6B4jM/IHgqhQMfw43YeujmHlA5RSUTliDF3a7+pylALqUfCqpI?=
- =?iso-8859-1?Q?fJmIMkQgRYbj8S8PrHLCpBhVjwcyEHok6rEZlXIoksAwkZvLGYTEv/V2tK?=
- =?iso-8859-1?Q?Y8uIoduEckHWG9vwESJn8xIsqbiK5jPaJdTx2ALiJPzjr8nnpJ2itZ9RbQ?=
- =?iso-8859-1?Q?/oVxpLT7mVpsEbEbV3tqt+F56bFh2IlWKpMFeqRi8B+rYld1UBe0JfH5Ru?=
- =?iso-8859-1?Q?gi0b6h2H2kg9PjoleKHUfpiZ+fIot10pTMOQe7Nfn6r86s4nBDuM9reWf0?=
- =?iso-8859-1?Q?gtHa8UDaMwNvy2P6ODnp3ataSp4FjGmTwrVRBcA47rlkrQHe9AhMzTbmGZ?=
- =?iso-8859-1?Q?fzXmOGjYIk3qXVuPWPsyX3SJeTPrdd7jjlhkBwd/8e+vVBpTP8PVYOrl5J?=
- =?iso-8859-1?Q?IKxHOtTMxVj3hT7ZScnAqecs2N8/yDXLmsrbPN9WIZ3TYwfWmkfKVARkD5?=
- =?iso-8859-1?Q?R0iYktQv2OvkoSwIhu8goIia9TOCs1gi8ceTCZUvNTWFj2um0y2R6kyHJT?=
- =?iso-8859-1?Q?IL3OniwAnpNPlwF0k5ggJreABrQqLcE/LbXER1I08=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e8b5d5b-a516-4c23-b844-08dbcae62b97
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB9507.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Oct 2023 05:43:33.7206
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3PR01MB10359
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20231010231616.3122392-1-jarkko@kernel.org> <CAFA6WYMdrCfqMVExYBbhCK7vUSQffyUfSWpQO0=HeQc6Edz9OA@mail.gmail.com>
+ <186a4b62517ead88df8c3c0e9e9585e88f9a6fd8.camel@kernel.org>
+ <0aeb4d88952aff53c5c1a40b547a9819ebd1947e.camel@kernel.org>
+ <CAFA6WYObvJvQv=-JJ5gnmFqJKbT=4JnT+ErC=iB1KfnYfVn7Ag@mail.gmail.com>
+ <79fe0b97e2f5d1f02d08c9f633b7c0da13dc9127.camel@kernel.org>
+ <CAFA6WYMrg3VBYvdV8Or==YK_qATk22bL+_ryDC-oO4jVf7DCWg@mail.gmail.com>
+ <b70d6be5980185a4fb4205e71c56111183e1f160.camel@kernel.org>
+ <CAFA6WYN0vXWZveAkzOfV_6Kki77SxgX7C=Xqe9brZMX1Dj2iLg@mail.gmail.com>
+ <bdf8dbb2e1aeeb6396d7a03b8c00d0db729c602d.camel@kernel.org> <6b1c0255de20752b55b902df0882c018cf75032d.camel@kernel.org>
+In-Reply-To: <6b1c0255de20752b55b902df0882c018cf75032d.camel@kernel.org>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Thu, 12 Oct 2023 13:11:03 +0530
+Message-ID: <CAFA6WYM9_RmjTkvZ2xgr+GrhwWfJVYG8Zn+A++gOuNOsDZk0EA@mail.gmail.com>
+Subject: Re: [PATCH] KEYS: trusted: Rollback init_trusted() consistently
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     keyrings@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        stable@vger.kernel.org, James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "open list:KEYS-TRUSTED" <linux-integrity@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
- =20
-Final Notice:=20
+On Wed, 11 Oct 2023 at 19:35, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>
+> On Wed, 2023-10-11 at 16:55 +0300, Jarkko Sakkinen wrote:
+> > On Wed, 2023-10-11 at 19:12 +0530, Sumit Garg wrote:
+> > > On Wed, 11 Oct 2023 at 18:36, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > >
+> > > > On Wed, 2023-10-11 at 18:25 +0530, Sumit Garg wrote:
+> > > > > On Wed, 11 Oct 2023 at 18:07, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > > > >
+> > > > > > On Wed, 2023-10-11 at 17:47 +0530, Sumit Garg wrote:
+> > > > > > > On Wed, 11 Oct 2023 at 16:04, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > > > > > >
+> > > > > > > > On Wed, 2023-10-11 at 13:12 +0300, Jarkko Sakkinen wrote:
+> > > > > > > > > On Wed, 2023-10-11 at 11:27 +0530, Sumit Garg wrote:
+> > > > > > > > > > On Wed, 11 Oct 2023 at 04:46, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > > > > > > > > > >
+> > > > > > > > > > > Do bind neither static calls nor trusted_key_exit() before a successful
+> > > > > > > > > > > init, in order to maintain a consistent state. In addition, depart the
+> > > > > > > > > > > init_trusted() in the case of a real error (i.e. getting back something
+> > > > > > > > > > > else than -ENODEV).
+> > > > > > > > > > >
+> > > > > > > > > > > Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+> > > > > > > > > > > Closes: https://lore.kernel.org/linux-integrity/CAHk-=whOPoLaWM8S8GgoOPT7a2+nMH5h3TLKtn=R_3w4R1_Uvg@mail.gmail.com/
+> > > > > > > > > > > Cc: stable@vger.kernel.org # v5.13+
+> > > > > > > > > > > Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
+> > > > > > > > > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > > > > > > > > > > ---
+> > > > > > > > > > >  security/keys/trusted-keys/trusted_core.c | 20 ++++++++++----------
+> > > > > > > > > > >  1 file changed, 10 insertions(+), 10 deletions(-)
+> > > > > > > > > > >
+> > > > > > > > > > > diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+> > > > > > > > > > > index 85fb5c22529a..fee1ab2c734d 100644
+> > > > > > > > > > > --- a/security/keys/trusted-keys/trusted_core.c
+> > > > > > > > > > > +++ b/security/keys/trusted-keys/trusted_core.c
+> > > > > > > > > > > @@ -358,17 +358,17 @@ static int __init init_trusted(void)
+> > > > > > > > > > >                 if (!get_random)
+> > > > > > > > > > >                         get_random = kernel_get_random;
+> > > > > > > > > > >
+> > > > > > > > > > > -               static_call_update(trusted_key_seal,
+> > > > > > > > > > > -                                  trusted_key_sources[i].ops->seal);
+> > > > > > > > > > > -               static_call_update(trusted_key_unseal,
+> > > > > > > > > > > -                                  trusted_key_sources[i].ops->unseal);
+> > > > > > > > > > > -               static_call_update(trusted_key_get_random,
+> > > > > > > > > > > -                                  get_random);
+> > > > > > > > > > > -               trusted_key_exit = trusted_key_sources[i].ops->exit;
+> > > > > > > > > > > -               migratable = trusted_key_sources[i].ops->migratable;
+> > > > > > > > > > > -
+> > > > > > > > > > >                 ret = trusted_key_sources[i].ops->init();
+> > > > > > > > > > > -               if (!ret)
+> > > > > > > > > > > +               if (!ret) {
+> > > > > > > > > > > +                       static_call_update(trusted_key_seal, trusted_key_sources[i].ops->seal);
+> > > > > > > > > > > +                       static_call_update(trusted_key_unseal, trusted_key_sources[i].ops->unseal);
+> > > > > > > > > > > +                       static_call_update(trusted_key_get_random, get_random);
+> > > > > > > > > > > +
+> > > > > > > > > > > +                       trusted_key_exit = trusted_key_sources[i].ops->exit;
+> > > > > > > > > > > +                       migratable = trusted_key_sources[i].ops->migratable;
+> > > > > > > > > > > +               }
+> > > > > > > > > > > +
+> > > > > > > > > > > +               if (!ret || ret != -ENODEV)
+> > > > > > > > > >
+> > > > > > > > > > As mentioned in the other thread, we should allow other trust sources
+> > > > > > > > > > to be initialized if the primary one fails.
+> > > > > > > > >
+> > > > > > > > > I sent the patch before I received that response but here's what you
+> > > > > > > > > wrote:
+> > > > > > > > >
+> > > > > > > > > "We should give other trust sources a chance to register for trusted
+> > > > > > > > > keys if the primary one fails."
+> > > > > > > > >
+> > > > > > > > > 1. This condition is lacking an inline comment.
+> > > > > > > > > 2. Neither this response or the one that you pointed out has any
+> > > > > > > > >    explanation why for any system failure the process should
+> > > > > > > > >    continue.
+> > > > > > > > >
+> > > > > > > > > You should really know the situations (e.g. list of posix error
+> > > > > > > > > code) when the process can continue and "allow list" those. This
+> > > > > > > > > way way too abstract. It cannot be let all possible system failures
+> > > > > > > > > pass.
+> > > > > > > >
+> > > > > > > > And it would nice if it printed out something for legit cases. Like
+> > > > > > > > "no device found" etc. And for rest it must really withdraw the whole
+> > > > > > > > process.
+> > > > > > >
+> > > > > > > IMO, it would be quite tricky to come up with an allow list. Can we
+> > > > > > > keep "EACCES", "EPERM", "ENOTSUPP" etc in that allow list? I think
+> > > > > > > these are all debatable.
+> > > > > >
+> > > > > > Yes, that does sounds reasonable.
+> > > > > >
+> > > > > > About the debate. Well, it is better eagerly block and tree falls down
+> > > > > > somewhere we can consider extending the list through a fix.
+> > > > > >
+> > > > > > This all wide open is worse than a few glitches somewhere, which are
+> > > > > > trivial to fix.
+> > > > > >
+> > > > >
+> > > > > Fair enough, I would suggest we document it appropriately such that it
+> > > > > is clear to the users or somebody looking at the code.
+> > > >
+> > > > I went throught the backends on how they implement init:
+> > > >
+> > > > 1. Returns -ENODEV when it does not exist.
+> > > > 2. Calls driver_register(). Something is wrong enough if that
+> > > >    fails to rollback the whole procedure.
+> > > > 3. TPM: -ENODEV
+> > > >
+> > > > Therefore, I would keep in the existing patch since there is no weird
+> > > > uapi visible legacy behavior to support in the first place. And for
+> > > > that reason there is no good reason to have all those four POSIX rc's
+> > > > in the list.
+> > >
+> > > Okay I can live with this patch as long as it doesn't break the
+> > > intended use-case.
+> >
+> > Well this sort of policy has been already existing for some time:
+> >
+> >         /*
+> >          * encrypted_keys.ko depends on successful load of this module even if
+> >          * trusted key implementation is not found.
+> >          */
+> >         if (ret == -ENODEV)
+> >                 return 0;
+> >
+> > If we would need a list of error codes, then this is also incorrect
+> > implementation because the error codes that you listed should be
+> > also success cases.
+>
 
-Congratulations!!! You are among the 50 beneficiaries of 2023 IMF-UN-World =
-Bank Grant. Reconfirm if this email id is active for more details
+As I mentioned before we can go ahead with this policy for trust
+sources and see how it pans out.
 
-Regards,
-Mrs. Oliva Pathe
-Communication Secretary
+> The dead obvious constraint here is that whatever error codes are
+> processed they need to be exact same anyway right?
+>
+> If things fall apart you should really not continue. This is IMHO
+> categorizes as a critical bug,
+
+Here we are discussing trust sources as multiple independent devices.
+If a particular device probe/init fails then it shouldn't be a blocker
+to probe/init another device.
+
+> not just debatable aspect on how
+> subsystems are engineered. I.e.I do not consider this as any sort
+> of API discussion per se.
+
+Agree, I see it as a policy decision for the trusted keys subsystem.
+
+-Sumit
+
+>
+> BR, Jarkko
