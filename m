@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0057C62CB
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 04:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F33007C62CC
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 04:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233040AbjJLCep (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 22:34:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48912 "EHLO
+        id S233929AbjJLCfT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 22:35:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232321AbjJLCeo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 22:34:44 -0400
+        with ESMTP id S232321AbjJLCfT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 22:35:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF553A4
-        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 19:34:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7A6C433C7
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 02:34:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F6F8B6
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 19:35:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA35C433C8
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 02:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697078082;
-        bh=R9t8pkdHlpekgP1vxUUhaYkMnxQplUmoxxdwpABpNdQ=;
+        s=k20201202; t=1697078116;
+        bh=pPP5HfIiR6s/9ZNqlfy8filLgwJLCoMx/r5GBDnIXLY=;
         h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=SFSuDTqvCxsGmSeyetRpgaB/Bd7bARDTUyTL4zUze9H3meIhR2lU4N4PTIrMmEBfD
-         pGYxh4ggoPtAq3epDiUaizM3FTqz43WoX1hVMgYJG9SDojHP+9zBSKEh5mU59Bp2+j
-         izC2mDTyAkSaytmvV0pOSHFAozdSzGaHoRK3n1ju0/AURjgFuJAAH43og0xdU7EsOy
-         wPMPmw0Jkuy/2xIGckwviZOh22rp6QzvGv1kO/d1a6zkISp9uELRtO3RLmdEvboCyf
-         5q1v75pHlTGUeDAIFxbp+ZMifuqOWxOXDWwfT9J1JaQxsdoqn007C1fTKi6Yrm0Y3q
-         C2stvzH2mBAtQ==
+        b=fDGaUjSMo6S14iz1b2Dlp1/5pBxi8RGA6gMfqFT0FBdOIz1aPlA3DGbMdDcAw7Pop
+         fB5/Ub3Ps37Cv8kd6+ge7DayDxosNcHrzSNT4Dc+tYyQUo+Xye28G5H61vmU6Sx2X7
+         nTLVc7JUG2NUwrnakwH4amAixuBzDlxSvunasqsTUEb7xcX7VkudtILhBJn1c/8ChA
+         WHK8pZ6Iofdi2xGuXbXDpFx/CcSbzRqXGGW5xK2cjfxz0HbN/VskYDd9Fq2IN7WHz/
+         gk+bfpb7ExDanANf6mvxqB15wCKgyVw2yYCxr27khGR8dzB0Nw8tkmvKqgauFxWKYN
+         Igbpu+485isdw==
 From:   Damien Le Moal <dlemoal@kernel.org>
 To:     stable@vger.kernel.org
-Subject: [PATCH 6.1.y] ata: libata-scsi: Disable scsi device manage_system_start_stop
-Date:   Thu, 12 Oct 2023 11:34:40 +0900
-Message-ID: <20231012023440.369943-1-dlemoal@kernel.org>
+Subject: [PATCH 6.5.y] ata: libata-scsi: Disable scsi device manage_system_start_stop
+Date:   Thu, 12 Oct 2023 11:35:15 +0900
+Message-ID: <20231012023515.370060-1-dlemoal@kernel.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023100752-margarita-unbuckled-133f@gregkh>
-References: <2023100752-margarita-unbuckled-133f@gregkh>
+In-Reply-To: <2023100421-numbness-pulsate-f83d@gregkh>
+References: <2023100421-numbness-pulsate-f83d@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -129,14 +129,14 @@ Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
  drivers/ata/libata-eh.c   | 54 ++++++++++++++++++++++-
  drivers/ata/libata-scsi.c | 16 +++----
  drivers/ata/libata.h      |  2 +
- include/linux/libata.h    |  7 ++-
- 5 files changed, 157 insertions(+), 12 deletions(-)
+ include/linux/libata.h    |  6 ++-
+ 5 files changed, 156 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 6a053cd0cf41..fbc231a3f795 100644
+index 6ae9cff6b50c..2a21f4d9500d 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -1943,6 +1943,96 @@ int ata_dev_read_id(struct ata_device *dev, unsigned int *p_class,
+@@ -1977,6 +1977,96 @@ int ata_dev_read_id(struct ata_device *dev, unsigned int *p_class,
  	return rc;
  }
  
@@ -234,7 +234,7 @@ index 6a053cd0cf41..fbc231a3f795 100644
   *	ata_read_log_page - read a specific log page
   *	@dev: target device
 diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 6d4c80b6daae..2a04dd36a494 100644
+index 960ef5c6f2c1..150e7ab62d1a 100644
 --- a/drivers/ata/libata-eh.c
 +++ b/drivers/ata/libata-eh.c
 @@ -106,6 +106,14 @@ static const unsigned int ata_eh_flush_timeouts[] = {
@@ -282,7 +282,7 @@ index 6d4c80b6daae..2a04dd36a494 100644
  	 * disable attached devices.
  	 */
  	ata_for_each_link(link, ap, PMP_FIRST) {
-@@ -687,6 +709,10 @@ void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap)
+@@ -690,6 +712,10 @@ void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap)
  				ehc->saved_xfer_mode[devno] = dev->xfer_mode;
  				if (ata_ncq_enabled(dev))
  					ehc->saved_ncq_enabled |= 1 << devno;
@@ -293,7 +293,7 @@ index 6d4c80b6daae..2a04dd36a494 100644
  			}
  		}
  
-@@ -750,6 +776,8 @@ void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap)
+@@ -753,6 +779,8 @@ void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap)
  	/* clean up */
  	spin_lock_irqsave(ap->lock, flags);
  
@@ -302,7 +302,7 @@ index 6d4c80b6daae..2a04dd36a494 100644
  	if (ap->pflags & ATA_PFLAG_LOADING)
  		ap->pflags &= ~ATA_PFLAG_LOADING;
  	else if ((ap->pflags & ATA_PFLAG_SCSI_HOTPLUG) &&
-@@ -1241,6 +1269,13 @@ void ata_eh_detach_dev(struct ata_device *dev)
+@@ -1244,6 +1272,13 @@ void ata_eh_detach_dev(struct ata_device *dev)
  	struct ata_eh_context *ehc = &link->eh_context;
  	unsigned long flags;
  
@@ -316,7 +316,7 @@ index 6d4c80b6daae..2a04dd36a494 100644
  	ata_dev_disable(dev);
  
  	spin_lock_irqsave(ap->lock, flags);
-@@ -2927,6 +2962,15 @@ static int ata_eh_revalidate_and_attach(struct ata_link *link,
+@@ -3042,6 +3077,15 @@ static int ata_eh_revalidate_and_attach(struct ata_link *link,
  		if (ehc->i.flags & ATA_EHI_DID_RESET)
  			readid_flags |= ATA_READID_POSTRESET;
  
@@ -332,7 +332,7 @@ index 6d4c80b6daae..2a04dd36a494 100644
  		if ((action & ATA_EH_REVALIDATE) && ata_dev_enabled(dev)) {
  			WARN_ON(dev->class == ATA_DEV_PMP);
  
-@@ -3886,6 +3930,7 @@ static void ata_eh_handle_port_suspend(struct ata_port *ap)
+@@ -4015,6 +4059,7 @@ static void ata_eh_handle_port_suspend(struct ata_port *ap)
  	unsigned long flags;
  	int rc = 0;
  	struct ata_device *dev;
@@ -340,7 +340,7 @@ index 6d4c80b6daae..2a04dd36a494 100644
  
  	/* are we suspending? */
  	spin_lock_irqsave(ap->lock, flags);
-@@ -3898,6 +3943,12 @@ static void ata_eh_handle_port_suspend(struct ata_port *ap)
+@@ -4027,6 +4072,12 @@ static void ata_eh_handle_port_suspend(struct ata_port *ap)
  
  	WARN_ON(ap->pflags & ATA_PFLAG_SUSPENDED);
  
@@ -353,7 +353,7 @@ index 6d4c80b6daae..2a04dd36a494 100644
  	/*
  	 * If we have a ZPODD attached, check its zero
  	 * power ready status before the port is frozen.
-@@ -3980,6 +4031,7 @@ static void ata_eh_handle_port_resume(struct ata_port *ap)
+@@ -4109,6 +4160,7 @@ static void ata_eh_handle_port_resume(struct ata_port *ap)
  	/* update the flags */
  	spin_lock_irqsave(ap->lock, flags);
  	ap->pflags &= ~(ATA_PFLAG_PM_PENDING | ATA_PFLAG_SUSPENDED);
@@ -362,10 +362,10 @@ index 6d4c80b6daae..2a04dd36a494 100644
  }
  #endif /* CONFIG_PM */
 diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 7b9c9264b9a7..2b9676416b8e 100644
+index ed3146c46091..cdbc382e949b 100644
 --- a/drivers/ata/libata-scsi.c
 +++ b/drivers/ata/libata-scsi.c
-@@ -1081,15 +1081,13 @@ int ata_scsi_dev_config(struct scsi_device *sdev, struct ata_device *dev)
+@@ -1100,15 +1100,13 @@ int ata_scsi_dev_config(struct scsi_device *sdev, struct ata_device *dev)
  		}
  	} else {
  		sdev->sector_size = ata_id_logical_sector_size(dev->id);
@@ -385,7 +385,7 @@ index 7b9c9264b9a7..2b9676416b8e 100644
  	}
  
  	/*
-@@ -1265,7 +1263,7 @@ static unsigned int ata_scsi_start_stop_xlat(struct ata_queued_cmd *qc)
+@@ -1284,7 +1282,7 @@ static unsigned int ata_scsi_start_stop_xlat(struct ata_queued_cmd *qc)
  	}
  
  	if (cdb[4] & 0x1) {
@@ -394,7 +394,7 @@ index 7b9c9264b9a7..2b9676416b8e 100644
  
  		if (qc->dev->flags & ATA_DFLAG_LBA) {
  			tf->flags |= ATA_TFLAG_LBA;
-@@ -1281,7 +1279,7 @@ static unsigned int ata_scsi_start_stop_xlat(struct ata_queued_cmd *qc)
+@@ -1300,7 +1298,7 @@ static unsigned int ata_scsi_start_stop_xlat(struct ata_queued_cmd *qc)
  			tf->lbah = 0x0; /* cyl high */
  		}
  
@@ -403,7 +403,7 @@ index 7b9c9264b9a7..2b9676416b8e 100644
  	} else {
  		/* Some odd clown BIOSen issue spindown on power off (ACPI S4
  		 * or S5) causing some drives to spin up and down again.
-@@ -1291,7 +1289,7 @@ static unsigned int ata_scsi_start_stop_xlat(struct ata_queued_cmd *qc)
+@@ -1310,7 +1308,7 @@ static unsigned int ata_scsi_start_stop_xlat(struct ata_queued_cmd *qc)
  			goto skip;
  
  		if ((qc->ap->flags & ATA_FLAG_NO_HIBERNATE_SPINDOWN) &&
@@ -413,7 +413,7 @@ index 7b9c9264b9a7..2b9676416b8e 100644
  
  		/* Issue ATA STANDBY IMMEDIATE command */
 diff --git a/drivers/ata/libata.h b/drivers/ata/libata.h
-index e5ec197aed30..a5e0e676ed9a 100644
+index 76d0a5937b66..b4f6cbf6c1d2 100644
 --- a/drivers/ata/libata.h
 +++ b/drivers/ata/libata.h
 @@ -62,6 +62,8 @@ extern int ata_dev_reread_id(struct ata_device *dev, unsigned int readid_flags);
@@ -426,10 +426,10 @@ index e5ec197aed30..a5e0e676ed9a 100644
  extern int ata_down_xfermask_limit(struct ata_device *dev, unsigned int sel);
  extern unsigned int ata_dev_set_feature(struct ata_device *dev,
 diff --git a/include/linux/libata.h b/include/linux/libata.h
-index a9ec8d97a715..45910aebc377 100644
+index 19ddc6c80400..747de50b6858 100644
 --- a/include/linux/libata.h
 +++ b/include/linux/libata.h
-@@ -189,6 +189,7 @@ enum {
+@@ -192,6 +192,7 @@ enum {
  	ATA_PFLAG_UNLOADING	= (1 << 9), /* driver is being unloaded */
  	ATA_PFLAG_UNLOADED	= (1 << 10), /* driver is unloaded */
  
@@ -437,19 +437,19 @@ index a9ec8d97a715..45910aebc377 100644
  	ATA_PFLAG_SUSPENDED	= (1 << 17), /* port is suspended (power) */
  	ATA_PFLAG_PM_PENDING	= (1 << 18), /* PM operation pending */
  	ATA_PFLAG_INIT_GTM_VALID = (1 << 19), /* initial gtm data valid */
-@@ -311,8 +312,10 @@ enum {
- 	ATA_EH_RESET		= ATA_EH_SOFTRESET | ATA_EH_HARDRESET,
+@@ -318,9 +319,10 @@ enum {
  	ATA_EH_ENABLE_LINK	= (1 << 3),
  	ATA_EH_PARK		= (1 << 5), /* unload heads and stop I/O */
-+	ATA_EH_SET_ACTIVE	= (1 << 6), /* Set a device to active power mode */
+ 	ATA_EH_GET_SUCCESS_SENSE = (1 << 6), /* Get sense data for successful cmd */
++	ATA_EH_SET_ACTIVE	= (1 << 7), /* Set a device to active power mode */
  
--	ATA_EH_PERDEV_MASK	= ATA_EH_REVALIDATE | ATA_EH_PARK,
-+	ATA_EH_PERDEV_MASK	= ATA_EH_REVALIDATE | ATA_EH_PARK |
-+				  ATA_EH_SET_ACTIVE,
+ 	ATA_EH_PERDEV_MASK	= ATA_EH_REVALIDATE | ATA_EH_PARK |
+-				  ATA_EH_GET_SUCCESS_SENSE,
++				  ATA_EH_GET_SUCCESS_SENSE | ATA_EH_SET_ACTIVE,
  	ATA_EH_ALL_ACTIONS	= ATA_EH_REVALIDATE | ATA_EH_RESET |
  				  ATA_EH_ENABLE_LINK,
  
-@@ -350,7 +353,7 @@ enum {
+@@ -358,7 +360,7 @@ enum {
  	/* This should match the actual table size of
  	 * ata_eh_cmd_timeout_table in libata-eh.c.
  	 */
