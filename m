@@ -2,106 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B1177C74ED
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 19:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49FC57C74F4
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 19:39:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347410AbjJLRiV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 13:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45704 "EHLO
+        id S1347461AbjJLRjG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 13:39:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347419AbjJLRiJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 13:38:09 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE2A710E9
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 10:36:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274C1C433C8;
-        Thu, 12 Oct 2023 17:36:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697132174;
-        bh=7x2NEMvw8tVNqC5DHRWew5RNqKUSmHvoRdZR4wl3lhk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Wg5P++rlIIO0xA210B+v5eaqg/qszkdA33aIiPWy/j06pA54xUTRe41wbKChJK7Xn
-         gUbIaN46ILs2joocLTDenjHYUjieCUvNQZ1fu67kfw4z7Ypv0+LSd28slgKsz2VuHq
-         Eecc4SWGJev6+M/wx9V0jG39G7ZZX9cCvPBvyqqE=
-Date:   Thu, 12 Oct 2023 19:36:11 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Rafael Aquini <aquini@redhat.com>
-Cc:     stable@vger.kernel.org, Marek Vasut <marex@denx.de>,
-        Manfred Spraul <manfred@colorfullife.com>,
-        Davidlohr Bueso <dbueso@suse.de>,
-        Waiman Long <llong@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 5.10.y] ipc: replace costly bailout check in
- sysvipc_find_ipc()
-Message-ID: <2023101219-gave-shadily-bed3@gregkh>
-References: <aaa0d2cc-832d-4b57-a06d-0d1fa77a4b03@denx.de>
- <20231012011341.111660-1-aquini@redhat.com>
+        with ESMTP id S1379609AbjJLRiz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 13:38:55 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 132B4B8
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 10:38:12 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 555945C01B9;
+        Thu, 12 Oct 2023 13:38:12 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Thu, 12 Oct 2023 13:38:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1697132292; x=1697218692; bh=Bc
+        dythh3keQ7hZuGmFeIG1+TLRQ3bXLbxxwfcjhIVB0=; b=puiODgwWBtHFms6Q5B
+        I5gPcpVLh6iV+BUB4fmbazIr65FWgSGvH8TyFMzd3PnnrbDDDxD3hYL2RecUJ5E9
+        njKQxcp8iq/EiK4CfxTvDgvwSr9RSpgo/kXBCDFtCfNulYdJkWtkBQVTWhdsFf4/
+        68JYq0+22GuiDC+gwxQx4b4dQetx7DPNhviPCfOWhsPIr1+C+flS8T93YMKo0aEH
+        2u7jtGCKl0c+60uA60j65jRd6ZFwCfvV8MgtB9m4eyQjvMJIt9cyIkREA190SXT2
+        kvMraSTIoM0BXySMomUTFm8O3XTDneXUhJ6iWYuBc5ZRGwE+N+qjSnTlU2jlcz+A
+        r9jg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1697132292; x=1697218692; bh=Bcdythh3keQ7h
+        ZuGmFeIG1+TLRQ3bXLbxxwfcjhIVB0=; b=Wryj+KDR9aPWEXxa/T3WXYnsqdi6e
+        7WIS+iSLB9SQT99aG+XPgrDCUllp1+SqiG+G6CFv/YeE2x+VlNEsuC9VuugRJC8T
+        SbTeD1P9mIBibh/mYLrorbs6e7Uo/020vBt9X7p1bscHGsvmuU6YUNr6oN6qQ2YP
+        XYkX7iH/8hvQHfiu3D9w++xmiRBRmcmCs++ItcZuZ+ZfxpcrRxb9Yt62WyKSxpEM
+        ISohw+wER/Cvya+8MUIHipp92DNZpNLyC5ziw8iYxI3+rzThTzVQzN37tCiE7GAY
+        zOf5WUbYzgDav+VJhGgAQyV0HxsBYMnR8X5Ew3lDJMfNlINBUgV0Z6R7Q==
+X-ME-Sender: <xms:BC8oZeGGvOV4Fv9Gu8TX9VDmo6TWwqs3ad4pY2QoQ7_PiVJQioyOxw>
+    <xme:BC8oZfWv1e9ZsF0HQrPm16XSTDx7YJL3Gx5K_URN8rhJjyItUY6Z8cEGAIYEcbYkD
+    lgQPGEZwnhpuw>
+X-ME-Received: <xmr:BC8oZYJhTr2fH4za-vR76o7jgIzvSexSWBFxcdgEh29XV6jNHpkxdteimpHBJRczQlBiwer4fHBPPc9uhFeDmZIooZSQ3dakPkmBPl7wejE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedriedtgddutdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:BC8oZYG8tepDMHR843p_40N27czTuIe060TQ80NXgbKgM2T6_zt7gA>
+    <xmx:BC8oZUXt7BeiVW0fDQALU-mSp7-uOtP-bAVoAFPQxdW2i_7oE8hskA>
+    <xmx:BC8oZbOgjx--pjFUU_55ZtVqNYbL1NIhkCxxxNB9MKjgwXMiGLqXbA>
+    <xmx:BC8oZYquQNQk7dreRi7YK7_41-0tL3IeU0Wdt8DAFktaPgmIc7OTWw>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 12 Oct 2023 13:38:11 -0400 (EDT)
+Date:   Thu, 12 Oct 2023 19:38:09 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Jordan Rife <jrife@google.com>
+Cc:     stable@vger.kernel.org, Willem de Bruijn <willemb@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>
+Subject: Re: [PATCH] net: prevent address rewrite in kernel_bind()
+Message-ID: <2023101257-june-banter-e7cc@gregkh>
+References: <20231011202849.3549727-2-jrife@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231012011341.111660-1-aquini@redhat.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20231011202849.3549727-2-jrife@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 11, 2023 at 09:13:41PM -0400, Rafael Aquini wrote:
-> commit 20401d1058f3f841f35a594ac2fc1293710e55b9 upstream
+On Wed, Oct 11, 2023 at 03:28:50PM -0500, Jordan Rife wrote:
+> commit c889a99a21bf124c3db08d09df919f0eccc5ea4c upstream.
 > 
-> This is CVE-2021-3669
-> 
-> sysvipc_find_ipc() was left with a costly way to check if the offset
-> position fed to it is bigger than the total number of IPC IDs in use.  So
-> much so that the time it takes to iterate over /proc/sysvipc/* files grows
-> exponentially for a custom benchmark that creates "N" SYSV shm segments
-> and then times the read of /proc/sysvipc/shm (milliseconds):
-> 
->     12 msecs to read   1024 segs from /proc/sysvipc/shm
->     18 msecs to read   2048 segs from /proc/sysvipc/shm
->     65 msecs to read   4096 segs from /proc/sysvipc/shm
->    325 msecs to read   8192 segs from /proc/sysvipc/shm
->   1303 msecs to read  16384 segs from /proc/sysvipc/shm
->   5182 msecs to read  32768 segs from /proc/sysvipc/shm
-> 
-> The root problem lies with the loop that computes the total amount of ids
-> in use to check if the "pos" feeded to sysvipc_find_ipc() grew bigger than
-> "ids->in_use".  That is a quite inneficient way to get to the maximum
-> index in the id lookup table, specially when that value is already
-> provided by struct ipc_ids.max_idx.
-> 
-> This patch follows up on the optimization introduced via commit
-> 15df03c879836 ("sysvipc: make get_maxid O(1) again") and gets rid of the
-> aforementioned costly loop replacing it by a simpler checkpoint based on
-> ipc_get_maxidx() returned value, which allows for a smooth linear increase
-> in time complexity for the same custom benchmark:
-> 
->      2 msecs to read   1024 segs from /proc/sysvipc/shm
->      2 msecs to read   2048 segs from /proc/sysvipc/shm
->      4 msecs to read   4096 segs from /proc/sysvipc/shm
->      9 msecs to read   8192 segs from /proc/sysvipc/shm
->     19 msecs to read  16384 segs from /proc/sysvipc/shm
->     39 msecs to read  32768 segs from /proc/sysvipc/shm
-> 
-> Link: https://lkml.kernel.org/r/20210809203554.1562989-1-aquini@redhat.com
-> Signed-off-by: Rafael Aquini <aquini@redhat.com>
-> Acked-by: Davidlohr Bueso <dbueso@suse.de>
-> Acked-by: Manfred Spraul <manfred@colorfullife.com>
-> Cc: Waiman Long <llong@redhat.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Rafael Aquini <aquini@redhat.com>
+> Fix merge conflicts, so this patch can be backported to 4.19+.
 
-Marek, you did not sign off on this patch, why not?
-
-And how did you test this?  Are you sure it's really needed?  Is that
-cve actually valid and something that you have had problems with in the
-real world?
-
-thanks,
+Now queued up, thanks.
 
 greg k-h
