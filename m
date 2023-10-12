@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D01C7C74D0
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 19:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B1177C74ED
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 19:38:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344076AbjJLRdU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 13:33:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35908 "EHLO
+        id S1347410AbjJLRiV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 13:38:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344075AbjJLRdT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 13:33:19 -0400
+        with ESMTP id S1347419AbjJLRiJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 13:38:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BF0EED
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 10:33:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D70C433C8;
-        Thu, 12 Oct 2023 17:33:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE2A710E9
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 10:36:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274C1C433C8;
+        Thu, 12 Oct 2023 17:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697131998;
-        bh=2L0cc9WYqX4JGRhSpiDe/HeC46/AufSsjbF68aHbtjw=;
+        s=korg; t=1697132174;
+        bh=7x2NEMvw8tVNqC5DHRWew5RNqKUSmHvoRdZR4wl3lhk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wqi35/nAzmHiaNqjtOmRP8l8knDnLUf0U1Y6JYGgaBtnQR8viKZnx2LSaz8DRLion
-         6oZ1J8J34bU03HLS0HxoipGSUp8R4uoqTbgBauu1v7wN70h8i10mkk4Duyxh+1r9ye
-         La7z87yq8RRQVfEK3EVfhTFInPTdHY3ryrySE9M0=
-Date:   Thu, 12 Oct 2023 19:33:15 +0200
+        b=Wg5P++rlIIO0xA210B+v5eaqg/qszkdA33aIiPWy/j06pA54xUTRe41wbKChJK7Xn
+         gUbIaN46ILs2joocLTDenjHYUjieCUvNQZ1fu67kfw4z7Ypv0+LSd28slgKsz2VuHq
+         Eecc4SWGJev6+M/wx9V0jG39G7ZZX9cCvPBvyqqE=
+Date:   Thu, 12 Oct 2023 19:36:11 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Damien Le Moal <dlemoal@kernel.org>
-Cc:     geert+renesas@glider.be, hare@suse.de, martin.petersen@oracle.com,
-        stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] ata: libata-scsi: Disable scsi device"
- failed to apply to 6.5-stable tree
-Message-ID: <2023101207-unlearned-shelf-c376@gregkh>
-References: <2023100421-numbness-pulsate-f83d@gregkh>
- <b779686d-07e6-50fb-5d94-80ebd5c9b13c@kernel.org>
- <2023100726-puppy-gutter-23af@gregkh>
- <23034522-699b-425f-951c-292730a42f30@kernel.org>
+To:     Rafael Aquini <aquini@redhat.com>
+Cc:     stable@vger.kernel.org, Marek Vasut <marex@denx.de>,
+        Manfred Spraul <manfred@colorfullife.com>,
+        Davidlohr Bueso <dbueso@suse.de>,
+        Waiman Long <llong@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH 5.10.y] ipc: replace costly bailout check in
+ sysvipc_find_ipc()
+Message-ID: <2023101219-gave-shadily-bed3@gregkh>
+References: <aaa0d2cc-832d-4b57-a06d-0d1fa77a4b03@denx.de>
+ <20231012011341.111660-1-aquini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <23034522-699b-425f-951c-292730a42f30@kernel.org>
+In-Reply-To: <20231012011341.111660-1-aquini@redhat.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -48,40 +50,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Oct 12, 2023 at 11:36:50AM +0900, Damien Le Moal wrote:
-> On 10/7/23 20:35, Greg KH wrote:
-> > On Thu, Oct 05, 2023 at 08:50:27AM +0900, Damien Le Moal wrote:
-> >> On 10/4/23 23:58, gregkh@linuxfoundation.org wrote:
-> >>>
-> >>> The patch below does not apply to the 6.5-stable tree.
-> >>> If someone wants it applied there, or to any other stable or longterm
-> >>> tree, then please email the backport, including the original git commit
-> >>> id to <stable@vger.kernel.org>.
-> >>>
-> >>> To reproduce the conflict and resubmit, you may use the following commands:
-> >>>
-> >>> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
-> >>> git checkout FETCH_HEAD
-> >>> git cherry-pick -x aa3998dbeb3abce63653b7f6d4542e7dcd022590
-> >>> # <resolve conflicts, build, test, etc.>
-> >>> git commit -s
-> >>> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100421-numbness-pulsate-f83d@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
-> >>>
-> >>> Possible dependencies:
-> >>
-> >> commit 3cc2ffe5c16dc65dfac354bc5b5bc98d3b397567
-> > 
-> > Ok, but that commit does not apply to 6.5.y either :(
-> > 
-> > Can you send a working set of backports for 6.5.y if you want to see
-> > this change there?
+On Wed, Oct 11, 2023 at 09:13:41PM -0400, Rafael Aquini wrote:
+> commit 20401d1058f3f841f35a594ac2fc1293710e55b9 upstream
 > 
-> Hi Greg,
+> This is CVE-2021-3669
 > 
-> It looks like all the needed dependencies are now backported and this is the
-> last fix patch that was needed. I did the above "git send-email ..." to send
-> you the backport for 6.5.y and did the same for 6.1.y.
+> sysvipc_find_ipc() was left with a costly way to check if the offset
+> position fed to it is bigger than the total number of IPC IDs in use.  So
+> much so that the time it takes to iterate over /proc/sysvipc/* files grows
+> exponentially for a custom benchmark that creates "N" SYSV shm segments
+> and then times the read of /proc/sysvipc/shm (milliseconds):
+> 
+>     12 msecs to read   1024 segs from /proc/sysvipc/shm
+>     18 msecs to read   2048 segs from /proc/sysvipc/shm
+>     65 msecs to read   4096 segs from /proc/sysvipc/shm
+>    325 msecs to read   8192 segs from /proc/sysvipc/shm
+>   1303 msecs to read  16384 segs from /proc/sysvipc/shm
+>   5182 msecs to read  32768 segs from /proc/sysvipc/shm
+> 
+> The root problem lies with the loop that computes the total amount of ids
+> in use to check if the "pos" feeded to sysvipc_find_ipc() grew bigger than
+> "ids->in_use".  That is a quite inneficient way to get to the maximum
+> index in the id lookup table, specially when that value is already
+> provided by struct ipc_ids.max_idx.
+> 
+> This patch follows up on the optimization introduced via commit
+> 15df03c879836 ("sysvipc: make get_maxid O(1) again") and gets rid of the
+> aforementioned costly loop replacing it by a simpler checkpoint based on
+> ipc_get_maxidx() returned value, which allows for a smooth linear increase
+> in time complexity for the same custom benchmark:
+> 
+>      2 msecs to read   1024 segs from /proc/sysvipc/shm
+>      2 msecs to read   2048 segs from /proc/sysvipc/shm
+>      4 msecs to read   4096 segs from /proc/sysvipc/shm
+>      9 msecs to read   8192 segs from /proc/sysvipc/shm
+>     19 msecs to read  16384 segs from /proc/sysvipc/shm
+>     39 msecs to read  32768 segs from /proc/sysvipc/shm
+> 
+> Link: https://lkml.kernel.org/r/20210809203554.1562989-1-aquini@redhat.com
+> Signed-off-by: Rafael Aquini <aquini@redhat.com>
+> Acked-by: Davidlohr Bueso <dbueso@suse.de>
+> Acked-by: Manfred Spraul <manfred@colorfullife.com>
+> Cc: Waiman Long <llong@redhat.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Rafael Aquini <aquini@redhat.com>
 
-Both now queued up, thanks!
+Marek, you did not sign off on this patch, why not?
+
+And how did you test this?  Are you sure it's really needed?  Is that
+cve actually valid and something that you have had problems with in the
+real world?
+
+thanks,
 
 greg k-h
