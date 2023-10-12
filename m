@@ -2,151 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D90487C67F4
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 10:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01F1B7C6861
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 10:54:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347230AbjJLIBp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 04:01:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35342 "EHLO
+        id S235370AbjJLIRt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 04:17:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343704AbjJLIBo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 04:01:44 -0400
-Received: from vulcan.natalenko.name (vulcan.natalenko.name [104.207.131.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF2390
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 01:01:41 -0700 (PDT)
-Received: from spock.localnet (unknown [94.142.239.106])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by vulcan.natalenko.name (Postfix) with ESMTPSA id 37FDE153CACD;
-        Thu, 12 Oct 2023 10:01:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-        s=dkim-20170712; t=1697097698;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=ym8znVE/KNVZ2ABkurRPnWvCdBcwyMiA231koj0IzME=;
-        b=RHv5a8hfYSsjGosuqXiM5HN4jBVFx9JzxhfRYPkbwVRUiakAp/Hupi2vIYb+4UPZc3sKSd
-        9NUE2039F9zJvlRGh3tY8xURchgzAgNstbmNDKkqwtbEYng4RqvFmbNzyALxU+QbluM9tv
-        G7di96YOnIw3j0q3NyvORUekdJK7uvM=
-From:   Oleksandr Natalenko <oleksandr@natalenko.name>
-To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-Subject: Re: [PATCH] drm: Do not overrun array in drm_gem_get_pages()
-Date:   Thu, 12 Oct 2023 10:01:23 +0200
-Message-ID: <2703014.mvXUDI8C0e@natalenko.name>
-In-Reply-To: <20231005135648.2317298-1-willy@infradead.org>
-References: <20231005135648.2317298-1-willy@infradead.org>
+        with ESMTP id S235369AbjJLIRs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 04:17:48 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C0698;
+        Thu, 12 Oct 2023 01:17:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABBBC433C7;
+        Thu, 12 Oct 2023 08:17:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1697098666;
+        bh=kKM1/FVUExrLMQC4dwFAB0Kn9+SEc0qIzTH/g3iioCQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Um/yzqpBM5ntawTnSotFLEFiZZdIgG3bpVBcUsAnGLZ0Di8jvo8eCbI/vN1fUs03y
+         qE+QLVLDQ2aMovHAfxwH8ZHlCITLOTeTLE9vQWUGgWtlHpzvtjDmXxZ2R7nkqDB4pg
+         PT3B1cP7LKpTlguNNk6CwshozRija+2c+F3aW4HY=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Alexander Potapenko <glider@google.com>,
+        Xiaoke Wang <xkernel.wang@foxmail.com>, stable@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] lib/test_meminit: fix off-by-one error in test_pages()
+Date:   Thu, 12 Oct 2023 10:17:39 +0200
+Message-ID: <2023101238-greasily-reiterate-aafc@gregkh>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart12302735.O9o76ZdvQC";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: *
+Lines:  31
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1112; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=kKM1/FVUExrLMQC4dwFAB0Kn9+SEc0qIzTH/g3iioCQ=; b=owGbwMvMwCRo6H6F97bub03G02pJDKnqqxeHlrRM3PrmvWQiy1SJN/HxhcHGUy/udA0+/EyQ4 yWT6fWijlgWBkEmBlkxRZYv23iO7q84pOhlaHsaZg4rE8gQBi5OAZiI1nWGBSsEGZ0fndaot27e eUxN63yq97niJoYF878r/tbcODk4oCLc3CT8u+XHnxu/AgA=
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---nextPart12302735.O9o76ZdvQC
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-Subject: Re: [PATCH] drm: Do not overrun array in drm_gem_get_pages()
-Date: Thu, 12 Oct 2023 10:01:23 +0200
-Message-ID: <2703014.mvXUDI8C0e@natalenko.name>
-In-Reply-To: <20231005135648.2317298-1-willy@infradead.org>
-References: <20231005135648.2317298-1-willy@infradead.org>
-MIME-Version: 1.0
+In commit efb78fa86e95 ("lib/test_meminit: allocate pages up to order
+MAX_ORDER"), the loop for testing pages is set to "<= MAX_ORDER" which
+causes crashes in systems when run.  Fix this to "< MAX_ORDER" to fix
+the test to work properly.
 
-On =C4=8Dtvrtek 5. =C5=99=C3=ADjna 2023 15:56:47 CEST Matthew Wilcox (Oracl=
-e) wrote:
-> If the shared memory object is larger than the DRM object that it backs,
-> we can overrun the page array.  Limit the number of pages we install
-> from each folio to prevent this.
->=20
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Reported-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-> Link: https://lore.kernel.org/lkml/13360591.uLZWGnKmhe@natalenko.name/
-> Fixes: 3291e09a4638 ("drm: convert drm_gem_put_pages() to use a folio_bat=
-ch")
-> Cc: stable@vger.kernel.org # 6.5.x
-> ---
->  drivers/gpu/drm/drm_gem.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-> index 6129b89bb366..44a948b80ee1 100644
-> --- a/drivers/gpu/drm/drm_gem.c
-> +++ b/drivers/gpu/drm/drm_gem.c
-> @@ -540,7 +540,7 @@ struct page **drm_gem_get_pages(struct drm_gem_object=
- *obj)
->  	struct page **pages;
->  	struct folio *folio;
->  	struct folio_batch fbatch;
-> -	int i, j, npages;
-> +	long i, j, npages;
-> =20
->  	if (WARN_ON(!obj->filp))
->  		return ERR_PTR(-EINVAL);
-> @@ -564,11 +564,13 @@ struct page **drm_gem_get_pages(struct drm_gem_obje=
-ct *obj)
-> =20
->  	i =3D 0;
->  	while (i < npages) {
-> +		long nr;
->  		folio =3D shmem_read_folio_gfp(mapping, i,
->  				mapping_gfp_mask(mapping));
->  		if (IS_ERR(folio))
->  			goto fail;
-> -		for (j =3D 0; j < folio_nr_pages(folio); j++, i++)
-> +		nr =3D min(npages - i, folio_nr_pages(folio));
-> +		for (j =3D 0; j < nr; j++, i++)
->  			pages[i] =3D folio_file_page(folio, i);
-> =20
->  		/* Make sure shmem keeps __GFP_DMA32 allocated pages in the
->=20
+Fixes: efb78fa86e95 ("lib/test_meminit: allocate pages up to order MAX_ORDER")
+Cc: Andrew Donnellan <ajd@linux.ibm.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Xiaoke Wang <xkernel.wang@foxmail.com>
+Cc: <stable@vger.kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ lib/test_meminit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Gentle ping. It would be nice to have this picked so that it gets into the =
-stable kernel rather sooner than later.
-
-Thanks.
-
-=2D-=20
-Oleksandr Natalenko (post-factum)
---nextPart12302735.O9o76ZdvQC
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmUnp9MACgkQil/iNcg8
-M0syoA//dDht5ZzqbjFSuWQmAUIPSUFsvQJN++9JIZ3meMgB/R8u8l0+hvQgo5pa
-SSOW/C6YPgDJn40fjQy/D+Z7WlbfpLdfm2SfE2TIvG2D87b1ve8iY2/Opk2LA9l5
-ezOWkm+M1Pq2Hrht7xiUGH4Y1WPuj4GRNl6ZAVQ0iLHUuFcNfcmio0lLY/z+1RN+
-6ODQv9nXMEhmsAWXQHNQ7PpJz0lyzYM8pe/CJM+gn1jtTBlIE9bN7AktIVR1XOvC
-7XMRiMbBKe7q/osmyDJ1VBgSn1EEWzupLnCwIjuLY0v9Hm7hTS030lbd0zUsiUe3
-PvtR96R+3udApMH0ch6bBBCuKjXSBoDlbtFrEgJy9UFlJsqvNyEipsYFRDe2qKJ7
-tNBOWQJCkTucQnn5e81XzzE429nqUYjUlR5qfYQF/sPXO7NewC1km/xO3bhePH3B
-vGOQAvpGrJ1llN8HQr3PNgDuviJIXqVSIGLvXLf/FdKlN6NmxOgQdeq0+BQq91dN
-s3J6ZxcGyoPt7y2WfY3ruExAl3lbpebYmK9Ti1O7mNpsIxdIl1gOkT3EtFICAIvJ
-rTz3ie7SKhie3FudN5ceC6s2/Di2k5ute1a2gVsKrbSMsAwxJczb2r/7H/EwGExw
-xMnCWyJ/SFIaxNcBIFTU7hQQcfbofJ7+Bf1mdhD6sCjfWfj0BwI=
-=Gk16
------END PGP SIGNATURE-----
-
---nextPart12302735.O9o76ZdvQC--
-
-
+diff --git a/lib/test_meminit.c b/lib/test_meminit.c
+index 0ae35223d773..85d8dd8e01dc 100644
+--- a/lib/test_meminit.c
++++ b/lib/test_meminit.c
+@@ -93,7 +93,7 @@ static int __init test_pages(int *total_failures)
+ 	int failures = 0, num_tests = 0;
+ 	int i;
+ 
+-	for (i = 0; i <= MAX_ORDER; i++)
++	for (i = 0; i < MAX_ORDER; i++)
+ 		num_tests += do_alloc_pages_order(i, &failures);
+ 
+ 	REPORT_FAILURES_IN_FN();
+-- 
+2.42.0
 
