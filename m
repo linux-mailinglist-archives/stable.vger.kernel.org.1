@@ -2,40 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F33007C62CC
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 04:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FC3E7C62D0
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 04:36:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233929AbjJLCfT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 11 Oct 2023 22:35:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48366 "EHLO
+        id S233994AbjJLCgy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 11 Oct 2023 22:36:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232321AbjJLCfT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 22:35:19 -0400
+        with ESMTP id S233946AbjJLCgy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 11 Oct 2023 22:36:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F6F8B6
-        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 19:35:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BA35C433C8
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 02:35:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 186F4A4
+        for <stable@vger.kernel.org>; Wed, 11 Oct 2023 19:36:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100F5C433CD;
+        Thu, 12 Oct 2023 02:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697078116;
-        bh=pPP5HfIiR6s/9ZNqlfy8filLgwJLCoMx/r5GBDnIXLY=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=fDGaUjSMo6S14iz1b2Dlp1/5pBxi8RGA6gMfqFT0FBdOIz1aPlA3DGbMdDcAw7Pop
-         fB5/Ub3Ps37Cv8kd6+ge7DayDxosNcHrzSNT4Dc+tYyQUo+Xye28G5H61vmU6Sx2X7
-         nTLVc7JUG2NUwrnakwH4amAixuBzDlxSvunasqsTUEb7xcX7VkudtILhBJn1c/8ChA
-         WHK8pZ6Iofdi2xGuXbXDpFx/CcSbzRqXGGW5xK2cjfxz0HbN/VskYDd9Fq2IN7WHz/
-         gk+bfpb7ExDanANf6mvxqB15wCKgyVw2yYCxr27khGR8dzB0Nw8tkmvKqgauFxWKYN
-         Igbpu+485isdw==
-From:   Damien Le Moal <dlemoal@kernel.org>
-To:     stable@vger.kernel.org
-Subject: [PATCH 6.5.y] ata: libata-scsi: Disable scsi device manage_system_start_stop
-Date:   Thu, 12 Oct 2023 11:35:15 +0900
-Message-ID: <20231012023515.370060-1-dlemoal@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023100421-numbness-pulsate-f83d@gregkh>
-References: <2023100421-numbness-pulsate-f83d@gregkh>
+        s=k20201202; t=1697078212;
+        bh=g5KiW0qunq9HcVtFqYCVKP79dY5DVTJYKJe1r5endNs=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=VKCrJxUj0vX8xmEBJQgAlzsNBnG4IbLSukEAqAk/trvtaaPqvIiKAuFErBkYDkX93
+         JVmdzEjmMM9kyItZOZg/nD28w86ewasl7F2B1D0B1lZLH7H2CjVY4kfdaiLZ+D38gW
+         eVnR2jyBmfpCY1IUAE0ZSeWJeiy8lRCUELYcaaeVVm+YSqM6fAd+TtFiz48R8whUVf
+         7DX9uPUT4bcg+CqhxsFElCSq3sLEgJ/B3WbWhqccY4oJeHF0LykK4GPKFIoebRHs3O
+         kBaT3Lgz+qD8la1oKVeQTT8l4ycfm6wBMIvY52u37o2D7LIoyPrzdv1jc6kKHFetQc
+         ZJXJTnElxasJQ==
+Message-ID: <23034522-699b-425f-951c-292730a42f30@kernel.org>
+Date:   Thu, 12 Oct 2023 11:36:50 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] ata: libata-scsi: Disable scsi device"
+ failed to apply to 6.5-stable tree
+Content-Language: en-US
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     geert+renesas@glider.be, hare@suse.de, martin.petersen@oracle.com,
+        stable@vger.kernel.org
+References: <2023100421-numbness-pulsate-f83d@gregkh>
+ <b779686d-07e6-50fb-5d94-80ebd5c9b13c@kernel.org>
+ <2023100726-puppy-gutter-23af@gregkh>
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <2023100726-puppy-gutter-23af@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -45,419 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit aa3998dbeb3abce63653b7f6d4542e7dcd022590 upstream.
+On 10/7/23 20:35, Greg KH wrote:
+> On Thu, Oct 05, 2023 at 08:50:27AM +0900, Damien Le Moal wrote:
+>> On 10/4/23 23:58, gregkh@linuxfoundation.org wrote:
+>>>
+>>> The patch below does not apply to the 6.5-stable tree.
+>>> If someone wants it applied there, or to any other stable or longterm
+>>> tree, then please email the backport, including the original git commit
+>>> id to <stable@vger.kernel.org>.
+>>>
+>>> To reproduce the conflict and resubmit, you may use the following commands:
+>>>
+>>> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+>>> git checkout FETCH_HEAD
+>>> git cherry-pick -x aa3998dbeb3abce63653b7f6d4542e7dcd022590
+>>> # <resolve conflicts, build, test, etc.>
+>>> git commit -s
+>>> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023100421-numbness-pulsate-f83d@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+>>>
+>>> Possible dependencies:
+>>
+>> commit 3cc2ffe5c16dc65dfac354bc5b5bc98d3b397567
+> 
+> Ok, but that commit does not apply to 6.5.y either :(
+> 
+> Can you send a working set of backports for 6.5.y if you want to see
+> this change there?
 
-The introduction of a device link to create a consumer/supplier
-relationship between the scsi device of an ATA device and the ATA port
-of that ATA device fixes the ordering of system suspend and resume
-operations. For suspend, the scsi device is suspended first and the ata
-port after it. This is fine as this allows the synchronize cache and
-START STOP UNIT commands issued by the scsi disk driver to be executed
-before the ata port is disabled.
+Hi Greg,
 
-For resume operations, the ata port is resumed first, followed
-by the scsi device. This allows having the request queue of the scsi
-device to be unfrozen after the ata port resume is scheduled in EH,
-thus avoiding to see new requests prematurely issued to the ATA device.
-Since libata sets manage_system_start_stop to 1, the scsi disk resume
-operation also results in issuing a START STOP UNIT command to the
-device being resumed so that the device exits standby power mode.
+It looks like all the needed dependencies are now backported and this is the
+last fix patch that was needed. I did the above "git send-email ..." to send
+you the backport for 6.5.y and did the same for 6.1.y.
 
-However, restoring the ATA device to the active power mode must be
-synchronized with libata EH processing of the port resume operation to
-avoid either 1) seeing the start stop unit command being received too
-early when the port is not yet resumed and ready to accept commands, or
-after the port resume process issues commands such as IDENTIFY to
-revalidate the device. In this last case, the risk is that the device
-revalidation fails with timeout errors as the drive is still spun down.
+Thanks !
 
-Commit 0a8589055936 ("ata,scsi: do not issue START STOP UNIT on resume")
-disabled issuing the START STOP UNIT command to avoid issues with it.
-But this is incorrect as transitioning a device to the active power
-mode from the standby power mode set on suspend requires a media access
-command. The IDENTIFY, READ LOG and SET FEATURES commands executed in
-libata EH context triggered by the ata port resume operation may thus
-fail.
+> 
+> thanks,
+> 
+> greg k-h
 
-Fix these synchronization issues is by handling a device power mode
-transitions for system suspend and resume directly in libata EH context,
-without relying on the scsi disk driver management triggered with the
-manage_system_start_stop flag.
-
-To do this, the following libata helper functions are introduced:
-
-1) ata_dev_power_set_standby():
-
-This function issues a STANDBY IMMEDIATE command to transitiom a device
-to the standby power mode. For HDDs, this spins down the disks. This
-function applies only to ATA and ZAC devices and does nothing otherwise.
-This function also does nothing for devices that have the
-ATA_FLAG_NO_POWEROFF_SPINDOWN or ATA_FLAG_NO_HIBERNATE_SPINDOWN flag
-set.
-
-For suspend, call ata_dev_power_set_standby() in
-ata_eh_handle_port_suspend() before the port is disabled and frozen.
-ata_eh_unload() is also modified to transition all enabled devices to
-the standby power mode when the system is shutdown or devices removed.
-
-2) ata_dev_power_set_active() and
-
-This function applies to ATA or ZAC devices and issues a VERIFY command
-for 1 sector at LBA 0 to transition the device to the active power mode.
-For HDDs, since this function will complete only once the disk spin up.
-Its execution uses the same timeouts as for reset, to give the drive
-enough time to complete spinup without triggering a command timeout.
-
-For resume, call ata_dev_power_set_active() in
-ata_eh_revalidate_and_attach() after the port has been enabled and
-before any other command is issued to the device.
-
-With these changes, the manage_system_start_stop and no_start_on_resume
-scsi device flags do not need to be set in ata_scsi_dev_config(). The
-flag manage_runtime_start_stop is still set to allow the sd driver to
-spinup/spindown a disk through the sd runtime operations.
-
-Fixes: 0a8589055936 ("ata,scsi: do not issue START STOP UNIT on resume")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-(cherry picked from commit aa3998dbeb3abce63653b7f6d4542e7dcd022590)
----
- drivers/ata/libata-core.c | 90 +++++++++++++++++++++++++++++++++++++++
- drivers/ata/libata-eh.c   | 54 ++++++++++++++++++++++-
- drivers/ata/libata-scsi.c | 16 +++----
- drivers/ata/libata.h      |  2 +
- include/linux/libata.h    |  6 ++-
- 5 files changed, 156 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 6ae9cff6b50c..2a21f4d9500d 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -1977,6 +1977,96 @@ int ata_dev_read_id(struct ata_device *dev, unsigned int *p_class,
- 	return rc;
- }
- 
-+/**
-+ *	ata_dev_power_set_standby - Set a device power mode to standby
-+ *	@dev: target device
-+ *
-+ *	Issue a STANDBY IMMEDIATE command to set a device power mode to standby.
-+ *	For an HDD device, this spins down the disks.
-+ *
-+ *	LOCKING:
-+ *	Kernel thread context (may sleep).
-+ */
-+void ata_dev_power_set_standby(struct ata_device *dev)
-+{
-+	unsigned long ap_flags = dev->link->ap->flags;
-+	struct ata_taskfile tf;
-+	unsigned int err_mask;
-+
-+	/* Issue STANDBY IMMEDIATE command only if supported by the device */
-+	if (dev->class != ATA_DEV_ATA && dev->class != ATA_DEV_ZAC)
-+		return;
-+
-+	/*
-+	 * Some odd clown BIOSes issue spindown on power off (ACPI S4 or S5)
-+	 * causing some drives to spin up and down again. For these, do nothing
-+	 * if we are being called on shutdown.
-+	 */
-+	if ((ap_flags & ATA_FLAG_NO_POWEROFF_SPINDOWN) &&
-+	    system_state == SYSTEM_POWER_OFF)
-+		return;
-+
-+	if ((ap_flags & ATA_FLAG_NO_HIBERNATE_SPINDOWN) &&
-+	    system_entering_hibernation())
-+		return;
-+
-+	ata_tf_init(dev, &tf);
-+	tf.flags |= ATA_TFLAG_DEVICE | ATA_TFLAG_ISADDR;
-+	tf.protocol = ATA_PROT_NODATA;
-+	tf.command = ATA_CMD_STANDBYNOW1;
-+
-+	ata_dev_notice(dev, "Entering standby power mode\n");
-+
-+	err_mask = ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, 0);
-+	if (err_mask)
-+		ata_dev_err(dev, "STANDBY IMMEDIATE failed (err_mask=0x%x)\n",
-+			    err_mask);
-+}
-+
-+/**
-+ *	ata_dev_power_set_active -  Set a device power mode to active
-+ *	@dev: target device
-+ *
-+ *	Issue a VERIFY command to enter to ensure that the device is in the
-+ *	active power mode. For a spun-down HDD (standby or idle power mode),
-+ *	the VERIFY command will complete after the disk spins up.
-+ *
-+ *	LOCKING:
-+ *	Kernel thread context (may sleep).
-+ */
-+void ata_dev_power_set_active(struct ata_device *dev)
-+{
-+	struct ata_taskfile tf;
-+	unsigned int err_mask;
-+
-+	/*
-+	 * Issue READ VERIFY SECTORS command for 1 sector at lba=0 only
-+	 * if supported by the device.
-+	 */
-+	if (dev->class != ATA_DEV_ATA && dev->class != ATA_DEV_ZAC)
-+		return;
-+
-+	ata_tf_init(dev, &tf);
-+	tf.flags |= ATA_TFLAG_DEVICE | ATA_TFLAG_ISADDR;
-+	tf.protocol = ATA_PROT_NODATA;
-+	tf.command = ATA_CMD_VERIFY;
-+	tf.nsect = 1;
-+	if (dev->flags & ATA_DFLAG_LBA) {
-+		tf.flags |= ATA_TFLAG_LBA;
-+		tf.device |= ATA_LBA;
-+	} else {
-+		/* CHS */
-+		tf.lbal = 0x1; /* sect */
-+	}
-+
-+	ata_dev_notice(dev, "Entering active power mode\n");
-+
-+	err_mask = ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, 0);
-+	if (err_mask)
-+		ata_dev_err(dev, "VERIFY failed (err_mask=0x%x)\n",
-+			    err_mask);
-+}
-+
- /**
-  *	ata_read_log_page - read a specific log page
-  *	@dev: target device
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 960ef5c6f2c1..150e7ab62d1a 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -106,6 +106,14 @@ static const unsigned int ata_eh_flush_timeouts[] = {
- 	UINT_MAX,
- };
- 
-+static const unsigned int ata_eh_pm_timeouts[] = {
-+	10000,	/* most drives spin up by 10sec */
-+	10000,	/* > 99% working drives spin up before 20sec */
-+	35000,	/* give > 30 secs of idleness for outlier devices */
-+	 5000,	/* and sweet one last chance */
-+	UINT_MAX, /* > 1 min has elapsed, give up */
-+};
-+
- static const unsigned int ata_eh_other_timeouts[] = {
- 	 5000,	/* same rationale as identify timeout */
- 	10000,	/* ditto */
-@@ -147,6 +155,8 @@ ata_eh_cmd_timeout_table[ATA_EH_CMD_TIMEOUT_TABLE_SIZE] = {
- 	  .timeouts = ata_eh_other_timeouts, },
- 	{ .commands = CMDS(ATA_CMD_FLUSH, ATA_CMD_FLUSH_EXT),
- 	  .timeouts = ata_eh_flush_timeouts },
-+	{ .commands = CMDS(ATA_CMD_VERIFY),
-+	  .timeouts = ata_eh_pm_timeouts },
- };
- #undef CMDS
- 
-@@ -498,7 +508,19 @@ static void ata_eh_unload(struct ata_port *ap)
- 	struct ata_device *dev;
- 	unsigned long flags;
- 
--	/* Restore SControl IPM and SPD for the next driver and
-+	/*
-+	 * Unless we are restarting, transition all enabled devices to
-+	 * standby power mode.
-+	 */
-+	if (system_state != SYSTEM_RESTART) {
-+		ata_for_each_link(link, ap, PMP_FIRST) {
-+			ata_for_each_dev(dev, link, ENABLED)
-+				ata_dev_power_set_standby(dev);
-+		}
-+	}
-+
-+	/*
-+	 * Restore SControl IPM and SPD for the next driver and
- 	 * disable attached devices.
- 	 */
- 	ata_for_each_link(link, ap, PMP_FIRST) {
-@@ -690,6 +712,10 @@ void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap)
- 				ehc->saved_xfer_mode[devno] = dev->xfer_mode;
- 				if (ata_ncq_enabled(dev))
- 					ehc->saved_ncq_enabled |= 1 << devno;
-+
-+				/* If we are resuming, wake up the device */
-+				if (ap->pflags & ATA_PFLAG_RESUMING)
-+					ehc->i.dev_action[devno] |= ATA_EH_SET_ACTIVE;
- 			}
- 		}
- 
-@@ -753,6 +779,8 @@ void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap)
- 	/* clean up */
- 	spin_lock_irqsave(ap->lock, flags);
- 
-+	ap->pflags &= ~ATA_PFLAG_RESUMING;
-+
- 	if (ap->pflags & ATA_PFLAG_LOADING)
- 		ap->pflags &= ~ATA_PFLAG_LOADING;
- 	else if ((ap->pflags & ATA_PFLAG_SCSI_HOTPLUG) &&
-@@ -1244,6 +1272,13 @@ void ata_eh_detach_dev(struct ata_device *dev)
- 	struct ata_eh_context *ehc = &link->eh_context;
- 	unsigned long flags;
- 
-+	/*
-+	 * If the device is still enabled, transition it to standby power mode
-+	 * (i.e. spin down HDDs).
-+	 */
-+	if (ata_dev_enabled(dev))
-+		ata_dev_power_set_standby(dev);
-+
- 	ata_dev_disable(dev);
- 
- 	spin_lock_irqsave(ap->lock, flags);
-@@ -3042,6 +3077,15 @@ static int ata_eh_revalidate_and_attach(struct ata_link *link,
- 		if (ehc->i.flags & ATA_EHI_DID_RESET)
- 			readid_flags |= ATA_READID_POSTRESET;
- 
-+		/*
-+		 * When resuming, before executing any command, make sure to
-+		 * transition the device to the active power mode.
-+		 */
-+		if ((action & ATA_EH_SET_ACTIVE) && ata_dev_enabled(dev)) {
-+			ata_dev_power_set_active(dev);
-+			ata_eh_done(link, dev, ATA_EH_SET_ACTIVE);
-+		}
-+
- 		if ((action & ATA_EH_REVALIDATE) && ata_dev_enabled(dev)) {
- 			WARN_ON(dev->class == ATA_DEV_PMP);
- 
-@@ -4015,6 +4059,7 @@ static void ata_eh_handle_port_suspend(struct ata_port *ap)
- 	unsigned long flags;
- 	int rc = 0;
- 	struct ata_device *dev;
-+	struct ata_link *link;
- 
- 	/* are we suspending? */
- 	spin_lock_irqsave(ap->lock, flags);
-@@ -4027,6 +4072,12 @@ static void ata_eh_handle_port_suspend(struct ata_port *ap)
- 
- 	WARN_ON(ap->pflags & ATA_PFLAG_SUSPENDED);
- 
-+	/* Set all devices attached to the port in standby mode */
-+	ata_for_each_link(link, ap, HOST_FIRST) {
-+		ata_for_each_dev(dev, link, ENABLED)
-+			ata_dev_power_set_standby(dev);
-+	}
-+
- 	/*
- 	 * If we have a ZPODD attached, check its zero
- 	 * power ready status before the port is frozen.
-@@ -4109,6 +4160,7 @@ static void ata_eh_handle_port_resume(struct ata_port *ap)
- 	/* update the flags */
- 	spin_lock_irqsave(ap->lock, flags);
- 	ap->pflags &= ~(ATA_PFLAG_PM_PENDING | ATA_PFLAG_SUSPENDED);
-+	ap->pflags |= ATA_PFLAG_RESUMING;
- 	spin_unlock_irqrestore(ap->lock, flags);
- }
- #endif /* CONFIG_PM */
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index ed3146c46091..cdbc382e949b 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1100,15 +1100,13 @@ int ata_scsi_dev_config(struct scsi_device *sdev, struct ata_device *dev)
- 		}
- 	} else {
- 		sdev->sector_size = ata_id_logical_sector_size(dev->id);
-+
- 		/*
--		 * Stop the drive on suspend but do not issue START STOP UNIT
--		 * on resume as this is not necessary and may fail: the device
--		 * will be woken up by ata_port_pm_resume() with a port reset
--		 * and device revalidation.
-+		 * Ask the sd driver to issue START STOP UNIT on runtime suspend
-+		 * and resume only. For system level suspend/resume, devices
-+		 * power state is handled directly by libata EH.
- 		 */
--		sdev->manage_system_start_stop = true;
- 		sdev->manage_runtime_start_stop = true;
--		sdev->no_start_on_resume = 1;
- 	}
- 
- 	/*
-@@ -1284,7 +1282,7 @@ static unsigned int ata_scsi_start_stop_xlat(struct ata_queued_cmd *qc)
- 	}
- 
- 	if (cdb[4] & 0x1) {
--		tf->nsect = 1;	/* 1 sector, lba=0 */
-+		tf->nsect = 1;  /* 1 sector, lba=0 */
- 
- 		if (qc->dev->flags & ATA_DFLAG_LBA) {
- 			tf->flags |= ATA_TFLAG_LBA;
-@@ -1300,7 +1298,7 @@ static unsigned int ata_scsi_start_stop_xlat(struct ata_queued_cmd *qc)
- 			tf->lbah = 0x0; /* cyl high */
- 		}
- 
--		tf->command = ATA_CMD_VERIFY;	/* READ VERIFY */
-+		tf->command = ATA_CMD_VERIFY;   /* READ VERIFY */
- 	} else {
- 		/* Some odd clown BIOSen issue spindown on power off (ACPI S4
- 		 * or S5) causing some drives to spin up and down again.
-@@ -1310,7 +1308,7 @@ static unsigned int ata_scsi_start_stop_xlat(struct ata_queued_cmd *qc)
- 			goto skip;
- 
- 		if ((qc->ap->flags & ATA_FLAG_NO_HIBERNATE_SPINDOWN) &&
--		     system_entering_hibernation())
-+		    system_entering_hibernation())
- 			goto skip;
- 
- 		/* Issue ATA STANDBY IMMEDIATE command */
-diff --git a/drivers/ata/libata.h b/drivers/ata/libata.h
-index 76d0a5937b66..b4f6cbf6c1d2 100644
---- a/drivers/ata/libata.h
-+++ b/drivers/ata/libata.h
-@@ -62,6 +62,8 @@ extern int ata_dev_reread_id(struct ata_device *dev, unsigned int readid_flags);
- extern int ata_dev_revalidate(struct ata_device *dev, unsigned int new_class,
- 			      unsigned int readid_flags);
- extern int ata_dev_configure(struct ata_device *dev);
-+extern void ata_dev_power_set_standby(struct ata_device *dev);
-+extern void ata_dev_power_set_active(struct ata_device *dev);
- extern int sata_down_spd_limit(struct ata_link *link, u32 spd_limit);
- extern int ata_down_xfermask_limit(struct ata_device *dev, unsigned int sel);
- extern unsigned int ata_dev_set_feature(struct ata_device *dev,
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 19ddc6c80400..747de50b6858 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -192,6 +192,7 @@ enum {
- 	ATA_PFLAG_UNLOADING	= (1 << 9), /* driver is being unloaded */
- 	ATA_PFLAG_UNLOADED	= (1 << 10), /* driver is unloaded */
- 
-+	ATA_PFLAG_RESUMING	= (1 << 16),  /* port is being resumed */
- 	ATA_PFLAG_SUSPENDED	= (1 << 17), /* port is suspended (power) */
- 	ATA_PFLAG_PM_PENDING	= (1 << 18), /* PM operation pending */
- 	ATA_PFLAG_INIT_GTM_VALID = (1 << 19), /* initial gtm data valid */
-@@ -318,9 +319,10 @@ enum {
- 	ATA_EH_ENABLE_LINK	= (1 << 3),
- 	ATA_EH_PARK		= (1 << 5), /* unload heads and stop I/O */
- 	ATA_EH_GET_SUCCESS_SENSE = (1 << 6), /* Get sense data for successful cmd */
-+	ATA_EH_SET_ACTIVE	= (1 << 7), /* Set a device to active power mode */
- 
- 	ATA_EH_PERDEV_MASK	= ATA_EH_REVALIDATE | ATA_EH_PARK |
--				  ATA_EH_GET_SUCCESS_SENSE,
-+				  ATA_EH_GET_SUCCESS_SENSE | ATA_EH_SET_ACTIVE,
- 	ATA_EH_ALL_ACTIONS	= ATA_EH_REVALIDATE | ATA_EH_RESET |
- 				  ATA_EH_ENABLE_LINK,
- 
-@@ -358,7 +360,7 @@ enum {
- 	/* This should match the actual table size of
- 	 * ata_eh_cmd_timeout_table in libata-eh.c.
- 	 */
--	ATA_EH_CMD_TIMEOUT_TABLE_SIZE = 7,
-+	ATA_EH_CMD_TIMEOUT_TABLE_SIZE = 8,
- 
- 	/* Horkage types. May be set by libata or controller on drives
- 	   (some horkage may be drive/controller pair dependent */
 -- 
-2.41.0
+Damien Le Moal
+Western Digital Research
 
