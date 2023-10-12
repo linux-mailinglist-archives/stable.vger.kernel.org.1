@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A34E7C759E
-	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 20:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D46247C759F
+	for <lists+stable@lfdr.de>; Thu, 12 Oct 2023 20:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231566AbjJLSED (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 14:04:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39654 "EHLO
+        id S1347319AbjJLSEM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 14:04:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231256AbjJLSED (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 14:04:03 -0400
+        with ESMTP id S1344076AbjJLSEL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 14:04:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2976B8
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 11:03:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26303C433C8;
-        Thu, 12 Oct 2023 18:03:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633B8CA
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 11:04:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0770C433CB;
+        Thu, 12 Oct 2023 18:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697133839;
-        bh=wuYHF980oXu8b+2WGd8dQ70hTqFjNRoo2EQr1F7IAsM=;
+        s=korg; t=1697133848;
+        bh=L3tnrlDYFUPLmUAN8WFjPAVlMimishuMe35uY24447M=;
         h=Subject:To:Cc:From:Date:From;
-        b=KoGjGXew/6oQUxqAD8A1/9P3Fm/98zWhK2QG7uVA5I9tjCZIOpwYtabV+agGl5I4y
-         6/ZhpukrNLb82r48vbSwYOvYTeSeHkS9QuAJ86vhnCvCZBL4r9gkl5hb0PBi8ZKCdb
-         UMzyjOqLPFYuP3Z8Xu5P7q19I2nVzMuvl4FSqjs4=
-Subject: FAILED: patch "[PATCH] ALSA: hda/realtek - ALC287 merge RTK codec with CS CS35L41" failed to apply to 6.5-stable tree
+        b=YgwYyZQ3AZ7EO/Be+PkUObBlwpAB2TSsKFJkBuOIe069Iv/+gMV5spCAHSpeRVt5a
+         3t7Qumg8R1LEE7Y6MogjKZqcv8AmZDeyiO8B4VcXdN5cHJ+LnZxIbIjo3rm7Oxh6hc
+         bDZaNZzpCl9FEGO24jQdwnU6W4tn23Xq4rVMakHk=
+Subject: FAILED: patch "[PATCH] ALSA: hda/realtek - ALC287 merge RTK codec with CS CS35L41" failed to apply to 6.1-stable tree
 To:     kailang@realtek.com, tiwai@suse.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 12 Oct 2023 20:03:56 +0200
-Message-ID: <2023101256-dicing-maximum-c28e@gregkh>
+Date:   Thu, 12 Oct 2023 20:03:57 +0200
+Message-ID: <2023101257-educated-sloppy-c73d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,24 +42,35 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x d93eeca627db512a56145285dc94feac5b88a1d4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101256-dicing-maximum-c28e@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101257-educated-sloppy-c73d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 d93eeca627db ("ALSA: hda/realtek - ALC287 merge RTK codec with CS CS35L41 AMP")
 e43252db7e20 ("ALSA: hda/realtek - ALC287 I2S speaker platform support")
+c99c26b16c15 ("ALSA: hda/realtek: Add quirk for mute LEDs on HP ENVY x360 15-eu0xxx")
+93dc18e11b1a ("ALSA: hda/realtek: Add quirk for HP Victus 16-d1xxx to enable mute LED")
+3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+f7b069cf0881 ("ALSA: hda/realtek: Fix generic fixup definition for cs35l41 amp")
+0659400f18c0 ("ALSA: hda/realtek: Enable Mute LED on HP Laptop 15s-eq2xxx")
+067eb0845928 ("ALSA: hda/realtek: Add quirk for ThinkPad P1 Gen 6")
+8eda19cd59ce ("ALSA: hda/realtek: Add quirks for Lenovo Z13/Z16 Gen2")
+9a6804aa1c92 ("ALSA: hda/realtek: Enable mute/micmute LEDs on HP Elitebook, 645 G9")
+ca88eeb308a2 ("ALSA: hda/realtek: Enable mute/micmute LEDs on HP Spectre x360 13-aw0xxx")
+a4517c4f3423 ("ALSA: hda/realtek: Apply dual codec fixup for Dell Latitude laptops")
+2912cdda734d ("ALSA: patch_realtek: Fix Dell Inspiron Plus 16")
 
 thanks,
 
