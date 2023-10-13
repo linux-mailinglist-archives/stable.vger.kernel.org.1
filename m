@@ -2,194 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D24CD7C881D
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 16:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44B0F7C885C
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 17:12:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230373AbjJMO5S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 10:57:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47266 "EHLO
+        id S232226AbjJMPMJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 11:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232166AbjJMO5R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 10:57:17 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8144CCA
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 07:57:10 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-99bdcade7fbso337034566b.1
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 07:57:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697209029; x=1697813829; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IWrbhvrzGMyL27X1/Ej2zzR/AW0jaYdGYz91JygNlqw=;
-        b=He91YvxMijLyN6HY9/xNjBVW0GRMlbwIAm3/RS4yLQyNkTmaXDz8DIJ6SM0sltypLS
-         ie/DNaZwEvBoaLMFXXORAnkdbElNTrku4Tld/PqFIZAA5vG4+lyY9gBl2HWRLEZIK6UB
-         5oFY7/9XB25YM7bAEfcBa1KtBy4VRPlJfF5h5gwxik7gZbaSt9XIg/pa1Awx9v1N52de
-         vOU15hjpoHnvSGf1AIvR2ufRUn9bq+uDvI5K74KoFobb2XJNUIvEEC5nYyXjt+4vuTbm
-         mkY1JFLlTEcOxV7YeJ0ENO52zgMwbdpzu7jyoa90VVsLn0Bjgll/nAPZazgpNmQkaYSA
-         alkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697209029; x=1697813829;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IWrbhvrzGMyL27X1/Ej2zzR/AW0jaYdGYz91JygNlqw=;
-        b=j6f7n8H1lx4QG4NNXvzkncZ4qS9fkdbxiMQlXu6UbDDCJeAp0umLUtHlzo5ONZhgew
-         nsXG4NnC8eX3ycEOOwLQfLtIFBkcHc8krfZJMrA4KBAhvgubc1c31uOI7N9pikno3pAA
-         XALgVaJFruzWNg3hH6C1s1uuOEIhErNpv3TAbwta87ad6eqD83Lkd2llcpRxQ1DaqV59
-         ztIUA2ayQ5+nUEYMAjWNUYrbaUJjYsnWUhh6LjzUEHP34HtmSL8DD/KiHl0r82wyeVKX
-         dzKJ5KCe4r4VPZiWyQUazAKq2zMAVKGYpmi5Zj2MkopL9h5caenE8NS0omgsQn7m6L1o
-         F2Rg==
-X-Gm-Message-State: AOJu0YzQpxixzvNCgSiBUSjLswBtUGIfWw8SUkcdgHER6SUF74Z16hzP
-        KzPzS6FVyYNWUrHivbQdbiWj/g==
-X-Google-Smtp-Source: AGHT+IGv76RjP4DNO5ukc0w7ZjoJSmsowv6+NlO4hl7Ade5sANtemSY4/pqSmSBjbNk2ivaq4buDTg==
-X-Received: by 2002:a17:907:7850:b0:9b9:ae5e:79ae with SMTP id lb16-20020a170907785000b009b9ae5e79aemr20288654ejc.60.1697209028794;
-        Fri, 13 Oct 2023 07:57:08 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.219.100])
-        by smtp.gmail.com with ESMTPSA id lu22-20020a170906fad600b009944e955e19sm12548341ejb.30.2023.10.13.07.57.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Oct 2023 07:57:08 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        stable@vger.kernel.org
-Subject: [RESEND PATCH] pinctrl: qcom: lpass-lpi: fix concurrent register updates
-Date:   Fri, 13 Oct 2023 16:57:05 +0200
-Message-Id: <20231013145705.219954-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S232254AbjJMPMH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 11:12:07 -0400
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7859FC9
+        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 08:12:05 -0700 (PDT)
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20231013151202epoutp03746146ca76a478a9ff0491b4e0f5bf3b~Ns26Z3afB2109621096epoutp03d
+        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 15:12:02 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20231013151202epoutp03746146ca76a478a9ff0491b4e0f5bf3b~Ns26Z3afB2109621096epoutp03d
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1697209922;
+        bh=qnMnyohs5nmJISS97BmHCgDxl7EvhWJv5GDMuDHFoIk=;
+        h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+        b=IsmkH4u6JbRarYT3MtzkoJV129yFbvYLtOTdwyB72nSakC6hRl0yTlXVogDC4zSoZ
+         vlGksLGOoW6SL9WwoemHGL+oCmLypLK+C2a4ENKHZPCRKqJkkMM6rTIKIWBXIc8WmP
+         1LOuhP+mNFXNtYMmRAIcRFoAY4G4338hOlyveIB0=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+        epcas5p3.samsung.com (KnoxPortal) with ESMTP id
+        20231013151201epcas5p328b7013d003d9597e10f6102dc8788b4~Ns25j7-Tz3175431754epcas5p3O;
+        Fri, 13 Oct 2023 15:12:01 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.176]) by
+        epsnrtp4.localdomain (Postfix) with ESMTP id 4S6VNH4KnVz4x9Pq; Fri, 13 Oct
+        2023 15:11:59 +0000 (GMT)
+Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+        epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        D7.D0.09023.F3E59256; Sat, 14 Oct 2023 00:11:59 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+        20231013151158epcas5p1bf7625abf71b63019c2886adde3e7326~Ns2258faz2248722487epcas5p1L;
+        Fri, 13 Oct 2023 15:11:58 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20231013151158epsmtrp11f7ea7543f7273dce6b5edbc64d74bef~Ns225Qh1v0144901449epsmtrp1D;
+        Fri, 13 Oct 2023 15:11:58 +0000 (GMT)
+X-AuditID: b6c32a44-a21ff7000000233f-93-65295e3fa21f
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        CA.CC.08649.E3E59256; Sat, 14 Oct 2023 00:11:58 +0900 (KST)
+Received: from [107.122.11.51] (unknown [107.122.11.51]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20231013151156epsmtip1deb7f9c4144840f6831c85303040f4c1~Ns2078PPn2293722937epsmtip16;
+        Fri, 13 Oct 2023 15:11:55 +0000 (GMT)
+Message-ID: <3438f3b8-f7d4-f0bd-44ef-7efb09ed6151@samsung.com>
+Date:   Fri, 13 Oct 2023 20:41:54 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0)
+        Gecko/20100101 Thunderbird/91.8.1
+Subject: Re: [PATCH v4] nvme: fix corruption for passthrough meta/data
+Content-Language: en-US
+To:     Keith Busch <kbusch@kernel.org>
+Cc:     Christoph Hellwig <hch@lst.de>, axboe@kernel.dk, sagi@grimberg.me,
+        linux-nvme@lists.infradead.org, vincentfu@gmail.com,
+        ankit.kumar@samsung.com, joshiiitr@gmail.com,
+        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
+From:   Kanchan Joshi <joshi.k@samsung.com>
+In-Reply-To: <ZSlL-6Oa5J9duahR@kbusch-mbp>
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGJsWRmVeSWpSXmKPExsWy7bCmuq59nGaqwcTnchZrrvxmt1h9t5/N
+        YuXqo0wW598eZrKYdOgao8X8ZU/ZLda9fs9isWDjI0aLx90djBYb2gQduDx2zrrL7nH+3kYW
+        j8tnSz02repk89i8pN5j980GNo++LasYPT5vkgvgiMq2yUhNTEktUkjNS85PycxLt1XyDo53
+        jjc1MzDUNbS0MFdSyEvMTbVVcvEJ0HXLzAG6UEmhLDGnFCgUkFhcrKRvZ1OUX1qSqpCRX1xi
+        q5RakJJTYFKgV5yYW1yal66Xl1piZWhgYGQKVJiQnbHiv3vBfu6Kf28XsjUwTubsYuTkkBAw
+        kfi05S9TFyMXh5DAbkaJQ5cWQDmfGCWez1jHCOF8Y5Q48HY2K0zLx7tLWCASe4Gqlv5jhXDe
+        Mkq03f/KDlLFK2AnsWftJrAOFgFViU/NX1gh4oISJ2c+YQGxRQWSJH5dncMIYgsLuElMWb2E
+        GcRmFhCXuPVkPhOILSKgLHF3/kywBcwCrxkl7jSdBiri4GAT0JS4MLkUpIZTQEvi3boOFohe
+        eYntb+cwg9RLCGzhkDj1+TETxNkuEl/vPGaBsIUlXh3fwg5hS0m87G+DspMlLs08B1VfIvF4
+        z0Eo216i9VQ/2F5moL3rd+lD7OKT6P39hAkkLCHAK9HRJgRRrShxb9JTaGCJSzycsQTK9pDY
+        sfk2NOAamCQubfrAPIFRYRZSsMxC8v4sJO/MQti8gJFlFaNkakFxbnpqsmmBYV5qOTzCk/Nz
+        NzGCE7CWyw7GG/P/6R1iZOJgPMQowcGsJMI7O04jVYg3JbGyKrUoP76oNCe1+BCjKTB+JjJL
+        iSbnA3NAXkm8oYmlgYmZmZmJpbGZoZI47+vWuSlCAumJJanZqakFqUUwfUwcnFINTMuVVx2Z
+        K6PuVno6USmFX0Gd5d/kSHXu6p/Hut9oizksuOm2auaK37/2ij//aNvJ4DK7zl/sxDKfDQ5B
+        6z9q2jxW6DAV1o3c9/OB/aEDsusa4t+G6Zz2Sax7t+mCEL9m/A5OQTGDSame2mEWL/Rf/lW4
+        pL6i7J5c/iWJzyp/2LZJTMiJdqx6eP37As/VeVOtvicy9/Jz7mt5ErrTpfvx0m3vw5/rMLY/
+        WvFD/sLm5+cmHi5kzT8UJrnKPznriVbc4po7ZX+n3n++syxg8bwb3iy3YqanLzTT35fs/D16
+        5Te249fvb3nt0TvzyHoukbqn388pbdg0cy9TwO7VZ0s6Tkhv3yhxr7TAT3nym8vz0jYosRRn
+        JBpqMRcVJwIAn49hz0kEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprEIsWRmVeSWpSXmKPExsWy7bCSnK5dnGaqwZSzIhZrrvxmt1h9t5/N
+        YuXqo0wW598eZrKYdOgao8X8ZU/ZLda9fs9isWDjI0aLx90djBYb2gQduDx2zrrL7nH+3kYW
+        j8tnSz02repk89i8pN5j980GNo++LasYPT5vkgvgiOKySUnNySxLLdK3S+DKWPHfvWA/d8W/
+        twvZGhgnc3YxcnJICJhIfLy7hKWLkYtDSGA3o8T1u+eZIRLiEs3XfrBD2MISK/89Z4coes0o
+        8eDdDrAEr4CdxJ61m1hBbBYBVYlPzV9YIeKCEidnPmEBsUUFkiT23G9kArGFBdwkpqxeAraA
+        GWjBrSfzweIiAsoSd+fPZAVZwAyyYNq566wQ2xqYJPb3P2DrYuTgYBPQlLgwuRSkgVNAS+Ld
+        ug4WiEFmEl1buxghbHmJ7W/nME9gFJqF5I5ZSPbNQtIyC0nLAkaWVYySqQXFuem5yYYFhnmp
+        5XrFibnFpXnpesn5uZsYwdGmpbGD8d78f3qHGJk4GA8xSnAwK4nwzo7TSBXiTUmsrEotyo8v
+        Ks1JLT7EKM3BoiTOazhjdoqQQHpiSWp2ampBahFMlomDU6qBSS+D58e1Gyo/uDwY7daU5yZq
+        F2Ss1hR0Et0/cW5g0umLltwnmlbUzF52Qk26Ze9fUcPPb49ILggLv+dcf22qn1PJ87cn7uYV
+        /i0Rjz4Z+bM83Hguz6xSqwyZdUs4XETW9e95wWBjcV1OouDJbAfFiuL7eZZ14r165X0mS3cq
+        CCw8bS38p6Ex6vPB1iD5MyvZO7/O4A9Zr31+X6b0LIPsb6L6YewKfTvCbJftk2Hg/H3olc7+
+        ZtnYlBNzTP1F1DVc1CXmrtoWJyzy1Y9lT6XQ1RiFzvDO9Sk3Dy78vbOuWdVv7W/bnQXtKhrT
+        5INq8uL1rh3blO9x5KHGyZtvVrvtyGzbwegnteAEMGHszFNiKc5INNRiLipOBAC6cSpHJQMA
+        AA==
+X-CMS-MailID: 20231013151158epcas5p1bf7625abf71b63019c2886adde3e7326
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20231013052157epcas5p3dc0698c56f9846191d315fa8d33ccb5c
+References: <CGME20231013052157epcas5p3dc0698c56f9846191d315fa8d33ccb5c@epcas5p3.samsung.com>
+        <20231013051458.39987-1-joshi.k@samsung.com> <20231013052612.GA6423@lst.de>
+        <8c755915-2366-28ff-ffd4-be17d797557c@samsung.com>
+        <ZSlL-6Oa5J9duahR@kbusch-mbp>
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The Qualcomm LPASS LPI pin controller driver uses one lock for guarding
-Read-Modify-Write code for slew rate registers.  However the pin
-configuration and muxing registers have exactly the same RMW code but
-are not protected.
+On 10/13/2023 7:24 PM, Keith Busch wrote:
+> On Fri, Oct 13, 2023 at 03:44:38PM +0530, Kanchan Joshi wrote:
+>> On 10/13/2023 10:56 AM, Christoph Hellwig wrote:
+>>> On Fri, Oct 13, 2023 at 10:44:58AM +0530, Kanchan Joshi wrote:
+>>>> Changes since v3:
+>>>> - Block only unprivileged user
+>>>
+>>> That's not really what at least I had in mind.  I'd much rather
+>>> completely disable unprivileged passthrough for now as an easy
+>>> backportable patch.  And then only re-enable it later in a way
+>>> where it does require using SGLs for all data transfers.
+>>>
+>>
+>> I did not get how forcing SGLs can solve the issue at hand.
+>> The problem happened because (i) user specified short buffer/len, and
+>> (ii) kernel allocated buffer. Whether the buffer is fed to device using
+>> PRP or SGL does not seem to solve the large DMA problem.
+> 
+> The problem is a disconnect between the buffer size provided and the
+> implied size of the command. The idea with SGL is that it requires an
+> explicit buffer size, so the device will know the buffer is short and
+> return an appropriate error.
 
-Pin controller framework does not provide locking here, thus it is
-possible to trigger simultaneous change of pin configuration registers
-resulting in non-atomic changes.
-
-Protect from concurrent access by re-using the same lock used to cover
-the slew rate register.  Using the same lock instead of adding second
-one will make more sense, once we add support for newer Qualcomm SoC,
-where slew rate is configured in the same register as pin
-configuration/muxing.
-
-Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
----
-
-Added Linus' review. Resending because no one picked up this patch.
----
- drivers/pinctrl/qcom/pinctrl-lpass-lpi.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-index abb6f1de230b..9651aed048cf 100644
---- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-+++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-@@ -32,7 +32,8 @@ struct lpi_pinctrl {
- 	char __iomem *tlmm_base;
- 	char __iomem *slew_base;
- 	struct clk_bulk_data clks[MAX_LPI_NUM_CLKS];
--	struct mutex slew_access_lock;
-+	/* Protects from concurrent register updates */
-+	struct mutex lock;
- 	DECLARE_BITMAP(ever_gpio, MAX_NR_GPIO);
- 	const struct lpi_pinctrl_variant_data *data;
- };
-@@ -103,6 +104,7 @@ static int lpi_gpio_set_mux(struct pinctrl_dev *pctldev, unsigned int function,
- 	if (WARN_ON(i == g->nfuncs))
- 		return -EINVAL;
- 
-+	mutex_lock(&pctrl->lock);
- 	val = lpi_gpio_read(pctrl, pin, LPI_GPIO_CFG_REG);
- 
- 	/*
-@@ -128,6 +130,7 @@ static int lpi_gpio_set_mux(struct pinctrl_dev *pctldev, unsigned int function,
- 
- 	u32p_replace_bits(&val, i, LPI_GPIO_FUNCTION_MASK);
- 	lpi_gpio_write(pctrl, pin, LPI_GPIO_CFG_REG, val);
-+	mutex_unlock(&pctrl->lock);
- 
- 	return 0;
- }
-@@ -233,14 +236,14 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
- 			if (slew_offset == LPI_NO_SLEW)
- 				break;
- 
--			mutex_lock(&pctrl->slew_access_lock);
-+			mutex_lock(&pctrl->lock);
- 
- 			sval = ioread32(pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
- 			sval &= ~(LPI_SLEW_RATE_MASK << slew_offset);
- 			sval |= arg << slew_offset;
- 			iowrite32(sval, pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
- 
--			mutex_unlock(&pctrl->slew_access_lock);
-+			mutex_unlock(&pctrl->lock);
- 			break;
- 		default:
- 			return -EINVAL;
-@@ -256,6 +259,7 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
- 		lpi_gpio_write(pctrl, group, LPI_GPIO_VALUE_REG, val);
- 	}
- 
-+	mutex_lock(&pctrl->lock);
- 	val = lpi_gpio_read(pctrl, group, LPI_GPIO_CFG_REG);
- 
- 	u32p_replace_bits(&val, pullup, LPI_GPIO_PULL_MASK);
-@@ -264,6 +268,7 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
- 	u32p_replace_bits(&val, output_enabled, LPI_GPIO_OE_MASK);
- 
- 	lpi_gpio_write(pctrl, group, LPI_GPIO_CFG_REG, val);
-+	mutex_unlock(&pctrl->lock);
- 
- 	return 0;
- }
-@@ -461,7 +466,7 @@ int lpi_pinctrl_probe(struct platform_device *pdev)
- 	pctrl->chip.label = dev_name(dev);
- 	pctrl->chip.can_sleep = false;
- 
--	mutex_init(&pctrl->slew_access_lock);
-+	mutex_init(&pctrl->lock);
- 
- 	pctrl->ctrl = devm_pinctrl_register(dev, &pctrl->desc, pctrl);
- 	if (IS_ERR(pctrl->ctrl)) {
-@@ -483,7 +488,7 @@ int lpi_pinctrl_probe(struct platform_device *pdev)
- 	return 0;
- 
- err_pinctrl:
--	mutex_destroy(&pctrl->slew_access_lock);
-+	mutex_destroy(&pctrl->lock);
- 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
- 
- 	return ret;
-@@ -495,7 +500,7 @@ void lpi_pinctrl_remove(struct platform_device *pdev)
- 	struct lpi_pinctrl *pctrl = platform_get_drvdata(pdev);
- 	int i;
- 
--	mutex_destroy(&pctrl->slew_access_lock);
-+	mutex_destroy(&pctrl->lock);
- 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
- 
- 	for (i = 0; i < pctrl->data->npins; i++)
--- 
-2.34.1
-
+Thanks for clearing this up.
+It seems we will have two limitations with this approach - (i) sgl for 
+the external metadata buffer, and (ii) using sgl for data-transfer will 
+reduce the speed of passthrough io, perhaps more than what can happen 
+using the checks. And if we make the sgl opt-in, that means leaving the 
+hole for the case when this was not chosen.
