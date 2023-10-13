@@ -2,201 +2,341 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BB977C853B
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 14:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B19D7C8570
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 14:14:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231637AbjJMMCf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 08:02:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59856 "EHLO
+        id S231614AbjJMMOF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 08:14:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231452AbjJMMCY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 08:02:24 -0400
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B348C171B;
-        Fri, 13 Oct 2023 05:01:52 -0700 (PDT)
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39D7OjeS022472;
-        Fri, 13 Oct 2023 12:01:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-id : content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=UgBHciMsesk8EVidEr3TovpFYvgIYorh8weDONs/Q6I=;
- b=M4D3xB6OALCijXFjZH2g1iawGOe5tdc5vcU4Dpq6f4vL4HwzUFaZPDCrCOudeTbx6CBY
- 208zJG7ePLrDxGH5D9+FwP+E6Bh/EgYUUXxtgw90Tmo/7WmIbDrhK+QF1YIx34DwWgFN
- XTDhbfUs4Od9gRG7MD889o5WUvf1ItRy/N7ZNSZK8bpDK8FWIGNj0rUJgy50PB+J0Osv
- PeXV3re1hBgKeWqGggaFA3ksnzxKpMQdFc5Q+8v5FNlquXeIPHfAq3d+lf4ohT9Q9HK8
- GB75wh6bAYJP9Nn358jAr+c9IXpQw29zVtMxl1qlP8o5v0IZPEFaULza9evHDPVUiN2n 0A== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3tmh9125qv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Oct 2023 12:01:45 +0000
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 39DA8hVt039128;
-        Fri, 13 Oct 2023 12:01:44 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2168.outbound.protection.outlook.com [104.47.57.168])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3tpt0trsg5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Oct 2023 12:01:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=m1nB5rNKWjgkrJ4vJ7xRyzf79CtLvI9p2FWs7o6ioyAuVVJkc5zMnNFlj3l+q+RYAvW6X1h+ZQltOeq+xH+deZkEeN5zaDi6NwCgl3pyyM77L9BRqfUjF5lGZ+c9Zf1ymA1JUZb5GHy69f1PGChq6KYgbUc1ESr+lKzkatEtAlrTPkh1MeQ4Y3TqlnoZUyD72fsKQ2HFnRybHgMcHhZVqIB4XBME53oGb/lrcToO2MU1MIVDfipg7NkNUMYF4sHmjjadHXaOINXOXNuOWw4wjY6sXn15+meMJM6L8G59cYE69O6A+HeZgEgPaPawWzA+ZbMy5/++YDaMSYNKsqa7lw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UgBHciMsesk8EVidEr3TovpFYvgIYorh8weDONs/Q6I=;
- b=ja85tMyOKS+T1OA9bpjqJpwuz30Jyy2MZqrpX4n+oG5TYx8KvRfDvxN/gCdWq5AGJ/4gmM19TpPLg3NQGtfNmgLs6uvNF3nOYcrrpv/vSPz8HODW3j5P3PtNCNiI8n7q7RnqYt2LypYKqwk/FwdRBbEPbegzjhcZhIAiESEkL8IEJZckEP5uEJQnXwhJd0LcnPLPbaAi5cllIHTJGl3mwWBI0juLbnSVviQcUpg5qS52tCG7JwEyikZRPjJdLbT5nCHwaBKqhS3XJZOFO8ltj8MTs4mIl2gWLehTJ+t5f0WUCwY0CDRIfWrxtiHQauomSeTa++Axv4Ilzm+V70LHbA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UgBHciMsesk8EVidEr3TovpFYvgIYorh8weDONs/Q6I=;
- b=gebqHnMRbtp6F5/CzQQ50qZmGQx0K1n7DiWuJkyDuC6QfudvPYnogrD1WW3Wtyp36XkperUZonmxqpXL7i/e/nuBUdIm9nKsCezzPDSQHQfnkaO4R6nHBaSgIKSDJ4wb2r+HUdyz3mZQjVbO3AVoDg8ikTHoADWLImsBKDlCzOE=
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com (2603:10b6:408:117::24)
- by CO1PR10MB4483.namprd10.prod.outlook.com (2603:10b6:303:98::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.46; Fri, 13 Oct
- 2023 12:01:42 +0000
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::cf32:e9b3:e1e0:9641]) by BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::cf32:e9b3:e1e0:9641%4]) with mapi id 15.20.6863.046; Fri, 13 Oct 2023
- 12:01:42 +0000
-From:   Chuck Lever III <chuck.lever@oracle.com>
-To:     Tom Talpey <tom@talpey.com>
-CC:     Chuck Lever <cel@kernel.org>,
-        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v1] svcrdma: Drop connection after an RDMA Read error
-Thread-Topic: [PATCH v1] svcrdma: Drop connection after an RDMA Read error
-Thread-Index: AQHZ+56J1sr/avAOwk+1mhbyafE6vLBG372AgADDB4A=
-Date:   Fri, 13 Oct 2023 12:01:42 +0000
-Message-ID: <9A009CB8-DF99-467A-8AA2-30E3E450CC7F@oracle.com>
-References: <169695862158.5083.6004887085023503434.stgit@oracle-102.nfsv4bat.org>
- <d2ecff1e-1404-4f9a-8550-b211ff5f7410@talpey.com>
-In-Reply-To: <d2ecff1e-1404-4f9a-8550-b211ff5f7410@talpey.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Apple Mail (2.3731.700.6)
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN0PR10MB5128:EE_|CO1PR10MB4483:EE_
-x-ms-office365-filtering-correlation-id: 3af2fa3b-4570-4410-89f1-08dbcbe42a00
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: FGbIwiV/Nuw2lASmFveu68fjLuKhZRkj2/eSZFQXmcnNQG6dUbDyL+QMIq9rNyOf71lKbUxg3IYtIiYNU6/+KcCe/XAm8OLDGQTmE0JsL0W2rzEjfJU0zBG0mszLPvMKwTZgkmoQgyz0YC1xK9hfLmkM4FMsv4kf+yMZlnZVnp50hag58N2JvhrK1VKLimeDosthJDu2Cw7EHMRJWWIwtbjGMumZXd+6Nfpa4eJiUTKBqvBv/uGBLKtaKeRYVFrxqvT7ZMWi+0fgoPtVsyI4Dhj8KXesrMxKegoYb6D004v6B+eqHfG7KoWvPeLdGL8ozx5ftspTF2m4nqfBmzI7NkvEfJ+PprflWIKsCZu9SHOwdFMsLdQ8loivIQTKHd0dFESDf3FAju4pjnaFa7KV2f0hdFCxBHUUaMaZG7jMaoHRsH6j6OZOrT9pUq+6TgvHPnUmUqgpi2GuOFkiWVhZkdjRtT0/PtJjqqNZN42QOtK1aLqmUryci0vBwIzeU6SX5tprEZHmi89TxLYJJTMCMSD8RlFPh8v7eNdSaT1VJY75MAltk6xeWz5HOj2aIzYlGo17ylbxLkK5eGE1Rd1HdGYX6trASSyFiPY1OB6mHSHo2VgtCyMWa4olHaAFtS9H8Z+b4IloSVg2UEBGLH/olQ==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5128.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(396003)(136003)(366004)(39860400002)(346002)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(6506007)(478600001)(6486002)(71200400001)(26005)(86362001)(2616005)(38100700002)(38070700005)(83380400001)(122000001)(36756003)(33656002)(6512007)(53546011)(91956017)(76116006)(41300700001)(316002)(66446008)(6916009)(66946007)(66556008)(66476007)(64756008)(54906003)(8936002)(8676002)(4326008)(5660300002)(2906002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?5pJCf+miua5kIPRltKDwFcgxpbks+lleDa0ym/x5EGmAmpJCO0UMeeeVWJl4?=
- =?us-ascii?Q?CY2XUj3t6SIFQbuUA57X7nh2lUoELrZPrO9VdBl76e5LBdgwZPHJTy9b68iu?=
- =?us-ascii?Q?aTpeffGgyO5mnowIDgk8NHpdAF2a8+1P8MErhpsnhEwGJA+Mt8U3RhA0NWKL?=
- =?us-ascii?Q?5dYwI+/PXiGbzTtLv21XonUVTPVTXO4ySwg8od3eB/FtWDIwZTFhWseicHKV?=
- =?us-ascii?Q?pSZlWHytnNtjcTqOwd0DmKuDC6TASdCi/3ZdmvpgBZ0QcAFqjYghTWIhowat?=
- =?us-ascii?Q?7d1ZWWgG4XJUzxIPYWlP1B9Cavw4Wmq3OQrSfG2nbnqVOmQCzpwH/pPmWGpg?=
- =?us-ascii?Q?b1xITDOd05weTZk3NU2YEVgrwFNEPYEC0ZKxj11k5YWZrBskEdHdyIe7EAXf?=
- =?us-ascii?Q?s1QhyGgLyznWOcURrEgDwT2ldvr6R9CISM+MoJAqnHJJU+ixqMuXdODX3LWU?=
- =?us-ascii?Q?dRuVIcLP3g4jo71l7I/V9D7Q0gWuj/I7xmfOcZ8FLTwYeEncDrAMdKKQNsaR?=
- =?us-ascii?Q?nJBL2B9IISYyjSySenBhaiQCcWyX6qctiRP8FpjQBv7fcLVRIB8X7WEv2PNC?=
- =?us-ascii?Q?Qj4K+e/BkLdEcl5JcUlX8JYVJeDY/GZPiibig9HIo6t3jGkkrgwh+rMB6Aoy?=
- =?us-ascii?Q?w7yT6/V6nVRXPylz+/o9MfNZto+o8YNdbb+onpvBNrEV/yVqfvQHz9Z4bBhN?=
- =?us-ascii?Q?O9dXde7PWd2FKd/jJDcYT3BgylsrKkuUNv69koOLc56uOkHbnzDw+rBlzbaw?=
- =?us-ascii?Q?WOcIZ05BfccYR707T8CZP+R+9vmZY0eV/fku0OObGDr1Lodx3FH1X0zoQjhI?=
- =?us-ascii?Q?u8TvHy4YkIQ/f37KQn3CyczOo7hTeR7tfeODPaCv0/3xzgBfgCK2U02Gqovd?=
- =?us-ascii?Q?KQ7aARtZ2j520g9UMFrUm+b4r6nK/DioupbZIo8jt4SG3vhjETeyjT+BhU03?=
- =?us-ascii?Q?RoEDCnL+fKVM7GbFF06mloVpIYxvlhqa12djXaF84E3mSAjB53+EYi3VUc9w?=
- =?us-ascii?Q?Cdl8uFv1tKq/BFrkZHqxWCPFX9KnXuW8ouCIsuQTtMynjJXxd5vAU1Elddor?=
- =?us-ascii?Q?1pFDNHj/sdxwzvf8JlG1DiSDHi5rk85lge8u36Xm1C1+33vZu5tznsQaMNcG?=
- =?us-ascii?Q?fSeX63FAdzj220hsu4JiqsbW5FDmz2lUyvGRlWy7CE5OVFEX2aTUf8So3XrO?=
- =?us-ascii?Q?N65UyEsZu3SET6GZeEPbJzU2+us7ntQRVhNMEaGr3sbz0qHbngwyIRNRMrhJ?=
- =?us-ascii?Q?3isGLiaQuWtMK0rObmrG3jafNM4KBm3WM0s+fXyeAyC5Lnki5oOlf7pJLz3h?=
- =?us-ascii?Q?2+4Xvs/M6jhV/qrpLNWhSRtQLEo5F38ZCXpdOUBOmH4VZdXU2lWCG9NySVHc?=
- =?us-ascii?Q?pyOsyGFqrWLIqzAcH2zApOmCw/NQw4u/fBiQkfcmWbWw973hCeCs8gbmerMi?=
- =?us-ascii?Q?NXblZGTUIPdGG5htUQ64n6lDOge1TMjljEtMsbzheSfaz3XVupMaubukc9jr?=
- =?us-ascii?Q?bYPF70rSEP715gxPNrKFhTlPB6+Z0GTssiwWGgrJnekbacJah9b7crLlt5+R?=
- =?us-ascii?Q?LmKUT6VKSKATgDFWRrRlBDINDzrXjO2/7XvwSe9VX2IhNF3kfMPGU2GV0waY?=
- =?us-ascii?Q?0Q=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <25358A5DF48FBC4EAFDF57F21CB0F2C1@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S231598AbjJMMOF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 08:14:05 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73E1DA9;
+        Fri, 13 Oct 2023 05:14:02 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id A097721882;
+        Fri, 13 Oct 2023 12:14:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1697199240; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=/Xf4C3l9Iso6xeaae7NubLlmFoMmCGa8pNWn490GaeE=;
+        b=qdeL2FvTP+LgFGtLi01o5NGHBNpXBrTA0gIQNOhXoWdq9zc+ZPMs16mVkdH3Fl7DguHUs/
+        dunMNV5ds/CVFwT5rEeynvt8fBLMeJlM1/F8qQH3067SNOwG1f5Wf1QalSmOQFJalRliNE
+        K1N9fSPpGfJcuWZchYU1ftjdwA/bMgw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1697199240;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=/Xf4C3l9Iso6xeaae7NubLlmFoMmCGa8pNWn490GaeE=;
+        b=ZS6djrqnN+1bDhnoVd815NyA3Xv65LdWFWX70YwP/5iyBI5/mlvu/gndycJJmVrme7vqFN
+        /AZut0O+dTwFDqCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8C6E11358F;
+        Fri, 13 Oct 2023 12:14:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id I+tFIog0KWVfagAAMHmgww
+        (envelope-from <jack@suse.cz>); Fri, 13 Oct 2023 12:14:00 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+        id 1D321A05C4; Fri, 13 Oct 2023 14:14:00 +0200 (CEST)
+From:   Jan Kara <jack@suse.cz>
+To:     Ted Tso <tytso@mit.edu>
+Cc:     <linux-ext4@vger.kernel.org>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>,
+        Dave Chinner <david@fromorbit.com>, Jan Kara <jack@suse.cz>,
+        stable@vger.kernel.org
+Subject: [PATCH v3] ext4: Properly sync file size update after O_SYNC direct IO
+Date:   Fri, 13 Oct 2023 14:13:50 +0200
+Message-Id: <20231013121350.26872-1-jack@suse.cz>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: v5mlB3Ks3WQX6rE9rCNycaYXAsRfg2XQcdBS6da1HE69fsT7qte0fAoe0g2qjIejct9uEQVBepUyubNEGTGBPW5AoY7qcF9cwoSaS8rOJwhXmc9RJAxkr4nKms5MoeOcfSpgO3uUA4apbpXF2ECeHe7N677zMMGkLSb5B2g/1zNIICiJRNXxlUeSyazYTsjpLfmNZUwgtm+gLtLheokuc9MwxHgx4n7JSKpbRT03oXt49NkgY+YKgnRe9QAd0pRIA/w3VOypP7ufk2498AarCq3SCIbqs1d7i3sUeqUQ5wMU3xPwbxysv6eQTC8ohaGx7Ay686VTU7mevWFanaqrFaNxCPlhOZWYeMNCel5wAz8E004DQ9U6JZ5i1Pwn/DdjNt44LzEHKQ7kDAOopANwBaaXXOAjT0X+xO5tH4ibOkMeP4gZ5dMmVZe370MQC2LL0oeBB+h4sjJLLGgUoGk5K4ldNa0FxlTnqVN6gfmWFJeLLqnqmyKq/YGl7WkWhrfAcIlVdM5RKe6BX5BgDdZq8xtH9Q2anZO2/9/1Nm45UgY9Fx/Rvxf/yOuWBjhyZjvbKbe0TsDNfz09Xhy60g6poYSrjH4tzI6lKTZ2hVgnw+3itU8D/t8NcGzB8oBuxMmzTiG1fueU+4g3lznO5xrpUlnKTiAG87yj+NXnrpk0/j5PsCsFn3QorxT9uaY4M2BWseEPrNyRz7azpRRlcK2rGLA2s5IC4+zV2kTkQRoAhJFwNU49VSocXFyx9Bd7ZM10Xr1Joxh66YcGzheLdHS+0c0P6XMQFV4LY4ya/wMSeTP2wZgWZQuQ03T7ot7PU4xwSaUJJ5JKiH1jZ1rBvF/Gyg==
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5128.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3af2fa3b-4570-4410-89f1-08dbcbe42a00
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Oct 2023 12:01:42.0175
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 2HAx9VqRs5ZEuhPl/TQ7H7FE9qfiMufxHzQBfziKXohJKSQGmSAdTfiS7r0uJRTleUMoQsPdR4vG+KzNuFY6sg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR10MB4483
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-13_03,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 mlxscore=0
- spamscore=0 suspectscore=0 mlxlogscore=999 malwarescore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310130099
-X-Proofpoint-GUID: emzplgRcpabD_EtQU8DyESrdbXUWwi1r
-X-Proofpoint-ORIG-GUID: emzplgRcpabD_EtQU8DyESrdbXUWwi1r
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8425; i=jack@suse.cz; h=from:subject; bh=1pHrsh/BRc9dHNqdl5wJ1etY2TaDx6R1VHRBskLM2mo=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBlKTR5BC9hdTZ9WwEqiR/cYxkQI6TgvMuCqBPFAcXZ CeqnwpGJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCZSk0eQAKCRCcnaoHP2RA2cKFB/ 4wVcnqbkvgj8Q9SDedAMwGbSuYreIH6eCNdd/F/unwI+BbT5xgtaGR+MxlvAtVO8VRgWaV1oKpLWTd mvyXulge+Rf6iHteiK/WrYDaPVVsh57t6I0+PJxMQw3aHZAyXi3SLUHyjp4GdaIZAyLICVWLMOmJKk xTG1IP8ZSmL00zkOaXauAQpeu8iX7tiCBh9GH39HpQ9j3/23ubuT7W75RQvHC4H0HqMMtlf29jX7T+ zqW9Bo4PStzpAC7vCMsGiovaGGcWT5HLL1OElZMNe0RVtC1oOPtuAZvKxFmu5Xh09f5YWevDdm0IOw 6srWUsNpfu2wRGZrCMUQBYyjm3gJQN
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out1.suse.de;
+        none
+X-Spam-Level: 
+X-Spam-Score: -0.60
+X-Spamd-Result: default: False [-0.60 / 50.00];
+         ARC_NA(0.00)[];
+         RCVD_VIA_SMTP_AUTH(0.00)[];
+         BAYES_HAM(-3.00)[100.00%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         R_MISSING_CHARSET(2.50)[];
+         TAGGED_RCPT(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         BROKEN_CONTENT_TYPE(1.50)[];
+         FREEMAIL_ENVRCPT(0.00)[gmail.com];
+         NEURAL_HAM_LONG(-3.00)[-1.000];
+         DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+         NEURAL_HAM_SHORT(-1.00)[-1.000];
+         RCPT_COUNT_SEVEN(0.00)[7];
+         MID_CONTAINS_FROM(1.00)[];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         RCVD_TLS_ALL(0.00)[];
+         SUSPICIOUS_RECIPS(1.50)[];
+         FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,linux.alibaba.com,fromorbit.com,suse.cz]
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Gao Xiang has reported that on ext4 O_SYNC direct IO does not properly
+sync file size update and thus if we crash at unfortunate moment, the
+file can have smaller size although O_SYNC IO has reported successful
+completion. The problem happens because update of on-disk inode size is
+handled in ext4_dio_write_iter() *after* iomap_dio_rw() (and thus
+dio_complete() in particular) has returned and generic_file_sync() gets
+called by dio_complete(). Fix the problem by handling on-disk inode size
+update directly in our ->end_io completion handler.
 
+References: https://lore.kernel.org/all/02d18236-26ef-09b0-90ad-030c4fe3ee20@linux.alibaba.com
+Reported-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+CC: stable@vger.kernel.org
+Fixes: 378f32bab371 ("ext4: introduce direct I/O write using iomap infrastructure")
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ fs/ext4/file.c | 153 +++++++++++++++++++++----------------------------
+ 1 file changed, 65 insertions(+), 88 deletions(-)
 
-> On Oct 12, 2023, at 8:23 PM, Tom Talpey <tom@talpey.com> wrote:
->=20
-> On 10/10/2023 1:23 PM, Chuck Lever wrote:
->> From: Chuck Lever <chuck.lever@oracle.com>
->> When an RPC Call message cannot be pulled from the client, that
->> is a message loss, by definition. Close the connection to trigger
->> the client to resend.
->=20
-> This looks correct, but it seems there are actually two changes here,
-> it's initiating the close but it's also unconditionally returning
-> -ENOTCONN. Other similar code paths do this so it's ok but the
-> altered return value is a bit mysterious.
+Changes since v2:
+* Added more comments explaining the code flow
+* Added WARN_ON_ONCE to verify extending IO is handled synchronously
 
-It's conventional for transport top level methods to return
--ENOTCONN if the connection is closing or closed.
+Changes since v1:
+* Rebased on top of Linus' tree (instead of a tree with iomap cleanup)
+* Made ext4_dio_write_end_io() always return number of written bytes on
+  success for consistency
+* Added Fixes tag
 
-
-> Reviewed-by: Tom Talpey <tom@talpey.com>
-
-Thanks!
-
-
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
->> ---
->>  net/sunrpc/xprtrdma/svc_rdma_recvfrom.c |    3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->> diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrd=
-ma/svc_rdma_recvfrom.c
->> index 85c8bcaebb80..3b05f90a3e50 100644
->> --- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
->> +++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
->> @@ -852,7 +852,8 @@ int svc_rdma_recvfrom(struct svc_rqst *rqstp)
->>   if (ret =3D=3D -EINVAL)
->>   svc_rdma_send_error(rdma_xprt, ctxt, ret);
->>   svc_rdma_recv_ctxt_put(rdma_xprt, ctxt);
->> - return ret;
->> + svc_xprt_deferred_close(xprt);
->> + return -ENOTCONN;
->>    out_backchannel:
->>   svc_rdma_handle_bc_reply(rqstp, ctxt);
-
---
-Chuck Lever
-
+diff --git a/fs/ext4/file.c b/fs/ext4/file.c
+index 6830ea3a6c59..19d9db4799c4 100644
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -306,80 +306,38 @@ static ssize_t ext4_buffered_write_iter(struct kiocb *iocb,
+ }
+ 
+ static ssize_t ext4_handle_inode_extension(struct inode *inode, loff_t offset,
+-					   ssize_t written, size_t count)
++					   ssize_t count)
+ {
+ 	handle_t *handle;
+-	bool truncate = false;
+-	u8 blkbits = inode->i_blkbits;
+-	ext4_lblk_t written_blk, end_blk;
+-	int ret;
+-
+-	/*
+-	 * Note that EXT4_I(inode)->i_disksize can get extended up to
+-	 * inode->i_size while the I/O was running due to writeback of delalloc
+-	 * blocks. But, the code in ext4_iomap_alloc() is careful to use
+-	 * zeroed/unwritten extents if this is possible; thus we won't leave
+-	 * uninitialized blocks in a file even if we didn't succeed in writing
+-	 * as much as we intended.
+-	 */
+-	WARN_ON_ONCE(i_size_read(inode) < EXT4_I(inode)->i_disksize);
+-	if (offset + count <= EXT4_I(inode)->i_disksize) {
+-		/*
+-		 * We need to ensure that the inode is removed from the orphan
+-		 * list if it has been added prematurely, due to writeback of
+-		 * delalloc blocks.
+-		 */
+-		if (!list_empty(&EXT4_I(inode)->i_orphan) && inode->i_nlink) {
+-			handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
+-
+-			if (IS_ERR(handle)) {
+-				ext4_orphan_del(NULL, inode);
+-				return PTR_ERR(handle);
+-			}
+-
+-			ext4_orphan_del(handle, inode);
+-			ext4_journal_stop(handle);
+-		}
+-
+-		return written;
+-	}
+-
+-	if (written < 0)
+-		goto truncate;
+ 
++	lockdep_assert_held_write(&inode->i_rwsem);
+ 	handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
+-	if (IS_ERR(handle)) {
+-		written = PTR_ERR(handle);
+-		goto truncate;
+-	}
++	if (IS_ERR(handle))
++		return PTR_ERR(handle);
+ 
+-	if (ext4_update_inode_size(inode, offset + written)) {
+-		ret = ext4_mark_inode_dirty(handle, inode);
++	if (ext4_update_inode_size(inode, offset + count)) {
++		int ret = ext4_mark_inode_dirty(handle, inode);
+ 		if (unlikely(ret)) {
+-			written = ret;
+ 			ext4_journal_stop(handle);
+-			goto truncate;
++			return ret;
+ 		}
+ 	}
+ 
+-	/*
+-	 * We may need to truncate allocated but not written blocks beyond EOF.
+-	 */
+-	written_blk = ALIGN(offset + written, 1 << blkbits);
+-	end_blk = ALIGN(offset + count, 1 << blkbits);
+-	if (written_blk < end_blk && ext4_can_truncate(inode))
+-		truncate = true;
+-
+-	/*
+-	 * Remove the inode from the orphan list if it has been extended and
+-	 * everything went OK.
+-	 */
+-	if (!truncate && inode->i_nlink)
++	if (inode->i_nlink)
+ 		ext4_orphan_del(handle, inode);
+ 	ext4_journal_stop(handle);
+ 
+-	if (truncate) {
+-truncate:
++	return count;
++}
++
++/*
++ * Clean up the inode after DIO or DAX extending write has completed and the
++ * inode size has been updated using ext4_handle_inode_extension().
++ */
++static void ext4_inode_extension_cleanup(struct inode *inode, ssize_t count)
++{
++	lockdep_assert_held_write(&inode->i_rwsem);
++	if (count < 0) {
+ 		ext4_truncate_failed_write(inode);
+ 		/*
+ 		 * If the truncate operation failed early, then the inode may
+@@ -388,9 +346,28 @@ static ssize_t ext4_handle_inode_extension(struct inode *inode, loff_t offset,
+ 		 */
+ 		if (inode->i_nlink)
+ 			ext4_orphan_del(NULL, inode);
++		return;
+ 	}
++	/*
++	 * If i_disksize got extended due to writeback of delalloc blocks while
++	 * the DIO was running we could fail to cleanup the orphan list in
++	 * ext4_handle_inode_extension(). Do it now.
++	 */
++	if (!list_empty(&EXT4_I(inode)->i_orphan) && inode->i_nlink) {
++		handle_t *handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
+ 
+-	return written;
++		if (IS_ERR(handle)) {
++			/*
++			 * The write has successfully completed. Not much to
++			 * do with the error here so just cleanup the orphan
++			 * list and hope for the best.
++			 */
++			ext4_orphan_del(NULL, inode);
++			return;
++		}
++		ext4_orphan_del(handle, inode);
++		ext4_journal_stop(handle);
++	}
+ }
+ 
+ static int ext4_dio_write_end_io(struct kiocb *iocb, ssize_t size,
+@@ -399,31 +376,22 @@ static int ext4_dio_write_end_io(struct kiocb *iocb, ssize_t size,
+ 	loff_t pos = iocb->ki_pos;
+ 	struct inode *inode = file_inode(iocb->ki_filp);
+ 
++	if (!error && size && flags & IOMAP_DIO_UNWRITTEN)
++		error = ext4_convert_unwritten_extents(NULL, inode, pos, size);
+ 	if (error)
+ 		return error;
+-
+-	if (size && flags & IOMAP_DIO_UNWRITTEN) {
+-		error = ext4_convert_unwritten_extents(NULL, inode, pos, size);
+-		if (error < 0)
+-			return error;
+-	}
+ 	/*
+-	 * If we are extending the file, we have to update i_size here before
+-	 * page cache gets invalidated in iomap_dio_rw(). Otherwise racing
+-	 * buffered reads could zero out too much from page cache pages. Update
+-	 * of on-disk size will happen later in ext4_dio_write_iter() where
+-	 * we have enough information to also perform orphan list handling etc.
+-	 * Note that we perform all extending writes synchronously under
+-	 * i_rwsem held exclusively so i_size update is safe here in that case.
+-	 * If the write was not extending, we cannot see pos > i_size here
+-	 * because operations reducing i_size like truncate wait for all
+-	 * outstanding DIO before updating i_size.
++	 * Note that EXT4_I(inode)->i_disksize can get extended up to
++	 * inode->i_size while the I/O was running due to writeback of delalloc
++	 * blocks. But the code in ext4_iomap_alloc() is careful to use
++	 * zeroed/unwritten extents if this is possible; thus we won't leave
++	 * uninitialized blocks in a file even if we didn't succeed in writing
++	 * as much as we intended.
+ 	 */
+-	pos += size;
+-	if (pos > i_size_read(inode))
+-		i_size_write(inode, pos);
+-
+-	return 0;
++	WARN_ON_ONCE(i_size_read(inode) < READ_ONCE(EXT4_I(inode)->i_disksize));
++	if (pos + size <= READ_ONCE(EXT4_I(inode)->i_disksize))
++		return size;
++	return ext4_handle_inode_extension(inode, pos, size);
+ }
+ 
+ static const struct iomap_dio_ops ext4_dio_write_ops = {
+@@ -606,9 +574,16 @@ static ssize_t ext4_dio_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 			   dio_flags, NULL, 0);
+ 	if (ret == -ENOTBLK)
+ 		ret = 0;
+-
+-	if (extend)
+-		ret = ext4_handle_inode_extension(inode, offset, ret, count);
++	if (extend) {
++		/*
++		 * We always perform extending DIO write synchronously so by
++		 * now the IO is completed and ext4_handle_inode_extension()
++		 * was called. Cleanup the inode in case of error or race with
++		 * writeback of delalloc blocks.
++		 */
++		WARN_ON_ONCE(ret == -EIOCBQUEUED);
++		ext4_inode_extension_cleanup(inode, ret);
++	}
+ 
+ out:
+ 	if (ilock_shared)
+@@ -689,8 +664,10 @@ ext4_dax_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 
+ 	ret = dax_iomap_rw(iocb, from, &ext4_iomap_ops);
+ 
+-	if (extend)
+-		ret = ext4_handle_inode_extension(inode, offset, ret, count);
++	if (extend) {
++		ret = ext4_handle_inode_extension(inode, offset, ret);
++		ext4_inode_extension_cleanup(inode, ret);
++	}
+ out:
+ 	inode_unlock(inode);
+ 	if (ret > 0)
+-- 
+2.35.3
 
