@@ -2,72 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EB6D7C7B8D
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 04:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 413BD7C7BA1
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 04:33:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229461AbjJMCTr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 22:19:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49694 "EHLO
+        id S229445AbjJMCdP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 22:33:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjJMCTr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 22:19:47 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFF2395
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 19:19:45 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-40651a726acso16436585e9.1
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 19:19:45 -0700 (PDT)
+        with ESMTP id S229437AbjJMCdO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 22:33:14 -0400
+Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E186B83;
+        Thu, 12 Oct 2023 19:33:12 -0700 (PDT)
+Received: by mail-vk1-xa2c.google.com with SMTP id 71dfb90a1353d-4a13374a1e8so620048e0c.1;
+        Thu, 12 Oct 2023 19:33:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697163584; x=1697768384; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X4FeNWprudZxQlt1QL8KDXCBzcl81LLzp84ZGP+Pd/I=;
-        b=KxVKPLw/ign65aeutjaX3G1EhK17lp+CTOtkDbdEg1L4sxOmvVdLwTvPO0iOvjEA12
-         U49X1otX1ZAM9Bmugq/2G/1k11XL/KmZfBpP0Hg51rtl16u/toq/JbPlcd0/kiA6XTSL
-         W8h5tGfrBu7P9XuC70o+E10kyn6JwDYbtoztrpNf453citMkCscOKQmm9DwXrk/aXg2T
-         GFt3Wv6ga7GJFWSJ3xQjSvFSL9nbikYWbZ5oNJjMjJLrPg+NTTnR3HQgricHuWyO9AVw
-         EmauvVrViTPJHPzSpLQzgPpHNDgvONK/2wiNkv/GADuNT11Ke6ChAwGwEztIMuzvt1Ix
-         TZXw==
+        d=gmail.com; s=20230601; t=1697164392; x=1697769192; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=L2qr7zuO96ufZPS1iOqXbjMEn0xmlzZcOIPVy4ltN2k=;
+        b=cGM3yI7GhFtZlsYyBQ/b6hti2DP644X9bvXb4N1CvuS2IFL/v1Q4MXdTl6P7L9Zn8q
+         92HorFATOhm6GTnwQ5K+7uVkxoT31ZGJIAQ4wAPxFtnjM5y4Yqe151VzsSBikKjmfVvb
+         c91bvb34jhOypMsJyma97xdZRUZFlaBbhEkaXWcjiw0QmIfOaucETGdraqYNfXVAzkuL
+         TT2YEhIZ+z2dgJkcCHo1t1PwOisROP9bvMIU3YcT8KrszxrKrwdXjk1P7dPkt4mYn7Vl
+         kgw4wMmuyqaTAC74kWEy8PQopTDRlQqBXcdzR37HHAE+mmM/JUAqWxxk20Ey3dHEmwwK
+         uTAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697163584; x=1697768384;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1697164392; x=1697769192;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=X4FeNWprudZxQlt1QL8KDXCBzcl81LLzp84ZGP+Pd/I=;
-        b=phIz9oz8bPf8K71N4qvFn9Qbaij94xOMcW7nXb+86RIqAqzFsle1RjY30lVDGEQEq6
-         VbR+Gg8/KJRQQ3+YFzkYx9tF1QQtzsPItnlhmoMMXlYBC8no39tgP4U5y7tbGDST10Yi
-         ZWZVpC/c1Jl6A1I2iDZtU8sCuzPMffo1LmyWmo/M/QafMQrPDTLSF7mpIUPIHtL1vtSq
-         y4h2/90Wd/o34tua4TDGNZB+8DAO4pH6PtIv7BYc1eFp+4eoIY7vBIReh5aDEv6CtX/B
-         0IVF3h7e2N3/Y2I51Q0TpsI/QvD9SQfvnnk96DSL/QC+Mj6km9Q4vnVvA10yNKUNhQCN
-         Eo9Q==
-X-Gm-Message-State: AOJu0YwLnsvh9WxZbXZu0BkehBchf2L1bWz2ExWUiVY2QTMx6UN3vFty
-        rPp1R/spKUgSmWN3ia7j0EZv4mC8o7v0s/xooQc=
-X-Google-Smtp-Source: AGHT+IHbEdeP/FvLtQBUA8coqiiD4ImLqKj5OYOku5Eh7GTT7WjD2zfvAGRtXD7pgWQNFNXZBRhDrLU3s/uj6iW5gk8=
-X-Received: by 2002:a05:6000:109:b0:320:9e2:b3a2 with SMTP id
- o9-20020a056000010900b0032009e2b3a2mr22835447wrx.33.1697163583792; Thu, 12
- Oct 2023 19:19:43 -0700 (PDT)
+        bh=L2qr7zuO96ufZPS1iOqXbjMEn0xmlzZcOIPVy4ltN2k=;
+        b=Ohl2eX8OpoLqNkQ4m37A20QdxmNdbJHfe3Vw6T9MIBmh6cWBybBq2mBJKKF4lGfkZL
+         koE07Z8peyhxGabvASwhRo6/vYsa77gAdNWXs5eZrQMP6i9ZoB/US+ONLcOqYeDNfXFZ
+         UqQfsRPb7IpJzP8+ZsV4GR7eAfmk+63+IBnBvouI9GJ0UFcIbGGqGgLv2j9LgA8fyH1n
+         7TCTIAi3SoBajGiM2yJZe1ti/2j/CJ/ejiawBLf4ZrhBLfOzydyg3LiGblc3l7anFdxE
+         mJa3ue4AWUxXhjAzYFH3wTXU2B/NL1b3Md3/PJerO6WYTRALA5BBRrWMU1CI3xlCLKwh
+         Yuog==
+X-Gm-Message-State: AOJu0Yzrhwe2Gwa4eXpyTwCG8tAtCjN+mEPbDk6kfgUGKcDK37EcePX6
+        mZ7VgedIElxA7cBmALyJbgCRAf18Jf4=
+X-Google-Smtp-Source: AGHT+IHymc3LaF5qB1ZpGLtIIFMfjchPFLcMnp13ploIYnVn8zZlv1a1d40OypvMwY1xb0cOsRh97A==
+X-Received: by 2002:a1f:c342:0:b0:49c:79f3:27a4 with SMTP id t63-20020a1fc342000000b0049c79f327a4mr23532551vkf.3.1697164391755;
+        Thu, 12 Oct 2023 19:33:11 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id i14-20020ac5cd8e000000b0049aa0209f49sm3170815vka.52.2023.10.12.19.33.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Oct 2023 19:33:10 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Thu, 12 Oct 2023 19:33:08 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 0/6] 6.1.58-rc1 review
+Message-ID: <0d61d6c4-5e73-44c3-abbb-4a90b0a27acb@roeck-us.net>
+References: <20231012180030.112560642@linuxfoundation.org>
 MIME-Version: 1.0
-References: <CGME20231006135322epcas5p1c9acf38b04f35017181c715c706281dc@epcas5p1.samsung.com>
- <1891546521.01696823881551.JavaMail.epsvc@epcpadp4> <20231010074634.GA6514@lst.de>
- <CA+1E3r+2Ce4BCZ2feJX37e1-dtvpZtY6ajiaO_orn8Airu2Bqg@mail.gmail.com>
- <20231011050254.GA32444@lst.de> <ZSbVuuE8YxgwpqM8@kbusch-mbp.dhcp.thefacebook.com>
- <20231012043652.GA1368@lst.de> <ZSgRWrcw1FFw3XRJ@kbusch-mbp.dhcp.thefacebook.com>
-In-Reply-To: <ZSgRWrcw1FFw3XRJ@kbusch-mbp.dhcp.thefacebook.com>
-From:   Kanchan Joshi <joshiiitr@gmail.com>
-Date:   Fri, 13 Oct 2023 07:49:19 +0530
-Message-ID: <CA+1E3r+gEPQgaieuwNXuXSDp5LHCQpUa8KFc80za4L9e88bUhg@mail.gmail.com>
-Subject: Re: [PATCH v3] nvme: fix memory corruption for passthrough metadata
-To:     Keith Busch <kbusch@kernel.org>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Kanchan Joshi <joshi.k@samsung.com>, axboe@kernel.dk,
-        sagi@grimberg.me, linux-nvme@lists.infradead.org,
-        vincentfu@gmail.com, ankit.kumar@samsung.com, cpgs@samsung.com,
-        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231012180030.112560642@linuxfoundation.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,47 +77,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Oct 12, 2023 at 9:01=E2=80=AFPM Keith Busch <kbusch@kernel.org> wro=
-te:
->
-> On Thu, Oct 12, 2023 at 06:36:52AM +0200, Christoph Hellwig wrote:
-> > On Wed, Oct 11, 2023 at 11:04:58AM -0600, Keith Busch wrote:
-> >
-> > > I don't think it's reasonable for the driver to decode every passthro=
-ugh
-> > > command to validate the data lengths, or reject ones that we don't kn=
-ow
-> > > how to decode. SG_IO doesn't do that either.
-> >
-> > I don't want that either, but what can we do against a (possibly
-> > unprivileged) user corrupting data?
->
-> The unpriviledged access is kind of recent. Maybe limit the scope of
-> decoding to that usage?
+On Thu, Oct 12, 2023 at 08:00:42PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.58 release.
+> There are 6 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 14 Oct 2023 18:00:23 +0000.
+> Anything received after that time might be too late.
+> 
 
-I can send an iteration today that takes this route.
-Maybe that can be considered over dropping a useful feature.
+Build results:
+	total: 157 pass: 157 fail: 0
+Qemu test results:
+	total: 529 pass: 529 fail: 0
 
-> We've always known the interface can be misused to corrupt memory and/or
-> data, and it was always user responsibility to use this interface
-> reponsibly. We shouldn't disable something people have relied on for
-> over 10 years just because someone rediscovered ways to break it.
->
-> It's not like this is a "metadata" specific thing either; you can
-> provide short user space buffers and corrupt memory with regular admin
-> commands, and we have been able to that from day 1. But if you abuse
-> this interface, it was always your fault; the kernel never took
-> responsibility to sanity check your nvme input, and I think it's a bad
-> precedent to start doing it.
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-In my mind, this was about dealing with the specific case when the
-kernel memory is being used for device DMA.
-We have just two cases: (i) separate meta buffer, and (ii) bounce
-buffer for data (+metadata).
-I had not planned sanity checks for user inputs for anything beyond that.
-As opposed to being preventive (in all cases), it was about failing
-only when we are certain that DMA will take place and it will corrupt
-kernel memory.
-
-In the long-term, it may be possible for the path to do away with
-memory copies. The checks can disappear with that.
+Guenter
