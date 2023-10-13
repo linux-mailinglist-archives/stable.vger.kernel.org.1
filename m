@@ -2,151 +2,194 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 057DE7C87DC
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 16:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D24CD7C881D
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 16:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232099AbjJMOaR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 10:30:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60908 "EHLO
+        id S230373AbjJMO5S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 10:57:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232024AbjJMOaQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 10:30:16 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FFCE95
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 07:30:15 -0700 (PDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39DEHZlA023011
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 14:30:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=6+y8P6iVx91hy24OiIHRs9af8ghIrQnrqC5oc+v1Ow0=;
- b=GxWfWJIHVwUYrGkupC0VTJSu0UYfQpB/l+LYsojKMDiiloXGCcisiBOvtZ+LyxMLiOn4
- xPj4qoYU2hUedW8WEVwCmGvCtrxXGjWTUOzaQE4o5OAbN7zwcX7tsigas/ylcNctPb8b
- Xoa/VKL2jj5F+A1cCooOQpORlcdLgm3OuVQyXgXHNrXmwU2LwLco8oqaa3vTQFamIS79
- EZuPCZUpI18qNyrGB5wB2pOFxltrv9UpCPBt05X1+Y0tgZiDvwcnIlvtnnthfOmQ9IHE
- H8ISaDyiaD6UtVKWUfsm4cuyxkjdC2473u7IYVG/NtnXu4B66u47eCMg9dXaR3RfWDdA CQ== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tq7he8dqe-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 14:30:14 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39DEEApb009040
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 14:30:13 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tpt57mf37-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 14:30:13 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-        by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39DEUBDr20251246
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Oct 2023 14:30:11 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BDF7558059;
-        Fri, 13 Oct 2023 14:30:11 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id EE6245805B;
-        Fri, 13 Oct 2023 14:30:10 +0000 (GMT)
-Received: from gauravs-mbp.lan (unknown [9.67.43.36])
-        by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Fri, 13 Oct 2023 14:30:10 +0000 (GMT)
-From:   Gaurav Batra <gbatra@linux.vnet.ibm.com>
-To:     gbatra@us.ibm.com
-Cc:     Gaurav Batra <gbatra@linux.vnet.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH 25/25] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
-Date:   Fri, 13 Oct 2023 09:29:45 -0500
-Message-Id: <20231013142945.1956-25-gbatra@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20231013142945.1956-1-gbatra@linux.vnet.ibm.com>
-References: <20231013142945.1956-1-gbatra@linux.vnet.ibm.com>
+        with ESMTP id S232166AbjJMO5R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 10:57:17 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8144CCA
+        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 07:57:10 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-99bdcade7fbso337034566b.1
+        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 07:57:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697209029; x=1697813829; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IWrbhvrzGMyL27X1/Ej2zzR/AW0jaYdGYz91JygNlqw=;
+        b=He91YvxMijLyN6HY9/xNjBVW0GRMlbwIAm3/RS4yLQyNkTmaXDz8DIJ6SM0sltypLS
+         ie/DNaZwEvBoaLMFXXORAnkdbElNTrku4Tld/PqFIZAA5vG4+lyY9gBl2HWRLEZIK6UB
+         5oFY7/9XB25YM7bAEfcBa1KtBy4VRPlJfF5h5gwxik7gZbaSt9XIg/pa1Awx9v1N52de
+         vOU15hjpoHnvSGf1AIvR2ufRUn9bq+uDvI5K74KoFobb2XJNUIvEEC5nYyXjt+4vuTbm
+         mkY1JFLlTEcOxV7YeJ0ENO52zgMwbdpzu7jyoa90VVsLn0Bjgll/nAPZazgpNmQkaYSA
+         alkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697209029; x=1697813829;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IWrbhvrzGMyL27X1/Ej2zzR/AW0jaYdGYz91JygNlqw=;
+        b=j6f7n8H1lx4QG4NNXvzkncZ4qS9fkdbxiMQlXu6UbDDCJeAp0umLUtHlzo5ONZhgew
+         nsXG4NnC8eX3ycEOOwLQfLtIFBkcHc8krfZJMrA4KBAhvgubc1c31uOI7N9pikno3pAA
+         XALgVaJFruzWNg3hH6C1s1uuOEIhErNpv3TAbwta87ad6eqD83Lkd2llcpRxQ1DaqV59
+         ztIUA2ayQ5+nUEYMAjWNUYrbaUJjYsnWUhh6LjzUEHP34HtmSL8DD/KiHl0r82wyeVKX
+         dzKJ5KCe4r4VPZiWyQUazAKq2zMAVKGYpmi5Zj2MkopL9h5caenE8NS0omgsQn7m6L1o
+         F2Rg==
+X-Gm-Message-State: AOJu0YzQpxixzvNCgSiBUSjLswBtUGIfWw8SUkcdgHER6SUF74Z16hzP
+        KzPzS6FVyYNWUrHivbQdbiWj/g==
+X-Google-Smtp-Source: AGHT+IGv76RjP4DNO5ukc0w7ZjoJSmsowv6+NlO4hl7Ade5sANtemSY4/pqSmSBjbNk2ivaq4buDTg==
+X-Received: by 2002:a17:907:7850:b0:9b9:ae5e:79ae with SMTP id lb16-20020a170907785000b009b9ae5e79aemr20288654ejc.60.1697209028794;
+        Fri, 13 Oct 2023 07:57:08 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.219.100])
+        by smtp.gmail.com with ESMTPSA id lu22-20020a170906fad600b009944e955e19sm12548341ejb.30.2023.10.13.07.57.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Oct 2023 07:57:08 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        stable@vger.kernel.org
+Subject: [RESEND PATCH] pinctrl: qcom: lpass-lpi: fix concurrent register updates
+Date:   Fri, 13 Oct 2023 16:57:05 +0200
+Message-Id: <20231013145705.219954-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hUf8_6lu0f6Q8dpbT4j8u6vpCVUXp5ZA
-X-Proofpoint-GUID: hUf8_6lu0f6Q8dpbT4j8u6vpCVUXp5ZA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-13_06,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
- mlxlogscore=999 priorityscore=1501 malwarescore=0 suspectscore=0
- phishscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310130122
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Bugzilla Number: 202953
+The Qualcomm LPASS LPI pin controller driver uses one lock for guarding
+Read-Modify-Write code for slew rate registers.  However the pin
+configuration and muxing registers have exactly the same RMW code but
+are not protected.
 
-Upstream CommitID:
+Pin controller framework does not provide locking here, thus it is
+possible to trigger simultaneous change of pin configuration registers
+resulting in non-atomic changes.
 
-Dependency-commit: d61cd13e732c0eaa7d66b45edb2d0de8eab65a1e
+Protect from concurrent access by re-using the same lock used to cover
+the slew rate register.  Using the same lock instead of adding second
+one will make more sense, once we add support for newer Qualcomm SoC,
+where slew rate is configured in the same register as pin
+configuration/muxing.
 
-Description:
-
-When a device is initialized, the driver invokes dma_supported() twice -
-first for streaming mappings followed by coherent mappings. For an
-SR-IOV device, default window is deleted and DDW created. With vPMEM
-enabled, TCE mappings are dynamically created for both vPMEM and SR-IOV
-device.  There are no direct mappings.
-
-First time when dma_supported() is called with 64 bit mask, DDW is created
-and marked as dynamic window. The second time dma_supported() is called,
-enable_ddw() finds existing window for the device and incorrectly returns
-it as "direct mapping".
-
-This only happens when size of DDW is big enough to map max LPAR memory.
-
-This results in streaming TCEs to not get dynamically mapped, since code
-incorrently assumes these are already pre-mapped. The adapter initially
-comes up but goes down due to EEH.
-
-Fixes: 381ceda88c4c ("powerpc/pseries/iommu: Make use of DDW for indirect mapping")
+Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
----
- arch/powerpc/platforms/pseries/iommu.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index efdcdf2aa42e..ce47ba64cb60 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -911,7 +911,8 @@ static int remove_ddw(struct device_node *np, bool remove_prop, const char *win_
- 	return 0;
- }
+---
+
+Added Linus' review. Resending because no one picked up this patch.
+---
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+index abb6f1de230b..9651aed048cf 100644
+--- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+@@ -32,7 +32,8 @@ struct lpi_pinctrl {
+ 	char __iomem *tlmm_base;
+ 	char __iomem *slew_base;
+ 	struct clk_bulk_data clks[MAX_LPI_NUM_CLKS];
+-	struct mutex slew_access_lock;
++	/* Protects from concurrent register updates */
++	struct mutex lock;
+ 	DECLARE_BITMAP(ever_gpio, MAX_NR_GPIO);
+ 	const struct lpi_pinctrl_variant_data *data;
+ };
+@@ -103,6 +104,7 @@ static int lpi_gpio_set_mux(struct pinctrl_dev *pctldev, unsigned int function,
+ 	if (WARN_ON(i == g->nfuncs))
+ 		return -EINVAL;
  
--static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift)
-+static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift,
-+			      bool *direct_mapping)
- {
- 	struct dma_win *window;
- 	const struct dynamic_dma_window_prop *dma64;
-@@ -924,6 +925,7 @@ static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *windo
- 			dma64 = window->prop;
- 			*dma_addr = be64_to_cpu(dma64->dma_base);
- 			*window_shift = be32_to_cpu(dma64->window_shift);
-+			*direct_mapping = window->direct;
- 			found = true;
- 			break;
- 		}
-@@ -1278,10 +1280,8 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 
- 	mutex_lock(&dma_win_init_mutex);
- 
--	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
--		direct_mapping = (len >= max_ram_len);
-+	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len, &direct_mapping))
- 		goto out_unlock;
--	}
++	mutex_lock(&pctrl->lock);
+ 	val = lpi_gpio_read(pctrl, pin, LPI_GPIO_CFG_REG);
  
  	/*
- 	 * If we already went through this for a previous function of
+@@ -128,6 +130,7 @@ static int lpi_gpio_set_mux(struct pinctrl_dev *pctldev, unsigned int function,
+ 
+ 	u32p_replace_bits(&val, i, LPI_GPIO_FUNCTION_MASK);
+ 	lpi_gpio_write(pctrl, pin, LPI_GPIO_CFG_REG, val);
++	mutex_unlock(&pctrl->lock);
+ 
+ 	return 0;
+ }
+@@ -233,14 +236,14 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
+ 			if (slew_offset == LPI_NO_SLEW)
+ 				break;
+ 
+-			mutex_lock(&pctrl->slew_access_lock);
++			mutex_lock(&pctrl->lock);
+ 
+ 			sval = ioread32(pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
+ 			sval &= ~(LPI_SLEW_RATE_MASK << slew_offset);
+ 			sval |= arg << slew_offset;
+ 			iowrite32(sval, pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
+ 
+-			mutex_unlock(&pctrl->slew_access_lock);
++			mutex_unlock(&pctrl->lock);
+ 			break;
+ 		default:
+ 			return -EINVAL;
+@@ -256,6 +259,7 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
+ 		lpi_gpio_write(pctrl, group, LPI_GPIO_VALUE_REG, val);
+ 	}
+ 
++	mutex_lock(&pctrl->lock);
+ 	val = lpi_gpio_read(pctrl, group, LPI_GPIO_CFG_REG);
+ 
+ 	u32p_replace_bits(&val, pullup, LPI_GPIO_PULL_MASK);
+@@ -264,6 +268,7 @@ static int lpi_config_set(struct pinctrl_dev *pctldev, unsigned int group,
+ 	u32p_replace_bits(&val, output_enabled, LPI_GPIO_OE_MASK);
+ 
+ 	lpi_gpio_write(pctrl, group, LPI_GPIO_CFG_REG, val);
++	mutex_unlock(&pctrl->lock);
+ 
+ 	return 0;
+ }
+@@ -461,7 +466,7 @@ int lpi_pinctrl_probe(struct platform_device *pdev)
+ 	pctrl->chip.label = dev_name(dev);
+ 	pctrl->chip.can_sleep = false;
+ 
+-	mutex_init(&pctrl->slew_access_lock);
++	mutex_init(&pctrl->lock);
+ 
+ 	pctrl->ctrl = devm_pinctrl_register(dev, &pctrl->desc, pctrl);
+ 	if (IS_ERR(pctrl->ctrl)) {
+@@ -483,7 +488,7 @@ int lpi_pinctrl_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ err_pinctrl:
+-	mutex_destroy(&pctrl->slew_access_lock);
++	mutex_destroy(&pctrl->lock);
+ 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
+ 
+ 	return ret;
+@@ -495,7 +500,7 @@ void lpi_pinctrl_remove(struct platform_device *pdev)
+ 	struct lpi_pinctrl *pctrl = platform_get_drvdata(pdev);
+ 	int i;
+ 
+-	mutex_destroy(&pctrl->slew_access_lock);
++	mutex_destroy(&pctrl->lock);
+ 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
+ 
+ 	for (i = 0; i < pctrl->data->npins; i++)
 -- 
-2.39.2 (Apple Git-143)
+2.34.1
 
