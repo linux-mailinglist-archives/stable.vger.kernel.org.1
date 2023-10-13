@@ -2,264 +2,322 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE33A7C894D
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 17:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33D0D7C8B47
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 18:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232444AbjJMP5U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 11:57:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35230 "EHLO
+        id S232632AbjJMQSp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 12:18:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232452AbjJMP5T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 11:57:19 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2900ABE
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 08:57:17 -0700 (PDT)
+        with ESMTP id S231300AbjJMQSj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 12:18:39 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED76676BB;
+        Fri, 13 Oct 2023 09:17:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697212637; x=1728748637;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=pVsOyThkZLCTJpiAC2i53MRD/BXz7rNEPPTT4RRL8S8=;
-  b=cg+St53h4tZw0QzfP1X8LU7hmuybBKTOBf/fvsayPSgvP/uttf8aXynF
-   PK1Ys61ME8j+CViZIKQZZnAdern2EQ5ggaW6d02hqyZB4ZBQOC3AQaozQ
-   g5xapXltMnMy08h7XDqzzLRqFv31NqlW1gJZ7WuWrFPyqhG3W8UhX3AcE
-   QocEKnfQqTwod/osTGr9eQRTBAVjE4JMk5+IlY02xpPpJwoxZ2iTfZzWC
-   HP+ksVj0odL8mfZzoTO8xGZpet22QE41sGVV4jvP7Bkx6oLW8vG2ZyeRT
-   e/lnDQy6OD7mWXbDN2wItflogFBZlgVrDqQJawNoTzOCmC497TjvIcKQd
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10862"; a="416257337"
+  t=1697213827; x=1728749827;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=eDg7PjKFI6fYDzrW8fqpXVxhXzF/EZxDyNrQ8RX9D0s=;
+  b=BMGbcZvvVeu4hLRFy2tYXg45m7plgEHXJB896e++AgUWK1nzh5hOqWkc
+   yUQTErHzs0vuKAqnPXTlwHQY8ze3T5LCWaQCGMLOl3mDGcJar5LfTvWNS
+   akKSQfus4+anBSnWpjWfxL91RiP45toxRk6QALKUtp68XzTSNjC909sPE
+   gtHVn+64V3TvYDI7TcmixdS/PkYc3xIWUR+pByso6GWgC6uTcI64reAWs
+   076rnq6jLAZJcBpeTtHtVKltZoxDh9/pi0qHevvau6Dm2c2V5jg3GgD99
+   KQGq3JxRa9Q/DX6Fznt6Dr4c9jBKtLWy935wynldSAlSDtRO++l46muI+
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10862"; a="6774578"
 X-IronPort-AV: E=Sophos;i="6.03,222,1694761200"; 
-   d="scan'208";a="416257337"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 08:57:16 -0700
+   d="scan'208";a="6774578"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 09:14:07 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10862"; a="845524892"
+X-IronPort-AV: E=McAfee;i="6600,9927,10862"; a="898614032"
 X-IronPort-AV: E=Sophos;i="6.03,222,1694761200"; 
-   d="scan'208";a="845524892"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by FMSMGA003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 13 Oct 2023 08:57:16 -0700
+   d="scan'208";a="898614032"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmsmga001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 13 Oct 2023 09:12:15 -0700
 Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32; Fri, 13 Oct 2023 08:57:15 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ 15.1.2507.32; Fri, 13 Oct 2023 09:14:04 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Fri, 13 Oct 2023 09:14:04 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
  orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.32 via Frontend Transport; Fri, 13 Oct 2023 08:57:15 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ 15.1.2507.32 via Frontend Transport; Fri, 13 Oct 2023 09:14:04 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.32; Fri, 13 Oct 2023 08:57:15 -0700
+ 15.1.2507.32; Fri, 13 Oct 2023 09:14:04 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iLEOQfqhSiEEOXrDVpUGs3c1kQ0EpMiKyWTRBklPkRI8sKf68WUHQtRMUVbhCDqycgpHgBuwXFbsDM78NoJope1z5L1hXKKAPfNDL+alAewjTiN5xByfBMTWCpcyWqV/piHisNONNsUxRkJQzEUsCCnor1DOzsXusip/S6BFZOhB+4X3GjQQo6lhbwYYEh3qIax/rDIca3385bHWMskUYcOlOgmf5irJJrtGKFGxuNPtai6fxkrZNvsjeiM2/x0oenJJWTqwD/6/aGGe+7MRvvrr8/HywN0T3DcsY4jQCgogd10OZeESn8RpDWtTlkJXoO+rm6OnQK2BPm56MHCTsw==
+ b=PW/G21K3yVgpHL7XEWC0CS1n16U8mrmk7kVIOi7ZlRwmiAOHyxn3BvdAA33Kz7Adaj0PxgmFUB92DvpynaQHzWwN8+cmzqDXtGXl7R1Eh/l+E7CT+UCbg3yk7nRY+K11n7KoUIlxZmlbts/7KAPw0Irg7sk+9EmFfxgAM2GRupkTTWvWmETTmzxfJ0h+gmxNR0CKdRuxbZaowapqPePQ3GjqIKjLJqYV9mKCFP9Yk+x4Dx5x6C+E72d4CPx7COI1Q7/e1AzRPWT+rD/xp8wURO0bY5lWp880/mSNn6QOKwL2RscwNRUaMfrNCThMB9LCgWneYNJbwdUmvergJgzI6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QretZeu/8Q3etNMvBgI9iwN2qjorSB7NrZPdh+YmJp8=;
- b=Tf44kh5maCz4mLsgqfcgzY6PezAUyPpZOkn31baPAMQdVQ5LX/dCiTAK/8b0Yj0l/D8NGMfQdAD2Hro3RJXirwLdrDAYQHHbF6Y4jbnzaQzvAvpHD5vZekBpXvmfG6pb1R8FmInh/GBZt+DnnwkIPC+b6qaqfqmDDlN4vBSTCZzyfhQ3ZPSEPOquXduqxjKjkQwk4eG4NYyWlbIuxrhP2MT/B/fVUtoRoRg3M+QZAhtxJ8AligxZllXIw/Wl1AGbyJ+NyUZJSoaQkkfgq43HEsaQJFfORVCPVFNDOOslY2wuhWk9fsU0DNWICvkv7PxvySnh1J8Ymou4NIICcCSAJg==
+ bh=OKGOPoYc+Vmy8Wkj5yd8LNwmF9fv8cA2cWQwjipk08w=;
+ b=TEaZj87rNTeFotkgKzTXBhLP0SHJAERodph4IY+JclhUFnSptxp5IEamHVTvZxiLGCtxdhQl7RtJ+s7pIYGrLMRVsrTVZTAwdACLrRAqsFY/5NwmPqx2KIP44Ok1EIC2U1uDcdPx1AlVWNXBbzgTRuFT/Hs+mkLBWmTbbBTHg9pEZQvjr6Xw980p2qFRQ14Z/CUzXBRXh4OVr2FtvODr1HRMQig93Ebh7RcDp5FeXeYt1olC/l9AAOGdC3rFiyW2r9XZuPPqP0rAt32Kx9LJYbU64wFJUo/2cI2Id03dCLx9WN3X/vNntgdi7eRX7IZMhO56H6cST9n5O8cATCP4OA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS7PR11MB7859.namprd11.prod.outlook.com (2603:10b6:8:da::22) by
- SN7PR11MB7019.namprd11.prod.outlook.com (2603:10b6:806:2ae::22) with
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com (2603:10b6:5:35c::12)
+ by IA1PR11MB7872.namprd11.prod.outlook.com (2603:10b6:208:3fe::6) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.29; Fri, 13 Oct
- 2023 15:57:13 +0000
-Received: from DS7PR11MB7859.namprd11.prod.outlook.com
- ([fe80::f957:c15a:9c34:71db]) by DS7PR11MB7859.namprd11.prod.outlook.com
- ([fe80::f957:c15a:9c34:71db%3]) with mapi id 15.20.6863.043; Fri, 13 Oct 2023
- 15:57:11 +0000
-Date:   Fri, 13 Oct 2023 08:57:07 -0700
-From:   Matt Roper <matthew.d.roper@intel.com>
-To:     Nirmoy Das <nirmoy.das@intel.com>
-CC:     <intel-gfx@lists.freedesktop.org>,
-        <dri-devel@lists.freedesktop.org>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        John Harrison <john.c.harrison@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] drm/i915: Flush WC GGTT only on required platforms
-Message-ID: <20231013155705.GO5757@mdroper-desk1.amr.corp.intel.com>
-References: <20231013134439.13579-1-nirmoy.das@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.45; Fri, 13 Oct
+ 2023 16:14:01 +0000
+Received: from CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::dbe4:218c:1bdd:510]) by CO6PR11MB5603.namprd11.prod.outlook.com
+ ([fe80::dbe4:218c:1bdd:510%4]) with mapi id 15.20.6863.046; Fri, 13 Oct 2023
+ 16:14:01 +0000
+Message-ID: <9cda7031-286f-42e6-a23f-80c284931696@intel.com>
+Date:   Fri, 13 Oct 2023 18:13:54 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] acpi/processor: sanitize _OSC/_PDC capabilities for
+ Xen dom0
+Content-Language: en-US
+To:     Jason Andryuk <jandryuk@gmail.com>,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+CC:     Roger Pau Monne <roger.pau@citrix.com>, <stable@vger.kernel.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "Borislav Petkov" <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, <linux-kernel@vger.kernel.org>,
+        <xen-devel@lists.xenproject.org>
+References: <20231010173924.44167-1-jandryuk@gmail.com>
+From:   "Wilczynski, Michal" <michal.wilczynski@intel.com>
+In-Reply-To: <20231010173924.44167-1-jandryuk@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231013134439.13579-1-nirmoy.das@intel.com>
-X-ClientProxiedBy: BY3PR05CA0052.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::27) To DS7PR11MB7859.namprd11.prod.outlook.com
- (2603:10b6:8:da::22)
+X-ClientProxiedBy: WA1P291CA0019.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:19::23) To CO6PR11MB5603.namprd11.prod.outlook.com
+ (2603:10b6:5:35c::12)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR11MB7859:EE_|SN7PR11MB7019:EE_
-X-MS-Office365-Filtering-Correlation-Id: 53dab29f-b371-427c-de4e-08dbcc050f7e
+X-MS-TrafficTypeDiagnostic: CO6PR11MB5603:EE_|IA1PR11MB7872:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3a531bb1-2e38-474d-ca29-08dbcc076977
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 11yE3CaAimDqOwi7p1JYJRmX64a8nDywSCGtaJEkvX9m0rFys19jEDLfQJt62oA8gZQRl/FgZbL24RqO8wmyrHbL/Xd/IAeUMqLiRrdCgsjdR3ooslw3LDFRsVEuvmEMvO90Q5PpSwKzMTV3XSsyEqFSJnF1rvVb26glfga3Y2Sm6crs5tizoL0qZpJ5RRZtufc326ei26aIFxqyZA79dd18loEvcXSaKha4oslf6QYCvHR9TIA2hIu2C43oTet9rNM2nrfyv20/idpo76O6CUk3KzNvFPZvrWZs3INNRVicI5pFz9gYZaf+5bM9n74ajPTylF5yUmQKRVqGVlysfuY0vNemayc8yitXrt/thXBW0i0uMzLn65TJ3dc6+/p8Jz3aCC462yQF65yzdybiXvgikF+/ZEVR8bc/O2kMypjuyO0nv7DbqR0dt80l8ek/eTodS8pXs/r9gAMTTsHbfL1r+leauxoYyJ9OKcKmVLc4F9YuBD2N15sWb32pCyipQxsyZmjY0i03m0INIcxnqDasNcrrTJ2PABW0C6AR1dotjURD17MZ2UiLJsOX/3/G
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB7859.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(396003)(366004)(376002)(39860400002)(230922051799003)(451199024)(1800799009)(64100799003)(186009)(41300700001)(6506007)(66946007)(54906003)(6862004)(4326008)(8936002)(5660300002)(6636002)(8676002)(66476007)(26005)(6486002)(478600001)(6666004)(66556008)(2906002)(6512007)(1076003)(82960400001)(38100700002)(316002)(83380400001)(66574015)(86362001)(33656002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: 7cuAIBos4LcIYeG+2LjhWFo/t7JlNimMm5dfPZlkBgpumiZexwriVyiTyv63IBC+HvuM3d9Cf9Ky8QrUeDsvOkBEf9KVNMf/6vm6gfmYdztd/XkkvbEUrKZ7kXyFjuYnHLd98omXSosTuCb9sdZw7Lm2wsQWC1AAppVcKqzbF6QFaZr7e3xKGNXmbF6fcm02AgW43nffFnC7WwxDr9woTwyv8T7lNBtmwpp4YgJCSm9KM0iMPvFgV7MBMI5/6Vx/LPYonn7NFqWjMpiCSTxYoapY1bvRO8DOCpUzFLJQQcJ+c1czoE9+Er3SU/CMC4tBbJ6SJSjPmUcmxdjFbJ/AGxhvUX58QhLaQGr6yUyjx9UX4cv+HIi04BI822u3XR8uwQaOlwx2hEGJqrBt+HE1E3Mhl4PVcVEic/ofMKV/Ynrs0wE6jFWISuqZe9LEcPJUA2v2qBO/7stt7EyChmxpR4UiVd40zl0tnyNcsF5J7hfh9nQUESOjnc8UahW8ZgEp1L7neb6NeJX+RWlKQfHkfQqPGzsZ3uiQSAr5egLZd4PVcqa9r636ReuWhCBEX/2hdi2t+eUlsECELEbJFwR3b0EwLLA9szpk3IWr35pdZAuQftBKZKev7YYIEOsc34jNlDRgxi14UeM17SCtTsvojw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR11MB5603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(376002)(136003)(39860400002)(346002)(366004)(230922051799003)(1800799009)(64100799003)(186009)(451199024)(6512007)(38100700002)(26005)(2616005)(82960400001)(8936002)(478600001)(6486002)(5660300002)(4326008)(31696002)(7416002)(2906002)(8676002)(54906003)(316002)(110136005)(66476007)(66556008)(41300700001)(86362001)(66946007)(36756003)(6666004)(53546011)(6506007)(31686004)(83380400001)(43740500002)(45980500001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?kT0kF4+LZT/snNef6nq1ZTGB24snfKnsWBD3PjTyDFOFTXCHhGEM1FETnv?=
- =?iso-8859-1?Q?LXnQolDVLIyp9I3HEs3ONvY6kN7S3uUZf5CvO4DvXv9ovkteF6J7hwI+AJ?=
- =?iso-8859-1?Q?0AijaPuZd8ZNUEcZBkRQoaGl18vC9wvyZsNk/bZXuKQ/ty8gwER5CmpMJm?=
- =?iso-8859-1?Q?I+4gr38N7l2/S6oq3H6cjUGOSgDG7+jKtZ3yIG9/tc5LClow898DzSBZvH?=
- =?iso-8859-1?Q?1DtdMU8ezvBlXc0t4Xtpj4Wsj7/ZghxON5p4/MmtxELcRsyAbYotv+cRi+?=
- =?iso-8859-1?Q?vDr7uxaCbRmfDJkPZ8m4Cl1TG9ZYCj2mCikGSjEncEw2FsFJUq1BI6dF5e?=
- =?iso-8859-1?Q?Cb8RSxdkj0Tnq2BWD+DTXP2CjIsCt5os0mrvcp+guKZtBAAiUfjaGaHWjw?=
- =?iso-8859-1?Q?kC5WuxGMSgFAAqk3jMriAoeD1KXslsL1p3vpczPrj+YUCJuNJnl5NBM2od?=
- =?iso-8859-1?Q?ij+g2oH8FZsNTix0s3N/MljZGtFChwOambaiDDfVOEqBFbxghxu4D8kjCx?=
- =?iso-8859-1?Q?lSfgTTUIKYRRWyBlryfFAMp1X5vsoTfEU7fE5mAbHwHt8MmmyewMtHFP6H?=
- =?iso-8859-1?Q?kKKnSykVjG35vcu+xXlFLDSaecOEksZwHOrwPT7am7Y7xPwztb5s3Dguhz?=
- =?iso-8859-1?Q?t4zlgczmxi2xt9LNs8kDJ7tssEdbkS5J6BieWwsgy0Yd4eaXsZZ+/kJ+ZW?=
- =?iso-8859-1?Q?GLAUcWDyWA9Z/xe7D4iIrqsViAHQkfhigUPrUBPkf/o5THUqqyfPYNncwn?=
- =?iso-8859-1?Q?axQ0ouq2K6/fNcfprUQFmo0a2AgqJPwcSFw3YYk4TqhlyWgirhd+gJ4O6U?=
- =?iso-8859-1?Q?xNtVRt0H7r3e99x3iyN+VvWo4zaQgNUZcpZUTqtvhiVvwMRyMeSuMuTnwS?=
- =?iso-8859-1?Q?awrMUMwj+hBIbkyR2ANFUB1NkJR4BHEG4SSKii9pGwxnUjry3LHg6t2bk1?=
- =?iso-8859-1?Q?xota7v8y1PBTDLGZuDDgtFca9EMZYioO3B1yDou+MUlI2F+xauKV4bVkvE?=
- =?iso-8859-1?Q?6hlMhejR+4SMq7J7U8lJosaxmKLnTbzitdu3VMtBA+KYwY8EyRXWftnBFt?=
- =?iso-8859-1?Q?AWCXSeFw4mokAf+E10ydwq9YrtE+8Qv6x5x2QsV0vvRh8tvWNrIWDZzjxO?=
- =?iso-8859-1?Q?+RVWo7587L/8btFb0XNi6btJmhJgRckwebetYCu817sHH8sN9EBAYr6VBE?=
- =?iso-8859-1?Q?qtkx/l7GCQOjewWIWZYYSWSAgTLK0GiIWOWT7zKGsBI92C8phYl6i/ERx9?=
- =?iso-8859-1?Q?5VKd+JKWdbKqZoxmI7EwnumqwfbA/KJvj+BrqYs8UcAzwX+IB4Fb1iWY+X?=
- =?iso-8859-1?Q?huu0K5ooAcgb01iXnTC+OsQP+mWC5PPzlyLDpLHRAyzUGfhn2qmmQUXFcE?=
- =?iso-8859-1?Q?ez7TDqmzP7gIKYFAioh7vHWKMuWBjwl6gh4bIKPM9o+4MjE0hQ/44662wi?=
- =?iso-8859-1?Q?s0G4Z/zpExTRsHvd4x7Agr9wThdd9XbdhGXzbj5+h+DgLLl7gnVTR5mEr8?=
- =?iso-8859-1?Q?GwcyPlQsFCBdLUY/DZseFQbEz9a8NX4Czxs0BGdJk9B6GFzHt8eB5o/BjL?=
- =?iso-8859-1?Q?mVH0AFcs5//sdpPqUnL9LR/i0Zuht3xlL4OiFUTgLS9tetc8B3lNAUbPym?=
- =?iso-8859-1?Q?4rq0VSZ8vMWNpKHjDaqHocyfJ2H9cl/tTJ+P/TJaE9xXaUpoRh0q5q6Q?=
- =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53dab29f-b371-427c-de4e-08dbcc050f7e
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB7859.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SUpHREJDUGdtblgwMWFHVVQzOGY5TmJVcUlQYUNsSHRFamJ4eVdyQXNxN3Yv?=
+ =?utf-8?B?WlNBanZNWkUwdHVXZ3E0anBYUlNXbU52Y2orSWhpc29YSWgyb2s4aXc4b3Av?=
+ =?utf-8?B?OG5QbmZhMWNEU21SU2pkMm91QmVlYnFVc24zVGtQdHpZZElTOEhkR3pKcEtM?=
+ =?utf-8?B?Vkp0WUtRMXd0VmRYOTBSaGRnVGJ4RE9qZFEvNFpXeVdiSmJEZGRrdUJ4bmh5?=
+ =?utf-8?B?VmVmcW9EZnp6Sm9uZEF6MVRTcGtyQmgyaUNXbkZyWDUxK1p2MWNzMWlldEsw?=
+ =?utf-8?B?Uk9KVmpEaE9HM1ZXVm93UCtXeHVTc1UvdjhJMEx5RWZCMU55N1NyeWdOdlUy?=
+ =?utf-8?B?Zytlck9ZbGdnU2VRV0N1UUpZSjFEZWg1OXhzZUN3YkV0MHo0cTFGRFU5SUlH?=
+ =?utf-8?B?YlNBVXlTVFdpQ0JrZEZHNlYyakdvUy9lcjBtR3lXUWg2RkZhRU10bTlDTkN1?=
+ =?utf-8?B?TDF0ekpLdkhTY29nMlNUWGNPbmEyTjNEV25RNTg2enMvdVRqNmZOVGpwMEd2?=
+ =?utf-8?B?THlVSWZDKzhRenR3YVg3RjI2NUN3UDFIcTdZQmFzVDBNZkhjYkgzSkljNUQ2?=
+ =?utf-8?B?SFdOd052V3ZoNUNCeiswbklsQU1BaDhpSkxPYkZSZ3h4ZTV6c2paeHArODJ3?=
+ =?utf-8?B?Ri9PSGxvMWxFZnRETHVYS1JrZ0xGWEpINExtM0F2TVVuSmtIVUlweUJLSFA5?=
+ =?utf-8?B?cmRxczlndTZzVkdSeVpvMHpOSWZNSjZ6VnNNZWxHeHMvN2hDUUVrV0cyRTVK?=
+ =?utf-8?B?dmZmdFU0Z1JaNndaMnQwK3FBU1JUS2daeU5kTjVHVWxFeElhUENWT2xLRTVR?=
+ =?utf-8?B?UlorZW9qWDJKVms5M1BMQVdXRVl3Q0x4U0ozcUJSSzR3M3lzUzgrTHMyOTZx?=
+ =?utf-8?B?Yis4L05nZGR2SC8xdWtMTlhHNUM1NzZjaHFTeFVuM1hsN1ZnZDNvVE5Rald0?=
+ =?utf-8?B?TEYyQXpLMXpPMFBaVTA5RnU5Zk8ydUd6bU4rVENMdHdqTkRpMVFoWFVZNG5R?=
+ =?utf-8?B?cG4xWHNrcFJLejdmWEtJQWpjRXdTQ1NocFpxZlJ5K0RnWDVDcUw1T0VpZkFq?=
+ =?utf-8?B?a0VnNlNMQitjOEllMTh1MjQ0SjRNV29KUkdPZ21KNWJDYURHSE1NUXo1R1Rp?=
+ =?utf-8?B?MnY0VDhldkZldGRwLyt6SmR3OWhaNFdiQ01PVFdrQWdXQXgwQk5MRzQxMjlt?=
+ =?utf-8?B?Q3U2N0pXRC9ndVVrR1hDdFdwSWpYZ2ljaDFhOVVCWVdQaFFqckZhK2JuSmZz?=
+ =?utf-8?B?LzNtczJodGdpeDZxNEthblRYbWtkUGlaWHB5S2twUDM3OWhiYk5UYVgyeWgz?=
+ =?utf-8?B?RHVIT2dUbEpvM045eVFkYndSb3kzVlkyVENSSjNNRVJEajdlYWtURXJvdkM1?=
+ =?utf-8?B?ZitXdFRjMDY1Wmh3ZTR2ejFYSE5VRGNNMExCamN4Z1FvdFM2Z2xHc3hKZWNS?=
+ =?utf-8?B?QkFudFpHaVpCZEsrR1BGeFhrL2MwVGxzTnhld2ZFVXg3aytHcnBSMzBOUzR6?=
+ =?utf-8?B?bmlRZk4vNTVrMlRLQm52YWw0ejRKVnhKbEhKYnZhN2hDWnUvYk9pNDZyV0Fr?=
+ =?utf-8?B?ak16U2l0QW5kWi9rWHFpa1NEcDRlS0hVd1RHcXpWUlhndk1DUVN1OFp4aVFV?=
+ =?utf-8?B?amMwZlpFKzhmMFFYQTE4Vm1wM24xTTd2WlM1a3hlcjNua21BU25ZT1Q1UGg1?=
+ =?utf-8?B?NXlqaU0zdm1QdG9PYjl0bldYZ2NvSkNoS3FoWmthMEZvQVdDWnIxL2FQaGJ1?=
+ =?utf-8?B?RGRFNy9hS2JYK0wrNHVuN1ZBemlaUEo3bEFDUTNud0JwYnBXZjZnNEVhOU91?=
+ =?utf-8?B?MnU2cU5tTHBGdjlSTms2MFo4TDBraFBnVmEyZDBwWTlTbzg2RFNVWG1VNUFN?=
+ =?utf-8?B?RXJ3TDdYRUlsWVVPVC9laWJpMkMzVHJPTjdWd3c1N2hIM2dOQkdOSkhVRXln?=
+ =?utf-8?B?b1drOU03MncyaC92VDN1Q3ZZdlVBWHlXTWdKYjZjYzhxRzJQdktBY3IrUXdy?=
+ =?utf-8?B?T1V1TCtJMkxSVjJBQmJvKzBnTDBjNUxPSnJSdWJvRW03aWUrb0I2UHVOYnQr?=
+ =?utf-8?B?OWtjUGlPYTNYR2ExSzVNdXFQb3I4eDZsRytvK2I1KzI1dGYxYjNKZEE3THUy?=
+ =?utf-8?B?N2YwcGd3TDZ1TUxtL3FsRTJpVXU4c2E0Wi9rcE9rMVoxV0ZNNTFCekZrZkNL?=
+ =?utf-8?B?TFE9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3a531bb1-2e38-474d-ca29-08dbcc076977
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR11MB5603.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2023 15:57:11.1396
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2023 16:14:01.2261
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fmrZUEBA/5kPX/skTCyLgqJQzS8jPAxpU1krJ77TZKxLW2qYPL/NQyRklcoc51r48t4fP+LgXbcKGnhM/VO3Gwf7FGKfbt3gWyzXExYeyS8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7019
+X-MS-Exchange-CrossTenant-UserPrincipalName: qKmDVwlUXTn1vSLinVxWWT6EnVlWXsy5SdHtpuPu1fdF1ktYHE3l8Nf0GDCPBLBFDjoQVcKzmcE1qXTFhc81DyXntG3hBdm9DMD+kvkV0cw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7872
 X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 13, 2023 at 03:44:39PM +0200, Nirmoy Das wrote:
-> gen8_ggtt_invalidate() is only needed for limited set of platforms
-> where GGTT is mapped as WC otherwise this can cause unwanted
-> side-effects on XE_HP platforms where GFX_FLSH_CNTL_GEN6 is not
-> valid.
-> 
-> v2: Add a func to detect wc ggtt detection (Ville)
-> 
-> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Cc: John Harrison <john.c.harrison@intel.com>
-> Cc: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Ville Syrj‰l‰ <ville.syrjala@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # v6.2+
-> Suggested-by: Matt Roper <matthew.d.roper@intel.com>
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> Acked-by: Andi Shyti <andi.shyti@linux.intel.com>
+Hi,
 
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-
-Interestingly, bspec 151 indicates that we probably shouldn't have been
-using a CPU:WC mapping for the GGTT on gen9bc platforms either (i.e.,
-the GTT part of the GTTMMADR has the same "64-bits or less" restriction
-listed as later platforms).  But we've been using WC without issue for
-the last 8 years, so I guess it's not worth changing it now.
-
-
-Matt
-
+On 10/10/2023 7:39 PM, Jason Andryuk wrote:
+> From: Roger Pau Monne <roger.pau@citrix.com>
+>
+> The Processor capability bits notify ACPI of the OS capabilities, and
+> so ACPI can adjust the return of other Processor methods taking the OS
+> capabilities into account.
+>
+> When Linux is running as a Xen dom0, the hypervisor is the entity
+> in charge of processor power management, and hence Xen needs to make
+> sure the capabilities reported by _OSC/_PDC match the capabilities of
+> the driver in Xen.
+>
+> Introduce a small helper to sanitize the buffer when running as Xen
+> dom0.
+>
+> When Xen supports HWP, this serves as the equivalent of commit
+> a21211672c9a ("ACPI / processor: Request native thermal interrupt
+> handling via _OSC") to avoid SMM crashes.  Xen will set bit
+> ACPI_PROC_CAP_COLLAB_PROC_PERF (bit 12) in the capability bits and the
+> _OSC/_PDC call will apply it.
+>
+> [ jandryuk: Mention Xen HWP's need.  Support _OSC & _PDC ]
+> Signed-off-by: Roger Pau Monn√© <roger.pau@citrix.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
 > ---
->  drivers/gpu/drm/i915/gt/intel_ggtt.c | 35 +++++++++++++++++++---------
->  1 file changed, 24 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/intel_ggtt.c b/drivers/gpu/drm/i915/gt/intel_ggtt.c
-> index 4d7d88b92632..401667f83f96 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_ggtt.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_ggtt.c
-> @@ -195,6 +195,21 @@ void gen6_ggtt_invalidate(struct i915_ggtt *ggtt)
->  	spin_unlock_irq(&uncore->lock);
->  }
->  
-> +static bool needs_wc_ggtt_mapping(struct drm_i915_private *i915)
-> +{
-> +	/*
-> +	 * On BXT+/ICL+ writes larger than 64 bit to the GTT pagetable range
-> +	 * will be dropped. For WC mappings in general we have 64 byte burst
-> +	 * writes when the WC buffer is flushed, so we can't use it, but have to
-> +	 * resort to an uncached mapping. The WC issue is easily caught by the
-> +	 * readback check when writing GTT PTE entries.
-> +	 */
-> +	if (!IS_GEN9_LP(i915) && GRAPHICS_VER(i915) < 11)
-> +		return true;
+> v3:
+> Move xen_sanitize_pdc() call to arch_acpi_set_proc_cap_bits() to cover
+> _OSC and _PDC.
+> drivers/xen/pcpu.c is CONFIG_DOM0 && CONFIG_X86
+>
+> v2:
+> Move local variables in acpi_processor_eval_pdc() to reuse in both conditions.
+> ---
+>  arch/x86/include/asm/acpi.h           | 13 +++++++++++++
+>  arch/x86/include/asm/xen/hypervisor.h |  9 +++++++++
+>  drivers/xen/pcpu.c                    | 21 +++++++++++++++++++++
+>  3 files changed, 43 insertions(+)
+>
+> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+> index c8a7fc23f63c..cc8d1669d6e8 100644
+> --- a/arch/x86/include/asm/acpi.h
+> +++ b/arch/x86/include/asm/acpi.h
+> @@ -16,6 +16,9 @@
+>  #include <asm/x86_init.h>
+>  #include <asm/cpufeature.h>
+>  #include <asm/irq_vectors.h>
+> +#include <asm/xen/hypervisor.h>
 > +
-> +	return false;
-> +}
-> +
->  static void gen8_ggtt_invalidate(struct i915_ggtt *ggtt)
->  {
->  	struct intel_uncore *uncore = ggtt->vm.gt->uncore;
-> @@ -202,8 +217,12 @@ static void gen8_ggtt_invalidate(struct i915_ggtt *ggtt)
->  	/*
->  	 * Note that as an uncached mmio write, this will flush the
->  	 * WCB of the writes into the GGTT before it triggers the invalidate.
-> +	 *
-> +	 * Only perform this when GGTT is mapped as WC, see ggtt_probe_common().
->  	 */
-> -	intel_uncore_write_fw(uncore, GFX_FLSH_CNTL_GEN6, GFX_FLSH_CNTL_EN);
-> +	if (needs_wc_ggtt_mapping(ggtt->vm.i915))
-> +		intel_uncore_write_fw(uncore, GFX_FLSH_CNTL_GEN6,
-> +				      GFX_FLSH_CNTL_EN);
->  }
+> +#include <xen/xen.h>
 >  
->  static void guc_ggtt_invalidate(struct i915_ggtt *ggtt)
-> @@ -1126,17 +1145,11 @@ static int ggtt_probe_common(struct i915_ggtt *ggtt, u64 size)
->  	GEM_WARN_ON(pci_resource_len(pdev, GEN4_GTTMMADR_BAR) != gen6_gttmmadr_size(i915));
->  	phys_addr = pci_resource_start(pdev, GEN4_GTTMMADR_BAR) + gen6_gttadr_offset(i915);
->  
-> -	/*
-> -	 * On BXT+/ICL+ writes larger than 64 bit to the GTT pagetable range
-> -	 * will be dropped. For WC mappings in general we have 64 byte burst
-> -	 * writes when the WC buffer is flushed, so we can't use it, but have to
-> -	 * resort to an uncached mapping. The WC issue is easily caught by the
-> -	 * readback check when writing GTT PTE entries.
-> -	 */
-> -	if (IS_GEN9_LP(i915) || GRAPHICS_VER(i915) >= 11)
-> -		ggtt->gsm = ioremap(phys_addr, size);
-> -	else
-> +	if (needs_wc_ggtt_mapping(i915))
->  		ggtt->gsm = ioremap_wc(phys_addr, size);
-> +	else
-> +		ggtt->gsm = ioremap(phys_addr, size);
+>  #ifdef CONFIG_ACPI_APEI
+>  # include <asm/pgtable_types.h>
+> @@ -127,6 +130,16 @@ static inline void arch_acpi_set_proc_cap_bits(u32 *cap)
+>  	if (!cpu_has(c, X86_FEATURE_MWAIT) ||
+>  	    boot_option_idle_override == IDLE_NOMWAIT)
+>  		*cap &= ~(ACPI_PROC_CAP_C_C1_FFH | ACPI_PROC_CAP_C_C2C3_FFH);
 > +
->  	if (!ggtt->gsm) {
->  		drm_err(&i915->drm, "Failed to map the ggtt page table\n");
->  		return -ENOMEM;
-> -- 
-> 2.41.0
-> 
+> +	if (xen_initial_domain()) {
+> +		/*
+> +		 * When Linux is running as Xen dom0, the hypervisor is the
+> +		 * entity in charge of the processor power management, and so
+> +		 * Xen needs to check the OS capabilities reported in the _PDC
 
--- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+I would argue the phrasing here is unfortunate - it's not really _PDC buffer anymore,
+it's more processor capabilities buffer [1]. Your phrasing would indicate that this
+buffer is somehow _PDC specific.
+
+BTW this file is x86 specific code - are you sure it's appropriate to involve Xen
+hypervisor here ? I understand this case if x86 specific, but still.
+
+> +		 * buffer matches what the hypervisor driver supports.
+> +		 */
+> +		xen_sanitize_pdc(cap);
+
+Same here as in [1], I would call this function xen_sanitize_proc_cap_buffer(),
+or something along those lines for better readability and correctness.
+
+> +	}
+>  }
+>  
+>  static inline bool acpi_has_cpu_in_madt(void)
+> diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
+> index 7048dfacc04b..c6c2f174fa30 100644
+> --- a/arch/x86/include/asm/xen/hypervisor.h
+> +++ b/arch/x86/include/asm/xen/hypervisor.h
+> @@ -100,4 +100,13 @@ static inline void leave_lazy(enum xen_lazy_mode mode)
+>  
+>  enum xen_lazy_mode xen_get_lazy_mode(void);
+>  
+> +#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI)
+> +void xen_sanitize_pdc(uint32_t *buf);
+> +#else
+> +static inline void xen_sanitize_pdc(uint32_t *buf)
+> +{
+> +	BUG();
+> +}
+> +#endif
+> +
+>  #endif /* _ASM_X86_XEN_HYPERVISOR_H */
+> diff --git a/drivers/xen/pcpu.c b/drivers/xen/pcpu.c
+> index b3e3d1bb37f3..859bb6027105 100644
+> --- a/drivers/xen/pcpu.c
+> +++ b/drivers/xen/pcpu.c
+> @@ -47,6 +47,9 @@
+>  #include <asm/xen/hypervisor.h>
+>  #include <asm/xen/hypercall.h>
+>  
+> +#ifdef CONFIG_ACPI
+> +#include <acpi/processor.h>
+> +#endif
+>  
+>  /*
+>   * @cpu_id: Xen physical cpu logic number
+> @@ -400,4 +403,22 @@ bool __init xen_processor_present(uint32_t acpi_id)
+>  
+>  	return online;
+>  }
+> +
+> +void xen_sanitize_pdc(uint32_t *cap)
+> +{
+> +	struct xen_platform_op op = {
+> +		.cmd			= XENPF_set_processor_pminfo,
+> +		.u.set_pminfo.id	= -1,
+> +		.u.set_pminfo.type	= XEN_PM_PDC,
+
+It would probably be best to rename this constant as well so it's
+not misleading.
+
+> +	};
+> +	u32 buf[3] = { ACPI_PDC_REVISION_ID, 1, *cap };
+> +	int ret;
+> +
+> +	set_xen_guest_handle(op.u.set_pminfo.pdc, buf);
+> +	ret = HYPERVISOR_platform_op(&op);
+> +	if (ret)
+> +		pr_info("sanitize of _PDC buffer bits from Xen failed: %d\n",
+> +			ret);
+
+Shouldn't an error be pr_err ?
+
+> +	*cap = buf[2];
+> +}
+>  #endif
+
+
+Regards,
+Micha≈Ç
+
