@@ -2,154 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 975587C82F1
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 12:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77BC77C830C
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 12:31:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230053AbjJMKZE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 06:25:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34596 "EHLO
+        id S229891AbjJMKbC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 06:31:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbjJMKZD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 06:25:03 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B31AC9;
-        Fri, 13 Oct 2023 03:25:01 -0700 (PDT)
+        with ESMTP id S229794AbjJMKbB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 06:31:01 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D247EC2;
+        Fri, 13 Oct 2023 03:30:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697192701; x=1728728701;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=K2rdGornxNI803mjCk+56gpA8USxtvZFxPbLLi47j8E=;
-  b=nkFsIyo24imX/mLPbvs+1nYcUEgWDM66anos1chAv1I+7DSxr5OkXXsQ
-   SUxhp9a3r+0hcJlg+43Vb1vvaCsDOMqcf8z0Zi+i7bgiyULPXlsi/OV3J
-   X022HfSm1wvFkYe1Laz99mokvBsC2wihvJG62+rgGycmxFLHis6//qUey
-   HmqrECns1wO4mavxX5UifjQQa8vn67hEWUcPZwZbphAZYUk1cjzHXBpr8
-   G2RzpHn69FAk8PWF7mOxsrwnPknCUmFQ9m1YtbOCzaDv9KQyOn3YQOsJU
-   WJcrF/YhLkSvot7cV38O+pp4uGuOcbqJ5myOVNutaoDMdXM9EWix1PEdR
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="382379958"
+  t=1697193059; x=1728729059;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=Aplyv6rJwAzx3jF4qUT1h44OjNduEae/nQks1TM9J9g=;
+  b=gTt3mYK39abnB8x8YmO+Ox+rSAhQkO7jpVgcdzHpJE19hnhWB30aUoQN
+   t3WvK1Tryjz7AxhB5v4nEFWg93TB2dFGBccwOVK1vROGrcNeiiiJbamAh
+   4qsEBmJhoLnAN5NxXGUIZEt5XKhhi57Sj1iRnt8E5E0bWciR3ndRG8VcQ
+   Oc2gYipdeYVZA5++JjsXdvHCftr4d2MCg1znGT0b1oOyCQcjn2nEF7dhG
+   +Ts3T6YP1s1QoUQl1elOng4IPqenhs8yzrOmY+GpH9rGE+vFuFLndpzTj
+   quHbnMqNISB0aQMVCfOq5o6hio0hCr+J+8ewhqUcsFAszAapy265Xpc38
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="364515513"
 X-IronPort-AV: E=Sophos;i="6.03,221,1694761200"; 
-   d="scan'208";a="382379958"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 03:25:01 -0700
+   d="scan'208";a="364515513"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 03:30:59 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="789818023"
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="758453505"
 X-IronPort-AV: E=Sophos;i="6.03,221,1694761200"; 
-   d="scan'208";a="789818023"
-Received: from ttmerile-mobl1.ger.corp.intel.com (HELO rploss-MOBL.ger.corp.intel.com) ([10.249.37.202])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 03:24:57 -0700
-Date:   Fri, 13 Oct 2023 13:24:50 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To:     Lino Sanfilippo <l.sanfilippo@kunbus.com>
-cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        LinoSanfilippo@gmx.de, Lukas Wunner <lukas@wunner.de>,
-        p.rosenberger@kunbus.com, stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] serial: core: fix sanitizing check for RTS
- settings
-In-Reply-To: <da9a9d10-2568-4960-b9f8-9d43cbc1b295@kunbus.com>
-Message-ID: <63b62f6c-d97d-8d45-1612-968ef74b6365@linux.intel.com>
-References: <20231011181544.7893-1-l.sanfilippo@kunbus.com> <20231011181544.7893-4-l.sanfilippo@kunbus.com> <40e4c6b1-e217-2926-a351-bf685a5b775f@linux.intel.com> <da9a9d10-2568-4960-b9f8-9d43cbc1b295@kunbus.com>
+   d="scan'208";a="758453505"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmsmga007.fm.intel.com with SMTP; 13 Oct 2023 03:30:55 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Fri, 13 Oct 2023 13:30:55 +0300
+Date:   Fri, 13 Oct 2023 13:30:55 +0300
+From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To:     Hamza Mahfooz <hamza.mahfooz@amd.com>
+Cc:     dri-devel@lists.freedesktop.org,
+        Maxime Ripard <mripard@kernel.org>,
+        amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: Re: [PATCH] drm/edid: add 8 bpc quirk to the BenQ GW2765
+Message-ID: <ZSkcX1nJ4Ipf2ICd@intel.com>
+References: <20231012184927.133137-1-hamza.mahfooz@amd.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1327546645-1697192700=:2026"
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231012184927.133137-1-hamza.mahfooz@amd.com>
+X-Patchwork-Hint: comment
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Thu, Oct 12, 2023 at 02:49:27PM -0400, Hamza Mahfooz wrote:
+> The BenQ GW2765 reports that it supports higher (> 8) bpc modes, but
+> when trying to set them we end up with a black screen. So, limit it to 8
+> bpc modes.
 
---8323329-1327546645-1697192700=:2026
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Bad cable/etc was ruled out as the cause?
 
-On Thu, 12 Oct 2023, Lino Sanfilippo wrote:
-> On 12.10.23 15:10, Ilpo JÃ¤rvinen wrote:
-> > On Wed, 11 Oct 2023, Lino Sanfilippo wrote:
-> > 
-> >> Among other things uart_sanitize_serial_rs485() tests the sanity of the RTS
-> >> settings in a RS485 configuration that has been passed by userspace.
-> >> If RTS-on-send and RTS-after-send are both set or unset the configuration
-> >> is adjusted and RTS-after-send is disabled and RTS-on-send enabled.
-> >>
-> >> This however makes only sense if both RTS modes are actually supported by
-> >> the driver.
-> >>
-> >> With commit be2e2cb1d281 ("serial: Sanitize rs485_struct") the code does
-> >> take the driver support into account but only checks if one of both RTS
-> >> modes are supported. This may lead to the errorneous result of RTS-on-send
-> >> being set even if only RTS-after-send is supported.
-> >>
-> >> Fix this by changing the implemented logic: First clear all unsupported
-> >> flags in the RS485 configuration, then adjust an invalid RTS setting by
-> >> taking into account which RTS mode is supported.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> Fixes: be2e2cb1d281 ("serial: Sanitize rs485_struct")
-> >> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-> >> ---
-> >>  drivers/tty/serial/serial_core.c | 28 ++++++++++++++++++----------
-> >>  1 file changed, 18 insertions(+), 10 deletions(-)
-> >>
-> >> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-> >> index 697c36dc7ec8..f4feebf8200f 100644
-> >> --- a/drivers/tty/serial/serial_core.c
-> >> +++ b/drivers/tty/serial/serial_core.c
-> >> @@ -1370,19 +1370,27 @@ static void uart_sanitize_serial_rs485(struct uart_port *port, struct serial_rs4
-> >>               return;
-> >>       }
-> >>
-> >> +     rs485->flags &= supported_flags;
-> >> +
-> >>       /* Pick sane settings if the user hasn't */
-> >> -     if ((supported_flags & (SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND)) &&
-> >> -         !(rs485->flags & SER_RS485_RTS_ON_SEND) ==
-> >> +     if (!(rs485->flags & SER_RS485_RTS_ON_SEND) ==
-> >>           !(rs485->flags & SER_RS485_RTS_AFTER_SEND)) {
-> >> -             dev_warn_ratelimited(port->dev,
-> >> -                     "%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
-> >> -                     port->name, port->line);
-> >> -             rs485->flags |= SER_RS485_RTS_ON_SEND;
-> >> -             rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
-> >> -             supported_flags |= SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND;
-> >> -     }
-> >> +             if (supported_flags & SER_RS485_RTS_ON_SEND) {
-> >> +                     rs485->flags |= SER_RS485_RTS_ON_SEND;
-> >> +                     rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
-> >>
-> >> -     rs485->flags &= supported_flags;
-> >> +                     dev_warn_ratelimited(port->dev,
-> >> +                             "%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
-> >> +                             port->name, port->line);
-> >> +             } else {
-> >> +                     rs485->flags |= SER_RS485_RTS_AFTER_SEND;
-> >> +                     rs485->flags &= ~SER_RS485_RTS_ON_SEND;
-> > 
-> > So if neither of the flags is supported, what will happen? You might want
-> > add if after that else?
-> >
 > 
-> I would consider this a bug in the driver, as at least one of both modes 
-> has to be supported. If the driver does not have at least one of both flags
-> set in rs485_supported.flags we could print a warning though. Would you prefer that?
-
-8250_exar.c needs to fixed then? I was taking these as things one can 
-"configure" even if when there's support only for a one of them there's 
-not that much to configure. As there was neither in 8250_exar's code, I 
-didn't add either flag.
-
-But I suppose your interpretation of those flag makes more sense.
+> Cc: stable@vger.kernel.org # 6.5+
+> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2610
+> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+> ---
+>  drivers/gpu/drm/drm_edid.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
+> index 0454da505687..bca2af4fe1fc 100644
+> --- a/drivers/gpu/drm/drm_edid.c
+> +++ b/drivers/gpu/drm/drm_edid.c
+> @@ -123,6 +123,9 @@ static const struct edid_quirk {
+>  	/* AEO model 0 reports 8 bpc, but is a 6 bpc panel */
+>  	EDID_QUIRK('A', 'E', 'O', 0, EDID_QUIRK_FORCE_6BPC),
+>  
+> +	/* BenQ GW2765 */
+> +	EDID_QUIRK('B', 'N', 'Q', 0x78d6, EDID_QUIRK_FORCE_8BPC),
+> +
+>  	/* BOE model on HP Pavilion 15-n233sl reports 8 bpc, but is a 6 bpc panel */
+>  	EDID_QUIRK('B', 'O', 'E', 0x78b, EDID_QUIRK_FORCE_6BPC),
+>  
+> -- 
+> 2.42.0
 
 -- 
- i.
-
---8323329-1327546645-1697192700=:2026--
+Ville Syrjälä
+Intel
