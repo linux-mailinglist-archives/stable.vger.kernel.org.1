@@ -2,42 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B8597C814C
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 11:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 874587C81ED
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 11:24:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230223AbjJMJDK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 05:03:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42212 "EHLO
+        id S230369AbjJMJYj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 05:24:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230160AbjJMJDK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 05:03:10 -0400
-Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B07B9C0
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 02:03:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=haquarter.de;
-        s=protonmail2; t=1697187784; x=1697446984;
-        bh=jBuPPGIq9BUwl8uFGT3MVjQDWFrHcr1CZzsDVg+Xorc=;
-        h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-        b=SPg2BflGksGhLQBYEp61uevqyT602hfGNkvFn9BfJ+boZ0IDoNOI5lS0d15+jlYL/
-         E5X8BPEoOizAPZFfgyxsBD4vjvsA3zpZFRPyCCT2fVk1UkVovp3SvJlPZAc51K0oB9
-         FJx1NDMnOtELdbEXV5uO41XYBY0rzvRnOj8cNmUoJ2yj8EfNyc6OKu8k7356YfFqYu
-         CVQxb8dxKP0gPyXUhMUDWKEcKn/6UfZ7pSLsRczPX3ygogYYm/7KO2LaJzZsHjUFCD
-         i7DKDdrcCkMlvB7q9n3AR340xad8VbGY6in8HonYxs6xdl71nbSuUO2PsIl9eaxMEj
-         gB62kUwtt32TQ==
-Date:   Fri, 13 Oct 2023 09:02:54 +0000
-To:     "stable@vger.kernel.org" <stable@vger.kernel.org>
-From:   craig <craig@haquarter.de>
-Subject: tcp: enforce receive buffer memory limits by allowing the tcp window to shrink
-Message-ID: <MzUupJN3oxWdw7O3tyFkgevmIelXS340Dl-1oKnkGG-e4G5sqRpblEfCpbKyAzk3x3SmccNR9egn4F5j-H7eiojEJW1HlrtBIfxhamuf7W4=@haquarter.de>
-Feedback-ID: 11697729:user:proton
+        with ESMTP id S230345AbjJMJYj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 05:24:39 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8293595;
+        Fri, 13 Oct 2023 02:24:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1927AC433C8;
+        Fri, 13 Oct 2023 09:24:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697189076;
+        bh=7IfoDnU1fNHDKyeP8m+8aGUt38qVXh15uI2Ni01PUrA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=J35dmo33SSEMIUEFMJ6d55ek49G6ch/FaskK0E7xAheo+6D2v0lxwalYJBHggAXOG
+         X8sCeOpKcwJm0QMakhnMHdBX6dLKJmSKnkJOMH1dxLYKRA5MgiZgCeM8ADlL+n2H75
+         d+KF0wNS9ezgUd8zNUNONVRgvspLHoNmXUGUBsW3Po0PkuaX6k05s9B7r0/alDFT8b
+         jwdC4Du7PMzsSWPs5zrSIbkdGG84ni5exmnHCSAgS2hSubA/72E3dxFnmY/RXCkkR7
+         xzJXKWSCdGIaK6+lnl6FYSEX/oZXGmAUnV+2i9+REfkcxzQDGsk9nfo7MfMYXiugGF
+         6msa+4Xkd4Rxw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Date:   Fri, 13 Oct 2023 11:24:31 +0200
+From:   Michael Walle <mwalle@kernel.org>
+To:     =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc:     Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ajay Singh <ajay.kathat@microchip.com>, stable@vger.kernel.org,
+        heiko.thiery@gmail.com
+Subject: Re: [PATCH] wifi: wilc1000: use vmm_table as array in wilc struct
+In-Reply-To: <20231013-wilc1000_tx_oops-v1-1-3761beb9524d@bootlin.com>
+References: <20231013-wilc1000_tx_oops-v1-1-3761beb9524d@bootlin.com>
+Message-ID: <f615b0895135489a2555d898afdcfbfa@kernel.org>
+X-Sender: mwalle@kernel.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -46,24 +56,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 Hi,
 
-I hope I'm doing this correctly, as per=C2=A0https://www.kernel.org/doc/htm=
-l/latest/process/stable-kernel-rules.html, Option 2. :)
+Am 2023-10-13 10:26, schrieb Alexis Lothoré:
+> From: Ajay Singh <ajay.kathat@microchip.com>
+> 
+> Enabling KASAN and running some iperf tests raises some memory issues 
+> with
+> vmm_table:
+> 
+> BUG: KASAN: slab-out-of-bounds in wilc_wlan_handle_txq+0x6ac/0xdb4
+> Write of size 4 at addr c3a61540 by task wlan0-tx/95
+> 
+> KASAN detects that we are writing data beyond range allocated to 
+> vmm_table.
+> There is indeed a mismatch between the size passed to allocator in
+> wilc_wlan_init, and the range of possible indexes used later: 
+> allocation
+> size is missing a multiplication by sizeof(u32)
 
-Subject of the patch: tcp: enforce receive buffer memory limits by allowing=
- the tcp window to shrink
-Full details including reproducers, impact, tests are available here: https=
-://blog.cloudflare.com/unbounded-memory-usage-by-tcp-for-receive-buffers-an=
-d-how-we-fixed-it/
+Nice catch.
 
-commit ID: b650d953cd391595e536153ce30b4aab385643ac
+> While at it, instead of simply multiplying the allocation size, do not 
+> keep
+> dedicated dynamic allocation for vmm_table: define it as an array with 
+> the
+> relevant size in wilc struct, which is already dynamically allocated
+> 
+> Fixes: 40b717bfcefa ("wifi: wilc1000: fix DMA on stack objects")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-Why I think it should be applied:
-- linux TCP sessions are allocating more memory than they should
-- the kernel drops incoming packets which it should not drop
-- large amounts of memory can be saved (see https://blog.cloudflare.com/unb=
-ounded-memory-usage-by-tcp-for-receive-buffers-and-how-we-fixed-it/#memory)
+Looks good to me. But you'll change the alignment of the table, not sure
+if that matters for some DMA controllers.
 
-What kernel versions you wish it to be applied to: 6.1.x (stable).
-Thank you! :)
-
-- craig
+-michael
