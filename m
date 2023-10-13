@@ -2,144 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDD0E7C802D
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 10:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE7B7C809F
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 10:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230147AbjJMI07 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 04:26:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55246 "EHLO
+        id S230128AbjJMIsn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 04:48:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230094AbjJMI0u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 04:26:50 -0400
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C82CC;
-        Fri, 13 Oct 2023 01:26:46 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 39874C0009;
-        Fri, 13 Oct 2023 08:26:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1697185604;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=XnBwm2IvHLuWvz5q9qZS2KbVkC5/vLI/x4BmkQloMCc=;
-        b=Jbac0TbSHmC1eG0PRUzvqNqBaaDAi5BFU9DGBKUJ8IgHy1uCpuwsw/gCUWXy09q8wD++Ia
-        CXQQ7HmMcPFz0r3tI0dVmq1hzK4RBu4vrBxA+/Du+xvkT31ho+hc/3fZf2l72m2/dBdqrQ
-        LTIoUNtSNIIc6w63UndezFo5wWZP+rSDuBgNdc48+gxWbb2SRsOykmo8DEtjw/wqnw9p2g
-        7zv6fpXjvsXi3OAnJBjz36k5SS5D/9XRxtJttm8nQ4m9ic0RQCK3JznDR2I04ofAWg6S/Y
-        v6eSbxQADPlBqDf80TMZtpqLbZgJ9O21lRzJyawXx2o00SdMQ0A63Ur74ZAvwg==
-From:   =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date:   Fri, 13 Oct 2023 10:26:52 +0200
-Subject: [PATCH] wifi: wilc1000: use vmm_table as array in wilc struct
+        with ESMTP id S230202AbjJMIsm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 04:48:42 -0400
+Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB0DEB7
+        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 01:48:40 -0700 (PDT)
+Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-5a7a7e9357eso22405357b3.0
+        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 01:48:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697186920; x=1697791720; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qsV6T9VsLLy2LxDe9+BKDcZ/cAWQqS9gO3NGL22SRNg=;
+        b=yrvXwWvRXLZZaIwpwDlFOB3vN2u8Al6KCOzlsryl+mBbXvvr9T+Ny3KQv2WUVui3df
+         ePLrrxXGkZiARdM7/cAfdecyPbQFeFSWt3+BAMsS6hIdbLm7bVnLRfiMQTYllRU5g5e9
+         TetkJyF89v2KwBimYcZOnMvm5iiU4nvK8X+ZTumT9rEJ1FL2lOfSE1g1ldd54xgoiaxq
+         cLj2N654VC/f1e94VXb8JaDW76hs8H1Fm9sF6SjjjTxMgXusPLAP5C7FxVs7xpC4soUO
+         qQ4lTS/lY4XshiKvDfxho30xwYYixgv6WhbEgbkjLDsBEQ/lyfQqYni1ZQb7cPM06gmA
+         HH1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697186920; x=1697791720;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qsV6T9VsLLy2LxDe9+BKDcZ/cAWQqS9gO3NGL22SRNg=;
+        b=oc770kE3uqLjcMfOMN9mXhhWSfQbt+rTHgOcFmOWf2iSIDWL4JXHrz5+1Up2bHaY2w
+         o1Xzg5fzN6rNWb5V02oEyoLnADfEPTMu43v5zcC3dz2qZLHIiF5VCz/3hOEP59wfp1fH
+         swou9/dSGHi2p1dZPoAYLieMsbt6rtK2m6a5IqgxKxOvng1OcFu6qfWMbdHlJkgmz/lJ
+         diLJ4gdsDbVwY23ZbaXbm7G7+1QaNLa35QofYXJ7fZBykA/bDFP6ziJWaBUdQdbTPpgA
+         T4t23NEiyz1U3l0GAicHvYCXrus10CkNNouY71280r63lEudIO+0Zs98w+x/FZpvQuyr
+         RqYw==
+X-Gm-Message-State: AOJu0Yx1CXzeqx2/WejWVEZ8vyWNwuMd1Gzr+Xm4qW9rl2C8reXGCMwH
+        RUMWvlcwNc2mKEYGPM3EePh/Iio7Urr5F1I0Of4=
+X-Google-Smtp-Source: AGHT+IHd4IPsGpH/FrRZ3mxTpnlfstHsQZ2So8luMKNtrkRy6qveX6G4SwPxatusW2RLjfDR3COPKg==
+X-Received: by 2002:a25:8702:0:b0:d9b:1483:3de5 with SMTP id a2-20020a258702000000b00d9b14833de5mr849223ybl.3.1697186919931;
+        Fri, 13 Oct 2023 01:48:39 -0700 (PDT)
+Received: from sumit-X1.. ([223.178.213.105])
+        by smtp.gmail.com with ESMTPSA id m26-20020a056a00165a00b00692b0d413c8sm13122908pfc.197.2023.10.13.01.48.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Oct 2023 01:48:39 -0700 (PDT)
+From:   Sumit Garg <sumit.garg@linaro.org>
+To:     stable@vger.kernel.org
+Cc:     gregkh@linuxfoundation.org, jarkko@kernel.org,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.15.y] KEYS: trusted: Remove redundant static calls usage
+Date:   Fri, 13 Oct 2023 14:18:25 +0530
+Message-Id: <20231013084825.564638-1-sumit.garg@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2023101258-map-demanding-68a7@gregkh>
+References: <2023101258-map-demanding-68a7@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20231013-wilc1000_tx_oops-v1-1-3761beb9524d@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAEv/KGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI2NDA0Mj3fLMnGRDAwOD+JKK+Pz8gmJdU4vkVEvD1FTjVEtjJaC2gqLUtMw
- KsJHRsbW1AKu7TRBiAAAA
-To:     Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Kalle Valo <kvalo@kernel.org>,
-        Michael Walle <mwalle@kernel.org>
-Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Ajay Singh <ajay.kathat@microchip.com>, stable@vger.kernel.org,
-        =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-X-Mailer: b4 0.12.3
-X-GND-Sasl: alexis.lothore@bootlin.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ajay Singh <ajay.kathat@microchip.com>
+[ Upstream commit 01bbafc63b65689cb179ca537971286bc27f3b74 ]
 
-Enabling KASAN and running some iperf tests raises some memory issues with
-vmm_table:
+Static calls invocations aren't well supported from module __init and
+__exit functions. Especially the static call from cleanup_trusted() led
+to a crash on x86 kernel with CONFIG_DEBUG_VIRTUAL=y.
 
-BUG: KASAN: slab-out-of-bounds in wilc_wlan_handle_txq+0x6ac/0xdb4
-Write of size 4 at addr c3a61540 by task wlan0-tx/95
+However, the usage of static call invocations for trusted_key_init()
+and trusted_key_exit() don't add any value from either a performance or
+security perspective. Hence switch to use indirect function calls instead.
 
-KASAN detects that we are writing data beyond range allocated to vmm_table.
-There is indeed a mismatch between the size passed to allocator in
-wilc_wlan_init, and the range of possible indexes used later: allocation
-size is missing a multiplication by sizeof(u32)
+Note here that although it will fix the current crash report, ultimately
+the static call infrastructure should be fixed to either support its
+future usage from module __init and __exit functions or not.
 
-While at it, instead of simply multiplying the allocation size, do not keep
-dedicated dynamic allocation for vmm_table: define it as an array with the
-relevant size in wilc struct, which is already dynamically allocated
-
-Fixes: 40b717bfcefa ("wifi: wilc1000: fix DMA on stack objects")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Reported-and-tested-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Link: https://lore.kernel.org/lkml/ZRhKq6e5nF%2F4ZIV1@fedora/#t
+Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[SG: backport for v5.15 stable]
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
 ---
- drivers/net/wireless/microchip/wilc1000/netdev.h |  2 +-
- drivers/net/wireless/microchip/wilc1000/wlan.c   | 12 ------------
- 2 files changed, 1 insertion(+), 13 deletions(-)
+ security/keys/trusted-keys/trusted_core.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.h b/drivers/net/wireless/microchip/wilc1000/netdev.h
-index bb1a315a7b7e..2137ef294953 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.h
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.h
-@@ -245,7 +245,7 @@ struct wilc {
- 	u8 *rx_buffer;
- 	u32 rx_buffer_offset;
- 	u8 *tx_buffer;
--	u32 *vmm_table;
-+	u32 vmm_table[WILC_VMM_TBL_SIZE];
+diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+index 9b9d3ef79cbe..08da794536fa 100644
+--- a/security/keys/trusted-keys/trusted_core.c
++++ b/security/keys/trusted-keys/trusted_core.c
+@@ -35,13 +35,12 @@ static const struct trusted_key_source trusted_key_sources[] = {
+ #endif
+ };
  
- 	struct txq_handle txq[NQUEUES];
- 	int txq_entries;
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 58bbf50081e4..d93493c40e49 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -1252,8 +1252,6 @@ void wilc_wlan_cleanup(struct net_device *dev)
- 	while ((rqe = wilc_wlan_rxq_remove(wilc)))
- 		kfree(rqe);
+-DEFINE_STATIC_CALL_NULL(trusted_key_init, *trusted_key_sources[0].ops->init);
+ DEFINE_STATIC_CALL_NULL(trusted_key_seal, *trusted_key_sources[0].ops->seal);
+ DEFINE_STATIC_CALL_NULL(trusted_key_unseal,
+ 			*trusted_key_sources[0].ops->unseal);
+ DEFINE_STATIC_CALL_NULL(trusted_key_get_random,
+ 			*trusted_key_sources[0].ops->get_random);
+-DEFINE_STATIC_CALL_NULL(trusted_key_exit, *trusted_key_sources[0].ops->exit);
++static void (*trusted_key_exit)(void);
+ static unsigned char migratable;
  
--	kfree(wilc->vmm_table);
--	wilc->vmm_table = NULL;
- 	kfree(wilc->rx_buffer);
- 	wilc->rx_buffer = NULL;
- 	kfree(wilc->tx_buffer);
-@@ -1491,14 +1489,6 @@ int wilc_wlan_init(struct net_device *dev)
- 			goto fail;
+ enum {
+@@ -322,19 +321,16 @@ static int __init init_trusted(void)
+ 			    strlen(trusted_key_sources[i].name)))
+ 			continue;
+ 
+-		static_call_update(trusted_key_init,
+-				   trusted_key_sources[i].ops->init);
+ 		static_call_update(trusted_key_seal,
+ 				   trusted_key_sources[i].ops->seal);
+ 		static_call_update(trusted_key_unseal,
+ 				   trusted_key_sources[i].ops->unseal);
+ 		static_call_update(trusted_key_get_random,
+ 				   trusted_key_sources[i].ops->get_random);
+-		static_call_update(trusted_key_exit,
+-				   trusted_key_sources[i].ops->exit);
++		trusted_key_exit = trusted_key_sources[i].ops->exit;
+ 		migratable = trusted_key_sources[i].ops->migratable;
+ 
+-		ret = static_call(trusted_key_init)();
++		ret = trusted_key_sources[i].ops->init();
+ 		if (!ret)
+ 			break;
  	}
+@@ -351,7 +347,8 @@ static int __init init_trusted(void)
  
--	if (!wilc->vmm_table)
--		wilc->vmm_table = kzalloc(WILC_VMM_TBL_SIZE, GFP_KERNEL);
--
--	if (!wilc->vmm_table) {
--		ret = -ENOBUFS;
--		goto fail;
--	}
--
- 	if (!wilc->tx_buffer)
- 		wilc->tx_buffer = kmalloc(WILC_TX_BUFF_SIZE, GFP_KERNEL);
+ static void __exit cleanup_trusted(void)
+ {
+-	static_call_cond(trusted_key_exit)();
++	if (trusted_key_exit)
++		(*trusted_key_exit)();
+ }
  
-@@ -1523,8 +1513,6 @@ int wilc_wlan_init(struct net_device *dev)
- 	return 0;
- 
- fail:
--	kfree(wilc->vmm_table);
--	wilc->vmm_table = NULL;
- 	kfree(wilc->rx_buffer);
- 	wilc->rx_buffer = NULL;
- 	kfree(wilc->tx_buffer);
-
----
-base-commit: f28d2198de8cbefa17286d5182337a1d6d518643
-change-id: 20231012-wilc1000_tx_oops-58ce91ee3e93
-
-Best regards,
+ late_initcall(init_trusted);
 -- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
