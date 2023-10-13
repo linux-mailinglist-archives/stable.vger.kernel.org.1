@@ -2,104 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FFDA7C8D39
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 20:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 429C57C8EEB
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 23:21:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231513AbjJMSmJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 14:42:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42950 "EHLO
+        id S231858AbjJMVVU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 17:21:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231443AbjJMSmI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 14:42:08 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2CCDBB
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 11:42:05 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-53e16f076b3so3885134a12.0
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 11:42:05 -0700 (PDT)
+        with ESMTP id S229958AbjJMVVT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 17:21:19 -0400
+Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CCA495
+        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 14:21:18 -0700 (PDT)
+Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-c647150c254so2168017276.1
+        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 14:21:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697222524; x=1697827324; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BlcetPZENt/KWUqTdKuElmZntlZWvFUuRk0MWi//bA8=;
-        b=Z75SW8rJLM6vMUcAeZKpUczPTN/YEMJwR6PDl9Vd/m2Gnq/zhUFFKl5V6yoxPRYXWu
-         c0Izk0LlqBNlz7n/SLietSdjUf9vWSTysf5bzKGhdbc67enRaeD+DHU8XzHDbBVod8gk
-         p2Qp9JK0Q1bjcWRryaUTXeAvjyO6iip/lcUjv0XBsJMGiiaVPEcu1VxYfqQMR8unYKLX
-         q7hHJnAVbYnqzu8SlAlqRnttKr/+msC+btuAcqKwV8VV4/Pu8qRL//UlmvGKPakIZFJj
-         gRkJdgavPZJ0WqXcS8CGVe+02lAVjlWxfejwx7BdXB0X87HiLB71Xb4KDaHBwMv4HgB4
-         S4rQ==
+        d=google.com; s=20230601; t=1697232077; x=1697836877; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zfTA8VaZv5rdrg7/cEK2VCte/Hm7Rf1qV3PJRXDA+Io=;
+        b=duxLCxEvkF/StVMibY18SFiSkJX8LtE1A0a/EgHqSSp+HW8AoMlsEwuWq5ozSlPqLI
+         9DGcJDdBY0RJ/tmbEhVR87mdjdhaOfHwxkB1W22jm/pxwCl7BboKWNQIPz8ZfN5kNuLd
+         2GhMZztkS4asHWgrRJ2q9hNG+NcLg/vaLtLUwHsg8zfCSdnlLsqHL1bjknDge4ROrUdv
+         5Yh3NRd4HUV31j3Hrb8JsE5NS8I8cmlsUoN5YAPQSbxpbPr4TDo7dm1/OAF4O4vXkba6
+         rzkcoBQ7szqZ7d9cQjK2AxnLrVkFXscWj0Wqmx0g5HzH5zetGx3oMuG86dl4zZgjBDgJ
+         O8Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697222524; x=1697827324;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BlcetPZENt/KWUqTdKuElmZntlZWvFUuRk0MWi//bA8=;
-        b=OmgWPRNyMhLpDDlcTf7d08nwijI/LGSJ35JG6YE4sFdzLVdCyoiiQa1vsWfnPJBfGv
-         zzqB6GsJweVLiXB2gT7M4wk69D+S9tirIPNf/Bwc+yV9qtTE8cs2qIxYJ2ixse3kj9Uy
-         RVbeHTCYFLJw8vQxxSK2IGRB2ayOFlWM+AL+FOUIe9rPKgbSwkBloXZqwEkAWCCEwCJY
-         KpK9bvbP5/vSh4Q1Vo+tecQvTkId51RRubpJWwz0SiObOKTzPGklcwqYVE7mhACMa/7n
-         ngE8oKFdKbhtI6wvJrbPkK4TXeEjNLkfUSzKhNkXnqX0810mT8qvZf0O3ksT3mcP1vtD
-         Hk8g==
-X-Gm-Message-State: AOJu0YzAgV1l9IdaS7W/Gk3GZm1h1hiyRbqpEKBLZeNUdymu9MrJxR5u
-        84WZB1rm6xe+mv8pfVQAGljsVQ==
-X-Google-Smtp-Source: AGHT+IENdas/HNvJqTs1sK4tay28wAJbuqwId0DuBDkOut5TKAkUJeoLG3Vf6EFnfe2mQpBp5j/wbA==
-X-Received: by 2002:a50:d658:0:b0:533:dcb1:5ab4 with SMTP id c24-20020a50d658000000b00533dcb15ab4mr821984edj.18.1697222523963;
-        Fri, 13 Oct 2023 11:42:03 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.219.100])
-        by smtp.gmail.com with ESMTPSA id dm9-20020a05640222c900b0053db1ca293asm4173171edb.19.2023.10.13.11.42.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Oct 2023 11:42:03 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Frederic Danis <frederic.danis@linux.intel.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     =?UTF-8?q?=E9=BB=84=E6=80=9D=E8=81=AA?= <huangsicong@iie.ac.cn>,
-        stable@vger.kernel.org
-Subject: [PATCH net-next] nfc: nci: fix possible NULL pointer dereference in send_acknowledge()
-Date:   Fri, 13 Oct 2023 20:41:29 +0200
-Message-Id: <20231013184129.18738-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        d=1e100.net; s=20230601; t=1697232077; x=1697836877;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zfTA8VaZv5rdrg7/cEK2VCte/Hm7Rf1qV3PJRXDA+Io=;
+        b=RW6Y6Th6DKDPt2OSJUz8nctt3+MybyoeEHdgydI7+CvI5EzKrtAVHCfxGnBarqQ+OK
+         +2E+vdU3te6RqyIIEojL0ZyzAzqpADeo10mfCjJlstcwllKMQTXE+0hF7rR6s6rc5NLc
+         tsZbLOwY8mXwYJJtIu0GbTbwiKKDTcLFRfGnNNqyP5lTzWNoiK9fumSi2XzAvthxURe2
+         NCaas2oYlFuabgrm6Thxe3yBoSFYY6JQgT4g+kbkn5RBCO75xEvpCDIYZpq2xxyZfh/b
+         Ve2BlPLsvMxhQUVgITK9pij1m9grwPexPrgsgkup2xWxkXiC7X74VQv0apzSboighslE
+         J5xA==
+X-Gm-Message-State: AOJu0Yz67YZawZK3T/sYKRZ8vhSO1SUiIh/m2y/T1cU/ficN/qkEvJUV
+        3bh3Pojsk1tmInwkdAPNbf9Re2ujeodSImGtELk1tKHbkfYY2CUXLJIVkcqKLHJ++P8LTB7OBio
+        BuRAN55d0WyYp7hs4aQmmBEF3+nyac8QuiFZt2zIUEhqMhvsEJHcodABHBbQ=
+X-Google-Smtp-Source: AGHT+IFKH+l7zUstS/XKjY5lNPXDHrUhAy0f7cnfIaIfizHuM1PaN+CCQ2ObBPVBXUT3cBhahf2zmMg2CQ==
+X-Received: from prohr-desktop.mtv.corp.google.com ([2620:15c:211:200:2cb4:ec7b:cfc0:caf7])
+ (user=prohr job=sendgmr) by 2002:a25:8d8f:0:b0:d9a:6360:485b with SMTP id
+ o15-20020a258d8f000000b00d9a6360485bmr39296ybl.2.1697232077348; Fri, 13 Oct
+ 2023 14:21:17 -0700 (PDT)
+Date:   Fri, 13 Oct 2023 14:21:11 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
+Message-ID: <20231013212114.3445624-1-prohr@google.com>
+Subject: [PATCH v2 0/3] net: add sysctl accept_ra_min_lft
+From:   Patrick Rohr <prohr@google.com>
+To:     stable@vger.kernel.org
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>,
+        Lorenzo Colitti <lorenzo@google.com>,
+        Patrick Rohr <prohr@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Handle memory allocation failure from nci_skb_alloc() (calling
-alloc_skb()) to avoid possible NULL pointer dereference.
+I am following up on https://lore.kernel.org/stable/20230925211034.905320-1-prohr@google.com/ with
+cherry-picks for 5.15.135. I have run our test suite with the changes applied and all relevant tests
+passed.
 
-Reported-by: 黄思聪 <huangsicong@iie.ac.cn>
-Fixes: 391d8a2da787 ("NFC: Add NCI over SPI receive")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- net/nfc/nci/spi.c | 2 ++
- 1 file changed, 2 insertions(+)
+I will follow up in a separate email with cherry-picks for 5.10.
 
-diff --git a/net/nfc/nci/spi.c b/net/nfc/nci/spi.c
-index 0935527d1d12..b68150c971d0 100644
---- a/net/nfc/nci/spi.c
-+++ b/net/nfc/nci/spi.c
-@@ -151,6 +151,8 @@ static int send_acknowledge(struct nci_spi *nspi, u8 acknowledge)
- 	int ret;
- 
- 	skb = nci_skb_alloc(nspi->ndev, 0, GFP_KERNEL);
-+	if (!skb)
-+		return -ENOMEM;
- 
- 	/* add the NCI SPI header to the start of the buffer */
- 	hdr = skb_push(skb, NCI_SPI_HDR_LEN);
+v2: Add UAPI sections back in and resolve conflicts. Note that the first patch adds UAPI, and the
+second patch renames it.
+
+Thanks,
+-Patrick
+
+Patrick Rohr (3):
+  net: add sysctl accept_ra_min_rtr_lft
+  net: change accept_ra_min_rtr_lft to affect all RA lifetimes
+  net: release reference to inet6_dev pointer
+
+ Documentation/networking/ip-sysctl.rst |  8 ++++++++
+ include/linux/ipv6.h                   |  1 +
+ include/uapi/linux/ipv6.h              |  3 +++
+ net/ipv6/addrconf.c                    | 13 +++++++++++++
+ net/ipv6/ndisc.c                       | 13 +++++++++++--
+ 5 files changed, 36 insertions(+), 2 deletions(-)
+
 -- 
-2.34.1
+2.42.0.655.g421f12c284-goog
 
