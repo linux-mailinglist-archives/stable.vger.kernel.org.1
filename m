@@ -2,70 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F6AF7C8BDE
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 18:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 638B17C8CC1
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 20:04:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229988AbjJMQ64 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 12:58:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58092 "EHLO
+        id S229891AbjJMSEG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 14:04:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230133AbjJMQ6z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 12:58:55 -0400
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C694FA9
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 09:58:53 -0700 (PDT)
-Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-4195fe5cf73so5211cf.1
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 09:58:53 -0700 (PDT)
+        with ESMTP id S229958AbjJMSEF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 14:04:05 -0400
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47056C0;
+        Fri, 13 Oct 2023 11:04:02 -0700 (PDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1c8a1541232so20947615ad.0;
+        Fri, 13 Oct 2023 11:04:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697216333; x=1697821133; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D/RJ3K2u2/0kEbjKg5ncvwK22eF90W+UiIC6POGZyhw=;
-        b=Pn0bTeOaW7xBlrAlaqf6JSZcPwOO0McEBB6qG2VRP215t5WknzorgIbskh2sZIToed
-         4/VVrUQ08XLhooufRvG+VPoHHWeNoUTMwukP+Lclye0r9jJv6n9WE+vz/Lp7aV639dJf
-         qcCNgX4Crr4TeV2E41ocurLsXV11AkiSkQ1pEMVY17SHqKirsXejCoVPHz4bnYLYZNF+
-         w+p3/JdArUCAEy14aVbObn4rj0vgRJ2COGKm4aI8xgY2wkhs/3zm5SXdh2A0kST43XpX
-         QWayt3nkAM3B2Pmyhh+8zGZPog5VZ8edjiNWdEakBdH5Xz4j9oSa0dfGevF2MuTZugq/
-         vIug==
+        d=gmail.com; s=20230601; t=1697220241; x=1697825041; darn=vger.kernel.org;
+        h=in-reply-to:subject:cc:to:from:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=sfjXdT7cAyc2iDE1Sn8k9xOdZrrZkWk2OCvv9E04Z4I=;
+        b=QdaF/6QwyBMIGP6nyfhSjJc3kMeaVFN71Yq65vWsCx69+5GFfPe0j+j8nqEhKj5LMS
+         oFBoRQkQAdhnWw3xHoNHke8hRmEpAlUgcjUoaQarCuQ9L4oX6rl9OttBroqNhAbKaXc4
+         aBdVeNobDhliH2L3DxR87Zlwz3n5SMmPmgEpNywKbV5gWzXYfDSdAppsLX8eZYOju3/B
+         QLotmfJwt0okb+xrDInJVE+TXSu2N7BVxgySqsKafnZit/81tbJLEBj3fU0yJVbsiRSV
+         BVulcVusii0Svg+ogT1fvSxx8TKXoHEOzUybIAzMbNi/hCBijfh8BBFpMjS1XkLycLal
+         B4WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697216333; x=1697821133;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D/RJ3K2u2/0kEbjKg5ncvwK22eF90W+UiIC6POGZyhw=;
-        b=Y+QYfM+QKpzmp0kYQu/NbtRmphnpsLtjj4woopKBASBNJmCNm2w+NjFInox4VnMf+3
-         wmG37I2Jj/GO+1eQ7I8jflkMdFb+Iu834cXvYkfo0AIB6+0DOm0hmK+dtSk0bJkr1kQB
-         zpTSqGEeX9dup34XK8UHJ+5Nk0qo0ZGLwfdvNY9bI7x13vy947BYWBSMPxy3kda75/bq
-         QDdIikQKeERYL/+U9s3lqfGuUCzXgfebfxiE0oIBnSHc7TJkBT0ldRWtEMyROjrMeP8H
-         1r2NJtOzFmsgeoTqKbkW3Ouu4nBQ6DV3uZnfDiad+6bYtpfRhSirYxb3ItVDvQ12yx5c
-         TOtQ==
-X-Gm-Message-State: AOJu0YyRZBs1WCXV060d4quhdnBCpi71cnpTR5P6iTtK34kZFsuf3kEJ
-        yVjfHUtWRsWwqXfglr2v0FZpVByXl0mdpz4HfRVBU5N3kAZrs4UOPvM=
-X-Google-Smtp-Source: AGHT+IFAW7Bczz5NDXvkJQcCZ4+FX6sRtvEd1YQB7iwOw42rTvoGYUoJYhMIfbq6RZe+s+zoMym4uQ/SJA2ukWLhrQU=
-X-Received: by 2002:ac8:5bd6:0:b0:418:fb5:83d9 with SMTP id
- b22-20020ac85bd6000000b004180fb583d9mr224253qtb.19.1697216332767; Fri, 13 Oct
- 2023 09:58:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231012235524.2741092-1-prohr@google.com> <20231012235524.2741092-3-prohr@google.com>
- <42778c9a-d487-f1a1-ae70-70a9f69c3b82@kernel.org>
-In-Reply-To: <42778c9a-d487-f1a1-ae70-70a9f69c3b82@kernel.org>
-From:   Patrick Rohr <prohr@google.com>
-Date:   Fri, 13 Oct 2023 09:58:36 -0700
-Message-ID: <CANLD9C2Xfvdzh+UOkOW09TvHeQiQMnrtaN9jVGQg_VG4a=R0hA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] net: change accept_ra_min_rtr_lft to affect all RA lifetimes
-To:     David Ahern <dsahern@kernel.org>
-Cc:     stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>,
-        Lorenzo Colitti <lorenzo@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        d=1e100.net; s=20230601; t=1697220241; x=1697825041;
+        h=in-reply-to:subject:cc:to:from:message-id:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sfjXdT7cAyc2iDE1Sn8k9xOdZrrZkWk2OCvv9E04Z4I=;
+        b=neuizUH+b+KRCbadZlRMZ1xDOkPBz/hxPRnU5G7NXzgkcr374L6qWJEoAFS/NBq8Ww
+         kf4aJoVWSIlfrSI/zzVYyteMScLoma2Yg0X9VQlRUkeKcQs143SPPHiqsHDVxYr7wpqZ
+         BnOMePmdBYonEOY+NIDL2By6J2oRzsU5tDReGFHfyc0yU3L1UOi14FfjmhGBxHW3/964
+         182hSSrPnDYRPlWGOSmnD9rIrkfdjkGjtNwXEu+JdM28skV3hv9yrvLdMyPNsm54mFze
+         MgKbMge2gB0E8zngylMIXRwKdgvp0qsxEV5NGY8HIKFgnu8NdOl/6BI3ryVecvvk+6Yx
+         nV8Q==
+X-Gm-Message-State: AOJu0Yz6lnng1SSkuFVHQbPE8dYhk3Ya0kjU3jl4GboPFNf1eiw0SGsE
+        jhH4LeeNPlM8z6xDL/B4R9XxKwV5IjY=
+X-Google-Smtp-Source: AGHT+IG4hjayqt7WDglsYpaApzyj0EmlG83LNFBeImgkYu1e6HfmQ5q+4CxIZI7DGH/fT65n3lJp7Q==
+X-Received: by 2002:a17:902:f688:b0:1c9:e830:160d with SMTP id l8-20020a170902f68800b001c9e830160dmr4544137plg.22.1697220241158;
+        Fri, 13 Oct 2023 11:04:01 -0700 (PDT)
+Received: from dw-tp ([2401:4900:1cc4:c403:d76d:9a77:e4fd:36be])
+        by smtp.gmail.com with ESMTPSA id p4-20020a170902eac400b001b9da8b4eb7sm4170044pld.35.2023.10.13.11.03.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Oct 2023 11:04:00 -0700 (PDT)
+Date:   Fri, 13 Oct 2023 23:33:56 +0530
+Message-Id: <87edhyielv.fsf@doe.com>
+From:   Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To:     Jan Kara <jack@suse.cz>, Ted Tso <tytso@mit.edu>
+Cc:     linux-ext4@vger.kernel.org,
+        Gao Xiang <hsiangkao@linux.alibaba.com>,
+        Dave Chinner <david@fromorbit.com>, Jan Kara <jack@suse.cz>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3] ext4: Properly sync file size update after O_SYNC direct IO
+In-Reply-To: <20231013121350.26872-1-jack@suse.cz>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,17 +67,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 13, 2023 at 9:21=E2=80=AFAM David Ahern <dsahern@kernel.org> wr=
-ote:
->
-> On 10/12/23 5:55 PM, Patrick Rohr wrote:
-> > commit 5027d54a9c30bc7ec808360378e2b4753f053f25 upstream.
-> >
-> > (Backported without unnecessary UAPI portion.)
-> >
->
-> no such thing as "unnecessary UAPI". If the original patch has a uapi,
-> the backport to stable should have it too.
->
+Jan Kara <jack@suse.cz> writes:
 
-Thanks for the guidance, David. I will follow up with a v2.
+> Gao Xiang has reported that on ext4 O_SYNC direct IO does not properly
+> sync file size update and thus if we crash at unfortunate moment, the
+> file can have smaller size although O_SYNC IO has reported successful
+> completion. The problem happens because update of on-disk inode size is
+> handled in ext4_dio_write_iter() *after* iomap_dio_rw() (and thus
+> dio_complete() in particular) has returned and generic_file_sync() gets
+> called by dio_complete(). Fix the problem by handling on-disk inode size
+> update directly in our ->end_io completion handler.
+>
+> References: https://lore.kernel.org/all/02d18236-26ef-09b0-90ad-030c4fe3ee20@linux.alibaba.com
+> Reported-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> CC: stable@vger.kernel.org
+> Fixes: 378f32bab371 ("ext4: introduce direct I/O write using iomap infrastructure")
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
+>  fs/ext4/file.c | 153 +++++++++++++++++++++----------------------------
+>  1 file changed, 65 insertions(+), 88 deletions(-)
+>
+> Changes since v2:
+> * Added more comments explaining the code flow
+> * Added WARN_ON_ONCE to verify extending IO is handled synchronously
+>
+> Changes since v1:
+> * Rebased on top of Linus' tree (instead of a tree with iomap cleanup)
+> * Made ext4_dio_write_end_io() always return number of written bytes on
+>   success for consistency
+
+Thanks for addressing it. It's always better to have a consistent return
+value wherever possible.
+
+> * Added Fixes tag
+
+Looks good to me. Please feel free to add - 
+
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
