@@ -2,104 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C80D7C861C
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 14:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 347B77C8635
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 14:56:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231874AbjJMMtT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 08:49:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51130 "EHLO
+        id S231254AbjJMM4H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 08:56:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231814AbjJMMtO (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Fri, 13 Oct 2023 08:49:14 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DF5CDA
-        for <Stable@vger.kernel.org>; Fri, 13 Oct 2023 05:49:12 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-32d834ec222so1961921f8f.0
-        for <Stable@vger.kernel.org>; Fri, 13 Oct 2023 05:49:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697201350; x=1697806150; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YHWz+2cENNJo8soalNrQC54X+UbYVE7Vc57ND+OacnA=;
-        b=rNrz0wIb7Fqj12fcI5xJMlNvLEtnjr6eiYnHgNiT0Ezf1x7xvIqSEFYHnxxB951euK
-         qmxRGImx/yGIKW/XF8UaBZGQqt4Z5jLUTqBUpP9O+txCiYeg5x4Sy7XJgjVpXG6sYLrL
-         N8mwAFUVNvlVcsMwLljcU98JggaiiaPza0pzL4cHXe/PHRrIfd3Hof0rIxy57Mmjmxxa
-         lj02y/bJ5NPo0LDDjS62LHxPWIRgIpErlUkCesoKaJ6vvjzdDax1ET7EJlYXZyySgvzb
-         379cpDeIDgu4C3XJSsoJtMT0wGv2a1r9bq89dDCRXeFlTbJBybPN8kOpENs8U2DdSVbZ
-         qQVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697201350; x=1697806150;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YHWz+2cENNJo8soalNrQC54X+UbYVE7Vc57ND+OacnA=;
-        b=o/x++dZ1juVOOR/Lfiy9/e7GNfCqc6Ty/qyGMgx1WJgPJ6DyktKneCHNNW5RuNKwiH
-         XuN9bwpOoJFw7sXIk14C6xJvAf0oMjZ9PK9bLbeH6VQK/o9dmKrN+YWYMe0Na5Q0/frb
-         xzwnYbLNhg8bU1K5BIP9rrnrlxjWvPy3unv5ewwVy2FgaAWb0iNHmRlLD6iG5bQAs30S
-         Y5c4fZgLpqfjbCCfaaBnNauQ23zS5c5ZviTkDiYmmz4+JclHr9q05IRnVhoAnes+4W2X
-         qFTvfK1yvwGSFYuB8GzEvVOnWattk2tPyLDmR2NRAouFMvmgnf+g63oyFdOfBcVzcr/Y
-         Cq+g==
-X-Gm-Message-State: AOJu0YyEctHOJXK300J+UZWhed1VkfdgxU/4wSD1cN8xQimSOZdfwX6Z
-        quI+YVgfVoWWrQ+fwslFg3FqfA==
-X-Google-Smtp-Source: AGHT+IFdKyNswXgqV8YyUSFLJ9/VNa34tD0bTm2EbMeuZXnHOdakJpYme7AEsOScRGQ8ZyexXwZwSA==
-X-Received: by 2002:a5d:5b1b:0:b0:329:6e92:8d73 with SMTP id bx27-20020a5d5b1b000000b003296e928d73mr20970919wrb.67.1697201350545;
-        Fri, 13 Oct 2023 05:49:10 -0700 (PDT)
-Received: from srini-hackbase.lan ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id w16-20020adf8bd0000000b0032d81837433sm8035438wra.30.2023.10.13.05.49.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Oct 2023 05:49:09 -0700 (PDT)
-From:   srinivas.kandagatla@linaro.org
-To:     gregkh@linuxfoundation.org
-Cc:     linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
-        Stable@vger.kernel.org,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 3/3] nvmem: imx: correct nregs for i.MX6ULL
-Date:   Fri, 13 Oct 2023 13:49:04 +0100
-Message-Id: <20231013124904.175782-4-srinivas.kandagatla@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231013124904.175782-1-srinivas.kandagatla@linaro.org>
-References: <20231013124904.175782-1-srinivas.kandagatla@linaro.org>
+        with ESMTP id S231750AbjJMM4G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 08:56:06 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BEFDC0
+        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 05:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697201765; x=1728737765;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=zMLD2+97ZJNhpw6RdKVyZ6wlpplAV7WG4TyReIqNY2M=;
+  b=DnFS8BU6mFCpY/KdOsmDeBxm1+9FtB81KQBdO3UwEp72eudRtXVUfoje
+   fuouNHvTdAhYaTEJxezej97dNFi5tMpeR5k7eETMmzCST7vUOXUtYJ5jQ
+   DEirKXM3f9OIpZrbWwTWvUPPAssT+f9ulcV4K0jgftgYIxQ9rOi9slB4N
+   rCDLql38NXjV7os+sPdyq+WdOChDnGMLdjCbjOgANIqSyi5YWwIxRevp/
+   XxRxFqdUm/7GvxGJILr5wrfwb9vnilPtJYQwDQRU4AK5gcjehE0BovauC
+   9h71ZudqYeZF6mVGzp47b51QR79/BoDlfaM37ovtS9B4tQ27KPtySFw+g
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10862"; a="471413101"
+X-IronPort-AV: E=Sophos;i="6.03,222,1694761200"; 
+   d="scan'208";a="471413101"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 05:56:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10862"; a="789857951"
+X-IronPort-AV: E=Sophos;i="6.03,222,1694761200"; 
+   d="scan'208";a="789857951"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orsmga001.jf.intel.com with SMTP; 13 Oct 2023 05:56:00 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Fri, 13 Oct 2023 15:55:59 +0300
+Date:   Fri, 13 Oct 2023 15:55:59 +0300
+From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To:     Nirmoy Das <nirmoy.das@intel.com>
+Cc:     intel-gfx@lists.freedesktop.org,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        dri-devel@lists.freedesktop.org,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>, stable@vger.kernel.org,
+        Matt Roper <matthew.d.roper@intel.com>,
+        John Harrison <john.c.harrison@intel.com>
+Subject: Re: [PATCH] drm/i915: Flush WC GGTT only on required platforms
+Message-ID: <ZSk-X7oe2eVqmuW3@intel.com>
+References: <20231013103140.12192-1-nirmoy.das@intel.com>
+ <ZSkg47slZ25rSQK4@intel.com>
+ <ae8d62c9-ddfb-8913-6b67-681d9cf70978@intel.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=836; i=srinivas.kandagatla@linaro.org; h=from:subject; bh=ZrAY4rsNvvzr6wfGA3iwhJUERadtqpuGBRNuscN7mxE=; b=owEBbQGS/pANAwAKAXqh/VnHNFU3AcsmYgBlKTzAhXBlQ+Dta0l39iaO903eTrn2W777na+lJ q72yBAE9EaJATMEAAEKAB0WIQQi509axvzi9vce3Y16of1ZxzRVNwUCZSk8wAAKCRB6of1ZxzRV N6FBB/97p16dSnWV9TvdWHNK+y6+YHumuxBv5Gi25/7AjdWywVUCH8MV/2a99fwqvsaeZtueSoZ vbcXJTCKx6ZLoJZcLnKZzCBa5PSquj3NfvLJS+29ae7N0ShjAQKu9tMr5imOLFLSvk39unqwimv 6h+8HCvchYoPhBY1nREpsnhg8EdNKsSerls/JdFtOEeCiC32yi9t4q4PVhuNBlOnIg+b5igleoJ wMBc6eBVbii+BF0bMc/5Y9+L+c7Y9O7EwwEGrNC48LD+2vjPgajWIpy16rrGXMVIXKTW3Vu9CLx wNxGu10u2NEqlza8riM68YWuk3tGnxXyUKnd1pWrHmSWoqH9
-X-Developer-Key: i=srinivas.kandagatla@linaro.org; a=openpgp; fpr=ED6472765AB36EC43B3EF97AD77E3FC0562560D6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: *
+In-Reply-To: <ae8d62c9-ddfb-8913-6b67-681d9cf70978@intel.com>
+X-Patchwork-Hint: comment
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peng Fan <peng.fan@nxp.com>
+On Fri, Oct 13, 2023 at 02:28:21PM +0200, Nirmoy Das wrote:
+> Hi Ville,
+> 
+> On 10/13/2023 12:50 PM, Ville Syrjälä wrote:
+> > On Fri, Oct 13, 2023 at 12:31:40PM +0200, Nirmoy Das wrote:
+> >> gen8_ggtt_invalidate() is only needed for limitted set of platforms
+> >> where GGTT is mapped as WC
+> > I know there is supposed to be some kind hw snooping of the ggtt
+> > pte writes to invalidate the tlb, but are we sure GFX_FLSH_CNTL
+> > has no other side effects we depend on?
+> 
+> I spent some time searching through the gfxspec. This GFX_FLSH_CNTL 
+> register only seems to be for
+> 
+> invalidating TLB for GUnit  and (from git log ) we started to do that to 
+> enable WC based GGTT updates.
+> 
+> 
+> So if I am not missing anything obvious then this should be safe.
 
-The nregs for i.MX6ULL should be 80 per fuse map, correct it.
+OK.
 
-Fixes: ffbc34bf0e9c ("nvmem: imx-ocotp: Implement i.MX6ULL/ULZ support")
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
----
- drivers/nvmem/imx-ocotp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The only code related complaint I have is that you are now duplicating
+that same platform check in two different places. It's always better to
+have a single point of truth instead of two or more, so that there is
+no risk of introducing bugs due to mismatches.
 
-diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-index 921afe114a2c..e8b6f194925d 100644
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -519,7 +519,7 @@ static const struct ocotp_params imx6ul_params = {
- };
- 
- static const struct ocotp_params imx6ull_params = {
--	.nregs = 64,
-+	.nregs = 80,
- 	.bank_address_words = 0,
- 	.set_timing = imx_ocotp_set_imx6_timing,
- 	.ctrl = IMX_OCOTP_BM_CTRL_DEFAULT,
+> 
+> 
+> Regards,
+> 
+> Nirmoy
+> 
+> >
+> >> otherwise this can cause unwanted
+> >> side-effects on XE_HP platforms where GFX_FLSH_CNTL_GEN6 is not
+> >> valid.
+> >>
+> >> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
+> >> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> >> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> >> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> >> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> >> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> >> Cc: John Harrison <john.c.harrison@intel.com>
+> >> Cc: Andi Shyti <andi.shyti@linux.intel.com>
+> >> Cc: <stable@vger.kernel.org> # v6.2+
+> >> Suggested-by: Matt Roper <matthew.d.roper@intel.com>
+> >> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> >> ---
+> >>   drivers/gpu/drm/i915/gt/intel_ggtt.c | 6 +++++-
+> >>   1 file changed, 5 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/gpu/drm/i915/gt/intel_ggtt.c b/drivers/gpu/drm/i915/gt/intel_ggtt.c
+> >> index 4d7d88b92632..c2858d434bce 100644
+> >> --- a/drivers/gpu/drm/i915/gt/intel_ggtt.c
+> >> +++ b/drivers/gpu/drm/i915/gt/intel_ggtt.c
+> >> @@ -197,13 +197,17 @@ void gen6_ggtt_invalidate(struct i915_ggtt *ggtt)
+> >>   
+> >>   static void gen8_ggtt_invalidate(struct i915_ggtt *ggtt)
+> >>   {
+> >> +	struct drm_i915_private *i915 = ggtt->vm.i915;
+> >>   	struct intel_uncore *uncore = ggtt->vm.gt->uncore;
+> >>   
+> >>   	/*
+> >>   	 * Note that as an uncached mmio write, this will flush the
+> >>   	 * WCB of the writes into the GGTT before it triggers the invalidate.
+> >> +	 *
+> >> +	 * Only perform this when GGTT is mapped as WC, see ggtt_probe_common().
+> >>   	 */
+> >> -	intel_uncore_write_fw(uncore, GFX_FLSH_CNTL_GEN6, GFX_FLSH_CNTL_EN);
+> >> +	if (!IS_GEN9_LP(i915) && GRAPHICS_VER(i915) < 11)
+> >> +		intel_uncore_write_fw(uncore, GFX_FLSH_CNTL_GEN6, GFX_FLSH_CNTL_EN);
+> >>   }
+> >>   
+> >>   static void guc_ggtt_invalidate(struct i915_ggtt *ggtt)
+> >> -- 
+> >> 2.41.0
+
 -- 
-2.25.1
-
+Ville Syrjälä
+Intel
