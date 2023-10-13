@@ -2,75 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F1D77C7D07
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 07:32:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 559C67C7D0C
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 07:32:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229437AbjJMFcK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 01:32:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46508 "EHLO
+        id S229518AbjJMFc6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 01:32:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjJMFcJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 01:32:09 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 116F4B8;
-        Thu, 12 Oct 2023 22:32:08 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6b20577ef7bso330567b3a.3;
-        Thu, 12 Oct 2023 22:32:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697175127; x=1697779927; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nIvaPS82lenFE9njzHfPB1IlZ8+QONjjy7qyu3wWos4=;
-        b=c4TV5Ip973ixvH3HjkaH6FrPe/5YhZX8ou4+wHdrfGzGwnyu/ljLVEEaDkJvcpXevK
-         H0nknVXeQiyhZCV8o1mF0czjRYHMbbNjSeDFBY/pOwnGGl/SqvkHC02YQvdR59i1RKOh
-         koOtd2+eDFEcDCNkteM0u3VrMKmjKBS8E3b43IbpVjqQTD5v3fLuauK5+vrv7Ww9WAy4
-         grAnM6M9hynKbjCBXUUxljRjMEAom7Bnr7ZO9YqnKRoNL8stYIA2x7Hnrc/bCS8hfQqy
-         f14MX1FsmpkrTzqo9U7RiQyogDTFZoUisLEW817/Fg0c5iQquhOcVfFWDilkN8//DhCB
-         rgZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697175127; x=1697779927;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nIvaPS82lenFE9njzHfPB1IlZ8+QONjjy7qyu3wWos4=;
-        b=hSDFRb75sZsXQpwWSsQT36+AyDBWEKqKOdEPp1iYK5ZgXVIBCrB/dQmsW1whlXsEoc
-         YoagCq3bYLFJ436xKFBoQRx3DM+va4E+JAszKFpPIT3+B9/jJmBNWPFw88/zk54asq5p
-         viaU33TyaL8W3mLGby/lgEAxNsMwSRKAqdKXLwI5UfyMh1uPRAfKFWgbF4Y0P2Bi7Qak
-         aSS7zW00LPsiJBsZINS1Wyvz/gc03hMEeZqR0puhSkTR18OTWY1NL7c9lFS+ovBQ0DG3
-         UznjPkRoP2kS8JDKzjdnmX1oTm1l4XQMyR16PuVR9EdwUfnkjv/1mkkl3rul2g1voByh
-         aZkg==
-X-Gm-Message-State: AOJu0YxrBdgOnN8/sRWr/poRG/6FTEchBfP24Qzz+pNNOiB4zM4klAa7
-        xBB93RmJx18nxIFuj7mHSLU=
-X-Google-Smtp-Source: AGHT+IHF4II3VixwJFDR98pc7JU2m3Z7Qk8+kTLeK1ZUPjdx43t6VBQzk24AdOEBlcQKpZG63FOqsQ==
-X-Received: by 2002:a05:6a20:d417:b0:15d:4a4d:ecf7 with SMTP id il23-20020a056a20d41700b0015d4a4decf7mr20773277pzb.36.1697175127387;
-        Thu, 12 Oct 2023 22:32:07 -0700 (PDT)
-Received: from debian.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id s4-20020a170902ea0400b001bbab888ba0sm2903283plg.138.2023.10.12.22.32.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Oct 2023 22:32:06 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 35C2C83B4ED5; Fri, 13 Oct 2023 12:32:00 +0700 (WIB)
-Date:   Fri, 13 Oct 2023 12:31:59 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.1 0/6] 6.1.58-rc1 review
-Message-ID: <ZSjWT2w3uzRkRca_@debian.me>
-References: <20231012180030.112560642@linuxfoundation.org>
+        with ESMTP id S229487AbjJMFc6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 01:32:58 -0400
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56F5FBC
+        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 22:32:54 -0700 (PDT)
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20231013053251epoutp026f3e3e47d25871c57d03e85086b2331d~Nk9OZBjK62794127941epoutp02l
+        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 05:32:51 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20231013053251epoutp026f3e3e47d25871c57d03e85086b2331d~Nk9OZBjK62794127941epoutp02l
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1697175171;
+        bh=i6mQ53pmJmScjLHPFNSyagi2TiK5TeXO1gJWVu0BM0g=;
+        h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+        b=otEp5YndX8Qp2k9rzevhapIZxtdqupFw6AQ4TiGk/zqeieM2nBbMZuQA1Kxs+TQ8c
+         joBmnuPg33Mq35kGI3UM8o+TOWs/fA0Gowd4jWT9afSuYsrxDhBES/o3hg5Gq/DdNx
+         V+PSlWxn+IB+7/wT6PipaSfIU7WCazjVtatnakHY=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+        epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+        20231013053251epcas5p4c9203f4caa1f4d8717a1befe8aa1b4c9~Nk9N91k0C0425404254epcas5p4j;
+        Fri, 13 Oct 2023 05:32:51 +0000 (GMT)
+Received: from epsmges5p3new.samsung.com (unknown [182.195.38.176]) by
+        epsnrtp2.localdomain (Postfix) with ESMTP id 4S6FX118Vgz4x9QG; Fri, 13 Oct
+        2023 05:32:49 +0000 (GMT)
+Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+        epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        2A.B5.09635.186D8256; Fri, 13 Oct 2023 14:32:49 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+        20231013053248epcas5p40dfac6454e90700856fa7409bddc8b05~Nk9Lnn_n70425404254epcas5p4f;
+        Fri, 13 Oct 2023 05:32:48 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20231013053248epsmtrp235e58fd55f127844cf5b638ca505dff8~Nk9Lm01VG1605416054epsmtrp2_;
+        Fri, 13 Oct 2023 05:32:48 +0000 (GMT)
+X-AuditID: b6c32a4b-2f5ff700000025a3-ea-6528d681491f
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        F3.C5.08649.086D8256; Fri, 13 Oct 2023 14:32:48 +0900 (KST)
+Received: from [107.122.11.51] (unknown [107.122.11.51]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20231013053246epsmtip184868320452015213afc7758b84a6951~Nk9KBpqiJ1388613886epsmtip1W;
+        Fri, 13 Oct 2023 05:32:46 +0000 (GMT)
+Message-ID: <fedb15f7-3986-12b3-599c-884e0381aff2@samsung.com>
+Date:   Fri, 13 Oct 2023 11:02:46 +0530
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="DtwhJ4fBDgUKVjIt"
-Content-Disposition: inline
-In-Reply-To: <20231012180030.112560642@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0)
+        Gecko/20100101 Thunderbird/91.8.1
+Subject: Re: [PATCH v4] nvme: fix corruption for passthrough meta/data
+Content-Language: en-US
+To:     hch@lst.de, kbusch@kernel.org, axboe@kernel.dk, sagi@grimberg.me
+Cc:     linux-nvme@lists.infradead.org, vincentfu@gmail.com,
+        ankit.kumar@samsung.com, joshiiitr@gmail.com,
+        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
+From:   Kanchan Joshi <joshi.k@samsung.com>
+In-Reply-To: <20231013051458.39987-1-joshi.k@samsung.com>
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGJsWRmVeSWpSXmKPExsWy7bCmum7jNY1Ug+XLWSzWXPnNbrH6bj+b
+        xcrVR5kszr89zGQx6dA1Rov5y56yW6x7/Z7FYsHGR4wWj7s7GC02tAk6cHnsnHWX3eP8vY0s
+        HpfPlnpsWtXJ5rF5Sb3H7psNbB59W1YxenzeJBfAEZVtk5GamJJapJCal5yfkpmXbqvkHRzv
+        HG9qZmCoa2hpYa6kkJeYm2qr5OIToOuWmQN0oZJCWWJOKVAoILG4WEnfzqYov7QkVSEjv7jE
+        Vim1ICWnwKRArzgxt7g0L10vL7XEytDAwMgUqDAhO2PV9n2MBa/YKp7s+cjUwHiUtYuRk0NC
+        wETi5udHzF2MXBxCArsZJc5/W8EE4XxilNg+9QWU841R4trMWcwwLXsWLmaESOxllNjVPJMN
+        wnnLKLF080RGkCpeATuJa3N+gi1hEVCVeHmsEyouKHFy5hMWEFtUIEni19U5YHFhATeJKauX
+        gG1gFhCXuPVkPhOILSLgItHw7w3YNmaBZYwSO39sZO9i5OBgE9CUuDC5FKSGU8BSYu+zH4wQ
+        vfIS29/OAXtIQmAHh8SBVVOhznaRWDn7BAuELSzx6vgWdghbSuLzu71sEHayxKWZ55gg7BKJ
+        x3sOQtn2Eq2n+plB9jID7V2/Sx9iF59E7+8nTCBhCQFeiY42IYhqRYl7k55Cw1dc4uGMJVC2
+        h8SOzbfBLhAS6GGUOHOWbQKjwiykUJmF5PtZSL6ZhbB4ASPLKkbJ1ILi3PTUYtMC47zUcniE
+        J+fnbmIEJ2At7x2Mjx580DvEyMTBeIhRgoNZSYR3dpxGqhBvSmJlVWpRfnxRaU5q8SFGU2D0
+        TGSWEk3OB+aAvJJ4QxNLAxMzMzMTS2MzQyVx3tetc1OEBNITS1KzU1MLUotg+pg4OKUamOq4
+        z++LjX+o+Lli7bQte757l77eox/xec+u7V2v9bnKQhQuL/zz6tueFplrEjmzW2q3SG9uU5H3
+        KrrleaU5KjfPp+ix8IMrc+IC5+7dJrXswqOGKNbCuITTv+rrjkvx31H68Cj+dPnNGwnJB9N5
+        zYPFvafemZC87YrJpd4uKdbtYTKX5yrkJ3cmBYgFmR3beKLMJsRM99R/gUA7N2eFdfvVZBJu
+        LA24v4unb4l16efAgkZ+3vrE1q7n1+3vtzMXPe6RFS44pf6Up/gse/Kdl6UZ1+7WZCUXPLat
+        q5/guU3rus059mqlounH9msVbDd2rOereM/4xnfDl+lRLP6P6w4Yy07mPXvc95n4tPOySizF
+        GYmGWsxFxYkA9cdrHkkEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprEIsWRmVeSWpSXmKPExsWy7bCSnG7DNY1Ug5d/ZS3WXPnNbrH6bj+b
+        xcrVR5kszr89zGQx6dA1Rov5y56yW6x7/Z7FYsHGR4wWj7s7GC02tAk6cHnsnHWX3eP8vY0s
+        HpfPlnpsWtXJ5rF5Sb3H7psNbB59W1YxenzeJBfAEcVlk5Kak1mWWqRvl8CVsWr7PsaCV2wV
+        T/Z8ZGpgPMraxcjJISFgIrFn4WJGEFtIYDejxPRZBRBxcYnmaz/YIWxhiZX/ngPZXEA1rxkl
+        NrxcBdbAK2AncW3OT7BBLAKqEi+PdULFBSVOznzCAmKLCiRJ7LnfyARiCwu4SUxZvYQZxGYG
+        WnDryXywuIiAi0TDvzeMIAuYBZYxShzY/oURYlsPo8TrIxOBVnNwsAloSlyYXArSwClgKbH3
+        2Q9GiEFmEl1bu6BseYntb+cwT2AUmoXkjllI9s1C0jILScsCRpZVjJKpBcW56bnJhgWGeanl
+        esWJucWleel6yfm5mxjB0aalsYPx3vx/eocYmTgYDzFKcDArifDOjtNIFeJNSaysSi3Kjy8q
+        zUktPsQozcGiJM5rOGN2ipBAemJJanZqakFqEUyWiYNTqoFpw/WEtdvCPSL38IXsS1y62Opu
+        67SfHx7opc/Y9Pbfs+3LV+xTUE24t8Whbs/OsLIyjjkKgfK7lh1+tOHDmVWheZuLEg/XPJ1V
+        qbBMLFpKwnbHo4UahpXzLO3DXE5MO39iii7vzkLHjcE37fbWvxB63Liy7kWI6dojHxTfuxxv
+        zCuRnJtW+nLJk2kKc4P0pFcrH87T0Pl/6No14f/b98SvbrRt+T7134T5T9quvbTw/vCQ2TTx
+        mINxotmR847H/X/m2x3NE5rafeTkwy4GlUt7mBnvGv56YWHXYuIye9/pdZfF/CbqSU/87JZz
+        Wn5FzDXOFnnph8c9ssVCXzrql7zK+MctFfNzeqT9zr/ac2ecfaHEUpyRaKjFXFScCAB37/ps
+        JQMAAA==
+X-CMS-MailID: 20231013053248epcas5p40dfac6454e90700856fa7409bddc8b05
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20231013052157epcas5p3dc0698c56f9846191d315fa8d33ccb5c
+References: <CGME20231013052157epcas5p3dc0698c56f9846191d315fa8d33ccb5c@epcas5p3.samsung.com>
+        <20231013051458.39987-1-joshi.k@samsung.com>
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,36 +118,22 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 10/13/2023 10:44 AM, Kanchan Joshi wrote:
+> User can specify a smaller meta buffer than what the device is
+> wired to update/access. Kernel makes a copy of the meta buffer into
+> which the device does DMA.
+> As a result, the device overwrites the unrelated kernel memory, causing
+> random kernel crashes.
+> 
+> Same issue is possible for extended-lba case also. When user specifies a
+> short unaligned buffer, the kernel makes a copy and uses that for DMA.
+> 
+> Detect these situations and prevent corruption for unprivileged user
+> passthrough. No change to status-quo for privileged/root user.
+> 
+> Fixes: 63263d60e0f9 ("nvme: Use metadata for passthrough commands")
 
---DtwhJ4fBDgUKVjIt
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Since change is only for unprivileged user, I should have changed this 
+'Fixes:' to point to this patch instead:
 
-On Thu, Oct 12, 2023 at 08:00:42PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.58 release.
-> There are 6 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-
-Successfully compiled and installed bindeb-pkgs on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
-
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---DtwhJ4fBDgUKVjIt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZSjWSQAKCRD2uYlJVVFO
-owi7AP44/kvOHOX2rSJOHx3Y9NngBuPUkm+nr1XUfNc1uF+2AAD/Ybe4YrYRc0Ox
-2KFxSLfx8e8LFkJB0//IMkRdyjvqlw0=
-=VyG7
------END PGP SIGNATURE-----
-
---DtwhJ4fBDgUKVjIt--
+5b7717f44b1 (nvme: fine-granular CAP_SYS_ADMIN for nvme io commands)
