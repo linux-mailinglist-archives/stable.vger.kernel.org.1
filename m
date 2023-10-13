@@ -2,135 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1077C82C6
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 12:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 975587C82F1
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 12:25:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbjJMKOx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 06:14:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45280 "EHLO
+        id S230053AbjJMKZE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 06:25:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229744AbjJMKOv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 06:14:51 -0400
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97ECFA9
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 03:14:49 -0700 (PDT)
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20231013101445epoutp023fe3ae31789c887657dda66bcb1db573~NozWnpNO23188531885epoutp02C
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 10:14:45 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20231013101445epoutp023fe3ae31789c887657dda66bcb1db573~NozWnpNO23188531885epoutp02C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1697192085;
-        bh=sAdsrcy47KgvtkQqo+Eoi6qGMV6FSrM+SBH+rU2sZ9A=;
-        h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-        b=UCNrX41MnEbKCo3Xx55t1c2xCIfVsFS1s04P+nU11ZDOHZLL8wkz43VxYoE5lSKOZ
-         KokTC3f85kkrtOniyHSK50wvt0cK8s6b561CQDdGceI1vv/nDaF7iembM8PRsTWPUh
-         9xiAk4lNamniOPWKOu3Xu54VFfxlr7Wr1DOdmwsg=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-        epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-        20231013101444epcas5p4be0502dc3f69d9b2699b01b520623ce6~NozVsL3zm1661116611epcas5p4x;
-        Fri, 13 Oct 2023 10:14:44 +0000 (GMT)
-Received: from epsmges5p2new.samsung.com (unknown [182.195.38.179]) by
-        epsnrtp1.localdomain (Postfix) with ESMTP id 4S6MnG3Sk6z4x9Pr; Fri, 13 Oct
-        2023 10:14:42 +0000 (GMT)
-Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
-        epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        8C.3D.09638.29819256; Fri, 13 Oct 2023 19:14:42 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-        20231013101442epcas5p3a38926de76ca3720e5a63ad22800ccb9~NozTdR4K73104731047epcas5p32;
-        Fri, 13 Oct 2023 10:14:42 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20231013101442epsmtrp1ca4abffbe4275810de738a4cd4ede26d~NozTcjpTc2720427204epsmtrp1x;
-        Fri, 13 Oct 2023 10:14:42 +0000 (GMT)
-X-AuditID: b6c32a4a-92df9700000025a6-c2-652918928def
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
-        75.D8.18916.19819256; Fri, 13 Oct 2023 19:14:41 +0900 (KST)
-Received: from [107.122.11.51] (unknown [107.122.11.51]) by
-        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20231013101439epsmtip188630c337170fe35772c9012e38a2f5f~NozRgHYgk2167721677epsmtip1c;
-        Fri, 13 Oct 2023 10:14:39 +0000 (GMT)
-Message-ID: <8c755915-2366-28ff-ffd4-be17d797557c@samsung.com>
-Date:   Fri, 13 Oct 2023 15:44:38 +0530
+        with ESMTP id S229726AbjJMKZD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 06:25:03 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B31AC9;
+        Fri, 13 Oct 2023 03:25:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697192701; x=1728728701;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=K2rdGornxNI803mjCk+56gpA8USxtvZFxPbLLi47j8E=;
+  b=nkFsIyo24imX/mLPbvs+1nYcUEgWDM66anos1chAv1I+7DSxr5OkXXsQ
+   SUxhp9a3r+0hcJlg+43Vb1vvaCsDOMqcf8z0Zi+i7bgiyULPXlsi/OV3J
+   X022HfSm1wvFkYe1Laz99mokvBsC2wihvJG62+rgGycmxFLHis6//qUey
+   HmqrECns1wO4mavxX5UifjQQa8vn67hEWUcPZwZbphAZYUk1cjzHXBpr8
+   G2RzpHn69FAk8PWF7mOxsrwnPknCUmFQ9m1YtbOCzaDv9KQyOn3YQOsJU
+   WJcrF/YhLkSvot7cV38O+pp4uGuOcbqJ5myOVNutaoDMdXM9EWix1PEdR
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="382379958"
+X-IronPort-AV: E=Sophos;i="6.03,221,1694761200"; 
+   d="scan'208";a="382379958"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 03:25:01 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10861"; a="789818023"
+X-IronPort-AV: E=Sophos;i="6.03,221,1694761200"; 
+   d="scan'208";a="789818023"
+Received: from ttmerile-mobl1.ger.corp.intel.com (HELO rploss-MOBL.ger.corp.intel.com) ([10.249.37.202])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2023 03:24:57 -0700
+Date:   Fri, 13 Oct 2023 13:24:50 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Lino Sanfilippo <l.sanfilippo@kunbus.com>
+cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-serial <linux-serial@vger.kernel.org>,
+        LinoSanfilippo@gmx.de, Lukas Wunner <lukas@wunner.de>,
+        p.rosenberger@kunbus.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3 3/6] serial: core: fix sanitizing check for RTS
+ settings
+In-Reply-To: <da9a9d10-2568-4960-b9f8-9d43cbc1b295@kunbus.com>
+Message-ID: <63b62f6c-d97d-8d45-1612-968ef74b6365@linux.intel.com>
+References: <20231011181544.7893-1-l.sanfilippo@kunbus.com> <20231011181544.7893-4-l.sanfilippo@kunbus.com> <40e4c6b1-e217-2926-a351-bf685a5b775f@linux.intel.com> <da9a9d10-2568-4960-b9f8-9d43cbc1b295@kunbus.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0)
-        Gecko/20100101 Thunderbird/91.8.1
-Subject: Re: [PATCH v4] nvme: fix corruption for passthrough meta/data
-Content-Language: en-US
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     kbusch@kernel.org, axboe@kernel.dk, sagi@grimberg.me,
-        linux-nvme@lists.infradead.org, vincentfu@gmail.com,
-        ankit.kumar@samsung.com, joshiiitr@gmail.com,
-        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
-From:   Kanchan Joshi <joshi.k@samsung.com>
-In-Reply-To: <20231013052612.GA6423@lst.de>
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGJsWRmVeSWpSXmKPExsWy7bCmpu4kCc1Ug41TJCzWXPnNbrH6bj+b
-        xcrVR5kszr89zGQx6dA1Rov5y56yW6x7/Z7FYsHGR4wWj7s7GC02tAk6cHnsnHWX3eP8vY0s
-        HpfPlnpsWtXJ5rF5Sb3H7psNbB59W1YxenzeJBfAEZVtk5GamJJapJCal5yfkpmXbqvkHRzv
-        HG9qZmCoa2hpYa6kkJeYm2qr5OIToOuWmQN0oZJCWWJOKVAoILG4WEnfzqYov7QkVSEjv7jE
-        Vim1ICWnwKRArzgxt7g0L10vL7XEytDAwMgUqDAhO+P+sbuMBUdZK3o2TmJtYNzA0sXIySEh
-        YCKx4uxKIJuLQ0hgN6PEyUeXoZxPjBJtR5cgOKeP9zHBtPSefs0OkdjJKLHm/hMmCOcto8Tt
-        57/YQKp4Bewkjv1qYgaxWQRUJd43H2CEiAtKnJz5BGy5qECSxK+rc8DiwgJuElNWLwGrZxYQ
-        l7j1ZD7YNhEBJYmnr84yQsTvMUosvG3excjBwSagKXFhcilImFNAW2L37ncsECXyEtvfzmEG
-        uUdCYC2HxPwpV9ggrnaROHd/FSOELSzx6vgWdghbSuJlfxuUnSxxaeY5qC9LJB7vOQhl20u0
-        nupnBtnLDLR3/S59iF18Er2/QX7nACrhlehoE4KoVpS4N+kpK4QtLvFwxhIo20Nix+bb0ABd
-        zSixaMVq5gmMCrOQQmUWku9nIXlnFsLmBYwsqxglUwuKc9NTi00LjPJSy+ERnpyfu4kRnIC1
-        vHYwPnzwQe8QIxMH4yFGCQ5mJRHe2XEaqUK8KYmVValF+fFFpTmpxYcYTYHRM5FZSjQ5H5gD
-        8kriDU0sDUzMzMxMLI3NDJXEeV+3zk0REkhPLEnNTk0tSC2C6WPi4JRqYPJjOXB/5f2pm9fq
-        +/JVr/fT/vDRoa7HdN/RFVsTP57fs/Kt7WuHLX96F5SWd7JW/crKTZnqcUY+6/ABLp91DtPP
-        7hXmuncp+VRidG3ky9PPn3MLNLYnXavT39ea/+tEfoil7JG5HEmv3l+xviTQ/fltx+q4O6Xp
-        9pN+SOU+MXvoc8NAxvejZNWp7UeqJqtreXAcrOAO257wRumpQbB//8MbuzPr9kywUSs/ES//
-        Ma5g6nEDV2bG/8a/u5M8TrDNXWP1ap+txuMF19fIei1+dF5gm/EmeW2nWTYTSppmfXxeUV56
-        OHDrnqayza3sL3vO7jDItvy42GbxUj2OuVr7Wp5KLz8wd3G1jKUXX97UrnYlluKMREMt5qLi
-        RACT3ZKTSQQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnkeLIzCtJLcpLzFFi42LZdlhJTneihGaqwe5ZZhZrrvxmt1h9t5/N
-        YuXqo0wW598eZrKYdOgao8X8ZU/ZLda9fs9isWDjI0aLx90djBYb2gQduDx2zrrL7nH+3kYW
-        j8tnSz02repk89i8pN5j980GNo++LasYPT5vkgvgiOKySUnNySxLLdK3S+DKuH/sLmPBUdaK
-        no2TWBsYN7B0MXJySAiYSPSefs3excjFISSwnVGiceUfZoiEuETztR/sELawxMp/z6GKXjNK
-        /Dz0jBUkwStgJ3HsVxNYA4uAqsT75gOMEHFBiZMzn4BtEBVIkthzv5EJxBYWcJOYsnoJWD0z
-        0IJbT+aDxUUElCSevjrLCLKAWeAeo8TdLzuhtq1mlLgz7xfQJA4ONgFNiQuTS0EaOAW0JXbv
-        fscCMchMomtrFyOELS+x/e0c5gmMQrOQ3DELyb5ZSFpmIWlZwMiyilE0taA4Nz03ucBQrzgx
-        t7g0L10vOT93EyM4zrSCdjAuW/9X7xAjEwfjIUYJDmYlEd7ZcRqpQrwpiZVVqUX58UWlOanF
-        hxilOViUxHmVczpThATSE0tSs1NTC1KLYLJMHJxSDUxr3jW5anuePzT9yD2zSX++PF2yW7uw
-        +NeK2Pgdy4QWpBwtyXxmfzekp3bdl7/VBXy3rjZdYz956VU5w4Gy5XPC84W5eZJd6yJuSdVY
-        6dkk/pq9maFTjj3f7fmN1oeMctWfisM4Cx9oy1X/1GW1ntURJlKxae1tr6lffikJTNDbkp/S
-        8JN7xgoBX6mlfFP2X3WKP/bpdd/tIMfD1h9Xmt/ZFL9QmeN+8PnWSQGaO+ZOMpc/pfnx1/Fz
-        eyd2q315uOn6CZEHtbPE0mNu+xtkbJXccm09V9p3yV7GVWKn5x2WmGzdkzjX/e2PYve3R27X
-        22xVWuW9nvPlmduit5YoXZwkmiCT+azk6uGTf9t6n0/8psRSnJFoqMVcVJwIADMlDB4iAwAA
-X-CMS-MailID: 20231013101442epcas5p3a38926de76ca3720e5a63ad22800ccb9
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20231013052157epcas5p3dc0698c56f9846191d315fa8d33ccb5c
-References: <CGME20231013052157epcas5p3dc0698c56f9846191d315fa8d33ccb5c@epcas5p3.samsung.com>
-        <20231013051458.39987-1-joshi.k@samsung.com> <20231013052612.GA6423@lst.de>
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; boundary="8323329-1327546645-1697192700=:2026"
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/13/2023 10:56 AM, Christoph Hellwig wrote:
-> On Fri, Oct 13, 2023 at 10:44:58AM +0530, Kanchan Joshi wrote:
->> Changes since v3:
->> - Block only unprivileged user
-> 
-> That's not really what at least I had in mind.  I'd much rather
-> completely disable unprivileged passthrough for now as an easy
-> backportable patch.  And then only re-enable it later in a way
-> where it does require using SGLs for all data transfers.
-> 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-I did not get how forcing SGLs can solve the issue at hand.
-The problem happened because (i) user specified short buffer/len, and 
-(ii) kernel allocated buffer. Whether the buffer is fed to device using 
-PRP or SGL does not seem to solve the large DMA problem.
+--8323329-1327546645-1697192700=:2026
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
+On Thu, 12 Oct 2023, Lino Sanfilippo wrote:
+> On 12.10.23 15:10, Ilpo Järvinen wrote:
+> > On Wed, 11 Oct 2023, Lino Sanfilippo wrote:
+> > 
+> >> Among other things uart_sanitize_serial_rs485() tests the sanity of the RTS
+> >> settings in a RS485 configuration that has been passed by userspace.
+> >> If RTS-on-send and RTS-after-send are both set or unset the configuration
+> >> is adjusted and RTS-after-send is disabled and RTS-on-send enabled.
+> >>
+> >> This however makes only sense if both RTS modes are actually supported by
+> >> the driver.
+> >>
+> >> With commit be2e2cb1d281 ("serial: Sanitize rs485_struct") the code does
+> >> take the driver support into account but only checks if one of both RTS
+> >> modes are supported. This may lead to the errorneous result of RTS-on-send
+> >> being set even if only RTS-after-send is supported.
+> >>
+> >> Fix this by changing the implemented logic: First clear all unsupported
+> >> flags in the RS485 configuration, then adjust an invalid RTS setting by
+> >> taking into account which RTS mode is supported.
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Fixes: be2e2cb1d281 ("serial: Sanitize rs485_struct")
+> >> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+> >> ---
+> >>  drivers/tty/serial/serial_core.c | 28 ++++++++++++++++++----------
+> >>  1 file changed, 18 insertions(+), 10 deletions(-)
+> >>
+> >> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+> >> index 697c36dc7ec8..f4feebf8200f 100644
+> >> --- a/drivers/tty/serial/serial_core.c
+> >> +++ b/drivers/tty/serial/serial_core.c
+> >> @@ -1370,19 +1370,27 @@ static void uart_sanitize_serial_rs485(struct uart_port *port, struct serial_rs4
+> >>               return;
+> >>       }
+> >>
+> >> +     rs485->flags &= supported_flags;
+> >> +
+> >>       /* Pick sane settings if the user hasn't */
+> >> -     if ((supported_flags & (SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND)) &&
+> >> -         !(rs485->flags & SER_RS485_RTS_ON_SEND) ==
+> >> +     if (!(rs485->flags & SER_RS485_RTS_ON_SEND) ==
+> >>           !(rs485->flags & SER_RS485_RTS_AFTER_SEND)) {
+> >> -             dev_warn_ratelimited(port->dev,
+> >> -                     "%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
+> >> -                     port->name, port->line);
+> >> -             rs485->flags |= SER_RS485_RTS_ON_SEND;
+> >> -             rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+> >> -             supported_flags |= SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND;
+> >> -     }
+> >> +             if (supported_flags & SER_RS485_RTS_ON_SEND) {
+> >> +                     rs485->flags |= SER_RS485_RTS_ON_SEND;
+> >> +                     rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+> >>
+> >> -     rs485->flags &= supported_flags;
+> >> +                     dev_warn_ratelimited(port->dev,
+> >> +                             "%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
+> >> +                             port->name, port->line);
+> >> +             } else {
+> >> +                     rs485->flags |= SER_RS485_RTS_AFTER_SEND;
+> >> +                     rs485->flags &= ~SER_RS485_RTS_ON_SEND;
+> > 
+> > So if neither of the flags is supported, what will happen? You might want
+> > add if after that else?
+> >
+> 
+> I would consider this a bug in the driver, as at least one of both modes 
+> has to be supported. If the driver does not have at least one of both flags
+> set in rs485_supported.flags we could print a warning though. Would you prefer that?
+
+8250_exar.c needs to fixed then? I was taking these as things one can 
+"configure" even if when there's support only for a one of them there's 
+not that much to configure. As there was neither in 8250_exar's code, I 
+didn't add either flag.
+
+But I suppose your interpretation of those flag makes more sense.
+
+-- 
+ i.
+
+--8323329-1327546645-1697192700=:2026--
