@@ -2,106 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 438137C7B3A
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 03:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30C887C7ACE
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 02:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229437AbjJMBh6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 12 Oct 2023 21:37:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
+        id S1343497AbjJMAXl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 12 Oct 2023 20:23:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229436AbjJMBh6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 21:37:58 -0400
-Received: from correo1.cdmx.gob.mx (mtax.cdmx.gob.mx [189.240.235.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1CFFBB
-        for <stable@vger.kernel.org>; Thu, 12 Oct 2023 18:37:56 -0700 (PDT)
-Received: from cdmx.gob.mx ([10.250.108.150])
-        by correo1.cdmx.gob.mx  with ESMTP id 39D1atu2007762-39D1atu4007762
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Thu, 12 Oct 2023 19:36:55 -0600
-Received: from cdmx.gob.mx (localhost [127.0.0.1])
-        by cdmx.gob.mx (Postfix) with ESMTPS id 13B1B24514B;
-        Thu, 12 Oct 2023 17:08:23 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-        by cdmx.gob.mx (Postfix) with ESMTP id E109324581C;
-        Thu, 12 Oct 2023 17:08:22 -0500 (CDT)
-DKIM-Filter: OpenDKIM Filter v2.9.2 cdmx.gob.mx E109324581C
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=cdmx.gob.mx; s=DKIM1; c=relaxed/relaxed;
- h=content-type:mime-version:subject:to:from:date:reply-to:message-id;
- bh=OozyC4KqQCm5C8N0odjjqaX2ICa3aEoB5tfAYnISOwY=;
- b=H/S0Qrrp3LpYaSRDjEf4v6KVj904PWBHFEz44T4pNk4THuGLfgVhlwZ78qmYqePDBLmKKwumo4Oc
-        ITjru4WMfOAXNZIRqA1Nq6p+sLkVGrrXk+XPFyZ7hyLf/djK9jdGcGSRhHse7ylrgS2tE4zSV/Bg
-        BYRGATclVuXVaw7NFVONE27av38SIzDb8FpaR3l6OGtWDLl3UL4WFCi0WTkPAPHcSQsip4v7VHZy
-        IZcQHRh2B3yU9IN8o/pee0BtfVfGV5tGeKzihDZ9matcrCB5GuVTJzPOujeIQ6UPmGY29ClWMROF
-        Z3z+H71vE424X1XqCaE8Q1/kIiWPXLNdH/l31A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cdmx.gob.mx;
-        s=2020J4N146MXCTY; t=1697148502;
-        bh=S/oI4wigMfgrbDjKznV/x5TSg+j0lTDG1iO6v8g0zuI=;
-        h=Content-Type:MIME-Version:Subject:To:From:Date:Reply-To:
-         Message-Id;
-        b=jUivdx3Six2hBkMO1EipBOZq9NJiam0Wq7wm+/geMH4XwjElZzfQ8Qdek4aGUUFFA
-         Kbr6ed6vr+fpW8hqUgnmOhNNwMHMsr4q5uW/zzfvDokaDUlrDgiT9r8SKcfGWo73Xx
-         nXri/O+cOcHjjW3hxlvjvUK7Z29k33zAexDXRYdg=
-X-Virus-Scanned: amavisd-new at cdmx.gob.mx
-Received: from cdmx.gob.mx ([127.0.0.1])
-        by localhost (cdmx.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id aKEXVF0zt4tD; Thu, 12 Oct 2023 17:08:22 -0500 (CDT)
-Received: from [192.168.8.123] (unknown [179.61.245.12])
-        by cdmx.gob.mx (Postfix) with ESMTPSA id 885BD2450DF;
-        Thu, 12 Oct 2023 17:08:04 -0500 (CDT)
-Content-Type: multipart/alternative; boundary="===============1806728007=="
+        with ESMTP id S229840AbjJMAXl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 12 Oct 2023 20:23:41 -0400
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2058.outbound.protection.outlook.com [40.107.244.58])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69005B7;
+        Thu, 12 Oct 2023 17:23:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OwwU7MFYN105X6zkuJRMW3l74FH86Dz0PCrJnqLXvH10Y+QQr/BA7Sgme+EtDXbZFy77awbwHhn0jhST8RjNbiXpRgxJJBCM2KGAF8Fc7SVtQ6jy4BG5egxYNrEm7bcXfybQTZWMtPviUWJcqjdf1aHuX46ut333906GOo5KMA5wTkGLaLv80o1F7XDSUQLe8zi2AxyVKouyENBkBCg794Fe9ncCadNnlhW9eFSysjUzwUCJ+GTeo3IkmQySWbZH4cKc4iwmHX1UOzArpDKU8H5+lkFthqW10ojvYe40WoFj29Dk+NUNP9ULqfdNCO49nfowzO0+HrPQRkjqKwnwIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tS0cv5gb1MJ2b54oclGWQaautNSCuGBqoWIxVNl8rNY=;
+ b=bebYS8YLpG2peSwIOH00shFQi+EURDZWV8rleZnSJ1XMR+pRR7JqwsIRaqKjbNxOPnfVAyitWT2H8GhDSiCwyXjo50hVkOcwEJehhrwezRHHQrIx1ob5JiLQvcfthY3ZShI3ehjeRZo6LilSteMLRM0OJmMWIk6tNNPQfX/eNGelT8ThCXL5oi015ruB3HCUFGCr87j6+TNewaHU4xR5r437twOxxPJaiDHggQxAXG+i+aPJk0S3jjg/A1cAsTOSidQqvxKkgo8arMNR8kkfprlHq24kaJiexH+OlJt9QlNhqxWXQECwFZvuPNpzLXhdgzrgvs54QkyN2y8lmekgvA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=talpey.com; dmarc=pass action=none header.from=talpey.com;
+ dkim=pass header.d=talpey.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=talpey.com;
+Received: from SN6PR01MB4445.prod.exchangelabs.com (2603:10b6:805:e2::33) by
+ SA1PR01MB7325.prod.exchangelabs.com (2603:10b6:806:1f4::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6863.44; Fri, 13 Oct 2023 00:23:34 +0000
+Received: from SN6PR01MB4445.prod.exchangelabs.com
+ ([fe80::28cd:b4e1:d64b:7160]) by SN6PR01MB4445.prod.exchangelabs.com
+ ([fe80::28cd:b4e1:d64b:7160%4]) with mapi id 15.20.6863.040; Fri, 13 Oct 2023
+ 00:23:33 +0000
+Message-ID: <d2ecff1e-1404-4f9a-8550-b211ff5f7410@talpey.com>
+Date:   Thu, 12 Oct 2023 20:23:29 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] svcrdma: Drop connection after an RDMA Read error
+Content-Language: en-US
+To:     Chuck Lever <cel@kernel.org>, linux-nfs@vger.kernel.org
+Cc:     stable@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>
+References: <169695862158.5083.6004887085023503434.stgit@oracle-102.nfsv4bat.org>
+From:   Tom Talpey <tom@talpey.com>
+In-Reply-To: <169695862158.5083.6004887085023503434.stgit@oracle-102.nfsv4bat.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BL0PR0102CA0062.prod.exchangelabs.com
+ (2603:10b6:208:25::39) To SN6PR01MB4445.prod.exchangelabs.com
+ (2603:10b6:805:e2::33)
 MIME-Version: 1.0
-Subject: $4.8 million dollars.
-To:     Recipients <ctrinidad@cdmx.gob.mx>
-From:   "Mr. Dennis Banfield" <ctrinidad@cdmx.gob.mx>
-Date:   Thu, 12 Oct 2023 16:08:26 -0700
-Reply-To: dbanfielddonation@gmail.com
-Message-Id: <20231012220804.885BD2450DF@cdmx.gob.mx>
-X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_60,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        HK_NAME_MR_MRS,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,SPF_HELO_NONE,
-        SPF_PASS,SUBJ_DOLLARS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6064]
-        *  0.1 SUBJ_DOLLARS Subject starts with dollar amount
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  1.0 HK_NAME_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  2.5 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: ******
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR01MB4445:EE_|SA1PR01MB7325:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e81196a-62ba-4142-98c0-08dbcb82a238
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sEeu2BaRoglkufk6QLnOAvd5OOvkwK2kbJqI6gbfwJSgORxwo2jdTGh2MP1OT/d4J0KCc6tR9uIdERN74S7s+KG9IvQ5M/wSRaNxHn2s8PBX147sLrsMgmsFipsZfrTe0+wfBMKR3CCReBDSxZTQshFam0DvaudFjTKXvm7/MgFtRgVkJty9OsAWsEBDWJrKlpisenmxXxD5QqeH2yPUFF949WeZIPNk54nwCi5iPPPrFiqX9Xq93BkpmitPP8hxwDKYZdyf2dogrr3soAZuOxfOJMdsrTH35yFUcdPjjgPZPjQd8zZbm/K9Fh7W5AzhWWXB0aP/XYE8DQM22a2rXnaHIOX/jszn/zovmlQ/ZdSFWV6Q8eBjHFjJu2n7fFGZgWBcf515m+lPcCKEt66EOaMW65MXtqQ9wohzYwztMmouwfCWYFVYHtqJtQyHdi14G7riSb9r9POej2pbUUjrZb5GnBt1/b8LUhP5+90KhGMYbEk6LiqguS5H1vKHUVyVtAFpS1Hjjpj7lB7F9WnizRP66bAZTXhgvxJW8eMSZh5As2oG933PlzdNb9runNaFu+nbOgrA86kO2zbgdeW4JmyjLGtvCwAGSMZcCSCoBLc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR01MB4445.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(39830400003)(366004)(136003)(346002)(396003)(230922051799003)(64100799003)(451199024)(1800799009)(186009)(6512007)(26005)(316002)(8676002)(53546011)(6506007)(83380400001)(31696002)(86362001)(2906002)(2616005)(31686004)(478600001)(6486002)(38100700002)(5660300002)(36756003)(8936002)(41300700001)(4326008)(6666004)(66476007)(66556008)(66946007)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NG1MOFhGUWFGVWV3ZGJwVmRDbXdFQ3VPb2pVVkNseUFaN2o2RTQrRUNpRmQw?=
+ =?utf-8?B?dE9CY2xVcjFyM2E2eFNMTUozc1hNY3VBVS9kRlcxSi9JdndNYkRHalkzVjIz?=
+ =?utf-8?B?YkVUWk9ycjZlTUdZa3lwNk1UaG9wc0tGcWd0c20zaEV5WkoxNFhrNWJwRFZl?=
+ =?utf-8?B?M1RISUQ1dWdQZEpROC95UVcvY1FVVWhXY2VHUGNwWGxVcHpsMWJsdHl6ZUYr?=
+ =?utf-8?B?UE9lZ2s0dVVlaTI0U0M0NGZnUjRlZ3RHQWhYTENhdkJERkoxdXM2TjUrTUZV?=
+ =?utf-8?B?VHN1QzJsWWlFcHVmTVR2WnJTSzhQNmI2OXFTZkNtZlpzcWxCcnE2S3YydlFN?=
+ =?utf-8?B?TGRqc1FVdGxkcjMwUjlKUmo4MVRvZVNTSkJPUEpJVUU2b1habUUzYmlUMzBl?=
+ =?utf-8?B?TU8rYzR3QkJNUlVaRkJjc3ZEMDlPeklsWENidk1vc1FWZG8vaGJvaTZJNmNm?=
+ =?utf-8?B?Tjlibm5YdVVDT3QzZXBQWDl1dlRjUjcramZXWkZpNVg3WDRWRmlpcDRpZnFi?=
+ =?utf-8?B?QlRuRHYxU3B6bURnKzFJeHhLTVg5TWYyM3lCSlkwNmEzaUVkSUNPRjFVKy9G?=
+ =?utf-8?B?YW0xTGxIYTZsSjhuRys2S0dvTkk5TkVrNzBRSXNQTmNGNHpRSWd4SnJTTzda?=
+ =?utf-8?B?WkFNWTI3LzFlSVBTMCtVbFg4Mk5PVkpta09DZjFmZklMdXB5Wi9Vc1RkQ2Vi?=
+ =?utf-8?B?N1NqZ0hoZmJmSmZPMUFlU2JjcFlab1BCTjdpWi9jVk1zdnV2QW5kWkxCOXll?=
+ =?utf-8?B?SHoyVDBLQW02T1lYVGlrMHlWdVlnNDN3WGZKZzlZVjU2d2lLcGhEK3FYT3BT?=
+ =?utf-8?B?ZWJ5LzY3WXV4d3o5UUxFejUrdXdmSXpPbU9QM0t0L2plcG5SVTc5QU5qZmQ5?=
+ =?utf-8?B?OWxRcHdoYWdUTTlKdkxQTTlyTVp5N21PcHZ1bzNRVktNYkQvcWwrNDZXZ0NB?=
+ =?utf-8?B?eHBBbGdjUVlGMHpxZm5jOWRyQmx0OUxabTNHZ1pOUkdJSWx0cW8zd2lhUUtM?=
+ =?utf-8?B?Rm0xS0RFZjY1c3Y3ZkkzZFZFWGFiOGRrbHVXQS8zRjJFMlFZYlJyK0lKMjBW?=
+ =?utf-8?B?QnlIbW11ZGNkMks4azduT0NkK2pkSnNCNjBac1JOK2JJYTBldHZzNzlzQXZR?=
+ =?utf-8?B?KzVwWTFhRVVXVXI2elM3amVtMCtQU2hVcmN6TFJTTXVDU3BNRTZDNzJEL3Zp?=
+ =?utf-8?B?R29zbVlHVWt1NS82TndpUnIvMjVXR1YwdXhtMXQzYXlBRW0rZUZjdnVVeUZh?=
+ =?utf-8?B?WUl6VWZGRE9PeW1KZ28yZGloT3c2NDVIb2owOGE4MWlxTjZoa1RuYTN0R1dN?=
+ =?utf-8?B?SGRMUlNNcDlISWFnYUpSSmRHRklGKzZwb2czNmgvTkYwMnNEQWJ1VzFuOUlE?=
+ =?utf-8?B?YlRFamxxMWZpZElab2QzM2xoUjN3MmNveHcrT2ZWR0trWml3Lzgra2hlaDJC?=
+ =?utf-8?B?T2JZSkNBZjFBMzhMTmVhNTFHOHZQZlRlRnUvUXlJTGJmakQzR0dvcU1tN254?=
+ =?utf-8?B?VXVEVVd6ZHlhU0QvcVlkL0I1eG9tSFhIQURoL2tDRzc3ZmZ5cnF5UGpjb0Ja?=
+ =?utf-8?B?Mm13ckwvZDRsWlhOVWRMeitzTlJuSVNxcGZWdVpWOFQyaFNBd3JITXNvek1q?=
+ =?utf-8?B?NEN4YTk0dFFoY3pEa0lkQWN5K1ZOeGRvUW14dmZ5UEI2TGgvSkhxZHVmQUtG?=
+ =?utf-8?B?RXU4dlJOWnZoTVRrdUc4ejM4WHRDQk1pMGZWakVkWjhaQ2dJMVNKZnR5VmFv?=
+ =?utf-8?B?MWhzTTVWZHN6Z0g2S3Q1QUdqOUI0VnhNUFM2NVFrMUY5bUxCV2NpbUJVaTBY?=
+ =?utf-8?B?TU9MNFRnT3lvOWk0UUEwRkNnWHdnbkVUbWdQZDNWOEludDJzemFRUXZud2Jl?=
+ =?utf-8?B?Ly8vRk0ycDFoVkhwTVlaMVBjdENGZ0NzUXVVS2ZGZzFIWXNiTkZNQ0V6dWM4?=
+ =?utf-8?B?bTNuUkpROFhJcFJtNm9JbC9Ga3RKQzBmejZhWnAvRkpVSnROREJVQlJWMU5j?=
+ =?utf-8?B?bVQrL296Qk9lRmJKc2c1aCtGMUQ1YUFGK1ByL3dDNFg1VWRyWHppUWs0T1kv?=
+ =?utf-8?B?ZzA5QXQ4V1g5ZFAvNDgrUDcyQndIWThGN3VkYmNGNXR5MVdnREV5bmZGcWI4?=
+ =?utf-8?Q?hXvk4d0yxYHX/6oCWODsGX9yx?=
+X-OriginatorOrg: talpey.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e81196a-62ba-4142-98c0-08dbcb82a238
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR01MB4445.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2023 00:23:33.3027
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 2b2dcae7-2555-4add-bc80-48756da031d5
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x/kS/2z9owFkSlKlWeiR0x/Z/mlt2NIoE+RyXtf6bKcYlApVMA5cOQR3WaHmEdSl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR01MB7325
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-You will not see this in a MIME-aware mail reader.
---===============1806728007==
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
+On 10/10/2023 1:23 PM, Chuck Lever wrote:
+> From: Chuck Lever <chuck.lever@oracle.com>
+> 
+> When an RPC Call message cannot be pulled from the client, that
+> is a message loss, by definition. Close the connection to trigger
+> the client to resend.
 
-I have a donation of $4,800,000.00 dollars for you, I won the UK lottery Po=
-werball jackpot and I donated a part of it to charities. kindly contact me =
-for your donation via (dbanfielddonation@gmail.com) for your claim.
---===============1806728007==
-Content-Type: text/plain; charset=utf-8
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
+This looks correct, but it seems there are actually two changes here,
+it's initiating the close but it's also unconditionally returning
+-ENOTCONN. Other similar code paths do this so it's ok but the
+altered return value is a bit mysterious.
 
-I have a donation of $4,800,000.00 dollars for you, I won the UK lottery =
-Powerball jackpot and I donated a part of it to charities. kindly contact=
- me for your donation via (dbanfielddonation@gmail.com)) for your claim.
+Reviewed-by: Tom Talpey <tom@talpey.com>
 
---===============1806728007==--
+> 
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+> ---
+>   net/sunrpc/xprtrdma/svc_rdma_recvfrom.c |    3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+> index 85c8bcaebb80..3b05f90a3e50 100644
+> --- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+> +++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+> @@ -852,7 +852,8 @@ int svc_rdma_recvfrom(struct svc_rqst *rqstp)
+>   	if (ret == -EINVAL)
+>   		svc_rdma_send_error(rdma_xprt, ctxt, ret);
+>   	svc_rdma_recv_ctxt_put(rdma_xprt, ctxt);
+> -	return ret;
+> +	svc_xprt_deferred_close(xprt);
+> +	return -ENOTCONN;
+>   
+>   out_backchannel:
+>   	svc_rdma_handle_bc_reply(rqstp, ctxt);
+> 
+> 
+> 
