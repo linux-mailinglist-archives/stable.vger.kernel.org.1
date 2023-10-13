@@ -2,63 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8710D7C7EBE
-	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 09:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B5067C7F39
+	for <lists+stable@lfdr.de>; Fri, 13 Oct 2023 10:01:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229740AbjJMHk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 03:40:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50394 "EHLO
+        id S229946AbjJMIBK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 13 Oct 2023 04:01:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbjJMHk6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 03:40:58 -0400
-Received: from mail.marketnova.pl (mail.marketnova.pl [51.38.127.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12D23B8
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 00:40:54 -0700 (PDT)
-Received: by mail.marketnova.pl (Postfix, from userid 1002)
-        id DA0A0A7657; Fri, 13 Oct 2023 07:40:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marketnova.pl;
-        s=mail; t=1697182852;
-        bh=q6g+ObtCV61LlnEBi7yLnSiOU+IF64224rZgvBJLEss=;
-        h=Date:From:To:Subject:From;
-        b=lStRGR9vzl5NWeZFeb3Ioq0lQB+Krj/HLCmmvo66XxRYpm+zzuZb+/CrqiD9LSvWM
-         OMRMy/C0+mwXD0cPFjortngS0D959oxkYLnZMxuXrxoHOSkV2MOPl4rRnGeVwwEjws
-         1pkN9DwsIY1C5carrsslOSooB00eeI6lL5saSihS2G8vwzTesUqcPOg1Tr+u/RXHV6
-         EUtA5hctv4aNHbWpnbqCVtztanZUn5/Rg2zL1br0e9Ssnbrn+og5uWcXXo/XleZnwE
-         /xH/iMVp8RivycGpC4hhT1pnjbviTZp3e3gsV9jMMZ4XwxK4VfJm85dctJDJwl8dh/
-         QajO43HLDwY4g==
-Received: by mail.marketnova.pl for <stable@vger.kernel.org>; Fri, 13 Oct 2023 07:40:44 GMT
-Message-ID: <20231013064500-0.1.cn.1am9g.0.nph2kjlx8n@marketnova.pl>
-Date:   Fri, 13 Oct 2023 07:40:44 GMT
-From:   "Wiktor Nurek" <wiktor.nurek@marketnova.pl>
-To:     <stable@vger.kernel.org>
-Subject: =?UTF-8?Q?Nap=C5=82yw_Klient=C3=B3w_ze_strony?=
-X-Mailer: mail.marketnova.pl
+        with ESMTP id S229939AbjJMIBJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 04:01:09 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1EFA9B8;
+        Fri, 13 Oct 2023 01:01:08 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 4864880A2;
+        Fri, 13 Oct 2023 08:01:07 +0000 (UTC)
+Date:   Fri, 13 Oct 2023 11:01:05 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc:     Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Douglas Anderson <dianders@chromium.org>,
+        Mark Brown <broonie@kernel.org>, linux-omap@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] ARM: OMAP1: ams-delta: Fix MODEM initialization
+ failure
+Message-ID: <20231013080105.GG34982@atomide.com>
+References: <20231011175038.1907629-1-jmkrzyszt@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_ABUSE_SURBL,URIBL_DBL_SPAM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231011175038.1907629-1-jmkrzyszt@gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dzie=C5=84 dobry,
+* Janusz Krzysztofik <jmkrzyszt@gmail.com> [231011 20:50]:
+> v2: Trim down the warning for prettier git log output (Tony).
 
-chcia=C5=82bym poinformowa=C4=87 Pa=C5=84stwa o mo=C5=BCliwo=C5=9Bci pozy=
-skania nowych zlece=C5=84 ze strony www.
+Thanks for updating it.
 
-Widzimy zainteresowanie potencjalnych Klient=C3=B3w Pa=C5=84stwa firm=C4=85=
-, dlatego ch=C4=99tnie pomo=C5=BCemy Pa=C5=84stwu dotrze=C4=87 z ofert=C4=
-=85 do wi=C4=99kszego grona odbiorc=C3=B3w poprzez efektywne metody pozyc=
-jonowania strony w Google.
+> Fixes: 259b93b21a9f ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in 4.14")
 
-Czy m=C3=B3g=C5=82bym liczy=C4=87 na kontakt zwrotny?
+Applying into fixes.
 
+Thanks,
 
-Pozdrawiam serdecznie
-Wiktor Nurek
+Tony
