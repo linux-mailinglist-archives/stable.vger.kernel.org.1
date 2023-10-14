@@ -2,59 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D12E7C9376
-	for <lists+stable@lfdr.de>; Sat, 14 Oct 2023 10:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 516DC7C9390
+	for <lists+stable@lfdr.de>; Sat, 14 Oct 2023 10:51:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232091AbjJNIau (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 14 Oct 2023 04:30:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36268 "EHLO
+        id S232750AbjJNIvj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 14 Oct 2023 04:51:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231377AbjJNIau (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 14 Oct 2023 04:30:50 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43ED9B7
-        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 01:30:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAF7C433C8;
-        Sat, 14 Oct 2023 08:30:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697272248;
-        bh=kFIkQHkAUZ3uMClZ43oS+n85biMfLgyyRN1pwUAENjc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CoMX+pQ4/m0EUzLJQ8Wk6YFvQy7Mfv5hylQT+2Yb2xh6V5oyGWkeyJN06G5EUQFKx
-         CKNVgg4JxQtUHFJb8hjNhsTl2mqCMAvVBEespv1kBMbThLAQwZ6DY2gg1tp0UdGUI7
-         yet6Ehu5UlSz48wJawh06q7Cc7MU0Y9N89t97fRI=
-Date:   Sat, 14 Oct 2023 10:30:46 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Gaurav Batra <gbatra@linux.vnet.ibm.com>
-Cc:     gbatra@us.ibm.com, stable@vger.kernel.org
-Subject: Re: [PATCH 25/25] powerpc/pseries/iommu: enable_ddw incorrectly
- returns direct mapping for SR-IOV device
-Message-ID: <2023101423-chastity-heavily-e065@gregkh>
-References: <20231013142945.1956-1-gbatra@linux.vnet.ibm.com>
- <20231013142945.1956-25-gbatra@linux.vnet.ibm.com>
+        with ESMTP id S231377AbjJNIvi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 14 Oct 2023 04:51:38 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A52CAC9
+        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 01:51:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697273498; x=1728809498;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=fHTAeI3l4XQDaB/GNzh2C+XRjtoMqm0TgHpfTMeoA6U=;
+  b=mzgfIzcdoLjbGCsNdmmbAC/ZYUcs5cuwl/E5lWKZc5DsbNT7GEYZpC2A
+   NYHubDYh9p5nEEPTg5C18JpIakyZxamr+5AxXGh5iic21dMA5+h/2L4N2
+   XBOEYGWxQ/h1pNDq8fDKwNQ6T/3lc5wlPfw9bKoD3bN6wxbniBlxPMBtR
+   osW/uXKMpJdNV3kGC3uYbPVSCvJz1F+EppszxjVxWe5xcefEeCSSf5q7U
+   bEbuSA79kKTzp3TsWAHbpZ0+JF0OEJHVkJvyiTv4yivcVAkGZRE7zx0td
+   XR7ZuGeqi42rHAc+2Ob+oKDLfVOcSZU2YAIzM7i+JT8DNnIlwvfwc0UrB
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10862"; a="6875602"
+X-IronPort-AV: E=Sophos;i="6.03,224,1694761200"; 
+   d="scan'208";a="6875602"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2023 01:51:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10862"; a="1086434465"
+X-IronPort-AV: E=Sophos;i="6.03,224,1694761200"; 
+   d="scan'208";a="1086434465"
+Received: from phamt-mobl2.ccr.corp.intel.com (HELO intel.com) ([10.214.145.117])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2023 01:51:30 -0700
+Date:   Sat, 14 Oct 2023 10:51:25 +0200
+From:   Andi Shyti <andi.shyti@linux.intel.com>
+To:     Nirmoy Das <nirmoy.das@intel.com>
+Cc:     intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        John Harrison <john.c.harrison@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Ville =?iso-8859-15?Q?Syrj=E4l=E4?= 
+        <ville.syrjala@linux.intel.com>, stable@vger.kernel.org,
+        Matt Roper <matthew.d.roper@intel.com>
+Subject: Re: [PATCH v2] drm/i915: Flush WC GGTT only on required platforms
+Message-ID: <ZSpWjR+gtjt2oMJZ@ashyti-mobl2.lan>
+References: <20231013134439.13579-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <20231013142945.1956-25-gbatra@linux.vnet.ibm.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231013134439.13579-1-nirmoy.das@intel.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 13, 2023 at 09:29:45AM -0500, Gaurav Batra wrote:
-> Bugzilla Number: 202953
+Hi Nirmoy,
+
+On Fri, Oct 13, 2023 at 03:44:39PM +0200, Nirmoy Das wrote:
+> gen8_ggtt_invalidate() is only needed for limited set of platforms
+> where GGTT is mapped as WC otherwise this can cause unwanted
+> side-effects on XE_HP platforms where GFX_FLSH_CNTL_GEN6 is not
+> valid.
 > 
-> Upstream CommitID:
+> v2: Add a func to detect wc ggtt detection (Ville)
 > 
-> Dependency-commit: d61cd13e732c0eaa7d66b45edb2d0de8eab65a1e
+> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Cc: John Harrison <john.c.harrison@intel.com>
+> Cc: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v6.2+
+> Suggested-by: Matt Roper <matthew.d.roper@intel.com>
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> Acked-by: Andi Shyti <andi.shyti@linux.intel.com>
 
-What are these values for?
+I took some time to look at this and you can swap the a-b with
+an r-b:
 
-confused,
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com> 
 
-greg k-h
+Thanks,
+Andi
