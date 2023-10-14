@@ -2,133 +2,196 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 149A17C946D
-	for <lists+stable@lfdr.de>; Sat, 14 Oct 2023 13:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58E097C9496
+	for <lists+stable@lfdr.de>; Sat, 14 Oct 2023 14:23:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232994AbjJNL7f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 14 Oct 2023 07:59:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37520 "EHLO
+        id S233033AbjJNMXo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 14 Oct 2023 08:23:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233113AbjJNL7e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 14 Oct 2023 07:59:34 -0400
-Received: from mail-vk1-xa34.google.com (mail-vk1-xa34.google.com [IPv6:2607:f8b0:4864:20::a34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15FA8A9;
-        Sat, 14 Oct 2023 04:59:32 -0700 (PDT)
-Received: by mail-vk1-xa34.google.com with SMTP id 71dfb90a1353d-49ad8b76003so1151532e0c.3;
-        Sat, 14 Oct 2023 04:59:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697284771; x=1697889571; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HZlc482k/rrtYqYbzZMx2rkwqW6WN7JZHueUcH2+av8=;
-        b=lFhM3OYhck0X7bRC9rHWiSvonGLxp7P8M6Yxy61fGfjCyf6VTqnabghNX10tLNAOJs
-         QH5KcIa/VLUTqePIzUwVultheYFtJ8ojo7ymJ2JZPR62h+8EEgVdflCkFAmJrSKmpMcg
-         clz5eHfECyULTAfi+L03wbSqTC7mxKJcJ9xiKOzcPQVlG/rupmUiciBjCjURExaXIR4N
-         jFW88wlZJYlSWljSQYXNpDw6hEAZaUSppsWprbfB9UIFcaO0LfGldrg4pGxNsSxXzx9h
-         6kwyrA++vD1CVTu8reHAtYwSllcOTqkBP22Vm4BhbUKSKR5V3LoiSGI0vcRM8aVsFIhm
-         XguQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697284771; x=1697889571;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HZlc482k/rrtYqYbzZMx2rkwqW6WN7JZHueUcH2+av8=;
-        b=YN/Hj6C33n4tq/jjbi/0RkOOFepFviXold2RdGuiuk0qdrWE4tHAvXfuhEy3cQY281
-         5CUm5CF5GjXUF2+I8RC8clebuCEEqEvIdJIxGThIEU5pey7pG5kjF4BBzuhcNvc9gAQp
-         /vf6uC0BQV3E7rzGNYQwW7IUqRLjEBN4M/53EJABQ0AIqiSQLk3PashifBEkR+60Hvfx
-         x1n6Nv0NBRD6Nm1nGFxKTjLtaP9Uw7v+9CDoVVvJQJa1RGOZS9mFvINmqS+I/K/pKejb
-         1N2xSCFQBhNFXspBS0NnyaP+qmtszyxP9vfH35huQ1awN+LPq8WUddmPxWdiXE6QFemD
-         RgVA==
-X-Gm-Message-State: AOJu0Ywr6rGI3ygXGI97eClFCmbqj1mE86IvcqOWKKpFM0dqhl2JeU5Y
-        sJ3xLukfh7PZaDPcwmlZGeo=
-X-Google-Smtp-Source: AGHT+IFRpDpRJ4qHUzHOJR30FoxUvX1FnX7kQ21oTbc/rsFp2eIu/q0xyG7y6Tc4wsOvzFbBZdT6aQ==
-X-Received: by 2002:a1f:a9c9:0:b0:49e:1eca:f847 with SMTP id s192-20020a1fa9c9000000b0049e1ecaf847mr15754459vke.15.1697284770972;
-        Sat, 14 Oct 2023 04:59:30 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id g10-20020a056122062a00b004961bbadb84sm258976vkp.7.2023.10.14.04.59.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Oct 2023 04:59:29 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sat, 14 Oct 2023 04:59:28 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Badhri Jagan Sridharan <badhri@google.com>
-Cc:     gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com,
-        kyletso@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rdbabiera@google.com,
-        amitsd@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH v1] usb: typec: tcpm: Check for sink pdp op current only
- for pd
-Message-ID: <636e2ace-30cb-4d05-b67f-7047f6fad2a9@roeck-us.net>
-References: <20231014031709.1900370-1-badhri@google.com>
+        with ESMTP id S232957AbjJNMXn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 14 Oct 2023 08:23:43 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 385E6A2;
+        Sat, 14 Oct 2023 05:23:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+ t=1697286197; x=1697890997; i=linosanfilippo@gmx.de;
+ bh=kgDuOk3z1Ea4qWhQuI9kBo9177OQ8y0oXsIYIljyoes=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=baYtoi4D36rhBH1R75lao0TrIMwT7MSTlReTcTd2/u6L8ytG2F+iablgvpbkCkb2tr4ZMG3i4Ae
+ zoRFLLXRReS87RU4+d+oOyfyfmBqXNzIjc6ZBkMY5up3TdND2RB1nI0HD4NiVRKzm50Imt8Y+6V5O
+ t7/sBEG99IW/vUDYmDGRn7itTTCgjpm9j3PUID1vNyE9u/bc+4t7pKePjj4cF6IG9uiN7uKdu69ci
+ Xoz6E/t/DRGuwNc6rREYMumcKbZN2JzoqStUQ2Io97u7WrX9Qr/NOE4yMug9iL50DbT7ip28y0emn
+ Uv35oY/mHqsjdc1rLYQiWHZDrYHPcgn6m0Ew==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.2.42] ([84.162.21.41]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MNt0C-1rBW0K3zlQ-00OFiE; Sat, 14
+ Oct 2023 14:23:17 +0200
+Message-ID: <b06c2fcd-02c0-464b-a7e8-4dfbf9e2befc@gmx.de>
+Date:   Sat, 14 Oct 2023 14:23:15 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231014031709.1900370-1-badhri@google.com>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/6] serial: core: fix sanitizing check for RTS
+ settings
+Content-Language: en-US
+To:     =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, shawnguo@kernel.org,
+        s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
+        alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-serial <linux-serial@vger.kernel.org>,
+        Lukas Wunner <lukas@wunner.de>, p.rosenberger@kunbus.com,
+        stable@vger.kernel.org
+References: <20231011181544.7893-1-l.sanfilippo@kunbus.com>
+ <20231011181544.7893-4-l.sanfilippo@kunbus.com>
+ <40e4c6b1-e217-2926-a351-bf685a5b775f@linux.intel.com>
+ <da9a9d10-2568-4960-b9f8-9d43cbc1b295@kunbus.com>
+ <63b62f6c-d97d-8d45-1612-968ef74b6365@linux.intel.com>
+From:   Lino Sanfilippo <LinoSanfilippo@gmx.de>
+In-Reply-To: <63b62f6c-d97d-8d45-1612-968ef74b6365@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:CHN2pNHaAkw0ZESaLnuGgSm6m6EKCzvkaP3fYPHWXDJPm8blbaR
+ 1SvWzi/huJIP50I3EY9CvPuSJF5a/GqlaIgxjbqZENub4y/aumnjrINqe0hIuWCyVXJY7oZ
+ yOY1HGek1NFehYlgQGEwF2lwzPtjeTaDp7m7tQNyO09UvstSh7VuHqR3jh6GqDbH2ck3QB2
+ zzuOqMfk8QVZxIY59kaFw==
+UI-OutboundReport: notjunk:1;M01:P0:smEzDPWVI2Y=;uVqFcyRNYsaSTA4KRKzG75nbiRu
+ nd1nafhYNxCBNLPACMbRf+9R/FLLTAZQ5F4MoZdZd1HRhhqRj7Vt273DeMpVMI9ki3nOrTYMG
+ MrxUpjxN18lZXMG6sVvn80fPyaGlXNnYQbSEcUG++tPCK/apPzRYdHGuI7UB5Q4VstgMwFDUJ
+ VAnt/LjiGbclPxP2LBKPH646RpovSaoQf6iOq9eWDrVTRlT529qA9NwfrrMZxhxB39r4WcI5E
+ Bzoni88qhfA19p60Eg/XGbHoxRZ00yp0oILbUI7umFVQ9tuyhOaPEcc7paQN4j/bo0T//pdhO
+ mGCT2gYkT6cJvY0ZCUyX97fH9zO8O8e4P9t4CxhMNzi3QZPw8fzZwiBhZhME/i0Ld2/r/lHCK
+ T2bhAJ7cqzTyY2Gau3x+9znO1Pw9nlBMCCuR9bbJRv48PzAzm51k+z2WjbYd+HuThyc1G6u9s
+ 9ekFjOdoDvBwVj9c5G4HUb9u2SWxz6mImws3r0gBiQnXJkKYF+6c+1pQmHzKXtmFBa4mQ7pCi
+ LKASlxHgHvOW0c/I3jaqRZQcsbCP41/psTBENAOYD3wLZbRf3bY4v2biXjhqfxu7i3w6Yr8Ls
+ 9DffQeuauvy2rYhqQ4yhxa/BI2NY1WBSJhIdYbKy5sp4Y250dLcHj//Q1q7fGotTk5STOTVGM
+ HxUM5fzncxHDtjSPZ3MGkOSjBySFS7wrqlW+5XjqfojOFWBlQA0E6LAicC5DjQ4naqPd9SnoF
+ fguYsJmCAapR19oz7Hay1PanBq7US/gr55zeYkBtbgaErRpKaogSWUBOj+0nQdD8Ck93+xIEN
+ PGQzuSWiUeRVfceo7e4V2s1kMeDC+G8m+y/ewJ8LivnpTayJcu6WZuxI03+oXik07ld7KeSSo
+ BvQPY8E2ztyv7N2pUdeMrsfM+co9C74UYeGsJq5cpD/3YtM3JRaUNhVB2ao3stoGbiadWRXK/
+ C4upYg==
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Oct 14, 2023 at 03:17:09AM +0000, Badhri Jagan Sridharan wrote:
-> TCPM checks for sink caps operational current even when PD is disabled.
-> This incorrectly sets tcpm_set_charge() when PD is disabled.
-> Check for sink caps only when PD is disabled.
-                                      ^^^^^^^^
+Hi Ilpo,
 
-enabled ?
+On 13.10.23 12:24, Ilpo J=C3=A4rvinen wrote:
+> On Thu, 12 Oct 2023, Lino Sanfilippo wrote:
+>> On 12.10.23 15:10, Ilpo J=C3=A4rvinen wrote:
+>>> On Wed, 11 Oct 2023, Lino Sanfilippo wrote:
+>>>
+>>>> Among other things uart_sanitize_serial_rs485() tests the sanity of t=
+he RTS
+>>>> settings in a RS485 configuration that has been passed by userspace.
+>>>> If RTS-on-send and RTS-after-send are both set or unset the configura=
+tion
+>>>> is adjusted and RTS-after-send is disabled and RTS-on-send enabled.
+>>>>
+>>>> This however makes only sense if both RTS modes are actually supporte=
+d by
+>>>> the driver.
+>>>>
+>>>> With commit be2e2cb1d281 ("serial: Sanitize rs485_struct") the code d=
+oes
+>>>> take the driver support into account but only checks if one of both R=
+TS
+>>>> modes are supported. This may lead to the errorneous result of RTS-on=
+-send
+>>>> being set even if only RTS-after-send is supported.
+>>>>
+>>>> Fix this by changing the implemented logic: First clear all unsupport=
+ed
+>>>> flags in the RS485 configuration, then adjust an invalid RTS setting =
+by
+>>>> taking into account which RTS mode is supported.
+>>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: be2e2cb1d281 ("serial: Sanitize rs485_struct")
+>>>> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+>>>> ---
+>>>>  drivers/tty/serial/serial_core.c | 28 ++++++++++++++++++----------
+>>>>  1 file changed, 18 insertions(+), 10 deletions(-)
+>>>>
+>>>> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/se=
+rial_core.c
+>>>> index 697c36dc7ec8..f4feebf8200f 100644
+>>>> --- a/drivers/tty/serial/serial_core.c
+>>>> +++ b/drivers/tty/serial/serial_core.c
+>>>> @@ -1370,19 +1370,27 @@ static void uart_sanitize_serial_rs485(struct=
+ uart_port *port, struct serial_rs4
+>>>>               return;
+>>>>       }
+>>>>
+>>>> +     rs485->flags &=3D supported_flags;
+>>>> +
+>>>>       /* Pick sane settings if the user hasn't */
+>>>> -     if ((supported_flags & (SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFT=
+ER_SEND)) &&
+>>>> -         !(rs485->flags & SER_RS485_RTS_ON_SEND) =3D=3D
+>>>> +     if (!(rs485->flags & SER_RS485_RTS_ON_SEND) =3D=3D
+>>>>           !(rs485->flags & SER_RS485_RTS_AFTER_SEND)) {
+>>>> -             dev_warn_ratelimited(port->dev,
+>>>> -                     "%s (%d): invalid RTS setting, using RTS_ON_SEN=
+D instead\n",
+>>>> -                     port->name, port->line);
+>>>> -             rs485->flags |=3D SER_RS485_RTS_ON_SEND;
+>>>> -             rs485->flags &=3D ~SER_RS485_RTS_AFTER_SEND;
+>>>> -             supported_flags |=3D SER_RS485_RTS_ON_SEND|SER_RS485_RT=
+S_AFTER_SEND;
+>>>> -     }
+>>>> +             if (supported_flags & SER_RS485_RTS_ON_SEND) {
+>>>> +                     rs485->flags |=3D SER_RS485_RTS_ON_SEND;
+>>>> +                     rs485->flags &=3D ~SER_RS485_RTS_AFTER_SEND;
+>>>>
+>>>> -     rs485->flags &=3D supported_flags;
+>>>> +                     dev_warn_ratelimited(port->dev,
+>>>> +                             "%s (%d): invalid RTS setting, using RT=
+S_ON_SEND instead\n",
+>>>> +                             port->name, port->line);
+>>>> +             } else {
+>>>> +                     rs485->flags |=3D SER_RS485_RTS_AFTER_SEND;
+>>>> +                     rs485->flags &=3D ~SER_RS485_RTS_ON_SEND;
+>>>
+>>> So if neither of the flags is supported, what will happen? You might w=
+ant
+>>> add if after that else?
+>>>
+>>
+>> I would consider this a bug in the driver, as at least one of both mode=
+s
+>> has to be supported. If the driver does not have at least one of both f=
+lags
+>> set in rs485_supported.flags we could print a warning though. Would you=
+ prefer that?
+>
+> 8250_exar.c needs to fixed then?
+I was taking these as things one can
+> "configure" even if when there's support only for a one of them there's
+> not that much to configure. As there was neither in 8250_exar's code, I
+> didn't add either flag.
 
-> 
-> [   97.572342] Start toggling
-> [   97.578949] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-> [   99.571648] CC1: 0 -> 0, CC2: 0 -> 4 [state TOGGLING, polarity 0, connected]
-> [   99.571658] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-> [   99.571673] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-> [   99.741778] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-> [   99.789283] CC1: 0 -> 0, CC2: 4 -> 5 [state SNK_DEBOUNCED, polarity 0, connected]
-> [   99.789306] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-> [   99.903584] VBUS on
-> [   99.903591] state change SNK_DEBOUNCED -> SNK_ATTACHED [rev3 NONE_AMS]
-> [   99.903600] polarity 1
-> [   99.910155] enable vbus discharge ret:0
-> [   99.910160] Requesting mux state 1, usb-role 2, orientation 2
-> [   99.946791] state change SNK_ATTACHED -> SNK_STARTUP [rev3 NONE_AMS]
-> [   99.946798] state change SNK_STARTUP -> SNK_DISCOVERY [rev3 NONE_AMS]
-> [   99.946800] Setting voltage/current limit 5000 mV 500 mA
-> [   99.946803] vbus=0 charge:=1
-> [  100.027139] state change SNK_DISCOVERY -> SNK_READY [rev3 NONE_AMS]
-> [  100.027145] Setting voltage/current limit 5000 mV 3000 mA
-> [  100.466830] VBUS on
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 34fde9ec08a3 ("FROMGIT: usb: typec: tcpm: not sink vbus if operational current is 0mA")
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 6e843c511b85..994493481c24 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -4268,7 +4268,8 @@ static void run_state_machine(struct tcpm_port *port)
->  				current_lim = PD_P_SNK_STDBY_MW / 5;
->  			tcpm_set_current_limit(port, current_lim, 5000);
->  			/* Not sink vbus if operational current is 0mA */
-> -			tcpm_set_charge(port, !!pdo_max_current(port->snk_pdo[0]));
-> +			tcpm_set_charge(port, port->pd_supported ?
-> +					!!pdo_max_current(port->snk_pdo[0]) : true);
->  
->  			if (!port->pd_supported)
->  				tcpm_set_state(port, SNK_READY, 0);
-> 
-> base-commit: 1034cc423f1b4a7a9a56d310ca980fcd2753e11d
-> -- 
-> 2.42.0.655.g421f12c284-goog
-> 
+> But I suppose your interpretation of those flag makes more sense.
+>
+
+IMHO this is consistent with what we have in uart_get_rs485_mode(). This f=
+unction
+ensures that we have at least one RTS mode set (with default to RTS_ON_SEN=
+D). So
+concerning 8250_exar.c, I think it should be fixed (havent noticed the mis=
+sing
+RTS mode though until you mentioned it). Would you like to provide a fix f=
+or this
+or shall I include one into the next version of this series?
+
+
+BR,
+Lino
