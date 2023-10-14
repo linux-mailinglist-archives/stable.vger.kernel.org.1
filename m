@@ -2,80 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A29157C956C
-	for <lists+stable@lfdr.de>; Sat, 14 Oct 2023 18:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BB867C9718
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 00:40:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233197AbjJNQji (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 14 Oct 2023 12:39:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51136 "EHLO
+        id S229735AbjJNWkv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 14 Oct 2023 18:40:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232238AbjJNQji (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 14 Oct 2023 12:39:38 -0400
+        with ESMTP id S229867AbjJNWkv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 14 Oct 2023 18:40:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B96A2
-        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 09:39:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBD0C433C7;
-        Sat, 14 Oct 2023 16:39:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697301576;
-        bh=KMnJhorsnSWz5/7BlQOX6Zikw83Hl9vuJV1gG65YlOk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FUlmydetFqtHuStINlBONXkFH4arANnAtY+p118N/Zd9xNjP+0Wz3zLNIgAiZ0fcs
-         sAdz3en4vqYCeH1BvFFBFs4+yQm3oVt7+JYEoOVp/+rz8eeVqFJSHm4oMP7bk0De6U
-         2qrH2q4RqsEcMwL5ZTIhyNn2Cv8KefweVUNgoYWYX7jPrisM656LcuTFn1UkQD0B2C
-         SvmZWcNgSx3CyVweFKzWVDL+oLOXImvXBl+6+zy7nfF+0g3V0+MSfgX+yjY4drV6PE
-         OZy8Wn3J5TmPbRpn5lbJY19G6HeV3QiwAzeUp9OP383DQrkDK+lbsNdNozTC72TGA2
-         Hu6GTMFVdodHA==
-Date:   Sat, 14 Oct 2023 12:39:35 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     Marek Vasut <marex@denx.de>, Linux Stable <stable@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>
-Subject: Re: Possibly broken Linux 5.10.198 backport spi: spi-zynqmp-gqspi:
- Fix runtime PM imbalance in zynqmp_qspi_probe
-Message-ID: <ZSrERw6ucvl1wLWX@sashalap>
-References: <9afe9285-6f46-46d9-bd21-2ea5c4dc43c0@denx.de>
- <ZSjYC_ATX193mJOA@debian.me>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <ZSjYC_ATX193mJOA@debian.me>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BB76DE;
+        Sat, 14 Oct 2023 15:40:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E28C433C7;
+        Sat, 14 Oct 2023 22:40:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1697323248;
+        bh=1jHEIhzl9SooOUTj6MODzbWFgglfOtNFXvhcAVU/XsM=;
+        h=Date:To:From:Subject:From;
+        b=e2GFnigZsNujvOp2FRBwluyQQUuRMZ1f/fsW30cwvZ8EUGeADAAaV+ya5y6ANksbx
+         gUwg4XYKYxIGneMg+/jMz4B3fwO7S1BAxVoIRzvnrnW9SGUF6nSX3ssm4wVWd12I5E
+         WegFbDz69rJdg/ERI4zzl5yRIXUNJvhmMqjN5sGE=
+Date:   Sat, 14 Oct 2023 15:40:46 -0700
+To:     mm-commits@vger.kernel.org, usama.anjum@collabora.com,
+        stable@vger.kernel.org, shuah@kernel.org, lkft@linaro.org,
+        samasth.norway.ananda@oracle.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + selftests-mm-include-mman-header-to-access-mremap_dontunmap-identifier.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231014224048.98E28C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 13, 2023 at 12:39:23PM +0700, Bagas Sanjaya wrote:
->On Thu, Oct 12, 2023 at 06:39:10PM +0200, Marek Vasut wrote:
->> Linux 5.10.198 commit
->> 2cdec9c13f81 ("spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in
->> zynqmp_qspi_probe")
->>
->> looks very different compared to matching upstream commit:
->> a21fbc42807b ("spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in
->> zynqmp_qspi_probe")
->>
->> The Linux 5.10.198 change breaks a platform for me and it really looks like
->> an incorrect backport.
->>
->> Dinghao, can you have a look ?
->>
->
->Thanks for the regression report. I'm adding it to regzbot (as stable-specific
->one):
->
->#regzbot ^introduced: 2cdec9c13f81
 
-I'm going to revert it from 5.10.
+The patch titled
+     Subject: selftests/mm: include mman header to access MREMAP_DONTUNMAP identifier
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     selftests-mm-include-mman-header-to-access-mremap_dontunmap-identifier.patch
 
--- 
-Thanks,
-Sasha
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-include-mman-header-to-access-mremap_dontunmap-identifier.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Subject: selftests/mm: include mman header to access MREMAP_DONTUNMAP identifier
+Date: Thu, 12 Oct 2023 08:52:57 -0700
+
+Definition for MREMAP_DONTUNMAP is not present in glibc older than 2.32
+thus throwing an undeclared error when running make on mm.  Including
+linux/mman.h solves the build error for people having older glibc.
+
+Link: https://lkml.kernel.org/r/20231012155257.891776-1-samasth.norway.ananda@oracle.com
+Fixes: 0183d777c29a ("selftests: mm: remove duplicate unneeded defines")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/linux-mm/CA+G9fYvV-71XqpCr_jhdDfEtN701fBdG3q+=bafaZiGwUXy_aA@mail.gmail.com/
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/testing/selftests/mm/mremap_dontunmap.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/tools/testing/selftests/mm/mremap_dontunmap.c~selftests-mm-include-mman-header-to-access-mremap_dontunmap-identifier
++++ a/tools/testing/selftests/mm/mremap_dontunmap.c
+@@ -7,6 +7,7 @@
+  */
+ #define _GNU_SOURCE
+ #include <sys/mman.h>
++#include <linux/mman.h>
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+_
+
+Patches currently in -mm which might be from samasth.norway.ananda@oracle.com are
+
+selftests-mm-include-mman-header-to-access-mremap_dontunmap-identifier.patch
+
