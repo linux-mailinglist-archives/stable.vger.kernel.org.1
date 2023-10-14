@@ -2,120 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36E367C9275
-	for <lists+stable@lfdr.de>; Sat, 14 Oct 2023 05:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D12E7C9376
+	for <lists+stable@lfdr.de>; Sat, 14 Oct 2023 10:30:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232715AbjJNDRT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 13 Oct 2023 23:17:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45186 "EHLO
+        id S232091AbjJNIau (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 14 Oct 2023 04:30:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232686AbjJNDRS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 13 Oct 2023 23:17:18 -0400
-Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EB07C2
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 20:17:14 -0700 (PDT)
-Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-5a31f85e361so1650726a12.0
-        for <stable@vger.kernel.org>; Fri, 13 Oct 2023 20:17:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697253434; x=1697858234; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Cygcl9PmHTIW27CQufR8VhIxisSzXoKQWoi0Hf3IAWI=;
-        b=1+NygvOfJg0W+zLTPqNITbFbaF0LwuY/no3E4jZrvj42scbKwP8v/wRlGsN8whgJhl
-         YpvE+XaxV7oCRdj0bgW82bkeQo5Yj+c7q/l2kAw6ip8DaKVYq7Ji2urlfx7KFSiBX4KD
-         z8/TGwvqSvCpSLegYmyOEWuVkrOLAojUg0bzC5T3sohfwgCttqQcZnfe09usLik2O/kV
-         SZKi0oeRKLIs0XJFF8NtmvPrT2HZZ9ddbbsiLlYCPATumnHtV/FYc0D0ihjh3CvpDWtD
-         Z594fVrNZzGu+EzIV8A9WpmXZQViyXOEDuTAmxkF9Zjz60Dve8GOG6EA/LxGZq/q7Lbm
-         4C5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697253434; x=1697858234;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Cygcl9PmHTIW27CQufR8VhIxisSzXoKQWoi0Hf3IAWI=;
-        b=DrnzLrX1RTcyoLpBIulEnUvjl3g+u3Ew/bme42pZ/ohs+QHuZxHQPgzMKYapyxhFqJ
-         46XoLdjVCVn1Sgu7PiDx8Pf4QDV8YF22yzqBrfByE2UtekehMZ0i0s+CenYmC8MbtuqV
-         MDqCeRiy4GjWwHYvtHs6/fRcK+jqBYMWGHWvFaz2myBDRG5rUYaW5Nev2aVCmap7B/fZ
-         xfey07WtDGsCIFNXL+sXgahprqkovi96rRU8V47xtTxfF9XnhltVwjUfrL9C353yYEV8
-         EXJATFapz5aPvFlIr2Zqegmz+y/14ngyWjxh/PvO0mSLakVPbJan6ifwxhrCfwCBfkeo
-         cYyw==
-X-Gm-Message-State: AOJu0YzTnx3aLmzE/kaMjsRvbFM3xbzeiMr4yrPUnaZvw0+0JbpD6XIJ
-        P7JkrCYz8pZ6+jE8KoIklFrkktQTWTA=
-X-Google-Smtp-Source: AGHT+IGr78g2jXoouBJder6syoTwtrbmWyiVJWo80raBkuAFBVoRCBxKZJB0snIcYs+zarooC8jRwRH9JCw=
-X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
- (user=badhri job=sendgmr) by 2002:a65:6697:0:b0:5ab:7d1d:3322 with SMTP id
- b23-20020a656697000000b005ab7d1d3322mr90269pgw.9.1697253433887; Fri, 13 Oct
- 2023 20:17:13 -0700 (PDT)
-Date:   Sat, 14 Oct 2023 03:17:09 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-Message-ID: <20231014031709.1900370-1-badhri@google.com>
-Subject: [PATCH v1] usb: typec: tcpm: Check for sink pdp op current only for pd
-From:   Badhri Jagan Sridharan <badhri@google.com>
-To:     gregkh@linuxfoundation.org, linux@roeck-us.net,
-        heikki.krogerus@linux.intel.com
-Cc:     kyletso@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rdbabiera@google.com,
-        amitsd@google.com, stable@vger.kernel.org,
-        Badhri Jagan Sridharan <badhri@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        with ESMTP id S231377AbjJNIau (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 14 Oct 2023 04:30:50 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43ED9B7
+        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 01:30:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAF7C433C8;
+        Sat, 14 Oct 2023 08:30:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1697272248;
+        bh=kFIkQHkAUZ3uMClZ43oS+n85biMfLgyyRN1pwUAENjc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CoMX+pQ4/m0EUzLJQ8Wk6YFvQy7Mfv5hylQT+2Yb2xh6V5oyGWkeyJN06G5EUQFKx
+         CKNVgg4JxQtUHFJb8hjNhsTl2mqCMAvVBEespv1kBMbThLAQwZ6DY2gg1tp0UdGUI7
+         yet6Ehu5UlSz48wJawh06q7Cc7MU0Y9N89t97fRI=
+Date:   Sat, 14 Oct 2023 10:30:46 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Gaurav Batra <gbatra@linux.vnet.ibm.com>
+Cc:     gbatra@us.ibm.com, stable@vger.kernel.org
+Subject: Re: [PATCH 25/25] powerpc/pseries/iommu: enable_ddw incorrectly
+ returns direct mapping for SR-IOV device
+Message-ID: <2023101423-chastity-heavily-e065@gregkh>
+References: <20231013142945.1956-1-gbatra@linux.vnet.ibm.com>
+ <20231013142945.1956-25-gbatra@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231013142945.1956-25-gbatra@linux.vnet.ibm.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-TCPM checks for sink caps operational current even when PD is disabled.
-This incorrectly sets tcpm_set_charge() when PD is disabled.
-Check for sink caps only when PD is disabled.
+On Fri, Oct 13, 2023 at 09:29:45AM -0500, Gaurav Batra wrote:
+> Bugzilla Number: 202953
+> 
+> Upstream CommitID:
+> 
+> Dependency-commit: d61cd13e732c0eaa7d66b45edb2d0de8eab65a1e
 
-[   97.572342] Start toggling
-[   97.578949] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[   99.571648] CC1: 0 -> 0, CC2: 0 -> 4 [state TOGGLING, polarity 0, connected]
-[   99.571658] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[   99.571673] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[   99.741778] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[   99.789283] CC1: 0 -> 0, CC2: 4 -> 5 [state SNK_DEBOUNCED, polarity 0, connected]
-[   99.789306] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[   99.903584] VBUS on
-[   99.903591] state change SNK_DEBOUNCED -> SNK_ATTACHED [rev3 NONE_AMS]
-[   99.903600] polarity 1
-[   99.910155] enable vbus discharge ret:0
-[   99.910160] Requesting mux state 1, usb-role 2, orientation 2
-[   99.946791] state change SNK_ATTACHED -> SNK_STARTUP [rev3 NONE_AMS]
-[   99.946798] state change SNK_STARTUP -> SNK_DISCOVERY [rev3 NONE_AMS]
-[   99.946800] Setting voltage/current limit 5000 mV 500 mA
-[   99.946803] vbus=0 charge:=1
-[  100.027139] state change SNK_DISCOVERY -> SNK_READY [rev3 NONE_AMS]
-[  100.027145] Setting voltage/current limit 5000 mV 3000 mA
-[  100.466830] VBUS on
+What are these values for?
 
-Cc: stable@vger.kernel.org
-Fixes: 34fde9ec08a3 ("FROMGIT: usb: typec: tcpm: not sink vbus if operational current is 0mA")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
----
- drivers/usb/typec/tcpm/tcpm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+confused,
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 6e843c511b85..994493481c24 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4268,7 +4268,8 @@ static void run_state_machine(struct tcpm_port *port)
- 				current_lim = PD_P_SNK_STDBY_MW / 5;
- 			tcpm_set_current_limit(port, current_lim, 5000);
- 			/* Not sink vbus if operational current is 0mA */
--			tcpm_set_charge(port, !!pdo_max_current(port->snk_pdo[0]));
-+			tcpm_set_charge(port, port->pd_supported ?
-+					!!pdo_max_current(port->snk_pdo[0]) : true);
- 
- 			if (!port->pd_supported)
- 				tcpm_set_state(port, SNK_READY, 0);
-
-base-commit: 1034cc423f1b4a7a9a56d310ca980fcd2753e11d
--- 
-2.42.0.655.g421f12c284-goog
-
+greg k-h
