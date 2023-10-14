@@ -2,42 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01B0F7C956A
-	for <lists+stable@lfdr.de>; Sat, 14 Oct 2023 18:38:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A29157C956C
+	for <lists+stable@lfdr.de>; Sat, 14 Oct 2023 18:39:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233033AbjJNQie (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 14 Oct 2023 12:38:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35652 "EHLO
+        id S233197AbjJNQji (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 14 Oct 2023 12:39:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232238AbjJNQid (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 14 Oct 2023 12:38:33 -0400
+        with ESMTP id S232238AbjJNQji (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 14 Oct 2023 12:39:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92EB5A2
-        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 09:38:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A447C433C7;
-        Sat, 14 Oct 2023 16:38:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B96A2
+        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 09:39:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBD0C433C7;
+        Sat, 14 Oct 2023 16:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697301512;
-        bh=dQl9TCXt5svBQVtYqasP/N4wA3dmmtMMr95KqnKCpBM=;
+        s=k20201202; t=1697301576;
+        bh=KMnJhorsnSWz5/7BlQOX6Zikw83Hl9vuJV1gG65YlOk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mdghomp3Z9RG4TlaeSmr0v+p3iPiQHIB/+APF+QA7P/fdbUc5vnoUjPfX69L6y5+H
-         yTUxm1AaKuhh+EGJOKUXRqiTa8sr7uk6ANw96HnM/qXMX7PB1j7XsUqXJY4vyrWX31
-         oGk9wseeFuV/pF8OF48zUXR4LATW057vy39Qm0wVoeiwfkH/m6pdP8aQnRKnTMB/w9
-         2OeQgRYUlJkkHlu7jg+rLX96TVaQX13zG4VZBqYOutyPFzp58iv2SYL6m5kuhVWmCa
-         iUd5F7k7wm90eBpALcqEiu8D2pU1An7DPUiuaRQ24+yLL4w/JIj1hoB4kWEtCr/n/i
-         Dn2eioPpqAw3A==
-Date:   Sat, 14 Oct 2023 12:38:30 -0400
+        b=FUlmydetFqtHuStINlBONXkFH4arANnAtY+p118N/Zd9xNjP+0Wz3zLNIgAiZ0fcs
+         sAdz3en4vqYCeH1BvFFBFs4+yQm3oVt7+JYEoOVp/+rz8eeVqFJSHm4oMP7bk0De6U
+         2qrH2q4RqsEcMwL5ZTIhyNn2Cv8KefweVUNgoYWYX7jPrisM656LcuTFn1UkQD0B2C
+         SvmZWcNgSx3CyVweFKzWVDL+oLOXImvXBl+6+zy7nfF+0g3V0+MSfgX+yjY4drV6PE
+         OZy8Wn3J5TmPbRpn5lbJY19G6HeV3QiwAzeUp9OP383DQrkDK+lbsNdNozTC72TGA2
+         Hu6GTMFVdodHA==
+Date:   Sat, 14 Oct 2023 12:39:35 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Younes Manton <younes.m@gmail.com>
-Cc:     stable@vger.kernel.org
-Subject: Re: Request backport of "perf inject: Fix GEN_ELF_TEXT_OFFSET for
- jit"
-Message-ID: <ZSrEBsL38S6rXTkX@sashalap>
-References: <CAMVNhxS-6qNfxy8jHrY5EtZASTL9gAvZi=BdTkUA5_5CSQ2Cmg@mail.gmail.com>
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Marek Vasut <marex@denx.de>, Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: Re: Possibly broken Linux 5.10.198 backport spi: spi-zynqmp-gqspi:
+ Fix runtime PM imbalance in zynqmp_qspi_probe
+Message-ID: <ZSrERw6ucvl1wLWX@sashalap>
+References: <9afe9285-6f46-46d9-bd21-2ea5c4dc43c0@denx.de>
+ <ZSjYC_ATX193mJOA@debian.me>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <CAMVNhxS-6qNfxy8jHrY5EtZASTL9gAvZi=BdTkUA5_5CSQ2Cmg@mail.gmail.com>
+In-Reply-To: <ZSjYC_ATX193mJOA@debian.me>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -48,36 +53,28 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 13, 2023 at 07:22:02PM -0400, Younes Manton wrote:
->The following commit:
+On Fri, Oct 13, 2023 at 12:39:23PM +0700, Bagas Sanjaya wrote:
+>On Thu, Oct 12, 2023 at 06:39:10PM +0200, Marek Vasut wrote:
+>> Linux 5.10.198 commit
+>> 2cdec9c13f81 ("spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in
+>> zynqmp_qspi_probe")
+>>
+>> looks very different compared to matching upstream commit:
+>> a21fbc42807b ("spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in
+>> zynqmp_qspi_probe")
+>>
+>> The Linux 5.10.198 change breaks a platform for me and it really looks like
+>> an incorrect backport.
+>>
+>> Dinghao, can you have a look ?
+>>
 >
->[babd04386b1df8c364cdaa39ac0e54349502e1e5] perf jit: Include program
->header in ELF files
+>Thanks for the regression report. I'm adding it to regzbot (as stable-specific
+>one):
 >
->introduced a bug in perf that causes samples to be attributed to the
->wrong instructions in the annotated assembly output of `perf report`
->and `perf annotate`.
->
->The following commit:
->
->[89b15d00527b7825ff19130ed83478e80e3fae99] perf inject: Fix
->GEN_ELF_TEXT_OFFSET for jit
->
->fixes the bug.
->
->Buggy commit is present in 4.19, 5.4, 5.10, and 5.15. The fix is in
->6.1, 6.4, and 6.5. Can it also be backported to at least the 5.x
->kernels, if not 4.19?
->
->The output looks very confusing when parts of the code one expects to
->accumulate ticks don't and other parts that shouldn't be executed at
->all accumulate ticks.
->
->I opened https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2020197
->and was directed here, hopefully I understood the request correctly.
->Thank you.
+>#regzbot ^introduced: 2cdec9c13f81
 
-Queued up, thanks.
+I'm going to revert it from 5.10.
 
 -- 
 Thanks,
