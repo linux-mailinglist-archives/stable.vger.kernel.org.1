@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 208847C9AC5
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:28:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 265237C9AC6
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:29:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbjJOS2S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:28:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43180 "EHLO
+        id S229603AbjJOS3N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:29:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOS2R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:28:17 -0400
+        with ESMTP id S229518AbjJOS3N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:29:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0452B7
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:28:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00459C433C8;
-        Sun, 15 Oct 2023 18:28:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE3FDAB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:29:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEC8C433C9;
+        Sun, 15 Oct 2023 18:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697394495;
-        bh=Bt0OUBB+jy9EIDwyOspj766yn8boBa/3v7UaKUwtkPc=;
+        s=korg; t=1697394551;
+        bh=W2G6gdQwDTYrrBl5EW2KJ+HtFTYBNxmRr/BcDg9Pl30=;
         h=Subject:To:Cc:From:Date:From;
-        b=OoUQ8lQSO0lFmQLRbj81xUj7KMJvmykGJYMCZBpPfQLXsZT5CV9RXe5tbEHARkpLa
-         Q/bW70NDKH/QnOdL7nwbO5t9pJk8uCjT6g29w45mAxAFwHvXrQYaBTTrKAvvNwlbGe
-         l51Zuh/nwieCHPs/mCx6LzlhJ0skqoDaEOAuZgk4=
-Subject: FAILED: patch "[PATCH] riscv: Only consider swbp/ss handlers for correct privileged" failed to apply to 5.15-stable tree
-To:     bjorn@rivosinc.com, guoren@kernel.org, namcaov@gmail.com,
-        palmer@rivosinc.com, puranjay12@gmail.com
+        b=sJYCDIaUL7i7dCCn2DvYgdY8+nddCgV/NRgbCSZAbzV89ZLf2+2Cy95nM5iMqjHzM
+         oJbWmhbIDTMZ/QNil6DJGibyEPYxPoRo98i0YWRvETB+ujuVlZGAqJx1MndjzIKPHo
+         9wRBKRwY4WTZHVxD84Mq3NLewHWo8v7pFlY47F5Y=
+Subject: FAILED: patch "[PATCH] riscv: Remove duplicate objcopy flag" failed to apply to 6.1-stable tree
+To:     songshuaishuai@tinylab.org, palmer@rivosinc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:28:03 +0200
-Message-ID: <2023101503-astride-vacant-a511@gregkh>
+Date:   Sun, 15 Oct 2023 20:29:08 +0200
+Message-ID: <2023101508-brute-untrimmed-cd90@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -43,25 +42,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9f564b92cf6d0ecb398f9348600a7d8a7f8ea804
+git cherry-pick -x 505b02957e74f0c5c4655647ccb04bdc945d18f6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101503-astride-vacant-a511@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101508-brute-untrimmed-cd90@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-9f564b92cf6d ("riscv: Only consider swbp/ss handlers for correct privileged mode")
-f0bddf50586d ("riscv: entry: Convert to generic entry")
-c3ec1e8964fb ("Merge patch series "RISC-V: Align the shadow stack"")
+505b02957e74 ("riscv: Remove duplicate objcopy flag")
+26e7aacb83df ("riscv: Allow to downgrade paging mode from the command line")
+559d1e45a16d ("riscv: Use --emit-relocs in order to move .rela.dyn in init")
+c2dea0bc5339 ("riscv: Check relocations at compile time")
+39b33072941f ("riscv: Introduce CONFIG_RELOCATABLE")
+69a90d2fe107 ("riscv: Move .rela.dyn outside of init to avoid empty relocations")
+f3af3b0039fe ("Merge patch series "riscv: improve link and support ARCH_WANT_LD_ORPHAN_WARN"")
 
 thanks,
 
@@ -69,142 +72,38 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9f564b92cf6d0ecb398f9348600a7d8a7f8ea804 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>
-Date: Tue, 12 Sep 2023 08:56:19 +0200
-Subject: [PATCH] riscv: Only consider swbp/ss handlers for correct privileged
- mode
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 505b02957e74f0c5c4655647ccb04bdc945d18f6 Mon Sep 17 00:00:00 2001
+From: Song Shuai <songshuaishuai@tinylab.org>
+Date: Thu, 14 Sep 2023 17:13:34 +0800
+Subject: [PATCH] riscv: Remove duplicate objcopy flag
 
-RISC-V software breakpoint trap handlers are used for {k,u}probes.
+There are two duplicate `-O binary` flags when objcopying from vmlinux
+to Image/xipImage.
 
-When trapping from kernelmode, only the kernelmode handlers should be
-considered. Vice versa, only usermode handlers for usermode
-traps. This is not the case on RISC-V, which can trigger a bug if a
-userspace process uses uprobes, and a WARN() is triggered from
-kernelmode (which is implemented via {c.,}ebreak).
+RISC-V set `-O binary` flag in both OBJCOPYFLAGS in the top-level riscv
+Makefile and OBJCOPYFLAGS_* in the boot/Makefile, and the objcopy cmd
+in Kbuild would join them together.
 
-The kernel will trap on the kernelmode {c.,}ebreak, look for uprobes
-handlers, realize incorrectly that uprobes need to be handled, and
-exit the trap handler early. The trap returns to re-executing the
-{c.,}ebreak, and enter an infinite trap-loop.
+The `-O binary` flag is only needed for objcopying Image, so remove the
+OBJCOPYFLAGS in the top-level riscv Makefile.
 
-The issue was found running the BPF selftest [1].
-
-Fix this issue by only considering the swbp/ss handlers for
-kernel/usermode respectively. Also, move CONFIG ifdeffery from traps.c
-to the asm/{k,u}probes.h headers.
-
-Note that linux/uprobes.h only include asm/uprobes.h if CONFIG_UPROBES
-is defined, which is why asm/uprobes.h needs to be unconditionally
-included in traps.c
-
-Link: https://lore.kernel.org/linux-riscv/87v8d19aun.fsf@all.your.base.are.belong.to.us/ # [1]
-Fixes: 74784081aac8 ("riscv: Add uprobes supported")
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Nam Cao <namcaov@gmail.com>
-Tested-by: Puranjay Mohan <puranjay12@gmail.com>
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20230912065619.62020-1-bjorn@kernel.org
+Fixes: c0fbcd991860 ("RISC-V: Build flat and compressed kernel images")
+Signed-off-by: Song Shuai <songshuaishuai@tinylab.org>
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/r/20230914091334.1458542-1-songshuaishuai@tinylab.org
+Cc: stable@vger.kernel.org
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 
-diff --git a/arch/riscv/include/asm/kprobes.h b/arch/riscv/include/asm/kprobes.h
-index e7882ccb0fd4..78ea44f76718 100644
---- a/arch/riscv/include/asm/kprobes.h
-+++ b/arch/riscv/include/asm/kprobes.h
-@@ -40,6 +40,15 @@ void arch_remove_kprobe(struct kprobe *p);
- int kprobe_fault_handler(struct pt_regs *regs, unsigned int trapnr);
- bool kprobe_breakpoint_handler(struct pt_regs *regs);
- bool kprobe_single_step_handler(struct pt_regs *regs);
--
-+#else
-+static inline bool kprobe_breakpoint_handler(struct pt_regs *regs)
-+{
-+	return false;
-+}
-+
-+static inline bool kprobe_single_step_handler(struct pt_regs *regs)
-+{
-+	return false;
-+}
- #endif /* CONFIG_KPROBES */
- #endif /* _ASM_RISCV_KPROBES_H */
-diff --git a/arch/riscv/include/asm/uprobes.h b/arch/riscv/include/asm/uprobes.h
-index f2183e00fdd2..3fc7deda9190 100644
---- a/arch/riscv/include/asm/uprobes.h
-+++ b/arch/riscv/include/asm/uprobes.h
-@@ -34,7 +34,18 @@ struct arch_uprobe {
- 	bool simulate;
- };
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index 1329e060c548..b43a6bb7e4dc 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -6,7 +6,6 @@
+ # for more details.
+ #
  
-+#ifdef CONFIG_UPROBES
- bool uprobe_breakpoint_handler(struct pt_regs *regs);
- bool uprobe_single_step_handler(struct pt_regs *regs);
--
-+#else
-+static inline bool uprobe_breakpoint_handler(struct pt_regs *regs)
-+{
-+	return false;
-+}
-+
-+static inline bool uprobe_single_step_handler(struct pt_regs *regs)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_UPROBES */
- #endif /* _ASM_RISCV_UPROBES_H */
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index 19807c4d3805..fae8f610d867 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -13,6 +13,8 @@
- #include <linux/kdebug.h>
- #include <linux/uaccess.h>
- #include <linux/kprobes.h>
-+#include <linux/uprobes.h>
-+#include <asm/uprobes.h>
- #include <linux/mm.h>
- #include <linux/module.h>
- #include <linux/irq.h>
-@@ -247,22 +249,28 @@ static inline unsigned long get_break_insn_length(unsigned long pc)
- 	return GET_INSN_LENGTH(insn);
- }
- 
-+static bool probe_single_step_handler(struct pt_regs *regs)
-+{
-+	bool user = user_mode(regs);
-+
-+	return user ? uprobe_single_step_handler(regs) : kprobe_single_step_handler(regs);
-+}
-+
-+static bool probe_breakpoint_handler(struct pt_regs *regs)
-+{
-+	bool user = user_mode(regs);
-+
-+	return user ? uprobe_breakpoint_handler(regs) : kprobe_breakpoint_handler(regs);
-+}
-+
- void handle_break(struct pt_regs *regs)
- {
--#ifdef CONFIG_KPROBES
--	if (kprobe_single_step_handler(regs))
-+	if (probe_single_step_handler(regs))
- 		return;
- 
--	if (kprobe_breakpoint_handler(regs))
--		return;
--#endif
--#ifdef CONFIG_UPROBES
--	if (uprobe_single_step_handler(regs))
-+	if (probe_breakpoint_handler(regs))
- 		return;
- 
--	if (uprobe_breakpoint_handler(regs))
--		return;
--#endif
- 	current->thread.bad_cause = regs->cause;
- 
- 	if (user_mode(regs))
+-OBJCOPYFLAGS    := -O binary
+ LDFLAGS_vmlinux := -z norelro
+ ifeq ($(CONFIG_RELOCATABLE),y)
+ 	LDFLAGS_vmlinux += -shared -Bsymbolic -z notext --emit-relocs
 
