@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B567C9ACF
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 710AC7C9AD3
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbjJOSgt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:36:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44518 "EHLO
+        id S230153AbjJOSoS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:44:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbjJOSgs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:36:48 -0400
+        with ESMTP id S229522AbjJOSoS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:44:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CD5DAB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:36:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93A2C433C8;
-        Sun, 15 Oct 2023 18:36:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8D0FB7
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:44:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B7FC433C7;
+        Sun, 15 Oct 2023 18:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697395006;
-        bh=69BsjIOX5R8jyogLLfgeDp3WVOd068v/B5Izg2Pr6zk=;
+        s=korg; t=1697395456;
+        bh=jrYqARvTQf13cDYhJYArS8HezLUdH0lpXUOB3xjC/SI=;
         h=Subject:To:Cc:From:Date:From;
-        b=FYx/WTgJ9YlR4PlGNJLh6rUIJLwHjywHwJEJycCCzGuCaX6jH/zR/3DDZQZTIhd39
-         DqVWWbD6NuUhCFgdrQqmiL3frIfkM7l5b6pCzumrIBmhaCAgMBb4FnGGwmOpQDgvUL
-         ROZTjaXv7dAADR0JJsZHKWt5/Ubx30yo3px9BQ1I=
-Subject: FAILED: patch "[PATCH] ovl: fix regression in parsing of mount options with escaped" failed to apply to 6.5-stable tree
-To:     amir73il@gmail.com, ryan.hendrickson@alum.mit.edu
+        b=IafEzGONQ6U5Q4iGHRDMxv4qswqmQiApH1Mr8ittM2ebysyrNAZIuTCG3bi83eUGz
+         1yeIW+sThhZf2IqWQbzl+KFGkk8OogR6dKuXBdMQqxmb4+czzTGH9T1Q+qWpAuQTZ0
+         NeuuDT4IdYpZ08PEPdtED65yQnXE/24K69e4J4kg=
+Subject: FAILED: patch "[PATCH] usb: typec: altmodes/displayport: Signal hpd low when exiting" failed to apply to 4.19-stable tree
+To:     rdbabiera@google.com, gregkh@linuxfoundation.org,
+        heikki.krogerus@linux.intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:36:43 +0200
-Message-ID: <2023101542-semisweet-rogue-1c44@gregkh>
+Date:   Sun, 15 Oct 2023 20:44:13 +0200
+Message-ID: <2023101513-grieving-riches-1ab5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x c34706acf40b43dd31f67c92c5a95d39666a1eb3
+git cherry-pick -x 89434b069e460967624903b049e5cf5c9e6b99b9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101542-semisweet-rogue-1c44@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101513-grieving-riches-1ab5@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -66,74 +67,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c34706acf40b43dd31f67c92c5a95d39666a1eb3 Mon Sep 17 00:00:00 2001
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 12 Oct 2023 16:08:28 +0300
-Subject: [PATCH] ovl: fix regression in parsing of mount options with escaped
- comma
+From 89434b069e460967624903b049e5cf5c9e6b99b9 Mon Sep 17 00:00:00 2001
+From: RD Babiera <rdbabiera@google.com>
+Date: Mon, 9 Oct 2023 21:00:58 +0000
+Subject: [PATCH] usb: typec: altmodes/displayport: Signal hpd low when exiting
+ mode
 
-Ever since commit 91c77947133f ("ovl: allow filenames with comma"), the
-following example was legit overlayfs mount options:
+Upon receiving an ACK for a sent EXIT_MODE message, the DisplayPort
+driver currently resets the status and configuration of the port partner.
+The hpd signal is not updated despite being part of the status, so the
+Display stack can still transmit video despite typec_altmode_exit placing
+the lanes in a Safe State.
 
-  mount -t overlay overlay -o 'lowerdir=/tmp/a\,b/lower' /mnt
+Set hpd to low when a sent EXIT_MODE message is ACK'ed.
 
-The conversion to new mount api moved to using the common helper
-generic_parse_monolithic() and discarded the specialized ovl_next_opt()
-option separator.
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231009210057.3773877-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Bring back ovl_next_opt() and use vfs_parse_monolithic_sep() to fix the
-regression.
-
-Reported-by: Ryan Hendrickson <ryan.hendrickson@alum.mit.edu>
-Closes: https://lore.kernel.org/r/8da307fb-9318-cf78-8a27-ba5c5a0aef6d@alum.mit.edu/
-Fixes: 1784fbc2ed9c ("ovl: port to new mount api")
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-
-diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
-index 95b751507ac8..17c74ef4f089 100644
---- a/fs/overlayfs/params.c
-+++ b/fs/overlayfs/params.c
-@@ -157,6 +157,34 @@ const struct fs_parameter_spec ovl_parameter_spec[] = {
- 	{}
- };
- 
-+static char *ovl_next_opt(char **s)
-+{
-+	char *sbegin = *s;
-+	char *p;
-+
-+	if (sbegin == NULL)
-+		return NULL;
-+
-+	for (p = sbegin; *p; p++) {
-+		if (*p == '\\') {
-+			p++;
-+			if (!*p)
-+				break;
-+		} else if (*p == ',') {
-+			*p = '\0';
-+			*s = p + 1;
-+			return sbegin;
-+		}
-+	}
-+	*s = NULL;
-+	return sbegin;
-+}
-+
-+static int ovl_parse_monolithic(struct fs_context *fc, void *data)
-+{
-+	return vfs_parse_monolithic_sep(fc, data, ovl_next_opt);
-+}
-+
- static ssize_t ovl_parse_param_split_lowerdirs(char *str)
- {
- 	ssize_t nr_layers = 1, nr_colons = 0;
-@@ -682,6 +710,7 @@ static int ovl_reconfigure(struct fs_context *fc)
- }
- 
- static const struct fs_context_operations ovl_context_ops = {
-+	.parse_monolithic = ovl_parse_monolithic,
- 	.parse_param = ovl_parse_param,
- 	.get_tree    = ovl_get_tree,
- 	.reconfigure = ovl_reconfigure,
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index 426c88a516e5..59e0218a8bc5 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -304,6 +304,11 @@ static int dp_altmode_vdm(struct typec_altmode *alt,
+ 			typec_altmode_update_active(alt, false);
+ 			dp->data.status = 0;
+ 			dp->data.conf = 0;
++			if (dp->hpd) {
++				drm_connector_oob_hotplug_event(dp->connector_fwnode);
++				dp->hpd = false;
++				sysfs_notify(&dp->alt->dev.kobj, "displayport", "hpd");
++			}
+ 			break;
+ 		case DP_CMD_STATUS_UPDATE:
+ 			dp->data.status = *vdo;
 
