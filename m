@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 727B17C9A91
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74DFF7C9A92
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:06:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230156AbjJOSGm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:06:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57188 "EHLO
+        id S230178AbjJOSGp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:06:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbjJOSGl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:41 -0400
+        with ESMTP id S229704AbjJOSGo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2A37AB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF87C433C7;
-        Sun, 15 Oct 2023 18:06:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C78B7
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1EFC433C8;
+        Sun, 15 Oct 2023 18:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393199;
-        bh=Ev900uOFunGcr/MjIdcpeESE0Pc3uwzRYWNZye+jjk0=;
+        s=korg; t=1697393202;
+        bh=lNR87MRwXirt8kfGcqXA8HEe/vwXRWeKWb3kfz7JRNo=;
         h=Subject:To:Cc:From:Date:From;
-        b=UG+YxYpI7jBEfI1o8HfPOITg++M/S5AYiFITwRvf3+4tE3MtErhtvftxRcqgUfRpP
-         CD+os8fuwiCqMa5+rjSZ1ElY9tOBt4YAyvJPlJG0usM8uHJ4Y9zTFBE0ZqP8yBpwNY
-         yU+oaTFSKodKt0UM4F14ZP8AUQRap/8FREJIO9y8=
-Subject: FAILED: patch "[PATCH] xhci: Clear EHB bit only at end of interrupt handler" failed to apply to 6.1-stable tree
+        b=ZNefvxV20nbbpwC6m0wLuM+fT6Cid28oWBy1+2kLT39t+gHyb57ECpyD6+Fl8/9b5
+         Wr1U7W2qfjvw5Vn1cBt+Fo8o2fS00dan1XRdcFAp/ecerHHaGHGfBguYS6FImRVngR
+         +so1PCX7F3Eu7CuJ7GB1pSZ/4zPn9LZopiHcUuDY=
+Subject: FAILED: patch "[PATCH] xhci: Clear EHB bit only at end of interrupt handler" failed to apply to 5.15-stable tree
 To:     lukas@wunner.de, gregkh@linuxfoundation.org,
         mathias.nyman@linux.intel.com, peter.chen@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:06:36 +0200
-Message-ID: <2023101536-existing-google-76ef@gregkh>
+Date:   Sun, 15 Oct 2023 20:06:37 +0200
+Message-ID: <2023101537-marsupial-maroon-fd1e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 15f3ef070933817fac2bcbdb9c85bff9e54e9f80
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101536-existing-google-76ef@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101537-marsupial-maroon-fd1e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
