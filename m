@@ -2,101 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 119FB7C98AF
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 12:32:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 473B57C98CA
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 13:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbjJOKcb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 06:32:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53972 "EHLO
+        id S229555AbjJOLV6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 07:21:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjJOKcb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 06:32:31 -0400
-Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 376F3AD
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 03:32:28 -0700 (PDT)
-Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-5a7dd65052aso48119937b3.0
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 03:32:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697365947; x=1697970747; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5gQNEowOiA65pTVrY36QDnfIDvU+PkRiMRLEgKxooNo=;
-        b=Jv9gkEYuZBP9cqRRBykbKKRgLshu1YrLHu1+aN30DcLiqJm0cXf36JMlRUZLMdyKPk
-         aiH2rFZjuTsPGkTig3tIoLn8oixF6Pb6sYOfb5W4eezHMm4ddHIxq8RwtaofdqLXQo2n
-         LTKK8Ohx2TMcDPaUMf0mP4JJXWggyQ2Qs1O94sA6dZFpm+ui6MYeFeqyHc7LGkWV9XbX
-         eS7+jdIef5fB2iojGbu+qTELMTI3piidF6CTTd0c51QWegwCvBOVqbnA+NXF2FEppsoU
-         tBP2ybFnHwUSPC/WmUXcAm+KQfzaHmz8DQLBHl0W8jptYfOcSLBTUCwdkPnGsr9TrgCx
-         y9aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697365947; x=1697970747;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5gQNEowOiA65pTVrY36QDnfIDvU+PkRiMRLEgKxooNo=;
-        b=XpSI4AjgLKu7Sz43O62kwovELrMajBkuK9t/sVUn/TjWgayY42k4a9TCIKip66HdWW
-         pnxbIXP8tlrjTlBiEWOsHLS57bvVjU0uOi6JCmk03AKzpsYB4rorT6OY5jMuTLhPSA73
-         Ce22pV6wQ+lYEElHs4l4GaPaRKK08/7gUZEfCLTblDQJPJ9Kb6okQZNfhnaCDGV5qYmT
-         kzSCjMu4Myb+xCH2i5WWYmru5wI1K0A8vgRGo/G97NXySiNODxswCqbmwBUGG5k/bPgn
-         2wYUkfybhq8/cOeIHkjt/5fHVJDSZCT3iv6fEXVT3KVXTLe3jP8fA6spVp9lecxlgrA3
-         8F1w==
-X-Gm-Message-State: AOJu0YzlCqobRaE+Syp9SJnIgE6Mu2rH1oy55YzVDZfPrIQkndkQY0fb
-        8YJMRs/GefAoVb3Dkn6S+TzbLYJmr7+qGriUKC0Sr7wXbctIyctb
-X-Google-Smtp-Source: AGHT+IF+TgDOCsOoo05cN3P+tm6EmoIQc+ZjNPRd9L9fyFgFVozkSRxS5eWrm2Z/dHxzXEsGttaqPf9u4MIVNclH1PQ=
-X-Received: by 2002:a05:690c:f0e:b0:5a8:1d0e:ca6 with SMTP id
- dc14-20020a05690c0f0e00b005a81d0e0ca6mr8599898ywb.32.1697365947253; Sun, 15
- Oct 2023 03:32:27 -0700 (PDT)
+        with ESMTP id S229522AbjJOLV6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 07:21:58 -0400
+X-Greylist: delayed 1772 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 15 Oct 2023 04:21:51 PDT
+Received: from hall.aurel32.net (hall.aurel32.net [IPv6:2001:bc8:30d7:100::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B146DA
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 04:21:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
+        ; s=202004.hall; h=In-Reply-To:Content-Type:MIME-Version:References:
+        Message-ID:Subject:Cc:To:From:Date:Content-Transfer-Encoding:From:Reply-To:
+        Subject:Content-ID:Content-Description:X-Debbugs-Cc;
+        bh=HqvLjp+xjsCGDhG6wgQ7WZ36jvTj8OtOsubSmVuvOyQ=; b=yZeEATys26zHLLdVMPwaLVq3Hh
+        MEewVl5Yiigz+10k7gbqmJQSyf2/B1m2b29muI5mb5lwU+UWtV9fUffA326WxuG1SEQyFkYi+8RVk
+        6TsF5LN3Np7JYCPNFS/n9LeYuytYx7SG+g73vbnqnFRW5T3F48OQeoiSCShvApbUg/NiQhbG5NAUP
+        i1kBM9GFAmQjC1HJjxcLIPR+wDwkWCtUXbIkhQZ6k9DBIAQ7Bt89SMrJQCC4bVepXfcPAWf2VDf8L
+        EV1XJt55y5JRYN6GpaUDLRhvMU71sPS2pxB5b36F0yxRgJNMH0P7P1XC5XcV7Hu/m92J2FXtzwlPZ
+        u7K7D+eg==;
+Received: from [2a01:e34:ec5d:a741:1ee1:92ff:feb4:5ec0] (helo=ohm.rr44.fr)
+        by hall.aurel32.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1qryjI-003Y8P-N2; Sun, 15 Oct 2023 12:52:16 +0200
+Received: from aurel32 by ohm.rr44.fr with local (Exim 4.97-RC0)
+        (envelope-from <aurelien@aurel32.net>)
+        id 1qryjI-0000000CMcm-0t0q;
+        Sun, 15 Oct 2023 12:52:16 +0200
+Date:   Sun, 15 Oct 2023 12:52:16 +0200
+From:   Aurelien Jarno <aurelien@aurel32.net>
+To:     stable@vger.kernel.org
+Cc:     palmer@dabbelt.com, Andy Chiu <andy.chiu@sifive.com>
+Subject: Re: [PATCH] riscv: signal: fix sigaltstack frame size checking
+Message-ID: <ZSvEYJfg2HksQhaW@aurel32.net>
+References: <20230822164904.21660-1-andy.chiu@sifive.com>
 MIME-Version: 1.0
-References: <20231011073204.1069793-1-zyytlz.wz@163.com> <2023101214-trilogy-wildcard-29cb@gregkh>
-In-Reply-To: <2023101214-trilogy-wildcard-29cb@gregkh>
-From:   Zheng Hacker <hackerzheng666@gmail.com>
-Date:   Sun, 15 Oct 2023 18:32:15 +0800
-Message-ID: <CAJedcCyMCOT07=T=DKbYobXWGNXDZ9ccjmdCsdorm2fDoDGmng@mail.gmail.com>
-Subject: Re: [RESEND PATCH v2] media: mtk-jpeg: Fix use after free bug due to
- uncanceled work
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Zheng Wang <zyytlz.wz@163.com>, stable@vger.kernel.org,
-        sashal@kernel.org, patches@lists.linux.dev, amergnat@baylibre.com,
-        wenst@chromium.org, angelogioacchino.delregno@collabora.com,
-        hverkuil-cisco@xs4all.nl
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230822164904.21660-1-andy.chiu@sifive.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Greg KH <gregkh@linuxfoundation.org> =E4=BA=8E2023=E5=B9=B410=E6=9C=8813=E6=
-=97=A5=E5=91=A8=E4=BA=94 01:23=E5=86=99=E9=81=93=EF=BC=9A
+Hi,
 
->
-> On Wed, Oct 11, 2023 at 03:32:04PM +0800, Zheng Wang wrote:
-> > This is a security bug that has been reported to google.
-> > It affected all platforms on chrome-os. Please apply this
-> > patch to 4.14 4.19 5.4 5.10 and 5.15.
-> >
-> > [ Upstream commit c677d7ae83141d390d1253abebafa49c962afb52 ]
->
-> Did you try to apply this?  The file:
->
-> >  drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c | 1 +
->
-> Is not in the kernels you asked for this patch to be applied to.
+The patch below is an important fix, as it is necessary to run rustc on riscv.
+It has been merged as commit 14a270bfab7ab1c4b605c01eeca5557447ad5a2b. I have
+seen that other commits from the same pull request have already been queued for
+6.5, but not this one. Would it be possible to queue it for stable 6.5?
 
-Sorry I did't check the file. After reviewing the code, I found the
-Directory Structure has been changed.
-I'll write another patch for them.
+Thanks
+Aurelien
 
-Best Regards,
-Zheng Wang
->
-> How did you test this?
->
-> confused,
->
-> greg k-h
+On 2023-08-22 16:49, Andy Chiu wrote:
+> The alternative stack checking in get_sigframe introduced by the Vector
+> support is not needed and has a problem. It is not needed as we have
+> already validate it at the beginning of the function if we are already
+> on an altstack. If not, the size of an altstack is always validated at
+> its allocation stage with sigaltstack_size_valid().
+> 
+> Besides, we must only regard the size of an altstack if the handler of a
+> signal is registered with SA_ONSTACK. So, blindly checking overflow of
+> an altstack if sas_ss_size not equals to zero will check against wrong
+> signal handlers if only a subset of signals are registered with
+> SA_ONSTACK.
+> 
+> Fixes: 8ee0b41898fa ("riscv: signal: Add sigcontext save/restore for vector")
+> Reported-by: Prashanth Swaminathan <prashanthsw@google.com>
+> Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
+> ---
+>  arch/riscv/kernel/signal.c | 7 -------
+>  1 file changed, 7 deletions(-)
+> 
+> diff --git a/arch/riscv/kernel/signal.c b/arch/riscv/kernel/signal.c
+> index 180d951d3624..21a4d0e111bc 100644
+> --- a/arch/riscv/kernel/signal.c
+> +++ b/arch/riscv/kernel/signal.c
+> @@ -311,13 +311,6 @@ static inline void __user *get_sigframe(struct ksignal *ksig,
+>  	/* Align the stack frame. */
+>  	sp &= ~0xfUL;
+>  
+> -	/*
+> -	 * Fail if the size of the altstack is not large enough for the
+> -	 * sigframe construction.
+> -	 */
+> -	if (current->sas_ss_size && sp < current->sas_ss_sp)
+> -		return (void __user __force *)-1UL;
+> -
+>  	return (void __user *)sp;
+>  }
+>  
+> -- 
+> 2.17.1
+> 
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
+> 
+
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                     http://aurel32.net
