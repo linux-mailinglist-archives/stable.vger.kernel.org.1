@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8862B7C9A94
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9967C9A95
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230200AbjJOSGy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:06:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57060 "EHLO
+        id S229704AbjJOSHA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:07:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230188AbjJOSGy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:54 -0400
+        with ESMTP id S230188AbjJOSG7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF3BB7
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDDEC433C9;
-        Sun, 15 Oct 2023 18:06:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD43DC1
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91AEBC433C8;
+        Sun, 15 Oct 2023 18:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393212;
-        bh=6gjVAFgktWu/3XT4nmdSI+bjXNAXtaY6oHkXAOXObHg=;
+        s=korg; t=1697393217;
+        bh=5lgCKsP6uj9dwQsuRSuCU28enF0PSrcBRQnliW/1j7k=;
         h=Subject:To:Cc:From:Date:From;
-        b=F/r/vBej5f+JpqaBdSa2z9vWXHRq2UjUuR3WqFmQlKIfm2iFNq/sn5x6zAWs3rDSk
-         9IZtzw0cXq5ZUc/DwZLnEzOTrl7o8owEN+z8Rp5+6VWcxRR2sWSjXAq/SR/f59hkJV
-         l3RBw5Z7gTyvn4ZMF5jMqxfe5xzLFMWZujSNOuD8=
-Subject: FAILED: patch "[PATCH] xhci: Clear EHB bit only at end of interrupt handler" failed to apply to 5.4-stable tree
+        b=Rd/Dvs9/F4iq9DEbnd1bvRnDMcEBJSwI7hShwZSFSX67N5pvOEw1DzceMHEza2pb7
+         sUkirZ3xYwP5Y2OZsZC8ZiGW/gn702fEOtw7Rw7TjOvWTN/jGDHpgIYXSxxRNrkFTp
+         dzODNN0DiBcWisaQX2llxeRxyCISHxR+I/vchGgk=
+Subject: FAILED: patch "[PATCH] xhci: Clear EHB bit only at end of interrupt handler" failed to apply to 4.19-stable tree
 To:     lukas@wunner.de, gregkh@linuxfoundation.org,
         mathias.nyman@linux.intel.com, peter.chen@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:06:40 +0200
-Message-ID: <2023101540-oblong-setup-899a@gregkh>
+Date:   Sun, 15 Oct 2023 20:06:42 +0200
+Message-ID: <2023101542-magnolia-configure-5eae@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 15f3ef070933817fac2bcbdb9c85bff9e54e9f80
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101540-oblong-setup-899a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101542-magnolia-configure-5eae@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
