@@ -2,68 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14DCF7C9AEA
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 21:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2F877C9AFD
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 21:20:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230153AbjJOTGl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 15:06:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34966 "EHLO
+        id S229649AbjJOTUP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 15:20:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230200AbjJOTGj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 15:06:39 -0400
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7F7D9
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 12:06:38 -0700 (PDT)
-Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-3573dc94399so16067295ab.0
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 12:06:38 -0700 (PDT)
+        with ESMTP id S230350AbjJOTUO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 15:20:14 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2021CB7
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 12:20:13 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-405361bb9f7so38600555e9.2
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 12:20:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1697396797; x=1698001597; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yo/uuE8iMEdnS/XaWZtFvOcBfKEpJF0Nd2shBozh6Fc=;
-        b=xP+zD4u+Jzqb0TxYaRpdJ6x8jKqxI8nFhd7cgTeoaz70x0nSgXfoKIbHR/rr2aKy9t
-         CNy7K8hT0wainfa7LMtUfNRWZzZq15/klOIUzJnK5YeUY+WoDSGMxoIBRepKrPPlcLty
-         xrWdfXCCSHq61Tts/HHijJz1oENmBxOrM/U9ZPU4fe6YAUHMHYw2DJCy2y9IjOT2ZEUQ
-         2zORnuC6z22Q+OvdfKmhu09+DPb4eSIro4PCfhpaJCuLU8VXC1yymGDu7s9HQKhfy/xO
-         gdTWAvpMilrA4Ej2vsCfZJ8GLzut++oSc2H4bH/SW+G7xx/UPDtDxa1Hx4XVOmg/liPF
-         +3QA==
+        d=gmail.com; s=20230601; t=1697397611; x=1698002411; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8GofQLZWTi6FbZHWXBIt+6WRQsgJYYQDRGNXx0VI/oQ=;
+        b=Ty7pRhCVTZ//GRaaFpsRMDSZnGEU6nvsCPp7qXZiTVjAQ281Q0XJZVI0cZO2wLAvS3
+         02h/vRDJGrsMIno5aUOIMJIxissijoUTg1rPgcDHJqutDp30umfWa5DFHcU2YGAlOEYO
+         WDQBsfG9rG8fUF8DiL0HdxZ+d1kUBmnggbjBlxG7NJm0d7rlMLzHWm0t+kd0orflao49
+         CLRhI5TZCSmM9wCQZDPu1CN35P+yhVObJ372OUbdHPTqHHEuypUu2DWRy50Tgzj7poiq
+         vilV+b4NphToxtEKMl/Y7JRgC8jkVdUoQ5NsxI51/qp9XulZ47KEKdRcKDer7aqgqyJ5
+         ml3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697396797; x=1698001597;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Yo/uuE8iMEdnS/XaWZtFvOcBfKEpJF0Nd2shBozh6Fc=;
-        b=qser+QcyCXf6OULKNJSizFKOqNrZGQzogeda7WxgjHLDy9qUv8EzTqICDDJd93soSg
-         /DdM28YO3UpM4DiaR2GxIFrA5Kq5wiXXSZ1a4PkYX3DnqceXw4o7FHB0OMzVovr2B8ir
-         O5/Tbre23HCSbuo4+fW0wkzRwS3pzibBswwSsn+RyKCt06yCwPdW0q/+uEy5bbtKX4hb
-         RhswsnAo/myamKNBuFdhChiOUhPOEnNbDdyWENAbvSnng0QNJKDnPaZaUQkxZcHpgNOe
-         9iKsz7wrOVHmZizKsNyqA1jnh+8SNx0c/Ykq6oMRYjKFQR0xnzAMe4FG10F7CoNfx0kl
-         YNBg==
-X-Gm-Message-State: AOJu0YwXmxgZTi/PDKOQohq2eLXCD55XIW+exgNPKTi4TnqxChnlbuZa
-        tkEgb7Q61OxxHQ7SfF8zQ02qzo9LcYQf+0xEtdgA8Q==
-X-Google-Smtp-Source: AGHT+IGIjdUvad8tHRr3lUxO/U8pVqjqfROtehKOWoYF3XTRIiTKw0zes+9077nKR3F5HPEO9gYDjw==
-X-Received: by 2002:a05:6e02:1c29:b0:34f:efde:ec7c with SMTP id m9-20020a056e021c2900b0034fefdeec7cmr40034404ilh.28.1697396797028;
-        Sun, 15 Oct 2023 12:06:37 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id 29-20020a17090a1a5d00b00268b439a0cbsm3668805pjl.23.2023.10.15.12.06.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Oct 2023 12:06:36 -0700 (PDT)
-Message-ID: <652c383c.170a0220.76264.ba8c@mx.google.com>
-Date:   Sun, 15 Oct 2023 12:06:36 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1697397611; x=1698002411;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8GofQLZWTi6FbZHWXBIt+6WRQsgJYYQDRGNXx0VI/oQ=;
+        b=GzhvWfdykqrf7DWc2Hs94+OUz7DDSNBuUgfJwE8XCE0ygVyZPRPxwJT1BE1wHn7qib
+         16HcqVnV1WuFP5A6cH8pqTe1FXJAPYC6f0FmGsMSv+M/cTGNXBnpwE/MIBXxMwEBR2gg
+         kHKKQ7SBb9HR/uEKnYcP03ugIMFoeI50EoTo4HDy62SJYs8r9G/Gk1dRFJtZBuwWmXNT
+         mjlz516sthoJJMUIKkFzlR6C8b9CUwit1nl6WVycL6SrPskddXja/8cGPhNyBgttLI6s
+         +gcTOi2/IaKYGtgiH0NC6F4vxvG3AghSC0BqKtnUVSzitabCzLsrnaNG3LK3ynex3jWi
+         DVQA==
+X-Gm-Message-State: AOJu0Yy354Pq7NVr34OzQ+u1ughs03r+dFMR2htiVOB+EwJoo3hWSli9
+        r3CGti8Hddd/NVrEA5x+9iKu33I6yu7hGID0M7Q=
+X-Google-Smtp-Source: AGHT+IEO6jRQY0jXh4Tku2XP4+Z/ER8upt6B/6W1/9HjOIaH5cul61iotiIWNzdCVUPNTj0udX4pcEQ+I6aneunUQ2M=
+X-Received: by 2002:a7b:ce09:0:b0:403:b86:f624 with SMTP id
+ m9-20020a7bce09000000b004030b86f624mr27452222wmc.23.1697397611251; Sun, 15
+ Oct 2023 12:20:11 -0700 (PDT)
 MIME-Version: 1.0
+References: <CGME20231013052157epcas5p3dc0698c56f9846191d315fa8d33ccb5c@epcas5p3.samsung.com>
+ <20231013051458.39987-1-joshi.k@samsung.com> <20231013052612.GA6423@lst.de>
+ <8c755915-2366-28ff-ffd4-be17d797557c@samsung.com> <ZSlL-6Oa5J9duahR@kbusch-mbp>
+ <3438f3b8-f7d4-f0bd-44ef-7efb09ed6151@samsung.com> <20231013154708.GA17455@lst.de>
+In-Reply-To: <20231013154708.GA17455@lst.de>
+From:   Kanchan Joshi <joshiiitr@gmail.com>
+Date:   Mon, 16 Oct 2023 00:49:45 +0530
+Message-ID: <CA+1E3rKaUW0YN+bphe9n26ZRTX1rq6M0z7Hpc=zLOJE1AER9hw@mail.gmail.com>
+Subject: Re: [PATCH v4] nvme: fix corruption for passthrough meta/data
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Kanchan Joshi <joshi.k@samsung.com>,
+        Keith Busch <kbusch@kernel.org>, axboe@kernel.dk,
+        sagi@grimberg.me, linux-nvme@lists.infradead.org,
+        vincentfu@gmail.com, ankit.kumar@samsung.com,
+        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v6.1.58
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.58)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,155 +74,25 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
-1.58)
+On Fri, Oct 13, 2023 at 9:17=E2=80=AFPM Christoph Hellwig <hch@lst.de> wrot=
+e:
+> The main limitation is that the device needs to support SGLs, and
+> we need to as well (we currently don't for metadata).  But for any
+> non-stupid workload SGLs should be at least as fast if not faster
+> with modern hardware.  But I see no way out.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
-/kernel/v6.1.58/
+You may agree that it's a hardware-assisted way out. It is offloading
+the checks to a SGL-capable device.
+I wrote some quick code in that direction but could not readily get my
+hands on a device that exposes metadata-with-sgl capability.
+That reminded me that we are limiting unprivileged-passthrough to a
+niche set of devices/users. That is the opposite of what the feature
+was for.
 
-Tree: stable-rc
-Branch: linux-6.1.y
-Git Describe: v6.1.58
-Git Commit: adc4d740ad9ec780657327c69ab966fa4fdf0e8e
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+OTOH, this patch implemented a software-only way out. There are some
+checks, but someone (either SW or HW) has to do those to keep things
+right.
+The patch ensures the regular user cannot exploit the hole and that
+the root user continues to work as before (Keith's concern).
+So, I really wonder why we don't want to go for the way that solves it
+generically.
