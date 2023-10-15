@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D76CB7C9AB2
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 492287C9AB3
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:18:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbjJOSSP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:18:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33304 "EHLO
+        id S229704AbjJOSST (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:18:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSSP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:18:15 -0400
+        with ESMTP id S229518AbjJOSST (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:18:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87001B7
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:18:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A08C433C7;
-        Sun, 15 Oct 2023 18:18:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDB01B7
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:18:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06E9C433C9;
+        Sun, 15 Oct 2023 18:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393893;
-        bh=C4Ban8ZGJZpzPZtGCz8WhVwxQ9VeZcDhqKpQLkyqpcg=;
+        s=korg; t=1697393897;
+        bh=Uk/CTmFGAuTeG2VcEWhAljRoFX6wgWn0tnKqR1NiRPM=;
         h=Subject:To:Cc:From:Date:From;
-        b=yFwbxwOw2tQTS0Qsbl4ji2s2uTVpw/GvGvZ+SNA+s0rxlTuqeEDhXuDhveTqarK2Y
-         ocXPu7ntJEQuJaddPdIgX+h3NuHET3mufw5WVHE+3mtYMy4SZu+8pfwZAEWcXqO8ru
-         sVN3Y87OwnPzP5r0yvySLbQeJdWgsyQpi8AL4RM8=
-Subject: FAILED: patch "[PATCH] x86/alternatives: Disable KASAN in apply_alternatives()" failed to apply to 5.15-stable tree
+        b=tFjv9+cgG9pkyw/ghEWirh3cmmyFY83JBx0+KJgOdsluN2npfwKZaFJU7uQnbHdiy
+         yySoh5ADG2ndszpjIp/ORi8ILkfQLJXYhUSypbjQE6NZ0Bak6yMzP2/70/UT+jYdZJ
+         a0jlWiuKNjTsXU/6flu8edwiI1Q2BBoGep5Y9JC8=
+Subject: FAILED: patch "[PATCH] x86/alternatives: Disable KASAN in apply_alternatives()" failed to apply to 5.10-stable tree
 To:     kirill.shutemov@linux.intel.com, fei.yang@intel.com,
         mingo@kernel.org, peterz@infradead.org,
         torvalds@linux-foundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:17:50 +0200
-Message-ID: <2023101550-ranger-imaginary-2bed@gregkh>
+Date:   Sun, 15 Oct 2023 20:17:51 +0200
+Message-ID: <2023101551-eardrum-control-9aae@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x d35652a5fc9944784f6f50a5c979518ff8dacf61
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101550-ranger-imaginary-2bed@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101551-eardrum-control-9aae@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
