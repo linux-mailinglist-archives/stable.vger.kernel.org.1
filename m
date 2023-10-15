@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B573B7C9AA5
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:15:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6DAD7C9AA6
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:15:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbjJOSPl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:15:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43160 "EHLO
+        id S229603AbjJOSPs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:15:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSPk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:15:40 -0400
+        with ESMTP id S229518AbjJOSPs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:15:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FCD1AB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:15:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5605AC433C8;
-        Sun, 15 Oct 2023 18:15:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD9F4AB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:15:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCDEC433C7;
+        Sun, 15 Oct 2023 18:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393739;
-        bh=mZ+kIeAKic31k4L8ahV8Em1I4HmUD3aNe3iSovqRhHk=;
+        s=korg; t=1697393746;
+        bh=oX7Ohz9evNdZ22rPrwgMXdOGbDdOn43t8xPIvc5wv5k=;
         h=Subject:To:Cc:From:Date:From;
-        b=wEBNmwFtDGF/YHdFvN+eUj+4JeKmOLomkUBSGlOqiEUriaDdp4JGPr3ouSR4m9PCE
-         Q/Df2W1kSWdaA1p6I4V38Nr6WJmn+M8Jzk2XbYNJQ6kUf+gKJK4D2ZAZKk3I6td7oz
-         G/IJsyuNNloPQdm+33hEoNSl8zef1UvY+g1/efME=
-Subject: FAILED: patch "[PATCH] serial: Reduce spinlocked portion of uart_rs485_config()" failed to apply to 6.1-stable tree
+        b=pIEhkK+ugZn4M9f2yRWIB/8HOe3Ai9nipxFz0t49hFQSu+Kb/iZdvPkDKueGvRiT8
+         mH5h27dra0yb1A6VM6Jl24TSUawxLZ9RRfXx3U2NkmImQblFV45MPXcBzk0/gTwhRy
+         Ht2lbR9rWMrft6pOTrEyiSIhIPlh+1m99XWp+K8g=
+Subject: FAILED: patch "[PATCH] serial: Reduce spinlocked portion of uart_rs485_config()" failed to apply to 5.15-stable tree
 To:     lukas@wunner.de, LinoSanfilippo@gmx.de, gregkh@linuxfoundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:15:33 +0200
-Message-ID: <2023101533-spotty-alkalize-ac65@gregkh>
+Date:   Sun, 15 Oct 2023 20:15:35 +0200
+Message-ID: <2023101535-sprain-fidgeting-e62d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8679328eb859d06a1984ab48d90ac35d11bbcaf1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101533-spotty-alkalize-ac65@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101535-sprain-fidgeting-e62d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
