@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32D7A7C9AA8
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A1BA7C9AA9
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:16:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjJOSP7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:15:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58520 "EHLO
+        id S229659AbjJOSQJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:16:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229649AbjJOSP6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:15:58 -0400
+        with ESMTP id S229649AbjJOSQI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:16:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7244FDA
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:15:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D3BC433C8;
-        Sun, 15 Oct 2023 18:15:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D17FAB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:16:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901FFC433C7;
+        Sun, 15 Oct 2023 18:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393757;
-        bh=8eO8wm0D6A2dZfK6apb3dfTKmWq3GrvzUFPGDbjaIRM=;
+        s=korg; t=1697393767;
+        bh=oqt44vC5rRc1RmDERXo4Icwjrojfm9fH40Ti8TKsEMY=;
         h=Subject:To:Cc:From:Date:From;
-        b=jxSzfcWcXOmk7xgPavzb21R+nuT4LdYUX0TrXVtKcpgNTU9YrYaM8vrPyzJc3XZNH
-         UDyPfL1RbHiiF92YnN1ztIBmqVOxgN7T5QEvCKA6eKVVYKI61hOOpaKbghkonkCGuE
-         mHXWpSCplA9eJ2IFrDXlLA5ooj2CyW6qSqZfLUig=
-Subject: FAILED: patch "[PATCH] serial: 8250_omap: Fix errors with no_console_suspend" failed to apply to 6.1-stable tree
+        b=QLxQMOznTStNkE+KE7iiOi5RbpKyo2sQJx4UVrXMpW7FEWWBD/3gVBmVYqDXZQkUt
+         QAIcWSGTVDvsoVjkIfOiW1PWftr6U4MyemA/TdpD0yZIgpsCM3ywmY4y/0lKteTjBX
+         oqGi26nsG1tBtBPvnD4MSmkJhqIszbsxeW+1lKEs=
+Subject: FAILED: patch "[PATCH] serial: 8250_omap: Fix errors with no_console_suspend" failed to apply to 5.15-stable tree
 To:     tony@atomide.com, d-gole@ti.com, gregkh@linuxfoundation.org,
         stable@kernel.org, thomas.richard@bootlin.com, u-kumar1@ti.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:15:52 +0200
-Message-ID: <2023101552-trifle-ashy-52c1@gregkh>
+Date:   Sun, 15 Oct 2023 20:15:54 +0200
+Message-ID: <2023101554-evasion-wistful-806e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 560706eff7c8e5621b0d63afe0866e0e1906e87e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101552-trifle-ashy-52c1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101554-evasion-wistful-806e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
