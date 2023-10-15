@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21D007C9A8C
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:06:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F0737C9A8D
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjJOSGX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:06:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51100 "EHLO
+        id S229559AbjJOSG0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:06:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSGW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:22 -0400
+        with ESMTP id S229518AbjJOSG0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 962E4C1
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCB1C433C8;
-        Sun, 15 Oct 2023 18:06:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1DDCAB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCB1C433C9;
+        Sun, 15 Oct 2023 18:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393180;
-        bh=PoHV6JRhIndOfed023nUPncHL0NUpWvGCuqLKpxqXTA=;
+        s=korg; t=1697393184;
+        bh=wcSCRWMmgEhM0tuKaDHVLJ6dMPcx70CvW21v0WSLK30=;
         h=Subject:To:Cc:From:Date:From;
-        b=DCWK1NI20TQr5dTHqPopAeLwNXuSVa+h4W++qR/IClew8ED+XHxJ0aooxojz7Iyvo
-         8DKImt87fAU7bWAf5UjBfbsqLTY3b8G6DgUEdVs83ziLRBycbIpYHL9yz1YxTOnOvc
-         EaX+XCDA5rV3D2mrcJJi1vTruCcYsqYf2pO/TWuQ=
-Subject: FAILED: patch "[PATCH] xhci: track port suspend state correctly in unsuccessful" failed to apply to 5.15-stable tree
+        b=t6efZE+a9mhk37oz7xmbVziHO+7+zvNEIAEFnwypRj+z2Y6vh1eL9I094mJLTXkyJ
+         Z7o7czxi7JwdWGkFtoKe1zUi+gdLlMNW+bXwWoBRdiNsaOBZLOoqNp4CavD3HGQW8P
+         su2wYjQFMXD/CDy49ZawfEwVUKSDkPsrdcy6+ahw=
+Subject: FAILED: patch "[PATCH] xhci: track port suspend state correctly in unsuccessful" failed to apply to 5.10-stable tree
 To:     mathias.nyman@linux.intel.com, gregkh@linuxfoundation.org,
         quic_wcheng@quicinc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:06:14 +0200
-Message-ID: <2023101514-couch-overprice-659c@gregkh>
+Date:   Sun, 15 Oct 2023 20:06:15 +0200
+Message-ID: <2023101515-laziness-saddled-c4b0@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x d7cdfc319b2bcf6899ab0a05eec0958bc802a9a1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101514-couch-overprice-659c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101515-laziness-saddled-c4b0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
