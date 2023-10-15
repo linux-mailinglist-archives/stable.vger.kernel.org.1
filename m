@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 835A87C9A8F
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:06:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 787E47C9A90
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229518AbjJOSGe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:06:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38128 "EHLO
+        id S230153AbjJOSGh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:06:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbjJOSGd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:33 -0400
+        with ESMTP id S229704AbjJOSGg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A65AED9
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59E2C433C8;
-        Sun, 15 Oct 2023 18:06:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5BAC1
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2581C433C7;
+        Sun, 15 Oct 2023 18:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393191;
-        bh=CZpzRSwF2UyQSl49dGuYkKBJHeE26EXRNsjkph3a8FA=;
+        s=korg; t=1697393194;
+        bh=vU4ozGQaDuA3U6Cya7tsOFbksJfr1HQuzUK08/ISs+w=;
         h=Subject:To:Cc:From:Date:From;
-        b=LAvuBV2rdbb0MFoA6WxUXvjP94lq51IUWiDGc9IO0zQaKx67fDvKFWzVL6sUAyitx
-         G+IRQvEwZstpIqTYTYB6p5sDdaKtfbYe9YasjMKB3jSIO9FUiMqW2wQ0JWaIQw68TE
-         xkNOphtQkGtJuIpGUuzqte4U4VbXggkVoDzZFlgs=
-Subject: FAILED: patch "[PATCH] xhci: track port suspend state correctly in unsuccessful" failed to apply to 4.19-stable tree
+        b=Gtsu3IufxtUtVmCr7YVKW8tzrzhVh+eUgVkJME5JGuJnHvVgZcLd0FgWL3JUvbwxe
+         jzraVOFlJq7Ot5b7MAzF8IOCRkUKc0KmO12+acqhjzUCNIYlTGjCXsf0ZFm2GPdnfK
+         aEz1Ao7BArH7ABlc+bfYEdYj+JO5wgLp0uiGIHPg=
+Subject: FAILED: patch "[PATCH] xhci: track port suspend state correctly in unsuccessful" failed to apply to 4.14-stable tree
 To:     mathias.nyman@linux.intel.com, gregkh@linuxfoundation.org,
         quic_wcheng@quicinc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:06:18 +0200
-Message-ID: <2023101518-legume-speak-a031@gregkh>
+Date:   Sun, 15 Oct 2023 20:06:19 +0200
+Message-ID: <2023101519-had-wrath-b7ca@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x d7cdfc319b2bcf6899ab0a05eec0958bc802a9a1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101518-legume-speak-a031@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101519-had-wrath-b7ca@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
