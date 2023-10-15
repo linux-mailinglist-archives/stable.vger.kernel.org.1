@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D64117C9ACB
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:35:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8441B7C9ACD
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:35:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbjJOSfO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:35:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48892 "EHLO
+        id S229603AbjJOSfc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:35:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSfN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:35:13 -0400
+        with ESMTP id S229518AbjJOSfc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:35:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 184C6AB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:35:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22056C433C7;
-        Sun, 15 Oct 2023 18:35:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA1C4AB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:35:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDD9C433C7;
+        Sun, 15 Oct 2023 18:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697394911;
-        bh=pFSrmuuga7ikY29I8SyUWHzG5KM5UveBBnpBlfdzvzA=;
+        s=korg; t=1697394930;
+        bh=P3/AN0DzmY/GFzkk0Eu+geilov88I+dO3oU733pwm1s=;
         h=Subject:To:Cc:From:Date:From;
-        b=OmaHsF1jednm3m7g2aybJ84TIqtvUF1rS0C0gDS7ZeScC6gIJa8hL4JCGqbAvvjba
-         t78ekp+LVPWxZvMXZiq7xLxvMY/CBLRp4trU3H+djEllS5R40JeL/G3fMDbwHbksFA
-         luAxMFCiHkQhaESVQkfB6aRKTIUobdy7gxpxRQOE=
-Subject: FAILED: patch "[PATCH] iio: cros_ec: fix an use-after-free in" failed to apply to 5.15-stable tree
+        b=bKhUwzS0cYuk/v6mSNAPZE5+N7yd3PSzn06R9kzMaUSWIN0lJVd7JRzCiEof4XjNV
+         R2znE1WrSd8UMsiX/aHtM5neESutEfgSjBs4RTsDhniti8KL5opycU1FYYh/jEOO47
+         J4VMZb2YQt8r2uVnYakZUNkFChwpDlF1OHPjNsVo=
+Subject: FAILED: patch "[PATCH] iio: cros_ec: fix an use-after-free in" failed to apply to 6.1-stable tree
 To:     tzungbi@kernel.org, Jonathan.Cameron@huawei.com,
         groeck@chromium.org, swboyd@chromium.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:35:01 +0200
-Message-ID: <2023101501-conclude-partner-77d5@gregkh>
+Date:   Sun, 15 Oct 2023 20:35:26 +0200
+Message-ID: <2023101526-sweep-stray-4f99@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7771c8c80d62ad065637ef74ed2962983f6c5f6d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101501-conclude-partner-77d5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101526-sweep-stray-4f99@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
