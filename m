@@ -2,133 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2FB87C97FC
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 07:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 132157C9800
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 07:29:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230091AbjJOFPt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 01:15:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49252 "EHLO
+        id S233497AbjJOF3q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 01:29:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233497AbjJOFPs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 01:15:48 -0400
-Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95864DA
-        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 22:15:42 -0700 (PDT)
-Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-5aaae6f46e1so1753918a12.3
-        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 22:15:42 -0700 (PDT)
+        with ESMTP id S233489AbjJOF3p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 01:29:45 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09C10B7
+        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 22:29:44 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id d75a77b69052e-4180d962b68so24380921cf.1
+        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 22:29:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697346942; x=1697951742; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=TdaEzOTX6ywtIk5zck1LY8j1JHQ8Qsr1vK5cWeNfXMc=;
-        b=N3HanSpNBGNxmLQH3LAh2FcJBxee86VOHrOWCjZUsuwukqPNNiJxuIUb4s1cz1obLJ
-         FtivQJsGPyvkZollxt/yFS2FTJXjCNROE6/QIWrr1zyeJTIV0fWl73Gdm1uh00BytX1U
-         A9MhddtKlLy37VOV76DyXmfEYbkvOTHPQqDqSmfHiS1ZrjeldDah3m9+UBKurXGD8ewW
-         djrpNnVCDoIfeuvjV+hkFb+5EF80uZkT9ovQYjwBgxV9gupyTeGLE6EITfInb0YSpIKb
-         7vSgXSP8pqkTtwBkQ2OzfzolTZ2OkrSMIR5tx7z46pRejXW/Ld6vB6jkNxUMkzN54DeV
-         tDbw==
+        d=gmail.com; s=20230601; t=1697347783; x=1697952583; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ef7vv1cgYlTiF0Hvsk6gW7YFSMoM6pwzu7ykklDFFYE=;
+        b=NaF8ezbFkVofpYnswQEeGG4h/Ma30dLhDfivILc+4CDfIXhe5KlnDjQdjVuLMxLUtI
+         wna9qilXGMRONI+va4y1sThQGmnHeQAwoe59qfwYd1Tys4cVOK1jTnMVi2lJJQXdShEy
+         YIJfyhcHXceIe9x1koIbx+L+XeN927/7o1x2ktH2s7WOPrr/LjkQFYw2uZUF4dWaXnz7
+         rNRlO6e4s6YE0v26rkCogub3SYpIKPZxXbD87Vetq1WCnUbCCqZC7LvoPLDXJnmPU9ei
+         N8yrtA/hrIiXh/hDuAWQvZr5xJ39vdyxslTLYT3BJ2aCvAL2YEGjvr2Ft2/rSijRNMd7
+         kDRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697346942; x=1697951742;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TdaEzOTX6ywtIk5zck1LY8j1JHQ8Qsr1vK5cWeNfXMc=;
-        b=UVk8OmeM69VR9Be+02RYHbGn7Z5DVQko3DR6Nvtxqzn+L2UAmKuCV5JaFH3JXZ2U1R
-         5H4VV2q7rFMrVvVt93oZ61D+MJU41Xe32KbC6Jl62F68BiPCaUZtUVXyRWh0Gmi6ePE6
-         1AlJ3YAVU/RFKzfj0cwawv7W17qCt8OGQMBShh9OSIvG9QXx8fCkpVPTgBE11MjgpPPT
-         ACT76mO2mZ1lBAs/FGyekWcm6YuUPeX2i3yr2nTb4maAfGTH2/Yna9GEipF6UotOSIE+
-         MwJOrHwCiyGlVnEVf3gxo6pIU7HGZlyNxy6PDWngQ1RprFS87tDcDrYIDvSL6Xc/Cxlq
-         hwvg==
-X-Gm-Message-State: AOJu0YzdPKDmZ6enhLAPzkRFh1EdJOtEa5mAkYHDHiGDb/lFRrmFasRI
-        NoNKyPCawWsd8N1Ks2IGbfkvMpV6OJ0=
-X-Google-Smtp-Source: AGHT+IG0jy59Rsv7ESphioQunhxw4q/SrMwa5fIMSN14rVK7m4kY8tzaw4ZKdhJgi38niKUcBa/gHCArfMo=
-X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
- (user=badhri job=sendgmr) by 2002:a63:334e:0:b0:58a:a0c:a62 with SMTP id
- z75-20020a63334e000000b0058a0a0c0a62mr472465pgz.9.1697346942053; Sat, 14 Oct
- 2023 22:15:42 -0700 (PDT)
-Date:   Sun, 15 Oct 2023 05:15:38 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-Message-ID: <20231015051538.2344565-1-badhri@google.com>
-Subject: [PATCH v1] usb: typec: tcpm: Add additional checks for contaminant
-From:   Badhri Jagan Sridharan <badhri@google.com>
-To:     gregkh@linuxfoundation.org, linux@roeck-us.net,
-        heikki.krogerus@linux.intel.com
-Cc:     kyletso@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rdbabiera@google.com,
-        amitsd@google.com, stable@vger.kernel.org,
-        Badhri Jagan Sridharan <badhri@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        d=1e100.net; s=20230601; t=1697347783; x=1697952583;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ef7vv1cgYlTiF0Hvsk6gW7YFSMoM6pwzu7ykklDFFYE=;
+        b=QS11BhispXs6VnmBI9NyB51Z0m4NdvQqSjb0LRi5/DazgCin8cDpAl5Ya1Fk58xAGS
+         eI00xLIazfdOaeRs3NCn2nYuBrQaE9Eigwlo22VT9i/S5r/SW/97fNhWAOG4Kf/Fv0bn
+         Py1TPjHYO4kCmmVtIMSSZvZ5zZ7/LBsF97wb3zi/98BhjuPGHo200v/9KxbaB9NB7zPC
+         UkyfGstVO8qETn/cUZKGxmALAQ6LsNGYCJZPDczLJtZgVPynNMBg+/biFuQGQbJBXOD/
+         iyVDWXlURBaQYbZGXaVGgl7xoLMz7EXJr33PkfSxtaWMcZZ4sDJ/s7EBkC36VZyQSSs6
+         ZN1g==
+X-Gm-Message-State: AOJu0Yyy+PBHkmHfUm8ySe37bvpTxPtR8KQ2g/s1kcnfqUfoqrN43dHb
+        DQ1xw38Za2iRk0AP+0EkTUSS3o26kIY=
+X-Google-Smtp-Source: AGHT+IGK9AgNN2mo+ayx7DzybWVY5IbZA9j1H0EJulu1i3mniVi1J+MAp5+3ySwqqtgWzVHtJ8lWgQ==
+X-Received: by 2002:ac8:4e56:0:b0:403:ca55:6ac5 with SMTP id e22-20020ac84e56000000b00403ca556ac5mr41157024qtw.18.1697347783110;
+        Sat, 14 Oct 2023 22:29:43 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id l18-20020a170902eb1200b001c5fc291ef9sm6293338plb.209.2023.10.14.22.29.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Oct 2023 22:29:42 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 0A055A25D313; Sun, 15 Oct 2023 12:29:38 +0700 (WIB)
+Date:   Sun, 15 Oct 2023 12:29:37 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     Marek Vasut <marex@denx.de>, Linux Stable <stable@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: Re: Possibly broken Linux 5.10.198 backport spi: spi-zynqmp-gqspi:
+ Fix runtime PM imbalance in zynqmp_qspi_probe
+Message-ID: <ZSt4wfx1EMeC0lnX@debian.me>
+References: <9afe9285-6f46-46d9-bd21-2ea5c4dc43c0@denx.de>
+ <ZSjYC_ATX193mJOA@debian.me>
+ <ZSrERw6ucvl1wLWX@sashalap>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="77rmlWxZ44xZNn1P"
+Content-Disposition: inline
+In-Reply-To: <ZSrERw6ucvl1wLWX@sashalap>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When transitioning from SNK_DEBOUNCED to unattached, its worthwhile to
-check for contaminant to mitigate wakeups.
 
-```
-[81334.219571] Start toggling
-[81334.228220] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.305147] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.305162] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.305187] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81334.475515] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81334.486480] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81334.486495] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81334.486515] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81334.506621] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81334.506640] Start toggling
-[81334.516972] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.592759] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.592773] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.592792] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81334.762940] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81334.773557] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81334.773570] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81334.773588] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81334.793672] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81334.793681] Start toggling
-[81334.801840] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.878655] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.878672] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.878696] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81335.048968] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81335.060684] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81335.060754] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81335.060775] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81335.080884] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81335.080900] Start toggling
-```
+--77rmlWxZ44xZNn1P
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Cc: stable@vger.kernel.org
-Fixes: 00bdc7e4e0f56 ("usb: typec: tcpm: Add callbacks to mitigate wakeups due to contaminant")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
----
- drivers/usb/typec/tcpm/tcpm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On Sat, Oct 14, 2023 at 12:39:35PM -0400, Sasha Levin wrote:
+> On Fri, Oct 13, 2023 at 12:39:23PM +0700, Bagas Sanjaya wrote:
+> > On Thu, Oct 12, 2023 at 06:39:10PM +0200, Marek Vasut wrote:
+> > > Linux 5.10.198 commit
+> > > 2cdec9c13f81 ("spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in
+> > > zynqmp_qspi_probe")
+> > >=20
+> > > looks very different compared to matching upstream commit:
+> > > a21fbc42807b ("spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in
+> > > zynqmp_qspi_probe")
+> > >=20
+> > > The Linux 5.10.198 change breaks a platform for me and it really look=
+s like
+> > > an incorrect backport.
+> > >=20
+> > > Dinghao, can you have a look ?
+> > >=20
+> >=20
+> > Thanks for the regression report. I'm adding it to regzbot (as stable-s=
+pecific
+> > one):
+> >=20
+> > #regzbot ^introduced: 2cdec9c13f81
+>=20
+> I'm going to revert it from 5.10.
+>=20
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 6e843c511b85..3634f9092a84 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3903,7 +3903,9 @@ static void run_state_machine(struct tcpm_port *port)
- 		port->potential_contaminant = ((port->enter_state == SRC_ATTACH_WAIT &&
- 						port->state == SRC_UNATTACHED) ||
- 					       (port->enter_state == SNK_ATTACH_WAIT &&
--						port->state == SNK_UNATTACHED));
-+						port->state == SNK_UNATTACHED) ||
-+					       (port->enter_state == SNK_DEBOUNCED &&
-+					        port->state == SNK_UNATTACHED));
- 
- 	port->enter_state = port->state;
- 	switch (port->state) {
+OK, thanks!
 
-base-commit: 1034cc423f1b4a7a9a56d310ca980fcd2753e11d
--- 
-2.42.0.655.g421f12c284-goog
+Don't forget to add Link: to this regression report and most importantly,
+Fixes: to the culprit commit when reverting.
 
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--77rmlWxZ44xZNn1P
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZSt4wQAKCRD2uYlJVVFO
+o2oxAQDemQvJ179CQYJ0coRWaZ55FTtmTVisfsz5uxEM466dXQD/T6GCbeigArv7
+b4FJMks1BydkUp6p/pXyyt9OFM9k5Ac=
+=RV4T
+-----END PGP SIGNATURE-----
+
+--77rmlWxZ44xZNn1P--
