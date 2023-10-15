@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5A5E7C9ABA
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3657C9ABB
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:23:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbjJOSXQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:23:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46070 "EHLO
+        id S229603AbjJOSXT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:23:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSXQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:23:16 -0400
+        with ESMTP id S229518AbjJOSXT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:23:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8E48AB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:23:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D26C433C8;
-        Sun, 15 Oct 2023 18:23:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E5F6AB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:23:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C32C433C9;
+        Sun, 15 Oct 2023 18:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697394194;
-        bh=hVlktB+l78GwZGAOhrTFMyTIpLsfxWsF5C+wuyUerEs=;
+        s=korg; t=1697394198;
+        bh=MM0qC7Sa+5DPfF/5WaIShofY3xK9CHrc7hPnoKs4kUU=;
         h=Subject:To:Cc:From:Date:From;
-        b=vIqYSld9h3EhKpVgXSeosv3YMezNDb2GgSsoedhKjoKKNMFMVBFuOwUNk5146BSck
-         d1mv4RyqioDn9MeGEXdjoAwHl9RBSYmUn3Gx9YmZrMUQO6b4v1+pqaxAXpJJkm2Cq3
-         22c7BjAC5WUIMd5eQHz1azdtENtaN6c7JVL4eDS0=
-Subject: FAILED: patch "[PATCH] block: Don't invalidate pagecache for invalid falloc modes" failed to apply to 6.1-stable tree
+        b=JJ+IMX6XPMFn9Wu3zUoikSfzkDdgpy1QEk9SnHctEY2mNZMLoYrR+YrMcqyuatmeJ
+         yI234kexiYupHONgyRCq4JpUfdatAFlelEoAHf0iKvHhXA6ns4t5ty3DK1LBEWhFEL
+         nRFH0LHamdIaiSPEMxvqiiDmY/IfmyyqyNRZl3Sg=
+Subject: FAILED: patch "[PATCH] block: Don't invalidate pagecache for invalid falloc modes" failed to apply to 5.15-stable tree
 To:     sarthakkukreti@chromium.org, axboe@kernel.dk, djwong@kernel.org,
         hch@lst.de, snitzer@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:23:11 +0200
-Message-ID: <2023101511-outpost-crucial-c477@gregkh>
+Date:   Sun, 15 Oct 2023 20:23:12 +0200
+Message-ID: <2023101512-hurt-guise-534b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1364a3c391aedfeb32aa025303ead3d7c91cdf9d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101511-outpost-crucial-c477@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101512-hurt-guise-534b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
